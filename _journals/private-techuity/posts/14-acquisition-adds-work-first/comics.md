@@ -109,7 +109,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "aspect_ratio": "16:9",
   "prompt": "Panel 5 of an explainer comic. Morgan marks an expiration date on a service bridge. Use one speech bubble with the exact words: \"How do we leave this bridge?\" Convey: A transition services agreement supplies temporary support, often from the seller. Record its cost, its end date, the milestone that replaces each service and the test that shows the business runs alone.",
   "alt": "Comic panel: Morgan marks an expiration date on a service bridge.",
-  "caption": "A transition services agreement supplies temporary support, often from the seller. Record its cost, its end date, the milestone that replaces each service and the test that shows the business runs alone.",
+  "caption": "A transition services agreement supplies temporary support, often from the seller. Record its cost, its end date, the milestone that replaces each service and the test that shows the business runs alone. In the fictional carve-out the agreement costs €35,000 a month and ends on 30 June 2027; each replacement runs two months beside the parent’s service before that service is switched off, and May 2027 is the month the business must run with every parent service off.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -120,7 +120,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Morgan marks an expiration date on a service bridge.](assets/images/14-acquisition-adds-work-first/comic-05-scene.jpeg)
 
-**Panel 5:** A transition services agreement supplies temporary support, often from the seller. Record its cost, its end date, the milestone that replaces each service and the test that shows the business runs alone.
+**Panel 5:** A transition services agreement supplies temporary support, often from the seller. Record its cost, its end date, the milestone that replaces each service and the test that shows the business runs alone. In the fictional carve-out the agreement costs €35,000 a month and ends on 30 June 2027; each replacement runs two months beside the parent’s service before that service is switched off, and May 2027 is the month the business must run with every parent service off.
 
 *Dialogue:* “How do we leave this bridge?”
 

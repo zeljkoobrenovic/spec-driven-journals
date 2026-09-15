@@ -61,9 +61,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/25-teamsystem/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Sam separates received cash from a retained ownership certificate. Use one speech bubble with the exact words: \"This part remains invested.\" Convey: A partial exit sells some of an investment while retaining an interest. Money received and estimated value still held remain separate, and a later agreed sale value is still not cash received.",
+  "prompt": "Panel 3 of an explainer comic. Sam separates received cash from a retained ownership certificate. Use one speech bubble with the exact words: \"This part remains invested.\" Convey: A partial exit sells some of an investment while retaining an interest. Money received and retained investment value stay separate; a later agreed sale value, or the gross proceeds a seller reports, is still not the net cash an investor receives.",
   "alt": "Comic panel: Sam separates received cash from a retained ownership certificate.",
-  "caption": "A partial exit sells some of an investment while retaining an interest. Money received and estimated value still held remain separate, and a later agreed sale value is still not cash received.",
+  "caption": "A partial exit sells some of an investment while retaining an interest. Money received and retained investment value stay separate; a later agreed sale value, or the gross proceeds a seller reports, is still not the net cash an investor receives.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -74,7 +74,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam separates received cash from a retained ownership certificate.](assets/images/25-teamsystem/comic-03-scene.jpeg)
 
-**Panel 3:** A partial exit sells some of an investment while retaining an interest. Money received and estimated value still held remain separate, and a later agreed sale value is still not cash received.
+**Panel 3:** A partial exit sells some of an investment while retaining an interest. Money received and retained investment value stay separate; a later agreed sale value, or the gross proceeds a seller reports, is still not the net cash an investor receives.
 
 *Dialogue:* “This part remains invested.”
 
@@ -107,9 +107,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/25-teamsystem/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Alex carries development and integration work past an adjusted earnings board. Use one speech bubble with the exact words: \"The work still needs funding.\" Convey: Adjusted earnings reconcile to a statutory loss through reported lines, mostly amortization and finance costs. Development and integration still require money even when their costs sit outside the adjusted measure.",
+  "prompt": "Panel 5 of an explainer comic. Alex carries development and integration work past an adjusted earnings board. Use one speech bubble with the exact words: \"The work still needs funding.\" Convey: Adjusted earnings reconcile to a statutory loss through reported lines, mostly amortization and a finance charge larger than the interest actually paid. Development and integration still require money even when their costs sit outside the adjusted measure.",
   "alt": "Comic panel: Alex carries development and integration work past an adjusted earnings board.",
-  "caption": "Adjusted earnings reconcile to a statutory loss through reported lines, mostly amortization and finance costs. Development and integration still require money even when their costs sit outside the adjusted measure.",
+  "caption": "Adjusted earnings reconcile to a statutory loss through reported lines, mostly amortization and a finance charge larger than the interest actually paid. Development and integration still require money even when their costs sit outside the adjusted measure.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -120,7 +120,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex carries development and integration work past an adjusted earnings board.](assets/images/25-teamsystem/comic-05-scene.jpeg)
 
-**Panel 5:** Adjusted earnings reconcile to a statutory loss through reported lines, mostly amortization and finance costs. Development and integration still require money even when their costs sit outside the adjusted measure.
+**Panel 5:** Adjusted earnings reconcile to a statutory loss through reported lines, mostly amortization and a finance charge larger than the interest actually paid. Development and integration still require money even when their costs sit outside the adjusted measure.
 
 *Dialogue:* “The work still needs funding.”
 

@@ -84,9 +84,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/06-different-bets/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Morgan places an exit calendar beside a longer product commitment. Use one speech bubble with the exact words: \"Whose horizon governs this choice?\" Convey: In the fictional consolidation, the fund wants the saving visible in earnings before a sale process; the add-on customers' renewals and the support team's knowledge run on a longer clock.",
+  "prompt": "Panel 4 of an explainer comic. Morgan places an exit calendar beside a longer product commitment. Use one speech bubble with the exact words: \"Whose horizon governs this choice?\" Convey: In the fictional consolidation, the fund wants the saving sitting in reported earnings before a sale process two to four years away. The add-on customers' thirty renewals fall in the next two quarters, so the support team's knowledge is the near-term constraint, and the customers' dependence on the product runs on past the exit.",
   "alt": "Comic panel: Morgan places an exit calendar beside a longer product commitment.",
-  "caption": "In the fictional consolidation, the fund wants the saving visible in earnings before a sale process; the add-on customers’ renewals and the support team’s knowledge run on a longer clock.",
+  "caption": "In the fictional consolidation, the fund wants the saving sitting in reported earnings before a sale process two to four years away. The add-on customers’ thirty renewals fall in the next two quarters, so the support team’s knowledge is the near-term constraint, and the customers’ dependence on the product runs on past the exit.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -97,7 +97,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Morgan places an exit calendar beside a longer product commitment.](assets/images/06-different-bets/comic-04-scene.jpeg)
 
-**Panel 4:** In the fictional consolidation, the fund wants the saving visible in earnings before a sale process; the add-on customers’ renewals and the support team’s knowledge run on a longer clock.
+**Panel 4:** In the fictional consolidation, the fund wants the saving sitting in reported earnings before a sale process two to four years away. The add-on customers’ thirty renewals fall in the next two quarters, so the support team’s knowledge is the near-term constraint, and the customers’ dependence on the product runs on past the exit.
 
 *Dialogue:* “Whose horizon governs this choice?”
 
@@ -107,9 +107,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/06-different-bets/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Employees carry transition boxes while investors review returns. Use one speech bubble with the exact words: \"Who carries these costs?\" Convey: Closing the second support location raises the sale price the executives and the fund are betting on. Eleven employees lose their jobs; staging and retention payments reduce the customer risk but do not compensate them. Record who benefits and who carries the burden.",
+  "prompt": "Panel 5 of an explainer comic. Employees carry transition boxes while investors review returns. Use one speech bubble with the exact words: \"Who carries these costs?\" Convey: Closing the second support location could raise the sale price the executives and the fund are betting on, if the saving survives the renewals and a buyer pays the assumed multiple. Eleven employees lose their jobs now; staging and retention payments reduce the customer risk but do not compensate them. Record who benefits and who carries the burden.",
   "alt": "Comic panel: Employees carry transition boxes while investors review returns.",
-  "caption": "Closing the second support location raises the sale price the executives and the fund are betting on. Eleven employees lose their jobs; staging and retention payments reduce the customer risk but do not compensate them. Record who benefits and who carries the burden.",
+  "caption": "Closing the second support location could raise the sale price the executives and the fund are betting on, if the saving survives the renewals and a buyer pays the assumed multiple. Eleven employees lose their jobs now; staging and retention payments reduce the customer risk but do not compensate them. Record who benefits and who carries the burden.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -120,7 +120,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Employees carry transition boxes while investors review returns.](assets/images/06-different-bets/comic-05-scene.jpeg)
 
-**Panel 5:** Closing the second support location raises the sale price the executives and the fund are betting on. Eleven employees lose their jobs; staging and retention payments reduce the customer risk but do not compensate them. Record who benefits and who carries the burden.
+**Panel 5:** Closing the second support location could raise the sale price the executives and the fund are betting on, if the saving survives the renewals and a buyer pays the assumed multiple. Eleven employees lose their jobs now; staging and retention payments reduce the customer risk but do not compensate them. Record who benefits and who carries the burden.
 
 *Dialogue:* “Who carries these costs?”
 

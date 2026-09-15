@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: Toys R Us: Positive Operating Earnings, Too Little Cash
@@ -56,6 +56,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-15: Editorial review follow-up: comic panel 3 dialogue changed to “Positive operating earnings; almost no operating cash flow.” and flagged for regeneration (image still shows the original bubble); the proposed technology program is described as multi-year/four-year throughout; debt service tied to management's September 2017 account; year-end cash balance ($566m) and total liquidity ($1.5bn) added as a balance distinct from operating cash flow; repeated transfer cautions compressed. Permalink and id unchanged.
 - 2026-09-14: Retitle to “Toys R Us: Positive Operating Earnings, Too Little Cash” and revise per the editorial review: corrected causal opening, labelled net-loss lines, period-labelled debt and technology figures, single supplier feedback loop, leverage ratio removed, cash-flow question separated, application sections combined; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “Toys R Us: Technology Plans Under Cash Pressure” to “Toys R Us: Profitable on Paper, Out of Cash in Practice”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.

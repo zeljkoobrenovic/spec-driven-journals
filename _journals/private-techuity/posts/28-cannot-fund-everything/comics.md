@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** Investor ownership changes the conditions of the choice of what to fund: establish the actual money, team time and authority before committing, and name the result the funding was agreed on. The panels follow a fictional Larkspur exercise from four requests to a feasible combination, and then to the review that revised it.
+**Comic.** Investor ownership changes the conditions of the choice of what to fund: establish the actual money, team time and authority before committing, and name the result the funding was agreed on. The panels follow a fictional Larkspur exercise, the same first-hundred-days plan the board approves at closing, from four requests to a feasible combination, and then to the review that revised it.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -61,9 +61,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/28-cannot-fund-everything/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "caption": "Cash and team time are separate limits. In this fictional exercise, the requests fit €500,000 but need 30 engineer-weeks against 24 available.",
+  "caption": "Cash and team time are separate limits. In this fictional exercise, the requests fit €500,000 but need 30 engineer-weeks against 24 available; a fifth item, KNW-1, uses four protected specialist-weeks outside the 24 and no cash.",
   "alt": "Comic panel: Sam compares a cash counter with a row of 24 available time blocks; six additional blocks sit outside the row.",
-  "prompt": "Panel 3 of an explainer comic. Sam compares a cash counter with a row of 24 available time blocks; six additional blocks sit outside the row. Use one speech bubble with the exact words: \"The money fits. The time does not.\" Convey: Cash and team time are separate limits. In this fictional exercise, the requests fit €500,000 but need 30 engineer-weeks against 24 available.",
+  "prompt": "Panel 3 of an explainer comic. Sam compares a cash counter with a row of 24 available time blocks; six additional blocks sit outside the row. Use one speech bubble with the exact words: \"The money fits. The time does not.\" Convey: Cash and team time are separate limits. In this fictional exercise, the requests fit €500,000 but need 30 engineer-weeks against 24 available; a fifth item, KNW-1, uses four protected specialist-weeks outside the 24 and no cash.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -74,7 +74,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam compares a cash counter with a row of 24 available time blocks; six additional blocks sit outside the row.](assets/images/28-cannot-fund-everything/comic-03-scene.jpeg)
 
-**Panel 3:** Cash and team time are separate limits. In this fictional exercise, the requests fit €500,000 but need 30 engineer-weeks against 24 available.
+**Panel 3:** Cash and team time are separate limits. In this fictional exercise, the requests fit €500,000 but need 30 engineer-weeks against 24 available; a fifth item, KNW-1, uses four protected specialist-weeks outside the 24 and no cash.
 
 *Dialogue:* “The money fits. The time does not.”
 
@@ -84,9 +84,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/28-cannot-fund-everything/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "caption": "One defensible selection uses €280,000 and 18 engineer-weeks for restoration, the smaller setup change and customer research. It leaves €220,000 and six weeks uncommitted and defers the full portal, whose twelve weeks still do not fit.",
+  "caption": "Ines proposes and the board approves €280,000 and 18 engineer-weeks for restoration, the smaller setup change and customer research, with KNW-1 alongside. It leaves €220,000 and six weeks in reserve, which only the board may draw, and defers the full portal, whose twelve weeks still do not fit.",
   "alt": "Comic panel: Alex selects three cards and leaves the full portal proposal beside a question mark.",
-  "prompt": "Panel 4 of an explainer comic. Alex selects three cards and leaves the full portal proposal beside a question mark. Use one speech bubble with the exact words: \"Learn before the larger commitment.\" Convey: One defensible selection uses €280,000 and 18 engineer-weeks for restoration, the smaller setup change and customer research. It leaves €220,000 and six weeks uncommitted and defers the full portal, whose twelve weeks still do not fit.",
+  "prompt": "Panel 4 of an explainer comic. Alex selects three cards and leaves the full portal proposal beside a question mark. Use one speech bubble with the exact words: \"Learn before the larger commitment.\" Convey: Ines proposes and the board approves €280,000 and 18 engineer-weeks for restoration, the smaller setup change and customer research, with KNW-1 alongside. It leaves €220,000 and six weeks in reserve, which only the board may draw, and defers the full portal, whose twelve weeks still do not fit.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -97,7 +97,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex selects three cards and leaves the full portal proposal beside a question mark.](assets/images/28-cannot-fund-everything/comic-04-scene.jpeg)
 
-**Panel 4:** One defensible selection uses €280,000 and 18 engineer-weeks for restoration, the smaller setup change and customer research. It leaves €220,000 and six weeks uncommitted and defers the full portal, whose twelve weeks still do not fit.
+**Panel 4:** Ines proposes and the board approves €280,000 and 18 engineer-weeks for restoration, the smaller setup change and customer research, with KNW-1 alongside. It leaves €220,000 and six weeks in reserve, which only the board may draw, and defers the full portal, whose twelve weeks still do not fit.
 
 *Dialogue:* “Learn before the larger commitment.”
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/28-cannot-fund-everything/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "caption": "The day-45 restoration test fails. Correcting it takes €20,000 and two weeks from the reserve, so the combination is revised: €300,000 and 20 engineer-weeks committed, the portal still deferred and the retest as the next review point.",
+  "caption": "The day-45 restoration test fails after its €80,000 and four weeks are spent. On Ines’s request the board approves €20,000 and two weeks from the reserve for the correction and a retest by day 85: €300,000 and 20 engineer-weeks committed, €200,000 and four weeks left, the portal still deferred.",
   "alt": "Comic panel: Alex, Sam and Priya compare the original combination sheet with the revised one after the failed restoration test.",
-  "prompt": "Panel 6 of an explainer comic. Alex, Sam and Priya compare two option sheets, the original combination and the revised one after a failed restoration test, with scope, time and funding checklists. Use one speech bubble with the exact words: \"Which combination can we actually deliver?\" Convey: The day-45 restoration test fails. Correcting it takes €20,000 and two weeks from the reserve, so the combination is revised: €300,000 and 20 engineer-weeks committed, the portal still deferred and the retest as the next review point.",
+  "prompt": "Panel 6 of an explainer comic. Alex, Sam and Priya compare two option sheets, the original combination and the revised one after a failed restoration test, with scope, time and funding checklists. Use one speech bubble with the exact words: \"Which combination can we actually deliver?\" Convey: The day-45 restoration test fails after its €80,000 and four weeks are spent. On Ines’s request the board approves €20,000 and two weeks from the reserve for the correction and a retest by day 85: €300,000 and 20 engineer-weeks committed, €200,000 and four weeks left, the portal still deferred.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -143,6 +143,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex, Sam and Priya compare the original combination sheet with the revised one after the failed restoration test.](assets/images/28-cannot-fund-everything/comic-06-scene.jpeg)
 
-**Panel 6:** The day-45 restoration test fails. Correcting it takes €20,000 and two weeks from the reserve, so the combination is revised: €300,000 and 20 engineer-weeks committed, the portal still deferred and the retest as the next review point.
+**Panel 6:** The day-45 restoration test fails after its €80,000 and four weeks are spent. On Ines’s request the board approves €20,000 and two weeks from the reserve for the correction and a retest by day 85: €300,000 and 20 engineer-weeks committed, €200,000 and four weeks left, the portal still deferred.
 
 *Dialogue:* “Which combination can we actually deliver?”

@@ -61,9 +61,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/30-useful-engagement/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "caption": "External expertise still needs company capacity. Ten specialist days need six engineer-days, two customer-team sessions and Priya’s review, all written into the plan.",
+  "caption": "External expertise still needs company capacity. Ten specialist days, capped at €15,000 from the ONB-1 budget, need six engineer-days, two customer-team sessions and Priya’s review, all written into the plan.",
   "alt": "Comic panel: Sam adds company engineer time beside the specialist’s ten-day offer on a six-week calendar.",
-  "prompt": "Panel 3 of an explainer comic. Sam adds company engineer time beside the specialist’s ten-day offer on a six-week calendar. Use one speech bubble with the exact words: \"Our time belongs in the plan too.\" Convey: External expertise still needs company capacity. Ten specialist days need six engineer-days, two customer-team sessions and Priya’s review, all written into the plan.",
+  "prompt": "Panel 3 of an explainer comic. Sam adds company engineer time beside the specialist’s ten-day offer on a six-week calendar. Use one speech bubble with the exact words: \"Our time belongs in the plan too.\" Convey: External expertise still needs company capacity. Ten specialist days, capped at €15,000 from the ONB-1 budget, need six engineer-days, two customer-team sessions and Priya’s review, all written into the plan.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -74,7 +74,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam adds company engineer time beside the specialist’s ten-day offer on a six-week calendar.](assets/images/30-useful-engagement/comic-03-scene.jpeg)
 
-**Panel 3:** External expertise still needs company capacity. Ten specialist days need six engineer-days, two customer-team sessions and Priya’s review, all written into the plan.
+**Panel 3:** External expertise still needs company capacity. Ten specialist days, capped at €15,000 from the ONB-1 budget, need six engineer-days, two customer-team sessions and Priya’s review, all written into the plan.
 
 *Dialogue:* “Our time belongs in the plan too.”
 
@@ -107,9 +107,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/30-useful-engagement/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "caption": "The day-20 baseline shows data quality, not the setup step, decides when a setup completes. Priya and the investor-side sponsor redirect the remaining five specialist days; the budget and review date do not move.",
+  "caption": "By engagement week three, about day 40 after closing, the first cohort setups confirm what the day-20 baseline suggested: data quality, not the setup step, decides when a setup completes. Priya and the investor-side sponsor redirect the remaining five specialist days; the €15,000 cap and the review date do not move.",
   "alt": "Comic panel: Alex places before-and-after customer-setup records beside a newly discovered data-quality issue.",
-  "prompt": "Panel 5 of an explainer comic. Alex places before-and-after customer-setup records beside a newly discovered data-quality issue. Use one speech bubble with the exact words: \"The evidence changed the problem.\" Convey: The day-20 baseline shows data quality, not the setup step, decides when a setup completes. Priya and the investor-side sponsor redirect the remaining five specialist days; the budget and review date do not move.",
+  "prompt": "Panel 5 of an explainer comic. Alex places before-and-after customer-setup records beside a newly discovered data-quality issue. Use one speech bubble with the exact words: \"The evidence changed the problem.\" Convey: By engagement week three, about day 40 after closing, the first cohort setups confirm what the day-20 baseline suggested: data quality, not the setup step, decides when a setup completes. Priya and the investor-side sponsor redirect the remaining five specialist days; the €15,000 cap and the review date do not move.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -120,7 +120,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex places before-and-after customer-setup records beside a newly discovered data-quality issue.](assets/images/30-useful-engagement/comic-05-scene.jpeg)
 
-**Panel 5:** The day-20 baseline shows data quality, not the setup step, decides when a setup completes. Priya and the investor-side sponsor redirect the remaining five specialist days; the budget and review date do not move.
+**Panel 5:** By engagement week three, about day 40 after closing, the first cohort setups confirm what the day-20 baseline suggested: data quality, not the setup step, decides when a setup completes. Priya and the investor-side sponsor redirect the remaining five specialist days; the €15,000 cap and the review date do not move.
 
 *Dialogue:* “The evidence changed the problem.”
 
@@ -131,9 +131,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "needs_regeneration": true,
   "asset": "assets/images/30-useful-engagement/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "caption": "Week six: the Larkspur engineer completes a new customer’s setup with the specialist observing only. The engagement ends on schedule, and the data-quality finding goes to the board as a better decision to make.",
-  "alt": "Comic panel: Priya and Alex watch a Larkspur engineer complete a customer setup while the specialist stands back, hands folded.",
-  "prompt": "Panel 6 of an explainer comic. Priya and Alex watch a Larkspur engineer complete a customer setup at a screen while the specialist stands back, hands folded, observing only; a small card on the desk reads data quality, to the board. Use one speech bubble with the exact words: \"Our engineer ran it alone. The rest goes to the board.\" Convey: Week six: the Larkspur engineer completes a new customer’s setup with the specialist observing only. The engagement ends on schedule, and the data-quality finding goes to the board as a better decision to make.",
+  "caption": "Week six, about day 63: the Larkspur engineer and a customer-team member complete a new customer’s setup with the specialist observing only. The engagement ends on schedule within its €15,000 cap, and the data-quality finding goes to the day-100 board review as a better decision to make.",
+  "alt": "Comic panel: Priya and Alex watch a Larkspur engineer and a customer-team member complete a customer setup while the specialist stands back, hands folded.",
+  "prompt": "Panel 6 of an explainer comic. Priya and Alex watch a Larkspur engineer and a customer-team member complete a customer setup at a screen while the specialist stands back, hands folded, observing only; a small card on the desk reads data quality, to the board. Use one speech bubble with the exact words: \"Our team ran it without the specialist. The rest goes to the board.\" Convey: Week six, about day 63: the Larkspur engineer and a customer-team member complete a new customer’s setup with the specialist observing only. The engagement ends on schedule within its €15,000 cap, and the data-quality finding goes to the day-100 board review as a better decision to make.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -142,8 +142,8 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Priya and Alex watch a Larkspur engineer complete a customer setup while the specialist stands back, hands folded.](assets/images/30-useful-engagement/comic-06-scene.jpeg)
+![Comic panel: Priya and Alex watch a Larkspur engineer and a customer-team member complete a customer setup while the specialist stands back, hands folded.](assets/images/30-useful-engagement/comic-06-scene.jpeg)
 
-**Panel 6:** Week six: the Larkspur engineer completes a new customer’s setup with the specialist observing only. The engagement ends on schedule, and the data-quality finding goes to the board as a better decision to make.
+**Panel 6:** Week six, about day 63: the Larkspur engineer and a customer-team member complete a new customer’s setup with the specialist observing only. The engagement ends on schedule within its €15,000 cap, and the data-quality finding goes to the day-100 board review as a better decision to make.
 
-*Dialogue:* “Our engineer ran it alone. The rest goes to the board.”
+*Dialogue:* “Our team ran it without the specialist. The rest goes to the board.”

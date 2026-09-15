@@ -1,31 +1,37 @@
 # Editorial review: The First Hundred Days: Turn Expectations Into a Funded Plan
 
-Reviewed 14 September 2026. Read the full article, summary and reader-facing comic text.
+Reassessed 15 September 2026 from the complete current article, summary and comic text where present, the previous review where present, revision log and Git changes. See the [collection review](../REVIEW.md).
 
-## Overall assessment
+## Current assessment
 
-The chapter uses the early post-transaction period to turn diligence findings into a credible operating plan, with company participation, protected capacity and reviewable assumptions. Its rejection of a universal hundred-day transformation deadline is sound. The warning that a short priority list must not erase material risks is particularly valuable.
+The article now delivers a named, costed and capacity-limited plan. D-3, D-5 and D-6 become ONB-1, KNW-1 and REC-1, and a day-100 review changes the expansion and spending decisions. The priority table, visible deferrals and distinction between commitments and cash spent are substantial improvements for a leader inheriting transaction expectations.
 
-Its main problem is the gap between the heading “An Early Operating Plan, Worked Through” and what follows. The table is a set of proposed workstreams, not a funded plan: it omits names, amounts, dates and resource allocations, then tells readers to supply them. The article needs to demonstrate the outcome its title promises.
+The example's integrity is not yet secure. The recovery overspend is absent, the baseline replacement is asserted without its result, and a sentence rewards a failed test over a successful one. Repair those details before describing this as a fully reconciled plan.
 
-## Detailed feedback
+## Active recommendations
 
-- **Introduction and tone:** The first paragraph explains the planning convention clearly. “A new investor replaces [the company's] rhythm with its own” is too categorical and conflicts with the following statement that further funding need not replace management or practices. Use “can introduce a new review timetable and expectations” or show the actual Larkspur change.
-- **Organization and flow:** Reconfirm findings → limit priorities → sequence dependencies → establish baselines → review the plan is a good sequence. The investor-category table largely repeats previous orientation. The support-charter section is also familiar after Part IV and should be a short applied reference.
-- **Clarity and examples:** The three priorities are sensible: onboarding, knowledge dependence and recovery. Each names a role and a type of evidence. But “product and implementation leaders,” “the CTO” and “designated service owner” are less usable than the named-decision example in the governance chapter. A spending limit is especially necessary in a chapter about funding.
-- **Missing narrative:** The diligence chapter should hand over one material finding that changes an early commitment. Here the priorities appear as a fresh list. Show what management confirms, disputes or discovers, then how that affects funding and sequence. Readers should see why the signed case cannot simply be copied into the operating plan.
-- **Technical precision and evidence:** The three-to-five suggestion is explicitly a heuristic, and the text does not claim a universal optimum. Preserve that restraint. The private-equity-plan study in further reading should not be read as proving that any particular planning template causes returns; the body sensibly avoids such a claim. No numerical worked plan currently exists to verify.
-- **Pacing and conclusion:** The chapter repeats the same plan fields in “Few Priorities,” after the example table, and in the close. A completed record would replace much of that repetition. “Review the Plan, Not Its Completion Rate” is a strong ending principle, but needs one concrete day-100 decision.
-- **Other formats:** The summary calls the table a method demonstration, which is more accurate than “worked through.” The comic makes the right request—“What must wait for these?”—but the article never answers it for the example.
+1. **High impact — reconcile the reserve after the failed recovery test.** [You Cannot Fund Everything](../28-cannot-fund-everything/index.md) spends the original €80,000/four weeks before the same day-45 failure and adds €20,000/two weeks for correction. This plan retains the original €260,000/20-week total, then spends the full €40,000/four-week reserve on data quality. Carrying both additions gives €320,000 and 26 weeks, exceeding this chapter's €300,000/24-week envelope by €20,000/two weeks. Either establish a different, explicitly separate recovery scenario or reconcile the common REC-1 history and show the new authorization or deferral. Because this chapter explicitly invokes the same test, silent alternative assumptions do not work.
 
-## Recommended changes
+2. **High impact — preserve actual spending through the handover.** ONB-1 commits €180,000 but has spent about €90,000 by day 100. [The new handover chapter](../31-handover-of-obligations/index.md) calls €180,000 its actual day-100 cost. Keep this chapter's useful distinction and require the receiving record to show paid/incurred cost, remaining commitment and annual maintenance separately. State where the €30,000 annual maintenance commitment is funded; it need not all fall within the hundred days, but it must not disappear from the continuing plan.
 
-- **High impact — Build one genuinely funded example in the review's recommended revision.** Give each priority a named accountable person, cash allowance, specialist time, decision date and prerequisite. Show the total fitting the stated cash and capacity limits, and name work that is deferred. Label every figure fictional.
-- **High impact — Carry a finding from diligence into the plan.** Keep its identifier, original assumption, management's updated evidence and funded response. This creates continuity and shows what the chapter adds to general prioritization advice.
-- **Medium impact — Show the hundred-day review changing something.** Recovery may pass while onboarding evidence supports a narrower segment, leading the board to delay expansion. A revised commitment is a better payoff than completion of all three tasks.
-- **Medium impact — Shorten the ownership and support recaps.** Use the chosen scenario and link to other arrangements. Keep the warning that excluded material risks still require a decision.
-- **Low impact — Align the opening and shorter formats.** “The transaction introduces new assumptions and review dates. Confirm which of them change the company's existing plan.”
+3. **Medium impact — remove the claim that a day-45 pass would be worse.** A sound test that passes would provide evidence of capability; failure is useful because it exposes a problem, not because it is intrinsically a better result. Suggested rewrite: “Finding the obstacles at day 45 gave the team time to correct them before a real failure.” Likewise, change “the day-100 review should change something” to “should confirm or revise the plan on evidence.” This preserves the earlier diligence chapter's acceptance of a supported existing assumption.
 
-## Proposed structure
+4. **Medium impact — finish the baseline and deferral history.** Management rejects the sampled 80 hours and promises a baseline from actual records by day 20, but the day-100 account simply returns to 80. Report what was measured, over which customer population and period, and whether it coincidentally confirmed the earlier average. Second-country expansion was moved outside year one during diligence; “one more quarter” needs a prior and revised date. Without them, the review's changed commitment cannot be followed into the handover.
 
-What actually changed → confirm one inherited finding with the team → funded three-priority plan and deferred work → dependencies and imperfect baselines → day-100 evidence and revised decision → longer-term operating review. Preserve the hundred-day convention as an organizing aid, not a promise of completion.
+5. **Low impact — clarify the knowledge test and trim formulaic restatement.** D-5 says two people understand the scheduling engine, while KNW-1 trains a “second engineer.” Explain whether only one of those two could release and recover it, or whether a third person is intended. The paragraph repeating every field after the table could be shorter. Preserve the current outline and the restrained hundred-day convention.
+
+## Verification and formats
+
+The initial table adds correctly: €180,000 + €0 + €80,000 = €260,000; 12 + 4 + 4 = 20 weeks. The difficulty is reconciliation with subsequent work, not addition within that table. At unchanged total implementation capacity, 80/62 ≈ 1.29× throughput, so the revised result does not establish 1.5× capacity; the board's caution is justified. The summary and comic faithfully repeat the current plan but therefore inherit its missing recovery expenditure and ambiguous deferral date. No operational or artwork test is claimed.
+
+## Changes since the previous review
+
+| Previous recommendation | Current disposition |
+| --- | --- |
+| Supply a funded example with names, amounts, dates and deferrals | **Partially resolved:** all fields now exist; the shared spending and capacity history does not reconcile. |
+| Carry a diligence finding into the plan | **Resolved structurally; partially resolved evidentially:** identifiers persist, but the replacement baseline needs its measured result. |
+| Show the hundred-day review changing a decision | **Partially resolved:** the decision is concrete; reserve and timing need repair. |
+| Shorten ownership and support recaps | **Resolved:** the chosen scenario and applied links work. |
+| Align opening and companions | **Largely resolved:** categorical investor takeover language is gone; the new demand that a review must change something is unnecessary. |
+
+The reserve conflict and actual-cost mismatch are high-priority new findings. The failed-test sentence is a separate conceptual regression.

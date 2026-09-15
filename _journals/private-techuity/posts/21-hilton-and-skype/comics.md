@@ -38,9 +38,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/21-hilton-and-skype/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Morgan places Hilton's commercial systems beside a restructuring record. Use one speech bubble with the exact words: \"Several mechanisms changed together.\" Convey: Hilton’s technology systems, business development, borrowing changes and market recovery all belong in the explanation of its result. The filing describes the systems but does not date them, so it cannot say which the owner inherited.",
+  "prompt": "Panel 2 of an explainer comic. Morgan places Hilton's commercial systems beside a restructuring record. Use one speech bubble with the exact words: \"Several mechanisms changed together.\" Convey: Hilton’s technology systems, business development, borrowing changes and market recovery all belong in the explanation of its result. Earlier filings date the OnQ platform to 2003, before the buyout; what remains unknown is how much later work added to the return.",
   "alt": "Comic panel: Morgan places Hilton's commercial systems beside a restructuring record.",
-  "caption": "Hilton’s technology systems, business development, borrowing changes and market recovery all belong in the explanation of its result. The filing describes the systems but does not date them, so it cannot say which the owner inherited.",
+  "caption": "Hilton’s technology systems, business development, borrowing changes and market recovery all belong in the explanation of its result. Earlier filings date the OnQ platform to 2003, before the buyout; what remains unknown is how much later work added to the return.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -51,7 +51,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Morgan places Hilton's commercial systems beside a restructuring record.](assets/images/21-hilton-and-skype/comic-02-scene.jpeg)
 
-**Panel 2:** Hilton’s technology systems, business development, borrowing changes and market recovery all belong in the explanation of its result. The filing describes the systems but does not date them, so it cannot say which the owner inherited.
+**Panel 2:** Hilton’s technology systems, business development, borrowing changes and market recovery all belong in the explanation of its result. Earlier filings date the OnQ platform to 2003, before the buyout; what remains unknown is how much later work added to the return.
 
 *Dialogue:* “Several mechanisms changed together.”
 
@@ -128,6 +128,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "06-scene",
   "status": "generated",
+  "needs_regeneration": true,
   "asset": "assets/images/21-hilton-and-skype/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 6 of an explainer comic. The fictional team places two decision maps beside the historical documents without reenacting the events. Use one speech bubble with the exact words: \"Two cases, two different decisions.\" Convey: Hilton asks whether the company has financing and time for the operating plan. Skype asks whether it controls the rights the product depends on and what a particular buyer values. Neither answer can be read from the exit price.",

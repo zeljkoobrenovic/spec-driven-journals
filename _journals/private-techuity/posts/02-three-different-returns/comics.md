@@ -36,10 +36,11 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "02-scene",
   "status": "generated",
+  "needs_regeneration": true,
   "asset": "assets/images/02-three-different-returns/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Sam moves earnings, valuation, and debt blocks independently. Use one speech bubble with the exact words: \"Ten times: one hundred and ten million.\" Convey: Outcome one. A buyer pays the same 10× multiple: €15m × 10 = €150m, less €40m of debt. The fund receives €110m, 2.75 times its €40m, about 22% a year. Earnings up, debt down, price per euro unchanged.",
-  "alt": "Comic panel: Sam moves earnings, valuation, and debt blocks independently.",
+  "prompt": "Panel 2 of an explainer comic. Sam stands beside a rising earnings chart and a shrinking debt stack, holding a price tag marked 10×; Alex looks on. Use one speech bubble with the exact words: \"Ten times: one hundred and ten million.\" Convey: Outcome one. A buyer pays the same 10× multiple: €15m × 10 = €150m, less €40m of debt. The fund receives €110m, 2.75 times its €40m, about 22% a year. Earnings up, debt down, price per euro unchanged.",
+  "alt": "Comic panel: Sam holds a 10× price tag beside a rising earnings chart and a shrinking debt stack, while Alex looks on.",
   "caption": "Outcome one. A buyer pays the same 10× multiple: €15m × 10 = €150m, less €40m of debt. The fund receives €110m, 2.75 times its €40m, about 22% a year. Earnings up, debt down, price per euro unchanged.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
@@ -49,7 +50,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Sam moves earnings, valuation, and debt blocks independently.](assets/images/02-three-different-returns/comic-02-scene.jpeg)
+![Comic panel: Sam holds a 10× price tag beside a rising earnings chart and a shrinking debt stack, while Alex looks on.](assets/images/02-three-different-returns/comic-02-scene.jpeg)
 
 **Panel 2:** Outcome one. A buyer pays the same 10× multiple: €15m × 10 = €150m, less €40m of debt. The fund receives €110m, 2.75 times its €40m, about 22% a year. Earnings up, debt down, price per euro unchanged.
 
@@ -59,10 +60,11 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "03-scene",
   "status": "generated",
+  "needs_regeneration": true,
   "asset": "assets/images/02-three-different-returns/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Alex proudly holds a deployment report beside rising valuation. Use one speech bubble with the exact words: \"Twelve times. Same team, same numbers.\" Convey: Outcome two. Same EBITDA, same debt, but a buyer pays 12×: €180m less €40m. The fund receives €140m, 3.5 times its money, about 28% a year. Calling this proof of exceptional engineering confuses the exit price with the company's work.",
-  "alt": "Comic panel: Alex proudly holds a deployment report beside rising valuation.",
+  "prompt": "Panel 3 of an explainer comic. Alex proudly holds a deployment report beside the same rising earnings chart and the same shrinking debt stack as before; Sam holds a larger price tag marked 12×. Use one speech bubble with the exact words: \"Twelve times. Same team, same numbers.\" Convey: Outcome two. Same EBITDA, same debt, but a buyer pays 12×: €180m less €40m. The fund receives €140m, 3.5 times its money, about 28% a year. Calling this proof of exceptional engineering confuses the exit price with the company's work.",
+  "alt": "Comic panel: Alex proudly holds a deployment report beside the same earnings chart and debt stack, while Sam holds a larger 12× price tag.",
   "caption": "Outcome two. Same EBITDA, same debt, but a buyer pays 12×: €180m less €40m. The fund receives €140m, 3.5 times its money, about 28% a year. Calling this proof of exceptional engineering confuses the exit price with the company’s work.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
@@ -72,7 +74,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Alex proudly holds a deployment report beside rising valuation.](assets/images/02-three-different-returns/comic-03-scene.jpeg)
+![Comic panel: Alex proudly holds a deployment report beside the same earnings chart and debt stack, while Sam holds a larger 12× price tag.](assets/images/02-three-different-returns/comic-03-scene.jpeg)
 
 **Panel 3:** Outcome two. Same EBITDA, same debt, but a buyer pays 12×: €180m less €40m. The fund receives €140m, 3.5 times its money, about 28% a year. Calling this proof of exceptional engineering confuses the exit price with the company’s work.
 
@@ -85,7 +87,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "needs_regeneration": true,
   "asset": "assets/images/02-three-different-returns/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Sam stands beside the same rising earnings chart and the same shrinking debt stack as before, but holds a smaller price tag; Alex looks at the identical chart, puzzled. Use one speech bubble with the exact words: \"Seven times. Same team, same numbers.\" Convey: Outcome three. Same EBITDA, same debt, but a buyer pays only 7×: €105m less €40m. The fund receives €65m, 1.6 times its money, about 10% a year. Calling this a failed transformation confuses the exit price with the company's work.",
+  "prompt": "Panel 4 of an explainer comic. Sam stands beside the same rising earnings chart and the same shrinking debt stack as before, but holds a smaller price tag marked 7×; Alex looks at the identical chart, puzzled. Use one speech bubble with the exact words: \"Seven times. Same team, same numbers.\" Convey: Outcome three. Same EBITDA, same debt, but a buyer pays only 7×: €105m less €40m. The fund receives €65m, 1.6 times its money, about 10% a year. Calling this a failed transformation confuses the exit price with the company's work.",
   "alt": "Comic panel: Sam holds a smaller price tag beside the same earnings chart and debt stack, while Alex looks at the unchanged chart.",
   "caption": "Outcome three. Same EBITDA, same debt, but a buyer pays only 7×: €105m less €40m. The fund receives €65m, 1.6 times its money, about 10% a year. Calling this a failed transformation confuses the exit price with the company’s work.",
   "generation": {

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: An AI Strategy Hides Three Investment Questions
@@ -25,7 +25,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Move from a concrete question through explanation and example to a practical conclusion; connect the conclusion to the next chapter in the configured reading order.
 - Make summaries and comic storyboards understandable on their own; preserve source limits and label fictional scenarios, including changes in example assumptions.
 - Explain the title question and its implications for a concrete company decision.
-- Use the three investment questions as the visible structure, each with a decision, evidence required and one Larkspur example that ends with the chosen option, alternatives rejected, funding, scarce capacity, who is authorized and the evidence that would change it. Keep the dated coding-study comparison as a compact evidence box inside the internal-work question.
+- Use the three investment questions as the visible structure, each with a decision, evidence required and one Larkspur example that ends with the chosen option, alternatives rejected, funding, scarce capacity, who is authorized, a dated gate and the evidence that would change it. State recurring costs and give the net figure before a capacity result is called a saving. Keep the dated coding-study comparison as a compact evidence box inside the internal-work question.
 - Present company-wide coordination as a proportionate proposal integrated early: who coordinates, which functions participate in this company, which decisions are shared. Champions are an option with time and authority, not a requirement for every function; state the two-or-three-functions starting point in every format.
 - Use the specific investor expectation in the scenario rather than prevalence claims about investors or companies.
 - Distinguish sourced observations, the manuscript's analysis, and explicitly fictional examples.
@@ -58,6 +58,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-15: Give each Larkspur test a dated gate; split the customer pilot into a week-five stop rule and a week-ten release gate with a separate missed-safety-document check; connect the support pilot to the deferred hire through a throughput model (6.75 vs 7.5 agent-equivalents), a rollout check and a volume threshold, with €32,000 gross reduced to about €22,000 net of recurring costs; tie the substitution test to a recorded configuration; split the evidence box; state that the tests use their own budgets rather than the hundred-day envelope; comic panels 3 and 4 replaced by the substitution test and the hire condition; summary aligned.
 - 2026-09-14: Restructure around the three investment questions with completed Larkspur examples, move the coding studies into an evidence box, recast the operating model as a proportionate coordination proposal, remove prevalence claims and hand off to the acquisition chapter, per the editorial review; permalink and id unchanged.
 - 2026-09-14: Add an intro paragraph on why AI earns a chapter of its own, reorder the intro for flow, and add a section on treating AI as an org-wide operating model rather than a product and engineering topic. TL;DR updated to match.
 - 2026-09-14: Retitle the post from “An AI Strategy Contains Three Different Investment Questions” to “An AI Strategy Hides Three Investment Questions”. Permalink and id unchanged; body unchanged.

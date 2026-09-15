@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** The retailer reported positive operating earnings, a net loss and almost no operating cash in the same year, then a supplier cash shock. The panels follow what the documents show: why a technology transition needed funding, and how earlier supplier payments left less room to fund it. They do not show that the proposed work would have restored competitiveness.
+**Comic.** The retailer reported positive operating earnings, a net loss and almost no operating cash flow in the same year, then a supplier cash shock. The panels follow what the documents show: why a technology transition needed funding, and how earlier supplier payments left less room to fund it. They do not show that the proposed work would have restored competitiveness.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -59,9 +59,10 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "03-scene",
   "status": "generated",
+  "needs_regeneration": true,
   "asset": "assets/images/23-toys-r-us/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Sam places earnings, interest and cash-flow statements beside a transformation plan. Use one speech bubble with the exact words: \"Positive operating earnings, negative cash.\" Convey: In fiscal 2016 the company reported positive operating earnings, a net loss attributable to Toys R Us, Inc. and almost no operating cash flow. Name the measure and its period, and check which expenses are already included so that none is subtracted twice.",
+  "prompt": "Panel 3 of an explainer comic. Sam places earnings, interest and cash-flow statements beside a transformation plan. Use one speech bubble with the exact words: \"Positive operating earnings; almost no operating cash flow.\" Convey: In fiscal 2016 the company reported positive operating earnings, a net loss attributable to Toys R Us, Inc. and almost no operating cash flow. Name the measure and its period, and check which expenses are already included so that none is subtracted twice.",
   "alt": "Comic panel: Sam places earnings, interest and cash-flow statements beside a transformation plan.",
   "caption": "In fiscal 2016 the company reported positive operating earnings, a net loss attributable to Toys R Us, Inc. and almost no operating cash flow. Name the measure and its period, and check which expenses are already included so that none is subtracted twice.",
   "generation": {
@@ -76,7 +77,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 **Panel 3:** In fiscal 2016 the company reported positive operating earnings, a net loss attributable to Toys R Us, Inc. and almost no operating cash flow. Name the measure and its period, and check which expenses are already included so that none is subtracted twice.
 
-*Dialogue:* “Positive operating earnings, negative cash.”
+*Dialogue:* “Positive operating earnings; almost no operating cash flow.”
 
 <!-- comic-panel
 {

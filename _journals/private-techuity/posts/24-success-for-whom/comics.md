@@ -5,9 +5,9 @@
 }
 -->
 
-**Comic.** An exit is a decisive reporting event for some investors, not the only horizon for judging the work: product and engineering leaders, customers, employees and suppliers live with the company through and after each funding or ownership event. The panels set the book’s proposed standard of durable success, a company that can keep serving customers, fund its obligations and explain what is unfinished, beside the investor’s result, and show what to record when the two disagree.
+**Comic.** An exit is a decisive reporting event for some investors, not the only horizon for judging the work: product and engineering leaders, customers, employees and suppliers live with the company through and after each funding or ownership event. The panels set the book’s proposed standard of durable success, a company that can keep serving customers, fund its obligations and explain what is unfinished, beside the investor’s result, then follow one fictional Larkspur decision about thirty customers on an old onboarding path: the option that breaks their contracts is refused, the feasible ones are compared, and the chosen transition is funded, dated and reviewed.
 
-Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
+Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, Sam leads finance, and Ines is the CEO. All are fictional, and so are the Larkspur figures. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
@@ -105,11 +105,12 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "05-scene",
   "status": "generated",
+  "needs_regeneration": true,
   "asset": "assets/images/24-success-for-whom/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. The team connects investment expectations, funding, decision rights and company work. Use one speech bubble with the exact words: \"Do these conditions fit together?\" Convey: The investment expectations, financing, decision rights and company capabilities need to fit together. When they pull apart, name who is authorized to decide and whose interests lose. The book proposes this as a test, not a guarantee.",
-  "alt": "Comic panel: The team connects investment expectations, funding, decision rights and company work.",
-  "caption": "The investment expectations, financing, decision rights and company capabilities need to fit together. When they pull apart, name who is authorized to decide and whose interests lose. The book proposes this as a test, not a guarantee.",
+  "prompt": "Panel 5 of an explainer comic. At a boardroom table, Sam holds a calendar page marked with a 90-day cut-off while Priya holds a small stack of customer contracts whose end dates run past it; Morgan watches. Use one speech bubble, spoken by Priya, with the exact words: \"Not before their contracts allow.\" Convey: Sam proposes ending an old onboarding path for thirty customers in 90 days, saving about €220,000 a year. Several customer contracts run past that date, so the cut-off as written is a breach, not an option. The board refuses it and compares two feasible routes: a consent-based early migration and a two-quarter migration with the specialist kept on.",
+  "alt": "Comic panel: Sam holds a calendar page marked with a 90-day cut-off while Priya holds customer contracts whose end dates run past it, and Morgan watches.",
+  "caption": "Sam proposes ending an old onboarding path for thirty customers in 90 days, saving about €220,000 a year. Several customer contracts run past that date, so the cut-off as written is a breach, not an option. The board refuses it and compares two feasible routes: a consent-based early migration and a two-quarter migration with the specialist kept on.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -118,21 +119,22 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: The team connects investment expectations, funding, decision rights and company work.](assets/images/24-success-for-whom/comic-05-scene.jpeg)
+![Comic panel: Sam holds a calendar page marked with a 90-day cut-off while Priya holds customer contracts whose end dates run past it, and Morgan watches.](assets/images/24-success-for-whom/comic-05-scene.jpeg)
 
-**Panel 5:** The investment expectations, financing, decision rights and company capabilities need to fit together. When they pull apart, name who is authorized to decide and whose interests lose. The book proposes this as a test, not a guarantee.
+**Panel 5:** Sam proposes ending an old onboarding path for thirty customers in 90 days, saving about €220,000 a year. Several customer contracts run past that date, so the cut-off as written is a breach, not an option. The board refuses it and compares two feasible routes: a consent-based early migration and a two-quarter migration with the specialist kept on.
 
-*Dialogue:* “Do these conditions fit together?”
+*Dialogue:* “Not before their contracts allow.”
 
 <!-- comic-panel
 {
   "id": "06-scene",
   "status": "generated",
+  "needs_regeneration": true,
   "asset": "assets/images/24-success-for-whom/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Alex keeps an evidence notebook open beside the manuscript. Use one speech bubble with the exact words: \"What would change our judgment?\" Convey: Apply the ideas to one real decision, keep the evidence and revise the plan when the results challenge its assumptions.",
-  "alt": "Comic panel: Alex keeps an evidence notebook open beside the manuscript.",
-  "caption": "Apply the ideas to one real decision, keep the evidence and revise the plan when the results challenge its assumptions.",
+  "prompt": "Panel 6 of an explainer comic. Ines writes a short decision record on a board while Alex and Priya look on; the board shows a two-quarter timeline, a separate line for cash and a separate line for freed time, and a review marker at month nine. Use one speech bubble, spoken by Ines, with the exact words: \"Two quarters, the specialist stays, review at month nine.\" Convey: The board chooses the two-quarter migration after the data-quality step. It funds the specialist through the migration, then a half-time data service; it records €80,000 a year of payroll saved from year two as cash and €70,000 of support time as capacity, names who is accountable, keeps the disagreement on record and sets the evidence that reopens the decision.",
+  "alt": "Comic panel: Ines writes a decision record on a board showing a two-quarter timeline, separate cash and freed-time lines and a month-nine review marker, while Alex and Priya look on.",
+  "caption": "The board chooses the two-quarter migration after the data-quality step. It funds the specialist through the migration, then a half-time data service; it records €80,000 a year of payroll saved from year two as cash and €70,000 of support time as capacity, names who is accountable, keeps the disagreement on record and sets the evidence that reopens the decision.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -141,8 +143,8 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Alex keeps an evidence notebook open beside the manuscript.](assets/images/24-success-for-whom/comic-06-scene.jpeg)
+![Comic panel: Ines writes a decision record on a board showing a two-quarter timeline, separate cash and freed-time lines and a month-nine review marker, while Alex and Priya look on.](assets/images/24-success-for-whom/comic-06-scene.jpeg)
 
-**Panel 6:** Apply the ideas to one real decision, keep the evidence and revise the plan when the results challenge its assumptions.
+**Panel 6:** The board chooses the two-quarter migration after the data-quality step. It funds the specialist through the migration, then a half-time data service; it records €80,000 a year of payroll saved from year two as cash and €70,000 of support time as capacity, names who is accountable, keeps the disagreement on record and sets the evidence that reopens the decision.
 
-*Dialogue:* “What would change our judgment?”
+*Dialogue:* “Two quarters, the specialist stays, review at month nine.”

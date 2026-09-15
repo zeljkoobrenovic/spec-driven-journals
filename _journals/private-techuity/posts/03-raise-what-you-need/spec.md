@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: Match the Funding to the Work
@@ -57,6 +57,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-15: Repair the financing comparison per the 15 September review: debt service tested against €350,000 of operating cash alone (released capacity excluded until a dated conversion); the loan completed as a four-year schedule (€750,000 at 8%, one-year principal holiday, payments €60,000 / €310,000 / €290,000 / €270,000, closing at zero) with a dated downside forecast; why operating cash cannot carry the front-loaded requirement; day-90 cohort / day-100 decision with green/amber/red thresholds; headroom stated as excluding financing costs; callout qualified; €67,500 → €70,000 rounding labelled; the comparison declared this chapter’s own scenario importing the shared pilot result. Summary aligned.
 - 2026-09-14: Retitle to “Match the Funding to the Work” and revise per the editorial review: conditional formulation replaces “the type of capital sets the pace” across formats; a fictional Larkspur sizing comparison (€610,000 need, growth equity vs term loan, choice under stated assumptions) replaces the four category sketches; inherited-arrangement readers get a defined action; control/partnership compressed to one linked paragraph; readiness checklist dropped; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “Capital Should Fit the Company's Problem” to “Raise the Money You Need, Not the Most You Can”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.

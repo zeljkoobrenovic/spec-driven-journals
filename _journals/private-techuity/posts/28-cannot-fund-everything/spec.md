@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: You Cannot Fund Every Good Project at Once
@@ -46,6 +46,7 @@ Existing chapters provide the financial and governance foundations. Where releva
 
 ## Changelog
 
+- 2026-09-15: Reconcile the exercise with the shared Larkspur ledger: the €500,000 / 24-engineer-week envelope is the first-hundred-days plan (not “the next two quarters”); rows carry the REC-1 / ONB-1 / KNW-1 identifiers, with KNW-1 shown as €0 and four protected specialist-weeks outside the 24; the recovery sequence is stated once (€80,000 / 4 weeks authorized and spent by the day-45 failure; €20,000 / 2 weeks approved by the board from the reserve for correction and retest by day 85; REC-1 €100,000 / 6 weeks; committed €300,000 / 20, reserve €200,000 / 4; day-100 data-quality draw to €340,000 / 24, reserve €160,000). Authority: Ines proposes, the board approves the plan; reserve draws are the board’s. Luehrman annotation corrected. Summary and comic captions aligned; no dialogue changed.
 - 2026-09-14: Bring the €500,000 / 24-engineer-week table forward, state the funding boundary (operating work budgeted; change budget funds the recovery improvement), complete the selection as a decision record, add the failed day-45 restore retest as the review that revises the combination, compress the investor-scenario table to the growth-funding condition with a link to [[raise-what-you-need]], replace the “overruled or unfunded” prediction with the missing-constraint explanation, end with the toolkit record and three questions; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “Choosing What to Fund—and What to Stop” to “You Cannot Fund Every Good Project at Once”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: Management Equity, Fund Carry and Employee Jobs Are Different Bets
@@ -54,6 +54,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-15: Correct the fund row of the consolidation table (fund stake versus its manager’s carry, exposure not diversification, €6m as company equity value), separate run-rate saving from year-one cash under both plans, define gross and net revenue retention and make gross the guardrail with a prospective commission rule, split options from share awards, make the comic’s renewal clock and sale-price claim conditional, and align the summary; permalink and id unchanged.
 - 2026-09-14: Replace the opening generalization, add the consolidation comparison with a recorded decision and unresolved burden, turn the guardrail list into one worked revenue-target choice, distinguish the company payout waterfall from the fund waterfall, move "A Leadership Change Needs a Hypothesis" to the organization chapter, and scope the Leslie and Oyer annotation; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “Owning Shares Together Is Not Wanting the Same Thing” to “Management Equity, Fund Carry and Employee Jobs Are Different Bets”. Permalink and id unchanged; body unchanged.
 - 2026-09-14: Retitle the post from “Shared Ownership Does Not Create Identical Interests” to “Owning Shares Together Is Not Wanting the Same Thing”. Permalink and id unchanged; body unchanged.

@@ -1,31 +1,37 @@
 # Editorial review: Fix the Decision Problem Before Adding People
 
-Reviewed 14 September 2026. Read the full article, summary and reader-facing comic text.
+Reassessed 15 September 2026 from the complete current article, summary and comic text where present, the previous review where present, revision log and Git changes. See the [collection review](../REVIEW.md).
 
-## Overall assessment
+## Current assessment
 
-The chapter argues that delivery capacity depends on decisions, knowledge and coherent responsibilities as well as headcount. It speaks directly to leaders facing hiring, location changes or restructuring. The opening's unchanged founder bottleneck, the full-cost comparison and the insistence that a receiving team demonstrate competence are strong.
+Moving this chapter immediately after the assessment works. The sixteen-day trace turns an apparent staffing problem into separable approval, queue and implementation problems. The resulting choice—change two approvals, protect specialist time and fund one engineer—accepts that hiring can be necessary without treating headcount as the first diagnosis. The revised external-capacity calculation is also clearer.
 
-The main weakness is that the promised decision diagnosis is brief, while the article surveys executive assessment, nearshoring, knowledge, organizational health, autonomy and conditional hiring. It would be more effective as one developed change to the operating model, supported by those considerations. A private role brief also pulls the perspective away from the company leader.
+The remaining recommendations concern the conditions under which the choice changes and how confidently the chapter diagnoses a failed intervention. Preserve the trace and the limited hiring decision; they are the chapter's strongest teaching devices.
 
-## Detailed feedback
+## Active recommendations
 
-- **Introduction and tone:** The six-month outcome is vivid. “Investment plans usually fund what can be counted” and “rarely fund” decision change are unsubstantiated claims about typical investor behavior. The observed fictional failure already motivates the chapter without this generalization. Preserve the direct criticism of buying resources while leaving the bottleneck intact.
-- **Organization and narrative:** “Follow One Piece of Work” is the right method, but no actual request is followed through a before/after sequence. Subsequent sections introduce many possible causes without resolving the opening founder queue. The title risks becoming advice to delay all hiring unless the chapter also shows a situation where additional people are the correct remedy.
-- **Clarity and terminology:** Operating model, capability and autonomy are explained plainly. “An organization chart … hides these dependencies” is too absolute; a chart simply does not capture all of them. The nearshoring definition should keep geography/time-zone proximity distinct from assumed cultural similarity.
-- **Examples and accuracy:** The proposed recurring cost is €650,000 + €150,000 = €800,000; annual savings are €200,000; with €250,000 transition spending, first-year cost is €1.05m under the full-year assumption. The arithmetic and qualification are correct. The summary calls this a salary comparison, while the article starts from external development spending; align them so supplier margin, benefits and payroll are not conflated.
-- **Evidence and viewpoint:** “Assess the Job Before You Assess the Leader” ends by invoking a supplied Technology Principal role brief. That establishes the manuscript's inspiration, not general evidence about the company's organization. It is also inaccessible as independent public support. The DORA paragraph is better: it labels the finding as an association and uses it to suggest investigation rather than a financial conversion.
-- **Pacing and conclusion:** Knowledge transfer is one of the strongest sections; retain the receiving team's demonstration as the exit condition. Standardization/autonomy repeats the engineering and acquisition chapters. The final advice is constructive but broad, ending without a decision on the proposed second team.
-- **Other formats:** The summary and comic preserve the main ideas but repeat the unsupported “rarely fund” premise. The summary's mention of a Principal-specific mandate further narrows a chapter meant for company leaders.
+1. **High impact — keep both conditions attached to the deferred team.** The five-person team is deferred until demand is confirmed **and** the financing is committed. The later reversal says faster customer arrival means the conditions are met and hiring proceeds, without preserving the financing condition. Suggested rewrite: “Faster customer arrival satisfies the demand condition. The five-person team still requires committed funding and approval; until then, the one-engineer plan remains the authorized response.” This is essential in a collection that repeatedly distinguishes expected financing from spendable resources.
 
-## Recommended changes
+2. **Medium impact — correct the opening's description of build time.** “The build itself takes under two days” does not follow from the preceding chapter's commit-to-production measure. This chapter's own trace records two days of building and one further day from commit to production. Use those observed stages directly. The total is sixteen working days: 3 + 7 + 2 + 3 + 1. Removing the two approval waits saves six days only if the replacement approvals add no material queue; label ten days as the initial forecast until a subsequent change confirms it.
 
-- **High impact — Show the diagnosis producing a staffing decision.** Trace one Larkspur change through the founder queue, revise delegation or role boundaries, then state what capacity gap remains. Show whether hiring proceeds, changes shape or is deferred. This avoids an indiscriminate “process before people” rule.
-- **High impact — Make this the home for leadership assessment.** Bring the relevant material from “Different Bets” here, combine it with the role assessment and include a case where replacement or added leadership is justified. Preserve accountability alongside systemic diagnosis.
-- **Medium impact — Remove the role brief as argumentative support.** If provenance matters, leave it in the bibliography. Explain the organizational recommendation through the company's work and evidence instead.
-- **Medium impact — Consolidate repeated boundaries.** Shorten standardization/autonomy to the boundary that affects this particular staffing choice, with links to engineering and acquisition design. Keep the full knowledge-transfer test.
-- **Low impact — Correct the summary's cost description and generalizations.** Suggested wording: “The plan funds new resources, but it has not funded the management time and decision changes needed to use them.” This is specific enough to test.
+3. **Medium impact — distinguish a failed result from a disproved diagnosis.** Lead time remaining above two weeks after sixty days does not by itself mean “the diagnosis was wrong.” The change may not have been implemented, demand may have changed, or another constraint may now dominate. This matters because the later leadership example describes non-implementation. A better decision is: “Trace the next changes. If the approvals have gone but the queue persists, revisit the capacity diagnosis; if the agreed changes were not made, address the reasons and accountability.”
 
-## Proposed structure
+4. **Medium impact — complete the leadership and capacity tradeoffs.** Replacing or supplementing leadership may be justified by persistent non-implementation, but the example jumps from symptoms to that conclusion without explaining the cause or why added support is insufficient. One sentence identifying the reviewed evidence and selected remedy would complete it. Similarly, protected specialist time and first-line incident cover consume capacity: name what the operations lead stops or delegates. The point is to make the chosen response feasible, not to add a personnel checklist.
 
-Unchanged bottleneck after hiring → trace a real request → distinguish decision, skill and staffing constraints → compare role/leadership/location options → fund transition and prove knowledge transfer → decision on the second team and organizational-health review.
+5. **Low impact — soften the blanket claim about ongoing adviser dependence.** A plan meeting that regularly benefits from an adviser is not necessarily evidence of failed capability transfer. Distinguish an intentionally purchased ongoing service from a team that cannot perform an agreed internal responsibility. That distinction would also align this conclusion with Part IV. Keep the current title and outline; the remaining work is local.
+
+## Verification and formats
+
+The staffing comparison is internally calculable: one €90,000 role versus five costing €450,000 on the stated six-month basis. The external-capacity comparison now separates €650,000 supplier cost, €150,000 retained internal cost and €250,000 transition cost: €800,000 recurring and €1.05 million in a first year with a full year of recurring costs. This avoids treating the €350,000 supplier reduction as the whole saving. The summary should preserve both hiring gates, and the comic should keep leadership change as an evidenced choice rather than a universal remedy.
+
+## Changes since the previous review
+
+| Previous recommendation | Current disposition |
+| --- | --- |
+| Trace one delay through to a staffing decision | **Partially resolved:** the trace and decision are strong; the later reversal loses the funding condition. |
+| Give leadership issues a primary home, including a justified change | **Partially resolved:** the topic now has a home, but the final remedy needs a clearer evidential bridge. |
+| Remove the unpublished P01 support and consolidate chapter boundaries | **Resolved:** the public argument stands on its own and the new position works. |
+| Align external-capacity costs | **Resolved:** recurring and transition costs are separated. |
+| Use a conditional opening | **Resolved in ownership framing; new correction needed:** the build-time claim misstates the preceding metric. |
+
+The loss of the financing gate and the “diagnosis was wrong” inference are material new findings. Preserve the revised assessment → organization → design sequence.

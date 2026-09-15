@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: Visma: Continuity of Manager Is Not Continuity of Money
@@ -54,6 +54,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-15: Editorial pass: replace “no exit” with a continuing company-and-manager relationship through repeated investor entries and exits (KKR’s 2017 exit recorded as announced, completion subject to regulatory approval); ask which vehicles hold the interests instead of assuming one majority fund, across article, summary and comic panel 6 (flagged for regeneration); qualify the adjusted measure as one basis for comparison alongside the full cost of the strategy; remove the “book’s home” navigation sentence. The €892.646m + €11.665m = €904.311m bridge is unchanged.
 - 2026-09-14: Editorial revision: keep the title and add a sourced transaction map (manager / vehicle / entering / leaving / money to the company, unknown cells marked), connect the ownership and earnings lessons and follow the €892.646m + €11.665m = €904.311m bridge with the budget decision it cannot resolve, narrow the shared-services claim to a question, consolidate evidence-limit sections, correct the ESMA annotation, and end on one authority-and-budget check with the handoff to Toys R Us; permalink and id unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** In the fictional Larkspur scenario, the board-approved plan assumes flat cloud spending while volume grows, and the investor’s technology adviser has asked why the bill rose. The panels show how the engineering team turns that question into a judgment about the service customers receive: put the figures on one basis, separate why the bill changed, commit only to the demand the company can defend, and check the continuing cost behind credits and contracts.
+**Comic.** In the fictional Larkspur scenario, the board-approved plan assumes flat cloud spending while volume grows, and the investor’s technology adviser has asked why the bill rose. Two questions sit inside that one: did the cost of a unit of useful work improve, and was the approved plan met? The panels show how the engineering team keeps them apart and turns the question into a judgment about the service customers receive: put the figures on one basis, read unit cost against the plan as well as the prior period, separate why the bill changed, commit only to the demand the company can defend, and check the continuing cost behind credits and contracts.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -38,9 +38,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/10-cheaper-cloud-bill/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Alex shows more successful customer transactions. Use one speech bubble with the exact words: \"We served more useful demand.\" Convey: Compare cost with useful work delivered. More successful customer transactions can reduce cost per transaction even when the total bill rises.",
+  "prompt": "Panel 2 of an explainer comic. Alex shows more successful customer transactions. Use one speech bubble with the exact words: \"We served more useful demand.\" Convey: Compare cost with useful work delivered. More successful customer transactions can reduce cost per transaction even when the total bill rises. Whether the approved spending plan was met is a separate question: Larkspur’s unit cost fell 20% while spending ran €20,000 a month above the flat plan.",
   "alt": "Comic panel: Alex compares cloud usage with a monitor showing completed customer work.",
-  "caption": "Compare cost with useful work delivered. More successful customer transactions can reduce cost per transaction even when the total bill rises.",
+  "caption": "Compare cost with useful work delivered. More successful customer transactions can reduce cost per transaction even when the total bill rises. Whether the approved spending plan was met is a separate question: Larkspur’s unit cost fell 20% while spending ran €20,000 a month above the flat plan.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -51,7 +51,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex compares cloud usage with a monitor showing completed customer work.](assets/images/10-cheaper-cloud-bill/comic-02-scene.jpeg)
 
-**Panel 2:** Compare cost with useful work delivered. More successful customer transactions can reduce cost per transaction even when the total bill rises.
+**Panel 2:** Compare cost with useful work delivered. More successful customer transactions can reduce cost per transaction even when the total bill rises. Whether the approved spending plan was met is a separate question: Larkspur’s unit cost fell 20% while spending ran €20,000 a month above the flat plan.
 
 *Dialogue:* “We served more useful demand.”
 
@@ -84,9 +84,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/10-cheaper-cloud-bill/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Sam receives a discount tied to a heavy commitment. Use one speech bubble with the exact words: \"What if demand falls?\" Convey: A long contract may lower the rate while requiring payment for capacity the company no longer needs. Larkspur states a demand range and its funded horizon, then commits only to the demand it can defend across both.",
+  "prompt": "Panel 4 of an explainer comic. Sam receives a discount tied to a heavy commitment. Use one speech bubble with the exact words: \"What if demand falls?\" Convey: A long contract may lower the rate while requiring payment for capacity the company no longer needs. Larkspur states a demand range and its funded horizon, then commits for one year to the €30,000 of demand it can defend: €9,000 a month saved across the range, €1,000 more in the stress case, nothing owed beyond the funded year.",
   "alt": "Comic panel: Sam examines a minimum-commitment contract beside unused servers under a lower-demand label.",
-  "caption": "A long contract may lower the rate while requiring payment for capacity the company no longer needs. Larkspur states a demand range and its funded horizon, then commits only to the demand it can defend across both.",
+  "caption": "A long contract may lower the rate while requiring payment for capacity the company no longer needs. Larkspur states a demand range and its funded horizon, then commits for one year to the €30,000 of demand it can defend: €9,000 a month saved across the range, €1,000 more in the stress case, nothing owed beyond the funded year.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -97,7 +97,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam examines a minimum-commitment contract beside unused servers under a lower-demand label.](assets/images/10-cheaper-cloud-bill/comic-04-scene.jpeg)
 
-**Panel 4:** A long contract may lower the rate while requiring payment for capacity the company no longer needs. Larkspur states a demand range and its funded horizon, then commits only to the demand it can defend across both.
+**Panel 4:** A long contract may lower the rate while requiring payment for capacity the company no longer needs. Larkspur states a demand range and its funded horizon, then commits for one year to the €30,000 of demand it can defend: €9,000 a month saved across the range, €1,000 more in the stress case, nothing owed beyond the funded year.
 
 *Dialogue:* “What if demand falls?”
 

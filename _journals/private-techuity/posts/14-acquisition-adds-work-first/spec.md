@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: An Acquisition Adds Work Before It Adds Value
@@ -56,6 +56,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-15: Make the carve-out calendar feasible per the 15 September review: milestones 31 Oct 2026 / 31 Dec 2026 / 28 Feb 2027 so every parent service is off by 30 April before the May 2027 independence test, with a dated calendar table, TSA scope and cost (€35,000 a month in three bundles, €320,000 on the plan, €157,500 extension held as contingency); completion tests follow the chosen integration depth and exclude deliberate supplier relationships; the two engineers’ twenty-six project weeks are derived; opening callouts keep the “can” qualification; both Larkspur examples declared separate from the Part V record. Permalink and id unchanged.
 - 2026-09-14: Restructure into “Combining businesses” and “Separating a business” under one boundary-and-continuity principle, add the add-on capacity decision and the dated carve-out bridge with an independence test, correct the opening to remove the investor-timetable generalization, absorb the standardization boundary point from the team-delivery chapter and hand off to Part IV, per the editorial review; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “The Deal Closes Long Before the Integration Does” to “An Acquisition Adds Work Before It Adds Value”. Permalink and id unchanged; body unchanged.
 - 2026-09-14: Retitle the post from “A Transaction Changes Ownership Before It Changes Operations” to “The Deal Closes Long Before the Integration Does”. Permalink and id unchanged; body unchanged.

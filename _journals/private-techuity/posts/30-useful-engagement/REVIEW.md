@@ -1,31 +1,38 @@
 # Editorial review: Turn an Offer of Help Into a Useful Engagement
 
-Reviewed 14 September 2026. Read the full article, summary and reader-facing comic text.
+Reassessed 15 September 2026 from the complete current article, summary and comic text where present, the previous review where present, revision log and Git changes. See the [collection review](../REVIEW.md).
 
-## Overall assessment
+## Current assessment
 
-The article turns investor support into a bounded agreement about results, internal and external resources, authority, information, review and handover. It serves the company leader receiving help. The repeated interviews in the opening, ten-day/six-week capacity example and discovery that data quality is the real bottleneck are particularly effective.
+The completed charter, week-three redirection and week-six handover now demonstrate the title's promise. Moving the data-quality discovery into the main narrative gives the document a purpose beyond administration. The investor-side sponsor is distinct from Priya's company responsibility, and the three legitimate outcomes—capability, decision or continuing service—remain a strong ending.
 
-The chapter is useful but overexplains a charter that remains unfilled. Its strongest narrative development—the engagement changing direction after learning—is late. There is substantial overlap with both preceding chapters, plus an opening claim that the difficulty is peculiar to investor-backed companies when the more precise issue is multiple principals and perceived authority.
+The current structure works. The main remaining issues are the calendar shared with the sourcing chapter, an unquantified charge inside a supposedly completed charter, and the unfinished comic revision.
 
-## Detailed feedback
+## Active recommendations
 
-- **Introduction and tone:** The same engineers interviewed three times is a concrete cost of vague help. Preserve it. “A consultant the company hires answers to the company” versus an investor specialist is too clean: company-sponsored work can also involve conflicting executive sponsors and unclear authority. The investor's role adds a particular reporting and influence relationship; it does not create the general contracting problem.
-- **Organization and clarity:** The eight-field charter is easy to scan. Defining “engagement sponsor” specifically as the investment-firm backer is useful within this scenario, but differs from common company-sponsor usage. Label the field “investor-side sponsor” and retain a separate accountable company leader so readers can adapt it without guessing.
-- **Examples and resources:** Ten specialist days across six weeks plus six days of company engineering effort makes internal participation visible. Customer-team sessions and Priya's time are also named. A completed charter should attach those resources to the exact result and review date rather than leave them as a separate example.
-- **Flow and repetition:** “Keep Investor Support Within One Company Plan” and “Agree How Information Will Be Used” overlap on access, coaching and assessment. Those role distinctions are already central to the adviser chapter. The baseline/contribution discussion also repeats the roadmap chapter; one applied measure is enough here.
-- **Evidence and technical precision:** The working method and examples are explicitly proposed and fictional. The article sensibly recognizes that a required group service cannot always be ended by local management. Preserve that qualification. No numerical or technical error was confirmed; actual authority, confidentiality and termination rights still depend on the engagement and applicable obligations.
-- **Conclusion:** “Leave a Capability, a Decision or an Understood Service” is an excellent three-way ending, avoiding the false assumption every assignment must create complete independence. Figure 2 arrives after the handoff to Part V; move it into that final section so the conclusion is not followed by another conceptual restart.
-- **Other formats:** The summary reflects the full argument. The comic shows the data-quality discovery but ends on competing advisers, losing the satisfying handover the title and article promise. Its opening shares the too-simple consultant distinction.
+1. **Medium impact — identify which clock each date uses.** The preceding chapter selects a specialist who starts in pilot week three and works for six weeks, while this charter uses “day 20,” “week three,” “week six” and the shared day-90 review without distinguishing engagement time from days after closing. [The first-hundred-days plan](../17-first-hundred-days/index.md) requires the baseline by day 20 after closing. Give explicit dates or relative offsets: when the specialist starts, which baseline is available then, when the scope changes and when the handover occurs. This is essential for a chapter teaching dated commitments.
 
-## Recommended changes
+2. **Medium impact — make the specialist cost inspectable.** “At an agreed day rate” leaves out the agreement's amount. Add the fictional rate or fee cap, calculate ten days, and show that this is included within the €180,000 pilot commitment rather than added to it. Preserve the useful distinction between fees, company effort and implementation expenditure. “The budget is intact” at week six should mean “within the agreed cap,” not that the budget remains unspent after all specialist days were used.
 
-- **High impact — Fill in the charter for the opening engagement.** Name Priya, the specialist's contribution, internal capacity, initial evidence, scope boundary, review date and handover test. Show the actual agreement that would have prevented the repeated interviews.
-- **High impact — Carry the same engagement through a scope change.** Move the data-quality discovery forward and show the agreed response: who changes the scope, which work stops and whether the original budget still fits. This demonstrates the charter's value beyond documentation.
-- **Medium impact — Correct the opening and sponsor label.** Suggested rewrite: “The specialist also reports to the investor. Before work starts, agree how that responsibility relates to the company's priorities and who can direct the assignment.”
-- **Medium impact — Cut repeated advice by linking to its home.** Let the adviser chapter explain role/confidentiality tension and the roadmap chapter explain causal measurement. Apply those principles to this charter in a paragraph each.
-- **Low impact — Restore a clear ending across formats.** Move Figure 2 before the Part V handoff and finish the comic with a demonstrated capability, a changed decision or an explicitly funded continuing service.
+3. **Medium impact — finish the handover across reading formats.** Panel 6 is explicitly awaiting regeneration; the old image depicts competing adviser assignments. The new dialogue says the engineer ran the setup “alone,” while the article's success test involves both an engineer and a customer-team member. Prefer “Our team ran it without the specialist.” Keep the limited evidence: two setups demonstrate this path's handover, not all customer types or reduced queue time.
 
-## Proposed structure
+4. **Low impact — replace editorial section language with reader language.** “Apply the Boundaries Other Chapters Own” and “Each gets one paragraph here; the argument lives at its home” expose the editing plan. “Keep the assignment inside the company's plan” would introduce the three applied boundaries naturally. The opening and closing now work; shorten the recap rather than adding another outline.
 
-Undefined offer → completed charter → internal capacity and funding → discovery changes the scope → review decision → tested handover or continuing service. A combined sourcing-and-engagement chapter is viable if the collection needs compression; otherwise make the concrete request from the preceding chapter its opening input.
+5. **Low impact — keep the charter's authority rules explicitly local.** The separate assessment process is an agreed Larkspur arrangement. Avoid inheriting [the adviser chapter's](../15-investors-adviser/REVIEW.md) universal claim that every investor assessment requires new company permission. Existing reporting and information rights still need to be understood.
+
+## Verification and formats
+
+Five specialist days used plus five redirected equals the agreed ten; six engineer-days remain unchanged. The portfolio allocation and day rate cannot be independently reconciled until the missing amount is stated. The distinction between effort released and cash saved is correct and should survive compression. The summary carries the charter and scope change well. No claim is made that image regeneration or actual operating performance has been verified.
+
+## Changes since the previous review
+
+| Previous recommendation | Current disposition |
+| --- | --- |
+| Fill in the charter | **Partially resolved:** roles, resources and tests are concrete; charge and date basis remain incomplete. |
+| Carry the same engagement through a scope change | **Resolved in narrative:** a specific discovery redirects remaining resources without an automatic extension. |
+| Correct the consultant contrast and sponsor label | **Resolved:** the reporting relationship and investor-side sponsor are clear. |
+| Link repeated advice to its primary home | **Resolved substantively:** editorial scaffolding should be removed from the reader-facing explanation. |
+| Restore the ending and move Figure 2 | **Partially resolved:** article placement and conclusion work; the comic image still needs replacement. |
+| Consider combining the two support chapters | **Superseded:** selection and delivery now have distinct, connected decisions. |
+
+The calendar ambiguity and “alone” mismatch are new findings. Preserve the charter changing the work when evidence changes.

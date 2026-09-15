@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: Decide Who Decides, Before You Disagree
@@ -54,6 +54,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-15: Fund the January fallback from the first stage already approved in the cash chapter (€210,000: the canonical €180,000 build plus €30,000 first-year maintenance; twelve engineer-weeks) and state the hiring approval condition (board, May meeting, on first-quarter collections and the first three pilot implementations); record the canonical delegation rule (reserve draws and changes to what an envelope funds are reserved to the board; permanent hires outside the headcount plan likewise) and use it to explain the €40,000 board request; mark the cloud remark, onboarding proposal and scheduling rewrite as separate illustrations; keep the investor callout conditional. Summary and comic intro/caption aligned; permalink and id unchanged.
 - 2026-09-14: Reorganize around the filled Larkspur decision record with generic roles afterward, add the missed-deadline branch and a three-sentence board update, cut the shadow-hierarchy and coaching-confidentiality material to a short parallel-instructions warning linking the adviser and engagement chapters, and replace "owns" with "is accountable for"; permalink and id unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

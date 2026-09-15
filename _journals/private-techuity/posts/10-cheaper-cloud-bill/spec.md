@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: Why a Cheaper Cloud Bill Can Be Bad News
@@ -56,6 +56,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-15: Editorial revision: read the unit-cost result against the board’s flat-spend plan as well as the prior period (prior year €0.10, plan €0.067, actual €0.08; plan missed by €20,000 a month, the one-year commitment closes €9,000 of it), state all plan-table figures on one basis, label the discount and commitment floors as example assumptions, condition Option B’s extra saving on demand, and carry the plan-versus-improvement split and the one-year choice into the summary and comic captions; permalink and id unchanged.
 - 2026-09-14: Editorial revision: add an explicit comparison basis, complete the commitment decision under a stated demand range and funding condition, group credits/minimum-spend/ownership-change terms, align the opportunity → change implemented → observed net effect vocabulary across formats, trim acquisition and peer-network material to links, and cut questions to three; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “A Smaller Bill Is Not Always an Improvement” to “Why a Cheaper Cloud Bill Can Be Bad News”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.

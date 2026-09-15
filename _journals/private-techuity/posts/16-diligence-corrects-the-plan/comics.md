@@ -61,9 +61,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/16-diligence-corrects-the-plan/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Morgan labels observation, assertion, and inference separately. Use one speech bubble with the exact words: \"Which claims have supporting evidence?\" Convey: Finding D-3. Observed: three of five sampled implementations needed one specialist’s manual configuration, about 80 hours each. Reported by Alex: roughly 40% of the effort is poor customer data. Inferred by Morgan: the dependency is structural. Not established: the real split.",
+  "prompt": "Panel 3 of an explainer comic. Morgan labels observation, assertion, and inference separately. Use one speech bubble with the exact words: \"Which claims have supporting evidence?\" Convey: Finding D-3. Observed: five of the last twelve implementations sampled; three needed one specialist’s manual configuration; about 80 hours on average across the five. Reported by Alex: roughly 40% of the effort is poor customer data. Inferred by Morgan: the dependency is structural. Not established: how much each explanation accounts for; both can be true.",
   "alt": "Comic panel: Morgan labels observation, assertion, and inference separately.",
-  "caption": "Finding D-3. Observed: three of five sampled implementations needed one specialist’s manual configuration, about 80 hours each. Reported by Alex: roughly 40% of the effort is poor customer data. Inferred by Morgan: the dependency is structural. Not established: the real split.",
+  "caption": "Finding D-3. Observed: five of the last twelve implementations sampled; three needed one specialist’s manual configuration; about 80 hours on average across the five. Reported by Alex: roughly 40% of the effort is poor customer data. Inferred by Morgan: the dependency is structural. Not established: how much each explanation accounts for; both can be true.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -74,7 +74,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Morgan labels observation, assertion, and inference separately.](assets/images/16-diligence-corrects-the-plan/comic-03-scene.jpeg)
 
-**Panel 3:** Finding D-3. Observed: three of five sampled implementations needed one specialist’s manual configuration, about 80 hours each. Reported by Alex: roughly 40% of the effort is poor customer data. Inferred by Morgan: the dependency is structural. Not established: the real split.
+**Panel 3:** Finding D-3. Observed: five of the last twelve implementations sampled; three needed one specialist’s manual configuration; about 80 hours on average across the five. Reported by Alex: roughly 40% of the effort is poor customer data. Inferred by Morgan: the dependency is structural. Not established: how much each explanation accounts for; both can be true.
 
 *Dialogue:* “Which claims have supporting evidence?”
 
@@ -84,9 +84,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/16-diligence-corrects-the-plan/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. A finding moves toward price, funding, or a work plan. Use one speech bubble with the exact words: \"Which decision should this change?\" Convey: D-3 changes the plan, not the deal. The first-year volume assumption falls from 2× to 1.5×, second-country expansion waits for pilot evidence, and a €180,000, 12-engineer-week setup pilot becomes a funded condition. Hiring two specialists at €300,000 a year is deferred.",
+  "prompt": "Panel 4 of an explainer comic. A finding moves toward price, funding, or a work plan. Use one speech bubble with the exact words: \"Which decision should this change?\" Convey: D-3 changes the plan, not the deal. The first-year volume assumption falls from 2× to 1.5×, a forecast conditional on pilot evidence; second-country expansion waits for that evidence; a €180,000, 12-engineer-week setup pilot becomes a funded condition. Hiring two specialists at €300,000 a year is deferred.",
   "alt": "Comic panel: A finding moves toward price, funding, or a work plan.",
-  "caption": "D-3 changes the plan, not the deal. The first-year volume assumption falls from 2× to 1.5×, second-country expansion waits for pilot evidence, and a €180,000, 12-engineer-week setup pilot becomes a funded condition. Hiring two specialists at €300,000 a year is deferred.",
+  "caption": "D-3 changes the plan, not the deal. The first-year volume assumption falls from 2× to 1.5×, a forecast conditional on pilot evidence; second-country expansion waits for that evidence; a €180,000, 12-engineer-week setup pilot becomes a funded condition. Hiring two specialists at €300,000 a year is deferred.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -97,7 +97,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: A finding moves toward price, funding, or a work plan.](assets/images/16-diligence-corrects-the-plan/comic-04-scene.jpeg)
 
-**Panel 4:** D-3 changes the plan, not the deal. The first-year volume assumption falls from 2× to 1.5×, second-country expansion waits for pilot evidence, and a €180,000, 12-engineer-week setup pilot becomes a funded condition. Hiring two specialists at €300,000 a year is deferred.
+**Panel 4:** D-3 changes the plan, not the deal. The first-year volume assumption falls from 2× to 1.5×, a forecast conditional on pilot evidence; second-country expansion waits for that evidence; a €180,000, 12-engineer-week setup pilot becomes a funded condition. Hiring two specialists at €300,000 a year is deferred.
 
 *Dialogue:* “Which decision should this change?”
 
@@ -107,9 +107,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/16-diligence-corrects-the-plan/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Alex annotates a finding with evidence still needed and the name of the accountable company leader. Use one speech bubble with the exact words: \"Let’s record what we can commit to.\" Convey: The investment committee approves the terms; the Larkspur board approves the plan and funding; Priya is accountable. Alex’s data-quality explanation is recorded as a disagreement, to be resolved by the pilot cohort’s measured effort split.",
+  "prompt": "Panel 5 of an explainer comic. Alex annotates a finding with evidence still needed and the name of the accountable company leader. Use one speech bubble with the exact words: \"Let’s record what we can commit to.\" Convey: The investment committee approves the terms; the Larkspur board adopts the plan and funding; Priya is accountable. Alex’s data-quality explanation is recorded as a disagreement compatible with Morgan’s, to be sized by Priya’s day-90 cohort measurement; the next money follows the largest actionable share of remaining effort with a costed step.",
   "alt": "Comic panel: Alex annotates a finding with evidence still needed and the name of the accountable company leader.",
-  "caption": "The investment committee approves the terms; the Larkspur board approves the plan and funding; Priya is accountable. Alex’s data-quality explanation is recorded as a disagreement, to be resolved by the pilot cohort’s measured effort split.",
+  "caption": "The investment committee approves the terms; the Larkspur board adopts the plan and funding; Priya is accountable. Alex’s data-quality explanation is recorded as a disagreement compatible with Morgan’s, to be sized by Priya’s day-90 cohort measurement; the next money follows the largest actionable share of remaining effort with a costed step.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -120,7 +120,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex annotates a finding with evidence still needed and the name of the accountable company leader.](assets/images/16-diligence-corrects-the-plan/comic-05-scene.jpeg)
 
-**Panel 5:** The investment committee approves the terms; the Larkspur board approves the plan and funding; Priya is accountable. Alex’s data-quality explanation is recorded as a disagreement, to be resolved by the pilot cohort’s measured effort split.
+**Panel 5:** The investment committee approves the terms; the Larkspur board adopts the plan and funding; Priya is accountable. Alex’s data-quality explanation is recorded as a disagreement compatible with Morgan’s, to be sized by Priya’s day-90 cohort measurement; the next money follows the largest actionable share of remaining effort with a costed step.
 
 *Dialogue:* “Let’s record what we can commit to.”
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/16-diligence-corrects-the-plan/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Priya and Alex connect a demonstrated capability and an untested assumption to a proposed funding condition. Use one speech bubble with the exact words: \"What does this evidence let us promise?\" Convey: Access differs by stage. Before signing, a finding can still move the price; after closing, only the plan and its funding. Priya records acceptance of D-3 within ten days of closing, and it becomes a funded priority with a day-90 review.",
+  "prompt": "Panel 6 of an explainer comic. Priya and Alex connect a demonstrated capability and an untested assumption to a proposed funding condition. Use one speech bubble with the exact words: \"What does this evidence let us promise?\" Convey: Access differs by stage. Before signing, a finding can still move the price; after closing, management’s immediate levers are the plan and its funding, and any price adjustment depends on the signed terms. Priya records acceptance of D-3 within ten days of closing; her day-90 cohort measurement feeds the board’s day-100 decision.",
   "alt": "Comic panel: Priya and Alex connect a demonstrated capability and an untested assumption to a proposed funding condition.",
-  "caption": "Access differs by stage. Before signing, a finding can still move the price; after closing, only the plan and its funding. Priya records acceptance of D-3 within ten days of closing, and it becomes a funded priority with a day-90 review.",
+  "caption": "Access differs by stage. Before signing, a finding can still move the price; after closing, management’s immediate levers are the plan and its funding, and any price adjustment depends on the signed terms. Priya records acceptance of D-3 within ten days of closing; her day-90 cohort measurement feeds the board’s day-100 decision.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -143,6 +143,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Priya and Alex connect a demonstrated capability and an untested assumption to a proposed funding condition.](assets/images/16-diligence-corrects-the-plan/comic-06-scene.jpeg)
 
-**Panel 6:** Access differs by stage. Before signing, a finding can still move the price; after closing, only the plan and its funding. Priya records acceptance of D-3 within ten days of closing, and it becomes a funded priority with a day-90 review.
+**Panel 6:** Access differs by stage. Before signing, a finding can still move the price; after closing, management’s immediate levers are the plan and its funding, and any price adjustment depends on the signed terms. Priya records acceptance of D-3 within ten days of closing; her day-90 cohort measurement feeds the board’s day-100 decision.
 
 *Dialogue:* “What does this evidence let us promise?”

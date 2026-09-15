@@ -1,27 +1,27 @@
-# Editorial review: Part VI — Lessons from the Field
+# Editorial review: PART VI — Lessons from the Field
 
-Reviewed 14 September 2026. Read the complete introduction and all five chapters it introduces.
+Reassessed 15 September 2026 from the full introduction, previous review, revision log and all five chapters it introduces.
 
-## Overall assessment
+## Current assessment
 
-The introduction sets an appropriate standard for historical cases: establish what happened, consider mechanisms and identify the current decision a case can inform. It explicitly acknowledges that the evidence concentrates on private equity and does not represent all investor arrangements. That scope statement should remain.
+The contrast between Hilton's reported gain and Toys R Us's positive operating earnings gives the opening a concrete reason to investigate history. The case-purpose map now distinguishes the chapters, and the finale is correctly presented as synthesis and judgment. The method—reported event, possible mechanism, present decision—is clear without overwhelming the reader.
 
-The main improvement is to make the cases' different contributions visible before repeating the collection's evidence cautions. Readers need a reason to read each case, not only a method for avoiding overinterpretation.
+The introduction explicitly acknowledges the private-equity concentration of the evidence and does not treat a later strategic acquisition as a balanced corporate-ownership case. Preserve that boundary. “Lessons from the Field” remains a defensible title; the earlier alternative was a stylistic option, not an outstanding accuracy repair.
 
-## Detailed feedback
+## Active recommendations
 
-- **Opening and organization:** Testing operating arguments against history is a good transition from the practical chapters. Lead with a concrete contrast among results or financing conditions, then introduce the method.
-- **Flow and examples:** The five-entry learning path is manageable. Add the distinctive question for each: exit explanation, changed investors and measures, liquidity failure, inherited work, and a broader standard of success.
-- **Terminology and accuracy:** “What happened” should remain distinguishable from management's account and the author's inference. The introduction does this well. No confirmed factual error identified in this page.
-- **Tone and pacing:** The methodological caution is proportionate here; repeated generic versions in every case can be shortened while preserving limitations beside particular claims.
-- **Conclusion:** The finale is a judgment about success, not another company history. Signal that difference so its purpose as synthesis is clear.
+- **Medium — Recheck the case windows after the substantive corrections.** Visma now contains a 2006–2023 transaction map as well as 2024 operating evidence. TeamSystem includes later ownership events, and a 2024 trust report supplies realization evidence beyond the currently described announcements. Describe those two strands explicitly rather than leaving “principally 2023–2024” and “through 2017” to understate material portions of the chapters. A compact rewrite is: “Visma: ownership episodes from 2006, with financial comparison centered on 2024.” See the [TeamSystem review](../25-teamsystem/REVIEW.md) for the separately verified later report.
+- **Low — Narrow “kept apart throughout.”** The intended evidence discipline is sound, but the current cases still confuse some missing dates with missing causal attribution and some earnings charges with cash payments. “Read management's account, sponsor claims and the author's inference separately” states the reader's method without certifying every current sentence.
 
-## Recommended changes
+The introduction, organization, terminology, tone and ending otherwise work. No new outline, title change or additional methodology section is needed.
 
-- **Medium impact — Add a compact case-purpose map.** Include case, historical window and the decision it illuminates. This improves reading order and prevents Visma and TeamSystem from appearing interchangeable.
-- **Medium impact — Introduce the last chapter as synthesis.** Its revision should explicitly compare the preceding cases and then use wider research to challenge incomplete success measures.
-- **Low impact — Consider a more descriptive part title.** “Documented Ownership Cases” would emphasize the source base. “Lessons from the Field” is also defensible; this is a stylistic preference, not an accuracy correction.
+## Changes since the previous review
 
-## Proposed structure
+| Previous recommendation | Current disposition |
+| --- | --- |
+| Add a concrete opening and case-purpose map | **Resolved:** the new table gives each case a distinct job; date descriptions need a small update. |
+| Present the finale as synthesis | **Resolved:** comparison, final decision and wider research are explicitly previewed. |
+| Preserve the evidence boundary | **Resolved locally.** |
+| Consider a more descriptive title | **Superseded:** retaining the established title is reasonable. |
 
-Keep one short introduction: concrete contrast → three-step reading method → distinct purposes of the five chapters → evidence boundary and invitation to the first case. No major expansion or extra methodology section is needed.
+The underlying cases remain subject to their own factual and interpretive recommendations; this improved map is not a readiness verdict.

@@ -1,31 +1,41 @@
 # Editorial review: Visma: Continuity of Manager Is Not Continuity of Money
 
-Reviewed 14 September 2026. Read the complete article, summary and reader-facing comic text; reread the article and summary after their latest update during final verification.
+Reassessed 15 September 2026 from the complete current article, summary and comic text where present, the previous review where present, revision log and Git changes. See the [collection review](../REVIEW.md).
 
-## Overall assessment
+## Current assessment
 
-The chapter asks company leaders to look behind a familiar investment manager and familiar financial labels: investors can change, and two earnings numbers can describe the same year under different definitions. Visma's acquisition activity and combination of local decisions with shared services make it a relevant software example.
+The transaction map now supports the title, and the transition from repeated acquisitions to changing earnings definitions is much stronger. Narrowing shared services to a question raised by the case is an effective alternative to inventing an intervention story. The ESMA annotation also corrects a material earlier error. Preserve the distinction between a manager, its funds and the operating company, and the point that an earnings adjustment does not create cash.
 
-Its strongest passage is the exact €892.646m + €11.665m = €904.311m reconciliation. That is a concrete demonstration of the book's insistence on definitions. The main structural weakness is that the title promises an ownership-continuity case while much of the explanatory weight sits in financial comparability. The operating-model lesson is plausible but less directly evidenced than the financial lesson.
+Remaining recommendations concern two ownership shortcuts and a prescriptive statement about the “right” earnings measure. The exact reconciliation has now been independently checked against primary report copies. The current structure is coherent and does not need another split or title change.
 
-## Detailed feedback
+## Active recommendations
 
-- **Introduction and organization:** The opening's three questions are a useful guide and should remain. “A Long Manager Relationship With Changing Investors” establishes the distinction but does not provide a sufficiently detailed transaction map to carry the title. Add only the documented investing entities, events and cash destinations needed to show the change. Do not infer a complete fund history from the manager's long association.
-- **Flow and pacing:** The move from 33 acquisitions to two earnings measures is effective: recurring acquisition activity creates the reason to question recurring adjustments. Preserve that sequence. “What the Evidence Supports About Technology,” “Employees, Customers and Acquired Companies,” and the final two substantive sections repeat limitations and transfer questions; combine overlapping conclusions.
-- **Clarity and technical depth:** The historical window is clearly stated, including why a 2025 report is used to reconcile 2024. Before-tax free cash flow, annualized repeatable revenue, organic-growth scope and gross-versus-net borrowing distinctions are valuable. Keep definitions beside the relevant number rather than moving all of them into the glossary.
-- **Examples:** The arithmetic bridge explains a real discrepancy. The shared-services argument has no equally concrete example showing a local decision, support intervention, cost and observed customer outcome. The text acknowledges this gap; either add bounded evidence or present this as an operating question raised by the case, rather than its demonstrated success mechanism.
-- **Confirmed overstatement in the source annotation:** “Binding on listed issuers and voluntary for a private group” is too broad a description of ESMA's scope. The cited guidelines address specified securities issuers and prospectus responsibilities, with exclusions including measures inside financial statements. Private share ownership alone does not settle applicability. Correct the generalization; whether particular Visma entities or disclosures fall within the rules needs separate verification. See the [ESMA guidelines, scope paragraphs 1–5](https://www.esma.europa.eu/sites/default/files/library/2015/10/2015-esma-1415en.pdf).
-- **Tone and conclusion:** The question “If You Buy Companies Every Year, Is Buying Them Exceptional?” is memorable and fair because the answer allows an adjustment to be useful while requiring a complete cash plan. Keep it. The distinction between a corporate group's authority over subsidiaries and a fund manager's support across separate portfolio companies is another important safeguard.
-- **Other formats:** Both companions preserve the historical boundary and metric distinction. Comic panels 2 and 6 return to essentially the same manager/fund point; the final panel could instead show the specific resource or authority that the fictional team would recheck.
+1. **Medium impact — replace “no exit” in the opening.** The map itself records KKR's announced complete exit in 2017. Continued involvement by Hg is not an absence of exits by other shareholders or funds. Suggested rewrite: “Visma shows a continuing company and manager relationship through repeated investor entries and exits.” This is the distinction the chapter otherwise explains well. Hg's 2017 announcement also makes completion subject to regulatory approval; keep announced terms distinct from verified closing events. [Hg's 2017 announcement](https://hgcapital.com/insights/hg-leads-usd5-3bn-buyout-of-visma)
 
-## Recommended changes
+2. **Medium impact — do not assume one fund holds the majority.** The final authority check, summary and comic panel 6 ask “which fund now holds the majority.” A manager's aggregate majority can be held through several vehicles. Ask instead: “Which vehicles hold the interests, how are their rights exercised, and which horizons affect the plan?” This preserves the title's central distinction without assuming an ownership structure the map marks unknown.
 
-- **High impact — Correct the ESMA annotation.** Suggested replacement: “These guidelines provide a useful model for explaining alternative measures. Their formal scope depends on the issuer, securities and disclosure; private share ownership alone does not establish an exemption.” Avoid asserting Visma's legal status without checking it.
-- **Medium impact — Give the title an explicit transaction map.** Separate manager, investing vehicle, owners entering or leaving, and money reaching the operating business. Mark unknown entries. This makes the headline distinction visible without manufacturing a complete history.
-- **Medium impact — Connect the two main lessons.** Before the reconciliation: “Continuity needs checking in the numbers as well as the ownership. The same year now appears under a different earnings definition.” Follow the financial example with the budget decision that the adjustment cannot resolve.
-- **Medium impact — Narrow the operating-model claim or add one documented intervention.** Evidence of a stated model is enough to raise a question; it is insufficient to attribute group growth to shared technology support.
-- **Low impact — Shorten repeated evidence-boundary paragraphs.** Preserve specific unknowns and one closing limitation. Update the comic's final action accordingly.
+3. **Medium impact — qualify “the right basis for comparing product lines.”** The budget example calls earnings before deal costs the right basis, after correctly explaining that usefulness depends on the question. An acquisition-heavy product line can also need recurring integration resources. Use “one basis for comparing operating performance, alongside the full cost of the strategy.” The callout similarly need not demand that purchase valuation and management budgeting use the identical metric; the definitions and reconciliation must be explicit.
 
-## Proposed structure
+4. **Low impact — remove editorial navigation language from the argument.** “This chapter is the book's home for that lesson” can become a simple link explaining what TeamSystem adds. The compact authority-and-budget check is a useful conclusion; keep it, with plural vehicles and the unresolved facts stated precisely.
 
-Retain one article: changed investors behind the same manager → local work and acquisition demands → changed earnings presentation → implications for shared-service funding → what the documents cannot establish → one authority-and-budget check. A separate accounting post is unnecessary because the acquisition-cost bridge belongs naturally in this case. If a richer ownership timeline cannot be sourced, broaden the title to “Visma: Check What Continues Behind the Familiar Name.”
+## Verification and limits
+
+The [ESMA guidelines' scope paragraphs 1–5](https://www.esma.europa.eu/sites/default/files/library/2015/10/2015-esma-1415en.pdf) support the revised annotation: issuer, securities and disclosure matter; private share ownership alone is not an exemption. This is not a determination of Visma's legal obligations. Hg's primary announcement supports the named Hg5/Hg7 investments, announced 41% position and planned KKR exit. Complete fund-level cash flows, company funding receipts and a measured shared-service intervention remain unestablished.
+
+Independent text extraction from cached primary PDFs verifies the bridge: [2024 report, pp. 50/52](https://cdn.prod.website-files.com/69787181d8720ea08c1f22fe/69787181d8720ea08c1f460b_Visma-Annual-Report-2024.pdf), €892.646m EBITDA; [2025 report, p. 96](https://cdn.prod.website-files.com/69787181d8720ea08c1f22fe/69bb9fc407e856cb8d6f7726_Visma%20Annual%20Report%202025.pdf), €11.665m M&A adjustment and €904.311m adjusted EBITDA for the 2024 comparative. The sum checks exactly. Current CDN retrieval failed, but cached original reports resolved the transcription question; the [live financials page](https://www.visma.com/investors/financials) also shows the rounded €904m. This is a selected-page check, not an audit of either full report.
+
+
+Comic panel 6 has revised dialogue but an unchanged image and no regeneration flag. Its visible speech needs **verification** against the new text; the metadata alone cannot establish agreement.
+
+## Changes since the previous review
+
+| Previous recommendation | Current disposition |
+| --- | --- |
+| Correct ESMA's scope | **Resolved.** |
+| Give the title an explicit transaction map | **Partially resolved:** the map works; opening and conclusion still oversimplify exits and majority ownership. |
+| Connect ownership continuity with measure continuity | **Resolved:** the transition and budget application are clear. |
+| Narrow or substantiate the operating-model claim | **Resolved through effective narrowing:** a documented model is not called a demonstrated cause. |
+| Consolidate limitations and improve the comic's final action | **Partially resolved:** the final action is specific but assumes a single majority fund. |
+| Broaden the title if no map can be sourced | **Superseded:** the partial documented map justifies retaining it. |
+
+The report reconciliation is confirmed; the remaining ownership-language inconsistencies are separate issues.

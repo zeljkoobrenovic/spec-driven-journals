@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** In the fictional Larkspur scenario, backups had run for three years and nobody had restored the service. The panels follow one restore from a recovery objective stated in a dispatcher’s words, through a failed test and funded corrective work, to a retest and a record of what remains exposed and who accepted it. The decisions are the company’s, taken by the Larkspur board, its CEO and its CTO under the plan the board approved; the investor’s adviser helps obtain specialist judgment but does not decide what Larkspur funds.
+**Comic.** In the fictional Larkspur scenario, backups had run for three years and nobody had restored the service. The panels follow one restore from a recovery objective stated in a dispatcher’s words, through a failed test and corrective work funded from the board’s reserve, to a retest and a record of what remains exposed and who accepted it. The decisions are the company’s, taken by the Larkspur board, its CEO and its CTO under the plan the board approved; the investor’s adviser helps obtain specialist judgment but does not decide what Larkspur funds.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -107,9 +107,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/11-prove-you-can-restore/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. The team practices service restoration and customer communication. Use one speech bubble with the exact words: \"Test the whole response.\" Convey: The funded corrective item, €80,000 and four engineer-weeks, fixes the credential and database-version gaps. The retest restores dispatch within the objective, checked end to end with the customer team.",
+  "prompt": "Panel 5 of an explainer comic. The team practices service restoration and customer communication. Use one speech bubble with the exact words: \"Test the whole response.\" Convey: The plan’s €80,000 and four engineer-weeks were spent by the failed test. The correction, a version-matched environment, managed credentials and a written rehearsal, costs €20,000 and two weeks from the reserve, approved by the board. The day-85 retest restores dispatch within the objective, checked end to end with the customer team.",
   "alt": "Comic panel: The team practices service restoration and customer communication.",
-  "caption": "The funded corrective item, €80,000 and four engineer-weeks, fixes the credential and database-version gaps. The retest restores dispatch within the objective, checked end to end with the customer team.",
+  "caption": "The plan’s €80,000 and four engineer-weeks were spent by the failed test. The correction, a version-matched environment, managed credentials and a written rehearsal, costs €20,000 and two weeks from the reserve, approved by the board. The day-85 retest restores dispatch within the objective, checked end to end with the customer team.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -120,7 +120,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: The team practices service restoration and customer communication.](assets/images/11-prove-you-can-restore/comic-05-scene.jpeg)
 
-**Panel 5:** The funded corrective item, €80,000 and four engineer-weeks, fixes the credential and database-version gaps. The retest restores dispatch within the objective, checked end to end with the customer team.
+**Panel 5:** The plan’s €80,000 and four engineer-weeks were spent by the failed test. The correction, a version-matched environment, managed credentials and a written rehearsal, costs €20,000 and two weeks from the reserve, approved by the board. The day-85 retest restores dispatch within the objective, checked end to end with the customer team.
 
 *Dialogue:* “Test the whole response.”
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/11-prove-you-can-restore/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Alex identifies the affected customer service, the company decision-maker and the external support boundary. Use one speech bubble with the exact words: \"Who accepts this risk, with what evidence?\" Convey: A passed test changes the exposure; it does not remove it. Alex records what the test did not cover, the CEO accepts the residual risk on the board’s behalf with a quarterly retest, and any shared investor support still needs agreed access and a recovery plan if the provider changes.",
+  "prompt": "Panel 6 of an explainer comic. Alex identifies the affected customer service, the company decision-maker and the external support boundary. Use one speech bubble with the exact words: \"Who accepts this risk, with what evidence?\" Convey: A passed test changes the exposure; it does not remove it. The retest covers loss of the application environment in this region, not a regional outage. Alex records that and the other limits, the CEO accepts the residual risk on the board’s behalf with a quarterly retest, and any shared investor support still needs agreed access and a recovery plan if the provider changes.",
   "alt": "Comic panel: Alex identifies the affected customer service, the company decision-maker and the external support boundary.",
-  "caption": "A passed test changes the exposure; it does not remove it. Alex records what the test did not cover, the CEO accepts the residual risk on the board’s behalf with a quarterly retest, and any shared investor support still needs agreed access and a recovery plan if the provider changes.",
+  "caption": "A passed test changes the exposure; it does not remove it. The retest covers loss of the application environment in this region, not a regional outage. Alex records that and the other limits, the CEO accepts the residual risk on the board’s behalf with a quarterly retest, and any shared investor support still needs agreed access and a recovery plan if the provider changes.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -143,6 +143,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex identifies the affected customer service, the company decision-maker and the external support boundary.](assets/images/11-prove-you-can-restore/comic-06-scene.jpeg)
 
-**Panel 6:** A passed test changes the exposure; it does not remove it. Alex records what the test did not cover, the CEO accepts the residual risk on the board’s behalf with a quarterly retest, and any shared investor support still needs agreed access and a recovery plan if the provider changes.
+**Panel 6:** A passed test changes the exposure; it does not remove it. The retest covers loss of the application environment in this region, not a regional outage. Alex records that and the other limits, the CEO accepts the residual risk on the board’s behalf with a quarterly retest, and any shared investor support still needs agreed access and a recovery plan if the provider changes.
 
 *Dialogue:* “Who accepts this risk, with what evidence?”

@@ -1,27 +1,26 @@
-# Editorial review: Part II — How Investor Ownership Changes Decisions
+# Editorial review: PART II — How Investor Ownership Changes Decisions
 
-Reviewed 14 September 2026. Read the complete introduction and all three chapters it introduces.
+Reassessed 15 September 2026 from the full introduction, previous review, revision log and all three chapters it introduces.
 
-## Overall assessment
+## Current assessment
 
-The introduction moves effectively from money to decision-making: governance, incentives and investor behavior under pressure. The founder's growth and control preferences alongside the investor's cost concerns create a useful conflict without reducing either party to a caricature. The primary audience remains company leaders.
+The cash-to-authority bridge now explains why Part II follows the financial chapters. Authority, incentives and investor behavior form a clear progression for leaders working within an existing arrangement. The introduction avoids turning investor selection into the primary reader's responsibility and leaves detailed examples to the chapters.
 
-This is one of the more successful short introductions. It needs light tightening and a clearer bridge from the previous part, rather than major rewriting.
+The opening and ending have different jobs, repeated promises have been reduced, and the tone is practical. Preserve the emphasis on the actual source of approval rights. Two small qualifications would prevent the short definitions from becoming broader than the advice they introduce.
 
-## Detailed feedback
+## Active recommendations
 
-- **Organization and narrative:** Authority → incentives → behavior is an intelligible progression. The final transition into choosing company work gives the part a purpose beyond learning definitions.
-- **Clarity and terminology:** The distinctions among a minority investor, board, lender and adviser prevent ownership percentage from standing in for all authority. Preserve that precision. A short reference to the source of the approval right would reinforce the previous part's entity map.
-- **Tone and pacing:** The opening quotation and explanatory prose repeat some of the same promise. Trim one statement without losing the direct voice.
-- **Examples:** The opening conflict is enough for an introduction. The linked chapters should supply the completed governance and investor-comparison decisions; adding another example here would duplicate them.
-- **Ending and accuracy:** The conclusion appropriately prepares the reader for practical commitments. No confirmed technical error identified. The title describes possible effects of ownership; the body properly avoids claiming that ordinary company governance or conflicting incentives begin only when outside investors arrive.
+- **Medium — Distinguish an advisory role from authority.** The claim that shares, a board seat, a lending condition and an advisory role each carry a different kind of authority grants the last category too much by default. An adviser may have influence and information access without any decision right. Suggested wording: “These positions can carry different rights or influence; establish what authority, if any, accompanies the role.” This aligns the introduction with the distinction developed in the [adviser review](../15-investors-adviser/REVIEW.md).
+- **Low — Broaden the source-of-right check slightly.** Agreements and delegation records are useful evidence, but applicable company rules and law can also establish authority. “Identify the agreement, delegation or applicable rule that establishes the right” is precise without adding a legal digression.
 
-## Recommended changes
+No new outline is needed. Keep the concise learning path and the company-side conclusion; avoid adding another investor-category table.
 
-- **Medium impact — Add a precise bridge from Part I.** Suggested sentence: “Knowing where the cash sits does not yet tell you who can authorize the work.” Follow it with the existing governance, incentives and behavior sequence.
-- **Medium impact — Preserve conditional authority language during chapter revisions.** This introduction is a better model than the categorical ownership contrasts found elsewhere.
-- **Low impact — Trim the repeated opening promise.** This is an editorial preference for pace; the current length is already appropriate.
+## Changes since the previous review
 
-## Proposed structure
+| Previous recommendation | Current disposition |
+| --- | --- |
+| Add a bridge from money to authority | **Resolved:** the opening explicitly supplies it. |
+| Reduce repeated purpose statements | **Resolved.** |
+| Ground approval rights in their source | **Partially resolved:** the instruction is present; advisory influence and non-contractual sources need the small qualifications above. |
 
-Keep the current structure and three-chapter order. A short bridge, the existing conflict, the learning path and the outcome are sufficient. No split, merger or additional substantive section is warranted.
+No independent numerical or historical claim on this page required recalculation. The chapter-level incentive examples remain subject to their own reviews.

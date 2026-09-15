@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: A Valuation Is an Estimate, Not a Fact
@@ -55,6 +55,7 @@ S06–S07 for earnings and development-accounting distinctions; S52 for IPEV's D
 
 ## Changelog
 
+- 2026-09-15: Editorial revision per REVIEW.md: corrected the Gornall–Strebulaev annotation to the source’s direction (reported post-money valuations about 50% above modeled fair value, not fair values 50% below), restored the “may shape / can become” qualification in both opening callouts and the Stage 1 checkpoint (“estimated value”, not “price”), replaced the unsupported “can’t start in year one” timing rule with phasing benefits from the validation date, and made the closing competence claim proportionate; permalink and id unchanged.
 - 2026-09-14: Editorial revision per REVIEW.md: two named learning stages with a checkpoint on the €60m thread, softened “assumptions decide results” to “can become targets to examine” across all formats, corrected the Gornall–Strebulaev annotation to its actual population (135 US unicorns, modeled fair values), added an engineering-facing closing assumption linking [[growth-into-design]], marked the SEC primer as the beginner route, trimmed repeated “not cash” reminders and the questions list; permalink and id unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

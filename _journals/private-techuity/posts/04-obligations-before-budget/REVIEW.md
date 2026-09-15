@@ -1,31 +1,32 @@
-# Editorial review: Interest, Tax and Loan Repayments Come Before Your Budget
+# Editorial review: Find the Cash Behind Your Technology Budget
 
-Reviewed 14 September 2026. Read the complete article, summary and reader-facing comic text.
+Reassessed 15 September 2026 from the complete current article, summary and comic text, previous review, revision log and Git changes. See the [collection review](../REVIEW.md).
 
-## Overall assessment
+## Current assessment
 
-This chapter explains why positive earnings may coexist with an unfunded technology initiative. Its cash bridge, hiring/runway example and capitalization comparison give product and engineering leaders useful ways to work with finance. It is one of the collection's most practically valuable chapters.
+The retitling and early distinction between obligations and choices resolve the previous review's central objection. The text no longer puts engineering behind a universal payment queue. The annual bridge, cash-on-hand qualification, separate runway scenario and capitalization explanation give leaders useful ways to work with finance. The three priced options now lead to a selected pilot rather than an uncompleted checklist.
 
-It also contains a high-priority framing problem: the title and opening present a universal payment priority that the conclusion explicitly disavows. They imply cash constraints become structural only under outside investors and that payments to owners necessarily precede engineering investment. The article's own examples are more accurate and nuanced than that framing.
+The structure works, although the selected pilot needs a clearer cost and timing basis. The voice preserves agency without denying financial constraints. Keep the explanation that payroll is already inside EBITDA and the explicit separation of annual residual from available bank cash. The final transition into authority and governance follows naturally; the chapter does not need another outline.
 
-## Detailed feedback
+## Active recommendations
 
-- **Introduction and confirmed internal inconsistency:** “Without outside investors, the gap between earnings and cash is mostly an accounting matter” overlooks the real cash timing and financing obligations already described in chapter 1. “They are paid before a migration or a new team is funded” also includes fees and payments to owners without distinguishing mandatory from discretionary payments. The closing paragraph correctly says the model is “not a universal payment priority” and engineering salaries are already in operating costs. That correction needs to govern the title and opening.
-- **Organization and flow:** The earnings bridge → runway → debt downside sequence works. The capitalization lesson is useful, although its definitions begin before the reader sees why they are needed. “Preserve the Capacity to Absorb a Setback” then broadens into investor support and capability loss, territory addressed elsewhere.
-- **Clarity and calculations:** The €10m-to-€0.5m bridge, 12-to-8.6-month runway and €1.8m interest increase are arithmetically consistent. Separate assumptions are clearly labelled. The distinctions between an annual residual, opening cash and payment dates are particularly important and should remain adjacent to the table.
-- **Terminology and technical accuracy:** Working capital is explicitly a simplified operating definition. Capitalization is correctly described as conditional rather than an elective earnings tactic; the [IAS 38 overview](https://www.ifrs.org/issued-standards/list-of-standards/ias-38-intangible-assets/) supports the research/development distinction. Clarify that later amortization affects other profit measures rather than implying it subsequently reverses an EBITDA effect; EBITDA excludes amortization. The present wording “before later amortization” leaves that inference open.
-- **Tone, examples and ending:** The line about neither dismissing cash constraints nor automatically declaring useful work unaffordable is excellent. It preserves agency without pretending constraints disappear. “Bring Choices, Not an Unpriced Wish List” offers a good conclusion, but it describes three options instead of completing that comparison for the €1m initiative.
-- **Evidence limits:** The crisis study is already qualified as conditional support and the Toys R Us reference is explicitly noncausal. Preserve that discipline. This review does not establish the legal priority of payments under any particular financing agreement.
-- **Other formats:** Both companion introductions strengthen the misleading universal priority; the summary later qualifies it. Correct the framing in all three versions together.
+- **Medium — Explain the pilot's local cost basis in “Three Priced Options.”** This chapter prices the reusable setup step plus first-year maintenance at €200,000, while the linked roadmap/allocation examples use €180,000 + €30,000 = €210,000. Separate scenarios may have different numbers, but calling it the same step invites readers to reuse those inputs. State the local build and maintenance assumptions, or align them. Likewise, option 1 buys a specialist for “two peak quarters” but is rejected because it “buys a quarter”; fix that duration. These are cross-reference and internal-consistency defects, not proof that all Larkspur scenarios must share one balance sheet.
+- **Medium — Show the cash condition for the fallback.** The pilot is approved before the first-half review; a weak first half then supposedly falls back to option 1. Name pilot spending already incurred, cancellable work and the additional cost of the specialist. It cannot silently replace spent cash with a cheaper alternative. A short dated line would suffice: “At the review, €X is spent, €Y remains cancellable, and a one-quarter specialist costs €Z within the revised reserve.”
+- **Medium — Make the payment-authority table conditional.** “Only the lender” can change interest/principal is too categorical: borrower and lender may amend terms, and refinancing can involve another lender; rights already in the agreement may permit repayment or rate choices. Prefer “Under the loan's terms or an agreed amendment/refinancing; confirm required consents.” This is a conceptual clarification, not a finding about a real loan. The owner's distribution row should also remain subject to applicable rules as well as private agreements.
+- **Low — Trim repeated setup and repair the capability link.** The opening states the reconciliation almost verbatim in multiple highlights and prose. Remove one repetition. “Which savings are reversible reductions of waste” is not the main task of “Find the Help”; link to the specific discussion that supports it or describe that destination as assessing support and continuing capability. Keep the bounded accounting subsection rather than cutting it for length.
 
-## Recommended changes
+## Verification and formats
 
-- **High impact — Rewrite the title and opening.** A more accurate title is “Find the Cash Behind Your Technology Budget.” Suggested opening: “Positive EBITDA does not establish cash available for a new initiative. Reconcile it with investment, taxes, financing payments, working-capital needs and cash already on hand, then check the dates and restrictions.” Keep the force of the problem without inventing a universal hierarchy.
-- **High impact — Distinguish obligations from choices at the first bridge.** Identify ordinary payroll already counted, contractual financing payments, planned investment and any proposed owner distributions. State which can be renegotiated or deferred only under the relevant agreements. Move the existing closing qualification beside the opening claim.
-- **Medium impact — Finish the €1m initiative example.** Show a minimum-continuity option, a staged improvement and a funding request with their next decision dates. This makes the final advice immediately usable and links naturally to “You Cannot Fund Everything.”
-- **Medium impact — Tighten the setback section.** Retain the conditional-support finding, then link to “The Financing Slipped” and “Help That Changes Capability” rather than previewing their full arguments.
-- **Low impact — Clarify the amortization sentence.** “The cash outflow is the same. Capitalization changes when costs enter profit; later amortization is excluded from EBITDA.”
+Recalculated €10m − €4m − €1m − €2m − €1m − €1.5m = €0.5m; adding €0.3m opening cash above reserve gives €0.8m, less a €0.2m pilot leaves €0.6m. Simple runway is 12 months or 8.57 months. Interest on €60m rises from €3.6m at 6% to €5.4m at 9%, a €1.8m difference. The corrected amortization sentence properly avoids suggesting that amortization later reverses EBITDA. Summary and comic now preserve the qualified cash argument; synchronize their pilot figures with whichever local assumptions are chosen.
 
-## Proposed structure
+## Changes since the previous review
 
-Preserve the main sequence. Correct the framing, put assumptions directly with the cash bridge, complete the staged-investment decision, then teach runway and financing downside. Keep the accounting comparison as a clearly bounded explanatory subsection. Major conceptual correction is essential; wholesale replacement of the worked examples would be counterproductive.
+| Previous recommendation | Current disposition |
+| --- | --- |
+| Correct the title/opening in all formats | **Resolved.** |
+| Separate obligations, payroll and choices at the bridge | **Partially resolved:** strong early table; “only the lender” remains too absolute. |
+| Complete three options for the €1m request | **Partially resolved:** choice and authority supplied; costs, duration and fallback timing need reconciliation. |
+| Tighten the setback section | **Resolved:** conditional support evidence and onward links replace the broader detour. |
+| Clarify amortization versus EBITDA | **Resolved.** |
+
+The earlier high priority for misleading payment-order framing is obsolete; the remaining work is focused consistency and completeness.

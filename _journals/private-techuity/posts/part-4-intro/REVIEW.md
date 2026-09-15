@@ -1,27 +1,27 @@
-# Editorial review: Part IV — Beyond Money: Getting Useful Help From Your Investor
+# Editorial review: PART IV — Beyond Money: Getting Useful Help From Your Investor
 
-Reviewed 14 September 2026. Read the complete introduction and all three chapters it introduces.
+Reassessed 15 September 2026 from the full introduction, previous review, revision log and all three chapters it introduces.
 
-## Overall assessment
+## Current assessment
 
-The introduction defines a useful three-step path: understand the adviser's role, choose a source of help and agree how the work will proceed. It speaks to company leaders facing a capability gap, rather than presenting the investor's support offering as an automatic benefit.
+This is now a strong part introduction. A capability gap leads to three distinct decisions: understand the adviser's role, choose a source of help, and agree an engagement. The compressed provider paragraph illustrates differences in capacity and conditions without repeating the earlier investor taxonomy. Alternatives outside the investor's network make the company-side perspective credible.
 
-Its recognition that a continuing specialist service can be useful is particularly important. It prevents “capability left behind” from becoming a rule that every company must internalize every skill. The principal weakness is repeated investor-category explanation already covered earlier.
+The allowance for a deliberately funded continuing specialist service is clear and valuable. It prevents “capability left behind” from implying that every specialty must become an internal team. Terminology, tone and pacing are proportionate; the conclusion names the accountable company leader and hands the reader into the lifecycle part. Preserve this structure and the current title.
 
-## Detailed feedback
+## Active recommendations
 
-- **Opening and narrative:** Missing capability that money cannot immediately supply is a good starting problem. Preserve the focus on company work and scarce time.
-- **Organization:** Role → source → engagement is a coherent sequence. It will remain useful if the underlying chapters are sharpened to those separate jobs.
-- **Clarity and terminology:** Actual availability, authority and conditions are better guides than the investor's label. Use “accountable company leader” where “owner” could mean a shareholder or a person responsible for work.
-- **Tone and pacing:** The range of possible support is balanced, but repeating the investor categories consumes a substantial share of a short introduction. One example and a link can provide enough context.
-- **Ending and accuracy:** The learning outcome is practical. No confirmed technical error identified. There is a confirmed naming mismatch in the reading guide's Part IV heading; use this introduction's current title consistently.
+There is no essential local correction. **Low-impact preference:** the learning outcome and “By the end” paragraph repeat the three-step route; one could be shortened if the collection's openings are streamlined. The repetition is small and may help a reader entering at this part.
 
-## Recommended changes
+The underlying sourcing and engagement chapters now justify their separate places, although their pilot calendar and specialist budget still need reconciliation. Track those issues in the [sourcing review](../29-help-that-changes-capability/REVIEW.md) and [engagement review](../30-useful-engagement/REVIEW.md), rather than combining the chapters simply to comply with the earlier optional suggestion.
 
-- **Medium impact — Preserve the three distinct chapter purposes during revision.** The main chapters overlap; this introduction already supplies the boundaries that should separate them.
-- **Medium impact — Retain the allowance for continuing services.** Carry it into the engagement and final-success chapters so “independence” does not become an inconsistent universal objective.
-- **Low impact — Shorten the category recap and harmonize the title.** Suggested emphasis: “Start with the capability the company needs, then establish who can provide it, under what authority and at what total cost.”
+## Changes since the previous review
 
-## Proposed structure
+| Previous recommendation | Current disposition |
+| --- | --- |
+| Preserve role → source → engagement boundaries | **Resolved:** the introduction states the jobs and the chapters substantially perform them. |
+| Retain continuing services as a legitimate result | **Resolved locally:** this allowance also survives in the toolkit and finale. |
+| Shorten the investor-category recap | **Resolved through an effective compact alternative.** |
+| Harmonize the Part IV title | **Resolved:** the guide and configuration use the current title. |
+| Consider combining the final two chapters for a shorter edition | **Superseded:** their distinct decisions now justify keeping both. |
 
-No major change needed. Keep problem → three-step path → useful outcome. If a shorter edition combines the source-selection and engagement chapters, update the learning path accordingly; the adviser-role chapter should remain distinct.
+No new outline or factual verification issue arises on this page.

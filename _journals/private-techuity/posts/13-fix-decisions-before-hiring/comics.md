@@ -62,7 +62,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "asset": "assets/images/13-fix-decisions-before-hiring/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 3 of an explainer comic. Sam compares salary savings with transition obligations. Use one speech bubble with the exact words: \"What is the full operating cost?\" Convey: A cheaper team than the current external development spend can be offset by recruitment, coordination, training and the cost of moving work between teams.",
-  "alt": "Comic panel: Sam compares salary savings with transition obligations.",
+  "alt": "Comic panel: Sam compares a cheaper team’s cost with transition obligations.",
   "caption": "A cheaper team than the current external development spend can be offset by recruitment, coordination, training and the cost of moving work between teams.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
@@ -72,7 +72,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Sam compares salary savings with transition obligations.](assets/images/13-fix-decisions-before-hiring/comic-03-scene.jpeg)
+![Comic panel: Sam compares a cheaper team’s cost with transition obligations.](assets/images/13-fix-decisions-before-hiring/comic-03-scene.jpeg)
 
 **Panel 3:** A cheaper team than the current external development spend can be offset by recruitment, coordination, training and the cost of moving work between teams.
 
@@ -84,9 +84,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/13-fix-decisions-before-hiring/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Alex considers a leadership change beside unclear authority. Use one speech bubble with the exact words: \"Which conditions would also change?\" Convey: Before replacing a leader, state a testable hypothesis: what new leadership must enable, and what evidence shows the capability is missing. If the conditions are changed and the leader does not use them, replacement is justified.",
+  "prompt": "Panel 4 of an explainer comic. Alex considers a leadership change beside unclear authority. Use one speech bubble with the exact words: \"Which conditions would also change?\" Convey: Before replacing a leader, state a testable hypothesis: what new leadership must enable, and what evidence shows the capability is missing. If the conditions are changed and the leader does not use them, the evidence supports added leadership with authority, or replacement.",
   "alt": "Comic panel: Alex considers a leadership change beside unclear authority.",
-  "caption": "Before replacing a leader, state a testable hypothesis: what new leadership must enable, and what evidence shows the capability is missing. If the conditions are changed and the leader does not use them, replacement is justified.",
+  "caption": "Before replacing a leader, state a testable hypothesis: what new leadership must enable, and what evidence shows the capability is missing. If the conditions are changed and the leader does not use them, the evidence supports added leadership with authority, or replacement.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -97,7 +97,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex considers a leadership change beside unclear authority.](assets/images/13-fix-decisions-before-hiring/comic-04-scene.jpeg)
 
-**Panel 4:** Before replacing a leader, state a testable hypothesis: what new leadership must enable, and what evidence shows the capability is missing. If the conditions are changed and the leader does not use them, replacement is justified.
+**Panel 4:** Before replacing a leader, state a testable hypothesis: what new leadership must enable, and what evidence shows the capability is missing. If the conditions are changed and the leader does not use them, the evidence supports added leadership with authority, or replacement.
 
 *Dialogue:* “Which conditions would also change?”
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/13-fix-decisions-before-hiring/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Alex and Priya review two clearly labelled groups of roles with Sam before speaking to the team. Use one speech bubble with the exact words: \"Which roles are funded now?\" Convey: The hire changes shape: one billing engineer funded now, the second team conditional on demand evidence and new money. Explain the same conditions to investors and teams.",
+  "prompt": "Panel 6 of an explainer comic. Alex and Priya review two clearly labelled groups of roles with Sam before speaking to the team. Use one speech bubble with the exact words: \"Which roles are funded now?\" Convey: The hire changes shape: one billing engineer funded now; the second team waits for demand evidence and for the next round to be committed and approved. Explain the same conditions to investors and teams.",
   "alt": "Comic panel: Alex and Priya review two clearly labelled groups of roles with Sam before speaking to the team.",
-  "caption": "The hire changes shape: one billing engineer funded now, the second team conditional on demand evidence and new money. Explain the same conditions to investors and teams.",
+  "caption": "The hire changes shape: one billing engineer funded now; the second team waits for demand evidence and for the next round to be committed and approved. Explain the same conditions to investors and teams.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -143,6 +143,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex and Priya review two clearly labelled groups of roles with Sam before speaking to the team.](assets/images/13-fix-decisions-before-hiring/comic-06-scene.jpeg)
 
-**Panel 6:** The hire changes shape: one billing engineer funded now, the second team conditional on demand evidence and new money. Explain the same conditions to investors and teams.
+**Panel 6:** The hire changes shape: one billing engineer funded now; the second team waits for demand evidence and for the next round to be committed and approved. Explain the same conditions to investors and teams.
 
 *Dialogue:* “Which roles are funded now?”

@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/04-obligations-before-budget/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Alex and Ines fund the staged pilot from three priced options and set the cohort review date. Use one speech bubble with the exact words: \"A feasible plan beats an ambition.\" Convey: Three priced options, each with a decision date and a decider: continuity, a staged pilot, the full request. Under the stated assumptions the €200,000 pilot is funded; the cohort review decides the rest.",
+  "prompt": "Panel 6 of an explainer comic. Alex and Ines fund the staged pilot from three priced options and set the cohort review date. Use one speech bubble with the exact words: \"A feasible plan beats an ambition.\" Convey: Three priced options, each with a decision date and a decider: continuity, a staged pilot, the full request. Under the stated assumptions the pilot is funded, €180,000 to build plus €30,000 of first-year maintenance; the day-90 cohort review and the board’s day-100 decision settle the rest.",
   "alt": "Comic panel: Alex reviews three priced options and a service-protection checklist beside a calendar marked with the cohort review.",
-  "caption": "Three priced options, each with a decision date and a decider: continuity, a staged pilot, the full request. Under the stated assumptions the €200,000 pilot is funded; the cohort review decides the rest.",
+  "caption": "Three priced options, each with a decision date and a decider: continuity, a staged pilot, the full request. Under the stated assumptions the pilot is funded, €180,000 to build plus €30,000 of first-year maintenance; the day-90 cohort review and the board’s day-100 decision settle the rest.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -143,6 +143,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex reviews three priced options and a service-protection checklist beside a calendar marked with the cohort review.](assets/images/04-obligations-before-budget/comic-06-scene.jpeg)
 
-**Panel 6:** Three priced options, each with a decision date and a decider: continuity, a staged pilot, the full request. Under the stated assumptions the €200,000 pilot is funded; the cohort review decides the rest.
+**Panel 6:** Three priced options, each with a decision date and a decider: continuity, a staged pilot, the full request. Under the stated assumptions the pilot is funded, €180,000 to build plus €30,000 of first-year maintenance; the day-90 cohort review and the board’s day-100 decision settle the rest.
 
 *Dialogue:* “A feasible plan beats an ambition.”

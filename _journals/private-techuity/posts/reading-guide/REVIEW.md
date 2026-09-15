@@ -1,29 +1,30 @@
 # Editorial review: OWNED — Reading Guide
 
-Reviewed 14 September 2026. Read the complete guide and evaluated its promises against all 39 posts and the companion formats.
+Reassessed 15 September 2026 from the complete current guide, previous review, revision log, configured order and all current reading formats. See the [collection review](../REVIEW.md).
 
-## Overall assessment
+## Current assessment
 
-The guide presents a useful book for product and engineering leaders working under investor ownership, including leaders who inherit an arrangement they did not choose. Its strongest organizing idea is to examine owners, rights, funding and change separately. The fictional-company explanation and explicit limits on transferring private-equity evidence to other arrangements are unusually helpful.
+The guide now makes a useful promise to company leaders who know their work but need finance vocabulary. Putting decision routes before the conceptual tour is a substantial improvement, and the full contents now functions as secondary lookup. The six-part structure, optional fund reference and honest disclosure that only 29 of 30 main chapters have comics accurately describe the inventory.
 
-The main weakness is competing navigation: ownership events, six-part progression, decision routes, three formats and a full contents list all ask the reader to orient themselves again. The guide also overpromises accessibility relative to the financial and technical depth of the actual chapters.
+The main remaining problem is the promised continuity of the fictional examples. The guide describes one evidence chain through Part V, but the delayed-financing chapter explicitly uses a separate scenario. Readers also encounter parts of the shared onboarding and recovery story in Parts III and IV. A precise map would help them distinguish deliberate alternate assumptions from actual contradictions.
 
-## Detailed feedback
+## Active recommendations
 
-- **Opening and audience:** The collision among hiring, product work and integration is a strong reason to read. State the primary reader immediately. Investor advisers are a useful secondary audience, but the guide should not imply equal emphasis on designing an investor's support service.
-- **Organization and pacing:** “Owners, Rights, Funding, and Change” supplies a clear conceptual frame. “Choose a Reading Format or Route” offers the most actionable navigation but arrives after other route explanations. Bring the immediate-decision routes forward and reduce duplication with “Contents.”
-- **Clarity and promise:** “No accounting or technical background is required” is too broad. The book teaches financial foundations, but assumes interest in fairly detailed software delivery, architecture, organizational and evidence questions. A more credible promise is that no finance training is assumed and technical terms are explained when needed.
-- **Examples and terminology:** Preserve Larkspur, the named roles and the explicit statement that scenarios use alternative assumptions rather than one continuous company history. This prevents readers from combining unrelated euro examples. The owner/rights/funding distinction is more precise than several chapters' investor-versus-noninvestor openings; use this guide as the framing standard.
-- **Confirmed collection inconsistencies:** The Part IV contents heading differs from the part introduction and configured title. The 300–500-word summary promise also needs enforcement: approximate prose-only counting puts several summaries above 500, most clearly AI at about 555 words and team delivery at about 525. Set a consistent counting convention before editing borderline cases.
-- **Tone and ending:** The guide is welcoming without trivializing the subject. The full contents listing is useful for lookup but makes the page end as an index. A short statement of the first decision to bring to the book would give its explanatory portion a clearer finish.
+- **Medium — Correct the shared-scenario promise in “How the Parts Build” and the Larkspur explanation.** D-3/ONB-1 travels through diligence, the early plan and handover, with earlier pilot and support episodes; the September–December funding delay is a separate illustration. Say so directly: “Follow D-3 from diligence into a funded pilot, its review and handover. The financing-delay chapter separately demonstrates how a dated cash forecast changes commitments.” This is a local correction even after the numerical inconsistencies identified in the [toolkit review](../toolkit/REVIEW.md) are repaired.
+- **Medium — Make format equivalence mean preservation of material qualifications.** The article can carry more detail, but the summary and comic still need the conditions that determine whether the conclusion is true. The current financing comic equates written commitment with cash; the Toys R Us comic confuses operating cash flow with a cash balance. The guide should promise the same decision and essential limits in each available format, with depth varying. Do not present the formats as fully synchronized until their reviews' outstanding corrections are addressed.
+- **Low — Reconcile “To Probe Further” with the bibliography's actual policy.** Some optional readings are also registered evidence, including the Hg 2017 announcement. Prefer: “Further-reading lists contain optional resources; the bibliography identifies which were also used as evidence.” Optional reading is not exempt from accurate annotation.
+- **Low — Keep immediate routes selective.** The current routes are useful; a reader facing a customer-versus-investor trade-off could finish with the revised finale. Replace “the first decision most readers bring” with “If this is your decision” unless there is audience evidence for the prevalence claim. These are navigation and tone preferences, not essential structural repairs.
 
-## Recommended changes
+The introduction is clearer, the audience is consistent with the main text, and the ending supplies destinations rather than a second manifesto. No new outline is warranted. Keep the ownership-model evidence boundary: the historical material remains concentrated on private equity.
 
-- **High impact — Align the audience and accessibility promise with the book.** Suggested wording: “This book is for product and engineering leaders. It assumes no finance training and explains the financial terms needed to question a plan, budget or ownership claim.”
-- **Medium impact — Give readers one immediate route before the full tour.** Use the existing decision table; offer the six-part sequence as the default for a complete reading. Combine repeated explanations of ownership events with the four-dimension frame.
-- **Medium impact — Correct the Part IV heading and format-length promise.** Keep the chapter names, order and reading formats consistent with the publication configuration.
-- **Low impact — Keep the full contents as a clearly secondary lookup aid.** If the site's existing contents navigation supplies the same function, shorten this duplicate list. That is a navigation preference, not an essential content cut.
+## Changes since the previous review
 
-## Proposed structure
+| Previous recommendation | Current disposition |
+| --- | --- |
+| Clarify audience and accessibility promise | **Resolved:** finance beginners are the explicit audience; technical subject matter is acknowledged. |
+| Put immediate routes before the full tour | **Resolved.** |
+| Match Part IV's title and describe format availability accurately | **Resolved:** current headings and 30/29 counts agree with configuration and files. |
+| Make full contents secondary and sharpen the first decision | **Resolved through an effective alternative:** routes precede the contents; no need to enforce the previous placement suggestion. |
+| Explain fictional-example continuity | **Partially resolved:** disclosure added, but its boundaries conflict with the actual chapters. |
 
-Reader and problem → choose a decision route or full sequence → four dimensions → Larkspur and separate scenarios → formats → evidence limits → optional full contents. Preserve the evidence-scope statement; do not replace it with an implication that the historical cases represent all investor types.
+No summaries or comics are expected for this guide. The new main chapter's missing comic is a collection coverage issue, already disclosed here, not a missing guide companion.

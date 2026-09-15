@@ -1,27 +1,27 @@
-# Editorial review: Part I — Understanding Financing and Ownership
+# Editorial review: PART I — Understanding Financing and Ownership
 
-Reviewed 14 September 2026. Read the complete introduction and all six chapters it introduces.
+Reassessed 15 September 2026 from the full introduction, previous review, revision log and the six chapters it introduces.
 
-## Overall assessment
+## Current assessment
 
-This introduction gives finance beginners a sensible path from cash sources and entities through valuation, returns, funding arrangements and obligations. Its intended audience and learning outcome are clear. The short linked chapter descriptions work well as orientation rather than miniature summaries.
+The introduction now bases financing consequences on actual agreements rather than treating investor ownership as a universal change in how companies work. The route from funding sources through money destinations, valuation, returns, funding choice and spendable cash prepares a finance beginner well. Experienced readers get a useful refresher route and optional fund detail has a real destination.
 
-The main opportunity is to reduce repetition about where money comes from and qualify the suggestion that a funding source determines authority or timing by itself. The later chapters are strongest when they inspect actual terms.
+The opening explains why product and engineering leaders need this material without promising they will become accountants. The learning path is concise, terminology is introduced in context, and the conclusion gives a clear next step. Preserve that proportion: the main chapters already contain the worked decisions, so another example or a larger outline here would add repetition.
 
-## Detailed feedback
+## Active recommendations
 
-- **Organization and flow:** The sequence is logical, particularly the earnings primer before the worked returns. Preserve it. The section is long enough as six chapters; this introduction should help readers decide which foundations they need.
-- **Clarity and terminology:** Distinguishing money paid to sellers, money available to the company and a fund's own commitments is the correct endpoint. Let that concrete distinction do more work than repeated abstractions about funding sources.
-- **Tone and pacing:** The opening quotation and following explanation substantially overlap. One direct statement plus a practical question would be more economical.
-- **Examples and ending:** A large example would duplicate the first chapter. A brief question about whether an announcement funds a proposed hire is sufficient. The ending's promise to identify whose money and return are being discussed is useful.
-- **Accuracy:** No confirmed numerical or technical error identified in this introductory text. The concern is deterministic wording: rights and restrictions follow the particular agreements and entities, not the cash-source label alone.
+- **Low — Name the parties in the remaining fund-commitment wording.** “An investor's own commitments to its fund” can mean an LP's capital commitment or the manager's responsibilities. Use, where that is the intended point: “A fund's investors may have committed capital that has not yet been called; that does not place cash in the operating company's budget.” This keeps the introduction consistent with the manager/fund/company distinction.
+- **Low — Preserve this page's conditional framing when revising the chapters.** Several later “Why Investors Care” callouts reintroduce categorical motives. The introduction's actual-agreement framing is the better model; it does not require a local rewrite.
 
-## Recommended changes
+There is no high-impact local defect. Numerical and funding-state problems in the substantive chapters are tracked in their reviews and the [collection review](../REVIEW.md); a sound introduction does not validate those examples.
 
-- **High impact — Keep the framing contractual and specific.** Replace any implication of automatic authority with: “The source and terms of funding affect which money the company can use, who must approve a commitment and when payments are due.”
-- **Medium impact — Remove one repetition of the opening funding claim.** Use the space to tell a financially experienced reader that the linked path can also serve as a refresher.
-- **Low impact — Keep the concise learning-path list.** Do not expand it with fund terminology that belongs in the chapters.
+## Changes since the previous review
 
-## Proposed structure
+| Previous recommendation | Current disposition |
+| --- | --- |
+| Replace deterministic ownership framing | **Resolved:** contracts and arrangements now carry the explanation. |
+| Reduce repeated explanation | **Resolved:** the opening and learning path have distinct jobs. |
+| Give experienced readers a refresher route | **Resolved.** |
+| Move detailed fund mechanics to optional depth | **Resolved:** the new reference is configured and linked. |
 
-No substantial restructuring needed. Use one opening problem, one statement of the distinctions the part teaches, the six links and the existing outcome. The requested changes are framing and economy, not a new introduction.
+No substantial restructuring, summary or comic is needed for this part introduction.

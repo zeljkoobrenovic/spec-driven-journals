@@ -1,31 +1,35 @@
 # Editorial review: Why a Cheaper Cloud Bill Can Be Bad News
 
-Reviewed 14 September 2026. Read the full article, summary and reader-facing comic text.
+Reassessed 15 September 2026 from the complete current article, summary and comic text where present, the previous review where present, revision log and Git changes. See the [collection review](../REVIEW.md).
 
-## Overall assessment
+## Current assessment
 
-The post explains why a cloud bill must be interpreted through useful service, demand, rates, commitments and full transition costs. It serves engineering and finance leaders well. Its numerical examples deliver the title's counterintuitive promise, and its distinction between an opportunity, an implemented change and an observed economic effect is practical.
+The revision turns the cloud discussion into a useful purchasing decision. Cash paid, costs assigned to a period, credits and commitment utilization are distinguished before the worked comparison. The demand stress case and one-year commitment make the tension between nominal discount and exposure concrete. The article also avoids counting a projected annual saving as an already observed result.
 
-This needs selective tightening rather than major restructuring. The strongest material is already present. The main gaps are an explicit decision in the contract example, a clearer cost basis for comparing invoices over time, and less repetition of investor-support themes.
+One important loop remains open: the conclusion demonstrates improvement against last year's unit cost but does not answer whether the board's actual plan was met. The present outline and accessible arithmetic should be preserved.
 
-## Detailed feedback
+## Active recommendations
 
-- **Introduction and flow:** The falling-bill question immediately establishes the problem. Four possible explanations invite investigation. The later investor paragraph overgeneralizes cloud as a large cost and says reducing it improves earnings without immediately qualifying the associated operating costs. Use the specific company situation; the rest of the article supplies the nuance.
-- **Clarity and terminology:** Cloud services, unit economics, rightsizing, latency and stranded costs are defined at the point of use. The repeated use of “useful” is justified here by the distinction between internal resource counts and completed customer work. Keep that distinction explicit rather than substituting a generic efficiency ratio.
-- **Examples and accuracy:** €0.10 → €0.08 per transaction and the €0.16 lower-demand case are correct. The fixed €35,000 commitment examples correctly contrast €15,000 savings with €15,000 excess cost under different demand. The assumptions about inability to reduce or reuse the commitment prevent this from pretending to describe every provider contract.
-- **Technical precision:** Comparing a monthly bill with an upfront commitment can mix cash timing with cost allocation. The opening raises that problem but does not show the common basis to use afterward. Distinguish cash paid, cost assigned to the period, credits and commitment usage. This is an explanatory gap; no specific vendor-product claim has been disproved.
-- **Organization and pacing:** Credits belong close to the commitment section. The acquisition paragraph in “Protect the Service” and the final peer-network paragraph both lead into shared purchasing/support, which Part IV develops. They can be brief links here. “Portfolio Comparisons Need a Cohort” is useful but could become a short note after the unit-economics example.
-- **Tone and conclusion:** “A discount on unused capacity is still an expense” is memorable and technically grounded by the example. The conclusion appropriately asks for a repeatable explanation rather than a one-time savings announcement. It could end more firmly with the contractual choice the fictional company makes.
-- **Other formats:** The summary is faithful, but its “four different amounts” differs from the article's three quantities. One is an implemented change, not inherently an amount. Align the taxonomy, and treat an annualized estimate as a separately labelled projection rather than another observed saving.
+1. **Medium impact — close against the plan as well as the prior period.** The opening plan is flat spending with 50% more volume. The later €120,000/1.5-million-unit result improves unit cost from €0.10 to €0.08, but misses that plan: flat €100,000 spending at the new volume would require about €0.0667 per unit. Actual spending is €20,000 above plan and unit cost is 20% above the planned unit cost. Suggested closing answer: “Unit economics improved by 20% against the prior period, but the flat-spend plan was missed by €20,000. Morgan now needs to explain the remaining cost drivers and seek a revised envelope or further changes.” This distinction is the point of an investor-facing explanation, not an additional accounting lesson.
 
-## Recommended changes
+2. **Low impact — label the hypothetical pricing assumptions once.** The one-year and three-year choices both use a 30% discount, with different commitment floors. That is a legitimate fictional comparison, but readers should not infer a general supplier tariff. Keep the conclusion conditional on the quoted terms and range of demand. When calling the three-year option an additional €6,000 saving, retain the higher-demand condition; it is not an advantage at every row in the table.
 
-- **High impact — Make the comparison basis explicit.** Add a short sentence or column specifying whether each figure is a cash payment, recurring service cost or amortized commitment cost. This prevents the central lesson from being undermined by incomparable monthly numbers.
-- **Medium impact — Complete the commitment decision.** Under a stated range of demand and funding conditions, show the company choosing a smaller commitment, retaining flexibility or accepting the fixed payment. Explain what evidence and approval justify it; do not prescribe one result for every cloud contract.
-- **Medium impact — Group temporary and contractual pricing effects.** Put credits, minimum spend, renewal and ownership-change conditions together. Keep service quality as the final test of whether the saving is acceptable.
-- **Medium impact — Align the savings vocabulary across formats.** Use opportunity → change implemented → observed net effect; label run-rate projections separately and state their assumptions.
-- **Low impact — Trim cross-chapter repetition.** Reduce the peer-network discussion to a link and keep three reflection questions: the unit, the explanation for cost change and the remaining commitment.
+3. **Low impact — let the closing formats carry the chosen commitment.** The comic's credits and falling-bill contrast remain useful, but one reference to the one-year choice and its downside would distinguish this revised chapter from its previous version. This is optional compression of the worked decision, not a requirement to reproduce the table in six panels. The summary should explicitly separate improvement from meeting the flat-spend plan.
 
-## Proposed structure
+## Verification and formats
 
-No major rewrite is necessary. A tighter order is bill change → unit and comparable cost basis → usage/rate/design causes → commitment and credits decision → full costs and service guardrails → verified result. Preserve all three numerical comparisons.
+The calculations check out on the stated common period basis. €100,000/1 million is €0.10; €120,000/1.5 million is €0.08; €80,000/0.5 million is €0.16. A €50,000 commitment discounted by 30% costs €35,000; at €20,000 of useful demand it costs €15,000 more than flexible spending. The one-year €30,000 floor costs €21,000, with additional demand paid flexibly; its table gives €21,000, €41,000, €51,000 and €21,000 for the stated scenarios. A projected €9,000 monthly reduction annualizes to €108,000, but is not itself a realized annual saving.
+
+The examples are assumptions, not independently verified cloud quotations. No deployment, billing-system or artwork validation is claimed. The article and summary now make the accounting basis much easier to follow; the outstanding plan comparison is an internal, confirmed omission.
+
+## Changes since the previous review
+
+| Previous recommendation | Current disposition |
+| --- | --- |
+| Align the numerical examples on a common cost basis | **Resolved:** payment, allocation, credits and utilization are explicitly distinguished. |
+| Show a commitment choice under uncertainty | **Resolved:** the demand scenarios and selected one-year commitment complete the decision. |
+| Group terminology and reduce scattered definitions | **Resolved:** definitions precede the comparison. |
+| Separate observed savings from forecasts | **Resolved:** the annualized figure is identified as a projection. |
+| Trim repeated explanations | **Largely resolved:** any further cuts are stylistic. |
+
+The missing comparison with the board's original flat-spend target is a new finding. The later “WHY INVESTORS CARE” wording is better scoped to unit economics than the earlier falling-total-bill framing, but should remain an expectation to test in the stated plan.

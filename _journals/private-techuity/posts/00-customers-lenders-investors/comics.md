@@ -130,9 +130,9 @@ Morgan is an investor's adviser in the fund scenarios; Alex leads technology, Pr
   "status": "generated",
   "asset": "assets/images/00-customers-lenders-investors/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Priya and Alex compare four ownership cards with Sam, keeping the company budget separate. Use one speech bubble with the exact words: \"What can we actually commit to?\" Convey: Venture, growth, buyout and corporate labels are orientation, not terms. For the same €100,000, a prepayment fixes a delivery date, a loan starts repayments now, and new shares add an approver; Larkspur chose the prepayment because the feature fit the date.",
+  "prompt": "Panel 6 of an explainer comic. Priya and Alex compare four ownership cards with Sam, keeping the company budget separate. Use one speech bubble with the exact words: \"What can we actually commit to?\" Convey: Venture, growth, buyout and corporate labels are orientation, not terms. For the same €100,000, a prepayment fixes a delivery date, a loan starts repayments now, and new shares add an approver; Larkspur chose the prepayment because the feature fit the date and the customers’ cash funded it; the CEO signed within her delegation after the board recorded its support. If fewer customers sign, the release is reforecast rather than borrowed beyond what the monthly surplus can repay.",
   "alt": "Comic panel: Priya and Alex compare four ownership cards with Sam, keeping the company budget separate.",
-  "caption": "Venture, growth, buyout and corporate labels are orientation, not terms. For the same €100,000, a prepayment fixes a delivery date, a loan starts repayments now, and new shares add an approver; Larkspur chose the prepayment because the feature fit the date.",
+  "caption": "Venture, growth, buyout and corporate labels are orientation, not terms. For the same €100,000, a prepayment fixes a delivery date, a loan starts repayments now, and new shares add an approver; Larkspur chose the prepayment because the feature fit the date and the customers’ cash funded it; the CEO signed within her delegation after the board recorded its support. If fewer customers sign, the release is reforecast rather than borrowed beyond what the monthly surplus can repay.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -143,6 +143,6 @@ Morgan is an investor's adviser in the fund scenarios; Alex leads technology, Pr
 
 ![Comic panel: Priya and Alex compare four ownership cards with Sam, keeping the company budget separate.](assets/images/00-customers-lenders-investors/comic-06-scene.jpeg)
 
-**Panel 6:** Venture, growth, buyout and corporate labels are orientation, not terms. For the same €100,000, a prepayment fixes a delivery date, a loan starts repayments now, and new shares add an approver; Larkspur chose the prepayment because the feature fit the date.
+**Panel 6:** Venture, growth, buyout and corporate labels are orientation, not terms. For the same €100,000, a prepayment fixes a delivery date, a loan starts repayments now, and new shares add an approver; Larkspur chose the prepayment because the feature fit the date and the customers’ cash funded it; the CEO signed within her delegation after the board recorded its support. If fewer customers sign, the release is reforecast rather than borrowed beyond what the monthly surplus can repay.
 
 *Dialogue:* “What can we actually commit to?”

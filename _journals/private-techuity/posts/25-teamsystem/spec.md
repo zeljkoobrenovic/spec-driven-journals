@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: TeamSystem: Each New Owner Inherits Progress and Unfinished Work
@@ -26,7 +26,8 @@ Product and engineering leaders inside companies working under investors, includ
 - Establish the historical window and distinguish transaction announcements from completed transactions.
 - Separate sponsor accounts from company financial records and the manuscript's causal hypotheses.
 - Explain cash proceeds versus retained value, pro forma comparisons, adjusted EBITDA versus statutory earnings, and capitalized development using checked source figures; show the full reported adjusted-EBITDA-to-loss reconciliation, and present the ownership episodes in a table with date/status and what each source establishes, without a synthetic performance ranking.
-- Treat later HgCapital Trust announcements (2021, 2024) as announced values with completion and stake continuity unverified.
+- Treat later HgCapital Trust events (2021, 2023, 2024) by source: announcements give announced values; the Trust's annual reports give completion status and gross realizations; none gives net investor cash, and none is the 2016 stake.
+- Distinguish the accounting finance charge from finance costs actually paid, using the 2017 report's notes 7–10, and keep both distinct from other financing cash outflows.
 - Keep the recurring-acquisition-adjustment lesson to one paragraph linking [[visma]]; link [[handover-of-obligations]] for the continuing-obligations handover.
 - Relate concrete interventions to testable customer and business mechanisms; expose stakeholder and attribution gaps.
 - Preserve qualifications in a 300–500-word TL;DR and six-panel fictional comic storyboard.
@@ -47,10 +48,11 @@ Independent customer and employee histories; full investor cash flows; matched p
 
 ## Sources
 
-S45–S49: Palamon's historical account; HgCapital Trust's 2010 and 2015 announcements and March 2016 results presentation; TeamSystem Holding's 2017 consolidated financial statements and directors' report. Exact metadata, consulted sections, and limitations are in the bibliography and private research register.
+S45–S49: Palamon's historical account; HgCapital Trust's 2010 and 2015 announcements and March 2016 results presentation; TeamSystem Holding's 2017 consolidated financial statements and directors' report. S66–S71: HgCapital Trust's January 2021 and July 2024 announcements and its 2021, 2023 and 2024 annual reports; Silver Lake's May 2023 announcement. Exact metadata, consulted sections, and limitations are in the bibliography and private research register.
 
 ## Changelog
 
+- 2026-09-15: Revise per the 15 September review: the net finance charge is presented as an accounting charge with its non-cash components, and the 2017 report's note 10 supplies €52.1 million of finance costs paid; the 2021 completion, 2023 partial sale and 2024 gross realization are taken from the Trust's annual reports (new sources S66–S71) without replacing the July 2024 announced value or claiming net investor cash; capitalization wording no longer asserts same-year payment; bridge heading and layout revised. Permalink and id unchanged.
 - 2026-09-14: Retitle to “TeamSystem: Each New Owner Inherits Progress and Unfinished Work” and revise per the editorial review: narrowed opening, ownership-episode table, corrected 2021/2024 announcement annotations, complete adjusted-EBITDA-to-loss bridge from the 2017 report, recurring-adjustment discussion shortened with a link to Visma, closing sections combined; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “TeamSystem: What a Buy-and-Build Actually Accumulates” to “TeamSystem: Each New Owner Buys the Last Owner’s Progress”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.

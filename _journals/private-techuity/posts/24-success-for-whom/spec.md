@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: Success for Whom, and for How Long?
@@ -57,6 +57,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-15: Repair the final Larkspur decision: the unmodified 90-day cut-off is inadmissible because customer contracts are protected obligations; a consent-based alternative (A′) is compared with the two-quarter migration; the €220,000 is split into €150,000 cash payroll and €70,000 released support capacity; the transition is dated (months 7–12, after the data-quality step) and funded (≈€75,000 one-off retention, eight engineer-weeks, named displacement); comic panels 5–6 carry the decision. Permalink and id unchanged.
 - 2026-09-14: Rebuild the finale around a case matrix and a final Larkspur trade-off decision, correct the realization-only framing and two source annotations, add a supplier row and a process for unresolved disagreement, and shorten research methodology so it serves the leadership argument; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “Judge Success Beyond the Funding Round or Sale” to “Success for Whom, and for How Long?”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.

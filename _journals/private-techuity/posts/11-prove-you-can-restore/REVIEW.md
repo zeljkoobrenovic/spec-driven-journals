@@ -1,31 +1,36 @@
 # Editorial review: Prove You Can Restore, Not Just That You Back Up
 
-Reviewed 14 September 2026. Read the full article, summary and reader-facing comic text.
+Reassessed 15 September 2026 from the complete current article, summary and comic text where present, the previous review where present, revision log and Git changes. See the [collection review](../REVIEW.md).
 
-## Overall assessment
+## Current assessment
 
-The argument is that security and recovery need evidence of business capability, not merely policies, successful backup jobs or monetized risk claims. The intended reader is a company leader deciding what to fund and who may accept the remaining exposure. The 6am scheduling dependency, eleven-hour restore and uncertain expected-loss example are excellent foundations.
+The chapter now follows a failed restore through an owned, funded response and a second test. That is a substantial improvement over general warnings about backups. The dispatch scene gives the four-hour recovery and fifteen-minute data-loss objectives meaning; the closing residual-risk discussion prevents a successful test from becoming a claim of universal resilience. The distinction between a modeled reduction in expected loss and booked financial benefit is also worth preserving.
 
-The title promises a focused recovery lesson, while the article becomes a broad security-governance chapter. That breadth can work if the restore failure remains the organizing case. At present it disappears into risk, diligence, shared services and investor access without a completed recovery decision.
+The shared recovery example nevertheless has incompatible funding histories across the collection. Resolve that before treating REC-1 as a demonstration of reliable records. The outline is already effective.
 
-## Detailed feedback
+## Active recommendations
 
-- **Introduction and narrative:** Three definitions precede the strongest scene. Open with dispatchers unable to assign engineers, then introduce security, resilience and recovery as the capabilities that situation needs. “A company under no pressure to show earnings” is an unhelpful implied comparison, and a security case does not inherently require a stronger justification simply because an outside investor exists.
-- **Authority and terminology:** The introduction says the leader must argue in terms an “investment committee” recognizes. That can be appropriate during a transaction, but the book has carefully distinguished the fund committee from the company board and executives. Name the actual company approval forum or specify that this is an investment-approval scenario. “Security Work Needs an Owner” could use “accountable leader” to avoid ambiguity with share ownership.
-- **Examples and technical precision:** The missing credential and unavailable database version make restore failure concrete. However, eleven hours is never compared with an agreed maximum outage or acceptable data loss. Add those plain-language recovery objectives, then explain what a test must demonstrate: restored data, integrity, access, application dependencies and the customer workflow. The summary already says a technical restore may not establish business recovery; bring that useful distinction into the worked case.
-- **Risk calculation:** Five percent of €4m is €200,000; two percent is €80,000; the difference is €120,000. The arithmetic is sound for the stated simplified scenario. The tail-risk warning and refusal to book this as EBITDA are especially valuable. The assumed probability improvement remains illustrative, not verified effectiveness of a real control; preserve that label.
-- **Organization and pacing:** NIST's six functions provide orientation, but this chapter need not expand into an equal treatment of all of them. “Funding Pressure” and “Shared Support” overlap on access and continuing recovery responsibilities. Combine them or link to the engagement chapter.
-- **Tone and conclusion:** The voice is responsible without treating checklists as worthless. The ending restates the proposal formula rather than showing how Larkspur remedies and retests its failure. No specific notification deadline is asserted, which appropriately avoids a false universal legal rule.
-- **Other formats:** The summary's whole-service recovery explanation is stronger than the article's scenario. The comic retains the title's lesson, but its introduction repeats the investment-committee ambiguity.
+1. **High impact — reconcile the cost, sequence and envelope for REC-1.** This chapter presents €80,000 and four engineer-weeks as the corrective response after the day-45 failure. [You Cannot Fund Everything](../28-cannot-fund-everything/index.md) says that allocation has already been spent at failure and authorizes an additional €20,000 and two weeks for the day-85 retest. This chapter also refers to both a €300,000 first-hundred-days envelope and the €500,000 allocation. Identify whether €300,000 is a funded subset, a different scenario or an error. Because REC-1 and the selected allocation are explicitly shared, the guide's general alternative-scenario convention cannot resolve this silently. Give the article, summary, comic, first-hundred-days plan and toolkit one agreed funding history.
 
-## Recommended changes
+2. **Medium impact — define what the accepted recovery objectives cover.** The retest meets four hours and fifteen minutes in the tested environment, while a regional cloud failure remains outside the demonstrated capability. State whether the business agreed these objectives for a defined failure scenario or for the whole service across failures. Suggested rewrite: “The retest demonstrates the agreed objective for loss of the application environment in this region. It does not demonstrate recovery after a regional outage; Inès records that separate exposure and its next decision date.” Otherwise “REC-1 closed” can read as closing a broader obligation than the evidence supports.
 
-- **High impact — Make the failed restore the chapter's spine.** Define Larkspur's service need, demonstrate the gap, select funded corrective work, repeat the test and record residual exposure. This turns the title into a complete leadership decision.
-- **High impact — Identify the appropriate authority.** Replace the generic investment committee with the company decision-maker in this scenario. Clarify that documented acceptance cannot make an unmet mandatory obligation disappear; specialist interpretation still governs that question.
-- **Medium impact — State recovery objectives in ordinary language.** “Dispatch must resume by [fictional agreed time], with no more than [agreed period] of lost updates.” Show how that requirement changes the restore test rather than adding an acronym-heavy checklist.
-- **Medium impact — Keep quantified risk as a bounded inset.** Preserve the arithmetic and severe-loss warning, then return to the decision. Link shared-service and data-access detail to Part IV.
-- **Low impact — Start with the scene and shorten the conclusion.** Retain the distinction between evidence of a backup and evidence of an operating service; it is the chapter's strongest line.
+3. **Low impact — retain the concrete opening without categorical shorthand.** “A backup that has not been restored is a hope, not a control” is memorable but less precise than the rest of the chapter. A backup can be one control while recoverability remains unproven. “A completed backup is not evidence that dispatch can resume within four hours” connects the opening directly to the demonstrated requirement. The six-a.m. failure works as a fictional scenario; it need not become a prediction about every company's incident.
 
-## Proposed structure
+4. **Low impact — close with the next accountable event.** The article already records quarterly tests and a later regional decision. End on the named next test and acceptance scope, rather than adding another general statement about resilience. This is a pacing preference; preserve the human consequence for dispatchers and customers.
 
-6am service dependency → failed restore against stated objectives → evidence and response roles → funded corrective option, with risk estimate as an inset → retest and residual-risk decision → implications for shared services and changing owners.
+## Verification and formats
+
+The risk inset is arithmetically correct: 5% × €4 million = €200,000 and 2% × €4 million = €80,000, a modeled €120,000 expected-loss difference. It is not an observed cash saving or a guarantee against a severe loss. The probability and impact figures are fictional assumptions. The four-hour and fifteen-minute objectives are business choices in this scenario, not universal or legal thresholds.
+
+The summary and comic text now explain a failed test, funded changes and a retest, but inherit the €80,000 corrective-cost version. Their wording must follow the reconciled sequence. Existing images have not been certified against the revised text.
+
+## Changes since the previous review
+
+| Previous recommendation | Current disposition |
+| --- | --- |
+| Make a failed restore and accountable response the spine | **Partially resolved:** the narrative is complete, but its spending history conflicts with the linked allocation. |
+| Explain recovery objectives in ordinary language | **Resolved for meaning; partially resolved for scope:** the regional exclusion needs to be attached to the accepted objective. |
+| Bound the quantitative risk illustration | **Resolved:** estimates, tail risk and the absence of a booked saving are explicit. |
+| Begin with a scene and end with a decision | **Resolved:** dispatch, retest and residual-risk acceptance give the chapter a practical arc. |
+
+The budget inconsistency is a new regression in a deliberately shared example. Preserve the substantial improvement in showing who funds a recovery response and who accepts the remaining exposure.

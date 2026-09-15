@@ -7,7 +7,7 @@
 
 **Comic.** The team is on schedule, but the €4m round expected in September now looks likely in December. The panels follow a fictional company changing a funding assumption before it becomes a delivery promise: cash by date, a latest useful decision date, three alternatives and one authorized fallback.
 
-Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, Sam leads finance and Ines is the CEO. All are fictional, and every figure in the scenario is invented. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
+Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, Sam leads finance and Ines is the CEO. All are fictional, and every figure in the scenario is invented. This scenario is deliberately separate from the shared Larkspur examples in other chapters: its cash, burn, hires and dates are its own. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
@@ -63,9 +63,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "needs_regeneration": true,
   "asset": "assets/images/18-the-financing-slipped/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Sam stands at a whiteboard showing a simple cash line falling from July to a reserve line at 31 December, with three short branches labeled A, B and C ending at November, December and March. Use one speech bubble with the exact words: \"Plan A breaks the reserve in November.\" Convey: Put cash on a calendar. Without new money the €400,000 reserve is reached on 31 December. Proceeding as planned breaches it in late November; deferring the hires and the portal holds to 31 December; a conditional €600,000 bridge would cover a slip to March, but it is not cash until it is committed in writing.",
+  "prompt": "Panel 3 of an explainer comic. Sam stands at a whiteboard showing a simple cash line falling from July to a reserve line at 31 December, with three short branches labeled A, B and C ending at November, December and March. Use one speech bubble with the exact words: \"Plan A breaks the reserve in November.\" Convey: Put cash on a calendar. Without new money the €400,000 reserve is reached on 31 December. Proceeding as planned breaches it in late November; deferring the hires and the portal holds to 31 December; a conditional €600,000 bridge would add three months if its net proceeds arrive by 30 November; a written commitment still has conditions and is not cash received.",
   "alt": "Comic panel: Sam at a whiteboard showing cash falling to the reserve line, with three branches A, B and C ending in November, December and March.",
-  "caption": "Put cash on a calendar. Without new money the €400,000 reserve is reached on 31 December. Proceeding as planned breaches it in late November; deferring the hires and the portal holds to 31 December; a conditional €600,000 bridge would cover a slip to March, but it is not cash until it is committed in writing.",
+  "caption": "Put cash on a calendar. Without new money the €400,000 reserve is reached on 31 December. Proceeding as planned breaches it in late November; deferring the hires and the portal holds to 31 December; a conditional €600,000 bridge would add three months if its net proceeds arrive by 30 November; a written commitment still has conditions and is not cash received.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -76,7 +76,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam at a whiteboard showing cash falling to the reserve line, with three branches A, B and C ending in November, December and March.](assets/images/18-the-financing-slipped/comic-03-scene.jpeg)
 
-**Panel 3:** Put cash on a calendar. Without new money the €400,000 reserve is reached on 31 December. Proceeding as planned breaches it in late November; deferring the hires and the portal holds to 31 December; a conditional €600,000 bridge would cover a slip to March, but it is not cash until it is committed in writing.
+**Panel 3:** Put cash on a calendar. Without new money the €400,000 reserve is reached on 31 December. Proceeding as planned breaches it in late November; deferring the hires and the portal holds to 31 December; a conditional €600,000 bridge would add three months if its net proceeds arrive by 30 November; a written commitment still has conditions and is not cash received.
 
 *Dialogue:* “Plan A breaks the reserve in November.”
 
@@ -110,9 +110,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/18-the-financing-slipped/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Sam moves a funding date on a wall calendar while Alex and Priya review contracts and a commitments list at the table. Use one speech bubble with the exact words: \"What changes if the money arrives late?\" Convey: On 10 August the board chooses B: defer the hires and the portal, keep the pilot and the recovery work. Sam is to obtain a written bridge commitment by 1 September, the plan is reviewed on 1 October, and Alex and Priya stage the deferred work so it can restart without rework.",
+  "prompt": "Panel 5 of an explainer comic. Sam moves a funding date on a wall calendar while Alex and Priya review contracts and a commitments list at the table. Use one speech bubble with the exact words: \"What changes if the money arrives late?\" Convey: On 10 August the board chooses B: defer the hires and the portal, keep the pilot and the recovery work. The bridge is pursued, not counted. Sam is to obtain a written bridge commitment by 1 September, the plan is reviewed on 1 October, and Alex and Priya stage the deferred work and cost the next reduction.",
   "alt": "Comic panel: Sam moves a funding date on the calendar while Alex and Priya review contracts and the commitments list.",
-  "caption": "On 10 August the board chooses B: defer the hires and the portal, keep the pilot and the recovery work. Sam is to obtain a written bridge commitment by 1 September, the plan is reviewed on 1 October, and Alex and Priya stage the deferred work so it can restart without rework.",
+  "caption": "On 10 August the board chooses B: defer the hires and the portal, keep the pilot and the recovery work. The bridge is pursued, not counted. Sam is to obtain a written bridge commitment by 1 September, the plan is reviewed on 1 October, and Alex and Priya stage the deferred work and cost the next reduction.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -123,7 +123,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam moves a funding date on the calendar while Alex and Priya review contracts and the commitments list.](assets/images/18-the-financing-slipped/comic-05-scene.jpeg)
 
-**Panel 5:** On 10 August the board chooses B: defer the hires and the portal, keep the pilot and the recovery work. Sam is to obtain a written bridge commitment by 1 September, the plan is reviewed on 1 October, and Alex and Priya stage the deferred work so it can restart without rework.
+**Panel 5:** On 10 August the board chooses B: defer the hires and the portal, keep the pilot and the recovery work. The bridge is pursued, not counted. Sam is to obtain a written bridge commitment by 1 September, the plan is reviewed on 1 October, and Alex and Priya stage the deferred work and cost the next reduction.
 
 *Dialogue:* “What changes if the money arrives late?”
 
@@ -133,9 +133,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/18-the-financing-slipped/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Alex hands a colleague the operating record that shows which plan the team is executing and what would restore the original one. Use one speech bubble with the exact words: \"We know what the next stage needs.\" Convey: Customers get no promise that depends on the hires. The team is told it is executing B, what continues, and what restores the original plan: a signed subscription agreement with understood conditions, not a term sheet.",
+  "prompt": "Panel 6 of an explainer comic. Alex hands a colleague the operating record that shows which plan the team is executing and what would restore the original one. Use one speech bubble with the exact words: \"We know what the next stage needs.\" Convey: Customers get no promise that depends on the hires. The team is told it is executing B, what continues, and what restarts the deferred spending: cash received, or a conditional commitment the board has specifically authorized counting against a dated cash forecast and a funded downside. A term sheet is neither.",
   "alt": "Comic panel: Alex hands a colleague the operating record that shows which plan the team is executing and what would restore the original one.",
-  "caption": "Customers get no promise that depends on the hires. The team is told it is executing B, what continues, and what restores the original plan: a signed subscription agreement with understood conditions, not a term sheet.",
+  "caption": "Customers get no promise that depends on the hires. The team is told it is executing B, what continues, and what restarts the deferred spending: cash received, or a conditional commitment the board has specifically authorized counting against a dated cash forecast and a funded downside. A term sheet is neither.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -146,6 +146,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex hands a colleague the operating record that shows which plan the team is executing and what would restore the original one.](assets/images/18-the-financing-slipped/comic-06-scene.jpeg)
 
-**Panel 6:** Customers get no promise that depends on the hires. The team is told it is executing B, what continues, and what restores the original plan: a signed subscription agreement with understood conditions, not a term sheet.
+**Panel 6:** Customers get no promise that depends on the hires. The team is told it is executing B, what continues, and what restarts the deferred spending: cash received, or a conditional commitment the board has specifically authorized counting against a dated cash forecast and a funded downside. A term sheet is neither.
 
 *Dialogue:* “We know what the next stage needs.”

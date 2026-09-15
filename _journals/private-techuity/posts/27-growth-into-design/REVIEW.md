@@ -1,30 +1,40 @@
 # Editorial review: Turn “We Expect Growth” Into a Design Decision
 
-Reviewed 14 September 2026. Read the full article, summary and reader-facing comic text.
+Reassessed 15 September 2026 from the complete current article, summary and comic text where present, the previous review where present, revision log and Git changes. See the [collection review](../REVIEW.md).
 
-## Overall assessment
+## Current assessment
 
-The chapter connects valuation assumptions to operating requirements, technical options and a funded transition. Its intended audience includes leaders of both internally built software and bought enterprise systems. The build/buy comparison, distinction between modularity and microservices, and warning against counting a valuation sensitivity and the same future savings twice are valuable.
+The article now develops a genuine design choice from the preceding assessment and organization findings. Buying a supplier capability, extracting a country boundary and replacing the platform have distinct costs, times and consequences. The treatment of bought products, configurable rules and organizational boundaries prevents “architecture” from becoming shorthand for rewriting software. The correction to the rare-failure rule is particularly important: consequence as well as frequency now matters.
 
-The main weakness is that the promised design decision remains largely a catalogue of possibilities. The worked example calculates payback, but never compares two actual designs and selects one. A categorical opening and an oversimplified risk statement also conflict with the collection's more careful reasoning.
+The preferred option is understandable, but its cost comparison and fallback need more precise boundaries. Keep the current structure; another split would not solve these local problems.
 
-## Detailed feedback
+## Active recommendations
 
-- **Introduction and confirmed overstatement:** “The missing connection is specific to investor-backed companies” is untenable as written. Stable ownership and investor ownership are not opposites, and founder-owned companies also translate financial expectations into technical work. The chapter's distinctive setting is an investor's particular assumption arriving without its reasoning, not the existence of this translation problem.
-- **Structure and flow:** The chain of definitions is clear, but the four-column table carries a large part of the article's instructional load. Readers must compare financial priorities, build options, buy options and trade-offs while also learning seven technical terms. This deserves either several smaller comparisons or one developed example.
-- **Technical depth and clarity:** “Modular boundaries don't automatically require [microservices]” is a useful correction to fashionable architecture prescriptions. The supplier-upgrade and exit-cost discussion broadens the audience appropriately. “Most companies” use a bought core with built extensions and heavy customization is “the common way” flexibility is lost are unsupported prevalence claims; state them as patterns a reader may encounter.
-- **Risk reasoning:** The final table row says an expensive rebuild to avoid an unlikely failure is not worth buying. Low probability alone cannot establish that conclusion: the recovery chapter explicitly explains why a rare catastrophic outcome can dominate a decision. Replace this rule with a comparison of impact, probability, alternatives, obligations and affordability. This is a substantive internal inconsistency, not a stylistic preference.
-- **Examples and accuracy:** The €200,000 outlay and €100,000 annual net savings after a one-year implementation give about three years to simple payback under the stated assumptions. The 10× sensitivity produces €1m of enterprise value, with suitable qualifications about cash and net debt. Preserve these calculations. They explain financing but need to be attached to a specific configuration, integration or replacement choice.
-- **Tone, pacing and ending:** The five-answer decision record is the right destination. At present it is blank in substance: the reader is told what to fill in after several alternatives, rather than shown a completed answer. The summary and comic repeat the opening's false stable-owner/investor contrast and likewise stop before choosing a design.
+1. **Medium impact — compare costs on the same basis.** The supplier route costs €60,000 to establish plus €40,000 annually, while the internal boundary has €140,000 of additional spending and separately funded staff. Calling the latter “an extra €80,000” compares setup expenditure alone. Calling the fallback a “€60,000” choice likewise omits its recurring obligation. Label the €80,000 as the upfront difference, show the relevant first-year and ongoing costs, and state how internal maintenance is funded. The €160,000 remaining cash headroom is useful, but it is not an estimate of the fallback's full cost.
 
-## Recommended changes
+2. **Medium impact — make the failure state genuinely reviewable.** If unexplained invoice differences persist, a “safe intermediate state” cannot simply assume that the extracted country capability is safe. State what remains live and validated. For example: “If the extracted path has not passed invoice replay, existing billing remains authoritative. The board can fund the supplier route using the unspent reserve, with migration and subscription costs shown separately.” Distinguish money already spent from the incremental fallback commitment, and show whether its four-to-five-month lead time still fits the launch window when invoked at month four.
 
-- **High impact — Complete one design decision.** Carry forward the previous chapter's assessed constraint. Compare, for example, supplier configuration, a company-owned integration and a core replacement against the same customer need, delivery date, ongoing responsibility and cash limit. Choose one under explicit assumptions and name the evidence that could reverse it.
-- **High impact — Correct the risk shortcut and opening across formats.** Suggested risk wording: “Compare the dependency's possible impact and likelihood with the cost and effectiveness of the alternatives; include consequences the company cannot accept.” Suggested opening: “An investor's growth assumption has reached the team as a request for flexibility. Recover the business requirement before comparing designs.”
-- **Medium impact — Reformat the build/buy table.** Keep a short overview, then two smaller tables or prose comparisons. Preserve the bought-system depth; cutting it would narrow the audience again.
-- **Medium impact — Make the boundary with the prior chapter explicit.** That chapter establishes capability and transition constraints; this one should select among implementations using them. Remove repeated assessment explanations once the handoff exists.
-- **Low impact — Reduce generalization and definition density.** Use “a common arrangement” where evidence cannot establish “most companies,” and define technical terms beside the option that uses them.
+3. **Medium impact — correct the summary's description of the options.** “Three options meet the requirement within €300,000” conflicts with the €1.3 million replacement option presented immediately afterwards. A useful sentence is: “Two options could fit the €300,000 additional-spend limit; the full replacement provides a comparison that exceeds both the immediate budget and the target for first benefits.” Keep this explicit across formats.
 
-## Proposed structure
+4. **Medium impact — preserve the distinction between changed timing and available cash.** A longer holding period may make later benefits relevant, but it does not itself make the replacement affordable. Likewise, slower growth does not establish that earlier spending “was not wasted.” Reassess the remaining costs and benefits under each changed condition rather than reassuring the reader about the original choice. The collection's financing chapters already provide the needed vocabulary.
 
-An assessed operating constraint → two or three implementation options → trade-offs and one selected design → cash/payback implications → completed five-answer record and review trigger. Retain the valuation sensitivity as a bounded illustration, not the centerpiece.
+5. **Low impact — specify specialist weeks and reduce table repetition.** “Six weeks of two specialists and the new engineer” can mean elapsed weeks or combined effort, while later passages use six protected specialist-weeks. Define the unit once. The successive overview, built-product and bought-product tables are helpful for different readers, but a few repeated explanations of the same five priorities can be cut. These are clarity and pacing edits, not reasons to rebuild the outline.
+
+## Verification and formats
+
+The €300,000 envelope less €140,000 additional spending leaves €160,000. The separate payback illustration is consistent when benefits start after the first year: €200,000 spent initially and €100,000 annual net savings thereafter recover the initial amount after approximately three years from the start. A €1 million valuation illustration at 10× €100,000 is arithmetic, not proof of an additional realizable return; retain that qualification and avoid adding it to a cash-flow valuation of the same benefits.
+
+The main text, summary and comic all now treat design as a response to requirements. The summary's budget sentence is a confirmed mismatch. The risk section correctly rejects “rare” as sufficient reason to ignore a severe outcome.
+
+## Changes since the previous review
+
+| Previous recommendation | Current disposition |
+| --- | --- |
+| Complete a choice among three designs | **Partially resolved:** the decision, dependencies and fallback exist; comparable costs and the fallback state need repair. |
+| Correct the rare-failure rule | **Resolved:** likelihood, impact and unacceptable consequences are considered together. |
+| Remove universal claims about investor-driven design | **Resolved in the main argument:** the specific growth requirement now does the work. |
+| Separate built and bought product explanations | **Resolved:** their distinct implications are visible. |
+| Clarify the assessment/design boundary | **Resolved:** this chapter chooses a response to an already identified constraint. |
+| Reduce unsupported “most” claims and density | **Largely resolved; low-impact pacing remains.** |
+
+The summary budget claim and incomplete recurring-cost comparison are new findings. Preserve the option-specific reasoning and the corrected risk treatment.

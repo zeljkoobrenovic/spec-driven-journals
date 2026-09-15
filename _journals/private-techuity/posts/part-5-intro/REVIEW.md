@@ -1,28 +1,26 @@
-# Editorial review: Part V — Leading Through Funding and Ownership Changes
+# Editorial review: PART V — Leading Through Funding and Ownership Changes
 
-Reviewed 14 September 2026. Read the complete introduction and all three chapters it introduces.
+Reassessed 15 September 2026 from the full introduction, previous review, revision log and the four current chapters it introduces.
 
-## Overall assessment
+## Current assessment
 
-This introduction correctly presents ownership events as branching possibilities rather than a compulsory purchase-to-exit sequence. Diligence, an early funded plan, later revisions and handover are relevant to leaders under minority, buyout and corporate arrangements.
+Separating delayed financing from handover has improved this part materially. The four destinations are easier to understand, the amount of change is appropriately tied to the arrangement, and the page no longer presents ownership events as a compulsory purchase-to-exit sequence. The short examples of minority investment, buyout and corporate acquisition establish relevance without competing with the chapters.
 
-The conceptual map is stronger than the current allocation of material: the third chapter is asked to cover delayed financing, regular reviews, continued ownership and multiple handovers. The introduction needs revision after that overloaded chapter is split or substantially refocused.
+The remaining substantive defect is the claim that the same onboarding finding travels through all four chapters. Diligence, the early plan and handover share D-3/ONB-1. The financing-delay chapter explicitly declares its figures a separate scenario and does not carry that finding through its decision. The introduction should accurately describe the effective split rather than claiming an integration the manuscript does not demonstrate.
 
-## Detailed feedback
+## Active recommendations
 
-- **Organization and flow:** Investigation → commitments → review is clear. The later statement that events have no fixed order is also correct, but it appears in several forms across the opening, middle and ending.
-- **Clarity:** Defining the ownership cycle as a map prevents readers from treating it as a prescribed lifecycle. Preserve one clear statement rather than repeatedly restating that the next event is not predetermined.
-- **Examples and scope:** The short examples of a minority round, buyout and corporate acquisition establish relevance without needing separate mini-cases. “Each event changes the leadership work” could be softened to reflect that the amount of change varies.
-- **Tone, pacing and conclusion:** The company-side viewpoint and handover of unfinished work are valuable. The ending's promise to carry evidence through stages should be fulfilled by one linked finding and initiative in the substantive chapters.
-- **Accuracy:** No confirmed numerical error identified. The definition of exit as a transaction realizing a holding is simplified; retain the collection's distinction between announced, partial and completed realization when it matters.
+- **Medium — Correct the learning outcome, “The Learning Path” and conclusion together.** Replace “one fictional finding travels through all of them” with: “One onboarding finding travels from diligence into a funded plan and its handover. A separate financing-delay example shows how to revise commitments when the expected money moves.” This accepts the author's useful alternative without requiring the delay chapter to inherit incompatible numbers.
+- **Low — Remove one remaining nonlinearity statement if shortening.** “No fixed order” and “not a prescribed lifecycle” largely repeat each other. One statement plus the concrete branches is enough, but this is a pacing preference.
 
-## Recommended changes
+Keep the four-part learning path and the next-step links. Further restructuring is unnecessary. The shared chain's actual cost and outcome contradictions are recorded in the [hundred-day](../17-first-hundred-days/REVIEW.md), [handover](../31-handover-of-obligations/REVIEW.md) and [toolkit](../toolkit/REVIEW.md) reviews.
 
-- **High impact — Update this map after refocusing “The Financing Slipped.”** Give delayed funding and durable handover separate destinations if the recommended split is adopted.
-- **Medium impact — Remove repeated nonlinearity explanations.** One opening statement and concrete branches establish the point.
-- **Medium impact — Promise an evidence trail that the chapters actually demonstrate.** For example: “Follow one finding from investigation to a funded commitment, a revised plan and the record handed to the next decision-maker.”
-- **Low impact — Qualify the amount of change an ownership event implies.** The practical question is what changes in this arrangement, not whether every event transforms management.
+## Changes since the previous review
 
-## Proposed structure
-
-Keep the branching event map, then provide four destinations: investigate, fund the initial plan, respond to a delayed event, and hand over continuing obligations. If the third chapter remains intact, broaden its title and explain its two distinct tasks rather than hiding handover under a financing-delay label.
+| Previous recommendation | Current disposition |
+| --- | --- |
+| Refocus delayed financing and give handover a destination | **Resolved:** new chapter configured and linked. |
+| Remove repeated nonlinearity explanations | **Partially resolved:** much shorter, with one minor repetition left. |
+| Promise an evidence trail the chapters demonstrate | **Partially resolved:** substantial trail now exists, but not through the separate delay scenario. |
+| Qualify how much an event changes leadership work | **Resolved.** |
+| Replace the old three-destination outline | **Resolved:** retain the current four destinations. |

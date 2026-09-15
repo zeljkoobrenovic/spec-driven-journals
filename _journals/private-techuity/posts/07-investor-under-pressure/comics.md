@@ -61,9 +61,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/07-investor-under-pressure/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Sam reviews a downside cash scenario with the investor. Use one speech bubble with the exact words: \"What happens if growth slows?\" Convey: The same downside question goes to both investors. Investor A's follow-on goes to a committee whose criteria are not written down; Investor B's fund is in its seventh year of ten.",
+  "prompt": "Panel 3 of an explainer comic. Sam reviews a downside cash scenario with the investor. Use one speech bubble with the exact words: \"What happens if growth slows?\" Convey: The same downside question goes to both investors. Investor A's follow-on goes to a committee whose criteria are not written down; Investor B's fund is in its seventh year of ten, a term that can be extended but with less money left for follow-ons.",
   "alt": "Comic panel: Sam reviews a downside cash scenario with the investor.",
-  "caption": "The same downside question goes to both investors. Investor A’s follow-on goes to a committee whose criteria are not written down; Investor B’s fund is in its seventh year of ten.",
+  "caption": "The same downside question goes to both investors. Investor A’s follow-on goes to a committee whose criteria are not written down; Investor B’s fund is in its seventh year of ten, a term that can be extended but with less money left for follow-ons.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -74,7 +74,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam reviews a downside cash scenario with the investor.](assets/images/07-investor-under-pressure/comic-03-scene.jpeg)
 
-**Panel 3:** The same downside question goes to both investors. Investor A’s follow-on goes to a committee whose criteria are not written down; Investor B’s fund is in its seventh year of ten.
+**Panel 3:** The same downside question goes to both investors. Investor A’s follow-on goes to a committee whose criteria are not written down; Investor B’s fund is in its seventh year of ten, a term that can be extended but with less money left for follow-ons.
 
 *Dialogue:* “What happens if growth slows?”
 
@@ -107,9 +107,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/07-investor-under-pressure/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. A warning light appears beside repeated unexplained reversals. Use one speech bubble with the exact words: \"Look for a pattern.\" Convey: One difficult story is context, not a verdict. A second former executive with the same account of Investor B replacing management would be a pattern, and would reopen the choice.",
+  "prompt": "Panel 5 of an explainer comic. A warning light appears beside repeated unexplained reversals. Use one speech bubble with the exact words: \"Look for a pattern.\" Convey: One difficult story is context, not a verdict. A second former executive with the same account of Investor B replacing management would call for investigation, and for negotiating the approval route for management changes before signing; a count alone is not a verdict.",
   "alt": "Comic panel: A warning light appears beside repeated unexplained reversals.",
-  "caption": "One difficult story is context, not a verdict. A second former executive with the same account of Investor B replacing management would be a pattern, and would reopen the choice.",
+  "caption": "One difficult story is context, not a verdict. A second former executive with the same account of Investor B replacing management would call for investigation, and for negotiating the approval route for management changes before signing; a count alone is not a verdict.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -120,7 +120,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: A warning light appears beside repeated unexplained reversals.](assets/images/07-investor-under-pressure/comic-05-scene.jpeg)
 
-**Panel 5:** One difficult story is context, not a verdict. A second former executive with the same account of Investor B replacing management would be a pattern, and would reopen the choice.
+**Panel 5:** One difficult story is context, not a verdict. A second former executive with the same account of Investor B replacing management would call for investigation, and for negotiating the approval route for management changes before signing; a count alone is not a verdict.
 
 *Dialogue:* “Look for a pattern.”
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/07-investor-under-pressure/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Priya and Alex place two investor messages beside a single funding decision calendar. Use one speech bubble with the exact words: \"Who can commit, and when?\" Convey: Ines chooses Investor B with a written, conditional follow-on. For an investor already in place, Alex moves the June hire to a dated July decision and labels unconfirmed support. Interest is not committed money.",
+  "prompt": "Panel 6 of an explainer comic. Priya and Alex place two investor messages beside a single funding decision calendar. Use one speech bubble with the exact words: \"Who can commit, and when?\" Convey: Ines chooses Investor B: a €1.5 million follow-on from B’s own fund, conditional on pilot evidence, to be written into the investment agreement and not yet signed. For an investor already in place, Alex moves the June hire to a dated July decision and labels unconfirmed support. Interest is not committed money.",
   "alt": "Comic panel: Priya and Alex place two investor messages beside a single funding decision calendar.",
-  "caption": "Ines chooses Investor B with a written, conditional follow-on. For an investor already in place, Alex moves the June hire to a dated July decision and labels unconfirmed support. Interest is not committed money.",
+  "caption": "Ines chooses Investor B: a €1.5 million follow-on from B’s own fund, conditional on pilot evidence, to be written into the investment agreement and not yet signed. For an investor already in place, Alex moves the June hire to a dated July decision and labels unconfirmed support. Interest is not committed money.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -143,6 +143,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Priya and Alex place two investor messages beside a single funding decision calendar.](assets/images/07-investor-under-pressure/comic-06-scene.jpeg)
 
-**Panel 6:** Ines chooses Investor B with a written, conditional follow-on. For an investor already in place, Alex moves the June hire to a dated July decision and labels unconfirmed support. Interest is not committed money.
+**Panel 6:** Ines chooses Investor B: a €1.5 million follow-on from B’s own fund, conditional on pilot evidence, to be written into the investment agreement and not yet signed. For an investor already in place, Alex moves the June hire to a dated July decision and labels unconfirmed support. Interest is not committed money.
 
 *Dialogue:* “Who can commit, and when?”

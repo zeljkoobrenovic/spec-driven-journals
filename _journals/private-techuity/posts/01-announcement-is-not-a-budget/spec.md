@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: An Investment Announcement Is Not a Budget
@@ -53,6 +53,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-15: Distinguish the headline (valuation or transaction amount) from primary money reaching the company and secondary payments to sellers, in the opening and the closing handoff; give the hiring record one chronology (five requested at the 20 September announcement, three approved 12 October after closing on 3 October), an explicit headcount reserved matter beside the €250,000 spending threshold, a reproducible 24-month runway and a forecast-variance reopening trigger; soften the investor callout; remove the editorial aside from the diagram commentary.
 - 2026-09-14: Correct the founder-owned/earnings-to-budget contrast in all three formats, add the completed funding-and-authority record for Alex's hire as the payoff, move the waterfall detail to [[fund-economics]], bring the entity diagram beside the entity table with the sale route labelled, qualify the GP sentence and cut the questions to four; permalink and id unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: Same Company, Same Performance, Three Different Returns
@@ -57,6 +57,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-15: Editorial revision per the 15 September REVIEW.md: scope the “Why Investors Care” callout to a fund manager reporting to its fund investors; name the measure in the headline comparison (proceeds and MOIC, €65m/1.6× to €140m/3.5×) and define EBITDA beside the preview; replace the “at most / generous reading” sentence with the entry-multiple attribution; point the fund-reporting paragraph at [[fund-economics]] for fees, profit share and distribution rules instead of repeating them; summary aligned; comic panels 2 and 3 flagged for regeneration after visual verification showed their images still carry the old dialogue (panel 4 already flagged). Permalink and id unchanged.
 - 2026-09-14: Editorial revision per REVIEW.md: preview the three-outcome comparison after the opening, merge the measures and base-buyout sections, attach the interaction decomposition to the “engineering created €30m” claim, fix the MOIC and “market mood” shortcuts, move the fund performance report section to [[fund-economics]] leaving a two-sentence distinction and link, realign the summary and three comic panels (2–4) to the three outcomes, and trim the questions; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “How Company Value Becomes an Investor Return” to “Same Company, Same Performance, Three Different Returns”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.

@@ -1,0 +1,23 @@
+# Editorial review: Fund Economics: Fees, Distributions and Performance Reports
+
+First review, 15 September 2026. Read the full new page and its revision-log entry, and compared the material moved from the announcement and returns chapters. This optional reference has no summary or comic by design.
+
+## Current assessment
+
+Moving waterfalls and fund-report ratios here improves the main narrative: company leaders can learn the money destinations and a single-investment return before choosing this extra detail. The €160 distribution example and €100/€60/€90 report are easy to follow, and the closing connection to requests made of the company gives the mechanics a purpose.
+
+The arithmetic in the worked cases is sound. Several generalizations surrounding it are not. In particular, the new partial-catch-up sentence misstates what a slower catch-up necessarily does to the eventual split. The opening also expands a deliberately cash-only example into a universal definition of distributions. Correct these before treating the relocation as a complete financial revision.
+
+## Active recommendations
+
+- **High — Correct “a partial catch-up lands between the two cases.”** A catch-up allocating less than 100% of each intermediate distribution to the GP can still reach the full 20% share when sufficient proceeds exist. Under an 80% GP catch-up after the €8 hurdle, the next €2.6667 distributes about €2.1333 to the GP and €0.5333 to LPs; the remaining €49.3333 splits 20/80. Final totals are still GP €12 and LPs €148. Distinguish the rate during catch-up from the final entitlement. This is a recalculated counterexample, supported by the structure in [ILPA's model LPA, §14.3.3–14.3.4](https://ilpa.org/wp-content/uploads/2019/10/ILPA-Model-Limited-Partnership-Agreement-October-2019.pdf).
+- **Medium — Limit the cash-only definition to its example, including the key points.** DPI counts distributions, which can include assets; residual value is the remaining net asset value, not necessarily only unsold company holdings. The glossary already says to identify whether distributions are cash. Suggested wording: “DPI measures distributions relative to paid-in capital; in this example all distributions are cash. RVPI measures remaining net value.” The same [ILPA model, §14.4](https://ilpa.org/wp-content/uploads/2019/10/ILPA-Model-Limited-Partnership-Agreement-October-2019.pdf) permits distributions of marketable securities.
+- **Medium — Present deal-by-deal distributions as one arrangement.** “Funds distribute investment by investment” is categorical immediately after the text says agreements differ. Introduce the clawback example with “Under a deal-by-deal waterfall…” and distinguish interim carry from final whole-fund entitlement. ILPA supplies both [whole-fund and deal-by-deal model agreements](https://ilpa.org/resources-tools/resource-library/deal-by-deal-model-limited-partnership-agreement-pdf/); neither is a rule for every fund.
+- **Medium — Keep receipt, valuation and legal commitment separate without inventing universal rules.** “A term sheet is an expression of interest” is too broad: provisions can have legal effect even when funding is not committed. Say it does not by itself establish unconditional funding and read the terms. “A valuation increase pays nobody until it is realized” should state the intended financial point: “A higher valuation is not itself a cash distribution.” That avoids excluding fee arrangements linked to asset values or distributions in kind. Keep the company's authorized use of available cash or drawable facilities separate from expected financing; see the [glossary review](../glossary/REVIEW.md).
+- **Low — Distinguish GP and LP before the first table.** They are central actors here but are used as unexplained abbreviations after a general glossary pointer. Define them once in the paragraph immediately before the waterfall. Retain the concise company-leader conclusion and avoid another investor taxonomy.
+
+## Verification and changes since the previous review
+
+There was no per-post review. The earlier collection recommendation to create optional fund depth is **resolved structurally**: this page is configured, linked and contains the relocated material. Its new explanations require the corrections above.
+
+Recalculation confirms the base €148/€12 split; the no-catch-up €149.60/€10.40 split; the 100% catch-up €148/€12 split; and DPI 0.6× + RVPI 0.9× = TVPI 1.5×. These assume the stated one-year period, no fees or taxes and sufficient proceeds. The examples are not verified terms of an actual fund. No substantial outline change is needed.

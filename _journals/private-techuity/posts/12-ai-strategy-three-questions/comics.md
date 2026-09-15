@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** An investor’s request for an AI strategy hides three investment questions: a product customers will pay for, internal work that changes spending, and a substitute for the product customers already buy. The panels separate the three, show why the evidence for each stays attached to its conditions, and keep a funding demonstration apart from a product commitment.
+**Comic.** An investor’s request for an AI strategy hides three investment questions: a product customers will pay for, internal work that changes spending, and a substitute for the product customers already buy. The panels separate the three, show why the evidence for each stays attached to its conditions, follow Larkspur’s three dated tests, and keep a funding demonstration apart from a product commitment.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -59,11 +59,12 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "03-scene",
   "status": "generated",
+  "needs_regeneration": true,
   "asset": "assets/images/12-ai-strategy-three-questions/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Sam checks a calendar beside an updated research note. Use one speech bubble with the exact words: \"The evidence has a date.\" Convey: Check the dates and participation conditions. Changing tools or participants can change what a study tells us.",
-  "alt": "Comic panel: Sam checks a calendar beside an updated research note.",
-  "caption": "Check the dates and participation conditions. Changing tools or participants can change what a study tells us.",
+  "prompt": "Panel 3 of an explainer comic. Priya watches a customer planner draft a weekly maintenance schedule with a general assistant on a laptop; beside them a technician's device and a locked regulator record folder stay unconnected, and a roadmap card marked with a pause symbol lies on the desk. Use one speech bubble with the exact words: \"What did the customer lose?\" Convey: A general assistant can draft the schedule; the test asks five customers what they lost, such as dispatch, live re-planning and the regulator's records. Larkspur pauses its €120,000 suggestions feature until the 15 January 2027 decision to defend, partner, reprice or stop.",
+  "alt": "Comic panel: Priya watches a customer planner draft a weekly schedule with a general assistant, beside an unconnected technician device, a locked record folder and a paused roadmap card.",
+  "caption": "A general assistant can draft the schedule; the test asks five customers what they lost: dispatch, live re-planning, the regulator’s records. Larkspur pauses its €120,000 suggestions feature until the 15 January 2027 decision to defend, partner, reprice or stop.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -72,21 +73,22 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Sam checks a calendar beside an updated research note.](assets/images/12-ai-strategy-three-questions/comic-03-scene.jpeg)
+![Comic panel: Priya watches a customer planner draft a weekly schedule with a general assistant, beside an unconnected technician device, a locked record folder and a paused roadmap card.](assets/images/12-ai-strategy-three-questions/comic-03-scene.jpeg)
 
-**Panel 3:** Check the dates and participation conditions. Changing tools or participants can change what a study tells us.
+**Panel 3:** A general assistant can draft the schedule; the test asks five customers what they lost: dispatch, live re-planning, the regulator’s records. Larkspur pauses its €120,000 suggestions feature until the 15 January 2027 decision to defend, partner, reprice or stop.
 
-*Dialogue:* “The evidence has a date.”
+*Dialogue:* “What did the customer lose?”
 
 <!-- comic-panel
 {
   "id": "04-scene",
   "status": "generated",
+  "needs_regeneration": true,
   "asset": "assets/images/12-ai-strategy-three-questions/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Alex reviews a plausible output containing a subtle error. Use one speech bubble with the exact words: \"Review is part of the work.\" Convey: Include checking, correcting and using the output when measuring time, cost and quality.",
-  "alt": "Comic panel: Alex reviews a plausible output containing a subtle error.",
-  "caption": "Include checking, correcting and using the output when measuring time, cost and quality.",
+  "prompt": "Panel 4 of an explainer comic. Sam and Priya stand beside a large stopwatch whose dial includes a segment labeled review, next to a wall calendar where a pinned hiring card has been moved from April to October. Use one speech bubble with the exact words: \"Twenty percent faster is not a seventh agent.\" Convey: Include review and correction in handling time. Three support agents 20% faster supply the capacity of 6.75 agents, not seven; the seventh hire moves from April to October 2027 only if a rollout check and ticket volume hold, and €32,000 gross becomes about €22,000 net of licenses, review and rollout.",
+  "alt": "Comic panel: Sam and Priya check a stopwatch that includes a review segment, beside a calendar where a hiring card has moved from April to October.",
+  "caption": "Include review and correction in handling time. Three agents 20% faster supply 6.75 agents’ capacity, not seven; the seventh hire moves from April to October 2027 only if the rollout check and ticket volume hold, and €32,000 gross becomes about €22,000 net of licenses, review and rollout.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -95,11 +97,11 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Alex reviews a plausible output containing a subtle error.](assets/images/12-ai-strategy-three-questions/comic-04-scene.jpeg)
+![Comic panel: Sam and Priya check a stopwatch that includes a review segment, beside a calendar where a hiring card has moved from April to October.](assets/images/12-ai-strategy-three-questions/comic-04-scene.jpeg)
 
-**Panel 4:** Include checking, correcting and using the output when measuring time, cost and quality.
+**Panel 4:** Include review and correction in handling time. Three agents 20% faster supply 6.75 agents’ capacity, not seven; the seventh hire moves from April to October 2027 only if the rollout check and ticket volume hold, and €32,000 gross becomes about €22,000 net of licenses, review and rollout.
 
-*Dialogue:* “Review is part of the work.”
+*Dialogue:* “Twenty percent faster is not a seventh agent.”
 
 <!-- comic-panel
 {
@@ -132,7 +134,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "aspect_ratio": "16:9",
   "prompt": "Panel 6 of an explainer comic. Priya and Alex separate a demonstration card from a customer launch checklist. Use one speech bubble with the exact words: \"What have we actually demonstrated?\" Convey: A demonstration for a funding meeting does not establish a product customers will pay for. Agree the quality threshold, price and cost evidence a pilot must show before committing to launch.",
   "alt": "Comic panel: Priya and Alex separate a demonstration card from a customer launch checklist.",
-  "caption": "A demonstration for a funding meeting does not establish a product customers will pay for. Agree the quality threshold, price and cost evidence a pilot must show before committing to launch.",
+  "caption": "A demonstration for a funding meeting does not establish a product customers will pay for. Agree the quality threshold, price and cost evidence a pilot must show before committing to launch; Larkspur’s paid pilot has a stop rule on 6 November and a release gate on 11 December 2026.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -143,6 +145,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Priya and Alex separate a demonstration card from a customer launch checklist.](assets/images/12-ai-strategy-three-questions/comic-06-scene.jpeg)
 
-**Panel 6:** A demonstration for a funding meeting does not establish a product customers will pay for. Agree the quality threshold, price and cost evidence a pilot must show before committing to launch.
+**Panel 6:** A demonstration for a funding meeting does not establish a product customers will pay for. Agree the quality threshold, price and cost evidence a pilot must show before committing to launch; Larkspur’s paid pilot has a stop rule on 6 November and a release gate on 11 December 2026.
 
 *Dialogue:* “What have we actually demonstrated?”

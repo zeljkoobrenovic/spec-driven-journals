@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: Customers, Lenders and Investors: What Each Expects in Return
@@ -52,6 +52,7 @@ Investor.gov introductions to stocks, public companies and private equity; SBA g
 
 ## Changelog
 
+- 2026-09-15: Treat lenders as investors (debt, not equity-only) in the callout and borrowing definition; make the €100,000 decision's authority follow the instrument (customer contracts inside the CEO's delegation, borrowing and share issues reserved to the board) and make the fallback affordable from the stated €1,500 monthly surplus with board approval; state the share-count and prepayment assumptions; align summary and comic caption; permalink and id unchanged.
 - 2026-09-14: Complete the €100,000 opening example as a Larkspur decision, remove the amount-versus-terms ranking, shorten public/private ownership with a glossary link, reduce investor labels to an orientation table, trim questions to four and narrow the Myers and Robb–Robinson annotations to what the sources support; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “Where the Money Comes From Decides What You Owe” to “Customers, Lenders and Investors: What Each Expects in Return”. Permalink and id unchanged; body unchanged.
 - 2026-09-14: Retitle the post from “How Companies Get Money” to “Where the Money Comes From Decides What You Owe”. Permalink and id unchanged; body unchanged.

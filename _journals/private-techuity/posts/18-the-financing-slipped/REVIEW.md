@@ -1,31 +1,39 @@
 # Editorial review: The Roadmap Did Not Slip, the Financing Did
 
-Reviewed 14 September 2026. Read the full article, summary and reader-facing comic text.
+Reassessed 15 September 2026 from the complete current article, summary and comic text where present, the previous review where present, revision log and Git changes. See the [collection review](../REVIEW.md).
 
-## Overall assessment
+## Current assessment
 
-The article argues for revising operating commitments when funding assumptions change and preserving evidence through continuing ownership or a handover. The September-to-December funding delay is a strong and distinctive leadership problem. The refusal to assume an eventual sale is inevitable, and the insistence that unfinished obligations remain visible, are also valuable.
+Splitting out handover material materially improves urgency and coherence. The September-to-December delay now opens the chapter, the cash calendar makes the deadline tangible, and the board selects B while pursuing an uncommitted bridge. Moving general peer and adviser material to Part IV was also effective. Preserve the calm separation of delivery performance from a missing funding dependency in this stated scenario.
 
-This is one of the collection's clearest candidates for substantial restructuring or splitting. The urgent problem named in the title is delayed by sections on meeting cadence, escalation and peer communities. The latter half then becomes an exit-readiness and transaction-form primer. Each topic is useful, but the current chapter has two destinations and a lengthy preliminary detour.
+The remaining problems concern the exact condition for restarting spending, the comic's definition of cash, and a claimed fallback beyond December that is never actually specified. The focused outline should stay.
 
-## Detailed feedback
+## Active recommendations
 
-- **Introduction and framing:** The title implies a diagnosis; the opening describes a mixture of delivery and financing changes without a specific incident. Start with the actual September-to-December scenario. “In a company without investors, a plan can be revised quietly” is an unsupported contrast: employees, customers and lenders can require communication under any ownership. “Each revision” being checked against fund life and sale also excludes investor arrangements the book otherwise includes.
-- **Organization and flow:** “A Regular Conversation,” “Escalate” and “Portfolio Collaboration” belong mainly to governance and investor-support chapters. Their presence postpones the title's problem. Once “Exit Readiness” begins, the article never returns to the funding crisis as a worked decision.
-- **Clarity and terminology:** The latest useful decision date is excellent and should be central. IPO, secondary sale and continuation transaction are defined clearly but add a second learning task. “Secondary sale” should name whether company shares or a fund interest are meant in a particular example, since the actors and implications differ.
-- **Examples and pacing:** The delayed-round scenario has dates but no available-cash figure, commitments at risk, safe stopping point or chosen fallback. It says what Sam, Alex and Priya should investigate without showing whether the company can reach December. The cloud/migration/AI evidence list is useful for handover but interrupts a reader looking for a financing response.
-- **Tone and evidence:** Avoiding blame before separating a failed hypothesis, poor execution and an unfunded dependency is a strength. Preserve it. The Hilton and Visma references explicitly warn against equating partial transactions with completed fund outcomes. The earnings-management reading concerns sponsor fundraising; describe its relevance as an analogous reporting incentive rather than direct evidence of every exit-period distortion.
-- **Conclusion:** The final handoff is coherent for a chapter about the entire ownership period, but it does not resolve the title's immediate problem. The two themes need separate endings: an authorized funding fallback and an honest operational handover.
-- **Other formats:** The summary and comic emphasize ongoing engagement and exit preparation; the title's financing delay arrives only near the end. This confirms a scope mismatch across the whole post, not just its heading order.
+1. **High impact — correct comic panel 3's commitment/cash conflation.** “It is not cash until it is committed in writing” implies a written commitment is cash. It is not: the chapter's own four states end with receipt. Suggested caption: “The bridge would add three months if its net proceeds arrive in time; a written commitment still has conditions and is not cash received.” Preserve B as the running plan until the stated release condition is met.
 
-## Recommended changes
+2. **Medium impact — use one explicit rule for restarting hires and the portal.** The key points prohibit promises depending on money not yet received, while the decision record says a signed subscription agreement restores the work and the final section says to wait for the implied cash date. Those are different gates. State the actual company rule: cash received, or a specifically authorized conditional commitment supported by a dated cash forecast and a funded downside. Reaching a forecast date does not establish that closing conditions were satisfied. Apply the same rule in the summary and final comic panel.
 
-- **High impact — Split immediate replanning from handover preparation.** Keep this permalink and title for a focused delayed-financing chapter. Move “Exit Readiness,” “Avoid Exit-Period Distortions,” transaction forms, handover and post-handoff learning into a new post on carrying obligations through an ownership change. If adding a post is undesirable, use two clearly named halves and a broader title.
-- **High impact — Complete the funding decision.** Show cash by date, protected obligations, reversible versus committed spending, the last decision point and the board's selected fallback. Distinguish a round delay from a refinancing change or parent-budget withdrawal; one developed case plus short variations is enough.
-- **Medium impact — Move general support material to Part IV.** Retain only the escalation step necessary for the funding decision. Peer-community design belongs with finding useful help.
-- **Medium impact — Correct the non-investor contrast across formats.** Suggested opening: “The team is on schedule, but the expected September round now looks likely in December. The company must change a funding assumption before it becomes an impossible delivery promise.”
-- **Low impact — Keep transaction definitions in the handover article or glossary.** Use the conclusion here to name what continues if the new money never arrives.
+3. **Medium impact — complete or honestly leave open the post-December fallback.** The board asks for a “named list” of reductions, and the conclusion says that list answers what remains affordable beyond December. The reader never sees the list, savings, protected service level or decision deadline. Add one feasible costed reduction with a latest useful date, or say the later plan remains an unresolved decision due at the October review. Do not claim a completed fallback that the example has not supplied.
 
-## Proposed structure
+4. **Medium impact — state the bridge assumptions behind March.** €600,000 adds three months at €200,000 monthly burn only if it arrives before the reserve is needed and no fees, interest or repayment reduce that headroom before March. Label those fictional assumptions or show the net proceeds and payments. A conditional bridge amount is not by itself a complete financing schedule.
 
-For this article: funding slips → dated cash and commitments → alternatives and decision deadline → authorized fallback → communication to customers and teams → conditions for restoring the original plan. For the new handover article: durable evidence → transaction and authority changes → unfinished obligations → accepted handover → permitted follow-up. This split would materially improve both urgency and navigability.
+5. **Low impact — keep causation and tone specific.** A delayed round is an unfunded dependency in this example; in other cases missed operating milestones can contribute to the delay. The new investor callout's “often the investor's own process” is unsupported prevalence. Keep the focus on the dated decision, not a general allocation of blame. The reporting-incentive readings are indirect analogies; one more directly relevant primary financing document would be a better practical complement if the reading list is revised.
+
+## Verification and formats
+
+The corrected late-November calculation is sound on the stated monthly model: €600,000 baseline cash at 30 November − €120,000 portal − three × €30,000 hiring cost = €390,000, below the €400,000 reserve. Without additions, six months take €1.6 million to €0.4 million at 31 December. The earlier mid-November instruction was mistaken for these assumptions; the revision was right to reject it. The bridge calculation is conditional as described above.
+
+The summary now matches the financing scope. Comic panels 2–4 explicitly await regeneration and still cannot be considered visually reconciled; panel 3 also needs the textual correction above.
+
+## Changes since the previous review
+
+| Previous recommendation | Current disposition |
+| --- | --- |
+| Separate immediate replanning from handover | **Resolved:** the split improves both destinations. |
+| Complete a dated cash decision and authorized fallback | **Partially resolved:** B is concrete; restart rules and the later reduction plan remain incomplete. |
+| Move general support material to Part IV | **Resolved.** |
+| Correct the non-investor contrast across formats | **Resolved:** the specific delay now opens all formats. |
+| Move transaction definitions and end on what continues | **Partially resolved:** definitions moved successfully; the post-December answer is asserted without its contents. |
+
+The comic's cash definition is a new confirmed error. Accept the independently correct late-November date rather than restoring literal compliance with the earlier brief.

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: Find the Cash Behind Your Technology Budget
@@ -57,6 +57,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-15: Align the priced options with the shared pilot cost basis per the 15 September review: option 2 is €180,000 build + €30,000 first-year maintenance (€210,000, replacing €200,000); option 1 is a two-peak-quarter specialist at €75,000 (half of €150,000 a year); the pilot's review is the day-90 cohort with the board deciding at day 100 and a month-six second-stage gate at ≤ 50 hours; the fallback states its cash condition (≈€90,000 spent, €90,000 committed, maintenance not started, one-quarter specialist €37,500). Payment-authority table made conditional (loan terms, agreed amendment or refinancing; distributions subject to applicable rules). Opening repetition trimmed; onward links to [[the-financing-slipped]] and [[help-that-changes-capability]] describe those chapters accurately. Annual model and runway example stated as this chapter's own scenarios. Summary and comic panel 6 caption synchronized; no images regenerated.
 - 2026-09-14: Retitle to “Find the Cash Behind Your Technology Budget” and revise per the editorial review: opening rewritten around reconciling EBITDA with investment, tax, financing, working capital and cash on hand (universal payment hierarchy and the no-investors contrast removed) across all formats; obligations-versus-choices table and the planning-calculation qualification placed beside the bridge; €1 million initiative completed with three priced options and a decision; setback section tightened to the conditional-support finding plus links; amortization sentence corrected; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “Profit Is Not Money You Can Spend” to “Interest, Tax and Loan Repayments Come Before Your Budget”. Permalink and id unchanged; body unchanged.
 - 2026-09-14: Retitle the post from “Profit, Runway and the Cash You Can Commit” to “Profit Is Not Money You Can Spend”. Permalink and id unchanged; body unchanged.

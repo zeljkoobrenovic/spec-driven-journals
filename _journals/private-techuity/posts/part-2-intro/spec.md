@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: PART II — How Investor Ownership Changes Decisions
@@ -48,6 +48,7 @@ None. These pieces describe the book's own structure and make no external factua
 
 ## Changelog
 
+- 2026-09-15: Distinguish advisory influence from decision authority (an adviser may have access and weight without a decision right) and widen the source-of-right check to agreements, delegations and applicable rules. Permalink unchanged.
 - 2026-09-14: Add the bridge from Part I ("Knowing where the cash sits does not yet tell you who can authorize the work"), trim the repeated opening promise and describe each chapter by the completed decision it now shows. Permalink unchanged.
 - 2026-09-13: Align the specification heading with the current part-introduction title.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

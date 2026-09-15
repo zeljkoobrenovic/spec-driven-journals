@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: Find the Help That Changes What Your Team Can Do
@@ -49,6 +49,7 @@ Existing chapters provide the financial and governance foundations. Where releva
 
 ## Changelog
 
+- 2026-09-15: Editorial revision per the 15 September review: the four-route comparison put on the shared Larkspur calendar (days from closing; comparison about day 7, specialist day 21 to about day 63, cohort day 90, board review day 100); fictional capped costs added (€1,500 a day, ten days = €15,000 from ONB-1’s €180,000, inside the ≈€90,000 incurred by day 100; hire ≈€150,000 a year); independent route’s lead time made explicit (seven to nine weeks); choice made provisional on references; editorial scaffolding sentence removed; investor callout scoped to fund managers; comic panel 5 caption updated without regeneration; permalink and id unchanged.
 - 2026-09-14: Editorial revision per review: exclusivity opening replaced, investor-category catalogue removed, a four-route sourcing comparison and the written request added, peer-network material absorbed from the-financing-slipped, research annotations qualified; comic captions reworded without regeneration; permalink and id unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: Fix the Decision Problem Before Adding People
@@ -19,7 +19,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is generated from its six-panel storyboard with consistent fictional characters and preserved captions.
 - Distinguish recurring savings from first-year transition cash (€800,000 recurring, €200,000 saving, €1.05m first year), and describe nearshoring by geographic or time-zone proximity, with cultural similarity checked rather than assumed.
-- Trace one Larkspur change with a step table (sixteen working days, two of building), remove the decision waits by delegation, state the remaining knowledge gap, and record the staffing decision with chosen option, alternatives rejected, funding, scarce capacity, authority and reversing evidence.
+- Trace one Larkspur change with a step table (sixteen working days: 3 + 7 + 2 + 3 + 1, two of building), remove the decision waits by delegation as an initial forecast, state the remaining knowledge gap, and record the staffing decision with chosen option, alternatives rejected, funding, scarce capacity, authority and reversing evidence.
 - State the leadership-change hypothesis and show it cutting both ways: systemic diagnosis first, replacement or added leadership when the conditions are changed and unused.
 - No prevalence claims about what investment plans “usually” or “rarely” fund; no private role brief as argumentative support (provenance stays in the bibliography).
 - Hand off to [[growth-into-design]] with the system constraint (country rules coupled into the invoicing module) explicitly still open.
@@ -59,6 +59,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-15: Editorial revision: the deferred five-person team keeps both gates (demand evidenced and the round committed and approved); the opening takes only the three-week / under-two-day measures from [[can-the-team-deliver]] and lets the trace supply the 3 + 7 + 2 + 3 + 1 = 16-day split; the six saved days are an initial forecast; a persistent queue after sixty days triggers a new trace rather than a hire; the protected specialist day is paid for by a named reassignment; the leadership case names the evidence and the remedy; adviser dependence distinguished from a purchased continuing service. Summary and comic captions aligned.
 - 2026-09-14: Editorial revision: opened with the funded-resources-without-decision-changes diagnosis instead of a “usually fund / rarely fund” generalization, added the sixteen-day trace table and the delegation step, made the diagnosis produce a reshaped hire (one billing engineer now, second team conditional), absorbed the leadership-change hypothesis from [[different-bets]] with a case where replacement is justified, removed the role brief as support, kept nearshoring’s geography/time-zone distinct from cultural similarity, cut standardization/autonomy to one boundary question with links, and rerouted the handoff to [[growth-into-design]]; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “Capability Includes How People Decide and Coordinate” to “Fix the Decision Problem Before Adding People”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.

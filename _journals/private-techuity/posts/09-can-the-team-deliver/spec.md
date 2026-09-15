@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: Can the Software and the Team Deliver What Was Promised?
@@ -58,6 +58,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-15: Editorial revision: the lead-time comparison no longer infers that all time outside the DORA measure is waiting; it states that most elapsed time falls outside commit-to-production and defers the diagnosis to the trace in [[fix-decisions-before-hiring]] (article, finding table, conclusion, summary). Qualified the WHY YOU SHOULD CARE callout as conditional on a plan that assumes a launch before assessment. Shortened the conclusion to a direct handoff. Comic panel 4 prompt now forbids an architectural comparison; artwork still needs regeneration.
 - 2026-09-14: Editorial revision: opened with the specific condition instead of a normal-operations contrast, distinguished end-to-end work lead time from DORA change lead time, clarified the €1.3m table as transition spending before benefit offsets with a spending period and first-benefit month, qualified the built/bought transition comparison, cut standardization to one question with links, carried the second-country case through the chapter, added the six-element finding table, rerouted the handoff to [[fix-decisions-before-hiring]] then [[growth-into-design]], and rewrote comic panel 4 as an assessment beat (needs regeneration); permalink and id unchanged.
 - 2026-09-14: Retitle the post from “Testing the Plans Against Engineering Reality” to “Can the Software and the Team Deliver What Was Promised?”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Drop the opening software-architecture definition. It duplicated [[growth-into-design]], which owns architecture in the reading order, and narrowed the chapter to companies that build their own software. The chapter now frames itself as an assessment of engineering capability and the cost of changing it, keeping "architecture" only where it names a long-lived commitment (funded transition, standardization boundary). Applied across index, TL;DR and comic panel 1; no artwork regenerated.

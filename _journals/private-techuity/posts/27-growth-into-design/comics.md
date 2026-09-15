@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** An investor’s growth assumption has reached the team as a request for flexibility, with the reasoning left behind. The panels show fictional Larkspur recovering the business requirement, comparing three designs against the same need, date and cash limit, and choosing one.
+**Comic.** An investor’s growth assumption has reached the team as a request for flexibility, with the reasoning left behind. The panels show fictional Larkspur recovering the business requirement, comparing three designs against the same need, date and cash limit on one cost basis, first-year cash and recurring fees, and choosing one with a priced fallback.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -61,9 +61,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/27-growth-into-design/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Two paths diverge: one signposted toward many small doors, the other toward one wide corridor. Use one speech bubble with the exact words: \"Which change does the business need?\" Convey: Compare the designs that meet the same requirement by the delivery date, within the cash limit, and ask who maintains each afterwards.",
+  "prompt": "Panel 3 of an explainer comic. Two paths diverge: one signposted toward many small doors, the other toward one wide corridor. Use one speech bubble with the exact words: \"Which change does the business need?\" Convey: Compare the designs that meet the same requirement by the delivery date on one cost basis, first-year cash and recurring fees, and ask who maintains and funds each afterwards.",
   "alt": "Comic panel: Two paths diverge: one signposted toward many small doors, the other toward one wide corridor.",
-  "caption": "Compare the designs that meet the same requirement by the delivery date, within the cash limit, and ask who maintains each afterwards.",
+  "caption": "Compare the designs that meet the same requirement by the delivery date on one cost basis, first-year cash and recurring fees, and ask who maintains and funds each afterwards.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -74,7 +74,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Two paths diverge: one signposted toward many small doors, the other toward one wide corridor.](assets/images/27-growth-into-design/comic-03-scene.jpeg)
 
-**Panel 3:** Compare the designs that meet the same requirement by the delivery date, within the cash limit, and ask who maintains each afterwards.
+**Panel 3:** Compare the designs that meet the same requirement by the delivery date on one cost basis, first-year cash and recurring fees, and ask who maintains and funds each afterwards.
 
 *Dialogue:* “Which change does the business need?”
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/27-growth-into-design/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Priya and Alex connect one owner expectation to a customer task, required capability and funding decision. Use one speech bubble with the exact words: \"Which assumption does this design test?\" Convey: The record is complete: the growth assumption, the second-country requirement, the chosen boundary Larkspur owns, its funding and the evidence that would reverse it.",
+  "prompt": "Panel 6 of an explainer comic. Priya and Alex connect one owner expectation to a customer task, required capability and funding decision. Use one speech bubble with the exact words: \"Which assumption does this design test?\" Convey: The record is complete: the growth assumption, the second-country requirement, the chosen boundary Larkspur owns, its funding, the supplier fallback priced with its subscription, and the evidence that would reverse it.",
   "alt": "Comic panel: Alex and Priya examine a design sketch beside question cards for the assumption, customer work and funding.",
-  "caption": "The record is complete: the growth assumption, the second-country requirement, the chosen boundary Larkspur owns, its funding and the evidence that would reverse it.",
+  "caption": "The record is complete: the growth assumption, the second-country requirement, the chosen boundary Larkspur owns, its funding, the supplier fallback priced with its subscription, and the evidence that would reverse it.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -143,6 +143,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex and Priya examine a design sketch beside question cards for the assumption, customer work and funding.](assets/images/27-growth-into-design/comic-06-scene.jpeg)
 
-**Panel 6:** The record is complete: the growth assumption, the second-country requirement, the chosen boundary Larkspur owns, its funding and the evidence that would reverse it.
+**Panel 6:** The record is complete: the growth assumption, the second-country requirement, the chosen boundary Larkspur owns, its funding, the supplier fallback priced with its subscription, and the evidence that would reverse it.
 
 *Dialogue:* “Which assumption does this design test?”

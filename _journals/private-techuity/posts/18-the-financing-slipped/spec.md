@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: The Roadmap Did Not Slip, the Financing Did
@@ -16,7 +16,8 @@ Product and engineering leaders inside companies working under investors, includ
 ## Success criteria
 
 - Open with the actual scenario (September round now likely in December) rather than a general account of ownership, and avoid contrasts with “companies without investors”; name the specific condition the arrangement changes.
-- Work one fictional Larkspur scenario with the shared figures (€1.6m on 1 July, €200,000 monthly burn, €400,000 reserve reached 31 December, hires at €30,000 a month, €120,000 portal contract) through to a dated board decision: chosen option, alternatives rejected, funding, scarce capacity, who is authorized, review date and the evidence that would change it.
+- Work one fictional Larkspur scenario with this chapter’s own figures (€1.6m on 1 July, €200,000 monthly burn, €400,000 reserve reached 31 December, hires at €30,000 a month, €120,000 portal contract), stated in the text as deliberately separate from the shared Larkspur ledger (no ONB-1 identifier or shared ledger figures), through to a dated board decision: chosen option, alternatives rejected, funding, scarce capacity, who is authorized, review date and the evidence that would change it.
+- State one restart rule for deferred spending (cash received, or a conditional commitment the board has specifically authorized counting against a dated cash forecast and a funded downside) and apply it in the article, summary and comic; state the bridge’s payer, amount, arrival date and fee/interest assumptions behind the March date; cost at least one post-December reduction with its latest useful date and leave the deeper continuation level explicitly open rather than claiming a completed fallback.
 - Make the latest useful decision date (15 August) central, and distinguish the stages of a commitment: expression of interest, approval pending, contractual commitment with conditions, cash received.
 - Retain only the escalation step this decision needs, with a link to the governance chapter; keep the distinction between a failed hypothesis, poor execution and an unfunded dependency.
 - Include two short variations (a refinancing that leaves less cash; a corporate parent withdrawing budget) without developing a second full case.
@@ -51,6 +52,7 @@ The supplied book brief establishes scope, including the shared Larkspur delayed
 
 ## Changelog
 
+- 2026-09-15: Implement the 15 September review: comic panel 3 no longer equates a written commitment with cash; one restart rule (cash received, or a board-authorized conditional commitment with a dated forecast and a funded downside) replaces the three differing gates; bridge assumptions (payer, €600,000, arrival by 30 November, no fee or cash interest before March) stated; Reduction R1 (€50,000 a month from 1 November, decision date 1 October) costed and the post-December continuation level left open; ONB-1 identifier and the €180,000 ledger figure removed and the scenario declared separate from the shared Larkspur ledger; NVCA model term sheet added to the reading list; timetoread 13 min.
 - 2026-09-14: Refocus the post on the delayed-financing decision with a completed dated Larkspur scenario; move exit readiness, exit-period distortions, transaction forms, handover and post-handoff learning to the new chapter `handover-of-obligations`, peer-network material to `help-that-changes-capability`, and cut cadence and escalation to the single step the decision needs; comic panels 2–4 flagged for regeneration; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “Keep the Plan Credible Through Funding and Ownership Changes” to “The Roadmap Did Not Slip, the Financing Did”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.

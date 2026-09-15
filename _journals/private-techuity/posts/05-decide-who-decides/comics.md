@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** An investment can change who is authorized to decide, and a suggestion from someone close to the investor can sound like an instruction. The panels follow one Larkspur decision from a misheard cloud remark to a filled-in decision record, a deadline that passes, and the plan the team is told it is actually executing.
+**Comic.** An investment can change who is authorized to decide, and a suggestion from someone close to the investor can sound like an instruction. The panels start with a misheard cloud remark, which settles how far an adviser’s influence reaches, then follow a separate Larkspur onboarding proposal through a filled-in decision record, a deadline that passes, and the funded plan the team is told it is actually executing.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/05-decide-who-decides/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Alex and Priya take two incompatible requests to Ines, with one company plan between them. Use one speech bubble with the exact words: \"Which plan are we authorizing?\" Convey: Several investors can make conflicting requests, and an approval can miss its date. Use the authorized forum. If the hiring approval has not arrived by May, the team executes the January plan and is told so in writing.",
+  "prompt": "Panel 6 of an explainer comic. Alex and Priya take two incompatible requests to Ines, with one company plan between them. Use one speech bubble with the exact words: \"Which plan are we authorizing?\" Convey: Several investors can make conflicting requests, and an approval can miss its date. Use the authorized forum. If the hiring approval has not arrived by May, the team executes the January plan, with the cash and engineer-weeks already authorized, and is told so in writing.",
   "alt": "Comic panel: Alex and Priya take two incompatible requests to Ines, with one company plan between them.",
-  "caption": "Several investors can make conflicting requests, and an approval can miss its date. Use the authorized forum. If the hiring approval has not arrived by May, the team executes the January plan and is told so in writing.",
+  "caption": "Several investors can make conflicting requests, and an approval can miss its date. Use the authorized forum. If the hiring approval has not arrived by May, the team executes the January plan, with the cash and engineer-weeks already authorized, and is told so in writing.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -143,6 +143,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex and Priya take two incompatible requests to Ines, with one company plan between them.](assets/images/05-decide-who-decides/comic-06-scene.jpeg)
 
-**Panel 6:** Several investors can make conflicting requests, and an approval can miss its date. Use the authorized forum. If the hiring approval has not arrived by May, the team executes the January plan and is told so in writing.
+**Panel 6:** Several investors can make conflicting requests, and an approval can miss its date. Use the authorized forum. If the hiring approval has not arrived by May, the team executes the January plan, with the cash and engineer-weeks already authorized, and is told so in writing.
 
 *Dialogue:* “Which plan are we authorizing?”

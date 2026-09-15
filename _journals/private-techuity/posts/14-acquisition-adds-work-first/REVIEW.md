@@ -1,32 +1,35 @@
 # Editorial review: An Acquisition Adds Work Before It Adds Value
 
-Reviewed 14 September 2026. Read the full article, summary and reader-facing comic text.
+Reassessed 15 September 2026 from the complete current article, summary and comic text where present, the previous review where present, revision log and Git changes. See the [collection review](../REVIEW.md).
 
-## Overall assessment
+## Current assessment
 
-The article argues that ownership transfer does not complete operational integration or independence. It serves leaders preparing acquisitions, repeated add-ons and carve-outs. The integration-depth table, warning about allocating the same engineers repeatedly and €400,000-to-€700,000 standalone-cost example are useful and concrete.
+The two-process structure is a successful revision. Integration now has a capacity collision and a chosen order; separation has a cost bridge, milestones and an independence test. The shared customer-continuity principle holds them together without requiring another chapter. Preserve the integration-depth table, the warning that its rows are not maturity levels, and the distinction between recurring standalone cost and one-time separation work.
 
-The chapter handles two related but different processes. Integration seeks selected shared benefits; separation must establish independence by a deadline. The parallel is valuable, but the frequent switching between them weakens narrative development. The opening also presents transaction sponsorship and timing as more uniformly investor-controlled than the chapter's own governance principles allow.
+For the intended operating leader, the remaining problems are the feasibility of the carve-out calendar and completion criteria that are broader than the integration choices they are supposed to test.
 
-## Detailed feedback
+## Active recommendations
 
-- **Introduction and framing:** Defining acquisition, integration and carve-out at the outset is efficient. “Both are usually investor decisions” and “the transaction is agreed on the investor's timetable” overgeneralize motivations and authority. In some settings management proposes the transaction, several bodies approve it and counterparties or regulators affect timing. Use the particular Larkspur transaction rather than making a general claim.
-- **Organization and flow:** Thesis → ownership setting → depth → capacity → carve-out → diligence → results is logical as a reference chapter, but not yet a developed case. “The New Owner Changes the Integration Question” repeats scenarios from the engineering and support chapters. The depth table can explain those differences with less duplication.
-- **Clarity and terminology:** Distinguishing platform company from software platform prevents a common confusion. Organic growth, multiple effects and operating synergies are also separated well. “Who owns them” and “an accountable owner” could use responsibility language to avoid ambiguity in a chapter explicitly about ownership transfers.
-- **Technical precision and examples:** The standalone-cost bridge correctly separates the €300,000 annual increase from €300,000 one-time separation spending. The TSA explanation is concise and useful. The pre-closing permissions paragraph appropriately avoids asserting a universal legal deadline. The title and “transaction changes ownership before operations” should be understood as a warning that benefits require work, not a claim that no operational preparation or useful capability can exist before completion.
-- **Pacing and missing context:** The integration-capacity warning is excellent but would benefit from a concrete collision between the current roadmap, last acquisition and next diligence request. The carve-out story stops at the cost bridge; no service deadline, independent operating test or decision is shown.
-- **Tone and conclusion:** The skeptical stance toward automatic synergies is constructive because it offers integration choices rather than rejecting integration. Preserve “design options, not maturity levels.” The ending clearly distinguishes transaction and operating milestones, but could finish on evidence that one chosen boundary now works.
-- **Evidence:** The Skype filing is used for a bounded IP-rights lesson rather than general causal proof. The buy-and-build further-reading annotation acknowledges abstract-only access; retain that limitation when discussing its results. No arithmetic error was found in the fictional cost example.
-- **Other formats:** The summary and comic faithfully preserve integration versus separation, while repeating the categorical investor-timetable premise.
+1. **High impact — reconcile parallel running with the May independence test.** The network/security/license milestone is 30 April 2027, and each milestone has two months of parallel running before the parent service is switched off. That would retain the last parent services through June, yet the test requires every parent service disconnected for the whole of May. Move the last readiness milestone earlier, change the parallel-running rule with a reason, or move the test and show whether the TSA extension is then needed. The summary should carry the corrected schedule. A future test is an acceptable ending for this fictional plan; an internally impossible test is not.
 
-## Recommended changes
+2. **Medium impact — make completion depend on the chosen benefit.** “Combining is complete” currently requires a combined offering, one support team and retirement of duplicated cost. The depth table allows separate products and selected shared services, which need not have all three outcomes. Suggested rewrite: “Completion means the chosen integration works for customers and the specific benefit in the thesis has been evidenced; any duplicated costs counted as savings have actually ended.” Likewise, distinguish independence from temporary parent services from a deliberate, funded continuing supplier relationship. The general principle should not make deeper integration obligatory.
 
-- **High impact — Give the two processes a visible structure.** Use “Combining businesses” and “Separating a business” as distinct sections under a shared boundary-and-continuity principle. Each needs its own example and completion test.
-- **High impact — Add a capacity decision for an acquisition.** Show which roadmap item or next acquisition task is delayed when the same specialists are required, who approves that choice and what happens to the expected synergy date.
-- **Medium impact — Complete the carve-out bridge.** Add a fictional TSA end date, replacement milestone, accountable company leader and a test of independent service. This connects the financial example to the chapter's operational claim.
-- **Medium impact — Correct the opening across formats.** Suggested rewrite: “The transaction plan can assume savings or independence before the operating teams have validated the work. Bring those dependencies into the discussion while scope, price and timing can still change.”
-- **Low impact — Shorten repeated ownership comparisons.** Let the integration-depth table do more work, and link to the authority chapter instead of re-establishing minority versus controlling rights.
+3. **Medium impact — explain the two engineers' available capacity.** Sixteen + ten + three = 29 engineer-weeks is correct. Twenty-six available weeks for two people over half a year is a scenario allocation, not their full nominal capacity. State what reserves the other time, or call the 26 explicitly the combined project capacity after operating work and leave. The comparison then demonstrates a real resource constraint without an unexplained denominator.
 
-## Proposed structure
+4. **Low impact — restore the qualification in the new opening callouts.** The body correctly says a transaction plan *can* assume benefits before the work is validated. “Synergies and independence are assumed … before anyone has scheduled the work” removes that qualification. Keep the specific Larkspur case or “can” across the opening. The lengthy “Chosen / Rejected / Funding” paragraphs could also be broken into a short decision table for pacing; this is optional, not a new structural requirement.
 
-Shared principle: new boundary, continuing customer promise → integration thesis, depth and capacity example → carve-out cost, TSA and independence example → rights and pre-closing constraints → customer/cash completion tests. Keep one chapter initially; split into integration and carve-out posts only if both examples need substantial operational detail.
+## Verification and formats
+
+The standalone bridge remains correct: €700,000 − €400,000 = €300,000 additional recurring spending, separate from €300,000 one-time separation work. The extension's 150% price has no base monthly charge, so its actual cash requirement cannot be calculated; add that amount if the fallback is presented as fully funded. Historical Skype wording remains a bounded rights example, not a causal explanation of the transaction. Comic text now reflects both processes, though it does not demonstrate the dated test and does not establish artwork alignment.
+
+## Changes since the previous review
+
+| Previous recommendation | Current disposition |
+| --- | --- |
+| Give combining and separating distinct structures | **Resolved:** retaining one chapter is effective; the proposed further split is **superseded**. |
+| Add an acquisition capacity decision | **Partially resolved:** the chosen delays and approvals are clear; define available engineer-weeks. |
+| Complete the carve-out bridge with dates and a test | **Partially resolved:** all fields exist, but the schedule conflicts and the extension cost is unquantified. |
+| Correct investor-controlled timing across formats | **Partially resolved:** body and companions improve; later callouts lose the qualification. |
+| Shorten repeated ownership comparisons | **Resolved:** the depth table and authority link do more of the work. |
+
+The calendar conflict and overly universal completion test are new findings. Preserve the much stronger transition to Part IV.

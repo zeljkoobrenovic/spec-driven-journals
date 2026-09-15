@@ -1,31 +1,37 @@
 # Editorial review: The Chain From Roadmap to Revenue Breaks Easily
 
-Reviewed 14 September 2026. Read the full article, summary and reader-facing comic text.
+Reassessed 15 September 2026 from the complete current article, summary and comic text where present, the previous review where present, revision log and Git changes. See the [collection review](../REVIEW.md).
 
-## Overall assessment
+## Current assessment
 
-The post argues that a roadmap item needs an evidenced chain from technical change through customer behavior to business effects. It is highly relevant to product leaders and engineers asked to substantiate investment claims. The distinction between 3,000 freed hours and €225,000 of actual savings, the warning about double counting and the explanation of changing customer mix are major strengths.
+This is a substantially stronger chapter. It starts with a customer and a queue, explains several possible financial mechanisms, then tests one of them. The distinction between released capacity and realized cash is especially valuable. The eight-customer pilot, imperfect historical baseline, unchanged queue and rejection of two immediate hires give the reader evidence with limits, rather than an automatic success story.
 
-The article is coherent but could demonstrate more of the chain it asks readers to test. It calculates capacity precisely, then stops before a completed conversion or a failed assumption changes the decision. Product discovery also arrives after the financial model, reversing the sequence advocated by the text.
+The remaining weaknesses sit in the inference from that evidence and the reasons for the next investment. Preserve the present structure and measured tone of the pilot account; bring the new investor callout and conclusion up to that standard.
 
-## Detailed feedback
+## Active recommendations
 
-- **Introduction and framing:** The faster-setup question is immediately useful. The statement that under investors the benefit “has to reach a financial result … before the next review or a sale” is too categorical. It can imply all work needs a monetized result within that window, although the article later includes continuity, risk and strategic flexibility. Describe the particular expectation being tested rather than a universal requirement.
-- **Structure and narrative:** “Follow the Steps” and the diagram provide a strong organizing device. “Test Whether the Product Serves a Useful Need” should precede the capacity arithmetic. The investor-introduction passage is a good specific application but repeats the corporate-exclusivity scenario used elsewhere.
-- **Clarity and terminology:** The six-benefit table helps separate effects that are often mixed. The word “contribution” then means both revenue less specified costs and a qualified causal claim. The article acknowledges this, but readers still have to switch meanings. Use “financial contribution” for the measure and “helped produce the outcome” for causal language.
-- **Examples and technical accuracy:** The 100 × 80 × €75 and 100 × 50 × €75 calculations yield €600,000 and €375,000; the €225,000/3,000-hour difference is correct. The pilot is clearly separated from the earlier €1m program. The explanation that earlier billing changes timing rather than necessarily increasing lifetime revenue is especially valuable.
-- **Evidence and missing context:** The baseline/cohort discussion distinguishes plausible contribution from sole causation and properly limits DORA's survey evidence. It would benefit from a practical small-company case where randomization is unavailable and evidence remains imperfect. Do not imply “comparable” customers alone eliminate selection bias; state what relevant differences remain.
-- **Tone, pacing and conclusion:** The skeptical but constructive voice works well. The close repeats the full chain rather than reporting what Priya, Alex and Sam learned from it. A concrete keep/change/stop outcome would better honor the title's warning that the chain breaks.
-- **Other formats:** The companions preserve the principal distinctions. Comic panel 2's dialogue, “They reach value sooner,” sounds conclusive next to a caption saying this is only a possibility. Make the dialogue a testable question or explicitly an observed result under stated conditions.
+1. **High impact — make the linked financing example respect this chapter's cash finding.** Here, the projected €135,000 represents staff capacity: no invoice, hire or cash payment has yet been avoided. [Raise What You Need](../03-raise-what-you-need/index.md) adds that same capacity value to operating cash to support repayment. That is an inconsistent financial mechanism. Keep this chapter's qualification and propagate it to the financing comparison, rather than turning the pilot into a cash saving retrospectively.
 
-## Recommended changes
+2. **Medium impact — justify the €40,000 next stage with future benefits and costs.** Rejecting a stop partly because the build money is already spent introduces a sunk-cost argument. Eighteen hours released per onboarding is relevant evidence, but the next €40,000, four weeks and continuing maintenance need their own prospective case. For example: “The build cost cannot be recovered. The board funds one €40,000 data-quality stage because the pilot suggests a specific remaining bottleneck; it will stop if the next cohort does not reduce the queue enough to justify ongoing support.” Specify what “enough” means for this decision.
 
-- **High impact — Finish the pilot decision.** Show whether the released time serves waiting customers, avoids an external invoice or remains unusable because a different bottleneck binds. Include the €30,000 maintenance cost and say what changes in the next commitment.
-- **High impact — Put the customer-need test before the business case.** This makes the chapter's organization demonstrate its principle: a useful need must justify optimizing the workflow.
-- **Medium impact — Narrow the opening's deadline claim.** Suggested rewrite: “An investor may expect this change to support a particular growth, margin or retention target. Make that expectation explicit, then test whether the benefit and its timing are credible.”
-- **Medium impact — Simplify causal terminology.** Keep the clear counterfactual explanation, but reduce the number of new labels. Add one small-company comparison with its unresolved confounders instead of another general warning.
-- **Low impact — Tighten the ending and align the comic.** End with the pilot's result and one question about the next constraint. Change panel 2 to “Do customers reach value sooner?” if it still represents a hypothesis.
+3. **Medium impact — distinguish observed hours from an annual extrapolation.** Eight customers at an average 18-hour reduction imply 144 hours in the observed cohort. The 1,800 hours and €135,000 require 100 comparable onboardings over a year. Label those as projections, and distinguish the €30,000 annual maintenance commitment from maintenance actually incurred by day 90. The early caveats about customer selection, reconstructed timesheets and learning effects should remain beside the conclusion, not disappear when the article says the technical link “held.” The evidence supports a promising association, not an isolated causal effect.
 
-## Proposed structure
+4. **Medium impact — remove unsupported prevalence from the introduction.** “Most technology business cases fail” is a broad empirical claim without a cited population or measure of failure. Likewise, released capacity can matter to a valuation model even before it reduces expenditure, provided the modeled conversion is explicit. Suggested callout: “A technology benefit enters a financial plan through a mechanism: more revenue, avoided expenditure, released capacity used elsewhere, or a change in risk. The mechanism needs evidence.” This keeps the stakes without making the reader begin from a presumed failure.
 
-Customer problem and demand → proposed benefit chain → capacity and full-cost arithmetic → conversion plan → observed comparison and alternative explanations → guardrails and revised decision. Preserve the detailed numerical lesson; it should become the model for other chapters' worked examples.
+5. **Low impact — let the comic end on the tested outcome.** The comic now asks a better question, but its ending still gives more space to a general investor conversation than to the unchanged queue and the constrained follow-up. A final exchange such as “We saved handling time; we have not yet served more customers” would carry the chapter's distinctive lesson. This is a format improvement; the pending panel-2 image update is a separate production dependency.
+
+## Verification and formats
+
+The target calculation is correct: (80−50) × 100 × €75 = €225,000 of annual capacity value. The revised projection is (80−62) × 100 × €75 = €135,000. Neither equation establishes a cash receipt or saving. The 40% data-quality finding and pilot outcomes are explicitly fictional. The summary preserves the central cash qualification; it should also distinguish the annual projection from the measured cohort. No new outline is warranted.
+
+## Changes since the previous review
+
+| Previous recommendation | Current disposition |
+| --- | --- |
+| Start from a customer need and test the mechanism | **Resolved:** the onboarding queue gives the chapter a concrete problem. |
+| Complete the pilot with a decision | **Partially resolved:** there is a result, rejected alternatives and a funded next step; the prospective justification needs repair. |
+| Use conditional ownership framing | **Partially resolved:** the body improves, but the new callout adds an unsupported generalization. |
+| Explain causal language and uncertainty | **Partially resolved:** the design limitations are unusually good; the conclusion is more certain than they permit. |
+| End on action and improve the comic | **Partially resolved:** the next stage is actionable; the comic and panel artwork still need follow-through. |
+
+The conflict with the financing chapter, sunk-cost rationale and observed-versus-annual distinction are new findings.

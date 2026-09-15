@@ -1,31 +1,35 @@
 # Editorial review: Diligence Is Your Chance to Correct the Plan Before It Is Signed
 
-Reviewed 14 September 2026. Read the full article, summary and reader-facing comic text.
+Reassessed 15 September 2026 from the complete current article, summary and comic text where present, the previous review where present, revision log and Git changes. See the [collection review](../REVIEW.md).
 
-## Overall assessment
+## Current assessment
 
-The chapter argues that diligence should test the investment's actual assumptions and carry material findings into decisions, funding and the operating plan. It serves company leaders being assessed, rather than only the investor's reviewer. The opening unresolved onboarding finding, sampling limits and insistence that confirming a sound assumption is useful all work well.
+D-3 is now a substantive finding with evidence, competing explanations, options, approvers and a changed plan. Putting access limits near the opening makes the chapter fairer to leaders excluded from a transaction process. Moving the seven-area coverage check after the specific finding also improves the teaching sequence. Preserve the distinction between observation, management assertion and reviewer inference, and the reminder that diligence can confirm a sound assumption.
 
-The main weakness is that the article explains a strong process without demonstrating a complete finding-to-decision record. It also revisits much of the earlier engineering assessment, and its claim that diligence exists “only” because an investor will put money in is narrower than the activity and the collection's own transaction distinctions.
+The remaining work concerns the strength of the inference and the exact record inherited by later chapters. No further outline change is needed.
 
-## Detailed feedback
+## Active recommendations
 
-- **Introduction and precision:** The unresolved finding is a strong hook. “It exists only because an investor is deciding … to put money in” should become a description of this chapter's transaction, not a universal definition of technical diligence. A secondary purchase need not put new cash into the company, as Part I carefully teaches; the recipient should remain clear.
-- **Structure and flow:** Transaction context → investment question → seven dimensions → sampling → findings → thesis → handover is coherent. However, “Match the Evidence” and “Start With an Investment Question” repeat their central instruction. The Technology Investment Thesis then introduces another document before readers have seen a completed finding.
-- **Clarity and terminology:** Materiality, sampling, assertions and inference are handled responsibly. Stable finding identifiers are useful because the next chapter is about follow-through. “High confidence” is linked to evidence and scope rather than assessor seniority; preserve that unusually good distinction.
-- **Examples and missing context:** The international-onboarding thesis is concrete and product-relevant. It needs one actual finding with observed evidence, uncertain inference, response, approver, funding requirement and accepted disagreement. At present “more capacity,” “reusable approach” and “limiting the segment” remain possible responses rather than a chosen or explicitly unresolved decision.
-- **Tone and agency:** The chapter balances candor with the limits of the company leader's authority. Its recognition that management may lack access before closing is important and should appear earlier, close to the title's promise. Otherwise a reader with no access to the report may feel asked to deliver a process they cannot control.
-- **Evidence and technical accuracy:** The seven dimensions are correctly described as proposed coverage rather than a validated score. The Skype reference is used to expose a rights dependency, not to establish transaction causation. No numerical error was identified. In further reading, the earnings-management study's result should retain its UK management-buyout sample and measurement limits; it is not evidence that presenters generally manipulate every diligence number.
-- **Conclusion and companions:** The handover preserves agreement, disagreement and unknowns rather than treating report receipt as acceptance; keep this. The summary and comic repeat the overly exclusive opening definition. Their emphasis on observation versus inference is helpful and could become part of the filled article example.
+1. **Medium impact — define the 80-hour denominator and preserve both explanations.** “Five of the last twelve,” “in three” and “average effort … per implementation” leave open whether 80 hours describes the three dependent cases, the five inspected cases or all twelve. The summary and comic read it as the three cases, while the roadmap chapter uses a twelve-customer historical baseline. Name the denominator and measurement method consistently. Poor customer data and a structural dependency are not mutually exclusive; the pilot should estimate their contributions, not promise to decide which person was right.
 
-## Recommended changes
+2. **Medium impact — make the pilot's decision rule agree with the later evidence.** The response says the next money goes to data quality “if most remaining hours” trace there. The later chapters report about 40% of remaining hours and nevertheless fund that step. Forty percent is not most. Use the intended rule—such as the largest specifically actionable source of effort, supported by a costed intervention—or change the later decision's explanation. Also keep 1.5× volume as a conditional forecast: moving from 80 to a target 50 hours could support it in a simple capacity model, but funding the pilot does not establish that result.
 
-- **High impact — Add a complete finding and negotiated implication.** Use the onboarding dependency to show evidence, options and the decision that changes the proposed growth plan. Carry that identifier into the next chapter's funded plan. This would connect the book across a real artifact rather than another “next chapter” sentence.
-- **High impact — Clarify the leader's access and timing.** State what to do before signing, between signing and closing where applicable, and after closing when earlier participation was impossible. These are operating opportunities, not universal transaction rights.
-- **Medium impact — Merge the two opening method sections.** Keep one investment question with the relevant transaction conditions; use the seven-area table to test coverage after that question is concrete.
-- **Medium impact — Distinguish the two records.** The finding records evidence and a response; the one-page thesis summarizes the investment dependencies. Explain why both are needed, or use the thesis as a short summary of linked findings in the toolkit.
-- **Low impact — Rewrite the exclusive definition across formats.** “In this transaction, technical diligence tests the product, technology and team assumptions behind the proposed investment.”
+3. **Medium impact — qualify the claimed closing boundary for price.** “After closing, only the plan and its funding” is not a universal transaction rule. Some agreements contain post-closing adjustments; [this SEC-filed purchase agreement, section 2.11](https://www.sec.gov/Archives/edgar/data/814549/000119312524172508/d810917dex103.htm) is a concrete example. That is not a general right to reopen a price because diligence was weak. Suggested rewrite: “After closing, management's immediate operating levers are the plan and its funding; any price adjustment or claim depends on the signed terms.” Apply it to comic panel 6 and soften “the terms are set; the plan is not” in the access table.
 
-## Proposed structure
+4. **Low impact — keep the new callouts consistent with the access caveat.** Findings can inform price and commitments; they do not invariably set them, and management does not always control participation. The opening's “treating it as an audit … gives away the moment” is harsher than the useful access table. Use “where you have access” and “can influence” rather than implying every excluded leader missed an opportunity voluntarily.
 
-Unresolved onboarding finding → decision and access available to the company → evidence and sampling → completed finding with options and response → coverage check → concise thesis and handoff to the early operating plan. Preserve the distinction between a supported assumption and a changed decision.
+## Verification and formats
+
+The fictional pilot has €180,000 build cost, €30,000 annual maintenance and 12 engineer-weeks; the two-hire option is €300,000 annually. These match the intended D-3 options, but later records confuse the €180,000 commitment with €90,000 spent by day 100. [The handover review](../31-handover-of-obligations/REVIEW.md) identifies that confirmed mismatch. The summary and comic now carry the finding and changed volume assumption rather than merely describing a process. Their denominator and closing-boundary statements need the same corrections as the article.
+
+## Changes since the previous review
+
+| Previous recommendation | Current disposition |
+| --- | --- |
+| Complete a finding and negotiated implication | **Partially resolved:** the record is strong; measurement scope and the later decision rule need reconciliation. |
+| Clarify access before signing, before closing and afterwards | **Partially resolved:** useful stages are explicit, but the price boundary is too categorical. |
+| Merge the opening method sections | **Resolved:** one investment question now leads the evidence. |
+| Distinguish the finding record from the thesis | **Resolved:** the thesis summarizes and links findings rather than duplicating them. |
+| Correct the exclusive diligence definition in all formats | **Resolved:** the transaction is scoped and secondary proceeds are distinguished. |
+
+The changed “most” threshold and measurement denominator are new findings. Preserve the evidence-first voice and the completed handoff into ONB-1.

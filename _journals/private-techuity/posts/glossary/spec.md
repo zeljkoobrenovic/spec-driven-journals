@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: Glossary
@@ -38,6 +38,7 @@ Research and editorial gaps remain in the separate notes; revise this reference 
 
 ## Decision log
 
+- 2026-09-15: Definitions state the necessary conditions rather than categorical rules (per the 15 September collection review): a written commitment is not received cash, but a budget may rely on cash held, authorized facilities and forecast receipts in a dated cash plan; lenders are investors; accountability and approval are separate roles; advisory involvement carries only granted authority. The glossary is the terminology the chapters aim to follow, not a certification that they already do.
 - 2026-09-14: The glossary becomes the terminology standard the chapters are aligned to (per the collection review); reader-facing vocabulary drops Productscapes, which stays in the bibliography as provenance.
 - 2026-09-13: The author requested Owned and substantive comparative treatment of leadership under investors; this supersedes the previous private-equity-first framing.
 - 2026-09-12: Keep reference pages in the repository's per-post structure and expose them through the journal configuration.
@@ -48,6 +49,7 @@ See the bibliography and the relevant chapters. The source registry records cons
 
 ## Changelog
 
+- 2026-09-15: Replace the cash-only budgeting sentences with the funding-state principle; repair the term-sheet, announced-value, accountable-leader, investment-committee, shareholder, adviser and operating-team rows; add Authority and Lender rows and the missing index entries (Audited financial statements, Authority, Lender, Term sheet, Terminal value); align catch-up, waterfall and RVPI wording with [[fund-economics]]; soften the how-to-use certification to an editorial objective. Permalink unchanged.
 - 2026-09-14: Add the how-to-use paragraph and alphabetical index, split overloaded rows, add the terminology-sheet entries (roles and sponsors section, funding states, measures with scope and period, lead times, retained and announced value), broaden the AI definition with a verified OECD citation, and remove the Productscapes entry, per the editorial review; permalink and id unchanged.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.
 - 2026-09-13: Reconcile the revised article and applicable reading formats with the Owned contract; specification accepted as matching the draft manuscript.

@@ -1,36 +1,32 @@
 # Editorial review: Customers, Lenders and Investors: What Each Expects in Return
 
-Reviewed 14 September 2026. Read the complete article, summary and reader-facing comic text.
+Reassessed 15 September 2026 against the complete current article, summary and comic text, the previous review, revision log and Git changes. See the [collection review](../REVIEW.md) for scope and verification limits.
 
-## Overall assessment
+## Current assessment
 
-The chapter argues that each source of company cash carries different obligations, and that buying ownership is different from funding operations. It serves product and engineering leaders with little finance knowledge. The new-versus-existing-shares explanation, accessible definitions and refusal to equate private ownership with one investor model are strong foundations worth preserving.
+The chapter now teaches a decision instead of leaving readers with a vocabulary list. Larkspur's €100,000 need, the three offers and the selected prepayment make financing relevant to a product or engineering leader without finance training. Moving reporting detail to the glossary and compressing investor labels improves the structure. Preserve the patient definitions, share-class qualification, new-versus-existing-share explanation and explicit rejection of two alternatives.
 
-The main weakness is instructional overload. The chapter moves from four cash sources through shares, public reporting, boards and five investment labels without returning to the initial €100,000 problem. Readers acquire vocabulary faster than they see how to use it. Several distinctions are then taught again in the next two chapters.
+Remaining work is concentrated in the logic of the fictional decision and the newly added opening callout. The conclusion now earns its link to the announcement chapter. Four reflection questions and labelled further reading are a reasonable alternative to the earlier request for only two or three; no further outline is needed. The opening still repeats the budget/terms formulation in the callouts and prose, a low-impact pacing issue.
 
-## Detailed feedback
+## Active recommendations
 
-- **Organization and flow:** “Four Common Ways Cash Reaches a Business” supplies an excellent organizing question. The subsequent public-market detour weakens that thread. The unnamed scheduling company also misses an easy opportunity to establish Larkspur as the recurring example.
-- **Clarity and terminology:** Principal, interest, equity and share classes are explained economically. The capital-structure clarification is useful but interrupts the shares explanation; it would work as a short note after the funding comparison. “The amount is the less important half” ranks amount below terms without an argument. Affordability depends on both.
-- **Tone and pacing:** The direct, patient voice respects beginners. Bold definitions are useful, but the sequence of definitions, two explanatory figures, five reflection questions and five annotated readings makes this feel more like an introductory course than a short opening chapter. Preserve the concrete explanations while reducing the number of concepts introduced here.
-- **Examples and ending:** The share arithmetic is transparent. The €100,000 need has no decision or outcome, so the opening example remains a setup. “Carry the Funding Question Into the Next Chapter” offers a useful handoff; the following long reading list dilutes its final emphasis.
-- **Evidence and precision:** The text explicitly limits its four funding routes and qualifies public-reporting categories; retain both. No error is apparent in the 10/1,000 calculation. The annotations describing Myers as explaining why finance “so often prefers a loan” and Robb–Robinson as showing new firms rely “mostly on bank debt” need checking against the theory's conditions and the study's population and measures. These are verification concerns, not established factual errors in this review.
-- **Other formats:** The summary faithfully covers the main concepts. Its opening and the comic introduction repeat the overstatement that the source matters more than the amount. The panels explain concepts clearly but mostly illustrate successive definitions rather than a decision with consequences.
+- **High — Correct the new investor callout.** “Investors want their money to be … ownership … not … a loan” treats investors as exclusively equity investors. Debt investment is investment too; the SEC explicitly describes investors lending through bonds. Suggested wording: “Equity investors expect the share rights they negotiated; lenders expect the repayment and protections in their contracts. Establish which instrument supplies this money.” This is a terminology correction, not a preference for a gentler title. [Primary source: Investor.gov, bonds](https://www.investor.gov/introduction-investing/investing-basics/investment-products/bonds-or-fixed-income-products/bonds).
+- **Medium — Repair the decision's authority and fallback logic in “The Same €100,000, Three Ways.”** The offer is for a year's service, but the reason given for mandatory board approval applies to contracts “beyond a year.” Either show a longer obligation or describe this as voluntary board approval. More consequentially, the loan is rejected because repayments leave insufficient salary cash, then becomes the fallback when customer signatures fail or effort rises. Explain what makes it affordable under that worse scenario: reduced scope, delayed start, new receipts or renegotiated repayment dates. For example: “If signatures fail, pause the commitment and reforecast a smaller release; accept the loan only if that plan covers repayments.” Carry that condition into the summary, which currently recommends the fallback without it.
+- **Medium — Make the share and prepayment assumptions explicit.** State that Larkspur starts with 1,000 identical shares before issuing 111; the earlier generic 1,000-share example does not quite establish its capitalization. “The prepayment is the cheapest money” also needs a stated assumption about service costs, discounts and refunds. A cash prepayment creates a year of service obligations; eight engineer-weeks alone cannot establish its full cost.
+- **Low — Tighten the setup and comic payoff.** “The four routes … all answer … €100,000” is immediately contradicted by the unavailable asset sale. Say there are four common routes and three available offers. The comic's final caption now states the choice, but five preceding panels still mostly teach definitions; a future revision could show the competing obligations earlier. This is an enhancement, not a requirement to redraw a conceptually valid comic.
 
-## Recommended changes
+## Verification
 
-- **High impact — Complete the opening example.** Name the company Larkspur and show what the same €100,000 permits under a customer prepayment, loan and new share issue. State one obligation that changes the delivery promise in each case. This would turn definitions into a leadership decision without adding more terminology.
-- **High impact — Remove the false ranking of money and conditions.** Suggested rewrite: “A budget tells you how much you may spend. The funding terms help explain when you may spend it, which approvals you need and what obligations the company must meet.” Apply the same correction to both companion formats.
-- **Medium impact — Shorten “Public and Private Ownership.”** Keep the secondary-market cash distinction and a brief explanation of reporting. Move audit frequency and the fuller IPO discussion to the glossary; link there. Let the following chapter own the detailed map of cash recipients.
-- **Medium impact — Make the investor labels orientation only.** Keep one compact comparison here and send readers to “Raise the Money You Need” for the consequences. Avoid recreating that chapter's comparison before it begins.
-- **Low impact — Curate the ending.** Retain two or three reflection questions and identify one beginner reading and one deeper reading. Verify the research annotations before using them to support generalizations.
+Recalculation supports 10/1,000 = 1%; 111/1,111 = 9.99%; and a €100,000, 36-month amortizing loan at 6% nominal annual interest with monthly payments of about €3,042, excluding fees. These correct calculations do not resolve the fallback's cash-flow gap.
 
-## Proposed structure
+The narrowed Myers annotation matches the author's conditional theories rather than a universal preference for loans. [Myers, 2001](https://www.aeaweb.org/articles?id=10.1257/jep.15.2.81). Robb–Robinson's [NBER abstract](https://www.nber.org/papers/w16272) supports the first-year sample and substantial reliance on outside debt. The [authors' later account](https://corpgov.law.harvard.edu/2013/07/23/the-capital-structure-decisions-of-new-firms/) explains personal assets used as collateral or guarantees. “Often supported by founders' personal assets or guarantees” would distinguish that from assuming all bank borrowing was a personal loan. The complete 2010 PDF was not retrieved, but the core revised attribution is supported.
 
-1. Larkspur needs €100,000: what must it promise in return?
-2. Four cash sources, with a small consequence for each.
-3. New and existing shares: who receives the money?
-4. Brief orientation to public/private ownership and investor labels.
-5. A completed funding comparison and the question to take to the next chapter.
+## Changes since the previous review
 
-This is a tightening, not a wholesale rewrite. Preserve the share example and the author's habit of connecting financial language to company obligations.
+| Previous recommendation | Current disposition |
+| --- | --- |
+| Complete the €100,000 example | **Partially resolved:** options, choice, authority and triggers supplied; authority threshold and fallback still need repair. |
+| Remove the ranking of amount below conditions in all formats | **Resolved:** both now matter explicitly. The new investor callout is a separate regression. |
+| Shorten public/private reporting and relocate detail | **Resolved:** shorter treatment and glossary destination. |
+| Use investor labels as orientation | **Resolved:** compact comparison and onward link. |
+| Curate the ending and verify annotations | **Resolved in substance:** effective reading labels, fewer questions and supported research scope; the personal-credit phrase could be more precise. |

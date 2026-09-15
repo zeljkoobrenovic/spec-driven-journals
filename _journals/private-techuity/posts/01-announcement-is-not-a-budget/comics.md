@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** An announcement describes a transaction, not a budget. The panels follow a fictional investment announcement to show what has to be established before a hire can be authorized: how much cash reaches the business, when it arrives and who can approve its use. Those questions apply under every ownership arrangement; the deal structure decides the answers.
+**Comic.** An announcement describes a transaction, not a budget, and its headline may be a valuation rather than money that changes hands. The panels follow a fictional investment announcement to show what has to be established before a hire can be authorized: how much cash reaches the business, when it arrives at closing and who can approve its use. Those questions apply under every ownership arrangement; the deal structure decides the answers.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/01-announcement-is-not-a-budget/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Alex and Sam sit at a table with four cards labelled VENTURE, GROWTH, BUYOUT and CORPORATE beside a folder labelled COMPANY BUDGET; Sam points at the folder. Use one speech bubble with the exact words: \"Which money can fund our team?\" Convey: In the fictional €8m share issue, Larkspur received €7.6m net and the board’s approved plan let the CEO authorize three hires. A purchase of existing shares would have paid the seller; a corporate budget needs its own approval.",
+  "prompt": "Panel 6 of an explainer comic. Alex and Sam sit at a table with four cards labelled VENTURE, GROWTH, BUYOUT and CORPORATE beside a folder labelled COMPANY BUDGET; Sam points at the folder. Use one speech bubble with the exact words: \"Which money can fund our team?\" Convey: In the fictional €8m share issue, Larkspur received €7.6m net at closing and the board’s approved plan let the CEO authorize three hires; a fifth engineer would have exceeded the approved headcount and needed the investor director’s consent. A purchase of existing shares would have paid the seller; a corporate budget needs its own approval.",
   "alt": "Comic panel: Alex and Sam sit at a table with cards labelled venture, growth, buyout and corporate beside a company-budget folder, asking which money can fund the team.",
-  "caption": "In the fictional €8m share issue, Larkspur received €7.6m net and the board’s approved plan let the CEO authorize three hires. A purchase of existing shares would have paid the seller; a corporate budget needs its own approval.",
+  "caption": "In the fictional €8m share issue, Larkspur received €7.6m net at closing and the board’s approved plan let the CEO authorize three hires; a fifth engineer would have exceeded the approved headcount and needed the investor director’s consent. A purchase of existing shares would have paid the seller; a corporate budget needs its own approval.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -143,6 +143,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex and Sam sit at a table with cards labelled venture, growth, buyout and corporate beside a company-budget folder, asking which money can fund the team.](assets/images/01-announcement-is-not-a-budget/comic-06-scene.jpeg)
 
-**Panel 6:** In the fictional €8m share issue, Larkspur received €7.6m net and the board’s approved plan let the CEO authorize three hires. A purchase of existing shares would have paid the seller; a corporate budget needs its own approval.
+**Panel 6:** In the fictional €8m share issue, Larkspur received €7.6m net at closing and the board’s approved plan let the CEO authorize three hires; a fifth engineer would have exceeded the approved headcount and needed the investor director’s consent. A purchase of existing shares would have paid the seller; a corporate budget needs its own approval.
 
 *Dialogue:* “Which money can fund our team?”

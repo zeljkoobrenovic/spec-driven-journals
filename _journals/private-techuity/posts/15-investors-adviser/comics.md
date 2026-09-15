@@ -39,9 +39,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "needs_regeneration": true,
   "asset": "assets/images/15-investors-adviser/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Alex holds a product roadmap and asks Morgan who has the authority to approve it. Use one speech bubble with the exact words: \"Who is authorized to decide?\" Convey: Working for the investor gives a suggestion influence. Only an explicit assignment agreed by the company gives the adviser authority to approve product priorities or spending.",
+  "prompt": "Panel 2 of an explainer comic. Alex holds a product roadmap and asks Morgan who has the authority to approve it. Use one speech bubble with the exact words: \"Who is authorized to decide?\" Convey: Working for the investor gives a suggestion influence. Authority to approve product priorities or spending comes from a role, board responsibility, agreed rights or an explicit assignment; the adviser has only what those grant.",
   "alt": "Comic panel: Alex holds a product roadmap and asks Morgan who has the authority to approve it.",
-  "caption": "Working for the investor gives a suggestion influence. Only an explicit assignment agreed by the company gives the adviser authority to approve product priorities or spending.",
+  "caption": "Working for the investor gives a suggestion influence. Authority to approve product priorities or spending comes from a role, board responsibility, agreed rights or an explicit assignment; the adviser has only what those grant.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -52,7 +52,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex holds a product roadmap and asks Morgan who has the authority to approve it.](assets/images/15-investors-adviser/comic-02-scene.jpeg)
 
-**Panel 2:** Working for the investor gives a suggestion influence. Only an explicit assignment agreed by the company gives the adviser authority to approve product priorities or spending.
+**Panel 2:** Working for the investor gives a suggestion influence. Authority to approve product priorities or spending comes from a role, board responsibility, agreed rights or an explicit assignment; the adviser has only what those grant.
 
 *Dialogue:* “Who is authorized to decide?”
 
@@ -60,9 +60,10 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "03-scene",
   "status": "generated",
+  "needs_regeneration": true,
   "asset": "assets/images/15-investors-adviser/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Alex lays the company’s own evidence beside Morgan’s investment assumptions on a table. Use one speech bubble with the exact words: \"Here is what our team can demonstrate.\" Convey: Build a shared account of the company’s capabilities and the investor’s assumptions. Each side states the evidence that would change its view.",
+  "prompt": "Panel 3 of an explainer comic. Alex lays the company’s own evidence beside Morgan’s investment assumptions on a table; papers are labelled onboarding effort, customer data quality and investment assumptions, with no pricing example. Use one speech bubble with the exact words: \"Here is what our team can demonstrate.\" Convey: Build a shared account of the company’s capabilities and the investor’s assumptions. Each side states the evidence that would change its view.",
   "alt": "Comic panel: Alex lays the company’s own evidence beside Morgan’s investment assumptions on a table.",
   "caption": "Build a shared account of the company’s capabilities and the investor’s assumptions. Each side states the evidence that would change its view.",
   "generation": {
@@ -132,9 +133,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "needs_regeneration": true,
   "asset": "assets/images/15-investors-adviser/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Morgan tells Alex that the investment firm has asked for a written assessment of technology leadership, and Ines stands beside them holding a short written note for the team. Three cards on the table read coaching, assessment and delivery, with Morgan’s hand moving from the coaching card to the assessment card. Use one speech bubble with the exact words: \"My role has changed. Here is who agreed it.\" Convey: A change of role is a new agreement. The firm may ask its adviser for a view; only the company can authorize an assessment of its executive, and employees are told what the new conversations are for.",
+  "prompt": "Panel 6 of an explainer comic. Morgan tells Alex that the investment firm has asked for a written assessment of technology leadership, and Ines stands beside them holding a short written note for the team. Three cards on the table read coaching, assessment and delivery, with Morgan’s hand moving from the coaching card to the assessment card. Use one speech bubble with the exact words: \"My role has changed. Here is who agreed it.\" Convey: A change of role is a new agreement. The firm may ask its adviser for a view within its existing rights; new access for a company-sponsored assessment is agreed by Ines or the board, and employees are told what the new conversations are for.",
   "alt": "Comic panel: Morgan moves a card from coaching to assessment while Ines holds a written note for the team.",
-  "caption": "A change of role is a new agreement. The firm may ask its adviser for a view; only the company can authorize an assessment of its executive, and employees are told what the new conversations are for.",
+  "caption": "A change of role is a new agreement. The firm may ask its adviser for a view within its existing rights; new access for a company-sponsored assessment is agreed by Ines or the board, and employees are told what the new conversations are for.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -145,6 +146,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Morgan moves a card from coaching to assessment while Ines holds a written note for the team.](assets/images/15-investors-adviser/comic-06-scene.jpeg)
 
-**Panel 6:** A change of role is a new agreement. The firm may ask its adviser for a view; only the company can authorize an assessment of its executive, and employees are told what the new conversations are for.
+**Panel 6:** A change of role is a new agreement. The firm may ask its adviser for a view within its existing rights; new access for a company-sponsored assessment is agreed by Ines or the board, and employees are told what the new conversations are for.
 
 *Dialogue:* “My role has changed. Here is who agreed it.”

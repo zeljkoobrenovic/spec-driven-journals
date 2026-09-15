@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: Turn “We Expect Growth” Into a Design Decision
@@ -25,7 +25,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Make summaries and comic storyboards understandable on their own; preserve source limits and label fictional scenarios, including changes in example assumptions.
 - Show why "we are valued on growth" and "we are valued on EBITDA" are incomplete as instructions, and what questions complete them.
 - Map growth and earnings priorities to technical capabilities and their trade-offs as a short overview plus two smaller build-side and buy-side comparisons, without prescribing microservices for growth or cost-cutting for earnings; treat supplier or single-person dependence by comparing impact and likelihood with the cost and effectiveness of alternatives, including consequences the company cannot accept (linked to [[prove-you-can-restore]]), never by rarity alone.
-- Complete the Larkspur second-country design decision: three options in one table, the chosen option, alternatives rejected, funding (€140,000 of a €300,000 envelope), scarce capacity (six specialist-weeks), who is authorized, and the reversing evidence.
+- Complete the Larkspur second-country design decision: three options in one table, the chosen option, alternatives rejected, funding (€140,000 of a €300,000 envelope, stated as a separate, later scenario from the hundred-day plan), costs compared on one basis (first-year cash, then recurring supplier fees; the fallback priced at €60,000 setup plus €40,000 a year, its stop state defined), scarce capacity (six specialist-weeks, defined as effort not elapsed time), who is authorized, and the reversing evidence.
 - Keep the €200,000 / €100,000 payback and the 10× sensitivity as a bounded, separately labelled illustration, including the double-counting trap.
 - Fill the five-answer decision record with the chosen design and stress it against slower growth, a lower sale valuation and a longer ownership period.
 - Open with the specific condition (an assumption arriving without its reasoning), not a contrast between stable and investor ownership; use “a common arrangement” / “one common way” rather than prevalence claims.
@@ -55,6 +55,7 @@ Inherits the IPEV valuation guidance cited in [[valuation-is-an-estimate]]. The 
 
 ## Changelog
 
+- 2026-09-15: Editorial revision: costs of the three options put on one basis (first-year cash, then recurring cost; B’s €80,000 labelled as the upfront difference; internal maintenance funded inside the billing engineer’s role), the fallback priced at €60,000 plus €40,000 a year with its stop state (existing module authoritative until the replay passes; about €80,000 spent by month four; supplier invoice around month nine or ten), the €300,000 envelope declared a separate, later scenario from the hundred-day plan, the stress test reassesses remaining costs and benefits instead of defending the choice, engineer-weeks defined, restatement trimmed; summary and comic captions aligned; permalink and id unchanged.
 - 2026-09-14: Editorial revision: replaced the stable-versus-investor opening with the assumption-without-reasoning condition, split the four-column table into an overview plus build-side and buy-side tables, replaced the rare-failure rule with an impact-and-likelihood comparison linked to [[prove-you-can-restore]], completed one design decision (supplier configuration vs owned boundary vs core replacement; boundary chosen) from the constraint handed over by [[can-the-team-deliver]], kept the payback and 10× sensitivity as a bounded illustration, filled the five-answer record, replaced prevalence claims with “a common arrangement”, and rewrote the handoff to [[cheaper-cloud-bill]]; permalink and id unchanged.
 - 2026-09-14: Retitle the post from ““More Flexible” Is Not a Requirement” to “Turn “We Expect Growth” Into a Design Decision”. Permalink and id unchanged; body unchanged.
 - 2026-09-14: Retitle the post from “From Valuation Assumptions to Implementation Choices” to ““More Flexible” Is Not a Requirement”. Permalink and id unchanged; body unchanged.

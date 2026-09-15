@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: Judge an Investor by Their Behavior Under Pressure
@@ -54,6 +54,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-15: Distinguish B’s fund reserve from the contractual follow-on (payer, amount, lapse date, single performance condition, signed state); align the follow-on gate with the shared pilot result (65 hours or less with waiting time no worse, cohort of at least eight) while keeping the round a separate scenario; retain the management-change and fund-life risks as accepted rather than bounded; verify the ILPA fund-term extension wording; keep the two scenarios apart in the missing-evidence entry; integrate the comic’s decline-a-service answers into the comparison; soften the second-account panel to investigation.
 - 2026-09-14: Resolve the two-investor comparison with a recorded decision, bring the inherited-relationship route forward with one changed dependency, add a missing-evidence outcome, consolidate warning signs and reassessment into one process, cut engagement design to Part IV links, and scope the Bernstein and Sheen annotation; permalink and id unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

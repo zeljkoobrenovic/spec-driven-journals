@@ -1,31 +1,32 @@
 # Editorial review: Decide Who Decides, Before You Disagree
 
-Reviewed 14 September 2026. Read the full article, summary and reader-facing comic text.
+Reassessed 15 September 2026 from the complete current article, summary and comic text, previous review, revision log and Git changes. See the [collection review](../REVIEW.md).
 
-## Overall assessment
+## Current assessment
 
-The chapter argues that advice, approval, funding and delivery responsibility must be distinguished before investor expectations become company commitments. It directly serves leaders navigating ambiguous authority. The opening cloud-provider misunderstanding, filled Larkspur decision record and conditional October/January delivery example are excellent. They make this one of the collection's strongest practical chapters.
+The chapter now moves from misheard advice to actual authority, a named record and a missed-approval branch. That is a useful progression for leaders who have inherited investor relationships. Putting the filled example before generic roles and moving adviser confidentiality to Part IV substantially improves focus. Preserve the €500,000 delegation, the acknowledgment that ownership does not automatically change every right, and the explicit treatment of existing customer promises.
 
-The main weakness is accumulation: governance, business cases, reporting, support charters, coaching confidentiality and disagreement each receive a separate treatment. The result is useful but broader than necessary, with material that Part IV can own more effectively.
+The reporting example is compact and actionable, and the conclusion distinguishes authority from incentives cleanly. Terminology and tone are mostly precise. The remaining weakness is that the narrative calls several separate proposals “one decision,” leaving funding and capacity continuity unclear. This needs a short clarification, not another reorganization.
 
-## Detailed feedback
+## Active recommendations
 
-- **Introduction and flow:** The opening scene is recognizable and economical. The founder-owned-company paragraph is plausible but implies too clean a before/after distinction; informal influence and unclear delegation can also predate an investor. The chapter becomes most compelling when it abandons generalities for Alex's actual approval route.
-- **Organization:** “Establish What Has Changed” and “Identify the Different Decision-Makers” are necessary preparation. The generic five-row decision table and the filled example perform overlapping functions; the filled record should come first. “Support Can Become a Shadow Hierarchy” and the confidentiality paragraph in “Disagreement Without Evasion” belong primarily with the adviser/engagement chapters.
-- **Clarity and terminology:** Defining governance, authority, mandate and escalation at use works well. “Who owns each result” in the first table reintroduces the ambiguity between ownership and accountability that the book is otherwise careful to avoid. “Who is accountable” is clearer. The generic table's Principal-specific column gives a secondary actor considerable visual prominence despite the wider audience.
-- **Examples and pacing:** Names, the €500,000 delegation threshold and the two-week response time make the example actionable. The text explicitly says the €1m initiative is still unfunded, maintaining continuity with the cash chapter. The conditional commitment is similarly precise. Preserve both; they justify the chapter's length more than the surrounding lists of possible roles.
-- **Conclusion and practical gap:** The ending articulates accountable disagreement well. It does not fully handle the likely failure case: the approver misses the deadline or will not decide. The reader needs a proposed operating fallback, distinguished from any existing customer contract or legal obligation.
-- **Evidence and accuracy:** The generic decision pattern is explicitly a proposal and the company threshold is fictional; neither should be criticized as an asserted legal rule. The NVCA and Capstone references are appropriately scoped. “The board or other authorized body must resolve the choice” is an operating aspiration, not a complete account of deadlock or separate shareholder consents. Those mechanisms require the actual documents.
-- **Other formats:** The summary carries the main advice but gives a long opening to definitions and investor context. The comic's “Who can act before Friday?” is particularly effective; retain it.
+- **Medium — Establish that the January fallback is authorized and resourced.** “Make a Conditional Commitment Explicit” follows an explicitly unfunded €1m program. The January branch removes two hires, but does not say what cash and current-team allocation fund the work, or which existing assignments move. “Current engineering team, which is fully assigned” does not explain how that team delivers the fallback. Add: “The board-approved baseline reserves X existing team capacity and €Y for January; October requires the additional hiring approval.” Alternatively label January as a proposal awaiting approval, then show the interim authorized work.
+- **Medium — Mark the changes of example.** The introduction promises “one Larkspur decision” from a cloud remark to the filled record; the record is actually onboarding, and the business-outcome section introduces a scheduling-engine rewrite. One sentence such as “The cloud remark establishes the boundary; a separate onboarding proposal shows the full approval process” removes the false continuity. The comic introduction needs the same adjustment.
+- **Medium — Explain why the €40,000 board request needs that forum.** Ines has a €500,000 spending delegation, yet the report asks the board to approve €40,000 from a reserve. A board-controlled reserve or a change to an approved plan can justify this; state which. This is not a legal error, but an omitted fictional authority condition in a chapter teaching exactly that distinction.
+- **Low — Keep the opening investor rationale conditional and shorten the role recap.** Approval rights are negotiated in particular arrangements; they are not a uniform package every investor “paid for.” The body already explains reserved matters well. The generic role table can remain as lookup, but need not repeat the filled record's whole lesson.
 
-## Recommended changes
+## Verification and formats
 
-- **High impact — Organize the chapter around the filled decision record.** Start from the cloud suggestion, identify its authority, and show a completed proposed decision. Use generic roles to explain the example afterward. This gives readers a concrete object to understand and adapt.
-- **High impact — Add a missed-deadline branch.** For example: “If the hiring approval has not arrived by May, Alex brings the January option back to Ines and communicates the currently authorized plan. Existing customer commitments still require an explicit decision.” Name the escalation and communication, rather than assuming silence resolves the issue.
-- **Medium impact — Move support-specific boundaries to Part IV.** Keep a short warning about parallel instructions and link to “The Investor's Adviser” and “A Useful Engagement.” Move coaching disclosure detail there.
-- **Medium impact — Keep reporting focused on the decision request.** Show a two- or three-sentence board update for onboarding, including the action requested. Link to the toolkit instead of expanding the reporting framework here.
-- **Low impact — Use consistent responsibility language.** Replace ambiguous “owns” with “is accountable for” when shares are not meant. Reduce repeated founder-versus-investor framing in the shorter formats.
+€1m exceeds the fictional €500,000 delegation. The short board update uses the 80→62-hour finding and €40,000/four-engineer-week proposal also used later in the manuscript; those figures are example inputs, not externally verified results. Summary and comic explicitly communicate a January fallback and avoid treating silence as approval. They must retain whatever funding/authority qualification is added to that fallback. Current contractual rights and deadlock outcomes cannot be inferred from model documents; the article correctly sends readers to their own agreements.
 
-## Proposed structure
+## Changes since the previous review
 
-Misheard advice → establish changed rights → filled decision record → handle conflicting investors → conditional commitment and missed deadline → brief reporting example → next chapter on incentives. The existing scenes and thresholds should survive this reordering.
+| Previous recommendation | Current disposition |
+| --- | --- |
+| Lead with the filled record | **Resolved:** concrete record precedes generic roles, and the cloud suggestion is classified. |
+| Add a missed-deadline branch | **Partially resolved:** escalation, team communication and customer obligations are handled; January's resources remain unstated. |
+| Move support boundaries to Part IV | **Resolved:** short warning and relevant links. |
+| Focus reporting on a decision request | **Resolved:** three-sentence example replaces a broad framework; reserve authority needs a local clarification. |
+| Use accountability language and qualify the ownership contrast | **Resolved** in the substantive body and companions. |
+
+The former proposed outline is no longer an active recommendation; retain the current structure.

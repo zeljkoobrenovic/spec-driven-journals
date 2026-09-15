@@ -1,32 +1,33 @@
 # Editorial review: Practical Tools for Ownership and Technology Decisions
 
-Reviewed 14 September 2026. Read the complete toolkit and checked its role against the collection.
+Reassessed 15 September 2026 from the complete toolkit, previous review, revision log and the chapters sharing its D-3/ONB-1 example. See the [collection review](../REVIEW.md).
 
-## Overall assessment
+## Current assessment
 
-The toolkit turns the book's ideas into records for company leaders: authority, evidence, funded work, outcomes and handover. Its opening principle that a template matters only when it changes a decision is excellent. Stable identifiers, explicit evidence types and separate cash and capacity calculations are useful safeguards against bureaucratic reporting.
+This is one of the largest substantive improvements in the revision. The pending-versus-authorized initiative, actual cohort result and handover show what a decision record adds. Minimum-use guidance and an evolving page per initiative make twelve tools less bureaucratic. The orphan appendix has gone; sponsor labels, continuing-service terms and the design chapter link are repaired.
 
-The main weakness is that twelve tools are easier to recognize than to use together. Several overlap, ordering does not follow the current learning sequence, and even the featured “funded” example remains conditional. There is also a stale reference to an optional appendix absent from the current collection.
+The toolkit is now useful enough to become the collection's common record, which makes its remaining inconsistencies consequential. The completed chain must reconcile with the other chapters, particularly the recovery retest, cash spent and the next expansion decision. Preserve the distinction between released capacity and changed spending, named accountability and evidence of disagreement. No replacement framework or additional tools are needed.
 
-## Detailed feedback
+## Active recommendations
 
-- **Introduction and confirmed stale context:** “Some also serve readers designing support services in the optional appendix” points outside the actual 39-page collection and its configured reading order. Remove it or identify a real destination. Do not add an appendix solely to justify this residual sentence.
-- **Organization and navigation:** The question-to-tool table is helpful, but its entries are plain labels rather than direct section links. Tool 12, choosing a combination of work, logically precedes Tool 5, committing to one initiative. Tool 11 belongs near the initiative/design decision rather than appearing as a late addition.
-- **Overlap and narrative:** Tools 2, 3 and 5 repeat evidence, resources, responsibility and decision implications. Tools 6 and 7 repeat outcome definitions; Tool 10 repeats several ownership-map fields. Distinguish the specific question each record answers, and reference a common record rather than implying the reader must copy all fields into several documents.
-- **Examples and missing payoff:** Tool 3's observed onboarding finding is a strong model because it includes scope and uncertainty. Tool 5's “Larkspur’s smaller onboarding pilot” remains a proposal: funding is “to examine,” responsibility is unnamed, and the review date is still to be set. It is useful preparation, but it does not demonstrate a funded initiative. This repeats the central weakness of the hundred-day chapter.
-- **Terminology and consistency:** The opening's explanation of “owner” helps, but “responsible person,” “decision owner,” “funding owner,” “accountable leader” and “engagement sponsor” still require reconciliation. Tool 4 specifically locates the sponsor at the investor, whereas the glossary permits company or investor sponsors. Name that field “investor-side sponsor” if that is the intended requirement.
-- **Technical care:** The distinction between released capacity, reduced spending and causal contribution is especially good. Tool 12 warns against double-counting payroll and shows that cash and skill availability are separate constraints. Preserve these details.
-- **Tone, pacing and ending:** Short prompts mostly suit lookup. The allowance to drop fields is welcome, but readers need an example of the smallest adequate record. The final decision-loop figure describes connections that a completed textual example could demonstrate more effectively.
+- **High — Reconcile the whole reserve before calling Stage 5 funded.** Stage 2 commits €260,000 and 20 engineer-weeks from a €300,000/24-week envelope, leaving €40,000/4 weeks. The same REC-1 failure in the allocation chapter requires a further €20,000/2 weeks. Adding the toolkit's €40,000/4-week data-quality step would take the combined commitments to €320,000/26 weeks. Either distinguish genuinely separate scenarios and initiative IDs, or show the board releasing work, increasing resources or reducing the later step. The same reserve cannot fund both responses. See the [allocation](../28-cannot-fund-everything/REVIEW.md), [recovery](../11-prove-you-can-restore/REVIEW.md) and [hundred-day](../17-first-hundred-days/REVIEW.md) reviews.
+- **High — Carry one dated spending record into the handover.** Stages 3–6 consistently distinguish €180,000 committed from about €90,000 spent by day 100; the handover chapter calls €180,000 the actual day-100 cost. Keep this distinction and reconcile the other chapter. Identify when the remaining commitment is payable and which budget funds the €30,000 annual maintenance. A genuinely funded record needs that timing, not just an annual cost label.
+- **Medium — Repair the evidence interpretation and expansion calendar.** Stage 1 presents data quality and structural dependence as competing explanations, although a structural process can require manual correction of poor data. Stage 4's 40% of remaining effort does not make data quality the sole constraint. Tool 4 nevertheless says the engagement discovered that data quality “was the binding constraint.” Describe what the sample established and what the next test can distinguish. Stage 5 also changes “out of year one” into “one more quarter”; give the actual decision date and retain any original year-one restriction.
+- **Medium — Qualify the rule about avoided hiring.** In Stage 4, “The avoided hiring is not a saving: the hires were never committed” overcorrects. The fictional case demonstrates capacity, with no established cash reduction. Avoided spending can be measured against a credible demand-and-cost counterfactual even if a contract was never signed. Suggested wording: “No hiring reduction or avoidance has been demonstrated here; report the 144 observed hours as capacity and keep any future hiring comparison separate.”
+- **Medium — Complete the promised section navigation.** The grouped index is an effective alternative to physically renumbering tools, but “see Tool N below” is not a link. The renderer's missing automatic heading IDs is a real constraint, not a reason the result is complete: the glossary already uses explicit HTML anchors. Add equivalent section targets and links in a manuscript revision, without requiring a template change. Keep existing tool numbers.
+- **Low — Shorten the repeated minimum-use explanation.** Opening, “Minimum Use,” “What Each Stage Added” and “Combining and Revising Records” repeat the one-page principle. Keep the opening instruction and the final field-sharing explanation. “Nothing was copied between records” is also too literal: the printed demonstration repeats baseline and funding fields. Say the underlying record is reused and the tables show its successive states.
 
-## Recommended changes
+## Verification and changes since the previous review
 
-- **High impact — Supply one completed chain using existing tools.** Carry an onboarding finding into a selected option, named approval, cash by period, allocated team time, review date and observed or explicitly hypothetical result. Include both a pending version and an authorized version so readers can see what changed. Use the same example in the revised diligence and hundred-day chapters.
-- **High impact — Remove the orphan appendix reference and clarify sponsor terminology.** These are confirmed consistency repairs.
-- **Medium impact — Organize tools by decision stage and add section links.** Map → investigate → compare options → commit → obtain help → measure → revise or hand over. Existing tool numbers can remain stable while a grouped navigation table supplies the new order.
-- **Medium impact — Show which records can be combined.** A small company may keep a finding, initiative and outcome in one evolving page. Explain what new information is needed at each stage rather than requiring separate forms.
-- **Medium impact — Make Tool 4 usable for a continuing service.** Define recurring cost, accountability, review and an exit/continuity plan where relevant, without assuming successful support must always end in complete internal independence.
-- **Low impact — Link Tool 11 directly to “Growth Into Design.”** Its current valuation link provides vocabulary but not the main design application.
+Recalculation confirms 80 − 62 = 18 hours per customer; 8 × 18 = 144 observed hours; and 100 × 18 = 1,800 hours only as a projection. €180,000 + €80,000 = €260,000 and 12 + 4 + 4 = 20 weeks are correct initial totals. The unresolved issue is the later additional work, not those additions.
 
-## Proposed structure
+| Previous recommendation | Current disposition |
+| --- | --- |
+| Supply a completed finding-to-funded-plan-to-result chain | **Partially resolved:** the demonstration exists and is substantially better; shared costs, timing and interpretation still conflict. |
+| Remove the appendix reference and clarify sponsor terminology | **Resolved.** |
+| Organize by decision stage and add section links | **Partially resolved:** grouped ordering works; direct navigation remains absent. |
+| Show which records can be combined | **Resolved:** one evolving page and specific field-sharing guidance. |
+| Support a continuing service | **Resolved:** recurring cost, accountability, review and continuity are explicit. |
+| Link the design tool to its main teaching chapter | **Resolved.** |
 
-Minimum-use guidance → grouped linked index → one completed end-to-end example → the existing tools arranged or indexed by decision stage → how to combine records and revise them. Do not add more templates until the current set demonstrates a complete decision. This is a substantive usability revision, not a recommendation to replace the author's methods with a generic management framework.
+Keep the current outline. The remaining work is reconciliation and retrieval, not another structural expansion.

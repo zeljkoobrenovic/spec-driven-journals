@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: PART I — Understanding Financing and Ownership
@@ -48,6 +48,7 @@ None. These pieces describe the book's own structure and make no external factua
 
 ## Changelog
 
+- 2026-09-15: Name the parties in the fund-commitment example (a fund’s investors commit capital; the manager calls it; neither step puts cash in the company’s budget). Conditional actual-agreement framing kept unchanged. Permalink unchanged.
 - 2026-09-14: Reframe the opening as a contractual condition on funding (source and terms affect usable money, approvals and payment dates), remove the repeated funding claim, point experienced readers to the part as a refresher and link the optional fund-economics reference. Permalink unchanged.
 - 2026-09-13: Align the specification heading with the current part-introduction title.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

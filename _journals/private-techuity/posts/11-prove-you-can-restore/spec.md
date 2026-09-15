@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: Prove You Can Restore, Not Just That You Back Up
@@ -19,7 +19,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is generated from its six-panel storyboard with consistent fictional characters and preserved captions.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
-- Use the shared Larkspur chain: finding D-6, plan item REC-1 (€80,000, four engineer-weeks), the day-45 failure (missing credential, unavailable database version), the day-85 retest passing the objective “dispatch must resume within four hours of a failure, with no more than fifteen minutes of lost schedule updates”, and a recorded residual risk. End the decision with chosen option, rejected alternatives, funding, capacity, approver and the evidence that would change it.
+- Use the shared Larkspur chain: finding D-6, plan item REC-1 (€80,000, four engineer-weeks from the board’s €500,000 / 24-engineer-week hundred-day envelope, spent by the day-45 failure), the day-45 failure (missing credential, unavailable database version), the board-approved correction (€20,000, two engineer-weeks from the reserve, on Ines’s request), the day-85 retest passing the objective “dispatch must resume within four hours of a failure, with no more than fifteen minutes of lost schedule updates”, and a recorded residual risk. End the decision with chosen option, rejected alternatives, funding, capacity, approver and the evidence that would change it.
 - Never send a company funding decision to an “investment committee”; note that documented acceptance cannot discharge an unmet mandatory obligation.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
 - Introduce necessary terms in ordinary language before using them in explanations, examples, tables, or diagrams; keep opening key points readable without prior study.
@@ -56,6 +56,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-15: Reconcile REC-1 with the canonical Larkspur ledger: the planned €80,000 / four weeks were spent by the failed day-45 test; the correction and day-85 retest cost €20,000 / two engineer-weeks from the reserve, approved by the board on Ines’s request; the envelope is one €500,000 / 24-week hundred-day envelope (the €300,000 reference removed). Define the accepted recovery scope (loss of the application environment in this region, not a regional outage) and the residual accepted at day 100 with a quarterly retest. Summary and comic panels 5–6 aligned; panel 5 dialogue unchanged.
 - 2026-09-14: Editorial revision: open with the 6am dispatch scene, state the recovery objective, carry the failed restore through funded corrective work, retest and residual-risk record, replace the investment committee with the company decision-maker, drop the no-earnings-pressure comparison, bound the risk arithmetic as an inset, compress shared-support and handover material to links, and cut questions to four; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “How to Evaluate Security and Recovery Investments” to “Prove You Can Restore, Not Just That You Back Up”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.

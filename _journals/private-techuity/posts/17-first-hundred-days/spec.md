@@ -1,13 +1,13 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: The First Hundred Days: Turn Expectations Into a Funded Plan
 
 ## Intent
 
-Use the early period after funding or an ownership change to establish a funded operating plan, demonstrated on one fictional Larkspur scenario: carry diligence finding D-3 into ONB-1, show a three-priority plan (ONB-1, KNW-1, REC-1) with accountable people, cash, engineer-weeks, decision dates and prerequisites inside a board-authorized €300,000 / 24-engineer-week envelope with recorded deferrals, and show the day-100 review changing the plan. Other arrangements are linked, not re-tabulated; avoid assuming every investment replaces management.
+Use the early period after funding or an ownership change to establish a funded operating plan, demonstrated on one fictional Larkspur scenario: carry diligence finding D-3 into ONB-1, show a funded plan (ONB-1, KNW-1, REC-1 and portal research) with accountable people, cash, engineer-weeks, decision dates and prerequisites inside a board-authorized €500,000 / 24-engineer-week envelope with recorded deferrals and a reserve ledger that carries the REC-1 correction and the day-100 decision, distinguish committed from incurred cost through the handover, and show the day-100 review confirming or revising the plan on evidence. Other arrangements are linked, not re-tabulated; avoid assuming every investment replaces management.
 
 ## Audience
 
@@ -56,6 +56,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-15: Align with the canonical shared ledger: envelope €500,000 / 24 engineer-weeks; plan €280,000 / 18 weeks plus KNW-1’s 4 protected weeks outside the 24 (portal research €20,000 / 2 added); reserve €220,000 / 6; board-approved €20,000 / 2-week REC-1 correction from the reserve (→ €300,000 / 20; reserve €200,000 / 4); day-100 data-quality step (→ €340,000 / 24; reserve €160,000 / 0). ONB-1 committed vs incurred (≈€90,000 by day 100, €90,000 over two quarters, €30,000/yr maintenance from the operating budget) carried to the handover; day-20 baseline reported; expansion decision dated (next quarterly review ≈ day 190, not before month 13); D-5 clarified; “a pass at day 45 would have been worse” removed. Summary and comic captions aligned; images unchanged.
 - 2026-09-14: Replace the unfunded workstream table with the funded three-priority plan (ONB-1 / KNW-1 / REC-1, €260,000 and 20 engineer-weeks of a €300,000 / 24-week envelope), carry D-3 in from diligence, add the day-100 results and board decision, shorten the ownership and support recaps to links, and replace the categorical “replaces that rhythm” opening; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “A Hundred Days Is Enough to Agree the Plan, Not to Finish It” to “The First Hundred Days: Turn Expectations Into a Funded Plan”. Permalink and id unchanged; body unchanged.
 - 2026-09-14: Retitle the post from “After Funding or a Deal, Establish a Funded Plan” to “A Hundred Days Is Enough to Agree the Plan, Not to Finish It”. Permalink and id unchanged; body unchanged.

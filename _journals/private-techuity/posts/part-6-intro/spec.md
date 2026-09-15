@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: PART VI — Lessons from the Field
@@ -48,6 +48,7 @@ None. These pieces describe the book's own structure and make no external factua
 
 ## Changelog
 
+- 2026-09-15: Match the case-map windows to the expanded chapter evidence (Hilton’s OnQ dated by 2003/2005 pre-buyout filings; Skype’s technology steps dated inside 2009–2011; Visma’s 2006–2023 transaction map with a 2024 financial comparison; TeamSystem’s 2000–2017 analysis with later events to the 2024 realization report; Toys R Us’s September 2017 filing) and narrow “kept apart throughout” to the reader’s method. Permalink unchanged.
 - 2026-09-14: Open with a concrete contrast, add a case-purpose map (case, historical window, decision illuminated), reflect the retitled Toys R Us and TeamSystem chapters and introduce the finale as synthesis. Permalink unchanged.
 - 2026-09-13: Align the specification heading with the current part-introduction title.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

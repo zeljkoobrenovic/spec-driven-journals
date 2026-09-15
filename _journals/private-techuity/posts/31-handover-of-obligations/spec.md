@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: Hand Over the Obligations, Not Just the Company
@@ -17,7 +17,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 - Structure: durable evidence kept during the work → transaction forms and who receives cash versus who keeps an interest → authority changes → unfinished obligations → the accepted handover record → permitted follow-up and learning.
 - Distinguish a secondary sale of company shares from a sale of a fund interest, and describe a continuation transaction with its price and conflict questions; cite [S02] and keep the Hilton [S24] and Visma [S30] references within their source scope, linking [[three-different-returns]], [[hilton-and-skype]] and [[visma]].
-- Include one compact Larkspur handover example using the shared D-3/ONB-1 chain (80-hour baseline; €180,000 build and €30,000 a year; 62 hours in an eight-customer cohort; open data-quality step, deferred expansion, deferred hiring; Priya accountable), labeled fictional.
+- Include one compact Larkspur handover example using the shared D-3/ONB-1 chain (80-hour baseline; €180,000 committed, about €90,000 incurred by day 100, €90,000 remaining, €30,000 a year maintenance from the operating budget; 62 hours in an eight-customer cohort; funded data-quality step, expansion decision at the next quarterly review, deferred hiring; Priya accountable), labeled fictional, with contractual obligations, funded work, accepted risks and options awaiting evidence kept as separate kinds, and one completed acceptance naming the receiving decision-maker, date and open exception. State that the delayed-financing chapter is a separate scenario.
 - Reuse the evidence-through-ownership figure from the delayed-financing chapter with its caption; link Tool 10 in the [[toolkit]] and [[teamsystem]] for inherited work.
 - Keep the anti-distortion section: disclose obligations and assumptions accurately; unfinished work may be priced, not hidden.
 - Close with the Part V recap and the handoff to Part VI ([[part-6]], [[hilton-and-skype]]); trim Questions to Consider to three.
@@ -48,3 +48,4 @@ The supplied book brief establishes scope, including the shared Larkspur chain. 
 ## Changelog
 
 - 2026-09-14: Created by splitting handover material out of the delayed-financing chapter.
+- 2026-09-15: Day-100 record corrected to committed/incurred/remaining (€180,000 / ≈€90,000 / €90,000) with the reconciled reserve (€160,000, 0 weeks) and expansion date (≈ day 190); obligations split into four kinds; one accepted handover added; transaction table qualified (IPO control, retained minority, combined forms); chapter 18 declared a separate scenario. Comic still pending.

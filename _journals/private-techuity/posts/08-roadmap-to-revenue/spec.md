@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: The Chain From Roadmap to Revenue Breaks Easily
@@ -54,6 +54,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-15: Align the pilot account with the shared Larkspur ledger: state the €75/h and €150,000-per-FTE cost basis once, separate 144 observed hours from the 1,800-hour / €135,000 projection, report the pilot as €180,000 committed with about €90,000 incurred by day 100 and maintenance committed from the next financial year, replace “no contractor to cancel” with the contract specialist’s unexpired twelve months, give the €40,000 data-quality step a prospective case with the month-six gate (≤ 50 hours, waiting time down), date the expansion decision to the next quarterly review, and remove the unsupported prevalence claim from the callouts; comic ends on the tested outcome (panel 6 rewritten, panels 2 and 6 flagged for regeneration).
 - 2026-09-14: Move the customer-need test before the business case, narrow the opening’s deadline claim to a stated investor expectation, separate “financial contribution” from causal “helped produce”, add the eight-customer pilot comparison with its unresolved differences, finish the pilot decision (80→62 hours, waiting time unchanged, data-quality step funded from the reserve, expansion and hiring deferred), point the handoff to [[can-the-team-deliver]] with [[fix-decisions-before-hiring]] following it, and make comic panel 2 a testable question; permalink and id unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

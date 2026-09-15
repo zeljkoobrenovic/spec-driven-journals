@@ -1,15 +1,16 @@
 ---
 title: "Hand Over the Obligations, Not Just the Company"
 date: 2026-09-14
-author: Owned working manuscript
+author: Željko Obrenović
 excerpt: "Carry the evidence and the unfinished obligations through a funding round, a secondary sale, a continuation transaction or a sale, so the next decision-maker inherits what was believed, spent, observed and left undone."
 permalink: handover-of-obligations
 timetoread: 11 min read
+icon: "assets/icons/31-handover-of-obligations.png"
 ---
 
 > **IN THIS SECTION, YOU WILL:** Learn to keep the evidence during the work, follow who receives cash and who keeps an interest in each transaction form, and hand over the unfinished obligations with the company.
 
-> **WHY INVESTORS CARE:** Investors realize value through the next transaction; a handover with the evidence and obligations attached supports the price and the disclosure, while surprises found afterward come back as claims and reputation.
+> **WHY INVESTORS CARE:** Most of an investor’s value is realized at a later transaction, some of it through distributions during continued ownership; in either case a handover with the evidence and obligations attached supports the price and the disclosure, while surprises found afterward come back as claims and reputation.
 
 > **WHY YOU SHOULD CARE:** The customer contracts, the half-finished migration and the deferred hire are still there the morning after a transaction; if they are not handed over with the company, they are discovered by whoever inherits them.
 
@@ -21,9 +22,9 @@ timetoread: 11 min read
 > * **A handover is accepted when each open obligation has an accountable leader on the receiving side.** Hand over the record with its open work and continuing cost, agree any follow-up role explicitly, and treat later results as evidence to learn from rather than a verdict on the previous owners.
 
 <br>
-A company changes hands more often than it changes work. A round adds an investor; a secondary sale gives one shareholder liquidity; a continuation transaction moves the holding to a new vehicle under the same manager; a sale or a listing changes who controls the company. On the morning after each of these, the customer contracts, the agreed recovery requirement, the half-finished migration and the deferred hire are still there. This chapter is about handing those over, not only the shares.
+On the morning after an ownership event, the customer contracts, the agreed recovery requirement, the half-finished migration and the deferred hire are still there. A round adds an investor; a secondary sale gives one shareholder liquidity; a continuation transaction moves the holding to a new vehicle under the same manager; a sale of control changes who holds authority over the plan; a listing may or may not. None of these events changes the work. This chapter is about handing that work over, not only the shares.
 
-[[the-financing-slipped]] ended with a dated decision record. This chapter follows such records into an ownership event, whichever form it takes. A sale is one possible event, not the inevitable next stage; the same record has to serve continued ownership, another round and a change of controlling shareholder. Where the chapter uses Larkspur, the figures are fictional and belong to the chain that runs through [[diligence-corrects-the-plan]] and [[first-hundred-days]].
+[[the-financing-slipped]] ended with a dated decision record. This chapter follows such records into an ownership event, whichever form it takes. A sale is one possible event, not the inevitable next stage; the same record has to serve continued ownership, another round and a change of controlling shareholder. The Larkspur figures in this chapter are fictional and belong to the chain that runs from [[diligence-corrects-the-plan]] through [[first-hundred-days]] to this handover. The delayed-financing chapter works a deliberately separate scenario with its own cash, burn and dates; its figures are not part of this record.
 
 ## Keep the Evidence During the Work
 
@@ -42,18 +43,22 @@ These are stronger materials than a list of projects because they show the limit
 
 ### The Larkspur record at day 100
 
-After the day-100 review, the record for diligence finding D-3 and the funded onboarding pilot ONB-1 reads as follows (fictional figures):
+After the day-100 review, the record for diligence finding D-3 and the funded onboarding pilot ONB-1 reads as follows (fictional figures). Committed cash, incurred cost and the remaining commitment are separate entries, because a receiving side needs to know what has been paid, what is still owed and what continues:
 
 | Field | Entry |
 | --- | --- |
-| Baseline | About 80 hours of implementation effort per customer, measured from actual customer records by day 20 |
-| Actual cost | €180,000 to build the reusable setup step, €30,000 a year to maintain it, 12 engineer-weeks |
-| Observed result | 62 hours in an eight-customer cohort, not the 50 assumed; about 40% of the remaining hours traced to customer data quality; customer waiting time unchanged |
-| Open work | A data-quality step funded from the reserve (€40,000, 4 engineer-weeks); second-country expansion deferred one more quarter; hiring two implementation specialists still deferred pending pilot evidence |
+| Baseline | About 80 hours of implementation effort per customer, measured by day 20 from the twelve implementations of the previous two quarters in one country, reconstructed from the specialist’s time records |
+| Committed | €180,000 and 12 engineer-weeks, authorized by the board at day 0 inside the €500,000 and 24-engineer-week envelope for the first hundred days |
+| Incurred by day 100 | About €90,000: the investor’s specialist’s ten days (€15,000), tooling and services, contractor time; about 10 of the 12 engineer-weeks used |
+| Remaining commitment | About €90,000 payable over the next two quarters, by about day 280, for the less-common customer-type templates; about 2 engineer-weeks of the 12 |
+| Continuing cost | €30,000 a year to maintain the setup step, funded from the operating budget from the next financial year; nothing incurred yet |
+| Observed result | 62 hours in an eight-customer cohort, not the 50 assumed; about 40% of the remaining hours traced to customer data quality; customer waiting time unchanged; errors and tickets not up |
+| Funded open work | A data-quality step, €40,000 and 4 engineer-weeks, drawn from the reserve at the day-100 review and not yet built. After this draw and the €20,000 and 2-week draw for the REC-1 retest at day 47, the reserve stands at €160,000 and no engineer-weeks until the next quarter’s envelope |
+| Decisions awaiting evidence | Second-country expansion: decision at the next quarterly review, about day 190, if the next cohort’s effort split and waiting time support 1.5× volume; the expansion itself not before month 13. Hiring two implementation specialists, about €300,000 a year: still deferred pending the same evidence |
 | Accountable leader | Priya |
-| Evidence that would change the next decision | The next cohort’s measured effort split between customer data quality and product limitation |
+| Evidence that would change the next decision | The next cohort’s measured effort split between customer data quality and product limitation, and its waiting time |
 
-This is what Priya hands to whoever decides next: a new investor’s board member after a round, a buyer’s integration lead after a sale, or the same board after a continuation transaction. The receiving decision-maker can see that the pilot worked partly, why, what it costs to keep, and what was deferred rather than solved. The alternative, “onboarding automation delivered”, would be true and useless.
+This is what Priya hands to whoever decides next: the reconstituted board and its chief executive after a round, a buyer’s integration lead after a sale, or the same board after a continuation transaction. The receiving decision-maker can see that the pilot worked partly, why, what has been paid and what is still owed, what it costs to keep, and what was deferred rather than solved. The alternative, “onboarding automation delivered”, would be true and useless.
 
 ## Avoid Exit-Period Distortions
 
@@ -65,30 +70,37 @@ This does not mean all work must be complete before a transaction. Buyers can ac
 
 ## Who Receives Cash and Who Keeps an Interest
 
-Transactions that look alike in a headline move money and authority differently. For each form, establish who receives cash, who keeps an interest and what the company itself receives.
+Transactions that look alike in a headline move money and authority differently. For each form, establish who receives cash, who keeps an interest and what the company itself receives. The table simplifies: real transactions combine forms, and the rights that come with each depend on the documents, not on the label.
 
 | Transaction | Who receives cash | Who keeps an interest | What the company receives |
 | --- | --- | --- | --- |
-| Funding round (new shares) | The company | Existing shareholders, diluted; a new investor with new rights | Cash, often with new approval rights over the plan |
+| Funding round (new shares) | The company; selling shareholders too, if secondary purchases are combined with the issue | Existing shareholders, diluted; a new investor with new rights | Cash, often with new approval rights over the plan |
 | Secondary sale of company shares | The selling shareholder | The buyer of the shares; other shareholders unchanged | Nothing, unless new shares are issued alongside |
-| Sale of a fund interest | The selling fund investor (a limited partner) | The buying investor in the fund; the fund still holds the company | Nothing; the company’s shareholder has not changed |
-| Continuation transaction | Fund investors who choose to cash out | A new vehicle under the same manager, with investors who rolled over and new ones | Nothing directly; the manager, and often the board, continue |
-| Initial public offering (IPO) | The company for new shares; selling shareholders for existing shares | Public shareholders; the existing investor may retain shares | Cash from new shares, plus a different reporting and financing setting |
-| Sale of control | The selling shareholders | The buyer | Nothing directly; new authority over the plan |
+| Sale of a fund interest | The selling fund investor (a limited partner) | The buying investor in the fund; the fund still holds the company | Nothing; the company’s direct shareholder has not changed |
+| Continuation transaction | Fund investors who choose to cash out | A new vehicle under the same manager, with investors who rolled over and new ones | Nothing directly, unless the new vehicle also commits fresh capital; the manager, and often the board, continue |
+| Initial public offering (IPO) | The company for new shares; selling shareholders for existing shares | Public shareholders; founders and existing investors may retain shares, and share classes with extra votes or voting agreements can keep control with them | Cash from new shares, plus a different reporting and financing setting |
+| Sale of control | The selling shareholders | The buyer; sellers may keep a minority interest | Nothing directly; new authority over the plan |
 
-Two forms deserve care. “Secondary sale” is used both for a sale of company shares and for a sale of a fund interest. The first can bring a new shareholder with rights over the company; the second changes nothing at the company, because its shareholder, the fund, is unchanged. Ask which is meant. A **continuation transaction** moves an investment into a new vehicle associated with the same manager; it needs attention to price and to possible conflicts between the manager, the investors leaving and the investors rolling over. The Institutional Limited Partners Association (ILPA) treats these manager-led transfers as a governance issue in its principles. [S02: ILPA principles](https://ilpa.org/wp-content/uploads/2019/06/ILPA-Principles-3.0_2019.pdf)
+Two forms deserve care. “Secondary sale” is used both for a sale of company shares and for a sale of a fund interest. The first can bring a new shareholder with rights over the company; the second leaves the company’s direct shareholder, the fund, unchanged. What may change is the patience and the priorities of the investors behind that fund, which is why “nothing changes” is a stronger claim than the fact supports. Ask which is meant. A **continuation transaction** moves an investment into a new vehicle associated with the same manager; it needs attention to price and to possible conflicts between the manager, the investors leaving and the investors rolling over. The Institutional Limited Partners Association (ILPA) treats these manager-led transfers as a governance issue in its principles. [S02: ILPA principles](https://ilpa.org/wp-content/uploads/2019/06/ILPA-Principles-3.0_2019.pdf)
 
 Do not infer realized fund performance from a transaction announcement. Follow the actual proceeds, retained interests, costs and distribution dates. The return mechanics in [[three-different-returns]] still apply when a company is described as an exit success. The cases show why. Hilton’s financial sponsor described its final stake sale in 2018, while Visma’s 2023 announcement described another transaction within a continuing ownership relationship. [S24: Blackstone 2018 investor call](https://ir.blackstone.com/files/doc_events/BLACKSTONE-Second-Quarter-2018-Earnings-Investor-Call.pdf) [S30: Visma 2023 transaction](https://www.visma.com/newsroom/visma-attracts-new-investors-for-further-international-expansion-in-a-transaction-valuing-the-company-at-eur-19-billion-59703d9f) These are different realization contexts. Reconstruct the relevant vehicle and cash flows before calling either a complete fund outcome; see [[hilton-and-skype]] and [[visma]].
 
 ## Authority Changes Even When the Name Does Not
 
-A funding round can add an investor and new rights while management continues. A secondary sale of company shares can give one investor liquidity without adding a euro to the company. A corporate acquisition can leave the brand and product in place while changing the authority behind them. An IPO introduces a financing and reporting setting that needs preparation beyond this book’s scope.
+A funding round can add an investor and new rights while management continues. A secondary sale of company shares can give one investor liquidity without adding a euro to the company. A corporate acquisition can leave the brand and product in place while changing the authority behind them. An IPO can raise cash and change the reporting setting while leaving a majority of the votes with the founders or the existing investor; it needs preparation beyond this book’s scope.
 
 For each transition, map the next holder of authority over the plan, the money actually available to the company, the services it depends on and the customer commitments still open. Redo the approval map from [[decide-who-decides]] for the new arrangement rather than assuming the old one survives. Carry forward the original baselines and actual results. Do not reset the history because a new owner prefers a different reporting format.
 
 ## Unfinished Obligations Travel With the Company
 
-Obligations do not close at the transaction. A migration half done, a recovery test failed and retested, a data-quality step funded but not built, a hire deferred pending evidence: each is a commitment with a cost and a date, and each is owed to a customer, a regulator or the company’s own operations rather than to the seller. [[acquisition-adds-work-first]] shows the same point from the buyer’s side: an acquisition adds integration or separation work before it adds anything else.
+Obligations do not close at the transaction, but they are not all of one kind, and a handover that lists them as one undifferentiated backlog misleads the receiving side about what is owed. Separate four kinds, and keep them separate in the record:
+
+- **Contractual obligations**, owed to a customer, a supplier or a regulator and due whoever owns the company. At Larkspur: the onboarding promised in each signed customer contract, and the €90,000 still payable on the ONB-1 templates.
+- **Funded work**, authorized and paid for but not built. The data-quality step, €40,000 and 4 engineer-weeks from the reserve. The receiving side can stop it, but stopping is a decision with a recorded reason, not a saving discovered afterwards.
+- **Accepted risks**, where an authorized person has decided to carry a known exposure. REC-1’s residual after the day-85 retest: a regional outage is not covered, rehearsals run on weekdays only and two people are still required. Ines accepted it on the board’s behalf with a quarterly retest.
+- **Options awaiting evidence**. The second-country expansion and the two specialist hires. Nothing is owed here; what travels is the decision date and the evidence that will decide it.
+
+Only the first kind is a debt in the ordinary sense. The other three are decisions, and the record carries them as decisions with reasons so that the receiving side can revisit them knowingly rather than discover them. [[acquisition-adds-work-first]] shows the same point from the buyer’s side: an acquisition adds integration or separation work before it adds anything else.
 
 The company leader’s success in a transition is a working handover with understood obligations. A sale price, a round valuation or an internal integration milestone can matter to the shareholders without establishing that the company’s work is complete.
 
@@ -96,7 +108,23 @@ The company leader’s success in a transition is a working handover with unders
 
 A handover is accepted, not merely sent. The record lists, for each material initiative and open obligation: the baseline, the actual cost to date and the continuing cost, the observed result and its uncertainty, the open work with its funding status, and the accountable leader on both sides. The receiving decision-maker signs for it. Tool 10 in the [[toolkit]] gives the format.
 
-In the Larkspur chain, the D-3/ONB-1 record above is the entry for one initiative. Two more sit beside it: D-5, the scheduling engine, whose release and recovery a second engineer demonstrated at day 60; and D-6, the restore test, which failed at day 45 and passed on retest at day 85 within the agreed recovery objective. The receiving side inherits the reserve decision, the deferred expansion and the deferred hires as decisions with recorded reasons, not as gaps. If the receiving leader wants to reverse any of them, the record shows what evidence the reversal should answer.
+In the Larkspur chain, the D-3/ONB-1 record above is the entry for one initiative. Two more sit beside it. KNW-1, the scheduling engine from finding D-5, passed at day 60 when a second engineer released and recovered it without the specialist; it cost no cash and four weeks of the specialist’s protected time outside the envelope. REC-1, the restore test from finding D-6, failed at day 45, was corrected with €20,000 and 2 engineer-weeks drawn from the reserve, and passed on retest at day 85 within the agreed recovery objective for loss of the application environment in this region; €100,000 incurred in total, closed at day 100 with the residual accepted. Across the whole plan the reconciliation is one line: €340,000 of the €500,000 envelope committed, about €190,000 incurred, all 24 engineer-weeks allocated, €160,000 of cash in reserve. The receiving side inherits the two reserve draws, the deferred expansion and the deferred hires as decisions with recorded reasons, not as gaps. If the receiving leader wants to reverse any of them, the record shows what evidence the reversal should answer.
+
+### One accepted handover
+
+Acceptance needs a named receiver with authority over the obligations, not a distribution list. Suppose, for the illustration, that the next event is a follow-on round that closes at day 130, adds an investor with a board seat and lowers the threshold above which spending needs board approval. The acknowledgment then reads:
+
+| Field | Entry |
+| --- | --- |
+| Receiving decision-maker | Ines, chief executive, who under the delegation rule the reconstituted board re-adopted authorizes spending inside the approved plan; reserve draws and changes to what the envelope funds remain reserved to the board |
+| Received for information | The new investor’s board nominee, who holds the board’s reserved decisions with the other directors and is not the operating leader for onboarding |
+| Continuing accountability | Priya remains the accountable leader for ONB-1, the data-quality step and the next cohort’s measurement; the new director oversees, she decides and answers |
+| Accepted | The D-3/ONB-1, KNW-1 and REC-1 entries as recorded, including the €90,000 remaining ONB-1 commitment, the funded data-quality step and REC-1’s accepted residual with its quarterly retest |
+| Exception | The €30,000 a year of setup-step maintenance is a commitment against an operating budget the new board has not yet adopted; accepted as an open item until that budget is approved |
+| Next review | The quarterly review at about day 190: the second cohort’s effort split and waiting time, the expansion decision and the hiring decision |
+| Acceptance | Signed by Ines and Priya at day 130 |
+
+Without the exception and the review date, the acknowledgment would be a receipt for a document. With them, it is a decision about who owes what, and when it is looked at again.
 
 ## Permitted Follow-Up and Learning
 

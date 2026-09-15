@@ -1,37 +1,32 @@
 # Editorial review: Same Company, Same Performance, Three Different Returns
 
-Reviewed 14 September 2026. Read the complete article, summary and reader-facing comic text.
+Reassessed 15 September 2026 against the complete current article, summary and comic text, the previous review, revision log and Git changes. See the [collection review](../REVIEW.md).
 
-## Overall assessment
+## Current assessment
 
-The article shows why investor returns cannot be treated as a direct score for product or engineering performance. Dilution, leverage, debt repayment, exit pricing and timing all affect the result. The fixed-performance, three-exit-multiple comparison and the explicit interaction term in the value bridge are among the collection's best explanations.
+This is now one of the collection's clearest arguments. The opening three-outcome table gives company leaders a reason to learn the buyout arithmetic; the later complete table delivers the title's promise. Moving LP reporting to the optional reference preserves depth without distracting from company performance. The interaction term and the refusal to infer engineering's causal contribution from a sale remain major strengths.
 
-Its weakness is scope and sequencing. The title promises a sharp comparison, but readers first pass through minority dilution, refreshed financial definitions, a buyout model and return attribution. Fund-level ratios then create another substantial branch. The strongest argument is buried inside an otherwise careful finance tutorial.
+The explanatory structure works. The numerical progression, separate downside assumptions and brief dilution/corporate extensions are well judged. The conclusion connects the example to whether a proposal remains useful under a lower sale price or longer hold. Remaining issues concern terminology in the new investor callout and incomplete comic production; one attribution sentence could be clearer. No new outline is needed.
 
-## Detailed feedback
+## Active recommendations
 
-- **Opening and narrative flow:** The first contrast is compelling. The following explanation of why investor requests may differ from operating priorities gives it a clear audience. However, the story's promised payoff, “Same Company, Same Performance, Three Different Returns,” arrives late. A preview of that table would give readers a reason to learn the preceding arithmetic.
-- **Clarity and examples:** The minority share counts and €3.2m proceeds are transparent. The buyout's €40m → €110m result, 2.75× MOIC and approximately 22.4% annual return are internally consistent. Explicitly separating the downside debt assumption is good practice. Preserve the acknowledgement that higher EBITDA alone does not establish better service.
-- **Technical precision:** “MOIC … is what came out divided by what went in” describes the realized example, whereas the comic correctly includes value still held. Add “in this fully realized example.” “IRR tells you how fast” is memorable shorthand but should remain attached to the payment-timing explanation, not suggest a simple duration score for every investment.
-- **Attribution and tone:** The €50m/€20m/€10m interaction explanation is excellent and should not be cut for brevity. “Depending on the market mood at exit” is more dismissive and categorical than the surrounding text: the chapter itself explains that multiples can also reflect company prospects and buyer-specific expectations. State that only the assumed multiple changes in this exercise.
-- **Pacing and organization:** “Reading a Fund Performance Report” introduces DPI, RVPI, TVPI, gross/net returns and subscription lines after the main thesis has already landed. This material is useful to a subset of readers but shifts attention from the company's decisions to an LP's reporting task.
-- **Conclusion and companion formats:** The sustainable-benefit test is a strong ending. The TL;DR omits the actual three-multiple comparison that gives the article its title, while retaining a substantial fund-ratio paragraph. The comic likewise never shows three different returns for unchanged operations. This is a confirmed mismatch of emphasis, not an arithmetic error.
+- **Low — Simplify the conditional upper-bound wording in “Why the Bridge Can't Say ‘Engineering Created €30 Million’.”** The complete sentence qualifies €50m with “at the unchanged price,” so the number is correct under that convention. “At most” and “generous reading” nevertheless obscure the precise point after the preceding interaction discussion. Suggested rewrite: “At the entry multiple, the earnings component is €50m. Allocating the interaction differently changes that accounting attribution; none of those conventions identifies engineering's causal share.” This is a clarity preference, not a confirmed arithmetic contradiction. Preserve the interaction table.
+- **Medium — Complete the comic's format alignment.** The text now shows all three outcomes, but panel 4 is explicitly marked for regeneration. Panels 2 and 3 also have changed dialogue while retaining their image files and no regeneration flag. Those two need visual verification as well; their absence from the log's flag list does not establish agreement. Reconcile final artwork, accessible text and visible dialogue before treating the recommendation as complete.
+- **Medium — Scope “WHY INVESTORS CARE” to a fund manager.** “Its own investors” does not describe every shareholder or corporate owner; “the investor's return, not the company's performance” also obscures the chapter's point that operating performance contributes to returns. Suggested wording: “A fund manager reports investment returns to its fund investors. Those returns combine company performance with entry price, financing and exit terms.” The broader article already explains corporate benefits separately.
+- **Low — Name the return measure in the headline comparison.** “The return … more than doubles” can mean proceeds, profit, MOIC or annual rate. Here proceeds and MOIC rise from €65m/1.625× to €140m/3.5×; IRR also more than doubles. Naming one avoids ambiguity. Define EBITDA in a short phrase beside the preview for standalone readers, while keeping the full definitions below. “IRR exposes the speed” remains an acceptable mnemonic only with the dated-cash-flow qualification nearby.
 
-## Recommended changes
+## Verification and formats
 
-- **High impact — Lead toward the title's comparison sooner.** Preview the 7×/10×/12× outcomes after the opening, teach the common starting assumptions, then return to the complete table. Keep the calculation legible rather than adding a second parallel example.
-- **High impact — Align the shorter formats with the title.** Replace the summary's fund-ratio detail with the fixed-performance comparison. Use three comic panels to show the same operating result and three investor outcomes, with the assumptions explicit.
-- **Medium impact — Relocate fund-reporting detail.** Put DPI/RVPI/TVPI and subscription facilities in an optional reference section linked from “An Investment Announcement Is Not a Budget” and “Different Bets.” The chapter can retain a two-sentence distinction between received cash and unsold estimates.
-- **Medium impact — Retain the interaction term but connect it to one claim.** Ask how “engineering created €30m” would be justified, then use the decomposition to explain why a transaction bridge cannot answer that causal question by itself.
-- **Low impact — Adjust the two shortcuts.** “In this realized example, MOIC is proceeds divided by total capital invested.” And: “The operating assumptions are unchanged; varying only the exit multiple produces markedly different investment results.”
+Recalculation confirms €105m/€150m/€180m enterprise values and €65m/€110m/€140m equity proceeds after €40m debt; exact MOICs are 1.625×, 2.75× and 3.5×. Five-year annual rates are approximately 10.20%, 22.42% and 28.47%. The €80m enterprise-value increase decomposes as €50m + €20m + €10m. Doubling in three/seven years gives 25.99%/10.41%; the downside produces €20m equity; dilution gives 16% and €3.2m proceeds. No arithmetic error was found in these examples. The summary now includes the title's actual comparison and appropriately omits detailed fund ratios.
 
-## Proposed structure
+## Changes since the previous review
 
-1. One operating result, three investor outcomes: preview.
-2. The base buyout and complete arithmetic.
-3. Vary the multiple and timing; show downside leverage.
-4. Explain the operating/price interaction and attribution limits.
-5. Brief extensions: dilution and corporate benefits.
-6. What engineering can substantiate, with fund reporting linked as optional depth.
+| Previous recommendation | Current disposition |
+| --- | --- |
+| Bring the fixed-performance comparison forward | **Resolved:** preview plus explained final table is effective. |
+| Align summary and comic with the title | **Partially resolved:** both texts now align; panel 4 is flagged and panels 2–3 require visual verification. |
+| Relocate fund reporting | **Resolved:** linked optional reference. |
+| Preserve the interaction and test an engineering claim | **Resolved:** stronger causal explanation; optional wording improvement above. |
+| Qualify MOIC and remove “market mood” shorthand | **Resolved:** realized-example scope and multiple drivers are stated. |
 
-The article deserves a more prominent role in the collection; restructuring should expose its existing intellectual strength rather than simplify it away.
+The previous proposed structure has effectively been implemented; further restructuring would add little.

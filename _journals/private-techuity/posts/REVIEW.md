@@ -1,206 +1,131 @@
 # Editorial review of OWNED: Product & Engineering Leadership Under Investors
 
-Reviewed 14 September 2026.
+Reassessed 14–15 September 2026. This review replaces the earlier assessment of the 39-page manuscript.
 
-## Scope and overall assessment
+## Current assessment
 
-This review covers every post in this directory: 29 main chapters, six part introductions, the reading guide, toolkit, glossary and bibliography. All 39 `index.md` files were read in full, including their chapter-end source annotations. All 29 summaries and the reader-facing comic introductions, captions, dialogue and alternative text were also read. The configured publication order, rather than alphabetical folder order, informed the collection assessment. Each post has a separate linked review below.
+The revision has improved the book materially. Chapters now make choices instead of stopping at checklists: funding is sized, investors and providers are compared, design alternatives are selected, a support charter is filled, and a diligence finding reaches an authorized initiative and a reported result. The financing/handover split and the move from delivery diagnosis directly into organization improve the reading sequence. Optional fund economics removes a genuine distraction from the beginner's route. These are effective changes worth preserving.
 
-The review assesses the writing and textual explanations of figures; it is not an inspection of the illustration artwork or rendered page layouts. External checks were targeted at consequential financial, technical and research claims. Individual reviews distinguish confirmed inconsistencies or source mismatches from matters requiring further verification. No claim is made to have independently audited every company account, contract or cited study. The original posts have not been edited.
+The main remaining problem is the reliability of the new decisions. Several are described as funded even though costs, team capacity, payment dates or conditions do not reconcile. The recurring D-3/ONB-1/REC-1 material now carries enough detail for readers to check it, and different chapters give incompatible answers. New financial and factual errors also remain, including the unicorn-study percentage, the loan repayment schedule, fund catch-up mechanics and TeamSystem's cash explanation. The updated reviews distinguish confirmed defects from unresolved evidence questions.
 
-The collection has a strong central argument: product and engineering leaders should translate ownership expectations into commitments supported by actual money, authority, capability and evidence. A thesis, valuation or investment announcement is an input to that work, not a completed operating plan. The best chapters make these distinctions concrete through calculations and recognizable choices.
+This is a stronger manuscript, but the revision log's completion labels do not establish readiness. The next pass should correct and reconcile the completed examples, then bring their companion formats into agreement. Another broad structural rewrite would lose more than it gains.
 
-The manuscript is substantial, roughly book length rather than a short blog series. Its main problems are cumulative repetition, occasional categorical claims that conflict with its own careful definitions, and examples that introduce a decision without completing it. Several titles promise a narrower or more decisive lesson than their chapters deliver. These are structural and argumentative issues; proofreading alone would not resolve them.
+## Scope, history and inventory
 
-## Purpose, audience and thematic coherence
+Read the repository instructions, collection and per-post reviews, revision log, all **41 current articles/pages in full**, all **30 summaries**, and all **29 comics' reader-facing introductions, captions and dialogue**, together with their panel metadata. Reading followed `config.yaml`, not numeric folder names. The current inventory is 30 main chapters, six part introductions, the guide and four reference pages.
 
-The clearest primary reader is a product or engineering leader inside a company whose investors affect funding, authority and expectations. That reader may have inherited the ownership arrangement and may have limited influence over investor selection, fund economics or the transaction. The guide and several introductions recognize this well. Maintain that viewpoint throughout.
+The comparison includes the manuscript at `c11d151`, the substantial revision in `903ef5a`, and the later callout additions/reordering in `8e6fd3c`, `f5f37b3`, `aa4d8be` and `ab7a8f4`. Earlier history also explains title changes, the broader ownership framing and removed appendix material. Initial uncommitted changes were inspected; those changes subsequently appeared in the revision commits. The final source check used clean manuscript HEAD `ab7a8f4`, with no additional manuscript changes pending. The revision was not treated as a single-commit event.
 
-Secondary audiences include founders, finance partners and investor advisers. Serving them is useful, but sections explaining fund carry in depth or designing a Technology Principal's role sometimes displace the company leader's decision. Keep specialist material where it changes that decision, and provide an optional reference route for the rest. The glossary and toolkit can support depth without repeatedly interrupting the main argument.
+Two pages are new: `31-handover-of-obligations` and `fund-economics`. Neither had a previous per-post review; both now have one. No current post is unconfigured or missing. Earlier removed appendix/support-model pages are not part of this edition and should not receive new review obligations merely because old history contains them. No article, summary, comic, specification, asset, configuration or revision-log content was changed by this review.
 
-The six-part progression is coherent: understand the money; establish authority and incentives; choose and deliver company work; obtain useful help; carry the work through ownership events; judge outcomes. Part III is the center of the book and appropriately begins with competing commitments. Part VI broadens the standard of success beyond investor realization, which gives the practical advice a worthwhile purpose.
+This assessment concerns the complete manuscript and comic text. It does not certify the rendered site or all illustration artwork. External verification targeted consequential changes and newly discovered claims; it was not an audit of every company report, contract or research dataset.
 
-There is a scope tension between the broad ownership promise and the evidence. Historical cases and most ownership research concern private equity, while venture, growth and corporate arrangements mainly appear in fictional comparisons and explanatory guidance. The manuscript openly acknowledges that limit. Preserve the disclosure and strengthen the broader frame with a genuinely documented case only if the evidence can support it. Repeating investor categories across more chapters does not close this gap.
+## Highest-priority remaining work
 
-## What already works and should survive revision
+1. **Reconcile cash, capacity and repayment before endorsing the chosen plans.** The funding-choice chapter adds €135,000 of released staff capacity to cash available for loan service, although the measured pilot explicitly changes no spending. Its €750,000 three-year loan starts €250,000 annual principal payments only in year two and does not explain the final balance. Correct both the benefit bridge and the maturity schedule. The finale likewise needs to establish which parts of its €220,000 cost reduction actually leave spending. See [funding choice](03-raise-what-you-need/REVIEW.md), [measured benefits](08-roadmap-to-revenue/REVIEW.md) and [finale](24-success-for-whom/REVIEW.md).
+2. **Make the shared initiative history internally consistent.** The €300,000/24-week early plan initially commits €260,000/20 weeks. The recovery retest adds €20,000/2 weeks elsewhere; the later data-quality decision still spends the original €40,000/4-week reserve. Together that is €320,000/26 weeks. The toolkit records €90,000 of ONB-1 spending by day 100, while handover calls €180,000 the actual cost. Show one dated record of commitments, payments, available skills, additional approvals and displaced work. Reconcile the day-20 baseline, day-45 recovery result, day-90 cohort, day-100 decision and subsequent expansion gate. [Allocation](28-cannot-fund-everything/REVIEW.md), [recovery](11-prove-you-can-restore/REVIEW.md), [early plan](17-first-hundred-days/REVIEW.md), [handover](31-handover-of-obligations/REVIEW.md), [toolkit](toolkit/REVIEW.md).
+3. **Correct specific financial and source errors.** The unicorn source says reported values average 50% above modeled fair value; the new annotation reverses that into fair values 50% below reported values. A slower partial catch-up need not reduce the final GP share. TeamSystem's net finance charge includes non-cash items, and its report does disclose finance costs and note interest paid. These are confirmed errors or omissions, not merely requests for more research. [Valuation](26-valuation-is-an-estimate/REVIEW.md), [fund economics](fund-economics/REVIEW.md), [TeamSystem](25-teamsystem/REVIEW.md).
+4. **Keep the conditions that make a decision permissible and feasible.** The organization chapter's future hiring trigger drops the financing condition. The acquisition example's two-month network overlap conflicts with an all-parent-services-off May test. The finale treats a service cutoff that exceeds existing customer contracts as an ordinary acceptable alternative. Establish the funding gate, a feasible transition calendar and contractual consent or a compliant alternative before presenting the trade-offs. [Organization](13-fix-decisions-before-hiring/REVIEW.md), [acquisition](14-acquisition-adds-work-first/REVIEW.md), [finale](24-success-for-whom/REVIEW.md).
+5. **Remove new categorical rules and synchronize formats.** The glossary's cash-only budgeting rule is too absolute; written commitment is not received cash; advisory involvement is not itself decision authority; debt investors are still investors. The late investor callouts sometimes restore the sweeping claims the main revision removed. Correct each specific claim, then carry the same necessary conditions into summaries and comics. [Funding sources](00-customers-lenders-investors/REVIEW.md), [adviser](15-investors-adviser/REVIEW.md), [financing delay](18-the-financing-slipped/REVIEW.md), [glossary](glossary/REVIEW.md).
 
-- **The financial distinctions are unusually useful.** Company cash versus seller proceeds, enterprise versus equity value, EBITDA versus cash, released capacity versus reduced spending, and retained value versus received proceeds recur for good reasons. Keep the local definition needed to understand a calculation even when trimming repeated lessons.
-- **The strongest examples show a choice under constraints.** “You Cannot Fund Every Good Project at Once” compares both cash and engineer-weeks and selects a feasible combination. The cloud chapter shows why lower total spending can coexist with worse unit economics. The cash-budget chapter's bridge and runway calculation are worth retaining after its framing is corrected.
-- **The technical depth mostly serves leadership judgment.** Recovery dependencies, transition costs, bought-system design, IP rights and acquisition separation costs make financial arguments less superficial. Tightening should remove duplicated setup, not these distinctions.
-- **The author is usefully skeptical without rejecting action.** Asking for the definition behind a number or the authority behind advice is part of the distinctive voice. Preserve direct questions, concrete amounts and candid acknowledgment of uncertainty.
-- **Source limitations are often carefully handled.** Sponsor accounts are distinguished from causal evidence; partial research access is disclosed; historical periods are bounded. Toys R Us adds supplier evidence, and the finale refuses to cancel patient harms with unrelated positive metrics. These are important strengths.
-- **Larkspur gives the book continuity without pretending every example shares a balance sheet.** Keep the named roles and the guide's explanation of alternative scenarios. The next improvement is continuity within selected examples, not forcing all scenarios into one artificial company history.
+## Coherence, audience, voice and reading order
 
-## Changes with the greatest editorial benefit
+The clearest reader remains a product or engineering leader inside an existing ownership arrangement. The revised guide properly assumes no finance training while acknowledging detailed software and organizational questions. Keep founders, finance partners and investor advisers as secondary audiences. Repeated claims about what “the investor” reports to “its investors” should identify a fund manager where that is the actual actor; corporate shareholders, individuals, LPs and managers do not have interchangeable duties or incentives.
 
-### 1. Correct the categorical ownership contrasts
+Keep the six-part architecture and the configured order. Delivery → organization → design now connects diagnosis to the appropriate response. Sourcing and engagement deserve separate chapters because they now deliver different decisions; the earlier optional merger is no longer a priority. Hilton/Skype remains a useful paired contrast, while Visma and TeamSystem have sufficiently different purposes. The finale now synthesizes cases before research, so a separate evidence essay is optional, not a prerequisite.
 
-Several openings imply that ordinary companies fund work from earnings, revise plans quietly or react to needs as they arise, while outside investors introduce cash constraints, formal expectations and decision structures. Other openings present investor help or technical diligence as exclusive to outside ownership. These claims are broader than the book's evidence and sometimes contradict its own introductory finance chapter.
+The handover split improves Part V, but the guide and introduction overstate its integration: the delayed-financing example declares separate assumptions and does not carry D-3 through the same history. Accept that effective alternative and describe it accurately. Do not force every Larkspur illustration onto one balance sheet. Conversely, examples explicitly sharing a finding, initiative and failed test must agree, or openly declare a different scenario with distinct identifiers. Reusing familiar numbers is not sufficient to establish continuity.
 
-The affected chapters include the investment announcement, cash obligations, team delivery, design, adviser, help, engagement, diligence and financing-delay chapters. Do not merely add a late qualification. Let the accurate formulation govern the opening, title where necessary, summary and comic introduction.
+The strongest voice remains concrete and questioning: show which cash can pay for which obligation, why a restore test failed, or which customer loses a service. The new “Why Investors Care” layer adds another setup before many chapters and sometimes substitutes assumptions about motives for evidence. Keep it where it identifies an actual financing or governance consequence; shorten it where it merely repeats the learning outcome and key points. Remove editorial instructions that reached the prose, such as “the title's comparison needs a decision” or “this chapter is the book's home.”
 
-A useful pattern is: “This arrangement changes the conditions of the decision. Establish the actual funding, authority and deadline before committing.” Then name the specific condition in that chapter. This preserves the focus on investor ownership without inventing a universal contrast with other companies.
+The glossary, bibliography and toolkit are more usable, but assigning a topic a main home should reduce duplicate explanations and uncontrolled copies of figures. Authority belongs primarily in the decision-rights chapter; role changes in the adviser chapter; provider selection in sourcing; agreed delivery in engagement; measurement in the benefits chapter and toolkit. Standalone chapters still need a local definition and the conditions behind their example. The aim is fewer repeated instructions, not thinner reasoning.
 
-### 2. Complete the decisions that the chapters introduce
+Historical coverage remains concentrated on private equity. The guide, Part VI and bibliography disclose this appropriately. A documented minority/venture financing case and a corporate ownership case would strengthen the broader promise if sufficiently good evidence is found. Their absence is a coverage limitation, not a reason to fabricate balance or infer comparative performance from the fictional cases. The new employee/customer decisions improve the breadth of judgment, but their costs and contractual boundaries must be credible.
 
-Many chapters name a sensible process and finish by asking readers to apply it. The resource-allocation chapter demonstrates how much stronger the book becomes when it carries the example through to a choice.
+## Changes since the previous review
 
-Complete a small number of reusable examples: compare and choose between the two investors; size or rename the funding request; select a design alternative; approve a support engagement; turn a diligence finding into a funded first-hundred-day commitment; and revise a dated cash plan when financing slips. State the chosen option, alternatives rejected, funding, scarce capacity, authority and evidence that would change the decision.
-
-The toolkit should show the same finding and initiative moving through these stages. Its current pilot is a useful proposal, but still asks the reader to supply funding approval, a responsible person and a review date. Label the pending state accurately and then show the authorized state. This is the most valuable addition the collection could make without introducing another topic.
-
-### 3. Restore agreement between titles and chapter payoffs
-
-| Chapter | Current mismatch | Recommended resolution |
-| --- | --- | --- |
-| Raise the Money You Need | Primarily compares funding arrangements; does not size the need | Add a real sizing/downside example or rename around matching funding to work |
-| Interest, Tax and Loan Repayments | Implies a universal payment priority disavowed in the body | Retitle around finding cash available for the initiative and separate obligations from choices |
-| Three Different Returns | The promised comparison arrives after extensive fund vocabulary | Preview the identical-performance comparison, then explain the mechanics |
-| Growth Into Design | Offers a wide catalogue of design concerns without completing the promised choice | Compare a few alternatives and choose one under stated constraints |
-| The First Hundred Days | Promises a funded plan; leaves decisive fields open | Complete a small plan with named responsibility, approved resources, dates and deferred work |
-| The Financing Slipped | Covers regular meetings, peer support, exit reporting and handover as well as delay | Split the urgent financing decision from the durable handover material |
-| Toys R Us | “Profitable” obscures the reported net loss | Name positive operating earnings or EBITDA explicitly |
-| TeamSystem | Promises an explanation of adjusted earnings versus a statutory loss | Show the actual component reconciliation, not only the size of the gap |
-| Success for Whom | Functions mainly as a research essay before becoming a finale | Lead with a synthesis of the cases and a final company decision |
-
-### 4. Reduce repetition by assigning each subject a main home
-
-| Subject | Main home | Material to shorten, move or cross-reference |
-| --- | --- | --- |
-| Funding sources and money recipients | Customers/Lenders/Investors; Announcement | Repeated general finance primers in later operating chapters |
-| Investor arrangement comparisons | Raise the Money You Need | Repeated venture/growth/buyout/corporate tables in resource-allocation and support chapters; retain only the condition relevant locally |
-| Cash available and cash timing | Obligations Before Budget | Generic cash warnings elsewhere; apply the bridge to the local decision instead |
-| Formal authority | Decide Who Decides | Repeated general governance explanations in adviser and engagement chapters |
-| Adviser role and conflicts | Investor's Adviser | Coaching/assessment boundaries scattered through governance, team and support discussions |
-| Selecting a provider and agreeing work | Help That Changes Capability; Useful Engagement | Keep the first about sourcing and the second about a concrete charter; optionally combine for a shorter edition |
-| Capability assessment, organization and design | Team Delivery; Fix Decisions; Growth Into Design | Team Delivery should diagnose, Fix Decisions should change operating responsibilities, and Design should choose system changes |
-| Measured benefits | Roadmap to Revenue; toolkit outcome record | Repeated generic attribution and capacity/cash lessons; retain domain-specific measurement traps |
-| Recurring acquisition adjustments | Visma | Shorten the parallel discussion in TeamSystem and link back; let TeamSystem emphasize reporting periods and inherited work |
-| Continuing evidence and obligations | Proposed handover chapter | Move exit reporting and handover out of the financing-delay chapter; link from acquisition and historical cases |
-
-Repetition is justified when a standalone article needs one sentence of context or a calculation needs a nearby definition. It is less useful when an opening, key points, several tables, questions, conclusion and next-chapter handoff all restate the same general rule. Compress those layers before cutting technical substance.
-
-## Voice, readability and terminology
-
-The voice is strongest when it connects a claim to a consequence: a lower bill can conceal a worse service unit, a backup can fail to restore a working product, or a secondary sale can pay owners without funding the team. Preserve those concrete reversals. Repeated admonitions to “record,” “name,” “check” and “preserve” become less effective when the reader never sees the completed record or ensuing decision.
-
-Use the guide, glossary and stronger introductions as the terminology standard. Agree these distinctions once, then apply them consistently:
-
-| Term | Editorial rule |
+| Previous recommendation | Current disposition |
 | --- | --- |
-| Investor, firm/manager, fund, company | Name the actual actor or entity where authority or money depends on it |
-| Owner | Use shareholder for ownership and accountable leader for responsibility when either meaning could be inferred |
-| Sponsor | Distinguish the financial sponsor from the company or investor-side sponsor of an engagement |
-| Commitment and funding | Separate interest, pending approval, contractual commitment with conditions, and received cash |
-| Profit, earnings, EBITDA and cash | Name the measure, scope and period; avoid an unqualified title that reverses the careful body |
-| Contribution | Distinguish a financial contribution measure from a causal contribution to an outcome |
-| Lead time | Name the start and end points; DORA change lead time has a particular definition |
-| Independence and capability | Allow a deliberately funded continuing service; useful capability does not require internalizing every specialty |
-| Thesis and durable value | Identify them as an investment explanation and the author's proposed evaluative standard, respectively |
+| Replace categorical ownership contrasts across formats | **Partially resolved:** most targeted openings improved; later callouts and some new definitions reintroduce universality. |
+| Complete actual decisions, especially the finding-to-funded-plan chain | **Partially resolved:** decisions and records now exist; affordability, capacity and chronology still need reconciliation. |
+| Align titles with chapter payoffs | **Largely resolved:** funding choice, obligations, returns and Toys R Us are clearer. TeamSystem supplies an earnings bridge; its cash interpretation still needs correction. |
+| Give subjects distinct homes and reduce repetition | **Partially resolved:** moves are effective; shared records now duplicate inconsistent data and some opening layers remain repetitive. |
+| Move organization after delivery | **Resolved:** configuration, introduction and handoffs agree. |
+| Separate financing delay from durable handover | **Resolved structurally:** the new page has a useful purpose; its spending record and event definitions need repair. |
+| Create optional fund-economics depth | **Resolved structurally:** configured and linked; the new catch-up explanation needs correction. |
+| Consider merging sourcing and engagement | **Superseded:** the distinct revised jobs justify keeping both. |
+| Repair payment-priority framing and rare-failure reasoning | **Resolved in substance:** obligations are distinguished from choices; low probability no longer alone dismisses a severe failure. |
+| Correct Toys R Us's profit measure, Visma's ESMA scope and finale research provenance | **Resolved in substance and independently checked:** remaining comic/interpretation issues are separate. |
+| Correct TeamSystem's announced-versus-received claim and verify retained-interest continuity | **Partially resolved:** July 2024 wording improved; intervening holding continuity remains limited. Later 2024 reporting supplies a distinct realization figure and supersedes part of the claimed evidence gap. |
+| Narrow the unicorn study population | **Partially resolved:** US unicorn scope fixed, percentage relationship newly reversed. |
+| Improve reference navigation and terminology | **Partially resolved:** glossary index and bibliography backlinks work; toolkit section links remain absent and some definitions overcorrect. |
+| Keep summaries within the promised range | **Resolved under an explicit text-count convention:** all 30 are 466–500 words after excluding figures, source citations and markup. This does not certify factual agreement. |
+| Broaden documented ownership cases | **Unresolved as a coverage aspiration:** no new documented minority/venture or corporate operating case; retain the explicit evidence boundary. |
 
-Some stylistic changes are optional: fewer opening quotations, shorter contents duplication, or alternative provocative titles. Correcting false universality, misleading measures and unsupported source claims is essential. The reviews separate those categories; they do not recommend flattening every chapter into an identical house style.
+Earlier cautions also need correction where better evidence is available. Skype's filing dates Qik and other developments; Hilton's earlier filings establish OnQ before the buyout. The new reviews should not continue calling those dates unknowable. Visma's exact historical earnings reconciliation is independently verified from cached primary PDFs despite current CDN access failures. The returns chapter's €50m earnings component is correctly qualified by an unchanged multiple; improving its “at most” wording is stylistic, not a newly confirmed arithmetic error. DORA's current five-metric count remains correct.
 
-## Evidence and technical repairs
+## Verification, formats and remaining limits
 
-Address these before general polishing:
+Primary-source checks and recalculations are documented beside the affected findings in each review. They cover changed valuation and fund mechanics, borrowing and cash examples, delivery definitions, AI-study scope, the historical financial reconciliations, transaction chronology and consequential employment/healthcare research annotations. Reported sponsor returns remain distinct from independently reconstructed net investor returns. A source supporting the date of a product launch does not identify that launch's contribution to a sale price.
 
-1. **TeamSystem's 2024 further-reading annotation:** the cited [announcement](https://www.hgcapitaltrust.com/news-insights/news/2024/08-07-2024) reports an agreed sale and investment value, not established cash receipt. Continuity of the precise retained stake from 2016 requires additional verification. The individual review separates those two issues.
-2. **Toys R Us's title and cash question:** the company reported a net loss despite positive operating earnings; name the profit measure. Separate operating cash flow from cash after capital expenditure. The [fiscal 2016 release](https://www.sec.gov/Archives/edgar/data/1005414/000100541417000010/truq4-16earningsreleaseexh.htm) supports the measure correction.
-3. **The obligations chapter's opening and title:** its own conclusion rejects the universal payment priority implied at the start. Bring the accurate qualification forward and correct the companion formats.
-4. **The design chapter's rare-failure rule:** rejecting an expensive rebuild because failure is unlikely omits severity, continuity requirements and alternatives, conflicting with the recovery chapter. Evaluate probability and consequence together.
-5. **The valuation chapter's supplementary unicorn-study description:** restrict the population and interpretation to the actual study. It is not evidence about private companies generally; see the [primary research paper](https://centers.tuck.dartmouth.edu/uploads/cpee/files/SSRN-id2955455.pdf).
-6. **Visma's ESMA annotation:** remove the blanket private-company exemption. Formal scope depends on issuer and disclosure conditions, as the [guidelines' scope section](https://www.esma.europa.eu/sites/default/files/library/2015/10/2015-esma-1415en.pdf) explains; applicability to a particular entity still needs checking.
-7. **The finale's supplementary research notes:** attribute the +15% employment figure to the Davis study, keep Cohn and colleagues' complementary research separate, and describe the [July 2023 BMJ review](https://www.bmj.com/content/382/bmj-2023-075244) as earlier literature rather than coverage of subsequent studies.
+The 2024 HgCapital Trust report lists TeamSystem among realizations with about £34.189m gross proceeds; this must not silently replace the different July announcement figure or become a claim about net investor distributions. TeamSystem's 2017 Note 10 separately reports €52.1m finance costs paid, including €49.8m note interest. Visma's €892.646m + €11.665m = €904.311m bridge is confirmed. Sources, pages, qualifications and proposed corrections are in the [TeamSystem](25-teamsystem/REVIEW.md) and [Visma](22-visma/REVIEW.md) reviews.
 
-The main numerical teaching examples checked in the individual reviews generally work. Current DORA guidance does list five delivery-performance metrics; changing that to the historical four would introduce an error. The [current guide](https://dora.dev/guides/dora-metrics/) supports the chapter's count. The AI discussion also usefully distinguishes bounded experiments and later measurement problems. Focus corrections on actual scope and definition problems rather than replacing qualified evidence with familiar but outdated shorthand.
+All 41 configured pages have reviews and all manuscript wiki-link targets resolve. Bibliography “Used in” links agree with current inline identifiers. These are structural checks, not proof that each linked source substantiates every surrounding sentence. All 174 comic panel metadata blocks parse, their asset paths exist and recorded hashes match. No panel image changed between the reviewed manuscript baseline and current HEAD.
 
-The 29 main chapters contain 138 further-reading entries, including repeated sources. These annotations need the same source-scope discipline as the numbered bibliography. Some introduce factual claims without equivalent consultation notes. Separate optional reading from evidence actually used, and do not invent an author's consultation history when adding an entry.
+Nine panels are flagged for regeneration: returns 4; benefits 2; delivery 4; adviser 2 and 6; engagement 6; financing delay 2, 3 and 4. **Five further panels changed their dialogue without changing their images or receiving a flag:** returns 2 and 3, Hilton/Skype 6, Visma 6 and Toys R Us 3. These require visual verification; unchanged files and edited captions do not establish that embedded speech agrees. The new handover chapter has no comic, and that gap is honestly disclosed in the guide. Introduction and reference pages do not need companion formats merely to equalize counts.
 
-## Reading order, combinations and worthwhile additions
+The check did not certify every illustration or rendered layout, independently reanalyze research datasets, reconstruct all investor distributions, or determine the governing rights of fictional companies. The complete Toys R Us fiscal 2016 10-K access gap remains; its earnings release supports the checked financial figures separately. The PEI Hilton retrospective was accessible in this pass. Current Visma downloads failed, but cached original PDFs resolved the selected historical figures. Keep these limited checks distinct from a full audit and from the confirmed textual errors above.
 
-Keep the six-part architecture. For the complete-book route, preserve the existing money and governance sequence. Within Part III, consider moving “Fix the Decision Problem Before Adding People” directly after “Can the Software and the Team Deliver What Was Promised?” This groups diagnosis and organizational response before architecture and domain choices. It is a medium-impact editorial option; changing order alone will not fix overlap.
+## Current per-post review index
 
-Part V should provide four distinct jobs: diligence, the early funded plan, a delayed-financing response, and handover of continuing obligations. Splitting the last job out of the current financing chapter is the strongest structural recommendation. Move peer-network material to Part IV and regular authority/cadence explanations to governance or the engagement chapter. Retain only the communication required by the specific delayed-funding decision in the financing chapter.
+Priority indicates the highest remaining impact in that review, not a quality score. The order below matches configuration.
 
-Keep Hilton and Skype paired: their different periods, financing and exit mechanisms make the comparison valuable. Keep Visma and TeamSystem separate, but sharpen their respective lessons. Keep the acquisition/integration and separation routes within one chapter for now, with visible substructures; split only if adding enough practical detail to give each a full decision example.
-
-For a shorter edition, combining “Find the Help” and “Useful Engagement” is viable after removing repeated provider and charter advice. Keep “Investor's Adviser” separate because conflicted roles and authority are a different problem. If detailed waterfalls and fund-level return ratios remain important to secondary readers, move them into an explicitly optional fund-economics reference rather than extending the beginner's route. The existing orphan “optional appendix” sentence is not a reason to create one.
-
-Offer three short routes in the guide alongside the complete reading:
-
-| Immediate need | Suggested route |
-| --- | --- |
-| A promised investment must become a budget | Announcement → Obligations → Decide Who Decides → Cannot Fund Everything → Financing Slipped |
-| An operating improvement needs a credible case | Cannot Fund Everything → Roadmap to Revenue → Team Delivery → the relevant domain chapter → toolkit initiative/outcome records |
-| Investor help or an ownership change is imminent | Investor's Adviser → Find the Help → Useful Engagement, or Diligence → First Hundred Days → Handover, according to the event |
-
-The most useful additions fill existing promises:
-
-- **Essential within the revision:** one complete finding-to-funded-plan-to-review example, and an explicit handover destination.
-- **High value if broader ownership remains central:** a documented venture funding delay or minority-investment case, and eventually a corporate ownership case with actual rights, resources and operating consequences. Choose cases for available evidence, not for balanced labels.
-- **High value within existing chapters:** a worked disagreement involving employee, customer or supplier consequences. Introduce those effects during the investment choice, then return to them in the finale.
-- **Optional:** a companion evidence essay for fuller healthcare/research methods, if moving that material helps the finale synthesize the book. Preserve material findings and links in the finale itself.
-
-Avoid adding generic chapters on every emerging technology or another management template. Coverage is already broad; the missing element is often a completed application.
-
-## Revision order and per-post review index
-
-First repair the consequential inaccuracies and contradictory framing, especially Obligations, Toys R Us, TeamSystem and Growth Into Design. Then resolve chapter boundaries and promises, especially Financing Slipped, First Hundred Days, Raise the Money You Need, the support pair and the finale. Complete their shared examples before polishing dependent chapters. Update summaries, comics, introductions, toolkit, glossary and guide after the main arguments settle. Finish with the bibliography and a cross-reference/terminology pass.
-
-“High” below means a consequential correction, substantial structural work or an unmet central promise. “Medium” means focused rewriting or a missing example. “Low” means the page largely works and primarily needs coordination with revised chapters. These are revision priorities, not scores of the author's ability or the subject's importance.
-
-| Post, in current reading order | Priority | Main revision target |
+| Current page | Priority | Main remaining work |
 | --- | --- | --- |
-| [Reading guide](reading-guide/REVIEW.md) | Medium | Audience promise, simpler routes and synchronized titles/formats |
-| [Part I introduction](part-1-intro/REVIEW.md) | Low | Qualify funding/authority framing and trim repetition |
-| [Customers, Lenders and Investors](00-customers-lenders-investors/REVIEW.md) | Medium | Resolve the opening example and reduce public-market detours |
-| [Investment Announcement](01-announcement-is-not-a-budget/REVIEW.md) | High | Correct the earnings/budget contrast and focus the money map |
-| [Valuation](26-valuation-is-an-estimate/REVIEW.md) | High | Correct source scope and clarify the two learning stages |
-| [Three Different Returns](02-three-different-returns/REVIEW.md) | Medium | Lead with the promised comparison; subordinate fund ratios |
-| [Raise the Money You Need](03-raise-what-you-need/REVIEW.md) | High | Supply sizing or revise the title and scope |
-| [Obligations Before Budget](04-obligations-before-budget/REVIEW.md) | High | Correct payment-priority framing across formats |
-| [Part II introduction](part-2-intro/REVIEW.md) | Low | Preserve sequence; strengthen the brief bridge |
-| [Decide Who Decides](05-decide-who-decides/REVIEW.md) | Medium | Complete an approval record and delayed-decision response |
-| [Different Bets](06-different-bets/REVIEW.md) | Medium | Develop employee consequences; move leadership assessment |
-| [Investor Under Pressure](07-investor-under-pressure/REVIEW.md) | Medium | Finish the promised investor comparison |
-| [Part III introduction](part-3-intro/REVIEW.md) | Medium | Group the nine-chapter route |
-| [Cannot Fund Everything](28-cannot-fund-everything/REVIEW.md) | Medium | Bring forward the strong choice; clarify resource boundaries |
-| [Roadmap to Revenue](08-roadmap-to-revenue/REVIEW.md) | Medium | Complete the capacity-to-outcome decision |
-| [Team Delivery](09-can-the-team-deliver/REVIEW.md) | Medium | Sharpen diagnosis and align terminology/companions |
-| [Growth Into Design](27-growth-into-design/REVIEW.md) | High | Correct risk framing and finish an actual design choice |
-| [Cheaper Cloud Bill](10-cheaper-cloud-bill/REVIEW.md) | Medium | Clarify cost basis and complete a contract choice |
-| [Prove You Can Restore](11-prove-you-can-restore/REVIEW.md) | Medium | Center the recovery scenario and retest |
-| [AI Strategy](12-ai-strategy-three-questions/REVIEW.md) | Medium | Organize around the three questions and scope the operating proposal |
-| [Fix Decisions Before Hiring](13-fix-decisions-before-hiring/REVIEW.md) | Medium | Show the changed decision process and resulting staffing choice |
-| [Acquisition Adds Work](14-acquisition-adds-work-first/REVIEW.md) | Medium | Distinguish integration/separation routes and finish a transition |
-| [Part IV introduction](part-4-intro/REVIEW.md) | Low | Preserve chapter boundaries and continuing-service qualification |
-| [Investor's Adviser](15-investors-adviser/REVIEW.md) | Medium | Correct uniqueness claims and illustrate a role conflict |
-| [Find the Help](29-help-that-changes-capability/REVIEW.md) | High | Correct access claims and compare actual providers |
-| [Useful Engagement](30-useful-engagement/REVIEW.md) | High | Complete the charter and remove duplicated setup |
-| [Part V introduction](part-5-intro/REVIEW.md) | Medium | Reflect the financing/handover split |
-| [Diligence](16-diligence-corrects-the-plan/REVIEW.md) | Medium | Carry one finding into a company decision |
-| [First Hundred Days](17-first-hundred-days/REVIEW.md) | High | Deliver the promised funded plan |
-| [Financing Slipped](18-the-financing-slipped/REVIEW.md) | High | Separate urgent funding decisions from handover and peer support |
-| [Part VI introduction](part-6-intro/REVIEW.md) | Low | Map distinct case purposes and signal the finale |
-| [Hilton and Skype](21-hilton-and-skype/REVIEW.md) | Medium | Clarify technology chronology and consolidate repeated limits |
-| [Visma](22-visma/REVIEW.md) | High | Correct ESMA scope and strengthen the ownership/metrics connection |
-| [Toys R Us](23-toys-r-us/REVIEW.md) | High | Correct profitability and causal framing |
-| [TeamSystem](25-teamsystem/REVIEW.md) | High | Correct announced-versus-received status and complete the financial bridge |
-| [Success for Whom](24-success-for-whom/REVIEW.md) | High | Make the finale synthesize the cases and a real trade-off |
-| [Toolkit](toolkit/REVIEW.md) | High | Show a completed decision chain and remove stale appendix context |
-| [Glossary](glossary/REVIEW.md) | Medium | Standardize terminology and improve lookup |
-| [Bibliography](bibliography/REVIEW.md) | High | Reconcile substantive further-reading claims and evidence scope |
+| [Reading guide](reading-guide/REVIEW.md) | Medium | Describe shared scenarios and format equivalence accurately |
+| [Part I introduction](part-1-intro/REVIEW.md) | Low | Clarify which party makes a fund commitment |
+| [Customers, Lenders and Investors](00-customers-lenders-investors/REVIEW.md) | High | Debt-investor terminology; affordable fallback and authority |
+| [Investment Announcement](01-announcement-is-not-a-budget/REVIEW.md) | High | Transaction versus valuation; hiring and approval logic |
+| [Valuation](26-valuation-is-an-estimate/REVIEW.md) | High | Correct the unicorn percentage and benefit timing |
+| [Three Different Returns](02-three-different-returns/REVIEW.md) | Medium | Fund-manager scope and changed comic dialogue |
+| [Match the Funding to the Work](03-raise-what-you-need/REVIEW.md) | High | Cash versus capacity; complete loan repayment schedule |
+| [Cash Behind the Budget](04-obligations-before-budget/REVIEW.md) | Medium | Pilot cost boundary and incremental fallback cost |
+| [Part II introduction](part-2-intro/REVIEW.md) | Medium | Advisory influence versus decision authority |
+| [Decide Who Decides](05-decide-who-decides/REVIEW.md) | Medium | Fund the fallback and specify approval conditions |
+| [Different Bets](06-different-bets/REVIEW.md) | High | Fund exposure, transition timing and retention measure |
+| [Investor Under Pressure](07-investor-under-pressure/REVIEW.md) | Medium | Evidence for governance choice and follow-on availability |
+| [Part III introduction](part-3-intro/REVIEW.md) | Low | Preserve improved grouping; widen support handoff |
+| [Cannot Fund Everything](28-cannot-fund-everything/REVIEW.md) | High | Reconcile the recovery retest with the shared resource record |
+| [Roadmap to Revenue](08-roadmap-to-revenue/REVIEW.md) | High | Keep observed capacity separate from cash and future benefits |
+| [Team Delivery](09-can-the-team-deliver/REVIEW.md) | Medium | Respect lead-time boundaries; complete comic alignment |
+| [Fix Decisions Before Hiring](13-fix-decisions-before-hiring/REVIEW.md) | High | Preserve the funding gate; correct the work trace |
+| [Growth Into Design](27-growth-into-design/REVIEW.md) | Medium | Include recurring supplier and fallback costs |
+| [Cheaper Cloud Bill](10-cheaper-cloud-bill/REVIEW.md) | Medium | Separate improved unit cost from missing the spending plan |
+| [Prove You Can Restore](11-prove-you-can-restore/REVIEW.md) | High | Fund the retest and define accepted recovery scope |
+| [AI Strategy](12-ai-strategy-three-questions/REVIEW.md) | Medium | Reconcile throughput, recurring costs and decision gates |
+| [Acquisition Adds Work](14-acquisition-adds-work-first/REVIEW.md) | High | Make dual-running and independence milestones compatible |
+| [Part IV introduction](part-4-intro/REVIEW.md) | Low | Preserve distinct jobs and continuing-service allowance |
+| [Investor's Adviser](15-investors-adviser/REVIEW.md) | High | Qualify assessment authority and formal oversight |
+| [Find the Help](29-help-that-changes-capability/REVIEW.md) | Medium | One support calendar and comparable capped costs |
+| [Useful Engagement](30-useful-engagement/REVIEW.md) | Medium | Align pilot and engagement dates, costs and handover |
+| [Part V introduction](part-5-intro/REVIEW.md) | Medium | Correct the claim of one finding through all four chapters |
+| [Diligence](16-diligence-corrects-the-plan/REVIEW.md) | Medium | Sample denominator, compatible explanations and transaction terms |
+| [First Hundred Days](17-first-hundred-days/REVIEW.md) | High | Shared reserve, spending and maintenance commitments |
+| [Financing Slipped](18-the-financing-slipped/REVIEW.md) | High | Written versus received funding; funded continuation beyond December |
+| [Handover of Obligations — new](31-handover-of-obligations/REVIEW.md) | High | Actual spend, authority changes and accepted handover |
+| [Part VI introduction](part-6-intro/REVIEW.md) | Medium | Match case windows to the expanded evidence |
+| [Hilton and Skype](21-hilton-and-skype/REVIEW.md) | High | Use documented technology dates; preserve causal limits |
+| [Visma](22-visma/REVIEW.md) | Medium | Exits, plural vehicles and appropriate earnings comparisons |
+| [Toys R Us](23-toys-r-us/REVIEW.md) | Medium | Comic cash measure and proposed investment period |
+| [TeamSystem](25-teamsystem/REVIEW.md) | High | Finance charges versus cash paid; later realization evidence |
+| [Success for Whom](24-success-for-whom/REVIEW.md) | High | Contractual feasibility and actual cash consequences of the final choice |
+| [Toolkit](toolkit/REVIEW.md) | High | Reconcile the common record and finish section navigation |
+| [Fund economics — new](fund-economics/REVIEW.md) | High | Catch-up mechanics; cash-only and waterfall qualifications |
+| [Glossary](glossary/REVIEW.md) | High | Correct absolute budgeting, commitment and authority definitions |
+| [Bibliography](bibliography/REVIEW.md) | High | Finish source reconciliation; update dates and evidence limits |
 
-## Cross-references and companion formats
+## Revision sequence and acceptance criteria
 
-Replace generic next-chapter handoffs with links that answer the current reader's next question. Useful connections include the cash bridge to the delayed-funding decision; roadmap benefits to the outcome ledger; team assessment to organizational and design alternatives; recovery risk to the design chapter's failure-cost reasoning; diligence findings to the funded early plan; and TeamSystem's continuing obligations to the new handover chapter. The case chapters should point back to the specific method they illuminate rather than repeat the entire broader-ownership disclaimer.
+Repair the cash/loan calculations and shared initiative record first, then the consequential source claims and conditions on authority, hiring, transition and customer obligations. Use one agreed set of dates and measures for genuinely shared scenarios; make distinct scenarios explicit. Revise summaries and comic text from those settled arguments, inspect affected artwork, then synchronize introductions, guide, glossary, toolkit and bibliography. Preserve these reviews as independent feedback while the revision log records what was actually changed or remains open.
 
-The three reading formats need a shared argument, not identical prose. Several summaries and comic introductions repeat categorical claims that their full articles later qualify. The returns summary underplays the title's core comparison; the team-delivery comic includes design material not developed in the main article; the AI formats differ in emphasis on an organization-wide operating model. The individual reviews locate these mismatches.
-
-Keep comic scenes as fictional document discussions in the historical cases. For practical chapters, use more panels to show a choice, consequence or revised assumption; a sequence of people asking similar questions does less explanatory work. This is feedback on the comic text, not a judgment of the artwork.
-
-Enforce a defined convention for the promised 300–500-word summaries. Several run long even with citations and figure text excluded, especially AI and team delivery. Correct the substantive argument first, then shorten. Part introductions and the reference pages should be updated last so they accurately describe the final collection rather than preserving abandoned structures.
-
-## What a successful revision would achieve
-
-A reader should leave each substantive chapter able to explain one decision: what matters, which options are credible, what evidence is missing, who can act, and what changes next. The book should retain its financial care and technical substance while asking readers to carry fewer repeated abstractions. Its concluding standard should then be earned by the cases and choices they have encountered: who received the gains, who carried the costs, and what the company can continue to do.
+A successful next pass will let a reader reproduce each consequential calculation, identify the remaining commitment and decision-maker, and move between formats without losing a condition that changes the answer. It will retain the new concrete decisions and stronger structure while correcting their evidence and consequences. Completion requires those outcomes, not merely a checklist of files edited.

@@ -1,32 +1,32 @@
 # Editorial review: Judge an Investor by Their Behavior Under Pressure
 
-Reviewed 14 September 2026. Read the full article, summary and reader-facing comic text.
+Reassessed 15 September 2026 from the complete current article, summary and comic text, previous review, revision log and Git changes. See the [collection review](../REVIEW.md).
 
-## Overall assessment
+## Current assessment
 
-The post argues that investor fit must be assessed through difficult decisions, available resources and revisable commitments rather than reassuring promises. It addresses both prospective relationships and leaders who inherited an investor. Its reference questions, acknowledgement of biased accounts and distinction between uncomfortable challenge and interference are particularly strong.
+The two term sheets now lead to a comparison and a choice. The separate inherited-investor example changes a real planning dependency, and unavailable evidence becomes an explicit uncertainty with a review date. These are substantial improvements for the intended company leader. Preserve the balanced reference-checking advice: silence, confidentiality and a disgruntled executive's account are grounds for inquiry, not verdicts.
 
-The main weakness is an unresolved narrative promise. Ines has two term sheets, but readers never learn how the evidence changes her comparison. The article becomes an extensive interview guide, repeating financing questions from Part I and engagement questions from Part IV instead of demonstrating judgment under conflicting evidence.
+The remaining argument gap is the claim that Investor B's management-change and fund-life risks have been bounded. The actual terms shown do not do that. The order of work, references, support, funding and reassessment is otherwise coherent; the sharper conclusion earns its link to allocation. No revised outline is needed.
 
-## Detailed feedback
+## Active recommendations
 
-- **Introduction and audience:** The two-term-sheet scene is a good hook, and the explicit explanation for leaders who do not choose investors is welcome. However, those readers receive their most actionable advice only in “Test the Relationship You Have.” Bring the inherited-relationship route closer to the opening.
-- **Structure and flow:** Work needed → difficult references → support → funding is sensible. “Warning Signs,” “Test the Relationship You Have” and “Fit Is Not Settled at Signing” partly repeat the same call for specific commitments and escalation. A single reassessment section could do that work.
-- **Clarity and terminology:** Investor fit, term sheets and funding conditions are explained plainly. “Who owns the decision?” in the support questions could become “Who has authority to decide?” to maintain the book's distinction between ownership and responsibility.
-- **Tone and evidence:** The reference table invites follow-up rather than instant judgment. The paragraph explaining that an executive may have no relevant incident or be constrained by confidentiality is especially good. Preserve it. The distinction between a provider's advertised capabilities and evidence of availability is also appropriately careful.
-- **Examples and pacing:** Onboarding, a second country and a retiring founder give the opening a specific company situation, but the subsequent questions rarely use those details. The conditional co-investor example is concrete; the corporate exclusivity example is familiar from several other chapters and adds less here.
-- **Conclusion and missing decision:** The ending promises “specific commitments” but supplies no completed assessment, negotiated term or changed plan. It also leaves unclear what to do when useful references or fund information are unavailable. Missing evidence should become an explicit uncertainty in the plan rather than an endless request for more information.
-- **Accuracy and verification:** The article correctly avoids treating one reference or a refusal as proof of misconduct. No confirmed numerical or technical error was found in the text. The further-reading claim about industry-experienced partners should retain the empirical study's sector and period when expanded; a relationship in one study is not a guaranteed effect of assigning an experienced adviser.
-- **Other formats:** The shorter formats are faithful. The comic introduction says it tests two investors, but its panels offer general questions and never compare two alternatives. That is the same promise/payoff gap as the article.
+- **Medium — Show the protection that makes the choice of B credible.** After the comparison table, the text says the two uncertainties “can be bounded … with a written condition … [and] a governance term.” The table supplies a pilot-conditioned follow-on and operator days, but no management-change rule or term addressing the fund's remaining life. State the negotiated governance/continuity term, or honestly retain those risks as reasons the choice remains conditional. For example: “B makes the next funding decision more explicit; its exit pressure and management-change practice remain risks the board accepts, subject to further references.” Ten years is not an automatic company sale date; the body should retain the actual fund-term qualification.
+- **Medium — Distinguish reserved from contractually committed follow-on funding.** A reserve inside a fund is not itself a company entitlement. Specify the payer, amount, release deadline, whether the pilot condition is the only condition, and the state of the agreement. The example's “reserved €1.5 million … released when” otherwise promises more certainty than its evidence establishes. The summary and comic should keep the same funding state.
+- **Medium — Remove “the only guide” from “WHY YOU SHOULD CARE.”** Past behavior is useful evidence, alongside current resources, terms, people and circumstances; it is neither the only guide nor a guarantee. Suggested wording: “Past decisions help test promises of support; current terms and available resources determine which promises your plan can rely on.” This restores the body's balanced voice.
+- **Low — Keep the scenarios distinct at “When the Evidence Is Missing.”** That paragraph mixes B's follow-on with the AI-help dependency from the separately labelled inherited-investor scenario in one “Larkspur's plan.” Use two example entries or explicitly label them as alternatives. Comic panel 4 adds A/B service-decline details absent from the article; either integrate those observations into the comparison or keep the panel's wording as a question, not new evidence for the choice. Panel 5 should say a second account prompts investigation, rather than establishes a pattern by count alone.
 
-## Recommended changes
+## Verification and formats
 
-- **High impact — Resolve the two-investor setup.** Show a compact comparison: evidence obtained, remaining uncertainty, effect on Larkspur's next decisions and a negotiated commitment. Either investor can remain plausible; the lesson should be how the evidence changes the choice.
-- **High impact — Bring the inherited-relationship route forward.** Suggested transition: “If the investor is already in place, use this assessment to change one dependency in your plan: the funding date, approval route or support commitment.” Then demonstrate that change.
-- **Medium impact — Add a missing-evidence outcome.** Explain how to label support unconfirmed, avoid funding-dependent commitments and set a review date when references or information are unavailable. This keeps the method usable for leaders with limited access.
-- **Medium impact — Consolidate the last three sections.** Keep warning signs as observations to investigate, then one reassessment process with a link to the governance chapter. Move detailed engagement design to Part IV and retain only the evidence needed to assess credibility here.
-- **Low impact — Reduce repeated questions at the end.** Retain the next-three-decisions question and the question about one change within reach. The reference table already carries the interview detail.
+The €5m versus €4.5m plus conditional €1.5m comparison is explicitly fictional; no actual investor conduct is being verified. A lower valuation is stated, but the ownership percentages are not, so the comparison does not quantify dilution. That is acceptable if presented as a focused support/conditional-funding decision rather than a complete assessment of the term sheets. The revised restaurant-study annotation states sector, period and limits; it is not evidence that B's operator will succeed.
 
-## Proposed structure
+## Changes since the previous review
 
-Two offers, or one inherited dependency → define Larkspur's required contribution → gather and qualify evidence → compare both investors against the same needs → negotiate or revise one commitment → periodic reassessment. The balanced treatment of references should remain intact.
+| Previous recommendation | Current disposition |
+| --- | --- |
+| Resolve the two-investor setup | **Partially resolved:** comparison and choice supplied; claimed contractual protection remains incomplete. |
+| Bring forward and demonstrate the inherited-relationship route | **Resolved:** June hire becomes a dated July decision and pilot funding is separated. |
+| Provide a missing-evidence outcome | **Resolved:** unconfirmed state, protected commitments and review date. |
+| Consolidate reassessment and move engagement detail | **Resolved:** one main reassessment section and appropriate Part IV links. |
+| Reduce repeated questions | **Resolved:** four focused questions are an effective alternative to a still shorter list. |
+
+The later callout's exclusivity claim is a new finding, not evidence that the original reference-checking recommendation failed.

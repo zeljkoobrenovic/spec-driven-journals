@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** A product leader normally has to show that a change is useful. An investor may expect the change to support a particular growth, margin or retention target; the panels follow one roadmap item along the chain from work to result, testing each link, because that chain is the part most often asserted rather than shown.
+**Comic.** A product leader normally has to show that a change is useful. An investor may expect the change to support a particular growth, margin or retention target; the panels follow one roadmap item along the chain from work to result, testing each link, because that chain is the part most often asserted rather than shown, and end on what the pilot’s day-90 cohort showed.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -38,9 +38,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/08-roadmap-to-revenue/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. A customer reaches a usable product with fewer handoffs. Use one speech bubble with the exact words: \"Do customers reach value sooner?\" Convey: Fewer setup steps may help customers begin useful work sooner. That is a hypothesis until a cohort shows it; in the pilot, waiting time did not change.",
+  "prompt": "Panel 2 of an explainer comic. A customer reaches a usable product with fewer handoffs. Use one speech bubble with the exact words: \"Do customers reach value sooner?\" Convey: Fewer setup steps may help customers begin useful work sooner. That is a hypothesis until a cohort shows it; in the day-90 cohort, waiting time did not change.",
   "alt": "Comic panel: A customer reaches a usable product with fewer handoffs.",
-  "caption": "Fewer setup steps may help customers begin useful work sooner. That is a hypothesis until a cohort shows it; in the pilot, waiting time did not change.",
+  "caption": "Fewer setup steps may help customers begin useful work sooner. That is a hypothesis until a cohort shows it; in the day-90 cohort, waiting time did not change.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -52,7 +52,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: A customer reaches a usable product with fewer handoffs.](assets/images/08-roadmap-to-revenue/comic-02-scene.jpeg)
 
-**Panel 2:** Fewer setup steps may help customers begin useful work sooner. That is a hypothesis until a cohort shows it; in the pilot, waiting time did not change.
+**Panel 2:** Fewer setup steps may help customers begin useful work sooner. That is a hypothesis until a cohort shows it; in the day-90 cohort, waiting time did not change.
 
 *Dialogue:* “Do customers reach value sooner?”
 
@@ -108,9 +108,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/08-roadmap-to-revenue/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Alex adds implementation and ongoing costs to the proposal. Use one speech bubble with the exact words: \"Count the whole intervention.\" Convey: Include the €180,000 build and €30,000 a year of maintenance before claiming a net benefit, and say which conversion of the released time actually happened.",
+  "prompt": "Panel 5 of an explainer comic. Alex adds implementation and ongoing costs to the proposal. Use one speech bubble with the exact words: \"Count the whole intervention.\" Convey: Count the €180,000 build commitment (about €90,000 incurred by day 100) and the €30,000 a year of maintenance that starts next financial year before claiming a net benefit, and say which conversion of the released time actually happened.",
   "alt": "Comic panel: Alex adds implementation and ongoing costs to the proposal.",
-  "caption": "Include the €180,000 build and €30,000 a year of maintenance before claiming a net benefit, and say which conversion of the released time actually happened.",
+  "caption": "Count the €180,000 build commitment (about €90,000 incurred by day 100) and the €30,000 a year of maintenance that starts next financial year before claiming a net benefit, and say which conversion of the released time actually happened.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -121,7 +121,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex adds implementation and ongoing costs to the proposal.](assets/images/08-roadmap-to-revenue/comic-05-scene.jpeg)
 
-**Panel 5:** Include the €180,000 build and €30,000 a year of maintenance before claiming a net benefit, and say which conversion of the released time actually happened.
+**Panel 5:** Count the €180,000 build commitment (about €90,000 incurred by day 100) and the €30,000 a year of maintenance that starts next financial year before claiming a net benefit, and say which conversion of the released time actually happened.
 
 *Dialogue:* “Count the whole intervention.”
 
@@ -131,19 +131,20 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/08-roadmap-to-revenue/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Priya compares an introduced prospect’s request with existing customer needs and the work it would displace. Use one speech bubble with the exact words: \"Does this serve the market we chose?\" Convey: An investor introduction is a lead, not a product strategy. Test the need and willingness to pay as with any prospect, and make the displaced work explicit before changing the roadmap.",
-  "alt": "Comic panel: Priya compares an introduced prospect’s request with existing customer needs and the work it would displace.",
-  "caption": "An investor introduction is a lead, not a product strategy. Test the need and willingness to pay as with any prospect, and make the displaced work explicit before changing the roadmap.",
+  "prompt": "Panel 6 of an explainer comic. Priya and Sam at the day-100 board review: a simple board shows hours per setup falling from 80 to 62, beside a customer queue that is still the same length. Use one speech bubble with the exact words: \"We saved hours; we have not yet served more customers.\" Convey: The setup step released 18 hours per implementation, but customers still waited for their own data, so the queue did not move. The board funds one €40,000 data-quality step from the reserve, keeps hiring and expansion deferred, and stops if the next cohort is not at 50 hours or less with waiting time down.",
+  "alt": "Comic panel: Priya and Sam at the day-100 review, hours down from 80 to 62 beside an unchanged customer queue.",
+  "caption": "The setup step released 18 hours per implementation, but customers still waited for their own data, so the queue did not move. The board funds one €40,000 data-quality step from the reserve, keeps hiring and expansion deferred, and stops if the next cohort is not at 50 hours or less with waiting time down.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
     "sha256": "0802ccb2924f7cf2f4cf3c72b3fd1b51758403750ad9c92634ab90bc4e0bc0c8"
-  }
+  },
+  "needs_regeneration": true
 }
 -->
 
-![Comic panel: Priya compares an introduced prospect’s request with existing customer needs and the work it would displace.](assets/images/08-roadmap-to-revenue/comic-06-scene.jpeg)
+![Comic panel: Priya and Sam at the day-100 review, hours down from 80 to 62 beside an unchanged customer queue.](assets/images/08-roadmap-to-revenue/comic-06-scene.jpeg)
 
-**Panel 6:** An investor introduction is a lead, not a product strategy. Test the need and willingness to pay as with any prospect, and make the displaced work explicit before changing the roadmap.
+**Panel 6:** The setup step released 18 hours per implementation, but customers still waited for their own data, so the queue did not move. The board funds one €40,000 data-quality step from the reserve, keeps hiring and expansion deferred, and stops if the next cohort is not at 50 hours or less with waiting time down.
 
-*Dialogue:* “Does this serve the market we chose?”
+*Dialogue:* “We saved hours; we have not yet served more customers.”

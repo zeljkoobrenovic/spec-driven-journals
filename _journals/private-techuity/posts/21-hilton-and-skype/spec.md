@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: Hilton and Skype: A Successful Exit Still Needs Explaining
@@ -26,7 +26,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Explain the title question and its implications for a concrete company decision.
 - Distinguish sourced observations, the manuscript's analysis, and explicitly fictional examples.
 - Include a meaningful trade-off or counterargument and identify the evidence that would change the judgment.
-- Give each company an inherited-capability / documented-change / remaining-uncertainty row drawn only from the cited sources; where a source cannot date a change, say so rather than attributing it to ownership.
+- Give each company an inherited-capability / documented-change / remaining-uncertainty row drawn only from the cited sources; use the dates the sources supply, and keep a dated event distinct from a measured contribution to the return.
 - Link related chapters and cite substantive external factual claims close to the text.
 - Keep the TL;DR and six-panel comic script consistent with the full article.
 
@@ -55,6 +55,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-15: Editorial revision: date the technology chronology from primary filings (OnQ introduced 2003 and installed system-wide by end-2005 per Hilton's 2003 and 2005 annual filings, S64–S65; Qik acquisition, group video calling and Citrix partnership dated January–March 2011 per the Skype registration filing, S27), separate missing causal attribution from missing chronology in the key points, summary and comic panel 2, trim the closing restatements and the investor callout, and flag comic panel 6 for regeneration because its image still shows the previous dialogue; permalink and id unchanged.
 - 2026-09-14: Editorial revision: preview the Hilton/Skype contrast and add an opening comparison table, add a sourced technology-chronology row per company (no change dated to ownership where the sources do not date it), consolidate repeated evidence limits into one closing paragraph, finish on the two operating questions with the final figure before the handoff, correct the eBay 2007 impairment annotation and trim the questions; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “Hilton and Skype: Two Successful Exits” to “Hilton and Skype: A Successful Exit Still Needs Explaining”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.

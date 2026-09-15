@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-15
 ---
 
 # Spec: Turn an Offer of Help Into a Useful Engagement
@@ -49,6 +49,7 @@ Existing chapters provide the financial and governance foundations. Where releva
 
 ## Changelog
 
+- 2026-09-15: Editorial revision per the 15 September review: two clocks named (days from closing, engagement weeks from day 21); charter dated (start day 21, scope change week three ≈ day 40, review week six ≈ day 63, cohort day 90 read at the day-100 board review) and costed (€1,500 a day cap, ten days = €15,000 inside ONB-1’s €180,000 and the ≈€90,000 incurred by day 100); the shared cost table and calendar added; “budget is intact” now means within the agreed cap; handover qualified to two setups on one path; boundaries section retitled and authority rule kept local; comic panel 6 dialogue changed to “Our team ran it without the specialist” (regeneration still flagged); permalink and id unchanged.
 - 2026-09-14: Editorial revision per review: charter completed for the ONB-1 pilot support, week-three scope change and week-six review carried through the same engagement, opening and sponsor label corrected, repeated role/measurement advice reduced to applied paragraphs with links, Figure 2 moved before the handoff; comic panel 6 rewritten to the handover (regeneration flagged); permalink and id unchanged.
 - 2026-09-14: Retitle the post from “Turn an Offer of Help into a Useful Engagement” to “Turn an Offer of Help Into a Useful Engagement”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.
