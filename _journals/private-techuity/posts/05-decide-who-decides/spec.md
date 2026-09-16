@@ -1,13 +1,13 @@
 ---
 status: accepted
-revised: 2026-09-15
+revised: 2026-09-16
 ---
 
 # Spec: Decide Who Decides, Before You Disagree
 
 ## Intent
 
-Help leaders establish decision authority when founders, multiple minority investors, a controlling financial sponsor or a corporate parent have different rights. Organize the chapter around one filled-in Larkspur decision record (a misheard cloud suggestion, the €1 million onboarding proposal, a conditional delivery date) and show what happens when the approval it depends on is late. Adviser influence, confidentiality and support charters are owned by the Part IV chapters and only linked here.
+Help leaders establish decision authority when founders, multiple minority investors, a controlling financial sponsor or a corporate parent have different rights. Organize the chapter around one filled-in Larkspur decision record (a misheard cloud suggestion, the €1 million onboarding proposal, a conditional delivery date) and show what happens when the approval it depends on is late. Adviser influence, confidentiality and support charters are owned by the Part IV chapters and only linked here. Map authority explicitly for executive appointments, changes to the headcount plan and a reduction, and distinguish a formal approval right from a funding condition and from informal influence; the worked appointment and reduction decisions live in [[fix-decisions-before-hiring]] and [[headcount-plan-shrinks]].
 
 ## Audience
 
@@ -19,6 +19,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is generated from its six-panel storyboard with consistent fictional characters and preserved captions.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
+- Give the generic lookup table rows for an executive appointment, a change to the headcount plan and a reduction, and add one short passage that names the three kinds of pressure a company leader must tell apart (a formal approval right from the agreements, a condition attached to money, and influence without authority) with the response each requires.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
 - Introduce necessary terms in ordinary language before using them in explanations, examples, tables, or diagrams; keep opening key points readable without prior study.
 - Move from a concrete question through explanation and example to a practical conclusion; connect the conclusion to the next chapter in the configured reading order.
@@ -54,6 +55,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-16: Investor impact on hiring and reductions: lookup table gains executive appointment, headcount-plan change and reduction rows; new passage distinguishing a formal approval right, a funding condition and informal influence, linking the appointment and reduction chapters. Summary aligned; permalink and id unchanged.
 - 2026-09-15: Fund the January fallback from the first stage already approved in the cash chapter (€210,000: the canonical €180,000 build plus €30,000 first-year maintenance; twelve engineer-weeks) and state the hiring approval condition (board, May meeting, on first-quarter collections and the first three pilot implementations); record the canonical delegation rule (reserve draws and changes to what an envelope funds are reserved to the board; permanent hires outside the headcount plan likewise) and use it to explain the €40,000 board request; mark the cloud remark, onboarding proposal and scheduling rewrite as separate illustrations; keep the investor callout conditional. Summary and comic intro/caption aligned; permalink and id unchanged.
 - 2026-09-14: Reorganize around the filled Larkspur decision record with generic roles afterward, add the missed-deadline branch and a three-sentence board update, cut the shadow-hierarchy and coaching-confidentiality material to a short parallel-instructions warning linking the adviser and engagement chapters, and replace "owns" with "is accountable for"; permalink and id unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.

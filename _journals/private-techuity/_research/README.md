@@ -2,7 +2,8 @@
 
 **Private working notes; excluded from `config.yaml` and the rendered journal.** These files support revision and may identify confidential inputs. The reader-facing manuscript begins at [the book index](../index.md).
 
-- [Owned rewrite and validation](owned-revision.md) — current revision; earlier decisions are historical.
+- [Owned rewrite and validation](owned-revision.md) — the September 2026 rewrite; earlier decisions are historical.
+- [Investor impact on hiring, headcount and layoffs](investor-workforce-impact-plan.md) — 16 September 2026 plan, implementation record and validation evidence; the newest revision.
 - [Second research and accessibility pass](research-pass-02.md)
 - [Accepted working-title decision](title-decision.md)
 - [Editorial thesis and architecture](editorial-thesis.md)

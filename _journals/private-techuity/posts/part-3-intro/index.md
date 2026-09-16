@@ -29,7 +29,7 @@ This is the center of the book, and its nine chapters follow three moves. Throug
 **Then assess and change the delivery system.**
 
 - [[can-the-team-deliver]] assesses what the software and the team can support, producing a finding the next two chapters use.
-- [[fix-decisions-before-hiring]] changes decision-making and responsibilities before adding people, and decides whether hiring still proceeds.
+- [[fix-decisions-before-hiring]] changes decision-making and responsibilities before adding people, decides whether hiring still proceeds, and tests whether an investor-proposed appointment is the right response.
 - [[growth-into-design]] chooses one implementation from the assessed constraint, with its funded transition.
 
 **Finally, apply the same reasoning to major operating choices.**

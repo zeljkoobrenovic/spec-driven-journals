@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-15
+revised: 2026-09-16
 ---
 
 # Spec: Glossary
@@ -49,6 +49,7 @@ See the bibliography and the relevant chapters. The source registry records cons
 
 ## Changelog
 
+- 2026-09-16: Workforce terms added (headcount plan, hiring freeze, redeployment, reduction in force, notice period, severance, collective consultation, funding condition) with index entries.
 - 2026-09-15: Replace the cash-only budgeting sentences with the funding-state principle; repair the term-sheet, announced-value, accountable-leader, investment-committee, shareholder, adviser and operating-team rows; add Authority and Lender rows and the missing index entries (Audited financial statements, Authority, Lender, Term sheet, Terminal value); align catch-up, waterfall and RVPI wording with [[fund-economics]]; soften the how-to-use certification to an editorial objective. Permalink unchanged.
 - 2026-09-14: Add the how-to-use paragraph and alphabetical index, split overloaded rows, add the terminology-sheet entries (roles and sponsors section, funding states, measures with scope and period, lead times, retained and announced value), broaden the AI definition with a verified OECD citation, and remove the Productscapes entry, per the editorial review; permalink and id unchanged.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.

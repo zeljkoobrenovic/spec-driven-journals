@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-15
+revised: 2026-09-16
 ---
 
 # Spec: PART V — Leading Through Funding and Ownership Changes
@@ -20,7 +20,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
 - Orient a beginner using ordinary language, briefly recall what the previous part established, and explain the next learning step without assuming later vocabulary.
 - Say why the part exists and what its chapters do together, in under 400 words.
-- Walk the chapters in order, one line each, showing why that order. Name each chapter by its linked title rather than a number, so the list survives renumbering.
+- Walk the chapters in order, one line each, showing why that order (five destinations after the reduction chapter joins: diligence, funded early plan, delayed financing, the plan that must shrink, handover). Name each chapter by its linked title rather than a number, so the list survives renumbering.
 - State what the reader should be able to do by the end — and, where it matters, what the part will not give them.
 - Hand off to the next part in the closing line.
 
@@ -48,6 +48,7 @@ None. These pieces describe the book's own structure and make no external factua
 
 ## Changelog
 
+- 2026-09-16: Five destinations: [[headcount-plan-shrinks]] added after the delayed-financing chapter as the continuation of that separate scenario; excerpt and closing promise updated.
 - 2026-09-15: Describe the evidence trail as the chapters demonstrate it: the onboarding finding runs diligence → funded plan → handover (with the earlier pilot and support episodes in Parts III–IV and the toolkit); the financing-delay chapter is a separate scenario with its own figures. Keep one nonlinearity statement.
 - 2026-09-14: Describe four destinations after the split of the financing chapter (diligence, funded early plan, delayed financing, handover of obligations), state nonlinearity once, qualify how much an event changes and promise the finding that travels through all four chapters. Permalink unchanged.
 - 2026-09-13: Align the specification heading with the current part-introduction title.

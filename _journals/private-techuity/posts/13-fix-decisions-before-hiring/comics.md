@@ -84,9 +84,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/13-fix-decisions-before-hiring/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Alex considers a leadership change beside unclear authority. Use one speech bubble with the exact words: \"Which conditions would also change?\" Convey: Before replacing a leader, state a testable hypothesis: what new leadership must enable, and what evidence shows the capability is missing. If the conditions are changed and the leader does not use them, the evidence supports added leadership with authority, or replacement.",
+  "prompt": "Panel 4 of an explainer comic. Alex considers a leadership change beside unclear authority. Use one speech bubble with the exact words: \"Which conditions would also change?\" Convey: Before replacing a leader, state a testable hypothesis: what new leadership must enable, and what evidence shows the capability is missing. If the conditions are changed and the leader does not use them, the evidence supports added leadership with authority, or replacement. The same test decides whether an investor-proposed appointment is the answer.",
   "alt": "Comic panel: Alex considers a leadership change beside unclear authority.",
-  "caption": "Before replacing a leader, state a testable hypothesis: what new leadership must enable, and what evidence shows the capability is missing. If the conditions are changed and the leader does not use them, the evidence supports added leadership with authority, or replacement.",
+  "caption": "Before replacing a leader, state a testable hypothesis: what new leadership must enable, and what evidence shows the capability is missing. If the conditions are changed and the leader does not use them, the evidence supports added leadership with authority, or replacement. The same test decides whether an investor-proposed appointment is the answer.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -97,7 +97,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex considers a leadership change beside unclear authority.](assets/images/13-fix-decisions-before-hiring/comic-04-scene.jpeg)
 
-**Panel 4:** Before replacing a leader, state a testable hypothesis: what new leadership must enable, and what evidence shows the capability is missing. If the conditions are changed and the leader does not use them, the evidence supports added leadership with authority, or replacement.
+**Panel 4:** Before replacing a leader, state a testable hypothesis: what new leadership must enable, and what evidence shows the capability is missing. If the conditions are changed and the leader does not use them, the evidence supports added leadership with authority, or replacement. The same test decides whether an investor-proposed appointment is the answer.
 
 *Dialogue:* “Which conditions would also change?”
 

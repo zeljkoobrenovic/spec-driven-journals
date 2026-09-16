@@ -8,7 +8,7 @@ This is a living journal and a work in progress: a draft built by [Željko Obren
 
 Start with [the purpose and reading guide](posts/introduction/index.md). It explains the company leader’s responsibilities, the comparative ownership lens, the fictional company and routes for different funding and ownership situations.
 
-The book contains 30 main chapters across six parts. Each main chapter includes an article, a 300–500-word summary and a six-panel illustrated comic. The edition includes 40 header logos and 40 navigation icons, alongside 180 comic panels and a dedicated Owned journal logo; the fund-economics reference page still needs its logo and icon.
+The book contains 31 main chapters across six parts. Each main chapter includes an article, a 300–500-word summary and a six-panel comic; thirty comics are illustrated. The edition includes 40 header logos and 41 navigation icons, alongside 180 comic panels and a dedicated Owned journal logo. The fund-economics reference page still needs its logo and icon, and the reduction chapter added on 16 September 2026 awaits its six panels, two figures, TL;DR visual, logo and icon.
 
 ## Contents
 
@@ -59,24 +59,25 @@ Ask for help the company can use and agree the cost, authority and continuing de
 
 ### Part V — Leading Through Funding and Ownership Changes
 
-Lead through diligence, the early funded plan, delayed financing and the handover of continuing obligations.
+Lead through diligence, the early funded plan, delayed financing, the plan that must shrink and the handover of continuing obligations.
 
 - [[part-5]] — part introduction
 - **22.** [[diligence-corrects-the-plan]]
 - **23.** [[first-hundred-days]]
 - **24.** [[the-financing-slipped]]
-- **25.** [[handover-of-obligations]]
+- **25.** [[headcount-plan-shrinks]]
+- **26.** [[handover-of-obligations]]
 
 ### Part VI — Lessons from the Field
 
 Test leadership judgments against specific histories while keeping the evidence in scope.
 
 - [[part-6]] — part introduction
-- **26.** [[hilton-and-skype]]
-- **27.** [[visma]]
-- **28.** [[toys-r-us]]
-- **29.** [[teamsystem]]
-- **30.** [[success-for-whom]]
+- **27.** [[hilton-and-skype]]
+- **28.** [[visma]]
+- **29.** [[toys-r-us]]
+- **30.** [[teamsystem]]
+- **31.** [[success-for-whom]]
 
 ### Reference Material
 
@@ -87,4 +88,4 @@ Test leadership judgments against specific histories while keeping the evidence 
 
 ## Editorial Status
 
-This living manuscript follows the six-part structure in [STRUCTURE.md](STRUCTURE.md) and the Owned rewrite in [PLAN.md](PLAN.md). Leadership under investor ownership is the central subject. Private equity remains the deepest historical treatment; broader comparisons state their assumptions and evidence limits. Articles, summaries and illustrated comics share the revised framing. The artwork and bold emphasis are in place. The 14 September 2026 editorial review (`posts/REVIEW.md` and per-post `REVIEW.md`) was implemented the same day; `posts/REVISION_LOG.md` records each disposition.
+This living manuscript follows the six-part structure in [STRUCTURE.md](STRUCTURE.md) and the Owned rewrite in [PLAN.md](PLAN.md). Leadership under investor ownership is the central subject. Private equity remains the deepest historical treatment; broader comparisons state their assumptions and evidence limits. Articles, summaries and illustrated comics share the revised framing. The artwork and bold emphasis are in place. The 14 September 2026 editorial review (`posts/REVIEW.md` and per-post `REVIEW.md`) was implemented the same day; `posts/REVISION_LOG.md` records each disposition. On 16 September 2026 the investor-workforce revision (`_research/investor-workforce-impact-plan.md`) expanded the organization chapter’s treatment of investor-proposed appointments, added the Part V reduction chapter, and extended the toolkit, glossary and bibliography.

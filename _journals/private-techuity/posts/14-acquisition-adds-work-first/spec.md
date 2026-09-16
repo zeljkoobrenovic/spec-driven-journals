@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-15
+revised: 2026-09-16
 ---
 
 # Spec: An Acquisition Adds Work Before It Adds Value
@@ -25,6 +25,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Make summaries and comic storyboards understandable on their own; preserve source limits and label fictional scenarios, including changes in example assumptions.
 - Explain the title question and its implications for a concrete company decision.
 - Give “Combining businesses” and “Separating a business” visible sections, each with its own Larkspur example that ends with the chosen option, alternatives rejected, funding, scarce capacity, who is authorized and the evidence that would change it, and each with a stated completion test.
+- Connect staffing synergies priced into a transaction to the transition cost, notice timing and knowledge-transfer checks in [[headcount-plan-shrinks]] and [[fix-decisions-before-hiring]] in one sentence each, without developing a reduction case here.
 - Carry the group-versus-local standardization boundary point (stated problem, cost of compliance, exceptions process, named funder of the transition) in the integration-depth section; use responsibility language rather than “owns”; link to the authority chapter instead of re-establishing minority versus controlling rights.
 - Distinguish sourced observations, the manuscript's analysis, and explicitly fictional examples.
 - Include a meaningful trade-off or counterargument and identify the evidence that would change the judgment.
@@ -56,6 +57,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-16: Staffing synergies connected to the reduction chapter’s transition and capability checks; permalink and id unchanged.
 - 2026-09-15: Make the carve-out calendar feasible per the 15 September review: milestones 31 Oct 2026 / 31 Dec 2026 / 28 Feb 2027 so every parent service is off by 30 April before the May 2027 independence test, with a dated calendar table, TSA scope and cost (€35,000 a month in three bundles, €320,000 on the plan, €157,500 extension held as contingency); completion tests follow the chosen integration depth and exclude deliberate supplier relationships; the two engineers’ twenty-six project weeks are derived; opening callouts keep the “can” qualification; both Larkspur examples declared separate from the Part V record. Permalink and id unchanged.
 - 2026-09-14: Restructure into “Combining businesses” and “Separating a business” under one boundary-and-continuity principle, add the add-on capacity decision and the dated carve-out bridge with an independence test, correct the opening to remove the investor-timetable generalization, absorb the standardization boundary point from the team-delivery chapter and hand off to Part IV, per the editorial review; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “The Deal Closes Long Before the Integration Does” to “An Acquisition Adds Work Before It Adds Value”. Permalink and id unchanged; body unchanged.

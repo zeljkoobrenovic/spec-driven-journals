@@ -21,6 +21,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Keep historical findings within their source scope and label new comparative scenarios as fictional. Describe the one deliberate shared chain by the chapters that actually carry it (diligence, the funded early plan and its review, the handover, with the earlier pilot and support episodes and the toolkit record) and name the delayed-financing chapter as a separate illustration.
 - Describe the reading formats as companions that carry the same decision and its material conditions at different depth, not as interchangeable substitutes, and keep the comic-coverage disclosure accurate.
 - Make the page usable by a beginner: explain how to start, define labels plainly, and link the relevant teaching chapters.
+- Offer reading routes for “the investor wants a leadership change” and “we must reduce headcount”, and keep the contents list and chapter counts in step with the configured order (31 main chapters after the reduction chapter joins Part V).
 - State the primary reader and an accurate accessibility promise (no finance training assumed; technical questions are explained but not avoided); offer decision routes before the full tour; keep the contents list as a secondary lookup aid; keep the Part IV heading identical to the configured title.
 
 Readers can find, interpret, and use the material without confusing evidence with proposals or fictional examples. Navigation is stable; confidential provenance remains outside site content.
@@ -31,7 +32,7 @@ Exhaustive coverage, a universal role charter, or a claim of completed professio
 
 ## Modalities
 
-This reference page uses the Article modality. The 30 main chapters additionally provide a TL;DR; each of them also has a six-panel illustrated comic (the handover chapter’s was added on 2026-09-15). Reference material is not padded with redundant adaptations.
+This reference page uses the Article modality. The 31 main chapters additionally provide a TL;DR and a six-panel comic storyboard; thirty have generated artwork (the handover chapter’s was added on 2026-09-15) and the reduction chapter’s panels are pending generation. Reference material is not padded with redundant adaptations.
 
 ## Open questions
 
@@ -59,4 +60,5 @@ See the bibliography and the relevant chapters. The source registry records cons
 - 2026-09-12: Add the author-requested ai-notes KEY POINTS opening; preserve article-specific conclusions and caveats.
 - 2026-09-12: Initial reference-page specification for the living draft.
 - 2026-09-16: Added "Why This Book Exists, and How It Is Written": the motivation (financial and legal aspects of investment are well covered; the effect on product and engineering is not, which breeds confusion, missed opportunities and misuse of "investors want us to…" claims) and the living-journal statement with the author link, matching the journal description.
+- 2026-09-16 (investor workforce impact): two reading routes added (leadership change; headcount reduction); Part V description, the shared-chain note, the contents list and the format counts updated for the new chapter [[headcount-plan-shrinks]].
 - 2026-09-16 (review response): Figures 1 and 2 regenerated to match the text (four questions: owners, rights, funding, what is changing; the discontinued Productscapes branch removed from the reading journey); venture-investor definition qualified against the SEC glossary; motivation reframed as the author’s observed gap with the problem separated from the book’s response; shared-example map lists allocation and measured outcomes and separates the chain from the financing-delay example; reading-format wording no longer says only the article carries figures and sources; readers pointed to each chapter’s specification changelog; modality inventory and revision date reconciled.

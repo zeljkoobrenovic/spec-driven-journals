@@ -1537,3 +1537,43 @@ Response to the reassessed `posts/introduction/REVIEW.md` of 16 September (the p
 **Declined:** none.
 **Unresolved / needs separate action:** Figure 1 carries four small incidental prop labels ("New feature", "Process update", "Today", "Future") beyond the requested cards; they invent no facts and were left. The reading guide's "still being reconciled" caveat about summaries and comics remains until the author decides to lift it.
 **Verification:** all 79 cross-links in the introduction resolve; no leftover "Twenty-nine", "only the article carries", "searching for a repeatable" or "revision log beside" phrasing; both figures read back against the text; build run, `docs/private-techuity/introduction.html` and its three assets present.
+
+---
+
+# Revision log — investor impact on hiring, headcount and layoffs, 16 September 2026
+
+Implementation of `_research/investor-workforce-impact-plan.md` (six steps). Specifications were revised before their articles; permalinks unchanged; the author’s staged `manuscripts/owned/resources/title_page.jpg` left untouched.
+
+## 13-fix-decisions-before-hiring — Fix the Decision Problem Before Adding People (`fix-decisions-before-hiring`)
+
+**Files changed:** spec.md, index.md, summary.md, comics.md (panel 4 caption and prompt only; artwork unchanged).
+**Implemented:**
+- Plan step 1 — new section “When the Investor Proposes an Appointment”: five forms of investor involvement (proposing a role, introducing candidates, selection, compensation approval, assessing incumbents); a formal approval right (fictional reserved matter over executive officers’ hiring, dismissal and pay, modelled on S76 §5.4(g)), a funding condition and influence distinguished; the fictional CPO proposal compared as external recruitment / developing Priya / narrower support, decided (senior product manager plus Priya’s development, CPO role design written, six-month evidence review) with chosen option, rejected alternatives, funding, authority, success evidence; investor-introduced candidates assessed against the company’s role design with conflicts declared; a responsibility table for product priorities, product management, design and research, and engineering.
+- Opening sentence and closing handoff point to [[headcount-plan-shrinks]]; TL;DR gains the appointment paragraph and stays at 500 words; comic panel 4 caption extended by one sentence (scene unchanged, no regeneration).
+- `timetoread` 14 → 17 min.
+
+## 32-headcount-plan-shrinks — When the Headcount Plan Shrinks (`headcount-plan-shrinks`) — new
+
+**Files created:** spec.md, index.md, summary.md, comics.md (six pending panels); wired into `config.yaml` after the delayed-financing chapter in Part V.
+**Implemented:** plan step 2 in full — the delayed-financing scenario continued from 1 October with the bridge commitment’s condition; the staffing and payroll baseline (40 people, €324,000 payroll, €50,000 contractors, €76,000 non-payroll, €250,000 collected revenue, €200,000 burn) reproducing the earlier chapter’s €200,000 / €150,000 / €500,000 figures; funding condition, formal approval right and influence separated; seven alternatives costed on one basis; R2 (eight roles, €72,000 a month recurring, €120,000 one-off) reconciled by month with notice periods, severance ramp and cash under three plans (€505,000 at 30 June with the bridge; €200,000 without R2; reserve breached in January without the bridge); a full decision record; the team after the plan, work stopped, customer commitments revised, the transfer test inside the notice period; leavers’ terms and the order of the day; the remaining team’s stopped list and on-call change; jurisdiction thresholds from S77 and S78 with no claim about Larkspur’s law; two variations (margin-driven; post-acquisition consolidation); handoff to the handover chapter.
+**Artwork:** two article-figure placeholders, the TL;DR overview placeholder, six comic panels, the header logo and the navigation icon are staged as prompts (`_research/logo-and-icon-prompts-20260913.json`, `_research/summary-visual-prompts-20260913.json`, the placeholders in the files) and **await generation**: no `GEMINI_API_KEY` was available in the 16 September session. Dry runs of all three generators pass.
+
+## Supporting chapters (plan step 3)
+
+- **05-decide-who-decides:** lookup table gains executive appointment, headcount-plan change and reduction rows; new passage distinguishing a formal approval right, a funding condition and influence with the response each requires; TL;DR sentence added and trimmed to 500 words.
+- **06-different-bets:** the unresolved-burden section links the consolidation’s notice, severance, stopped work and merged-team workload to the new chapter; no figures changed.
+- **29-help-that-changes-capability:** recruiting support tied to candidate assessment against the company’s role design, declared conflicts of interest and company accountability, linking the CPO decision.
+- **18-the-financing-slipped:** the deeper reduction is handed to the new chapter in the R1 passage, the continuation paragraph and the closing handoff; TL;DR closing clause updated; figures unchanged and still declared separate from the shared ledger.
+- **14-acquisition-adds-work-first:** staffing synergies connected to notice timing, severance and the knowledge-transfer test, and to the new chapter’s consolidation check.
+- **31-handover-of-obligations:** opening and Part V recap name the reduction chapter; TL;DR parenthetical adjusted at 500 words.
+
+## Navigation and tools (plan step 4)
+
+- **introduction:** two reading routes (“The investor wants a leadership change”; “We must reduce headcount”); Part V description, the shared-chain note, format counts and the contents list (31 main chapters) updated.
+- **toolkit:** Tool 13, the workforce-decision record (twelve fields including the investor request’s kind, decision authority, baseline, alternatives, cash timing, work stopped, jurisdiction check, employee consequences, communication, review) with a navigation-table row; the spec’s “no new templates” criterion replaced by a one-template allowance.
+- **part-5-intro** (five destinations), **part-3-intro** (appointment clause), **glossary** (eight workforce terms with index entries), **bibliography** (S77 Council Directive 98/59/EC via the legislation.gov.uk copy; S78 US WARN Act §§ 2101–2102 via Cornell LII; S76 widened to §5.4(g); topic row; window to 16 September), journal `index.md`, `README.md`, `STRUCTURE.md` (decision record), `PLAN.md` (contract), `_research/README.md`, `_research/next-session.md`, `_research/bibliography-revision-history.md`.
+
+**Adapted:** EUR-Lex refused automated access, so the directive text was read in the UK statute-book copy and the entry says so. Chapter-end reading for the new chapter verified by page fetch (HBR) or Crossref metadata (AMJ, Journal of Management, California Management Review) after publisher pages returned 403; left unregistered under the further-reading policy.
+**Declined:** registering a source for the survivor-turnover claim inline (kept as a pointer to the reading list); adding the new terms to `_research/sources.json`, which already lags the register from S64.
+**Unresolved / needs separate action:** artwork generation for the new chapter (see above); `_research/sources.json` reconciliation; the introduction’s “still being reconciled” caveat remains.
+**Verification:** see the completion record in `_research/investor-workforce-impact-plan.md`.

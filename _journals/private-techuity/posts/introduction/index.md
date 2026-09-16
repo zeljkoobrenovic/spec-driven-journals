@@ -48,6 +48,8 @@ The six parts are ordered for learning, and the complete sequence is the default
 | Owners want more growth or earnings than the team can support | [[raise-what-you-need]] → [[cannot-fund-everything]] → [[fix-decisions-before-hiring]] |
 | Investor requests compete with customer needs | [[roadmap-to-revenue]] → [[decide-who-decides]] → [[investor-under-pressure]] → [[success-for-whom]] |
 | A corporate investor wants integration or access to data | [[acquisition-adds-work-first]] → [[prove-you-can-restore]] → [[useful-engagement]] |
+| The investor wants a leadership change | [[decide-who-decides]] → [[fix-decisions-before-hiring]] → [[help-that-changes-capability]] → [[investors-adviser]] |
+| We must reduce headcount | [[the-financing-slipped]] → [[headcount-plan-shrinks]] → [[different-bets]] → the [[toolkit]] workforce-decision record |
 
 If your decision is the first one in the table — an announced investment that someone expects to become a hiring plan — read [[announcement-is-not-a-budget]] now and the rest in order later.
 
@@ -68,7 +70,7 @@ The practical impact of any investment therefore depends on its actual terms, **
 
 ## How the Parts Build on Each Other
 
-Part I supplies the financial tools to understand your owners and your available cash. Part II establishes authority, incentives and working relationships. Part III turns expectations into choices about product, engineering and people; it is the center of the book. Part IV helps you obtain useful help, from the investor or elsewhere. Part V follows one finding from diligence into a funded early plan, its review and a handover; its delayed-financing chapter is a separate illustration of how a dated cash forecast changes commitments. Part VI examines historical cases and closes with the book’s standard for success.
+Part I supplies the financial tools to understand your owners and your available cash. Part II establishes authority, incentives and working relationships. Part III turns expectations into choices about product, engineering and people; it is the center of the book. Part IV helps you obtain useful help, from the investor or elsewhere. Part V follows one finding from diligence into a funded early plan, its review and a handover; its delayed-financing chapter, and the reduction chapter that continues it, are a separate illustration of how a dated cash forecast changes commitments and, when the money is late enough, the team. Part VI examines historical cases and closes with the book’s standard for success.
 
 Each part introduction explains its chapters and the order. On a first pass, read in order, since each chapter builds on terms introduced earlier: [[valuation-is-an-estimate]] teaches financial valuation, and [[growth-into-design]] later applies those concepts to a design choice once the product and engineering foundations are in place.
 
@@ -94,11 +96,11 @@ One chain is a deliberate exception, and it is the only one. A single onboarding
 
 The [[toolkit]] shows the record those chapters write, stage by stage. Follow that chain to see one decision carried all the way through, from evidence to money to what was left undone.
 
-The delayed-financing chapter ([[the-financing-slipped]]) is not part of that chain. It is a separate illustration of how a dated cash forecast changes commitments when expected money arrives late; its cash, burn, hires and dates are its own and do not add to the chain’s figures. “€m” means millions of euros.
+The delayed-financing chapter ([[the-financing-slipped]]) and the reduction chapter that continues it ([[headcount-plan-shrinks]]) are not part of that chain. They are a separate illustration of how a dated cash forecast changes commitments when expected money arrives late, and what a reduction costs by date; their cash, burn, people and dates are their own and do not add to the chain’s figures. “€m” means millions of euros.
 
 ## Choose a Reading Format
 
-Each main chapter provides an **Article** and a 300–500-word **TL;DR** summary. TL;DR means “too long; didn’t read.” All thirty main chapters also have a six-panel **Comic**, illustrated, with captions and dialogue transcripts. The six part introductions and the reference pages have no TL;DR or comic.
+Each main chapter provides an **Article** and a 300–500-word **TL;DR** summary. TL;DR means “too long; didn’t read.” All thirty-one main chapters also have a six-panel **Comic** with captions and dialogue transcripts; thirty are illustrated, and the reduction chapter’s artwork is pending. The six part introductions and the reference pages have no TL;DR or comic.
 
 For a shorter first pass, read the part introductions and the summaries. The formats are companions rather than substitutes. Each one is written to reach the same decision and to keep the conditions that decide whether that decision holds; what varies is depth: the article gives the fullest calculations, the discussion of sources and the alternative cases, while every format keeps the conditions that would change the decision. The summaries and comics of this September 2026 revision are still being reconciled chapter by chapter, so where a short format and the article disagree, the article is the one to trust.
 
@@ -157,16 +159,17 @@ The site navigation lists the same chapters; this list is here for lookup.
 - **22.** [[diligence-corrects-the-plan]]
 - **23.** [[first-hundred-days]]
 - **24.** [[the-financing-slipped]]
-- **25.** [[handover-of-obligations]]
+- **25.** [[headcount-plan-shrinks]]
+- **26.** [[handover-of-obligations]]
 
 ### Part VI — Lessons from the Field
 
 - [[part-6]] — part introduction
-- **26.** [[hilton-and-skype]]
-- **27.** [[visma]]
-- **28.** [[toys-r-us]]
-- **29.** [[teamsystem]]
-- **30.** [[success-for-whom]]
+- **27.** [[hilton-and-skype]]
+- **28.** [[visma]]
+- **29.** [[toys-r-us]]
+- **30.** [[teamsystem]]
+- **31.** [[success-for-whom]]
 
 ### Reference Material
 

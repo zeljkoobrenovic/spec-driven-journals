@@ -18,9 +18,9 @@ icon: "assets/icons/bibliography.png"
 > * **Keep evidence, proposed methods and fictional examples distinct.** The cases and studies here are evidence about what happened in particular settings; the book’s templates and worked examples are the author’s proposals.
 
 <br>
-This page lists the sources consulted for the book. Sources were consulted between September 12 and September 15, 2026; each entry carries its own consultation date. Each entry states the version and the material consulted; access to a document does not imply that every page was reviewed, and publication dates and study periods differ from the consultation dates. Where an individual date affects how a figure or a claim should be read, the entry gives it.
+This page lists the sources consulted for the book. Sources were consulted between September 12 and September 16, 2026; each entry carries its own consultation date. Each entry states the version and the material consulted; access to a document does not imply that every page was reviewed, and publication dates and study periods differ from the consultation dates. Where an individual date affects how a figure or a claim should be read, the entry gives it.
 
-Source identifiers are stable. **S** marks a public source and **P** a supplied private input; the numbers identify, they do not rank. Identifiers are never reassigned, so gaps stay (there is no S38) and a citation in a chapter keeps meaning the same document. The register currently runs to S76. Private inputs are described without publishing their contents or file details.
+Source identifiers are stable. **S** marks a public source and **P** a supplied private input; the numbers identify, they do not rank. Identifiers are never reassigned, so gaps stay (there is no S38) and a citation in a chapter keeps meaning the same document. The register currently runs to S78. Private inputs are described without publishing their contents or file details.
 
 ## Topic Index
 
@@ -30,7 +30,8 @@ Use this table to find evidence by question. A source can appear under more than
 | --- | --- | --- |
 | Valuation, earnings measures and investor returns | S03, S04, S05, S06, S52, S53, S73, S74 | [[valuation-is-an-estimate]], [[three-different-returns]], [[fund-economics]] |
 | Cash, funding forms and financing documents | S01, S02, S07, S54, S55, S56, S57, S58, S59, S60, S61, S72 | [[customers-lenders-investors]], [[announcement-is-not-a-budget]], [[obligations-before-budget]] |
-| Governance, rights and incentives | S01, S02, S04, S61, S76 | [[decide-who-decides]], [[different-bets]] |
+| Governance, rights and incentives | S01, S02, S04, S61, S76 | [[decide-who-decides]], [[different-bets]], [[fix-decisions-before-hiring]] |
+| Workforce reductions and employment process | S77, S78 | [[headcount-plan-shrinks]] |
 | Delivery, architecture and cloud cost | S13, S14, S15, S16, S53, S75 | [[can-the-team-deliver]], [[roadmap-to-revenue]], [[cheaper-cloud-bill]] |
 | Security and resilience | S17 | [[prove-you-can-restore]] |
 | AI evidence | S18, S19, S20, S21, S63 | [[ai-strategy-three-questions]] |
@@ -662,11 +663,27 @@ Fastly, Inc. [Fourth Quarter and Fiscal Year 2020 Shareholder Letter](https://ww
 
 ### S76 — Avalyn Pharma investors' rights agreement
 
-Avalyn Pharma Inc. [Amended and Restated Investors' Rights Agreement, section 3.2 (Inspection Rights)](https://www.sec.gov/Archives/edgar/data/1540171/000119312526147573/ck0001540171-ex4_2.htm). April 25, 2025; filed as an exhibit.
+Avalyn Pharma Inc. [Amended and Restated Investors' Rights Agreement, sections 3.2 (Inspection Rights) and 5.4 (Board Matters Requiring Approval of Preferred Directors)](https://www.sec.gov/Archives/edgar/data/1540171/000119312526147573/ck0001540171-ex4_2.htm). April 25, 2025; filed as an exhibit.
 
-**Evidence type:** Filed contract between a company and its investors. **Consulted scope:** Section 3.2 only, read for a right granted to each major investor and its authorized representatives to visit and inspect the company's properties, examine its corporate and financial records and discuss its affairs, finances and accounts with its officers, during normal business hours, with carve-outs for trade secrets, confidential information and material whose disclosure would affect attorney-client privilege, and excluding investors the board has determined to be competitors. One filed example showing that such rights are commonly written down in advance; it does not establish what any other company's agreement grants.
+**Evidence type:** Filed contract between a company and its investors. **Consulted scope:** Section 3.2, read for a right granted to each major investor and its authorized representatives to visit and inspect the company's properties, examine its corporate and financial records and discuss its affairs, finances and accounts with its officers, during normal business hours, with carve-outs for trade secrets, confidential information and material whose disclosure would affect attorney-client privilege, and excluding investors the board has determined to be competitors. Section 5.4(g), read on September 16, 2026, which lists among the board matters requiring the preferred directors' approval the decision to "hire, terminate, or change the compensation of the executive officers, including approving any option grants or stock awards to executive officers". One filed example showing that such rights are commonly written down in advance; it does not establish what any other company's agreement grants.
 
-**Used in:** [[investors-adviser]].
+**Used in:** [[investors-adviser]], [[fix-decisions-before-hiring]].
+
+### S77 — Council Directive 98/59/EC
+
+Council of the European Union. [Council Directive 98/59/EC of 20 July 1998 on the approximation of the laws of the Member States relating to collective redundancies](https://www.legislation.gov.uk/eudr/1998/59). 20 July 1998; consulted September 16, 2026 in the UK statute-book copy on legislation.gov.uk, because EUR-Lex (CELEX 31998L0059) refused automated access during the session.
+
+**Evidence type:** Union legislation. **Consulted scope:** Article 1(1)(a) thresholds (over 30 days: at least 10 dismissals in establishments of 20 to 100 workers, at least 10% in 100 to 300, at least 30 in 300 or more; or at least 20 over 90 days where a member state so chooses), Article 2(1) consultation of workers’ representatives in good time with a view to reaching an agreement, Article 3(1) written notification of the competent public authority and Article 4(1) the 30-day period before notified redundancies take effect. Minimum requirements that member states transpose and may exceed; not the law of any particular country, and the book does not say which law governs the fictional company. Later amendments were not reviewed.
+
+**Used in:** [[headcount-plan-shrinks]].
+
+### S78 — US WARN Act, 29 U.S.C. §§ 2101–2102
+
+United States Code, Title 29, Chapter 23. [§ 2101, Definitions; exclusions from definition of loss of employment](https://www.law.cornell.edu/uscode/text/29/2101) and [§ 2102, Notice required before plant closings and mass layoffs](https://www.law.cornell.edu/uscode/text/29/2102) (the Worker Adjustment and Retraining Notification Act). Consulted September 16, 2026 in the Legal Information Institute’s copy of the US Code.
+
+**Evidence type:** Federal statute. **Consulted scope:** The definitions of employer (100 or more employees, excluding part-time employees), plant closing (an employment loss for 50 or more employees at a single site) and mass layoff (at least 33 percent of the employees and at least 50 employees, or at least 500), and the requirement in § 2102(a) not to order a plant closing or mass layoff until 60 days after written notice to the employees’ representatives or the employees, the state and the local government. The implementing regulations, state notice laws and the statutory exceptions were not reviewed.
+
+**Used in:** [[headcount-plan-shrinks]].
 
 ## Supplied Private Inputs
 

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-15
+revised: 2026-09-16
 ---
 
 # Spec: PART III — Turning Investor Expectations Into Commitments
@@ -48,6 +48,7 @@ None. These pieces describe the book's own structure and make no external factua
 
 ## Changelog
 
+- 2026-09-16: The organization chapter’s line notes that it also tests an investor-proposed appointment.
 - 2026-09-15: Widen the closing handoff to Part IV to “help from the investor or another source”; the three-move grouping and the level of detail of the learning path are preserved. Permalink unchanged.
 - 2026-09-14: Group the nine chapters into three moves (choose and justify work; assess and change the delivery system; apply the reasoning to operating choices) and reflect the new order in which fix-decisions-before-hiring follows can-the-team-deliver. Permalink unchanged.
 - 2026-09-14: Retitle the post from “PART III — Turning Investor Expectations into Commitments” to “PART III — Turning Investor Expectations Into Commitments”. Permalink and id unchanged; body unchanged.

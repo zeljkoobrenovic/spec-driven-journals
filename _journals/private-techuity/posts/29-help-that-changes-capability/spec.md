@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-15
+revised: 2026-09-16
 ---
 
 # Spec: Find the Help That Changes What Your Team Can Do
@@ -21,6 +21,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Open without an exclusivity claim: an investor may give faster access; compare it with alternatives, including the time and obligations each route brings; allow mixed investor motives.
 - Show one sourcing decision among credible alternatives for the same onboarding need, ending with the chosen option, alternatives rejected, funding, scarce capacity, who is authorized and the evidence that would change it, consistent with the shared Larkspur chain.
 - Keep one support map (the company-need table); treat peer communities as one source in a compressed paragraph; keep the continuing-service allowance and “Borrow experience with its context attached”; link charter and coaching detail to the adjacent chapters.
+- Connect investor recruiting support to candidate assessment against the company’s role design, declared conflicts of interest (a candidate from the investor’s network, a search firm the investor pays) and the company’s accountability for the appointment, in one short passage that points to the worked CPO decision in [[fix-decisions-before-hiring]] rather than repeating it.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
 - Define necessary terms before using them, and begin with a recognizable company decision.
@@ -49,6 +50,7 @@ Existing chapters provide the financial and governance foundations. Where releva
 
 ## Changelog
 
+- 2026-09-16: Investor recruiting support connected to candidate assessment, conflicts of interest and company accountability, with a link to the CPO decision in the organization chapter; permalink and id unchanged.
 - 2026-09-15 (verification pass): independent-route calendar recomputed from the day-7 request — seven to nine weeks’ procurement means a start about day 56 to 70, five to seven weeks later than the investor’s specialist (was “four to six”), and a six-week assignment ending about day 98 to 112 (was “day 91 to 105”); comic panel 5 caption/prompt updated to match (spoken text unchanged, no regeneration); broken antecedent after the shared calendar table repaired.
 - 2026-09-15: Editorial revision per the 15 September review: the four-route comparison put on the shared Larkspur calendar (days from closing; comparison about day 7, specialist day 21 to about day 63, cohort day 90, board review day 100); fictional capped costs added (€1,500 a day, ten days = €15,000 from ONB-1’s €180,000, inside the ≈€90,000 incurred by day 100; hire ≈€150,000 a year); independent route’s lead time made explicit (seven to nine weeks); choice made provisional on references; editorial scaffolding sentence removed; investor callout scoped to fund managers; comic panel 5 caption updated without regeneration; permalink and id unchanged.
 - 2026-09-14: Editorial revision per review: exclusivity opening replaced, investor-category catalogue removed, a four-route sourcing comparison and the written request added, peer-network material absorbed from the-financing-slipped, research annotations qualified; comic captions reworded without regeneration; permalink and id unchanged.

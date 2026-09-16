@@ -1,6 +1,6 @@
 # Rewrite Plan — OWNED: Product & Engineering Leadership Under Investors
 
-**Status:** implemented; final validation and installation recorded in `_research/owned-revision.md`
+**Status:** implemented; final validation and installation recorded in `_research/owned-revision.md`. Extended on 2026-09-16 by the investor-workforce revision (`_research/investor-workforce-impact-plan.md`), which added one Part V chapter and the contracts below marked 2026-09-16.
 **Date:** 2026-09-13
 
 ## Editorial decision
@@ -60,7 +60,7 @@ New institutional guidance supports descriptions of venture, expansion and corpo
 - `10-cheaper-cloud-bill`: Evaluate cloud costs and commitments under runway, profitable expansion and group purchasing. Compare temporary credits with continuing economics and contract duration with the company’s funded horizon.
 - `11-prove-you-can-restore`: Make security and recovery obligations explicit when funding is uncertain or investors offer shared services. Tie risk acceptance to company authority and test access boundaries under minority and corporate ownership.
 - `12-ai-strategy-three-questions`: Assess data and AI proposals against customer use, total cost and ownership-related pressure. Distinguish a fundraising demonstration, a repeatable commercial capability and strategic data access.
-- `13-fix-decisions-before-hiring`: Turn investor growth, earnings and integration expectations into a credible team plan. Examine conditional hiring, changing incentives, leadership accountability and the cost of losing capability.
+- `13-fix-decisions-before-hiring`: Turn investor growth, earnings and integration expectations into a credible team plan. Examine conditional hiring, changing incentives, leadership accountability, investor involvement in key appointments (2026-09-16) and the cost of losing capability.
 - `14-acquisition-adds-work-first`: Treat acquisition and separation as changes to product obligations and authority. Distinguish sponsor consolidation, a strategic acquisition and a separation funded by any suitable owner.
 - `15-investors-adviser`: Explain how a company leader can work with the investor’s adviser. Keep the supplied Technology Principal role explicitly fund-specific and compare it with venture support, corporate specialists and an investor with no operating team.
 - `29-help-that-changes-capability`: Help company leaders request useful investor support under different arrangements. Compare possible expertise, networks and corporate access while testing availability, incentives and the cost of dependence.
@@ -68,6 +68,7 @@ New institutional guidance supports descriptions of venture, expansion and corpo
 - `16-diligence-corrects-the-plan`: Help company leaders shape feasible commitments before a funding round, control transaction or strategic investment. Match evidence and access to the decision and prevent the transaction story from outrunning delivery capacity.
 - `17-first-hundred-days`: Use the early period after funding or an ownership change to establish a funded operating plan. Adapt the priorities to a minority round, buyout or corporate acquisition; avoid assuming every investment replaces the owner.
 - `18-the-financing-slipped`: Lead through ongoing ownership, delayed funding, refinancing, changed expectations and possible sale or integration. Prepare an honest handover without treating an exit as the inevitable next stage.
+- `32-headcount-plan-shrinks` (2026-09-16): Follow a product and engineering reduction from the investor’s request to an authorized, funded plan, continuing the delayed-financing scenario. Distinguish a funding condition, a formal approval right and influence; reconcile notice, severance, savings and cash by date; show the team, the work stopped, the commitments revised and the consequences for the people who leave and remain, with jurisdiction-tied process details.
 - `21-hilton-and-skype`: Use the documented ownership periods to distinguish investor proceeds from company capability and product continuity. Treat Skype’s strategic acquisition as a change of decision context, not proof of general strategic-owner behavior.
 - `22-visma`: Examine changing investors behind a continuing manager and the implications for local product authority and shared capability. Keep the historical evidence specific to the periods and measures actually documented.
 - `23-toys-r-us`: Use the documented cash and operating pressures to test the feasibility of a technology plan. Distinguish a transferable funding-dependency question from a causal claim about venture-backed or strategically owned companies.

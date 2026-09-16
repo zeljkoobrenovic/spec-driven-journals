@@ -1,13 +1,13 @@
 ---
 status: accepted
-revised: 2026-09-15
+revised: 2026-09-16
 ---
 
 # Spec: Fix the Decision Problem Before Adding People
 
 ## Intent
 
-Turn investor growth, earnings and integration expectations into a credible team plan by letting a diagnosis produce the staffing decision. Start from the finding in [[can-the-team-deliver]], trace one fictional Larkspur pricing change through its queue, separate decision, knowledge and staffing constraints, change the decisions first, and show whether hiring proceeds, changes shape or is deferred. This chapter is the book’s home for leadership assessment (the leadership-change hypothesis absorbed from [[different-bets]], combined with the role assessment, including a case where replacement or added leadership is justified). Keep the full-cost location comparison and the knowledge-transfer test.
+Turn investor growth, earnings and integration expectations into a credible team plan by letting a diagnosis produce the staffing decision. Start from the finding in [[can-the-team-deliver]], trace one fictional Larkspur pricing change through its queue, separate decision, knowledge and staffing constraints, change the decisions first, and show whether hiring proceeds, changes shape or is deferred. This chapter is the book’s home for leadership assessment (the leadership-change hypothesis absorbed from [[different-bets]], combined with the role assessment, including a case where replacement or added leadership is justified) and for investor involvement in key appointments: proposing a role, introducing candidates, influencing selection, approving compensation and assessing incumbents. Work one fictional proposal to appoint a chief product officer through recruitment, developing the existing leader and adding narrower support, and decide it. Keep the full-cost location comparison and the knowledge-transfer test. Reductions are handed to [[headcount-plan-shrinks]].
 
 ## Audience
 
@@ -21,8 +21,9 @@ Product and engineering leaders inside companies working under investors, includ
 - Distinguish recurring savings from first-year transition cash (€800,000 recurring, €200,000 saving, €1.05m first year), and describe nearshoring by geographic or time-zone proximity, with cultural similarity checked rather than assumed.
 - Trace one Larkspur change with a step table (sixteen working days: 3 + 7 + 2 + 3 + 1, two of building), remove the decision waits by delegation as an initial forecast, state the remaining knowledge gap, and record the staffing decision with chosen option, alternatives rejected, funding, scarce capacity, authority and reversing evidence.
 - State the leadership-change hypothesis and show it cutting both ways: systemic diagnosis first, replacement or added leadership when the conditions are changed and unused.
+- Add a section on investor involvement in appointments that separates a formal approval right (a fictional reserved matter over executive officers’ hiring, dismissal and pay, modelled on the filed clause in [S76]), a funding condition and informal influence; work the CPO proposal through three options (external recruitment, developing Priya, narrower support) with what each enables, its cost, its timing and its risk; record who decides, what authority the role receives, how it is funded and how success is assessed; and give the responsibility implications for product management, design, research and engineering in one table. Investor-introduced candidates are assessed against the company’s role design, with conflicts of interest declared; the company appoints and remains accountable.
 - No prevalence claims about what investment plans “usually” or “rarely” fund; no private role brief as argumentative support (provenance stays in the bibliography).
-- Hand off to [[growth-into-design]] with the system constraint (country rules coupled into the invoicing module) explicitly still open.
+- Hand off to [[growth-into-design]] with the system constraint (country rules coupled into the invoicing module) explicitly still open; point to [[headcount-plan-shrinks]] for a plan that must shrink rather than grow, without repeating its reduction method here.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
 - Introduce necessary terms in ordinary language before using them in explanations, examples, tables, or diagrams; keep opening key points readable without prior study.
@@ -59,6 +60,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-16: Investor impact on hiring: added the appointments section (investor proposes a CPO; formal right versus funding condition versus influence; recruit / develop / narrower support compared and decided; role authority, funding, success evidence; responsibility table for product, design, research and engineering); S76 widened to its executive-officer clause; handoff to the new reduction chapter. Summary and comic panel 4 caption aligned; permalink and id unchanged.
 - 2026-09-15: Editorial revision: the deferred five-person team keeps both gates (demand evidenced and the round committed and approved); the opening takes only the three-week / under-two-day measures from [[can-the-team-deliver]] and lets the trace supply the 3 + 7 + 2 + 3 + 1 = 16-day split; the six saved days are an initial forecast; a persistent queue after sixty days triggers a new trace rather than a hire; the protected specialist day is paid for by a named reassignment; the leadership case names the evidence and the remedy; adviser dependence distinguished from a purchased continuing service. Summary and comic captions aligned.
 - 2026-09-14: Editorial revision: opened with the funded-resources-without-decision-changes diagnosis instead of a “usually fund / rarely fund” generalization, added the sixteen-day trace table and the delegation step, made the diagnosis produce a reshaped hire (one billing engineer now, second team conditional), absorbed the leadership-change hypothesis from [[different-bets]] with a case where replacement is justified, removed the role brief as support, kept nearshoring’s geography/time-zone distinct from cultural similarity, cut standardization/autonomy to one boundary question with links, and rerouted the handoff to [[growth-into-design]]; permalink and id unchanged.
 - 2026-09-14: Retitle the post from “Capability Includes How People Decide and Coordinate” to “Fix the Decision Problem Before Adding People”. Permalink and id unchanged; body unchanged.
