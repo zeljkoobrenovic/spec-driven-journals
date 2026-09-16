@@ -637,7 +637,7 @@ def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str, crosslink_in
     index_html = (
         index_tpl
         .replace("__TITLE__", _html_escape(title))
-        .replace("__DESCRIPTION__", _html_escape(description))
+        .replace("__DESCRIPTION__", _description_html(description))
         .replace("__JOURNAL__", _html_escape(journal_dir.name))
         .replace("__LOGO_HTML__", logo_html)
         .replace("__DATA_JSON__", _embed_json(index_payload))
@@ -744,6 +744,19 @@ def _byline(meta: dict) -> str:
     if meta.get("timetoread"):
         parts.append(meta["timetoread"])
     return "  ·  ".join(parts)
+
+
+_MD_LINK = re.compile(r"\[([^\]]+)\]\((https?://[^)\s]+)\)")
+
+
+def _description_html(s: str) -> str:
+    """HTML-escape a config description, then turn markdown links into anchors.
+
+    Only ``[text](https://…)`` is recognized, so a description stays plain text
+    unless the author deliberately writes a link.
+    """
+    escaped = _html_escape(s)
+    return _MD_LINK.sub(lambda m: f'<a href="{m.group(2)}">{m.group(1)}</a>', escaped)
 
 
 def _html_escape(s: str) -> str:

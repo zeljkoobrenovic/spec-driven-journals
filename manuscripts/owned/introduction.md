@@ -1,7 +1,9 @@
-{id: reading-guide}
-# OWNED — Reading Guide
+{mainmatter}
 
-![OWNED — Reading Guide — logo](private-techuity/posts/reading-guide/assets/images/reading-guide/logo.jpeg)
+{id: introduction}
+# 1. Introduction & Reading Guide
+
+![Introduction & Reading Guide — logo](private-techuity/posts/introduction/assets/images/introduction/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn what this book is for, which route to take for the decision in front of you, and how to read its fictional examples and historical evidence.
 
@@ -17,7 +19,14 @@ Your company has new investors. The announcement promises growth and support. Wi
 
 The company’s ownership setting doesn’t remove your judgment or responsibility. Sometimes you can approve a change yourself. Sometimes you must negotiate funding, challenge a target or ask the board to choose between incompatible outcomes. The book helps you distinguish those situations and make the consequences clear.
 
-{id: reading-guide--start-with-the-decision-in-front-of-you}
+{id: introduction--why-this-book-exists-and-how-it-is-written}
+## Why This Book Exists, and How It Is Written
+
+The financial, legal, and general business aspects of outside investment are well covered: there is no shortage of material on term sheets, valuations, fund structures, and deal mechanics. Far less has been written about **what an external investment does to product and engineering**: which commitments it creates, which money and authority the team can actually count on, and how a roadmap, an architecture decision or a hiring plan should change once the ownership changes. This gap breeds **mystery and confusion** inside companies, and it **costs them opportunities**, because leaders who cannot read the arrangement cannot use it. It also **invites misuse**. Claims that begin with “investors want us to…” are used to push agendas that nobody in the room has examined, often without anyone knowing what th e investors actually require or whether they were even asked. This book exists to close that gap from the company leader’s side: to give product and engineering leaders the vocabulary and working methods to test such claims, ask the right questions, and make commitments they can keep.
+
+This book is a living journal and a work in progress: a draft by [Željko Obrenović](https://obren.io), who keeps revising it as he learns more about its topics. Chapters change as better evidence, sharper examples, and reader questions arrive; the specifications and revision log beside each chapter record what changed and why. Read it as current thinking with its limits stated, not as a finished text.
+
+{id: introduction--start-with-the-decision-in-front-of-you}
 ## Start With the Decision in Front of You
 
 The six parts are ordered for learning, and the complete sequence is the default for a first reading. If a decision is already waiting, start with one of these routes and return to Part I when a financial term is unfamiliar.
@@ -34,7 +43,7 @@ The six parts are ordered for learning, and the complete sequence is the default
 
 If your decision is the first one in the table — an announced investment that someone expects to become a hiring plan — read [An Investment Announcement Is Not a Budget](#announcement-is-not-a-budget) now and the rest in order later.
 
-{id: reading-guide--owners-rights-funding-and-change}
+{id: introduction--owners-rights-funding-and-change}
 ## Owners, Rights, Funding, and Change
 
 This book focuses mainly on private companies working with **outside investors**. Founder self-funding serves as a point of comparison, and public markets come up where they influence financing or ownership changes, but leadership in public companies is not covered in detail.
@@ -47,22 +56,22 @@ These labels tell you roughly what kind of investor you’re dealing with, but n
 
 The practical impact of any investment therefore depends on its actual terms, **established case by case**: the investor’s rights, the financing, the support available and the time horizon. The events a leader faces, from a first round to a sale or continued ownership, arrive in any order; each sends you to a different part of the book, which is why the routes above exist.
 
-![A company commitment depends on actual owners, funding, decision rights and expectations.](private-techuity/posts/reading-guide/assets/images/reading-guide/four-questions-before-a-commitment.jpeg)
+![A company commitment depends on actual owners, funding, decision rights and expectations.](private-techuity/posts/introduction/assets/images/introduction/four-questions-before-a-commitment.jpeg)
 
 **Figure 1:** *A company commitment depends on actual owners, funding, decision rights and expectations.*
 
-{id: reading-guide--how-the-parts-build-on-each-other}
+{id: introduction--how-the-parts-build-on-each-other}
 ## How the Parts Build on Each Other
 
 Part I supplies the financial tools to understand your owners and your available cash. Part II establishes authority, incentives and working relationships. Part III turns expectations into choices about product, engineering and people; it is the center of the book. Part IV helps you obtain useful help, from the investor or elsewhere. Part V follows one finding from diligence into a funded early plan, its review and a handover; its delayed-financing chapter is a separate illustration of how a dated cash forecast changes commitments. Part VI examines historical cases and closes with the book’s standard for success.
 
 Each part introduction explains its chapters and the order. On a first pass, read in order, since each chapter builds on terms introduced earlier: [A Valuation Is an Estimate, Not a Fact](#valuation-is-an-estimate) teaches financial valuation, and [Turn “We Expect Growth” Into a Design Decision](#growth-into-design) later applies those concepts to a design choice once the product and engineering foundations are in place.
 
-![The book moves from money and decisions through company work, support, ownership changes and field lessons.](private-techuity/posts/reading-guide/assets/images/reading-guide/owned-reading-journey.jpeg)
+![The book moves from money and decisions through company work, support, ownership changes and field lessons.](private-techuity/posts/introduction/assets/images/introduction/owned-reading-journey.jpeg)
 
 **Figure 2:** *The reading sequence builds the foundations before applying them to work, support and changing ownership.*
 
-{id: reading-guide--meet-the-fictional-company}
+{id: introduction--meet-the-fictional-company}
 ## Meet the Fictional Company
 
 **Larkspur** sells scheduling software to maintenance businesses. Its customers organize appointments and assign people to work. A recurring challenge is **customer onboarding**: the setup and help needed before a customer can use the product successfully.
@@ -73,14 +82,14 @@ The chapters place Larkspur in alternative situations: learning with limited cas
 
 One chain is a deliberate exception, and it is the only one. A single onboarding finding — that setting up a new customer depends on one specialist’s manual work — is carried from the investigation before the investment ([Diligence Is Your Chance to Correct the Plan Before It Is Signed](#diligence-corrects-the-plan)) into the funded early plan and its day-100 review ([The First Hundred Days: Turn Expectations Into a Funded Plan](#first-hundred-days)) and on into the handover ([Hand Over the Obligations, Not Just the Company](#handover-of-obligations)). The same initiative and the recovery test funded beside it also appear earlier, in the restore chapter of Part III ([Prove You Can Restore, Not Just That You Back Up](#prove-you-can-restore)) and in the support chapters of Part IV ([Find the Help That Changes What Your Team Can Do](#help-that-changes-capability), [Turn an Offer of Help Into a Useful Engagement](#useful-engagement)); the [Practical Tools for Ownership and Technology Decisions](#toolkit) shows the record those chapters write, stage by stage, with the same identifiers. Follow that chain if you want to see one decision carried all the way through, from evidence to money to what was left undone. The delayed-financing chapter ([The Roadmap Did Not Slip, the Financing Did](#the-financing-slipped)) is a separate illustration: it shows how a dated cash forecast changes commitments when expected money arrives late, and its cash, burn, hires and dates are its own and do not add to the chain’s figures. “€m” means millions of euros.
 
-{id: reading-guide--choose-a-reading-format}
+{id: introduction--choose-a-reading-format}
 ## Choose a Reading Format
 
 Each main chapter provides an **Article** and a 300–500-word **TL;DR** summary. TL;DR means “too long; didn’t read.” All thirty main chapters also have a six-panel **Comic**, illustrated, with captions and dialogue transcripts. The six part introductions and the reference pages have no TL;DR or comic.
 
 For a shorter first pass, read the part introductions and the summaries. The formats are companions rather than substitutes. Each one is written to reach the same decision and to keep the conditions that decide whether that decision holds; what varies is depth, because only the article carries the worked figures, the sources and the cases where the conclusion would change. The summaries and comics of this September 2026 revision are still being reconciled chapter by chapter, so where a short format and the article disagree, the article is the one to trust.
 
-{id: reading-guide--read-the-evidence-with-its-limits}
+{id: introduction--read-the-evidence-with-its-limits}
 ## Read the Evidence With Its Limits
 
 This living manuscript was first drafted in September 2026 and revised the same month. Its historical cases examine specified periods at Hilton, Skype, Visma, Toys R Us and TeamSystem. The evidence concentrates on private equity and related ownership transitions, and doesn’t establish how all venture, growth or corporate investors behave or perform.
@@ -89,12 +98,12 @@ Institutional funding guides support descriptions of other arrangements. The com
 
 The [Bibliography and Evidence Guide](#bibliography) records consultation scope and evidence limits. The chapter-end “To Probe Further” lists are optional reading for going deeper; the bibliography identifies which resources were also used as evidence, since a few appear in both places. A chapter’s argument rests only on the sources cited inline.
 
-{id: reading-guide--contents}
+{id: introduction--contents}
 ## Contents
 
 The site navigation lists the same chapters; this list is here for lookup.
 
-{id: reading-guide--part-i-understanding-financing-and-ownership-money-authority-and-returns}
+{id: introduction--part-i-understanding-financing-and-ownership-money-authority-and-returns}
 ### Part I — Understanding Financing and Ownership: Money, Authority and Returns
 
 - [PART I — Understanding Financing and Ownership](#part-1) — part introduction
@@ -105,7 +114,7 @@ The site navigation lists the same chapters; this list is here for lookup.
 - **5.** [Match the Funding to the Work](#raise-what-you-need)
 - **6.** [Find the Cash Behind Your Technology Budget](#obligations-before-budget)
 
-{id: reading-guide--part-ii-how-investor-ownership-changes-decisions}
+{id: introduction--part-ii-how-investor-ownership-changes-decisions}
 ### Part II — How Investor Ownership Changes Decisions
 
 - [PART II — How Investor Ownership Changes Decisions](#part-2) — part introduction
@@ -113,7 +122,7 @@ The site navigation lists the same chapters; this list is here for lookup.
 - **8.** [Management Equity, Fund Carry and Employee Jobs Are Different Bets](#different-bets)
 - **9.** [Judge an Investor by Their Behavior Under Pressure](#investor-under-pressure)
 
-{id: reading-guide--part-iii-turning-investor-expectations-into-commitments}
+{id: introduction--part-iii-turning-investor-expectations-into-commitments}
 ### Part III — Turning Investor Expectations Into Commitments
 
 - [PART III — Turning Investor Expectations Into Commitments](#part-3) — part introduction
@@ -127,7 +136,7 @@ The site navigation lists the same chapters; this list is here for lookup.
 - **17.** [An AI Strategy Hides Three Investment Questions](#ai-strategy-three-questions)
 - **18.** [An Acquisition Adds Work Before It Adds Value](#acquisition-adds-work-first)
 
-{id: reading-guide--part-iv-beyond-money-getting-useful-help-from-your-investor}
+{id: introduction--part-iv-beyond-money-getting-useful-help-from-your-investor}
 ### Part IV — Beyond Money: Getting Useful Help From Your Investor
 
 - [PART IV — Beyond Money: Getting Useful Help From Your Investor](#part-4) — part introduction
@@ -135,7 +144,7 @@ The site navigation lists the same chapters; this list is here for lookup.
 - **20.** [Find the Help That Changes What Your Team Can Do](#help-that-changes-capability)
 - **21.** [Turn an Offer of Help Into a Useful Engagement](#useful-engagement)
 
-{id: reading-guide--part-v-leading-through-funding-and-ownership-changes}
+{id: introduction--part-v-leading-through-funding-and-ownership-changes}
 ### Part V — Leading Through Funding and Ownership Changes
 
 - [PART V — Leading Through Funding and Ownership Changes](#part-5) — part introduction
@@ -144,7 +153,7 @@ The site navigation lists the same chapters; this list is here for lookup.
 - **24.** [The Roadmap Did Not Slip, the Financing Did](#the-financing-slipped)
 - **25.** [Hand Over the Obligations, Not Just the Company](#handover-of-obligations)
 
-{id: reading-guide--part-vi-lessons-from-the-field}
+{id: introduction--part-vi-lessons-from-the-field}
 ### Part VI — Lessons from the Field
 
 - [PART VI — Lessons from the Field](#part-6) — part introduction
@@ -154,7 +163,7 @@ The site navigation lists the same chapters; this list is here for lookup.
 - **29.** [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem)
 - **30.** [Success for Whom, and for How Long?](#success-for-whom)
 
-{id: reading-guide--reference-material}
+{id: introduction--reference-material}
 ### Reference Material
 
 - [Practical Tools for Ownership and Technology Decisions](#toolkit) — practical decision and support records, with one finding followed all the way through.

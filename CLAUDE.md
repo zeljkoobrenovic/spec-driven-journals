@@ -48,7 +48,7 @@ Before any per-journal substitution, both templates run through `apply_includes(
 
 ```yaml
 title: <site title>
-description: <site subtitle>
+description: <site subtitle>   # plain text; a markdown link [text](https://…) is rendered as an anchor
 logo: assets/images/<file>      # optional; rendered as a hero image on the index
 logo_credit: <optional caption shown under the logo>
 sections:

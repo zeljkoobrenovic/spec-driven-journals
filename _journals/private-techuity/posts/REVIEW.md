@@ -82,7 +82,7 @@ Priority indicates the highest remaining impact in that review, not a quality sc
 
 | Current page | Priority | Main remaining work |
 | --- | --- | --- |
-| [Reading guide](reading-guide/REVIEW.md) | Medium | Describe shared scenarios and format equivalence accurately |
+| [Reading guide](introduction/REVIEW.md) | Medium | Describe shared scenarios and format equivalence accurately |
 | [Part I introduction](part-1-intro/REVIEW.md) | Low | Clarify which party makes a fund commitment |
 | [Customers, Lenders and Investors](00-customers-lenders-investors/REVIEW.md) | High | Debt-investor terminology; affordable fallback and authority |
 | [Investment Announcement](01-announcement-is-not-a-budget/REVIEW.md) | High | Transaction versus valuation; hiring and approval logic |

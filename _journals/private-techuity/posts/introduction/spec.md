@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-15
+revised: 2026-09-16
 ---
 
 # Spec: Owned — Purpose and Reading Guide
@@ -31,7 +31,7 @@ Exhaustive coverage, a universal role charter, or a claim of completed professio
 
 ## Modalities
 
-This reference page uses the Article modality. The 30 main chapters additionally provide a TL;DR; 29 of them also have an illustrated comic (the handover chapter added on 2026-09-14 does not yet). Reference material is not padded with redundant adaptations.
+This reference page uses the Article modality. The 30 main chapters additionally provide a TL;DR; each of them also has a six-panel illustrated comic (the handover chapter’s was added on 2026-09-15). Reference material is not padded with redundant adaptations.
 
 ## Open questions
 
@@ -58,3 +58,5 @@ See the bibliography and the relevant chapters. The source registry records cons
 - 2026-09-13: Revise for readers starting from scratch; define terms before use, explain reasoning steps, and connect the configured chapter sequence.
 - 2026-09-12: Add the author-requested ai-notes KEY POINTS opening; preserve article-specific conclusions and caveats.
 - 2026-09-12: Initial reference-page specification for the living draft.
+- 2026-09-16: Added "Why This Book Exists, and How It Is Written": the motivation (financial and legal aspects of investment are well covered; the effect on product and engineering is not, which breeds confusion, missed opportunities and misuse of "investors want us to…" claims) and the living-journal statement with the author link, matching the journal description.
+- 2026-09-16 (review response): Figures 1 and 2 regenerated to match the text (four questions: owners, rights, funding, what is changing; the discontinued Productscapes branch removed from the reading journey); venture-investor definition qualified against the SEC glossary; motivation reframed as the author’s observed gap with the problem separated from the book’s response; shared-example map lists allocation and measured outcomes and separates the chain from the financing-delay example; reading-format wording no longer says only the article carries figures and sources; readers pointed to each chapter’s specification changelog; modality inventory and revision date reconciled.

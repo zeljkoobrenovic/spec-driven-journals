@@ -1,6 +1,6 @@
 # Next-Session Handoff — Owned
 
-The current title is **OWNED: Product & Engineering Leadership Under Investors**. Read [PLAN.md](../PLAN.md), [STRUCTURE.md](../STRUCTURE.md), [the reading guide](../posts/reading-guide/index.md) and [the revision record](owned-revision.md) first. Earlier title and thesis notes remain historical.
+The current title is **OWNED: Product & Engineering Leadership Under Investors**. Read [PLAN.md](../PLAN.md), [STRUCTURE.md](../STRUCTURE.md), [the reading guide](../posts/introduction/index.md) and [the revision record](owned-revision.md) first. Earlier title and thesis notes remain historical.
 
 The manuscript has 29 main chapters, two optional appendix essays, 31 summaries and 31 six-panel illustrated comics. Six part introductions, an appendix introduction and four guide/reference pages make 42 published articles with 42 companion specs. The illustrated edition contains 66 article figures, 31 TL;DR overview visuals, 42 header logos, 42 icons, 186 comic panels and a dedicated Owned journal logo; the manuscript remains a living draft.
 

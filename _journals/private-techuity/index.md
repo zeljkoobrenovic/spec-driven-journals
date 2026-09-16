@@ -4,9 +4,11 @@
 
 A practical guide to making product and engineering decisions when investors shape the money, authority and expectations around your company.
 
-Start with [the purpose and reading guide](posts/reading-guide/index.md). It explains the company leader’s responsibilities, the comparative ownership lens, the fictional company and routes for different funding and ownership situations.
+This is a living journal and a work in progress: a draft built by [Željko Obrenović](https://obren.io), who keeps evolving it as he learns more about the topics it covers.
 
-The book contains 30 main chapters across six parts. Each main chapter includes an article and a 300–500-word summary; 29 also have a six-panel illustrated comic. The edition includes 39 header logos and 39 navigation icons, alongside 174 comic panels and a dedicated Owned journal logo; the handover chapter added on 2026-09-14 still needs its comic, logo and icon.
+Start with [the purpose and reading guide](posts/introduction/index.md). It explains the company leader’s responsibilities, the comparative ownership lens, the fictional company and routes for different funding and ownership situations.
+
+The book contains 30 main chapters across six parts. Each main chapter includes an article, a 300–500-word summary and a six-panel illustrated comic. The edition includes 40 header logos and 40 navigation icons, alongside 180 comic panels and a dedicated Owned journal logo; the fund-economics reference page still needs its logo and icon.
 
 ## Contents
 

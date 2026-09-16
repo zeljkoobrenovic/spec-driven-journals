@@ -6,7 +6,7 @@ Working note kept outside the site build. Fixed by the coordinator of the 15 Sep
 Two read-only synthesis passes inventoried every passage of the shared Larkspur examples. The coordinator has fixed the following canonical facts. Every agent must make its post agree with them; where a post deliberately uses a separate scenario it must say so in the text and must not reuse the shared identifiers (D-3, ONB-1, REC-1, KNW-1) for different numbers.
 
 ## A. The shared initiative chain (D-3 → ONB-1 / KNW-1 / REC-1 → day-100 → handover)
-Used by: 16-diligence, 17-first-hundred-days, 28-cannot-fund-everything, 11-prove-you-can-restore, 31-handover, toolkit, 08-roadmap-to-revenue, 05-decide-who-decides (board update), 29/30 (engagement), 24 (finale), part-5-intro, reading-guide.
+Used by: 16-diligence, 17-first-hundred-days, 28-cannot-fund-everything, 11-prove-you-can-restore, 31-handover, toolkit, 08-roadmap-to-revenue, 05-decide-who-decides (board update), 29/30 (engagement), 24 (finale), part-5-intro, introduction.
 
 Days count from closing (day 0 = the board meeting that adopts the operating plan).
 

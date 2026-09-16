@@ -36,7 +36,7 @@ There is no required journey from one investor type to the next. The arrangement
 
 **Investor type** describes who supplies ownership capital and what they seek. **Control** concerns the rights to decide. **Financing** concerns the money and its obligations. **Transaction context** describes an event such as a funding round, acquisition or separation. These dimensions interact, but none replaces the others. A founder might need personal cash from selling shares while the company needs no new funding; a large transaction can leave the company with no new money at all.
 
-[[customers-lenders-investors]] and the [[reading-guide]] introduce the arrangements. The recap below keeps only the question each one raises about the work; the operating consequences are conditional judgments, not evidence that all investors in a category behave alike.
+[[customers-lenders-investors]] and the [[introduction]] introduce the arrangements. The recap below keeps only the question each one raises about the work; the operating consequences are conditional judgments, not evidence that all investors in a category behave alike.
 
 | Arrangement | The question to test against the work |
 | --- | --- |

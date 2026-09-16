@@ -32,7 +32,7 @@ This log records how each recommendation in `REVIEW.md` (the collection review) 
 
 - Part III reordered; `31-handover-of-obligations` added to Part V; `fund-economics` added to Reference Material; Part V and Reference section descriptions updated. README, STRUCTURE (decision record entry dated 2026-09-14) and the workspace book index synchronized to 30 main chapters / 41 pages and current permalinks (the workspace index previously used stale permalinks).
 
-### reading-guide — OWNED — Reading Guide (`reading-guide`)
+### introduction — OWNED — Reading Guide (`introduction`)
 
 **Files changed:** index.md, spec.md
 **Implemented:**
@@ -179,7 +179,7 @@ This log records how each recommendation in `REVIEW.md` (the collection review) 
 - Medium: develop one Larkspur case with two feasible arrangements and a choice → Arrangement A (€2.5m growth equity with approval rights and an 18-month second-country expectation) vs Arrangement B (€750,000 three-year term loan at 8%, staged work); B chosen under stated assumptions (€350,000 operating cash, customer evidence for the setup constraint, no second-country evidence); example ends with chosen option, alternatives rejected, funding, scarce capacity, who is authorized and the evidence that would reverse it (signed second-country customers; cohort effort still above 70 hours).
 - Medium: move detailed control and partnership questions to Part II → compressed to one paragraph "Control and Partnership Are Separate Questions" with links to [[decide-who-decides]] and [[investor-under-pressure]]; the Gompers/Kaplan/Mukharlyamov survey (S04) kept in one sentence with its stated-practice qualification.
 - Low: replace category determinism → "The terms of the funding and the investor's expectations affect the pace, the tolerated losses and the time available for the plan" now governs the intro, key points, summary opening and comic introduction; "the type of capital sets the pace" removed from all formats.
-- Compress the category comparison → recap table reduced to two columns with links to [[customers-lenders-investors]] and the [[reading-guide]]; the four Larkspur category sketches removed.
+- Compress the category comparison → recap table reduced to two columns with links to [[customers-lenders-investors]] and the [[introduction]]; the four Larkspur category sketches removed.
 - Keep "a business that decides against outside ownership hasn't failed a test" → kept, in "Revisit the Fit When the Plan Changes".
 - Keep the €4m vs €1m interest comparison but integrate it → now closes the chosen case ("the scale of the financing matters more than its label"; the €3m difference is five times the onboarding need) with the link to [[obligations-before-budget]].
 - Drop the readiness checklist → removed; "any of three answers can be correct" folded into the revisit section.
@@ -302,7 +302,7 @@ This log records how each recommendation in `REVIEW.md` (the collection review) 
 - High: bring the resource table forward → new opening section "Three Requests, Two Limits" puts the €500,000 / 24-engineer-week table directly after the three requests; obligations, evidence, dependencies and the experiment row are then explained in "Sort the Rows by What They Rest On" as the team chooses among the rows. "Start With the Result", "Establish the Commitments" and "Compare Complete Options" (including the six-question table) were folded into that section.
 - Medium: clarify the funding boundary → exact wording used: "Routine operating work is already budgeted. The following change budget must also fund the improvement needed to meet the agreed recovery requirement." Restoration stays in the change pool (€80,000 / 4 weeks); same model in summary and comic panel 2.
 - Medium: one review that changes the selection → the day-45 restoration test fails (eleven hours against four; missing credential and unavailable database version, consistent with the brief's chain and [[prove-you-can-restore]]); correction and retest by day 85 take €20,000 and two engineer-weeks from the reserve. Revised commitment stated: €300,000 / 20 weeks committed, €200,000 / 4 weeks remaining, portal still deferred, retest as next review point. Both the original and the revised selection carry chosen option, rejected alternatives, funding, scarce capacity, authority (board envelope; Ines decides; Alex/Priya accountable) and the evidence that would change the decision.
-- Medium: compress the investor-scenario table → replaced by "The Condition That Applies Here": the growth-funding condition (onboarding volume rises without proportional implementation staff) plus links to [[raise-what-you-need]] and [[reading-guide]]; the conditional "this arrangement changes the conditions of the decision" pattern replaces the two-ways framing in article, summary and comic intro.
+- Medium: compress the investor-scenario table → replaced by "The Condition That Applies Here": the growth-funding condition (onboarding volume rises without proportional implementation staff) plus links to [[raise-what-you-need]] and [[introduction]]; the conditional "this arrangement changes the conditions of the decision" pattern replaces the two-ways framing in article, summary and comic intro.
 - Low: end with a usable record and three questions → "Keep the Record" links the [[toolkit]] Tool 12 record (Compare Investment Choices and Capacity); questions cut from six to three; "overruled or unfunded" replaced with the missing-constraint explanation.
 - Evidence note on real-options annotation → Luehrman annotation now says the option is only worth what it costs to exercise.
 - Investment-thesis wording aligned to the terminology sheet (investor's explanation; revisable prediction, not an instruction).
@@ -951,7 +951,7 @@ This pass implements the reassessed reviews dated 14–15 September 2026 (collec
 
 ## Per-post records (reading order)
 
-## reading-guide — OWNED — Reading Guide (`reading-guide`)
+## introduction — OWNED — Reading Guide (`introduction`)
 
 **Files changed:** index.md, spec.md
 **Implemented:**
@@ -1000,7 +1000,7 @@ This pass implements the reassessed reviews dated 14–15 September 2026 (collec
 **Files changed:** index.md, spec.md
 **Implemented:** Medium — correct the learning outcome, the Learning Path and the conclusion together → highlight uses the review's wording verbatim ("One onboarding finding travels from diligence into a funded plan and its handover. A separate financing-delay example shows how to revise commitments when the expected money moves."); Learning Path says the pilot and support chapters of Parts III and IV and the toolkit follow the same finding and the financing-delay chapter uses a separate scenario with its own cash and dates; the [[the-financing-slipped]] bullet drops "September to December" for the chapter's job; the [[handover-of-obligations]] bullet carries the record into the next event; conclusion: "carry one body of evidence from diligence to handover". Low — one nonlinearity statement kept. Spec revised 2026-09-15.
 **Adapted:** chapters described at job level only. **Declined:** none.
-**Unresolved / needs separate action:** reading guide lines 60 and 73 still state the old integration (reading-guide agent). Body 468 words vs the spec's ~400 cap, which HEAD already exceeded.
+**Unresolved / needs separate action:** reading guide lines 60 and 73 still state the old integration (introduction agent). Body 468 words vs the spec's ~400 cap, which HEAD already exceeded.
 **Verification:** four cross-links resolve; 18's separate-scenario sentence confirmed.
 
 ## 00-customers-lenders-investors — Customers, Lenders and Investors: What Each Expects in Return (`customers-lenders-investors`)
@@ -1030,7 +1030,7 @@ This pass implements the reassessed reviews dated 14–15 September 2026 (collec
 **Adapted:** callout extended with the consent-rights clause; runway labels placed inside the Runway row.
 **Declined:** none.
 **Unresolved / needs separate action:** no comic speech changed; no flags; all six image hashes match. Per-hire cost (≈€100,000 onboarding engineers) differs from the canonical €150,000 specialist FTE; the article states this scenario is separate. timetoread 12 min.
-**Verification:** arithmetic above; summary 497 words; seven cross-links resolve; glossary defines the two share terms; backlinks in 00, 26, part-1-intro, reading-guide and glossary do not assert the €100m was a valuation. Build not run.
+**Verification:** arithmetic above; summary 497 words; seven cross-links resolve; glossary defines the two share terms; backlinks in 00, 26, part-1-intro, introduction and glossary do not assert the €100m was a valuation. Build not run.
 
 ## 26-valuation-is-an-estimate — A Valuation Is an Estimate, Not a Fact (`valuation-is-an-estimate`)
 
@@ -1510,8 +1510,30 @@ This pass implements the reassessed reviews dated 14–15 September 2026 (collec
 
 - **Comic panels regenerated (15 September, later the same day):** the twenty panels flagged above were regenerated with the journal's generator (`_research/generate_comics.py`, shared cast reference) after every prompt was realigned with its caption; a read-back of each image found all twenty speech bubbles textually correct and eleven artwork defects (mirrored labels, an inverted debt chart, invented calendar months and tab labels, a missing second person, MORGAN off-model in six panels). Those eleven were regenerated with tightened scene prompts and skin tones added to the generator's cast descriptions; four went through a third pass. Final read-back: nineteen panels match their dialogue and scene. **Residual:** visma panel 6 keeps upright, legible VEHICLES / BUDGET / DEFINITION tabs but its secondary MANAGER folder label renders mirrored (three attempts; the best version kept). Cosmetic slips left as is: toys-r-us 3 shows four document labels on three objects; three-different-returns 4 has a skewed chart panel; investors-adviser 2 has an ambiguous bubble tail. Superseded images are archived in `_research/discarded-comic-variants/`. No `needs_regeneration` flags remain.
 - **New pages' visual assets:** `handover-of-obligations` received its six-panel comic and header logo later on 15 September (comics.md written from the revised article; all six bubbles verified exact; panels 2 and 6 keep upside-down prop text on the binder tabs and the handover sheet, re-rolls were worse); the reading guide now says all thirty main chapters have a comic. `fund-economics` still needs a header logo and icon.
-- **Reading-guide caveat to remove later:** the guide now says summaries and comics are still being reconciled and the article governs; drop that sentence once the flagged artwork is regenerated.
+- **introduction caveat to remove later:** the guide now says summaries and comics are still being reconciled and the article governs; drop that sentence once the flagged artwork is regenerated.
 - **Lengths flagged for the author's discretion:** part-6 introduction (543 words including its case-map table, above the spec's ~400 prose cap, as before this pass); part-5 introduction (468 words); several articles grew by 10–35% to carry completed decisions (funding choice 14 min, adviser 12 min, investor-under-pressure 13 min, decision rights 12 min, roadmap 15 min, organization 14 min, different bets 14 min).
 - **Verification that could not be completed:** completion of Silver Lake's 2023 TeamSystem purchase and of the August 2023 HgT partial sale (labelled as announced); the £34.2m vs £24.3m TeamSystem gap is unreconciled by any source; Hg's 2017 Visma completion and which Hg vehicles hold the 2023 stake; the Toys R Us fiscal 2016 10-K remains inaccessible (earnings release used); SSRN/ScienceDirect refused the unicorn paper (NBER and Stanford pages used).
 - **Research files lagging the register:** `_research/sources.json` stops at S63 while the bibliography now runs to S76; reconcile separately. Topic-index entry anchors remain plain text until the renderer emits heading ids.
 - **Declined for lack of evidence:** a documented minority/venture or corporate-ownership case (collection review); the evidence-scope disclosure stays in the guide, Part VI introduction and bibliography.
+
+---
+
+# Revision log — introduction (reading guide) follow-up, 16 September 2026
+
+Response to the reassessed `posts/introduction/REVIEW.md` of 16 September (the page was renamed from `reading-guide` to `introduction` by the author the same day; its permalink is now `introduction`).
+
+## introduction — OWNED — Reading Guide (`introduction`)
+
+**Files changed:** index.md, spec.md, both explanatory figures under `assets/images/introduction/`, `_research/article-illustration-prompts-20260913.json`
+**Implemented:**
+- Major 1 — illustrations taught an older version of the guide → Figure 1 regenerated with the four stated questions as its cards (Owners, Rights, Funding, What is changing) feeding one notebook labelled Commitment, and its alt text and caption rewritten to match; Figure 2 regenerated without the discontinued Productscapes branch. The first re-roll of Figure 2 drew the stops out of order (I, II, IV, III, V, VI) and the second added a headline; the final version reads I–VI in two rows with no title. Superseded versions kept outside the repo.
+- Major 2 — venture-investor definition made an early-stage example universal → "typically funds a young company that is still proving its product or business model, though venture funds also invest in successive rounds of companies already scaling an established product"; the venture and growth labels are said to overlap, with the round's terms mattering more than its name (SEC capital-raising glossary, "Series Rounds").
+- Minor 1 — stale spec metadata → spec now says all 30 main chapters have a TL;DR and a comic; `revised:` set to 2026-09-16 with a changelog line.
+- Minor 2 — motivation overstated → reframed as the author's observation from practice ("not a survey of the literature"); the consequences and the misuse of "investors want us to…" are qualified ("How often that happens is not measured here"); the problem and the book's response are now separate paragraphs.
+- Minor 3 — shared-example map incomplete and hard to scan → the chain is a six-step numbered list that now includes [[cannot-fund-everything]] (allocation within the same envelope) and [[roadmap-to-revenue]] (the measured outcome); the financing-delay note is its own paragraph.
+- Minor 4 — "only the article" too exclusive → "the article gives the fullest calculations, the discussion of sources and the alternative cases, while every format keeps the conditions that would change the decision".
+- Minor 5 — revision log not where readers are told → readers are pointed to each chapter's "View spec" link and the changelog at the end of that specification.
+**Adapted:** the author's light edits to the motivation paragraph (bold emphasis, wording) were kept and folded into the reframed version.
+**Declined:** none.
+**Unresolved / needs separate action:** Figure 1 carries four small incidental prop labels ("New feature", "Process update", "Today", "Future") beyond the requested cards; they invent no facts and were left. The reading guide's "still being reconciled" caveat about summaries and comics remains until the author decides to lift it.
+**Verification:** all 79 cross-links in the introduction resolve; no leftover "Twenty-nine", "only the article carries", "searching for a repeatable" or "revision log beside" phrasing; both figures read back against the text; build run, `docs/private-techuity/introduction.html` and its three assets present.

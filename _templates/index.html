@@ -513,7 +513,7 @@
     </header>
 
     <div style="padding: 4px;">
-        <section class="book-edition" id="book-edition" aria-labelledby="book-heading" hidden></section>
+        <section class="book-edition" id="book-edition" aria-label="Book edition" hidden></section>
         <nav class="view-tabs" id="view-tabs" role="tablist">
             <button type="button" id="tab-list" class="active" role="tab" aria-selected="true">Articles</button>
             <button type="button" id="tab-visual" role="tab" aria-selected="false">Visual Overview</button>
@@ -569,8 +569,7 @@
                         bookEpub ? 'Read the book as EPUB' : 'View the book cover'
                 }, [el('img', {src: bookImage, alt: 'Book cover'})]));
             }
-            const details = el('div', {class: 'book-details'}, [
-            ]);
+            const details = el('div', {class: 'book-details'});
             if (bookPdf || bookEpub) {
                 const links = el('div', {class: 'book-links'});
                 if (bookPdf) links.appendChild(el('a', {href: bookPdf, text: 'Download PDF'}));

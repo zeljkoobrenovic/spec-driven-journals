@@ -24,7 +24,7 @@ The new architecture connections are presented as analysis and fictional example
 
 ## Build and browser checks
 
-The journal-only build passed. Headless Chromium opened the journal index, all 26 chapters and four references: 31 reader pages. Each chapter’s Article, TL;DR and Comic tabs displayed content; Key points rendered as a blockquote with three actual list items. The two existing Mermaid diagrams rendered. No JavaScript errors were observed. Desktop valuation/reading-guide and mobile valuation captures were visually inspected; the mobile page had no horizontal overflow.
+The journal-only build passed. Headless Chromium opened the journal index, all 26 chapters and four references: 31 reader pages. Each chapter’s Article, TL;DR and Comic tabs displayed content; Key points rendered as a blockquote with three actual list items. The two existing Mermaid diagrams rendered. No JavaScript errors were observed. Desktop valuation/introduction and mobile valuation captures were visually inspected; the mobile page had no horizontal overflow.
 
 The rendered preview was scanned for confidential firm/file details, private input paths and the local user path; none was found. No inputs or private research notes are configured as site articles.
 
