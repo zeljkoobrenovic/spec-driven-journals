@@ -628,7 +628,12 @@ def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str, crosslink_in
 
     logo_html = _logo_html(logo, logo_credit)
 
-    index_payload = {"sections": index_sections}
+    index_payload = {
+        "sections": index_sections,
+        "book_image": config.get("book_image") or None,
+        "book_pdf": config.get("book_pdf") or None,
+        "book_epub": config.get("book_epub") or None,
+    }
     index_html = (
         index_tpl
         .replace("__TITLE__", _html_escape(title))

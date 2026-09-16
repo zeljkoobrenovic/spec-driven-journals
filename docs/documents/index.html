@@ -56,6 +56,68 @@
             color: var(--muted);
         }
 
+        .book-edition {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0 40px;
+            padding: 4px;
+        }
+
+        .book-edition[hidden] {
+            display: none;
+        }
+
+        .book-edition .book-cover {
+            display: block;
+            flex: 0 0 100px;
+        }
+
+        .book-edition .book-cover img {
+            display: block;
+            width: 100px;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        .book-edition .book-details {
+            flex: 1 1 180px;
+            min-width: 0;
+        }
+
+        .book-edition h2 {
+            margin: 0 0 0px;
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .book-edition .book-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .book-edition .book-links a {
+            padding: 8px 14px;
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            color: var(--accent);
+            background: #fff;
+            font-size: 15px;
+            text-decoration: none;
+        }
+
+        .book-edition .book-links a:hover {
+            color: #fff;
+            background: var(--accent);
+        }
+
+        .book-edition a:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+        }
+
         .search {
             margin: 0 0 38px;
         }
@@ -464,6 +526,7 @@
     </header>
 
     <div style="padding: 4px;">
+        <section class="book-edition" id="book-edition" aria-labelledby="book-heading" hidden></section>
         <nav class="view-tabs" id="view-tabs" role="tablist">
             <button type="button" id="tab-list" class="active" role="tab" aria-selected="true">Articles</button>
             <button type="button" id="tab-visual" role="tab" aria-selected="false">Visual Overview</button>
@@ -481,7 +544,7 @@
     </div>
 </main>
 
-<script id="data" type="application/json">{"sections": [{"title": "Fundamentals", "description": "What ADRs are and why teams use them.", "posts": [{"id": "", "status": "", "title": "What is an architecture decision record?", "excerpt": "An overview of ADRs and the surrounding terminology — architecture decision (AD), architecture decision log (ADL), architecturally-significant requirement (ASR), and architecture knowledge management (AKM).", "url": "what-is-an-architecture-decision-record.html", "icon": "assets/icons/what-is-an-architecture-decision-record.png", "logo": "assets/images/what-is-an-architecture-decision-record/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Suggestions for writing good ADRs", "excerpt": "What makes an ADR good: a clear rationale, a tight focus on one decision, dated entries, and immutable history — plus what belongs in the Context and Consequences sections.", "url": "suggestions-for-writing-good-adrs.html", "icon": "assets/icons/suggestions-for-writing-good-adrs.png", "logo": "assets/images/suggestions-for-writing-good-adrs/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "AWS Architectural Decision Records Process", "excerpt": "How AWS describes the ADR process: an ADR captures the context and consequences of a significant architectural decision, and the collection of ADRs forms the project's decision log.", "url": "aws-adr-process.html", "icon": "assets/icons/aws-adr-process.png", "logo": "assets/images/aws-adr-process/logo.jpeg", "tags": []}]}, {"title": "Getting Started", "description": "Practical ways to begin using ADRs.", "posts": [{"id": "", "status": "", "title": "How to start using ADRs", "excerpt": "Five areas a team should discuss when adopting ADRs: identifying decisions, making them, enacting and enforcing them, sharing them across projects, and documenting them.", "url": "how-to-start-using-adrs.html", "icon": "assets/icons/how-to-start-using-adrs.png", "logo": "assets/images/how-to-start-using-adrs/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "How to start using ADRs with git", "excerpt": "A minimal recipe for starting ADRs in a git-based project: create an adr/ directory, write one text file per decision, and commit it next to the source code.", "url": "how-to-start-using-adrs-with-git.html", "icon": "assets/icons/how-to-start-using-adrs-with-git.png", "logo": "assets/images/how-to-start-using-adrs-with-git/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "How to start using ADRs with tools", "excerpt": "ADRs work in whatever tool a team already uses — Google Docs, git, Jira, or a wiki. Pick the tool that matches the existing workflow rather than introducing a new one.", "url": "how-to-start-using-adrs-with-tools.html", "icon": "assets/icons/how-to-start-using-adrs-with-tools.png", "logo": "assets/images/how-to-start-using-adrs-with-tools/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "File name conventions for ADRs", "excerpt": "A file-naming convention for ADRs stored as text files: lowercase, dashes, present-tense imperative verb phrases, and a markdown extension.", "url": "file-name-conventions-for-adrs.html", "icon": "assets/icons/file-name-conventions-for-adrs.png", "logo": "assets/images/file-name-conventions-for-adrs/logo.jpeg", "tags": []}]}, {"title": "Teamwork", "description": "How teams adopt and live with ADRs.", "posts": [{"id": "", "status": "", "title": "Teamwork advice for ADRs", "excerpt": "Three lessons from rolling out decision records with many teams: lead with the why, prefer the word \\\"decisions\\\" to \\\"ADRs\\\", and treat ADRs as living documents in practice.", "url": "teamwork-advice-for-adrs.html", "icon": "assets/icons/teamwork-advice-for-adrs.png", "logo": "assets/images/teamwork-advice-for-adrs/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Teamwork questions for ADRs", "excerpt": "Questions a team should answer to agree on how ADRs work in their context: who can create one, what justifies raising or skipping one, the lifecycle, roles, governance, and guiding principles.", "url": "teamwork-questions-for-adrs.html", "icon": "assets/icons/teamwork-questions-for-adrs.png", "logo": "assets/images/teamwork-questions-for-adrs/logo.jpeg", "tags": []}]}, {"title": "Sustainability & Governance", "description": "Keeping decisions durable and enforceable over time.", "posts": [{"id": "", "status": "", "title": "Decision Sustainability Criteria", "excerpt": "Five criteria that make architectural decisions sustainable: strategic, measurable and manageable, achievable and realistic, rooted in requirements, and timeless.", "url": "decision-sustainability-criteria.html", "icon": "assets/icons/decision-sustainability-criteria.png", "logo": "assets/images/decision-sustainability-criteria/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Guidelines to Achieve Sustainable Decisions", "excerpt": "Eight practical guidelines for producing sustainable architectural decisions: start lean, prioritize what matters, expand only what's important, reuse existing knowledge, and keep traceability in sync.", "url": "guidelines-to-achieve-sustainable-decisions.html", "icon": "assets/icons/guidelines-to-achieve-sustainable-decisions.png", "logo": "assets/images/guidelines-to-achieve-sustainable-decisions/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Fitness functions for decisions as code", "excerpt": "Fitness functions are objective automated checks, written in code, that verify decisions are being maintained — making decisions testable, assurable, and continuously enforced.", "url": "fitness-functions-for-decisions-as-code.html", "icon": "assets/icons/fitness-functions-for-decisions-as-code.png", "logo": "assets/images/fitness-functions-for-decisions-as-code/logo.jpeg", "tags": []}]}]}</script>
+<script id="data" type="application/json">{"sections": [{"title": "Fundamentals", "description": "What ADRs are and why teams use them.", "posts": [{"id": "", "status": "", "title": "What is an architecture decision record?", "excerpt": "An overview of ADRs and the surrounding terminology — architecture decision (AD), architecture decision log (ADL), architecturally-significant requirement (ASR), and architecture knowledge management (AKM).", "url": "what-is-an-architecture-decision-record.html", "icon": "assets/icons/what-is-an-architecture-decision-record.png", "logo": "assets/images/what-is-an-architecture-decision-record/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Suggestions for writing good ADRs", "excerpt": "What makes an ADR good: a clear rationale, a tight focus on one decision, dated entries, and immutable history — plus what belongs in the Context and Consequences sections.", "url": "suggestions-for-writing-good-adrs.html", "icon": "assets/icons/suggestions-for-writing-good-adrs.png", "logo": "assets/images/suggestions-for-writing-good-adrs/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "AWS Architectural Decision Records Process", "excerpt": "How AWS describes the ADR process: an ADR captures the context and consequences of a significant architectural decision, and the collection of ADRs forms the project's decision log.", "url": "aws-adr-process.html", "icon": "assets/icons/aws-adr-process.png", "logo": "assets/images/aws-adr-process/logo.jpeg", "tags": []}]}, {"title": "Getting Started", "description": "Practical ways to begin using ADRs.", "posts": [{"id": "", "status": "", "title": "How to start using ADRs", "excerpt": "Five areas a team should discuss when adopting ADRs: identifying decisions, making them, enacting and enforcing them, sharing them across projects, and documenting them.", "url": "how-to-start-using-adrs.html", "icon": "assets/icons/how-to-start-using-adrs.png", "logo": "assets/images/how-to-start-using-adrs/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "How to start using ADRs with git", "excerpt": "A minimal recipe for starting ADRs in a git-based project: create an adr/ directory, write one text file per decision, and commit it next to the source code.", "url": "how-to-start-using-adrs-with-git.html", "icon": "assets/icons/how-to-start-using-adrs-with-git.png", "logo": "assets/images/how-to-start-using-adrs-with-git/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "How to start using ADRs with tools", "excerpt": "ADRs work in whatever tool a team already uses — Google Docs, git, Jira, or a wiki. Pick the tool that matches the existing workflow rather than introducing a new one.", "url": "how-to-start-using-adrs-with-tools.html", "icon": "assets/icons/how-to-start-using-adrs-with-tools.png", "logo": "assets/images/how-to-start-using-adrs-with-tools/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "File name conventions for ADRs", "excerpt": "A file-naming convention for ADRs stored as text files: lowercase, dashes, present-tense imperative verb phrases, and a markdown extension.", "url": "file-name-conventions-for-adrs.html", "icon": "assets/icons/file-name-conventions-for-adrs.png", "logo": "assets/images/file-name-conventions-for-adrs/logo.jpeg", "tags": []}]}, {"title": "Teamwork", "description": "How teams adopt and live with ADRs.", "posts": [{"id": "", "status": "", "title": "Teamwork advice for ADRs", "excerpt": "Three lessons from rolling out decision records with many teams: lead with the why, prefer the word \\\"decisions\\\" to \\\"ADRs\\\", and treat ADRs as living documents in practice.", "url": "teamwork-advice-for-adrs.html", "icon": "assets/icons/teamwork-advice-for-adrs.png", "logo": "assets/images/teamwork-advice-for-adrs/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Teamwork questions for ADRs", "excerpt": "Questions a team should answer to agree on how ADRs work in their context: who can create one, what justifies raising or skipping one, the lifecycle, roles, governance, and guiding principles.", "url": "teamwork-questions-for-adrs.html", "icon": "assets/icons/teamwork-questions-for-adrs.png", "logo": "assets/images/teamwork-questions-for-adrs/logo.jpeg", "tags": []}]}, {"title": "Sustainability & Governance", "description": "Keeping decisions durable and enforceable over time.", "posts": [{"id": "", "status": "", "title": "Decision Sustainability Criteria", "excerpt": "Five criteria that make architectural decisions sustainable: strategic, measurable and manageable, achievable and realistic, rooted in requirements, and timeless.", "url": "decision-sustainability-criteria.html", "icon": "assets/icons/decision-sustainability-criteria.png", "logo": "assets/images/decision-sustainability-criteria/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Guidelines to Achieve Sustainable Decisions", "excerpt": "Eight practical guidelines for producing sustainable architectural decisions: start lean, prioritize what matters, expand only what's important, reuse existing knowledge, and keep traceability in sync.", "url": "guidelines-to-achieve-sustainable-decisions.html", "icon": "assets/icons/guidelines-to-achieve-sustainable-decisions.png", "logo": "assets/images/guidelines-to-achieve-sustainable-decisions/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Fitness functions for decisions as code", "excerpt": "Fitness functions are objective automated checks, written in code, that verify decisions are being maintained — making decisions testable, assurable, and continuously enforced.", "url": "fitness-functions-for-decisions-as-code.html", "icon": "assets/icons/fitness-functions-for-decisions-as-code.png", "logo": "assets/images/fitness-functions-for-decisions-as-code/logo.jpeg", "tags": []}]}], "book_image": null, "book_pdf": null, "book_epub": null}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -504,6 +567,31 @@
             }
             if (children) children.forEach(c => c && e.appendChild(c));
             return e;
+        }
+
+        const bookImage = (data.book_image || '').trim();
+        const bookPdf = (data.book_pdf || '').trim();
+        const bookEpub = (data.book_epub || '').trim();
+        if (bookImage || bookPdf || bookEpub) {
+            const book = document.getElementById('book-edition');
+            if (bookImage) {
+                book.appendChild(el('a', {
+                    class: 'book-cover',
+                    href: bookPdf || bookEpub || bookImage,
+                    'aria-label': bookPdf ? 'Read the book as PDF' :
+                        bookEpub ? 'Read the book as EPUB' : 'View the book cover'
+                }, [el('img', {src: bookImage, alt: 'Book cover'})]));
+            }
+            const details = el('div', {class: 'book-details'}, [
+            ]);
+            if (bookPdf || bookEpub) {
+                const links = el('div', {class: 'book-links'});
+                if (bookPdf) links.appendChild(el('a', {href: bookPdf, text: 'Download PDF'}));
+                if (bookEpub) links.appendChild(el('a', {href: bookEpub, text: 'Download EPUB'}));
+                details.appendChild(links);
+            }
+            book.appendChild(details);
+            book.hidden = false;
         }
 
         // Tag and status counts across all posts.

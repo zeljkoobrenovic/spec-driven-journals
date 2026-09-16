@@ -8,7 +8,7 @@ template framework.
 
 | File | Role |
 | --- | --- |
-| `index.html` | Journal index page. Renders sections, post cards, search, tag filters, and status filters from embedded JSON. |
+| `index.html` | Journal index page. Renders an optional book edition, sections, post cards, search, tag filters, and status filters from embedded JSON. |
 | `post.html` | Post and spec page shell. Contains the client-side Markdown renderer and custom block renderers. |
 | `site.css` | Shared base styling copied into each generated journal directory. |
 
@@ -38,6 +38,11 @@ template framework.
 
 Placeholders are replaced with simple string operations in Python. Keep names
 unique enough that they cannot occur accidentally in page content.
+
+The index JSON contains `sections` and optional `book_image`, `book_pdf`, and
+`book_epub` values from the journal's `config.yaml`. A book edition section appears
+above the article tabs when any book value is nonempty. PDF and EPUB links work
+without a cover image; a cover alone links to the image itself.
 
 ## Client-Side Rendering
 

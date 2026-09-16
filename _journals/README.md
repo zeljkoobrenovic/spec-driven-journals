@@ -49,6 +49,18 @@ sections:
 Post paths are relative to `_journals/<journal>/posts/`. Current journals use
 the per-post folder layout, so config order is preserved by the build.
 
+To show a book edition above the article list, add any of these optional fields:
+
+```yaml
+book_image: assets/book-cover.jpg
+book_pdf: https://example.com/book.pdf
+book_epub: https://example.com/book.epub
+```
+
+Each download link appears only when its URL is provided. The cover image is
+optional, and its path is relative to the journal root, like `logo`. If all three
+fields are absent or empty, the book section is hidden.
+
 ## Post Layout
 
 Use this layout for new posts:

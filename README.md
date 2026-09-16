@@ -50,6 +50,7 @@ Then open `http://localhost:8000/`. The root page redirects to
 | `_templates/` | Shared HTML templates and CSS used by the journal generator. |
 | `_start/` | Source for the start page that links all journals together. |
 | `docs/` | Generated publication output. Commit it when source changes are meant to be published. |
+| `manuscripts/` | Leanpub Markua exports and reusable export/validation scripts. See [manuscript instructions](manuscripts/README.md). |
 | `AGENTS.md`, `CLAUDE.md` | Agent-facing operating instructions. Keep them aligned with the build behavior when changing conventions. |
 
 ## How Publishing Works

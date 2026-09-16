@@ -21,7 +21,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Reuse the evidence-through-ownership figure from the delayed-financing chapter with its caption; link Tool 10 in the [[toolkit]] and [[teamsystem]] for inherited work.
 - Keep the anti-distortion section: disclose obligations and assumptions accurately; unfinished work may be priced, not hidden.
 - Close with the Part V recap and the handoff to Part VI ([[part-6]], [[hilton-and-skype]]); trim Questions to Consider to three.
-- TL;DR of 300–500 words carrying the same claims and qualifications. Comic, header logo and navigation icon are pending image generation.
+- TL;DR of 300–500 words carrying the same claims and qualifications. Comic (six panels), header logo and navigation icon are in place.
 
 ## Non-goals
 
@@ -31,11 +31,11 @@ The delayed-financing decision (owned by [[the-financing-slipped]]); IPO prepara
 
 - Full Article: index.md, the substantive argument.
 - TL;DR: summary.md, the practical implications in concise prose.
-- Comic: comics.md, not yet written; requires image generation, together with the post logo and navigation icon.
+- Comic: comics.md, six panels generated 15 September 2026 with the shared cast reference; header logo and navigation icon present.
 
 ## Open questions
 
-Comic, logo and icon await image generation. Evidence gaps and chapter-specific next research are tracked in the separate editorial backlog.
+Comic, logo and icon are generated. Evidence gaps and chapter-specific next research are tracked in the separate editorial backlog.
 
 ## Decision log
 
@@ -50,3 +50,4 @@ The supplied book brief establishes scope, including the shared Larkspur chain. 
 - 2026-09-14: Created by splitting handover material out of the delayed-financing chapter.
 - 2026-09-15: Day-100 record corrected to committed/incurred/remaining (€180,000 / ≈€90,000 / €90,000) with the reconciled reserve (€160,000, 0 weeks) and expansion date (≈ day 190); obligations split into four kinds; one accepted handover added; transaction table qualified (IPO control, retained minority, combined forms); chapter 18 declared a separate scenario. Comic still pending.
 - 2026-09-15 (verification pass): Article re-checked against the canonical Larkspur ledger and chapter 17 — all figures agree; no article change needed. TL;DR trimmed from 545 to 500 words to meet the 300–500 convention, keeping every canonical figure, the four kinds of obligation and the dated acceptance. Comic, logo pending; navigation icon now present.
+- 2026-09-15 (visual assets): comics.md written (six panels: the morning after, keep the evidence, paid/owed/continuing, who gets cash and who keeps an interest, four kinds of open work, the accepted handover) and generated with the journal's cast reference; all six speech bubbles verified exact; panels 2 and 6 keep the first render (prop text on the binder tabs and the handover sheet renders upside down toward the signers; re-rolls were worse). Header logo generated (text-free emblem: a folder passed between two hands with keys and a bookmark) and added to the front matter with the logo credit.

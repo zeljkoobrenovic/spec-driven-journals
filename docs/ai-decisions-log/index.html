@@ -56,6 +56,68 @@
             color: var(--muted);
         }
 
+        .book-edition {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0 40px;
+            padding: 4px;
+        }
+
+        .book-edition[hidden] {
+            display: none;
+        }
+
+        .book-edition .book-cover {
+            display: block;
+            flex: 0 0 100px;
+        }
+
+        .book-edition .book-cover img {
+            display: block;
+            width: 100px;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        .book-edition .book-details {
+            flex: 1 1 180px;
+            min-width: 0;
+        }
+
+        .book-edition h2 {
+            margin: 0 0 0px;
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .book-edition .book-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .book-edition .book-links a {
+            padding: 8px 14px;
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            color: var(--accent);
+            background: #fff;
+            font-size: 15px;
+            text-decoration: none;
+        }
+
+        .book-edition .book-links a:hover {
+            color: #fff;
+            background: var(--accent);
+        }
+
+        .book-edition a:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+        }
+
         .search {
             margin: 0 0 38px;
         }
@@ -464,6 +526,7 @@
     </header>
 
     <div style="padding: 4px;">
+        <section class="book-edition" id="book-edition" aria-labelledby="book-heading" hidden></section>
         <nav class="view-tabs" id="view-tabs" role="tablist">
             <button type="button" id="tab-list" class="active" role="tab" aria-selected="true">Articles</button>
             <button type="button" id="tab-visual" role="tab" aria-selected="false">Visual Overview</button>
@@ -481,7 +544,7 @@
     </div>
 </main>
 
-<script id="data" type="application/json">{"sections": [{"title": "AI-Assisted Development", "description": "Strategic decisions for AI-assisted software development.", "posts": [{"id": "ORG-SD-AI-TOOLING", "status": "draft:gray", "title": "AI Developer Tooling: Claude Code as the Default Agent Platform for 2026", "excerpt": "Organization adopts Claude Code as the default AI developer tool for 2026. This is a platform decision, not a claim about which model is permanently best. The decision chooses the shared surface where CLAUDE.md files, Skills, MCP servers, subagents, hooks, settings, templates, permission modes, registries, and audit controls can compound across teams. Codex, Gemini, and other agentic coding tools remain available by exception when they fit a concrete workflow better.", "url": "ai-tooling.html", "icon": "assets/icons/ai-tooling.png", "logo": "assets/images/ai-tooling/logo.jpeg", "tags": ["ai", "claude-code", "devex", "agentic-coding"]}, {"id": "ORG-SD-AI-POLICY", "status": "draft:gray", "title": "AI Coding Policy: Human Accountability with Executable Controls", "excerpt": "Organization's AI coding policy starts with human accountability and makes it enforceable through executable controls: data classification rules, approved tool registries, Claude Code permission modes, hooks, settings, command allowlists, MCP and subagent controls, audit trails, CI gates, and incident handling. The policy treats AI agents as powerful development tools that can read context, run commands, and change files, so every capability needs an owner, a scope, and evidence.", "url": "ai-policy.html", "icon": "assets/icons/ai-policy.png", "logo": "assets/images/ai-policy/logo.jpeg", "tags": ["ai", "security", "claude-code"]}, {"id": "ORG-SD-AI-OPERATING-MODEL", "status": "draft:gray", "title": "AI Operating Model: Dedicated AI Engineering Enablement Function", "excerpt": "Organization establishes a dedicated AI Engineering Enablement function that owns the shared AI developer platform: Claude Code defaults, CLAUDE.md templates, Skills, MCP and subagent registries, policy controls, exception process, adoption support, incident coordination, and the six-month review cycle. Product teams retain delivery accountability; enablement owns shared primitives, not product features.", "url": "ai-operating-model.html", "icon": "assets/icons/ai-operating-model.png", "logo": "assets/images/ai-operating-model/logo.jpeg", "tags": ["ai", "claude-code", "platform"]}, {"id": "ORG-SD-AI-ENGINEERING-STANDARDS", "status": "draft:gray", "title": "AI Engineering Standards: Governance-as-Code for Modernization", "excerpt": "Organization makes engineering standards executable through the AI developer platform. CLAUDE.md files, shared fragments, settings, hooks, Skills, MCP servers, subagents, pull request templates, and CI gates encode how modernization work is done here. Standards are versioned with the code, applied across repositories, and reviewed every six months alongside the AI tooling and policy decisions.", "url": "ai-engineering-standards.html", "icon": "assets/icons/ai-engineering-standards.png", "logo": "assets/images/ai-engineering-standards/logo.jpeg", "tags": ["ai", "claude-code", "devex"]}]}]}</script>
+<script id="data" type="application/json">{"sections": [{"title": "AI-Assisted Development", "description": "Strategic decisions for AI-assisted software development.", "posts": [{"id": "ORG-SD-AI-TOOLING", "status": "draft:gray", "title": "AI Developer Tooling: Claude Code as the Default Agent Platform for 2026", "excerpt": "Organization adopts Claude Code as the default AI developer tool for 2026. This is a platform decision, not a claim about which model is permanently best. The decision chooses the shared surface where CLAUDE.md files, Skills, MCP servers, subagents, hooks, settings, templates, permission modes, registries, and audit controls can compound across teams. Codex, Gemini, and other agentic coding tools remain available by exception when they fit a concrete workflow better.", "url": "ai-tooling.html", "icon": "assets/icons/ai-tooling.png", "logo": "assets/images/ai-tooling/logo.jpeg", "tags": ["ai", "claude-code", "devex", "agentic-coding"]}, {"id": "ORG-SD-AI-POLICY", "status": "draft:gray", "title": "AI Coding Policy: Human Accountability with Executable Controls", "excerpt": "Organization's AI coding policy starts with human accountability and makes it enforceable through executable controls: data classification rules, approved tool registries, Claude Code permission modes, hooks, settings, command allowlists, MCP and subagent controls, audit trails, CI gates, and incident handling. The policy treats AI agents as powerful development tools that can read context, run commands, and change files, so every capability needs an owner, a scope, and evidence.", "url": "ai-policy.html", "icon": "assets/icons/ai-policy.png", "logo": "assets/images/ai-policy/logo.jpeg", "tags": ["ai", "security", "claude-code"]}, {"id": "ORG-SD-AI-OPERATING-MODEL", "status": "draft:gray", "title": "AI Operating Model: Dedicated AI Engineering Enablement Function", "excerpt": "Organization establishes a dedicated AI Engineering Enablement function that owns the shared AI developer platform: Claude Code defaults, CLAUDE.md templates, Skills, MCP and subagent registries, policy controls, exception process, adoption support, incident coordination, and the six-month review cycle. Product teams retain delivery accountability; enablement owns shared primitives, not product features.", "url": "ai-operating-model.html", "icon": "assets/icons/ai-operating-model.png", "logo": "assets/images/ai-operating-model/logo.jpeg", "tags": ["ai", "claude-code", "platform"]}, {"id": "ORG-SD-AI-ENGINEERING-STANDARDS", "status": "draft:gray", "title": "AI Engineering Standards: Governance-as-Code for Modernization", "excerpt": "Organization makes engineering standards executable through the AI developer platform. CLAUDE.md files, shared fragments, settings, hooks, Skills, MCP servers, subagents, pull request templates, and CI gates encode how modernization work is done here. Standards are versioned with the code, applied across repositories, and reviewed every six months alongside the AI tooling and policy decisions.", "url": "ai-engineering-standards.html", "icon": "assets/icons/ai-engineering-standards.png", "logo": "assets/images/ai-engineering-standards/logo.jpeg", "tags": ["ai", "claude-code", "devex"]}]}], "book_image": null, "book_pdf": null, "book_epub": null}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -504,6 +567,31 @@
             }
             if (children) children.forEach(c => c && e.appendChild(c));
             return e;
+        }
+
+        const bookImage = (data.book_image || '').trim();
+        const bookPdf = (data.book_pdf || '').trim();
+        const bookEpub = (data.book_epub || '').trim();
+        if (bookImage || bookPdf || bookEpub) {
+            const book = document.getElementById('book-edition');
+            if (bookImage) {
+                book.appendChild(el('a', {
+                    class: 'book-cover',
+                    href: bookPdf || bookEpub || bookImage,
+                    'aria-label': bookPdf ? 'Read the book as PDF' :
+                        bookEpub ? 'Read the book as EPUB' : 'View the book cover'
+                }, [el('img', {src: bookImage, alt: 'Book cover'})]));
+            }
+            const details = el('div', {class: 'book-details'}, [
+            ]);
+            if (bookPdf || bookEpub) {
+                const links = el('div', {class: 'book-links'});
+                if (bookPdf) links.appendChild(el('a', {href: bookPdf, text: 'Download PDF'}));
+                if (bookEpub) links.appendChild(el('a', {href: bookEpub, text: 'Download EPUB'}));
+                details.appendChild(links);
+            }
+            book.appendChild(details);
+            book.hidden = false;
         }
 
         // Tag and status counts across all posts.

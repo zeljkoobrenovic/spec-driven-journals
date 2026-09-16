@@ -56,6 +56,68 @@
             color: var(--muted);
         }
 
+        .book-edition {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0 40px;
+            padding: 4px;
+        }
+
+        .book-edition[hidden] {
+            display: none;
+        }
+
+        .book-edition .book-cover {
+            display: block;
+            flex: 0 0 100px;
+        }
+
+        .book-edition .book-cover img {
+            display: block;
+            width: 100px;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        .book-edition .book-details {
+            flex: 1 1 180px;
+            min-width: 0;
+        }
+
+        .book-edition h2 {
+            margin: 0 0 0px;
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .book-edition .book-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .book-edition .book-links a {
+            padding: 8px 14px;
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            color: var(--accent);
+            background: #fff;
+            font-size: 15px;
+            text-decoration: none;
+        }
+
+        .book-edition .book-links a:hover {
+            color: #fff;
+            background: var(--accent);
+        }
+
+        .book-edition a:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+        }
+
         .search {
             margin: 0 0 38px;
         }
@@ -463,6 +525,7 @@
     </header>
 
     <div style="padding: 4px;">
+        <section class="book-edition" id="book-edition" aria-labelledby="book-heading" hidden></section>
         <nav class="view-tabs" id="view-tabs" role="tablist">
             <button type="button" id="tab-list" class="active" role="tab" aria-selected="true">Articles</button>
             <button type="button" id="tab-visual" role="tab" aria-selected="false">Visual Overview</button>
@@ -480,7 +543,7 @@
     </div>
 </main>
 
-<script id="data" type="application/json">{"sections": [{"title": "Architecture", "description": "Approaches and metaphors for the practice of architecture.", "posts": [{"id": "", "status": "", "title": "Architects as Superglue: One Approach To Being An Architect in IT Organizations", "excerpt": "This article is a written statement of my experiences on what it means to be an architect in IT organizations, how architects need to develop, and how architects should work together.", "url": "superglue.html", "icon": "assets/icons/superglue.png", "logo": null, "tags": []}, {"id": "", "status": "", "title": "Data + Automation + Curation = Useful Architectural Documentation", "excerpt": "This article summarizes my experiences in replacing classical architectural documentation with data-driven documents.", "url": "documentation.html", "icon": "assets/icons/oil.png", "logo": null, "tags": []}]}, {"title": "Economics & Cost", "description": "Thinking about the economic side of IT systems.", "posts": [{"id": "", "status": "", "title": "The IT Cost Box", "excerpt": "In this post, I introduce a simple model for thinking about IT costs in three dimensions. This model presents IT costs as the volume of the box, where each side of the box shows three drivers of the cost: unit costs, size, and time.", "url": "costbox.html", "icon": "assets/icons/costs.png", "logo": null, "tags": []}, {"id": "", "status": "", "title": "The Economic Value of Architecture: Two Metaphors", "excerpt": "In this post, I sketch two answers to the question of the economic value of architecture: the return on investment metaphor, and the financial options metaphor.", "url": "economics.html", "icon": "assets/icons/economics.png", "logo": null, "tags": []}, {"id": "", "status": "", "title": "What Digital Marketplaces Sell? A Short Memo", "excerpt": "Digital marketplaces facilitate transactions between buyers and sellers. The marketplace is not the seller (nor a buyer), but it sells a reduction in transaction costs. .", "url": "digital-marketplaces.html", "icon": "assets/icons/market.png", "logo": null, "tags": []}]}, {"title": "Cloud & Platforms", "description": "Cloud capabilities and the platforms built on top of them.", "posts": [{"id": "", "status": "", "title": "Uber's Payments Platform", "excerpt": "Recently, Uber has announced deeper push into financial services with Uber Money, a new division, including products such as a digital wallet and upgraded debit and credit cards. It is expected that Uber could soon offer a bank account to consumers on its platform. While many of the news articles focus on the business side of Uber move, limited resources are available to understand better the payment technology that Uber is building. I believe that we can learn from looking under the hood of Uber payment technologies, as the Uber approach may be the way how we will make the banks of the future.", "url": "uber-payments-platform.html", "icon": "assets/icons/uber.png", "logo": null, "tags": []}, {"id": "", "status": "", "title": "Public Cloud: Great Expectations", "excerpt": "This article enlists some of the key benefits we can expect from of cloud: development velocity, performance, scalability, functionality, uptime, costs, transparency, and security. The article also provides a reality check on these expectations. You need to earn the public cloud benefits; simply moving to the cloud rarely leads to immediate improvements.", "url": "cloud-expectations.html", "icon": "assets/icons/cloud.png", "logo": null, "tags": []}]}, {"title": "Media & Streaming", "description": "Distributing video and other media at scale.", "posts": [{"id": "", "status": "", "title": "Adaptive HTTP Streaming Technologies: The Problem Statement", "excerpt": "Adaptive HTTP Streaming technologies enable distributing video efficiently via the standard HTTP infrastructure and CDNs. These technologies offer three key elements that the technologies introduce to solve critical challenges: segmentation of video content in smaller blocks to minimize overhead, improve user experience, and improve caching performance, adaptivity by having multiple channels of variable quality to enable automatic switching among channels based on the device characteristics and network performance, and securing the video content while keeping the benefits of efficient HTTP content distribution.", "url": "adaptive-http-streaming.html", "icon": "assets/icons/streaming.png", "logo": null, "tags": []}]}, {"title": "AI & Tooling", "description": "Working with AI assistants in software development.", "posts": [{"id": "", "status": "", "title": "LLMs, ChatGPT and Evolution of Software Engineering: Patterns, Anti-Patterns, and Quality Imperative", "excerpt": "LLMs like ChatGPT can significantly impact software engineering by synergically combining Natural Language Processing (NLP), LLM-driven Soft Programming, and Traditional Hard Programming. Three synergy patterns: Generative Pattern, Learning and Explanation Pattern, and Hardening Pattern, can help developers harness the potential of these technologies.", "url": "chatgpt-se-evolution.html", "icon": "assets/icons/chatgpt.png", "logo": null, "tags": []}]}]}</script>
+<script id="data" type="application/json">{"sections": [{"title": "Architecture", "description": "Approaches and metaphors for the practice of architecture.", "posts": [{"id": "", "status": "", "title": "Architects as Superglue: One Approach To Being An Architect in IT Organizations", "excerpt": "This article is a written statement of my experiences on what it means to be an architect in IT organizations, how architects need to develop, and how architects should work together.", "url": "superglue.html", "icon": "assets/icons/superglue.png", "logo": null, "tags": []}, {"id": "", "status": "", "title": "Data + Automation + Curation = Useful Architectural Documentation", "excerpt": "This article summarizes my experiences in replacing classical architectural documentation with data-driven documents.", "url": "documentation.html", "icon": "assets/icons/oil.png", "logo": null, "tags": []}]}, {"title": "Economics & Cost", "description": "Thinking about the economic side of IT systems.", "posts": [{"id": "", "status": "", "title": "The IT Cost Box", "excerpt": "In this post, I introduce a simple model for thinking about IT costs in three dimensions. This model presents IT costs as the volume of the box, where each side of the box shows three drivers of the cost: unit costs, size, and time.", "url": "costbox.html", "icon": "assets/icons/costs.png", "logo": null, "tags": []}, {"id": "", "status": "", "title": "The Economic Value of Architecture: Two Metaphors", "excerpt": "In this post, I sketch two answers to the question of the economic value of architecture: the return on investment metaphor, and the financial options metaphor.", "url": "economics.html", "icon": "assets/icons/economics.png", "logo": null, "tags": []}, {"id": "", "status": "", "title": "What Digital Marketplaces Sell? A Short Memo", "excerpt": "Digital marketplaces facilitate transactions between buyers and sellers. The marketplace is not the seller (nor a buyer), but it sells a reduction in transaction costs. .", "url": "digital-marketplaces.html", "icon": "assets/icons/market.png", "logo": null, "tags": []}]}, {"title": "Cloud & Platforms", "description": "Cloud capabilities and the platforms built on top of them.", "posts": [{"id": "", "status": "", "title": "Uber's Payments Platform", "excerpt": "Recently, Uber has announced deeper push into financial services with Uber Money, a new division, including products such as a digital wallet and upgraded debit and credit cards. It is expected that Uber could soon offer a bank account to consumers on its platform. While many of the news articles focus on the business side of Uber move, limited resources are available to understand better the payment technology that Uber is building. I believe that we can learn from looking under the hood of Uber payment technologies, as the Uber approach may be the way how we will make the banks of the future.", "url": "uber-payments-platform.html", "icon": "assets/icons/uber.png", "logo": null, "tags": []}, {"id": "", "status": "", "title": "Public Cloud: Great Expectations", "excerpt": "This article enlists some of the key benefits we can expect from of cloud: development velocity, performance, scalability, functionality, uptime, costs, transparency, and security. The article also provides a reality check on these expectations. You need to earn the public cloud benefits; simply moving to the cloud rarely leads to immediate improvements.", "url": "cloud-expectations.html", "icon": "assets/icons/cloud.png", "logo": null, "tags": []}]}, {"title": "Media & Streaming", "description": "Distributing video and other media at scale.", "posts": [{"id": "", "status": "", "title": "Adaptive HTTP Streaming Technologies: The Problem Statement", "excerpt": "Adaptive HTTP Streaming technologies enable distributing video efficiently via the standard HTTP infrastructure and CDNs. These technologies offer three key elements that the technologies introduce to solve critical challenges: segmentation of video content in smaller blocks to minimize overhead, improve user experience, and improve caching performance, adaptivity by having multiple channels of variable quality to enable automatic switching among channels based on the device characteristics and network performance, and securing the video content while keeping the benefits of efficient HTTP content distribution.", "url": "adaptive-http-streaming.html", "icon": "assets/icons/streaming.png", "logo": null, "tags": []}]}, {"title": "AI & Tooling", "description": "Working with AI assistants in software development.", "posts": [{"id": "", "status": "", "title": "LLMs, ChatGPT and Evolution of Software Engineering: Patterns, Anti-Patterns, and Quality Imperative", "excerpt": "LLMs like ChatGPT can significantly impact software engineering by synergically combining Natural Language Processing (NLP), LLM-driven Soft Programming, and Traditional Hard Programming. Three synergy patterns: Generative Pattern, Learning and Explanation Pattern, and Hardening Pattern, can help developers harness the potential of these technologies.", "url": "chatgpt-se-evolution.html", "icon": "assets/icons/chatgpt.png", "logo": null, "tags": []}]}], "book_image": null, "book_pdf": null, "book_epub": null}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -503,6 +566,31 @@
             }
             if (children) children.forEach(c => c && e.appendChild(c));
             return e;
+        }
+
+        const bookImage = (data.book_image || '').trim();
+        const bookPdf = (data.book_pdf || '').trim();
+        const bookEpub = (data.book_epub || '').trim();
+        if (bookImage || bookPdf || bookEpub) {
+            const book = document.getElementById('book-edition');
+            if (bookImage) {
+                book.appendChild(el('a', {
+                    class: 'book-cover',
+                    href: bookPdf || bookEpub || bookImage,
+                    'aria-label': bookPdf ? 'Read the book as PDF' :
+                        bookEpub ? 'Read the book as EPUB' : 'View the book cover'
+                }, [el('img', {src: bookImage, alt: 'Book cover'})]));
+            }
+            const details = el('div', {class: 'book-details'}, [
+            ]);
+            if (bookPdf || bookEpub) {
+                const links = el('div', {class: 'book-links'});
+                if (bookPdf) links.appendChild(el('a', {href: bookPdf, text: 'Download PDF'}));
+                if (bookEpub) links.appendChild(el('a', {href: bookEpub, text: 'Download EPUB'}));
+                details.appendChild(links);
+            }
+            book.appendChild(details);
+            book.hidden = false;
         }
 
         // Tag and status counts across all posts.

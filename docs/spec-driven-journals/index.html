@@ -56,6 +56,68 @@
             color: var(--muted);
         }
 
+        .book-edition {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0 40px;
+            padding: 4px;
+        }
+
+        .book-edition[hidden] {
+            display: none;
+        }
+
+        .book-edition .book-cover {
+            display: block;
+            flex: 0 0 100px;
+        }
+
+        .book-edition .book-cover img {
+            display: block;
+            width: 100px;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        .book-edition .book-details {
+            flex: 1 1 180px;
+            min-width: 0;
+        }
+
+        .book-edition h2 {
+            margin: 0 0 0px;
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .book-edition .book-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .book-edition .book-links a {
+            padding: 8px 14px;
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            color: var(--accent);
+            background: #fff;
+            font-size: 15px;
+            text-decoration: none;
+        }
+
+        .book-edition .book-links a:hover {
+            color: #fff;
+            background: var(--accent);
+        }
+
+        .book-edition a:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+        }
+
         .search {
             margin: 0 0 38px;
         }
@@ -464,6 +526,7 @@
     </header>
 
     <div style="padding: 4px;">
+        <section class="book-edition" id="book-edition" aria-labelledby="book-heading" hidden></section>
         <nav class="view-tabs" id="view-tabs" role="tablist">
             <button type="button" id="tab-list" class="active" role="tab" aria-selected="true">Articles</button>
             <button type="button" id="tab-visual" role="tab" aria-selected="false">Visual Overview</button>
@@ -481,7 +544,7 @@
     </div>
 </main>
 
-<script id="data" type="application/json">{"sections": [{"title": "Foundations", "description": "The philosophy behind writing durable organizational knowledge as markdown source, generated sites, and reviewable specs.", "posts": [{"id": "", "status": "", "title": "What Are Spec-Driven Journals?", "excerpt": "Spec-driven journals treat durable writing as structured source: each article is authored from a lightweight spec, published as static documentation, and kept readable by humans and AI agents.", "url": "what-are-spec-driven-journals.html", "icon": "assets/icons/what-are-spec-driven-journals.png", "logo": "assets/images/what-are-spec-driven-journals/logo.jpeg", "tags": ["journals", "documentation", "specs", "static site"]}, {"id": "", "status": "", "title": "Journals as Source of Truth", "excerpt": "A spec-driven journal is useful because it separates canonical source from generated output: authors change markdown, specs, config, and assets, while generated HTML remains the review and publication surface.", "url": "journals-as-source-of-truth.html", "icon": "assets/icons/journals-as-source-of-truth.png", "logo": "assets/images/journals-as-source-of-truth/logo.jpeg", "tags": ["source of truth", "markdown", "git", "publishing"]}]}, {"title": "Authoring Model", "description": "How journals, posts, specs, assets, cross-links, and AI-mediated sessions fit together in day-to-day writing.", "posts": [{"id": "", "status": "", "title": "Anatomy of a Journal", "excerpt": "A journal is a small source tree: one config file, a posts folder, optional assets, and per-post folders that keep the article, its spec, and its media together.", "url": "anatomy-of-a-journal.html", "icon": "assets/icons/anatomy-of-a-journal.png", "logo": "assets/images/anatomy-of-a-journal/logo.jpeg", "tags": ["journal structure", "config", "posts", "front matter"]}, {"id": "", "status": "", "title": "Cross-Links, Assets, and Blocks", "excerpt": "Spec-driven journals stay navigable through stable cross-links, simple asset paths, generated clickable images, and a small set of custom block types for diagrams and visualizations.", "url": "cross-links-assets-and-blocks.html", "icon": "assets/icons/cross-links-assets-and-blocks.png", "logo": "assets/images/cross-links-assets-and-blocks/logo.jpeg", "tags": ["cross-links", "assets", "markdown", "rendering"]}, {"id": "", "status": "", "title": "Spec-Driven Authoring Workflow", "excerpt": "Spec-driven authoring is the practical workflow inside Spec-Driven Journals: state the intent in a sibling spec, draft the post from that contract, build the journal, inspect the generated page, and return fixes to source.", "url": "spec-driven-authoring-workflow.html", "icon": "assets/icons/spec-driven-authoring-workflow.png", "logo": "assets/images/spec-driven-authoring-workflow/logo.jpeg", "tags": ["authoring", "specs", "workflow", "review"]}, {"id": "", "status": "", "title": "AI-Mediated Journal Operations", "excerpt": "AI agents are useful journal collaborators when they treat the Spec-Driven Journals repository as source, read the local contract before editing, update specs before substantial posts, build scoped output, and leave a clear verification trail.", "url": "ai-mediated-journal-operations.html", "icon": "assets/icons/ai-mediated-journal-operations.png", "logo": "assets/images/ai-mediated-journal-operations/logo.jpeg", "tags": ["ai agents", "authoring", "review", "operations"]}]}, {"title": "Implementation", "description": "How the generator turns source into static sites, and how to extend the system without losing its lightweight character.", "posts": [{"id": "", "status": "", "title": "Build Pipeline and Rendering Model", "excerpt": "The journal build is intentionally small: Python collects source into structured JSON payloads, templates embed those payloads, and browser-side JavaScript renders markdown, links, images, diagrams, and custom blocks.", "url": "build-pipeline-and-rendering-model.html", "icon": "assets/icons/build-pipeline-and-rendering-model.png", "logo": "assets/images/build-pipeline-and-rendering-model/logo.jpeg", "tags": ["implementation", "build", "rendering", "static site"]}, {"id": "", "status": "", "title": "Extending and Maintaining the System", "excerpt": "Spec-driven journals can evolve safely when maintainers preserve the small build contract, keep source and generated output separate, add journals deliberately, and verify changes with scoped builds and rendered pages.", "url": "extending-and-maintaining-the-system.html", "icon": "assets/icons/extending-and-maintaining-the-system.png", "logo": "assets/images/extending-and-maintaining-the-system/logo.jpeg", "tags": ["maintenance", "extension", "build contracts", "start page"]}]}]}</script>
+<script id="data" type="application/json">{"sections": [{"title": "Foundations", "description": "The philosophy behind writing durable organizational knowledge as markdown source, generated sites, and reviewable specs.", "posts": [{"id": "", "status": "", "title": "What Are Spec-Driven Journals?", "excerpt": "Spec-driven journals treat durable writing as structured source: each article is authored from a lightweight spec, published as static documentation, and kept readable by humans and AI agents.", "url": "what-are-spec-driven-journals.html", "icon": "assets/icons/what-are-spec-driven-journals.png", "logo": "assets/images/what-are-spec-driven-journals/logo.jpeg", "tags": ["journals", "documentation", "specs", "static site"]}, {"id": "", "status": "", "title": "Journals as Source of Truth", "excerpt": "A spec-driven journal is useful because it separates canonical source from generated output: authors change markdown, specs, config, and assets, while generated HTML remains the review and publication surface.", "url": "journals-as-source-of-truth.html", "icon": "assets/icons/journals-as-source-of-truth.png", "logo": "assets/images/journals-as-source-of-truth/logo.jpeg", "tags": ["source of truth", "markdown", "git", "publishing"]}]}, {"title": "Authoring Model", "description": "How journals, posts, specs, assets, cross-links, and AI-mediated sessions fit together in day-to-day writing.", "posts": [{"id": "", "status": "", "title": "Anatomy of a Journal", "excerpt": "A journal is a small source tree: one config file, a posts folder, optional assets, and per-post folders that keep the article, its spec, and its media together.", "url": "anatomy-of-a-journal.html", "icon": "assets/icons/anatomy-of-a-journal.png", "logo": "assets/images/anatomy-of-a-journal/logo.jpeg", "tags": ["journal structure", "config", "posts", "front matter"]}, {"id": "", "status": "", "title": "Cross-Links, Assets, and Blocks", "excerpt": "Spec-driven journals stay navigable through stable cross-links, simple asset paths, generated clickable images, and a small set of custom block types for diagrams and visualizations.", "url": "cross-links-assets-and-blocks.html", "icon": "assets/icons/cross-links-assets-and-blocks.png", "logo": "assets/images/cross-links-assets-and-blocks/logo.jpeg", "tags": ["cross-links", "assets", "markdown", "rendering"]}, {"id": "", "status": "", "title": "Spec-Driven Authoring Workflow", "excerpt": "Spec-driven authoring is the practical workflow inside Spec-Driven Journals: state the intent in a sibling spec, draft the post from that contract, build the journal, inspect the generated page, and return fixes to source.", "url": "spec-driven-authoring-workflow.html", "icon": "assets/icons/spec-driven-authoring-workflow.png", "logo": "assets/images/spec-driven-authoring-workflow/logo.jpeg", "tags": ["authoring", "specs", "workflow", "review"]}, {"id": "", "status": "", "title": "AI-Mediated Journal Operations", "excerpt": "AI agents are useful journal collaborators when they treat the Spec-Driven Journals repository as source, read the local contract before editing, update specs before substantial posts, build scoped output, and leave a clear verification trail.", "url": "ai-mediated-journal-operations.html", "icon": "assets/icons/ai-mediated-journal-operations.png", "logo": "assets/images/ai-mediated-journal-operations/logo.jpeg", "tags": ["ai agents", "authoring", "review", "operations"]}]}, {"title": "Implementation", "description": "How the generator turns source into static sites, and how to extend the system without losing its lightweight character.", "posts": [{"id": "", "status": "", "title": "Build Pipeline and Rendering Model", "excerpt": "The journal build is intentionally small: Python collects source into structured JSON payloads, templates embed those payloads, and browser-side JavaScript renders markdown, links, images, diagrams, and custom blocks.", "url": "build-pipeline-and-rendering-model.html", "icon": "assets/icons/build-pipeline-and-rendering-model.png", "logo": "assets/images/build-pipeline-and-rendering-model/logo.jpeg", "tags": ["implementation", "build", "rendering", "static site"]}, {"id": "", "status": "", "title": "Extending and Maintaining the System", "excerpt": "Spec-driven journals can evolve safely when maintainers preserve the small build contract, keep source and generated output separate, add journals deliberately, and verify changes with scoped builds and rendered pages.", "url": "extending-and-maintaining-the-system.html", "icon": "assets/icons/extending-and-maintaining-the-system.png", "logo": "assets/images/extending-and-maintaining-the-system/logo.jpeg", "tags": ["maintenance", "extension", "build contracts", "start page"]}]}], "book_image": null, "book_pdf": null, "book_epub": null}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -504,6 +567,31 @@
             }
             if (children) children.forEach(c => c && e.appendChild(c));
             return e;
+        }
+
+        const bookImage = (data.book_image || '').trim();
+        const bookPdf = (data.book_pdf || '').trim();
+        const bookEpub = (data.book_epub || '').trim();
+        if (bookImage || bookPdf || bookEpub) {
+            const book = document.getElementById('book-edition');
+            if (bookImage) {
+                book.appendChild(el('a', {
+                    class: 'book-cover',
+                    href: bookPdf || bookEpub || bookImage,
+                    'aria-label': bookPdf ? 'Read the book as PDF' :
+                        bookEpub ? 'Read the book as EPUB' : 'View the book cover'
+                }, [el('img', {src: bookImage, alt: 'Book cover'})]));
+            }
+            const details = el('div', {class: 'book-details'}, [
+            ]);
+            if (bookPdf || bookEpub) {
+                const links = el('div', {class: 'book-links'});
+                if (bookPdf) links.appendChild(el('a', {href: bookPdf, text: 'Download PDF'}));
+                if (bookEpub) links.appendChild(el('a', {href: bookEpub, text: 'Download EPUB'}));
+                details.appendChild(links);
+            }
+            book.appendChild(details);
+            book.hidden = false;
         }
 
         // Tag and status counts across all posts.

@@ -77,7 +77,7 @@ One chain is a deliberate exception, and it is the only one. A single onboarding
 
 ## Choose a Reading Format
 
-Each main chapter provides an **Article** and a 300–500-word **TL;DR** summary. TL;DR means “too long; didn’t read.” Twenty-nine of the thirty main chapters also have a six-panel **Comic**, illustrated, with captions and dialogue transcripts; the handover chapter added in the September 2026 revision does not yet have one. The six part introductions and the reference pages have no TL;DR or comic.
+Each main chapter provides an **Article** and a 300–500-word **TL;DR** summary. TL;DR means “too long; didn’t read.” All thirty main chapters also have a six-panel **Comic**, illustrated, with captions and dialogue transcripts. The six part introductions and the reference pages have no TL;DR or comic.
 
 For a shorter first pass, read the part introductions and the summaries. The formats are companions rather than substitutes. Each one is written to reach the same decision and to keep the conditions that decide whether that decision holds; what varies is depth, because only the article carries the worked figures, the sources and the cases where the conclusion would change. The summaries and comics of this September 2026 revision are still being reconciled chapter by chapter, so where a short format and the article disagree, the article is the one to trust.
 

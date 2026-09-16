@@ -56,6 +56,68 @@
             color: var(--muted);
         }
 
+        .book-edition {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0 40px;
+            padding: 4px;
+        }
+
+        .book-edition[hidden] {
+            display: none;
+        }
+
+        .book-edition .book-cover {
+            display: block;
+            flex: 0 0 100px;
+        }
+
+        .book-edition .book-cover img {
+            display: block;
+            width: 100px;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        .book-edition .book-details {
+            flex: 1 1 180px;
+            min-width: 0;
+        }
+
+        .book-edition h2 {
+            margin: 0 0 0px;
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .book-edition .book-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .book-edition .book-links a {
+            padding: 8px 14px;
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            color: var(--accent);
+            background: #fff;
+            font-size: 15px;
+            text-decoration: none;
+        }
+
+        .book-edition .book-links a:hover {
+            color: #fff;
+            background: var(--accent);
+        }
+
+        .book-edition a:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+        }
+
         .search {
             margin: 0 0 38px;
         }
@@ -463,6 +525,7 @@
     </header>
 
     <div style="padding: 4px;">
+        <section class="book-edition" id="book-edition" aria-labelledby="book-heading" hidden></section>
         <nav class="view-tabs" id="view-tabs" role="tablist">
             <button type="button" id="tab-list" class="active" role="tab" aria-selected="true">Articles</button>
             <button type="button" id="tab-visual" role="tab" aria-selected="false">Visual Overview</button>
@@ -480,7 +543,7 @@
     </div>
 </main>
 
-<script id="data" type="application/json">{"sections": [{"title": "Foundations", "description": "Format choice and licensing for the MADR project.", "posts": [{"id": "", "status": "", "title": "Use Markdown Architectural Decision Records", "excerpt": "We adopt MADR — Markdown Architectural Decision Records — as the format for recording decisions in this project. MADR is lean, structured, and well maintained.", "url": "0000-use-markdown-architectural-decision-records.html", "icon": "assets/icons/0000-use-markdown-architectural-decision-records.png", "logo": "assets/images/0000-use-markdown-architectural-decision-records/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Dual-license MADR under MIT or CC0", "excerpt": "We dual-license MADR under MIT OR CC0-1.0 so users can pick whichever license fits their work. Default copyright laws would otherwise block reuse.", "url": "0001-use-CC0-or-MIT-as-license.html", "icon": "assets/icons/0001-use-CC0-or-MIT-as-license.png", "logo": "assets/images/0001-use-CC0-or-MIT-as-license/logo.jpeg", "tags": []}]}, {"title": "Tooling", "description": "Decisions about MADR's supporting tools.", "posts": [{"id": "", "status": "", "title": "Provide MADR's own tooling", "excerpt": "We maintain MADR's own tooling rather than rely on existing ADR tools. The maintenance cost is the price of staying in sync with the format.", "url": "0003-provide-own-madr-tools.html", "icon": "assets/icons/0003-provide-own-madr-tools.png", "logo": "assets/images/0003-provide-own-madr-tools/logo.jpeg", "tags": ["on hold"]}, {"id": "", "status": "", "title": "Write our own table-of-contents tool", "excerpt": "We write our own ADR table-of-contents tool, adr-log, because adr-tools only emits titles and we want ADR-NNNN identifiers in the TOC.", "url": "0004-write-own-toc-tool.html", "icon": "assets/icons/0004-write-own-toc-tool.png", "logo": "assets/images/0004-write-own-toc-tool/logo.jpeg", "tags": []}]}, {"title": "Filenames & identifiers", "description": "How ADRs are named, numbered, and referenced.", "posts": [{"id": "", "status": "", "title": "Do not use numbers in ADR headings", "excerpt": "ADR headings contain the title only — no leading ADR number. Numbers belong in filenames; headings stay portable.", "url": "0002-do-not-use-numbers-in-headings.html", "icon": "assets/icons/0002-do-not-use-numbers-in-headings.png", "logo": "assets/images/0002-do-not-use-numbers-in-headings/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Use dashes in ADR filenames", "excerpt": "ADR filenames follow the pattern NNNN-title-with-dashes.md — a stable, command-line-friendly identifier that aligns with adr-tools.", "url": "0005-use-dashes-in-filenames.html", "icon": "assets/icons/0005-use-dashes-in-filenames.png", "logo": "assets/images/0005-use-dashes-in-filenames/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Use option names as identifiers", "excerpt": "Repeat the option name wherever an option is referenced. Short identifiers like [A] save space but break readability.", "url": "0006-use-names-as-identifier.html", "icon": "assets/icons/0006-use-names-as-identifier.png", "logo": "assets/images/0006-use-names-as-identifier/logo.jpeg", "tags": []}]}, {"title": "Metadata", "description": "Fields that describe the ADR, separate from its content.", "posts": [{"id": "", "status": "", "title": "Add a status field via YAML front matter", "excerpt": "An ADR's status lives in YAML front matter, not in the body. The body stays focused on context and decision; tools can read the status without parsing prose.", "url": "0008-add-status-field.html", "icon": "assets/icons/0008-add-status-field.png", "logo": "assets/images/0008-add-status-field/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Use YAML front matter for metadata", "excerpt": "ADR metadata — status, decision makers, date — lives in YAML front matter rather than in the body. The body stays focused on context and decision.", "url": "0013-use-yaml-front-matter-for-meta-data.html", "icon": "assets/icons/0013-use-yaml-front-matter-for-meta-data.png", "logo": "assets/images/0013-use-yaml-front-matter-for-meta-data/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Include Consulted and Informed from RACI", "excerpt": "MADR adopts Consulted and Informed from RACI as optional fields alongside Decision Makers. Responsible and Accountable are skipped because they often confuse and don't fit consensus-driven decisions.", "url": "0015-include-consulting-informed-of-raci.html", "icon": "assets/icons/0015-include-consulting-informed-of-raci.png", "logo": "assets/images/0015-include-consulting-informed-of-raci/logo.jpeg", "tags": []}]}, {"title": "Structure", "description": "Order and shape of the ADR body.", "posts": [{"id": "", "status": "", "title": "Support links between ADRs in a More Information section", "excerpt": "Cross-ADR links live in a More Information section at the bottom of the document, not in tables or sidebars near the status.", "url": "0009-support-links-between-adrs-inside-an-adrs.html", "icon": "assets/icons/0009-support-links-between-adrs-inside-an-adrs.png", "logo": "assets/images/0009-support-links-between-adrs-inside-an-adrs/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Support categories via subfolders", "excerpt": "Group ADRs by category using one level of subfolders with local IDs. Filesystem grouping is natural and works without external tooling.", "url": "0010-support-categories.html", "icon": "assets/icons/0010-support-categories.png", "logo": "assets/images/0010-support-categories/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Place Decision Outcome before detailed Pros and Cons", "excerpt": "Decision Outcome comes before the detailed Pros and Cons section. The decision is what most readers came for; the detailed arguments are appendix material.", "url": "0016-outcome-before-detailed-pros-cons.html", "icon": "assets/icons/0016-outcome-before-detailed-pros-cons.png", "logo": "assets/images/0016-outcome-before-detailed-pros-cons/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Use the same Good/Bad format for Consequences as for Options", "excerpt": "The Consequences section uses Good, because… / Bad, because… — the same format as the Options section. Consistency makes copy-and-paste safe.", "url": "0017-use-same-format-for-outcomes-and-options.html", "icon": "assets/icons/0017-use-same-format-for-outcomes-and-options.png", "logo": "assets/images/0017-use-same-format-for-outcomes-and-options/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Use Confirmation as the implementation-check heading", "excerpt": "MADR uses Confirmation as the heading for the section that records how a decision is checked to have been implemented — not Validation or Verification.", "url": "0018-use-confirmation-as-heading.html", "icon": "assets/icons/0018-use-confirmation-as-heading.png", "logo": "assets/images/0018-use-confirmation-as-heading/logo.jpeg", "tags": []}]}, {"title": "Authoring conventions", "description": "Small formatting choices that shape day-to-day writing.", "posts": [{"id": "", "status": "", "title": "Do not emphasize line headings", "excerpt": "Line headings like Chosen option: are not emphasized with bold or italics. Position plus colon are enough; stars would confuse Markdown novices.", "url": "0007-do-not-emphasize-line-headings.html", "icon": "assets/icons/0007-do-not-emphasize-line-headings.png", "logo": "assets/images/0007-do-not-emphasize-line-headings/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Use asterisk as the Markdown list marker", "excerpt": "Markdown lists use the asterisk marker rather than a hyphen. Asterisks are tone-neutral; hyphens carry a faint negative connotation.", "url": "0011-use-asterisk-as-list-marker.html", "icon": "assets/icons/0011-use-asterisk-as-list-marker.png", "logo": "assets/images/0011-use-asterisk-as-list-marker/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Use curly braces to denote placeholders", "excerpt": "Template placeholders are written in curly braces, not square brackets. Square brackets clashed with Markdown link syntax and confused users.", "url": "0012-use-curly-braces-to-denote-placeholder.html", "icon": "assets/icons/0012-use-curly-braces-to-denote-placeholder.png", "logo": "assets/images/0012-use-curly-braces-to-denote-placeholder/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Allow neutral arguments alongside Good and Bad", "excerpt": "Pros-and-cons lists may include Neutral, because… alongside Good, because… and Bad, because… — matching the +/0/- pattern.", "url": "0014-allow-neutral-arguments.html", "icon": "assets/icons/0014-allow-neutral-arguments.png", "logo": "assets/images/0014-allow-neutral-arguments/logo.jpeg", "tags": []}]}]}</script>
+<script id="data" type="application/json">{"sections": [{"title": "Foundations", "description": "Format choice and licensing for the MADR project.", "posts": [{"id": "", "status": "", "title": "Use Markdown Architectural Decision Records", "excerpt": "We adopt MADR — Markdown Architectural Decision Records — as the format for recording decisions in this project. MADR is lean, structured, and well maintained.", "url": "0000-use-markdown-architectural-decision-records.html", "icon": "assets/icons/0000-use-markdown-architectural-decision-records.png", "logo": "assets/images/0000-use-markdown-architectural-decision-records/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Dual-license MADR under MIT or CC0", "excerpt": "We dual-license MADR under MIT OR CC0-1.0 so users can pick whichever license fits their work. Default copyright laws would otherwise block reuse.", "url": "0001-use-CC0-or-MIT-as-license.html", "icon": "assets/icons/0001-use-CC0-or-MIT-as-license.png", "logo": "assets/images/0001-use-CC0-or-MIT-as-license/logo.jpeg", "tags": []}]}, {"title": "Tooling", "description": "Decisions about MADR's supporting tools.", "posts": [{"id": "", "status": "", "title": "Provide MADR's own tooling", "excerpt": "We maintain MADR's own tooling rather than rely on existing ADR tools. The maintenance cost is the price of staying in sync with the format.", "url": "0003-provide-own-madr-tools.html", "icon": "assets/icons/0003-provide-own-madr-tools.png", "logo": "assets/images/0003-provide-own-madr-tools/logo.jpeg", "tags": ["on hold"]}, {"id": "", "status": "", "title": "Write our own table-of-contents tool", "excerpt": "We write our own ADR table-of-contents tool, adr-log, because adr-tools only emits titles and we want ADR-NNNN identifiers in the TOC.", "url": "0004-write-own-toc-tool.html", "icon": "assets/icons/0004-write-own-toc-tool.png", "logo": "assets/images/0004-write-own-toc-tool/logo.jpeg", "tags": []}]}, {"title": "Filenames & identifiers", "description": "How ADRs are named, numbered, and referenced.", "posts": [{"id": "", "status": "", "title": "Do not use numbers in ADR headings", "excerpt": "ADR headings contain the title only — no leading ADR number. Numbers belong in filenames; headings stay portable.", "url": "0002-do-not-use-numbers-in-headings.html", "icon": "assets/icons/0002-do-not-use-numbers-in-headings.png", "logo": "assets/images/0002-do-not-use-numbers-in-headings/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Use dashes in ADR filenames", "excerpt": "ADR filenames follow the pattern NNNN-title-with-dashes.md — a stable, command-line-friendly identifier that aligns with adr-tools.", "url": "0005-use-dashes-in-filenames.html", "icon": "assets/icons/0005-use-dashes-in-filenames.png", "logo": "assets/images/0005-use-dashes-in-filenames/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Use option names as identifiers", "excerpt": "Repeat the option name wherever an option is referenced. Short identifiers like [A] save space but break readability.", "url": "0006-use-names-as-identifier.html", "icon": "assets/icons/0006-use-names-as-identifier.png", "logo": "assets/images/0006-use-names-as-identifier/logo.jpeg", "tags": []}]}, {"title": "Metadata", "description": "Fields that describe the ADR, separate from its content.", "posts": [{"id": "", "status": "", "title": "Add a status field via YAML front matter", "excerpt": "An ADR's status lives in YAML front matter, not in the body. The body stays focused on context and decision; tools can read the status without parsing prose.", "url": "0008-add-status-field.html", "icon": "assets/icons/0008-add-status-field.png", "logo": "assets/images/0008-add-status-field/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Use YAML front matter for metadata", "excerpt": "ADR metadata — status, decision makers, date — lives in YAML front matter rather than in the body. The body stays focused on context and decision.", "url": "0013-use-yaml-front-matter-for-meta-data.html", "icon": "assets/icons/0013-use-yaml-front-matter-for-meta-data.png", "logo": "assets/images/0013-use-yaml-front-matter-for-meta-data/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Include Consulted and Informed from RACI", "excerpt": "MADR adopts Consulted and Informed from RACI as optional fields alongside Decision Makers. Responsible and Accountable are skipped because they often confuse and don't fit consensus-driven decisions.", "url": "0015-include-consulting-informed-of-raci.html", "icon": "assets/icons/0015-include-consulting-informed-of-raci.png", "logo": "assets/images/0015-include-consulting-informed-of-raci/logo.jpeg", "tags": []}]}, {"title": "Structure", "description": "Order and shape of the ADR body.", "posts": [{"id": "", "status": "", "title": "Support links between ADRs in a More Information section", "excerpt": "Cross-ADR links live in a More Information section at the bottom of the document, not in tables or sidebars near the status.", "url": "0009-support-links-between-adrs-inside-an-adrs.html", "icon": "assets/icons/0009-support-links-between-adrs-inside-an-adrs.png", "logo": "assets/images/0009-support-links-between-adrs-inside-an-adrs/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Support categories via subfolders", "excerpt": "Group ADRs by category using one level of subfolders with local IDs. Filesystem grouping is natural and works without external tooling.", "url": "0010-support-categories.html", "icon": "assets/icons/0010-support-categories.png", "logo": "assets/images/0010-support-categories/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Place Decision Outcome before detailed Pros and Cons", "excerpt": "Decision Outcome comes before the detailed Pros and Cons section. The decision is what most readers came for; the detailed arguments are appendix material.", "url": "0016-outcome-before-detailed-pros-cons.html", "icon": "assets/icons/0016-outcome-before-detailed-pros-cons.png", "logo": "assets/images/0016-outcome-before-detailed-pros-cons/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Use the same Good/Bad format for Consequences as for Options", "excerpt": "The Consequences section uses Good, because… / Bad, because… — the same format as the Options section. Consistency makes copy-and-paste safe.", "url": "0017-use-same-format-for-outcomes-and-options.html", "icon": "assets/icons/0017-use-same-format-for-outcomes-and-options.png", "logo": "assets/images/0017-use-same-format-for-outcomes-and-options/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Use Confirmation as the implementation-check heading", "excerpt": "MADR uses Confirmation as the heading for the section that records how a decision is checked to have been implemented — not Validation or Verification.", "url": "0018-use-confirmation-as-heading.html", "icon": "assets/icons/0018-use-confirmation-as-heading.png", "logo": "assets/images/0018-use-confirmation-as-heading/logo.jpeg", "tags": []}]}, {"title": "Authoring conventions", "description": "Small formatting choices that shape day-to-day writing.", "posts": [{"id": "", "status": "", "title": "Do not emphasize line headings", "excerpt": "Line headings like Chosen option: are not emphasized with bold or italics. Position plus colon are enough; stars would confuse Markdown novices.", "url": "0007-do-not-emphasize-line-headings.html", "icon": "assets/icons/0007-do-not-emphasize-line-headings.png", "logo": "assets/images/0007-do-not-emphasize-line-headings/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Use asterisk as the Markdown list marker", "excerpt": "Markdown lists use the asterisk marker rather than a hyphen. Asterisks are tone-neutral; hyphens carry a faint negative connotation.", "url": "0011-use-asterisk-as-list-marker.html", "icon": "assets/icons/0011-use-asterisk-as-list-marker.png", "logo": "assets/images/0011-use-asterisk-as-list-marker/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Use curly braces to denote placeholders", "excerpt": "Template placeholders are written in curly braces, not square brackets. Square brackets clashed with Markdown link syntax and confused users.", "url": "0012-use-curly-braces-to-denote-placeholder.html", "icon": "assets/icons/0012-use-curly-braces-to-denote-placeholder.png", "logo": "assets/images/0012-use-curly-braces-to-denote-placeholder/logo.jpeg", "tags": []}, {"id": "", "status": "", "title": "Allow neutral arguments alongside Good and Bad", "excerpt": "Pros-and-cons lists may include Neutral, because… alongside Good, because… and Bad, because… — matching the +/0/- pattern.", "url": "0014-allow-neutral-arguments.html", "icon": "assets/icons/0014-allow-neutral-arguments.png", "logo": "assets/images/0014-allow-neutral-arguments/logo.jpeg", "tags": []}]}], "book_image": null, "book_pdf": null, "book_epub": null}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -503,6 +566,31 @@
             }
             if (children) children.forEach(c => c && e.appendChild(c));
             return e;
+        }
+
+        const bookImage = (data.book_image || '').trim();
+        const bookPdf = (data.book_pdf || '').trim();
+        const bookEpub = (data.book_epub || '').trim();
+        if (bookImage || bookPdf || bookEpub) {
+            const book = document.getElementById('book-edition');
+            if (bookImage) {
+                book.appendChild(el('a', {
+                    class: 'book-cover',
+                    href: bookPdf || bookEpub || bookImage,
+                    'aria-label': bookPdf ? 'Read the book as PDF' :
+                        bookEpub ? 'Read the book as EPUB' : 'View the book cover'
+                }, [el('img', {src: bookImage, alt: 'Book cover'})]));
+            }
+            const details = el('div', {class: 'book-details'}, [
+            ]);
+            if (bookPdf || bookEpub) {
+                const links = el('div', {class: 'book-links'});
+                if (bookPdf) links.appendChild(el('a', {href: bookPdf, text: 'Download PDF'}));
+                if (bookEpub) links.appendChild(el('a', {href: bookEpub, text: 'Download EPUB'}));
+                details.appendChild(links);
+            }
+            book.appendChild(details);
+            book.hidden = false;
         }
 
         // Tag and status counts across all posts.

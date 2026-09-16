@@ -56,6 +56,68 @@
             color: var(--muted);
         }
 
+        .book-edition {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0 40px;
+            padding: 4px;
+        }
+
+        .book-edition[hidden] {
+            display: none;
+        }
+
+        .book-edition .book-cover {
+            display: block;
+            flex: 0 0 100px;
+        }
+
+        .book-edition .book-cover img {
+            display: block;
+            width: 100px;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        .book-edition .book-details {
+            flex: 1 1 180px;
+            min-width: 0;
+        }
+
+        .book-edition h2 {
+            margin: 0 0 0px;
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .book-edition .book-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .book-edition .book-links a {
+            padding: 8px 14px;
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            color: var(--accent);
+            background: #fff;
+            font-size: 15px;
+            text-decoration: none;
+        }
+
+        .book-edition .book-links a:hover {
+            color: #fff;
+            background: var(--accent);
+        }
+
+        .book-edition a:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+        }
+
         .search {
             margin: 0 0 38px;
         }
@@ -464,6 +526,7 @@
     </header>
 
     <div style="padding: 4px;">
+        <section class="book-edition" id="book-edition" aria-labelledby="book-heading" hidden></section>
         <nav class="view-tabs" id="view-tabs" role="tablist">
             <button type="button" id="tab-list" class="active" role="tab" aria-selected="true">Articles</button>
             <button type="button" id="tab-visual" role="tab" aria-selected="false">Visual Overview</button>
@@ -481,7 +544,7 @@
     </div>
 </main>
 
-<script id="data" type="application/json">{"sections": [{"title": "Foundations", "description": "The core idea: product architecture as a source-of-truth specification, not only as diagrams, decks, or scattered requirements.", "posts": [{"id": "", "status": "", "title": "What Is Spec-Driven Product Architecture?", "excerpt": "Spec-driven product architecture treats the product domain model as a source-of-truth artifact: structured enough for AI agents to author and validate, and rich enough to connect product vision to implementation reality.", "url": "what-is-spec-driven-product-architecture.html", "icon": "assets/icons/what-is-spec-driven-product-architecture.png", "logo": "assets/images/what-is-spec-driven-product-architecture/logo.jpeg", "tags": ["product architecture", "spec-driven development", "ai", "strategy"]}, {"id": "", "status": "", "title": "Product Domain as Source of Truth", "excerpt": "A product domain is the unit of memory in Spec-Driven Product Architecture: one folder that keeps customer value, strategy, delivery, product bricks, teams, roadmap, and evidence in a form AI agents can inspect and change.", "url": "product-domain-as-source-of-truth.html", "icon": "assets/icons/product-domain-as-source-of-truth.png", "logo": "assets/images/product-domain-as-source-of-truth/logo.jpeg", "tags": ["product domains", "source of truth", "json", "static documentation"]}]}, {"title": "From Product Value To Architecture", "description": "How customer value, product strategy, capabilities, product bricks, delivery, teams, and roadmaps fit into one coherent model.", "posts": [{"id": "", "status": "", "title": "From Customer Value to Architecture", "excerpt": "Spec-Driven Product Architecture starts with customer progress, then carries that context through KPIs, strategy horizons, capabilities, product bricks, delivery, and team ownership.", "url": "customer-value-to-architecture.html", "icon": "assets/icons/customer-value-to-architecture.png", "logo": "assets/images/customer-value-to-architecture/logo.jpeg", "tags": ["customers", "jobs to be done", "kpi architecture", "product strategy"]}, {"id": "", "status": "", "title": "Product Bricks and Capabilities", "excerpt": "Capabilities describe the outcomes a product must deliver. Product bricks describe the implementation-facing units that make those outcomes buildable, ownable, and traceable.", "url": "product-bricks-and-capabilities.html", "icon": "assets/icons/product-bricks-and-capabilities.png", "logo": "assets/images/product-bricks-and-capabilities/logo.jpeg", "tags": ["product bricks", "capabilities", "architecture", "implementation"]}, {"id": "", "status": "", "title": "Delivery, Teams, and Roadmaps", "excerpt": "A product architecture model becomes operable when delivery, team ownership, objectives, releases, targets, and roadmap overlays are connected to the same customer and brick model.", "url": "delivery-teams-and-roadmaps.html", "icon": "assets/icons/delivery-teams-and-roadmaps.png", "logo": "assets/images/delivery-teams-and-roadmaps/logo.jpeg", "tags": ["delivery", "teams", "roadmap", "product architecture"]}]}, {"title": "AI-Mediated Modeling", "description": "How AI agents use structure, examples, skills, source-first visuals, grounding, evidence, and validation to create useful product-architecture specifications.", "posts": [{"id": "", "status": "", "title": "AI Agents as Product Architecture Authors", "excerpt": "AI agents become useful product-architecture authors when they are given structure, examples, local skills, validation gates, source-first media generation, and a repository they can inspect and validate.", "url": "ai-agents-as-product-architecture-authors.html", "icon": "assets/icons/ai-agents-as-product-architecture-authors.png", "logo": "assets/images/ai-agents-as-product-architecture-authors/logo.jpeg", "tags": ["ai agents", "authoring", "product architecture", "validation"]}, {"id": "", "status": "", "title": "Modeling Diverse Domains", "excerpt": "Diverse product-domain examples are not decoration. They teach AI agents which modeling structures are reusable and which product details must remain specific to the domain.", "url": "modeling-diverse-domains.html", "icon": "assets/icons/modeling-diverse-domains.png", "logo": "assets/images/modeling-diverse-domains/logo.jpeg", "tags": ["examples", "domains", "ai", "modeling"]}, {"id": "", "status": "", "title": "Grounding, Validation, and Publishing", "excerpt": "AI-authored product architecture becomes reviewable when grounding connects intended product concepts to explored reality, evidence is explicit, source files validate, and generated documentation is treated as output.", "url": "evidence-validation-and-publishing.html", "icon": "assets/icons/evidence-validation-and-publishing.png", "logo": "assets/images/evidence-validation-and-publishing/logo.jpeg", "tags": ["grounding", "evidence", "validation", "static documentation", "governance"]}]}]}</script>
+<script id="data" type="application/json">{"sections": [{"title": "Foundations", "description": "The core idea: product architecture as a source-of-truth specification, not only as diagrams, decks, or scattered requirements.", "posts": [{"id": "", "status": "", "title": "What Is Spec-Driven Product Architecture?", "excerpt": "Spec-driven product architecture treats the product domain model as a source-of-truth artifact: structured enough for AI agents to author and validate, and rich enough to connect product vision to implementation reality.", "url": "what-is-spec-driven-product-architecture.html", "icon": "assets/icons/what-is-spec-driven-product-architecture.png", "logo": "assets/images/what-is-spec-driven-product-architecture/logo.jpeg", "tags": ["product architecture", "spec-driven development", "ai", "strategy"]}, {"id": "", "status": "", "title": "Product Domain as Source of Truth", "excerpt": "A product domain is the unit of memory in Spec-Driven Product Architecture: one folder that keeps customer value, strategy, delivery, product bricks, teams, roadmap, and evidence in a form AI agents can inspect and change.", "url": "product-domain-as-source-of-truth.html", "icon": "assets/icons/product-domain-as-source-of-truth.png", "logo": "assets/images/product-domain-as-source-of-truth/logo.jpeg", "tags": ["product domains", "source of truth", "json", "static documentation"]}]}, {"title": "From Product Value To Architecture", "description": "How customer value, product strategy, capabilities, product bricks, delivery, teams, and roadmaps fit into one coherent model.", "posts": [{"id": "", "status": "", "title": "From Customer Value to Architecture", "excerpt": "Spec-Driven Product Architecture starts with customer progress, then carries that context through KPIs, strategy horizons, capabilities, product bricks, delivery, and team ownership.", "url": "customer-value-to-architecture.html", "icon": "assets/icons/customer-value-to-architecture.png", "logo": "assets/images/customer-value-to-architecture/logo.jpeg", "tags": ["customers", "jobs to be done", "kpi architecture", "product strategy"]}, {"id": "", "status": "", "title": "Product Bricks and Capabilities", "excerpt": "Capabilities describe the outcomes a product must deliver. Product bricks describe the implementation-facing units that make those outcomes buildable, ownable, and traceable.", "url": "product-bricks-and-capabilities.html", "icon": "assets/icons/product-bricks-and-capabilities.png", "logo": "assets/images/product-bricks-and-capabilities/logo.jpeg", "tags": ["product bricks", "capabilities", "architecture", "implementation"]}, {"id": "", "status": "", "title": "Delivery, Teams, and Roadmaps", "excerpt": "A product architecture model becomes operable when delivery, team ownership, objectives, releases, targets, and roadmap overlays are connected to the same customer and brick model.", "url": "delivery-teams-and-roadmaps.html", "icon": "assets/icons/delivery-teams-and-roadmaps.png", "logo": "assets/images/delivery-teams-and-roadmaps/logo.jpeg", "tags": ["delivery", "teams", "roadmap", "product architecture"]}]}, {"title": "AI-Mediated Modeling", "description": "How AI agents use structure, examples, skills, source-first visuals, grounding, evidence, and validation to create useful product-architecture specifications.", "posts": [{"id": "", "status": "", "title": "AI Agents as Product Architecture Authors", "excerpt": "AI agents become useful product-architecture authors when they are given structure, examples, local skills, validation gates, source-first media generation, and a repository they can inspect and validate.", "url": "ai-agents-as-product-architecture-authors.html", "icon": "assets/icons/ai-agents-as-product-architecture-authors.png", "logo": "assets/images/ai-agents-as-product-architecture-authors/logo.jpeg", "tags": ["ai agents", "authoring", "product architecture", "validation"]}, {"id": "", "status": "", "title": "Modeling Diverse Domains", "excerpt": "Diverse product-domain examples are not decoration. They teach AI agents which modeling structures are reusable and which product details must remain specific to the domain.", "url": "modeling-diverse-domains.html", "icon": "assets/icons/modeling-diverse-domains.png", "logo": "assets/images/modeling-diverse-domains/logo.jpeg", "tags": ["examples", "domains", "ai", "modeling"]}, {"id": "", "status": "", "title": "Grounding, Validation, and Publishing", "excerpt": "AI-authored product architecture becomes reviewable when grounding connects intended product concepts to explored reality, evidence is explicit, source files validate, and generated documentation is treated as output.", "url": "evidence-validation-and-publishing.html", "icon": "assets/icons/evidence-validation-and-publishing.png", "logo": "assets/images/evidence-validation-and-publishing/logo.jpeg", "tags": ["grounding", "evidence", "validation", "static documentation", "governance"]}]}], "book_image": null, "book_pdf": null, "book_epub": null}</script>
 <script>
     (function () {
         const data = JSON.parse(document.getElementById('data').textContent);
@@ -504,6 +567,31 @@
             }
             if (children) children.forEach(c => c && e.appendChild(c));
             return e;
+        }
+
+        const bookImage = (data.book_image || '').trim();
+        const bookPdf = (data.book_pdf || '').trim();
+        const bookEpub = (data.book_epub || '').trim();
+        if (bookImage || bookPdf || bookEpub) {
+            const book = document.getElementById('book-edition');
+            if (bookImage) {
+                book.appendChild(el('a', {
+                    class: 'book-cover',
+                    href: bookPdf || bookEpub || bookImage,
+                    'aria-label': bookPdf ? 'Read the book as PDF' :
+                        bookEpub ? 'Read the book as EPUB' : 'View the book cover'
+                }, [el('img', {src: bookImage, alt: 'Book cover'})]));
+            }
+            const details = el('div', {class: 'book-details'}, [
+            ]);
+            if (bookPdf || bookEpub) {
+                const links = el('div', {class: 'book-links'});
+                if (bookPdf) links.appendChild(el('a', {href: bookPdf, text: 'Download PDF'}));
+                if (bookEpub) links.appendChild(el('a', {href: bookEpub, text: 'Download EPUB'}));
+                details.appendChild(links);
+            }
+            book.appendChild(details);
+            book.hidden = false;
         }
 
         // Tag and status counts across all posts.
