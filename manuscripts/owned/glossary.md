@@ -287,7 +287,7 @@ See [You Cannot Fund Every Good Project at Once](#cannot-fund-everything), [Find
 | Reduction in force (layoff, redundancy) | Ending roles, and the employment of the people in them, because the work stops or the plan can no longer fund it. Choose the roles by the work that stops; the terms and the process belong to the jurisdiction ([Anatomy of a Layoff](#anatomy-of-a-layoff)). |
 | Notice period | The time between telling a person their employment ends and the end itself, set by contract or law and paid whether or not it is worked. It delays the saving from a reduction. |
 | Severance | A payment on ending employment, set by law, contract or company policy, paid before the saving from a reduction begins. |
-| Collective consultation | A legal duty, in some jurisdictions above a threshold number of dismissals, to consult employee representatives and notify a public authority before dismissals take effect. Its thresholds decide the calendar of a reduction. |
+| Collective consultation | A legal duty, in some jurisdictions above a threshold number of dismissals counted per establishment over a stated window, to consult employee representatives before dismissals take effect; often paired with a separate duty to notify a public authority, after which a waiting period runs. The thresholds and the two duties together decide the calendar of a reduction; national law can go further than the floor a directive sets ([Anatomy of a Layoff](#anatomy-of-a-layoff)). |
 
 {id: glossary--technology}
 ## Technology and Company Work

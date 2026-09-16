@@ -47,13 +47,13 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "pending",
   "asset": "assets/images/32-anatomy-of-a-layoff/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Sam points at a wall calendar running from November to August; a paper cash line dips in the first three months, then flattens above a dashed line labeled RESERVE, while a small stack of envelopes labeled SEVERANCE sits under November. Use one speech bubble with the exact words: \"The savings arrive after the costs.\" Convey: Notice periods delay the saving and severance is paid first, so the reduction cannot replace the late round; with the bridge it holds the reserve past June, without the bridge January is lost whatever the reduction does.",
+  "prompt": "Panel 3 of an explainer comic. Sam points at a wall calendar running from November to August; a paper cash line dips in the first three months, then flattens above a dashed line labeled RESERVE, while a small stack of envelopes labeled SEVERANCE sits under November. Use one speech bubble with the exact words: \"The savings arrive after the costs.\" Convey: Notice periods delay the saving and severance is paid first, so at Larkspur’s terms and dates the reduction cannot replace the late round: with the bridge it holds the reserve past June, without the bridge January is lost whatever the reduction does. Compare the dates before assuming either.",
   "alt": "Comic panel: Sam points at a wall calendar where a cash line dips for three months and then flattens above a dashed reserve line, with severance envelopes under November.",
-  "caption": "Notice periods delay the saving and severance is paid first, so the reduction cannot replace the late round; with the bridge it holds the reserve past June, without the bridge January is lost whatever the reduction does."
+  "caption": "Notice periods delay the saving and severance is paid first, so at Larkspur’s terms and dates the reduction cannot replace the late round: with the bridge it holds the reserve past June, without the bridge January is lost whatever the reduction does. Compare the dates before assuming either."
 }
 -->
 
-**Panel 3:** Notice periods delay the saving and severance is paid first, so the reduction cannot replace the late round; with the bridge it holds the reserve past June, without the bridge January is lost whatever the reduction does.
+**Panel 3:** Notice periods delay the saving and severance is paid first, so at Larkspur’s terms and dates the reduction cannot replace the late round: with the bridge it holds the reserve past June, without the bridge January is lost whatever the reduction does. Compare the dates before assuming either.
 
 *Dialogue:* “The savings arrive after the costs.”
 
@@ -79,13 +79,13 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "pending",
   "asset": "assets/images/32-anatomy-of-a-layoff/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Alex sits across a small table from one unnamed engineer in grey clothes, handing over a folder; on the wall behind them a simple checklist shows NOTICE, SEVERANCE, OPTIONS, REFERENCE, and a second unnamed engineer at a nearby desk releases a change on a screen labeled RULE CHANGE. Use one speech bubble with the exact words: \"You hear it from me, first.\" Convey: The eight are told individually, first, with their notice, severance, option terms and references written down and the same for all; the knowledge they hold is transferred inside the notice period, and the remaining engineer must release a rule change alone before the specialists leave.",
+  "prompt": "Panel 5 of an explainer comic. Alex sits across a small table from one unnamed engineer in grey clothes, handing over a folder; on the wall behind them a simple checklist shows NOTICE, SEVERANCE, OPTIONS, REFERENCE, and a second unnamed engineer at a nearby desk releases a change on a screen labeled RULE CHANGE. Use one speech bubble with the exact words: \"You hear it from me, first.\" Convey: The eight are told individually, first, with their notice, severance, option terms and references written down and the same for all; the knowledge they hold is transferred while the specialists are still employed, the remaining engineer must release a rule change alone, and a funded extension is the fallback if the retest fails.",
   "alt": "Comic panel: Alex hands a folder to an engineer across a small table beneath a checklist of notice, severance, options and reference, while another engineer releases a rule change at a nearby desk.",
-  "caption": "The eight are told individually, first, with their notice, severance, option terms and references written down and the same for all; the knowledge they hold is transferred inside the notice period, and the remaining engineer must release a rule change alone before the specialists leave."
+  "caption": "The eight are told individually, first, with their notice, severance, option terms and references written down and the same for all; the knowledge they hold is transferred while the specialists are still employed, the remaining engineer must release a rule change alone, and a funded extension is the fallback if the retest fails."
 }
 -->
 
-**Panel 5:** The eight are told individually, first, with their notice, severance, option terms and references written down and the same for all; the knowledge they hold is transferred inside the notice period, and the remaining engineer must release a rule change alone before the specialists leave.
+**Panel 5:** The eight are told individually, first, with their notice, severance, option terms and references written down and the same for all; the knowledge they hold is transferred while the specialists are still employed, the remaining engineer must release a rule change alone, and a funded extension is the fallback if the retest fails.
 
 *Dialogue:* “You hear it from me, first.”
 
