@@ -8,7 +8,7 @@ This is a living journal and a work in progress: a draft built by [Željko Obren
 
 Start with [the purpose and reading guide](posts/introduction/index.md). It explains the company leader’s responsibilities, the comparative ownership lens, the fictional company and routes for different funding and ownership situations.
 
-The book contains 31 main chapters across six parts. Each main chapter includes an article, a 300–500-word summary and a six-panel comic; thirty comics are illustrated. The edition includes 40 header logos and 41 navigation icons, alongside 180 comic panels and a dedicated Owned journal logo. The fund-economics reference page still needs its logo and icon, and the reduction chapter added on 16 September 2026 awaits its six panels, two figures, TL;DR visual, logo and icon.
+The book contains 31 main chapters across six parts. Each main chapter includes an article, a 300–500-word summary and a six-panel illustrated comic. The edition includes 41 header logos and 42 navigation icons, alongside 186 comic panels and a dedicated Owned journal logo; the fund-economics reference page still needs its header logo.
 
 ## Contents
 

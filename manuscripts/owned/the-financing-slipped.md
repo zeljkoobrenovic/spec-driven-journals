@@ -1,7 +1,7 @@
 {id: the-financing-slipped}
-# 25. The Roadmap Did Not Slip, the Financing Did
+# 25. Planning on Money That Hasn't Arrived
 
-![The Roadmap Did Not Slip, the Financing Did — logo](private-techuity/posts/18-the-financing-slipped/assets/images/18-the-financing-slipped/logo.jpeg)
+![Planning on Money That Hasn't Arrived — logo](private-techuity/posts/18-the-financing-slipped/assets/images/18-the-financing-slipped/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to revise a dated cash plan when expected funding arrives late, find the latest useful decision date and authorize one fallback before the plan chooses itself.
 
@@ -103,7 +103,7 @@ Until one gate is met, B is the plan, and the question for 1 October is the ques
 {id: the-financing-slipped--two-variations-on-the-same-decision}
 ## Two Variations on the Same Decision
 
-**A refinancing that leaves less cash.** A loan is approaching repayment, and the refinancing on offer leaves less cash for development. The trigger is a financing change, not evidence that engineering has become less valuable. The method is unchanged: the dated cash position after the refinancing, the protected obligations, the commitments still reversible, the latest useful date (here, the refinancing signature) and the alternatives priced by when each reaches the reserve. [Find the Cash Behind Your Technology Budget](#obligations-before-budget) shows how loan payments and taxes come before the discretionary budget in that calculation.
+**A refinancing that leaves less cash.** A loan is approaching repayment, and the refinancing on offer leaves less cash for development. The trigger is a financing change, not evidence that engineering has become less valuable. The method is unchanged: the dated cash position after the refinancing, the protected obligations, the commitments still reversible, the latest useful date (here, the refinancing signature) and the alternatives priced by when each reaches the reserve. [Confirm the Cash Before You Commit](#obligations-before-budget) shows how loan payments and taxes come before the discretionary budget in that calculation.
 
 **A corporate parent withdrawing budget.** A new group strategy or budget reduces the allocation to the product. Reconfirm which business unit is the company sponsor, what remains funded and which promises to external customers continue regardless. A reorganization inside the parent is not an instruction to let local obligations become ownerless. The latest useful date is set by the parent’s budget cycle and the company’s own contract renewals, and the escalation goes to whoever in the parent is authorized to fund or release the obligation.
 

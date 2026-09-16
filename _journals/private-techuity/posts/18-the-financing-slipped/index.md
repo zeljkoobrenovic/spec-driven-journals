@@ -1,5 +1,5 @@
 ---
-title: "The Roadmap Did Not Slip, the Financing Did"
+title: "Planning on Money That Hasn't Arrived"
 date: 2026-09-12
 author: Željko Obrenović
 excerpt: "When an expected round, refinancing or parent budget arrives late, revise the dated cash plan and the commitments that depend on it before the latest useful decision date."

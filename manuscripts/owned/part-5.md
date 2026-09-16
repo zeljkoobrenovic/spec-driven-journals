@@ -18,7 +18,7 @@ The five chapters are five destinations. One fictional finding, Larkspur’s dil
 
 - [Diligence Is Your Chance to Correct the Plan Before It Is Signed](#diligence-corrects-the-plan) shows what access you have at each stage of a transaction and completes that finding into a recorded decision.
 - [The First Hundred Days: Turn Expectations Into a Funded Plan](#first-hundred-days) turns the finding into a funded early plan with named accountability, cash, team time and review dates, then shows the day-100 review changing the plan.
-- [The Roadmap Did Not Slip, the Financing Did](#the-financing-slipped) responds when an expected round, refinancing or parent budget arrives later than planned: dated cash, the latest useful decision date and the board’s authorized fallback.
+- [Planning on Money That Hasn't Arrived](#the-financing-slipped) responds when an expected round, refinancing or parent budget arrives later than planned: dated cash, the latest useful decision date and the board’s authorized fallback.
 - [Anatomy of a Layoff](#anatomy-of-a-layoff) continues that scenario into the reduction the delayed money forces: where the pressure actually comes from, the alternatives costed by date, roles chosen by the work that stops, and the people who leave and the people who remain.
 - [Hand Over the Obligations, Not Just the Company](#handover-of-obligations) carries the onboarding record through a further round, a sale, integration or continued ownership: who receives cash, who keeps an interest, who holds authority, and what unfinished work goes with the company.
 

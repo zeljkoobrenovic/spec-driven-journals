@@ -1,5 +1,5 @@
 ---
-title: "Find the Cash Behind Your Technology Budget"
+title: "Confirm the Cash Before You Commit"
 date: 2026-09-12
 author: Željko Obrenović
 excerpt: "Reconcile positive earnings with investment, tax, financing payments, working capital and cash on hand; separate obligations from choices; then price three options for the initiative the company can actually fund."

@@ -94,7 +94,7 @@ A is rejected on pace, not on money: it would commit the company to an expansion
 
 **Who is authorized.** Ines and Sam negotiate the loan or the investment and bring it to the board; the shareholders’ agreement says which decisions also need shareholder consent. Alex and Priya don’t sign the financing. What they can do, and did here, is bring the revised scope, the €610,000 requirement with its components, the alternative of hiring two implementation specialists at about €300,000 a year recurring, and the dated review: the day-90 cohort and the day-100 decision. Their recommendation is about the work: which option to fund, in what sequence, and what would show it isn’t working. Renegotiating the terms belongs to the CEO, the CFO and the board.
 
-**The scale of the financing matters more than its label.** Suppose Larkspur were instead carrying acquisition borrowing. Annual interest of €4m leaves €3m less for other uses than interest of €1m, all else equal, and that €3m is five times the onboarding need. Neither figure establishes affordability on its own: the company also has to fund tax, investment and the timing of customer payments. [Find the Cash Behind Your Technology Budget](#obligations-before-budget) follows those obligations through a worked bridge.
+**The scale of the financing matters more than its label.** Suppose Larkspur were instead carrying acquisition borrowing. Annual interest of €4m leaves €3m less for other uses than interest of €1m, all else equal, and that €3m is five times the onboarding need. Neither figure establishes affordability on its own: the company also has to fund tax, investment and the timing of customer payments. [Confirm the Cash Before You Commit](#obligations-before-budget) follows those obligations through a worked bridge.
 
 {id: raise-what-you-need--control-and-partnership-are-separate-questions}
 ## Control and Partnership Are Separate Questions
@@ -112,7 +112,7 @@ The answer need not be another ownership transaction. The company might change i
 
 **Figure 2:** *Investment fit needs reassessment when the assumptions supporting the work change.*
 
-The useful question is **“what work must this business do next, and which ownership and funding arrangement can support it?”** Once the arrangement is chosen, the next question is how much of the company’s earnings is actually cash the work can use. [Find the Cash Behind Your Technology Budget](#obligations-before-budget) works from EBITDA to the cash left after financing, tax, investment and working capital, then prices three options for one initiative.
+The useful question is **“what work must this business do next, and which ownership and funding arrangement can support it?”** Once the arrangement is chosen, the next question is how much of the company’s earnings is actually cash the work can use. [Confirm the Cash Before You Commit](#obligations-before-budget) works from EBITDA to the cash left after financing, tax, investment and working capital, then prices three options for one initiative.
 
 {id: raise-what-you-need--questions-to-consider}
 ## Questions to Consider

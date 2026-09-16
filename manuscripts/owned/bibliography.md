@@ -23,8 +23,8 @@ Use this table to find evidence by question. A source can appear under more than
 | Topic | Identifiers | Start with |
 | --- | --- | --- |
 | Valuation, earnings measures and investor returns | S03, S04, S05, S06, S52, S53, S73, S74 | [A Valuation Is an Estimate, Not a Fact](#valuation-is-an-estimate), [Same Company, Same Performance, Three Different Returns](#three-different-returns), [Fund Economics: Fees, Distributions and Performance Reports](#fund-economics) |
-| Cash, funding forms and financing documents | S01, S02, S07, S54, S55, S56, S57, S58, S59, S60, S61, S72 | [Customers, Lenders and Investors: What Each Expects in Return](#customers-lenders-investors), [An Investment Announcement Is Not a Budget](#announcement-is-not-a-budget), [Find the Cash Behind Your Technology Budget](#obligations-before-budget) |
-| Governance, rights and incentives | S01, S02, S04, S61, S76 | [Decide Who Decides, Before You Disagree](#decide-who-decides), [Management Equity, Fund Carry and Employee Jobs Are Different Bets](#different-bets), [Fix the Decision Problem Before Adding People](#fix-decisions-before-hiring) |
+| Cash, funding forms and financing documents | S01, S02, S07, S54, S55, S56, S57, S58, S59, S60, S61, S72 | [Customers, Lenders and Investors: What Each Expects in Return](#customers-lenders-investors), [An Investment Announcement Is Not a Budget](#announcement-is-not-a-budget), [Confirm the Cash Before You Commit](#obligations-before-budget) |
+| Governance, rights and incentives | S01, S02, S04, S61, S76 | [Decide Who Decides, Before You Disagree](#decide-who-decides), [Management Equity, Fund Carry and Employee Jobs Are Different Bets](#different-bets), [Capacity Is Not Headcount: Trace the Work Before You Hire](#fix-decisions-before-hiring) |
 | Workforce reductions and employment process | S77, S78 | [Anatomy of a Layoff](#anatomy-of-a-layoff) |
 | Delivery, architecture and cloud cost | S13, S14, S15, S16, S53, S75 | [Can the Software and the Team Deliver What Was Promised?](#can-the-team-deliver), [The Chain From Roadmap to Revenue Breaks Easily](#roadmap-to-revenue), [Why a Cheaper Cloud Bill Can Be Bad News](#cheaper-cloud-bill) |
 | Security and resilience | S17 | [Prove You Can Restore, Not Just That You Back Up](#prove-you-can-restore) |
@@ -119,7 +119,7 @@ U.S. Securities and Exchange Commission, Division of Corporation Finance. [Non-G
 
 **Evidence type:** Regulator staff guidance. **Consulted scope:** Relevant EBITDA and adjusted-measure interpretations consulted. US disclosure context; not a universal accounting definition for every private company.
 
-**Used in:** [Find the Cash Behind Your Technology Budget](#obligations-before-budget), [A Valuation Is an Estimate, Not a Fact](#valuation-is-an-estimate), [Glossary](#glossary).
+**Used in:** [Confirm the Cash Before You Commit](#obligations-before-budget), [A Valuation Is an Estimate, Not a Fact](#valuation-is-an-estimate), [Glossary](#glossary).
 
 {id: bibliography--s07-ias-38-overview}
 ### S07 — IAS 38 overview
@@ -128,7 +128,7 @@ IFRS Foundation. [IAS 38: Intangible Assets](https://www.ifrs.org/issued-standar
 
 **Evidence type:** Accounting standard issuer. **Consulted scope:** Public overview consulted for research expense and development recognition criteria. The overview was rechecked on September 13, 2026 to clarify that recognition criteria determine the treatment. The complete standard and any particular company's application were not audited.
 
-**Used in:** [Find the Cash Behind Your Technology Budget](#obligations-before-budget), [Glossary](#glossary).
+**Used in:** [Confirm the Cash Before You Commit](#obligations-before-budget), [Glossary](#glossary).
 
 {id: bibliography--s08-davis-et-al-2024-revision}
 ### S08 — Davis et al., 2024 revision
@@ -155,7 +155,7 @@ Shai Bernstein, Josh Lerner, and Filippo Mezzanotti. [Private Equity and Financi
 
 **Evidence type:** Original empirical research. **Consulted scope:** PDF abstract, introduction, sample and selected mechanism discussion consulted. UK financial-crisis setting and matched observational design limit generalization. Journal version appeared in 2019. DOI: 10.3386/w23626.
 
-**Used in:** [Find the Cash Behind Your Technology Budget](#obligations-before-budget), [Success for Whom, and for How Long?](#success-for-whom).
+**Used in:** [Confirm the Cash Before You Commit](#obligations-before-budget), [Success for Whom, and for How Long?](#success-for-whom).
 
 {id: bibliography--s11-gupta-et-al-nursing-homes}
 ### S11 — Gupta et al., nursing homes
@@ -200,7 +200,7 @@ DORA / Google Cloud. [2024 Accelerate State of DevOps Report](https://dora.dev/r
 
 **Evidence type:** Original industry survey. **Consulted scope:** Report landing page, findings summary, and errata consulted; no independent reanalysis of the full survey. Associations support questions about operating conditions, not automatic causal or financial claims.
 
-**Used in:** [The Chain From Roadmap to Revenue Breaks Easily](#roadmap-to-revenue), [Fix the Decision Problem Before Adding People](#fix-decisions-before-hiring).
+**Used in:** [The Chain From Roadmap to Revenue Breaks Easily](#roadmap-to-revenue), [Capacity Is Not Headcount: Trace the Work Before You Hire](#fix-decisions-before-hiring).
 
 {id: bibliography--s16-finops-unit-economics}
 ### S16 — FinOps unit economics
@@ -380,7 +380,7 @@ Toys R Us, Inc. [Toys R Us, Inc. Reports Results for the Full Year and Fourth Qu
 
 **Evidence type:** Company financial disclosure. **Consulted scope:** Release and financial tables consulted, including operating earnings, interest, cash flow, capex, sales, and e-commerce discussion. Fiscal year ended January 28, 2017; table units are USD millions.
 
-**Used in:** [Find the Cash Behind Your Technology Budget](#obligations-before-budget), [Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us).
+**Used in:** [Confirm the Cash Before You Commit](#obligations-before-budget), [Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us).
 
 {id: bibliography--s36-toys-r-us-bankruptcy-note}
 ### S36 — Toys R Us bankruptcy note
@@ -740,7 +740,7 @@ Avalyn Pharma Inc. [Amended and Restated Investors' Rights Agreement, sections 3
 
 **Evidence type:** Filed contract between a company and its investors. **Consulted scope:** Section 3.2, read for a right granted to each major investor and its authorized representatives to visit and inspect the company's properties, examine its corporate and financial records and discuss its affairs, finances and accounts with its officers, during normal business hours, with carve-outs for trade secrets, confidential information and material whose disclosure would affect attorney-client privilege, and excluding investors the board has determined to be competitors. Section 5.4(g), read on September 16, 2026, which lists among the board matters requiring the preferred directors' approval the decision to "hire, terminate, or change the compensation of the executive officers, including approving any option grants or stock awards to executive officers". One filed example showing that such rights are commonly written down in advance; it does not establish what any other company's agreement grants.
 
-**Used in:** [Is the Investor’s Adviser Helping, Assessing or Deciding?](#investors-adviser), [Fix the Decision Problem Before Adding People](#fix-decisions-before-hiring).
+**Used in:** [Is the Investor’s Adviser Helping, Assessing or Deciding?](#investors-adviser), [Capacity Is Not Headcount: Trace the Work Before You Hire](#fix-decisions-before-hiring).
 
 {id: bibliography--s77-council-directive-98-59-ec}
 ### S77 — Council Directive 98/59/EC

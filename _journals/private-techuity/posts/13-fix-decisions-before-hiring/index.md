@@ -1,5 +1,5 @@
 ---
-title: "Fix the Decision Problem Before Adding People"
+title: "Capacity Is Not Headcount: Trace the Work Before You Hire"
 date: 2026-09-12
 author: Željko Obrenović
 excerpt: "Trace one piece of work through the company before adding people: separate decision, knowledge and staffing constraints, assess leaders in their system, and decide what hiring the plan needs."

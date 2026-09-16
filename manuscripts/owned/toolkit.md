@@ -34,8 +34,8 @@ The tools keep their original numbers because chapters and earlier readers cite 
 | **Obtain help** | Should we work with this investor at all? | Investor-fit interview — [Tool 8](#toolkit--tool-8) | [Judge an Investor by Their Behavior Under Pressure](#investor-under-pressure) |
 | **Measure** | Did the work help, and is the benefit capacity or cash? | Outcome and contribution ledger — [Tool 6](#toolkit--tool-6); small scorecard — [Tool 7](#toolkit--tool-7) | [The Chain From Roadmap to Revenue Breaks Easily](#roadmap-to-revenue), [Why a Cheaper Cloud Bill Can Be Bad News](#cheaper-cloud-bill) |
 | **Revise or hand over** | We are combining or separating businesses; what must continue? | Integration or separation plan — [Tool 9](#toolkit--tool-9) | [An Acquisition Adds Work Before It Adds Value](#acquisition-adds-work-first) |
-| **Revise or hand over** | Funding or ownership is changing; what evidence and obligations must travel with the work? | Funding or ownership handover — [Tool 10](#toolkit--tool-10) | [Hand Over the Obligations, Not Just the Company](#handover-of-obligations), [The Roadmap Did Not Slip, the Financing Did](#the-financing-slipped) |
-| **Revise or hand over** | The headcount plan has to shrink, or an investor proposes an appointment; who decides, what stops, and what are the people owed? | Workforce decision — [Tool 13](#toolkit--tool-13) | [Anatomy of a Layoff](#anatomy-of-a-layoff), [Fix the Decision Problem Before Adding People](#fix-decisions-before-hiring) |
+| **Revise or hand over** | Funding or ownership is changing; what evidence and obligations must travel with the work? | Funding or ownership handover — [Tool 10](#toolkit--tool-10) | [Hand Over the Obligations, Not Just the Company](#handover-of-obligations), [Planning on Money That Hasn't Arrived](#the-financing-slipped) |
+| **Revise or hand over** | The headcount plan has to shrink, or an investor proposes an appointment; who decides, what stops, and what are the people owed? | Workforce decision — [Tool 13](#toolkit--tool-13) | [Anatomy of a Layoff](#anatomy-of-a-layoff), [Capacity Is Not Headcount: Trace the Work Before You Hire](#fix-decisions-before-hiring) |
 
 Tool 12 (choose the combination) comes before Tool 5 (commit to one initiative) in this order: each initiative can be feasible on its own while the combination is not.
 
@@ -46,7 +46,7 @@ Restrict distribution according to the engagement and company permissions. A fil
 {id: toolkit--followed-through}
 ## One Finding, Followed Through
 
-Everything in this section is **fictional**. Larkspur, its people and every figure are teaching examples shared with [Diligence Is Your Chance to Correct the Plan Before It Is Signed](#diligence-corrects-the-plan), [The First Hundred Days: Turn Expectations Into a Funded Plan](#first-hundred-days), [You Cannot Fund Every Good Project at Once](#cannot-fund-everything), [Prove You Can Restore, Not Just That You Back Up](#prove-you-can-restore), [Turn an Offer of Help Into a Useful Engagement](#useful-engagement) and [Hand Over the Obligations, Not Just the Company](#handover-of-obligations); the figures below are the same ledger those chapters use, so a number here should match the number there. The scenario states its own assumptions and does not reconcile with the annual cash bridge in [Find the Cash Behind Your Technology Budget](#obligations-before-budget), and [The Roadmap Did Not Slip, the Financing Did](#the-financing-slipped) is a separate illustration with its own cash and dates. The chain uses the existing tools only. Read it once to see what each stage adds; then use only the stage you need.
+Everything in this section is **fictional**. Larkspur, its people and every figure are teaching examples shared with [Diligence Is Your Chance to Correct the Plan Before It Is Signed](#diligence-corrects-the-plan), [The First Hundred Days: Turn Expectations Into a Funded Plan](#first-hundred-days), [You Cannot Fund Every Good Project at Once](#cannot-fund-everything), [Prove You Can Restore, Not Just That You Back Up](#prove-you-can-restore), [Turn an Offer of Help Into a Useful Engagement](#useful-engagement) and [Hand Over the Obligations, Not Just the Company](#handover-of-obligations); the figures below are the same ledger those chapters use, so a number here should match the number there. The scenario states its own assumptions and does not reconcile with the annual cash bridge in [Confirm the Cash Before You Commit](#obligations-before-budget), and [Planning on Money That Hasn't Arrived](#the-financing-slipped) is a separate illustration with its own cash and dates. The chain uses the existing tools only. Read it once to see what each stage adds; then use only the stage you need.
 
 The scenario: a growth investment whose investment thesis is that Larkspur can double onboarding volume without proportional growth in implementation staff. Morgan, the investor’s technology adviser, records the finding below during diligence. On the one-page thesis (Tool 2), the “main constraint” line points at this finding rather than repeating it.
 
@@ -161,7 +161,7 @@ Each stage added information to one underlying record; the tables above show its
 {id: toolkit--tool-1}
 ## 1. Map the Shareholders, Funding and Decision
 
-Use before translating an ownership announcement into an operating promise. See [An Investment Announcement Is Not a Budget](#announcement-is-not-a-budget), [Find the Cash Behind Your Technology Budget](#obligations-before-budget) and [Decide Who Decides, Before You Disagree](#decide-who-decides). Complete this for the actual arrangement, rather than assuming every investor has a fund or controls the company.
+Use before translating an ownership announcement into an operating promise. See [An Investment Announcement Is Not a Budget](#announcement-is-not-a-budget), [Confirm the Cash Before You Commit](#obligations-before-budget) and [Decide Who Decides, Before You Disagree](#decide-who-decides). Complete this for the actual arrangement, rather than assuming every investor has a fund or controls the company.
 
 | Field | Record |
 | --- | --- |
@@ -325,7 +325,7 @@ Sequence changes around customer continuity and scarce expertise. Show dual-runn
 {id: toolkit--tool-10}
 ## 10. Prepare a Funding or Ownership Handover
 
-Use for another round, a sale, corporate integration or a material change in authority. See [Hand Over the Obligations, Not Just the Company](#handover-of-obligations) for what must travel with the work, and [The Roadmap Did Not Slip, the Financing Did](#the-financing-slipped) for the delayed-event plan; [Diligence Is Your Chance to Correct the Plan Before It Is Signed](#diligence-corrects-the-plan) shows what the next investor will look for. A new fundraise and an investor selling existing shares need different cash explanations. The [D-3/ONB-1 entry in Stage 6](#toolkit--stage-6) is a completed row.
+Use for another round, a sale, corporate integration or a material change in authority. See [Hand Over the Obligations, Not Just the Company](#handover-of-obligations) for what must travel with the work, and [Planning on Money That Hasn't Arrived](#the-financing-slipped) for the delayed-event plan; [Diligence Is Your Chance to Correct the Plan Before It Is Signed](#diligence-corrects-the-plan) shows what the next investor will look for. A new fundraise and an investor selling existing shares need different cash explanations. The [D-3/ONB-1 entry in Stage 6](#toolkit--stage-6) is a completed row.
 
 | Field | Record |
 | --- | --- |
@@ -378,7 +378,7 @@ Record the reason for the selected combination in ordinary language. A score can
 {id: toolkit--tool-13}
 ## 13. Record a Workforce Decision
 
-Use when an investor’s request, a funding condition or the company’s own cash forecast means the headcount plan has to change: a reduction, a freeze that becomes permanent, or a consolidation after an acquisition. See [Anatomy of a Layoff](#anatomy-of-a-layoff) for the worked reduction and [Fix the Decision Problem Before Adding People](#fix-decisions-before-hiring) for the knowledge-transfer test and for an investor-proposed appointment, which uses the first three rows and the role-design fields of Tool 5 rather than a separate form. Reuse Tool 1’s Authority row and Tool 12’s option comparison rather than copying them.
+Use when an investor’s request, a funding condition or the company’s own cash forecast means the headcount plan has to change: a reduction, a freeze that becomes permanent, or a consolidation after an acquisition. See [Anatomy of a Layoff](#anatomy-of-a-layoff) for the worked reduction and [Capacity Is Not Headcount: Trace the Work Before You Hire](#fix-decisions-before-hiring) for the knowledge-transfer test and for an investor-proposed appointment, which uses the first three rows and the role-design fields of Tool 5 rather than a separate form. Reuse Tool 1’s Authority row and Tool 12’s option comparison rather than copying them.
 
 | Field | Record |
 | --- | --- |

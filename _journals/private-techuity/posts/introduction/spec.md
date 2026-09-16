@@ -32,7 +32,7 @@ Exhaustive coverage, a universal role charter, or a claim of completed professio
 
 ## Modalities
 
-This reference page uses the Article modality. The 31 main chapters additionally provide a TL;DR and a six-panel comic storyboard; thirty have generated artwork (the handover chapter’s was added on 2026-09-15) and the reduction chapter’s panels are pending generation. Reference material is not padded with redundant adaptations.
+This reference page uses the Article modality. The 31 main chapters additionally provide a TL;DR and a six-panel illustrated comic (the handover chapter’s was added on 2026-09-15, the reduction chapter’s on 2026-09-16). Reference material is not padded with redundant adaptations.
 
 ## Open questions
 

@@ -1,7 +1,7 @@
 {id: fix-decisions-before-hiring}
-# 14. Fix the Decision Problem Before Adding People
+# 14. Capacity Is Not Headcount: Trace the Work Before You Hire
 
-![Fix the Decision Problem Before Adding People — logo](private-techuity/posts/13-fix-decisions-before-hiring/assets/images/13-fix-decisions-before-hiring/logo.jpeg)
+![Capacity Is Not Headcount: Trace the Work Before You Hire — logo](private-techuity/posts/13-fix-decisions-before-hiring/assets/images/13-fix-decisions-before-hiring/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to trace one piece of work through the company, separate decision, knowledge and staffing constraints, assess leaders in their system and decide what hiring the plan needs.
 

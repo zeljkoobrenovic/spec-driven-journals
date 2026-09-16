@@ -1,18 +1,7 @@
 Outside investment grows a team quickly; its obligations can force cuts just as quickly, and a bad layoff removes the capacity the money was meant to build. On 1 October the fictional Larkspur board meets the decision [[the-financing-slipped]] left open. The €600,000 bridge commitment has arrived with a condition: the existing investors fund it only if, by 31 October, the board adopts a plan that holds the €400,000 reserve until 30 June without the delayed round. **A reduction request has to be traced to its source before it is answered.** The scenario is separate from the shared Larkspur ledger; all figures are fictional.
 
-<!-- illustration-placeholder
-{
-  "id": "summary-at-a-glance",
-  "status": "pending",
-  "asset": "assets/images/32-anatomy-of-a-layoff/summary-at-a-glance.jpeg",
-  "aspect_ratio": "16:9",
-  "placement": "after the opening paragraph of the TL;DR modality",
-  "visual_goal": "Whole-post overview: a reduction request traced to its source, alternatives costed by date, roles chosen by work stopped, and a plan for the people who leave and the people who remain.",
-  "prompt": "Create one finished summary illustration explaining the whole post in Owned, a book for product and engineering leaders working with investors. Landscape 16:9. Calm editorial concept map with concrete drawn objects, navy ink, warm ivory background, muted teal and ochre. Use generous empty space, a clear reading order and large high-contrast labels legible at article width. Left: three different envelopes labeled CONDITION, VOTE and BENCHMARK arriving at one desk. Center: a wall calendar with a falling cash line and a dashed line labeled RESERVE, beside a short list on a clipboard labeled WORK STOPPED. Right: a doorway with two small groups, one walking out with a folder labeled RECORD and one staying at desks beside a sign labeled NOT EXPECTED. Use only the labels explicitly requested; no decorative title, paragraph text, figure number, watermark, photorealism or 3D gradients. Do not invent numbers, dates, research findings or financial claims.",
-  "alt": "A reduction request arrives as a condition, a vote and a benchmark; cash by date and a stopped-work list decide the plan; the people leaving carry a record and the people remaining have a list of what is no longer expected.",
-  "caption": "Trace the request to its source, reconcile the reduction by date, and plan for both sides of the door."
-}
--->
+![A reduction request arrives as a condition, a vote and a benchmark; cash by date and a stopped-work list decide the plan; the people leaving carry a record and the people remaining have a list of what is no longer expected.](assets/images/32-anatomy-of-a-layoff/summary-at-a-glance.jpeg)
+**Figure 1:** *Trace the request to its source, reconcile the reduction by date, and plan for both sides of the door.*
 
 The baseline comes first: forty employees, €324,000 of monthly payroll, €50,000 of contractors ending with R1, €76,000 of other costs, €250,000 of collected revenue, a €200,000 burn. The pressure is then separated. The bridge’s condition is a **funding condition**: cash to a date, which Sam translates into a saving of at least €40,000 a month from February. The investor director’s vote under the reserved matter is a **formal approval right**, answered with a decision the board can take. The remark that other companies cut a fifth of engineering is **influence**: about €28,000 a month by ratio, short of the condition.
 

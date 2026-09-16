@@ -49,7 +49,7 @@ Now the base case in full. The fictional company has annual EBITDA of **€10 mi
 
 Five years pass. EBITDA reaches €15 million: earnings improved by half, and for now we take no view on whether the company itself got better. It also pays down €20 million of debt from its own cash. The fund sells at the same 10× multiple.
 
-Amounts are in millions of euros. Assume no cash is available to offset debt at entry or exit. Ignore fees, taxes on the sale, changes in the fund’s ownership percentage and payments to owners before the sale; [Find the Cash Behind Your Technology Budget](#obligations-before-budget) examines the fuller cash bridge.
+Amounts are in millions of euros. Assume no cash is available to offset debt at entry or exit. Ignore fees, taxes on the sale, changes in the fund’s ownership percentage and payments to owners before the sale; [Confirm the Cash Before You Commit](#obligations-before-budget) examines the fuller cash bridge.
 
 | Item | Entry | Calculation | Exit | Calculation |
 | --- | ---: | --- | ---: | --- |
