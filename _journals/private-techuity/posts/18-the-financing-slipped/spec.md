@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-09-16
 ---
 
-# Spec: The Roadmap Did Not Slip, the Financing Did
+# Spec: Planning on Money That Hasn't Arrived
 
 ## Intent
 
@@ -52,6 +52,7 @@ The supplied book brief establishes scope, including the shared Larkspur delayed
 
 ## Changelog
 
+- 2026-09-16: Retitle the post from “The Roadmap Did Not Slip, the Financing Did” to “Planning on Money That Hasn't Arrived” at the author’s request. Permalink and id unchanged; body unchanged.
 - 2026-09-16: Hand the deeper reduction decision to the new chapter [[anatomy-of-a-layoff]] (article closing passages and TL;DR); this chapter’s figures unchanged and still declared separate from the shared ledger; permalink and id unchanged.
 - 2026-09-15: Verification pass over the 15 September review. All six comic panels checked against their image files (hashes match the JSON); panels 2, 3 and 4 confirmed to show the superseded cadence / confidentiality / buyer scenes and keep `needs_regeneration`. Panel 3's caption, prompt and panel text confirmed free of the commitment/cash conflation. Summary trimmed from 604 to 501 words of body text to meet the 300–500 convention (the collection's band is 496–505) with the restart rule, the bridge assumptions, R1 and the separation sentence all retained. NVCA model term sheet re-downloaded and the quoted binding-obligations sentence verified verbatim.
 - 2026-09-15: Implement the 15 September review: comic panel 3 no longer equates a written commitment with cash; one restart rule (cash received, or a board-authorized conditional commitment with a dated forecast and a funded downside) replaces the three differing gates; bridge assumptions (payer, €600,000, arrival by 30 November, no fee or cash interest before March) stated; Reduction R1 (€50,000 a month from 1 November, decision date 1 October) costed and the post-December continuation level left open; ONB-1 identifier and the €180,000 ledger figure removed and the scenario declared separate from the shared Larkspur ledger; NVCA model term sheet added to the reading list; timetoread 13 min.

@@ -8,11 +8,11 @@ Expand the leadership material, add one chapter on headcount reductions, and con
 
 The coverage review found strong treatment of hiring budgets, headcount approvals and staffing diagnosis. Investor-driven executive appointments and product/engineering layoffs need more complete treatment. The existing support-location consolidation provides a substantial foundation for discussing employee consequences.
 
-1. **Expand “Fix the Decision Problem Before Adding People.”**
+1. **Expand “Fix the Decision Problem Before Adding People.”** (Now titled “Headcount Is Not Capacity: Trace the Work Before You Hire”; permalink `fix-decisions-before-hiring`.)
 
    Keep the staffing diagnosis and CTO assessment in [the organization chapter](../posts/13-fix-decisions-before-hiring/index.md). Add a section on investor involvement in key appointments: proposing roles, introducing candidates, influencing selection, approving compensation, and assessing incumbents. Work through a fictional proposal to appoint a CPO, comparing recruitment with developing the existing leader or adding narrower support. Specify who decides, what authority the role receives, how it is funded, and how success will be assessed. Include the implications for product management, design, research, and engineering responsibilities.
 
-2. **Add “When the Headcount Plan Shrinks.”** (Published title after the author’s later retitle: “Anatomy of a Layoff”; folder `32-anatomy-of-a-layoff` and permalink `anatomy-of-a-layoff`, both renamed from the headcount-plan-shrinks names the same day, before deployment.)
+2. **Add “When the Headcount Plan Shrinks.”** (The financing chapter it follows is now titled “Planning on Money That Hasn't Arrived”; permalink `the-financing-slipped`.) (Published title after the author’s later retitle: “Anatomy of a Layoff”; folder `32-anatomy-of-a-layoff` and permalink `anatomy-of-a-layoff`, both renamed from the headcount-plan-shrinks names the same day, before deployment.)
 
    Place it in **Part V, after “The Roadmap Did Not Slip, the Financing Did,”** with links from the organization chapter. This preserves the existing assessment → organization → design sequence.
 

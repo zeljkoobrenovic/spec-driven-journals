@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-09-16
 ---
 
-# Spec: Fix the Decision Problem Before Adding People
+# Spec: Headcount Is Not Capacity: Trace the Work Before You Hire
 
 ## Intent
 
@@ -60,6 +60,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-16: Retitle the post from “Fix the Decision Problem Before Adding People” to “Headcount Is Not Capacity: Trace the Work Before You Hire” at the author’s request (an intermediate “Capacity Is Not Headcount: Trace the Work Before You Hire” was committed earlier the same day). Permalink and id unchanged; body unchanged.
 - 2026-09-16 (review response): the CPO decision carries the full consent requirement (hiring, dismissal and pay), the senior product manager is placed in an approved second-team role so Ines appoints within the headcount plan, and a CPO is recorded as outside that plan (board approval plus consent). Summary aligned.
 - 2026-09-16: Investor impact on hiring: added the appointments section (investor proposes a CPO; formal right versus funding condition versus influence; recruit / develop / narrower support compared and decided; role authority, funding, success evidence; responsibility table for product, design, research and engineering); S76 widened to its executive-officer clause; handoff to the new reduction chapter. Summary and comic panel 4 caption aligned; permalink and id unchanged.
 - 2026-09-15: Editorial revision: the deferred five-person team keeps both gates (demand evidenced and the round committed and approved); the opening takes only the three-week / under-two-day measures from [[can-the-team-deliver]] and lets the trace supply the 3 + 7 + 2 + 3 + 1 = 16-day split; the six saved days are an initial forecast; a persistent queue after sixty days triggers a new trace rather than a hire; the protected specialist day is paid for by a named reassignment; the leadership case names the evidence and the remedy; adviser dependence distinguished from a purchased continuing service. Summary and comic captions aligned.
