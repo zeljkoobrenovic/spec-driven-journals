@@ -22,9 +22,13 @@ The company’s ownership setting doesn’t remove your judgment or responsibili
 {id: introduction--why-this-book-exists-and-how-it-is-written}
 ## Why This Book Exists, and How It Is Written
 
-The financial, legal, and general business aspects of outside investment are well covered: there is no shortage of material on term sheets, valuations, fund structures, and deal mechanics. Far less has been written about **what an external investment does to product and engineering**: which commitments it creates, which money and authority the team can actually count on, and how a roadmap, an architecture decision or a hiring plan should change once the ownership changes. This gap breeds **mystery and confusion** inside companies, and it **costs them opportunities**, because leaders who cannot read the arrangement cannot use it. It also **invites misuse**. Claims that begin with “investors want us to…” are used to push agendas that nobody in the room has examined, often without anyone knowing what th e investors actually require or whether they were even asked. This book exists to close that gap from the company leader’s side: to give product and engineering leaders the vocabulary and working methods to test such claims, ask the right questions, and make commitments they can keep.
+The financial, legal, and general business aspects of outside investment are well covered: there is no shortage of material on term sheets, valuations, fund structures, and deal mechanics. In the author’s experience as a technology leader and adviser, far less has been written about **what an external investment does to product and engineering**: which commitments it creates, which money and authority the team can actually count on, and how a roadmap, an architecture decision or a hiring plan should change once the ownership changes. That is an observation from practice, not a survey of the literature.
 
-This book is a living journal and a work in progress: a draft by [Željko Obrenović](https://obren.io), who keeps revising it as he learns more about its topics. Chapters change as better evidence, sharper examples, and reader questions arrive; the specifications and revision log beside each chapter record what changed and why. Read it as current thinking with its limits stated, not as a finished text.
+The same experience suggests what the gap costs. Inside companies it breeds **confusion**, and it **costs them opportunities**, because leaders who cannot read the arrangement cannot use it. It also **invites misuse**: a sentence that begins “investors want us to…” can carry an agenda nobody in the room has examined, sometimes without anyone knowing what the investors actually require or whether they were even asked. How often that happens is not measured here; that it happens at all is reason enough to be able to check.
+
+This book is the response, written from the company leader’s side: the vocabulary to read the arrangement, working methods to test such claims, and worked decisions that show what a commitment the team can keep looks like.
+
+This book is a living journal and a work in progress: a draft by [Željko Obrenović](https://obren.io), who keeps revising it as he learns more about its topics. Chapters change as better evidence, sharper examples, and reader questions arrive. Each chapter’s page carries a “View spec” link to the specification it was written against; the changelog at the end of that specification records what changed and why. Read the book as current thinking with its limits stated, not as a finished text.
 
 {id: introduction--start-with-the-decision-in-front-of-you}
 ## Start With the Decision in Front of You
@@ -50,15 +54,15 @@ This book focuses mainly on private companies working with **outside investors**
 
 To understand the impact of any outside investment, keep **four questions** separate: who the owners are, what rights they have, how the company is funded, and what is changing.
 
-The first question, who the owners are, is where most of the labels come from. A **venture investor** funds a young company still searching for a repeatable business. A **growth investor** funds the expansion of a business with established demand. A **buyout investor** purchases control. A **corporate investor** is another operating business investing for financial or commercial reasons; it may hold a minority stake or acquire the company outright.
+The first question, who the owners are, is where most of the labels come from. A **venture investor** typically funds a young company that is still proving its product or business model, though venture funds also invest in successive rounds of companies already scaling an established product. A **growth investor** funds the expansion of a business with established demand; the venture and growth labels overlap at that later stage, and the round’s terms matter more than its name. A **buyout investor** purchases control. A **corporate investor** is another operating business investing for financial or commercial reasons; it may hold a minority stake or acquire the company outright.
 
 These labels tell you roughly what kind of investor you’re dealing with, but not the answers to the other three questions. Rights don’t automatically follow from stake size: a minority investment can carry important approval rights without conferring control. Funding doesn’t follow from deal type: borrowing is a way to raise money and isn’t confined to buyouts. And the nature of the change is separate again: a **carve-out** takes a business out of a larger company, a **turnaround** fixes serious business problems, and either can involve any of the owner types above.
 
 The practical impact of any investment therefore depends on its actual terms, **established case by case**: the investor’s rights, the financing, the support available and the time horizon. The events a leader faces, from a first round to a sale or continued ownership, arrive in any order; each sends you to a different part of the book, which is why the routes above exist.
 
-![A company commitment depends on actual owners, funding, decision rights and expectations.](private-techuity/posts/introduction/assets/images/introduction/four-questions-before-a-commitment.jpeg)
+![A company commitment depends on four separate questions: who the owners are, what rights they have, how the company is funded and what is changing.](private-techuity/posts/introduction/assets/images/introduction/four-questions-before-a-commitment.jpeg)
 
-**Figure 1:** *A company commitment depends on actual owners, funding, decision rights and expectations.*
+**Figure 1:** *Keep the four questions separate before a commitment: who the owners are, what rights they have, how the company is funded and what is changing.*
 
 {id: introduction--how-the-parts-build-on-each-other}
 ## How the Parts Build on Each Other
@@ -80,14 +84,25 @@ Ines is the **chief executive officer (CEO)**, leading the company. Alex is the 
 
 The chapters place Larkspur in alternative situations: learning with limited cash, expanding with growth funding, operating after a buyout, or working with a corporate owner. These are fictional decision exercises, not a single company history. Each example states its own assumptions; its figures do not combine into one set of accounts.
 
-One chain is a deliberate exception, and it is the only one. A single onboarding finding — that setting up a new customer depends on one specialist’s manual work — is carried from the investigation before the investment ([Diligence Is Your Chance to Correct the Plan Before It Is Signed](#diligence-corrects-the-plan)) into the funded early plan and its day-100 review ([The First Hundred Days: Turn Expectations Into a Funded Plan](#first-hundred-days)) and on into the handover ([Hand Over the Obligations, Not Just the Company](#handover-of-obligations)). The same initiative and the recovery test funded beside it also appear earlier, in the restore chapter of Part III ([Prove You Can Restore, Not Just That You Back Up](#prove-you-can-restore)) and in the support chapters of Part IV ([Find the Help That Changes What Your Team Can Do](#help-that-changes-capability), [Turn an Offer of Help Into a Useful Engagement](#useful-engagement)); the [Practical Tools for Ownership and Technology Decisions](#toolkit) shows the record those chapters write, stage by stage, with the same identifiers. Follow that chain if you want to see one decision carried all the way through, from evidence to money to what was left undone. The delayed-financing chapter ([The Roadmap Did Not Slip, the Financing Did](#the-financing-slipped)) is a separate illustration: it shows how a dated cash forecast changes commitments when expected money arrives late, and its cash, burn, hires and dates are its own and do not add to the chain’s figures. “€m” means millions of euros.
+One chain is a deliberate exception, and it is the only one. A single onboarding finding, that setting up a new customer depends on one specialist’s manual work, is carried through six chapters and the toolkit with the same identifiers:
+
+1. the investigation before the investment, [Diligence Is Your Chance to Correct the Plan Before It Is Signed](#diligence-corrects-the-plan);
+2. the funded early plan, [The First Hundred Days: Turn Expectations Into a Funded Plan](#first-hundred-days), which allocates one envelope, and [You Cannot Fund Every Good Project at Once](#cannot-fund-everything), which chooses within it and revises the choice when a test fails;
+3. the recovery test funded beside the pilot, [Prove You Can Restore, Not Just That You Back Up](#prove-you-can-restore);
+4. the investor’s support for the pilot, [Find the Help That Changes What Your Team Can Do](#help-that-changes-capability) and [Turn an Offer of Help Into a Useful Engagement](#useful-engagement);
+5. the pilot’s measured outcome and the decision it supports, [The Chain From Roadmap to Revenue Breaks Easily](#roadmap-to-revenue);
+6. the handover of what was paid, owed and left undone, [Hand Over the Obligations, Not Just the Company](#handover-of-obligations).
+
+The [Practical Tools for Ownership and Technology Decisions](#toolkit) shows the record those chapters write, stage by stage. Follow that chain to see one decision carried all the way through, from evidence to money to what was left undone.
+
+The delayed-financing chapter ([The Roadmap Did Not Slip, the Financing Did](#the-financing-slipped)) is not part of that chain. It is a separate illustration of how a dated cash forecast changes commitments when expected money arrives late; its cash, burn, hires and dates are its own and do not add to the chain’s figures. “€m” means millions of euros.
 
 {id: introduction--choose-a-reading-format}
 ## Choose a Reading Format
 
 Each main chapter provides an **Article** and a 300–500-word **TL;DR** summary. TL;DR means “too long; didn’t read.” All thirty main chapters also have a six-panel **Comic**, illustrated, with captions and dialogue transcripts. The six part introductions and the reference pages have no TL;DR or comic.
 
-For a shorter first pass, read the part introductions and the summaries. The formats are companions rather than substitutes. Each one is written to reach the same decision and to keep the conditions that decide whether that decision holds; what varies is depth, because only the article carries the worked figures, the sources and the cases where the conclusion would change. The summaries and comics of this September 2026 revision are still being reconciled chapter by chapter, so where a short format and the article disagree, the article is the one to trust.
+For a shorter first pass, read the part introductions and the summaries. The formats are companions rather than substitutes. Each one is written to reach the same decision and to keep the conditions that decide whether that decision holds; what varies is depth: the article gives the fullest calculations, the discussion of sources and the alternative cases, while every format keeps the conditions that would change the decision. The summaries and comics of this September 2026 revision are still being reconciled chapter by chapter, so where a short format and the article disagree, the article is the one to trust.
 
 {id: introduction--read-the-evidence-with-its-limits}
 ## Read the Evidence With Its Limits
