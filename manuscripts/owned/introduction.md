@@ -45,7 +45,7 @@ The six parts are ordered for learning, and the complete sequence is the default
 | Investor requests compete with customer needs | [The Chain From Roadmap to Revenue Breaks Easily](#roadmap-to-revenue) → [Decide Who Decides, Before You Disagree](#decide-who-decides) → [Judge an Investor by Their Behavior Under Pressure](#investor-under-pressure) → [Success for Whom, and for How Long?](#success-for-whom) |
 | A corporate investor wants integration or access to data | [An Acquisition Adds Work Before It Adds Value](#acquisition-adds-work-first) → [Prove You Can Restore, Not Just That You Back Up](#prove-you-can-restore) → [Turn an Offer of Help Into a Useful Engagement](#useful-engagement) |
 | The investor wants a leadership change | [Decide Who Decides, Before You Disagree](#decide-who-decides) → [Fix the Decision Problem Before Adding People](#fix-decisions-before-hiring) → [Find the Help That Changes What Your Team Can Do](#help-that-changes-capability) → [Is the Investor’s Adviser Helping, Assessing or Deciding?](#investors-adviser) |
-| We must reduce headcount | [The Roadmap Did Not Slip, the Financing Did](#the-financing-slipped) → [When the Headcount Plan Shrinks](#headcount-plan-shrinks) → [Management Equity, Fund Carry and Employee Jobs Are Different Bets](#different-bets) → the [Practical Tools for Ownership and Technology Decisions](#toolkit) workforce-decision record |
+| We must reduce headcount | [The Roadmap Did Not Slip, the Financing Did](#the-financing-slipped) → [Anatomy of a Layoff](#headcount-plan-shrinks) → [Management Equity, Fund Carry and Employee Jobs Are Different Bets](#different-bets) → the [Practical Tools for Ownership and Technology Decisions](#toolkit) workforce-decision record |
 
 If your decision is the first one in the table — an announced investment that someone expects to become a hiring plan — read [An Investment Announcement Is Not a Budget](#announcement-is-not-a-budget) now and the rest in order later.
 
@@ -97,7 +97,7 @@ One chain is a deliberate exception, and it is the only one. A single onboarding
 
 The [Practical Tools for Ownership and Technology Decisions](#toolkit) shows the record those chapters write, stage by stage. Follow that chain to see one decision carried all the way through, from evidence to money to what was left undone.
 
-The delayed-financing chapter ([The Roadmap Did Not Slip, the Financing Did](#the-financing-slipped)) and the reduction chapter that continues it ([When the Headcount Plan Shrinks](#headcount-plan-shrinks)) are not part of that chain. They are a separate illustration of how a dated cash forecast changes commitments when expected money arrives late, and what a reduction costs by date; their cash, burn, people and dates are their own and do not add to the chain’s figures. “€m” means millions of euros.
+The delayed-financing chapter ([The Roadmap Did Not Slip, the Financing Did](#the-financing-slipped)) and the reduction chapter that continues it ([Anatomy of a Layoff](#headcount-plan-shrinks)) are not part of that chain. They are a separate illustration of how a dated cash forecast changes commitments when expected money arrives late, and what a reduction costs by date; their cash, burn, people and dates are their own and do not add to the chain’s figures. “€m” means millions of euros.
 
 {id: introduction--choose-a-reading-format}
 ## Choose a Reading Format
@@ -168,7 +168,7 @@ The site navigation lists the same chapters; this list is here for lookup.
 - **22.** [Diligence Is Your Chance to Correct the Plan Before It Is Signed](#diligence-corrects-the-plan)
 - **23.** [The First Hundred Days: Turn Expectations Into a Funded Plan](#first-hundred-days)
 - **24.** [The Roadmap Did Not Slip, the Financing Did](#the-financing-slipped)
-- **25.** [When the Headcount Plan Shrinks](#headcount-plan-shrinks)
+- **25.** [Anatomy of a Layoff](#headcount-plan-shrinks)
 - **26.** [Hand Over the Obligations, Not Just the Company](#handover-of-obligations)
 
 {id: introduction--part-vi-lessons-from-the-field}

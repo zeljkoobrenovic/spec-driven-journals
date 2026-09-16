@@ -1,5 +1,5 @@
 {id: headcount-plan-shrinks}
-# 26. When the Headcount Plan Shrinks
+# 26. Anatomy of a Layoff
 
 > **IN THIS SECTION, YOU WILL:** Learn to turn a reduction request into an operating plan: find where the pressure actually comes from, compare the alternatives on cash by date, choose roles by the work that stops, and plan for the people who leave and the people who remain.
 

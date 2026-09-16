@@ -1,5 +1,5 @@
 ---
-title: "When the Headcount Plan Shrinks"
+title: "Anatomy of a Layoff"
 date: 2026-09-16
 author: Željko Obrenović
 excerpt: "Follow a product and engineering reduction from the investor’s request to an authorized, funded plan: the staffing baseline, the real source of the pressure, the alternatives, the cash by date, the work stopped, and what happens to the people who leave and the people who stay."

@@ -1552,7 +1552,9 @@ Implementation of `_research/investor-workforce-impact-plan.md` (six steps). Spe
 - Opening sentence and closing handoff point to [[headcount-plan-shrinks]]; TL;DR gains the appointment paragraph and stays at 500 words; comic panel 4 caption extended by one sentence (scene unchanged, no regeneration).
 - `timetoread` 14 → 17 min.
 
-## 32-headcount-plan-shrinks — When the Headcount Plan Shrinks (`headcount-plan-shrinks`) — new
+## 32-headcount-plan-shrinks — Anatomy of a Layoff (`headcount-plan-shrinks`) — new
+
+(Retitled from “When the Headcount Plan Shrinks” to “Anatomy of a Layoff” at the author’s request later on 16 September; permalink unchanged.)
 
 **Files created:** spec.md, index.md, summary.md, comics.md (six pending panels); wired into `config.yaml` after the delayed-financing chapter in Part V.
 **Implemented:** plan step 2 in full — the delayed-financing scenario continued from 1 October with the bridge commitment’s condition; the staffing and payroll baseline (40 people, €324,000 payroll, €50,000 contractors, €76,000 non-payroll, €250,000 collected revenue, €200,000 burn) reproducing the earlier chapter’s €200,000 / €150,000 / €500,000 figures; funding condition, formal approval right and influence separated; seven alternatives costed on one basis; R2 (eight roles, €72,000 a month recurring, €120,000 one-off) reconciled by month with notice periods, severance ramp and cash under three plans (€505,000 at 30 June with the bridge; €200,000 without R2; reserve breached in January without the bridge); a full decision record; the team after the plan, work stopped, customer commitments revised, the transfer test inside the notice period; leavers’ terms and the order of the day; the remaining team’s stopped list and on-call change; jurisdiction thresholds from S77 and S78 with no claim about Larkspur’s law; two variations (margin-driven; post-acquisition consolidation); handoff to the handover chapter.

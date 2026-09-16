@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-09-16
 ---
 
-# Spec: When the Headcount Plan Shrinks
+# Spec: Anatomy of a Layoff
 
 ## Intent
 
@@ -54,4 +54,5 @@ The delayed-financing chapter supplies the scenario; the organization chapter su
 
 ## Changelog
 
+- 2026-09-16: Retitle the post from “When the Headcount Plan Shrinks” to “Anatomy of a Layoff” at the author’s request. Permalink `headcount-plan-shrinks` and folder unchanged; body unchanged.
 - 2026-09-16: Initial spec, status accepted; article, TL;DR and comic storyboard written the same day; artwork pending.

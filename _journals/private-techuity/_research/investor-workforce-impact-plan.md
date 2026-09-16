@@ -12,7 +12,7 @@ The coverage review found strong treatment of hiring budgets, headcount approval
 
    Keep the staffing diagnosis and CTO assessment in [the organization chapter](../posts/13-fix-decisions-before-hiring/index.md). Add a section on investor involvement in key appointments: proposing roles, introducing candidates, influencing selection, approving compensation, and assessing incumbents. Work through a fictional proposal to appoint a CPO, comparing recruitment with developing the existing leader or adding narrower support. Specify who decides, what authority the role receives, how it is funded, and how success will be assessed. Include the implications for product management, design, research, and engineering responsibilities.
 
-2. **Add “When the Headcount Plan Shrinks.”**
+2. **Add “When the Headcount Plan Shrinks.”** (Published title after the author’s later retitle: “Anatomy of a Layoff”; permalink `headcount-plan-shrinks`.)
 
    Place it in **Part V, after “The Roadmap Did Not Slip, the Financing Did,”** with links from the organization chapter. This preserves the existing assessment → organization → design sequence.
 
@@ -54,7 +54,7 @@ Implemented by an AI-mediated session against the working tree at commit `1d9b0c
 | Step | Status | Where |
 | --- | --- | --- |
 | 1. Expand “Fix the Decision Problem Before Adding People” | Done | `posts/13-fix-decisions-before-hiring/` spec, index (new section “When the Investor Proposes an Appointment”: five forms of involvement; formal right / funding condition / influence; CPO proposal compared as recruit / develop / narrower support and decided with authority, funding and success evidence; responsibility table for product management, design, research and engineering), summary, comic panel 4 caption |
-| 2. Add “When the Headcount Plan Shrinks” in Part V after the financing chapter | Done (text); artwork blocked | `posts/32-headcount-plan-shrinks/` (spec, index, summary, comics), `config.yaml`; permalink `headcount-plan-shrinks` |
+| 2. Add “When the Headcount Plan Shrinks” (retitled “Anatomy of a Layoff”) in Part V after the financing chapter | Done (text); artwork blocked | `posts/32-headcount-plan-shrinks/` (spec, index, summary, comics), `config.yaml`; permalink `headcount-plan-shrinks` |
 | 3. Supporting chapters | Done | `05-decide-who-decides` (table rows, three-pressures passage, summary), `06-different-bets` (link), `29-help-that-changes-capability` (recruiting-support passage), `18-the-financing-slipped` (handoff, summary), `14-acquisition-adds-work-first` (synergy link), `31-handover-of-obligations` (opening, recap, summary) |
 | 4. Navigation and tools | Done | `introduction` (two routes, counts, contents), `toolkit` (Tool 13 and its navigation row), `part-5-intro`, `part-3-intro`, journal `index.md`, `README.md`, `STRUCTURE.md`, `PLAN.md` |
 | 5. Authoring workflow: specs first, sources, labels, synchronization | Done except artwork | Specs revised first (13 changelogs dated 2026-09-16); S77–S78 registered and S76 widened in the bibliography with `_research/bibliography-revision-history.md` updated; glossary terms added; summaries and storyboards synchronized; prompts staged for the new chapter’s logo, icon, TL;DR visual, two figures and six panels |
