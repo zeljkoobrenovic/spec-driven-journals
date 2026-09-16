@@ -49,7 +49,7 @@ The six parts are ordered for learning, and the complete sequence is the default
 | Investor requests compete with customer needs | [[roadmap-to-revenue]] → [[decide-who-decides]] → [[investor-under-pressure]] → [[success-for-whom]] |
 | A corporate investor wants integration or access to data | [[acquisition-adds-work-first]] → [[prove-you-can-restore]] → [[useful-engagement]] |
 | The investor wants a leadership change | [[decide-who-decides]] → [[fix-decisions-before-hiring]] → [[help-that-changes-capability]] → [[investors-adviser]] |
-| We must reduce headcount | [[the-financing-slipped]] → [[headcount-plan-shrinks]] → [[different-bets]] → the [[toolkit]] workforce-decision record |
+| We must reduce headcount | [[the-financing-slipped]] → [[anatomy-of-a-layoff]] → [[different-bets]] → the [[toolkit]] workforce-decision record |
 
 If your decision is the first one in the table — an announced investment that someone expects to become a hiring plan — read [[announcement-is-not-a-budget]] now and the rest in order later.
 
@@ -96,7 +96,7 @@ One chain is a deliberate exception, and it is the only one. A single onboarding
 
 The [[toolkit]] shows the record those chapters write, stage by stage. Follow that chain to see one decision carried all the way through, from evidence to money to what was left undone.
 
-The delayed-financing chapter ([[the-financing-slipped]]) and the reduction chapter that continues it ([[headcount-plan-shrinks]]) are not part of that chain. They are a separate illustration of how a dated cash forecast changes commitments when expected money arrives late, and what a reduction costs by date; their cash, burn, people and dates are their own and do not add to the chain’s figures. “€m” means millions of euros.
+The delayed-financing chapter ([[the-financing-slipped]]) and the reduction chapter that continues it ([[anatomy-of-a-layoff]]) are not part of that chain. They are a separate illustration of how a dated cash forecast changes commitments when expected money arrives late, and what a reduction costs by date; their cash, burn, people and dates are their own and do not add to the chain’s figures. “€m” means millions of euros.
 
 ## Choose a Reading Format
 
@@ -159,7 +159,7 @@ The site navigation lists the same chapters; this list is here for lookup.
 - **22.** [[diligence-corrects-the-plan]]
 - **23.** [[first-hundred-days]]
 - **24.** [[the-financing-slipped]]
-- **25.** [[headcount-plan-shrinks]]
+- **25.** [[anatomy-of-a-layoff]]
 - **26.** [[handover-of-obligations]]
 
 ### Part VI — Lessons from the Field

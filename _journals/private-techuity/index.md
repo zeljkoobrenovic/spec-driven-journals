@@ -65,7 +65,7 @@ Lead through diligence, the early funded plan, delayed financing, the plan that 
 - **22.** [[diligence-corrects-the-plan]]
 - **23.** [[first-hundred-days]]
 - **24.** [[the-financing-slipped]]
-- **25.** [[headcount-plan-shrinks]]
+- **25.** [[anatomy-of-a-layoff]]
 - **26.** [[handover-of-obligations]]
 
 ### Part VI — Lessons from the Field

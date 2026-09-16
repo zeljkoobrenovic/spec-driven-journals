@@ -25,7 +25,7 @@ Use this table to find evidence by question. A source can appear under more than
 | Valuation, earnings measures and investor returns | S03, S04, S05, S06, S52, S53, S73, S74 | [A Valuation Is an Estimate, Not a Fact](#valuation-is-an-estimate), [Same Company, Same Performance, Three Different Returns](#three-different-returns), [Fund Economics: Fees, Distributions and Performance Reports](#fund-economics) |
 | Cash, funding forms and financing documents | S01, S02, S07, S54, S55, S56, S57, S58, S59, S60, S61, S72 | [Customers, Lenders and Investors: What Each Expects in Return](#customers-lenders-investors), [An Investment Announcement Is Not a Budget](#announcement-is-not-a-budget), [Find the Cash Behind Your Technology Budget](#obligations-before-budget) |
 | Governance, rights and incentives | S01, S02, S04, S61, S76 | [Decide Who Decides, Before You Disagree](#decide-who-decides), [Management Equity, Fund Carry and Employee Jobs Are Different Bets](#different-bets), [Fix the Decision Problem Before Adding People](#fix-decisions-before-hiring) |
-| Workforce reductions and employment process | S77, S78 | [Anatomy of a Layoff](#headcount-plan-shrinks) |
+| Workforce reductions and employment process | S77, S78 | [Anatomy of a Layoff](#anatomy-of-a-layoff) |
 | Delivery, architecture and cloud cost | S13, S14, S15, S16, S53, S75 | [Can the Software and the Team Deliver What Was Promised?](#can-the-team-deliver), [The Chain From Roadmap to Revenue Breaks Easily](#roadmap-to-revenue), [Why a Cheaper Cloud Bill Can Be Bad News](#cheaper-cloud-bill) |
 | Security and resilience | S17 | [Prove You Can Restore, Not Just That You Back Up](#prove-you-can-restore) |
 | AI evidence | S18, S19, S20, S21, S63 | [An AI Strategy Hides Three Investment Questions](#ai-strategy-three-questions) |
@@ -749,7 +749,7 @@ Council of the European Union. [Council Directive 98/59/EC of 20 July 1998 on th
 
 **Evidence type:** Union legislation. **Consulted scope:** Article 1(1)(a) thresholds (over 30 days: at least 10 dismissals in establishments of 20 to 100 workers, at least 10% in 100 to 300, at least 30 in 300 or more; or at least 20 over 90 days where a member state so chooses), Article 2(1) consultation of workers’ representatives in good time with a view to reaching an agreement, Article 3(1) written notification of the competent public authority and Article 4(1) the 30-day period before notified redundancies take effect. Minimum requirements that member states transpose and may exceed; not the law of any particular country, and the book does not say which law governs the fictional company. Later amendments were not reviewed.
 
-**Used in:** [Anatomy of a Layoff](#headcount-plan-shrinks).
+**Used in:** [Anatomy of a Layoff](#anatomy-of-a-layoff).
 
 {id: bibliography--s78-us-warn-act-29-u-s-c-21012102}
 ### S78 — US WARN Act, 29 U.S.C. §§ 2101–2102
@@ -758,7 +758,7 @@ United States Code, Title 29, Chapter 23. [§ 2101, Definitions; exclusions from
 
 **Evidence type:** Federal statute. **Consulted scope:** The definitions of employer (100 or more employees, excluding part-time employees), plant closing (an employment loss for 50 or more employees at a single site) and mass layoff (at least 33 percent of the employees and at least 50 employees, or at least 500), and the requirement in § 2102(a) not to order a plant closing or mass layoff until 60 days after written notice to the employees’ representatives or the employees, the state and the local government. The implementing regulations, state notice laws and the statutory exceptions were not reviewed.
 
-**Used in:** [Anatomy of a Layoff](#headcount-plan-shrinks).
+**Used in:** [Anatomy of a Layoff](#anatomy-of-a-layoff).
 
 {id: bibliography--supplied-private-inputs}
 ## Supplied Private Inputs

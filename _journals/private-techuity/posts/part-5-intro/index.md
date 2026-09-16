@@ -26,7 +26,7 @@ The five chapters are five destinations. One fictional finding, Larkspur’s dil
 - [[diligence-corrects-the-plan]] shows what access you have at each stage of a transaction and completes that finding into a recorded decision.
 - [[first-hundred-days]] turns the finding into a funded early plan with named accountability, cash, team time and review dates, then shows the day-100 review changing the plan.
 - [[the-financing-slipped]] responds when an expected round, refinancing or parent budget arrives later than planned: dated cash, the latest useful decision date and the board’s authorized fallback.
-- [[headcount-plan-shrinks]] continues that scenario into the reduction the delayed money forces: where the pressure actually comes from, the alternatives costed by date, roles chosen by the work that stops, and the people who leave and the people who remain.
+- [[anatomy-of-a-layoff]] continues that scenario into the reduction the delayed money forces: where the pressure actually comes from, the alternatives costed by date, roles chosen by the work that stops, and the people who leave and the people who remain.
 - [[handover-of-obligations]] carries the onboarding record through a further round, a sale, integration or continued ownership: who receives cash, who keeps an interest, who holds authority, and what unfinished work goes with the company.
 
 By the end, you should be able to carry one body of evidence from diligence to handover, make a specific request when the plan or the money behind it changes, turn a reduction request into a funded plan with its consequences stated, and hand over a record that accounts for unfinished work.

@@ -47,7 +47,7 @@ The supplied book brief establishes scope, including the shared Larkspur chain. 
 
 ## Changelog
 
-- 2026-09-16: Opening and Part V recap name the reduction chapter [[headcount-plan-shrinks]] that now precedes this one; no figures changed; permalink and id unchanged.
+- 2026-09-16: Opening and Part V recap name the reduction chapter [[anatomy-of-a-layoff]] that now precedes this one; no figures changed; permalink and id unchanged.
 - 2026-09-14: Created by splitting handover material out of the delayed-financing chapter.
 - 2026-09-15: Day-100 record corrected to committed/incurred/remaining (€180,000 / ≈€90,000 / €90,000) with the reconciled reserve (€160,000, 0 weeks) and expansion date (≈ day 190); obligations split into four kinds; one accepted handover added; transaction table qualified (IPO control, retained minority, combined forms); chapter 18 declared a separate scenario. Comic still pending.
 - 2026-09-15 (verification pass): Article re-checked against the canonical Larkspur ledger and chapter 17 — all figures agree; no article change needed. TL;DR trimmed from 545 to 500 words to meet the 300–500 convention, keeping every canonical figure, the four kinds of obligation and the dated acceptance. Comic, logo pending; navigation icon now present.

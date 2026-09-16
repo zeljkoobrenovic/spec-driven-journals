@@ -140,7 +140,7 @@ The chapters keep three questions separate: who owns shares, who is accountable 
 | Governance | The arrangements for making decisions and overseeing their execution: which body decides what, on what information, and how it is reviewed. |
 | Decision rights | Authority over specified decisions, such as who may approve spending above a limit. |
 | Reserved matters | Matters that require approval from a designated party, often the board or a shareholder, under the company’s agreements. |
-| Funding condition | A condition attached to money: a bridge drawn only once a cost plan is adopted, a round that wants a particular executive in place. It is neither an approval right nor influence; the company meets it or does without the money ([[headcount-plan-shrinks]]). |
+| Funding condition | A condition attached to money: a bridge drawn only once a cost plan is adopted, a round that wants a particular executive in place. It is neither an approval right nor influence; the company meets it or does without the money ([[anatomy-of-a-layoff]]). |
 | Mandate | The agreed scope of investments, responsibilities or authority. State which meaning applies. |
 | Escalation | Taking an unresolved issue to someone authorized or equipped to act, through a path agreed in advance. |
 | Financial sponsor | The investment firm behind a transaction, acting for its fund. This is the usual meaning of “sponsor” in deal documents. |
@@ -281,7 +281,7 @@ See [[cannot-fund-everything]], [[help-that-changes-capability]] and [[useful-en
 | Headcount plan | The roles a plan funds, by period, and the roles that are conditional on money or evidence not yet received. Hires outside it, and reductions to it, need whoever approves the plan ([[decide-who-decides]]). |
 | Hiring freeze | A decision to fill no new or vacant roles for a period. It saves only what would otherwise have been spent; a freeze already in force adds nothing to a later reduction. |
 | Redeployment | Moving people from work that ends or stops to work that continues, so that a gap is filled without a hire and a role is kept without a dismissal. |
-| Reduction in force (layoff, redundancy) | Ending roles, and the employment of the people in them, because the work stops or the plan can no longer fund it. Choose the roles by the work that stops; the terms and the process belong to the jurisdiction ([[headcount-plan-shrinks]]). |
+| Reduction in force (layoff, redundancy) | Ending roles, and the employment of the people in them, because the work stops or the plan can no longer fund it. Choose the roles by the work that stops; the terms and the process belong to the jurisdiction ([[anatomy-of-a-layoff]]). |
 | Notice period | The time between telling a person their employment ends and the end itself, set by contract or law and paid whether or not it is worked. It delays the saving from a reduction. |
 | Severance | A payment on ending employment, set by law, contract or company policy, paid before the saving from a reduction begins. |
 | Collective consultation | A legal duty, in some jurisdictions above a threshold number of dismissals, to consult employee representatives and notify a public authority before dismissals take effect. Its thresholds decide the calendar of a reduction. |

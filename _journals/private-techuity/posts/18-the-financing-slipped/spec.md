@@ -7,7 +7,7 @@ revised: 2026-09-16
 
 ## Intent
 
-Show a company leader how to respond when an expected round, refinancing or parent budget arrives late while delivery is on track: put cash and commitments on a calendar, find the latest useful decision date, price the alternatives, obtain one authorized fallback, tell customers and teams which plan is running, and restore the original plan only on a signed commitment. Handover through ownership changes is a separate chapter, [[handover-of-obligations]]; the deeper workforce reduction that the 1 October review has to decide is a separate chapter, [[headcount-plan-shrinks]], which continues this scenario’s figures.
+Show a company leader how to respond when an expected round, refinancing or parent budget arrives late while delivery is on track: put cash and commitments on a calendar, find the latest useful decision date, price the alternatives, obtain one authorized fallback, tell customers and teams which plan is running, and restore the original plan only on a signed commitment. Handover through ownership changes is a separate chapter, [[handover-of-obligations]]; the deeper workforce reduction that the 1 October review has to decide is a separate chapter, [[anatomy-of-a-layoff]], which continues this scenario’s figures.
 
 ## Audience
 
@@ -17,7 +17,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 - Open with the actual scenario (September round now likely in December) rather than a general account of ownership, and avoid contrasts with “companies without investors”; name the specific condition the arrangement changes.
 - Work one fictional Larkspur scenario with this chapter’s own figures (€1.6m on 1 July, €200,000 monthly burn, €400,000 reserve reached 31 December, hires at €30,000 a month, €120,000 portal contract), stated in the text as deliberately separate from the shared Larkspur ledger (no ONB-1 identifier or shared ledger figures), through to a dated board decision: chosen option, alternatives rejected, funding, scarce capacity, who is authorized, review date and the evidence that would change it.
-- State one restart rule for deferred spending (cash received, or a conditional commitment the board has specifically authorized counting against a dated cash forecast and a funded downside) and apply it in the article, summary and comic; state the bridge’s payer, amount, arrival date and fee/interest assumptions behind the March date; cost at least one post-December reduction with its latest useful date and hand the deeper continuation level to [[headcount-plan-shrinks]] rather than claiming a completed fallback here.
+- State one restart rule for deferred spending (cash received, or a conditional commitment the board has specifically authorized counting against a dated cash forecast and a funded downside) and apply it in the article, summary and comic; state the bridge’s payer, amount, arrival date and fee/interest assumptions behind the March date; cost at least one post-December reduction with its latest useful date and hand the deeper continuation level to [[anatomy-of-a-layoff]] rather than claiming a completed fallback here.
 - Make the latest useful decision date (15 August) central, and distinguish the stages of a commitment: expression of interest, approval pending, contractual commitment with conditions, cash received.
 - Retain only the escalation step this decision needs, with a link to the governance chapter; keep the distinction between a failed hypothesis, poor execution and an unfunded dependency.
 - Include two short variations (a refinancing that leaves less cash; a corporate parent withdrawing budget) without developing a second full case.
@@ -28,7 +28,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Non-goals
 
-The deeper reduction decision and its employee consequences (owned by [[headcount-plan-shrinks]]); handover, exit readiness, exit-period distortions and transaction forms (moved to [[handover-of-obligations]]); regular investor cadence and peer networks (governance and Part IV chapters); universal prescriptions, invented evidence, promises of investment performance, or disclosure of confidential inputs. The chapter is not a legal or tax opinion.
+The deeper reduction decision and its employee consequences (owned by [[anatomy-of-a-layoff]]); handover, exit readiness, exit-period distortions and transaction forms (moved to [[handover-of-obligations]]); regular investor cadence and peer networks (governance and Part IV chapters); universal prescriptions, invented evidence, promises of investment performance, or disclosure of confidential inputs. The chapter is not a legal or tax opinion.
 
 ## Modalities
 
@@ -52,7 +52,7 @@ The supplied book brief establishes scope, including the shared Larkspur delayed
 
 ## Changelog
 
-- 2026-09-16: Hand the deeper reduction decision to the new chapter [[headcount-plan-shrinks]] (article closing passages and TL;DR); this chapter’s figures unchanged and still declared separate from the shared ledger; permalink and id unchanged.
+- 2026-09-16: Hand the deeper reduction decision to the new chapter [[anatomy-of-a-layoff]] (article closing passages and TL;DR); this chapter’s figures unchanged and still declared separate from the shared ledger; permalink and id unchanged.
 - 2026-09-15: Verification pass over the 15 September review. All six comic panels checked against their image files (hashes match the JSON); panels 2, 3 and 4 confirmed to show the superseded cadence / confidentiality / buyer scenes and keep `needs_regeneration`. Panel 3's caption, prompt and panel text confirmed free of the commitment/cash conflation. Summary trimmed from 604 to 501 words of body text to meet the 300–500 convention (the collection's band is 496–505) with the restart rule, the bridge assumptions, R1 and the separation sentence all retained. NVCA model term sheet re-downloaded and the quoted binding-obligations sentence verified verbatim.
 - 2026-09-15: Implement the 15 September review: comic panel 3 no longer equates a written commitment with cash; one restart rule (cash received, or a board-authorized conditional commitment with a dated forecast and a funded downside) replaces the three differing gates; bridge assumptions (payer, €600,000, arrival by 30 November, no fee or cash interest before March) stated; Reduction R1 (€50,000 a month from 1 November, decision date 1 October) costed and the post-December continuation level left open; ONB-1 identifier and the €180,000 ledger figure removed and the scenario declared separate from the shared Larkspur ledger; NVCA model term sheet added to the reading list; timetoread 13 min.
 - 2026-09-14: Refocus the post on the delayed-financing decision with a completed dated Larkspur scenario; move exit readiness, exit-period distortions, transaction forms, handover and post-handoff learning to the new chapter `handover-of-obligations`, peer-network material to `help-that-changes-capability`, and cut cadence and escalation to the single step the decision needs; comic panels 2–4 flagged for regeneration; permalink and id unchanged.

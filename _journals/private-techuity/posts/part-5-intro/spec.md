@@ -48,7 +48,7 @@ None. These pieces describe the book's own structure and make no external factua
 
 ## Changelog
 
-- 2026-09-16: Five destinations: [[headcount-plan-shrinks]] added after the delayed-financing chapter as the continuation of that separate scenario; excerpt and closing promise updated.
+- 2026-09-16: Five destinations: [[anatomy-of-a-layoff]] added after the delayed-financing chapter as the continuation of that separate scenario; excerpt and closing promise updated.
 - 2026-09-15: Describe the evidence trail as the chapters demonstrate it: the onboarding finding runs diligence → funded plan → handover (with the earlier pilot and support episodes in Parts III–IV and the toolkit); the financing-delay chapter is a separate scenario with its own figures. Keep one nonlinearity statement.
 - 2026-09-14: Describe four destinations after the split of the financing chapter (diligence, funded early plan, delayed financing, handover of obligations), state nonlinearity once, qualify how much an event changes and promise the finding that travels through all four chapters. Permalink unchanged.
 - 2026-09-13: Align the specification heading with the current part-introduction title.

@@ -3,7 +3,7 @@ title: "Anatomy of a Layoff"
 date: 2026-09-16
 author: Željko Obrenović
 excerpt: "Follow a product and engineering reduction from the investor’s request to an authorized, funded plan: the staffing baseline, the real source of the pressure, the alternatives, the cash by date, the work stopped, and what happens to the people who leave and the people who stay."
-permalink: headcount-plan-shrinks
+permalink: anatomy-of-a-layoff
 timetoread: 17 min read
 ---
 
@@ -97,7 +97,7 @@ Three of the eight leave the payroll on 30 November, three on 31 December and tw
 {
   "id": "cash-by-date-under-three-plans",
   "status": "pending",
-  "asset": "assets/images/32-headcount-plan-shrinks/cash-by-date-under-three-plans.jpeg",
+  "asset": "assets/images/32-anatomy-of-a-layoff/cash-by-date-under-three-plans.jpeg",
   "aspect_ratio": "16:9",
   "placement": "after the monthly cash table in Reconcile the Reduction by Date",
   "visual_goal": "Show that a reduction's savings arrive after its one-off costs, so it extends money that arrives but cannot replace money that is late: three simple cash lines against a reserve line.",
@@ -131,7 +131,7 @@ The reduction is chosen by work, so the organization that results can be describ
 {
   "id": "team-by-work-before-and-after",
   "status": "pending",
-  "asset": "assets/images/32-headcount-plan-shrinks/team-by-work-before-and-after.jpeg",
+  "asset": "assets/images/32-anatomy-of-a-layoff/team-by-work-before-and-after.jpeg",
   "aspect_ratio": "16:9",
   "placement": "after the first paragraph of The Team After the Plan",
   "visual_goal": "Show a team described by its work before and after a reduction: five work streams becoming two, with one stream stopped, one narrowed and one redeployed, and the protected work unchanged.",

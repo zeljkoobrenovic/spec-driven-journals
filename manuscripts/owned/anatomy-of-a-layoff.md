@@ -1,4 +1,4 @@
-{id: headcount-plan-shrinks}
+{id: anatomy-of-a-layoff}
 # 26. Anatomy of a Layoff
 
 > **IN THIS SECTION, YOU WILL:** Learn to turn a reduction request into an operating plan: find where the pressure actually comes from, compare the alternatives on cash by date, choose roles by the work that stops, and plan for the people who leave and the people who remain.
@@ -17,7 +17,7 @@ It is 1 October at fictional Larkspur, and the board review that [The Roadmap Di
 
 This chapter continues that chapter’s scenario and stays deliberately separate from the shared Larkspur ledger that runs through [The First Hundred Days: Turn Expectations Into a Funded Plan](#first-hundred-days) and [Hand Over the Obligations, Not Just the Company](#handover-of-obligations): its cash, burn, people and dates are its own, and every figure is fictional. What the earlier chapter never stated, because its decision did not need it, is who works at Larkspur and what they cost. A reduction cannot be decided without that baseline, so it comes first.
 
-{id: headcount-plan-shrinks--the-baseline-the-earlier-decision-did-not-need}
+{id: anatomy-of-a-layoff--the-baseline-the-earlier-decision-did-not-need}
 ## The Baseline the Earlier Decision Did Not Need
 
 Larkspur has forty employees. Its monthly costs on 1 October, and the collected revenue they are set against, are these:
@@ -40,7 +40,7 @@ The table reproduces the earlier chapter’s figures: a €200,000 burn, €150,
 
 The engineers are organized around five pieces of work: four on the onboarding pilot, two finishing the recovery work that ends in December, five on the scheduling core (incidents, customer-committed changes and maintenance), three on the pricing and tax rules for the second country, where two customers signed in the summer with go-live promised for the first quarter, and two on a field-worker mobile app that has three beta customers, no revenue yet and a launch planned for the second quarter. One product manager and one designer work with the onboarding and core teams; the other product manager and designer belong to the mobile app.
 
-{id: headcount-plan-shrinks--three-pressures-that-sound-alike}
+{id: anatomy-of-a-layoff--three-pressures-that-sound-alike}
 ## Three Pressures That Sound Alike
 
 “The investors want a reduction” describes three different things at Larkspur, and a company leader has to answer each with a different response. [Decide Who Decides, Before You Disagree](#decide-who-decides) gives the general rule; here it is applied.
@@ -51,7 +51,7 @@ The second is a **formal approval right**. Under Larkspur’s fictional sharehol
 
 The third is **influence**. At the same meeting the investor director says that in the fund’s other companies a delayed round has meant a cut of about a fifth of engineering, and Morgan, the investor’s adviser, has seen the same. A fifth of Larkspur’s engineering payroll is about €28,000 a month. It would not meet the condition, and it would select people by a ratio rather than by the work the company is going to stop. A benchmark from other companies is information about those companies; it is not an instruction, and treating it as one would produce a smaller saving than the condition needs and a worse team than the plan can afford. Alex records it as one option to cost beside the others.
 
-{id: headcount-plan-shrinks--the-alternatives-costed-on-the-same-basis}
+{id: anatomy-of-a-layoff--the-alternatives-costed-on-the-same-basis}
 ## The Alternatives, Costed on the Same Basis
 
 Before a reduction, the board asks what else could close the gap. Several measures are already in force or easy to state, and the table puts them on one basis: the recurring monthly saving once it has fully arrived, the one-off cash it costs first, the first month in which the full saving appears, and what the company gives up. Every figure is fictional.
@@ -69,7 +69,7 @@ Before a reduction, the board asks what else could close the gap. Several measur
 
 Two rows need explanation. R3 is the number the board asked for in August, the cost level at which the company could continue with no new money at all: total costs of €250,000 against €250,000 of collected revenue, which means removing €150,000 a month beyond R1. It is worth knowing, and it is not a plan. At that level Larkspur would release the two second-country customers, cut the implementation and support team that the collected revenue depends on, and take the engineers off the onboarding pilot the round is being priced on. It also would not save January, for the reason the next section shows. R2 is the reduction the rest of this chapter follows: it removes whole pieces of work rather than a slice of every team, it meets the condition with a margin, and it keeps the protected obligations and the pilot intact.
 
-{id: headcount-plan-shrinks--reconcile-the-reduction-by-date}
+{id: anatomy-of-a-layoff--reconcile-the-reduction-by-date}
 ## Reconcile the Reduction by Date
 
 A reduction is often presented as a monthly saving. Cash does not arrive that way. Under Larkspur’s fictional employment terms, notice periods run from one to three months by length of service and are paid whether or not the person works them; severance is one month’s pay for every two full years of service with a minimum of one month, paid with the final salary; accrued leave is paid out. R2 gives notice to eight people on 31 October: two engineers, a designer and a product manager from the mobile app, two of the three second-country engineers, one sales role that existed for the second-country expansion and one administrative role. Their combined cost is €63,000 a month, and a further €9,000 of non-payroll spending stops with the app: its cloud environment, test devices and store fees.
@@ -91,7 +91,7 @@ Three of the eight leave the payroll on 30 November, three on 31 December and tw
 
 Cash on 30 June is €505,000, above the reserve with a margin of about one month, and the reserve is reached in the second week of August. That meets the condition. Without R2 the same table shows €200,000 on 30 June and the reserve breached in mid-May, which is why the investors attached the condition. The third comparison is the one a board rarely asks for. Without the bridge, R2 or no R2, Larkspur is below the reserve in January: the one-off costs come first, and the first full month of saving is February. R2 with no bridge reaches the reserve about ten days earlier than R1 alone would have. **A reduction makes money that arrives last longer; it cannot replace money that is late**, because notice periods and severance put the cost in front of the saving. That is the sentence Sam puts at the top of the board paper, and it is the reason R3 is not the fallback if the bridge fails.
 
-{id: headcount-plan-shrinks--the-decision-recorded}
+{id: anatomy-of-a-layoff--the-decision-recorded}
 ## The Decision, Recorded
 
 The board meets on 15 October rather than waiting for its November date, because the condition’s date is 31 October and the notice periods have to start then for the savings to land by February. The record reads:
@@ -106,7 +106,7 @@ The board meets on 15 October rather than waiting for its November date, because
 
 A record like this is what distinguishes a decision from a number. It shows the condition being met, the alternatives that were not chosen and why, and the evidence that would change the plan, which a later board, or a later owner, can check.
 
-{id: headcount-plan-shrinks--the-team-after-the-plan}
+{id: anatomy-of-a-layoff--the-team-after-the-plan}
 ## The Team After the Plan
 
 The reduction is chosen by work, so the organization that results can be described by work. From 1 February Larkspur has twelve engineers besides Alex: four on the onboarding pilot, and eight on a core team that now includes the second-country rules and the two engineers redeployed from the recovery work when it ends in December. Product and design are Priya, one product manager and one designer, both with the onboarding and core teams. Implementation and support are unchanged, because the collected revenue depends on them.
@@ -119,7 +119,7 @@ Three things had to be decided for that team to be real rather than drawn.
 
 **Knowledge transferred, inside the notice period.** The two departing second-country engineers hold the mapping between the country’s tax rules and Larkspur’s configuration. The transfer test from [Fix the Decision Problem Before Adding People](#fix-decisions-before-hiring) applies: before they leave, the remaining engineer releases one rule change alone, and the written mapping is reviewed against the release. The test is scheduled for the second week of December. If it fails, the notice period of one departing engineer is extended, paid, until it passes; the cost of that extension is the price of not discovering in March that the mapping lived in someone’s head. The mobile app needs no transfer, because nobody is going to change it; it needs the state-of-work record.
 
-{id: headcount-plan-shrinks--the-people-who-leave}
+{id: anatomy-of-a-layoff--the-people-who-leave}
 ## The People Who Leave
 
 A reduction chosen by work still ends in eight individual conversations, and the record of what the company owes each person is part of the plan, not an afterthought. At Larkspur the terms are the fictional ones above: notice paid in full, whether worked or not; severance on the stated formula; accrued leave paid out; a written reference; and outplacement support at the company’s cost. Each person also holds share options, and [Management Equity, Fund Carry and Employee Jobs Are Different Bets](#different-bets) explained why the leaver terms decide what those are worth: Larkspur’s board treats the eight as good leavers, so vested options can be exercised for twelve months after leaving rather than lapsing in ninety days, and unvested options lapse. None of this compensates for a job lost in the middle of a winter. It is what the company can do, it is written down, and it is the same for all eight.
@@ -128,7 +128,7 @@ The order of the day matters. On 31 October each of the eight is told individual
 
 **The employment process belongs to a jurisdiction, and the thresholds decide the calendar.** In the European Union, the collective redundancies directive applies from ten dismissals over thirty days in an establishment of twenty to a hundred workers, ten per cent in one of a hundred to three hundred, and thirty in a larger one, or twenty over ninety days where a member state chooses that test; an employer within it must consult the workers’ representatives in good time with a view to reaching an agreement, notify the competent public authority in writing, and the dismissals take effect not earlier than thirty days after that notification. [S77: Council Directive 98/59/EC](https://www.legislation.gov.uk/eudr/1998/59) In the United States, the federal statute applies to employers with a hundred or more employees, defines a plant closing by fifty or more job losses at one site and a mass layoff by a third of the workforce and at least fifty employees, or five hundred, and requires sixty days’ written notice. [S78: US WARN Act, 29 U.S.C. §§ 2101–2102](https://www.law.cornell.edu/uscode/text/29/2101) Eight people in an establishment of forty sit below the directive’s lowest band and forty employees sit below the US statute’s threshold, but member states may set lower thresholds, national law governs individual dismissals and works councils in any case, and this book does not say which law governs Larkspur. What it says is that the calendar in the cash table assumes individual notice with no collective procedure, that Larkspur’s counsel confirms the assumption before the date is fixed, and that if the assumption is wrong every date moves by at least the consultation period. A reduction planned without that check has a saving date nobody can rely on.
 
-{id: headcount-plan-shrinks--the-people-who-remain}
+{id: anatomy-of-a-layoff--the-people-who-remain}
 ## The People Who Remain
 
 Thirty-two people are still at Larkspur on 1 February, and the plan has to say what it expects of them. The failure to avoid is the silent one: the work of eight people distributed over the rest by omission, so that the reduction saves €72,000 on paper and costs the company its next four resignations.
@@ -137,7 +137,7 @@ So the stopped list is published, not implied. The remaining engineers are told,
 
 The people who remain draw conclusions of their own, and some leave; the reading list at the end includes the research on that. A company cannot promise them stability it does not have. It can tell them which plan is running, why, and what the next review will decide, and it can make sure that the same dated cash table sits behind the board paper, the investor update and the team briefing. A team that hears “the round is nearly done” in October and watches eight colleagues leave in November has learned something about its leaders that no later update repairs.
 
-{id: headcount-plan-shrinks--two-variations-on-the-same-decision}
+{id: anatomy-of-a-layoff--two-variations-on-the-same-decision}
 ## Two Variations on the Same Decision
 
 **A profitable company pursuing a higher margin.** Under a buyout, the pressure may be a margin target in the value-creation plan rather than a cash date, and the reduction is proposed when nothing is late. The authority is the same board and the same reserved matters; what is missing is the latest useful date that cash supplies, so the discipline has to come from the comparison instead: the recurring saving against the revenue it puts at risk, the one-off cost against the year-one net, and the capacity removed against the work that will actually stop. The support-location consolidation in [Management Equity, Fund Carry and Employee Jobs Are Different Bets](#different-bets) is that comparison, worked through to a staged decision; a margin target with no stopped list attached is the “cut engineering by 20%” of [Decide Who Decides, Before You Disagree](#decide-who-decides), a number that is not yet a plan.
@@ -146,14 +146,14 @@ The people who remain draw conclusions of their own, and some leave; the reading
 
 In every version, continued ownership is the scenario to plan for. If the round never closes, the reduction is what Larkspur is, and the record above is what its next board, its next investor or its buyer inherits. [Hand Over the Obligations, Not Just the Company](#handover-of-obligations) follows that record through whatever event comes next: who receives cash, who keeps an interest, and how the obligations that survived the reduction, the two customer contracts, the frozen app and the deferred hires, are handed over with the company rather than discovered afterwards.
 
-{id: headcount-plan-shrinks--questions-to-consider}
+{id: anatomy-of-a-layoff--questions-to-consider}
 ## Questions to Consider
 
 1. *Where does the reduction pressure on your company actually come from: a condition attached to money, a right someone holds under the agreements, or a benchmark somebody quoted? What response does each one require?*
 2. *If you gave notice on the last day of this month, in which month would the full saving first appear, and what would the reserve look like in the months before it?*
 3. *Which pieces of work would stop entirely, and has that list been written down for the people who remain, or will they discover it when they are asked to do it anyway?*
 
-{id: headcount-plan-shrinks--to-probe-further}
+{id: anatomy-of-a-layoff--to-probe-further}
 ## To Probe Further
 
 - **[Layoffs That Don’t Break Your Company](https://hbr.org/2018/05/layoffs-that-dont-break-your-company)** — Sandra J. Sucher and Shalene Gupta, Harvard Business Review, May–June 2018.  

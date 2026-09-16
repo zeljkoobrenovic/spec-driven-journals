@@ -35,7 +35,7 @@ The tools keep their original numbers because chapters and earlier readers cite 
 | **Measure** | Did the work help, and is the benefit capacity or cash? | Outcome and contribution ledger — [Tool 6](#toolkit--tool-6); small scorecard — [Tool 7](#toolkit--tool-7) | [The Chain From Roadmap to Revenue Breaks Easily](#roadmap-to-revenue), [Why a Cheaper Cloud Bill Can Be Bad News](#cheaper-cloud-bill) |
 | **Revise or hand over** | We are combining or separating businesses; what must continue? | Integration or separation plan — [Tool 9](#toolkit--tool-9) | [An Acquisition Adds Work Before It Adds Value](#acquisition-adds-work-first) |
 | **Revise or hand over** | Funding or ownership is changing; what evidence and obligations must travel with the work? | Funding or ownership handover — [Tool 10](#toolkit--tool-10) | [Hand Over the Obligations, Not Just the Company](#handover-of-obligations), [The Roadmap Did Not Slip, the Financing Did](#the-financing-slipped) |
-| **Revise or hand over** | The headcount plan has to shrink, or an investor proposes an appointment; who decides, what stops, and what are the people owed? | Workforce decision — [Tool 13](#toolkit--tool-13) | [Anatomy of a Layoff](#headcount-plan-shrinks), [Fix the Decision Problem Before Adding People](#fix-decisions-before-hiring) |
+| **Revise or hand over** | The headcount plan has to shrink, or an investor proposes an appointment; who decides, what stops, and what are the people owed? | Workforce decision — [Tool 13](#toolkit--tool-13) | [Anatomy of a Layoff](#anatomy-of-a-layoff), [Fix the Decision Problem Before Adding People](#fix-decisions-before-hiring) |
 
 Tool 12 (choose the combination) comes before Tool 5 (commit to one initiative) in this order: each initiative can be feasible on its own while the combination is not.
 
@@ -378,7 +378,7 @@ Record the reason for the selected combination in ordinary language. A score can
 {id: toolkit--tool-13}
 ## 13. Record a Workforce Decision
 
-Use when an investor’s request, a funding condition or the company’s own cash forecast means the headcount plan has to change: a reduction, a freeze that becomes permanent, or a consolidation after an acquisition. See [Anatomy of a Layoff](#headcount-plan-shrinks) for the worked reduction and [Fix the Decision Problem Before Adding People](#fix-decisions-before-hiring) for the knowledge-transfer test and for an investor-proposed appointment, which uses the first three rows and the role-design fields of Tool 5 rather than a separate form. Reuse Tool 1’s Authority row and Tool 12’s option comparison rather than copying them.
+Use when an investor’s request, a funding condition or the company’s own cash forecast means the headcount plan has to change: a reduction, a freeze that becomes permanent, or a consolidation after an acquisition. See [Anatomy of a Layoff](#anatomy-of-a-layoff) for the worked reduction and [Fix the Decision Problem Before Adding People](#fix-decisions-before-hiring) for the knowledge-transfer test and for an investor-proposed appointment, which uses the first three rows and the role-design fields of Tool 5 rather than a separate form. Reuse Tool 1’s Authority row and Tool 12’s option comparison rather than copying them.
 
 | Field | Record |
 | --- | --- |

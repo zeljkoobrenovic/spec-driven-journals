@@ -25,7 +25,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Make summaries and comic storyboards understandable on their own; preserve source limits and label fictional scenarios, including changes in example assumptions.
 - Explain the title question and its implications for a concrete company decision.
 - Give “Combining businesses” and “Separating a business” visible sections, each with its own Larkspur example that ends with the chosen option, alternatives rejected, funding, scarce capacity, who is authorized and the evidence that would change it, and each with a stated completion test.
-- Connect staffing synergies priced into a transaction to the transition cost, notice timing and knowledge-transfer checks in [[headcount-plan-shrinks]] and [[fix-decisions-before-hiring]] in one sentence each, without developing a reduction case here.
+- Connect staffing synergies priced into a transaction to the transition cost, notice timing and knowledge-transfer checks in [[anatomy-of-a-layoff]] and [[fix-decisions-before-hiring]] in one sentence each, without developing a reduction case here.
 - Carry the group-versus-local standardization boundary point (stated problem, cost of compliance, exceptions process, named funder of the transition) in the integration-depth section; use responsibility language rather than “owns”; link to the authority chapter instead of re-establishing minority versus controlling rights.
 - Distinguish sourced observations, the manuscript's analysis, and explicitly fictional examples.
 - Include a meaningful trade-off or counterargument and identify the evidence that would change the judgment.

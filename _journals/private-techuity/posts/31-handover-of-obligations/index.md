@@ -26,7 +26,7 @@ icon: "assets/icons/31-handover-of-obligations.png"
 <br>
 On the morning after an ownership event, the customer contracts, the agreed recovery requirement, the half-finished migration and the deferred hire are still there. A round adds an investor; a secondary sale gives one shareholder liquidity; a continuation transaction moves the holding to a new vehicle under the same manager; a sale of control changes who holds authority over the plan; a listing may or may not. None of these events changes the work. This chapter is about handing that work over, not only the shares.
 
-[[the-financing-slipped]] and [[headcount-plan-shrinks]] ended with dated decision records. This chapter follows such records into an ownership event, whichever form it takes. A sale is one possible event, not the inevitable next stage; the same record has to serve continued ownership, another round and a change of controlling shareholder. The Larkspur figures in this chapter are fictional and belong to the chain that runs from [[diligence-corrects-the-plan]] through [[first-hundred-days]] to this handover. The delayed-financing and reduction chapters work a deliberately separate scenario with its own cash, burn, people and dates; their figures are not part of this record.
+[[the-financing-slipped]] and [[anatomy-of-a-layoff]] ended with dated decision records. This chapter follows such records into an ownership event, whichever form it takes. A sale is one possible event, not the inevitable next stage; the same record has to serve continued ownership, another round and a change of controlling shareholder. The Larkspur figures in this chapter are fictional and belong to the chain that runs from [[diligence-corrects-the-plan]] through [[first-hundred-days]] to this handover. The delayed-financing and reduction chapters work a deliberately separate scenario with its own cash, burn, people and dates; their figures are not part of this record.
 
 ## Keep the Evidence During the Work
 
@@ -134,7 +134,7 @@ A handover is a chance for both company leaders and the investor to learn. Where
 
 Any involvement after a handover needs an agreed role and appropriate access; it is not a right that survives the transaction. The point is to check the durability claims made during ownership. Later deterioration does not automatically prove that the prior owners failed; market conditions and subsequent decisions matter. Later success does not prove that every prior intervention was necessary. A consistent record makes it possible to learn from the whole ownership period: what was expected, what was tried, what happened and what still needs work.
 
-Part V has followed the company leader through investigation ([[diligence-corrects-the-plan]]), the early funded plan ([[first-hundred-days]]), a delayed financing ([[the-financing-slipped]]), the reduction it forced ([[headcount-plan-shrinks]]) and now the handover. Part VI tests these methods against company histories, starting with two contrasting exits: [[part-6]] and [[hilton-and-skype]].
+Part V has followed the company leader through investigation ([[diligence-corrects-the-plan]]), the early funded plan ([[first-hundred-days]]), a delayed financing ([[the-financing-slipped]]), the reduction it forced ([[anatomy-of-a-layoff]]) and now the handover. Part VI tests these methods against company histories, starting with two contrasting exits: [[part-6]] and [[hilton-and-skype]].
 
 ## Questions to Consider
 

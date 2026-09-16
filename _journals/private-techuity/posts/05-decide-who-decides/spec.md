@@ -7,7 +7,7 @@ revised: 2026-09-16
 
 ## Intent
 
-Help leaders establish decision authority when founders, multiple minority investors, a controlling financial sponsor or a corporate parent have different rights. Organize the chapter around one filled-in Larkspur decision record (a misheard cloud suggestion, the €1 million onboarding proposal, a conditional delivery date) and show what happens when the approval it depends on is late. Adviser influence, confidentiality and support charters are owned by the Part IV chapters and only linked here. Map authority explicitly for executive appointments, changes to the headcount plan and a reduction, and distinguish a formal approval right from a funding condition and from informal influence; the worked appointment and reduction decisions live in [[fix-decisions-before-hiring]] and [[headcount-plan-shrinks]].
+Help leaders establish decision authority when founders, multiple minority investors, a controlling financial sponsor or a corporate parent have different rights. Organize the chapter around one filled-in Larkspur decision record (a misheard cloud suggestion, the €1 million onboarding proposal, a conditional delivery date) and show what happens when the approval it depends on is late. Adviser influence, confidentiality and support charters are owned by the Part IV chapters and only linked here. Map authority explicitly for executive appointments, changes to the headcount plan and a reduction, and distinguish a formal approval right from a funding condition and from informal influence; the worked appointment and reduction decisions live in [[fix-decisions-before-hiring]] and [[anatomy-of-a-layoff]].
 
 ## Audience
 
