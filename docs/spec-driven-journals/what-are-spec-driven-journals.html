@@ -308,11 +308,31 @@
             margin: 0;
         }
 
-        /* Wide tables scroll on narrow screens instead of crushing their columns. */
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
         @media (max-width: 640px) {
             article .table-wrap table {
                 min-width: 560px;
             }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
         }
 
         article th, article td {
@@ -729,6 +749,27 @@
                 }
                 window.mermaid.run({nodes: mermaidNodes});
             }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
         }
 
         // Modality tabs. One <article class="pane"> per modality; panes are
@@ -765,6 +806,8 @@
             if (!renderedPanes[key]) {
                 renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
                 renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
             }
             if (updateHash) {
                 history.replaceState(null, '',
@@ -793,6 +836,7 @@
             const k = location.hash.slice(1);
             if (mods.some(m => m.key === k)) activate(k, false);
         });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
     })();
 </script>
 </body>
