@@ -7,7 +7,7 @@
 
 **Comic.** Product and engineering leaders usually meet money as a budget: an amount they may spend. The panels follow Larkspur's fictional €100,000 need to show what the funding terms add: when the money may be spent, who must approve it, and what the company must deliver, repay or give up in return.
 
-Morgan is an investor's adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
+Morgan advises investors in the later scenarios where an investment fund, a pool of money that invests on behalf of others, owns part of Larkspur. Alex leads technology, Priya leads product, Sam leads finance and Ines is the chief executive. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
@@ -15,9 +15,9 @@ Morgan is an investor's adviser in the fund scenarios; Alex leads technology, Pr
   "status": "generated",
   "asset": "assets/images/00-customers-lenders-investors/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Alex and Sam compare customer payments, a loan, owner funding and an asset sale on four cards. Use one speech bubble with the exact words: \"What comes with the money?\" Convey: Larkspur needs €100,000. Customer payments, a loan, owners’ money and an asset sale are four common sources; each arrives with a different obligation, and other sources, such as eligible grants, also exist.",
+  "prompt": "Panel 1 of an explainer comic. Alex and Sam compare customer payments, a loan, owner funding and an asset sale on four cards. Use one speech bubble with the exact words: \"What comes with the money?\" Convey: Larkspur needs €100,000. Customer payments, a loan, owners’ money and the sale of an asset, something the company owns, are four common sources. Each arrives with a different obligation. Other sources also exist, such as grants, money awarded for a specified purpose.",
   "alt": "Comic panel: Alex and Sam compare customer payments, a loan, owner funding and an asset sale on four cards.",
-  "caption": "Larkspur needs €100,000. Customer payments, a loan, owners’ money and an asset sale are four common sources; each arrives with a different obligation, and other sources, such as eligible grants, also exist.",
+  "caption": "Larkspur needs €100,000. Customer payments, a loan, owners’ money and the sale of an asset, something the company owns, are four common sources. Each arrives with a different obligation. Other sources also exist, such as grants, money awarded for a specified purpose.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -28,7 +28,7 @@ Morgan is an investor's adviser in the fund scenarios; Alex leads technology, Pr
 
 ![Comic panel: Alex and Sam compare customer payments, a loan, owner funding and an asset sale on four cards.](assets/images/00-customers-lenders-investors/comic-01-scene.jpeg)
 
-**Panel 1:** Larkspur needs €100,000. Customer payments, a loan, owners’ money and an asset sale are four common sources; each arrives with a different obligation, and other sources, such as eligible grants, also exist.
+**Panel 1:** Larkspur needs €100,000. Customer payments, a loan, owners’ money and the sale of an asset, something the company owns, are four common sources. Each arrives with a different obligation. Other sources also exist, such as grants, money awarded for a specified purpose.
 
 *Dialogue:* “What comes with the money?”
 
@@ -38,9 +38,9 @@ Morgan is an investor's adviser in the fund scenarios; Alex leads technology, Pr
   "status": "generated",
   "asset": "assets/images/00-customers-lenders-investors/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Sam traces one payment to a company issuing shares and another to a founder selling existing shares. Use one speech bubble with the exact words: \"Who receives this payment?\" Convey: A share is a unit of ownership. Buying new shares can fund the company; buying a founder’s existing shares pays the founder.",
+  "prompt": "Panel 2 of an explainer comic. Sam traces one payment to a company issuing shares and another to a founder selling existing shares. Use one speech bubble with the exact words: \"Who receives this payment?\" Convey: A share is a unit of ownership. Buying new shares from the company can fund the company; buying the existing shares of a founder, someone who started the company, pays the founder.",
   "alt": "Comic panel: Sam traces one payment to a company issuing shares and another to a founder selling existing shares.",
-  "caption": "A share is a unit of ownership. Buying new shares can fund the company; buying a founder’s existing shares pays the founder.",
+  "caption": "A share is a unit of ownership. Buying new shares from the company can fund the company; buying the existing shares of a founder, someone who started the company, pays the founder.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -51,7 +51,7 @@ Morgan is an investor's adviser in the fund scenarios; Alex leads technology, Pr
 
 ![Comic panel: Sam traces one payment to a company issuing shares and another to a founder selling existing shares.](assets/images/00-customers-lenders-investors/comic-02-scene.jpeg)
 
-**Panel 2:** A share is a unit of ownership. Buying new shares can fund the company; buying a founder’s existing shares pays the founder.
+**Panel 2:** A share is a unit of ownership. Buying new shares from the company can fund the company; buying the existing shares of a founder, someone who started the company, pays the founder.
 
 *Dialogue:* “Who receives this payment?”
 
@@ -84,9 +84,9 @@ Morgan is an investor's adviser in the fund scenarios; Alex leads technology, Pr
   "status": "generated",
   "asset": "assets/images/00-customers-lenders-investors/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Alex places a company report, a share-price chart and a bank balance side by side. Use one speech bubble with the exact words: \"These tell us different things.\" Convey: Public companies publish financial information under the rules that apply to them. A public share price and reported profit are different from available cash.",
+  "prompt": "Panel 4 of an explainer comic. Alex places a company report, a share-price chart and a bank balance side by side. Use one speech bubble with the exact words: \"These tell us different things.\" Convey: Public companies, whose shares anyone can buy on a stock exchange, publish financial information under the rules that apply to them. A share price is what investors pay one another for a share. Reported profit is income minus expenses recorded for a period, not cash received minus cash paid. Neither says how much cash the company has in the bank to spend.",
   "alt": "Comic panel: Alex places a company report, a share-price chart and a bank balance side by side.",
-  "caption": "Public companies publish financial information under the rules that apply to them. A public share price and reported profit are different from available cash.",
+  "caption": "Public companies, whose shares anyone can buy on a stock exchange, publish financial information under the rules that apply to them. A share price is what investors pay one another for a share. Reported profit is income minus expenses recorded for a period, not cash received minus cash paid. Neither says how much cash the company has in the bank to spend.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -97,7 +97,7 @@ Morgan is an investor's adviser in the fund scenarios; Alex leads technology, Pr
 
 ![Comic panel: Alex places a company report, a share-price chart and a bank balance side by side.](assets/images/00-customers-lenders-investors/comic-04-scene.jpeg)
 
-**Panel 4:** Public companies publish financial information under the rules that apply to them. A public share price and reported profit are different from available cash.
+**Panel 4:** Public companies, whose shares anyone can buy on a stock exchange, publish financial information under the rules that apply to them. A share price is what investors pay one another for a share. Reported profit is income minus expenses recorded for a period, not cash received minus cash paid. Neither says how much cash the company has in the bank to spend.
 
 *Dialogue:* “These tell us different things.”
 
@@ -107,9 +107,9 @@ Morgan is an investor's adviser in the fund scenarios; Alex leads technology, Pr
   "status": "generated",
   "asset": "assets/images/00-customers-lenders-investors/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Three owners review their private company’s decision agreement with Alex. Use one speech bubble with the exact words: \"Who may approve the work?\" Convey: A private company’s shares do not trade on a public stock market. Its shareholders and decision rules still need to be understood.",
+  "prompt": "Panel 5 of an explainer comic. Three owners review their private company’s decision agreement with Alex. Use one speech bubble with the exact words: \"Who may approve the work?\" Convey: A private company’s shares do not trade on a public stock market. Its owners still set decision rules, in the company’s rulebook and in agreements between the shareholders, and those documents say who may approve the work.",
   "alt": "Comic panel: Three owners review their private company’s decision agreement with Alex.",
-  "caption": "A private company’s shares do not trade on a public stock market. Its shareholders and decision rules still need to be understood.",
+  "caption": "A private company’s shares do not trade on a public stock market. Its owners still set decision rules, in the company’s rulebook and in agreements between the shareholders, and those documents say who may approve the work.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -120,7 +120,7 @@ Morgan is an investor's adviser in the fund scenarios; Alex leads technology, Pr
 
 ![Comic panel: Three owners review their private company’s decision agreement with Alex.](assets/images/00-customers-lenders-investors/comic-05-scene.jpeg)
 
-**Panel 5:** A private company’s shares do not trade on a public stock market. Its shareholders and decision rules still need to be understood.
+**Panel 5:** A private company’s shares do not trade on a public stock market. Its owners still set decision rules, in the company’s rulebook and in agreements between the shareholders, and those documents say who may approve the work.
 
 *Dialogue:* “Who may approve the work?”
 
@@ -130,19 +130,23 @@ Morgan is an investor's adviser in the fund scenarios; Alex leads technology, Pr
   "status": "generated",
   "asset": "assets/images/00-customers-lenders-investors/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Priya and Alex compare four ownership cards with Sam, keeping the company budget separate. Use one speech bubble with the exact words: \"What can we actually commit to?\" Convey: Venture, growth, buyout and corporate labels are orientation, not terms. For the same €100,000, a prepayment fixes a delivery date, a loan starts repayments now, and new shares add an approver; Larkspur chose the prepayment because the feature fit the date and the customers’ cash funded it; the CEO signed within her delegation after the board recorded its support. If fewer customers sign, the release is reforecast rather than borrowed beyond what the monthly surplus can repay.",
-  "alt": "Comic panel: Priya and Alex compare four ownership cards with Sam, keeping the company budget separate.",
-  "caption": "Venture, growth, buyout and corporate labels are orientation, not terms. For the same €100,000, a prepayment fixes a delivery date, a loan starts repayments now, and new shares add an approver; Larkspur chose the prepayment because the feature fit the date and the customers’ cash funded it; the CEO signed within her delegation after the board recorded its support. If fewer customers sign, the release is reforecast rather than borrowed beyond what the monthly surplus can repay.",
+  "prompt": "Panel 6 of an explainer comic. Ines, Alex and Sam compare three offer cards on a table: a customer contract beside a calendar, a bank loan beside a repayment calendar, and a share certificate beside an empty board chair; Sam holds the company budget sheet. Use one speech bubble with the exact words: \"What can we actually commit to?\" Convey: For the same €100,000, three offers. A customer prepayment, cash paid before the service is delivered, fixes the delivery date in a contract: if the feature is late, each customer gets one month’s service refunded. A loan starts monthly repayments from the following month, whether or not customers have paid. New shares give an investor a seat on the board, the small group that oversees the company for its shareholders, and a say over large unplanned spending, rights that last long after this feature. Larkspur chose the prepayment: the feature fits the date, the customers’ cash funds it, and the cost of a slip is that refund and the customers’ trust. The loan failed Sam’s rule: Larkspur’s existing income cannot cover a fixed monthly repayment, so the loan would rest on money not yet collected. The share issue was declined because its rights outlast the feature. The board recorded its support. Ines, the chief executive, signed within the permission the board had given her. If fewer than three customers sign, she signs nothing until the plan fits. Two customers plus a small loan the board approves, with the loan and both orders signed by the cutoff date, keep the planned version and date. If the work would take more than the twelve engineer-weeks allowed, the date is replanned before any order is signed. Otherwise the version is reworked to what the signed customers’ cash funds.",
+  "alt": "Comic panel: Ines, Alex and Sam compare three offer cards, a customer contract, a bank loan and a share certificate, while Sam holds the company budget sheet.",
+  "caption": "For the same €100,000, three offers. A customer prepayment, cash paid before the service is delivered, fixes the delivery date in a contract: if the feature is late, each customer gets one month’s service refunded. A loan starts monthly repayments from the following month, whether or not customers have paid. New shares give an investor a seat on the board, the small group that oversees the company for its shareholders, and a say over large unplanned spending, rights that last long after this feature. Larkspur chose the prepayment: the feature fits the date, the customers’ cash funds it, and the cost of a slip is that refund and the customers’ trust. The loan failed Sam’s rule: Larkspur’s existing income cannot cover a fixed monthly repayment, so the loan would rest on money not yet collected. The share issue was declined because its rights outlast the feature. The board recorded its support. Ines, the chief executive, signed within the permission the board had given her. If fewer than three customers sign, she signs nothing until the plan fits. Two customers plus a small loan the board approves, with the loan and both orders signed by the cutoff date, keep the planned version and date. If the work would take more than the twelve engineer-weeks allowed, the date is replanned before any order is signed. Otherwise the version is reworked to what the signed customers’ cash funds.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
-    "sha256": "dfd52e441ef63329397ed6f89279d3f623120c39d4a964b002a871ecbf7efce0"
+    "sha256": "9d85fef32fda744fd49c9eabc08a8237c3bb69f6a4735be8b886ab6c3e89b68d"
   }
 }
 -->
 
-![Comic panel: Priya and Alex compare four ownership cards with Sam, keeping the company budget separate.](assets/images/00-customers-lenders-investors/comic-06-scene.jpeg)
+![Comic panel: Ines, Alex and Sam compare three offer cards, a customer contract, a bank loan and a share certificate, while Sam holds the company budget sheet.](assets/images/00-customers-lenders-investors/comic-06-scene.jpeg)
 
-**Panel 6:** Venture, growth, buyout and corporate labels are orientation, not terms. For the same €100,000, a prepayment fixes a delivery date, a loan starts repayments now, and new shares add an approver; Larkspur chose the prepayment because the feature fit the date and the customers’ cash funded it; the CEO signed within her delegation after the board recorded its support. If fewer customers sign, the release is reforecast rather than borrowed beyond what the monthly surplus can repay.
+**Panel 6:** For the same €100,000, three offers. A customer prepayment, cash paid before the service is delivered, fixes the delivery date in a contract: if the feature is late, each customer gets one month’s service refunded. A loan starts monthly repayments from the following month, whether or not customers have paid. New shares give an investor a seat on the board, the small group that oversees the company for its shareholders, and a say over large unplanned spending, rights that last long after this feature.
+
+Larkspur chose the prepayment: the feature fits the date, the customers’ cash funds it, and the cost of a slip is that refund and the customers’ trust. The loan failed Sam’s rule: Larkspur’s existing income cannot cover a fixed monthly repayment, so the loan would rest on money not yet collected. The share issue was declined because its rights outlast the feature. The board recorded its support. Ines, the chief executive, signed within the permission the board had given her.
+
+If fewer than three customers sign, she signs nothing until the plan fits. Two customers plus a small loan the board approves, with the loan and both orders signed by the cutoff date, keep the planned version and date. If the work would take more than the twelve engineer-weeks allowed, the date is replanned before any order is signed. Otherwise the version is reworked to what the signed customers’ cash funds.
 
 *Dialogue:* “What can we actually commit to?”

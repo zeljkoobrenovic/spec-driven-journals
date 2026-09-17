@@ -727,7 +727,8 @@ def _logo_html(logo: str, credit: str) -> str:
         return ""
     src = _html_escape(logo)
     out = (
-        f'<a href="{src}" target="_blank" rel="noopener noreferrer">'
+        f'<a href="{src}" target="_blank" rel="noopener noreferrer" '
+        f'aria-label="Open header illustration at full size">'
         f'<img class="logo" src="{src}" alt=""></a>'
     )
     if credit:
