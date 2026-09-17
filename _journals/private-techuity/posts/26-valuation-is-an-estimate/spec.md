@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-15
+revised: 2026-09-17
 ---
 
 # Spec: A Valuation Is an Estimate, Not a Fact
@@ -18,12 +18,14 @@ Product and engineering leaders inside companies working under investors, includ
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is generated from its six-panel storyboard with consistent fictional characters and preserved captions.
-- Make the simplified net-debt bridge explicit about included cash and treatment of borrowing on sale; do not imply that a buyer always inherits existing loans.
+- Make the simplified net-debt bridge explicit about included cash and treatment of borrowing on sale; do not imply that a buyer always inherits existing loans. State the bridge in both directions with the same net-debt figure, and show the same subtraction/addition in the TL;DR overview visual and its text equivalent.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
 - Introduce necessary terms in ordinary language before using them in explanations, examples, tables, or diagrams; keep opening key points readable without prior study.
 - Move from a concrete question through explanation and example to a practical conclusion; connect the conclusion to the next chapter in the configured reading order.
 - Make summaries and comic storyboards understandable on their own; preserve source limits and label fictional scenarios, including changes in example assumptions.
+- Keep the Stage 1 checkpoint method-neutral: only a valuation quoted as a multiple needs a named revenue or earnings measure; cash-flow and asset-based estimates must not fail the checkpoint for lacking one.
+- Explain why discounting reduces a future amount (money in hand can be invested meanwhile, and the future payment is uncertain) before using a discount rate, and say the rate is a model assumption, not a promised return.
 - Structure the article as two explicitly named stages, “Read the business’s numbers” (ending in a short checkpoint on the €60m question) and “Interpret a valuation”; say that valuation assumptions can become targets to examine, not results the company must deliver; state one reminder that a valuation is not company cash, not several.
 - Close with one engineering-facing assumption to challenge (a cost-to-serve reduction assumed to follow from sales growth): which change produces it, when it becomes usable, who funds it; link [[growth-into-design]] and [[roadmap-to-revenue]].
 - Keep research annotations within the study’s actual population and inference (the Gornall–Strebulaev entry concerns 135 US unicorns and model-estimated fair values).
@@ -55,6 +57,7 @@ S06–S07 for earnings and development-accounting distinctions; S52 for IPEV's D
 
 ## Changelog
 
+- 2026-09-17: Editorial revision per the in-depth review (VAL-001 to VAL-011): reverse equity bridge restated with net debt (€60m equity + €20m net debt = €80m EV); WHY INVESTORS CARE scoped to investors managing money for others; first-use explanations added for margin, claims, SEC, GAAP, non-GAAP, liabilities, onboarding, implementation, cohort, fair value, IFRS, unicorn, share class and preferred shares; checkpoint made method-neutral; discounting explained by the growth-then-reverse comparison; opening paragraph shortened; Visma and TeamSystem cross-linked; TL;DR and comic made self-contained (EBITDA expanded, adjusted EBITDA distinguished, assets exemplified, pre-/post-money defined, newly issued shares stated); overview visual redrawn as one bridge equation, panel 3 redrawn with a single time axis, panel 6 worksheet relabelled “new cash received”; permalink and id unchanged.
 - 2026-09-15: Editorial revision per REVIEW.md: corrected the Gornall–Strebulaev annotation to the source’s direction (reported post-money valuations about 50% above modeled fair value, not fair values 50% below), restored the “may shape / can become” qualification in both opening callouts and the Stage 1 checkpoint (“estimated value”, not “price”), replaced the unsupported “can’t start in year one” timing rule with phasing benefits from the validation date, and made the closing competence claim proportionate; permalink and id unchanged.
 - 2026-09-14: Editorial revision per REVIEW.md: two named learning stages with a checkpoint on the €60m thread, softened “assumptions decide results” to “can become targets to examine” across all formats, corrected the Gornall–Strebulaev annotation to its actual population (135 US unicorns, modeled fair values), added an engineering-facing closing assumption linking [[growth-into-design]], marked the SEC primer as the beginner route, trimmed repeated “not cash” reminders and the questions list; permalink and id unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.

@@ -21,10 +21,10 @@ icon: "assets/icons/01-announcement-is-not-a-budget.png"
 >
 > * Find out **who receives the investment money**. Buying a founder’s shares pays the founder; buying new shares can put money into the company.
 > * **Separate the organizations involved**. The investment firm, its fund, the company used to hold the investment, and the business serving customers can have different money and obligations.
-> * Distinguish **an estimate from a payment**. Saying an investment is worth more does not mean its owners have received cash, and a headline figure does not authorize a hire until the payer, the approver and the conditions are on one page.
+> * Distinguish **an estimate from a payment**. Saying an investment is worth more does not mean its owners have received cash, and a headline figure does not authorize a hire until the payer, the approver and the conditions are on the same page.
 
 <br>
-Your company announces a €100 million investment. It's natural to expect a larger hiring or product **budget**, an amount of spending that someone with authority has approved. But the headline figure may be a **valuation**, an estimate of what the whole company is worth, or the amount that changes hands in the transaction, and those two numbers can differ. Even the amount that changes hands need not reach the business.
+Your company announces a €100 million investment. It's natural to expect a larger hiring or product **budget**, an amount of spending that someone with authority has approved. But the headline figure may be a **valuation**, an estimate of what the whole company is worth (after investment), or the amount that changes hands in the transaction, and those two numbers can differ. Even the amount that changes hands need not reach the business.
 
 A **share** is a unit of ownership in a company; its holder is a **shareholder**. Of the money paid for shares, payment for **newly issued shares** goes to the company that issues them: a **primary share issue**. Payment for **existing shares** goes to the shareholder selling them: a **secondary share sale**. Other parts of the amount may repay old loans or pay **transaction costs**, the legal and advisory fees of arranging the deal. Company cash can also grow in other ways, for example when a lender makes the company a loan as part of the same arrangement, or when an owner separately agrees to fund it.
 
@@ -32,7 +32,7 @@ In this chapter's examples, the money arrives at **closing**, the day the transa
 
 An announcement describes a transaction, an agreed exchange between the parties. To turn it into a hiring plan, establish how much cash reaches the business, when it arrives and who can authorize its use. These questions matter under every ownership arrangement; a transaction changes the conditions of the answer, because the amount that reaches the business depends on how the deal was structured and on the conditions attached to it.
 
-[[customers-lenders-investors]] traced €100,000 through a prepayment (money paid before the service is delivered), a loan and a share issue. This chapter does the same at transaction scale. It compares three arrangements: a **minority funding round**, one occasion on which the company raises money by selling less than half its shares to investors; a **buyout**, the purchase of control of the company, here paid for by an **investment fund**, a pool of investors’ money managed under agreed rules; and ownership by a larger operating company, a **corporate group**. It explains the fund structure behind the buyout, and ends with the one-page record that turns Alex's hiring assumption into an authorized plan.
+In the chapter [[customers-lenders-investors]] we traced €100,000 through a prepayment (money paid before the service is delivered), a loan and a share issue — one payment at a time. This chapter zooms out from single payments to whole deals: arrangements that change who owns or controls the company. It compares three: a **minority funding round**, one occasion on which the company raises money by selling less than half its shares to investors; a **buyout**, the purchase of control of the company, here paid for by an **investment fund**, a pool of investors' money managed under agreed rules; and ownership by a larger operating company, a **corporate group**. It explains the fund structure behind the buyout, and ends with the one-page record that turns Alex's hiring assumption into an authorized plan.
 
 ## Map the Arrangement Before Relying on the Money
 
@@ -46,7 +46,7 @@ Consider three alternative, fictional Larkspur announcements. In each, Alex want
 
 If an existing investor joins another round, that doesn't mean every shareholder contributes again. If a corporate investor buys a minority stake, less than half the shares, that doesn't automatically make the company part of the parent’s operating hierarchy. Draw the actual arrangement.
 
-Use one page to identify the shareholder, the entity supplying cash, the person authorized to commit it and any conditions before payment. Include the date by which a promised decision must arrive for the engineering plan to stay feasible. The end of this chapter shows that page completed for the first announcement.
+Identify the shareholder, the entity supplying cash, the person authorized to commit it and any conditions before payment. Include the date by which a promised decision must arrive for the engineering plan to stay feasible. The end of this chapter shows that page completed for the first announcement.
 
 The next sections explain a fund-backed arrangement in detail. **Venture investors**, who fund young businesses with uncertain prospects, and **growth investors**, who fund the expansion of established businesses, usually without buying control, can also use funds; corporate and individual owners may use different structures. Don't invent a fund, a holding company or a fixed sale deadline when the arrangement has none.
 
@@ -92,7 +92,7 @@ So before accepting a budget for a cloud migration, moving the software to anoth
 
 ## Commitments Are Promises, Not Payments
 
-The money in the fund comes from the limited partners: pension funds, which invest to pay future pensions; insurers, which invest premiums to pay future claims; and endowments. An **endowment** is a pool of assets invested to support an institution, such as a university. These investors supply the fund’s capital; whether any of it reaches a company’s technology budget depends on the transaction.
+The money in the fund comes from the limited partners: pension funds, which invest to pay future pensions; insurers, which invest premiums to pay future claims; and endowments. An **endowment** is a pool of assets invested to support an institution, such as a university. These investors supply the fund’s capital; whether any of it reaches a company’s product and technology budget depends on the transaction.
 
 Many funds are **partnerships**, a legal arrangement between partners governed by a **limited partnership agreement**. In that form, the **general partner**, or GP, holds the management responsibilities and powers under the fund arrangements. The investment firm often acts as the fund's manager under a separate agreement, and "GP" is used informally for the firm. Which body actually approves an investment is whatever those agreements say.
 
@@ -128,7 +128,7 @@ The manager is paid through a **management fee**, a regular payment for managing
 
 These terms shape which requests a company receives and when. A fund near the end of its term, or a manager whose profit share depends on a sale that turns estimated value into cash, has reasons to prefer some kinds of work over others.
 
-[[different-bets]] examines those incentives, and [[three-different-returns]] the ways an investment's gain is measured. The optional reference [[fund-economics]] works through the sharing rules and the terms that fine-tune them, for readers who want the mechanics.
+The chapter [[different-bets]] examines those incentives, and [[three-different-returns]] the ways an investment's gain is measured. The optional reference [[fund-economics]] works through the sharing rules and the terms that fine-tune them, for readers who want the mechanics.
 
 Fees, the way shared costs are split between the manager, its funds and their companies, and services bought from organizations connected to the manager also create conflicts. The US Securities and Exchange Commission (SEC), the federal regulator for investing, explicitly discusses in its guide the possibility that the manager's interests differ from those of its funds. [S01: SEC investor guide](https://www.investor.gov/introduction-investing/investing-basics/investment-products/private-investment-funds/private-equity) A company leader should therefore ask who funds an operating intervention and whether the provider has a financial interest in the recommendation. Useful support can still involve a conflict that needs to be understood.
 
@@ -138,7 +138,7 @@ An owner’s influence over the company and an executive’s authority to act fo
 
 An **investment committee** is the body authorized to approve investments for the fund under its arrangements. A company’s **board** oversees the business within its own authority, while executives manage day-to-day work. Buying a company, approving its annual plan and signing a customer contract are different decisions. Share ownership alone doesn't give every shareholder authority to sign contracts for the company. Loan agreements may also require the lender's approval for particular actions. When someone says "the investor wants X," the useful reply is: which body, exercising which right, and can they actually require it?
 
-Some investment firms employ an investor's technology adviser who may contribute to both investment and company discussions; this book's example of such a role is the Technology Principal, Morgan. The role's authority must be established in each forum; neither a venture investor nor a corporate owner necessarily provides an equivalent role. [[investors-adviser]] develops the role; [[decide-who-decides]] works through the decision rights in detail.
+Some investment firms employ an investor's technology adviser who may contribute to both investment and company discussions; this book's example of such a role is the Technology Principal, Morgan. The role's authority must be established in each forum; neither a venture investor nor a corporate owner necessarily provides an equivalent role. The chapter [[investors-adviser]] develops the role; the chapter [[decide-who-decides]] works through the decision rights in detail.
 
 ## Alex's Hire: The Completed Funding-and-Authority Record
 
@@ -174,7 +174,7 @@ Had the second announcement been the real one, the record would look different i
 
 Customer payments sustain the operating business. Investors, lenders and future buyers can also bring cash into the wider arrangement. Keeping those sources separate explains why an investor with plenty of money and a company short of cash can coexist.
 
-You can now trace who supplies cash, who receives it and which body makes a decision, and you have seen the record that turns an announcement into an authorized hire. One question from the opening remains: what the €100 million meant. A headline may name the purchase price, new funding or a valuation, and the three can differ. The next chapter explains how to identify and interpret the valuation. That needs three basic financial ideas, sales, profit and cash, which we develop in [[valuation-is-an-estimate]].
+You can now trace who supplies cash, who receives it and which body makes a decision, and you have seen the record that turns an announcement into an authorized hire. One question from the opening remains: what the €100 million meant. A headline may name the purchase price, new funding or a valuation, and the three can differ. The next chapter explains how to identify and interpret the valuation. That needs three basic financial ideas, sales, profit and cash, which we develop in the chapter [[valuation-is-an-estimate]].
 
 ## Questions to Consider
 

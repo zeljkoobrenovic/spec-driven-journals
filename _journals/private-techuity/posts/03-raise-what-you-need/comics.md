@@ -5,9 +5,11 @@
 }
 -->
 
-**Comic.** Product and engineering leaders may not choose the investor but they inherit its terms, and the terms of the funding and the investor’s expectations affect the pace, the tolerated losses and the time available for the plan. The panels size one piece of work, compare two arrangements that could fund it and show who can recommend and who can renegotiate.
+**Comic.** Product and engineering leaders may not choose the investor but they inherit its terms, the conditions attached to the money, and it is those terms and the investor’s expectations that affect the pace, the tolerated losses and the time available for the plan. The panels size one piece of work, compare two arrangements that could fund it and show who can recommend and who can renegotiate.
 
-Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
+Two words recur. **Equity** is money given to a company in exchange for a share of its ownership; the investor gets it back only if the company later pays out or is sold. A **loan** is money that must be repaid on fixed dates with interest, whatever happens, while the owners keep their shares. In the fictional Larkspur case the work is sized at €610,000; a bank offers a €750,000 loan, and a growth investor offers €2.5 million for a minority share, less than half the company, with the right to approve the annual budget.
+
+Alex leads engineering, Priya leads product, Sam leads finance and Ines runs the company as its chief executive; Morgan, an adviser on the investor’s side in other chapters, does not appear here. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
@@ -38,9 +40,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/03-raise-what-you-need/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. The same team faces an implementation queue. Use one speech bubble with the exact words: \"Demand exceeds our delivery capacity.\" Convey: Demand is not the problem; delivery is. Alex and Priya size the fix at about €610,000: the €180,000 build plus transition, interim capacity, an uncertainty allowance and decision runway.",
-  "alt": "Comic panel: The same team faces an implementation queue.",
-  "caption": "Demand is not the problem; delivery is. Alex and Priya size the fix at about €610,000: the €180,000 build plus transition, interim capacity, an uncertainty allowance and decision runway.",
+  "prompt": "Panel 2 of an explainer comic. The same team faces an implementation queue. Use one speech bubble with the exact words: \"Demand exceeds our delivery capacity.\" Convey: Demand is not the problem; delivery is. Each new customer is set up by hand, so the queue of waiting customers grows. Alex and Priya size the fix at about €610,000: the €180,000 build plus the transition to the new step, a temporary specialist to keep customers moving, an allowance for estimates being wrong and runway, the time bought before the next decision.",
+  "alt": "Comic panel: Alex, Priya, Sam and Ines face a long queue of waiting customers under a sign reading customer demand, beside an overflowing inbox.",
+  "caption": "Demand is not the problem; delivery is. Each new customer is set up by hand, so the queue of waiting customers grows. Alex and Priya size the fix at about €610,000: the €180,000 build plus the transition to the new step, a temporary specialist to keep customers moving, an allowance for estimates being wrong and runway, the time bought before the next decision.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -49,9 +51,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: The same team faces an implementation queue.](assets/images/03-raise-what-you-need/comic-02-scene.jpeg)
+![Comic panel: Alex, Priya, Sam and Ines face a long queue of waiting customers under a sign reading customer demand, beside an overflowing inbox.](assets/images/03-raise-what-you-need/comic-02-scene.jpeg)
 
-**Panel 2:** Demand is not the problem; delivery is. Alex and Priya size the fix at about €610,000: the €180,000 build plus transition, interim capacity, an uncertainty allowance and decision runway.
+**Panel 2:** Demand is not the problem; delivery is. Each new customer is set up by hand, so the queue of waiting customers grows. Alex and Priya size the fix at about €610,000: the €180,000 build plus the transition to the new step, a temporary specialist to keep customers moving, an allowance for estimates being wrong and runway, the time bought before the next decision.
 
 *Dialogue:* “Demand exceeds our delivery capacity.”
 
@@ -61,9 +63,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/03-raise-what-you-need/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. A founder places a retirement calendar beside a healthy business. Use one speech bubble with the exact words: \"Ownership is the question here.\" Convey: A retiring founder may want to sell their shares even when the company itself has enough cash.",
+  "prompt": "Panel 3 of an explainer comic. A founder places a retirement calendar beside a healthy business. Use one speech bubble with the exact words: \"Ownership is the question here.\" Convey: A retiring founder may want to sell their shares, their units of ownership, even when the company itself has enough cash.",
   "alt": "Comic panel: Sam reviews a retirement calendar beside an established-company model and a share-sale agreement.",
-  "caption": "A retiring founder may want to sell their shares even when the company itself has enough cash.",
+  "caption": "A retiring founder may want to sell their shares, their units of ownership, even when the company itself has enough cash.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -74,7 +76,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam reviews a retirement calendar beside an established-company model and a share-sale agreement.](assets/images/03-raise-what-you-need/comic-03-scene.jpeg)
 
-**Panel 3:** A retiring founder may want to sell their shares even when the company itself has enough cash.
+**Panel 3:** A retiring founder may want to sell their shares, their units of ownership, even when the company itself has enough cash.
 
 *Dialogue:* “Ownership is the question here.”
 
@@ -84,9 +86,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/03-raise-what-you-need/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Sam compares a minority stake with a substantial approval key. Use one speech bubble with the exact words: \"Read the rights, too.\" Convey: Owning a small share of a company can still bring important approval rights. Read the agreement as well as the percentage.",
-  "alt": "Comic panel: Sam compares a minority stake with a substantial approval key.",
-  "caption": "Owning a small share of a company can still bring important approval rights. Read the agreement as well as the percentage.",
+  "prompt": "Panel 4 of an explainer comic. Sam compares a minority stake with a substantial approval key. Use one speech bubble with the exact words: \"Read the rights, too.\" Convey: Owning a small share of a company can still bring important approval rights. Read the agreement as well as the percentage. Sam weighs a minority stake, a share of less than half the company, against an approval-rights key, with an open governance agreement, the contract that says which decisions need whose consent, such as the annual budget or a senior hire.",
+  "alt": "Comic panel: Sam sits between a rolled document labelled minority stake and a large key tagged approval rights, with a book labelled governance agreement open in front of him.",
+  "caption": "Owning a small share of a company can still bring important approval rights. Read the agreement as well as the percentage. Sam weighs a minority stake, a share of less than half the company, against an approval-rights key, with an open governance agreement, the contract that says which decisions need whose consent, such as the annual budget or a senior hire.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -95,9 +97,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Sam compares a minority stake with a substantial approval key.](assets/images/03-raise-what-you-need/comic-04-scene.jpeg)
+![Comic panel: Sam sits between a rolled document labelled minority stake and a large key tagged approval rights, with a book labelled governance agreement open in front of him.](assets/images/03-raise-what-you-need/comic-04-scene.jpeg)
 
-**Panel 4:** Owning a small share of a company can still bring important approval rights. Read the agreement as well as the percentage.
+**Panel 4:** Owning a small share of a company can still bring important approval rights. Read the agreement as well as the percentage. Sam weighs a minority stake, a share of less than half the company, against an approval-rights key, with an open governance agreement, the contract that says which decisions need whose consent, such as the annual budget or a senior hire.
 
 *Dialogue:* “Read the rights, too.”
 
@@ -107,9 +109,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/03-raise-what-you-need/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Priya sorts owner, rights, money and event cards into four clearly separated groups. Use one speech bubble with the exact words: \"These answer different questions.\" Convey: Investor type, control, financing and transaction context are different dimensions. A carve-out describes separation; a turnaround describes a problem to solve. Neither identifies the owner.",
-  "alt": "Comic panel: Priya sorts owner, rights, money and event cards into four clearly separated groups.",
-  "caption": "Investor type, control, financing and transaction context are different dimensions. A carve-out describes separation; a turnaround describes a problem to solve. Neither identifies the owner.",
+  "prompt": "Panel 5 of an explainer comic. Priya sorts owner, rights, money and event cards into four clearly separated groups. Use one speech bubble with the exact words: \"These answer different questions.\" Convey: Investor type, control, financing and transaction context are different dimensions. The cards read, left to right: owner (private equity, a fund that buys ownership of companies not traded on a stock exchange; family office, a wealthy family’s own investment company); rights (voting; a board seat, membership of the group that oversees the company); money (debt, borrowed money to be repaid; equity financing, money exchanged for ownership); event (carve-out, separating a business from its parent; turnaround, repairing a business in serious trouble; acquisition, buying a company). Neither a carve-out nor a turnaround identifies the owner.",
+  "alt": "Comic panel: Priya sorts labelled cards into four groups, owner, rights, money and event; the groups are transcribed in the caption.",
+  "caption": "Investor type, control, financing and transaction context are different dimensions. The cards read, left to right: owner (private equity, a fund that buys ownership of companies not traded on a stock exchange; family office, a wealthy family’s own investment company); rights (voting; a board seat, membership of the group that oversees the company); money (debt, borrowed money to be repaid; equity financing, money exchanged for ownership); event (carve-out, separating a business from its parent; turnaround, repairing a business in serious trouble; acquisition, buying a company). Neither a carve-out nor a turnaround identifies the owner.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -118,9 +120,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Priya sorts owner, rights, money and event cards into four clearly separated groups.](assets/images/03-raise-what-you-need/comic-05-scene.jpeg)
+![Comic panel: Priya sorts labelled cards into four groups, owner, rights, money and event; the groups are transcribed in the caption.](assets/images/03-raise-what-you-need/comic-05-scene.jpeg)
 
-**Panel 5:** Investor type, control, financing and transaction context are different dimensions. A carve-out describes separation; a turnaround describes a problem to solve. Neither identifies the owner.
+**Panel 5:** Investor type, control, financing and transaction context are different dimensions. The cards read, left to right: owner (private equity, a fund that buys ownership of companies not traded on a stock exchange; family office, a wealthy family’s own investment company); rights (voting; a board seat, membership of the group that oversees the company); money (debt, borrowed money to be repaid; equity financing, money exchanged for ownership); event (carve-out, separating a business from its parent; turnaround, repairing a business in serious trouble; acquisition, buying a company). Neither a carve-out nor a turnaround identifies the owner.
 
 *Dialogue:* “These answer different questions.”
 
@@ -130,19 +132,19 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/03-raise-what-you-need/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. The team weighs two financing proposals against the sized onboarding work. Use one speech bubble with the exact words: \"Does this capital fit?\" Convey: Two arrangements could fund the same need. Under the stated assumptions the staged loan is chosen over €2.5m of growth equity; Alex and Priya recommend the work, Ines and Sam negotiate the terms.",
-  "alt": "Comic panel: The team weighs two financing proposals against the sized onboarding work.",
-  "caption": "Two arrangements could fund the same need. Under the stated assumptions the staged loan is chosen over €2.5m of growth equity; Alex and Priya recommend the work, Ines and Sam negotiate the terms.",
+  "prompt": "Panel 6 of an explainer comic. Ines, Sam, Alex and Priya stand around a table holding three large sheets side by side: a sheet titled WORK PLAN showing three simple stacked blocks, a sheet titled BANK LOAN showing a calendar with four marked repayment dates, and a sheet titled OWNERSHIP INVESTMENT showing a pie chart with one slice shaded and a small map with a second country flagged. Sam points at the bank-loan sheet; Ines holds a folder marked FOR THE BOARD. Use one speech bubble with the exact words: \"Does this funding fit the work?\" Convey: Two arrangements could fund the same €610,000 need: a €750,000 bank loan with fixed repayments, or €2.5 million from a growth investor in exchange for a minority share and a say over the budget, on a plan to enter a second country within eighteen months. With about €350,000 of yearly operating cash to meet the payments and no evidence yet of second-country demand, Ines and Sam recommend the loan, funding the work in stages, and the board approves it. The risk they accept is that the repayments are fixed whatever the pilot shows.",
+  "alt": "Comic panel: Ines, Sam, Alex and Priya compare a work-plan sheet with a bank-loan sheet and an ownership-investment sheet; Sam points at the loan.",
+  "caption": "Two arrangements could fund the same €610,000 need: a €750,000 bank loan with fixed repayments, or €2.5 million from a growth investor in exchange for a minority share and a say over the budget, on a plan to enter a second country within eighteen months. With about €350,000 of yearly operating cash to meet the payments and no evidence yet of second-country demand, Ines and Sam recommend the loan, funding the work in stages, and the board approves it. The risk they accept is that the repayments are fixed whatever the pilot shows.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
-    "sha256": "54dbcb3f2a17c16539b83570b165b321547924905ece8bf8b87bbb9a36cde868"
+    "sha256": "e7a49c2c9a1e8362d5c8421e6e2ca9e621fd74fe6ec014bd79605b3c8c1ba411"
   }
 }
 -->
 
-![Comic panel: The team weighs two financing proposals against the sized onboarding work.](assets/images/03-raise-what-you-need/comic-06-scene.jpeg)
+![Comic panel: Ines, Sam, Alex and Priya compare a work-plan sheet with a bank-loan sheet and an ownership-investment sheet; Sam points at the loan.](assets/images/03-raise-what-you-need/comic-06-scene.jpeg)
 
-**Panel 6:** Two arrangements could fund the same need. Under the stated assumptions the staged loan is chosen over €2.5m of growth equity; Alex and Priya recommend the work, Ines and Sam negotiate the terms.
+**Panel 6:** Two arrangements could fund the same €610,000 need: a €750,000 bank loan with fixed repayments, or €2.5 million from a growth investor in exchange for a minority share and a say over the budget, on a plan to enter a second country within eighteen months. With about €350,000 of yearly operating cash to meet the payments and no evidence yet of second-country demand, Ines and Sam recommend the loan, funding the work in stages, and the board approves it. The risk they accept is that the repayments are fixed whatever the pilot shows.
 
-*Dialogue:* “Does this capital fit?”
+*Dialogue:* “Does this funding fit the work?”

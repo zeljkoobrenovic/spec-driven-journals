@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** Product and engineering leaders rarely need to produce a valuation, but they need to read one. The panels follow one question, what “worth €60 million” means, in two stages: first read the business’s numbers, then interpret the valuation. An investor’s valuation assumptions can become growth, margin and cost targets; knowing how the number was built shows which assumptions the plan is being asked to support.
+**Comic.** Product and engineering leaders rarely need to produce a valuation, but they need to read one. A valuation is an estimate of what a business, or the shares in it, is worth at a date and for a purpose. The panels follow one question, what “worth €60 million” means, in two stages: first read the business’s numbers, then interpret the valuation. An investor’s valuation assumptions can become growth, margin (profit as a percentage of sales) and cost targets; knowing how the number was built shows which assumptions the plan is being asked to support.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -38,9 +38,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/26-valuation-is-an-estimate/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Sam compares two identical operating businesses with different tax bills, while invoices for financing and investment remain on the desk. Use one speech bubble with the exact words: \"Different taxes, same operating performance.\" Convey: EBITDA leaves out interest, income taxes, depreciation and amortization. The last two spread asset costs over time. The excluded costs still matter, so ask what an adjusted figure leaves out.",
+  "prompt": "Panel 2 of an explainer comic. Sam compares two identical operating businesses with different tax bills, while invoices for financing and investment remain on the desk. Use one speech bubble with the exact words: \"Different taxes, same operating performance.\" Convey: EBITDA is an earnings measure: earnings before interest (the cost of borrowing), income taxes, depreciation and amortization. The last two spread the cost of assets, things the business owns and uses such as equipment or software, over the years they are used. Leaving all four out helps compare how efficiently two businesses operate, but the excluded costs still matter. An “adjusted” EBITDA excludes further costs the company chooses, so ask what each one is and whether it will recur.",
   "alt": "Comic panel: Sam compares two identical operating businesses with different tax bills, while invoices for financing and investment remain on the desk.",
-  "caption": "EBITDA leaves out interest, income taxes, depreciation and amortization. The last two spread asset costs over time. The excluded costs still matter, so ask what an adjusted figure leaves out.",
+  "caption": "EBITDA is an earnings measure: earnings before interest (the cost of borrowing), income taxes, depreciation and amortization. The last two spread the cost of assets, things the business owns and uses such as equipment or software, over the years they are used. Leaving all four out helps compare how efficiently two businesses operate, but the excluded costs still matter. An “adjusted” EBITDA excludes further costs the company chooses, so ask what each one is and whether it will recur.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -51,7 +51,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam compares two identical operating businesses with different tax bills, while invoices for financing and investment remain on the desk.](assets/images/26-valuation-is-an-estimate/comic-02-scene.jpeg)
 
-**Panel 2:** EBITDA leaves out interest, income taxes, depreciation and amortization. The last two spread asset costs over time. The excluded costs still matter, so ask what an adjusted figure leaves out.
+**Panel 2:** EBITDA is an earnings measure: earnings before interest (the cost of borrowing), income taxes, depreciation and amortization. The last two spread the cost of assets, things the business owns and uses such as equipment or software, over the years they are used. Leaving all four out helps compare how efficiently two businesses operate, but the excluded costs still matter. An “adjusted” EBITDA excludes further costs the company chooses, so ask what each one is and whether it will recur.
 
 *Dialogue:* “Different taxes, same operating performance.”
 
@@ -61,20 +61,20 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/26-valuation-is-an-estimate/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Morgan examines comparable businesses, a future cash calendar and a cabinet of assets. Use one speech bubble with the exact words: \"How are we estimating value?\" Convey: Stage 2, interpret the valuation. A valuation estimates what something is worth at a date, for a purpose. Compare similar businesses, estimate what future cash is worth today, or examine assets and relevant obligations.",
-  "alt": "Comic panel: Morgan examines comparable businesses, a future cash calendar and a cabinet of assets.",
-  "caption": "Stage 2, interpret the valuation. A valuation estimates what something is worth at a date, for a purpose. Compare similar businesses, estimate what future cash is worth today, or examine assets and relevant obligations.",
+  "prompt": "Panel 3 of an explainer comic. Morgan examines a stack of reports on comparable businesses, a simple wall chart with one horizontal time axis and a single rising line for expected future cash, and an open cabinet of assets such as equipment and folders. Use one speech bubble with the exact words: \"How are we estimating value?\" Convey: Stage 2, interpret the valuation. A valuation estimates what something is worth at a date, for a purpose. Three ways to estimate it: compare similar businesses, estimate what future cash is worth today, or add up what the business owns (its assets, such as equipment, software and money owed to it) and subtract what it owes.",
+  "alt": "Comic panel: Morgan examines a stack of reports on comparable businesses, a simple wall chart with one time axis and a single rising line for expected future cash, and an open cabinet of assets.",
+  "caption": "Stage 2, interpret the valuation. A valuation estimates what something is worth at a date, for a purpose. Three ways to estimate it: compare similar businesses, estimate what future cash is worth today, or add up what the business owns (its assets, such as equipment, software and money owed to it) and subtract what it owes.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
-    "sha256": "03295f46bcd81bc11c44fec45ba73f401823fdb7582d931e3c1614bd58a6e479"
+    "sha256": "38d4220c0c651d959a268730b0076be7e7deace516b3675cd2eceea132469dc1"
   }
 }
 -->
 
-![Comic panel: Morgan examines comparable businesses, a future cash calendar and a cabinet of assets.](assets/images/26-valuation-is-an-estimate/comic-03-scene.jpeg)
+![Comic panel: Morgan examines a stack of reports on comparable businesses, a simple wall chart with one time axis and a single rising line for expected future cash, and an open cabinet of assets.](assets/images/26-valuation-is-an-estimate/comic-03-scene.jpeg)
 
-**Panel 3:** Stage 2, interpret the valuation. A valuation estimates what something is worth at a date, for a purpose. Compare similar businesses, estimate what future cash is worth today, or examine assets and relevant obligations.
+**Panel 3:** Stage 2, interpret the valuation. A valuation estimates what something is worth at a date, for a purpose. Three ways to estimate it: compare similar businesses, estimate what future cash is worth today, or add up what the business owns (its assets, such as equipment, software and money owed to it) and subtract what it owes.
 
 *Dialogue:* “How are we estimating value?”
 
@@ -84,9 +84,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/26-valuation-is-an-estimate/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Sam holds one price tag while Alex measures it with two different rulers. Use one speech bubble with the exact words: \"Same price. Different ruler.\" Convey: A multiple compares value with a financial measure. A €60 million business with €20 million of revenue and €4 million of EBITDA is 3× revenue or 15× EBITDA.",
+  "prompt": "Panel 4 of an explainer comic. Sam holds one price tag while Alex measures it with two different rulers. Use one speech bubble with the exact words: \"Same price. Different ruler.\" Convey: A multiple compares value with a financial measure such as revenue (sales) or EBITDA. A €60 million business with €20 million of revenue and €4 million of EBITDA is 3× revenue or 15× EBITDA.",
   "alt": "Comic panel: Sam holds one price tag while Alex measures it with two different rulers.",
-  "caption": "A multiple compares value with a financial measure. A €60 million business with €20 million of revenue and €4 million of EBITDA is 3× revenue or 15× EBITDA.",
+  "caption": "A multiple compares value with a financial measure such as revenue (sales) or EBITDA. A €60 million business with €20 million of revenue and €4 million of EBITDA is 3× revenue or 15× EBITDA.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -97,7 +97,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam holds one price tag while Alex measures it with two different rulers.](assets/images/26-valuation-is-an-estimate/comic-04-scene.jpeg)
 
-**Panel 4:** A multiple compares value with a financial measure. A €60 million business with €20 million of revenue and €4 million of EBITDA is 3× revenue or 15× EBITDA.
+**Panel 4:** A multiple compares value with a financial measure such as revenue (sales) or EBITDA. A €60 million business with €20 million of revenue and €4 million of EBITDA is 3× revenue or 15× EBITDA.
 
 *Dialogue:* “Same price. Different ruler.”
 
@@ -130,19 +130,19 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/26-valuation-is-an-estimate/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Sam opens a fresh funding-round worksheet, keeping its values separate from the earlier business-valuation example. Use one speech bubble with the exact words: \"The company gets two million, not ten.\" Convey: Separate fictional round: €8m pre-money equity value plus €2m of new cash gives €10m post-money and 20% for the new investor, assuming equal rights and no other adjustments. Company cash increases by €2m.",
-  "alt": "Comic panel: Sam holds a worksheet distinguishing two million in company cash, eight million pre-money value and ten million post-money value.",
-  "caption": "Separate fictional round: €8m pre-money equity value plus €2m of new cash gives €10m post-money and 20% for the new investor, assuming equal rights and no other adjustments. Company cash increases by €2m.",
+  "prompt": "Panel 6 of an explainer comic. Sam opens a fresh funding-round worksheet, keeping its values separate from the earlier business-valuation example. Use one speech bubble with the exact words: \"The company gets two million, not ten.\" Convey: Separate fictional round. The shares are valued at €8m immediately before new funding (the pre-money value). An investor pays €2m for newly issued shares, so the shares are worth €10m immediately after (the post-money value) and the new investor owns 20%, assuming equal rights and no other adjustments. The company’s cash increases by €2m; it does not receive €10m.",
+  "alt": "Comic panel: Sam holds a worksheet with three lines: pre-money value eight million, new cash received two million, post-money value ten million.",
+  "caption": "Separate fictional round. The shares are valued at €8m immediately before new funding (the pre-money value). An investor pays €2m for newly issued shares, so the shares are worth €10m immediately after (the post-money value) and the new investor owns 20%, assuming equal rights and no other adjustments. The company’s cash increases by €2m; it does not receive €10m.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
-    "sha256": "9c5c967a336c95defb4e5e7f5ccc2f22fba5a1c825a277158afdfde2e09553d3"
+    "sha256": "3ac089f5ceaff16ffe6431c354999d15a1752548c55711d591cc636332468d1a"
   }
 }
 -->
 
-![Comic panel: Sam holds a worksheet distinguishing two million in company cash, eight million pre-money value and ten million post-money value.](assets/images/26-valuation-is-an-estimate/comic-06-scene.jpeg)
+![Comic panel: Sam holds a worksheet with three lines: pre-money value eight million, new cash received two million, post-money value ten million.](assets/images/26-valuation-is-an-estimate/comic-06-scene.jpeg)
 
-**Panel 6:** Separate fictional round: €8m pre-money equity value plus €2m of new cash gives €10m post-money and 20% for the new investor, assuming equal rights and no other adjustments. Company cash increases by €2m.
+**Panel 6:** Separate fictional round. The shares are valued at €8m immediately before new funding (the pre-money value). An investor pays €2m for newly issued shares, so the shares are worth €10m immediately after (the post-money value) and the new investor owns 20%, assuming equal rights and no other adjustments. The company’s cash increases by €2m; it does not receive €10m.
 
 *Dialogue:* “The company gets two million, not ten.”
