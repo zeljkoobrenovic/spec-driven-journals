@@ -196,6 +196,15 @@
             display: none;
         }
 
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
         article h2 {
             font-size: 26px;
             margin: 40px 0 12px;
@@ -347,6 +356,21 @@
             font-weight: 600;
         }
 
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
         article .mermaid {
             text-align: center;
             margin: 24px 0;
@@ -382,7 +406,7 @@
         <div class="tags" id="tags"></div>
         
     </header>
-    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist"></nav>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
     <div id="content"></div>
     <footer>
         <nav class="post-nav"><a class="nav-back" href="ai-engineering-standards.html">← AI Engineering Standards: Governance-as-Code for Modernization</a><span class="nav-right"></span></nav>
@@ -531,6 +555,14 @@
 
                 if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
                     const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
                     i += 2;
                     const rows = [];
                     while (i < lines.length && tableRow.test(lines[i])) {
@@ -538,14 +570,14 @@
                         i++;
                     }
                     let html = '<div class="table-wrap"><table><thead><tr>';
-                    headers.forEach(h => {
-                        html += '<th>' + inline(h) + '</th>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
                     });
                     html += '</tr></thead><tbody>';
                     rows.forEach(r => {
                         html += '<tr>';
-                        r.forEach(c => {
-                            html += '<td>' + inline(c) + '</td>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
                         });
                         html += '</tr>';
                     });
@@ -781,11 +813,20 @@
         const tabButtons = {};
         const renderedPanes = {};
 
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
         mods.forEach(function (m) {
             const pane = document.createElement('article');
             pane.className = 'pane';
             pane.dataset.key = m.key;
             pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
             root.appendChild(pane);
             panes[m.key] = pane;
         });
@@ -799,6 +840,9 @@
                 if (tabButtons[m.key]) {
                     tabButtons[m.key].classList.toggle('active', isActive);
                     tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
                 }
             });
             // Unhide first, then render: the chart libraries measure widths.
@@ -819,10 +863,31 @@
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
                 btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
                 btn.addEventListener('click', function () { activate(m.key, true); });
                 tabBar.appendChild(btn);
                 tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
             });
             tabBar.hidden = false;
         }

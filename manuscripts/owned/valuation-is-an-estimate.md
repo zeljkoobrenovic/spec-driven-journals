@@ -72,7 +72,7 @@ An **adjusted EBITDA** measure adds further specified exclusions to an earnings 
 
 Return to the opening number with the fictional income statement in hand. The table gives three results for the same year: €20 million of revenue, €4 million of EBITDA and €1.5 million of net profit. A valuation of €60 million is an estimated value. Stage 1 has equipped you to read the business’s numbers; Stage 2 explains which of those numbers the chosen valuation method actually needs. Before moving on, you should be able to ask three questions:
 
-- If the €60 million is quoted as a multiple of one of these measures, which measure and which period does it use: last year’s result, this year’s forecast or an adjusted figure?
+- If the €60 million is quoted as a **multiple** of one of these measures, that is, as a stated number of times annual revenue or earnings (for example, three times revenue), which measure and which period does it use: last year’s result, this year’s forecast or an adjusted figure?
 - If that measure is adjusted, what has been excluded, and will the business keep incurring it?
 - How did the business’s cash differ from its earnings over the year, and why?
 
@@ -99,7 +99,7 @@ Valuation methods organize evidence and assumptions; they don’t eliminate judg
 {id: valuation-is-an-estimate--three-ways-to-estimate-value}
 ### Three Ways to Estimate Value
 
-With business value and share value separated, the next question is how the business value itself is estimated. The methods below offer a practical orientation, not equal mastery of each: multiples get the fullest treatment because they are what leaders most often hear quoted; discounted cash flow gets a single-payment illustration rather than a working model. The methods can be used together, and their usefulness depends on the company and the available evidence. IPEV discusses earnings and revenue multiples, discounted cash flows and net assets, emphasizing appropriate inputs and comparability. [S52: IPEV valuation guidelines, sections 3.2–3.9](https://www.privateequityvaluation.com/Portals/0/Documents/Guidelines/2025%20IPEV%20Valuation%20Guidelines.pdf)
+With business value and share value separated, the next question is how a value is estimated at all. Three methods are common, and the check after the table says which value each one produces. The methods below offer a practical orientation, not equal mastery of each: multiples get the fullest treatment because they are what leaders most often hear quoted; discounted cash flow gets a single-payment illustration rather than a working model. The methods can be used together, and their usefulness depends on the company and the available evidence. IPEV discusses earnings and revenue multiples, discounted cash flows and net assets (what a business owns after subtracting the relevant amounts it owes), emphasizing appropriate inputs and comparability. [S52: IPEV valuation guidelines, sections 3.2–3.9](https://www.privateequityvaluation.com/Portals/0/Documents/Guidelines/2025%20IPEV%20Valuation%20Guidelines.pdf)
 
 | Approach | Plain-language question | Main limitation |
 | --- | --- | --- |
@@ -177,7 +177,7 @@ If the answers are “nothing specific,” “not yet” and “nobody,” the a
 {id: valuation-is-an-estimate--what-to-carry-forward}
 ## What to Carry Forward
 
-Stage 1 gave you three measures that describe different events: revenue records sales, profit deducts a specified set of costs, and cash flow follows actual payments. Stage 2 gave you the bridge from business value to share value, three ways the business value can be estimated, and the habit of reading a valuation as a bundle of assumptions to be tested rather than a fact to be met.
+Stage 1 gave you three measures that describe different events: revenue records sales, profit deducts a specified set of costs, and cash flow follows actual payments. Stage 2 gave you the bridge from business value to share value, three ways to estimate value, together with the check on which of those two values each method produces, and the habit of reading a valuation as a bundle of assumptions to be tested rather than a fact to be met.
 
 You can now ask which value is being quoted and which assumptions need testing. The next question is what the investor expects to get back from it, and why two investors holding the same company through the same performance can report very different results: [Same Company, Same Performance, Three Different Returns](#three-different-returns).
 
@@ -201,4 +201,4 @@ You can now ask which value is being quoted and which assumptions need testing. 
 - **[Valuation: Measuring and Managing the Value of Companies](https://www.wiley.com/en-us/Valuation:+Measuring+and+Managing+the+Value+of+Companies,+8th+Edition-p-9781394279418)** — Tim Koller, Marc Goedhart and David Wessels, McKinsey & Company, Wiley, 8th edition, 2025.  
   *Optional depth: the practitioner reference behind many investor models, showing how a cash-flow forecast becomes an enterprise value and then an equity value.*
 - **[Squaring Venture Capital Valuations with Reality](https://www.nber.org/papers/w23895)** — Will Gornall and Ilya Strebulaev, National Bureau of Economic Research working paper, 2017 (Journal of Financial Economics, vol. 135, no. 1, 2020, pp. 120–143).  
-  *In 135 US unicorns (privately held companies reported to be worth more than US$1 billion), reported post-money valuations averaged about 50% above the authors’ modeled fair values, which were derived from the contractual terms of each share class (a group of shares carrying the same rights); it shows how valuing every share at the price paid for the latest preferred shares, which carry extra protections such as being paid before ordinary shares in a sale, can overstate the estimated value of the whole company, which is why this chapter treats a round valuation as answering a different question.*
+  *In 135 US unicorns (privately held companies reported to be worth more than US$1 billion), reported post-money valuations averaged about 50% above the authors’ modeled fair values. Shares in the same company can be worth different amounts: the model valued each share class (a group of shares carrying the same rights) from its contractual terms, and the latest preferred shares carry extra protections, such as being paid before ordinary shares in a sale. Pricing every share at what those preferred shares fetched can overstate the estimated value of the whole company, which is why this chapter treats a funding-round headline as answering a different question.*

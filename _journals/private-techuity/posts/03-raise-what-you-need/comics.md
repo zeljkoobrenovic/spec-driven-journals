@@ -7,7 +7,7 @@
 
 **Comic.** Product and engineering leaders may not choose the investor but they inherit its terms, the conditions attached to the money, and it is those terms and the investor’s expectations that affect the pace, the tolerated losses and the time available for the plan. The panels size one piece of work, compare two arrangements that could fund it and show who can recommend and who can renegotiate.
 
-Two words recur. **Equity** is money given to a company in exchange for a share of its ownership; the investor gets it back only if the company later pays out or is sold. A **loan** is money that must be repaid on fixed dates with interest, whatever happens, while the owners keep their shares. In the fictional Larkspur case the work is sized at €610,000; a bank offers a €750,000 loan, and a growth investor offers €2.5 million for a minority share, less than half the company, with the right to approve the annual budget.
+Two words recur. **Equity** is ownership of a company, held as shares. When the company issues new shares to an investor, the money goes to the company; when an investor buys existing shares, the money goes to their seller, which is how a retiring founder can be paid while the company receives nothing new. An equity investor may later receive payouts from the company or sell their own shares, but nothing guarantees they get their money back. A **loan** is money that must be repaid on fixed dates together with **interest**, the charge for borrowing it, whatever happens, while the owners keep their shares. In the fictional Larkspur case the work is sized at €610,000; a bank offers a €750,000 loan repaid over four years, and a growth investor offers €2.5 million for a minority share, less than half the company, with the right to approve the annual budget.
 
 Alex leads engineering, Priya leads product, Sam leads finance and Ines runs the company as its chief executive; Morgan, an adviser on the investor’s side in other chapters, does not appear here. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -17,9 +17,9 @@ Alex leads engineering, Priya leads product, Sam leads finance and Ines runs the
   "status": "generated",
   "asset": "assets/images/03-raise-what-you-need/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Alex holds a promising prototype with unanswered customer notes. Use one speech bubble with the exact words: \"We still need to learn.\" Convey: A young product may need money and time to learn whether enough customers will pay.",
-  "alt": "Comic panel: Alex holds a promising prototype with unanswered customer notes.",
-  "caption": "A young product may need money and time to learn whether enough customers will pay.",
+  "prompt": "Panel 1 of an explainer comic. Alex holds a promising prototype with unanswered customer notes. Use one speech bubble with the exact words: \"We still need to learn.\" Convey: A young product may need money and time to learn whether enough customers will pay. The notes around Alex’s prototype, a first working version of the product, are open questions about what it should do, what it should cost, how easy it is to use and what customers will need next.",
+  "alt": "Comic panel: Alex holds a promising prototype beside customer notes; the notes are described in the caption.",
+  "caption": "A young product may need money and time to learn whether enough customers will pay. The notes around Alex’s prototype, a first working version of the product, are open questions about what it should do, what it should cost, how easy it is to use and what customers will need next.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -28,9 +28,9 @@ Alex leads engineering, Priya leads product, Sam leads finance and Ines runs the
 }
 -->
 
-![Comic panel: Alex holds a promising prototype with unanswered customer notes.](assets/images/03-raise-what-you-need/comic-01-scene.jpeg)
+![Comic panel: Alex holds a promising prototype beside customer notes; the notes are described in the caption.](assets/images/03-raise-what-you-need/comic-01-scene.jpeg)
 
-**Panel 1:** A young product may need money and time to learn whether enough customers will pay.
+**Panel 1:** A young product may need money and time to learn whether enough customers will pay. The notes around Alex’s prototype, a first working version of the product, are open questions about what it should do, what it should cost, how easy it is to use and what customers will need next.
 
 *Dialogue:* “We still need to learn.”
 
@@ -109,9 +109,9 @@ Alex leads engineering, Priya leads product, Sam leads finance and Ines runs the
   "status": "generated",
   "asset": "assets/images/03-raise-what-you-need/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Priya sorts owner, rights, money and event cards into four clearly separated groups. Use one speech bubble with the exact words: \"These answer different questions.\" Convey: Investor type, control, financing and transaction context are different dimensions. The cards read, left to right: owner (private equity, a fund that buys ownership of companies not traded on a stock exchange; family office, a wealthy family’s own investment company); rights (voting; a board seat, membership of the group that oversees the company); money (debt, borrowed money to be repaid; equity financing, money exchanged for ownership); event (carve-out, separating a business from its parent; turnaround, repairing a business in serious trouble; acquisition, buying a company). Neither a carve-out nor a turnaround identifies the owner.",
+  "prompt": "Panel 5 of an explainer comic. Priya sorts owner, rights, money and event cards into four clearly separated groups. Use one speech bubble with the exact words: \"These answer different questions.\" Convey: Investor type, control, financing and transaction context are different dimensions. The cards read, left to right:\n\n- **Owner:** private equity, investors’ pooled money that buys ownership of companies not traded on a stock exchange; or a family office, a wealthy family’s own investment company.\n- **Rights:** voting; or a board seat, membership of the group that oversees the company.\n- **Money:** debt, borrowed money to be repaid; or equity financing, money exchanged for ownership.\n- **Event:** a carve-out, separating a business from its parent; a turnaround, repairing a business in serious trouble; or an acquisition, buying a company.\n\nNeither a carve-out nor a turnaround identifies the owner.",
   "alt": "Comic panel: Priya sorts labelled cards into four groups, owner, rights, money and event; the groups are transcribed in the caption.",
-  "caption": "Investor type, control, financing and transaction context are different dimensions. The cards read, left to right: owner (private equity, a fund that buys ownership of companies not traded on a stock exchange; family office, a wealthy family’s own investment company); rights (voting; a board seat, membership of the group that oversees the company); money (debt, borrowed money to be repaid; equity financing, money exchanged for ownership); event (carve-out, separating a business from its parent; turnaround, repairing a business in serious trouble; acquisition, buying a company). Neither a carve-out nor a turnaround identifies the owner.",
+  "caption": "Investor type, control, financing and transaction context are different dimensions. The cards read, left to right:\n\n- **Owner:** private equity, investors’ pooled money that buys ownership of companies not traded on a stock exchange; or a family office, a wealthy family’s own investment company.\n- **Rights:** voting; or a board seat, membership of the group that oversees the company.\n- **Money:** debt, borrowed money to be repaid; or equity financing, money exchanged for ownership.\n- **Event:** a carve-out, separating a business from its parent; a turnaround, repairing a business in serious trouble; or an acquisition, buying a company.\n\nNeither a carve-out nor a turnaround identifies the owner.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -122,7 +122,14 @@ Alex leads engineering, Priya leads product, Sam leads finance and Ines runs the
 
 ![Comic panel: Priya sorts labelled cards into four groups, owner, rights, money and event; the groups are transcribed in the caption.](assets/images/03-raise-what-you-need/comic-05-scene.jpeg)
 
-**Panel 5:** Investor type, control, financing and transaction context are different dimensions. The cards read, left to right: owner (private equity, a fund that buys ownership of companies not traded on a stock exchange; family office, a wealthy family’s own investment company); rights (voting; a board seat, membership of the group that oversees the company); money (debt, borrowed money to be repaid; equity financing, money exchanged for ownership); event (carve-out, separating a business from its parent; turnaround, repairing a business in serious trouble; acquisition, buying a company). Neither a carve-out nor a turnaround identifies the owner.
+**Panel 5:** Investor type, control, financing and transaction context are different dimensions. The cards read, left to right:
+
+- **Owner:** private equity, investors’ pooled money that buys ownership of companies not traded on a stock exchange; or a family office, a wealthy family’s own investment company.
+- **Rights:** voting; or a board seat, membership of the group that oversees the company.
+- **Money:** debt, borrowed money to be repaid; or equity financing, money exchanged for ownership.
+- **Event:** a carve-out, separating a business from its parent; a turnaround, repairing a business in serious trouble; or an acquisition, buying a company.
+
+Neither a carve-out nor a turnaround identifies the owner.
 
 *Dialogue:* “These answer different questions.”
 
@@ -132,9 +139,9 @@ Alex leads engineering, Priya leads product, Sam leads finance and Ines runs the
   "status": "generated",
   "asset": "assets/images/03-raise-what-you-need/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Ines, Sam, Alex and Priya stand around a table holding three large sheets side by side: a sheet titled WORK PLAN showing three simple stacked blocks, a sheet titled BANK LOAN showing a calendar with four marked repayment dates, and a sheet titled OWNERSHIP INVESTMENT showing a pie chart with one slice shaded and a small map with a second country flagged. Sam points at the bank-loan sheet; Ines holds a folder marked FOR THE BOARD. Use one speech bubble with the exact words: \"Does this funding fit the work?\" Convey: Two arrangements could fund the same €610,000 need: a €750,000 bank loan with fixed repayments, or €2.5 million from a growth investor in exchange for a minority share and a say over the budget, on a plan to enter a second country within eighteen months. With about €350,000 of yearly operating cash to meet the payments and no evidence yet of second-country demand, Ines and Sam recommend the loan, funding the work in stages, and the board approves it. The risk they accept is that the repayments are fixed whatever the pilot shows.",
+  "prompt": "Panel 6 of an explainer comic. Ines, Sam, Alex and Priya stand around a table holding three large sheets side by side: a sheet titled WORK PLAN showing three simple stacked blocks, a sheet titled BANK LOAN showing a calendar with four marked repayment dates, and a sheet titled OWNERSHIP INVESTMENT showing a pie chart with one slice shaded and a small map with a second country flagged. Sam points at the bank-loan sheet; Ines holds a folder marked FOR THE BOARD. Use one speech bubble with the exact words: \"Does this funding fit the work?\" Convey: Two arrangements could fund the same €610,000 need. One is a €750,000 bank loan repaid over four years with fixed payments. The other is €2.5 million from a growth investor in exchange for a minority share and a say over the budget, on a plan to enter a second country within eighteen months.\n\nThe repayment test: the loan’s largest year-end payment is €310,000, in year two. Larkspur expects about €350,000 a year of operating cash, the money left from ordinary trading after tax and existing obligations, before payments on this new loan. That year therefore leaves €40,000 to spare.\n\nThe decision: with no evidence yet of second-country demand, Ines and Sam recommend the loan, funding the work in stages, and the board, the group that oversees the company, approves it. The risk they accept is that the repayments are fixed whatever the pilot, the small trial of the new step with its first customers, shows.",
   "alt": "Comic panel: Ines, Sam, Alex and Priya compare a work-plan sheet with a bank-loan sheet and an ownership-investment sheet; Sam points at the loan.",
-  "caption": "Two arrangements could fund the same €610,000 need: a €750,000 bank loan with fixed repayments, or €2.5 million from a growth investor in exchange for a minority share and a say over the budget, on a plan to enter a second country within eighteen months. With about €350,000 of yearly operating cash to meet the payments and no evidence yet of second-country demand, Ines and Sam recommend the loan, funding the work in stages, and the board approves it. The risk they accept is that the repayments are fixed whatever the pilot shows.",
+  "caption": "Two arrangements could fund the same €610,000 need. One is a €750,000 bank loan repaid over four years with fixed payments. The other is €2.5 million from a growth investor in exchange for a minority share and a say over the budget, on a plan to enter a second country within eighteen months.\n\nThe repayment test: the loan’s largest year-end payment is €310,000, in year two. Larkspur expects about €350,000 a year of operating cash, the money left from ordinary trading after tax and existing obligations, before payments on this new loan. That year therefore leaves €40,000 to spare.\n\nThe decision: with no evidence yet of second-country demand, Ines and Sam recommend the loan, funding the work in stages, and the board, the group that oversees the company, approves it. The risk they accept is that the repayments are fixed whatever the pilot, the small trial of the new step with its first customers, shows.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -145,6 +152,10 @@ Alex leads engineering, Priya leads product, Sam leads finance and Ines runs the
 
 ![Comic panel: Ines, Sam, Alex and Priya compare a work-plan sheet with a bank-loan sheet and an ownership-investment sheet; Sam points at the loan.](assets/images/03-raise-what-you-need/comic-06-scene.jpeg)
 
-**Panel 6:** Two arrangements could fund the same €610,000 need: a €750,000 bank loan with fixed repayments, or €2.5 million from a growth investor in exchange for a minority share and a say over the budget, on a plan to enter a second country within eighteen months. With about €350,000 of yearly operating cash to meet the payments and no evidence yet of second-country demand, Ines and Sam recommend the loan, funding the work in stages, and the board approves it. The risk they accept is that the repayments are fixed whatever the pilot shows.
+**Panel 6:** Two arrangements could fund the same €610,000 need. One is a €750,000 bank loan repaid over four years with fixed payments. The other is €2.5 million from a growth investor in exchange for a minority share and a say over the budget, on a plan to enter a second country within eighteen months.
+
+The repayment test: the loan’s largest year-end payment is €310,000, in year two. Larkspur expects about €350,000 a year of operating cash, the money left from ordinary trading after tax and existing obligations, before payments on this new loan. That year therefore leaves €40,000 to spare.
+
+The decision: with no evidence yet of second-country demand, Ines and Sam recommend the loan, funding the work in stages, and the board, the group that oversees the company, approves it. The risk they accept is that the repayments are fixed whatever the pilot, the small trial of the new step with its first customers, shows.
 
 *Dialogue:* “Does this funding fit the work?”

@@ -61,9 +61,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/26-valuation-is-an-estimate/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Morgan examines a stack of reports on comparable businesses, a simple wall chart with one horizontal time axis and a single rising line for expected future cash, and an open cabinet of assets such as equipment and folders. Use one speech bubble with the exact words: \"How are we estimating value?\" Convey: Stage 2, interpret the valuation. A valuation estimates what something is worth at a date, for a purpose. Three ways to estimate it: compare similar businesses, estimate what future cash is worth today, or add up what the business owns (its assets, such as equipment, software and money owed to it) and subtract what it owes.",
+  "prompt": "Panel 3 of an explainer comic. Morgan examines a stack of reports on comparable businesses, a simple wall chart with one horizontal time axis and a single rising line for expected future cash, and an open cabinet of assets such as equipment and folders. Use one speech bubble with the exact words: \"How are we estimating value?\" Convey: Stage 2, interpret the valuation. A valuation estimates what something is worth at a date, for a purpose. Three ways to estimate it: compare similar businesses, estimate what future cash is worth today, or add up what the business owns (its assets, such as equipment, software and money owed to it) and subtract what it owes. The first two give the value of the operating business, before its borrowing is taken into account. The third has already subtracted borrowing, so its result is closer to the owners’ share, the value of the shares. Whichever method is used, do not subtract the same borrowing twice.",
   "alt": "Comic panel: Morgan examines a stack of reports on comparable businesses, a simple wall chart with one time axis and a single rising line for expected future cash, and an open cabinet of assets.",
-  "caption": "Stage 2, interpret the valuation. A valuation estimates what something is worth at a date, for a purpose. Three ways to estimate it: compare similar businesses, estimate what future cash is worth today, or add up what the business owns (its assets, such as equipment, software and money owed to it) and subtract what it owes.",
+  "caption": "Stage 2, interpret the valuation. A valuation estimates what something is worth at a date, for a purpose. Three ways to estimate it: compare similar businesses, estimate what future cash is worth today, or add up what the business owns (its assets, such as equipment, software and money owed to it) and subtract what it owes. The first two give the value of the operating business, before its borrowing is taken into account. The third has already subtracted borrowing, so its result is closer to the owners’ share, the value of the shares. Whichever method is used, do not subtract the same borrowing twice.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -74,7 +74,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Morgan examines a stack of reports on comparable businesses, a simple wall chart with one time axis and a single rising line for expected future cash, and an open cabinet of assets.](assets/images/26-valuation-is-an-estimate/comic-03-scene.jpeg)
 
-**Panel 3:** Stage 2, interpret the valuation. A valuation estimates what something is worth at a date, for a purpose. Three ways to estimate it: compare similar businesses, estimate what future cash is worth today, or add up what the business owns (its assets, such as equipment, software and money owed to it) and subtract what it owes.
+**Panel 3:** Stage 2, interpret the valuation. A valuation estimates what something is worth at a date, for a purpose. Three ways to estimate it: compare similar businesses, estimate what future cash is worth today, or add up what the business owns (its assets, such as equipment, software and money owed to it) and subtract what it owes. The first two give the value of the operating business, before its borrowing is taken into account. The third has already subtracted borrowing, so its result is closer to the owners’ share, the value of the shares. Whichever method is used, do not subtract the same borrowing twice.
 
 *Dialogue:* “How are we estimating value?”
 
@@ -84,9 +84,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/26-valuation-is-an-estimate/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Sam holds one price tag while Alex measures it with two different rulers. Use one speech bubble with the exact words: \"Same price. Different ruler.\" Convey: A multiple compares value with a financial measure such as revenue (sales) or EBITDA. A €60 million business with €20 million of revenue and €4 million of EBITDA is 3× revenue or 15× EBITDA.",
+  "prompt": "Panel 4 of an explainer comic. Sam holds one price tag while Alex measures it with two different rulers. Use one speech bubble with the exact words: \"Same price. Different ruler.\" Convey: A multiple compares the value of the operating business with a financial measure such as revenue (sales) or EBITDA. A business valued at €60 million, with €20 million of revenue and €4 million of EBITDA, is at 3× revenue or 15× EBITDA.",
   "alt": "Comic panel: Sam holds one price tag while Alex measures it with two different rulers.",
-  "caption": "A multiple compares value with a financial measure such as revenue (sales) or EBITDA. A €60 million business with €20 million of revenue and €4 million of EBITDA is 3× revenue or 15× EBITDA.",
+  "caption": "A multiple compares the value of the operating business with a financial measure such as revenue (sales) or EBITDA. A business valued at €60 million, with €20 million of revenue and €4 million of EBITDA, is at 3× revenue or 15× EBITDA.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -97,7 +97,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam holds one price tag while Alex measures it with two different rulers.](assets/images/26-valuation-is-an-estimate/comic-04-scene.jpeg)
 
-**Panel 4:** A multiple compares value with a financial measure such as revenue (sales) or EBITDA. A €60 million business with €20 million of revenue and €4 million of EBITDA is 3× revenue or 15× EBITDA.
+**Panel 4:** A multiple compares the value of the operating business with a financial measure such as revenue (sales) or EBITDA. A business valued at €60 million, with €20 million of revenue and €4 million of EBITDA, is at 3× revenue or 15× EBITDA.
 
 *Dialogue:* “Same price. Different ruler.”
 
