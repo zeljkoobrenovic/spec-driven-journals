@@ -12,7 +12,7 @@ The allowance for a deliberately funded continuing specialist service is clear a
 
 There is no essential local correction. **Low-impact preference:** the learning outcome and “By the end” paragraph repeat the three-step route; one could be shortened if the collection's openings are streamlined. The repetition is small and may help a reader entering at this part.
 
-The underlying sourcing and engagement chapters now justify their separate places, although their pilot calendar and specialist budget still need reconciliation. Track those issues in the [sourcing review](../29-help-that-changes-capability/REVIEW.md) and [engagement review](../30-useful-engagement/REVIEW.md), rather than combining the chapters simply to comply with the earlier optional suggestion.
+The underlying sourcing and engagement chapters now justify their separate places, although their pilot calendar and specialist budget still need reconciliation. Track those issues in the [sourcing review](../19-help-that-changes-capability/REVIEW.md) and [engagement review](../20-useful-engagement/REVIEW.md), rather than combining the chapters simply to comply with the earlier optional suggestion.
 
 ## Changes since the previous review
 

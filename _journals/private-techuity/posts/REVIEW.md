@@ -16,17 +16,17 @@ Read the repository instructions, collection and per-post reviews, revision log,
 
 The comparison includes the manuscript at `c11d151`, the substantial revision in `903ef5a`, and the later callout additions/reordering in `8e6fd3c`, `f5f37b3`, `aa4d8be` and `ab7a8f4`. Earlier history also explains title changes, the broader ownership framing and removed appendix material. Initial uncommitted changes were inspected; those changes subsequently appeared in the revision commits. The final source check used clean manuscript HEAD `ab7a8f4`, with no additional manuscript changes pending. The revision was not treated as a single-commit event.
 
-Two pages are new: `31-handover-of-obligations` and `fund-economics`. Neither had a previous per-post review; both now have one. No current post is unconfigured or missing. Earlier removed appendix/support-model pages are not part of this edition and should not receive new review obligations merely because old history contains them. No article, summary, comic, specification, asset, configuration or revision-log content was changed by this review.
+Two pages are new: `25-handover-of-obligations` and `fund-economics`. Neither had a previous per-post review; both now have one. No current post is unconfigured or missing. Earlier removed appendix/support-model pages are not part of this edition and should not receive new review obligations merely because old history contains them. No article, summary, comic, specification, asset, configuration or revision-log content was changed by this review.
 
 This assessment concerns the complete manuscript and comic text. It does not certify the rendered site or all illustration artwork. External verification targeted consequential changes and newly discovered claims; it was not an audit of every company report, contract or research dataset.
 
 ## Highest-priority remaining work
 
-1. **Reconcile cash, capacity and repayment before endorsing the chosen plans.** The funding-choice chapter adds €135,000 of released staff capacity to cash available for loan service, although the measured pilot explicitly changes no spending. Its €750,000 three-year loan starts €250,000 annual principal payments only in year two and does not explain the final balance. Correct both the benefit bridge and the maturity schedule. The finale likewise needs to establish which parts of its €220,000 cost reduction actually leave spending. See [funding choice](03-raise-what-you-need/REVIEW.md), [measured benefits](08-roadmap-to-revenue/REVIEW.md) and [finale](24-success-for-whom/REVIEW.md).
-2. **Make the shared initiative history internally consistent.** The €300,000/24-week early plan initially commits €260,000/20 weeks. The recovery retest adds €20,000/2 weeks elsewhere; the later data-quality decision still spends the original €40,000/4-week reserve. Together that is €320,000/26 weeks. The toolkit records €90,000 of ONB-1 spending by day 100, while handover calls €180,000 the actual cost. Show one dated record of commitments, payments, available skills, additional approvals and displaced work. Reconcile the day-20 baseline, day-45 recovery result, day-90 cohort, day-100 decision and subsequent expansion gate. [Allocation](28-cannot-fund-everything/REVIEW.md), [recovery](11-prove-you-can-restore/REVIEW.md), [early plan](17-first-hundred-days/REVIEW.md), [handover](31-handover-of-obligations/REVIEW.md), [toolkit](toolkit/REVIEW.md).
-3. **Correct specific financial and source errors.** The unicorn source says reported values average 50% above modeled fair value; the new annotation reverses that into fair values 50% below reported values. A slower partial catch-up need not reduce the final GP share. TeamSystem's net finance charge includes non-cash items, and its report does disclose finance costs and note interest paid. These are confirmed errors or omissions, not merely requests for more research. [Valuation](26-valuation-is-an-estimate/REVIEW.md), [fund economics](fund-economics/REVIEW.md), [TeamSystem](25-teamsystem/REVIEW.md).
-4. **Keep the conditions that make a decision permissible and feasible.** The organization chapter's future hiring trigger drops the financing condition. The acquisition example's two-month network overlap conflicts with an all-parent-services-off May test. The finale treats a service cutoff that exceeds existing customer contracts as an ordinary acceptable alternative. Establish the funding gate, a feasible transition calendar and contractual consent or a compliant alternative before presenting the trade-offs. [Organization](13-fix-decisions-before-hiring/REVIEW.md), [acquisition](14-acquisition-adds-work-first/REVIEW.md), [finale](24-success-for-whom/REVIEW.md).
-5. **Remove new categorical rules and synchronize formats.** The glossary's cash-only budgeting rule is too absolute; written commitment is not received cash; advisory involvement is not itself decision authority; debt investors are still investors. The late investor callouts sometimes restore the sweeping claims the main revision removed. Correct each specific claim, then carry the same necessary conditions into summaries and comics. [Funding sources](00-customers-lenders-investors/REVIEW.md), [adviser](15-investors-adviser/REVIEW.md), [financing delay](18-the-financing-slipped/REVIEW.md), [glossary](glossary/REVIEW.md).
+1. **Reconcile cash, capacity and repayment before endorsing the chosen plans.** The funding-choice chapter adds €135,000 of released staff capacity to cash available for loan service, although the measured pilot explicitly changes no spending. Its €750,000 three-year loan starts €250,000 annual principal payments only in year two and does not explain the final balance. Correct both the benefit bridge and the maturity schedule. The finale likewise needs to establish which parts of its €220,000 cost reduction actually leave spending. See [funding choice](04-raise-what-you-need/REVIEW.md), [measured benefits](10-roadmap-to-revenue/REVIEW.md) and [finale](30-success-for-whom/REVIEW.md).
+2. **Make the shared initiative history internally consistent.** The €300,000/24-week early plan initially commits €260,000/20 weeks. The recovery retest adds €20,000/2 weeks elsewhere; the later data-quality decision still spends the original €40,000/4-week reserve. Together that is €320,000/26 weeks. The toolkit records €90,000 of ONB-1 spending by day 100, while handover calls €180,000 the actual cost. Show one dated record of commitments, payments, available skills, additional approvals and displaced work. Reconcile the day-20 baseline, day-45 recovery result, day-90 cohort, day-100 decision and subsequent expansion gate. [Allocation](09-cannot-fund-everything/REVIEW.md), [recovery](15-prove-you-can-restore/REVIEW.md), [early plan](22-first-hundred-days/REVIEW.md), [handover](25-handover-of-obligations/REVIEW.md), [toolkit](toolkit/REVIEW.md).
+3. **Correct specific financial and source errors.** The unicorn source says reported values average 50% above modeled fair value; the new annotation reverses that into fair values 50% below reported values. A slower partial catch-up need not reduce the final GP share. TeamSystem's net finance charge includes non-cash items, and its report does disclose finance costs and note interest paid. These are confirmed errors or omissions, not merely requests for more research. [Valuation](02-valuation-is-an-estimate/REVIEW.md), [fund economics](fund-economics/REVIEW.md), [TeamSystem](29-teamsystem/REVIEW.md).
+4. **Keep the conditions that make a decision permissible and feasible.** The organization chapter's future hiring trigger drops the financing condition. The acquisition example's two-month network overlap conflicts with an all-parent-services-off May test. The finale treats a service cutoff that exceeds existing customer contracts as an ordinary acceptable alternative. Establish the funding gate, a feasible transition calendar and contractual consent or a compliant alternative before presenting the trade-offs. [Organization](12-fix-decisions-before-hiring/REVIEW.md), [acquisition](17-acquisition-adds-work-first/REVIEW.md), [finale](30-success-for-whom/REVIEW.md).
+5. **Remove new categorical rules and synchronize formats.** The glossary's cash-only budgeting rule is too absolute; written commitment is not received cash; advisory involvement is not itself decision authority; debt investors are still investors. The late investor callouts sometimes restore the sweeping claims the main revision removed. Correct each specific claim, then carry the same necessary conditions into summaries and comics. [Funding sources](00-customers-lenders-investors/REVIEW.md), [adviser](18-investors-adviser/REVIEW.md), [financing delay](23-the-financing-slipped/REVIEW.md), [glossary](glossary/REVIEW.md).
 
 ## Coherence, audience, voice and reading order
 
@@ -68,7 +68,7 @@ Earlier cautions also need correction where better evidence is available. Skype'
 
 Primary-source checks and recalculations are documented beside the affected findings in each review. They cover changed valuation and fund mechanics, borrowing and cash examples, delivery definitions, AI-study scope, the historical financial reconciliations, transaction chronology and consequential employment/healthcare research annotations. Reported sponsor returns remain distinct from independently reconstructed net investor returns. A source supporting the date of a product launch does not identify that launch's contribution to a sale price.
 
-The 2024 HgCapital Trust report lists TeamSystem among realizations with about £34.189m gross proceeds; this must not silently replace the different July announcement figure or become a claim about net investor distributions. TeamSystem's 2017 Note 10 separately reports €52.1m finance costs paid, including €49.8m note interest. Visma's €892.646m + €11.665m = €904.311m bridge is confirmed. Sources, pages, qualifications and proposed corrections are in the [TeamSystem](25-teamsystem/REVIEW.md) and [Visma](22-visma/REVIEW.md) reviews.
+The 2024 HgCapital Trust report lists TeamSystem among realizations with about £34.189m gross proceeds; this must not silently replace the different July announcement figure or become a claim about net investor distributions. TeamSystem's 2017 Note 10 separately reports €52.1m finance costs paid, including €49.8m note interest. Visma's €892.646m + €11.665m = €904.311m bridge is confirmed. Sources, pages, qualifications and proposed corrections are in the [TeamSystem](29-teamsystem/REVIEW.md) and [Visma](27-visma/REVIEW.md) reviews.
 
 All 41 configured pages have reviews and all manuscript wiki-link targets resolve. Bibliography “Used in” links agree with current inline identifiers. These are structural checks, not proof that each linked source substantiates every surrounding sentence. All 174 comic panel metadata blocks parse, their asset paths exist and recorded hashes match. No panel image changed between the reviewed manuscript baseline and current HEAD.
 
@@ -86,39 +86,39 @@ Priority indicates the highest remaining impact in that review, not a quality sc
 | [Part I introduction](part-1-intro/REVIEW.md) | Low | Clarify which party makes a fund commitment |
 | [Customers, Lenders and Investors](00-customers-lenders-investors/REVIEW.md) | High | Debt-investor terminology; affordable fallback and authority |
 | [Investment Announcement](01-announcement-is-not-a-budget/REVIEW.md) | High | Transaction versus valuation; hiring and approval logic |
-| [Valuation](26-valuation-is-an-estimate/REVIEW.md) | High | Correct the unicorn percentage and benefit timing |
-| [Three Different Returns](02-three-different-returns/REVIEW.md) | Medium | Fund-manager scope and changed comic dialogue |
-| [Match the Funding to the Work](03-raise-what-you-need/REVIEW.md) | High | Cash versus capacity; complete loan repayment schedule |
-| [Cash Behind the Budget](04-obligations-before-budget/REVIEW.md) | Medium | Pilot cost boundary and incremental fallback cost |
+| [Valuation](02-valuation-is-an-estimate/REVIEW.md) | High | Correct the unicorn percentage and benefit timing |
+| [Three Different Returns](03-three-different-returns/REVIEW.md) | Medium | Fund-manager scope and changed comic dialogue |
+| [Match the Funding to the Work](04-raise-what-you-need/REVIEW.md) | High | Cash versus capacity; complete loan repayment schedule |
+| [Cash Behind the Budget](05-obligations-before-budget/REVIEW.md) | Medium | Pilot cost boundary and incremental fallback cost |
 | [Part II introduction](part-2-intro/REVIEW.md) | Medium | Advisory influence versus decision authority |
-| [Decide Who Decides](05-decide-who-decides/REVIEW.md) | Medium | Fund the fallback and specify approval conditions |
-| [Different Bets](06-different-bets/REVIEW.md) | High | Fund exposure, transition timing and retention measure |
-| [Investor Under Pressure](07-investor-under-pressure/REVIEW.md) | Medium | Evidence for governance choice and follow-on availability |
+| [Decide Who Decides](06-decide-who-decides/REVIEW.md) | Medium | Fund the fallback and specify approval conditions |
+| [Different Bets](07-different-bets/REVIEW.md) | High | Fund exposure, transition timing and retention measure |
+| [Investor Under Pressure](08-investor-under-pressure/REVIEW.md) | Medium | Evidence for governance choice and follow-on availability |
 | [Part III introduction](part-3-intro/REVIEW.md) | Low | Preserve improved grouping; widen support handoff |
-| [Cannot Fund Everything](28-cannot-fund-everything/REVIEW.md) | High | Reconcile the recovery retest with the shared resource record |
-| [Roadmap to Revenue](08-roadmap-to-revenue/REVIEW.md) | High | Keep observed capacity separate from cash and future benefits |
-| [Team Delivery](09-can-the-team-deliver/REVIEW.md) | Medium | Respect lead-time boundaries; complete comic alignment |
-| [Fix Decisions Before Hiring](13-fix-decisions-before-hiring/REVIEW.md) | High | Preserve the funding gate; correct the work trace |
-| [Growth Into Design](27-growth-into-design/REVIEW.md) | Medium | Include recurring supplier and fallback costs |
-| [Cheaper Cloud Bill](10-cheaper-cloud-bill/REVIEW.md) | Medium | Separate improved unit cost from missing the spending plan |
-| [Prove You Can Restore](11-prove-you-can-restore/REVIEW.md) | High | Fund the retest and define accepted recovery scope |
-| [AI Strategy](12-ai-strategy-three-questions/REVIEW.md) | Medium | Reconcile throughput, recurring costs and decision gates |
-| [Acquisition Adds Work](14-acquisition-adds-work-first/REVIEW.md) | High | Make dual-running and independence milestones compatible |
+| [Cannot Fund Everything](09-cannot-fund-everything/REVIEW.md) | High | Reconcile the recovery retest with the shared resource record |
+| [Roadmap to Revenue](10-roadmap-to-revenue/REVIEW.md) | High | Keep observed capacity separate from cash and future benefits |
+| [Team Delivery](11-can-the-team-deliver/REVIEW.md) | Medium | Respect lead-time boundaries; complete comic alignment |
+| [Fix Decisions Before Hiring](12-fix-decisions-before-hiring/REVIEW.md) | High | Preserve the funding gate; correct the work trace |
+| [Growth Into Design](13-growth-into-design/REVIEW.md) | Medium | Include recurring supplier and fallback costs |
+| [Cheaper Cloud Bill](14-cheaper-cloud-bill/REVIEW.md) | Medium | Separate improved unit cost from missing the spending plan |
+| [Prove You Can Restore](15-prove-you-can-restore/REVIEW.md) | High | Fund the retest and define accepted recovery scope |
+| [AI Strategy](16-ai-strategy-three-questions/REVIEW.md) | Medium | Reconcile throughput, recurring costs and decision gates |
+| [Acquisition Adds Work](17-acquisition-adds-work-first/REVIEW.md) | High | Make dual-running and independence milestones compatible |
 | [Part IV introduction](part-4-intro/REVIEW.md) | Low | Preserve distinct jobs and continuing-service allowance |
-| [Investor's Adviser](15-investors-adviser/REVIEW.md) | High | Qualify assessment authority and formal oversight |
-| [Find the Help](29-help-that-changes-capability/REVIEW.md) | Medium | One support calendar and comparable capped costs |
-| [Useful Engagement](30-useful-engagement/REVIEW.md) | Medium | Align pilot and engagement dates, costs and handover |
+| [Investor's Adviser](18-investors-adviser/REVIEW.md) | High | Qualify assessment authority and formal oversight |
+| [Find the Help](19-help-that-changes-capability/REVIEW.md) | Medium | One support calendar and comparable capped costs |
+| [Useful Engagement](20-useful-engagement/REVIEW.md) | Medium | Align pilot and engagement dates, costs and handover |
 | [Part V introduction](part-5-intro/REVIEW.md) | Medium | Correct the claim of one finding through all four chapters |
-| [Diligence](16-diligence-corrects-the-plan/REVIEW.md) | Medium | Sample denominator, compatible explanations and transaction terms |
-| [First Hundred Days](17-first-hundred-days/REVIEW.md) | High | Shared reserve, spending and maintenance commitments |
-| [Financing Slipped](18-the-financing-slipped/REVIEW.md) | High | Written versus received funding; funded continuation beyond December |
-| [Handover of Obligations — new](31-handover-of-obligations/REVIEW.md) | High | Actual spend, authority changes and accepted handover |
+| [Diligence](21-diligence-corrects-the-plan/REVIEW.md) | Medium | Sample denominator, compatible explanations and transaction terms |
+| [First Hundred Days](22-first-hundred-days/REVIEW.md) | High | Shared reserve, spending and maintenance commitments |
+| [Financing Slipped](23-the-financing-slipped/REVIEW.md) | High | Written versus received funding; funded continuation beyond December |
+| [Handover of Obligations — new](25-handover-of-obligations/REVIEW.md) | High | Actual spend, authority changes and accepted handover |
 | [Part VI introduction](part-6-intro/REVIEW.md) | Medium | Match case windows to the expanded evidence |
-| [Hilton and Skype](21-hilton-and-skype/REVIEW.md) | High | Use documented technology dates; preserve causal limits |
-| [Visma](22-visma/REVIEW.md) | Medium | Exits, plural vehicles and appropriate earnings comparisons |
-| [Toys R Us](23-toys-r-us/REVIEW.md) | Medium | Comic cash measure and proposed investment period |
-| [TeamSystem](25-teamsystem/REVIEW.md) | High | Finance charges versus cash paid; later realization evidence |
-| [Success for Whom](24-success-for-whom/REVIEW.md) | High | Contractual feasibility and actual cash consequences of the final choice |
+| [Hilton and Skype](26-hilton-and-skype/REVIEW.md) | High | Use documented technology dates; preserve causal limits |
+| [Visma](27-visma/REVIEW.md) | Medium | Exits, plural vehicles and appropriate earnings comparisons |
+| [Toys R Us](28-toys-r-us/REVIEW.md) | Medium | Comic cash measure and proposed investment period |
+| [TeamSystem](29-teamsystem/REVIEW.md) | High | Finance charges versus cash paid; later realization evidence |
+| [Success for Whom](30-success-for-whom/REVIEW.md) | High | Contractual feasibility and actual cash consequences of the final choice |
 | [Toolkit](toolkit/REVIEW.md) | High | Reconcile the common record and finish section navigation |
 | [Fund economics — new](fund-economics/REVIEW.md) | High | Catch-up mechanics; cash-only and waterfall qualifications |
 | [Glossary](glossary/REVIEW.md) | High | Correct absolute budgeting, commitment and authority definitions |

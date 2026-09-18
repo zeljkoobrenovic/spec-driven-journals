@@ -52,7 +52,7 @@ Restrict distribution according to the engagement and company permissions. A fil
 
 ## <a id="followed-through"></a>One Finding, Followed Through
 
-Everything in this section is **fictional**. Larkspur, its people and every figure are teaching examples shared with [[diligence-corrects-the-plan]], [[first-hundred-days]], [[cannot-fund-everything]], [[prove-you-can-restore]], [[useful-engagement]] and [[handover-of-obligations]]; the figures below are the same ledger those chapters use, so a number here should match the number there. The scenario states its own assumptions and does not reconcile with the annual cash bridge in [[obligations-before-budget]], and [[the-financing-slipped]] is a separate illustration with its own cash and dates. The chain uses the existing tools only. Read it once to see what each stage adds; then use only the stage you need.
+Everything in this section is **fictional**. Larkspur, its people and every figure are teaching examples shared with the chapters [[diligence-corrects-the-plan]], [[first-hundred-days]], [[cannot-fund-everything]], [[prove-you-can-restore]], [[useful-engagement]] and [[handover-of-obligations]]; the figures below are the same ledger those chapters use, so a number here should match the number there. The scenario states its own assumptions and does not reconcile with the annual cash bridge in the chapter [[obligations-before-budget]], and the chapter [[the-financing-slipped]] is a separate illustration with its own cash and dates. The chain uses the existing tools only. Read it once to see what each stage adds; then use only the stage you need.
 
 The scenario: a growth investment whose investment thesis is that Larkspur can double onboarding volume without proportional growth in implementation staff. Morgan, the investor’s technology adviser, records the finding below during diligence. On the one-page thesis (Tool 2), the “main constraint” line points at this finding rather than repeating it.
 
@@ -82,7 +82,7 @@ The board cannot fund every response, so the options are compared on cash and te
 | 2. Fund one reusable setup step as a pilot | Tests whether effort per implementation falls, and measures the data-versus-product split | €180,000 to build | 12 engineer-weeks | €30,000 a year | Result uncertain until the cohort is measured; evidence arrives at day 90 |
 | 3. Narrow the first-year target to customers with standard data | Less manual effort without building anything; lower first-year volume | €0 | Little | None | Does not remove the dependency; postpones the question |
 
-**Combination proposed and authorized:** option 2 is funded as initiative ONB-1 within the first-hundred-days envelope the board authorized at day 0: €500,000 of additional cash and 24 engineer-weeks, existing payroll excluded. The plan commits ONB-1 (€180,000, 12 weeks), REC-1, the restore test (€80,000, 4 weeks), and customer-portal research (€20,000, 2 weeks) — €280,000 and 18 of the 24 weeks — and leaves a reserve of €220,000 and 6 engineer-weeks. KNW-1, the scheduling-knowledge transfer, costs no additional cash and uses four protected specialist-weeks from the operating budget, outside the 24. Inside the approved plan Ines (CEO) authorizes spending; any draw on the reserve, and any change to what the envelope funds, is reserved to the board ([[decide-who-decides]]). Option 1 is deferred, with the decision recorded, until the pilot evidence exists. Option 3 is not adopted as a policy, but the revised 1.5× volume assumption and the deferred second-country expansion reduce the exposure it was meant to remove. Authority: the Larkspur board. Evidence that would change the combination: the pilot cohort’s effort per implementation and its measured split between data quality and product limitation.
+**Combination proposed and authorized:** option 2 is funded as initiative ONB-1 within the first-hundred-days envelope the board authorized at day 0: €500,000 of additional cash and 24 engineer-weeks, existing payroll excluded. The plan commits ONB-1 (€180,000, 12 weeks), REC-1, the restore test (€80,000, 4 weeks), and customer-portal research (€20,000, 2 weeks) — €280,000 and 18 of the 24 weeks — and leaves a reserve of €220,000 and 6 engineer-weeks. KNW-1, the scheduling-knowledge transfer, costs no additional cash and uses four protected specialist-weeks from the operating budget, outside the 24. Inside the approved plan Ines (CEO) authorizes spending; any draw on the reserve, and any change to what the envelope funds, is reserved to the board (see the chapter [[decide-who-decides]]). Option 1 is deferred, with the decision recorded, until the pilot evidence exists. Option 3 is not adopted as a policy, but the revised 1.5× volume assumption and the deferred second-country expansion reduce the exposure it was meant to remove. Authority: the Larkspur board. Evidence that would change the combination: the pilot cohort’s effort per implementation and its measured split between data quality and product limitation.
 
 ### <a id="stage-3"></a>Stage 3 — The Initiative, Pending and Authorized (Tool 5)
 
@@ -104,9 +104,9 @@ The same initiative record is shown twice. The left column is the state many pla
 | Evidence that would change the decision | Not stated. | Effort not falling in the cohort; waiting time or error rate rising; the measured effort split showing that the largest remaining share of effort lies in customer data rather than in the setup step. |
 | Financial limit | Fewer hours are capacity; count cash savings only when spending is actually reduced or avoided. | Unchanged. |
 
-The pending column is still useful: it is the preparation described in [[roadmap-to-revenue]]. It does not demonstrate a funded initiative until the right column exists. The pilot is a smaller alternative to that chapter’s earlier €1 million program, not additional spending already approved alongside it.
+The pending column is still useful: it is the preparation described in the chapter [[roadmap-to-revenue]]. It does not demonstrate a funded initiative until the right column exists. The pilot is a smaller alternative to that chapter’s earlier €1 million program, not additional spending already approved alongside it.
 
-The specialist support that helped build the setup step is a separate record ([Tool 4](#tool-4)): ten specialist days over six weeks from about day 21, at a fictional cap of €1,500 a day (€15,000 at most, charged to ONB-1’s €180,000 rather than to the reserve), six days of company engineering effort, Priya accountable, an investor-side sponsor named by role, review at week six — see [[useful-engagement]].
+The specialist support that helped build the setup step is a separate record ([Tool 4](#tool-4)): ten specialist days over six weeks from about day 21, at a fictional cap of €1,500 a day (€15,000 at most, charged to ONB-1’s €180,000 rather than to the reserve), six days of company engineering effort, Priya accountable, an investor-side sponsor named by role, review at week six — see the chapter [[useful-engagement]].
 
 ### <a id="stage-4"></a>Stage 4 — The Observed Result (Tool 6)
 
@@ -125,7 +125,7 @@ At the day-100 review the ledger entry for ONB-1 reads:
 
 ### <a id="stage-5"></a>Stage 5 — The Revised Decision
 
-Before the board can fund anything at day 100, the reserve has to be reconciled, because ONB-1 was not the only initiative drawing on it. The restore test REC-1 failed at day 45, and around day 47 the board — not Ines, because a reserve draw is the board’s — approved €20,000 and 2 engineer-weeks for the correction and a retest, which passed at day 85 ([[prove-you-can-restore]], [[cannot-fund-everything]]). The envelope therefore reads:
+Before the board can fund anything at day 100, the reserve has to be reconciled, because ONB-1 was not the only initiative drawing on it. The restore test REC-1 failed at day 45, and around day 47 the board — not Ines, because a reserve draw is the board’s — approved €20,000 and 2 engineer-weeks for the correction and a retest, which passed at day 85 (see the chapters [[prove-you-can-restore]] and [[cannot-fund-everything]]). The envelope therefore reads:
 
 | Point | Committed cash | Engineer-weeks committed of 24 | Reserve | Approver |
 | --- | ---: | ---: | ---: | --- |
@@ -151,7 +151,7 @@ When funding or ownership next changes, the handover record carries D-3/ONB-1 fo
 | Changed authority | None yet; record any new approval thresholds when the event completes. |
 | Receiver and acceptance | The receiving decision-maker is named and the acceptance dated when the event completes; until then Priya remains accountable. |
 
-Beside this entry sit the rows for the other two findings of the same plan: KNW-1, passed at day 60, and REC-1, passed on retest at day 85 with a recorded residual (a regional outage is out of scope; rehearsal is weekday-only; two people hold the credentials) that Ines accepted on the board’s behalf with a quarterly retest. A new shareholder’s reporting format should not erase these entries. The original cost, the shortfall against target and the open work are the operating history the next team inherits — see [[handover-of-obligations]].
+Beside this entry sit the rows for the other two findings of the same plan: KNW-1, passed at day 60, and REC-1, passed on retest at day 85 with a recorded residual (a regional outage is out of scope; rehearsal is weekday-only; two people hold the credentials) that Ines accepted on the board’s behalf with a quarterly retest. A new shareholder’s reporting format should not erase these entries. The original cost, the shortfall against target and the open work are the operating history the next team inherits — see the chapter [[handover-of-obligations]].
 
 ### What Each Stage Added
 
@@ -159,7 +159,7 @@ Each stage added information to one underlying record; the tables above show its
 
 ## <a id="tool-1"></a>1. Map the Shareholders, Funding and Decision
 
-Use before translating an ownership announcement into an operating promise. See [[announcement-is-not-a-budget]], [[obligations-before-budget]] and [[decide-who-decides]]. Complete this for the actual arrangement, rather than assuming every investor has a fund or controls the company.
+Use before translating an ownership announcement into an operating promise. See the chapters [[announcement-is-not-a-budget]], [[obligations-before-budget]] and [[decide-who-decides]]. Complete this for the actual arrangement, rather than assuming every investor has a fund or controls the company.
 
 | Field | Record |
 | --- | --- |
@@ -179,7 +179,7 @@ For fictional Larkspur, “hire two engineers after €2m arrives and the board 
 
 ## <a id="tool-2"></a>2. Write a One-Page Technology Thesis
 
-Use when investigating a proposed investment, then revise with the company leaders responsible for the plan after the transaction completes. See [[diligence-corrects-the-plan]]. The thesis summarizes and links the findings (Tool 3); it does not repeat them.
+Use when investigating a proposed investment, then revise with the company leaders responsible for the plan after the transaction completes. See the chapter [[diligence-corrects-the-plan]]. The thesis summarizes and links the findings (Tool 3); it does not repeat them.
 
 **Company and date:** [fill in]. **Ownership and rights:** [shareholders, control and approvals]. **Funding or transaction:** [new shares, sale, refinancing, separation or continued ownership]. **Decision and accountable company leader:** [fill in].
 
@@ -199,7 +199,7 @@ A thesis is useful if a decision-maker can explain **what would make it fail**. 
 
 ## <a id="tool-3"></a>3. Record a Material Diligence Finding
 
-The seven dimensions are a coverage aid: product, architecture, engineering, data and AI, security and resilience, organization, and economics. Don’t average their scores into false precision. See [[diligence-corrects-the-plan]]. The [D-3 record in Stage 1](#stage-1) is a completed example.
+The seven dimensions are a coverage aid: product, architecture, engineering, data and AI, security and resilience, organization, and economics. Don’t average their scores into false precision. See the chapter [[diligence-corrects-the-plan]]. The [D-3 record in Stage 1](#stage-1) is a completed example.
 
 | Field | Record |
 | --- | --- |
@@ -217,7 +217,7 @@ The seven dimensions are a coverage aid: product, architecture, engineering, dat
 
 ## <a id="tool-4"></a>4. Agree an Investor Support Engagement
 
-Use when agreeing a specific source of investor support, whether a short assignment or a continuing specialist service. See [[help-that-changes-capability]], [[useful-engagement]] and [[investors-adviser]].
+Use when agreeing a specific source of investor support, whether a short assignment or a continuing specialist service. See the chapters [[help-that-changes-capability]], [[useful-engagement]] and [[investors-adviser]].
 
 Record the question, the expected useful output, the **investor-side sponsor** (the person within the investment firm who backs the engagement and can secure agreed support or resolve a resource issue) and the **accountable company leader** (who remains responsible for the operating result unless a different formal assignment has been made). Add participants, scope, exclusions and the end date or review cadence. Name the adviser’s or specialist’s authority: advice, or a delegated decision, and if delegated, by whom. Define the time commitment, specialist budget, who pays it, availability during deal peaks, and the escalation path if resources change. For the fictional ONB-1 engagement that is ten specialist days at a cap of €1,500 a day — €15,000 at most — charged to ONB-1’s €180,000 commitment, so no reserve draw and no board decision is needed.
 
@@ -225,11 +225,11 @@ Specify information access and permitted recipients. Distinguish confidential co
 
 For a **continuing service** (a fractional security lead, a data specialist retained across releases, a shared platform team), add four fields: the recurring cost per period and which budget carries it; the accountable company leader for the service’s results; the review date and the evidence reviewed (cost, company effort, decisions changed); and an **exit or continuity plan** — what the company retains in knowledge, access, contracts and documentation if the provider, the investor or the engagement ends. A deliberately funded continuing specialist service is a legitimate outcome. Define success as a decision or capability left with the company, which does not require internalizing every specialty.
 
-Review service cost and company effort along with satisfaction. Before extending the engagement, ask what additional useful outcome requires continued involvement. The fictional ONB-1 support in [[useful-engagement]] shows a short engagement whose week-three finding — the day-20 baseline and the first cohort setups put configuration at under half the hours, with data cleaning the largest remaining share — redirected the remaining specialist days to a data-intake check through the agreed review: Priya proposed, the investor-side sponsor agreed, Alex confirmed the effort, and the board was not involved because neither the €15,000 cap nor the €180,000 commitment moved.
+Review service cost and company effort along with satisfaction. Before extending the engagement, ask what additional useful outcome requires continued involvement. The fictional ONB-1 support in the chapter [[useful-engagement]] shows a short engagement whose week-three finding — the day-20 baseline and the first cohort setups put configuration at under half the hours, with data cleaning the largest remaining share — redirected the remaining specialist days to a data-intake check through the agreed review: Priya proposed, the investor-side sponsor agreed, Alex confirmed the effort, and the board was not involved because neither the €15,000 cap nor the €180,000 commitment moved.
 
 ## <a id="tool-5"></a>5. Build a Funded Initiative Record
 
-Use for an early operating plan or later intervention. See [[first-hundred-days]]. The [pending and authorized versions of ONB-1 in Stage 3](#stage-3) show the level of detail to start with, and what has to be added before the record describes funded work.
+Use for an early operating plan or later intervention. See the chapter [[first-hundred-days]]. The [pending and authorized versions of ONB-1 in Stage 3](#stage-3) show the level of detail to start with, and what has to be added before the record describes funded work.
 
 | Field | Record |
 | --- | --- |
@@ -258,7 +258,7 @@ Distinguish cash received, a contractual commitment with understood conditions, 
 
 ## <a id="tool-6"></a>6. Keep an Outcome and Contribution Ledger
 
-Use to prevent an activity, a capacity gain, and a financial result from becoming the same claim. See [[roadmap-to-revenue]], [[cheaper-cloud-bill]], and [[three-different-returns]]. The ledger holds one initiative’s result; the scorecard (Tool 7) selects a few measures across initiatives. The [ONB-1 entry in Stage 4](#stage-4) is a completed example.
+Use to prevent an activity, a capacity gain, and a financial result from becoming the same claim. See the chapters [[roadmap-to-revenue]], [[cheaper-cloud-bill]], and [[three-different-returns]]. The ledger holds one initiative’s result; the scorecard (Tool 7) selects a few measures across initiatives. The [ONB-1 entry in Stage 4](#stage-4) is a completed example.
 
 Record the original baseline and its definition; the intervention and actual cost; the observed result and period; relevant customer or service quality; demand and mix changes; acquisition effects; and other initiatives. Link the underlying evidence rather than copying uncontrolled numbers around.
 
@@ -291,7 +291,7 @@ For each selected measure, record its baseline, accountable leader, reporting pe
 
 ## <a id="tool-8"></a>8. Interview for Investor Fit
 
-Use before and during an engagement. See [[investor-under-pressure]]. Ask for evidence and concrete examples rather than assurances.
+Use before and during an engagement. See the chapter [[investor-under-pressure]]. Ask for evidence and concrete examples rather than assurances.
 
 - Describe a case where the original thesis was wrong. What changed, and who decided?
 - Show how an operating investment was funded when the base case deteriorated.
@@ -306,7 +306,7 @@ Compare the answers across participants and permitted references. An absent docu
 
 ## <a id="tool-9"></a>9. Plan Acquisition Integration or Separation
 
-Use alongside the transaction timetable, with appropriate legal and financial specialists. See [[acquisition-adds-work-first]].
+Use alongside the transaction timetable, with appropriate legal and financial specialists. See the chapter [[acquisition-adds-work-first]].
 
 Identify the value mechanism that requires each integration: reporting, commercial collaboration, shared capability, or product convergence. Record the customer impact, permitted data flows, license and intellectual-property rights, identity and access boundaries, product commitments, supplier dependencies, and the people who hold critical knowledge.
 
@@ -316,7 +316,7 @@ Sequence changes around customer continuity and scarce expertise. Show dual-runn
 
 ## <a id="tool-10"></a>10. Prepare a Funding or Ownership Handover
 
-Use for another round, a sale, corporate integration or a material change in authority. See [[handover-of-obligations]] for what must travel with the work, and [[the-financing-slipped]] for the delayed-event plan; [[diligence-corrects-the-plan]] shows what the next investor will look for. A new fundraise and an investor selling existing shares need different cash explanations. The [D-3/ONB-1 entry in Stage 6](#stage-6) is a completed row.
+Use for another round, a sale, corporate integration or a material change in authority. See the chapter [[handover-of-obligations]] for what must travel with the work, and [[the-financing-slipped]] for the delayed-event plan; the chapter [[diligence-corrects-the-plan]] shows what the next investor will look for. A new fundraise and an investor selling existing shares need different cash explanations. The [D-3/ONB-1 entry in Stage 6](#stage-6) is a completed row.
 
 | Field | Record |
 | --- | --- |
@@ -333,7 +333,7 @@ Use for another round, a sale, corporate integration or a material change in aut
 
 ## <a id="tool-11"></a>11. Connect Valuation to Architecture
 
-Use this companion to the initiative record when a financial target is driving a technology proposal. Its main application is choosing between design alternatives under stated constraints — see [[growth-into-design]]. [[valuation-is-an-estimate]] supplies the financial vocabulary.
+Use this companion to the initiative record when a financial target is driving a technology proposal. Its main application is choosing between design alternatives under stated constraints — see the chapter [[growth-into-design]]. The chapter [[valuation-is-an-estimate]] supplies the financial vocabulary.
 
 | Record | Questions to answer together |
 | --- | --- |
@@ -347,7 +347,7 @@ A valuation ratio is context for this conversation. It doesn’t replace the cus
 
 ## <a id="tool-12"></a>12. Compare Investment Choices and Capacity
 
-Use before approving a combination of projects. See [[cannot-fund-everything]]. This record complements the individual initiative record in Tool 5: each project can be feasible on its own while the combination is not. The [option rows for D-3 in Stage 2](#stage-2) are a completed example.
+Use before approving a combination of projects. See the chapter [[cannot-fund-everything]]. This record complements the individual initiative record in Tool 5: each project can be feasible on its own while the combination is not. The [option rows for D-3 in Stage 2](#stage-2) are a completed example.
 
 | Field | Record |
 | --- | --- |
@@ -366,7 +366,7 @@ Record the reason for the selected combination in ordinary language. A score can
 
 ## <a id="tool-13"></a>13. Record a Workforce Decision
 
-Use when an investor’s request, a funding condition or the company’s own cash forecast means the headcount plan has to change: a reduction, a freeze that becomes permanent, or a consolidation after an acquisition. See [[anatomy-of-a-layoff]] for the worked reduction and [[fix-decisions-before-hiring]] for the knowledge-transfer test and for an investor-proposed appointment, which uses the first three rows and the role-design fields of Tool 5 rather than a separate form. Reuse Tool 1’s Authority row and Tool 12’s option comparison rather than copying them.
+Use when an investor’s request, a funding condition or the company’s own cash forecast means the headcount plan has to change: a reduction, a freeze that becomes permanent, or a consolidation after an acquisition. See the chapter [[anatomy-of-a-layoff]] for the worked reduction and [[fix-decisions-before-hiring]] for the knowledge-transfer test and for an investor-proposed appointment, which uses the first three rows and the role-design fields of Tool 5 rather than a separate form. Reuse Tool 1’s Authority row and Tool 12’s option comparison rather than copying them.
 
 | Field | Record |
 | --- | --- |

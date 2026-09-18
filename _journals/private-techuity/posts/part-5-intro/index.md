@@ -31,4 +31,4 @@ The five chapters are five destinations. One fictional finding, Larkspur’s dil
 
 By the end, you should be able to carry one body of evidence from diligence to handover, make a specific request when the plan or the money behind it changes, turn a reduction request into a funded plan with its consequences stated, and hand over a record that accounts for unfinished work.
 
-Begin with [[diligence-corrects-the-plan]]. Part VI then tests these ways of thinking against historical company situations.
+Begin with the chapter [[diligence-corrects-the-plan]]. Part VI then tests these ways of thinking against historical company situations.

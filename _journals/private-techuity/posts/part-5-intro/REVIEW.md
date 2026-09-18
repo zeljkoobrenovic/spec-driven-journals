@@ -13,7 +13,7 @@ The remaining substantive defect is the claim that the same onboarding finding t
 - **Medium — Correct the learning outcome, “The Learning Path” and conclusion together.** Replace “one fictional finding travels through all of them” with: “One onboarding finding travels from diligence into a funded plan and its handover. A separate financing-delay example shows how to revise commitments when the expected money moves.” This accepts the author's useful alternative without requiring the delay chapter to inherit incompatible numbers.
 - **Low — Remove one remaining nonlinearity statement if shortening.** “No fixed order” and “not a prescribed lifecycle” largely repeat each other. One statement plus the concrete branches is enough, but this is a pacing preference.
 
-Keep the four-part learning path and the next-step links. Further restructuring is unnecessary. The shared chain's actual cost and outcome contradictions are recorded in the [hundred-day](../17-first-hundred-days/REVIEW.md), [handover](../31-handover-of-obligations/REVIEW.md) and [toolkit](../toolkit/REVIEW.md) reviews.
+Keep the four-part learning path and the next-step links. Further restructuring is unnecessary. The shared chain's actual cost and outcome contradictions are recorded in the [hundred-day](../22-first-hundred-days/REVIEW.md), [handover](../25-handover-of-obligations/REVIEW.md) and [toolkit](../toolkit/REVIEW.md) reviews.
 
 ## Changes since the previous review
 

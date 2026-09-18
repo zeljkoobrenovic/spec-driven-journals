@@ -135,7 +135,7 @@ Candidate title: **"Turning the Investment Thesis Into Product and Engineering W
 
 ### Part IV — The Technology Principal's work → working the ownership structure
 
-**Current:** `15-technology-principal`, `16-diligence-and-thesis`, `17-first-hundred-days`, `18-execution-and-exit`
+**Current:** `15-technology-principal`, `16-diligence-and-thesis`, `22-first-hundred-days`, `18-execution-and-exit`
 
 **The proposal:** flip from "here is what a Technology Principal does" to "**here is how to use the investment structure to your advantage**" — sponsor support, the firm's network, bootstrapping, acceleration of product development, of engineering, and of team growth.
 
@@ -144,7 +144,7 @@ This converts the most inside-baseball section into the most actionable, and it 
 **How much is actually new — less than it first appears.** Reading the section headings, three of the four Principal chapters already carry substantial company-side content:
 
 - `16-diligence-and-thesis` ends on "Diligence Ends When Management Accepts the Findings"
-- `17-first-hundred-days` is explicitly about converting findings into a *company-owned funded plan*
+- `22-first-hundred-days` is explicitly about converting findings into a *company-owned funded plan*
 - `18-execution-and-exit` has "Portfolio Collaboration Must Earn Its Time" and "Escalate Through a Defined Path"
 
 Those are already about the company using the relationship; they are narrated from the adviser's chair. **Flipping the point of view is an editing job, not a rewrite.**
@@ -171,7 +171,7 @@ Written from the reader's chair, these chapters answer "what happens to me, in w
 
 ### Part VI — Durable value, success, and failure
 
-**Current:** `21-hilton-and-skype`, `22-visma`, `23-toys-r-us`, `25-teamsystem`, `24-durable-value`
+**Current:** `26-hilton-and-skype`, `27-visma`, `28-toys-r-us`, `29-teamsystem`, `24-durable-value`
 
 **Problem:** the title states a conclusion; the part is really evidence-testing.
 

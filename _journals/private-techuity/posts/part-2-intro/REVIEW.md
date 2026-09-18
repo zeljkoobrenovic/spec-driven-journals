@@ -10,7 +10,7 @@ The opening and ending have different jobs, repeated promises have been reduced,
 
 ## Active recommendations
 
-- **Medium — Distinguish an advisory role from authority.** The claim that shares, a board seat, a lending condition and an advisory role each carry a different kind of authority grants the last category too much by default. An adviser may have influence and information access without any decision right. Suggested wording: “These positions can carry different rights or influence; establish what authority, if any, accompanies the role.” This aligns the introduction with the distinction developed in the [adviser review](../15-investors-adviser/REVIEW.md).
+- **Medium — Distinguish an advisory role from authority.** The claim that shares, a board seat, a lending condition and an advisory role each carry a different kind of authority grants the last category too much by default. An adviser may have influence and information access without any decision right. Suggested wording: “These positions can carry different rights or influence; establish what authority, if any, accompanies the role.” This aligns the introduction with the distinction developed in the [adviser review](../18-investors-adviser/REVIEW.md).
 - **Low — Broaden the source-of-right check slightly.** Agreements and delegation records are useful evidence, but applicable company rules and law can also establish authority. “Identify the agreement, delegation or applicable rule that establishes the right” is precise without adding a legal digression.
 
 No new outline is needed. Keep the concise learning path and the company-side conclusion; avoid adding another investor-category table.

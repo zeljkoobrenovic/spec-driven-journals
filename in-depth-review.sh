@@ -28,7 +28,7 @@ Options:
   --                        End options (for paths beginning with a dash)
 
 Examples (from the repository root):
-  ./in-depth-review.sh _journals/private-techuity/posts/32-anatomy-of-a-layoff
+  ./in-depth-review.sh _journals/private-techuity/posts/24-anatomy-of-a-layoff
   ./in-depth-review.sh --rounds 5 path/to/article/index.md
   ./in-depth-review.sh --dry-run path/to/article
 

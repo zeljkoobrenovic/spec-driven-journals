@@ -27,4 +27,4 @@ Influence takes different forms. Shares, a board seat, a lending condition and a
 
 By the end, you should be able to explain how a consequential decision gets made, who is accountable and what you would do if the original expectations prove unrealistic.
 
-Begin with [[decide-who-decides]]. Part III then uses these decision arrangements to choose and deliver product and technology investments.
+Begin with the chapter [[decide-who-decides]]. Part III then uses these decision arrangements to choose and deliver product and technology investments.

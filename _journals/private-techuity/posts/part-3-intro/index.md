@@ -41,4 +41,4 @@ This is the center of the book, and its nine chapters follow three moves. Throug
 
 By the end, you should be able to explain why one combination of work deserves resources, how its benefits would arise and what evidence would change the plan. Value here means customer outcomes and continued capability as well as financial results.
 
-Begin with [[cannot-fund-everything]]. Part IV then considers how help from the investor or another source can close the gaps the plan exposes.
+Begin with the chapter [[cannot-fund-everything]]. Part IV then considers how help from the investor or another source can close the gaps the plan exposes.

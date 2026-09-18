@@ -32,4 +32,4 @@ Fund-side mechanics that go beyond a company leader’s day-to-day needs, such a
 
 By the end, you should be able to distinguish money paid to a selling shareholder from money available for company work, question a financial assumption and ask **what would fund a proposed change**.
 
-Begin with [[customers-lenders-investors]]. Part II then examines who can authorize the work once you know where the cash sits.
+Begin with the chapter [[customers-lenders-investors]]. Part II then examines who can authorize the work once you know where the cash sits.

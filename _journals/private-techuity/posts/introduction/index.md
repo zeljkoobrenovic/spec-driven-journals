@@ -51,7 +51,7 @@ The six parts are ordered for learning, and the complete sequence is the default
 | The investor wants a leadership change | [[decide-who-decides]] → [[fix-decisions-before-hiring]] → [[help-that-changes-capability]] → [[investors-adviser]] |
 | We must reduce headcount | [[the-financing-slipped]] → [[anatomy-of-a-layoff]] → [[different-bets]] → the [[toolkit]] workforce-decision record |
 
-If your decision is the first one in the table — an announced investment that someone expects to become a hiring plan — read [[announcement-is-not-a-budget]] now and the rest in order later.
+If your decision is the first one in the table — an announced investment that someone expects to become a hiring plan — read the chapter [[announcement-is-not-a-budget]] now and the rest in order later.
 
 ## Owners, Rights, Funding, and Change
 
@@ -72,7 +72,7 @@ The practical impact of any investment therefore depends on its actual terms, **
 
 Part I supplies the financial tools to understand your owners and your available cash. Part II establishes authority, incentives and working relationships. Part III turns expectations into choices about product, engineering and people; it is the center of the book. Part IV helps you obtain useful help, from the investor or elsewhere. Part V follows one finding from diligence into a funded early plan, its review and a handover; its delayed-financing chapter, and the reduction chapter that continues it, are a separate illustration of how a dated cash forecast changes commitments and, when the money is late enough, the team. Part VI examines historical cases and closes with the book’s standard for success.
 
-Each part introduction explains its chapters and the order. On a first pass, read in order, since each chapter builds on terms introduced earlier: [[valuation-is-an-estimate]] teaches financial valuation, and [[growth-into-design]] later applies those concepts to a design choice once the product and engineering foundations are in place.
+Each part introduction explains its chapters and the order. On a first pass, read in order, since each chapter builds on terms introduced earlier: the chapter [[valuation-is-an-estimate]] teaches financial valuation, and the chapter [[growth-into-design]] later applies those concepts to a design choice once the product and engineering foundations are in place.
 
 ![The book moves from money and decisions through company work, support, ownership changes and field lessons.](assets/images/introduction/owned-reading-journey.jpeg)
 **Figure 2:** *The reading sequence builds the foundations before applying them to work, support and changing ownership.*

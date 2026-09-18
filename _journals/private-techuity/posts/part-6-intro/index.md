@@ -31,4 +31,4 @@ Each case illuminates a different decision.
 
 The cases concentrate on private equity. Skype’s passage between owners also takes in a strategic acquisition and a later product history. Together they are useful evidence about particular transitions, not a balanced sample of ownership models, and not proof that one type of investor produces a given outcome. The last chapter is not another company history: it compares the four cases, applies the book’s standard to one final company decision and uses wider research to test whether investor outcomes alone can measure success.
 
-Begin with [[hilton-and-skype]] and read in order; [[success-for-whom]] closes the main narrative. The [[toolkit]] then provides practical records for your own decisions.
+Begin with the chapter [[hilton-and-skype]] and read in order; the chapter [[success-for-whom]] closes the main narrative. The [[toolkit]] then provides practical records for your own decisions.
