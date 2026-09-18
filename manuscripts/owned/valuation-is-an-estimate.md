@@ -19,7 +19,7 @@ Product and engineering leaders rarely need to produce a valuation. They do need
 
 Suppose someone says a company is worth €60 million. Before interpreting that number, ask what is being valued: the operating business, or the shares its owners hold? Then ask how the estimate was made. This chapter answers both questions in two stages, using that €60 million as the thread.
 
-**Stage 1, Read the business’s numbers,** introduces revenue, profit and cash flow and ends with a short checkpoint. **Stage 2, Interpret a valuation,** separates business value from shareholder value, works through three common ways of estimating value, and ends with one operating assumption a leader can challenge. Read the calculations one step at a time. They are there to make the assumptions understandable; no spreadsheet or accounting background is needed.
+**Stage 1, Read the business’s numbers,** introduces revenue, profit and cash flow and ends with a short checkpoint. **Stage 2, Interpret a valuation,** separates business value from shareholder value, works through three common ways of estimating value, and ends with one operating assumption a leader can challenge.
 
 {id: valuation-is-an-estimate--stage-1-read-the-businesss-numbers}
 ## Stage 1: Read the Business’s Numbers
@@ -31,8 +31,8 @@ Suppose someone says a company is worth €60 million. Before interpreting that 
 
 **Profit**, also called earnings, is what remains after the costs included in a particular profit measure. There are several measures because readers want to answer different questions: one may focus on selling and delivering the product, while another also deducts interest on borrowing and income tax. A company’s **income statement** records revenue and expenses over a period; **net profit** is the final result after all its income and charges.
 
-{id: valuation-is-an-estimate--why-people-use-ebitda-to-compare-operating-earnings}
-### Why People Use EBITDA to Compare Operating Earnings
+{id: valuation-is-an-estimate--ebitda-and-why-people-use-it-to-compare-operating-earnings}
+### EBITDA, And Why People Use It to Compare Operating Earnings
 
 Revenue shows the scale of sales but leaves out their cost: two companies with identical revenue can have very different operating economics. Net profit includes those costs but also reflects borrowing, income taxes and asset-accounting charges. Income-tax rates differ between countries, so higher net profit needn’t mean that a company serves customers more efficiently.
 
@@ -42,7 +42,7 @@ Consider two fictional companies with identical operations and €2 million of p
 
 EBITDA leaves those items out to help compare operating earnings across businesses with different financing, tax circumstances and asset histories. A more heavily borrowed company can pay more interest without operating less efficiently; an acquisition can introduce amortization charges without worsening the acquired product. Removing these effects helps examine the operating business before deciding how to finance or own it. Comparisons still need consistent accounting policies and context, a point the **International Private Equity and Venture Capital Valuation (IPEV) guidelines**, which investors use when reporting estimated values, also make. [S52: IPEV valuation guidelines, section 3.4](https://www.privateequityvaluation.com/Portals/0/Documents/Guidelines/2025%20IPEV%20Valuation%20Guidelines.pdf)
 
-**EBITDA supplements net profit and cash flow.** The excluded costs still affect value: lower taxes can benefit shareholders, interest must be paid, and assets may need replacing. EBITDA can’t establish how much cash the business can spend. The U.S. Securities and Exchange Commission (SEC), which regulates companies reporting to U.S. investors, calls EBITDA a **non-GAAP measure**, one that departs from generally accepted accounting principles (GAAP), the standard accounting rules. Under the SEC’s reporting rules, a measure that makes further adjustments beyond EBITDA needs a different label and a calculation explaining those adjustments. [S06: SEC non-GAAP guidance](https://www.sec.gov/rules-regulations/staff-guidance/corporation-finance-interpretations/non-gaap-financial-measures)
+**EBITDA provides a complementary view to net profit and cash flow analyses.** The excluded costs still affect value: lower taxes can benefit shareholders, interest must be paid, and assets may need replacing. EBITDA can't establish how much cash the business can spend. The U.S. Securities and Exchange Commission (SEC), which regulates companies reporting to U.S. investors, calls EBITDA a **non-GAAP measure**—one that departs from generally accepted accounting principles (GAAP), the standard accounting rules. Under the SEC's reporting rules, a measure that makes further adjustments beyond EBITDA needs a different label and a calculation showing those adjustments. [S06: SEC non-GAAP guidance](https://www.sec.gov/rules-regulations/staff-guidance/corporation-finance-interpretations/non-gaap-financial-measures)
 
 {id: valuation-is-an-estimate--putting-the-measures-together}
 ### Putting the Measures Together

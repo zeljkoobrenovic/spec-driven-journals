@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-15
+revised: 2026-09-18
 ---
 
 # Spec: The Chain From Roadmap to Revenue Breaks Easily
@@ -23,6 +23,10 @@ Product and engineering leaders inside companies working under investors, includ
 - Introduce necessary terms in ordinary language before using them in explanations, examples, tables, or diagrams; keep opening key points readable without prior study.
 - Move from a concrete question through explanation and example to a practical conclusion; connect the conclusion to the next chapter in the configured reading order.
 - Make summaries and comic storyboards understandable on their own; preserve source limits and label fictional scenarios, including changes in example assumptions.
+- Orient the reader inside the chapter: name the recurring people and their roles, say what day zero is, separate engineering work (engineer-weeks) from customer-setup work (staff hours per customer), say whose hours the 80/62/50 figures count, and label the 100-a-year volume as a planning assumption.
+- Keep four money states apart in every format: spending committed, cost incurred, cash paid and cash benefit. State a payment or a cancellation saving only where the fictional scenario supplies the term; otherwise say the scenario does not set it.
+- Make the month-six gate decidable: define customer waiting time (start, end, baseline, minimum useful improvement), keep data checking and correction inside the measured effort, and justify the €40,000 step by comparison with the named alternatives rather than by a superlative.
+- Comic artwork must not promise a result the pilot does not show; captions keep the article’s causal limits and the consequence of a failed gate.
 - Explain the title question and its implications for a concrete company decision.
 - Distinguish sourced observations, the manuscript's analysis, and explicitly fictional examples.
 - Include a meaningful trade-off or counterargument and identify the evidence that would change the judgment; the Larkspur pilot ends with a chosen option, rejected alternatives, funding, scarce capacity, authority and the evidence that would change the decision.
@@ -54,6 +58,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-18: In-depth review round 1 (R08-001 to R08-010). Add criteria for in-chapter orientation (people, day zero, two kinds of work, whose hours, planning-assumption volume), for keeping committed, incurred, paid and benefit apart, for a decidable month-six gate (waiting time defined with a fictional baseline of about ten weeks and a two-week minimum improvement; data work stays inside the measured hours) and for comic artwork that does not overstate the proposal. Plain-language openings for the callouts and the short formats; prevalence claim removed from all three formats. Shared figures unchanged; permalink unchanged.
 - 2026-09-15: Align the pilot account with the shared Larkspur ledger: state the €75/h and €150,000-per-FTE cost basis once, separate 144 observed hours from the 1,800-hour / €135,000 projection, report the pilot as €180,000 committed with about €90,000 incurred by day 100 and maintenance committed from the next financial year, replace “no contractor to cancel” with the contract specialist’s unexpired twelve months, give the €40,000 data-quality step a prospective case with the month-six gate (≤ 50 hours, waiting time down), date the expansion decision to the next quarterly review, and remove the unsupported prevalence claim from the callouts; comic ends on the tested outcome (panel 6 rewritten, panels 2 and 6 flagged for regeneration).
 - 2026-09-14: Move the customer-need test before the business case, narrow the opening’s deadline claim to a stated investor expectation, separate “financial contribution” from causal “helped produce”, add the eight-customer pilot comparison with its unresolved differences, finish the pilot decision (80→62 hours, waiting time unchanged, data-quality step funded from the reserve, expansion and hiring deferred), point the handoff to [[can-the-team-deliver]] with [[fix-decisions-before-hiring]] following it, and make comic panel 2 a testable question; permalink and id unchanged.
 - 2026-09-13: Add the requested single Nano Banana overview visual to the TL;DR modality.

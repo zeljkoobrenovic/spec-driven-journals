@@ -242,14 +242,14 @@ One spec can drive several docs of different modalities, all living in the same 
 | `checklist` | `checklist.md` | Checklist | Operational working checklist (grouped action bullets; the part you run) |
 | `summary` | `summary.md` | Summary | Management summary (300–500 words) |
 | `dialog` | `dialog.md` | Conversation | Two-host podcast-style conversation |
-| `comics` | `comics.md` | Comic | Explainer comic (generated panel images) |
+| `comics` | `comics.md` | Comic | Explainer comic (generated comic pages: each image is a page of stacked strips with the dialogue, labels and numbers in the artwork; older comics use one single-scene panel per image) |
 
 - **Discovery is file presence**, same as `spec.md`: a tab appears iff the file exists next to `index.md`. No `config.yaml` changes; only the folder layout supports modalities. The registry (`_MODALITIES` in `build.py`) is an explicit allow-list, so other sibling `.md` files (`spec.md`, `REVIEW.md`, …) stay ignored.
 - Modality files go through the same pipeline as posts (asset rewrite, `[[…]]` cross-links, block fences). Front matter is tolerated and stored as the modality's `meta` (e.g. `timetoread:`) but not rendered yet; title/byline/tags/hero always come from `index.md`.
 - With one modality the tab bar is hidden and the page looks exactly like a plain post. Spec pages are built as single-modality payloads and never show tabs.
 - Deep-link a tab with the URL hash: `<slug>.html#checklist`, `#summary`, `#dialog`, `#comics`.
 - Per-modality images live in the post's `assets/` folder like everything else — the per-post merge covers them.
-- **Authoring skills** in `.claude/skills/`, one per modality: `detailed-article` (writes `index.md`; canonical home of the house style), `operational-checklist`, `management-summary`, `podcast-dialog`, and `explainer-comics` (includes `scripts/generate_comic_panels.py` for Gemini panel generation). All five treat `spec.md` as the read-only contract and end by running the build and verifying the output.
+- **Authoring skills** in `.claude/skills/`, one per modality: `detailed-article` (writes `index.md`; canonical home of the house style), `operational-checklist`, `management-summary`, `podcast-dialog`, and `explainer-comics` (includes `scripts/generate_comic_pages.py` for Gemini generation of comic pages from `comic-page` blocks, with `comics.md` as the single source of truth, and the legacy `scripts/generate_comic_panels.py` for older single-panel comics; generated artwork is always inspected against its script). All five treat `spec.md` as the read-only contract and end by running the build and verifying the output.
 - **Enrichment skills** in `.claude/skills/` that edit an existing `index.md` without changing its argument: `bold-highlighter` (skim emphasis), `article-illustrator` (inline figures), and `probe-further` (appends a `## To Probe Further` section — 4–6 verified external resources, each with a linked title, a citation and, after a `<br>`, one italic sentence on why it is relevant to the post; every URL is fetched before it is written). `post-review` and `spec-creator` cover review and spec drafting.
 
 ### House style for new posts

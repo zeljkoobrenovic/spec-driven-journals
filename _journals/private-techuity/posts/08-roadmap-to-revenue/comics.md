@@ -5,9 +5,9 @@
 }
 -->
 
-**Comic.** A product leader normally has to show that a change is useful. An investor may expect the change to support a particular growth, margin or retention target; the panels follow one roadmap item along the chain from work to result, testing each link, because that chain is the part most often asserted rather than shown, and end on what the pilot’s day-90 cohort showed.
+**Comic.** A product leader normally has to show that a change is useful. An investor, who has put money into the company for a share of it, may expect more: that the change supports a target such as more sales, a larger share of sales kept as profit, or more customers staying. The panels follow one planned product change along the chain from work to result and test each link, because a proposal must demonstrate that chain, not assume it. They end on what a pilot, a limited trial with a first group of eight customers, showed at day 90.
 
-Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
+Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. The board is the group of directors who oversee the company’s major decisions. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
@@ -15,20 +15,20 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/08-roadmap-to-revenue/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 1 of an explainer comic. Alex presents a faster onboarding workflow. Use one speech bubble with the exact words: \"What changes for the customer?\" Convey: Onboarding is the setup needed before a customer can use the product. Start by identifying what the proposed change makes easier.",
-  "alt": "Comic panel: Alex presents a faster onboarding workflow.",
-  "caption": "Onboarding is the setup needed before a customer can use the product. Start by identifying what the proposed change makes easier.",
+  "prompt": "Panel 1 of an explainer comic. Alex stands beside a whiteboard and presents a PROPOSED change to customer setup to two unnamed colleagues in grey. The whiteboard is headed with the exact words \"PROPOSED SETUP\" and shows three boxes joined by arrows, labelled exactly \"Sign up\", \"Shorter setup?\" and \"Start using product\", with one large question mark beside the middle box. A smaller sheet pinned next to it is headed exactly \"TODAY\" and shows a longer row of five plain unlabelled boxes; it is NOT crossed out. Nothing in the scene says or implies that setup is already faster: no words such as immediate, instant, quick, complete or done, no tablet, no progress bar, no tick marks, and no other lettering. Use one speech bubble with the exact words: \"What changes for the customer?\" Convey: Onboarding is the setup needed before a customer can use the product. The whiteboard shows a proposal, not a result: “Shorter setup?” is the question the trial has to answer. Start by asking what the change would make easier for the customer.",
+  "alt": "Comic panel: Alex points to a whiteboard headed “Proposed setup”: Sign up, then “Shorter setup?” with a large question mark, then Start using product. A sheet headed “Today” shows a longer row of steps. Two colleagues ask what changes for the customer.",
+  "caption": "Onboarding is the setup needed before a customer can use the product. The whiteboard shows a proposal, not a result: “Shorter setup?” is the question the trial has to answer. Start by asking what the change would make easier for the customer.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
-    "sha256": "b1f2f25f6f2711e40b16a61c824c124e66ea57909f55c93a41c9c39e10457016"
+    "sha256": "b6defe7bfb65e7f13bbfbb93491ffa0827910fcbc5cbf2f9e6fcc16465b16386"
   }
 }
 -->
 
-![Comic panel: Alex presents a faster onboarding workflow.](assets/images/08-roadmap-to-revenue/comic-01-scene.jpeg)
+![Comic panel: Alex points to a whiteboard headed “Proposed setup”: Sign up, then “Shorter setup?” with a large question mark, then Start using product. A sheet headed “Today” shows a longer row of steps. Two colleagues ask what changes for the customer.](assets/images/08-roadmap-to-revenue/comic-01-scene.jpeg)
 
-**Panel 1:** Onboarding is the setup needed before a customer can use the product. Start by identifying what the proposed change makes easier.
+**Panel 1:** Onboarding is the setup needed before a customer can use the product. The whiteboard shows a proposal, not a result: “Shorter setup?” is the question the trial has to answer. Start by asking what the change would make easier for the customer.
 
 *Dialogue:* “What changes for the customer?”
 
@@ -38,9 +38,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/08-roadmap-to-revenue/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. A customer reaches a usable product with fewer handoffs. Use one speech bubble with the exact words: \"Do customers reach value sooner?\" Convey: Fewer setup steps may help customers begin useful work sooner. That is a hypothesis until a cohort shows it; in the day-90 cohort, waiting time did not change.",
-  "alt": "Comic panel: A customer reaches a usable product with fewer handoffs.",
-  "caption": "Fewer setup steps may help customers begin useful work sooner. That is a hypothesis until a cohort shows it; in the day-90 cohort, waiting time did not change.",
+  "prompt": "Panel 2 of an explainer comic. A customer reaches a usable product with fewer handoffs. Use one speech bubble with the exact words: \"Do customers reach value sooner?\" Convey: Fewer setup steps may help customers begin useful work sooner. That is an expectation to test, not a result. In the first group of eight trial customers, measured at day 90, the customers’ waiting time did not change.",
+  "alt": "Comic panel: A customer holds a box labelled “Product”. Alex, holding a sheet of steps that ends in the word “Value”, asks whether customers reach value sooner. Priya stands beside him; other customers wait behind.",
+  "caption": "Fewer setup steps may help customers begin useful work sooner. That is an expectation to test, not a result. In the first group of eight trial customers, measured at day 90, the customers’ waiting time did not change.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -49,9 +49,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: A customer reaches a usable product with fewer handoffs.](assets/images/08-roadmap-to-revenue/comic-02-scene.jpeg)
+![Comic panel: A customer holds a box labelled “Product”. Alex, holding a sheet of steps that ends in the word “Value”, asks whether customers reach value sooner. Priya stands beside him; other customers wait behind.](assets/images/08-roadmap-to-revenue/comic-02-scene.jpeg)
 
-**Panel 2:** Fewer setup steps may help customers begin useful work sooner. That is a hypothesis until a cohort shows it; in the day-90 cohort, waiting time did not change.
+**Panel 2:** Fewer setup steps may help customers begin useful work sooner. That is an expectation to test, not a result. In the first group of eight trial customers, measured at day 90, the customers’ waiting time did not change.
 
 *Dialogue:* “Do customers reach value sooner?”
 
@@ -107,9 +107,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/08-roadmap-to-revenue/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 5 of an explainer comic. Alex adds implementation and ongoing costs to the proposal. Use one speech bubble with the exact words: \"Count the whole intervention.\" Convey: Count the €180,000 build commitment (about €90,000 incurred by day 100) and the €30,000 a year of maintenance that starts next financial year before claiming a net benefit, and say which conversion of the released time actually happened.",
-  "alt": "Comic panel: Alex adds implementation and ongoing costs to the proposal.",
-  "caption": "Count the €180,000 build commitment (about €90,000 incurred by day 100) and the €30,000 a year of maintenance that starts next financial year before claiming a net benefit, and say which conversion of the released time actually happened.",
+  "prompt": "Panel 5 of an explainer comic. Alex adds implementation and ongoing costs to the proposal. Use one speech bubble with the exact words: \"Count the whole intervention.\" Convey: “The whole intervention” means the whole change: building it, introducing it and keeping it running. Count all of that cost before claiming a benefit. The company has agreed to spend €180,000 on the build. About €90,000 of that work had been received by day 100, which is not the same as cash paid. Upkeep adds €30,000 a year from the company’s next accounting year. Then say what the freed staff time was actually used for.",
+  "alt": "Comic panel: Alex and two colleagues work through a proposal whose last lines read “Total cost of intervention: build, introduce, maintain”. Folders labelled “Estimates”, “Budget” and “Historical cases” lie on the table. The speech bubble says to count the whole intervention.",
+  "caption": "“The whole intervention” means the whole change: building it, introducing it and keeping it running. Count all of that cost before claiming a benefit. The company has agreed to spend €180,000 on the build. About €90,000 of that work had been received by day 100, which is not the same as cash paid. Upkeep adds €30,000 a year from the company’s next accounting year. Then say what the freed staff time was actually used for.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -118,9 +118,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Alex adds implementation and ongoing costs to the proposal.](assets/images/08-roadmap-to-revenue/comic-05-scene.jpeg)
+![Comic panel: Alex and two colleagues work through a proposal whose last lines read “Total cost of intervention: build, introduce, maintain”. Folders labelled “Estimates”, “Budget” and “Historical cases” lie on the table. The speech bubble says to count the whole intervention.](assets/images/08-roadmap-to-revenue/comic-05-scene.jpeg)
 
-**Panel 5:** Count the €180,000 build commitment (about €90,000 incurred by day 100) and the €30,000 a year of maintenance that starts next financial year before claiming a net benefit, and say which conversion of the released time actually happened.
+**Panel 5:** “The whole intervention” means the whole change: building it, introducing it and keeping it running. Count all of that cost before claiming a benefit. The company has agreed to spend €180,000 on the build. About €90,000 of that work had been received by day 100, which is not the same as cash paid. Upkeep adds €30,000 a year from the company’s next accounting year. Then say what the freed staff time was actually used for.
 
 *Dialogue:* “Count the whole intervention.”
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/08-roadmap-to-revenue/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Priya and Sam at the day-100 board review: a simple board shows hours per setup falling from 80 to 62, beside a customer queue that is still the same length. Use one speech bubble with the exact words: \"We saved hours; we have not yet served more customers.\" Convey: The setup step released 18 hours per implementation, but customers still waited for their own data, so the queue did not move. The board funds one €40,000 data-quality step from the reserve, keeps hiring and expansion deferred, and stops if the next cohort is not at 50 hours or less with waiting time down.",
+  "prompt": "Panel 6 of an explainer comic. Priya and Sam at the day-100 board review: a simple board shows hours per setup falling from 80 to 62, beside a customer queue that is still the same length. Use one speech bubble with the exact words: \"We saved hours; we have not yet served more customers.\" Convey: In the trial comparison each setup took 18 fewer staff hours, although the comparison cannot prove that the new step alone was the cause. Customers still waited for their own data to be ready, so the queue did not move. The board funds one €40,000 step to check and correct customer data, from money held back for later decisions, and keeps hiring and expansion deferred. If the next group of customers does not average 50 hours or less with a shorter wait, the board approves no further stage. Payments already agreed are handled separately.",
   "alt": "Comic panel: Priya and Sam at the day-100 review, hours down from 80 to 62 beside an unchanged customer queue.",
-  "caption": "The setup step released 18 hours per implementation, but customers still waited for their own data, so the queue did not move. The board funds one €40,000 data-quality step from the reserve, keeps hiring and expansion deferred, and stops if the next cohort is not at 50 hours or less with waiting time down.",
+  "caption": "In the trial comparison each setup took 18 fewer staff hours, although the comparison cannot prove that the new step alone was the cause. Customers still waited for their own data to be ready, so the queue did not move. The board funds one €40,000 step to check and correct customer data, from money held back for later decisions, and keeps hiring and expansion deferred. If the next group of customers does not average 50 hours or less with a shorter wait, the board approves no further stage. Payments already agreed are handled separately.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -143,6 +143,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Priya and Sam at the day-100 review, hours down from 80 to 62 beside an unchanged customer queue.](assets/images/08-roadmap-to-revenue/comic-06-scene.jpeg)
 
-**Panel 6:** The setup step released 18 hours per implementation, but customers still waited for their own data, so the queue did not move. The board funds one €40,000 data-quality step from the reserve, keeps hiring and expansion deferred, and stops if the next cohort is not at 50 hours or less with waiting time down.
+**Panel 6:** In the trial comparison each setup took 18 fewer staff hours, although the comparison cannot prove that the new step alone was the cause. Customers still waited for their own data to be ready, so the queue did not move. The board funds one €40,000 step to check and correct customer data, from money held back for later decisions, and keeps hiring and expansion deferred. If the next group of customers does not average 50 hours or less with a shorter wait, the board approves no further stage. Payments already agreed are handled separately.
 
 *Dialogue:* “We saved hours; we have not yet served more customers.”

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-17
+revised: 2026-09-18
 ---
 
 # Spec: Same Company, Same Performance, Three Different Returns
@@ -17,7 +17,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
-- Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is generated from its six-panel storyboard with consistent fictional characters and preserved captions.
+- Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is a sequence of comic pages: each page is one image of three stacked strips that carries its dialogue, labels and amounts in the artwork, with consistent fictional characters and a short caption under each page. Every string drawn in a page comes from the page script, which traces to the article, and generated artwork is inspected against the script (spelling, cast identity, which speaker each bubble points to, counts and sizes), not assumed.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
 - Introduce necessary terms in ordinary language before using them in explanations, examples, tables, or diagrams; keep opening key points readable without prior study. This applies to software-delivery vocabulary (platform work, customer setup) as much as to finance vocabulary.
@@ -26,13 +26,13 @@ Product and engineering leaders inside companies working under investors, includ
 - Make summaries and comic storyboards understandable on their own; preserve source limits and label fictional scenarios, including changes in example assumptions.
 - Preview the 7×/10×/12× same-performance comparison directly after the opening, teach the base buyout arithmetic, then return to the full table with annual returns; keep the €50m/€20m/€10m interaction decomposition and attach it to one claim (“engineering created €30m”).
 - Avoid shortcuts the review flagged: state MOIC as proceeds divided by total capital invested only for the fully realized example; say the operating assumptions are unchanged and only the exit multiple varies, not “market mood”.
-- The summary carries the three-multiple comparison rather than fund-ratio detail; three comic panels show the same operating result with three investor outcomes, drawn as one identical operating chart so that only the price tag and the proceeds change between them.
+- The summary carries the three-multiple comparison rather than fund-ratio detail; one comic page shows the same operating result with three investor outcomes, one per strip, drawn around one identical operating chart so that only the price tag and the proceeds change between the strips.
 - In every reading format, explain EBITDA as an earnings measure rather than cash (with depreciation and amortization illustrated by tangible and intangible assets in the article), and state that the €20m debt repayment is a separate assumption about cash left after necessary spending. Introduce the fund, its manager, purchase, sale, borrowing and ownership percentage in plain words before their specialist equivalents (entry, exit, leverage, dilution), and gloss later finance terms (bridge, claims, refinancing, maturity, debt-funded dividend, pre-/post-money, distributions) where they appear.
 - Explain the title question and its implications for a concrete company decision.
 - Distinguish sourced observations, the manuscript's analysis, and explicitly fictional examples.
 - Include a meaningful trade-off or counterargument and identify the evidence that would change the judgment.
 - Link related chapters and cite substantive external factual claims close to the text.
-- Keep the TL;DR and six-panel comic script consistent with the full article.
+- Keep the TL;DR and the comic page script consistent with the full article.
 
 ## Non-goals
 
@@ -42,7 +42,7 @@ Universal prescriptions, invented evidence, promises of investment performance, 
 
 - Full Article: index.md, the substantive argument.
 - TL;DR: summary.md, the practical implications in concise prose.
-- Comic: comics.md, six illustrated fictional panels with alt text, visible captions, dialogue transcripts and machine-readable artwork prompts.
+- Comic: comics.md, seven illustrated fictional comic pages of three strips each, with the dialogue, labels and amounts in the artwork, alt text, short visible captions, dialogue transcripts and machine-readable page scripts.
 
 ## Open questions
 
@@ -59,6 +59,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-18: Comic converted from six single-scene panels to seven comic pages of three strips each (the format piloted on [[obligations-before-budget]]): the buyout at entry, the sale with lenders paid first, the three exit multiples as three strips of one page around an identical chart, timing and the downside of borrowing, the bridge and why it cannot credit engineering, dilution, and the test for an improvement. Article and summary unchanged.
 - 2026-09-17 (round 3): Editorial revision per round 3 of the 17 September in-depth review (TDR-008, TDR-009, TDR-010). Summary: the valuation equation, the MOIC/IRR measures and the downside case split into three short paragraphs and repeated framing trimmed to bring the prose back within 300–500 words with every figure, definition and assumption kept. Article: the MOIC/IRR paragraph and the headline comparison split so that proceeds and money multiple sit apart from the annual rate; the fund-reporting paragraph split from the optional fund-economics pointer, with “often called limited partners”; “platform work” explained as improvements to the shared software foundations and the onboarding example restated as making the product easier for new customers to set up; the three-column preview table wrapped in the template’s compact table wrapper so it fits a phone screen. Numbers, permalink and id unchanged.
 - 2026-09-17 (round 2): Editorial revision per round 2 of the 17 September in-depth review (TDR-003, TDR-008). Summary: enterprise value defined as the value of the operating business, with EBITDA × multiple stated as this example's pricing method; a compact assumptions sentence (no cash offsetting debt, no additional investor contributions or intermediate payments, unchanged ownership, no fees or sale taxes) placed before the three-outcome table. Article and summary: the preview setup split into short paragraphs (purchase funding; five-year performance and cash assumption; the one variable that changes), and the full EBITDA explanation split between what the excluded charges mean and why EBITDA is not available cash. Numbers, permalink and id unchanged.
 - 2026-09-17: Editorial revision per the 17 September in-depth review (TDR-001 to TDR-007): plain-language opening (fund, manager, purchase, sale, borrowing, ownership percentage) with the specialist terms introduced alongside their explanations; EBITDA explained as an earnings measure that is not cash, with depreciation and amortization illustrated and the €20m repayment stated as a separate cash assumption, in article, summary and comic; later finance terms glossed where used; Alex and Priya introduced by role; summary restructured around a compact three-outcome table with every equation and acronym explained; comic introduction made self-contained with the simplifying assumptions stated; panels 2–4 regenerated from one identical operating chart. Permalink and id unchanged.

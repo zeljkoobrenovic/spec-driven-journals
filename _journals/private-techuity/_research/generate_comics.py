@@ -5,6 +5,11 @@ Run from any directory:
   GEMINI_API_KEY=... python3 _journals/private-techuity/_research/generate_comics.py --dry-run
   GEMINI_API_KEY=... python3 _journals/private-techuity/_research/generate_comics.py --workers 6
 
+LEGACY single-panel format. Posts converted to comic pages (comic-page blocks in
+comics.md) are skipped here and are generated with the explainer-comics skill's
+scripts/generate_comic_pages.py; the cast reference and identity rules live in
+each converted comics.md style block.
+
 Existing images are preserved unless --overwrite is supplied. The six existing
 panel captions and dialogue remain the authoring contract. API schema reference:
 https://ai.google.dev/api/generate-content#method:-models.generatecontent
@@ -83,6 +88,7 @@ def collect(post_filter):
         slug=path.parent.name
         if post_filter and slug not in post_filter:continue
         text=path.read_text()
+        if '<!-- comic-page' in text:continue  # comic-pages-v1 post: see comic-pages-pilot/
         style_match=STYLE_RE.search(text)
         assert style_match, path
         style=json.loads(style_match.group(1))
