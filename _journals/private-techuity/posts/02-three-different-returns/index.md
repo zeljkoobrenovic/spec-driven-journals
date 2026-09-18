@@ -1,5 +1,5 @@
 ---
-title: "Same Company, Same Performance, Three Different Returns"
+title: "Same Company, Same Performance, Three Different Investor Returns"
 date: 2026-09-12
 author: Željko Obrenović
 excerpt: "Hold a company's performance fixed and watch the investor's return change with sale price, borrowing and timing, then see what engineering can and cannot claim credit for."

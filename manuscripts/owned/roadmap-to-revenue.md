@@ -72,7 +72,7 @@ flowchart TD
 
 Each arrow is a hypothesis. Faster implementation may not increase sales if few people want to buy. **Billing**, sending the customer an invoice, may start earlier without keeping customers who don’t receive value. Reduced effort may free staff time without reducing the money the company spends. The new setup step will itself need upkeep, and that cost absorbs part of the benefit.
 
-**Read each arrow as a question to test.** If engineering effort falls but customers wait just as long, find out what else is keeping them waiting. The last section of this chapter is that case.
+**Read each arrow as a question to test.** If staff effort per customer setup falls but customers wait just as long, find out what else is keeping them waiting. The last section of this chapter is that case.
 
 {id: roadmap-to-revenue--six-kinds-of-benefit-to-examine}
 ## Six Kinds of Benefit to Examine
@@ -88,7 +88,7 @@ A product change can help the business in six different ways. The table uses rev
 | Lower risk | Make sure a critical service can be restored after a failure | Restore tests actually run, the failures the company has planned for and how long recovery really took |
 | More future choices | Separate the part of the product that would have to change for a new country | The new choices this opens, what each would cost to use and how long it would take |
 
-These benefits overlap, but **their financial effects should not simply be added**. Earlier billing brings cash in sooner without increasing the total a customer pays over the contract. A customer who stays may already be counted in the forecast of future revenue. When one company buys another, the same saving can be counted twice: once as a lower cost and again inside the bought company’s reported profit. Count it once.
+These benefits overlap, but **their financial effects should not simply be added**. Earlier billing can bring cash in sooner, but only if the customer’s payment also moves earlier. A customer invoiced in March instead of April who pays in May either way has paid no sooner, which is why the table asks for cash actually received. Even when the payment does move, the customer pays the same total over the contract. A customer who stays may already be counted in the forecast of future revenue. When one company buys another, the same saving can be counted twice: once as a lower cost and again inside the bought company’s reported profit. Count it once.
 
 {id: roadmap-to-revenue--the-arithmetic-worked-through}
 ## The Arithmetic, Worked Through
@@ -152,20 +152,24 @@ The same pilot is the funded first-hundred-days commitment ONB-1 in [The First H
 
 **Observed.** The cohort was eight customers. Average effort per implementation fell from 80 hours to 62, not to the 50 the proposal assumed. About 40% of the remaining hours traced to poor customer data rather than to the product, which partly supports Alex’s explanation of where the effort goes. The guardrail indicators did not move: error rates and requests for help were not up.
 
-**Customer waiting time was unchanged.** Waiting time runs from the day the customer signs the contract to the day the customer first schedules real work in the product. For the typical customer it was about ten weeks in the earlier group and about ten weeks in the pilot group.
+**Customer waiting time was unchanged.** Waiting time runs from the day the customer signs the contract to the day the customer first schedules real work in the product. This chapter reports it as the **median** wait: line a group’s customers up from the shortest wait to the longest, and the median is the wait of the customer in the middle. With an even number of customers it is halfway between the two in the middle. The median was about ten weeks in the earlier group and about ten weeks in the pilot group.
 
 **Observed versus projected.** Eight customers at 18 hours less each is 144 hours released in the cohort, about €10,800 at the planning rate. The 1,800 hours and €135,000 a year quoted for the pilot (100 × 18 × €75) are a **projection**. It assumes 100 comparable implementations in a year, which is the model’s planning assumption. The caveats from the comparison travel with it: sales chose the pilot customers, the same specialist served both groups and may have grown faster with practice, and the baseline was reconstructed from time records. The evidence supports a promising association between the setup step and the reduction. It does not isolate the step as the cause, and a projection built on it inherits the same limits.
 
 Against the conversion plan:
 
 - **Serving waiting customers:** no. The team spent 18 fewer hours on each setup, but customers still waited for their own data to be ready, so the queue moved no faster. The bottleneck is somewhere else.
-- **Avoiding a supplier’s invoice or a hire:** not yet. No contract spending had been cancelled by day 100. A contract implementation specialist works through the queue while the step is built and proved, and is engaged for twelve months ([Match the Funding to the Work](#raise-what-you-need)). The saving the plan puts a date on is not extending that contract after month twelve, and only if the queue is moving by then. At day 100 it wasn’t, so the specialist was still needed. Ending the work earlier would not by itself avoid a payment: that depends on the contract’s notice and payment terms, which this scenario does not set. The hire of two specialists was already deferred, which is spending avoided, not spending reduced.
+- **Avoiding a supplier’s invoice or a hire:** not yet. No contract spending had been cancelled by day 100. Larkspur has engaged a contract implementation specialist, an outside person who works through the queue for twelve months while the step is built and proved. The saving the plan puts a date on is not extending that contract after month twelve, and only if the queue is moving by then. At day 100 it wasn’t, so the specialist was still needed. Ending the work earlier would not by itself avoid a payment: that depends on the contract’s notice and payment terms, which this scenario does not set. The hire of two specialists was already deferred, which is spending avoided, not spending reduced.
+
+**Where the contract specialist’s cost sits.** The contract specialist is an extra person who works alongside Larkspur’s own implementation specialist. The twelve months cost €150,000, one full-time year at the planning rate. The figure is imported from [Match the Funding to the Work](#raise-what-you-need), which prices the same engagement inside its own, separate financing example. Here the engagement was agreed before day zero and is paid from the **operating budget**, the money for the company’s ordinary running costs. It is not part of the pilot’s €180,000 and takes nothing from the board’s first-hundred-days money described below. So the costs quoted for the pilot leave it out.
+
+That does not tip the day-100 choice, because the engagement runs to month twelve under every option the board weighed. It matters afterwards: extending it would cost a further €150,000 a year, and not extending it is the first real reduction in spending the pilot could produce.
 
 **Cash and commitments at day 100.** Four things need keeping apart:
 
 - **Committed** spending is what the company has agreed to spend: €180,000 for the pilot.
-- **Incurred** cost is the part for which work or services have already been received: about €90,000 by day 100, for specialist days, tooling and services, and contractor time. Incurred does not mean paid. A supplier’s invoice can arrive in one month and be paid in the next, and this scenario does not give the payment dates for that €90,000.
-- **Still to come** is the other €90,000. It falls due over the next two quarters, for the reusable setup templates that serve less common types of customer. Maintenance of €30,000 a year is also committed, from the next financial year, and is paid from the **operating budget**, the money for the company’s ordinary running costs. None of it had been incurred by day 90.
+- **Incurred** cost is the part for which work or services have already been received: about €90,000 by day 100, for ten days of advice from a specialist the investor introduced, tooling and services, and contractor time on the setup templates. None of it is the contract implementation specialist, whose cost sits in the operating budget. Incurred does not mean paid. A supplier’s invoice can arrive in one month and be paid in the next, and this scenario does not give the payment dates for that €90,000.
+- **Still to come** is the other €90,000. It falls due over the next two quarters, for the reusable setup templates that serve less common types of customer. Maintenance of €30,000 a year is also committed, from the next financial year, and is paid from the operating budget. None of it had been incurred by day 90.
 - **Cash benefit** is money received or kept because of the change. There is none yet. The cash forecast carries the pilot’s payments, but no benefit from the released time, because that time has not been converted.
 
 **The rule.** The board decided at day 100, on Priya’s proposal as the accountable leader. It followed the rule set when the pilot was funded, which looks at the cohort’s average hours per setup:
@@ -178,14 +182,29 @@ Sixty-two hours is the middle band.
 
 **Chosen.** Fund a data-quality step: checking and correcting each customer’s data before setup begins. It costs €40,000 and four engineer-weeks, drawn from the **reserve**. The reserve is the part of the board’s **envelope** that was held back for later decisions. The envelope is the overall limit the board set at day zero for the first hundred days: €500,000 of additional cash and 24 engineer-weeks ([You Cannot Fund Every Good Project at Once](#cannot-fund-everything)). Before this decision the reserve held €200,000 and four engineer-weeks, so the step uses the last engineer-weeks available.
 
+**Who pays for what.** Each cost in this example has one budget, and none is counted twice:
+
+| Cost | Amount | Paid from |
+| --- | ---: | --- |
+| Building the setup step (the pilot) | €180,000 | The board’s envelope, in the plan approved at day zero |
+| Data-quality step | €40,000 | The envelope’s reserve, approved at day 100 |
+| Upkeep of the setup step, from the next financial year | €30,000 a year | Operating budget |
+| Contract implementation specialist, months 1 to 12 | €150,000 | Operating budget, agreed before day zero; not a pilot cost |
+
+The reserve still reconciles: €200,000 before this decision and €160,000 after it. The contract specialist touches neither figure.
+
 The case for the step looks forward. The €90,000 already incurred cannot be recovered and argues neither way. What argues for the step is that the measurement points at one specific remaining bottleneck: about 40% of the remaining hours and the unchanged waiting time both sit with customer data. The test is also small beside the alternatives on the table. Two hires cost €300,000 a year, every year. The full customer portal costs €220,000 and twelve engineer-weeks, which the envelope no longer has.
 
 **The threshold for continuing.** A second cohort is set up after the data-quality step and measured at about month six. It must pass two tests:
 
-- **Effort:** an average of 50 hours or less per setup. The hours are counted end to end. They include all Larkspur staff time spent checking and correcting customer data, whether that happens before or during setup. In [Match the Funding to the Work](#raise-what-you-need) the €40,000 buys an outside data-checking service and temporary data-entry help; that work is reported beside the hours, with what it would cost to keep. Moving work outside the measurement must not pass the test.
-- **Waiting time:** eight weeks or less for the typical customer, against about ten weeks now. Two weeks is the smallest improvement the board judged worth a further stage.
+- **Effort:** an average of 50 hours or less per setup. The hours are counted end to end, and they count whoever works them. They include all time spent checking and correcting customer data, before or during setup: by Larkspur’s staff, by the contract specialist, or by bought-in help.
+- **Waiting time:** a median wait of eight weeks or less, against about ten weeks now. It is the same measure as the ten weeks above. The board uses the median, not the average, because in a group of eight one very slow customer would drag an average a long way. Two weeks is the smallest improvement the board judged worth a further stage.
 
-Both tests must be met. Fifty hours with waiting time still near ten weeks fails. So does a result that reaches 50 hours only by leaving data work uncounted. If the cohort fails, the board approves no further stage. Commitments already made are handled separately: whatever remains of the pilot’s €90,000 is still owed. Hiring, narrowing the first-year target to customers with standard data, or reopening the financing conversation come back onto the table.
+**Bought-in work.** In [Match the Funding to the Work](#raise-what-you-need) the €40,000 buys an outside data-checking service and temporary data-entry help. Paying someone else to do the same work buys capacity; it does not reduce effort. So the helpers’ hours go into the 50: fifty staff hours plus 20 bought-in hours per customer is 70, and fails. Checking that the service does by machine has no hours, so it is counted as money. Priya reports what keeping the service and any help would cost per customer and per year. A request for a further stage must carry that cost, beside the €30,000 of upkeep.
+
+**Who is in the group.** The second cohort is the first eight customers whose setup starts after the data-quality step is in service, taken in the order they signed. Nobody is removed later. A customer who has not finished by the review stays in the count at the hours and weeks reached so far, and both can only grow. If the unfinished customers could still change either result, the board waits for them. It does not decide on the customers who happened to finish first.
+
+Both tests must be met. Fifty hours with a median wait of nine weeks fails. So does a result that reaches 50 hours only by leaving data work uncounted, or by moving it to a supplier. Passing does not approve the next stage; it allows Priya to request it, with its full cost. If the cohort fails, the board approves no further stage. Commitments already made are handled separately: whatever remains of the pilot’s €90,000 is still owed. Hiring, narrowing the first-year target to customers with standard data, or reopening the financing conversation come back onto the table.
 
 The rest of the decision record:
 
@@ -216,6 +235,6 @@ The pilot’s result raises the next constraint. The remaining hours sit with cu
 - **[Impact Mapping: Making a Big Impact with Software Products and Projects](https://www.impactmapping.org/book.html)** — Gojko Adzic, 2012.  
   *A drawing technique for the goal-to-deliverable chain that gives you a practical way to write down the arrows in this chapter's onboarding example before work starts.*
 - **[Trustworthy Online Controlled Experiments: A Practical Guide to A/B Testing](https://www.cambridge.org/core/books/trustworthy-online-controlled-experiments/D97B26382EB0EB2DC2019A7A7B518F59)** — Ron Kohavi, Diane Tang and Ya Xu, Cambridge University Press, 2020.  
-  *A thorough treatment of the comparison this chapter recommends. An A/B test gives version A to one randomly chosen group and version B to another, then compares the results. The book is written for very large companies, so scale the methods down rather than copying them.*
+  *A thorough treatment of the comparison this chapter recommends. An A/B test gives version A to one randomly chosen group and version B to another, then compares the results. Many of its examples come from large online services. Check whether your customer sample is large enough for the method rather than copying their testing setup: with eight customers, a controlled experiment can detect only a very large effect.*
 - **[The Magenta Book](https://www.gov.uk/government/publications/the-magenta-book)** — HM Treasury (the UK government’s finance ministry), 2020 edition with later updates.  
   *Annex A works through methods for estimating the counterfactual when assigning customers at random is impractical. One is difference-in-differences: compare the before-and-after change in the group that received the change with the change in a group that did not. It still needs a comparison group, and it assumes the two groups were following similar trends beforehand.*

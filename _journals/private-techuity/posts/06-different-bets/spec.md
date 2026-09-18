@@ -17,7 +17,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
-- Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is generated from its six-panel storyboard with consistent fictional characters and preserved captions.
+- Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is a sequence of comic pages: each page is one image of three stacked strips that carries its dialogue, labels and amounts in the artwork, with consistent fictional characters and a short caption under each page. Every string drawn in a page comes from the page script, which traces to the article, and generated artwork is inspected against the script (spelling, cast identity, which speaker each bubble points to, counts and sizes), not assumed.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
 - Introduce necessary terms in ordinary language before using them in explanations, examples, tables, or diagrams; keep opening key points readable without prior study.
@@ -27,7 +27,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Distinguish sourced observations, the manuscript's analysis, and explicitly fictional examples.
 - Include a meaningful trade-off or counterargument and identify the evidence that would change the judgment.
 - Link related chapters and cite substantive external factual claims close to the text.
-- Keep the TL;DR and six-panel comic script consistent with the full article.
+- Keep the TL;DR and the comic page script consistent with the full article.
 - State one explicit timeline for the support-location closure in every format: all fourteen are told at the announcement, which is not formal notice; under the rejected nine-month closure eleven jobs end at month nine; under the chosen staged closure six end at month six and five at month twelve, with three specialists paid to stay and then moved to the main team. Name the risk the staging addresses (unprotected specialists resigning, and the add-on handover starting inside the six-month renewal window), and show both plans month by month.
 - Give the staged plan a decision gate before each irreversible step (formal notice, giving up a floor), with a defined renewal comparison (share of renewals due since the announcement, against last year's 90% over the same two quarters), the add-on support waiting-time trigger, who may pause and for how long, what a pause costs per month, and what a gate can no longer stop. Label the savings schedule as the no-pause case.
 - State the carry illustration’s contractual assumption wherever the amount appears: every payment the fund agreement puts ahead of the manager has already been made, so additional profit splits 80% to the fund’s investors and 20% to the manager, and the executive plan’s €100 million threshold has already been passed. Say that a fund in profit which has not reached that point pays no carry yet, and that a catch-up can change the split. The summary carries the same condition or omits the amount.
@@ -37,7 +37,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Make the commission rule consistent with its objective: full commission only on contracts with positive first-year contribution; a loss-making contract needs prior approval, pays half at signature and the rest only on renewal at a positive contribution; without approval it earns nothing. Walk through the three cases.
 - Keep each table cell and recorded-decision item to one question; place the payout arithmetic below the four-bets table; introduce Ines, Sam and Priya by role where they first act.
 - Present severance and a reference as commitments of this fictional plan, not as a universal legal entitlement.
-- Comic order: (1) a percentage is not a payment, with the threshold example; (2) the separate option example; (3) two separate payout systems, drawn as two unconnected boards; (4) a target changes behavior; (5) the proposed closure and the different time frames; (6) the staged decision and the employees who still carry the cost. Artwork carries no financial jargon that the visible caption does not explain.
+- Comic order, one page each: (1) a percentage is not a payment, with the threshold example; (2) the separate option example; (3) two separate payout systems, drawn as two unconnected boards; (4) a target changes behavior, with the two guardrails and the gross-versus-net retention example; (5) the proposed closure and the four bets with their different time frames; (6) why the nine-month closure endangers the renewals; (7) the staged decision with its two gates, its triggers and what staging costs; (8) the employees who still carry the cost, and the record that says so. Artwork carries no financial jargon that the visible caption does not explain.
 
 ## Non-goals
 
@@ -47,7 +47,7 @@ Universal prescriptions, invented evidence, promises of investment performance, 
 
 - Full Article: index.md, the substantive argument.
 - TL;DR: summary.md, the practical implications in concise prose.
-- Comic: comics.md, six illustrated fictional panels with alt text, visible captions, dialogue transcripts and machine-readable artwork prompts.
+- Comic: comics.md, eight illustrated fictional comic pages of three strips each, with the dialogue, labels and amounts in the artwork, alt text, short visible captions, dialogue transcripts and machine-readable page scripts.
 
 ## Open questions
 
@@ -64,6 +64,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-18: Comic converted from six single-scene panels to eight comic pages of three strips each (the format piloted on [[obligations-before-budget]]). The required order is kept; the closure and the staged decision each take two pages, so the comic now carries the mechanism of the renewal-window risk, the two decision gates with their triggers, and what staging costs (€550,000 against €350,000, full saving from month thirteen instead of month ten). No scenario amounts changed. Article and summary unchanged.
 - 2026-09-18: In-depth review round 3 (DB-008, DB-014, DB-015, DB-016). Add contract requirements for a specialist fallback that distinguishes customers already walked through from those not yet and states the remaining coverage gap, and for summary statements that keep the article’s qualifications and its valuation assumption. The section heading on the equity arrangements now counts four, matching its table. No scenario amount, date or authorization changed; permalink and id unchanged.
 - 2026-09-18: In-depth review round 2 (DB-011, DB-008, DB-003, DB-012, DB-013). Add contract requirements for the carry illustration’s stated 80/20 assumption and for the pause contingency (agreed retention extension, up to €30,000 of authorized additional retention payments, cash check on the pause case, renewed-approval conditions, specialist fallback). The planned one-off cost stays €550,000 and no other scenario amount changed; the authorized total is now up to €580,000 if stage two is paused; permalink and id unchanged.
 - 2026-09-18: In-depth review round 1 (DB-001 to DB-010). Add contract requirements for one closure timeline across formats with the mechanism of the renewal-window risk, decision gates and pause costs, a commission rule that does not pay for unapproved loss-making contracts, single-question table cells and decision items, plan-specific severance and reference commitments, and the comic’s new panel order ending on the staged decision; no scenario amounts changed (€600,000, €350,000, €120,000, €80,000, €550,000, 70%, €6 million, €300,000, about €4 million, about €800,000); permalink and id unchanged.

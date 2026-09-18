@@ -1,5 +1,5 @@
 ---
-title: "Can the Software and the Team Deliver What Was Promised?"
+title: "Can the Team Deliver What the Plan Promises?"
 date: 2026-09-12
 author: Željko Obrenović
 excerpt: "Assess whether the technology and the team can deliver the plan: the required capability, the evidence, the strengths worth keeping, the binding constraint and what a transition would cost before its first benefit."

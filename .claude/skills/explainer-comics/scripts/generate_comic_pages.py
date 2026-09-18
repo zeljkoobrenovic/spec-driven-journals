@@ -175,8 +175,13 @@ def build_prompt(style: dict, page: dict) -> str:
     if cast:
         lines.append("Characters on this page: " + ", ".join(cast) + ". Do not draw cast members that a strip does not mention.")
     lines += ["Any other people the scenes ask for are unnamed, wear plain grey clothes and do not resemble the cast.", ""]
+    short = style.get("short") or {}
     for n, strip in enumerate(strips, start=1):
-        lines.append(f"STRIP {n} ({POSITIONS[count][n - 1]}). Scene: {strip['scene']}")
+        scene = strip["scene"]
+        for name in cast:
+            if name in short:  # put the look next to the name, where the figure is drawn
+                scene = re.sub(rf"\b{re.escape(name)}\b(?!')", f"{name} ({short[name]})", scene, count=1)
+        lines.append(f"STRIP {n} ({POSITIONS[count][n - 1]}). Scene: {scene}")
         if strip.get("narration"):
             lines.append(f'  Narration box (small pale rectangle in the top-left corner of this strip), exact words: "{strip["narration"]}"')
         for bubble in strip.get("bubbles", []):
@@ -192,7 +197,8 @@ def build_prompt(style: dict, page: dict) -> str:
         "minus and plus signs, percent signs and decimal points, and print each string in its own strip, as many times "
         "as it is listed there and no more. Within a strip, place speech bubbles in reading order, left to right, in "
         "clear space above heads, and stand the speakers left to right in that same order so that each tail reaches "
-        "its own speaker without crossing; never cover a face or a printed label with a bubble or a hand; keep bubbles "
+        "its own speaker without crossing; never cover a face or a printed label with a bubble or a hand; speech bubbles "
+        "never overlap each other, and every word of every bubble is fully visible; keep bubbles "
         "and tails inside the strip. Print NO other text anywhere: no character names, strip numbers, page title, "
         "caption, watermark, and no amounts, dates or percentages other than the supplied ones. Leave other documents "
         "and screens as blank lines.",

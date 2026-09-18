@@ -90,7 +90,8 @@ Read each new image and check it against the block:
   picture adds up; "bigger", "does not fit", "ends before" are visibly true.
 - **Consistency across strips:** a prop shown twice looks the same twice.
 
-The model spells supplied text reliably; it fails on the other four. Budget
+The model spells supplied text reliably (about one garbled word per hundred
+pages, so still read every bubble); it fails on the other four. Budget
 two to three generations per accepted page. Replaced images are archived
 automatically (`<journal>/_research/discarded-comic-variants/` when the journal
 has a `_research/` folder). If both speakers could say either line and the
@@ -128,7 +129,11 @@ GEMINI_API_KEY=... python3 .claude/skills/explainer-comics/scripts/generate_comi
 `cast` and `style` are required and go into every prompt. `identity` (one
 emphatic sentence per character, keyed by the name used in page `cast` lists)
 closes every prompt and is what stops character drift — write it whenever skin
-tone, hair colour or age matter. `reference` is an optional cast sheet image,
+tone, hair colour or age matter. `short` (optional, same keys) is a five-to-ten-word look for each character —
+"a brown-skinned man with short tight dark curls" — which the script inserts in
+brackets after the character's first mention in every strip's scene, where the
+figure is actually drawn; add it when drift persists despite `identity` (it
+cut drift sharply in practice). `reference` is an optional cast sheet image,
 path relative to the journal directory, attached to every generation. Keep the
 same cast, identity and reference across all comics in a journal.
 
@@ -186,6 +191,15 @@ block and re-run `--render`; never edit the rendered lines.
   stands left and who stands right, in that same order.
 - **Numbers live in the picture**, as labels on the device; dialogue carries
   the reasoning. A reader should be able to check the arithmetic by looking.
+- **Spell out every segment of a scale.** "Ten segments, 1 to 7 shaded, followed
+  by two dashed ones" came back with the dashed boxes straight after 7; "the
+  first ten segments carry the numerals 1 to 10; 1 to 7 are green and 8, 9 and
+  10 are white; after segment 10 come two dashed segments" came back right.
+- **People can be counted too.** "Two small groups" came back as four and four
+  under signs saying six and five; "exactly six people standing in one row,
+  shoulder to shoulder … exactly five … a clear gap separates the groups" came
+  back right. A sheet lying on a table gets its heading drawn upside down; have
+  the character hold it up "so that its heading reads upright for the reader".
 - **Number the things whose count matters.** "A row of four chairs" came back
   as three; four chairs with the numerals 1–4 on their backrests (listed as
   labels) came back as four. Pin cards side by side "with clear gaps" rather
@@ -218,6 +232,10 @@ block and re-run `--render`; never edit the rendered lines.
   `identity`.** "A CFO with round glasses" came back as a woman twice; "a man
   with short brown hair" did not. Expect drift anyway on roughly one page in
   three, and re-roll it.
+- **Empty space attracts props.** A staircase alone in a strip came back
+  surrounded by money bags and banknotes with `$` signs. Say what the strip
+  contains and that those things "are the only things in the strip", on "a bare,
+  empty floor against a plain wall".
 - **Props attract lettering.** Money bags get a `$`, cheques a payee name,
   certificates a garbled heading, whiteboard arrows pseudo-text, a "tag from the
   money bag" the words MONEY BAG. Describe such props positively as plain

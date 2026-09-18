@@ -9,6 +9,13 @@
     "Sam": "SAM is a light-skinned MAN with a masculine face and SHORT brown hair cropped above his ears (never a bob, never chin-length hair, never a woman), round glasses and an amber cardigan over a white shirt, third person in the reference.",
     "Priya": "PRIYA is a brown-skinned WOMAN with straight shoulder-length dark hair and a plum blouse, fourth person in the reference.",
     "Ines": "INES is a light-skinned OLDER WOMAN with a short GREY bob (grey hair, never dark) and a navy jacket, fifth person in the reference."
+  },
+  "short": {
+    "Morgan": "a light-skinned woman with a jet-black jaw-length bob and fringe, in a bright green jacket",
+    "Alex": "a brown-skinned man with short tight dark curls, in a blue rolled-sleeve shirt",
+    "Sam": "a light-skinned man with short brown hair and round glasses, in an amber cardigan over a collared white shirt",
+    "Priya": "a brown-skinned woman with straight shoulder-length dark hair, in a plum blouse",
+    "Ines": "an older light-skinned woman with a short grey bob, in a navy jacket"
   }
 }
 -->
