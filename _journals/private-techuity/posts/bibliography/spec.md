@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-16
+revised: 2026-09-20
 ---
 
 # Spec: Bibliography and Evidence Guide
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Cover the technology operating partner appendix with S79–S90, dated consultation scope, direct investment-firm examples and explicit limits on claims about hiring growth and performance. Identify a supplied text copy when that is the version consulted.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Keep consultation scope and source dates accurate when an editorial correction requires a focused primary-source recheck.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
@@ -31,7 +32,7 @@ Exhaustive coverage, a universal role charter, or a claim of completed professio
 
 ## Modalities
 
-This reference page uses the Article modality. The 29 main chapters and two appendix essays additionally provide a TL;DR and an illustrated comic. Reference material is not padded with redundant adaptations.
+This reference page uses the Article modality. The 31 main chapters additionally provide a summary and an illustrated comic; the optional technology operating partner appendix uses the Article modality. Reference material is not padded with redundant adaptations.
 
 ## Open questions
 
@@ -48,6 +49,9 @@ See the bibliography and the relevant chapters. The source registry records cons
 
 ## Changelog
 
+- 2026-09-20 (portfolio hiring): Extend S81 and S85 consultation notes after rechecking Redgrave’s talent-management discussion and KKR Capstone’s recruitment, development and retention remit. No new source identifiers.
+- 2026-09-20 (LinkedIn follow-up): Register S90, David Mackey’s post read in the author-supplied text copy; record the unverified publication date and distinguish recruiter experience from measured career outcomes.
+- 2026-09-20: Register S79–S89 for the technology operating partner appendix; extend the consultation window and topic index, keeping recruiter commentary and provider descriptions distinct from evidence of outcomes.
 - 2026-09-16: Register S77 (Council Directive 98/59/EC on collective redundancies) and S78 (US WARN Act, 29 U.S.C. §§ 2101–2102), widen S76 to its executive-officer approval clause, add a workforce-process topic row, and extend the consultation window to 16 September.
 - 2026-09-15: Editorial revision per REVIEW.md: registered S72–S76 for body evidence other chapters had linked without identifiers (Investor.gov bonds, the two ILPA model LPAs, the Fastly Q4 2020 shareholder letter, Avalyn Pharma §3.2) and converted those inline links to the [Sxx: …] form; widened S49's consulted scope to Notes 7, 8 and 10 and the cash-flow statement (PDF pp. 26, 48–49) with the finance-costs-paid figures; noted that S62 states completion subject to regulatory approval; recorded the working-paper (50%, 15 unicorns) versus journal (48%, 14) versions behind the chapter's “about 50%”; corrected the consultation range to September 12–15; added S62/S63 and S72–S76 to the topic index; regenerated every “Used in” line from the actual citations; trimmed the repeated method disclaimer; permalink and id unchanged.
 - 2026-09-14: Replaced revision-history narrative with present-tense scope, added a topic index and per-entry “Used in” chapter links, merged the two reading-rules sections, stated the proposed-methods-versus-evidence distinction once, added an evidence-versus-further-reading section and normalized S58–S61, in response to the 2026-09-14 review; permalink and id unchanged.

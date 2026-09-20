@@ -1,5 +1,5 @@
 {id: raise-what-you-need}
-# 6. Match the Funding to the Work
+# 5. Match the Funding to the Work
 
 ![Match the Funding to the Work — logo](private-techuity/posts/04-raise-what-you-need/assets/images/04-raise-what-you-need/logo.jpeg)
 

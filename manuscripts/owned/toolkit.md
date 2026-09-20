@@ -1,5 +1,5 @@
 {id: toolkit}
-# 33. Practical Tools for Ownership and Technology Decisions
+# Practical Tools for Ownership and Technology Decisions
 
 ![Practical Tools for Ownership and Technology Decisions — logo](private-techuity/posts/toolkit/assets/images/toolkit/logo.jpeg)
 
@@ -25,7 +25,7 @@ The tools keep their original numbers because chapters and earlier readers cite 
 
 | Stage | Your immediate question | Record | Teaching chapter |
 | --- | --- | --- | --- |
-| **Map** | Who receives the investment money, and who can approve the work? | Ownership, funding and decision map — [Tool 1](#toolkit--tool-1) | [An Investment Announcement Is Not a Budget](#announcement-is-not-a-budget), [Decide Who Decides, Before You Disagree](#decide-who-decides) |
+| **Map** | Who receives the investment money, and who can approve the work? | Ownership, funding and decision map — [Tool 1](#toolkit--tool-1) | [An Investment Announcement Is Not a Budget — Read the Fine Print](#announcement-is-not-a-budget), [Decide Who Decides, Before You Disagree](#decide-who-decides) |
 | **Investigate** | What should we check before an investment, and how do we record what we found? | One-page technology thesis — [Tool 2](#toolkit--tool-2); material finding — [Tool 3](#toolkit--tool-3) | [Diligence Is Your Chance to Correct the Plan Before It Is Signed](#diligence-corrects-the-plan) |
 | **Compare options** | Which combination of improvements can we fund and staff at once? | Investment choices and capacity — [Tool 12](#toolkit--tool-12) | [You Cannot Fund Every Good Project at Once](#cannot-fund-everything) |
 | **Compare options** | A financial target is driving a design proposal; which design alternative? | Valuation-to-architecture record — [Tool 11](#toolkit--tool-11) | [Turn “We Expect Growth” Into a Design Decision](#growth-into-design) |
@@ -161,7 +161,7 @@ Each stage added information to one underlying record; the tables above show its
 {id: toolkit--tool-1}
 ## 1. Map the Shareholders, Funding and Decision
 
-Use before translating an ownership announcement into an operating promise. See the chapters [An Investment Announcement Is Not a Budget](#announcement-is-not-a-budget), [Confirm the Cash Before You Commit](#obligations-before-budget) and [Decide Who Decides, Before You Disagree](#decide-who-decides). Complete this for the actual arrangement, rather than assuming every investor has a fund or controls the company.
+Use before translating an ownership announcement into an operating promise. See the chapters [An Investment Announcement Is Not a Budget — Read the Fine Print](#announcement-is-not-a-budget), [Confirm the Cash Before You Commit](#obligations-before-budget) and [Decide Who Decides, Before You Disagree](#decide-who-decides). Complete this for the actual arrangement, rather than assuming every investor has a fund or controls the company.
 
 | Field | Record |
 | --- | --- |

@@ -1,7 +1,7 @@
 {id: announcement-is-not-a-budget}
-# 3. An Investment Announcement Is Not a Budget
+# 2. An Investment Announcement Is Not a Budget — Read the Fine Print
 
-![An Investment Announcement Is Not a Budget — logo](private-techuity/posts/01-announcement-is-not-a-budget/assets/images/01-announcement-is-not-a-budget/logo.jpeg)
+![An Investment Announcement Is Not a Budget — Read the Fine Print — logo](private-techuity/posts/01-announcement-is-not-a-budget/assets/images/01-announcement-is-not-a-budget/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to trace who owns the company, who supplies its money and who can approve spending it.
 

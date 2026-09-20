@@ -1,5 +1,5 @@
 {id: roadmap-to-revenue}
-# 12. The Path From Roadmap to Revenue Is Fragile
+# 11. The Path From Roadmap to Revenue Is Fragile
 
 ![The Path From Roadmap to Revenue Is Fragile — logo](private-techuity/posts/10-roadmap-to-revenue/assets/images/10-roadmap-to-revenue/logo.jpeg)
 

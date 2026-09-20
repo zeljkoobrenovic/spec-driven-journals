@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-16
+revised: 2026-09-20
 ---
 
 # Spec: Glossary
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Define technology operating partner (including technical operating partner) and AI operating partner in the roles section and alphabetical index, with the appendix as their teaching home.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
@@ -49,6 +50,7 @@ See the bibliography and the relevant chapters. The source registry records cons
 
 ## Changelog
 
+- 2026-09-20: Define technology operating partner and AI operating partner, add their alphabetical entries and link the appendix; distinguish title from formal authority.
 - 2026-09-16 (later): eighteen terms added for the reduction and financing chapters (minimum operating reserve, bridge, convertible loan, drawdown, subscription agreement, collected revenue, fully loaded cost, one-off cost / recurring saving, investor director, operating plan, good and bad leaver, accrued leave, fixed-term contract, outplacement, funded contingency, restart rule, go-live, on-call rota) with index entries.
 - 2026-09-16: Workforce terms added (headcount plan, hiring freeze, redeployment, reduction in force, notice period, severance, collective consultation, funding condition) with index entries.
 - 2026-09-15: Replace the cash-only budgeting sentences with the funding-state principle; repair the term-sheet, announced-value, accountable-leader, investment-committee, shareholder, adviser and operating-team rows; add Authority and Lender rows and the missing index entries (Audited financial statements, Authority, Lender, Term sheet, Terminal value); align catch-up, waterfall and RVPI wording with [[fund-economics]]; soften the how-to-use certification to an editorial objective. Permalink unchanged.

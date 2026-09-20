@@ -8,7 +8,7 @@ This is a living journal and a work in progress: a draft built by [Željko Obren
 
 Start with [the purpose and reading guide](posts/introduction/index.md). It explains the company leader’s responsibilities, the comparative ownership lens, the fictional company and routes for different funding and ownership situations.
 
-The book contains 31 main chapters across six parts. Each main chapter includes an article, a 300–500-word summary and a six-panel illustrated comic. The edition includes 41 header logos and 42 navigation icons, alongside 186 comic panels and a dedicated Owned journal logo; the fund-economics reference page still needs its header logo.
+The book contains 31 main chapters across six parts, followed by an optional appendix on technology operating partners. Each main chapter includes an article, a 300–500-word summary and a six-panel illustrated comic. The edition includes 43 header logos and 43 navigation icons, alongside 186 comic panels and a dedicated Owned journal logo. The technology operating partner appendix includes a chapter logo, navigation icon and three explanatory figures covering portfolio support, hiring and AI decisions.
 
 ## Contents
 
@@ -79,6 +79,10 @@ Test leadership judgments against specific histories while keeping the evidence 
 - **30.** [[teamsystem]]
 - **31.** [[success-for-whom]]
 
+### Appendix
+
+- [[tech-operating-partner]] — why the function is growing in importance, how it compares with company leadership roles and how AI changes its work.
+
 ### Reference Material
 
 - [[toolkit]] — practical decision and support records, with one finding followed all the way through.
@@ -87,5 +91,7 @@ Test leadership judgments against specific histories while keeping the evidence 
 - [[bibliography]] — sources, consultation dates and evidence limits.
 
 ## Editorial Status
+
+The 20 September 2026 appendix adds the technology operating partner function, comparisons with CIO, CTO, CPO, Chief Architect and engineering leadership, and AI’s effect on the work. Its evidence and validation notes are in `_research/tech-operating-partner-20260920.md`.
 
 This living manuscript follows the six-part structure in [STRUCTURE.md](STRUCTURE.md) and the Owned rewrite in [PLAN.md](PLAN.md). Leadership under investor ownership is the central subject. Private equity remains the deepest historical treatment; broader comparisons state their assumptions and evidence limits. Articles, summaries and illustrated comics share the revised framing. The artwork and bold emphasis are in place. The 14 September 2026 editorial review (`posts/REVIEW.md` and per-post `REVIEW.md`) was implemented the same day; `posts/REVISION_LOG.md` records each disposition. On 16 September 2026 the investor-workforce revision (`_research/investor-workforce-impact-plan.md`) expanded the organization chapter’s treatment of investor-proposed appointments, added the Part V reduction chapter, and extended the toolkit, glossary and bibliography.

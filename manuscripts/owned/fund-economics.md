@@ -1,5 +1,5 @@
 {id: fund-economics}
-# 34. Fund Economics: Fees, Distributions and Performance Reports
+# Fund Economics: Fees, Distributions and Performance Reports
 
 ![Fund Economics: Fees, Distributions and Performance Reports — logo](private-techuity/posts/fund-economics/assets/images/fund-economics/logo.jpeg)
 
@@ -11,7 +11,7 @@
 > * A fund performance report **separates what has been distributed from estimated value still held**: DPI counts distributions (all cash in this page's example), RVPI the remaining net value at its current estimate, and TVPI adds the two. Gross, net and borrowing-adjusted figures differ.
 > * For a company leader, these mechanics explain **the timing and kind of requests** a company receives. A higher valuation is not itself a cash distribution; ask whether a reported result was received or estimated.
 
-This page is optional depth behind the chapters [An Investment Announcement Is Not a Budget](#announcement-is-not-a-budget) and [Same Company, Same Performance, Three Different Investor Returns](#three-different-returns) in Part I: what a fund's investors and its manager are paid, and how a fund reports its results. Nothing here is needed to follow the main chapters; the [Glossary](#glossary) defines each term in one line. The examples are deliberately simple, and every rate is an illustrative assumption rather than a typical or recommended term.
+This page is optional depth behind the chapters [An Investment Announcement Is Not a Budget — Read the Fine Print](#announcement-is-not-a-budget) and [Same Company, Same Performance, Three Different Investor Returns](#three-different-returns) in Part I: what a fund's investors and its manager are paid, and how a fund reports its results. Nothing here is needed to follow the main chapters; the [Glossary](#glossary) defines each term in one line. The examples are deliberately simple, and every rate is an illustrative assumption rather than a typical or recommended term.
 
 {id: fund-economics--how-fees-and-profit-sharing-work}
 ## How Fees and Profit Sharing Work
@@ -81,7 +81,7 @@ A **gross return** is measured before specified fees and other deductions; a **n
 {id: fund-economics--what-this-means-for-the-company-leader}
 ## What This Means for the Company Leader
 
-**Fund incentives can shape the timing and kind of requests.** A fund near the end of its term, or a manager whose carry depends on a realization that has not yet cleared the hurdle, has reasons to prefer work that shows up in a sale price soon, such as earnings improvements, over longer-dated capability work. A fund early in its investment period may accept spending that raises the estimated value of a holding before any cash returns. Which applies is a matter of fact, not of label: ask which fund owns the company, where it is in its life and what its agreements say. The chapter [Management Equity, Fund Carry and Employee Jobs Are Different Bets](#different-bets) compares the incentives of different investors; the chapter [An Investment Announcement Is Not a Budget](#announcement-is-not-a-budget) gives the one-page record for locating the payer and the approver.
+**Fund incentives can shape the timing and kind of requests.** A fund near the end of its term, or a manager whose carry depends on a realization that has not yet cleared the hurdle, has reasons to prefer work that shows up in a sale price soon, such as earnings improvements, over longer-dated capability work. A fund early in its investment period may accept spending that raises the estimated value of a holding before any cash returns. Which applies is a matter of fact, not of label: ask which fund owns the company, where it is in its life and what its agreements say. The chapter [Management Equity, Fund Carry and Employee Jobs Are Different Bets](#different-bets) compares the incentives of different investors; the chapter [An Investment Announcement Is Not a Budget — Read the Fine Print](#announcement-is-not-a-budget) gives the one-page record for locating the payer and the approver.
 
 **A higher valuation is not itself a cash distribution.** The year-three row in the announcement chapter's capital-call timeline and the RVPI ratio here are the same fact seen from two sides: an estimate can rise without anyone receiving money. When told that the investment "is performing well", ask whether the statement rests on distributions or on residual value. Keep three states apart: a term sheet sets out proposed terms and does not by itself establish an unconditional commitment to fund (which provisions bind depends on the document); a signed sale or investment agreement is a contractual commitment, usually with conditions, until completion and payment; only then is the value received. Never describe an announced or agreed figure as received.
 

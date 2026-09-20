@@ -1,5 +1,5 @@
 {id: customers-lenders-investors}
-# 2. Customers, Lenders and Investors: What Each Expects in Return
+# 1. Customers, Lenders and Investors: What Each Expects in Return
 
 ![Customers, Lenders and Investors: What Each Expects in Return — logo](private-techuity/posts/00-customers-lenders-investors/assets/images/00-customers-lenders-investors/logo.jpeg)
 
@@ -164,7 +164,7 @@ Whichever label applies, the leadership consequence is a question to investigate
 
 A product or technology proposal needs both a useful outcome and a way to pay for the work. Understanding financing helps you discuss the timing, obligations and decisions behind that funding.
 
-Larkspur's €100,000 was small enough for three people to trace in an afternoon. The next chapter starts from a €100 million investment announcement and asks the same two questions at that scale: who actually receives the money, and which body can authorize its use? The chapter [An Investment Announcement Is Not a Budget](#announcement-is-not-a-budget) follows those questions through the organizations a larger transaction involves.
+Larkspur's €100,000 was small enough for three people to trace in an afternoon. The next chapter starts from a €100 million investment announcement and asks the same two questions at that scale: who actually receives the money, and which body can authorize its use? The chapter [An Investment Announcement Is Not a Budget — Read the Fine Print](#announcement-is-not-a-budget) follows those questions through the organizations a larger transaction involves.
 
 {id: customers-lenders-investors--questions-to-consider}
 ## Questions to Consider

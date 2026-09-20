@@ -1,5 +1,5 @@
 {id: obligations-before-budget}
-# 7. Confirm the Cash Before You Commit
+# 6. Confirm the Cash Before You Commit
 
 ![Confirm the Cash Before You Commit — logo](private-techuity/posts/05-obligations-before-budget/assets/images/05-obligations-before-budget/logo.jpeg)
 

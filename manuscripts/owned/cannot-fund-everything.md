@@ -1,5 +1,5 @@
 {id: cannot-fund-everything}
-# 11. You Cannot Fund Every Good Project at Once
+# 10. You Cannot Fund Every Good Project at Once
 
 ![You Cannot Fund Every Good Project at Once — logo](private-techuity/posts/09-cannot-fund-everything/assets/images/09-cannot-fund-everything/logo.jpeg)
 

@@ -7,7 +7,8 @@ python3 -B manuscripts/_scripts/export_journal.py \
   --journal _journals/private-techuity \
   --output manuscripts/owned \
   --author "Željko Obrenović" \
-  --frontmatter-post reading-guide \
+  --frontmatter-post introduction \
+  --backmatter-section "Appendix" \
   --backmatter-section "Reference Material" \
   --max-manuscript-mb 40
 

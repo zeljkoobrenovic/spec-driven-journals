@@ -1,5 +1,5 @@
 {id: bibliography}
-# 36. Bibliography and Evidence Guide
+# Bibliography and Evidence Guide
 
 ![Bibliography and Evidence Guide — logo](private-techuity/posts/bibliography/assets/images/bibliography/logo.jpeg)
 
@@ -11,9 +11,9 @@
 > * **Source interests and evidence strength matter.** Company announcements, investor accounts, guidance documents and original research answer different questions and need different qualifications.
 > * **Keep evidence, proposed methods and fictional examples distinct.** The cases and studies here are evidence about what happened in particular settings; the book’s templates and worked examples are the author’s proposals.
 
-This page lists the sources consulted for the book. Sources were consulted between September 12 and September 16, 2026; each entry carries its own consultation date. Each entry states the version and the material consulted; access to a document does not imply that every page was reviewed, and publication dates and study periods differ from the consultation dates. Where an individual date affects how a figure or a claim should be read, the entry gives it.
+This page lists the sources consulted for the book. Sources were consulted between September 12 and September 20, 2026; each entry carries its own consultation date. Each entry states the version and the material consulted; access to a document does not imply that every page was reviewed, and publication dates and study periods differ from the consultation dates. Where an individual date affects how a figure or a claim should be read, the entry gives it.
 
-Source identifiers are stable. **S** marks a public source and **P** a supplied private input; the numbers identify, they do not rank. Identifiers are never reassigned, so gaps stay (there is no S38) and a citation in a chapter keeps meaning the same document. The register currently runs to S78. Private inputs are described without publishing their contents or file details.
+Source identifiers are stable. **S** marks a public source and **P** a supplied private input; the numbers identify, they do not rank. Identifiers are never reassigned, so gaps stay (there is no S38) and a citation in a chapter keeps meaning the same document. The register currently runs to S90. Private inputs are described without publishing their contents or file details.
 
 {id: bibliography--topic-index}
 ## Topic Index
@@ -23,13 +23,14 @@ Use this table to find evidence by question. A source can appear under more than
 | Topic | Identifiers | Start with |
 | --- | --- | --- |
 | Valuation, earnings measures and investor returns | S03, S04, S05, S06, S52, S53, S73, S74 | [A Valuation Is an Estimate, Not a Fact](#valuation-is-an-estimate), [Same Company, Same Performance, Three Different Investor Returns](#three-different-returns), [Fund Economics: Fees, Distributions and Performance Reports](#fund-economics) |
-| Cash, funding forms and financing documents | S01, S02, S07, S54, S55, S56, S57, S58, S59, S60, S61, S72 | [Customers, Lenders and Investors: What Each Expects in Return](#customers-lenders-investors), [An Investment Announcement Is Not a Budget](#announcement-is-not-a-budget), [Confirm the Cash Before You Commit](#obligations-before-budget) |
+| Cash, funding forms and financing documents | S01, S02, S07, S54, S55, S56, S57, S58, S59, S60, S61, S72 | [Customers, Lenders and Investors: What Each Expects in Return](#customers-lenders-investors), [An Investment Announcement Is Not a Budget — Read the Fine Print](#announcement-is-not-a-budget), [Confirm the Cash Before You Commit](#obligations-before-budget) |
 | Governance, rights and incentives | S01, S02, S04, S61, S76 | [Decide Who Decides, Before You Disagree](#decide-who-decides), [Management Equity, Fund Carry and Employee Jobs Are Different Bets](#different-bets), [Headcount Is Not Capacity: Trace the Work Before You Hire](#fix-decisions-before-hiring) |
 | Workforce reductions and employment process | S77, S78 | [Anatomy of a Layoff](#anatomy-of-a-layoff) |
 | Delivery, architecture and cloud cost | S13, S14, S15, S16, S53, S75 | [Can the Team Deliver What the Plan Promises?](#can-the-team-deliver), [The Path From Roadmap to Revenue Is Fragile](#roadmap-to-revenue), [Why a Cheaper Cloud Bill Can Be Bad News](#cheaper-cloud-bill) |
 | Security and resilience | S17 | [Prove You Can Restore, Not Just That You Back Up](#prove-you-can-restore) |
 | AI evidence | S18, S19, S20, S21, S63 | [An AI Strategy Hides Three Investment Questions](#ai-strategy-three-questions) |
 | Investor support and advisers | S22, P01, P02 | [Is the Investor’s Adviser Helping, Assessing or Deciding?](#investors-adviser), [Find the Help That Changes What Your Team Can Do](#help-that-changes-capability) |
+| Technology operating partners, leadership roles and AI support | S79–S90 | [The Rise of the Technology Operating Partner](#tech-operating-partner) |
 | Case: Hilton and Skype | S23, S24, S25, S26, S27, S28, S29, S64, S65 | [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype) |
 | Case: Visma | S30, S31, S32, S33, S43, S44, S62 | [Visma: Continuity of Manager Is Not Continuity of Money](#visma) |
 | Case: Toys R Us | S34, S35, S36, S37, S40, S41, S50, S51 | [Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us) |
@@ -60,7 +61,7 @@ The book contains two kinds of material, and this register supports them differe
 {id: bibliography--evidence-used-versus-further-reading}
 ## Evidence Used Versus Further Reading
 
-The main chapters end with a “To Probe Further” list; the reading guide, the part introductions and the reference pages do not. Those lists are optional reading, chosen to help a reader go deeper on the chapter’s subject. Their one-sentence annotations were checked for scope, meaning that the description stays within what the resource covers. They are not part of this consulted-evidence register unless the same resource also carries an S identifier, and a chapter’s argument does not rest on them. Listing a resource there does not mean the author consulted it for the book’s claims. Where a chapter’s claim depends on a source, that source is cited inline with an S or P identifier and appears below.
+The main chapters and the technology operating partner appendix end with a “To Probe Further” list; the reading guide, the part introductions and the reference pages do not. Those lists are optional reading, chosen to help a reader go deeper on the chapter’s subject. Their one-sentence annotations were checked for scope, meaning that the description stays within what the resource covers. They are not part of this consulted-evidence register unless the same resource also carries an S identifier, and a chapter’s argument does not rest on them. Listing a resource there does not mean the author consulted it for the book’s claims. Where a chapter’s claim depends on a source, that source is cited inline with an S or P identifier and appears below.
 
 One annotation carries a figure precise enough to need its version stated. The chapter [A Valuation Is an Estimate, Not a Fact](#valuation-is-an-estimate) cites Gornall and Strebulaev on unicorn valuations and says reported post-money valuations averaged “about 50%” above the authors’ modeled fair values. That is the figure in the [2017 NBER working paper](https://www.nber.org/papers/w23895), which reports an average of 50% above fair value with 15 of the 135 US unicorns more than 100% above. The version published in the *Journal of Financial Economics* 135(1), 2020, pp. 120–143 reports 48%, with 14 more than 100% above. The chapter links the working paper and names the journal version, and “about 50%” covers both estimates; the direction is the source’s own. Reported values average roughly half again above modeled fair value, which is not the same statement as fair values being 50% below reported values, and an average ratio cannot be inverted to obtain the average of the reverse ratio.
 
@@ -74,7 +75,7 @@ U.S. Securities and Exchange Commission, Investor.gov. [Private Equity Funds](ht
 
 **Evidence type:** Regulator education. **Consulted scope:** Guide consulted for fund structure, investment forms, illiquidity, and investor considerations. An introduction, not a particular fund agreement. Rechecked September 13, 2026 for the distinction between controlling and minority investment strategies.
 
-**Used in:** [Customers, Lenders and Investors: What Each Expects in Return](#customers-lenders-investors), [An Investment Announcement Is Not a Budget](#announcement-is-not-a-budget), [Fund Economics: Fees, Distributions and Performance Reports](#fund-economics), [Glossary](#glossary).
+**Used in:** [Customers, Lenders and Investors: What Each Expects in Return](#customers-lenders-investors), [An Investment Announcement Is Not a Budget — Read the Fine Print](#announcement-is-not-a-budget), [Fund Economics: Fees, Distributions and Performance Reports](#fund-economics), [Glossary](#glossary).
 
 {id: bibliography--s02-ilpa-principles}
 ### S02 — ILPA principles
@@ -83,7 +84,7 @@ Institutional Limited Partners Association (ILPA). [ILPA Principles 3.0: Fosteri
 
 **Evidence type:** LP industry guidance. **Consulted scope:** Selected sections on alignment, economics, governance, transparency, and continuation transactions. An LP perspective and voluntary principles, not law or proof of universal practice.
 
-**Used in:** [An Investment Announcement Is Not a Budget](#announcement-is-not-a-budget), [Management Equity, Fund Carry and Employee Jobs Are Different Bets](#different-bets), [Judge an Investor by Their Behavior Under Pressure](#investor-under-pressure), [Hand Over the Obligations, Not Just the Company](#handover-of-obligations), [Glossary](#glossary).
+**Used in:** [An Investment Announcement Is Not a Budget — Read the Fine Print](#announcement-is-not-a-budget), [Management Equity, Fund Carry and Employee Jobs Are Different Bets](#different-bets), [Judge an Investor by Their Behavior Under Pressure](#investor-under-pressure), [Hand Over the Obligations, Not Just the Company](#handover-of-obligations), [Glossary](#glossary).
 
 {id: bibliography--s03-kaplan-and-stromberg}
 ### S03 — Kaplan and Strömberg
@@ -760,6 +761,114 @@ United States Code, Title 29, Chapter 23. [§ 2101, Definitions; exclusions from
 
 **Used in:** [Anatomy of a Layoff](#anatomy-of-a-layoff).
 
+{id: bibliography--s79-korn-ferry-on-technology-operating-partners}
+### S79 — Korn Ferry on technology operating partners
+
+Korn Ferry. [Tech Titans in Private Equity](https://www.kornferry.com/institute/tech-titans-in-private-equity). Undated web article; accessed 2026-09-20.
+
+**Evidence type:** Executive-search practitioner commentary. **Consulted scope:** Web article on role scope, team models and cost allocation. The linked full report was not reviewed. Commercial perspective; no market-wide hiring series or causal return estimate established.
+
+**Used in:** [The Rise of the Technology Operating Partner](#tech-operating-partner).
+
+{id: bibliography--s80-ee-solutions-operating-partner-model}
+### S80 — EE Solutions operating-partner model
+
+EE Solutions Editorial Team. [What a Technology Operating Partner Does for Private Capital Firms](https://www.eesolutions.io/insights/technology-operating-partner-private-capital/). 2026-09-02; accessed 2026-09-20.
+
+**Evidence type:** Technology-services provider commentary. **Consulted scope:** Definition, lifecycle, diligence continuity, post-close work, AI and shared portfolio capabilities. Describes a commercial service model; client examples and claimed benefits were not independently verified.
+
+**Used in:** [The Rise of the Technology Operating Partner](#tech-operating-partner).
+
+{id: bibliography--s81-redgrave-on-the-technology-operating-partner}
+### S81 — Redgrave on the technology operating partner
+
+Rind Bajwa, Redgrave. [Why Technology Operating Partners Are Becoming Essential in Private Equity](https://redgravesearch.com/insights/technology-operating-partner-in-private-equity/). 2024-06-07 (page displays 07/06/2024); accessed 2026-09-20.
+
+**Evidence type:** Executive-search practitioner commentary. **Consulted scope:** Role scope, company support, recruitment guidance, staff development, organizational design and matching leadership backgrounds to assignments. Talent-management section rechecked 2026-09-20. Commercial perspective; broad CIO/CTO characterizations are not universal job definitions. No market-wide growth rate inferred.
+
+**Used in:** [The Rise of the Technology Operating Partner](#tech-operating-partner).
+
+{id: bibliography--s82-vertex-cio-outsourced-operating-support}
+### S82 — Vertex CIO outsourced operating support
+
+Vertex CIO Advisory. [Technology Operating Partner for Private Equity](https://vertexcio.com/pe-technology-operating-partner/). Undated service page; accessed 2026-09-20.
+
+**Evidence type:** Advisory-provider service description. **Consulted scope:** Lifecycle coverage, outsourced arrangements and distinction from a company fractional executive. Comparative performance claims, portfolio-size thresholds and suggested intervention timing were not adopted as evidence.
+
+**Used in:** [The Rise of the Technology Operating Partner](#tech-operating-partner).
+
+{id: bibliography--s83-acertitude-on-ai-and-technology-operating-partners}
+### S83 — Acertitude on AI and technology operating partners
+
+Jessica Tvelia, Acertitude. [Tech OPs vs. AI Solutions: The New Dilemma for PE Operating Leaders](https://www.acertitude.com/insights/choosing-between-ai-and-tech-operating-partners-what-pe-leaders-need-to-know). Undated article discussing Q1 2025; accessed 2026-09-20.
+
+**Evidence type:** Executive-search practitioner commentary. **Consulted scope:** AI specialization and separate or blended roles. Commercial perspective. Hiring-growth figures and secondary survey statistics were not independently verified and are not used in the chapter.
+
+**Used in:** [The Rise of the Technology Operating Partner](#tech-operating-partner).
+
+{id: bibliography--s84-vaultinum-on-continuing-technology-review}
+### S84 — Vaultinum on continuing technology review
+
+Marine Yborra, Vaultinum. [Operating Partner: how to drive value creation during the holding period](https://vaultinum.com/blog/operating-partners-tech-due-diligence). Updated 2026-07-16; accessed 2026-09-20.
+
+**Evidence type:** Technology-diligence provider commentary. **Consulted scope:** Revisiting acquisition assumptions during ownership, technology monitoring and exit preparation. The promoted service is not independently validated here. The asserted average holding period is not used.
+
+**Used in:** [The Rise of the Technology Operating Partner](#tech-operating-partner).
+
+{id: bibliography--s85-kkr-capstone-operating-function}
+### S85 — KKR Capstone operating function
+
+KKR. [Capstone](https://www.kkr.com/approach/capstone). Living organizational page; accessed 2026-09-20.
+
+**Evidence type:** Investment firm description of its own practice. **Consulted scope:** Investment assessment, operating plans, implementation, cross-company programs and the digital/technology remit; recruitment, development and retention in the wider operating function. Talent remit rechecked 2026-09-20. Supports existence and stated scope of a function; no independent outcome or causal performance assessment.
+
+**Used in:** [The Rise of the Technology Operating Partner](#tech-operating-partner).
+
+{id: bibliography--s86-blackstone-on-ai-and-operating-support}
+### S86 — Blackstone on AI and operating support
+
+Blackstone; interview with John Stecher and Rodney Zemmel. [AI at Scale: A Conversation with Blackstone’s CTO and Global Head of the Operating Team](https://www.blackstone.com/insights/article/ai-at-scale-a-conversation-with-blackstones-cto-and-global-head-of-the-operating-team/). 2026-05-07; accessed 2026-09-20.
+
+**Evidence type:** Investment firm interview about its own practice. **Consulted scope:** Questions 2–4 on software diligence, investment workflows and the dedicated AI team. Firm-reported practice; productivity and financial-result claims and wider forecasts were not independently verified or adopted.
+
+**Used in:** [The Rise of the Technology Operating Partner](#tech-operating-partner).
+
+{id: bibliography--s87-gitlab-chief-product-officer-role}
+### S87 — GitLab Chief Product Officer role
+
+GitLab. [Chief Product Officer](https://handbook.gitlab.com/job-description-library/product/chief-product-officer/). Living job-description page; accessed 2026-09-20.
+
+**Evidence type:** Company-published role description. **Consulted scope:** Role purpose and responsibilities: product direction, prioritization and collaboration with engineering. An example from one company, not a universal CPO charter or evidence about current staffing.
+
+**Used in:** [The Rise of the Technology Operating Partner](#tech-operating-partner).
+
+{id: bibliography--s88-ibm-on-varying-cio-and-cto-remits}
+### S88 — IBM on varying CIO and CTO remits
+
+IBM Institute for Business Value. [2021 CIO Study: The CIO Revolution](https://www.ibm.com/thought-leadership/institute-business-value/en-us/report/cio). 2021 study, web presentation consulted; accessed 2026-09-20.
+
+**Evidence type:** Vendor-sponsored leadership study. **Consulted scope:** CIO–CTO collaboration discussion and “The 3 CIO Mandates” section on organizational variation. Historical framing only; survey percentages, causal claims and a current role-distribution estimate are not used.
+
+**Used in:** [The Rise of the Technology Operating Partner](#tech-operating-partner).
+
+{id: bibliography--s89-govs-005-technology-accountability-and-architecture}
+### S89 — GovS 005 technology accountability and architecture
+
+UK Government Digital Service. [Government Functional Standard — GovS 005: Digital](https://www.gov.uk/government/publications/government-functional-standard-govs-005-digital/government-functional-standard-govs-005-digital-html). Updated 2026-04-22; accessed 2026-09-20.
+
+**Evidence type:** UK government functional standard. **Consulted scope:** Scope and sections 4.5.5–4.5.6, particularly the technology accountable officer and supporting Chief Architect. Illustrates one public-sector allocation of responsibilities; its requirements are not applied to private companies.
+
+**Used in:** [The Rise of the Technology Operating Partner](#tech-operating-partner).
+
+{id: bibliography--s90-mackey-on-building-an-operating-partner-track-record}
+### S90 — Mackey on building an operating-partner track record
+
+David Mackey, Partner at Albany. [Want to become a tech operating partner at a PE fund?](https://www.linkedin.com/posts/davidatalbany_want-to-become-a-tech-operating-partner-at-activity-7388847857598107648-EAg4/). Exact publication date unverified; supplied copy displays “10mo” and “Edited”; supplied copy consulted 2026-09-20.
+
+**Evidence type:** Recruiter practitioner commentary on LinkedIn; supplied text copy. **Consulted scope:** Full supplied post text consulted on 2026-09-20: interim, fractional and advisory assignments as a route to portfolio experience; technical diagnosis, versatility, communication and results. Original page, linked graphic, comments and publication date were not independently verified. A recruiter’s practice account, not measured hiring outcomes or a guaranteed route to appointment.
+
+**Used in:** [The Rise of the Technology Operating Partner](#tech-operating-partner).
+
 {id: bibliography--supplied-private-inputs}
 ## Supplied Private Inputs
 
@@ -783,5 +892,7 @@ Both domain overviews, technology-capability input and audit, structured record 
 
 {id: bibliography--remaining-research-limits}
 ## Remaining Research Limits
+
+The technology operating partner sources describe practices and assignments. They do not establish a market-wide hiring trend, a universal division of leadership responsibilities or a causal investment-return premium.
 
 The research is broad but selective. It does not establish the typical return of a current fund, a complete financing history for every case, a universal charter for an investor’s technology adviser, or the causal effect of the book’s proposed support model. Full access to the Toys R Us fiscal 2016 10-K (S34) was not obtained. The editorial chronology of this register, meaning which revision added or rechecked which entries, is kept in the working notes rather than on this page; the dates that matter for reading a source are in its entry.

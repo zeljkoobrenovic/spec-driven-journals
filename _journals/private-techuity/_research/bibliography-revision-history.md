@@ -17,3 +17,15 @@ Identifiers are stable and are never reassigned. S38 is unassigned in the regist
 | 2026-09-16 | Investor-workforce revision | Added S77 (Council Directive 98/59/EC, consulted in the legislation.gov.uk copy because EUR-Lex refused automated access) and S78 (US WARN Act, 29 U.S.C. §§ 2101–2102, Cornell LII copy), both cited by the new chapter `anatomy-of-a-layoff`; widened S76 to section 5.4(g) (executive-officer hiring, termination and compensation as a preferred-director approval matter), now also cited by `fix-decisions-before-hiring`; new topic row for workforce reductions; consultation window extended to 16 September. Chapter-end reading for the new chapter (Sucher and Gupta 2018; Trevor and Nyberg 2008; Datta et al. 2010; Brockner 1992) verified by page fetch or Crossref metadata and left unregistered under the further-reading policy. `sources.json` still stops at S63. |
 
 Related notes: [research method and source limits](research-method.md), [research pass two](research-pass-02.md), [Owned rewrite](owned-revision.md).
+
+## 2026-09-20 — Technology operating partner appendix
+
+Added S79–S89: six readable supplied links, two direct investment-firm descriptions and three references for the leadership-role comparison. Consultation scope excludes unsupported hiring statistics and performance claims. Direct retrieval of the supplied LinkedIn post failed during the initial pass. The author subsequently supplied a cached text copy, which was reviewed and registered as S90 in the follow-up below.
+
+### LinkedIn follow-up
+
+Read the complete supplied text copy of David Mackey’s post and added S90. The appendix now includes his account of building a track record through interim, fractional and advisory assignments, with technical diagnosis, adaptability, communication and results as evidence of suitability. The original page’s exact publication date, linked graphic and comments were not verified. All seven originally supplied sources now contribute to the chapter.
+
+### Portfolio hiring follow-up
+
+Rechecked the talent-management section in Redgrave (S81) and the recruitment, development and retention remit in KKR Capstone (S85). Extended the consultation scopes for the appendix’s new hiring section. The sources establish a talent-support role; the detailed workflow and authority boundaries are the book’s proposal, linked to its existing hiring and governance chapters. Source identifiers remain unchanged.

@@ -1,5 +1,5 @@
 {id: valuation-is-an-estimate}
-# 4. A Valuation Is an Estimate, Not a Fact
+# 3. A Valuation Is an Estimate, Not a Fact
 
 ![A Valuation Is an Estimate, Not a Fact — logo](private-techuity/posts/02-valuation-is-an-estimate/assets/images/02-valuation-is-an-estimate/logo.jpeg)
 
@@ -92,7 +92,7 @@ If the answers are unclear, you cannot yet tell what the number is claiming. Sta
 
 **Net debt** is borrowings minus the cash included in the valuation bridge. If €25 million of borrowing and €5 million of cash are included, net debt is €20 million. The debt may remain in place, be repaid or be refinanced (replaced with a new loan) at a sale; its treatment must be reflected in the calculation. Cash needed to run the business or restricted from use may be treated differently from surplus cash.
 
-So the opening €60 million can be either figure. If it is enterprise value and net debt is €20 million, equity value is €40 million, before other claims and deal-specific adjustments (for example, an agreed correction for the working cash left in the business at completion). If €60 million is instead the equity value, adding back the same €20 million of net debt gives €80 million of enterprise value, before those other adjustments. Neither figure is money the company has received; the chapter [An Investment Announcement Is Not a Budget](#announcement-is-not-a-budget) follows where the cash in a transaction actually goes.
+So the opening €60 million can be either figure. If it is enterprise value and net debt is €20 million, equity value is €40 million, before other claims and deal-specific adjustments (for example, an agreed correction for the working cash left in the business at completion). If €60 million is instead the equity value, adding back the same €20 million of net debt gives €80 million of enterprise value, before those other adjustments. Neither figure is money the company has received; the chapter [An Investment Announcement Is Not a Budget — Read the Fine Print](#announcement-is-not-a-budget) follows where the cash in a transaction actually goes.
 
 Valuation methods organize evidence and assumptions; they don’t eliminate judgment. The December 2025 IPEV guidelines distinguish the purpose of the valuation, the method used and inputs such as EBITDA. They guide the reporting of estimated values for private investments, meaning stakes in companies whose shares are not traded on a stock exchange; they don’t prescribe a company’s strategy or determine its negotiated sale price. [S52: IPEV valuation guidelines, introduction and section 3](https://www.privateequityvaluation.com/Portals/0/Documents/Guidelines/2025%20IPEV%20Valuation%20Guidelines.pdf)
 

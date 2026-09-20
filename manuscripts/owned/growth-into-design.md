@@ -1,5 +1,5 @@
 {id: growth-into-design}
-# 15. Turn “We Expect Growth” Into a Design Decision
+# 14. Turn “We Expect Growth” Into a Design Decision
 
 ![Turn “We Expect Growth” Into a Design Decision — logo](private-techuity/posts/13-growth-into-design/assets/images/13-growth-into-design/logo.jpeg)
 

@@ -1,5 +1,5 @@
 {id: the-financing-slipped}
-# 25. Planning on Money That Hasn't Arrived
+# 24. Planning on Money That Hasn't Arrived
 
 ![Planning on Money That Hasn't Arrived — logo](private-techuity/posts/23-the-financing-slipped/assets/images/23-the-financing-slipped/logo.jpeg)
 

@@ -43,6 +43,7 @@ The six parts are ordered for learning, and the complete sequence is the default
 | --- | --- |
 | A promised investment must become a budget | [[announcement-is-not-a-budget]] → [[obligations-before-budget]] → [[decide-who-decides]] → [[cannot-fund-everything]] → [[the-financing-slipped]] |
 | An operating improvement needs a credible case | [[cannot-fund-everything]] → [[roadmap-to-revenue]] → [[can-the-team-deliver]] → the relevant domain chapter in Part III → the [[toolkit]] initiative and outcome records |
+| The investor has a technology operating partner or AI specialist | [[tech-operating-partner]] → [[investors-adviser]] → [[useful-engagement]] |
 | Investor help is on offer | [[investors-adviser]] → [[help-that-changes-capability]] → [[useful-engagement]] |
 | A transaction or ownership change is imminent | [[diligence-corrects-the-plan]] → [[first-hundred-days]] → [[handover-of-obligations]] |
 | Owners want more growth or earnings than the team can support | [[raise-what-you-need]] → [[cannot-fund-everything]] → [[fix-decisions-before-hiring]] |
@@ -71,6 +72,8 @@ The practical impact of any investment therefore depends on its actual terms, **
 ## How the Parts Build on Each Other
 
 Part I supplies the financial tools to understand your owners and your available cash. Part II establishes authority, incentives and working relationships. Part III turns expectations into choices about product, engineering and people; it is the center of the book. Part IV helps you obtain useful help, from the investor or elsewhere. Part V follows one finding from diligence into a funded early plan, its review and a handover; its delayed-financing chapter, and the reduction chapter that continues it, are a separate illustration of how a dated cash forecast changes commitments and, when the money is late enough, the team. Part VI examines historical cases and closes with the book’s standard for success.
+
+After Part VI, the optional appendix [[tech-operating-partner]] explains the growing investor-side technology function, compares it with company leadership roles and examines the role of AI.
 
 Each part introduction explains its chapters and the order. On a first pass, read in order, since each chapter builds on terms introduced earlier: the chapter [[valuation-is-an-estimate]] teaches financial valuation, and the chapter [[growth-into-design]] later applies those concepts to a design choice once the product and engineering foundations are in place.
 
@@ -170,6 +173,10 @@ The site navigation lists the same chapters; this list is here for lookup.
 - **29.** [[toys-r-us]]
 - **30.** [[teamsystem]]
 - **31.** [[success-for-whom]]
+
+### Appendix
+
+- [[tech-operating-partner]] — why the function is growing in importance, how it compares with company leadership roles and how AI changes its work.
 
 ### Reference Material
 

@@ -1,5 +1,5 @@
 {id: teamsystem}
-# 31. TeamSystem: Each New Owner Inherits Progress and Unfinished Work
+# 30. TeamSystem: Each New Owner Inherits Progress and Unfinished Work
 
 ![TeamSystem: Each New Owner Inherits Progress and Unfinished Work — logo](private-techuity/posts/29-teamsystem/assets/images/29-teamsystem/logo.jpeg)
 

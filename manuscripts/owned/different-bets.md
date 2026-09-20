@@ -1,5 +1,5 @@
 {id: different-bets}
-# 9. Management Equity, Fund Carry and Employee Jobs Are Different Bets
+# 8. Management Equity, Fund Carry and Employee Jobs Are Different Bets
 
 ![Management Equity, Fund Carry and Employee Jobs Are Different Bets — logo](private-techuity/posts/07-different-bets/assets/images/07-different-bets/logo.jpeg)
 

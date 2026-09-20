@@ -1,5 +1,5 @@
 {id: investor-under-pressure}
-# 10. Judge an Investor by Their Behavior Under Pressure
+# 9. Judge an Investor by Their Behavior Under Pressure
 
 ![Judge an Investor by Their Behavior Under Pressure — logo](private-techuity/posts/08-investor-under-pressure/assets/images/08-investor-under-pressure/logo.jpeg)
 

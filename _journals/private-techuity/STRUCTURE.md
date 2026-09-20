@@ -1,7 +1,7 @@
 # Owned — Implemented Structure
 
 **Status:** implemented; living manuscript remains a draft
-**Date:** 2026-09-14
+**Date:** 2026-09-20
 
 ## Positioning
 
@@ -32,6 +32,7 @@ The primary reader leads product or engineering inside a company working under i
 - Part IV starts with the company’s missing capability and assesses available support, conflicting interests and continuing dependence.
 - Part V has five destinations: diligence, the early funded plan, a delayed financing, the reduction it forces and the handover of continuing obligations. One fictional finding (D-3, onboarding depends on one specialist) travels through diligence, the funded plan, the handover and the toolkit; the delayed-financing and reduction chapters share a separate scenario.
 - Part VI retains the documented company histories and distinguishes transferable questions from evidence about different ownership models.
+- The Appendix follows Part VI with one optional article on technology operating partners: the rise of the function, comparison with company product and technology leadership, and AI’s effect on the role. It leaves the 31 main chapters intact.
 - Reference Material holds the toolkit, an optional fund-economics page (fees, distributions, performance ratios moved out of Part I), the glossary and the bibliography. The Productscapes hypothesis is recorded only as provenance (P02).
 
 ## Editorial Rules
@@ -40,6 +41,7 @@ Define terms before use. Identify the company leader’s decision, required auth
 
 ## Decision Record
 
+- 2026-09-20: Add the author-requested technology operating partner appendix after Part VI and before Reference Material. Include CIO, CTO, CPO, Chief Architect and engineering-leadership comparisons and AI’s role. Seven supplied public sources (including the author-supplied text copy of the LinkedIn post), two investment-firm accounts and three role references are registered as S79–S90. This addition does not restore the discontinued Productscapes essays.
 - 2026-09-16 (later): Retitled “Fix the Decision Problem Before Adding People” to “Headcount Is Not Capacity: Trace the Work Before You Hire” and “The Roadmap Did Not Slip, the Financing Did” to “Planning on Money That Hasn't Arrived” at the author’s request; permalinks unchanged.
 - 2026-09-16 (later): Retitled the new chapter “When the Headcount Plan Shrinks” to “Anatomy of a Layoff” at the author’s request, then renamed its folder to `24-anatomy-of-a-layoff` and its permalink to `anatomy-of-a-layoff` before any public deployment (the one exception to the stable-permalink rule, made on the day of creation).
 - 2026-09-16: Investor impact on hiring, headcount and layoffs (`_research/investor-workforce-impact-plan.md`). Structural change: new Part V chapter `24-anatomy-of-a-layoff` (permalink `anatomy-of-a-layoff`) placed after “The Roadmap Did Not Slip, the Financing Did” and before the handover chapter, continuing the delayed-financing scenario; the organization chapter gains an investor-appointments section; the governance chapter maps authority for appointments, headcount changes and reductions; the toolkit gains Tool 13; the glossary gains workforce terms; the bibliography registers S77–S78. Permalinks unchanged; the new chapter’s artwork is pending generation.

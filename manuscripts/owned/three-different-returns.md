@@ -1,5 +1,5 @@
 {id: three-different-returns}
-# 5. Same Company, Same Performance, Three Different Investor Returns
+# 4. Same Company, Same Performance, Three Different Investor Returns
 
 ![Same Company, Same Performance, Three Different Investor Returns — logo](private-techuity/posts/03-three-different-returns/assets/images/03-three-different-returns/logo.jpeg)
 

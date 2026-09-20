@@ -1,5 +1,5 @@
 {id: anatomy-of-a-layoff}
-# 26. Anatomy of a Layoff
+# 25. Anatomy of a Layoff
 
 ![Anatomy of a Layoff — logo](private-techuity/posts/24-anatomy-of-a-layoff/assets/images/24-anatomy-of-a-layoff/logo.jpeg)
 

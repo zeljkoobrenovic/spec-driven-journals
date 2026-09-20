@@ -1,5 +1,5 @@
 {id: visma}
-# 29. Visma: Continuity of Manager Is Not Continuity of Money
+# 28. Visma: Continuity of Manager Is Not Continuity of Money
 
 ![Visma: Continuity of Manager Is Not Continuity of Money — logo](private-techuity/posts/27-visma/assets/images/27-visma/logo.jpeg)
 
