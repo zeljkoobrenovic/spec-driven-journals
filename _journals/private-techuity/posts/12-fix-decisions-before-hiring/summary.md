@@ -1,0 +1,18 @@
+A plan can fund tools, a cheaper location or more people and still leave work waiting on one executive and two experts.
+
+![Customer work exposes queues, knowledge dependencies and decision handoffs, supported by skills, authority, capacity and a funded transition.](assets/images/12-fix-decisions-before-hiring/summary-at-a-glance.jpeg)
+**Figure 1:** *Design teams around the work, knowledge and decisions customers depend on.*
+
+**Follow one piece of work.** Larkspur, a fictional scheduling-software company, needs sixteen working days to take a pricing change from request to production, the live customer system. Three wait for Priya, who leads product, to confirm the rule; seven sit in a two-person review queue; three wait for Ines, the chief executive, to sign off invoice changes. Two are building; one is **release**, putting it into that live system. That separates a decision constraint (authority with one person) from a knowledge constraint: only two people can change the invoicing module, which prepares customer bills.
+
+**Change the decisions first.** Priya lists the rule types the team may implement without asking her; Ines passes invoice sign-off to finance. That should remove about six waiting days without hiring. The real gap is a third person able to change the module, not the five-person second team the board of directors proposed.
+
+**Let the diagnosis decide the hire.** Larkspur fills one already approved position with a billing engineer, about €90,000 a year, and protects specialist time for teaching. The second team waits for evidenced second-country demand, a committed funding round (raising money from investors) and the board’s approval of the roles. **Committed** means investors have signed an agreement, subject to its terms; the money has not yet arrived. If changes still take over two weeks sixty days after delegation, trace again; don’t hire. If the engineer still cannot release independently six months after starting, the transfer has failed.
+
+**Assess leaders in their system.** Before replacing a leader, state a **hypothesis**: what must new leadership enable, and what evidence shows it missing? If conditions change and the leader still approves every release, the evidence supports adding leadership with release authority, or replacement.
+
+**When the investor proposes an appointment**, separate influence and funding conditions from a formal approval right: here the investor-appointed director must consent to hiring, dismissing or changing the pay of senior executives. Suppose demand is later shown, the financing completes and the board approves and funds the five-role second team. The investor director proposes a chief product officer above Priya, to set product priorities across teams. Nothing yet shows Priya cannot do that. Larkspur instead fills one of the five roles with a senior product manager for the second country, freeing Priya to prioritize across both teams, with coaching and a six-month review of the evidence. [S76: Avalyn Pharma investors’ rights agreement](https://www.sec.gov/Archives/edgar/data/1540171/000119312526147573/ck0001540171-ex4_2.htm)
+
+**Offshoring** locates work abroad; **nearshoring** does so closer in geography or time zone; check cultural similarity separately. Fictional numbers: a €650,000 team plus €150,000 of coordination replaces €1 million of yearly supplier spending: €800,000 a year, saving €200,000. With a full year at the lower running cost, the €250,000 transition makes first-year spending €1.05 million, €50,000 more than before.
+
+Knowledge transfer ends when the receiving team performs the work, not when documents arrive. The next chapter tackles what remains: country rules written into the invoicing module.
