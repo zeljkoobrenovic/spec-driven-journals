@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-20
+revised: 2026-09-21
 ---
 
 # Spec: Bibliography and Evidence Guide
@@ -15,7 +15,9 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
-- Cover the technology operating partner appendix with S79–S90, dated consultation scope, direct investment-firm examples and explicit limits on claims about hiring growth and performance. Identify a supplied text copy when that is the version consulted.
+- Register S91–S100 for the operating-model blueprints chapter and extend S01 for expense allocation and service-payment conflicts; distinguish historical surveys, practitioner advice, firm descriptions and proposed blueprints.
+
+- Cover the technology operating partner chapter with S79–S90, dated consultation scope, direct investment-firm examples and explicit limits on claims about hiring growth and performance. Identify a supplied text copy when that is the version consulted.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Keep consultation scope and source dates accurate when an editorial correction requires a focused primary-source recheck.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
@@ -32,7 +34,7 @@ Exhaustive coverage, a universal role charter, or a claim of completed professio
 
 ## Modalities
 
-This reference page uses the Article modality. The 31 main chapters additionally provide a summary and an illustrated comic; the optional technology operating partner appendix uses the Article modality. Reference material is not padded with redundant adaptations.
+This reference page uses the Article modality. Of the 33 main chapters, 31 also provide a summary and an illustrated comic; operating-model blueprints and technology operating partners use the illustrated Article modality. Reference material is not padded with redundant adaptations.
 
 ## Open questions
 
@@ -48,6 +50,9 @@ Research and editorial gaps remain in the separate notes; revise this reference 
 See the bibliography and the relevant chapters. The source registry records consultation scope and dates.
 
 ## Changelog
+
+- 2026-09-21 (Part IV order): Reconcile the current chapter and reading-format description with the two articles’ move into Part IV. Stable chapter links and source identifiers remain unchanged.
+- 2026-09-21: Add ten sources from the operating-model inputs, recheck S01, extend the consultation window and topic index, and record evidence limits.
 
 - 2026-09-20 (portfolio hiring): Extend S81 and S85 consultation notes after rechecking Redgrave’s talent-management discussion and KKR Capstone’s recruitment, development and retention remit. No new source identifiers.
 - 2026-09-20 (LinkedIn follow-up): Register S90, David Mackey’s post read in the author-supplied text copy; record the unverified publication date and distinguish recruiter experience from measured career outcomes.

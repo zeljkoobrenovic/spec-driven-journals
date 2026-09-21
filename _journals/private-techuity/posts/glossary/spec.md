@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-20
+revised: 2026-09-21
 ---
 
 # Spec: Glossary
@@ -15,7 +15,9 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
-- Define technology operating partner (including technical operating partner) and AI operating partner in the roles section and alphabetical index, with the appendix as their teaching home.
+- Link the operating-model definition to its Part IV teaching home and include resources and information alongside teams, responsibilities, processes and decisions.
+
+- Define technology operating partner (including technical operating partner) and AI operating partner in the roles section and alphabetical index, with the Part IV technology operating partner chapter as their teaching home.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
@@ -31,7 +33,7 @@ Exhaustive coverage, a universal role charter, or a claim of completed professio
 
 ## Modalities
 
-This reference page uses the Article modality. The 29 main chapters and two appendix essays additionally provide a TL;DR and an illustrated comic. Reference material is not padded with redundant adaptations.
+This reference page uses the Article modality. Of the 33 main chapters, 31 also provide a summary and an illustrated comic; operating-model blueprints and technology operating partners use the illustrated Article modality. Reference material is not padded with redundant adaptations.
 
 ## Open questions
 
@@ -49,6 +51,9 @@ Research and editorial gaps remain in the separate notes; revise this reference 
 See the bibliography and the relevant chapters. The source registry records consultation scope and dates.
 
 ## Changelog
+
+- 2026-09-21 (Part IV order): Reconcile the current chapter and reading-format description with the two articles’ move into Part IV. Stable chapter links and source identifiers remain unchanged.
+- 2026-09-21: Extend the operating-model definition and link the new appendix. Reconcile the modality note with the current 31 main chapters and two article appendices.
 
 - 2026-09-20: Define technology operating partner and AI operating partner, add their alphabetical entries and link the appendix; distinguish title from formal authority.
 - 2026-09-16 (later): eighteen terms added for the reduction and financing chapters (minimum operating reserve, bridge, convertible loan, drawdown, subscription agreement, collected revenue, fully loaded cost, one-off cost / recurring saving, investor director, operating plan, good and bad leaver, accrued leave, fixed-term contract, outplacement, funded contingency, restart rule, go-live, on-call rota) with index entries.

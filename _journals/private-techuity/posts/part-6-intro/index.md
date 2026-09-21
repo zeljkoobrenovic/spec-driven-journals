@@ -1,5 +1,5 @@
 ---
-title: "PART VI — Lessons from the Field"
+title: "LEARN: Lessons From the Field"
 date: 2026-09-13
 author: Željko Obrenović
 excerpt: "Test leadership judgments against specific histories while keeping the evidence in scope."

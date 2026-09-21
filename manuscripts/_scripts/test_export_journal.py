@@ -88,6 +88,31 @@ class ExportTests(unittest.TestCase):
         data = {item for name, item in exporter.files.items() if name.startswith("resources/")}
         self.assertEqual({b"journal artwork", b"guide", b"z-last", b"a-first"}, data)
 
+    def test_shortened_part_title_keeps_intro_out_of_chapter_numbering(self):
+        self.post("part-intro", "Part introduction.", title="COLLABORATE: Useful Help", slug="part-4")
+        self.post("chapter", "Company work.", title="Choose the Work")
+        for title in ["Part IV — Collaborate", "Part 4 — Collaborate"]:
+            with self.subTest(section=title):
+                self.config([(title, ["part-intro/index.md", "chapter/index.md"])])
+                exporter, manifest, _ = self.export()
+                self.assertEqual(1, manifest["counts"]["parts"])
+                self.assertEqual(1, manifest["counts"]["chapters"])
+                self.assertEqual(["book-title.md", "part-4.md", "chapter.md"], manifest["book_files"])
+                self.assertIn(b"{class: part, id: part-4}\n# COLLABORATE: Useful Help", exporter.files["part-4.md"])
+                self.assertIn(b"# 1. Choose the Work", exporter.files["chapter.md"])
+
+    def test_part_permalink_must_match_section_and_cannot_override_another_part_title(self):
+        for section, title in [("Part V — Lead", "COLLABORATE: Useful Help"),
+                               ("Part IV — Collaborate", "Part V — Lead")]:
+            with self.subTest(section=section, title=title):
+                self.post("part-intro", "Introduction.", title=title, slug="part-4")
+                self.config([(section, ["part-intro/index.md"])])
+                exporter, manifest, _ = self.export()
+                self.assertEqual(0, manifest["counts"]["parts"])
+                self.assertEqual(1, manifest["counts"]["chapters"])
+                self.assertIn("section-01.md", manifest["book_files"])
+                self.assertNotIn(b"class: part", exporter.files["part-4.md"])
+
     def test_html_anchors_headings_links_and_literal_code(self):
         body = """## <a id="cash"></a>Cash
 

@@ -1,5 +1,5 @@
 ---
-title: "PART I — Understanding Financing and Ownership"
+title: "UNDERSTAND: Financing and Ownership"
 date: 2026-09-13
 author: Željko Obrenović
 excerpt: "Identify your owners’ expectations and the money and decisions you can rely on."

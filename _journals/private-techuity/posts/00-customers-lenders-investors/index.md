@@ -1,5 +1,5 @@
 ---
-title: "Customers, Lenders and Investors: What Each Expects in Return"
+title: "Understand Expectations: Customers, Lenders and Investors"
 date: 2026-09-12
 author: Željko Obrenović
 excerpt: "Follow one €100,000 need through a customer prepayment, a loan and new shares to see what each source obliges the company to deliver, repay or give up."

@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-09-14
+revised: 2026-09-21
 ---
 
-# Spec: PART IV — Beyond Money: Getting Useful Help From Your Investor
+# Spec: PART IV — COLLABORATE: Getting Useful Help From Your Investor
 
 ## Intent
 
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Introduce all five chapters in the configured order, starting with the working arrangement and closing with the wider technology operating function.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
@@ -48,8 +49,9 @@ None. These pieces describe the book's own structure and make no external factua
 
 ## Changelog
 
+- 2026-09-21 (Part IV order): Introduce the five-chapter sequence: operating-model blueprints, sourcing help, agreeing an engagement, the investor’s adviser and the technology operating partner. Keep the introduction under 400 words.
 - 2026-09-14: Shorten the investor-category recap, state the three distinct chapter jobs (adviser role; sourcing; charter and handover), keep the continuing-service allowance and use accountable-leader language. Permalink unchanged.
-- 2026-09-14: Retitle the post from “PART IV — Beyond Money: Using Investor Support to Build Capability and Accelerate Progress” to “PART IV — Beyond Money: Getting Useful Help From Your Investor”. Permalink and id unchanged; body unchanged.
+- 2026-09-14: Retitle the post from “PART IV — Beyond Money: Using Investor Support to Build Capability and Accelerate Progress” to “PART IV — COLLABORATE: Getting Useful Help From Your Investor”. Permalink and id unchanged; body unchanged.
 - 2026-09-13: Align the specification heading with the current part-introduction title.
 - 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.
 - 2026-09-13: Reconcile the revised article and applicable reading formats with the Owned contract; specification accepted as matching the draft manuscript.

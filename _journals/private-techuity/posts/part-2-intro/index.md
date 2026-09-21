@@ -1,5 +1,5 @@
 ---
-title: "PART II — How Investor Ownership Changes Decisions"
+title: "ALIGN: Clarify Who Decides and What Is at Stake"
 date: 2026-09-13
 author: Željko Obrenović
 excerpt: "Establish who decides, what each party wants and how to resolve competing demands."

@@ -316,7 +316,7 @@ The company-investment sequence begins at the chapters [[cannot-fund-everything]
 | Capability | Something the company can reliably do, such as setting up a customer or restoring a service. |
 | Roadmap | Intended product or technology changes and priorities over time. |
 | Onboarding | Setup and support needed before a new customer can use a product successfully. |
-| Operating model | How teams, responsibilities, processes and decisions are arranged to do the work. |
+| Operating model | How people, responsibilities, decisions, work, information and resources are arranged to carry out a strategy. The investor–company relationship and the company’s internal organization are connected design choices; see [[operating-model-blueprints]]. |
 | Technical due diligence | Investigation of product, technology, people and risks to inform an investment decision. Its findings are observations, reported assertions and inferences; keep them apart (see the evidence section). |
 | Data room | A controlled collection of information shared for a transaction. |
 | Architecture | A system’s main parts, their responsibilities and their connections. |

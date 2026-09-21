@@ -1,7 +1,7 @@
 {class: part, id: part-6}
-# PART VI — Lessons from the Field
+# LEARN: Lessons From the Field
 
-![PART VI — Lessons from the Field — logo](private-techuity/posts/part-6-intro/assets/images/part-6-intro/logo.jpeg)
+![LEARN: Lessons From the Field — logo](private-techuity/posts/part-6-intro/assets/images/part-6-intro/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Get an introduction to Part VI, Lessons from the Field, and an overview of its five case chapters: the decision each one illuminates and the three-step method for reading them with the evidence kept in scope.
 

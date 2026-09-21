@@ -44,6 +44,7 @@ The six parts are ordered for learning, and the complete sequence is the default
 | A promised investment must become a budget | [[announcement-is-not-a-budget]] → [[obligations-before-budget]] → [[decide-who-decides]] → [[cannot-fund-everything]] → [[the-financing-slipped]] |
 | An operating improvement needs a credible case | [[cannot-fund-everything]] → [[roadmap-to-revenue]] → [[can-the-team-deliver]] → the relevant domain chapter in Part III → the [[toolkit]] initiative and outcome records |
 | The investor has a technology operating partner or AI specialist | [[tech-operating-partner]] → [[investors-adviser]] → [[useful-engagement]] |
+| Agree or reset how we work with the investor | [[operating-model-blueprints]] → [[decide-who-decides]] → [[useful-engagement]] |
 | Investor help is on offer | [[investors-adviser]] → [[help-that-changes-capability]] → [[useful-engagement]] |
 | A transaction or ownership change is imminent | [[diligence-corrects-the-plan]] → [[first-hundred-days]] → [[handover-of-obligations]] |
 | Owners want more growth or earnings than the team can support | [[raise-what-you-need]] → [[cannot-fund-everything]] → [[fix-decisions-before-hiring]] |
@@ -71,14 +72,16 @@ The practical impact of any investment therefore depends on its actual terms, **
 
 ## How the Parts Build on Each Other
 
-Part I supplies the financial tools to understand your owners and your available cash. Part II establishes authority, incentives and working relationships. Part III turns expectations into choices about product, engineering and people; it is the center of the book. Part IV helps you obtain useful help, from the investor or elsewhere. Part V follows one finding from diligence into a funded early plan, its review and a handover; its delayed-financing chapter, and the reduction chapter that continues it, are a separate illustration of how a dated cash forecast changes commitments and, when the money is late enough, the team. Part VI examines historical cases and closes with the book’s standard for success.
+Part I supplies the financial tools to understand your owners and your available cash. Part II establishes authority, incentives and working relationships. Part III turns expectations into choices about product, engineering and people; it is the center of the book. Part IV connects the investor–company working arrangement with useful help, engagement agreements and the people who provide that support. Part V follows one finding from diligence into a funded early plan, its review and a handover; its delayed-financing chapter, and the reduction chapter that continues it, are a separate illustration of how a dated cash forecast changes commitments and, when the money is late enough, the team. Part VI examines historical cases and closes with the book’s standard for success.
 
-After Part VI, the optional appendix [[tech-operating-partner]] explains the growing investor-side technology function, compares it with company leadership roles and examines the role of AI.
+Part IV opens with [[operating-model-blueprints]], a practical selection guide connecting investor involvement to the company’s organization, authority and resources. It closes with [[investors-adviser]] and [[tech-operating-partner]], moving from the individual adviser’s assignment to the wider function, its relationship with company leadership, portfolio hiring and AI.
 
 Each part introduction explains its chapters and the order. On a first pass, read in order, since each chapter builds on terms introduced earlier: the chapter [[valuation-is-an-estimate]] teaches financial valuation, and the chapter [[growth-into-design]] later applies those concepts to a design choice once the product and engineering foundations are in place.
 
-![The book moves from money and decisions through company work, support, ownership changes and field lessons.](assets/images/introduction/owned-reading-journey.jpeg)
-**Figure 2:** *The reading sequence builds the foundations before applying them to work, support and changing ownership.*
+The six parts work together around one purpose: **commitments the company can keep**. Funding and obligations set the conditions; authority and incentives shape decisions; those decisions become feasible work. Useful support adds capability, funding and ownership events require renewed commitments, and evidence from other companies helps you question the assumptions throughout.
+
+![Six parts form a connected framework around commitments the company can keep: I Understand money and obligations; II Align authority and incentives; III Commit to feasible work; IV Collaborate for useful help and capability; V Lead through funding and ownership changes; VI Learn from evidence about other companies. A clockwise path connects the parts and returns from learning to understanding.](assets/images/introduction/owned-six-part-framework.jpeg)
+**Figure 2:** *The six parts share one leadership purpose. Read I–VI to build the foundations, then revisit the relevant part as conditions and evidence change.*
 
 ## Meet the Fictional Company
 
@@ -103,9 +106,9 @@ The delayed-financing chapter ([[the-financing-slipped]]) and the reduction chap
 
 ## Choose a Reading Format
 
-Each main chapter provides an **Article** and a 300–500-word **TL;DR** summary. TL;DR means “too long; didn’t read.” All thirty-one main chapters also have a six-panel **Comic**, illustrated, with captions and dialogue transcripts. The six part introductions and the reference pages have no TL;DR or comic.
+All thirty-three main chapters provide an **Article**. Thirty-one also have a 300–500-word **TL;DR** summary and a six-panel illustrated **Comic**, with captions and dialogue transcripts. TL;DR means “too long; didn’t read.” [[operating-model-blueprints]] and [[tech-operating-partner]] are illustrated articles without separate summaries or comics. The six part introductions and the reference pages also use only the Article format.
 
-For a shorter first pass, read the part introductions and the summaries. The formats are companions rather than substitutes. Each one is written to reach the same decision and to keep the conditions that decide whether that decision holds; what varies is depth: the article gives the fullest calculations, the discussion of sources and the alternative cases, while every format keeps the conditions that would change the decision. The summaries and comics of this September 2026 revision are still being reconciled chapter by chapter, so where a short format and the article disagree, the article is the one to trust.
+For a shorter first pass, read the part introductions and available summaries, then the two chapters offered only as illustrated articles. The formats are companions rather than substitutes. Each one is written to reach the same decision and to keep the conditions that decide whether that decision holds; what varies is depth: the article gives the fullest calculations, the discussion of sources and the alternative cases, while every format keeps the conditions that would change the decision. The summaries and comics of this September 2026 revision are still being reconciled chapter by chapter, so where a short format and the article disagree, the article is the one to trust.
 
 ## Read the Evidence With Its Limits
 
@@ -119,7 +122,7 @@ The [[bibliography]] records consultation scope and evidence limits. The chapter
 
 The site navigation lists the same chapters; this list is here for lookup.
 
-### Part I — Understanding Financing and Ownership: Money, Authority and Returns
+### Part I — UNDERSTAND: Financing and Ownership
 
 - [[part-1]] — part introduction
 - **1.** [[customers-lenders-investors]]
@@ -129,14 +132,14 @@ The site navigation lists the same chapters; this list is here for lookup.
 - **5.** [[raise-what-you-need]]
 - **6.** [[obligations-before-budget]]
 
-### Part II — How Investor Ownership Changes Decisions
+### Part II — ALIGN: Clarify Who Decides and What Is at Stake
 
 - [[part-2]] — part introduction
 - **7.** [[decide-who-decides]]
 - **8.** [[different-bets]]
 - **9.** [[investor-under-pressure]]
 
-### Part III — Turning Investor Expectations Into Commitments
+### Part III — COMMIT: Turn Expectations Into Work You Can Deliver
 
 - [[part-3]] — part introduction
 - **10.** [[cannot-fund-everything]]
@@ -149,34 +152,32 @@ The site navigation lists the same chapters; this list is here for lookup.
 - **17.** [[ai-strategy-three-questions]]
 - **18.** [[acquisition-adds-work-first]]
 
-### Part IV — Beyond Money: Getting Useful Help From Your Investor
+### Part IV — COLLABORATE: Get Useful Help From Your Investors
 
 - [[part-4]] — part introduction
-- **19.** [[investors-adviser]]
+- **19.** [[operating-model-blueprints]]
 - **20.** [[help-that-changes-capability]]
 - **21.** [[useful-engagement]]
+- **22.** [[investors-adviser]]
+- **23.** [[tech-operating-partner]]
 
-### Part V — Leading Through Funding and Ownership Changes
+### Part V — LEAD: Manage Funding and Ownership Changes
 
 - [[part-5]] — part introduction
-- **22.** [[diligence-corrects-the-plan]]
-- **23.** [[first-hundred-days]]
-- **24.** [[the-financing-slipped]]
-- **25.** [[anatomy-of-a-layoff]]
-- **26.** [[handover-of-obligations]]
+- **24.** [[diligence-corrects-the-plan]]
+- **25.** [[first-hundred-days]]
+- **26.** [[the-financing-slipped]]
+- **27.** [[anatomy-of-a-layoff]]
+- **28.** [[handover-of-obligations]]
 
-### Part VI — Lessons from the Field
+### Part VI — LEARN: Lessons From the Field
 
 - [[part-6]] — part introduction
-- **27.** [[hilton-and-skype]]
-- **28.** [[visma]]
-- **29.** [[toys-r-us]]
-- **30.** [[teamsystem]]
-- **31.** [[success-for-whom]]
-
-### Appendix
-
-- [[tech-operating-partner]] — why the function is growing in importance, how it compares with company leadership roles and how AI changes its work.
+- **29.** [[hilton-and-skype]]
+- **30.** [[visma]]
+- **31.** [[toys-r-us]]
+- **32.** [[teamsystem]]
+- **33.** [[success-for-whom]]
 
 ### Reference Material
 

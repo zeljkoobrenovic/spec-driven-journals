@@ -29,3 +29,7 @@ Read the complete supplied text copy of David Mackey’s post and added S90. The
 ### Portfolio hiring follow-up
 
 Rechecked the talent-management section in Redgrave (S81) and the recruitment, development and retention remit in KKR Capstone (S85). Extended the consultation scopes for the appendix’s new hiring section. The sources establish a talent-support role; the detailed workflow and authority boundaries are the book’s proposal, linked to its existing hiring and governance chapters. Source identifiers remain unchanged.
+
+## 21 September 2026 — Operating-model blueprints
+
+Registered S91–S100 from the two supplied operating-model notes and extended S01 after checking fees, expense allocation and service-payment conflicts. The new appendix uses historical operating-group evidence, practitioner guidance, Vista’s self-description and stated executive preferences to frame its own proposed blueprints. The full Bain report and linked PDFs were not reviewed; the report landing page and British Business Bank overview remain background. Existing identifiers and registry gaps were retained.

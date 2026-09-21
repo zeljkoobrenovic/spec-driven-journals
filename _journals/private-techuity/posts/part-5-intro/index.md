@@ -1,5 +1,5 @@
 ---
-title: "PART V — Leading Through Funding and Ownership Changes"
+title: "LEAD: Manage Funding and Ownership Changes"
 date: 2026-09-13
 author: Željko Obrenović
 excerpt: "Lead through diligence, the early funded plan, delayed financing, the plan that must shrink and the handover of continuing obligations."

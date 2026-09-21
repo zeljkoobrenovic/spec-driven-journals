@@ -18,9 +18,9 @@ icon: "assets/icons/bibliography.png"
 > * **Keep evidence, proposed methods and fictional examples distinct.** The cases and studies here are evidence about what happened in particular settings; the book’s templates and worked examples are the author’s proposals.
 
 <br>
-This page lists the sources consulted for the book. Sources were consulted between September 12 and September 20, 2026; each entry carries its own consultation date. Each entry states the version and the material consulted; access to a document does not imply that every page was reviewed, and publication dates and study periods differ from the consultation dates. Where an individual date affects how a figure or a claim should be read, the entry gives it.
+This page lists the sources consulted for the book. Sources were consulted between September 12 and September 21, 2026; each entry carries its own consultation date. Each entry states the version and the material consulted; access to a document does not imply that every page was reviewed, and publication dates and study periods differ from the consultation dates. Where an individual date affects how a figure or a claim should be read, the entry gives it.
 
-Source identifiers are stable. **S** marks a public source and **P** a supplied private input; the numbers identify, they do not rank. Identifiers are never reassigned, so gaps stay (there is no S38) and a citation in a chapter keeps meaning the same document. The register currently runs to S90. Private inputs are described without publishing their contents or file details.
+Source identifiers are stable. **S** marks a public source and **P** a supplied private input; the numbers identify, they do not rank. Identifiers are never reassigned, so gaps stay (there is no S38) and a citation in a chapter keeps meaning the same document. The register currently runs to S100. Private inputs are described without publishing their contents or file details.
 
 ## Topic Index
 
@@ -37,6 +37,7 @@ Use this table to find evidence by question. A source can appear under more than
 | AI evidence | S18, S19, S20, S21, S63 | [[ai-strategy-three-questions]] |
 | Investor support and advisers | S22, P01, P02 | [[investors-adviser]], [[help-that-changes-capability]] |
 | Technology operating partners, leadership roles and AI support | S79–S90 | [[tech-operating-partner]] |
+| Operating-model blueprints and investor–company working arrangements | S01, S91–S100 | [[operating-model-blueprints]] |
 | Case: Hilton and Skype | S23, S24, S25, S26, S27, S28, S29, S64, S65 | [[hilton-and-skype]] |
 | Case: Visma | S30, S31, S32, S33, S43, S44, S62 | [[visma]] |
 | Case: Toys R Us | S34, S35, S36, S37, S40, S41, S50, S51 | [[toys-r-us]] |
@@ -64,7 +65,7 @@ The book contains two kinds of material, and this register supports them differe
 
 ## Evidence Used Versus Further Reading
 
-The main chapters and the technology operating partner appendix end with a “To Probe Further” list; the reading guide, the part introductions and the reference pages do not. Those lists are optional reading, chosen to help a reader go deeper on the chapter’s subject. Their one-sentence annotations were checked for scope, meaning that the description stays within what the resource covers. They are not part of this consulted-evidence register unless the same resource also carries an S identifier, and a chapter’s argument does not rest on them. Listing a resource there does not mean the author consulted it for the book’s claims. Where a chapter’s claim depends on a source, that source is cited inline with an S or P identifier and appears below.
+The main chapters end with a “To Probe Further” list; the reading guide, the part introductions and the reference pages do not. Those lists are optional reading, chosen to help a reader go deeper on the chapter’s subject. Their one-sentence annotations were checked for scope, meaning that the description stays within what the resource covers. They are not part of this consulted-evidence register unless the same resource also carries an S identifier, and a chapter’s argument does not rest on them. Listing a resource there does not mean the author consulted it for the book’s claims. Where a chapter’s claim depends on a source, that source is cited inline with an S or P identifier and appears below.
 
 One annotation carries a figure precise enough to need its version stated. The chapter [[valuation-is-an-estimate]] cites Gornall and Strebulaev on unicorn valuations and says reported post-money valuations averaged “about 50%” above the authors’ modeled fair values. That is the figure in the [2017 NBER working paper](https://www.nber.org/papers/w23895), which reports an average of 50% above fair value with 15 of the 135 US unicorns more than 100% above. The version published in the *Journal of Financial Economics* 135(1), 2020, pp. 120–143 reports 48%, with 14 more than 100% above. The chapter links the working paper and names the journal version, and “about 50%” covers both estimates; the direction is the source’s own. Reported values average roughly half again above modeled fair value, which is not the same statement as fair values being 50% below reported values, and an average ratio cannot be inverted to obtain the average of the reverse ratio.
 
@@ -74,9 +75,9 @@ One annotation carries a figure precise enough to need its version stated. The c
 
 U.S. Securities and Exchange Commission, Investor.gov. [Private Equity Funds](https://www.investor.gov/introduction-investing/investing-basics/investment-products/private-investment-funds/private-equity). Undated; accessed 2026-09-12.
 
-**Evidence type:** Regulator education. **Consulted scope:** Guide consulted for fund structure, investment forms, illiquidity, and investor considerations. An introduction, not a particular fund agreement. Rechecked September 13, 2026 for the distinction between controlling and minority investment strategies.
+**Evidence type:** Regulator education. **Consulted scope:** Guide consulted for fund structure, investment forms, illiquidity, and investor considerations. An introduction, not a particular fund agreement. Rechecked September 13, 2026 for the distinction between controlling and minority investment strategies. Fees, expense allocation and portfolio-company service-payment conflicts rechecked September 21, 2026 for the operating-model chapter; the guide does not determine a particular company’s charging arrangement.
 
-**Used in:** [[customers-lenders-investors]], [[announcement-is-not-a-budget]], [[fund-economics]], [[glossary]].
+**Used in:** [[customers-lenders-investors]], [[announcement-is-not-a-budget]], [[fund-economics]], [[glossary]], [[operating-model-blueprints]].
 
 ### S02 — ILPA principles
 
@@ -782,6 +783,86 @@ David Mackey, Partner at Albany. [Want to become a tech operating partner at a P
 
 **Used in:** [[tech-operating-partner]].
 
+### S91 — McKinsey on operating-group arrangements
+
+McKinsey & Company. [Private equity operating groups and the pursuit of “portfolio alpha”](https://www.mckinsey.com/industries/private-capital/our-insights/private-equity-operating-groups-and-the-pursuit-of-portfolio-alpha). 2018-11-06; accessed 2026-09-21.
+
+**Evidence type:** Consultancy survey of operating groups. **Consulted scope:** 2018 survey of 45 firms: variation in team composition, internal and external arrangements, and advisory work. Historical sample, not a current census. No trend estimate from the differently sized 2015/2018 samples, causal return claim or validation of the book’s four blueprints.
+
+**Used in:** [[operating-model-blueprints]].
+
+### S92 — McKinsey on investment-firm internal operations
+
+McKinsey & Company. [How private equity is tackling operational complexity](https://www.mckinsey.com/industries/private-capital/our-insights/how-private-equity-is-tackling-operational-complexity). 2018-10-26; accessed 2026-09-21.
+
+**Evidence type:** Consultancy survey and practitioner analysis. **Consulted scope:** Opening scope and back-/middle-office discussion, including fund administration and outsourcing. Used to distinguish the investment firm’s own operations from portfolio-company support. Historical scale thresholds, efficiency comparisons and promised digital returns are not adopted.
+
+**Used in:** [[operating-model-blueprints]].
+
+### S93 — Vista’s shared operating capabilities
+
+Vista Equity Partners. [Value Creation](https://www.vistaequitypartners.com/about/value-creation/). Living page; consulted 2026-09-21; accessed 2026-09-21.
+
+**Evidence type:** Investment firm description of its own practice. **Consulted scope:** Value Creation Approach sections: AI engineers working alongside portfolio companies, operating methods, partnerships and peer learning. Establishes an offered capability; performance, preferred pricing and other benefit claims are not independently verified. No universal adoption prescription.
+
+**Used in:** [[operating-model-blueprints]].
+
+### S94 — Bain on operating improvement and integrated diligence
+
+Hugh MacArthur, Claudia Bianchi, Brian Kmet and Brenda Rainey; Bain & Company. [Welcome to a New Era in Private Equity](https://www.bain.com/insights/welcome-to-a-new-era-global-private-equity-report-2026/). 2026-02-22; accessed 2026-09-21.
+
+**Evidence type:** Consultancy industry analysis. **Consulted scope:** Selected discussion of changing deal economics and multidisciplinary diligence linking commercial, operating and technology opportunities. Context for the design problem. Illustrative return arithmetic, forecasts and the claimed outcomes of named deals are not adopted; the full report was not reviewed.
+
+**Used in:** [[operating-model-blueprints]].
+
+### S95 — McKinsey on company leaders using investor support
+
+McKinsey & Company. [A playbook for newly minted private equity portfolio-company CEOs](https://www.mckinsey.com/industries/private-capital/our-insights/a-playbook-for-newly-minted-private-equity-portfolio-company-ceos). 2021-09-24; accessed 2026-09-21.
+
+**Evidence type:** Consultancy practitioner guidance informed by interviews. **Consulted scope:** Sections on board engagement, feasible plans and available operating teams, functional experts, advisers and peer networks. Descriptions of arrangements, not universal board authority or an empirically validated operating model. Return targets, prescribed replacement rates and performance multipliers are not used.
+
+**Used in:** [[operating-model-blueprints]].
+
+### S96 — Spencer Stuart on the investor–CEO working agreement
+
+Jason Hancock, Emily Amdurer, Ali Angier and Harleen Kaur; Spencer Stuart. [Partners in Value Creation: Unlocking Value Together — The Vital Bond Between Investors and CEOs](https://www.spencerstuart.com/research-and-insight/partners-in-value-creation-unlocking-the-vital-bond-between-investors-and-ceos). Publication date not displayed in the consulted page; accessed 2026-09-21.
+
+**Evidence type:** Executive-search practitioner guidance informed by interviews. **Consulted scope:** Support needs, rules of engagement, jointly developed plans, agreed metrics, reporting and meeting cadence. Commercial practitioner perspective; the chapter’s cadence and blueprint record are proposals. Psychometric claims, rapid-replacement prescriptions and causal performance claims are not adopted.
+
+**Used in:** [[operating-model-blueprints]].
+
+### S97 — McKinsey on board involvement between meetings
+
+McKinsey & Company. [Climbing the private-equity learning curve](https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/climbing-the-private-equity-learning-curve). 2021-05-26; accessed 2026-09-21.
+
+**Evidence type:** Consultancy commentary informed by CEO interviews. **Consulted scope:** Key differences and learning-curve discussion, particularly engagement between formal meetings and debate over plans. Used as an example of active oversight. Stock-ownership ranges, universal governance assertions, adjustment timelines and causal outperformance claims are not adopted.
+
+**Used in:** [[operating-model-blueprints]].
+
+### S98 — McKinsey on cash and financing constraints
+
+McKinsey & Company. [The PE company CFO: Essentials for success](https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/the-pe-company-cfo-essentials-for-success). 2020-05-01; accessed 2026-09-21.
+
+**Evidence type:** Consultancy practitioner guidance informed by interviews. **Consulted scope:** Get clear about the economics and the performance-review discussion: balance sheet, cash flow and relevant debt conditions. Not a claim that every investor-backed company uses acquisition debt. Broad assertions about data quality and specific technology-result examples are not adopted.
+
+**Used in:** [[operating-model-blueprints]].
+
+### S99 — McKinsey on dedicated transformation capacity
+
+McKinsey & Company. [Unlocking full potential: Five practices reshaping PE value creation](https://www.mckinsey.com/capabilities/transformation/our-insights/unlocking-full-potential-five-practices-reshaping-pe-value-creation). 2026-06-25; accessed 2026-09-21.
+
+**Evidence type:** Consultancy industry and practitioner analysis. **Consulted scope:** Adaptive plans, coordination burden and full-time transformation leadership inside portfolio companies, especially Invest in full-time transformation leadership. Chief transformation officer is distinguished from chief technology officer. Productivity percentages, return claims, execution-speed multipliers and self-funding assertions are not used.
+
+**Used in:** [[operating-model-blueprints]].
+
+### S100 — Spencer Stuart on leaders’ stated partnership preferences
+
+Emily Amdurer, Jason Baumgarten and Jason Hancock; Spencer Stuart. [Private Equity Is Still a Magnet for Top Leaders — but Trust, Not Pay, Is the Deciding Factor](https://www.spencerstuart.com/research-and-insight/private-equity-is-still-a-magnet-for-top-leaders). Publication date not displayed in the consulted page; accessed 2026-09-21.
+
+**Evidence type:** Executive-search survey of 1,015 senior leaders. **Consulted scope:** Sample description and discussion of culture and partnership approach when considering PE roles. Stated preferences in a hypothetical opportunity assessment, not observed operating-model outcomes, a representative view of all employees or evidence of superior investor returns.
+
+**Used in:** [[operating-model-blueprints]].
+
 ## Supplied Private Inputs
 
 ### P01 — supplied role brief
@@ -801,6 +882,8 @@ Both domain overviews, technology-capability input and audit, structured record 
 **Used in:** No chapter cites P02 directly. It is recorded as an intellectual input to the drafting of the support and role chapters (Part IV); the book states its own reasoning in ordinary terms, and readers do not need to learn the Productscapes model.
 
 ## Remaining Research Limits
+
+The operating-model sources document selected practices, practitioner advice and stated leadership preferences. They do not establish a superior blueprint, a current distribution of operating models or the outcomes of the book’s fictional example.
 
 The technology operating partner sources describe practices and assignments. They do not establish a market-wide hiring trend, a universal division of leadership responsibilities or a causal investment-return premium.
 

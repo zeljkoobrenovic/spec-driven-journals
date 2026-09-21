@@ -28,6 +28,15 @@ WIKI = re.compile(r"\[\[([a-zA-Z0-9][a-zA-Z0-9_-]*)\]\]")
 PART = re.compile(r"^part\s+([ivxlcdm]+|\d+)\b", re.I)
 
 
+def part_number(value: str) -> int:
+    if value.isdecimal():
+        return int(value)
+    values = {"i": 1, "v": 5, "x": 10, "l": 50, "c": 100, "d": 500, "m": 1000}
+    digits = [values[char] for char in value.lower()]
+    return sum(-n if i + 1 < len(digits) and n < digits[i + 1] else n
+               for i, n in enumerate(digits))
+
+
 def digest(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
@@ -364,8 +373,11 @@ class JournalExporter:
             first = articles[0]
             section_part = PART.match(section_title)
             article_part = PART.match(first.title)
+            part_slug = re.fullmatch(r"part-(\d+)", first.slug)
             has_intro = bool(section_part and article_part and
                              section_part[1].lower() == article_part[1].lower())
+            if section_part and not article_part and part_slug:
+                has_intro = part_number(section_part[1]) == int(part_slug[1])
             prefix = ""
             if section_title in self.backmatter and not back_started:
                 if not main_started:

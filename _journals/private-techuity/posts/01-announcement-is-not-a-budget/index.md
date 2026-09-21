@@ -1,5 +1,5 @@
 ---
-title: An Investment Announcement Is Not a Budget — Read the Fine Print
+title: Understand Funding and Control: An Investment Announcement Is Not a Budget
 date: 2026-09-12
 author: Željko Obrenović
 excerpt: "Follow who owns the company, who supplies its money, and who can decide how it is used, then record it for one proposed hire."

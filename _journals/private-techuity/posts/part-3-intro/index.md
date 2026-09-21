@@ -1,5 +1,5 @@
 ---
-title: "PART III — Turning Investor Expectations Into Commitments"
+title: "COMMIT: Turn Expectations Into Work You Can Deliver"
 date: 2026-09-13
 author: Željko Obrenović
 excerpt: "Turn investor expectations into feasible commitments to customers, systems and teams."

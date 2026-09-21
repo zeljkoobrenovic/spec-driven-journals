@@ -8,7 +8,6 @@ python3 -B manuscripts/_scripts/export_journal.py \
   --output manuscripts/owned \
   --author "Željko Obrenović" \
   --frontmatter-post introduction \
-  --backmatter-section "Appendix" \
   --backmatter-section "Reference Material" \
   --max-manuscript-mb 40
 
@@ -50,8 +49,11 @@ to `resources/`, following [Leanpub's resource layout](https://help.leanpub.com/
   are excluded. Text inside an article is retained, including references in prose
   to the journal's alternative reading formats.
 - Add a chapter heading from each article's title. Matching `Part I`, `Part II`,
-  etc. introductions become part headings. Other named sections get a separate
-  part heading. Main chapters receive consecutive visible numbers.
+  etc. introductions become part headings. A first article with a stable
+  `part-N` permalink also introduces the matching numbered part when its title
+  omits the part prefix, so shortened titles do not consume chapter numbers.
+  Other named sections get a separate part heading. Main chapters receive
+  consecutive visible numbers.
 - `--frontmatter-post PERMALINK` marks an initial article as front matter;
   `--backmatter-section TITLE` starts back matter at a configured section.
   Both options can be repeated. They never reorder articles.
