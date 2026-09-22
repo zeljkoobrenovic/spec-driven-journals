@@ -1,5 +1,5 @@
 ---
-title: "Manage Funding Delays: Revise the Cash Plan and Commitments"
+title: "Plan Layoffs: Decide What Work Stops, Not Just Who Leaves"
 date: 2026-09-16
 author: Željko Obrenović
 excerpt: "Follow a product and engineering reduction from the investor’s request to an authorized, funded plan: the staffing baseline, the real source of the pressure, the alternatives, the cash by date, the work stopped, and what happens to the people who leave and the people who stay."
@@ -67,7 +67,7 @@ The third is **influence**. At the same meeting the investor director says that 
 Before a reduction, the board asks what else could close the gap. Several measures are already in force or easy to state, and the table puts them on one basis: the recurring monthly saving once it has fully arrived, the one-off cash it costs first, the first month in which the full saving appears, and what the company gives up. Every figure is fictional.
 
 | Measure | Recurring saving a month | One-off cost | First full month | What it removes |
-| --- | ---: | ---: | --- | --- |
+| --- | --- | --- | --- | --- |
 | Hiring freeze (in force since August: the two deferred hires) | €0 further | €0 | — | Nothing more; the saving is already in the €200,000 burn |
 | R1: contract engineering not renewed (decided) | €50,000 | €0 | November | Internal tooling work; protected work unaffected |
 | Redeploy the two recovery engineers to the core team when the recovery work ends | €0 | €0 | — | Nothing; it fills a gap that a leaver would otherwise leave |

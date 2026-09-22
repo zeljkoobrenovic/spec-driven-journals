@@ -1,5 +1,5 @@
 ---
-title: "Plan for Growth: Decide What to Change in Your Systems"
+title: "Plan for Growth: Decide What (Not) to Change in Your Systems"
 date: 2026-09-12
 author: Željko Obrenović
 excerpt: "Recover the business requirement behind a request for flexibility, compare configuring a supplier, owning a boundary and replacing the core against the same need, date and cash limit, and choose one."
