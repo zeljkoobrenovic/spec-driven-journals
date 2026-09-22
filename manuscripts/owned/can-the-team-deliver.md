@@ -1,5 +1,5 @@
 {id: can-the-team-deliver}
-# 12. Assess Capability: Can the Team Deliver?
+# 13. Assess Capability: Can the Team Deliver?
 
 ![Assess Capability: Can the Team Deliver? — logo](private-techuity/posts/11-can-the-team-deliver/assets/images/11-can-the-team-deliver/logo.jpeg)
 
@@ -21,7 +21,7 @@ The expansion date was proposed before anyone assessed the plan’s **dependenci
 
 Alex, Larkspur’s technology leader, has to establish three things before the company commits money or makes a promise to a customer: what the systems and the team can support today, what must change in the plan, and what changing it would cost. That takes more than a look at the software, because the people who run it are part of what the company can do. The systems may be built in-house, bought from suppliers or assembled from both; the assessment is the same.
 
-The chapter [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue) connected a proposed change to customer and business results. This chapter produces the assessment those results depend on. It moves from the business plan to required capabilities, then to strengths and constraints, then to evidence about delivery and knowledge, and finally to a feasible transition. It stops at a finding. The organizational response to that finding is the subject of the chapter [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring); the choice among implementations is the subject of the chapter [Plan for Growth: Decide What to Change in Your Systems](#growth-into-design).
+The chapter [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue) connected a proposed change to customer and business results. This chapter produces the assessment those results depend on. It moves from the business plan to required capabilities, then to strengths and constraints, then to evidence about delivery and knowledge, and finally to a feasible transition. It stops at a finding. The organizational response to that finding is the subject of the chapter [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring); the choice among implementations is the subject of the chapter [Plan for Growth: Decide What (Not) to Change in Your Systems](#growth-into-design).
 
 {id: can-the-team-deliver--translate-the-business-plan-into-required-capabilities}
 ## Translate the Business Plan Into Required Capabilities
@@ -124,7 +124,7 @@ Match the commitment to the next funding decision. Suppose demand in the second 
 
 Now suppose funding is already committed to a proven expansion. The temporary interface then becomes a bottleneck, the point that holds everything else up. Larkspur has to cost a setup it can reuse for many customers and further countries. Funding uncertainty can justify limiting scope. It doesn’t justify hiding the cost of completing or safely maintaining the result.
 
-One more question belongs in the assessment. Suppose a parent company, one that owns Larkspur along with other businesses, mandates a group standard: a billing platform, a cloud provider (a supplier of rented computing services) or a release toolchain (the tools used to build, test and release software). What constraints does that create for this plan, and who pays for meeting the standard? Which decisions are made once for a whole group and which stay with the business is one of the questions **enterprise architecture** exists to answer. The integration-depth trade-off is developed in the chapter [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#acquisition-adds-work-first), and its design consequences in the chapter [Plan for Growth: Decide What to Change in Your Systems](#growth-into-design).
+One more question belongs in the assessment. Suppose a parent company, one that owns Larkspur along with other businesses, mandates a group standard: a billing platform, a cloud provider (a supplier of rented computing services) or a release toolchain (the tools used to build, test and release software). What constraints does that create for this plan, and who pays for meeting the standard? Which decisions are made once for a whole group and which stay with the business is one of the questions **enterprise architecture** exists to answer. The integration-depth trade-off is developed in the chapter [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#acquisition-adds-work-first), and its design consequences in the chapter [Plan for Growth: Decide What (Not) to Change in Your Systems](#growth-into-design).
 
 {id: can-the-team-deliver--the-finding}
 ## The Finding
@@ -144,7 +144,7 @@ The two smaller options named in the last row are these. One is a bought tax-and
 
 The finding tells the board what the plan assumes that is not yet true, and gives the people who choose the response something to choose against. Company engineers need to take part in the diagnosis; their knowledge of the system is part of the capability the plan depends on, and an assessment that treats their explanations as resistance loses the information needed to make the investment work.
 
-The next question is why a small country change takes three weeks when commit-to-production takes under two days, and how much of that is approvals, the two specialists’ queue or implementation. The chapter [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring) answers it by tracing one of these pricing changes from request to production, and decides whether Larkspur should change roles, hire, or both. Only then should Larkspur choose among configuring a supplier, drawing a boundary it owns around the country rules and replacing the core; the chapter [Plan for Growth: Decide What to Change in Your Systems](#growth-into-design) makes that choice against this same finding.
+The next question is why a small country change takes three weeks when commit-to-production takes under two days, and how much of that is approvals, the two specialists’ queue or implementation. The chapter [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring) answers it by tracing one of these pricing changes from request to production, and decides whether Larkspur should change roles, hire, or both. Only then should Larkspur choose among configuring a supplier, drawing a boundary it owns around the country rules and replacing the core; the chapter [Plan for Growth: Decide What (Not) to Change in Your Systems](#growth-into-design) makes that choice against this same finding.
 
 {id: can-the-team-deliver--questions-to-consider}
 ## Questions to Consider

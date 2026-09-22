@@ -19,6 +19,9 @@ Read each case in three steps: **establish what the sources show**, identify the
 
 ## The Learning Path
 
+![Four independent case chapters—Hilton and Skype, Visma, Toys R Us and TeamSystem—feed an evidence-to-mechanism-to-decision method. Their lessons reach the closing chapter, Success for Whom and for How Long, which compares gains, costs and continuing capability.](assets/images/part-6-intro/chapter-overview.jpeg)
+**Figure 1:** *Four independent case chapters feed a shared reading method and the closing chapter's test of durable success. The case table below keeps each lesson within its historical window.*
+
 Each case illuminates a different decision.
 
 | Case | Historical window | The decision it illuminates |

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-16
+revised: 2026-09-22
 ---
 
 # Spec: PART III — Turning Investor Expectations Into Commitments
@@ -15,6 +15,9 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Include exactly one chapter overview at the start of the learning path, in addition to the existing header logo. Give every configured chapter its own box, use short recognizable title labels without duplicating chapter numbers, and connect the chapters to the part's overall purpose.
+- Keep the nine chapters in three moves: choose and justify work, assess and change the delivery system, then apply the reasoning to cloud, resilience, AI and acquisitions or separations. The four applications share a method; none is a prerequisite for the next.
+- Generate the overview through the Gemini API, matching the book's ivory, navy, teal and ochre illustration style. Publish one JPEG with descriptive alt text and a prose caption, and preserve it in the manuscript export. Keep the linked chapter walkthrough as the full-title reading guide.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
@@ -30,7 +33,7 @@ Summarising the chapters' arguments, which would make the part introduction a su
 
 ## Modalities
 
-Article only. These are short orientation pieces; a TL;DR of a 400-word introduction would duplicate it, and a comic would imply an argument the piece does not make.
+Article with one chapter-overview diagram. These are short orientation pieces; a TL;DR of a 400-word introduction would duplicate it, and a comic would imply an argument the piece does not make.
 
 ## Open questions
 
@@ -44,10 +47,11 @@ None for the agreed part structure. Introductions remain unnumbered; chapter rea
 
 ## Sources
 
-None. These pieces describe the book's own structure and make no external factual claims.
+The journal's current config.yaml and the configured chapter introductions. These pieces describe the book's own structure and make no external factual claims.
 
 ## Changelog
 
+- 2026-09-22: Add one visual chapter framework at the author's request, showing the learning connections and the part's shared outcome. Generate an image through the Gemini API as explicitly requested, with alt text and a caption; retain the linked walkthrough and stable permalinks.
 - 2026-09-16: The organization chapter’s line notes that it also tests an investor-proposed appointment.
 - 2026-09-15: Widen the closing handoff to Part IV to “help from the investor or another source”; the three-move grouping and the level of detail of the learning path are preserved. Permalink unchanged.
 - 2026-09-14: Group the nine chapters into three moves (choose and justify work; assess and change the delivery system; apply the reasoning to operating choices) and reflect the new order in which fix-decisions-before-hiring follows can-the-team-deliver. Permalink unchanged.

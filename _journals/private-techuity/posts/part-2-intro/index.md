@@ -21,6 +21,9 @@ Influence takes different forms. Shares, a board seat, a lending condition and a
 
 ## The Learning Path
 
+![Authority establishes who decides; incentives reveal what each party gains or risks; investor fit tests behavior under pressure. All three support accountable decisions, with a return arrow to revisit the arrangements.](assets/images/part-2-intro/chapter-overview.jpeg)
+**Figure 1:** *Authority establishes who decides; incentives explain the competing stakes; investor fit tests the working relationship. Evidence under pressure can send you back to the decision arrangements.*
+
 - [[decide-who-decides]] shows how to establish decision rights around one filled decision record, and what to do when the approval does not arrive in time.
 - [[different-bets]] examines how equity, fund carry and employee jobs expose people differently, through one consolidation decision in which those interests pull apart.
 - [[investor-under-pressure]] helps you assess the partnership, whether you are comparing two offers or already working with an investor, and shows how evidence changes one commitment.

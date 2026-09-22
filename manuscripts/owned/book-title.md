@@ -10,7 +10,7 @@ toc-part-number-format: name
 {id: book-private-techuity}
 # OWNED: Product & Engineering Leadership Under Investors
 
-Željko Obrenović
+Željko Obrenović, Owned working manuscript
 
 ![OWNED: Product & Engineering Leadership Under Investors — logo](private-techuity/assets/pexels-chairs-2181916.jpg)
 

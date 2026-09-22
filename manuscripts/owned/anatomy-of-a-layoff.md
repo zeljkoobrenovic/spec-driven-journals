@@ -1,7 +1,7 @@
 {id: anatomy-of-a-layoff}
-# 27. Manage Funding Delays: Revise the Cash Plan and Commitments
+# 28. Plan Layoffs: Decide What Work Stops, Not Just Who Leaves
 
-![Manage Funding Delays: Revise the Cash Plan and Commitments — logo](private-techuity/posts/26-anatomy-of-a-layoff/assets/images/24-anatomy-of-a-layoff/logo.jpeg)
+![Plan Layoffs: Decide What Work Stops, Not Just Who Leaves — logo](private-techuity/posts/26-anatomy-of-a-layoff/assets/images/24-anatomy-of-a-layoff/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to turn a reduction request into an operating plan: find where the pressure actually comes from, compare the alternatives on cash by date, choose roles by the work that stops, and plan for the people who leave and the people who remain.
 
@@ -61,7 +61,7 @@ The third is **influence**. At the same meeting the investor director says that 
 Before a reduction, the board asks what else could close the gap. Several measures are already in force or easy to state, and the table puts them on one basis: the recurring monthly saving once it has fully arrived, the one-off cash it costs first, the first month in which the full saving appears, and what the company gives up. Every figure is fictional.
 
 | Measure | Recurring saving a month | One-off cost | First full month | What it removes |
-| --- | ---: | ---: | --- | --- |
+| --- | --- | --- | --- | --- |
 | Hiring freeze (in force since August: the two deferred hires) | €0 further | €0 | — | Nothing more; the saving is already in the €200,000 burn |
 | R1: contract engineering not renewed (decided) | €50,000 | €0 | November | Internal tooling work; protected work unaffected |
 | Redeploy the two recovery engineers to the core team when the recovery work ends | €0 | €0 | — | Nothing; it fills a gap that a leaver would otherwise leave |

@@ -21,6 +21,9 @@ Use this part from the company’s side of the table. A minority funding round n
 
 ## The Learning Path
 
+![One path carries the onboarding finding from diligence to a funded first-hundred-days plan and handover. A separate path revises commitments when financing is delayed and proceeds to layoffs only if a reduction is required. Both support accountable leadership through change.](assets/images/part-5-intro/chapter-overview.jpeg)
+**Figure 1:** *One scenario carries a finding from diligence into a funded plan and its handover. A separate funding-delay scenario may require a reduction. Both develop ways to lead through change; events have no mandatory order.*
+
 The five chapters are five destinations. One fictional finding, Larkspur’s diligence finding that customer onboarding depends on one specialist’s manual work, travels from diligence into a funded plan and its handover; the pilot and support chapters of Parts III and IV and the toolkit follow the same finding. The financing-delay chapter and the reduction chapter that continues it use a separate Larkspur scenario with its own cash, people and dates.
 
 - [[diligence-corrects-the-plan]] shows what access you have at each stage of a transaction and completes that finding into a recorded decision.

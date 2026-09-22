@@ -36,7 +36,7 @@ The primary reader leads product or engineering inside a company working under i
 
 ## Editorial Rules
 
-Define terms before use. Identify the company leader’s decision, required authority, available funding and next review. Separate investor identity, ownership rights, financing and transaction context. Label fictional comparisons and keep historical claims within their evidence. Number main-chapter source folders consecutively from `00` to `32` in configured reading order. Preserve the current unprefixed permalinks and existing public asset namespaces. Keep the 44 specifications and all applicable reading formats consistent: 33 main articles, of which 31 have summaries and comics, plus six part introductions and five guide/reference pages.
+Define terms before use. Identify the company leader’s decision, required authority, available funding and next review. Separate investor identity, ownership rights, financing and transaction context. Label fictional comparisons and keep historical claims within their evidence. Number main-chapter source folders consecutively from `00` to `32` in configured reading order. Preserve the current unprefixed permalinks and existing public asset namespaces. Keep the 44 specifications and all applicable reading formats consistent: 33 main chapters, each with an article, summary and illustrated comic, plus six part introductions and five guide/reference pages.
 
 ## Decision Record
 

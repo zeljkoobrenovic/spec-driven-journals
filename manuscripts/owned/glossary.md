@@ -1,5 +1,5 @@
 {id: glossary}
-# Glossary
+# 37. Glossary
 
 ![Glossary — logo](private-techuity/posts/glossary/assets/images/glossary/logo.jpeg)
 
@@ -89,7 +89,7 @@ These definitions support the comparisons in the chapter [Understand Funding Cho
 | Net cash burn | Cash spending minus cash receipts over a stated period when spending is greater. |
 | Collected revenue | Money customers have actually paid in the period, as distinct from revenue invoiced, recognized or forecast. A cash plan is built on it. |
 | Fully loaded cost | The full monthly or annual cost of an employee: salary plus employer charges, benefits, equipment and tools. It is the figure that changes when a person joins or leaves. |
-| One-off cost / recurring saving | A cost paid once (severance, a transition, a contract exit) against a saving that repeats each period once it has fully arrived. Compare them by date, not as two totals ([Manage Funding Delays: Revise the Cash Plan and Commitments](#anatomy-of-a-layoff)). |
+| One-off cost / recurring saving | A cost paid once (severance, a transition, a contract exit) against a saving that repeats each period once it has fully arrived. Compare them by date, not as two totals ([Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff)). |
 | Runway | Estimated time until available cash reaches a stated limit under a cash forecast. Cash divided by constant net burn is a simplifying illustration. |
 | Minimum operating reserve | The amount of cash a board agrees the company will not fall below, so that a slip can be absorbed while a decision is taken. Reaching it is a dated event a plan is measured against, not the moment the money runs out ([Manage Funding Delays: Revise the Cash Plan and Commitments](#the-financing-slipped)). |
 | Bridge (bridge loan, bridge financing) | A shorter, smaller financing, often from the existing investors, meant to carry the company until a larger round or other event closes. It is an investment decision on the investor’s side, may carry conditions the company must meet before the money is transferred, and is not cash until it is drawn. |
@@ -152,7 +152,7 @@ The chapters keep three questions separate: who owns shares, who is accountable 
 | Reserved matters | Matters that require approval from a designated party, often the board or a shareholder, under the company’s agreements. |
 | Investor director | A board member appointed by an investor under the agreements. The seat is a formal right; what the director may veto or consent to depends on the reserved matters, not on the title. |
 | Operating plan | The company’s plan for a period, with its revenue, costs, headcount and initiatives. The body that approves it also approves material changes to it; spending inside it is usually delegated to executives. |
-| Funding condition | A condition attached to money: a bridge drawn only once a cost plan is adopted, a round that wants a particular executive in place. It is neither an approval right nor influence; the company meets it or does without the money ([Manage Funding Delays: Revise the Cash Plan and Commitments](#anatomy-of-a-layoff)). |
+| Funding condition | A condition attached to money: a bridge drawn only once a cost plan is adopted, a round that wants a particular executive in place. It is neither an approval right nor influence; the company meets it or does without the money ([Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff)). |
 | Mandate | The agreed scope of investments, responsibilities or authority. State which meaning applies. |
 | Escalation | Taking an unresolved issue to someone authorized or equipped to act, through a path agreed in advance. |
 | Financial sponsor | The investment firm behind a transaction, acting for its fund. This is the usual meaning of “sponsor” in deal documents. |
@@ -300,10 +300,10 @@ See the chapters [Set Priorities: You Cannot Fund Everything at Once](#cannot-fu
 | Headcount plan | The roles a plan funds, by period, and the roles that are conditional on money or evidence not yet received. Hires outside it, and reductions to it, need whoever approves the plan ([Clarify Authority: Decide Who Decides Before You Disagree](#decide-who-decides)). |
 | Hiring freeze | A decision to fill no new or vacant roles for a period. It saves only what would otherwise have been spent; a freeze already in force adds nothing to a later reduction. |
 | Redeployment | Moving people from work that ends or stops to work that continues, so that a gap is filled without a hire and a role is kept without a dismissal. |
-| Reduction in force (layoff, redundancy) | Ending roles, and the employment of the people in them, because the work stops or the plan can no longer fund it. Choose the roles by the work that stops; the terms and the process belong to the jurisdiction ([Manage Funding Delays: Revise the Cash Plan and Commitments](#anatomy-of-a-layoff)). |
+| Reduction in force (layoff, redundancy) | Ending roles, and the employment of the people in them, because the work stops or the plan can no longer fund it. Choose the roles by the work that stops; the terms and the process belong to the jurisdiction ([Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff)). |
 | Notice period | The time between telling a person their employment ends and the end itself, set by contract or law and paid whether or not it is worked. It delays the saving from a reduction. |
 | Severance | A payment on ending employment, set by law, contract or company policy, paid before the saving from a reduction begins. |
-| Collective consultation | A legal duty, in some jurisdictions above a threshold number of dismissals counted per establishment over a stated window, to consult employee representatives before dismissals take effect; often paired with a separate duty to notify a public authority, after which a waiting period runs. The thresholds and the two duties together decide the calendar of a reduction; national law can go further than the floor a directive sets ([Manage Funding Delays: Revise the Cash Plan and Commitments](#anatomy-of-a-layoff)). |
+| Collective consultation | A legal duty, in some jurisdictions above a threshold number of dismissals counted per establishment over a stated window, to consult employee representatives before dismissals take effect; often paired with a separate duty to notify a public authority, after which a waiting period runs. The thresholds and the two duties together decide the calendar of a reduction; national law can go further than the floor a directive sets ([Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff)). |
 | Accrued leave | Holiday or leave a person has earned but not yet taken. On leaving it is usually paid out, and counts among the one-off costs of a reduction. |
 | Fixed-term contract | Employment with an agreed end date, used in this book to retain a departing specialist for a defined piece of work. Its cost and end date belong in the cash table. |
 | Outplacement | Help with finding the next job, paid for by the employer as part of a departure package. |
@@ -313,7 +313,7 @@ See the chapters [Set Priorities: You Cannot Fund Everything at Once](#cannot-fu
 {id: glossary--technology}
 ## Technology and Company Work
 
-The company-investment sequence begins at the chapters [Set Priorities: You Cannot Fund Everything at Once](#cannot-fund-everything) and [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue); delivery measures are discussed in the chapter [Assess Capability: Can the Team Deliver?](#can-the-team-deliver), recovery in [Build Resilience: Backups Are Not Enough](#prove-you-can-restore) and AI in [Clarify AI Strategy: Three Different Investment Questions](#ai-strategy-three-questions). Sources for the frameworks named below: [S13: SPACE](https://www.microsoft.com/en-us/research/publication/the-space-of-developer-productivity-theres-more-to-it-than-you-think/) [S14: DORA metrics](https://dora.dev/guides/dora-metrics/) [S16: FinOps unit economics](https://www.finops.org/framework/capabilities/unit-economics/) [S17: NIST framework](https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf) and, for the AI definition, [S63: OECD AI-system definition memorandum](https://www.oecd.org/content/dam/oecd/en/publications/reports/2024/03/explanatory-memorandum-on-the-updated-oecd-definition-of-an-ai-system_3c815e51/623da898-en.pdf).
+The company-investment sequence begins at the chapters [Set Priorities: You Cannot Fund Everything at Once](#cannot-fund-everything) and [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue); delivery measures are discussed in the chapter [Assess Capability: Can the Team Deliver?](#can-the-team-deliver), recovery in [Build And Test Resilience: Backups Are Not Enough](#prove-you-can-restore) and AI in [Clarify AI Strategy: Three Different Investment Questions](#ai-strategy-three-questions). Sources for the frameworks named below: [S13: SPACE](https://www.microsoft.com/en-us/research/publication/the-space-of-developer-productivity-theres-more-to-it-than-you-think/) [S14: DORA metrics](https://dora.dev/guides/dora-metrics/) [S16: FinOps unit economics](https://www.finops.org/framework/capabilities/unit-economics/) [S17: NIST framework](https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf) and, for the AI definition, [S63: OECD AI-system definition memorandum](https://www.oecd.org/content/dam/oecd/en/publications/reports/2024/03/explanatory-memorandum-on-the-updated-oecd-definition-of-an-ai-system_3c815e51/623da898-en.pdf).
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -341,12 +341,12 @@ The company-investment sequence begins at the chapters [Set Priorities: You Cann
 | Cloud | Computing resources rented from a supplier rather than owned. |
 | Managed service | A service operated by a supplier on the customer’s behalf, such as a managed database. |
 | FinOps | Collaborative management of the financial value of technology spending, especially cloud. |
-| Unit economics | Cost or value per defined unit of useful work, such as cost per processed transaction. A lower total bill can hide a worse unit cost ([Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill)). |
+| Unit economics | Cost or value per defined unit of useful work, such as cost per processed transaction. A lower total bill can hide a worse unit cost ([Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill)). |
 | Rightsizing | Matching computing capacity to demand and service requirements. |
 | Latency | The delay before a response or result. |
 | Security | Protection of systems and data against threats. |
 | Resilience / recovery | Ability to continue or restore essential work / the work of restoring service after failure. A backup is not evidence of recovery until a restore has been tested. |
-| Recovery objective | An agreed target for how quickly service must resume and how much data may be lost; the fictional Larkspur objective is dispatch within four hours with under fifteen minutes of lost updates ([Build Resilience: Backups Are Not Enough](#prove-you-can-restore)). |
+| Recovery objective | An agreed target for how quickly service must resume and how much data may be lost; the fictional Larkspur objective is dispatch within four hours with under fifteen minutes of lost updates ([Build And Test Resilience: Backups Are Not Enough](#prove-you-can-restore)). |
 | Residual risk | Risk remaining after the chosen protections or actions. |
 | AI system | A machine-based system that, for explicit or implicit objectives, infers from the input it receives how to generate outputs such as predictions, content, recommendations or decisions. This covers both learned (machine-learning) and knowledge-based approaches; this book mainly discusses learning-based systems. |
 | Generative AI | AI systems whose output is new content, such as text, code or images, produced by models trained on large collections of examples. Correctness for the intended use has to be checked. |

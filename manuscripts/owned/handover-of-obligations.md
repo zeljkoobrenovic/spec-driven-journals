@@ -1,5 +1,5 @@
 {id: handover-of-obligations}
-# 28. Manage the Handover: Carry Forward the Evidence and Obligations
+# 29. Manage the Handover: Carry Forward the Evidence and Obligations
 
 ![Manage the Handover: Carry Forward the Evidence and Obligations — logo](private-techuity/posts/27-handover-of-obligations/assets/images/25-handover-of-obligations/logo.jpeg)
 
@@ -17,7 +17,7 @@
 
 On the morning after an ownership event, the customer contracts, the agreed recovery requirement, the half-finished migration and the deferred hire are still there. A round adds an investor; a secondary sale gives one shareholder liquidity; a continuation transaction moves the holding to a new vehicle under the same manager; a sale of control changes who holds authority over the plan; a listing may or may not. None of these events changes the work. This chapter is about handing that work over, not only the shares.
 
-The chapters [Manage Funding Delays: Revise the Cash Plan and Commitments](#the-financing-slipped) and [Manage Funding Delays: Revise the Cash Plan and Commitments](#anatomy-of-a-layoff) ended with dated decision records. This chapter follows such records into an ownership event, whichever form it takes. A sale is one possible event, not the inevitable next stage; the same record has to serve continued ownership, another round and a change of controlling shareholder. The Larkspur figures in this chapter are fictional and belong to the chain that runs from the chapter [Use Diligence: Correct the Plan Before It Is Signed](#diligence-corrects-the-plan) through the chapter [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days) to this handover. The delayed-financing and reduction chapters work a deliberately separate scenario with its own cash, burn, people and dates; their figures are not part of this record.
+The chapters [Manage Funding Delays: Revise the Cash Plan and Commitments](#the-financing-slipped) and [Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff) ended with dated decision records. This chapter follows such records into an ownership event, whichever form it takes. A sale is one possible event, not the inevitable next stage; the same record has to serve continued ownership, another round and a change of controlling shareholder. The Larkspur figures in this chapter are fictional and belong to the chain that runs from the chapter [Use Diligence: Correct the Plan Before It Is Signed](#diligence-corrects-the-plan) through the chapter [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days) to this handover. The delayed-financing and reduction chapters work a deliberately separate scenario with its own cash, burn, people and dates; their figures are not part of this record.
 
 {id: handover-of-obligations--keep-the-evidence-during-the-work}
 ## Keep the Evidence During the Work
@@ -26,7 +26,7 @@ Exit preparation is easy to describe and hard to do late. If the decision and ou
 
 The company should be able to explain its product position, architecture constraints, operating reliability, leadership capacity, material risks, intellectual property and acquisition history, and to reconcile the economic claims attached to its technology work. The evidence differs by initiative:
 
-- For a cloud initiative: the baseline, the implemented changes, the demand adjustment, net costs and service outcomes (see the chapter [Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill)).
+- For a cloud initiative: the baseline, the implemented changes, the demand adjustment, net costs and service outcomes (see the chapter [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill)).
 - For a platform transition: migration cohorts, customers lost, dual-running costs and unfinished obligations.
 - For AI work: the evaluation versions and the actual workflow economics (see the chapter [Clarify AI Strategy: Three Different Investment Questions](#ai-strategy-three-questions)).
 
@@ -135,7 +135,7 @@ A handover is a chance for both company leaders and the investor to learn. Where
 
 Any involvement after a handover needs an agreed role and appropriate access; it is not a right that survives the transaction. The point is to check the durability claims made during ownership. Later deterioration does not automatically prove that the prior owners failed; market conditions and subsequent decisions matter. Later success does not prove that every prior intervention was necessary. A consistent record makes it possible to learn from the whole ownership period: what was expected, what was tried, what happened and what still needs work.
 
-Part V has followed the company leader through investigation ([Use Diligence: Correct the Plan Before It Is Signed](#diligence-corrects-the-plan)), the early funded plan ([Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days)), a delayed financing ([Manage Funding Delays: Revise the Cash Plan and Commitments](#the-financing-slipped)), the reduction it forced ([Manage Funding Delays: Revise the Cash Plan and Commitments](#anatomy-of-a-layoff)) and now the handover. Part VI tests these methods against company histories, starting with two contrasting exits: [LEARN: Lessons From the Field](#part-6) and [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype).
+Part V has followed the company leader through investigation ([Use Diligence: Correct the Plan Before It Is Signed](#diligence-corrects-the-plan)), the early funded plan ([Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days)), a delayed financing ([Manage Funding Delays: Revise the Cash Plan and Commitments](#the-financing-slipped)), the reduction it forced ([Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff)) and now the handover. Part VI tests these methods against company histories, starting with two contrasting exits: [LEARN: Lessons From the Field](#part-6) and [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype).
 
 {id: handover-of-obligations--questions-to-consider}
 ## Questions to Consider

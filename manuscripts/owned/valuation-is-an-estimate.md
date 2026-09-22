@@ -1,5 +1,5 @@
 {id: valuation-is-an-estimate}
-# 3. Understand Valuation: An Estimate, Not a Fact
+# 4. Understand Valuation: An Estimate, Not a Fact
 
 ![Understand Valuation: An Estimate, Not a Fact — logo](private-techuity/posts/02-valuation-is-an-estimate/assets/images/02-valuation-is-an-estimate/logo.jpeg)
 
@@ -172,7 +172,7 @@ Three questions turn the assumption into something testable:
 - **When does it become usable?** If the setup step needs two quarters (six months) to build and a first group of customers to prove that it works, the model cannot assume a full year of savings; phase the benefit from the expected validation date and check what that does to the early margins.
 - **Who funds the transition?** Building the change consumes cash and weeks of engineers’ time before it saves a single hour. That spending has to sit in an approved plan, not be assumed by the valuation.
 
-If the answers are “nothing specific,” “not yet” and “nobody,” the assumption is a hope, and the target derived from it needs revising before the plan does. The chapter [Plan for Growth: Decide What to Change in Your Systems](#growth-into-design) works through choosing the system change that makes such an assumption true, and the chapter [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue) shows how to measure whether it did.
+If the answers are “nothing specific,” “not yet” and “nobody,” the assumption is a hope, and the target derived from it needs revising before the plan does. The chapter [Plan for Growth: Decide What (Not) to Change in Your Systems](#growth-into-design) works through choosing the system change that makes such an assumption true, and the chapter [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue) shows how to measure whether it did.
 
 {id: valuation-is-an-estimate--what-to-carry-forward}
 ## What to Carry Forward

@@ -1,5 +1,5 @@
 {id: bibliography}
-# Bibliography and Evidence Guide
+# 38. Bibliography and Evidence Guide
 
 ![Bibliography and Evidence Guide — logo](private-techuity/posts/bibliography/assets/images/bibliography/logo.jpeg)
 
@@ -25,9 +25,9 @@ Use this table to find evidence by question. A source can appear under more than
 | Valuation, earnings measures and investor returns | S03, S04, S05, S06, S52, S53, S73, S74 | [Understand Valuation: An Estimate, Not a Fact](#valuation-is-an-estimate), [Understand Investor Returns: Same Performance, Different Outcomes](#three-different-returns), [Fund Economics: Fees, Distributions and Performance Reports](#fund-economics) |
 | Cash, funding forms and financing documents | S01, S02, S07, S54, S55, S56, S57, S58, S59, S60, S61, S72 | [Understand Expectations: Customers, Lenders and Investors](#customers-lenders-investors), [Understand Funding and Control: An Investment Announcement Is Not a Budget](#announcement-is-not-a-budget), [Understand Cash Flow: Confirm the Cash Before You Commit](#obligations-before-budget) |
 | Governance, rights and incentives | S01, S02, S04, S61, S76 | [Clarify Authority: Decide Who Decides Before You Disagree](#decide-who-decides), [Compare Incentives and Stakes: Equity, Carry and Jobs](#different-bets), [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring) |
-| Workforce reductions and employment process | S77, S78 | [Manage Funding Delays: Revise the Cash Plan and Commitments](#anatomy-of-a-layoff) |
-| Delivery, architecture and cloud cost | S13, S14, S15, S16, S53, S75 | [Assess Capability: Can the Team Deliver?](#can-the-team-deliver), [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue), [Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill) |
-| Security and resilience | S17 | [Build Resilience: Backups Are Not Enough](#prove-you-can-restore) |
+| Workforce reductions and employment process | S77, S78 | [Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff) |
+| Delivery, architecture and cloud cost | S13, S14, S15, S16, S53, S75 | [Assess Capability: Can the Team Deliver?](#can-the-team-deliver), [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue), [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill) |
+| Security and resilience | S17 | [Build And Test Resilience: Backups Are Not Enough](#prove-you-can-restore) |
 | AI evidence | S18, S19, S20, S21, S63 | [Clarify AI Strategy: Three Different Investment Questions](#ai-strategy-three-questions) |
 | Investor support and advisers | S22, P01, P02 | [Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?](#investors-adviser), [Choose the Right Help: Compare Investor Support With Other Options](#help-that-changes-capability) |
 | Technology operating partners, leadership roles and AI support | S79–S90 | [Understand Technology Operating Partners: How They Work With Your Team](#tech-operating-partner) |
@@ -211,7 +211,7 @@ FinOps Foundation. [Unit Economics](https://www.finops.org/framework/capabilitie
 
 **Evidence type:** Practitioner framework. **Consulted scope:** Capability guidance consulted for connecting cost with business units and value. All manuscript euro examples are fictional calculations.
 
-**Used in:** [Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill), [Glossary](#glossary).
+**Used in:** [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill), [Glossary](#glossary).
 
 {id: bibliography--s17-nist-csf-2-0}
 ### S17 — NIST CSF 2.0
@@ -220,7 +220,7 @@ National Institute of Standards and Technology (NIST). [The NIST Cybersecurity F
 
 **Evidence type:** Government framework. **Consulted scope:** Framework overview, functions, governance, and implementation orientation consulted. A structure for risk management, not evidence that adopting it eliminates incidents. DOI: 10.6028/NIST.CSWP.29.
 
-**Used in:** [Build Resilience: Backups Are Not Enough](#prove-you-can-restore), [Glossary](#glossary).
+**Used in:** [Build And Test Resilience: Backups Are Not Enough](#prove-you-can-restore), [Glossary](#glossary).
 
 {id: bibliography--s18-nist-generative-ai-profile}
 ### S18 — NIST generative AI profile
@@ -751,7 +751,7 @@ Council of the European Union. [Council Directive 98/59/EC of 20 July 1998 on th
 
 **Evidence type:** Union legislation. **Consulted scope:** Article 1(1)(a), the definition (dismissals for reasons not related to the individual workers) and the two alternative tests member states choose between (over 30 days: at least 10 dismissals in establishments normally employing more than 20 and fewer than 100 workers, at least 10% in those employing at least 100 and fewer than 300, at least 30 in those employing 300 or more; or over 90 days: at least 20 whatever the establishment’s size); the second subparagraph of Article 1(1), under which other terminations on the employer’s initiative for reasons unrelated to the individual are assimilated to redundancies provided there are at least five redundancies; Article 2(1) and (2), consultation of workers’ representatives in good time with a view to reaching an agreement, covering ways of avoiding or reducing the redundancies and mitigating their consequences; Article 3(1), written notification of the competent public authority; Article 4(1), the 30-day period after notification before the redundancies take effect, without prejudice to individual notice rights; and Article 5, member states’ freedom to apply more favourable provisions. Rechecked September 16, 2026 for the band boundaries. Minimum requirements that member states transpose and may exceed; not the law of any particular country, and the book does not say which law governs the fictional company. Later amendments were not reviewed.
 
-**Used in:** [Manage Funding Delays: Revise the Cash Plan and Commitments](#anatomy-of-a-layoff).
+**Used in:** [Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff).
 
 {id: bibliography--s78-us-warn-act-29-u-s-c-21012102}
 ### S78 — US WARN Act, 29 U.S.C. §§ 2101–2102
@@ -760,7 +760,7 @@ United States Code, Title 29, Chapter 23. [§ 2101, Definitions; exclusions from
 
 **Evidence type:** Federal statute. **Consulted scope:** § 2101(a)(1), employer (100 or more employees excluding part-time employees, or 100 or more who in aggregate work at least 4,000 hours a week exclusive of overtime); (a)(2), plant closing (a shutdown of a single site, or of facilities or operating units within it, causing an employment loss for 50 or more employees excluding part-time employees within any 30-day period); (a)(3), mass layoff (a reduction in force not resulting from a plant closing that causes an employment loss at a single site within any 30-day period for at least 33 percent of the employees and at least 50 employees, or for at least 500, excluding part-time employees); (a)(8), part-time employee; § 2102(a), the 60-day written notice and its recipients (the employees’ representatives or the employees, the state’s rapid-response entity and the chief elected local official); § 2102(b), the reduced-notice exceptions (faltering company, unforeseeable business circumstances, natural disaster); and § 2102(d), aggregation of smaller employment losses within any 90-day period unless they arise from separate and distinct actions and causes. Rechecked September 16, 2026. The implementing regulations at 20 CFR Part 639 and state notice laws were not reviewed.
 
-**Used in:** [Manage Funding Delays: Revise the Cash Plan and Commitments](#anatomy-of-a-layoff).
+**Used in:** [Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff).
 
 {id: bibliography--s79-korn-ferry-on-technology-operating-partners}
 ### S79 — Korn Ferry on technology operating partners

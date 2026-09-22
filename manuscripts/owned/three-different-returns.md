@@ -1,5 +1,5 @@
 {id: three-different-returns}
-# 4. Understand Investor Returns: Same Performance, Different Outcomes
+# 5. Understand Investor Returns: Same Performance, Different Outcomes
 
 ![Understand Investor Returns: Same Performance, Different Outcomes — logo](private-techuity/posts/03-three-different-returns/assets/images/03-three-different-returns/logo.jpeg)
 

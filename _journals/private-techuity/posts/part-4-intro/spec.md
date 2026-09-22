@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-21
+revised: 2026-09-22
 ---
 
 # Spec: PART IV — COLLABORATE: Getting Useful Help From Your Investor
@@ -15,6 +15,9 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Include exactly one chapter overview at the start of the learning path, in addition to the existing header logo. Give every configured chapter its own box, use short recognizable title labels without duplicating chapter numbers, and connect the chapters to the part's overall purpose.
+- Connect the working arrangement, choice of help and engagement terms to the adviser and technology operating partner roles; lead to useful support with explicit company accountability, cost and dependence.
+- Generate the overview through the Gemini API, matching the book's ivory, navy, teal and ochre illustration style. Publish one JPEG with descriptive alt text and a prose caption, and preserve it in the manuscript export. Keep the linked chapter walkthrough as the full-title reading guide.
 - Introduce all five chapters in the configured order, starting with the working arrangement and closing with the wider technology operating function.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
@@ -31,7 +34,7 @@ Summarising the chapters' arguments, which would make the part introduction a su
 
 ## Modalities
 
-Article only. These are short orientation pieces; a TL;DR of a 400-word introduction would duplicate it, and a comic would imply an argument the piece does not make.
+Article with one chapter-overview diagram. These are short orientation pieces; a TL;DR of a 400-word introduction would duplicate it, and a comic would imply an argument the piece does not make.
 
 ## Open questions
 
@@ -45,10 +48,11 @@ None for the agreed part structure. Introductions remain unnumbered; chapter rea
 
 ## Sources
 
-None. These pieces describe the book's own structure and make no external factual claims.
+The journal's current config.yaml and the configured chapter introductions. These pieces describe the book's own structure and make no external factual claims.
 
 ## Changelog
 
+- 2026-09-22: Add one visual chapter framework at the author's request, showing the learning connections and the part's shared outcome. Generate an image through the Gemini API as explicitly requested, with alt text and a caption; retain the linked walkthrough and stable permalinks.
 - 2026-09-21 (Part IV order): Introduce the five-chapter sequence: operating-model blueprints, sourcing help, agreeing an engagement, the investor’s adviser and the technology operating partner. Keep the introduction under 400 words.
 - 2026-09-14: Shorten the investor-category recap, state the three distinct chapter jobs (adviser role; sourcing; charter and handover), keep the continuing-service allowance and use accountable-leader language. Permalink unchanged.
 - 2026-09-14: Retitle the post from “PART IV — Beyond Money: Using Investor Support to Build Capability and Accelerate Progress” to “PART IV — COLLABORATE: Getting Useful Help From Your Investor”. Permalink and id unchanged; body unchanged.

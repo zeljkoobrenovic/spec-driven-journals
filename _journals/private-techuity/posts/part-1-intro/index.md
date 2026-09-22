@@ -21,6 +21,9 @@ The chapters compare arrangements side by side. Fund-backed buyouts receive the 
 
 ## The Learning Path
 
+![Six chapters build through three stages: customers, lenders and investors lead to funding and control; valuation leads to investor returns; funding choices lead to cash flow. Together they establish what can fund a commitment.](assets/images/part-1-intro/chapter-overview.jpeg)
+**Figure 1:** *The six chapters build from the sources and control of money, through valuation and returns, to a funding choice checked against available cash. Short labels correspond to the linked chapters below.*
+
 - [[customers-lenders-investors]] explains the main ways money reaches a company, what each source expects in return and what an ownership share represents.
 - [[announcement-is-not-a-budget]] maps the money and responsibilities behind a transaction and completes one funding-and-authority record for a proposed hire.
 - [[valuation-is-an-estimate]] introduces sales, profit, cash and estimates of business value, in two stages a beginner can follow.

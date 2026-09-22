@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-15
+revised: 2026-09-22
 ---
 
 # Spec: PART VI — Lessons from the Field
@@ -15,6 +15,9 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Include exactly one chapter overview at the start of the learning path, in addition to the existing header logo. Give every configured chapter its own box, use short recognizable title labels without duplicating chapter numbers, and connect the chapters to the part's overall purpose.
+- Bring the four case chapters into the closing synthesis. Show the common evidence-to-mechanism-to-decision method and preserve the distinction between independent histories and a causal sequence.
+- Generate the overview through the Gemini API, matching the book's ivory, navy, teal and ochre illustration style. Publish one JPEG with descriptive alt text and a prose caption, and preserve it in the manuscript export. Keep the linked chapter walkthrough as the full-title reading guide.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
@@ -30,7 +33,7 @@ Summarising the chapters' arguments, which would make the part introduction a su
 
 ## Modalities
 
-Article only. These are short orientation pieces; a TL;DR of a 400-word introduction would duplicate it, and a comic would imply an argument the piece does not make.
+Article with one chapter-overview diagram. These are short orientation pieces; a TL;DR of a 400-word introduction would duplicate it, and a comic would imply an argument the piece does not make.
 
 ## Open questions
 
@@ -44,10 +47,11 @@ None for the agreed part structure. Introductions remain unnumbered; chapter rea
 
 ## Sources
 
-None. These pieces describe the book's own structure and make no external factual claims.
+The journal's current config.yaml and the configured chapter introductions. These pieces describe the book's own structure and make no external factual claims.
 
 ## Changelog
 
+- 2026-09-22: Add one visual chapter framework at the author's request, showing the learning connections and the part's shared outcome. Generate an image through the Gemini API as explicitly requested, with alt text and a caption; retain the linked walkthrough and stable permalinks.
 - 2026-09-15: Match the case-map windows to the expanded chapter evidence (Hilton’s OnQ dated by 2003/2005 pre-buyout filings; Skype’s technology steps dated inside 2009–2011; Visma’s 2006–2023 transaction map with a 2024 financial comparison; TeamSystem’s 2000–2017 analysis with later events to the 2024 realization report; Toys R Us’s September 2017 filing) and narrow “kept apart throughout” to the reader’s method. Permalink unchanged.
 - 2026-09-14: Open with a concrete contrast, add a case-purpose map (case, historical window, decision illuminated), reflect the retitled Toys R Us and TeamSystem chapters and introduce the finale as synthesis. Permalink unchanged.
 - 2026-09-13: Align the specification heading with the current part-introduction title.

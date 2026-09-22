@@ -1,5 +1,5 @@
 {id: decide-who-decides}
-# 7. Clarify Authority: Decide Who Decides Before You Disagree
+# 8. Clarify Authority: Decide Who Decides Before You Disagree
 
 ![Clarify Authority: Decide Who Decides Before You Disagree — logo](private-techuity/posts/06-decide-who-decides/assets/images/06-decide-who-decides/logo.jpeg)
 
@@ -112,7 +112,7 @@ Requests of that kind reach a company leader in three forms that sound alike and
 - A **funding condition** attaches money to a plan. Two examples: a **bridge**, short-term financing that covers a gap until longer-term funding arrives, released only once a cost plan is adopted; or a new **funding round**, a sale of new shares to investors, whose **term sheet**, the document setting out the proposed terms before the binding contracts are signed, wants a particular executive in place. The response is to translate the condition into a date and a number, and decide whether to meet it.
 - **Influence** is everything else: an adviser’s **benchmark**, a comparison with similar companies, a director’s view of a leader, an introduction. The response is to record it as an option and assess it on the same evidence as any other.
 
-The chapter [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring) works an investor-proposed appointment through that distinction, and [Manage Funding Delays: Revise the Cash Plan and Commitments](#anatomy-of-a-layoff) a staffing reduction, where all three arrive at the same board meeting.
+The chapter [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring) works an investor-proposed appointment through that distinction, and [Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff) a staffing reduction, where all three arrive at the same board meeting.
 
 {id: decide-who-decides--make-a-conditional-commitment-explicit-and-plan-the-missed-deadline}
 ## Make a Conditional Commitment Explicit, and Plan the Missed Deadline

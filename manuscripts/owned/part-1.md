@@ -1,5 +1,3 @@
-{mainmatter}
-
 {class: part, id: part-1}
 # UNDERSTAND: Financing and Ownership
 
@@ -15,6 +13,10 @@ The chapters compare arrangements side by side. Fund-backed buyouts receive the 
 
 {id: part-1--the-learning-path}
 ## The Learning Path
+
+![Six chapters build through three stages: customers, lenders and investors lead to funding and control; valuation leads to investor returns; funding choices lead to cash flow. Together they establish what can fund a commitment.](private-techuity/posts/part-1-intro/assets/images/part-1-intro/chapter-overview.jpeg)
+
+**Figure 1:** *The six chapters build from the sources and control of money, through valuation and returns, to a funding choice checked against available cash. Short labels correspond to the linked chapters below.*
 
 - [Understand Expectations: Customers, Lenders and Investors](#customers-lenders-investors) explains the main ways money reaches a company, what each source expects in return and what an ownership share represents.
 - [Understand Funding and Control: An Investment Announcement Is Not a Budget](#announcement-is-not-a-budget) maps the money and responsibilities behind a transaction and completes one funding-and-authority record for a proposed hire.

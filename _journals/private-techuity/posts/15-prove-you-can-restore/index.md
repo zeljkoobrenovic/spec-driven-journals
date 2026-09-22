@@ -1,5 +1,5 @@
 ---
-title: "Build Resilience: Backups Are Not Enough"
+title: "Build And Test Resilience: Backups Are Not Enough"
 date: 2026-09-12
 author: Željko Obrenović
 excerpt: "Follow one failed restore from a stated recovery objective through funded corrective work, a retest and a recorded decision about the exposure that remains."

@@ -21,6 +21,9 @@ This is the center of the book, and its nine chapters follow three moves. Throug
 
 ## The Learning Path
 
+![Nine chapters form three moves: priorities and revenue assumptions justify the work; capability, work organization and system design establish delivery; cloud, resilience, AI and acquisitions or separations apply the same reasoning. The shared outcome is feasible funded work reviewed against evidence.](assets/images/part-3-intro/chapter-overview.jpeg)
+**Figure 1:** *The first five chapters establish what deserves investment and what delivery requires. The final four apply that reasoning to different choices; their grouping shows a shared method rather than a dependency between applications.*
+
 **First, choose and justify the work.**
 
 - [[cannot-fund-everything]] chooses a combination of work that fits both the cash and the team time available, then revises it when a test fails.

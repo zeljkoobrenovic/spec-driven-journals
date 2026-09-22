@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-21
+revised: 2026-09-22
 ---
 
 # Spec: The Rise of the Technology Operating Partner
@@ -28,6 +28,7 @@ Product and engineering leaders working under investors; secondarily investment 
 - Use the book's opening learning objective and three KEY POINTS. Aim for 3,800–4,700 words, with readable prose and at most two substantial comparison tables. Link relevant existing chapters and the bibliography.
 - Add a chapter hero logo, a matching navigation icon and three explanatory figures in the book’s ivory, navy, teal and ochre visual style. Illustrate the boundary between portfolio support and company leadership, alternatives in capability building and hiring, and the fictional companies’ different AI decisions. Use descriptive alt text and captions; retain generation prompts and provenance.
 - Place the article last in Part IV, immediately after `investors-adviser`, in source folder `22-tech-operating-partner`. Connect the preceding adviser chapter to the wider operating function and hand off to Part V. Retain all permalinks and align navigation and counts with 33 main chapters.
+- Add a 300–500-word TL;DR and a five-page illustrated comic. Preserve the operating function's continuity across the investment, company leadership and appointment authority, alternatives to hiring, and AI's effects on investment assumptions, company work and the operating function. Follow the article's independent fictional three-company AI comparison; retain the distinction between released capacity, cash savings and attribution. Reuse the journal cast as presenters, give each page three strips with dialogue and labels in the artwork, and include alt text, short captions and rendered transcripts. Preserve scripts and image provenance and inspect every page against its script.
 
 ## Non-goals
 
@@ -35,7 +36,9 @@ A comprehensive career guide, compensation survey, financial forecast, endorseme
 
 ## Modalities
 
-Illustrated article and companion specification, with a chapter hero logo, navigation icon and three explanatory figures. Retain the illustrated Article modality; no separate summary or comic is required for this structural move.
+- Article: the existing illustrated article, chapter hero logo, navigation icon and three explanatory figures.
+- TL;DR: `summary.md`, a self-contained 300–500-word summary in the journal's concise prose style, reusing the portfolio-support overview after the opening paragraph.
+- Comic: `comics.md`, five illustrated pages of three strips each. The familiar fictional cast presents the three-company AI example alongside the operating function's role, capability choices and review evidence; the page scripts drive artwork, captions and transcripts.
 
 ## Open questions
 
@@ -53,6 +56,7 @@ Draft link list: `_drafts/tech-operating-partner/online-source.md`. Consulted pu
 
 ## Changelog
 
+- 2026-09-22: Extend the contract before adding the requested TL;DR and Comic modalities. Reuse an existing overview figure and generate five comic pages, preserving company authority, the different AI decisions and the article's limits on outcome claims.
 - 2026-09-21 (Part IV order): Move the article to the end of Part IV, immediately after the adviser chapter. Preserve the role comparisons, portfolio hiring, AI coverage, sources and artwork; add the transition to Part V.
 - 2026-09-20 (illustrated appendix): Add the author-requested logo and explanatory figures, with a matching index icon. Keep the existing book palette and record the built-in image generator’s prompts and asset provenance.
 

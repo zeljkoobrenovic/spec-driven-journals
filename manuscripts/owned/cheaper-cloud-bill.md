@@ -1,7 +1,7 @@
 {id: cheaper-cloud-bill}
-# 15. Evaluate Cloud Costs: A Lower Bill Is Not Always Better
+# 16. Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better
 
-![Evaluate Cloud Costs: A Lower Bill Is Not Always Better — logo](private-techuity/posts/14-cheaper-cloud-bill/assets/images/14-cheaper-cloud-bill/logo.jpeg)
+![Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better — logo](private-techuity/posts/14-cheaper-cloud-bill/assets/images/14-cheaper-cloud-bill/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to put cloud bills on one comparable basis, separate why they changed, and decide how much to commit before calling a lower bill an improvement.
 
@@ -148,7 +148,7 @@ An initiative record should include implementation labor, specialist fees, tooli
 
 A useful cost improvement has an explanation the company can check: what changed, on what basis it was measured, how demand affected the comparison, what the transition cost and whether service remained acceptable. Larkspur’s answer to Morgan’s question is not “the bill went up 20%” or “we found €15,000 a month.” It has two parts that must stay separate. Unit cost per successful transaction fell 20% against the prior year, so the service became more efficient. The flat-spend plan was still missed: spending is €20,000 a month above the approved envelope, and unit cost is 20% above what the plan implied. The one-year commitment on the scheduling service closes €9,000 of that gap at every point in the approved demand range, would cost €1,000 more in the stress case, and is revisited if usage or ownership changes. Alex still owes the board an explanation of the remaining €11,000 a month of cost drivers, and either further changes or a revised envelope. That is a contractual choice beside an honest plan comparison, not a savings announcement.
 
-The commitment was tested against demand the company can observe. Some spending instead buys protection against harm the company hopes never to observe, and a lower bill there can mean the protection quietly went away. The next chapter shows how to judge that spending on evidence: [Build Resilience: Backups Are Not Enough](#prove-you-can-restore).
+The commitment was tested against demand the company can observe. Some spending instead buys protection against harm the company hopes never to observe, and a lower bill there can mean the protection quietly went away. The next chapter shows how to judge that spending on evidence: [Build And Test Resilience: Backups Are Not Enough](#prove-you-can-restore).
 
 {id: cheaper-cloud-bill--questions-to-consider}
 ## Questions to Consider

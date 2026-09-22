@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-21
+revised: 2026-09-22
 ---
 
 # Spec: Bibliography and Evidence Guide
@@ -34,7 +34,7 @@ Exhaustive coverage, a universal role charter, or a claim of completed professio
 
 ## Modalities
 
-This reference page uses the Article modality. Of the 33 main chapters, 31 also provide a summary and an illustrated comic; operating-model blueprints and technology operating partners use the illustrated Article modality. Reference material is not padded with redundant adaptations.
+This reference page uses the Article modality. All 33 main chapters provide an Article, a 300–500-word TL;DR and an illustrated Comic with captions and dialogue transcripts. Comics use either individual panels or pages of stacked strips. Reference material is not padded with redundant adaptations.
 
 ## Open questions
 
@@ -50,6 +50,8 @@ Research and editorial gaps remain in the separate notes; revise this reference 
 See the bibliography and the relevant chapters. The source registry records consultation scope and dates.
 
 ## Changelog
+
+- 2026-09-22: Reconcile reading-format coverage after adding TL;DR and illustrated Comic modalities to operating-model blueprints and technology operating partners. All 33 main chapters now provide all three formats.
 
 - 2026-09-21 (Part IV order): Reconcile the current chapter and reading-format description with the two articles’ move into Part IV. Stable chapter links and source identifiers remain unchanged.
 - 2026-09-21: Add ten sources from the operating-model inputs, recheck S01, extend the consultation window and topic index, and record evidence limits.

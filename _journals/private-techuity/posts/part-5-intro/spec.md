@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-16
+revised: 2026-09-22
 ---
 
 # Spec: PART V — Leading Through Funding and Ownership Changes
@@ -15,6 +15,9 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Include exactly one chapter overview at the start of the learning path, in addition to the existing header logo. Give every configured chapter its own box, use short recognizable title labels without duplicating chapter numbers, and connect the chapters to the part's overall purpose.
+- Keep the diligence-to-plan-to-handover evidence trail distinct from the separate delayed-financing and possible-reduction scenario. Connect both to accountable leadership through change without implying an inevitable transaction or layoff sequence.
+- Generate the overview through the Gemini API, matching the book's ivory, navy, teal and ochre illustration style. Publish one JPEG with descriptive alt text and a prose caption, and preserve it in the manuscript export. Keep the linked chapter walkthrough as the full-title reading guide.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
@@ -30,7 +33,7 @@ Summarising the chapters' arguments, which would make the part introduction a su
 
 ## Modalities
 
-Article only. These are short orientation pieces; a TL;DR of a 400-word introduction would duplicate it, and a comic would imply an argument the piece does not make.
+Article with one chapter-overview diagram. These are short orientation pieces; a TL;DR of a 400-word introduction would duplicate it, and a comic would imply an argument the piece does not make.
 
 ## Open questions
 
@@ -44,10 +47,11 @@ None for the agreed part structure. Introductions remain unnumbered; chapter rea
 
 ## Sources
 
-None. These pieces describe the book's own structure and make no external factual claims.
+The journal's current config.yaml and the configured chapter introductions. These pieces describe the book's own structure and make no external factual claims.
 
 ## Changelog
 
+- 2026-09-22: Add one visual chapter framework at the author's request, showing the learning connections and the part's shared outcome. Generate an image through the Gemini API as explicitly requested, with alt text and a caption; retain the linked walkthrough and stable permalinks.
 - 2026-09-16: Five destinations: [[anatomy-of-a-layoff]] added after the delayed-financing chapter as the continuation of that separate scenario; excerpt and closing promise updated.
 - 2026-09-15: Describe the evidence trail as the chapters demonstrate it: the onboarding finding runs diligence → funded plan → handover (with the earlier pilot and support episodes in Parts III–IV and the toolkit); the financing-delay chapter is a separate scenario with its own figures. Keep one nonlinearity statement.
 - 2026-09-14: Describe four destinations after the split of the financing chapter (diligence, funded early plan, delayed financing, handover of obligations), state nonlinearity once, qualify how much an event changes and promise the finding that travels through all four chapters. Permalink unchanged.

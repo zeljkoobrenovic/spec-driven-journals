@@ -106,9 +106,9 @@ The delayed-financing chapter ([[the-financing-slipped]]) and the reduction chap
 
 ## Choose a Reading Format
 
-All thirty-three main chapters provide an **Article**. Thirty-one also have a 300–500-word **TL;DR** summary and a six-panel illustrated **Comic**, with captions and dialogue transcripts. TL;DR means “too long; didn’t read.” [[operating-model-blueprints]] and [[tech-operating-partner]] are illustrated articles without separate summaries or comics. The six part introductions and the reference pages also use only the Article format.
+All thirty-three main chapters provide an **Article**, a 300–500-word **TL;DR** summary and an illustrated **Comic**, with captions and dialogue transcripts. TL;DR means “too long; didn’t read.” Comics use individual panels or pages of stacked strips; [[operating-model-blueprints]] and [[tech-operating-partner]] each offer five comic pages. The six part introductions and the reference pages use only the Article format.
 
-For a shorter first pass, read the part introductions and available summaries, then the two chapters offered only as illustrated articles. The formats are companions rather than substitutes. Each one is written to reach the same decision and to keep the conditions that decide whether that decision holds; what varies is depth: the article gives the fullest calculations, the discussion of sources and the alternative cases, while every format keeps the conditions that would change the decision. The summaries and comics of this September 2026 revision are still being reconciled chapter by chapter, so where a short format and the article disagree, the article is the one to trust.
+For a shorter first pass, read the part introductions and chapter summaries. The formats are companions rather than substitutes. Each one is written to reach the same decision and to keep the conditions that decide whether that decision holds; what varies is depth: the article gives the fullest calculations, the discussion of sources and the alternative cases, while every format keeps the conditions that would change the decision. The summaries and comics of this September 2026 revision are still being reconciled chapter by chapter, so where a short format and the article disagree, the article is the one to trust.
 
 ## Read the Evidence With Its Limits
 

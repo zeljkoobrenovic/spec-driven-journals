@@ -14,6 +14,10 @@ The aim is a stronger company, or a deliberately funded continuing service whose
 {id: part-4--the-learning-path}
 ## The Learning Path
 
+![The working arrangement leads to a choice of help and agreed engagement terms. The adviser and technology operating partner chapters clarify the people and wider function behind that help. Together they support useful collaboration with accountability, cost and dependence understood.](private-techuity/posts/part-4-intro/assets/images/part-4-intro/chapter-overview.jpeg)
+
+**Figure 1:** *The working arrangement shapes the help you seek and the terms you agree. The last two chapters clarify the individual adviser and the wider operating function, so support contributes to a company plan with clear accountability.*
+
 The five chapters move from the overall arrangement to specific engagements and the people supporting them.
 
 - [Plan Investor Support: Match the Help to Company Priorities](#operating-model-blueprints) connects investor involvement with company organization and offers four blueprints to adapt to the work, authority and resources available.

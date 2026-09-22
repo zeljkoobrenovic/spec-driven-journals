@@ -1,6 +1,6 @@
 ---
 status: draft
-revised: 2026-09-21
+revised: 2026-09-22
 ---
 
 # Spec: Working With Investors: Operating Model Blueprints
@@ -27,6 +27,7 @@ Product and engineering leaders inside investor-backed companies; CEOs, finance 
 - Preserve the book’s learning objective, three KEY POINTS, questions and further reading. Aim for 3,000–4,000 words of article prose, readable captions, and no more than two substantial tables.
 - Add a chapter logo, navigation icon and seven explanatory figures in the book’s ivory, navy, muted teal and ochre style. Retain the connected-model, support-choice and pilot-review figures. Add one distinct visual within each of the four blueprint sections: board oversight with company-led delivery; an adviser supporting a company decision; a booked specialist assignment with a company owner; and a dedicated company assignment with agreed reporting and handover. Depict advice and shared expertise without implying additional executive authority. Use accurate labels, descriptive alt text and numbered captions; preserve generation prompts and provenance.
 - Place the article immediately after the Part IV introduction, before `help-that-changes-capability`. End with a transition to sourcing useful help. Retain the permalink and artwork, number its source folder `18-operating-model-blueprints`, and align the reading guide, contents and manuscript with 33 main chapters.
+- Add a 300–500-word TL;DR and a five-page illustrated comic. Both preserve the distinction between investor support and company organization, all four proposed blueprints, explicit authority and committed capacity, and the fictional pilot's six-week and twelve-week reviews. The comic uses the journal's familiar cast to act out this independent example, with three strips per page, accurate dialogue and labels in the artwork, descriptive alt text, short captions and rendered transcripts. Preserve the scripts and image provenance; inspect every generated page against its script.
 
 ## Non-goals
 
@@ -34,7 +35,9 @@ A fund-administration manual, company-wide reorganization instructions, a jurisd
 
 ## Modalities
 
-Illustrated draft article and companion specification, with a chapter logo, navigation icon and seven explanatory figures. Retain the illustrated Article modality without a separate summary or comic.
+- Article: the existing illustrated draft, with its chapter logo, navigation icon and seven explanatory figures.
+- TL;DR: `summary.md`, a self-contained 300–500-word summary in the journal's concise prose style, reusing the support-choice overview after the opening paragraph.
+- Comic: `comics.md`, five illustrated pages of three strips each, following the independent fictional identity pilot from the proposal through its review and possible handover. The page scripts are the source for the artwork, captions and transcripts.
 
 ## Open questions
 
@@ -53,6 +56,7 @@ Author input: `_drafts/operating-models/INPUT-1.md` and `INPUT-2.md`, unchanged.
 
 ## Changelog
 
+- 2026-09-22: Extend the contract before adding the requested TL;DR and Comic modalities. Reuse the existing summary overview artwork; generate and inspect five comic pages without changing the article, its fictional commitments or its evidence limits.
 - 2026-09-21 (Part IV order): Move the illustrated article into the main reading sequence as the first chapter of Part IV, at the author’s request. Preserve its title, evidence, seven figures, logo and icon; update its opening and closing transitions.
 - 2026-09-21: Write the contract before drafting the requested appendix. Ask three scope questions and state provisional defaults while source verification proceeds.
 - 2026-09-21: Confirm scope with the author and revise the selection-guide contract before updating the article.

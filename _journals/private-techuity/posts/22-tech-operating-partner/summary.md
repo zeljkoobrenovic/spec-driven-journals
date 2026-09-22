@@ -1,0 +1,18 @@
+A **technology operating partner** brings technical and operating judgment to an investment firm and its portfolio companies—the businesses it invests in. Judge the function by better decisions, funded improvements and capability the company retains, with authority and resources agreed for each assignment.
+
+![An investment team and technology operating partner connect through an agreed mandate to portfolio companies with their own leadership teams.](assets/images/tech-operating-partner/portfolio-support-and-company-leadership.png)
+**Figure 1:** *Connect investment assumptions to company work through an explicit mandate and continuing company responsibility.*
+
+The need arises when investment plans depend on software, data, acquisitions or AI. Someone must test those assumptions before commitments are made and follow the findings through ownership. The article's sources describe a **widening remit**, without establishing an industry-wide hiring rate or a causal improvement in investment returns. Their scope and interests are recorded in [[bibliography]].
+
+Useful work extends from investment assessment to funded priorities, delivery, leadership, hiring, acquisitions, shared learning and preparation for a sale. Each contribution needs a concrete output: a finding tied to funding, an accountable company leader, a costed transition or evidence of a result. The function can use an internal partner, a specialist team, external support or a combination; choose according to the work and available expertise.
+
+**Company leaders keep their continuing responsibilities.** The chief product officer owns product direction within their remit; technology and engineering leaders oversee delivery and operation; information and architecture leaders cover their assigned systems and design responsibilities. The operating partner contributes assessment, challenge and support, plus any authority explicitly assigned. An interim executive appointment needs a reporting line, delegated budget and end condition. Coaching, assessment and instruction must remain recognizable to the team.
+
+For hiring, **define the capability gap before opening a search**. Consider development, promotion, coaching and interim help alongside recruitment. The partner can shape the role, introduce candidates and contribute specialist assessment. Agree outcomes, budget, selection criteria, appointment and compensation authority with the company's hiring manager and relevant decision-makers. Support onboarding and succession, then review the capability gained. [[fix-decisions-before-hiring]] develops this choice.
+
+AI affects the investment assumptions, company workflows and the partner's own analysis. Test customer demand, quality, data permissions, integration, human review and running cost. Preserve source evidence when AI summarizes documents. Measure the complete workflow before claiming productivity gains or changing staffing.
+
+In the **independent fictional example**, three software companies receive a proposal for one AI support tool. The company with reliable records designs a bounded pilot; the second resolves incomplete data permissions; the third prioritizes service reliability. Each uses its existing approval route and records displaced work. The operating function shares evaluation methods and supplier knowledge while supporting different decisions.
+
+Review resolution quality, customer waiting time, human effort and total running cost. **Released hours are capacity; cash savings require spending to change.** Even a successful pilot does not isolate the partner's contribution from the company team's work. Agree availability, charges, supplier interests and the next review through [[useful-engagement]].

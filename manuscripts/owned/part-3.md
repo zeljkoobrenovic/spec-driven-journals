@@ -14,6 +14,10 @@ This is the center of the book, and its nine chapters follow three moves. Throug
 {id: part-3--the-learning-path}
 ## The Learning Path
 
+![Nine chapters form three moves: priorities and revenue assumptions justify the work; capability, work organization and system design establish delivery; cloud, resilience, AI and acquisitions or separations apply the same reasoning. The shared outcome is feasible funded work reviewed against evidence.](private-techuity/posts/part-3-intro/assets/images/part-3-intro/chapter-overview.jpeg)
+
+**Figure 1:** *The first five chapters establish what deserves investment and what delivery requires. The final four apply that reasoning to different choices; their grouping shows a shared method rather than a dependency between applications.*
+
 **First, choose and justify the work.**
 
 - [Set Priorities: You Cannot Fund Everything at Once](#cannot-fund-everything) chooses a combination of work that fits both the cash and the team time available, then revises it when a test fails.
@@ -23,12 +27,12 @@ This is the center of the book, and its nine chapters follow three moves. Throug
 
 - [Assess Capability: Can the Team Deliver?](#can-the-team-deliver) assesses what the software and the team can support, producing a finding the next two chapters use.
 - [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring) changes decision-making and responsibilities before adding people, decides whether hiring still proceeds, and tests whether an investor-proposed appointment is the right response.
-- [Plan for Growth: Decide What to Change in Your Systems](#growth-into-design) chooses one implementation from the assessed constraint, with its funded transition.
+- [Plan for Growth: Decide What (Not) to Change in Your Systems](#growth-into-design) chooses one implementation from the assessed constraint, with its funded transition.
 
 **Finally, apply the same reasoning to major operating choices.**
 
-- [Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill) tests whether a lower bill reflects a better service unit and completes a commitment decision.
-- [Build Resilience: Backups Are Not Enough](#prove-you-can-restore) carries a failed restore test through funded correction and retest.
+- [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill) tests whether a lower bill reflects a better service unit and completes a commitment decision.
+- [Build And Test Resilience: Backups Are Not Enough](#prove-you-can-restore) carries a failed restore test through funded correction and retest.
 - [Clarify AI Strategy: Three Different Investment Questions](#ai-strategy-three-questions) separates product opportunity, internal workflow and competitive substitution into three funded decisions.
 - [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#acquisition-adds-work-first) applies the reasoning when businesses are combined or separated.
 

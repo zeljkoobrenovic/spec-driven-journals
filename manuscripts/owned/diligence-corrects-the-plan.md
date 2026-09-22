@@ -1,5 +1,5 @@
 {id: diligence-corrects-the-plan}
-# 24. Use Diligence: Correct the Plan Before It Is Signed
+# 25. Use Diligence: Correct the Plan Before It Is Signed
 
 ![Use Diligence: Correct the Plan Before It Is Signed — logo](private-techuity/posts/23-diligence-corrects-the-plan/assets/images/21-diligence-corrects-the-plan/logo.jpeg)
 

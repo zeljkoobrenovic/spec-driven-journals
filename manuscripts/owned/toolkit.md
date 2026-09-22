@@ -1,5 +1,5 @@
 {id: toolkit}
-# Practical Tools for Ownership and Technology Decisions
+# 35. Practical Tools for Ownership and Technology Decisions
 
 ![Practical Tools for Ownership and Technology Decisions — logo](private-techuity/posts/toolkit/assets/images/toolkit/logo.jpeg)
 
@@ -28,14 +28,14 @@ The tools keep their original numbers because chapters and earlier readers cite 
 | **Map** | Who receives the investment money, and who can approve the work? | Ownership, funding and decision map — [Tool 1](#toolkit--tool-1) | [Understand Funding and Control: An Investment Announcement Is Not a Budget](#announcement-is-not-a-budget), [Clarify Authority: Decide Who Decides Before You Disagree](#decide-who-decides) |
 | **Investigate** | What should we check before an investment, and how do we record what we found? | One-page technology thesis — [Tool 2](#toolkit--tool-2); material finding — [Tool 3](#toolkit--tool-3) | [Use Diligence: Correct the Plan Before It Is Signed](#diligence-corrects-the-plan) |
 | **Compare options** | Which combination of improvements can we fund and staff at once? | Investment choices and capacity — [Tool 12](#toolkit--tool-12) | [Set Priorities: You Cannot Fund Everything at Once](#cannot-fund-everything) |
-| **Compare options** | A financial target is driving a design proposal; which design alternative? | Valuation-to-architecture record — [Tool 11](#toolkit--tool-11) | [Plan for Growth: Decide What to Change in Your Systems](#growth-into-design) |
+| **Compare options** | A financial target is driving a design proposal; which design alternative? | Valuation-to-architecture record — [Tool 11](#toolkit--tool-11) | [Plan for Growth: Decide What (Not) to Change in Your Systems](#growth-into-design) |
 | **Commit** | Can we fund and deliver this one improvement, and who is accountable? | Funded initiative record — [Tool 5](#toolkit--tool-5) | [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days) |
 | **Obtain help** | What exactly will the adviser or specialist help us do, at what cost, for how long? | Support engagement — [Tool 4](#toolkit--tool-4) | [Set the Terms of Help: Agree the Work, Authority and Handover](#useful-engagement), [Choose the Right Help: Compare Investor Support With Other Options](#help-that-changes-capability) |
 | **Obtain help** | Should we work with this investor at all? | Investor-fit interview — [Tool 8](#toolkit--tool-8) | [Assess Investor Fit: Behavior Under Pressure](#investor-under-pressure) |
-| **Measure** | Did the work help, and is the benefit capacity or cash? | Outcome and contribution ledger — [Tool 6](#toolkit--tool-6); small scorecard — [Tool 7](#toolkit--tool-7) | [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue), [Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill) |
+| **Measure** | Did the work help, and is the benefit capacity or cash? | Outcome and contribution ledger — [Tool 6](#toolkit--tool-6); small scorecard — [Tool 7](#toolkit--tool-7) | [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue), [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill) |
 | **Revise or hand over** | We are combining or separating businesses; what must continue? | Integration or separation plan — [Tool 9](#toolkit--tool-9) | [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#acquisition-adds-work-first) |
 | **Revise or hand over** | Funding or ownership is changing; what evidence and obligations must travel with the work? | Funding or ownership handover — [Tool 10](#toolkit--tool-10) | [Manage the Handover: Carry Forward the Evidence and Obligations](#handover-of-obligations), [Manage Funding Delays: Revise the Cash Plan and Commitments](#the-financing-slipped) |
-| **Revise or hand over** | The headcount plan has to shrink, or an investor proposes an appointment; who decides, what stops, and what are the people owed? | Workforce decision — [Tool 13](#toolkit--tool-13) | [Manage Funding Delays: Revise the Cash Plan and Commitments](#anatomy-of-a-layoff), [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring) |
+| **Revise or hand over** | The headcount plan has to shrink, or an investor proposes an appointment; who decides, what stops, and what are the people owed? | Workforce decision — [Tool 13](#toolkit--tool-13) | [Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff), [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring) |
 
 Tool 12 (choose the combination) comes before Tool 5 (commit to one initiative) in this order: each initiative can be feasible on its own while the combination is not.
 
@@ -46,7 +46,7 @@ Restrict distribution according to the engagement and company permissions. A fil
 {id: toolkit--followed-through}
 ## One Finding, Followed Through
 
-Everything in this section is **fictional**. Larkspur, its people and every figure are teaching examples shared with the chapters [Use Diligence: Correct the Plan Before It Is Signed](#diligence-corrects-the-plan), [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days), [Set Priorities: You Cannot Fund Everything at Once](#cannot-fund-everything), [Build Resilience: Backups Are Not Enough](#prove-you-can-restore), [Set the Terms of Help: Agree the Work, Authority and Handover](#useful-engagement) and [Manage the Handover: Carry Forward the Evidence and Obligations](#handover-of-obligations); the figures below are the same ledger those chapters use, so a number here should match the number there. The scenario states its own assumptions and does not reconcile with the annual cash bridge in the chapter [Understand Cash Flow: Confirm the Cash Before You Commit](#obligations-before-budget), and the chapter [Manage Funding Delays: Revise the Cash Plan and Commitments](#the-financing-slipped) is a separate illustration with its own cash and dates. The chain uses the existing tools only. Read it once to see what each stage adds; then use only the stage you need.
+Everything in this section is **fictional**. Larkspur, its people and every figure are teaching examples shared with the chapters [Use Diligence: Correct the Plan Before It Is Signed](#diligence-corrects-the-plan), [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days), [Set Priorities: You Cannot Fund Everything at Once](#cannot-fund-everything), [Build And Test Resilience: Backups Are Not Enough](#prove-you-can-restore), [Set the Terms of Help: Agree the Work, Authority and Handover](#useful-engagement) and [Manage the Handover: Carry Forward the Evidence and Obligations](#handover-of-obligations); the figures below are the same ledger those chapters use, so a number here should match the number there. The scenario states its own assumptions and does not reconcile with the annual cash bridge in the chapter [Understand Cash Flow: Confirm the Cash Before You Commit](#obligations-before-budget), and the chapter [Manage Funding Delays: Revise the Cash Plan and Commitments](#the-financing-slipped) is a separate illustration with its own cash and dates. The chain uses the existing tools only. Read it once to see what each stage adds; then use only the stage you need.
 
 The scenario: a growth investment whose investment thesis is that Larkspur can double onboarding volume without proportional growth in implementation staff. Morgan, the investor’s technology adviser, records the finding below during diligence. On the one-page thesis (Tool 2), the “main constraint” line points at this finding rather than repeating it.
 
@@ -124,7 +124,7 @@ At the day-100 review the ledger entry for ONB-1 reads:
 {id: toolkit--stage-5}
 ### Stage 5 — The Revised Decision
 
-Before the board can fund anything at day 100, the reserve has to be reconciled, because ONB-1 was not the only initiative drawing on it. The restore test REC-1 failed at day 45, and around day 47 the board — not Ines, because a reserve draw is the board’s — approved €20,000 and 2 engineer-weeks for the correction and a retest, which passed at day 85 (see the chapters [Build Resilience: Backups Are Not Enough](#prove-you-can-restore) and [Set Priorities: You Cannot Fund Everything at Once](#cannot-fund-everything)). The envelope therefore reads:
+Before the board can fund anything at day 100, the reserve has to be reconciled, because ONB-1 was not the only initiative drawing on it. The restore test REC-1 failed at day 45, and around day 47 the board — not Ines, because a reserve draw is the board’s — approved €20,000 and 2 engineer-weeks for the correction and a retest, which passed at day 85 (see the chapters [Build And Test Resilience: Backups Are Not Enough](#prove-you-can-restore) and [Set Priorities: You Cannot Fund Everything at Once](#cannot-fund-everything)). The envelope therefore reads:
 
 | Point | Committed cash | Engineer-weeks committed of 24 | Reserve | Approver |
 | --- | ---: | ---: | ---: | --- |
@@ -267,7 +267,7 @@ Distinguish cash received, a contractual commitment with understood conditions, 
 {id: toolkit--tool-6}
 ## 6. Keep an Outcome and Contribution Ledger
 
-Use to prevent an activity, a capacity gain, and a financial result from becoming the same claim. See the chapters [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue), [Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill), and [Understand Investor Returns: Same Performance, Different Outcomes](#three-different-returns). The ledger holds one initiative’s result; the scorecard (Tool 7) selects a few measures across initiatives. The [ONB-1 entry in Stage 4](#toolkit--stage-4) is a completed example.
+Use to prevent an activity, a capacity gain, and a financial result from becoming the same claim. See the chapters [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue), [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill), and [Understand Investor Returns: Same Performance, Different Outcomes](#three-different-returns). The ledger holds one initiative’s result; the scorecard (Tool 7) selects a few measures across initiatives. The [ONB-1 entry in Stage 4](#toolkit--stage-4) is a completed example.
 
 Record the original baseline and its definition; the intervention and actual cost; the observed result and period; relevant customer or service quality; demand and mix changes; acquisition effects; and other initiatives. Link the underlying evidence rather than copying uncontrolled numbers around.
 
@@ -343,7 +343,7 @@ Use for another round, a sale, corporate integration or a material change in aut
 {id: toolkit--tool-11}
 ## 11. Connect Valuation to Architecture
 
-Use this companion to the initiative record when a financial target is driving a technology proposal. Its main application is choosing between design alternatives under stated constraints — see the chapter [Plan for Growth: Decide What to Change in Your Systems](#growth-into-design). The chapter [Understand Valuation: An Estimate, Not a Fact](#valuation-is-an-estimate) supplies the financial vocabulary.
+Use this companion to the initiative record when a financial target is driving a technology proposal. Its main application is choosing between design alternatives under stated constraints — see the chapter [Plan for Growth: Decide What (Not) to Change in Your Systems](#growth-into-design). The chapter [Understand Valuation: An Estimate, Not a Fact](#valuation-is-an-estimate) supplies the financial vocabulary.
 
 | Record | Questions to answer together |
 | --- | --- |
@@ -378,7 +378,7 @@ Record the reason for the selected combination in ordinary language. A score can
 {id: toolkit--tool-13}
 ## 13. Record a Workforce Decision
 
-Use when an investor’s request, a funding condition or the company’s own cash forecast means the headcount plan has to change: a reduction, a freeze that becomes permanent, or a consolidation after an acquisition. See the chapter [Manage Funding Delays: Revise the Cash Plan and Commitments](#anatomy-of-a-layoff) for the worked reduction and [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring) for the knowledge-transfer test and for an investor-proposed appointment, which uses the first three rows and the role-design fields of Tool 5 rather than a separate form. Reuse Tool 1’s Authority row and Tool 12’s option comparison rather than copying them.
+Use when an investor’s request, a funding condition or the company’s own cash forecast means the headcount plan has to change: a reduction, a freeze that becomes permanent, or a consolidation after an acquisition. See the chapter [Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff) for the worked reduction and [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring) for the knowledge-transfer test and for an investor-proposed appointment, which uses the first three rows and the role-design fields of Tool 5 rather than a separate form. Reuse Tool 1’s Authority row and Tool 12’s option comparison rather than copying them.
 
 | Field | Record |
 | --- | --- |

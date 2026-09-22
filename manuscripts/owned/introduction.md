@@ -1,5 +1,7 @@
+{mainmatter}
+
 {id: introduction}
-# Introduction & Reading Guide
+# 1. Introduction & Reading Guide
 
 ![Introduction & Reading Guide — logo](private-techuity/posts/introduction/assets/images/introduction/logo.jpeg)
 
@@ -43,9 +45,9 @@ The six parts are ordered for learning, and the complete sequence is the default
 | A transaction or ownership change is imminent | [Use Diligence: Correct the Plan Before It Is Signed](#diligence-corrects-the-plan) → [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days) → [Manage the Handover: Carry Forward the Evidence and Obligations](#handover-of-obligations) |
 | Owners want more growth or earnings than the team can support | [Understand Funding Choices: Match the Money to the Work](#raise-what-you-need) → [Set Priorities: You Cannot Fund Everything at Once](#cannot-fund-everything) → [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring) |
 | Investor requests compete with customer needs | [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue) → [Clarify Authority: Decide Who Decides Before You Disagree](#decide-who-decides) → [Assess Investor Fit: Behavior Under Pressure](#investor-under-pressure) → [Success for Whom, and for How Long?](#success-for-whom) |
-| A corporate investor wants integration or access to data | [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#acquisition-adds-work-first) → [Build Resilience: Backups Are Not Enough](#prove-you-can-restore) → [Set the Terms of Help: Agree the Work, Authority and Handover](#useful-engagement) |
+| A corporate investor wants integration or access to data | [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#acquisition-adds-work-first) → [Build And Test Resilience: Backups Are Not Enough](#prove-you-can-restore) → [Set the Terms of Help: Agree the Work, Authority and Handover](#useful-engagement) |
 | The investor wants a leadership change | [Clarify Authority: Decide Who Decides Before You Disagree](#decide-who-decides) → [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring) → [Choose the Right Help: Compare Investor Support With Other Options](#help-that-changes-capability) → [Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?](#investors-adviser) |
-| We must reduce headcount | [Manage Funding Delays: Revise the Cash Plan and Commitments](#the-financing-slipped) → [Manage Funding Delays: Revise the Cash Plan and Commitments](#anatomy-of-a-layoff) → [Compare Incentives and Stakes: Equity, Carry and Jobs](#different-bets) → the [Practical Tools for Ownership and Technology Decisions](#toolkit) workforce-decision record |
+| We must reduce headcount | [Manage Funding Delays: Revise the Cash Plan and Commitments](#the-financing-slipped) → [Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff) → [Compare Incentives and Stakes: Equity, Carry and Jobs](#different-bets) → the [Practical Tools for Ownership and Technology Decisions](#toolkit) workforce-decision record |
 
 If your decision is the first one in the table — an announced investment that someone expects to become a hiring plan — read the chapter [Understand Funding and Control: An Investment Announcement Is Not a Budget](#announcement-is-not-a-budget) now and the rest in order later.
 
@@ -73,7 +75,7 @@ Part I supplies the financial tools to understand your owners and your available
 
 Part IV opens with [Plan Investor Support: Match the Help to Company Priorities](#operating-model-blueprints), a practical selection guide connecting investor involvement to the company’s organization, authority and resources. It closes with [Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?](#investors-adviser) and [Understand Technology Operating Partners: How They Work With Your Team](#tech-operating-partner), moving from the individual adviser’s assignment to the wider function, its relationship with company leadership, portfolio hiring and AI.
 
-Each part introduction explains its chapters and the order. On a first pass, read in order, since each chapter builds on terms introduced earlier: the chapter [Understand Valuation: An Estimate, Not a Fact](#valuation-is-an-estimate) teaches financial valuation, and the chapter [Plan for Growth: Decide What to Change in Your Systems](#growth-into-design) later applies those concepts to a design choice once the product and engineering foundations are in place.
+Each part introduction explains its chapters and the order. On a first pass, read in order, since each chapter builds on terms introduced earlier: the chapter [Understand Valuation: An Estimate, Not a Fact](#valuation-is-an-estimate) teaches financial valuation, and the chapter [Plan for Growth: Decide What (Not) to Change in Your Systems](#growth-into-design) later applies those concepts to a design choice once the product and engineering foundations are in place.
 
 The six parts work together around one purpose: **commitments the company can keep**. Funding and obligations set the conditions; authority and incentives shape decisions; those decisions become feasible work. Useful support adds capability, funding and ownership events require renewed commitments, and evidence from other companies helps you question the assumptions throughout.
 
@@ -94,21 +96,21 @@ One chain is a deliberate exception, and it is the only one. A single onboarding
 
 1. the investigation before the investment, [Use Diligence: Correct the Plan Before It Is Signed](#diligence-corrects-the-plan);
 2. the funded early plan, [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days), which allocates one envelope, and [Set Priorities: You Cannot Fund Everything at Once](#cannot-fund-everything), which chooses within it and revises the choice when a test fails;
-3. the recovery test funded beside the pilot, [Build Resilience: Backups Are Not Enough](#prove-you-can-restore);
+3. the recovery test funded beside the pilot, [Build And Test Resilience: Backups Are Not Enough](#prove-you-can-restore);
 4. the investor’s support for the pilot, [Choose the Right Help: Compare Investor Support With Other Options](#help-that-changes-capability) and [Set the Terms of Help: Agree the Work, Authority and Handover](#useful-engagement);
 5. the pilot’s measured outcome and the decision it supports, [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue);
 6. the handover of what was paid, owed and left undone, [Manage the Handover: Carry Forward the Evidence and Obligations](#handover-of-obligations).
 
 The [Practical Tools for Ownership and Technology Decisions](#toolkit) shows the record those chapters write, stage by stage. Follow that chain to see one decision carried all the way through, from evidence to money to what was left undone.
 
-The delayed-financing chapter ([Manage Funding Delays: Revise the Cash Plan and Commitments](#the-financing-slipped)) and the reduction chapter that continues it ([Manage Funding Delays: Revise the Cash Plan and Commitments](#anatomy-of-a-layoff)) are not part of that chain. They are a separate illustration of how a dated cash forecast changes commitments when expected money arrives late, and what a reduction costs by date; their cash, burn, people and dates are their own and do not add to the chain’s figures. “€m” means millions of euros.
+The delayed-financing chapter ([Manage Funding Delays: Revise the Cash Plan and Commitments](#the-financing-slipped)) and the reduction chapter that continues it ([Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff)) are not part of that chain. They are a separate illustration of how a dated cash forecast changes commitments when expected money arrives late, and what a reduction costs by date; their cash, burn, people and dates are their own and do not add to the chain’s figures. “€m” means millions of euros.
 
 {id: introduction--choose-a-reading-format}
 ## Choose a Reading Format
 
-All thirty-three main chapters provide an **Article**. Thirty-one also have a 300–500-word **TL;DR** summary and a six-panel illustrated **Comic**, with captions and dialogue transcripts. TL;DR means “too long; didn’t read.” [Plan Investor Support: Match the Help to Company Priorities](#operating-model-blueprints) and [Understand Technology Operating Partners: How They Work With Your Team](#tech-operating-partner) are illustrated articles without separate summaries or comics. The six part introductions and the reference pages also use only the Article format.
+All thirty-three main chapters provide an **Article**, a 300–500-word **TL;DR** summary and an illustrated **Comic**, with captions and dialogue transcripts. TL;DR means “too long; didn’t read.” Comics use individual panels or pages of stacked strips; [Plan Investor Support: Match the Help to Company Priorities](#operating-model-blueprints) and [Understand Technology Operating Partners: How They Work With Your Team](#tech-operating-partner) each offer five comic pages. The six part introductions and the reference pages use only the Article format.
 
-For a shorter first pass, read the part introductions and available summaries, then the two chapters offered only as illustrated articles. The formats are companions rather than substitutes. Each one is written to reach the same decision and to keep the conditions that decide whether that decision holds; what varies is depth: the article gives the fullest calculations, the discussion of sources and the alternative cases, while every format keeps the conditions that would change the decision. The summaries and comics of this September 2026 revision are still being reconciled chapter by chapter, so where a short format and the article disagree, the article is the one to trust.
+For a shorter first pass, read the part introductions and chapter summaries. The formats are companions rather than substitutes. Each one is written to reach the same decision and to keep the conditions that decide whether that decision holds; what varies is depth: the article gives the fullest calculations, the discussion of sources and the alternative cases, while every format keeps the conditions that would change the decision. The summaries and comics of this September 2026 revision are still being reconciled chapter by chapter, so where a short format and the article disagree, the article is the one to trust.
 
 {id: introduction--read-the-evidence-with-its-limits}
 ## Read the Evidence With Its Limits
@@ -151,9 +153,9 @@ The site navigation lists the same chapters; this list is here for lookup.
 - **11.** [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue)
 - **12.** [Assess Capability: Can the Team Deliver?](#can-the-team-deliver)
 - **13.** [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring)
-- **14.** [Plan for Growth: Decide What to Change in Your Systems](#growth-into-design)
-- **15.** [Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill)
-- **16.** [Build Resilience: Backups Are Not Enough](#prove-you-can-restore)
+- **14.** [Plan for Growth: Decide What (Not) to Change in Your Systems](#growth-into-design)
+- **15.** [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill)
+- **16.** [Build And Test Resilience: Backups Are Not Enough](#prove-you-can-restore)
 - **17.** [Clarify AI Strategy: Three Different Investment Questions](#ai-strategy-three-questions)
 - **18.** [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#acquisition-adds-work-first)
 
@@ -174,7 +176,7 @@ The site navigation lists the same chapters; this list is here for lookup.
 - **24.** [Use Diligence: Correct the Plan Before It Is Signed](#diligence-corrects-the-plan)
 - **25.** [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days)
 - **26.** [Manage Funding Delays: Revise the Cash Plan and Commitments](#the-financing-slipped)
-- **27.** [Manage Funding Delays: Revise the Cash Plan and Commitments](#anatomy-of-a-layoff)
+- **27.** [Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff)
 - **28.** [Manage the Handover: Carry Forward the Evidence and Obligations](#handover-of-obligations)
 
 {id: introduction--part-vi-learn-lessons-from-the-field}

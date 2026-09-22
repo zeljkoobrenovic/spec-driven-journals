@@ -1,7 +1,7 @@
 {id: prove-you-can-restore}
-# 16. Build Resilience: Backups Are Not Enough
+# 17. Build And Test Resilience: Backups Are Not Enough
 
-![Build Resilience: Backups Are Not Enough — logo](private-techuity/posts/15-prove-you-can-restore/assets/images/15-prove-you-can-restore/logo.jpeg)
+![Build And Test Resilience: Backups Are Not Enough — logo](private-techuity/posts/15-prove-you-can-restore/assets/images/15-prove-you-can-restore/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to state a recovery objective in ordinary language, judge a restore test against it, fund the corrective work, retest and record the exposure that remains.
 

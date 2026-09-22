@@ -1,7 +1,7 @@
 {id: growth-into-design}
-# 14. Plan for Growth: Decide What to Change in Your Systems
+# 15. Plan for Growth: Decide What (Not) to Change in Your Systems
 
-![Plan for Growth: Decide What to Change in Your Systems — logo](private-techuity/posts/13-growth-into-design/assets/images/13-growth-into-design/logo.jpeg)
+![Plan for Growth: Decide What (Not) to Change in Your Systems — logo](private-techuity/posts/13-growth-into-design/assets/images/13-growth-into-design/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to recover the business requirement behind a request for flexibility, compare implementation options against it and choose one with its funded transition.
 
@@ -41,7 +41,7 @@ A valuation method doesn’t dictate an implementation. The overview below names
 | Serve more customers without proportional cost growth | Sharing resources may lower unit cost while increasing coordination or failure exposure. |
 | Improve sustainable earnings and cash generation | Savings depend on a completed transition; cutting resilience or development can damage future earnings. |
 | Combine acquisitions or prepare a separation | Integration can improve the customer offer but reduce local flexibility and complicate a later separation. |
-| Reduce dependence on a single supplier or person | Compare the dependency’s possible impact and likelihood with the cost and effectiveness of the alternatives; include consequences the company cannot accept. [Build Resilience: Backups Are Not Enough](#prove-you-can-restore) shows why a rare failure can still dominate a decision. |
+| Reduce dependence on a single supplier or person | Compare the dependency’s possible impact and likelihood with the cost and effectiveness of the alternatives; include consequences the company cannot accept. [Build And Test Resilience: Backups Are Not Enough](#prove-you-can-restore) shows why a rare failure can still dominate a decision. |
 
 **If the company builds the system.** A few terms first. **Modularity** means dividing software into parts with clear responsibilities and connections. **Feature flags** let a team enable or disable selected behavior without releasing a new version each time. **Tenant isolation** keeps different customers’ data or workloads appropriately separated in a shared service. **Interfaces** are the agreed ways software parts exchange information.
 
@@ -128,7 +128,7 @@ The CEO, CFO, product leader and CTO record five answers together, drawing on th
 
 Then test the record against slower growth, a lower sale valuation and a longer ownership period, reassessing the remaining costs and benefits under each rather than defending the original choice. Under slower growth with no third country, A would have met the requirement. B’s €80,000 upfront premium is recovered only if the design stays in use beyond the second year, when A’s subscription would have overtaken it; its remaining benefit, faster rule changes for two countries, is released capacity that has to be measured the way the chapter [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue) measures the pilot, not a saving the board should be told was not wasted. The extra cash was spent on an assumption, and the record says which. Under a lower sale valuation, nothing in the design changes, because the choice was made against a customer requirement rather than a multiple. Under a longer ownership period, more of C’s later benefit, the maintenance saving after the old core is retired, falls inside the holding period, which changes the benefit side of a future comparison; it does not change C’s €1.3m cash requirement against a €300,000 envelope. C becomes a candidate only if a financing decision of the kind compared in the chapter [Understand Funding Choices: Match the Money to the Work](#raise-what-you-need) supplies that cash.
 
-Option B leaves Larkspur operating the country rules itself: no supplier fee, but the billing engineer’s time, the protected specialist time and the test tooling are now committed inside the operating cost, and the next visible line an investor will question is the hosting bill, because it is large, adjustable and improves the earnings measure directly. The chapter [Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill) shows how to tell whether a lower bill reflects a real improvement or a worse unit of service.
+Option B leaves Larkspur operating the country rules itself: no supplier fee, but the billing engineer’s time, the protected specialist time and the test tooling are now committed inside the operating cost, and the next visible line an investor will question is the hosting bill, because it is large, adjustable and improves the earnings measure directly. The chapter [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill) shows how to tell whether a lower bill reflects a real improvement or a worse unit of service.
 
 {id: growth-into-design--questions-to-consider}
 ## Questions to Consider
