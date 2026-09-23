@@ -1,5 +1,5 @@
 {id: investors-adviser}
-# 23. Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?
+# 24. Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?
 
 ![Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding? — logo](private-techuity/posts/21-investors-adviser/assets/images/18-investors-adviser/logo.jpeg)
 

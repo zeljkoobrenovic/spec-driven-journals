@@ -1,5 +1,5 @@
 {id: learn-through-investors-network}
-# 20. Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives
+# 21. Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives
 
 ![Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives — logo](private-techuity/posts/18a-learn-through-investors-network/assets/images/18a-learn-through-investors-network/logo.jpeg)
 

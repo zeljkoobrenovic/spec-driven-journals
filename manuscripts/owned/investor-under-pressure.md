@@ -1,5 +1,5 @@
 {id: investor-under-pressure}
-# 9. Assess Investor Fit: Behavior Under Pressure
+# 10. Assess Investor Fit: Behavior Under Pressure
 
 ![Assess Investor Fit: Behavior Under Pressure — logo](private-techuity/posts/08-investor-under-pressure/assets/images/08-investor-under-pressure/logo.jpeg)
 
@@ -209,7 +209,7 @@ Fit is not settled at signing. People change, the company changes, and the origi
 
 When a problem emerges, start with a concrete decision rather than a general complaint: document the competing objectives and the evidence, offer feasible options, take them to the forum authorized to decide (see the chapter [Clarify Authority: Decide Who Decides Before You Disagree](#decide-who-decides)), and record the decision and its consequences. If the disagreement concerns an important obligation or a right under a contract, involve the relevant qualified advisers. The investor’s technology adviser can help translate these conversations but can’t make every conflict disappear. Sometimes honest disagreement reveals that a role or partnership should change.
 
-This chapter has connected changed authority, incentives and the working relationship. Each of them assumes something this part does not supply itself: that both sides are reasoning about the same facts. A partnership review, an evidence-based challenge and an honest disagreement all need defined, sourced figures that neither side has to take on trust. The appendix chapter [Build the Evidence Everyone Trusts: Data Foundations for Alignment](#data-foundations-for-alignment) assembles them.
+This chapter has connected changed authority, incentives and the working relationship. Each of them assumes something this part does not supply itself: that both sides are reasoning about the same facts. A partnership review, an evidence-based challenge and an honest disagreement all need defined, sourced figures that neither side has to take on trust. The appendix chapter [Appendix: Data Foundations for Alignment With Investors](#data-foundations-for-alignment) assembles them.
 
 Suppose the agreement with Investor B is signed, the deal has closed and the first €4.5 million has arrived in Larkspur’s account. Larkspur then has that money, ten operator days a quarter, and a right to €1.5 million that is not yet money. Which of Larkspur’s own initiatives the money actually received, and that capacity, can fund at once is the question Part III takes up: [COMMIT: Turn Expectations Into Work You Can Deliver](#part-3) and [Set Priorities: You Cannot Fund Everything at Once](#cannot-fund-everything).
 

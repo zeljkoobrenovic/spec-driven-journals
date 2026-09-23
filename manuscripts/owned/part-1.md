@@ -1,5 +1,3 @@
-{mainmatter}
-
 {class: part, id: part-1}
 # UNDERSTAND: Financing and Ownership
 

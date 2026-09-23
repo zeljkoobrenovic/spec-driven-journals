@@ -1,5 +1,5 @@
 {id: growth-into-design}
-# 14. Plan for Growth: Decide What (Not) to Change in Your Systems
+# 15. Plan for Growth: Decide What (Not) to Change in Your Systems
 
 ![Plan for Growth: Decide What (Not) to Change in Your Systems — logo](private-techuity/posts/13-growth-into-design/assets/images/13-growth-into-design/logo.jpeg)
 

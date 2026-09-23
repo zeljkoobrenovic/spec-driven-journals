@@ -1,5 +1,5 @@
 {id: ai-strategy-three-questions}
-# 17. Clarify AI Strategy: Three Different Investment Questions
+# 18. Clarify AI Strategy: Three Different Investment Questions
 
 ![Clarify AI Strategy: Three Different Investment Questions — logo](private-techuity/posts/16-ai-strategy-three-questions/assets/images/16-ai-strategy-three-questions/logo.jpeg)
 

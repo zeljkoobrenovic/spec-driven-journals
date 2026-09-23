@@ -1,5 +1,5 @@
 {id: toolkit}
-# Practical Tools for Ownership and Technology Decisions
+# 38. Practical Tools for Ownership and Technology Decisions
 
 ![Practical Tools for Ownership and Technology Decisions — logo](private-techuity/posts/toolkit/assets/images/toolkit/logo.jpeg)
 
@@ -33,7 +33,7 @@ The tools keep their original numbers because chapters and earlier readers cite 
 | **Obtain help** | What exactly will the adviser or specialist help us do, at what cost, for how long? | Support engagement — [Tool 4](#toolkit--tool-4) | [Set the Terms of Help: Agree the Work, Authority and Handover](#useful-engagement), [Choose the Right Help: Compare Investor Support With Other Options](#help-that-changes-capability) |
 | **Obtain help** | Should we work with this investor at all? | Investor-fit interview — [Tool 8](#toolkit--tool-8) | [Assess Investor Fit: Behavior Under Pressure](#investor-under-pressure) |
 | **Learn and explore** | What can we learn through the investor’s network, and what should we revisit afterward? | Learning brief — [Tool 14](#toolkit--tool-14) | [Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives](#learn-through-investors-network) |
-| **Define the evidence** | We keep arguing about what a number means; how do we define, own and label it before it reaches the board? | Measure record — [Tool 15](#toolkit--tool-15) | [Build the Evidence Everyone Trusts: Data Foundations for Alignment](#data-foundations-for-alignment) |
+| **Define the evidence** | We keep arguing about what a number means; how do we define, own and label it before it reaches the board? | Measure record — [Tool 15](#toolkit--tool-15) | [Appendix: Data Foundations for Alignment With Investors](#data-foundations-for-alignment) |
 | **Measure** | Did the work help, and is the benefit capacity or cash? | Outcome and contribution ledger — [Tool 6](#toolkit--tool-6); small scorecard — [Tool 7](#toolkit--tool-7) | [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue), [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill) |
 | **Revise or hand over** | We are combining or separating businesses; what must continue? | Integration or separation plan — [Tool 9](#toolkit--tool-9) | [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#acquisition-adds-work-first) |
 | **Revise or hand over** | Funding or ownership is changing; what evidence and obligations must travel with the work? | Funding or ownership handover — [Tool 10](#toolkit--tool-10) | [Manage the Handover: Carry Forward the Evidence and Obligations](#handover-of-obligations), [Manage Funding Delays: Revise the Cash Plan and Commitments](#the-financing-slipped) |
@@ -419,7 +419,7 @@ Better questions and continuing relationships can be worthwhile results. Record 
 {id: toolkit--tool-15}
 ## 15. Define a Measure Before You Report It
 
-Use before a measure enters a board pack, an investor update or a funding decision. [Build the Evidence Everyone Trusts: Data Foundations for Alignment](#data-foundations-for-alignment) explains the labelling rule and the internal/shared boundary. One short record per measure; if a measure cannot be given an owner or a decision, it probably should not be reported.
+Use before a measure enters a board pack, an investor update or a funding decision. [Appendix: Data Foundations for Alignment With Investors](#data-foundations-for-alignment) explains the labelling rule and the internal/shared boundary. One short record per measure; if a measure cannot be given an owner or a decision, it probably should not be reported.
 
 | Field | Record |
 | --- | --- |

@@ -23,6 +23,6 @@ A **minority investor** holds under half the shares but may have negotiated appr
 - [Clarify Authority: Decide Who Decides Before You Disagree](#decide-who-decides) asks who can decide and deliver: who proposes, approves, funds and delivers one piece of work.
 - [Compare Incentives and Stakes: Equity, Carry and Jobs](#different-bets) asks what each party gains or risks: leaders through shares (equity), the fund manager through its share of investment profits (carry, short for carried interest), employees through jobs.
 - [Assess Investor Fit: Behavior Under Pressure](#investor-under-pressure) asks how the relationship handles pressure, judged by the investor's behavior when results fell short of the plan.
-- The appendix chapter [Build the Evidence Everyone Trusts: Data Foundations for Alignment](#data-foundations-for-alignment) asks which facts these three chapters use: existing sources, defined once, kept accurate by a named person, with forecasts (what may happen) never read as results (what actually happened).
+- The appendix chapter [Appendix: Data Foundations for Alignment With Investors](#data-foundations-for-alignment) asks which facts these three chapters use: existing sources, defined once, kept accurate by a named person, with forecasts (what may happen) never read as results (what actually happened).
 
 Begin with [Clarify Authority: Decide Who Decides Before You Disagree](#decide-who-decides). Part III then uses these arrangements to choose and deliver product and technology investments.

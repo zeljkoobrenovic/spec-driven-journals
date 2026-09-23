@@ -1,7 +1,7 @@
 {id: data-foundations-for-alignment}
-# Build the Evidence Everyone Trusts: Data Foundations for Alignment
+# 37. Appendix: Data Foundations for Alignment With Investors
 
-![Build the Evidence Everyone Trusts: Data Foundations for Alignment — logo](private-techuity/posts/08a-data-foundations-for-alignment/assets/images/08a-data-foundations-for-alignment/logo.jpeg)
+![Appendix: Data Foundations for Alignment With Investors — logo](private-techuity/posts/data-foundations-for-alignment/assets/images/data-foundations-for-alignment/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn which financial, planning and technology evidence an investor relationship needs, how to build it from sources you already have, and how to label a figure so nobody mistakes a forecast for a result.
 
@@ -44,7 +44,7 @@ From that practice's account of what its data has to be, this chapter distils fi
 | **Actionable** | Present in real decisions. A measure nobody has ever used to decide anything is overhead. |
 | **Accessible** | Available to the people who need it, at a level of detail appropriate to each, without a request queue. |
 
-![Five ordinary sources feed one curated layer, which supports three connected areas of evidence: financial and business, planning and execution, and product and technology.](private-techuity/posts/08a-data-foundations-for-alignment/assets/images/08a-data-foundations-for-alignment/three-areas-one-foundation.jpeg)
+![Five ordinary sources feed one curated layer, which supports three connected areas of evidence: financial and business, planning and execution, and product and technology.](private-techuity/posts/data-foundations-for-alignment/assets/images/data-foundations-for-alignment/three-areas-one-foundation.jpeg)
 
 **Figure 1:** *One curated layer, built from sources the company already keeps, supports three areas of evidence. The areas are connected to each other, not ranked.*
 
@@ -154,7 +154,7 @@ That last point deserves emphasis, because it is where data stops being reportin
 
 Return to the day-100 board papers. Four kinds of statement about results and the future were in them, and only one was a fact about the past. A fifth kind, the resources authorized for the work, sits beside them:
 
-![Four identical cards distinguished only by hanging tags reading Actual, Target, Forecast and Assumption; only the Actual card is anchored to something below it.](private-techuity/posts/08a-data-foundations-for-alignment/assets/images/08a-data-foundations-for-alignment/four-kinds-of-number.jpeg)
+![Four identical cards distinguished only by hanging tags reading Actual, Target, Forecast and Assumption; only the Actual card is anchored to something below it.](private-techuity/posts/data-foundations-for-alignment/assets/images/data-foundations-for-alignment/four-kinds-of-number.jpeg)
 
 **Figure 2:** *The four kinds of statement look identical on a page. The label is what separates a measured result from arithmetic about a future that has not happened.*
 
@@ -205,7 +205,7 @@ Individual performance data, personal data and identifiable customer data stay i
 
 One principle simplifies the rest: **share the evidence that supports decisions the recipient is entitled to participate in.** The board approves the plan, so a director the investor appointed receives the evidence the plan rests on, with its assumptions visible — as a director. The investor itself receives what its information rights provide and, where the investment agreement gives it a separate consent right over the plan, the evidence that consent needs. Whether the director may pass board papers on to the investor depends on the arrangement and any confidentiality terms; check rather than assume. Investors do not run the engineering team, so they do not need its internal working detail — and offering it usually starts a conversation neither side has time for.
 
-![Dense working records inside the company pass through an open gate and are aggregated into a single shared sheet, which carries a tag reading With its definition.](private-techuity/posts/08a-data-foundations-for-alignment/assets/images/08a-data-foundations-for-alignment/internal-and-shared.jpeg)
+![Dense working records inside the company pass through an open gate and are aggregated into a single shared sheet, which carries a tag reading With its definition.](private-techuity/posts/data-foundations-for-alignment/assets/images/data-foundations-for-alignment/internal-and-shared.jpeg)
 
 **Figure 3:** *The same evidence at two resolutions. What crosses the boundary is aggregated and carries its definition with it.*
 

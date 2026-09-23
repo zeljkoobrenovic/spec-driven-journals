@@ -1,5 +1,5 @@
 {id: fix-decisions-before-hiring}
-# 13. Trace the Work: Headcount Is Not Capacity
+# 14. Trace the Work: Headcount Is Not Capacity
 
 ![Trace the Work: Headcount Is Not Capacity — logo](private-techuity/posts/12-fix-decisions-before-hiring/assets/images/12-fix-decisions-before-hiring/logo.jpeg)
 

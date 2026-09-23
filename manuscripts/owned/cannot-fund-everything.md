@@ -1,5 +1,5 @@
 {id: cannot-fund-everything}
-# 10. Set Priorities: You Cannot Fund Everything at Once
+# 11. Set Priorities: You Cannot Fund Everything at Once
 
 ![Set Priorities: You Cannot Fund Everything at Once — logo](private-techuity/posts/09-cannot-fund-everything/assets/images/09-cannot-fund-everything/logo.jpeg)
 

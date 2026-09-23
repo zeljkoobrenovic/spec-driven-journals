@@ -1,5 +1,5 @@
 {id: acquisition-adds-work-first}
-# 18. Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value
+# 19. Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value
 
 ![Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value — logo](private-techuity/posts/17-acquisition-adds-work-first/assets/images/17-acquisition-adds-work-first/logo.jpeg)
 
