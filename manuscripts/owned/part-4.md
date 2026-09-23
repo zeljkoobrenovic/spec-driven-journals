@@ -14,7 +14,7 @@ The aim is a stronger company, whether your team learns to do the work itself or
 {id: part-4--the-learning-path}
 ## The Learning Path
 
-![Six boxes stacked in reading order, each with a short description: plan support by agreeing the working arrangement; learn together through the investor’s network and peers; choose help by comparing sources of help for work your team cannot yet do; set the terms by agreeing the work, its cost and who takes it over afterwards; clarify what the investor’s adviser is asked to do; and meet the operating partners, the investor’s specialists who help its companies. A footer reads that learning and support come with company judgment and responsibility.](private-techuity/posts/part-4-intro/assets/images/part-4-intro/chapter-overview-six.svg)
+![Six boxes stacked in reading order, each with a short description: plan support by agreeing the working arrangement; learn together through the investor’s network and peers; choose help by comparing sources of help for work your team cannot yet do; set the terms by agreeing the work, its cost and who takes it over afterwards; clarify what the investor’s adviser is asked to do; and meet the operating partners, the investor’s specialists who help its companies. A footer reads that learning and support come with company judgment and responsibility.](private-techuity/posts/part-4-intro/assets/images/part-4-intro/chapter-overview.jpeg)
 
 **Figure 1:** *The six chapters connect learning and support with company judgment, accountability and understood commitments.*
 

@@ -1,5 +1,5 @@
 {id: useful-engagement}
-# 23. Set the Terms of Help: Agree the Work, Authority and Handover
+# 22. Set the Terms of Help: Agree the Work, Authority and Handover
 
 ![Set the Terms of Help: Agree the Work, Authority and Handover — logo](private-techuity/posts/20-useful-engagement/assets/images/20-useful-engagement/logo.jpeg)
 

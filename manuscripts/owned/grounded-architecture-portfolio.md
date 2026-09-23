@@ -1,7 +1,7 @@
 {id: grounded-architecture-portfolio}
-# Grounded Architecture Across a Portfolio: Reuse the Foundations, Adapt the Mechanisms
+# Appendix: Grounded Architecture Across an Investment Portfolio
 
-![Grounded Architecture Across a Portfolio: Reuse the Foundations, Adapt the Mechanisms — logo](private-techuity/posts/grounded-architecture-portfolio/assets/images/grounded-architecture-portfolio/logo.jpeg)
+![Appendix: Grounded Architecture Across an Investment Portfolio — logo](private-techuity/posts/grounded-architecture-portfolio/assets/images/grounded-architecture-portfolio/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** See how a framework built for architecture practice in large, decentralized organizations can support technology oversight and value creation across an investment portfolio, which parts transfer almost unchanged, which parts must be redesigned around the investor’s actual role, and what a company gains when it adopts the same practice itself.
 

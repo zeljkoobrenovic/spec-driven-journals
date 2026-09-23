@@ -15,7 +15,7 @@ Company product and engineering leaders, including people who inherited an inves
 
 ## Success criteria
 
-- Place the chapter last in Part II, after [[investor-under-pressure]], and hand off to [[part-3]] and [[cannot-fund-everything]], where the evidence is used to choose and fund work. Insert on disk as `08a-` so existing chapter paths stay stable; displayed numbering comes from configuration order.
+- Place the chapter in the Appendix, after [[grounded-architecture-portfolio]], as optional depth that Part II's chapters and [[part-3]] rely on; keep the hand-off to [[part-3]] and [[cannot-fund-everything]], where the evidence is used to choose and fund work. The folder stays `08a-` on disk so existing paths remain stable; the appendix is unnumbered.
 - Cover the three requested areas with enough specificity to act on, and make their connection the argument rather than three separate lists:
   - **Financial and business:** revenue, profitability, cash flow, cost structure, unit economics, customer retention, sales pipeline, and the assumptions behind growth forecasts.
   - **Planning and execution:** strategic priorities, investment plans, roadmaps, milestones, resource allocation, dependencies, delivery performance, and the gap between commitments and outcomes.
@@ -53,6 +53,8 @@ Whether a later chapter should carry a worked investor data pack. The consulted 
 - 2026-09-22: At the author's request, add a product-operations section connecting Perri and Tilles' three pillars to the chapter's three areas. Placed after the measure record, where the question of who maintains definitions arises naturally, and framed as assigning work rather than requiring a function.
 - 2026-09-22: At the author's request, retitle from "Build the Evidence Both Sides Trust" to "Build the Evidence Everyone Trusts" and remove "both sides" phrasing throughout, so the chapter frames the relationship as collaborative rather than two-sided. Permalink unchanged.
 
+- 2026-09-23: At the author's request, moved from the end of Part II to the Appendix, after the Grounded Architecture chapter. The chapter remains the evidence foundation that Part II's arrangements and Part III's choices use, but as optional depth rather than a numbered chapter; Part II's intro and the investor-under-pressure hand-off now name it as the appendix chapter.
+
 ## Sources
 
 - [S106: Željko Obrenović, Lightweight Architectural Analytics](https://grounded-architecture.io/analytics): the author's own practice; source-code, cloud-billing, incident and business/finance sources; the curated, current, credible, actionable and accessible requirements.
@@ -64,6 +66,7 @@ Whether a later chapter should carry a worked investor data pack. The consulted 
 
 ## Changelog
 
+- 2026-09-23: Moved to the Appendix after [[grounded-architecture-portfolio]]; placement criterion rewritten, closing hand-off reworded, contents lists renumbered (chapters 11–35 became 10–34).
 - 2026-09-23: Round-3 in-depth review (R08A-009, -010, -011, -015, -016). The cash comic page's dialogue must cover both cash mechanisms (payment avoided, extra receipts above costs), the measured page's board must say average, the sharing rule must keep director and investor as distinct recipients, the label table lists Committed last so row references hold, and the densest paragraphs in article and summary are split by purpose.
 - 2026-09-23: Round-2 in-depth review (R08A-004, -005, -009, -011, -013, -014, -015). The labelling rule gains an explicit *committed* label for authorized resources so every figure in the example can be labelled without contradiction; the forecast's third assumption (the 18-hour difference holding for future customers) is named in every format; the revenue example uses a delivered, unpaid service and excludes setup that merely enables a subscription; the threshold comic page must carry its bands in accessible text; the cash comic page ties avoided hiring to payment dates; remaining plain-language gaps (median, uptime, revenue, cloud bills, incident records, version control) and paragraph splits added.
 - 2026-09-23: Round-1 in-depth review (R08A-001 to R08A-012). Ledger criterion corrected: 144 h is the reduction (8 × 18), not hours worked (8 × 62 = 496); the projection revises the original €225,000 case; the contract specialist runs to month twelve. Added: decision rule versus spending authorization, target versus resource commitment, comparison limits and no-trend wording, revenue definition, plain-language first-use list, qualified information rights, the five qualities as this chapter's distillation, summary shape, and six generated comic pages.

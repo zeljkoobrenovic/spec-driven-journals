@@ -32,7 +32,7 @@ Use this table to find evidence by question. A source can appear under more than
 | Investor support and advisers | S22, P01, P02 | [Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?](#investors-adviser), [Choose the Right Help: Compare Investor Support With Other Options](#help-that-changes-capability) |
 | Investor-organized learning, peer communities and shared resources | S101–S105 | [Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives](#learn-through-investors-network) |
 | Data foundations, analytics practice and shared evidence | S106–S109 | [Build the Evidence Everyone Trusts: Data Foundations for Alignment](#data-foundations-for-alignment) |
-| Grounded Architecture applied across a portfolio | S106, S110–S115 | [Grounded Architecture Across a Portfolio: Reuse the Foundations, Adapt the Mechanisms](#grounded-architecture-portfolio) |
+| Grounded Architecture applied across a portfolio | S106, S110–S115 | [Appendix: Grounded Architecture Across an Investment Portfolio](#grounded-architecture-portfolio) |
 | Technology operating partners, leadership roles and AI support | S79–S90 | [Understand Technology Operating Partners: How They Work With Your Team](#tech-operating-partner) |
 | Operating-model blueprints and investor–company working arrangements | S01, S91–S100 | [Plan Investor Support: Match the Help to Company Priorities](#operating-model-blueprints) |
 | Case: Hilton and Skype | S23, S24, S25, S26, S27, S28, S29, S64, S65, S116, S117 | [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype) |
@@ -1015,7 +1015,7 @@ Etienne and Beverly Wenger-Trayner. [Communities of practice: a brief introducti
 
 **Evidence type:** Author’s own practitioner method, stated as practice rather than study. **Consulted scope:** The chapter page, covering the data sources it curates (source-code repositories and commit history, public-cloud billing, incident reports, business and finance data) and its stated requirements that analytics be curated, current, credible, actionable and accessible. Documents a described practice for the technology landscape; it does not establish measured outcomes, and its extension to the investor relationship is this book’s proposal. The chapter explicitly identifies the author’s involvement.
 
-**Used in:** [Build the Evidence Everyone Trusts: Data Foundations for Alignment](#data-foundations-for-alignment), [Grounded Architecture Across a Portfolio: Reuse the Foundations, Adapt the Mechanisms](#grounded-architecture-portfolio).
+**Used in:** [Build the Evidence Everyone Trusts: Data Foundations for Alignment](#data-foundations-for-alignment), [Appendix: Grounded Architecture Across an Investment Portfolio](#grounded-architecture-portfolio).
 
 {id: bibliography--s107-building-lightweight-architectural-analytics}
 ### S107 — Building Lightweight Architectural Analytics
@@ -1051,7 +1051,7 @@ Melissa Perri and Denise Tilles. *Product Operations: How Successful Companies B
 
 **Evidence type:** Author’s own practitioner framework, stated as practice rather than study. **Consulted scope:** The framework overview: its definition, the problem it addresses (architecture disconnected from the organization becoming process theater, document production or central bottlenecking) and its three elements — Lightweight Architectural Analytics, Collaborative Networks and the Operating Model. Describes the framework; establishes no measured outcomes. The appendix that cites it identifies the author’s involvement.
 
-**Used in:** [Grounded Architecture Across a Portfolio: Reuse the Foundations, Adapt the Mechanisms](#grounded-architecture-portfolio).
+**Used in:** [Appendix: Grounded Architecture Across an Investment Portfolio](#grounded-architecture-portfolio).
 
 {id: bibliography--s111-grounded-architecture-collaborative-networks}
 ### S111 — Grounded Architecture collaborative networks
@@ -1060,7 +1060,7 @@ Melissa Perri and Denise Tilles. *Product Operations: How Successful Companies B
 
 **Evidence type:** Author’s own practitioner method. **Consulted scope:** The people foundation: the claim that architecture scales through people rather than organization charts, the scarcity of architects, the centralized, federated and hybrid models with the hybrid recommended, the responsibilities of a small central team and a distributed network, community formats (regular forums, an annual summit, ad hoc workshops) and the practical principles, including identifying people already doing architecture work regardless of title. A described practice inside one organization; its extension to a portfolio is this book’s proposal.
 
-**Used in:** [Grounded Architecture Across a Portfolio: Reuse the Foundations, Adapt the Mechanisms](#grounded-architecture-portfolio).
+**Used in:** [Appendix: Grounded Architecture Across an Investment Portfolio](#grounded-architecture-portfolio).
 
 {id: bibliography--s112-grounded-architecture-operating-model}
 ### S112 — Grounded Architecture operating model
@@ -1069,7 +1069,7 @@ Melissa Perri and Denise Tilles. *Product Operations: How Successful Companies B
 
 **Evidence type:** Author’s own practitioner framework. **Consulted scope:** The introduction to the operating model: its purpose of turning insight and relationships into repeatable decisions, coordinated action and visible impact; its parts (general principles, governance, transformation support, generative AI); and the statement that people and data come first and process second. Read for the framework’s own ordering of its elements; establishes no outcomes.
 
-**Used in:** [Grounded Architecture Across a Portfolio: Reuse the Foundations, Adapt the Mechanisms](#grounded-architecture-portfolio).
+**Used in:** [Appendix: Grounded Architecture Across an Investment Portfolio](#grounded-architecture-portfolio).
 
 {id: bibliography--s113-grounded-architecture-operating-model-principles}
 ### S113 — Grounded Architecture operating-model principles
@@ -1078,7 +1078,7 @@ Melissa Perri and Denise Tilles. *Product Operations: How Successful Companies B
 
 **Evidence type:** Author’s own practitioner principles. **Consulted scope:** The general principles: engagement mindset, data-informed contributions, distributed decision authority, the general decision policy of deciding in the organization’s best interests, and clear rules of engagement. Read for the mapping of these principles onto the investor–company setting, which is this book’s adaptation, including the change it requires to the decision policy.
 
-**Used in:** [Grounded Architecture Across a Portfolio: Reuse the Foundations, Adapt the Mechanisms](#grounded-architecture-portfolio).
+**Used in:** [Appendix: Grounded Architecture Across an Investment Portfolio](#grounded-architecture-portfolio).
 
 {id: bibliography--s114-grounded-architecture-governance-principles}
 ### S114 — Grounded Architecture governance principles
@@ -1087,7 +1087,7 @@ Melissa Perri and Denise Tilles. *Product Operations: How Successful Companies B
 
 **Evidence type:** Author’s own practitioner framework. **Consulted scope:** The three governance instruments — nudges, taxation (economic incentives) and mandates and bans — with their examples (principles and golden paths, cloud cost cross-charging, compliance-driven restrictions), the argument for a balanced hybrid and the rejection of a one-size-fits-all model. The portfolio table that reassigns each instrument to its source of authority and cost is this book’s adaptation.
 
-**Used in:** [Grounded Architecture Across a Portfolio: Reuse the Foundations, Adapt the Mechanisms](#grounded-architecture-portfolio).
+**Used in:** [Appendix: Grounded Architecture Across an Investment Portfolio](#grounded-architecture-portfolio).
 
 {id: bibliography--s115-transforming-organizations-with-grounded-architecture}
 ### S115 — Transforming organizations with Grounded Architecture
@@ -1096,7 +1096,7 @@ Melissa Perri and Denise Tilles. *Product Operations: How Successful Companies B
 
 **Evidence type:** Author’s own practitioner framework. **Consulted scope:** The five stated impact areas (executing at scale, adaptability, evidence-based decision-making, organizational alignment, continuous learning), including the transparency claim that shared access to the same data reduces misunderstanding and increases trust. Stated as the framework’s intended effects inside an organization, not measured results; reading them as potential benefits between a company and its investor is this book’s proposal.
 
-**Used in:** [Grounded Architecture Across a Portfolio: Reuse the Foundations, Adapt the Mechanisms](#grounded-architecture-portfolio).
+**Used in:** [Appendix: Grounded Architecture Across an Investment Portfolio](#grounded-architecture-portfolio).
 
 {id: bibliography--s116-hilton-amended-registration-filing}
 ### S116 — Hilton amended registration filing

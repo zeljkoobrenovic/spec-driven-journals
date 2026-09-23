@@ -1,5 +1,5 @@
 {id: anatomy-of-a-layoff}
-# 29. Plan Layoffs: Decide What Work Stops, Not Just Who Leaves
+# 28. Plan Layoffs: Decide What Work Stops, Not Just Who Leaves
 
 ![Plan Layoffs: Decide What Work Stops, Not Just Who Leaves — logo](private-techuity/posts/26-anatomy-of-a-layoff/assets/images/24-anatomy-of-a-layoff/logo.jpeg)
 

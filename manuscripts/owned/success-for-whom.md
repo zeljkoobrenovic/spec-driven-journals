@@ -1,5 +1,5 @@
 {id: success-for-whom}
-# 35. Success for Whom, and for How Long?
+# 34. Success for Whom, and for How Long?
 
 ![Success for Whom, and for How Long? — logo](private-techuity/posts/32-success-for-whom/assets/images/30-success-for-whom/logo.jpeg)
 

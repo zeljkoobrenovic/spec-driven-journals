@@ -17,7 +17,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the summary prose concise (about 300–650 words; the band was widened from 500 on 23 September 2026 so the TL;DR can carry its own plain-language definitions of the three central measures, including the full earnings-to-loss bridge with interest income, working capital as stock plus customer debts less supplier bills, subsidiaries, and the composition of the bankruptcy financing), with bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
-- Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is generated from its six-panel storyboard with consistent fictional characters and preserved captions.
+- Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is a set of comic pages — each image one page of three stacked strips with the dialogue, labels and reported figures lettered in the artwork with their periods and scopes — generated from the `comic-page` blocks in `comics.md`, with consistent fictional characters, a caption and a transcript per page.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
 - Introduce necessary terms in ordinary language before using them in explanations, examples, tables, or diagrams; keep opening key points readable without prior study.
@@ -32,7 +32,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Distinguish sourced observations, the manuscript's analysis, and explicitly fictional examples.
 - Include a meaningful trade-off or counterargument and identify the evidence that would change the judgment.
 - Link related chapters and cite substantive external factual claims close to the text.
-- Keep the TL;DR and six-panel comic script consistent with the full article.
+- Keep the TL;DR and the comic page scripts consistent with the full article; inspect every generated page against its script.
 
 ## Non-goals
 
@@ -42,7 +42,7 @@ Universal prescriptions, invented evidence, promises of investment performance, 
 
 - Full Article: index.md, the substantive argument.
 - TL;DR: summary.md, the practical implications in concise prose.
-- Comic: comics.md, six illustrated fictional panels with alt text, visible captions, dialogue transcripts and machine-readable artwork prompts.
+- Comic: comics.md, seven illustrated pages of three strips each, with alt text, visible captions and per-strip transcripts rendered from the page blocks that are also the artwork scripts; the fictional team reads the documents and never reenacts the history.
 
 ## Open questions
 
@@ -59,6 +59,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-23 (comic pages): The six single-scene panels replaced by seven comic pages of three strips each, so the three measures in ordinary words and the 2005 purchase, the fiscal 2016 online growth against falling net sales and the court declaration's subscription gap and $90.4 million programme, the earnings calculation from $460 million to the $29 million and $36 million losses beside the cash side (operating cash flow about zero, $252 million of capital expenditure, $566 million as a balance), the declaration's figures with their scopes and management's four-step supplier chain, the filing-to-liquidation bridge with the financing ceilings, the employee and supplier consequences including Hasbro's $60.4 million with the $49 million inside it, and the four practices are drawn into the artwork rather than carried by captions. Every short-format gloss of operating cash flow keeps its scope. Page images live under `assets/images/30-toys-r-us/`; the previous panel comic is archived under `_research/comic-pages-pilot/`. No figure, date or claim changed; permalink unchanged.
 - 2026-09-23: In-depth review round 6 (TRU-012): one measure or calculation step per sentence in the short formats. The TL;DR ends its earnings bridge at the $29 million group loss, then gives the $7 million belonging to outside owners of partly owned subsidiaries and the $36 million attributable loss in their own sentences (prose about 657 words, within the band). Comic panel 3 states operating earnings, net loss and operating cash flow in one sentence each, keeping the fiscal period, the interest treatment and the borrowing and long-lived-asset exclusions; caption, prompt and panel text changed together, artwork unchanged. Permalink and id unchanged.
 - 2026-09-23: In-depth review round 2 (TRU-002): the comic must stand alone on its bankruptcy vocabulary; panel 5 explains the filing as entering a court process for dealing with debts, the sought agreement as one to reorganize debts and business, and liquidation as selling assets and closing the US stores. No artwork regenerated.
 - 2026-09-23: In-depth review round 4 (TRU-002, TRU-003, TRU-012, TRU-015): comic glosses of operating cash flow now carry the operating scope (day-to-day trading, interest included, borrowing and long-lived-asset purchases outside); comic panel 5 opens with the filing-to-liquidation bridge before the shutdown consequence; the post-table reconciliation paragraph is split into loss scopes, composition of operating earnings with the brand-sale gain, and the conclusion; shareholders, the buying companies, the share transaction, net sales and buyouts glossed in ordinary words. No artwork carries the changed words. Permalink and id unchanged.

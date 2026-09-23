@@ -1,5 +1,5 @@
 ---
-title: "Grounded Architecture Across a Portfolio: Reuse the Foundations, Adapt the Mechanisms"
+title: "Appendix: Grounded Architecture Across an Investment Portfolio"
 date: 2026-09-23
 author: Željko Obrenović
 excerpt: "How the author’s Grounded Architecture framework transfers from a decentralized technology group to an investment portfolio: reuse the data and people foundations that build understanding, and adapt the operating model to the investor’s role, each company’s autonomy and the investment’s objectives."

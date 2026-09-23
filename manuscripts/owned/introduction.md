@@ -50,7 +50,7 @@ The [Glossary](#glossary) covers the rest.
 | Investor help is on offer | [Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?](#investors-adviser) | [Choose the Right Help: Compare Investor Support With Other Options](#help-that-changes-capability), [Set the Terms of Help: Agree the Work, Authority and Handover](#useful-engagement) |
 | Explore the investor’s network: its events, and the leaders of the other companies it has invested in | [Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives](#learn-through-investors-network) | the [Practical Tools for Ownership and Technology Decisions](#toolkit) learning brief, then [Choose the Right Help: Compare Investor Support With Other Options](#help-that-changes-capability) when a specific need emerges |
 | The investor wants better reporting, or we keep arguing about what a number means | [Build the Evidence Everyone Trusts: Data Foundations for Alignment](#data-foundations-for-alignment) | the [Practical Tools for Ownership and Technology Decisions](#toolkit) measure record, then [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue) for the benefit arithmetic |
-| The investor wants to oversee technology across all the companies it has invested in (its portfolio) | [Grounded Architecture Across a Portfolio: Reuse the Foundations, Adapt the Mechanisms](#grounded-architecture-portfolio) | [Plan Investor Support: Match the Help to Company Priorities](#operating-model-blueprints), [Build the Evidence Everyone Trusts: Data Foundations for Alignment](#data-foundations-for-alignment) |
+| The investor wants to oversee technology across all the companies it has invested in (its portfolio) | [Appendix: Grounded Architecture Across an Investment Portfolio](#grounded-architecture-portfolio) | [Plan Investor Support: Match the Help to Company Priorities](#operating-model-blueprints), [Build the Evidence Everyone Trusts: Data Foundations for Alignment](#data-foundations-for-alignment) |
 | The company is about to be bought, or to take new investment | [Use Diligence: Correct the Plan Before It Is Signed](#diligence-corrects-the-plan) | [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days), [Manage the Handover: Carry Forward the Evidence and Obligations](#handover-of-obligations) |
 | Owners want more growth or profit than the team can support | [Understand Funding Choices: Match the Money to the Work](#raise-what-you-need) | [Set Priorities: You Cannot Fund Everything at Once](#cannot-fund-everything), [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring) |
 | Investor requests compete with customer needs | [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue) | [Clarify Authority: Decide Who Decides Before You Disagree](#decide-who-decides), [Assess Investor Fit: Behavior Under Pressure](#investor-under-pressure), [Success for Whom, and for How Long?](#success-for-whom) |
@@ -126,7 +126,7 @@ The delayed-financing chapter ([Manage Funding Delays: Revise the Cash Plan and 
 {id: introduction--choose-a-reading-format}
 ## Choose a Reading Format
 
-All thirty-five main chapters provide an **Article**, a short **TL;DR** summary and an illustrated **Comic**, with captions and dialogue transcripts. TL;DR means “too long; didn’t read.” Summaries aim for 300–500 words; some current drafts run longer than that target. Most comics are pages of stacked strips with the dialogue drawn into the artwork; the three case comics on Visma, Toys R Us and TeamSystem use single-scene panels. The six part introductions, the appendix and the reference pages use only the Article format. These counts describe the files at the time of writing and are rechecked as chapters are revised.
+All thirty-four main chapters provide an **Article**, a short **TL;DR** summary and an illustrated **Comic**, with captions and dialogue transcripts. TL;DR means “too long; didn’t read.” Summaries aim for 300–500 words; some current drafts run longer than that target. Most comics are pages of stacked strips with the dialogue drawn into the artwork; the three case comics on Visma, Toys R Us and TeamSystem use single-scene panels. The six part introductions, the appendix and the reference pages use only the Article format. These counts describe the files at the time of writing and are rechecked as chapters are revised.
 
 For a shorter first pass, read the part introductions and chapter summaries. The formats are companions rather than substitutes. Each one is written to reach the same decision and to keep the conditions that decide whether that decision holds; what varies is depth: the article gives the fullest calculations, the discussion of sources and the alternative cases, while every format keeps the conditions that would change the decision. The summaries and comics of this September 2026 revision are still being reconciled chapter by chapter, so where a short format and the article disagree, the article is the one to trust.
 
@@ -162,57 +162,57 @@ The site navigation lists the same chapters; this list is here for lookup.
 - **7.** [Clarify Authority: Decide Who Decides Before You Disagree](#decide-who-decides)
 - **8.** [Compare Incentives and Stakes: Equity, Carry and Jobs](#different-bets)
 - **9.** [Assess Investor Fit: Behavior Under Pressure](#investor-under-pressure)
-- **10.** [Build the Evidence Everyone Trusts: Data Foundations for Alignment](#data-foundations-for-alignment)
 
 {id: introduction--part-iii-commit-turn-expectations-into-work-you-can-deliver}
 ### Part III — COMMIT: Turn Expectations Into Work You Can Deliver
 
 - [COMMIT: Turn Expectations Into Work You Can Deliver](#part-3) — part introduction
-- **11.** [Set Priorities: You Cannot Fund Everything at Once](#cannot-fund-everything)
-- **12.** [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue)
-- **13.** [Assess Capability: Can the Team Deliver?](#can-the-team-deliver)
-- **14.** [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring)
-- **15.** [Plan for Growth: Decide What (Not) to Change in Your Systems](#growth-into-design)
-- **16.** [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill)
-- **17.** [Build And Test Resilience: Backups Are Not Enough](#prove-you-can-restore)
-- **18.** [Clarify AI Strategy: Three Different Investment Questions](#ai-strategy-three-questions)
-- **19.** [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#acquisition-adds-work-first)
+- **10.** [Set Priorities: You Cannot Fund Everything at Once](#cannot-fund-everything)
+- **11.** [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue)
+- **12.** [Assess Capability: Can the Team Deliver?](#can-the-team-deliver)
+- **13.** [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring)
+- **14.** [Plan for Growth: Decide What (Not) to Change in Your Systems](#growth-into-design)
+- **15.** [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill)
+- **16.** [Build And Test Resilience: Backups Are Not Enough](#prove-you-can-restore)
+- **17.** [Clarify AI Strategy: Three Different Investment Questions](#ai-strategy-three-questions)
+- **18.** [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#acquisition-adds-work-first)
 
 {id: introduction--part-iv-collaborate-get-useful-help-from-your-investors}
 ### Part IV — COLLABORATE: Get Useful Help From Your Investors
 
 - [COLLABORATE: Get Useful Help From Your Investor](#part-4) — part introduction
-- **20.** [Plan Investor Support: Match the Help to Company Priorities](#operating-model-blueprints)
-- **21.** [Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives](#learn-through-investors-network)
-- **22.** [Choose the Right Help: Compare Investor Support With Other Options](#help-that-changes-capability)
-- **23.** [Set the Terms of Help: Agree the Work, Authority and Handover](#useful-engagement)
-- **24.** [Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?](#investors-adviser)
-- **25.** [Understand Technology Operating Partners: How They Work With Your Team](#tech-operating-partner)
+- **19.** [Plan Investor Support: Match the Help to Company Priorities](#operating-model-blueprints)
+- **20.** [Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives](#learn-through-investors-network)
+- **21.** [Choose the Right Help: Compare Investor Support With Other Options](#help-that-changes-capability)
+- **22.** [Set the Terms of Help: Agree the Work, Authority and Handover](#useful-engagement)
+- **23.** [Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?](#investors-adviser)
+- **24.** [Understand Technology Operating Partners: How They Work With Your Team](#tech-operating-partner)
 
 {id: introduction--part-v-lead-manage-funding-and-ownership-changes}
 ### Part V — LEAD: Manage Funding and Ownership Changes
 
 - [LEAD: Manage Funding and Ownership Changes](#part-5) — part introduction
-- **26.** [Use Diligence: Correct the Plan Before It Is Signed](#diligence-corrects-the-plan)
-- **27.** [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days)
-- **28.** [Manage Funding Delays: Revise the Cash Plan and Commitments](#the-financing-slipped)
-- **29.** [Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff)
-- **30.** [Manage the Handover: Carry Forward the Evidence and Obligations](#handover-of-obligations)
+- **25.** [Use Diligence: Correct the Plan Before It Is Signed](#diligence-corrects-the-plan)
+- **26.** [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days)
+- **27.** [Manage Funding Delays: Revise the Cash Plan and Commitments](#the-financing-slipped)
+- **28.** [Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff)
+- **29.** [Manage the Handover: Carry Forward the Evidence and Obligations](#handover-of-obligations)
 
 {id: introduction--part-vi-learn-lessons-from-the-field}
 ### Part VI — LEARN: Lessons From the Field
 
 - [LEARN: Lessons From the Field](#part-6) — part introduction
-- **31.** [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype)
-- **32.** [Visma: Continuity of Manager Is Not Continuity of Money](#visma)
-- **33.** [Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us)
-- **34.** [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem)
-- **35.** [Success for Whom, and for How Long?](#success-for-whom)
+- **30.** [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype)
+- **31.** [Visma: Continuity of Manager Is Not Continuity of Money](#visma)
+- **32.** [Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us)
+- **33.** [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem)
+- **34.** [Success for Whom, and for How Long?](#success-for-whom)
 
 {id: introduction--appendix}
 ### Appendix
 
-- [Grounded Architecture Across a Portfolio: Reuse the Foundations, Adapt the Mechanisms](#grounded-architecture-portfolio) — the author’s Grounded Architecture framework applied across a portfolio, the set of companies one investor holds: reuse the shared data and people foundations, adapt the way decisions and responsibilities are organized in each company.
+- [Appendix: Grounded Architecture Across an Investment Portfolio](#grounded-architecture-portfolio) — the author’s Grounded Architecture framework applied across a portfolio, the set of companies one investor holds: reuse the shared data and people foundations, adapt the way decisions and responsibilities are organized in each company.
+- [Build the Evidence Everyone Trusts: Data Foundations for Alignment](#data-foundations-for-alignment) — the data foundations behind alignment: evidence built from sources the company already has, defined once, owned by name, kept current and labelled so a forecast is never read as a result.
 
 {id: introduction--reference-material}
 ### Reference Material

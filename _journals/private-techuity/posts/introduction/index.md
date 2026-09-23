@@ -126,7 +126,7 @@ The delayed-financing chapter ([[the-financing-slipped]]) and the staff-reductio
 
 ## Choose a Reading Format
 
-All thirty-five main chapters provide an **Article**, a short **TL;DR** summary and an illustrated **Comic**, with captions and dialogue transcripts. TL;DR means “too long; didn’t read.” Summaries aim for 300–500 words; some current drafts run longer than that target. Most comics are pages of stacked strips with the dialogue drawn into the artwork; the three case comics on Visma, Toys R Us and TeamSystem use single-scene panels. The six part introductions, the appendix and the reference pages use only the Article format. These counts describe the files at the time of writing and are rechecked as chapters are revised.
+All thirty-four main chapters provide an **Article**, a short **TL;DR** summary and an illustrated **Comic**, with captions and dialogue transcripts. TL;DR means “too long; didn’t read.” Summaries aim for 300–500 words; some current drafts run longer than that target. Most comics are pages of stacked strips with the dialogue drawn into the artwork; the three case comics on Visma, Toys R Us and TeamSystem use single-scene panels. The six part introductions, the appendix and the reference pages use only the Article format. These counts describe the files at the time of writing and are rechecked as chapters are revised.
 
 For a shorter first pass, read the part introductions and chapter summaries. The formats are companions rather than substitutes. Each one is written to reach the same decision and to keep the conditions that decide whether that decision holds; what varies is depth: the article gives the fullest calculations, the discussion of sources and the alternative cases, while every format keeps the conditions that would change the decision. The summaries and comics of this September 2026 revision are still being reconciled chapter by chapter, so where a short format and the article disagree, the article is the one to trust.
 
@@ -158,52 +158,52 @@ The site navigation lists the same chapters; this list is here for lookup.
 - **7.** [[decide-who-decides]]
 - **8.** [[different-bets]]
 - **9.** [[investor-under-pressure]]
-- **10.** [[data-foundations-for-alignment]]
 
 ### Part III — COMMIT: Turn Expectations Into Work You Can Deliver
 
 - [[part-3]] — part introduction
-- **11.** [[cannot-fund-everything]]
-- **12.** [[roadmap-to-revenue]]
-- **13.** [[can-the-team-deliver]]
-- **14.** [[fix-decisions-before-hiring]]
-- **15.** [[growth-into-design]]
-- **16.** [[cheaper-cloud-bill]]
-- **17.** [[prove-you-can-restore]]
-- **18.** [[ai-strategy-three-questions]]
-- **19.** [[acquisition-adds-work-first]]
+- **10.** [[cannot-fund-everything]]
+- **11.** [[roadmap-to-revenue]]
+- **12.** [[can-the-team-deliver]]
+- **13.** [[fix-decisions-before-hiring]]
+- **14.** [[growth-into-design]]
+- **15.** [[cheaper-cloud-bill]]
+- **16.** [[prove-you-can-restore]]
+- **17.** [[ai-strategy-three-questions]]
+- **18.** [[acquisition-adds-work-first]]
 
 ### Part IV — COLLABORATE: Get Useful Help From Your Investors
 
 - [[part-4]] — part introduction
-- **20.** [[operating-model-blueprints]]
-- **21.** [[learn-through-investors-network]]
-- **22.** [[help-that-changes-capability]]
-- **23.** [[useful-engagement]]
-- **24.** [[investors-adviser]]
-- **25.** [[tech-operating-partner]]
+- **19.** [[operating-model-blueprints]]
+- **20.** [[learn-through-investors-network]]
+- **21.** [[help-that-changes-capability]]
+- **22.** [[useful-engagement]]
+- **23.** [[investors-adviser]]
+- **24.** [[tech-operating-partner]]
 
 ### Part V — LEAD: Manage Funding and Ownership Changes
 
 - [[part-5]] — part introduction
-- **26.** [[diligence-corrects-the-plan]]
-- **27.** [[first-hundred-days]]
-- **28.** [[the-financing-slipped]]
-- **29.** [[anatomy-of-a-layoff]]
-- **30.** [[handover-of-obligations]]
+- **25.** [[diligence-corrects-the-plan]]
+- **26.** [[first-hundred-days]]
+- **27.** [[the-financing-slipped]]
+- **28.** [[anatomy-of-a-layoff]]
+- **29.** [[handover-of-obligations]]
 
 ### Part VI — LEARN: Lessons From the Field
 
 - [[part-6]] — part introduction
-- **31.** [[hilton-and-skype]]
-- **32.** [[visma]]
-- **33.** [[toys-r-us]]
-- **34.** [[teamsystem]]
-- **35.** [[success-for-whom]]
+- **30.** [[hilton-and-skype]]
+- **31.** [[visma]]
+- **32.** [[toys-r-us]]
+- **33.** [[teamsystem]]
+- **34.** [[success-for-whom]]
 
 ### Appendix
 
 - [[grounded-architecture-portfolio]] — the author’s Grounded Architecture framework applied across a portfolio, the set of companies one investor holds: reuse the shared data and people foundations, adapt the way decisions and responsibilities are organized in each company.
+- [[data-foundations-for-alignment]] — the data foundations behind alignment: evidence built from sources the company already has, defined once, owned by name, kept current and labelled so a forecast is never read as a result.
 
 ### Reference Material
 

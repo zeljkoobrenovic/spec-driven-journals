@@ -1,5 +1,5 @@
 {id: help-that-changes-capability}
-# 22. Choose the Right Help: Compare Investor Support With Other Options
+# 21. Choose the Right Help: Compare Investor Support With Other Options
 
 ![Choose the Right Help: Compare Investor Support With Other Options — logo](private-techuity/posts/19-help-that-changes-capability/assets/images/19-help-that-changes-capability/logo.jpeg)
 

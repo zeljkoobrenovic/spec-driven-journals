@@ -8,7 +8,7 @@ This is a living journal and a work in progress: a draft built by [Željko Obren
 
 Start with [the purpose and reading guide](posts/introduction/index.md). It explains the company leader’s responsibilities, the comparative ownership lens, the fictional company and routes for different funding and ownership situations.
 
-The book contains 35 main chapters across six parts. All 35 main chapters have an article and a summary; 34 also have an illustrated comic with captions and dialogue transcripts, and the data-foundations chapter’s comic is pending. Summaries normally target 300–500 words; individual specs record justified exceptions. Comics use individual panels or pages of stacked strips; operating-model blueprints and technology operating partners each have five comic pages. The edition includes 46 header logos, 47 navigation icons and a dedicated Owned journal logo; the data-foundations chapter’s header logo is pending. Six part introductions, one appendix chapter and five guide/reference pages bring the configured total to **47 pages**, each with a companion specification. The technology operating partner chapter includes three explanatory figures covering portfolio support, hiring and AI decisions. The Grounded Architecture appendix includes four explanatory figures: the two settings compared, reusing the method while keeping the data, connector rather than controller, and the governance mix per company. The operating-model blueprints chapter includes seven explanatory figures: the connected models, a dedicated visual for each of the four blueprints, the support-choice overview and fictional pilot reviews.
+The book contains 34 main chapters across six parts. All 34 main chapters have an article, a summary and an illustrated comic with captions and dialogue transcripts. Summaries normally target 300–500 words; individual specs record justified exceptions. Comics use individual panels or pages of stacked strips; operating-model blueprints and technology operating partners each have five comic pages. The edition includes 47 header logos, 47 navigation icons and a dedicated Owned journal logo. Six part introductions, two appendix chapters and five guide/reference pages bring the configured total to **47 pages**, each with a companion specification. The technology operating partner chapter includes three explanatory figures covering portfolio support, hiring and AI decisions. The Grounded Architecture appendix includes four explanatory figures: the two settings compared, reusing the method while keeping the data, connector rather than controller, and the governance mix per company. The operating-model blueprints chapter includes seven explanatory figures: the connected models, a dedicated visual for each of the four blueprints, the support-choice overview and fictional pilot reviews.
 
 ## Contents
 
@@ -32,60 +32,60 @@ Establish who decides, what each party wants and how to resolve competing demand
 - **7.** [[decide-who-decides]]
 - **8.** [[different-bets]]
 - **9.** [[investor-under-pressure]]
-- **10.** [[data-foundations-for-alignment]]
 
 ### Part III — COMMIT: Turn Investor Expectations Into Sustainable Work
 
 Turn investor expectations into feasible commitments to customers, systems and teams.
 
 - [[part-3]] — part introduction
-- **11.** [[cannot-fund-everything]]
-- **12.** [[roadmap-to-revenue]]
-- **13.** [[can-the-team-deliver]]
-- **14.** [[fix-decisions-before-hiring]]
-- **15.** [[growth-into-design]]
-- **16.** [[cheaper-cloud-bill]]
-- **17.** [[prove-you-can-restore]]
-- **18.** [[ai-strategy-three-questions]]
-- **19.** [[acquisition-adds-work-first]]
+- **10.** [[cannot-fund-everything]]
+- **11.** [[roadmap-to-revenue]]
+- **12.** [[can-the-team-deliver]]
+- **13.** [[fix-decisions-before-hiring]]
+- **14.** [[growth-into-design]]
+- **15.** [[cheaper-cloud-bill]]
+- **16.** [[prove-you-can-restore]]
+- **17.** [[ai-strategy-three-questions]]
+- **18.** [[acquisition-adds-work-first]]
 
 ### Part IV — COLLABORATE: Getting Useful Help From Your Investor
 
 Learn through the investor’s network, ask for useful help and agree the cost, authority and continuing dependence.
 
 - [[part-4]] — part introduction
-- **20.** [[operating-model-blueprints]]
-- **21.** [[learn-through-investors-network]]
-- **22.** [[help-that-changes-capability]]
-- **23.** [[useful-engagement]]
-- **24.** [[investors-adviser]]
-- **25.** [[tech-operating-partner]]
+- **19.** [[operating-model-blueprints]]
+- **20.** [[learn-through-investors-network]]
+- **21.** [[help-that-changes-capability]]
+- **22.** [[useful-engagement]]
+- **23.** [[investors-adviser]]
+- **24.** [[tech-operating-partner]]
 
 ### Part V — LEAD: Managing Funding and Ownership Changes
 
 Lead through diligence, the early funded plan, delayed financing, the plan that must shrink and the handover of continuing obligations.
 
 - [[part-5]] — part introduction
-- **26.** [[diligence-corrects-the-plan]]
-- **27.** [[first-hundred-days]]
-- **28.** [[the-financing-slipped]]
-- **29.** [[anatomy-of-a-layoff]]
-- **30.** [[handover-of-obligations]]
+- **25.** [[diligence-corrects-the-plan]]
+- **26.** [[first-hundred-days]]
+- **27.** [[the-financing-slipped]]
+- **28.** [[anatomy-of-a-layoff]]
+- **29.** [[handover-of-obligations]]
 
 ### Part VI — LEARN FROM OTHERS: Lessons from the Field
 
 Test leadership judgments against specific histories while keeping the evidence in scope.
 
 - [[part-6]] — part introduction
-- **31.** [[hilton-and-skype]]
-- **32.** [[visma]]
-- **33.** [[toys-r-us]]
-- **34.** [[teamsystem]]
-- **35.** [[success-for-whom]]
+- **30.** [[hilton-and-skype]]
+- **31.** [[visma]]
+- **32.** [[toys-r-us]]
+- **33.** [[teamsystem]]
+- **34.** [[success-for-whom]]
 
 ### Appendix
 
 - [[grounded-architecture-portfolio]] — the author’s Grounded Architecture framework applied across a portfolio: reuse the data and people foundations, adapt the operating model.
+- [[data-foundations-for-alignment]] — the data foundations behind alignment: evidence from existing sources, defined once, owned by name, kept current and labelled so a forecast is never mistaken for a result.
 
 ### Reference Material
 
@@ -95,6 +95,8 @@ Test leadership judgments against specific histories while keeping the evidence 
 - [[bibliography]] — sources, consultation dates and evidence limits.
 
 ## Editorial Status
+
+On 23 September 2026, the data-foundations chapter moved from the end of Part II to the Appendix, after the Grounded Architecture chapter, at the author’s request. Chapters 11–35 became 10–34; the folder name `data-foundations-for-alignment` and the permalink are unchanged.
 
 On 23 September 2026, an Appendix section was recreated after Part VI for one optional chapter applying the author’s Grounded Architecture framework across an investment portfolio. Its scope, consulted pages and validation are in `_research/grounded-architecture-portfolio-20260923.md`.
 
