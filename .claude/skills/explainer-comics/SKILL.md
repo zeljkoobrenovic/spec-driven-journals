@@ -186,6 +186,16 @@ block and re-run `--render`; never edit the rendered lines.
 - **When two speakers stand together, give their order explicitly** ("in this
   left-to-right order: first Alex, then Morgan") and match the bubble order;
   "Alex, with Morgan beside him" produced swapped tails.
+- **Two people each holding their own prop get a split strip too** (one with a
+  cashbox, one with a sheet; one at a calendar, one with a document). Pin both
+  props on one board or stand both people at one table.
+- **Show parallel activities as one level row**, each joined to the hub by an
+  equal line; "arrows fanning out left, up and right" came back with one branch
+  above the others, which reads as a sequence.
+- **Two people with nothing between them get a split strip.** A strip of one
+  character holding a card and another shrugging came back as two framed
+  panels with a divider. Give the pair a shared prop (one whiteboard, one
+  pinboard) so the scene has a centre.
 - **An exchange, not a statement.** Two bubbles: the tempting wrong idea, then
   the correction. List bubbles in reading order and say in the scene who
   stands left and who stands right, in that same order.
@@ -195,6 +205,11 @@ block and re-run `--render`; never edit the rendered lines.
   by two dashed ones" came back with the dashed boxes straight after 7; "the
   first ten segments carry the numerals 1 to 10; 1 to 7 are green and 8, 9 and
   10 are white; after segment 10 come two dashed segments" came back right.
+- **Uneven timelines get padding ticks.** "Exactly five evenly spaced tick
+  marks" for days 0, 10, 20, 90 and 100 came back twice with a sixth,
+  unlabelled tick filling the 20-to-90 gap. Drop "evenly spaced" and say "one
+  tick directly under each of the five labels, and no tick anywhere without a
+  label over it".
 - **People can be counted too.** "Two small groups" came back as four and four
   under signs saying six and five; "exactly six people standing in one row,
   shoulder to shoulder … exactly five … a clear gap separates the groups" came

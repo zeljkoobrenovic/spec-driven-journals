@@ -389,7 +389,7 @@ Toys R Us, Inc. [Toys R Us, Inc. Reports Results for the Full Year and Fourth Qu
 
 Toys R Us, Inc. [Bankruptcy Filing: Note to Interim Financial Statements](https://www.sec.gov/Archives/edgar/data/1005414/000100541417000047/R9.htm). 2017 filing for period ended October 28, 2017.
 
-**Evidence type:** Company regulatory disclosure. **Consulted scope:** Note consulted for the September 2017 filings and entity/jurisdiction scope. This is the company's financial-statement account, not a review of the complete court docket.
+**Evidence type:** Company regulatory disclosure. **Consulted scope:** Note consulted for the September 18, 2017 filings, the court-authorized financing facility of up to $3,125 million for the bankruptcy period (interim order September 19 and final order October 24, 2017), the authorized but not required payments of pre-filing claims, continued operation as debtor in possession, and entity/jurisdiction scope including the Canadian parallel process. This is the company's financial-statement account, not a review of the complete court docket.
 
 **Used in:** [Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us).
 

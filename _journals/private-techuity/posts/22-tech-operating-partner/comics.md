@@ -20,7 +20,7 @@
 }
 -->
 
-**Comic.** The familiar fictional cast presents this chapter’s independent example: an investor proposes one AI support tool for three software companies facing different problems. Morgan represents the technology operating function, Alex company technology leadership, Ines company executive authority and Sam finance. Five pages connect the proposed rollout to the function’s remit, capability choices and evidence of useful work.
+**Comic.** The familiar fictional cast presents this chapter’s independent example. An investor proposes one **artificial intelligence (AI)** support tool for three software companies: it drafts replies to customer questions from past support records, and staff check each draft before it is sent. The companies face different problems. Morgan represents the technology operating partner, the investor’s specialist who supports company technology work; Alex represents company technology leadership, Ines the company’s chief executive and Sam finance. Five pages connect the proposal to the partner’s remit, hiring choices and evidence of useful work.
 
 <!-- comic-page
 {
@@ -42,7 +42,7 @@
       "bubbles": [
         {
           "who": "Morgan",
-          "text": "The investor proposes one AI support tool for three companies."
+          "text": "The investor proposes one AI tool that drafts support replies for staff to check."
         },
         {
           "who": "Alex",
@@ -87,8 +87,8 @@
       ]
     }
   ],
-  "alt": "Three-strip comic: an investor proposes one AI support tool for three companies; their conditions differ between reliable records, incomplete permissions and an unstable service; a shared evaluation kit supports separate company decisions.",
-  "caption": "The journal’s fictional cast presents the article’s independent three-company example. Morgan represents the technology operating function and Alex company technology leadership; the portfolio is the set of businesses the investor invests in.",
+  "alt": "Three-strip comic: an investor proposes one AI tool that drafts customer-support replies for staff to check, for three companies; their conditions differ between reliable records, incomplete permissions and an unstable service; a shared evaluation kit supports separate company decisions.",
+  "caption": "The journal’s fictional cast presents the article’s independent three-company example. The portfolio is the set of businesses the investor invests in. Useful drafts need reliable records and customers’ permission to use them. Faster, better replies cannot repair a service that keeps failing, so the third company puts reliability first.",
   "source_sections": [
     "What Useful Intervention Looks Like",
     "What the Function Does Across an Investment"
@@ -96,19 +96,20 @@
   "status": "generated",
   "generation": {
     "tool": "OpenAI imagegen (built-in)",
-    "generation_calls": 1,
+    "generation_calls": 2,
     "visually_verified": true,
-    "sha256": "d56b0190c1eeb1238b29194712537acfcf57560234690738eadcd07866069d8d",
+    "corrections": "2026-09-22 in-depth review TOP-002: one --retext edit (Gemini) replaced Morgan's strip 1 bubble so the page says what the tool does (drafts support replies for staff to check); artwork otherwise unchanged. Gemini returned a 1792x2400 master, resized to 1086x1448 (Pillow LANCZOS, quality 92); prior version archived.",
+    "sha256": "a398833dc69dcc1377c981ca320ae7286b6121956702222d989fa8864618c824",
     "provenance": "_research/modalities-artwork-20260922.json"
   }
 }
 -->
 
-![Three-strip comic: an investor proposes one AI support tool for three companies; their conditions differ between reliable records, incomplete permissions and an unstable service; a shared evaluation kit supports separate company decisions.](assets/images/22-tech-operating-partner/comic-page-01-one-tool-three-problems.jpeg)
+![Three-strip comic: an investor proposes one AI tool that drafts customer-support replies for staff to check, for three companies; their conditions differ between reliable records, incomplete permissions and an unstable service; a shared evaluation kit supports separate company decisions.](assets/images/22-tech-operating-partner/comic-page-01-one-tool-three-problems.jpeg)
 
-**Page 1: One tool, three problems.** The journal’s fictional cast presents the article’s independent three-company example. Morgan represents the technology operating function and Alex company technology leadership; the portfolio is the set of businesses the investor invests in.
+**Page 1: One tool, three problems.** The journal’s fictional cast presents the article’s independent three-company example. The portfolio is the set of businesses the investor invests in. Useful drafts need reliable records and customers’ permission to use them. Faster, better replies cannot repair a service that keeps failing, so the third company puts reliability first.
 
-- *Strip 1.* **Morgan:** “The investor proposes one AI support tool for three companies.” **Alex:** “Do they have the same problem?”
+- *Strip 1.* **Morgan:** “The investor proposes one AI tool that drafts support replies for staff to check.” **Alex:** “Do they have the same problem?”
 - *Strip 2.* **Morgan:** “One has reliable records; another has incomplete customer permissions.” **Alex:** “The third gets complaints because its service is unstable.”
 - *Strip 3.* **Alex:** “What should the operating partner contribute?” **Morgan:** “Technical judgment, useful support and follow-through on company decisions.”
 
@@ -136,7 +137,7 @@
       "bubbles": [
         {
           "who": "Morgan",
-          "text": "Technical assumptions need testing before investment and follow-through afterward."
+          "text": "Before investing, ask whether AI changes what customers will buy or pay for."
         },
         {
           "who": "Alex",
@@ -184,29 +185,31 @@
       ]
     }
   ],
-  "alt": "Three-strip comic: linked folders run from investment assessment through funded priorities and delivery to sale preparation; an assignment records authority, availability, costs and review; company leadership and operating support remain distinct and connected.",
-  "caption": "Useful support follows the investment’s assumptions into company work. The actual assignment establishes authority; company leaders retain their continuing responsibilities, and executive direction requires an explicit appointment or delegation.",
+  "alt": "Three-strip comic: Morgan asks whether AI changes what customers will buy or pay for, beside linked folders running from investment assessment through funded priorities and delivery to sale preparation; an assignment records authority, availability, costs and review; company leadership and operating support remain distinct and connected.",
+  "caption": "Before investing, the partner tests the business assumptions behind the investment, such as whether AI changes what customers will buy or pay for. That is a separate question from whether a support tool works. Support then follows the findings into funded company work; the actual assignment sets the partner’s authority, and company leaders keep their continuing responsibilities.",
   "source_sections": [
     "What the Function Does Across an Investment",
-    "How the Role Compares With CIO, CTO, CPO and Chief Architect",
+    "Testing the Investment Thesis",
+    "How the Role Compares With Company Technology and Product Leaders",
     "What Company Leaders Should Expect"
   ],
   "status": "generated",
   "generation": {
     "tool": "OpenAI imagegen (built-in)",
-    "generation_calls": 1,
+    "generation_calls": 4,
     "visually_verified": true,
-    "sha256": "9c8ff73b0794edb554219239a4c477d1f5fec970067f989e59ede04e7e891368",
+    "corrections": "2026-09-22 in-depth review TOP-007: --retext (Gemini) replaced Morgan's strip 1 bubble with the investment-assumption question (does AI change what customers will buy or pay for). The first attempt kept a misspelling already present in the original page ('responsibiliities', strip 3); a second --retext corrected it. Resized from 1792x2400 to 1086x1448 (LANCZOS, quality 92); all prior versions archived.",
+    "sha256": "6c01c74aa16079a4d41012a8b34724485c2d778ea65a74bac2dc5e46f7d2861e",
     "provenance": "_research/modalities-artwork-20260922.json"
   }
 }
 -->
 
-![Three-strip comic: linked folders run from investment assessment through funded priorities and delivery to sale preparation; an assignment records authority, availability, costs and review; company leadership and operating support remain distinct and connected.](assets/images/22-tech-operating-partner/comic-page-02-connect-support-to-company-work.jpeg)
+![Three-strip comic: Morgan asks whether AI changes what customers will buy or pay for, beside linked folders running from investment assessment through funded priorities and delivery to sale preparation; an assignment records authority, availability, costs and review; company leadership and operating support remain distinct and connected.](assets/images/22-tech-operating-partner/comic-page-02-connect-support-to-company-work.jpeg)
 
-**Page 2: Connect support to company work.** Useful support follows the investment’s assumptions into company work. The actual assignment establishes authority; company leaders retain their continuing responsibilities, and executive direction requires an explicit appointment or delegation.
+**Page 2: Connect support to company work.** Before investing, the partner tests the business assumptions behind the investment, such as whether AI changes what customers will buy or pay for. That is a separate question from whether a support tool works. Support then follows the findings into funded company work; the actual assignment sets the partner’s authority, and company leaders keep their continuing responsibilities.
 
-- *Strip 1.* **Morgan:** “Technical assumptions need testing before investment and follow-through afterward.” **Alex:** “Keep findings connected to funded work and evidence.”
+- *Strip 1.* **Morgan:** “Before investing, ask whether AI changes what customers will buy or pay for.” **Alex:** “Keep findings connected to funded work and evidence.”
 - *Strip 2.* **Morgan:** “My title alone does not give me authority over your team.” **Ines:** “We agree the assignment and the decisions you may make.”
 - *Strip 3.* **Alex:** “Our leaders keep their continuing product, technology and delivery responsibilities.” **Morgan:** “I bring challenge, coordination and specialist help within the agreed remit.”
 
@@ -282,7 +285,7 @@
     }
   ],
   "alt": "Three-strip comic: a proposed AI-leader advert prompts inspection of the capability gap; three unranked routes offer development, interim help or recruitment; role outcomes, budget, reporting line and appointment authority are agreed before hiring.",
-  "caption": "This page applies the article’s capability questions to the proposed AI rollout; it records no fictional hiring decision. The operating partner can support role design and assessment, while appointment authority and the company’s continuing management responsibilities must be explicit.",
+  "caption": "This page applies the article’s capability questions to the proposed AI rollout; it records no fictional hiring decision. The capability gap is what the company needs to do but cannot yet do well; interim help means temporary support. The operating partner can help define the role and assess candidates, but the company must say who the new leader will report to, who has the authority to make the appointment, and how it will help the person settle in (onboarding) and review their first results.",
   "source_sections": [
     "Hiring at Portfolio Companies",
     "When a Dedicated AI Operating Partner Helps"
@@ -300,7 +303,7 @@
 
 ![Three-strip comic: a proposed AI-leader advert prompts inspection of the capability gap; three unranked routes offer development, interim help or recruitment; role outcomes, budget, reporting line and appointment authority are agreed before hiring.](assets/images/22-tech-operating-partner/comic-page-03-capability-before-hiring.jpeg)
 
-**Page 3: Capability before hiring.** This page applies the article’s capability questions to the proposed AI rollout; it records no fictional hiring decision. The operating partner can support role design and assessment, while appointment authority and the company’s continuing management responsibilities must be explicit.
+**Page 3: Capability before hiring.** This page applies the article’s capability questions to the proposed AI rollout; it records no fictional hiring decision. The capability gap is what the company needs to do but cannot yet do well; interim help means temporary support. The operating partner can help define the role and assess candidates, but the company must say who the new leader will report to, who has the authority to make the appointment, and how it will help the person settle in (onboarding) and review their first results.
 
 - *Strip 1.* **Alex:** “Should each company recruit an AI leader?” **Morgan:** “First establish what capability the plan needs.”
 - *Strip 2.* **Morgan:** “Development, interim support and recruitment are options to assess.” **Alex:** “We choose from the work, expertise, availability and cost.”
@@ -374,7 +377,7 @@
     }
   ],
   "alt": "Three-strip comic: reliable records support a limited AI pilot with an agreed budget and review; incomplete permissions require resolving permitted data use first; an unstable service requires reliability work while the AI rollout is deferred.",
-  "caption": "In the fictional comparison, shared expertise supports three different sequences. Each company uses its existing approval route for resources and records the work displaced; no common rollout or successful pilot outcome is assumed.",
+  "caption": "In the fictional comparison, shared expertise supports three different sequences. A pilot is a small, time-limited trial before wider use. The second company’s question is permission, not technical access: being able to open customer records does not mean it may use them to draft replies. Each company uses its existing approval route and records the work it postpones; no common rollout or successful pilot outcome is assumed.",
   "source_sections": [
     "What Useful Intervention Looks Like"
   ],
@@ -391,7 +394,7 @@
 
 ![Three-strip comic: reliable records support a limited AI pilot with an agreed budget and review; incomplete permissions require resolving permitted data use first; an unstable service requires reliability work while the AI rollout is deferred.](assets/images/22-tech-operating-partner/comic-page-04-shared-method-different-decisions.jpeg)
 
-**Page 4: Shared method, different decisions.** In the fictional comparison, shared expertise supports three different sequences. Each company uses its existing approval route for resources and records the work displaced; no common rollout or successful pilot outcome is assumed.
+**Page 4: Shared method, different decisions.** In the fictional comparison, shared expertise supports three different sequences. A pilot is a small, time-limited trial before wider use. The second company’s question is permission, not technical access: being able to open customer records does not mean it may use them to draft replies. Each company uses its existing approval route and records the work it postpones; no common rollout or successful pilot outcome is assumed.
 
 - *Strip 1.* **Morgan:** “This company has reliable support records.” **Alex:** “Design a limited pilot with an agreed budget and review date.”
 - *Strip 2.* **Morgan:** “This company has incomplete customer permissions.” **Alex:** “Resolve which records it can use before committing to implementation.”
@@ -443,7 +446,7 @@
         },
         {
           "who": "Sam",
-          "text": "Only when spending changes. First show how the time was used."
+          "text": "Only if spending falls against an agreed comparison, after counting the tool’s costs."
         }
       ]
     },
@@ -467,8 +470,8 @@
       ]
     }
   ],
-  "alt": "Three-strip comic: the pilot review has unscored measures for quality, waiting time, human review and cost; released hours and actual spending remain separate; shared methods and AI summaries stay linked to original evidence and qualified review.",
-  "caption": "Released hours are capacity until their use is demonstrated, and cash savings require a spending change. Even a successful pilot cannot isolate the operating partner’s contribution from the company team’s work; AI-generated summaries also require evidence and review.",
+  "alt": "Three-strip comic: the pilot review has unscored measures for quality, waiting time, human review and cost; released hours and actual spending remain separate, and a cash saving needs spending to fall after the tool’s own costs; shared methods and AI summaries stay linked to original evidence and qualified review.",
+  "caption": "Resolution quality means whether customers’ problems were actually solved. Released hours are capacity, time freed for other work, until the company shows how it was used. A cash saving means spending falls against an agreed comparison, such as support spending before the pilot, after counting the tool’s own setup and running costs. Staff answering more questions on unchanged pay is capacity, not cash; cutting paid overtime may save cash if the savings exceed the tool’s costs. Even a successful pilot cannot isolate the operating partner’s contribution from the company team’s work; AI-generated summaries also require evidence and review.",
   "source_sections": [
     "What Useful Intervention Looks Like",
     "Using AI in the Operating Partner’s Own Work",
@@ -477,18 +480,19 @@
   "status": "generated",
   "generation": {
     "tool": "OpenAI imagegen (built-in)",
-    "generation_calls": 1,
+    "generation_calls": 2,
     "visually_verified": true,
-    "sha256": "70105e068f7845f817d0da2a52582132763f432f6a1f2e404186a6f0176c6684",
+    "corrections": "2026-09-22 in-depth review TOP-005: one --retext edit (Gemini) replaced Sam's strip 2 bubble so a cash saving requires spending to fall against an agreed comparison after the tool's costs; artwork otherwise unchanged. Resized from 1792x2400 to 1086x1448 (LANCZOS, quality 92); prior version archived.",
+    "sha256": "84d60bcca3342f814956280f8f1d1d61a71f2bc5c2075f1c4026f7e528dd5255",
     "provenance": "_research/modalities-artwork-20260922.json"
   }
 }
 -->
 
-![Three-strip comic: the pilot review has unscored measures for quality, waiting time, human review and cost; released hours and actual spending remain separate; shared methods and AI summaries stay linked to original evidence and qualified review.](assets/images/22-tech-operating-partner/comic-page-05-review-what-changed.jpeg)
+![Three-strip comic: the pilot review has unscored measures for quality, waiting time, human review and cost; released hours and actual spending remain separate, and a cash saving needs spending to fall after the tool’s own costs; shared methods and AI summaries stay linked to original evidence and qualified review.](assets/images/22-tech-operating-partner/comic-page-05-review-what-changed.jpeg)
 
-**Page 5: Review what changed.** Released hours are capacity until their use is demonstrated, and cash savings require a spending change. Even a successful pilot cannot isolate the operating partner’s contribution from the company team’s work; AI-generated summaries also require evidence and review.
+**Page 5: Review what changed.** Resolution quality means whether customers’ problems were actually solved. Released hours are capacity, time freed for other work, until the company shows how it was used. A cash saving means spending falls against an agreed comparison, such as support spending before the pilot, after counting the tool’s own setup and running costs. Staff answering more questions on unchanged pay is capacity, not cash; cutting paid overtime may save cash if the savings exceed the tool’s costs. Even a successful pilot cannot isolate the operating partner’s contribution from the company team’s work; AI-generated summaries also require evidence and review.
 
 - *Strip 1.* **Alex:** “How will we judge the pilot?” **Sam:** “Measure the complete workflow, including human review and running cost.”
-- *Strip 2.* **Alex:** “If the pilot releases hours, have we saved cash?” **Sam:** “Only when spending changes. First show how the time was used.”
+- *Strip 2.* **Alex:** “If the pilot releases hours, have we saved cash?” **Sam:** “Only if spending falls against an agreed comparison, after counting the tool’s costs.”
 - *Strip 3.* **Morgan:** “We can share methods while each company makes a supported decision.” **Alex:** “And AI summaries still need original evidence and qualified review.”

@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Register S101–S105 for investor-organized learning: Prosus, Balderton, Insight Partners, Wenger-Trayner and the author’s CTO Starter Kit. Separate organizer accounts, a conceptual definition and documented project features from demonstrated company outcomes; add the topic route. Link the project’s public start page and repository and state the author’s involvement.
 - Register S91–S100 for the operating-model blueprints chapter and extend S01 for expense allocation and service-payment conflicts; distinguish historical surveys, practitioner advice, firm descriptions and proposed blueprints.
 
 - Cover the technology operating partner chapter with S79–S90, dated consultation scope, direct investment-firm examples and explicit limits on claims about hiring growth and performance. Identify a supplied text copy when that is the version consulted.
@@ -34,7 +35,7 @@ Exhaustive coverage, a universal role charter, or a claim of completed professio
 
 ## Modalities
 
-This reference page uses the Article modality. All 33 main chapters provide an Article, a 300–500-word TL;DR and an illustrated Comic with captions and dialogue transcripts. Comics use either individual panels or pages of stacked strips. Reference material is not padded with redundant adaptations.
+This reference page uses the Article modality. The main chapters provide an Article, a 300–500-word TL;DR and an illustrated Comic with captions and dialogue transcripts. Comics use either individual panels or pages of stacked strips. Reference material is not padded with redundant adaptations.
 
 ## Open questions
 
@@ -51,6 +52,8 @@ See the bibliography and the relevant chapters. The source registry records cons
 
 ## Changelog
 
+- 2026-09-23 (portfolio appendix): Register the Grounded Architecture framework pages as S110–S115, extend S106’s use, add the topic row and the limits paragraph for the appendix; consultation range now runs to 23 September 2026.
+- 2026-09-22 (investor learning): Specify S101–S105 and their consultation limits before updating the register for the new Part IV chapter, including the author-requested CTO Starter Kit.
 - 2026-09-22: Reconcile reading-format coverage after adding TL;DR and illustrated Comic modalities to operating-model blueprints and technology operating partners. All 33 main chapters now provide all three formats.
 
 - 2026-09-21 (Part IV order): Reconcile the current chapter and reading-format description with the two articles’ move into Part IV. Stable chapter links and source identifiers remain unchanged.

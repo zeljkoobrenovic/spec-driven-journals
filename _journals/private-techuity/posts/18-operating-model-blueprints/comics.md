@@ -20,7 +20,11 @@
 }
 -->
 
-**Comic.** The book’s fictional cast acts out this chapter’s independent example: three software businesses need coordinated access and support for two products. Ines represents the group chief executive, Alex technology leadership, Priya product leadership, Sam finance and Morgan investor support. Five pages follow the choice of help, the committed people and the reviews that change the plan.
+**Comic.** The book’s fictional cast acts out this chapter’s independent example. An investor has backed three software businesses — separate companies it bought into one group, each still running its own products. Customers who use two of those products must sign in twice, with two accounts and two help desks, and want one sign-in and one place to ask for help.
+
+Ines is the group’s chief executive officer (CEO), who leads the whole group. Alex is the chief technology officer (CTO), the executive responsible for technology. Priya leads product, Sam is the chief financial officer (CFO), responsible for the money, and Morgan advises for the investor — the firm that put money into these businesses expecting a financial gain.
+
+Five pages follow the choice of help, the committed people and the reviews that change the plan. Each page explains the words it needs, and a few recur throughout: a **platform** is a shared technical foundation several products sit on, and a **roadmap** is the product work a business has planned and when.
 
 <!-- comic-page
 {
@@ -90,7 +94,7 @@
     }
   ],
   "alt": "Three-strip comic: a proposed common platform spans three businesses; a customer need becomes coordinated access and support for two products; separate investor-support and company-organization boards connect through an agreed blueprint.",
-  "caption": "The familiar fictional cast acts out the article’s independent acquisition example. An operating model describes how people, responsibilities and decisions organize the work; the blueprint makes the chosen arrangement explicit.",
+  "caption": "The familiar fictional cast acts out the article’s independent example, in which businesses bought into one group decide how far to join their products up. An operating model describes how people, responsibilities and decisions organize the work; the blueprint makes the chosen arrangement explicit. **Shared identity**, which Alex proposes in strip 2, uses one system to check who a customer is across both products, so a single sign-in reaches each of them.",
   "source_sections": [
     "Connect Two Designs",
     "A Fictional Group Chooses a Combination"
@@ -108,7 +112,7 @@
 
 ![Three-strip comic: a proposed common platform spans three businesses; a customer need becomes coordinated access and support for two products; separate investor-support and company-organization boards connect through an agreed blueprint.](assets/images/18-operating-model-blueprints/comic-page-01-two-designs.jpeg)
 
-**Page 1: Start with the work.** The familiar fictional cast acts out the article’s independent acquisition example. An operating model describes how people, responsibilities and decisions organize the work; the blueprint makes the chosen arrangement explicit.
+**Page 1: Start with the work.** The familiar fictional cast acts out the article’s independent example, in which businesses bought into one group decide how far to join their products up. An operating model describes how people, responsibilities and decisions organize the work; the blueprint makes the chosen arrangement explicit. **Shared identity**, which Alex proposes in strip 2, uses one system to check who a customer is across both products, so a single sign-in reaches each of them.
 
 - *Strip 1.* **Ines:** “Should these three businesses share one platform?” **Alex:** “First, which customer problem needs shared work?”
 - *Strip 2.* **Priya:** “Buyers need coordinated access and support for two products.” **Alex:** “Then test shared identity while keeping local roadmaps.”
@@ -184,7 +188,7 @@
     }
   ],
   "alt": "Three-strip comic: four equally sized cards name board oversight, an operating adviser, shared specialists and dedicated execution; two toolboxes identify identity expertise and coordination capacity; advice and the company decision remain separate documents.",
-  "caption": "The four blueprints are combinations to adapt. In this example, shared specialists and dedicated company execution support a pilot under board oversight; the company’s actual delegations determine who decides.",
+  "caption": "The four blueprints are combinations to adapt. In this example, shared specialists and dedicated company execution support a pilot under board oversight — the board being the directors who govern the group. **Identity expertise** in strip 2 is a different thing from the system itself: it is the knowledge needed to design and run that single sign-in. The company’s actual delegations determine who decides.",
   "source_sections": [
     "Four Blueprints for Investor Involvement",
     "A Fictional Group Chooses a Combination"
@@ -202,7 +206,7 @@
 
 ![Three-strip comic: four equally sized cards name board oversight, an operating adviser, shared specialists and dedicated execution; two toolboxes identify identity expertise and coordination capacity; advice and the company decision remain separate documents.](assets/images/18-operating-model-blueprints/comic-page-02-choose-the-contribution.jpeg)
 
-**Page 2: Choose the contribution.** The four blueprints are combinations to adapt. In this example, shared specialists and dedicated company execution support a pilot under board oversight; the company’s actual delegations determine who decides.
+**Page 2: Choose the contribution.** The four blueprints are combinations to adapt. In this example, shared specialists and dedicated company execution support a pilot under board oversight — the board being the directors who govern the group. **Identity expertise** in strip 2 is a different thing from the system itself: it is the knowledge needed to design and run that single sign-in. The company’s actual delegations determine who decides.
 
 - *Strip 1.* **Ines:** “Which contribution does the work need?” **Alex:** “A decision route, judgment, expertise, or capacity to lead execution.”
 - *Strip 2.* **Morgan:** “This pilot needs identity expertise and coordination capacity.” **Alex:** “We can combine shared specialists with dedicated company execution.”
@@ -277,7 +281,7 @@
     }
   ],
   "alt": "Three-strip comic: a six-week specialist bar is half a twelve-week program-leader bar; two engineers each have a one-day-per-week booking while internal improvements are deferred; finance confirms specialist funding and expected service costs.",
-  "caption": "The fictional commitments are six weeks of specialist support and twelve weeks of program leadership. Two company engineers each reserve one day a week during the specialist assignment; their managers defer identified improvements, and the finance lead confirms funding before work starts.",
+  "caption": "The work being staffed here is a **pilot**: a limited trial with a few customers before the service is offered more widely. The fictional commitments are six weeks of specialist support and twelve weeks of program leadership. Two company engineers each reserve one day a week during the specialist assignment; their managers defer identified improvements, and the finance lead confirms funding before work starts. The engineers’ and program leader’s time costs no new money — their salaries already sit in the approved budget, the financial plan the board signed off — so what the deferred work buys is their available time, not extra spending.",
   "source_sections": [
     "A Fictional Group Chooses a Combination"
   ],
@@ -294,7 +298,7 @@
 
 ![Three-strip comic: a six-week specialist bar is half a twelve-week program-leader bar; two engineers each have a one-day-per-week booking while internal improvements are deferred; finance confirms specialist funding and expected service costs.](assets/images/18-operating-model-blueprints/comic-page-03-commit-the-capacity.jpeg)
 
-**Page 3: Commit the capacity.** The fictional commitments are six weeks of specialist support and twelve weeks of program leadership. Two company engineers each reserve one day a week during the specialist assignment; their managers defer identified improvements, and the finance lead confirms funding before work starts.
+**Page 3: Commit the capacity.** The work being staffed here is a **pilot**: a limited trial with a few customers before the service is offered more widely. The fictional commitments are six weeks of specialist support and twelve weeks of program leadership. Two company engineers each reserve one day a week during the specialist assignment; their managers defer identified improvements, and the finance lead confirms funding before work starts. The engineers’ and program leader’s time costs no new money — their salaries already sit in the approved budget, the financial plan the board signed off — so what the deferred work buys is their available time, not extra spending.
 
 - *Strip 1.* **Morgan:** “The specialist is committed for six weeks.” **Alex:** “The company program leader coordinates a twelve-week assignment.”
 - *Strip 2.* **Alex:** “Each engineer reserves one day weekly during the specialist assignment.” **Sam:** “Their managers defer other work to make room.”
@@ -352,9 +356,9 @@
       ]
     },
     {
-      "scene": "Morgan stands on the left and Alex on the right beside a small key-shaped identity-service model. In front of the model stand two clear upright checkpoint cards. Alex gestures with an open hand from the side so neither card is covered.",
+      "scene": "Morgan stands on the left and Alex on the right beside a small key-shaped identity-service model. In front of the model stand two clear upright checkpoint cards, the left one naming the approving role and the right one the continuing owner. Alex gestures with an open hand from the side so neither card is covered.",
       "labels": [
-        "Production acceptance",
+        "CTO approves go-live",
         "Named service owner"
       ],
       "label_notes": "Each label appears once on its described prop, upright and fully visible.",
@@ -365,13 +369,13 @@
         },
         {
           "who": "Alex",
-          "text": "Our security and service process; we name an operating owner before launch."
+          "text": "I do, against our security checks. A named owner then runs it."
         }
       ]
     }
   ],
-  "alt": "Three-strip comic: the program leader sequences the pilot and escalates people or customer-commitment conflicts to the group CEO; common security and reporting sit above three separate roadmaps; production acceptance and a named service owner precede launch.",
-  "caption": "The group chief executive resolves conflicts beyond the program leader’s remit. Product leaders retain delegated roadmap decisions, and the shared service needs company acceptance and continuing ownership.",
+  "alt": "Three-strip comic: the program leader sequences the pilot and escalates people or customer-commitment conflicts to the group chief executive, labelled Group CEO; common security and reporting sit above three separate product roadmaps; the chief technology officer approves go-live and a named service owner runs the service afterwards.",
+  "caption": "The group chief executive officer (CEO) resolves conflicts beyond the program leader’s scope. Product leaders keep their own planned product work. Going live — putting the service into **production**, meaning real customer use rather than testing — is one person’s decision, here the chief technology officer, against the company’s security checks. A different named person then runs the service day to day.",
   "source_sections": [
     "Decide What the Company Will Share",
     "A Fictional Group Chooses a Combination"
@@ -381,19 +385,20 @@
     "tool": "OpenAI imagegen (built-in)",
     "generation_calls": 1,
     "visually_verified": true,
-    "sha256": "ef4bab8c708df061b141aaec034610cc0c92dd87bae54d0b0ba811062da6dbb5",
+    "corrections": "2026-09-22 in-depth review OMB-006: two --retext edits (Gemini) named the approving role — Alex's bubble and the left checkpoint card; the rest of the artwork is unchanged and both prior versions are archived. The Gemini edit returned a 1792x2400 master, resized to the journal's 1086x1448 page geometry.",
+    "sha256": "a42649485bc4287928f750d1b9037d070d5e236ed50f7531eb4e93673307e9d6",
     "provenance": "_research/modalities-artwork-20260922.json"
   }
 }
 -->
 
-![Three-strip comic: the program leader sequences the pilot and escalates people or customer-commitment conflicts to the group CEO; common security and reporting sit above three separate roadmaps; production acceptance and a named service owner precede launch.](assets/images/18-operating-model-blueprints/comic-page-04-make-authority-visible.jpeg)
+![Three-strip comic: the program leader sequences the pilot and escalates people or customer-commitment conflicts to the group chief executive, labelled Group CEO; common security and reporting sit above three separate product roadmaps; the chief technology officer approves go-live and a named service owner runs the service afterwards.](assets/images/18-operating-model-blueprints/comic-page-04-make-authority-visible.jpeg)
 
-**Page 4: Make authority visible.** The group chief executive resolves conflicts beyond the program leader’s remit. Product leaders retain delegated roadmap decisions, and the shared service needs company acceptance and continuing ownership.
+**Page 4: Make authority visible.** The group chief executive officer (CEO) resolves conflicts beyond the program leader’s scope. Product leaders keep their own planned product work. Going live — putting the service into **production**, meaning real customer use rather than testing — is one person’s decision, here the chief technology officer, against the company’s security checks. A different named person then runs the service day to day.
 
 - *Strip 1.* **Ines:** “The program leader can sequence the agreed pilot.” **Alex:** “Conflicts over people or customer commitments come to you.”
 - *Strip 2.* **Priya:** “Product leaders keep their delegated roadmap decisions.” **Alex:** “Common standards can coexist with local delivery.”
-- *Strip 3.* **Morgan:** “Who accepts the pilot into production?” **Alex:** “Our security and service process; we name an operating owner before launch.”
+- *Strip 3.* **Morgan:** “Who accepts the pilot into production?” **Alex:** “I do, against our security checks. A named owner then runs it.”
 
 <!-- comic-page
 {
@@ -409,7 +414,7 @@
   ],
   "strips": [
     {
-      "scene": "Alex stands on the left and Priya on the right beneath a wall card marking the review point. On a bare table, the small key-shaped pilot model sits apart on the far left. A narrow delivery lane leads from left to right toward a doorway at the far right. The CUSTOMER RELEASE parcel waits on the left end of the lane; the much larger WIDER MIGRATION box occupies the lane immediately in front of the right-hand doorway, physically blocking the parcel from reaching it. Read left to right: waiting parcel, blocking migration box, doorway. Use the supplied labels with their exact capitalization. The top wall card supplies the review label.",
+      "scene": "Alex stands on the left and Priya on the right beneath a wall card marking the review point. On a bare table, the small key-shaped pilot model sits apart on the far left. A narrow delivery lane leads from left to right toward a doorway at the far right. The CUSTOMER RELEASE parcel sits on the lane; the much larger WIDER MIGRATION box stands beside the lane, clearly too wide to pass along it together with the parcel. Read left to right: parcel on the lane, oversized migration box alongside, doorway still clear. Use the supplied labels with their exact capitalization. The top wall card supplies the review label.",
       "labels": [
         "Week 6 review",
         "Wider migration",
@@ -467,8 +472,8 @@
       ]
     }
   ],
-  "alt": "Three-strip comic: at week six, wider migration blocks a customer release even though the identity pilot works; the chief executive approves a smaller step and sends the board a revised forecast; week twelve leaves three options open: end, continue with narrower scope or establish permanent capability.",
-  "caption": "The six-week review changes the funded next step. The twelve-week review leaves continuation open; technical progress alone establishes neither realized revenue nor investment returns.",
+  "alt": "Three-strip comic: at week six the sign-in pilot works, and a much larger wider-migration box beside the delivery lane shows how moving every customer across would compete with the promised customer release; the chief executive defers the migration, approves a smaller step and sends the board a revised forecast; week twelve leaves three options open: end, continue with narrower scope or establish permanent capability.",
+  "caption": "The six-week review changes the next step: the same two engineers keep one day a week each through week ten, running the service for two volunteer customers inside the approved budget, and the specialist is not extended. The wider **rollout** Priya warns about in strip 1 would extend the service to every customer, which means **migrating** them — moving their existing accounts across — and that is why it is deferred. The trial itself closes at week ten: both volunteer customers return to their original sign-ins, a step that fits inside the same reserved days, so nothing after week ten waits on a later decision. The revised **forecast** Sam hands the board in strip 2 replaces the budget’s assumption with the current estimate: the combined offer is now forecast to reach every intended customer a quarter later, moving the expected **revenue** — the income the group earns by supplying its products, counted when it delivers them rather than when customers pay — past the group’s year-end. That date assumes the wider migration is approved and funded at the twelve-week review, which has not been decided. The twelve-week review leaves continuation open, and each option would need its own approval and resources. Technical progress alone establishes neither revenue actually earned nor the investor’s eventual **return**, its gain or loss on the money it put in.",
   "source_sections": [
     "A Fictional Group Chooses a Combination",
     "Write the Blueprint You Can Actually Use"
@@ -484,9 +489,9 @@
 }
 -->
 
-![Three-strip comic: at week six, wider migration blocks a customer release even though the identity pilot works; the chief executive approves a smaller step and sends the board a revised forecast; week twelve leaves three options open: end, continue with narrower scope or establish permanent capability.](assets/images/18-operating-model-blueprints/comic-page-05-review-changes-the-plan.jpeg)
+![Three-strip comic: at week six the sign-in pilot works, and a much larger wider-migration box beside the delivery lane shows how moving every customer across would compete with the promised customer release; the chief executive defers the migration, approves a smaller step and sends the board a revised forecast; week twelve leaves three options open: end, continue with narrower scope or establish permanent capability.](assets/images/18-operating-model-blueprints/comic-page-05-review-changes-the-plan.jpeg)
 
-**Page 5: Review changes the plan.** The six-week review changes the funded next step. The twelve-week review leaves continuation open; technical progress alone establishes neither realized revenue nor investment returns.
+**Page 5: Review changes the plan.** The six-week review changes the next step: the same two engineers keep one day a week each through week ten, running the service for two volunteer customers inside the approved budget, and the specialist is not extended. The wider **rollout** Priya warns about in strip 1 would extend the service to every customer, which means **migrating** them — moving their existing accounts across — and that is why it is deferred. The trial itself closes at week ten: both volunteer customers return to their original sign-ins, a step that fits inside the same reserved days, so nothing after week ten waits on a later decision. The revised **forecast** Sam hands the board in strip 2 replaces the budget’s assumption with the current estimate: the combined offer is now forecast to reach every intended customer a quarter later, moving the expected **revenue** — the income the group earns by supplying its products, counted when it delivers them rather than when customers pay — past the group’s year-end. That date assumes the wider migration is approved and funded at the twelve-week review, which has not been decided. The twelve-week review leaves continuation open, and each option would need its own approval and resources. Technical progress alone establishes neither revenue actually earned nor the investor’s eventual **return**, its gain or loss on the money it put in.
 
 - *Strip 1.* **Alex:** “The pilot supports the access requirement.” **Priya:** “Wider rollout would take capacity from our committed customer release.”
 - *Strip 2.* **Ines:** “I approve a smaller next step within my delegated authority.” **Sam:** “The board receives the revised forecast and consequences.”

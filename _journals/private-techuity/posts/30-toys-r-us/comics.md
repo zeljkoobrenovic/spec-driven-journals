@@ -5,9 +5,9 @@
 }
 -->
 
-**Comic.** The retailer reported positive operating earnings, a net loss and almost no operating cash flow in the same year, then a supplier cash shock. The panels follow what the documents show: why a technology transition needed funding, and how earlier supplier payments left less room to fund it. They do not show that the proposed work would have restored competitiveness.
+**Comic.** The retailer reported positive operating earnings (the accounting profit from running the business, before interest and tax), a net loss and almost no operating cash flow (the cash actually received minus the cash actually paid out) in the same year, then a supplier cash shock. The panels follow what the documents show: why a technology transition needed funding, and how earlier supplier payments left less room to fund it. They do not show that the proposed work would have restored competitiveness.
 
-Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
+Morgan is a technology adviser at an investment firm; Alex leads technology, Priya leads product and Sam leads finance at Larkspur, a fictional software company. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
@@ -61,9 +61,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/28-toys-r-us/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Sam places three documents beside a transformation plan; their headings read, verbatim and printed normally left to right (never mirrored or reversed), OPERATING EARNINGS, INTEREST and OPERATING CASH FLOW, with a fourth sheet headed TRANSFORMATION PLAN. Two unnamed colleagues in grey look on. Use one speech bubble with the exact words: \"Positive operating earnings; almost no operating cash flow.\" Convey: In fiscal 2016 the company reported positive operating earnings, a net loss attributable to Toys R Us, Inc. and almost no operating cash flow. Name the measure and its period, and check which expenses are already included so that none is subtracted twice.",
+  "prompt": "Panel 3 of an explainer comic. Sam places three documents beside a transformation plan; their headings read, verbatim and printed normally left to right (never mirrored or reversed), OPERATING EARNINGS, INTEREST and OPERATING CASH FLOW, with a fourth sheet headed TRANSFORMATION PLAN. Two unnamed colleagues in grey look on. Use one speech bubble with the exact words: \"Positive operating earnings; almost no operating cash flow.\" Convey: In fiscal 2016, the accounting year ended January 28, 2017, the company reported positive operating earnings, its accounting profit before interest and tax; a net loss, the result after interest and tax; and almost no operating cash flow, the cash actually received minus the cash actually paid out, interest included. Earnings and cash differ because of timing. Name the measure and its period, and check which expenses are already included so that none is subtracted twice.",
   "alt": "Comic panel: Sam places earnings, interest and cash-flow statements beside a transformation plan.",
-  "caption": "In fiscal 2016 the company reported positive operating earnings, a net loss attributable to Toys R Us, Inc. and almost no operating cash flow. Name the measure and its period, and check which expenses are already included so that none is subtracted twice.",
+  "caption": "In fiscal 2016, the accounting year ended January 28, 2017, the company reported positive operating earnings, its accounting profit before interest and tax; a net loss, the result after interest and tax; and almost no operating cash flow, the cash actually received minus the cash actually paid out, interest included. Earnings and cash differ because of timing. Name the measure and its period, and check which expenses are already included so that none is subtracted twice.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -74,7 +74,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Sam places earnings, interest and cash-flow statements beside a transformation plan.](assets/images/28-toys-r-us/comic-03-scene.jpeg)
 
-**Panel 3:** In fiscal 2016 the company reported positive operating earnings, a net loss attributable to Toys R Us, Inc. and almost no operating cash flow. Name the measure and its period, and check which expenses are already included so that none is subtracted twice.
+**Panel 3:** In fiscal 2016, the accounting year ended January 28, 2017, the company reported positive operating earnings, its accounting profit before interest and tax; a net loss, the result after interest and tax; and almost no operating cash flow, the cash actually received minus the cash actually paid out, interest included. Earnings and cash differ because of timing. Name the measure and its period, and check which expenses are already included so that none is subtracted twice.
 
 *Dialogue:* “Positive operating earnings; almost no operating cash flow.”
 
@@ -84,9 +84,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/28-toys-r-us/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. A fictional vendor shortens the time between inventory delivery and payment. Use one speech bubble with the exact words: \"Payment is needed sooner.\" Convey: Management’s court declaration reports a chain: concern about survival led suppliers to require earlier payment, the same inventory then needed cash sooner, and less room remained to fund the transition.",
-  "alt": "Comic panel: A fictional vendor shortens the time between inventory delivery and payment.",
-  "caption": "Management’s court declaration reports a chain: concern about survival led suppliers to require earlier payment, the same inventory then needed cash sooner, and less room remained to fund the transition.",
+  "prompt": "Panel 4 of an explainer comic. A fictional supplier shortens the time between stock delivery and payment. Use one speech bubble with the exact words: \"Payment is needed sooner.\" Convey: Management’s court declaration reports a chain: concern about survival led suppliers to require earlier payment, the same stock for sale then needed cash sooner, and less room remained to fund the transition.",
+  "alt": "Comic panel: A fictional supplier shortens the time between stock delivery and payment.",
+  "caption": "Management’s court declaration reports a chain: concern about survival led suppliers to require earlier payment, the same stock for sale then needed cash sooner, and less room remained to fund the transition.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -95,9 +95,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: A fictional vendor shortens the time between inventory delivery and payment.](assets/images/28-toys-r-us/comic-04-scene.jpeg)
+![Comic panel: A fictional supplier shortens the time between stock delivery and payment.](assets/images/28-toys-r-us/comic-04-scene.jpeg)
 
-**Panel 4:** Management’s court declaration reports a chain: concern about survival led suppliers to require earlier payment, the same inventory then needed cash sooner, and less room remained to fund the transition.
+**Panel 4:** Management’s court declaration reports a chain: concern about survival led suppliers to require earlier payment, the same stock for sale then needed cash sooner, and less room remained to fund the transition.
 
 *Dialogue:* “Payment is needed sooner.”
 
@@ -130,9 +130,9 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "status": "generated",
   "asset": "assets/images/28-toys-r-us/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Priya and Sam place a separate Larkspur funding question beside the retailer’s historical records. Use one speech bubble with the exact words: \"Can our company fund the whole transition?\" Convey: The case raises a funding-dependency question, not a causal finding about every investor. Test your own operating cash flow, capital expenditure and payment terms before assuming a product improvement can sustain the transition.",
-  "alt": "Comic panel: Priya and Sam place a separate Larkspur funding question beside the retailer’s historical records.",
-  "caption": "The case raises a funding-dependency question, not a causal finding about every investor. Test your own operating cash flow, capital expenditure and payment terms before assuming a product improvement can sustain the transition.",
+  "prompt": "Panel 6 of an explainer comic. Priya and Sam place a separate Larkspur funding question beside the retailer’s historical records. Use one speech bubble with the exact words: \"Can our company fund the whole transition?\" Convey: The case raises a funding question for Larkspur, the fictional company, not a causal finding about every investor. Test your own operating cash flow, capital expenditure (spending on durable assets such as equipment and software) and payment terms before assuming a product improvement can sustain the transition.",
+  "alt": "Comic panel: Priya and Sam place a funding question for Larkspur, their fictional company, beside the retailer’s historical records.",
+  "caption": "The case raises a funding question for Larkspur, the fictional company, not a causal finding about every investor. Test your own operating cash flow, capital expenditure (spending on durable assets such as equipment and software) and payment terms before assuming a product improvement can sustain the transition.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -141,8 +141,8 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Priya and Sam place a separate Larkspur funding question beside the retailer’s historical records.](assets/images/28-toys-r-us/comic-06-scene.jpeg)
+![Comic panel: Priya and Sam place a funding question for Larkspur, their fictional company, beside the retailer’s historical records.](assets/images/28-toys-r-us/comic-06-scene.jpeg)
 
-**Panel 6:** The case raises a funding-dependency question, not a causal finding about every investor. Test your own operating cash flow, capital expenditure and payment terms before assuming a product improvement can sustain the transition.
+**Panel 6:** The case raises a funding question for Larkspur, the fictional company, not a causal finding about every investor. Test your own operating cash flow, capital expenditure (spending on durable assets such as equipment and software) and payment terms before assuming a product improvement can sustain the transition.
 
 *Dialogue:* “Can our company fund the whole transition?”

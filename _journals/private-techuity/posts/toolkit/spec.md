@@ -22,7 +22,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Open with minimum-use guidance and a navigation table grouped by decision stage (map → investigate → compare options → commit → obtain help → measure → revise or hand over) that keeps the existing tool numbers stable.
 - Include one completed end-to-end example using the shared Larkspur chain (finding D-3, option comparison, initiative ONB-1 shown pending and authorized, day-100 outcome ledger, revised decision, handover entry), labelled fictional, with every decision stating the chosen option, alternatives rejected, funding, capacity, authority and the evidence that would change it.
 - Explain which records can be combined on one evolving page and what new information each stage adds; make the support-engagement record usable for a continuing service without assuming full internal independence must result.
-- Add exactly one template beyond the twelve: Tool 13, a workforce-decision record (investor request and its kind, decision authority, target and reason, staffing baseline, alternatives, roles and capabilities affected, cash timing, work stopped and customer commitments revised, employee consequences for leavers and those remaining, communication, review date and reversing evidence), with a navigation-table row and links to [[anatomy-of-a-layoff]] and [[fix-decisions-before-hiring]]; add no other templates.
+- Retain Tool 13, the workforce-decision record, and its links to [[anatomy-of-a-layoff]] and [[fix-decisions-before-hiring]]. Add Tool 14, a short investor-network learning brief linked to [[learn-through-investors-network]]: questions and room for discovery, people, time and cost, information expectations, observations, interpretation and local context, follow-through and a review. Allow open questions and continuing relationships as legitimate results; require a separate company decision for funded implementation.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
 - Make the page usable by a beginner: explain how to start, define labels plainly, and link the relevant teaching chapters.
@@ -35,7 +35,7 @@ Exhaustive coverage, a universal role charter, or a claim of completed professio
 
 ## Modalities
 
-This reference page uses the Article modality. All 33 main chapters provide an Article, a 300–500-word TL;DR and an illustrated Comic with captions and dialogue transcripts. Comics use either individual panels or pages of stacked strips. Reference material is not padded with redundant adaptations.
+This reference page uses the Article modality. The main chapters provide an Article, a 300–500-word TL;DR and an illustrated Comic with captions and dialogue transcripts. Comics use either individual panels or pages of stacked strips. Reference material is not padded with redundant adaptations.
 
 ## Open questions
 
@@ -52,6 +52,7 @@ See the bibliography and the relevant chapters. The source registry records cons
 
 ## Changelog
 
+- 2026-09-22 (investor learning): Specify Tool 14 before adding the accepted chapter’s learning brief. Keep existing tool numbers and the shared Larkspur chain unchanged.
 - 2026-09-22: Reconcile reading-format coverage after adding TL;DR and illustrated Comic modalities to operating-model blueprints and technology operating partners. All 33 main chapters now provide all three formats.
 
 - 2026-09-21 (Part IV order): Reconcile the current chapter and reading-format description with the two articles’ move into Part IV. Stable chapter links and source identifiers remain unchanged.

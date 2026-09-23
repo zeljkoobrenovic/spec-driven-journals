@@ -1,6 +1,6 @@
 # Editorial review: Visma: Continuity of Manager Is Not Continuity of Money
 
-Reassessed 15 September 2026 from the complete current article, summary and comic text where present, the previous review where present, revision log and Git changes. See the [collection review](../REVIEW.md).
+Reassessed 15 September 2026 (dispositions for the 23 September in-depth review rounds appended below) from the complete current article, summary and comic text where present, the previous review where present, revision log and Git changes. See the [collection review](../REVIEW.md).
 
 ## Current assessment
 
@@ -26,6 +26,21 @@ Independent text extraction from cached primary PDFs verifies the bridge: [2024 
 
 
 Comic panel 6 has revised dialogue but an unchanged image and no regeneration flag. Its visible speech needs **verification** against the new text; the metadata alone cannot establish agreement.
+
+## In-depth review round 2 (23 September 2026): dispositions
+
+Implemented from the run `.in-depth-reviews/20260923-151518.4RqrNT` (round-01 review). Images were inspected and left unchanged: panel 4 carries only the REVENUE, CASH FLOW and DEFINITIONS headings and panel 5's ledger (892.6 + 11.7 = 904.3, € million, 2024) carries no payment wording, so both problems lived in the captions.
+
+| Finding | Disposition |
+| --- | --- |
+| VISMA-009 (medium) “was spent during 2024” | **Fixed.** Article and panel 5 caption now say the €11.665 million was recorded as an expense of 2024 and deducted; the 2025 report lists it under other operating expenses and gives no separate figure for when the cash was paid, so payment timing is not asserted. Summary add-back sentence aligned. |
+| VISMA-002 (medium) opening usable before definitions; M&A unexpanded | **Fixed.** Key point 2 explains two profit calculations and the excluded deal costs before naming EBITDA; “reconciliation” and “adds back” removed from the callouts. “M&A” expanded as mergers and acquisitions in the summary and in panel 5. |
+| VISMA-010 (medium) panel 4 definitions incomplete | **Fixed.** Caption and metadata quote organic growth (same businesses in both periods, constant exchange rates) and free cash flow (operating cash before tax, after investment in own software and other long-lived assets), with the Q4 report citation beside the caption. Matches the report's definitions page. |
+| VISMA-006 (medium) repeated promises; three dense paragraphs | **Fixed.** Callouts rewritten to do different jobs; the platform decision now precedes the definitions block; the definitions paragraph split into ownership (shares, funds, vehicles) and management (manager, Hg, private equity); the map paragraph split at “What the map cannot show”; the add-back paragraph split into calculation, boundaries and the remaining exclusions. Longest remaining paragraphs (2023 announcement, report definitions) were not flagged and each do one job. |
+| VISMA-011 (low) residual jargon | **Fixed.** Platform program described as rebuilding systems several products share; share-based compensation and initial public offering (IPO) explained; closing example now names a concrete ratio (engineers per million euros of revenue); summary gives equivalents for shared infrastructure and integration capacity, and explains buyout. Also added descriptors for NPS, NYC Retirement System, ICG/TPG and GIC from the terminology audit. |
+| VISMA-012 (medium) earnings-based pricing stated as a rule | **Fixed.** Investor callout is now conditional (“when investors use a company's earnings to judge what its shares are worth…”) and states that a measure informs a negotiated price without setting it. Spec criterion added. |
+
+Checks run: `python3 _wiring/build.py` (private-techuity built; docs change-set identical to the run baseline after restoring one unrelated teamsystem asset the build had copied); no unresolved `[[…]]` and every relative link in the built page resolves; summary prose 499 words by the exclusion rule used in round 1; panel JSON parses; 892.646 + 11.665 = 904.311 unchanged; Playwright screenshots at 1280 px and 390 px of the article, add-back section, TL;DR and comic panels 4–5 read correctly. Manuscript: exported to a scratch directory and only `visma.md` installed (heading kept as “# 31.”), with its two manifest entries updated; the validator still reports 11 pre-existing errors for other chapters whose sources are mid-edit (toolkit, glossary, bibliography, …), none for Visma. Still unverified: the three original Visma PDFs (local text extractions only).
 
 ## Changes since the previous review
 

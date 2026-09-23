@@ -7,7 +7,7 @@ revised: 2026-09-22
 
 ## Intent
 
-Introduce the company leader’s choices when accepting expertise, introductions or shared services from an investor. Make possible help dependent on the particular provider and arrangement.
+Introduce the company leader’s choices when learning through an investor’s network or accepting expertise, introductions or shared services. Make possible help dependent on the particular provider and arrangement.
 
 ## Audience
 
@@ -17,8 +17,8 @@ Product and engineering leaders inside companies working under investors, includ
 
 - Include exactly one chapter overview at the start of the learning path, in addition to the existing header logo. Give every configured chapter its own box, use short recognizable title labels without duplicating chapter numbers, and connect the chapters to the part's overall purpose.
 - Connect the working arrangement, choice of help and engagement terms to the adviser and technology operating partner roles; lead to useful support with explicit company accountability, cost and dependence.
-- Generate the overview through the Gemini API, matching the book's ivory, navy, teal and ochre illustration style. Publish one JPEG with descriptive alt text and a prose caption, and preserve it in the manuscript export. Keep the linked chapter walkthrough as the full-title reading guide.
-- Introduce all five chapters in the configured order, starting with the working arrangement and closing with the wider technology operating function.
+- Keep the overview in the book's ivory, navy, teal and ochre illustration style. For the six-chapter revision, publish a precise SVG diagram with descriptive alt text and a prose caption; retain the earlier five-chapter artwork as history. Preserve the new diagram in the manuscript export and keep the linked walkthrough as the full-title reading guide.
+- Introduce all six chapters in the configured order: working arrangement, learning through the investor’s network, sourcing help, engagement terms, adviser and technology operating function.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
@@ -52,6 +52,7 @@ The journal's current config.yaml and the configured chapter introductions. Thes
 
 ## Changelog
 
+- 2026-09-22 (investor learning): Specify the six-chapter path before adding the new learning chapter; include exploratory learning and continuing peer relationships, and replace the outdated overview with an editable six-chapter diagram.
 - 2026-09-22: Add one visual chapter framework at the author's request, showing the learning connections and the part's shared outcome. Generate an image through the Gemini API as explicitly requested, with alt text and a caption; retain the linked walkthrough and stable permalinks.
 - 2026-09-21 (Part IV order): Introduce the five-chapter sequence: operating-model blueprints, sourcing help, agreeing an engagement, the investor’s adviser and the technology operating partner. Keep the introduction under 400 words.
 - 2026-09-14: Shorten the investor-category recap, state the three distinct chapter jobs (adviser role; sourcing; charter and handover), keep the continuing-service allowance and use accountable-leader language. Permalink unchanged.

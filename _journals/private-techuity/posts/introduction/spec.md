@@ -15,8 +15,10 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
-- Keep the six part introductions unnumbered in the manuscript when their visible titles omit the Part I–VI prefix; use their stable matching `part-N` permalinks to retain the 33-chapter sequence.
-- Include operating-model blueprints first after the Part IV introduction and technology operating partners last in Part IV, with the adviser chapter immediately before it; show 33 main chapters and retain the route for agreeing the investor–company operating arrangement.
+- Add the investor-network learning chapter after operating-model blueprints, a direct reading route and 34 main chapters in the contents. Keep the six parts and existing public links.
+
+- Keep the six part introductions unnumbered in the manuscript when their visible titles omit the Part I–VI prefix; use their stable matching `part-N` permalinks to retain the 34-chapter sequence.
+- Include operating-model blueprints first after the Part IV introduction and technology operating partners last in Part IV, with the adviser chapter immediately before it; show 34 main chapters and retain the route for agreeing the investor–company operating arrangement.
 
 - Provide a route for readers encountering the technology operating partner function within Part IV.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
@@ -25,7 +27,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Keep historical findings within their source scope and label new comparative scenarios as fictional. Describe the one deliberate shared chain by the chapters that actually carry it (diligence, the funded early plan and its review, the handover, with the earlier pilot and support episodes and the toolkit record) and name the delayed-financing chapter as a separate illustration.
 - Describe the reading formats as companions that carry the same decision and its material conditions at different depth, not as interchangeable substitutes, and keep the comic-coverage disclosure accurate.
 - Make the page usable by a beginner: explain how to start, define labels plainly, and link the relevant teaching chapters.
-- Offer reading routes for “the investor wants a leadership change” and “we must reduce headcount”, and keep the contents list and chapter counts in step with the configured order (33 main chapters, including the two former appendix articles in Part IV).
+- Offer reading routes for “the investor wants a leadership change” and “we must reduce headcount”, and keep the contents list and chapter counts in step with the configured order (34 main chapters, including the two former appendix articles in Part IV).
 - State the primary reader and an accurate accessibility promise (no finance training assumed; technical questions are explained but not avoided); offer decision routes before the full tour; keep the contents list as a secondary lookup aid; keep the Part IV heading identical to the configured title.
 
 Readers can find, interpret, and use the material without confusing evidence with proposals or fictional examples. Navigation is stable; confidential provenance remains outside site content.
@@ -36,7 +38,7 @@ Exhaustive coverage, a universal role charter, or a claim of completed professio
 
 ## Modalities
 
-This reference page uses the Article modality. All 33 main chapters provide an Article, a 300–500-word TL;DR and an illustrated Comic with captions and dialogue transcripts. Comics use either individual panels or pages of stacked strips. Reference material is not padded with redundant adaptations.
+This reference page uses the Article modality. The main chapters provide an Article, a TL;DR and an illustrated Comic with captions and dialogue transcripts; individual specs record the summary length. Comics use either individual panels or pages of stacked strips. Reference material is not padded with redundant adaptations.
 
 ## Open questions
 
@@ -52,6 +54,9 @@ Research and editorial gaps remain in the separate notes; revise this reference 
 See the bibliography and the relevant chapters. The source registry records consultation scope and dates.
 
 ## Changelog
+
+- 2026-09-23 (portfolio appendix): Add the recreated Appendix section and its Grounded Architecture chapter to the reading routes, format note and contents; 47 configured pages, 35 main chapters unchanged.
+- 2026-09-22 (investor learning): Add the investor-network learning chapter after operating-model blueprints, a direct reading route and 34 main chapters in the contents. Keep the six parts and existing public links.
 
 - 2026-09-22: Reconcile reading-format coverage after adding TL;DR and illustrated Comic modalities to operating-model blueprints and technology operating partners. All 33 main chapters now provide all three formats.
 

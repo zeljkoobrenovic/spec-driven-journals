@@ -21,15 +21,15 @@ icon: "assets/icons/introduction.png"
 <br>
 Your company has new investors. The announcement promises growth and support. Within weeks, you are asked to hire faster, demonstrate a new product, reduce costs or connect to the owner’s systems. The requests may each sound reasonable. Together, they can exceed the company’s money, authority and ability to deliver.
 
-**OWNED: Product & Engineering Leadership Under Investors** is for product and engineering leaders inside a company whose investors affect its funding, authority and expectations, including leaders who have joined an arrangement they didn’t choose. It assumes no finance training and explains the financial terms needed to question a plan, budget or ownership claim. It does assume an interest in fairly detailed questions about software delivery, architecture, organization and evidence, because those are where the investor’s expectations land. Founders, finance partners and investor advisers may find it useful as a shared vocabulary; the decisions it works through are the company leader’s.
+**OWNED: Product & Engineering Leadership Under Investors** is for product and engineering leaders inside a company whose investors affect its funding, authority and expectations, including leaders who have joined an arrangement they didn’t choose. It assumes no finance training and explains the financial terms needed to question a plan, budget or ownership claim. It does assume an interest in fairly detailed questions about software delivery, architecture, organization and evidence, because those are where the investor’s expectations land. Founders, finance partners and investor advisers may find it useful as a shared vocabulary.
 
 The company’s ownership setting doesn’t remove your judgment or responsibility. Sometimes you can approve a change yourself. Sometimes you must negotiate funding, challenge a target or ask the board to choose between incompatible outcomes. The book helps you distinguish those situations and make the consequences clear.
 
 ## Why This Book Exists, and How It Is Written
 
-The financial, legal, and general business aspects of outside investment are well covered: there is no shortage of material on term sheets, valuations, fund structures, and deal mechanics. In the author’s experience as a technology leader and adviser, far less has been written about **what an external investment does to product and engineering**: which commitments it creates, which money and authority the team can actually count on, and how a roadmap, an architecture decision or a hiring plan should change once the ownership changes. That is an observation from practice, not a survey of the literature.
+The financial, legal, and general business aspects of outside investment are well covered: there is no shortage of material on term sheets, valuations, fund structures, and deal mechanics. In the author’s experience as a technology leader and adviser, far less has been written about **what an external investment does to product and engineering**: which commitments it creates, which money and authority the team can actually count on, and how a roadmap, an architecture decision or a hiring plan should change once the ownership changes.
 
-The same experience suggests what the gap costs. Inside companies it breeds **confusion**, and it **costs them opportunities**, because leaders who cannot read the arrangement cannot use it. It also **invites misuse**: a sentence that begins “investors want us to…” can carry an agenda nobody in the room has examined, sometimes without anyone knowing what the investors actually require or whether they were even asked. How often that happens is not measured here; that it happens at all is reason enough to be able to check.
+The same experience suggests what the gap costs. Inside companies it breeds **confusion**, and it **costs them opportunities**, because leaders who cannot read the arrangement cannot use it. It also **invites misuse**: a sentence that begins “investors want us to…” can carry an agenda nobody in the room has examined, sometimes without anyone knowing what the investors actually require or whether they were even asked.
 
 This book is the response, written from the company leader’s side: the vocabulary to read the arrangement, working methods to test such claims, and worked decisions that show what a commitment the team can keep looks like.
 
@@ -46,6 +46,9 @@ The six parts are ordered for learning, and the complete sequence is the default
 | The investor has a technology operating partner or AI specialist | [[tech-operating-partner]] → [[investors-adviser]] → [[useful-engagement]] |
 | Agree or reset how we work with the investor | [[operating-model-blueprints]] → [[decide-who-decides]] → [[useful-engagement]] |
 | Investor help is on offer | [[investors-adviser]] → [[help-that-changes-capability]] → [[useful-engagement]] |
+| Explore the investor’s network, learning events or peer communities | [[learn-through-investors-network]] → the [[toolkit]] learning brief → [[help-that-changes-capability]] when a specific need emerges |
+| The investor wants better reporting, or we keep arguing about what a number means | [[data-foundations-for-alignment]] → the [[toolkit]] measure record → [[roadmap-to-revenue]] for the benefit arithmetic |
+| The investor is building technology oversight across its whole portfolio | [[grounded-architecture-portfolio]] → [[operating-model-blueprints]] → [[data-foundations-for-alignment]] |
 | A transaction or ownership change is imminent | [[diligence-corrects-the-plan]] → [[first-hundred-days]] → [[handover-of-obligations]] |
 | Owners want more growth or earnings than the team can support | [[raise-what-you-need]] → [[cannot-fund-everything]] → [[fix-decisions-before-hiring]] |
 | Investor requests compete with customer needs | [[roadmap-to-revenue]] → [[decide-who-decides]] → [[investor-under-pressure]] → [[success-for-whom]] |
@@ -63,7 +66,7 @@ To understand the impact of any outside investment, keep **four questions** sepa
 
 The first question, who the owners are, is where most of the labels come from. A **venture investor** typically funds a young company that is still proving its product or business model, though venture funds also invest in successive rounds of companies already scaling an established product. A **growth investor** funds the expansion of a business with established demand; the venture and growth labels overlap at that later stage, and the round’s terms matter more than its name. A **buyout investor** purchases control. A **corporate investor** is another operating business investing for financial or commercial reasons; it may hold a minority stake or acquire the company outright.
 
-These labels tell you roughly what kind of investor you’re dealing with, but not the answers to the other three questions. Rights don’t automatically follow from stake size: a minority investment can carry important approval rights without conferring control. Funding doesn’t follow from deal type: borrowing is a way to raise money and isn’t confined to buyouts. And the nature of the change is separate again: a **carve-out** takes a business out of a larger company, a **turnaround** fixes serious business problems, and either can involve any of the owner types above.
+These labels tell you roughly what kind of investor you’re dealing with, but not the answers to the other three questions. **Rights** don’t automatically follow from **stake size**: a minority investment can carry important approval rights without conferring control. **Funding** doesn’t follow from deal type: borrowing is a way to raise money and isn’t confined to buyouts. And the nature of the **change** is separate again: a **carve-out** takes a business out of a larger company, a **turnaround** fixes serious business problems, and either can involve any of the owner types above.
 
 The practical impact of any investment therefore depends on its actual terms, **established case by case**: the investor’s rights, the financing, the support available and the time horizon. The events a leader faces, from a first round to a sale or continued ownership, arrive in any order; each sends you to a different part of the book, which is why the routes above exist.
 
@@ -74,9 +77,7 @@ The practical impact of any investment therefore depends on its actual terms, **
 
 Part I supplies the financial tools to understand your owners and your available cash. Part II establishes authority, incentives and working relationships. Part III turns expectations into choices about product, engineering and people; it is the center of the book. Part IV connects the investor–company working arrangement with useful help, engagement agreements and the people who provide that support. Part V follows one finding from diligence into a funded early plan, its review and a handover; its delayed-financing chapter, and the reduction chapter that continues it, are a separate illustration of how a dated cash forecast changes commitments and, when the money is late enough, the team. Part VI examines historical cases and closes with the book’s standard for success.
 
-Part IV opens with [[operating-model-blueprints]], a practical selection guide connecting investor involvement to the company’s organization, authority and resources. It closes with [[investors-adviser]] and [[tech-operating-partner]], moving from the individual adviser’s assignment to the wider function, its relationship with company leadership, portfolio hiring and AI.
-
-Each part introduction explains its chapters and the order. On a first pass, read in order, since each chapter builds on terms introduced earlier: the chapter [[valuation-is-an-estimate]] teaches financial valuation, and the chapter [[growth-into-design]] later applies those concepts to a design choice once the product and engineering foundations are in place.
+Each part introduction explains its chapters and the order. On a first pass, read in order, since each chapter builds on terms introduced earlier: for instance, the chapter [[valuation-is-an-estimate]] teaches financial valuation, and the chapter [[growth-into-design]] later applies those concepts to a design choice once the product and engineering foundations are in place.
 
 The six parts work together around one purpose: **commitments the company can keep**. Funding and obligations set the conditions; authority and incentives shape decisions; those decisions become feasible work. Useful support adds capability, funding and ownership events require renewed commitments, and evidence from other companies helps you question the assumptions throughout.
 
@@ -106,7 +107,7 @@ The delayed-financing chapter ([[the-financing-slipped]]) and the reduction chap
 
 ## Choose a Reading Format
 
-All thirty-three main chapters provide an **Article**, a 300–500-word **TL;DR** summary and an illustrated **Comic**, with captions and dialogue transcripts. TL;DR means “too long; didn’t read.” Comics use individual panels or pages of stacked strips; [[operating-model-blueprints]] and [[tech-operating-partner]] each offer five comic pages. The six part introductions and the reference pages use only the Article format.
+All thirty-three main chapters provide an **Article**, a 300–500-word **TL;DR** summary and an illustrated **Comic**, with captions and dialogue transcripts. TL;DR means “too long; didn’t read.” Comics use individual panels or pages of stacked strips; [[operating-model-blueprints]] and [[tech-operating-partner]] each offer five comic pages. The six part introductions, the appendix and the reference pages use only the Article format.
 
 For a shorter first pass, read the part introductions and chapter summaries. The formats are companions rather than substitutes. Each one is written to reach the same decision and to keep the conditions that decide whether that decision holds; what varies is depth: the article gives the fullest calculations, the discussion of sources and the alternative cases, while every format keeps the conditions that would change the decision. The summaries and comics of this September 2026 revision are still being reconciled chapter by chapter, so where a short format and the article disagree, the article is the one to trust.
 
@@ -138,46 +139,52 @@ The site navigation lists the same chapters; this list is here for lookup.
 - **7.** [[decide-who-decides]]
 - **8.** [[different-bets]]
 - **9.** [[investor-under-pressure]]
+- **10.** [[data-foundations-for-alignment]]
 
 ### Part III — COMMIT: Turn Expectations Into Work You Can Deliver
 
 - [[part-3]] — part introduction
-- **10.** [[cannot-fund-everything]]
-- **11.** [[roadmap-to-revenue]]
-- **12.** [[can-the-team-deliver]]
-- **13.** [[fix-decisions-before-hiring]]
-- **14.** [[growth-into-design]]
-- **15.** [[cheaper-cloud-bill]]
-- **16.** [[prove-you-can-restore]]
-- **17.** [[ai-strategy-three-questions]]
-- **18.** [[acquisition-adds-work-first]]
+- **11.** [[cannot-fund-everything]]
+- **12.** [[roadmap-to-revenue]]
+- **13.** [[can-the-team-deliver]]
+- **14.** [[fix-decisions-before-hiring]]
+- **15.** [[growth-into-design]]
+- **16.** [[cheaper-cloud-bill]]
+- **17.** [[prove-you-can-restore]]
+- **18.** [[ai-strategy-three-questions]]
+- **19.** [[acquisition-adds-work-first]]
 
 ### Part IV — COLLABORATE: Get Useful Help From Your Investors
 
 - [[part-4]] — part introduction
-- **19.** [[operating-model-blueprints]]
-- **20.** [[help-that-changes-capability]]
-- **21.** [[useful-engagement]]
-- **22.** [[investors-adviser]]
-- **23.** [[tech-operating-partner]]
+- **20.** [[operating-model-blueprints]]
+- **21.** [[learn-through-investors-network]]
+- **22.** [[help-that-changes-capability]]
+- **23.** [[useful-engagement]]
+- **24.** [[investors-adviser]]
+- **25.** [[tech-operating-partner]]
 
 ### Part V — LEAD: Manage Funding and Ownership Changes
 
 - [[part-5]] — part introduction
-- **24.** [[diligence-corrects-the-plan]]
-- **25.** [[first-hundred-days]]
-- **26.** [[the-financing-slipped]]
-- **27.** [[anatomy-of-a-layoff]]
-- **28.** [[handover-of-obligations]]
+- **26.** [[diligence-corrects-the-plan]]
+- **27.** [[first-hundred-days]]
+- **28.** [[the-financing-slipped]]
+- **29.** [[anatomy-of-a-layoff]]
+- **30.** [[handover-of-obligations]]
 
 ### Part VI — LEARN: Lessons From the Field
 
 - [[part-6]] — part introduction
-- **29.** [[hilton-and-skype]]
-- **30.** [[visma]]
-- **31.** [[toys-r-us]]
-- **32.** [[teamsystem]]
-- **33.** [[success-for-whom]]
+- **31.** [[hilton-and-skype]]
+- **32.** [[visma]]
+- **33.** [[toys-r-us]]
+- **34.** [[teamsystem]]
+- **35.** [[success-for-whom]]
+
+### Appendix
+
+- [[grounded-architecture-portfolio]] — the author’s Grounded Architecture framework applied across a portfolio: reuse the data and people foundations, adapt the operating model.
 
 ### Reference Material
 

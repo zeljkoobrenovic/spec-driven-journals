@@ -8,7 +8,7 @@ This is a living journal and a work in progress: a draft built by [Željko Obren
 
 Start with [the purpose and reading guide](posts/introduction/index.md). It explains the company leader’s responsibilities, the comparative ownership lens, the fictional company and routes for different funding and ownership situations.
 
-The book contains 33 main chapters across six parts. All 33 main chapters have an article, a 300–500-word summary and an illustrated comic with captions and dialogue transcripts. Comics use individual panels or pages of stacked strips; operating-model blueprints and technology operating partners each have five comic pages. The edition includes 44 header logos, 44 navigation icons and a dedicated Owned journal logo. Six part introductions and five guide/reference pages bring the configured total to **44 pages**, each with a companion specification. The technology operating partner chapter includes three explanatory figures covering portfolio support, hiring and AI decisions. The operating-model blueprints chapter includes seven explanatory figures: the connected models, a dedicated visual for each of the four blueprints, the support-choice overview and fictional pilot reviews.
+The book contains 35 main chapters across six parts. All 35 main chapters have an article and a summary; 34 also have an illustrated comic with captions and dialogue transcripts, and the data-foundations chapter’s comic is pending. Summaries normally target 300–500 words; individual specs record justified exceptions. Comics use individual panels or pages of stacked strips; operating-model blueprints and technology operating partners each have five comic pages. The edition includes 46 header logos, 47 navigation icons and a dedicated Owned journal logo; the data-foundations chapter’s header logo is pending. Six part introductions, one appendix chapter and five guide/reference pages bring the configured total to **47 pages**, each with a companion specification. The technology operating partner chapter includes three explanatory figures covering portfolio support, hiring and AI decisions. The Grounded Architecture appendix includes four explanatory figures: the two settings compared, reusing the method while keeping the data, connector rather than controller, and the governance mix per company. The operating-model blueprints chapter includes seven explanatory figures: the connected models, a dedicated visual for each of the four blueprints, the support-choice overview and fictional pilot reviews.
 
 ## Contents
 
@@ -32,54 +32,60 @@ Establish who decides, what each party wants and how to resolve competing demand
 - **7.** [[decide-who-decides]]
 - **8.** [[different-bets]]
 - **9.** [[investor-under-pressure]]
+- **10.** [[data-foundations-for-alignment]]
 
 ### Part III — COMMIT: Turn Investor Expectations Into Sustainable Work
 
 Turn investor expectations into feasible commitments to customers, systems and teams.
 
 - [[part-3]] — part introduction
-- **10.** [[cannot-fund-everything]]
-- **11.** [[roadmap-to-revenue]]
-- **12.** [[can-the-team-deliver]]
-- **13.** [[fix-decisions-before-hiring]]
-- **14.** [[growth-into-design]]
-- **15.** [[cheaper-cloud-bill]]
-- **16.** [[prove-you-can-restore]]
-- **17.** [[ai-strategy-three-questions]]
-- **18.** [[acquisition-adds-work-first]]
+- **11.** [[cannot-fund-everything]]
+- **12.** [[roadmap-to-revenue]]
+- **13.** [[can-the-team-deliver]]
+- **14.** [[fix-decisions-before-hiring]]
+- **15.** [[growth-into-design]]
+- **16.** [[cheaper-cloud-bill]]
+- **17.** [[prove-you-can-restore]]
+- **18.** [[ai-strategy-three-questions]]
+- **19.** [[acquisition-adds-work-first]]
 
 ### Part IV — COLLABORATE: Getting Useful Help From Your Investor
 
-Ask for help the company can use and agree the cost, authority and continuing dependence.
+Learn through the investor’s network, ask for useful help and agree the cost, authority and continuing dependence.
 
 - [[part-4]] — part introduction
-- **19.** [[operating-model-blueprints]]
-- **20.** [[help-that-changes-capability]]
-- **21.** [[useful-engagement]]
-- **22.** [[investors-adviser]]
-- **23.** [[tech-operating-partner]]
+- **20.** [[operating-model-blueprints]]
+- **21.** [[learn-through-investors-network]]
+- **22.** [[help-that-changes-capability]]
+- **23.** [[useful-engagement]]
+- **24.** [[investors-adviser]]
+- **25.** [[tech-operating-partner]]
 
 ### Part V — LEAD: Managing Funding and Ownership Changes
 
 Lead through diligence, the early funded plan, delayed financing, the plan that must shrink and the handover of continuing obligations.
 
 - [[part-5]] — part introduction
-- **24.** [[diligence-corrects-the-plan]]
-- **25.** [[first-hundred-days]]
-- **26.** [[the-financing-slipped]]
-- **27.** [[anatomy-of-a-layoff]]
-- **28.** [[handover-of-obligations]]
+- **26.** [[diligence-corrects-the-plan]]
+- **27.** [[first-hundred-days]]
+- **28.** [[the-financing-slipped]]
+- **29.** [[anatomy-of-a-layoff]]
+- **30.** [[handover-of-obligations]]
 
 ### Part VI — LEARN FROM OTHERS: Lessons from the Field
 
 Test leadership judgments against specific histories while keeping the evidence in scope.
 
 - [[part-6]] — part introduction
-- **29.** [[hilton-and-skype]]
-- **30.** [[visma]]
-- **31.** [[toys-r-us]]
-- **32.** [[teamsystem]]
-- **33.** [[success-for-whom]]
+- **31.** [[hilton-and-skype]]
+- **32.** [[visma]]
+- **33.** [[toys-r-us]]
+- **34.** [[teamsystem]]
+- **35.** [[success-for-whom]]
+
+### Appendix
+
+- [[grounded-architecture-portfolio]] — the author’s Grounded Architecture framework applied across a portfolio: reuse the data and people foundations, adapt the operating model.
 
 ### Reference Material
 
@@ -90,7 +96,9 @@ Test leadership judgments against specific histories while keeping the evidence 
 
 ## Editorial Status
 
-On 21 September 2026, both former appendix articles moved into Part IV: operating-model blueprints first after the introduction, technology operating partners last, and the adviser chapter immediately before it. Source folders and displayed chapter numbers now follow the 33-chapter reading sequence.
+On 23 September 2026, an Appendix section was recreated after Part VI for one optional chapter applying the author’s Grounded Architecture framework across an investment portfolio. Its scope, consulted pages and validation are in `_research/grounded-architecture-portfolio-20260923.md`.
+
+On 21 September 2026, both former appendix articles moved into Part IV: operating-model blueprints first after the introduction, technology operating partners last, and the adviser chapter immediately before it. On 22 September, the investor-network learning chapter was inserted after operating-model blueprints, and a data-foundations chapter was added at the end of Part II, bringing the book to 35 chapters. Existing source paths stay stable; `18a` and `08a` hold the new chapters, and the contents follow configuration order.
 
 The 21 September 2026 operating-model appendix is an illustrated draft based on the supplied working notes and checked public sources. Its scope, consultation record and validation are in `_research/operating-model-blueprints-20260921.md`.
 

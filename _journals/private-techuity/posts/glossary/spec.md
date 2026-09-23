@@ -33,7 +33,7 @@ Exhaustive coverage, a universal role charter, or a claim of completed professio
 
 ## Modalities
 
-This reference page uses the Article modality. All 33 main chapters provide an Article, a 300–500-word TL;DR and an illustrated Comic with captions and dialogue transcripts. Comics use either individual panels or pages of stacked strips. Reference material is not padded with redundant adaptations.
+This reference page uses the Article modality. The main chapters provide an Article, a TL;DR and an illustrated Comic with captions and dialogue transcripts; individual specs record the summary length. Comics use either individual panels or pages of stacked strips. Reference material is not padded with redundant adaptations.
 
 ## Open questions
 
@@ -51,6 +51,9 @@ Research and editorial gaps remain in the separate notes; revise this reference 
 See the bibliography and the relevant chapters. The source registry records consultation scope and dates.
 
 ## Changelog
+
+- 2026-09-23 (portfolio appendix): Add Grounded Architecture and Lightweight Architectural Analytics to the technology section and the alphabetical index.
+- 2026-09-22 (investor learning): Remove the duplicated main-chapter count from the format description after insertion of the new chapter; glossary content and public URL unchanged.
 
 - 2026-09-22: Reconcile reading-format coverage after adding TL;DR and illustrated Comic modalities to operating-model blueprints and technology operating partners. All 33 main chapters now provide all three formats.
 
