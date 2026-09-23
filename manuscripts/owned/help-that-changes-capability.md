@@ -1,5 +1,5 @@
 {id: help-that-changes-capability}
-# 21. Choose the Right Help: Compare Investor Support With Other Options
+# 22. Choose the Right Help: Compare Investor Support With Other Options
 
 ![Choose the Right Help: Compare Investor Support With Other Options — logo](private-techuity/posts/19-help-that-changes-capability/assets/images/19-help-that-changes-capability/logo.jpeg)
 
@@ -21,7 +21,7 @@ An investor may give Larkspur faster access to relevant people and experience. C
 
 Investors offer support for mixed reasons. A stronger company is worth more, which raises the value of the investor’s **holding** — the ownership stake it bought and will one day sell. But a firm that runs a shared team of advisers also wants that team busy enough to justify its cost, wants the goodwill of the other companies it has invested in, and wants a reputation that attracts the next founder. The offer is real and not free of interest; neither fact makes it the best route.
 
-The previous chapter connected the investor–company working arrangement with the company’s own organization, authority and resources. This chapter is about sourcing: the company’s need first, the four kinds of request, then a choice among credible sources for the same need, including sources outside the investor’s network. It ends with a written request, which the chapter [Set the Terms of Help: Agree the Work, Authority and Handover](#useful-engagement) turns into a **charter**: the short written agreement that fixes what the helper will do, for how long, at what cost and under whose direction.
+The earlier chapter [Plan Investor Support: Match the Help to Company Priorities](#operating-model-blueprints) connected the investor–company working arrangement with the company’s own organization, authority and resources. The previous chapter, [Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives](#learn-through-investors-network), explored learning that can reveal new possibilities and needs. This chapter is about sourcing: the company’s need first, the four kinds of request, then a choice among credible sources for the same need, including sources outside the investor’s network. It ends with a written request, which the chapter [Set the Terms of Help: Agree the Work, Authority and Handover](#useful-engagement) turns into a **charter**: the short written agreement that fixes what the helper will do, for how long, at what cost and under whose direction.
 
 {id: help-that-changes-capability--name-the-capability-you-need}
 ## Name the Capability You Need
@@ -65,6 +65,8 @@ The best route may be outside the investor’s network. Assess the support again
 
 {id: help-that-changes-capability--peer-communities-are-one-source}
 ## Peer Communities Are One Source
+
+[Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives](#learn-through-investors-network) develops the broader role of continuing peer relationships and exploratory learning. Here, the immediate question is how a peer can help with the capability gap already identified.
 
 A community of leaders across the investor’s portfolio can provide experience a company would struggle to assemble alone. It can also become an event series organized around the manager’s need to demonstrate activity. Judge a peer session by whether it starts from decisions the participants actually face: a conversation comparing how two companies made customer setup repeatable, what went wrong and what had to exist first is worth an hour; a session in which every **chief technology officer** — the senior leader responsible for technology, often written CTO — presents the same set of performance charts is not.
 

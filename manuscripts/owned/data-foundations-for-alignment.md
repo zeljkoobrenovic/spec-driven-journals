@@ -1,5 +1,5 @@
 {id: data-foundations-for-alignment}
-# 11. Build the Evidence Everyone Trusts: Data Foundations for Alignment
+# 10. Build the Evidence Everyone Trusts: Data Foundations for Alignment
 
 ![Build the Evidence Everyone Trusts: Data Foundations for Alignment — logo](private-techuity/posts/08a-data-foundations-for-alignment/assets/images/08a-data-foundations-for-alignment/logo.jpeg)
 

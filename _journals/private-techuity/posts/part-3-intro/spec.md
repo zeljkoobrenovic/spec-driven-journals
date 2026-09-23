@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-22
+revised: 2026-09-23
 ---
 
 # Spec: PART III — Turning Investor Expectations Into Commitments
@@ -15,14 +15,14 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
-- Include exactly one chapter overview at the start of the learning path, in addition to the existing header logo. Give every configured chapter its own box, use short recognizable title labels without duplicating chapter numbers, and connect the chapters to the part's overall purpose.
+- Include exactly one chapter overview at the start of the learning path, in addition to the existing header logo. Give every configured chapter its own box, use short recognizable title labels without duplicating chapter numbers, and connect the chapters to the part's overall purpose. Each box's second line, the band labels and the alt text use ordinary words a newcomer can follow without the later chapters (rented computing, restoring service after failure, artificial intelligence spelled out and its three questions named in verbs rather than counted, buying or splitting off a business). The diagram carries a short key stating what artificial intelligence does, so it reads standalone.
 - Keep the nine chapters in three moves: choose and justify work, assess and change the delivery system, then apply the reasoning to cloud, resilience, AI and acquisitions or separations. The four applications share a method; none is a prerequisite for the next.
 - Generate the overview through the Gemini API, matching the book's ivory, navy, teal and ochre illustration style. Publish one JPEG with descriptive alt text and a prose caption, and preserve it in the manuscript export. Keep the linked chapter walkthrough as the full-title reading guide.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
-- Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
+- Make the company leader’s decision, authority and funding assumptions explicit: recall that Part II established who decides and which approvals are needed, and say that this part works within those limits and returns for a decision when a limit or assumption must change. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
-- Orient a beginner using ordinary language, briefly recall what the previous part established, and explain the next learning step without assuming later vocabulary.
-- Say why the part exists and what its chapters do together, in under 400 words.
+- Orient a beginner using ordinary language, briefly recall what the previous part established, and explain the next learning step without assuming later vocabulary. Explain investor, thesis and the three planning questions (expected benefit, how long the available money covers the work, which other work must wait) in plain words at first use; give the planning example concrete actors (customer setup, a corporate owner's sister companies). The investor definition must not imply that the company necessarily receives the money: an investor may fund the company or buy shares from an existing owner, consistent with [[customers-lenders-investors]]; because a newcomer may not know the word, say in passing that shares are units of ownership. Describe each chapter through the question it answers, one line each. Where the build-expanded chapter title or the chapter line introduces a term a newcomer cannot follow (headcount versus capacity, backups, artificial intelligence), give a one-clause functional explanation in that line, written as a complete sentence or clause with clear boundaries rather than a comma splice or a chain of colons: headcount as the number of employees against the work the team can complete, backups as saved copies of data, artificial intelligence as software that predicts or generates content from data, with its three questions stated as what customers might pay for, which staff work might improve and whether a rival product could replace yours.
+- Say why the part exists and what its chapters do together, in under 400 authored words (each `[[…]]` chapter link counted as one word; title, byline and alt text excluded). The build expands the ten links to their full chapter titles, which adds roughly 75 rendered words; that rendered total is reported, not capped, because the chapter titles are owned by the chapters. The opening states the practical learning outcome rather than announcing an introduction, and does not repeat the previous part title.
 - Walk the chapters in order, one line each, showing why that order. Name each chapter by its linked title rather than a number, so the list survives renumbering.
 - State what the reader should be able to do by the end — and, where it matters, what the part will not give them.
 - Hand off to the next part in the closing line.
@@ -51,6 +51,9 @@ The journal's current config.yaml and the configured chapter introductions. Thes
 
 ## Changelog
 
+- 2026-09-23: In-depth review round 3 (P3-006 to P3-008). Shares are explained as units of ownership at the investor definition; the planning example opens directly with the customer-setup case; the headcount and artificial-intelligence guide lines are written with clear sentence boundaries. Word cap, permalink, chapter order, grouping and the overview diagram unchanged.
+- 2026-09-23: In-depth review round 2 (P3-005, P3-002). Investor definition must not imply the company receives the money (funding the company or buying an existing owner's shares). Chapter lines explain headcount versus capacity, backups and artificial intelligence functionally, with the three AI questions stated in verbs; the overview diagram names the AI questions and carries a one-line key on what AI does (regenerated). Word cap, permalink, chapter order and grouping unchanged.
+- 2026-09-23: In-depth review round 1 (P3-001 to P3-004). Plain-language criteria added: explain investor, thesis and the three planning questions at first use; make the planning example concrete (customer setup, sister companies of a corporate owner); recall Part II's decision authority as the bridge into commitments; describe each chapter through the question it answers; restate the 400-word cap as authored words with each chapter link counted once (the rendered titles add about 75 words); plain second-line labels, band labels and alt text on the overview diagram (regenerated). Permalink, chapter order and three-move grouping unchanged.
 - 2026-09-22: Add one visual chapter framework at the author's request, showing the learning connections and the part's shared outcome. Generate an image through the Gemini API as explicitly requested, with alt text and a caption; retain the linked walkthrough and stable permalinks.
 - 2026-09-16: The organization chapter’s line notes that it also tests an investor-proposed appointment.
 - 2026-09-15: Widen the closing handoff to Part IV to “help from the investor or another source”; the three-move grouping and the level of detail of the learning path are preserved. Permalink unchanged.

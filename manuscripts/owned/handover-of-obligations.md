@@ -1,5 +1,5 @@
 {id: handover-of-obligations}
-# 29. Manage the Handover: Carry Forward the Evidence and Obligations
+# 30. Manage the Handover: Carry Forward the Evidence and Obligations
 
 ![Manage the Handover: Carry Forward the Evidence and Obligations — logo](private-techuity/posts/27-handover-of-obligations/assets/images/25-handover-of-obligations/logo.jpeg)
 

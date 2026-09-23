@@ -217,7 +217,7 @@ The work being financed also changes the review. When a venture-funded team is s
 
 Review the operating model when the assignment changes: a new acquisition, an executive appointment, a change in how the company is financed — new investment, new borrowing or a **refinancing**, which replaces an existing borrowing arrangement with a new one — a serious delivery constraint, or a handover to another owner. Carry forward the obligations and company capability that remain. The model has served its purpose when people can make the required decisions and perform the funded work, with evidence that supports what should happen next.
 
-The blueprint establishes the working arrangement. The next chapter makes one choice within it: how to find useful help for a specific capability gap, including alternatives outside the investor’s network. Continue with [Choose the Right Help: Compare Investor Support With Other Options](#help-that-changes-capability).
+The blueprint establishes the working arrangement. The next chapter explores how the relationship can widen what company leaders know and whom they can ask, through shared knowledge, events, peer communities and visits: [Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives](#learn-through-investors-network). When the need for specific support is clear, [Choose the Right Help: Compare Investor Support With Other Options](#help-that-changes-capability) compares sources for that capability gap.
 
 {id: operating-model-blueprints--questions-to-consider}
 ## Questions to Consider

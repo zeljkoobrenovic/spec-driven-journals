@@ -20,7 +20,9 @@ estimate, which wraps differently, so the recorded SVGs come from python3.11.
 Run `python3 render-investor-learning-20260922.py comics` to regenerate only the
 five comic SVGs and comics.md without touching the replaced article figures,
 logo, icon or the Part IV overview. `... comics --check` prints the wrapped
-lines and their measured widths without writing anything.
+lines and their measured widths without writing anything. `... part-overview`
+regenerates only the Part IV six-chapter overview (stacked single column since
+23 September 2026, so it reads at phone width).
 """
 from pathlib import Path
 from html import escape
@@ -312,26 +314,54 @@ def comics(check=False):
 
 
 def part_overview():
-    b = text(55, 62, 'COLLABORATE', 22, TEAL, 700)
-    b += text(55, 111, 'Use the investor relationship well', 35, INK, 700)
-    boxes = [('Plan support', 'Agree the working arrangement'), ('Learn together', 'Explore knowledge and peers'), ('Choose help', 'Compare sources for a need'), ('Set the terms', 'Agree work, cost and handover'), ('Clarify the adviser', 'Understand the assignment'), ('Operating partners', 'Understand the wider function')]
+    """Part IV chapter overview: one stacked column so it stays readable inline on a phone.
+
+    Revised 23 September 2026 (Part IV in-depth review round 1, PART4-001/003): the
+    earlier three-column 1000-unit layout showed its 24-unit descriptions at about
+    8 pixels when the image was 342 pixels wide. The column is 600 units wide, so the
+    same description size shows at about 13.7 pixels and headings at about 16.
+    Box descriptions say what each chapter does in ordinary words; the last box no
+    longer describes operating partners as "the wider function".
+
+    Revised again on 23 September 2026 (round 2, PART4-001): the "Choose help" and
+    "Set the terms" boxes say what is missing (work your team cannot yet do) and
+    what changes hands (who takes the work over afterwards) instead of "one gap"
+    and "the handover", so the diagram reads on its own.
+    """
+    W, BOX_X, BOX_W, BOX_H, GAP = 600, 40, 520, 122, 40
+    HEAD, DESC = 28, 24
+    boxes = [('Plan support', 'Agree how the investor and company will work together'),
+             ('Learn together', 'Use the investor’s network and peers to learn'),
+             ('Choose help', 'Compare sources of help for work your team cannot yet do'),
+             ('Set the terms', 'Agree the work, its cost and who takes it over afterwards'),
+             ('Clarify the adviser', 'Know what the investor’s adviser is asked to do'),
+             ('Operating partners', 'Meet the investor’s specialists who help its companies')]
+    b = text(BOX_X, 52, 'COLLABORATE', 22, TEAL, 700)
+    b += lines_text(BOX_X, 96, ['Use the investor', 'relationship well'], 32, INK, 40, 700)  # balanced two-line title
+    y = 150
     for i, (title, desc) in enumerate(boxes):
-        col, row = i % 3, i // 3
-        x, y = 50 + col * 320, 165 + row * 210
-        b += rect(x, y, 280, 165, PALE if i == 1 else WHITE)
-        b += wrapped(x+20, y+47, title, 18, 28, INK, 34, 700)
-        b += wrapped(x+20, y+102, desc, 21, 24, MUTED, 30)
-        if col < 2: b += arrow(x+289, y+79, x+308, y+79)
-    b += '<path d="M955 280 L977 280 L977 351 L25 351 L25 455 L39 455" stroke="#337d79" stroke-width="3" fill="none" marker-end="url(#arrow)"/>'
-    b += text(500, 602, 'Learning and support, with company judgment and responsibility.', 25, INK, 400, 'middle')
-    out=JOURNAL/'posts/part-4-intro/assets/images/part-4-intro/chapter-overview-six.svg'
-    out.parent.mkdir(parents=True,exist_ok=True)
-    out.write_text(svg(1000,650,'Six choices for useful collaboration','Six chapters in reading order: plan support, learn together, choose help, set terms, clarify the adviser and understand operating partners.',b))
+        b += rect(BOX_X, y, BOX_W, BOX_H, PALE if i == 1 else WHITE)
+        b += lines_text(BOX_X + 20, y + 42, fit_lines(title, HEAD, BOX_W - 40, 700), HEAD, INK, 34, 700)
+        b += lines_text(BOX_X + 20, y + 80, fit_lines(desc, DESC, BOX_W - 40), DESC, MUTED, 30)
+        if i < len(boxes) - 1:
+            b += arrow(W // 2, y + BOX_H + 6, W // 2, y + BOX_H + GAP - 8)
+        y += BOX_H + GAP
+    footer = fit_lines('Learning and support, with company judgment and responsibility.', 24, BOX_W)
+    b += lines_text(W // 2, y + 14, footer, 24, INK, 32, 400, 'middle')
+    height = y + 14 + 32 * len(footer) + 10
+    out = JOURNAL / 'posts/part-4-intro/assets/images/part-4-intro/chapter-overview-six.svg'
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(svg(W, height, 'Six choices for useful collaboration',
+                       'Six chapters stacked in reading order: plan support, learn together, choose help for work your team cannot yet do, set the terms including who takes the work over afterwards, clarify the adviser and meet the operating partners; learning and support come with company judgment and responsibility.', b))
+    return out, height
 
 
 if __name__ == '__main__':
     import sys
-    if 'comics' in sys.argv[1:]:
+    if 'part-overview' in sys.argv[1:]:
+        out, height = part_overview()
+        print(f'Wrote Part IV overview (600 x {height}): {out}')
+    elif 'comics' in sys.argv[1:]:
         comics(check='--check' in sys.argv[1:])
         if '--check' not in sys.argv[1:]:
             print(f'Wrote five comic pages and comics.md: {POST}')

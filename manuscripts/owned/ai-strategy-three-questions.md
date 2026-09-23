@@ -192,6 +192,8 @@ Chosen: pause the smart-suggestions feature pending the test, and run the test. 
 {id: ai-strategy-three-questions--three-funded-decisions-and-their-review-triggers}
 ## Three Funded Decisions and Their Review Triggers
 
+Investor-organized seminars, peer conversations and ecosystem visits can help reveal which AI questions deserve attention. [Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives](#learn-through-investors-network) explains how to examine those encounters with their context intact. An unfamiliar demonstration can begin an enquiry; the company still needs to decide which of the three investment questions it raises and what evidence to seek.
+
 | Question | Decision taken | Funding and capacity | Accountable | Gate and date |
 | --- | --- | --- | --- | --- |
 | Product opportunity | Paid three-customer sorting trial | €45,000 cash, one-time; 6 engineer-weeks of existing staff time; about €60 a month per customer recurring against a €300 price | Priya | Stop rule 6 November 2026; release gate 11 December 2026: 95% accuracy on the representative sample, no missed document in the separate safety set, review below 1.5 hours a week, two of three customers confirming they will keep paying. Passing authorizes a January funding request, not a launch date |

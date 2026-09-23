@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-22
+revised: 2026-09-23
 ---
 
 # Spec: PART IV — COLLABORATE: Getting Useful Help From Your Investor
@@ -17,14 +17,15 @@ Product and engineering leaders inside companies working under investors, includ
 
 - Include exactly one chapter overview at the start of the learning path, in addition to the existing header logo. Give every configured chapter its own box, use short recognizable title labels without duplicating chapter numbers, and connect the chapters to the part's overall purpose.
 - Connect the working arrangement, choice of help and engagement terms to the adviser and technology operating partner roles; lead to useful support with explicit company accountability, cost and dependence.
-- Keep the overview in the book's ivory, navy, teal and ochre illustration style. For the six-chapter revision, publish a precise SVG diagram with descriptive alt text and a prose caption; retain the earlier five-chapter artwork as history. Preserve the new diagram in the manuscript export and keep the linked walkthrough as the full-title reading guide.
+- Keep the overview in the book's ivory, navy, teal and ochre illustration style. For the six-chapter revision, publish a precise SVG diagram with descriptive alt text and a prose caption; retain the earlier five-chapter artwork as history. Lay the diagram out as a single stacked column so that every label and description stays readable inline at phone width (about 342 pixels) without zooming, and describe each chapter’s job concretely rather than by its own name; the boxes, the alt text, the excerpt and the Part IV section description in `config.yaml` must stand on their own, saying in ordinary words what is missing, who decides and what support the company will keep needing, without relying on a chapter link or glossary. Preserve the new diagram in the manuscript export and keep the linked walkthrough as the full-title reading guide.
 - Introduce all six chapters in the configured order: working arrangement, learning through the investor’s network, sourcing help, engagement terms, adviser and technology operating function.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
-- Orient a beginner using ordinary language, briefly recall what the previous part established, and explain the next learning step without assuming later vocabulary.
-- Say why the part exists and what its chapters do together, in under 400 words.
-- Walk the chapters in order, one line each, showing why that order. Name each chapter by its linked title rather than a number, so the list survives renumbering.
+- Orient a beginner using ordinary language, briefly recall what the previous part established, and explain the next learning step without assuming later vocabulary. Gloss the chapters’ own terms at first use in the reading guide (capability gap, the terms of help, engagement charter, scope change, adviser, technology operating partner, artificial intelligence) in a few words each, so a newcomer can say what help is being agreed, what the written agreement records and whom the operating partners work with before following a link. Keep each gloss in its own short sentence or clause so that every sentence of the reading guide does one job; a chapter line may run to two or three sentences rather than one long sentence carrying nested definitions. In particular, keep a definition (such as scope change) and a test with two possible outcomes (such as the handover) in separate sentences, and split a role description from the changes that role can undergo.
+- Present a stronger company as the single aim, reached either by the company learning to do the work itself or by a continuing outside service whose cost and availability it can plan for; say plainly what continued reliance means.
+- Say why the part exists and what its chapters do together, in about 400 words; the brief glosses above may take the body somewhat over that figure, but nothing else should.
+- Walk the chapters in order, one bullet each, showing why that order. Name each chapter by its linked title rather than a number, so the list survives renumbering.
 - State what the reader should be able to do by the end — and, where it matters, what the part will not give them.
 - Hand off to the next part in the closing line.
 
@@ -52,6 +53,9 @@ The journal's current config.yaml and the configured chapter introductions. Thes
 
 ## Changelog
 
+- 2026-09-23 (in-depth review round 3, PART4-001/004): The Part IV section description in `config.yaml` must meet the same plain-language standard as the excerpt; the reading guide keeps a definition, a two-outcome test and a role’s changes in separate sentences.
+- 2026-09-23 (in-depth review round 2, PART4-001/004): Standalone material (excerpt, diagram boxes, alt text) must explain the missing capability, decision authority and handover in plain words; reading-guide glosses sit in their own short sentences so no chapter line carries nested definitions.
+- 2026-09-23 (in-depth review round 1, PART4-001/002/003): Gloss the chapters’ vocabulary at first use, make the stronger company the single aim with continuing support as one route to it, and re-lay the six-chapter overview as a stacked single column readable at phone width with concrete box descriptions. Word cap relaxed to “about 400” to allow the glosses.
 - 2026-09-22 (investor learning): Specify the six-chapter path before adding the new learning chapter; include exploratory learning and continuing peer relationships, and replace the outdated overview with an editable six-chapter diagram.
 - 2026-09-22: Add one visual chapter framework at the author's request, showing the learning connections and the part's shared outcome. Generate an image through the Gemini API as explicitly requested, with alt text and a caption; retain the linked walkthrough and stable permalinks.
 - 2026-09-21 (Part IV order): Introduce the five-chapter sequence: operating-model blueprints, sourcing help, agreeing an engagement, the investor’s adviser and the technology operating partner. Keep the introduction under 400 words.

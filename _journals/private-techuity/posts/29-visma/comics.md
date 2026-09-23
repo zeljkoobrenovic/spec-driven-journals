@@ -5,7 +5,9 @@
 }
 -->
 
-**Comic.** A change of fund, even under the same manager, can change the money and timeline behind long-running product and platform work. A **fund** is money pooled from investors and used to buy **shares**, the units of ownership in a company; the **investment manager** is the firm that runs the fund, and one firm can run several funds over the years, each with its own investors and its own expected holding period. The fund, or a holding company it sets up, owns the shares; the manager’s name on the door tells you little about whose money is behind it. The panels follow that pattern through Visma’s documents: the funds and the shareholders entering and leaving named in its transactions, the pace of acquisitions, and the two earnings definitions under which the same year is reported. **EBITDA** is profit before interest (borrowing costs), taxes, and depreciation and amortization (accounting charges that spread the cost of assets over the years they are used); an **adjusted** version leaves out further items the company specifies. The panels end on the specific budget and authority the fictional team would recheck.
+**Comic.** A change of fund, even under the same manager, can change the money and timeline behind long-running work on the systems several products share, such as sign-in, billing and hosting. A **fund** is money pooled from investors and used to buy **shares**, the units of ownership in a company. The **investment manager** is the firm that runs the fund, and one firm can run several funds over the years, each with its own investors and its own holding period, the time those investors expect to keep the investment before it is sold. The fund, or a holding company it sets up, owns the shares; the manager’s name on the door tells you little about whose money is behind it.
+
+The panels follow that pattern through Visma’s documents: the funds and the shareholders entering and leaving named in its transactions, the pace of acquisitions, and the two earnings definitions under which the same year is reported. They end on the specific budget and authority the fictional team would recheck.
 
 Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, Priya leads product, and Sam leads finance. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
@@ -40,7 +42,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "aspect_ratio": "16:9",
   "prompt": "Panel 2 of an explainer comic. Morgan stands behind a table. On the table lie three closed folders side by side, whose front labels read, exactly and only, FUND A, FUND B and FUND C, and behind them one long folder whose label reads MANAGER. The table top is otherwise bare: no timeline, no diagram, no papers, no other lettering. Two unnamed supporting people in grey clothing stand to one side holding blank sheets. Use one speech bubble with the exact words: \"A manager is not one fund.\" Convey: An investment manager can remain involved while the funds and investors behind it change. Hg’s own announcements name two different funds, one investor’s announced complete exit and another’s partial sale; a long relationship is not one unchanged investment.",
   "alt": "Comic panel: Morgan stands behind a table with three folders labelled FUND A, FUND B and FUND C in front of one long folder labelled MANAGER.",
-  "caption": "One investment manager, several funds. A fund is money pooled from investors and used to buy shares; the manager runs it, and the same manager can run fund after fund, each with different investors and a different holding period. Hg’s own announcements name two different Hg funds behind its Visma investments, one investor’s announced complete exit and another’s partial sale. A long relationship is not one unchanged investment.",
+  "caption": "One investment manager, several funds. A fund is money pooled from investors and used to buy shares; the manager runs it, and the same manager can run fund after fund, each with different investors and a different holding period, the time before its investors expect it to sell. Hg’s own announcements name two different Hg funds behind its Visma investments, one investor’s announced complete exit and another’s partial sale. A long relationship is not one unchanged investment.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -52,7 +54,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Morgan stands behind a table with three folders labelled FUND A, FUND B and FUND C in front of one long folder labelled MANAGER.](assets/images/27-visma/comic-02-scene.jpeg)
 
-**Panel 2:** One investment manager, several funds. A fund is money pooled from investors and used to buy shares; the manager runs it, and the same manager can run fund after fund, each with different investors and a different holding period. Hg’s own announcements name two different Hg funds behind its Visma investments, one investor’s announced complete exit and another’s partial sale. A long relationship is not one unchanged investment.
+**Panel 2:** One investment manager, several funds. A fund is money pooled from investors and used to buy shares; the manager runs it, and the same manager can run fund after fund, each with different investors and a different holding period, the time before its investors expect it to sell. Hg’s own announcements name two different Hg funds behind its Visma investments, one investor’s announced complete exit and another’s partial sale. A long relationship is not one unchanged investment.
 
 *Dialogue:* “A manager is not one fund.”
 
@@ -104,6 +106,8 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 *Dialogue:* “Definitions change the comparison.”
 
+Panel 5 turns to one number reported two ways. **EBITDA** is profit before interest (borrowing costs), taxes, and depreciation and amortization (accounting charges that spread the cost of assets over the years they are used). An **adjusted** version leaves out further items the company specifies, so the same year can appear under two figures.
+
 <!-- comic-panel
 {
   "id": "05-scene",
@@ -137,7 +141,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
   "aspect_ratio": "16:9",
   "prompt": "Panel 6 of an explainer comic. Alex sits at a desk with a folder labeled MANAGER, unchanged, and a notebook lying flat and facing the viewer, with exactly three tabs along its right edge whose labels are upright and read, verbatim and printed normally left to right (never mirrored, reversed or upside down), VEHICLES, BUDGET and DEFINITION; the folder label MANAGER is also printed normally. No other tabs, cards or labels. Use one speech bubble with the exact words: \"Which vehicles, which budget, which definition?\" Convey: After the transaction, the fictional team rechecks three specific things: the vehicles now holding the interests, their rights and horizons, without assuming one fund holds the majority; the funding and accountable leader for shared services and integration work; and the earnings definition the board, the lenders and the plan each use.",
   "alt": "Comic panel: Alex compares a manager folder with notebook tabs for the holding vehicles, the shared-service and integration budget, and the earnings definition in use.",
-  "caption": "After the transaction, the fictional team rechecks three specific things. Vehicles: which funds or holding companies now own the shares, what rights they have and how long their investors expect to stay, without assuming one fund holds the majority. Budget: whether shared services and integration work are still funded, and which leader is accountable. Definition: which earnings measure the board, the lenders and the plan each use for the same year.",
+  "caption": "After the transaction, the fictional team rechecks three specific things. Vehicles: which funds or holding companies now own the shares, what rights they have and how long their investors expect to stay, without assuming one fund holds more than half the shares. Budget: whether shared services and integration work (connecting the acquired companies’ systems and moving their customers) are still funded, and which leader is accountable. Definition: which earnings measure the board, the lenders and the plan each use for the same year.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -148,6 +152,6 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 
 ![Comic panel: Alex compares a manager folder with notebook tabs for the holding vehicles, the shared-service and integration budget, and the earnings definition in use.](assets/images/27-visma/comic-06-scene.jpeg)
 
-**Panel 6:** After the transaction, the fictional team rechecks three specific things. Vehicles: which funds or holding companies now own the shares, what rights they have and how long their investors expect to stay, without assuming one fund holds the majority. Budget: whether shared services and integration work are still funded, and which leader is accountable. Definition: which earnings measure the board, the lenders and the plan each use for the same year.
+**Panel 6:** After the transaction, the fictional team rechecks three specific things. Vehicles: which funds or holding companies now own the shares, what rights they have and how long their investors expect to stay, without assuming one fund holds more than half the shares. Budget: whether shared services and integration work (connecting the acquired companies’ systems and moving their customers) are still funded, and which leader is accountable. Definition: which earnings measure the board, the lenders and the plan each use for the same year.
 
 *Dialogue:* “Which vehicles, which budget, which definition?”

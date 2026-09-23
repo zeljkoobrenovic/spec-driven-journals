@@ -1,5 +1,5 @@
 {id: tech-operating-partner}
-# 24. Understand Technology Operating Partners: How They Work With Your Team
+# 25. Understand Technology Operating Partners: How They Work With Your Team
 
 ![Understand Technology Operating Partners: How They Work With Your Team — logo](private-techuity/posts/22-tech-operating-partner/assets/images/tech-operating-partner/logo.png)
 
@@ -61,7 +61,7 @@ The operating partner’s recurring task is to **connect an investment assumptio
 | Product and engineering improvement | Help remove constraints on delivery, customer adoption, reliability or operating cost. | A specific change to the work and a measure tied to its intended customer or business result. |
 | Leadership, hiring and organization | Help define roles, assess candidates, support appointments and help new employees settle in; support their development and plan for successors. | A funded need, clear selection criteria and appointment authority; an explicit distinction between advising, assessing and managing a leader. |
 | Acquisitions and separations | Examine systems, data, contracts and service dependencies when a business is bought, or split off to run on its own. | A transition plan with its costs, continuing service obligations and an accountable company executive. |
-| Learning across companies | Organize peer learning, reusable methods and access to specialists or suppliers; Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives develops the learning formats and follow-through. | Relevant access, company time and scope to explore, with assumptions and later outcomes kept distinct. |
+| Learning across companies | Organize peer learning, reusable methods and access to specialists or suppliers; [Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives](#learn-through-investors-network) develops the learning formats and follow-through. | Relevant access, company time and scope to explore, with assumptions and later outcomes kept distinct. |
 | Preparation for a sale | Help assemble a defensible account of the technology and remaining work. | Current evidence, known limitations and obligations the next owner must understand. |
 
 The output should survive a change of adviser. A diligence concern that disappears into a presentation, or a recommendation with no person funded to act on it, leaves the central problem unresolved. The continuity matters more than having the same individual attend every meeting.

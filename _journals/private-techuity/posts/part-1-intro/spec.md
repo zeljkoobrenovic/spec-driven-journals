@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-22
+revised: 2026-09-23
 ---
 
 # Spec: PART I — Understanding Financing and Ownership
@@ -17,12 +17,13 @@ Product and engineering leaders inside companies working under investors, includ
 
 - Include exactly one chapter overview at the start of the learning path, in addition to the existing header logo. Give every configured chapter its own box, use short recognizable title labels without duplicating chapter numbers, and connect the chapters to the part's overall purpose.
 - Group the six chapters into tracing money and control, interpreting value and returns, and confirming funding and cash; lead to the money a commitment can rely on.
-- Generate the overview through the Gemini API, matching the book's ivory, navy, teal and ochre illustration style. Publish one JPEG with descriptive alt text and a prose caption, and preserve it in the manuscript export. Keep the linked chapter walkthrough as the full-title reading guide.
+- Generate the overview through the Gemini API, matching the book's ivory, navy, teal and ochre illustration style. Lay the six chapters out as a single stacked column, tall rather than wide, with explanatory lettering that renders at roughly 14 to 16 CSS pixels at a 375-pixel phone width (about 327 pixels of content width) so every label and the closing banner read without zooming; wrap explanations onto several short lines rather than shrinking them. Label each chapter in plain language a beginner can understand without opening it, and let the first card say what customers, lenders and investors each expect rather than only naming them. Publish one JPEG with descriptive alt text and a prose caption, and preserve it in the manuscript export. Keep the linked chapter walkthrough as the full-title reading guide.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
-- Orient a beginner using ordinary language, briefly recall what the previous part established, and explain the next learning step without assuming later vocabulary.
-- Say why the part exists and what its chapters do together, in under 400 words.
+- Keep the money's direction and conditions clear: describe the cash-flow chapter so that outgoing payments (taxes, loan payments) are distinguished from money customers still owe; describe the funding-choices chapter so that loans and the company's own cash fit without implying every funding source changes ownership; and say that spendable cash depends on actual cash, agreement terms and spending approvals together, never on an agreement or an investor label alone.
+- Orient a beginner using ordinary language: explain lenders, investors, shares, shareholders, profit, funds, promised-but-unpaid money, valuation and payouts (distributions) in short sentences at first use, and describe each chapter's subject without finance jargon. Where the book's emphasis is fund-backed buyouts, say so without implying that every buyout involves a fund. Describe each chapter's subject accurately; the returns chapter follows one fictional fund through alternative sale prices, not three separate investors. Briefly recall what the previous part established, and explain the next learning step without assuming later vocabulary.
+- Say why the part exists and what its chapters do together, in under 400 reader-visible words counted after the chapter links expand to their published titles (image alt text and markup excluded). Do not repeat in a chapter's description what its expanded title already says.
 - Walk the chapters in order, one line each, showing why that order. Name each chapter by its linked title rather than a number, so the list survives renumbering.
 - State what the reader should be able to do by the end — and, where it matters, what the part will not give them.
 - Hand off to the next part in the closing line.
@@ -51,6 +52,9 @@ The journal's current config.yaml and the configured chapter introductions. Thes
 
 ## Changelog
 
+- 2026-09-23: In-depth review round 3 (P1-006 to P1-008). Separate money customers still owe from outgoing payments in the cash-flow description; broaden the funding-choices description to costs, obligations and ownership effects; replace the agreements-only claim with actual cash, agreement terms and spending approvals. Wording only; artwork, permalink and chapter sequence unchanged.
+- 2026-09-23: In-depth review round 2 (P1-002 to P1-005). Explain lenders, investors, profit and distributions at first use; scope the buyout sentence to fund-backed buyouts; describe the returns chapter as alternative outcomes for one fund; regenerate the overview taller with larger, wrapped lettering and a first card that explains the parties; cut duplicated chapter-description wording so the expanded body falls under 400 words. Permalink and chapter sequence unchanged.
+- 2026-09-23: In-depth review round 1 (P1-001 to P1-004). Explain the opening's finance vocabulary in short plain sentences, replace specialist chapter descriptions with plain-language glosses, regenerate the chapter overview as a stacked single-column image with plain labels that stay readable on a phone, and cut the introduction to under 400 expanded words. Permalink and chapter sequence unchanged.
 - 2026-09-22: Add one visual chapter framework at the author's request, showing the learning connections and the part's shared outcome. Generate an image through the Gemini API as explicitly requested, with alt text and a caption; retain the linked walkthrough and stable permalinks.
 - 2026-09-15: Name the parties in the fund-commitment example (a fund’s investors commit capital; the manager calls it; neither step puts cash in the company’s budget). Conditional actual-agreement framing kept unchanged. Permalink unchanged.
 - 2026-09-14: Reframe the opening as a contractual condition on funding (source and terms affect usable money, approvals and payment dates), remove the repeated funding claim, point experienced readers to the part as a refresher and link the optional fund-economics reference. Permalink unchanged.
