@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate or re-letter legacy comic panels of 29-visma (asset slug 27-visma).
+"""Regenerate or re-letter legacy comic panels of 34-visma (asset slug 27-visma).
 
 In-depth review 23 September 2026: VISMA-008 (panel 2 carried malformed and
 duplicated timeline labels such as repeated "Change"; panel 4 carried garbled
@@ -33,7 +33,7 @@ spec.loader.exec_module(helper)
 
 MODEL = 'gemini-3-pro-image-preview'
 CAST = J / '_research/comic-cast-20260913.jpeg'
-POST = J / 'posts/29-visma'
+POST = J / 'posts/34-visma'
 COMICS = POST / 'comics.md'
 LEGACY = '27-visma'
 PANEL_RE = re.compile(r'<!-- comic-panel\s+(\{.*?\})\s*-->', re.S)
@@ -97,7 +97,7 @@ def archive(asset: Path, panel_id: str) -> None:
     previous = asset.read_bytes()
     backups = J / '_research/discarded-comic-variants'
     backups.mkdir(exist_ok=True)
-    (backups / f'29-visma-comic-{panel_id}-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
+    (backups / f'34-visma-comic-{panel_id}-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
 
 
 def retext(panel_id: str, old: str, new: str, key: str) -> None:

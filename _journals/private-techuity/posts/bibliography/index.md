@@ -1026,7 +1026,7 @@ Both pages read. One role brief, not an industry-wide mandate. Heading/body titl
 
 Both domain overviews, technology-capability input and audit, structured record inventories, and selected substantive tutorials/models read. Not every repeated generated HTML/JSON prose field was read line by line. Proposals, example values, and null baselines are not verified operating results.
 
-**Used in:** No chapter cites P02 directly. It is recorded as an intellectual input to the drafting of the support and role chapters (Part IV); the book states its own reasoning in ordinary terms, and readers do not need to learn the Productscapes model.
+**Used in:** No chapter cites P02 directly. It is recorded as an intellectual input to the drafting of the support and role chapters (Part III); the book states its own reasoning in ordinary terms, and readers do not need to learn the Productscapes model.
 
 ## Remaining Research Limits
 

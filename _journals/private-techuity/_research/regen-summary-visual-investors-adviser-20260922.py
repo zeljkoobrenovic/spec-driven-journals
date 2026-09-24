@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate the TL;DR overview figure of 21-investors-adviser (legacy keys).
+"""Regenerate the TL;DR overview figure of 13-investors-adviser (legacy keys).
 
 The prompt archive keys this post as `15-technology-principal` and its assets live
 under `18-investors-adviser/`, so `generate_summary_visuals.py --post <slug>` cannot
@@ -26,7 +26,7 @@ spec.loader.exec_module(helper)
 MODEL = 'gemini-3-pro-image-preview'
 ARCHIVE = J / '_research/summary-visual-prompts-20260913.json'
 LEGACY_KEY = '15-technology-principal'
-ASSET = J / 'posts/21-investors-adviser/assets/images/18-investors-adviser/summary-at-a-glance.jpeg'
+ASSET = J / 'posts/13-investors-adviser/assets/images/18-investors-adviser/summary-at-a-glance.jpeg'
 
 BASE = ('Create one finished summary illustration explaining the whole post in Owned, a book for product and '
         'engineering leaders working with investors. Landscape 16:9. Calm editorial concept map with concrete '
@@ -77,7 +77,7 @@ def main() -> int:
     previous = ASSET.read_bytes()
     backups = J / '_research/discarded-summary-variants'
     backups.mkdir(exist_ok=True)
-    (backups / f'21-investors-adviser-summary-at-a-glance-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
+    (backups / f'13-investors-adviser-summary-at-a-glance-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
     ASSET.write_bytes(data)
     digest = hashlib.sha256(data).hexdigest()
     print('written', ASSET, digest[:16])

@@ -1,7 +1,7 @@
 {id: cheaper-cloud-bill}
-# 16. Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better
+# 28. Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better
 
-![Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better — logo](private-techuity/posts/14-cheaper-cloud-bill/assets/images/14-cheaper-cloud-bill/logo.jpeg)
+![Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better — logo](private-techuity/posts/27-cheaper-cloud-bill/assets/images/27-cheaper-cloud-bill/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to put cloud bills on one comparable basis, separate why they changed, and decide how much to commit before calling a lower bill an improvement.
 
@@ -25,7 +25,7 @@ The question is legitimate. It is also incomplete: a bill can rise while each co
 
 Two separate questions sit inside Morgan’s one: did the cost of a unit of useful work improve, and was the plan the board approved met? This chapter keeps them apart, because the answers can differ.
 
-The previous chapter compared three views of one proposal: its effect on **profit** — what is left after the costs being counted are taken off the money earned — its effect on cash, and its effect on the software design. Here we apply that approach to cloud spending: first choose a meaningful unit of service and a comparable way of counting cost, then separate the reasons costs change, then decide how much to commit, and finally check the saving alongside service quality.
+The chapter [Plan for Growth: Decide What (Not) to Change in Your Systems](#growth-into-design) compares three views of one proposal: its effect on **profit** — what is left after the costs being counted are taken off the money earned — its effect on cash, and its effect on the software design. Here we apply that approach to cloud spending: first choose a meaningful unit of service and a comparable way of counting cost, then separate the reasons costs change, then decide how much to commit, and finally check the saving alongside service quality.
 
 **Unit economics** means examining money earned or spent for one meaningful unit of activity, such as a completed transaction or a customer account. **FinOps** is the practice of managing technology’s financial value through collaboration among engineering, finance and business teams; the name joins *Finance* with *DevOps*, the practice of having the people who build software and the people who run it work as one team. The FinOps Foundation’s unit-economics guidance connects technology costs to organizational outcomes and distinguishes efficient use of computing resources from measures of business results. [FinOps Foundation: unit economics](https://www.finops.org/framework/capabilities/unit-economics/) For a company leader, it bridges infrastructure work and the questions about cash and about **margin** — the money left from a sale after the costs being counted — discussed in the chapter [Understand Cash Flow: Confirm the Cash Before You Commit](#obligations-before-budget).
 
@@ -73,7 +73,7 @@ Removing unused resources can yield fairly direct savings. **Rightsizing** means
 
 **Do not count the same saving twice**. If rightsizing reduces the volume eligible for a discounted commitment, the two headline opportunities aren’t necessarily additive. A model should apply changes in a stated order and calculate the combined result.
 
-![A cloud bill connects to three dials. Demand — how much work customers ask for, shown as completed appointments. Price agreed with the supplier for each unit of computing. Resource use, showing computing that does useful work beside computing left unused. A counter below records the appointments completed.](private-techuity/posts/14-cheaper-cloud-bill/assets/images/14-cheaper-cloud-bill/three-drivers-of-cloud-cost.jpeg)
+![A cloud bill connects to three dials. Demand — how much work customers ask for, shown as completed appointments. Price agreed with the supplier for each unit of computing. Resource use, showing computing that does useful work beside computing left unused. A counter below records the appointments completed.](private-techuity/posts/27-cheaper-cloud-bill/assets/images/27-cheaper-cloud-bill/three-drivers-of-cloud-cost.jpeg)
 
 **Figure 1:** *Three dials move the bill. **Demand** is how much work customers ask for — for Larkspur, appointments to be scheduled. **Price** is what the supplier charges for each unit of computing. **Resource use** is how much computing that work actually consumes, which depends on the software design as well as on demand: the same 1,250 appointments cost more if the software leaves capacity idle. Separate the three before deciding whether the service became more efficient.*
 
@@ -86,7 +86,7 @@ Assume a fixed €35,000 a month replaces the €50,000 flexible bill. At unchan
 
 A discount on unused capacity is still an expense. A contract that makes switching expensive can be reasonable, but the loss of flexibility should be visible when it’s approved.
 
-![Two bar comparisons on one scale. At stable demand, flexible spending is €50,000 a month against €35,000 for the committed contract. At lower demand, flexible spending is €20,000 against the same €35,000 commitment.](private-techuity/posts/14-cheaper-cloud-bill/assets/images/14-cheaper-cloud-bill/fixed-commitment-changing-demand.jpeg)
+![Two bar comparisons on one scale. At stable demand, flexible spending is €50,000 a month against €35,000 for the committed contract. At lower demand, flexible spending is €20,000 against the same €35,000 commitment.](private-techuity/posts/27-cheaper-cloud-bill/assets/images/27-cheaper-cloud-bill/fixed-commitment-changing-demand.jpeg)
 
 **Figure 2:** *The same €35,000 commitment saves €15,000 a month against €50,000 of flexible spending and costs €15,000 more against €20,000. Test the commitment against lower demand as well as the forecast that makes it attractive.*
 
@@ -186,7 +186,7 @@ So the gap depends on which month you pick. Take the €50,000 case — roughly 
 
 That benchmark is the honest one available, and it is borrowed. The board approved a 2027 demand forecast and the cash to meet it, which is what let Ines sign; it has not yet set a 2027 spending target. So €100,000 is the 2026 expectation being carried forward for want of a 2027 one. Alex owes the board two things at the autumn planning round: an account of what drives that €11,000, and a 2027 target to be measured against — either further changes that bring spending back to €100,000, or a case for a higher one. That is a contract choice set beside an honest comparison with the plan, not a savings announcement.
 
-The commitment was tested against demand the company can observe. Some spending instead buys protection against harm the company hopes never to observe, and a lower bill there can mean the protection quietly went away. The next chapter shows how to judge that spending on evidence: [Build And Test Resilience: Backups Are Not Enough](#prove-you-can-restore).
+The commitment was tested against demand the company can observe, and the chapter [Build And Test Resilience: Backups Are Not Enough](#prove-you-can-restore) judged spending whose benefit is harder to observe, protection against a failure. The next chapter applies this chapter’s method, a unit of useful work, one comparable basis, the reasons a bill changed and a commitment sized to a demand range, to the newest metered bill a company runs: [Critically Evaluate AI Costs: Measure the Return per Task and per Period](#ai-worth-its-cost).
 
 {id: cheaper-cloud-bill--questions-to-consider}
 ## Questions to Consider

@@ -37,7 +37,7 @@ This book is a living journal and a work in progress: a draft by [Željko Obreno
 
 ## Start With the Decision in Front of You
 
-The six parts are ordered for learning, and the complete sequence is the default for a first reading. If a decision is already waiting, pick the row that matches it, read the chapter in the **Start with** column, and return to Part I when a financial term is unfamiliar. The **Then** column is optional further reading, in a suggested order.
+The eight parts are ordered for learning, and the complete sequence is the default for a first reading. If a decision is already waiting, pick the row that matches it, read the chapter in the **Start with** column, and return to Part I when a financial term is unfamiliar. The **Then** column is optional further reading, in a suggested order.
 
 The chapter titles in the table appear in full on this page, and a few of them use words that Part I explains properly. Until then, read them this way:
 
@@ -50,7 +50,7 @@ The [[glossary]] covers the rest.
 | Your immediate need | Start with | Then |
 | --- | --- | --- |
 | A promised investment must become a budget | [[announcement-is-not-a-budget]] | [[obligations-before-budget]], [[decide-who-decides]], [[cannot-fund-everything]], [[the-financing-slipped]] |
-| A change to how the business works needs a credible case | [[cannot-fund-everything]] | [[roadmap-to-revenue]], [[can-the-team-deliver]], the Part III chapter for your area, and the [[toolkit]] records of an initiative and its outcome |
+| A change to how the business works needs a credible case | [[cannot-fund-everything]] | [[roadmap-to-revenue]], [[can-the-team-deliver]], the Part IV, V or VI chapter for your area, and the [[toolkit]] records of an initiative and its outcome |
 | The investor has its own technology adviser (a “technology operating partner”) or a specialist in artificial intelligence (AI): software that generates text or makes predictions from patterns in data | [[tech-operating-partner]] | [[investors-adviser]], [[useful-engagement]] |
 | Agree or reset how we work with the investor | [[operating-model-blueprints]] | [[decide-who-decides]], [[useful-engagement]] |
 | Investor help is on offer | [[investors-adviser]] | [[help-that-changes-capability]], [[useful-engagement]] |
@@ -91,17 +91,19 @@ The practical impact of any investment therefore depends on its actual terms, **
 
 - **Part I** supplies the financial tools to understand your owners and the cash you can actually count on.
 - **Part II** establishes who has the authority to decide, which rewards and pressures shape those decisions (the incentives), and the working relationships around them.
-- **Part III** turns expectations into choices about product, engineering and people. It is the center of the book.
-- **Part IV** connects the investor–company working arrangement with useful help, the agreements that define an adviser’s or specialist’s work and authority, and the people who provide that support.
-- **Part V** follows the events around a funding or ownership change: the investigation before an investment, the first hundred days, money that arrives late, a reduction in staff, and the handover to the next owners.
-- **Part VI** examines historical cases and closes with the book’s standard for success.
+- **Part III** connects the investor–company working arrangement with useful help, the agreements that define an adviser’s or specialist’s work and authority, and the people who provide that support.
+- **Part IV** turns expectations into choices about product, engineering, people and AI, and revises them when expected money is late. It is the center of the book.
+- **Part V** changes the company’s size and shape deliberately: adding people, reducing them, changing systems for expected growth, and buying or separating a business.
+- **Part VI** keeps the technology the company already runs worth its cost: a lower cloud bill and backups that must actually restore.
+- **Part VII** follows the events around a funding or ownership change: the investigation before an investment, the first hundred days, and the handover to the next owners.
+- **Part VIII** examines historical cases and closes with the book’s standard for success.
 
 Each part introduction explains its chapters and the order. On a first pass, read in order, since each chapter builds on terms introduced earlier: for instance, the chapter [[valuation-is-an-estimate]] teaches how a company’s worth is estimated, and the chapter [[growth-into-design]] later applies those concepts to a design choice once the product and engineering foundations are in place.
 
-The six parts work together around one purpose: **commitments the company can keep**. Funding and obligations (the payments and duties the company must fulfil) set the conditions; authority and incentives shape decisions; those decisions become feasible work. Useful support adds capability, funding and ownership events require renewed commitments, and evidence from other companies helps you question the assumptions throughout.
+The eight parts work together around one purpose: **commitments the company can keep**. Funding and obligations (the payments and duties the company must fulfil) set the conditions; authority and incentives shape decisions; the working arrangement with the investor adds capability; those decisions become feasible work, deliberate changes of size and a technology estate kept worth its cost. Funding and ownership events require renewed commitments, and evidence from other companies helps you question the assumptions throughout.
 
-![Six parts form a connected framework around commitments the company can keep: I Understand money and obligations; II Align authority and incentives; III Commit to feasible work; IV Collaborate for useful help and capability; V Lead through funding and ownership changes; VI Learn from evidence about other companies. A clockwise path connects the parts and returns from learning to understanding.](assets/images/introduction/owned-six-part-framework.jpeg)
-**Figure 2:** *The six parts share one leadership purpose. Read I–VI to build the foundations, then revisit the relevant part as conditions and evidence change.*
+![Eight parts form a connected framework around commitments the company can keep: I Understand money and obligations; II Align authority and incentives; III Collaborate for useful help and capability; IV Commit to feasible work; V Scale the team, the systems and the company deliberately; VI Sustain the technology you run, worth its cost; VII Lead through funding and ownership changes; VIII Learn from evidence about other companies. A clockwise path connects the parts and returns from learning to understanding.](assets/images/introduction/owned-eight-part-framework.jpeg)
+**Figure 2:** *The eight parts share one leadership purpose. Read I–VIII to build the foundations, then revisit the relevant part as conditions and evidence change.*
 
 ## Meet the Fictional Company
 
@@ -126,7 +128,7 @@ The delayed-financing chapter ([[the-financing-slipped]]) and the staff-reductio
 
 ## Choose a Reading Format
 
-All thirty-four main chapters provide an **Article**, a short **TL;DR** summary and an illustrated **Comic**, with captions and dialogue transcripts. TL;DR means “too long; didn’t read.” Summaries aim for 300–500 words; some current drafts run longer than that target. Most comics are pages of stacked strips with the dialogue drawn into the artwork; the three case comics on Visma, Toys R Us and TeamSystem use single-scene panels. The six part introductions, the appendix and the reference pages use only the Article format. These counts describe the files at the time of writing and are rechecked as chapters are revised.
+All thirty-eight main chapters provide an **Article**, a short **TL;DR** summary and an illustrated **Comic**, with captions and dialogue transcripts. TL;DR means “too long; didn’t read.” Summaries aim for 300–500 words; some current drafts run longer than that target. Most comics are pages of stacked strips with the dialogue drawn into the artwork; the three case comics on Visma, Toys R Us and TeamSystem use single-scene panels. The eight part introductions, the appendix and the reference pages use only the Article format. These counts describe the files at the time of writing and are rechecked as chapters are revised.
 
 For a shorter first pass, read the part introductions and chapter summaries. The formats are companions rather than substitutes. Each one is written to reach the same decision and to keep the conditions that decide whether that decision holds; what varies is depth: the article gives the fullest calculations, the discussion of sources and the alternative cases, while every format keeps the conditions that would change the decision. The summaries and comics of this September 2026 revision are still being reconciled chapter by chapter, so where a short format and the article disagree, the article is the one to trust.
 
@@ -159,46 +161,58 @@ The site navigation lists the same chapters; this list is here for lookup.
 - **8.** [[different-bets]]
 - **9.** [[investor-under-pressure]]
 
-### Part III — COMMIT: Turn Expectations Into Work You Can Deliver
+### Part III — COLLABORATE: Get Useful Help From Your Investors
 
 - [[part-3]] — part introduction
-- **10.** [[cannot-fund-everything]]
-- **11.** [[roadmap-to-revenue]]
-- **12.** [[can-the-team-deliver]]
-- **13.** [[fix-decisions-before-hiring]]
-- **14.** [[growth-into-design]]
-- **15.** [[cheaper-cloud-bill]]
-- **16.** [[prove-you-can-restore]]
-- **17.** [[ai-strategy-three-questions]]
-- **18.** [[acquisition-adds-work-first]]
+- **10.** [[operating-model-blueprints]]
+- **11.** [[learn-through-investors-network]]
+- **12.** [[help-that-changes-capability]]
+- **13.** [[useful-engagement]]
+- **14.** [[investors-adviser]]
+- **15.** [[tech-operating-partner]]
 
-### Part IV — COLLABORATE: Get Useful Help From Your Investors
+### Part IV — COMMIT: Turn Expectations Into Work You Can Deliver
 
 - [[part-4]] — part introduction
-- **19.** [[operating-model-blueprints]]
-- **20.** [[learn-through-investors-network]]
-- **21.** [[help-that-changes-capability]]
-- **22.** [[useful-engagement]]
-- **23.** [[investors-adviser]]
-- **24.** [[tech-operating-partner]]
+- **16.** [[adopt-outcome-thinking]]
+- **17.** [[cannot-fund-everything]]
+- **18.** [[roadmap-to-revenue]]
+- **19.** [[ai-strategy-three-questions]]
+- **20.** [[can-the-team-deliver]]
+- **21.** [[the-financing-slipped]]
 
-### Part V — LEAD: Manage Funding and Ownership Changes
+### Part V — SCALE: Change the Team, the Systems and the Company Deliberately
 
 - [[part-5]] — part introduction
-- **25.** [[diligence-corrects-the-plan]]
-- **26.** [[first-hundred-days]]
-- **27.** [[the-financing-slipped]]
-- **28.** [[anatomy-of-a-layoff]]
-- **29.** [[handover-of-obligations]]
+- **22.** [[fix-decisions-before-hiring]]
+- **23.** [[anatomy-of-a-layoff]]
+- **24.** [[scale-the-team-with-ai]]
+- **25.** [[growth-into-design]]
+- **26.** [[acquisition-adds-work-first]]
 
-### Part VI — LEARN: Lessons From the Field
+### Part VI — SUSTAIN: Keep the Technology You Run Worth Its Cost
 
 - [[part-6]] — part introduction
-- **30.** [[hilton-and-skype]]
-- **31.** [[visma]]
-- **32.** [[toys-r-us]]
-- **33.** [[teamsystem]]
-- **34.** [[success-for-whom]]
+- **27.** [[manage-technical-debt]]
+- **28.** [[prove-you-can-restore]]
+- **29.** [[cheaper-cloud-bill]]
+- **30.** [[ai-worth-its-cost]]
+
+### Part VII — LEAD: Manage Funding and Ownership Changes
+
+- [[part-7]] — part introduction
+- **31.** [[diligence-corrects-the-plan]]
+- **32.** [[first-hundred-days]]
+- **33.** [[handover-of-obligations]]
+
+### Part VIII — LEARN: Lessons From the Field
+
+- [[part-8]] — part introduction
+- **34.** [[hilton-and-skype]]
+- **35.** [[visma]]
+- **36.** [[toys-r-us]]
+- **37.** [[teamsystem]]
+- **38.** [[success-for-whom]]
 
 ### Appendix
 

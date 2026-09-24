@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""One-off driver: regenerate Figure 1 of 17-acquisition-adds-work-first.
+"""One-off driver: regenerate Figure 1 of 25-acquisition-adds-work-first.
 
 The 13 September prompt archive keys this post under its legacy slug
 (14-acquisitions-and-carveouts), so the illustrator module is driven directly
@@ -16,7 +16,7 @@ sys.path.insert(0, str(SCRIPTS))
 
 import generate_illustrations_nanobanana as gen  # noqa: E402
 
-POST = ROOT / "_journals/private-techuity/posts/17-acquisition-adds-work-first"
+POST = ROOT / "_journals/private-techuity/posts/25-acquisition-adds-work-first"
 
 STYLE = (
     "Create one finished explanatory illustration for Owned, a practical book for "
@@ -53,7 +53,7 @@ TARGETS = [
     {
         "id": "integration-depth-by-benefit",
         "status": "pending",
-        "asset": "assets/images/17-acquisition-adds-work-first/integration-depth-by-benefit.jpeg",
+        "asset": "assets/images/25-acquisition-adds-work-first/integration-depth-by-benefit.jpeg",
         "aspect_ratio": "16:9",
         "prompt": FIG1,
         "alt": "Three columns: two separate products joined by a sales agreement; two products on shared tools and data services; one combined product on one combined customer record.",

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate the TL;DR overview figure of 32-success-for-whom (legacy keys).
+"""Regenerate the TL;DR overview figure of 37-success-for-whom (legacy keys).
 
 The prompt archive keys this post as `24-durable-value` and its assets live under
 `30-success-for-whom/`, so `generate_summary_visuals.py --post <slug>` cannot select it.
@@ -28,7 +28,7 @@ spec.loader.exec_module(helper)
 MODEL = 'gemini-3-pro-image-preview'
 ARCHIVE = J / '_research/summary-visual-prompts-20260913.json'
 LEGACY_KEY = '24-durable-value'
-ASSET = J / 'posts/32-success-for-whom/assets/images/30-success-for-whom/summary-at-a-glance.jpeg'
+ASSET = J / 'posts/37-success-for-whom/assets/images/30-success-for-whom/summary-at-a-glance.jpeg'
 CANDIDATE = Path('/tmp/success-for-whom-summary-candidate.jpeg')
 
 BASE = ('Create one finished summary illustration explaining the whole post in Owned, a book for product and '
@@ -83,7 +83,7 @@ def accept(note: str) -> None:
     previous = ASSET.read_bytes()
     backups = J / '_research/discarded-summary-variants'
     backups.mkdir(exist_ok=True)
-    (backups / f'32-success-for-whom-summary-at-a-glance-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
+    (backups / f'37-success-for-whom-summary-at-a-glance-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
     ASSET.write_bytes(data)
     digest = hashlib.sha256(data).hexdigest()
     archive = json.loads(ARCHIVE.read_text())
@@ -101,7 +101,7 @@ def accept(note: str) -> None:
                           'and costs, operating capability, people affected and, along an arrow to a calendar, after the '
                           'ownership change.')
             fig['visual_review'] = 'accepted 2026-09-23 after direct inspection: ' + note
-            fig['current_asset'] = 'posts/32-success-for-whom/assets/images/30-success-for-whom/summary-at-a-glance.jpeg'
+            fig['current_asset'] = 'posts/37-success-for-whom/assets/images/30-success-for-whom/summary-at-a-glance.jpeg'
             break
     else:
         raise SystemExit('archive entry not found')

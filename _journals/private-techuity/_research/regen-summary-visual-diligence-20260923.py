@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate the TL;DR overview figure of 23-diligence-corrects-the-plan (legacy keys).
+"""Regenerate the TL;DR overview figure of 30-diligence-corrects-the-plan (legacy keys).
 
 The prompt archive keys this post as `16-diligence-and-thesis` and its assets live under
 `21-diligence-corrects-the-plan/`, so `generate_summary_visuals.py --post <slug>` cannot
@@ -27,7 +27,7 @@ spec.loader.exec_module(helper)
 MODEL = 'gemini-3-pro-image-preview'
 ARCHIVE = J / '_research/summary-visual-prompts-20260913.json'
 LEGACY_KEY = '16-diligence-and-thesis'
-ASSET = J / 'posts/23-diligence-corrects-the-plan/assets/images/21-diligence-corrects-the-plan/summary-at-a-glance.jpeg'
+ASSET = J / 'posts/30-diligence-corrects-the-plan/assets/images/21-diligence-corrects-the-plan/summary-at-a-glance.jpeg'
 CANDIDATE = Path('/tmp/diligence-summary-candidate.jpeg')
 
 BASE = ('Create one finished summary illustration explaining the whole post in Owned, a book for product and '
@@ -83,7 +83,7 @@ def accept(note: str) -> None:
     previous = ASSET.read_bytes()
     backups = J / '_research/discarded-summary-variants'
     backups.mkdir(exist_ok=True)
-    (backups / f'23-diligence-corrects-the-plan-summary-at-a-glance-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
+    (backups / f'30-diligence-corrects-the-plan-summary-at-a-glance-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
     ASSET.write_bytes(data)
     digest = hashlib.sha256(data).hexdigest()
     archive = json.loads(ARCHIVE.read_text())

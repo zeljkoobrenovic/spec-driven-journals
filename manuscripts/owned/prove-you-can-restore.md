@@ -1,7 +1,7 @@
 {id: prove-you-can-restore}
-# 17. Build And Test Resilience: Backups Are Not Enough
+# 27. Build And Test Resilience: Backups Are Not Enough
 
-![Build And Test Resilience: Backups Are Not Enough — logo](private-techuity/posts/15-prove-you-can-restore/assets/images/15-prove-you-can-restore/logo.jpeg)
+![Build And Test Resilience: Backups Are Not Enough — logo](private-techuity/posts/26-prove-you-can-restore/assets/images/26-prove-you-can-restore/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to state a recovery objective in ordinary language, judge a restore test against it, fund the corrective work, retest and record the exposure that remains.
 
@@ -65,7 +65,7 @@ Against the objective, the test failed twice over. Eleven hours against four. A 
 
 That is also what a restore test has to demonstrate: not that data came back, but that it is complete and consistent, that the right people can reach it, that the application and the services it depends on start against it, and that a dispatcher can assign a job end to end within the objective. A **certification**, a formal statement that specified requirements were met under a particular assessment process, is read the same way: which organization, systems, requirements and period it covers. It isn’t a guarantee that every part of the company is secure today.
 
-![Three claim-and-evidence pairs: what we intend to do rests on a written policy; the safeguard ran rests on a watched test; recovered in this tested case rests on a timed restore.](private-techuity/posts/15-prove-you-can-restore/assets/images/15-prove-you-can-restore/security-claims-and-proof.jpeg)
+![Three claim-and-evidence pairs: what we intend to do rests on a written policy; the safeguard ran rests on a watched test; recovered in this tested case rests on a timed restore.](private-techuity/posts/26-prove-you-can-restore/assets/images/26-prove-you-can-restore/security-claims-and-proof.jpeg)
 
 **Figure 1:** *Match the evidence to the capability you say the company has — and note that the recovery claim only covers the case that was tested.*
 
@@ -111,7 +111,7 @@ A practical exercise tests a plausible scenario. Larkspur’s: the scheduling se
 
 Legal notification deadlines, sector requirements and contractual duties vary and can change. In a live incident, the organization needs current advice for its jurisdictions and facts. This chapter supplies the operating questions, not a universal deadline.
 
-![A four-stage loop: spot the problem, assess impact and options, rebuild on a separate test system until the service works again, then record fixes and retest, with one named person responsible at the centre.](private-techuity/posts/15-prove-you-can-restore/assets/images/15-prove-you-can-restore/incident-restoration-practice.jpeg)
+![A four-stage loop: spot the problem, assess impact and options, rebuild on a separate test system until the service works again, then record fixes and retest, with one named person responsible at the centre.](private-techuity/posts/26-prove-you-can-restore/assets/images/26-prove-you-can-restore/incident-restoration-practice.jpeg)
 
 **Figure 2:** *Restoration is a capability to practise and verify: spot the problem, weigh the options, rebuild and check, then record what to fix — with one named person responsible throughout.*
 
@@ -125,13 +125,13 @@ The investor’s technology adviser can help obtain specialist judgment and comm
 {id: prove-you-can-restore--shared-support-and-changing-owners}
 ## Shared Support and Changing Owners
 
-A company’s ownership is divided into **shares**, and holding more of them means owning more of the company. A **corporate investor** — an established operating company that has invested in another — may offer its own shared security tools and services. A **minority investor**, one holding less than half the shares, may ask for customer data to help assess a risk. An investor’s network may supply scarce specialists. Each can make the company more capable, and each can create a common point of failure or an access boundary the company hasn’t agreed. Establish the purpose, permitted access and responsibility for an incident before moving information or systems, and verify that the company can still **detect, communicate and recover** if the service or the investor changes. The chapter [Set the Terms of Help: Agree the Work, Authority and Handover](#useful-engagement) in Part IV sets out how to agree that support.
+A company’s ownership is divided into **shares**, and holding more of them means owning more of the company. A **corporate investor** — an established operating company that has invested in another — may offer its own shared security tools and services. A **minority investor**, one holding less than half the shares, may ask for customer data to help assess a risk. An investor’s network may supply scarce specialists. Each can make the company more capable, and each can create a common point of failure or an access boundary the company hasn’t agreed. Establish the purpose, permitted access and responsibility for an incident before moving information or systems, and verify that the company can still **detect, communicate and recover** if the service or the investor changes. The chapter [Set the Terms of Help: Agree the Work, Authority and Handover](#useful-engagement) in Part III sets out how to agree that support.
 
 The same evidence should survive a change of owner. A restore that passed against a stated objective, with its residual risks written down, is worth more to the next owner than an orderly **data room**, a controlled collection of documents shared with a prospective buyer. The chapter [Manage the Handover: Carry Forward the Evidence and Obligations](#handover-of-obligations) covers carrying that evidence across the transaction.
 
 A sound recovery decision connects a harmful scenario to a stated objective, a test that failed or passed against it, the funded work in between, and someone authorized to accept what remains. Evidence of a backup is evidence about a backup. Evidence of an operating service is what the dispatcher at 6am needs, and it is what the board should be asked to fund. At Larkspur that evidence now has a date on it, and a bill: the operations lead runs the next restore in the first quarter after day 100, on two days of time the operating budget protects, against the same four hours and fifteen minutes, for the same loss of the application environment. The region question comes back to the board at about day 190.
 
-Larkspur could judge its recovery spending by a test it could run and watch. The next chapter turns to spending whose benefit is harder to observe and easier to assert: a strategy for artificial intelligence (**AI**), two letters that hide three separate investment questions. Continue with the chapter [Clarify AI Strategy: Three Different Investment Questions](#ai-strategy-three-questions).
+Larkspur could judge its recovery spending by a test it could run and watch. The next chapter, [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill), turns to spending the company can observe every month and shows why a lower bill still has to be read through the service it buys; the chapter [Critically Evaluate AI Costs: Measure the Return per Task and per Period](#ai-worth-its-cost) then applies the same reading to an AI bill. A strategy for artificial intelligence (**AI**), two letters that hide three separate investment questions, is the chapter [Clarify AI Strategy: Three Different Investment Questions](#ai-strategy-three-questions) in Part IV.
 
 {id: prove-you-can-restore--questions-to-consider}
 ## Questions to Consider

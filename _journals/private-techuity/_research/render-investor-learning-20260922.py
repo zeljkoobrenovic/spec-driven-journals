@@ -349,7 +349,7 @@ def part_overview():
     footer = fit_lines('Learning and support, with company judgment and responsibility.', 24, BOX_W)
     b += lines_text(W // 2, y + 14, footer, 24, INK, 32, 400, 'middle')
     height = y + 14 + 32 * len(footer) + 10
-    out = JOURNAL / 'posts/part-4-intro/assets/images/part-4-intro/chapter-overview-six.svg'
+    out = JOURNAL / 'posts/part-3-intro/assets/images/part-3-intro/chapter-overview-six.svg'
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(svg(W, height, 'Six choices for useful collaboration',
                        'Six chapters stacked in reading order: plan support, learn together, choose help for work your team cannot yet do, set the terms including who takes the work over afterwards, clarify the adviser and meet the operating partners; learning and support come with company judgment and responsibility.', b))

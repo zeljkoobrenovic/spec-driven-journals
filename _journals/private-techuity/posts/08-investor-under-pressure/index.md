@@ -78,7 +78,7 @@ Suppose an investor promises help with **artificial intelligence (AI)**, softwar
 
 Ask what the first *engagement*, a defined piece of outside help, would involve. Who is available, and for how many days? What relevant work is behind them? Who pays for specialists and implementation? Who has authority to decide, and what would stop the engagement? A reasonable answer can be modest. One experienced *operator*, someone who has run this kind of business or function, with a trusted specialist network can be more useful than an extensive catalogue without available capacity.
 
-Don’t confuse advice with funding. A recommendation to rebuild ageing software is incomplete until the company has the capacity and money to do it. Here, the support offer is evidence about the investor. Once a company need is agreed, finding suitable help and writing the engagement charter, the short document that records the engagement’s scope, responsibilities and limits, are Part IV’s work: the chapters [[help-that-changes-capability]] and [[useful-engagement]].
+Don’t confuse advice with funding. A recommendation to rebuild ageing software is incomplete until the company has the capacity and money to do it. Here, the support offer is evidence about the investor. Once a company need is agreed, finding suitable help and writing the engagement charter, the short document that records the engagement’s scope, responsibilities and limits, are Part III’s work: the chapters [[help-that-changes-capability]] and [[useful-engagement]].
 
 ## Test the Funding Horizon
 
@@ -210,7 +210,7 @@ When a problem emerges, start with a concrete decision rather than a general com
 
 This chapter has connected changed authority, incentives and the working relationship. Each of them assumes something this part does not supply itself: that both sides are reasoning about the same facts. A partnership review, an evidence-based challenge and an honest disagreement all need defined, sourced figures that neither side has to take on trust. The appendix chapter [[data-foundations-for-alignment]] assembles them.
 
-Suppose the agreement with Investor B is signed, the deal has closed and the first €4.5 million has arrived in Larkspur’s account. Larkspur then has that money, ten operator days a quarter, and a right to €1.5 million that is not yet money. Which of Larkspur’s own initiatives the money actually received, and that capacity, can fund at once is the question Part III takes up: [[part-3]] and [[cannot-fund-everything]].
+Suppose the agreement with Investor B is signed, the deal has closed and the first €4.5 million has arrived in Larkspur’s account. Larkspur then has that money, ten operator days a quarter, and a right to €1.5 million that is not yet money. Which of Larkspur’s own initiatives the money actually received, and that capacity, can fund at once is the question Part IV takes up: [[part-4]] and [[cannot-fund-everything]].
 
 ## Questions to Consider
 

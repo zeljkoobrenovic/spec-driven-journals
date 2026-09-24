@@ -1,7 +1,7 @@
 {id: investors-adviser}
-# 24. Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?
+# 14. Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?
 
-![Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding? — logo](private-techuity/posts/21-investors-adviser/assets/images/18-investors-adviser/logo.jpeg)
+![Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding? — logo](private-techuity/posts/13-investors-adviser/assets/images/18-investors-adviser/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to establish the investor adviser’s assignment and reporting relationship, separate influence from authority, and handle a change of role before sharing sensitive information.
 
@@ -21,7 +21,7 @@ An **investor’s technology adviser** is a person the investment firm employs o
 
 What distinguishes this adviser from other outside experts is not privileged access or multiple responsibilities; a board-appointed consultant can have both. This adviser reports to the investment firm, so the company needs to understand both the operating assignment and how findings may inform the investor’s decisions. Working that out is the company technology leader’s job, and it starts before sensitive information is shared.
 
-The earlier Part IV chapters established the working arrangement, the choice of help and the written agreement that records what a piece of advisory work covers. We now examine the person who may connect those needs to the investor’s resources. This chapter establishes the adviser’s assignment, separates influence from authority, works through what happens when the role changes and ends by returning to the planning meeting. Sourcing help is the subject of the chapter [Choose the Right Help: Compare Investor Support With Other Options](#help-that-changes-capability); the mechanics of an engagement belong to the chapter [Set the Terms of Help: Agree the Work, Authority and Handover](#useful-engagement).
+The earlier Part III chapters established the working arrangement, the choice of help and the written agreement that records what a piece of advisory work covers. We now examine the person who may connect those needs to the investor’s resources. This chapter establishes the adviser’s assignment, separates influence from authority, works through what happens when the role changes and ends by returning to the planning meeting. Sourcing help is the subject of the chapter [Choose the Right Help: Compare Investor Support With Other Options](#help-that-changes-capability); the mechanics of an engagement belong to the chapter [Set the Terms of Help: Agree the Work, Authority and Handover](#useful-engagement).
 
 {id: investors-adviser--establish-the-assignment-and-the-reporting-relationship}
 ## Establish the Assignment and the Reporting Relationship
@@ -58,7 +58,7 @@ These purposes can overlap, but everyone involved should know which apply. The l
 
 Ask the adviser to explain their responsibilities to both the company and the investment firm. Their role may include prospective investments and other companies, which affects availability; treat that as a planning input for the chapter [Set the Terms of Help: Agree the Work, Authority and Handover](#useful-engagement), not as a judgment about the relationship.
 
-![Three columns — investigate, coach and deliver — each with the scope it commits to: establish the facts, develop the leader’s judgment, do the agreed work. In the coaching column the company leader stands at a fork where neither path is marked, and the adviser gestures rather than points.](private-techuity/posts/21-investors-adviser/assets/images/18-investors-adviser/three-adviser-jobs.jpeg)
+![Three columns — investigate, coach and deliver — each with the scope it commits to: establish the facts, develop the leader’s judgment, do the agreed work. In the coaching column the company leader stands at a fork where neither path is marked, and the adviser gestures rather than points.](private-techuity/posts/13-investors-adviser/assets/images/18-investors-adviser/three-adviser-jobs.jpeg)
 
 **Figure 1:** *Identify the job before agreeing access, authority and the result the company expects. Coaching develops the leader’s own judgment; it is not advice about which way to go.*
 
@@ -73,7 +73,7 @@ The remedy is the decision map from that chapter, applied to the adviser by name
 
 Hands-on work isn’t the same as taking over. Morgan might help work out why a new version of the software broke when it went live, alongside the engineers, and then hand the improvement plan back to Alex. The test is whether company capability strengthens and responsibility stays understandable after the intervention ends.
 
-![Outside a box labelled company, a person labelled adviser sends a dashed arrow labelled advice to the company leader’s desk, labelled decision. A separate arrow carries information from the desk out through a gate labelled agreed access.](private-techuity/posts/21-investors-adviser/assets/images/18-investors-adviser/advice-and-accountability-boundary.jpeg)
+![Outside a box labelled company, a person labelled adviser sends a dashed arrow labelled advice to the company leader’s desk, labelled decision. A separate arrow carries information from the desk out through a gate labelled agreed access.](private-techuity/posts/13-investors-adviser/assets/images/18-investors-adviser/advice-and-accountability-boundary.jpeg)
 
 **Figure 2:** *Influence, access and formal decision authority need separate agreements.*
 

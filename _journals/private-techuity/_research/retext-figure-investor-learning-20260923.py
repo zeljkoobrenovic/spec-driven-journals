@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Relabel one lettered string on a Gemini article figure of 18a-learn-through-investors-network.
+"""Relabel one lettered string on a Gemini article figure of 10-learn-through-investors-network.
 
 In-depth review round 1, 23 September 2026 (INVNET-004): the third scene of
 Figure 3 (`bring-the-question-home.jpeg`) read "Our records vary", which
@@ -25,8 +25,8 @@ pages = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(pages)
 
 MODEL = 'gemini-3-pro-image-preview'
-POST = J / 'posts/18a-learn-through-investors-network'
-IMAGES = POST / 'assets/images/18a-learn-through-investors-network'
+POST = J / 'posts/10-learn-through-investors-network'
+IMAGES = POST / 'assets/images/10-learn-through-investors-network'
 
 
 def main() -> int:
@@ -45,7 +45,7 @@ def main() -> int:
     data, _, _ = pages.panels.normalize_image_bytes_for_target(data, mime, asset)
     backups = J / '_research/discarded-illustration-variants'
     backups.mkdir(exist_ok=True)
-    (backups / f'18a-learn-through-investors-network-{figure}-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
+    (backups / f'10-learn-through-investors-network-{figure}-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
     asset.write_bytes(data)
     print('retexted', asset.relative_to(ROOT), hashlib.sha256(data).hexdigest(), len(data), 'bytes')
     return 0

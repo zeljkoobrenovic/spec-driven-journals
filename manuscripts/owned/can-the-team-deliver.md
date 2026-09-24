@@ -1,7 +1,7 @@
 {id: can-the-team-deliver}
-# 13. Assess Capability: Can the Team Deliver?
+# 19. Assess Capability: Can the Team Deliver?
 
-![Assess Capability: Can the Team Deliver? — logo](private-techuity/posts/11-can-the-team-deliver/assets/images/11-can-the-team-deliver/logo.jpeg)
+![Assess Capability: Can the Team Deliver? — logo](private-techuity/posts/18-can-the-team-deliver/assets/images/18-can-the-team-deliver/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to assess whether the software and the team can deliver the plan, and produce a finding that names the obstacle that most limits the plan (its **binding constraint**), the evidence, and what a transition would cost in money and time.
 
@@ -21,7 +21,7 @@ The expansion date was proposed before anyone assessed the plan’s **dependenci
 
 Alex, Larkspur’s technology leader, has to establish three things before the company commits money or makes a promise to a customer: what the systems and the team can support today, what must change in the plan, and what changing it would cost. That takes more than a look at the software, because the people who run it are part of what the company can do. The systems may be built in-house, bought from suppliers or assembled from both; the assessment is the same.
 
-The chapter [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue) connected a proposed change to customer and business results. This chapter produces the assessment those results depend on. It moves from the business plan to required capabilities, then to strengths and constraints, then to evidence about delivery and knowledge, and finally to a feasible transition. It stops at a finding. The organizational response to that finding is the subject of the chapter [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring); the choice among implementations is the subject of the chapter [Plan for Growth: Decide What (Not) to Change in Your Systems](#growth-into-design).
+The chapter [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue) connected a proposed change to customer and business results. This chapter produces the assessment those results depend on. It moves from the business plan to required capabilities, then to strengths and constraints, then to evidence about delivery and knowledge, and finally to a feasible transition. It stops at a finding. The organizational response to that finding is the subject of the chapter [Scale the Team Up: Headcount Is Not Capacity](#fix-decisions-before-hiring); the choice among implementations is the subject of the chapter [Plan for Growth: Decide What (Not) to Change in Your Systems](#growth-into-design).
 
 {id: can-the-team-deliver--translate-the-business-plan-into-required-capabilities}
 ## Translate the Business Plan Into Required Capabilities
@@ -45,7 +45,7 @@ EBITDA is not cash, and a higher figure does not show that a project can be paid
 
 These priorities overlap. Reliable deployment reduces both the cost of failure and the time needed to experiment. A useful assessment describes the capability required and the trade-offs, rather than picking a technology from the financial target.
 
-![A business need, faster onboarding of customers, points to the two parts of the system that limit it, configuration and billing, before three options are compared: a small change, a staged replacement or a full replacement.](private-techuity/posts/11-can-the-team-deliver/assets/images/11-can-the-team-deliver/business-need-to-system-choice.jpeg)
+![A business need, faster onboarding of customers, points to the two parts of the system that limit it, configuration and billing, before three options are compared: a small change, a staged replacement or a full replacement.](private-techuity/posts/18-can-the-team-deliver/assets/images/18-can-the-team-deliver/business-need-to-system-choice.jpeg)
 
 **Figure 1:** *Start with the constraint the company needs to remove, then compare ways to remove it.*
 
@@ -82,7 +82,7 @@ Two lead-time measures are easy to confuse, and comparisons go wrong when they a
 
 For Larkspur’s pricing changes, the DORA clock shows under two days and the end-to-end clock shows about three weeks. Most of the elapsed time therefore falls outside commit-to-production.
 
-The difference does not say what that time is made of. Work before a commit includes building the change as well as approvals and queues, so the gap does not prove that the change was waiting. A step-by-step trace of one recent pricing or country change is needed to separate approvals, waiting for the specialists and the building itself. The chapter [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring) supplies that trace and uses it as the evidence for its diagnosis.
+The difference does not say what that time is made of. Work before a commit includes building the change as well as approvals and queues, so the gap does not prove that the change was waiting. A step-by-step trace of one recent pricing or country change is needed to separate approvals, waiting for the specialists and the building itself. The chapter [Scale the Team Up: Headcount Is Not Capacity](#fix-decisions-before-hiring) supplies that trace and uses it as the evidence for its diagnosis.
 
 Interviews help explain **telemetry**, the records and measurements collected from systems. A long end-to-end lead time may reflect a shared approval queue, unclear product decisions, an unreliable **test environment**, a separate setup used to check changes before customers receive them, or implementation that is slow because the code is hard to change. Adding developers helps only when their skills and responsibilities address the diagnosed constraint. New people do not automatically fix unclear decisions, a slow approval queue or an unreliable test environment, and code that is hard to change slows a newcomer too.
 
@@ -116,7 +116,7 @@ The annual model in the chapter [Understand Cash Flow: Confirm the Cash Before Y
 
 The plan should define which capability migrates first, how value appears before the whole program is complete, and what happens if the program stops. A staged approach is useful only if intermediate states can operate safely. Dividing an inseparable replacement into nominal phases doesn’t reduce the underlying risk. Also identify **the retirement condition**: if customers remain indefinitely on the old product, the expected maintenance saving never arrives; if forced migration loses valuable customers, the lost customers could cost more than the saving.
 
-![The current and new systems run side by side while data migration, customer support and training take place; the old system retires only after a readiness check, and bands for cash and team capacity run underneath for the whole period. The bands carry no amounts or dates.](private-techuity/posts/11-can-the-team-deliver/assets/images/11-can-the-team-deliver/fund-the-system-overlap.jpeg)
+![The current and new systems run side by side while data migration, customer support and training take place; the old system retires only after a readiness check, and bands for cash and team capacity run underneath for the whole period. The bands carry no amounts or dates.](private-techuity/posts/18-can-the-team-deliver/assets/images/18-can-the-team-deliver/fund-the-system-overlap.jpeg)
 
 **Figure 2:** *The investment includes the path to the new system and the cost of keeping customers served along the way.*
 
@@ -144,7 +144,7 @@ The two smaller options named in the last row are these. One is a bought tax-and
 
 The finding tells the board what the plan assumes that is not yet true, and gives the people who choose the response something to choose against. Company engineers need to take part in the diagnosis; their knowledge of the system is part of the capability the plan depends on, and an assessment that treats their explanations as resistance loses the information needed to make the investment work.
 
-The next question is why a small country change takes three weeks when commit-to-production takes under two days, and how much of that is approvals, the two specialists’ queue or implementation. The chapter [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring) answers it by tracing one of these pricing changes from request to production, and decides whether Larkspur should change roles, hire, or both. Only then should Larkspur choose among configuring a supplier, drawing a boundary it owns around the country rules and replacing the core; the chapter [Plan for Growth: Decide What (Not) to Change in Your Systems](#growth-into-design) makes that choice against this same finding.
+The next question is why a small country change takes three weeks when commit-to-production takes under two days, and how much of that is approvals, the two specialists’ queue or implementation. The chapter [Scale the Team Up: Headcount Is Not Capacity](#fix-decisions-before-hiring) answers it by tracing one of these pricing changes from request to production, and decides whether Larkspur should change roles, hire, or both. Only then should Larkspur choose among configuring a supplier, drawing a boundary it owns around the country rules and replacing the core; the chapter [Plan for Growth: Decide What (Not) to Change in Your Systems](#growth-into-design) makes that choice against this same finding.
 
 {id: can-the-team-deliver--questions-to-consider}
 ## Questions to Consider

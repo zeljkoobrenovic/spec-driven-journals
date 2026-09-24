@@ -1,7 +1,7 @@
 {id: tech-operating-partner}
-# 25. Understand Technology Operating Partners: How They Work With Your Team
+# 15. Understand Technology Operating Partners: How They Work With Your Team
 
-![Understand Technology Operating Partners: How They Work With Your Team — logo](private-techuity/posts/22-tech-operating-partner/assets/images/tech-operating-partner/logo.png)
+![Understand Technology Operating Partners: How They Work With Your Team — logo](private-techuity/posts/14-tech-operating-partner/assets/images/tech-operating-partner/logo.png)
 
 > **IN THIS SECTION, YOU WILL:** Understand why technology operating partners are becoming more important, how their role compares with company product and technology leadership, how they help the companies an investor owns to hire, and how artificial intelligence (AI) changes their work.
 
@@ -68,7 +68,7 @@ The output should survive a change of adviser. A diligence concern that disappea
 
 There are also three distinct responsibilities in this map. The **investment team** judges the investment and its terms within the firm’s arrangements. **Company executives** direct the business within their authority. The **operating function** supplies assessment, support and any oversight or delivery responsibility explicitly assigned to it. A partner may hold more than one role, but the people doing the work need to know which role applies to a particular decision. In the support-tool case, the investment team proposed the common rollout; each company’s executives decide whether and when their company adopts the tool; the operating partner assesses the three situations and supports those decisions.
 
-![An investment team and an operating partner connect through an agreed mandate to three portfolio companies, each with its own leadership team.](private-techuity/posts/22-tech-operating-partner/assets/images/tech-operating-partner/portfolio-support-and-company-leadership.png)
+![An investment team and an operating partner connect through an agreed mandate to three portfolio companies, each with its own leadership team.](private-techuity/posts/14-tech-operating-partner/assets/images/tech-operating-partner/portfolio-support-and-company-leadership.png)
 
 **Figure 1:** *The operating function connects investment assumptions with company work. Each assignment must specify its authority alongside the company leaders’ continuing responsibilities.*
 
@@ -118,7 +118,7 @@ If the operating partner steps in as interim CTO for a limited period, record th
 
 A technology operating partner can help a portfolio company build the leadership and specialist capability its plan requires. Redgrave includes recruitment guidance, staff development and organizational design in the role; KKR Capstone lists recruitment, development and retention within its wider operating remit. These descriptions support a talent contribution, while the detailed division of work below is the book’s proposal. [S81: Redgrave](https://redgravesearch.com/insights/technology-operating-partner-in-private-equity/) [S85: KKR Capstone](https://www.kkr.com/approach/capstone)
 
-**Define the need and the role.** Work with the CEO and relevant company leader to establish what is missing: technical direction, product judgment, execution capacity, specialist knowledge or clearer decisions. Assess the existing team in its operating context before recommending a new executive or replacement. Consider internal promotion, coaching, a narrower hire or temporary support. For a permanent role, agree the outcomes, reporting line, authority, team and available budget before launching the search. In the support-tool case, a proposal to hire an AI leader in each company should wait until each company knows its gap: the first may need help testing a **pilot**, a small, time-limited trial before wider use; the second advice on data permissions; the third reliability engineering rather than AI expertise. [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring) works through that choice in detail.
+**Define the need and the role.** Work with the CEO and relevant company leader to establish what is missing: technical direction, product judgment, execution capacity, specialist knowledge or clearer decisions. Assess the existing team in its operating context before recommending a new executive or replacement. Consider internal promotion, coaching, a narrower hire or temporary support. For a permanent role, agree the outcomes, reporting line, authority, team and available budget before launching the search. In the support-tool case, a proposal to hire an AI leader in each company should wait until each company knows its gap: the first may need help testing a **pilot**, a small, time-limited trial before wider use; the second advice on data permissions; the third reliability engineering rather than AI expertise. [Scale the Team Up: Headcount Is Not Capacity](#fix-decisions-before-hiring) works through that choice in detail.
 
 **Help reach suitable candidates.** The partner can introduce leaders known from other portfolio companies, identify relevant executive-search firms and help the company explain the opportunity. Coordinate this with the company’s hiring manager, human resources (HR) team and any investor talent team. The partner contributes technical and commercial context; recruiters organize the agreed search. Be clear with candidates about the company’s condition, expectations and resources. A connection to the investor can open a conversation, but the company still needs to assess the candidate for its own assignment.
 
@@ -128,7 +128,7 @@ A technology operating partner can help a portfolio company build the leadership
 
 **Help the appointment succeed.** Agree initial outcomes and a review date with the new leader and their company manager. The partner can explain the investment assumptions, introduce peers, arrange specialist support and help identify constraints the new hire cannot remove alone. Keep coaching, performance assessment and formal management responsibilities clear. Continue developing internal successors and reducing dependence on one person. Judge the contribution by the capability the company gains and the outcomes agreed for the role, alongside retention and time to fill the vacancy.
 
-![A defined capability need leads to three possible routes—develop existing people, use interim help or recruit—with support and review following each choice.](private-techuity/posts/22-tech-operating-partner/assets/images/tech-operating-partner/capability-before-recruitment.png)
+![A defined capability need leads to three possible routes—develop existing people, use interim help or recruit—with support and review following each choice.](private-techuity/posts/14-tech-operating-partner/assets/images/tech-operating-partner/capability-before-recruitment.png)
 
 **Figure 2:** *The partner helps identify the missing capability and an appropriate route to it. Hiring follows agreed role, budget and appointment decisions; every route needs support and review.*
 
@@ -151,7 +151,7 @@ The operating function can help choose a **use case**, a specific, limited task 
 
 The **CPO** connects a customer-facing use case to the product and its commercial purpose. The **CIO or relevant business leader** directs changes to internal ways of working. The **CTO and engineering leaders** establish delivery and ongoing operation. The **Chief Architect** examines how the tool connects to existing systems, what depends on it and whether the company could change suppliers. Data, security and legal specialists address the questions within their remits. The operating partner brings challenge, coordination and scarce expertise; the company names one executive accountable for the result.
 
-Evaluate the complete workflow: useful results, errors and recovery, human review, adoption, running costs and the work displaced. Faster code generation by itself does not establish faster customer delivery or justify cutting staff numbers. Before changing the staffing plan, show which work has actually disappeared and which new review or operating obligations remain. See [Clarify AI Strategy: Three Different Investment Questions](#ai-strategy-three-questions) and [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring).
+Evaluate the complete workflow: useful results, errors and recovery, human review, adoption, running costs and the work displaced. Faster code generation by itself does not establish faster customer delivery or justify cutting staff numbers. Before changing the staffing plan, show which work has actually disappeared and which new review or operating obligations remain. See [Clarify AI Strategy: Three Different Investment Questions](#ai-strategy-three-questions) and [Scale the Team Up: Headcount Is Not Capacity](#fix-decisions-before-hiring).
 
 {id: tech-operating-partner--using-ai-in-the-operating-partners-own-work}
 ### Using AI in the Operating Partner’s Own Work
@@ -178,7 +178,7 @@ A useful operating partner helps the first company design its pilot with an agre
 
 The function can still share evaluation methods and supplier knowledge across all three. Its contribution is a better sequence of decisions with reusable learning. Buying the same tool for everyone would be a much weaker success measure.
 
-![Shared AI methods inform three fictional company decisions: pilot with ready data, confirm permitted use of records whose permissions are unclear, or fix an unstable service first.](private-techuity/posts/22-tech-operating-partner/assets/images/tech-operating-partner/shared-ai-expertise-different-decisions.png)
+![Shared AI methods inform three fictional company decisions: pilot with ready data, confirm permitted use of records whose permissions are unclear, or fix an unstable service first.](private-techuity/posts/14-tech-operating-partner/assets/images/tech-operating-partner/shared-ai-expertise-different-decisions.png)
 
 **Figure 3:** *In the fictional example, reusable expertise supports different decisions: pilot, confirm permitted data use or restore reliability. Company conditions determine the sequence.*
 
@@ -193,7 +193,7 @@ Ask for a short explanation of the assignment: the decision or operating constra
 
 The operating function earns its place when it helps the company make a better decision, deliver a funded improvement or acquire a capability it can sustain. Review those contributions alongside customer outcomes, continuing obligations and team capacity. The number of assessments completed or technologies deployed can describe activity; the leader still needs to know what changed and whether the result is worth its cost.
 
-Part IV has connected the investor–company working arrangement, useful engagements and the people who support them. Part V follows those responsibilities through funding and ownership changes, starting with how a diligence finding becomes a company decision and a funded early plan: [LEAD: Manage Funding and Ownership Changes](#part-5) and [Use Diligence: Correct the Plan Before It Is Signed](#diligence-corrects-the-plan).
+Part III has connected the investor–company working arrangement, useful engagements and the people who support them. Part IV turns investor expectations into work the company can deliver, starting with which work fits the cash and team time: [COMMIT: Turn Expectations Into Work You Can Deliver](#part-4) and [Set Priorities: You Cannot Fund Everything at Once](#cannot-fund-everything).
 
 {id: tech-operating-partner--aside-building-credibility-across-companies}
 ## Aside: Building Credibility Across Companies

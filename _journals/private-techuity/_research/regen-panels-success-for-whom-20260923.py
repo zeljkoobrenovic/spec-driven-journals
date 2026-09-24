@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate legacy comic panels of 32-success-for-whom (asset slug 30-success-for-whom).
+"""Regenerate legacy comic panels of 37-success-for-whom (asset slug 30-success-for-whom).
 
 In-depth review 23 September 2026, finding SFW-05: panel 6's board read
 "TIMELINE: Q1 | Q2" with blank cash and freed-time lines, while the article
@@ -28,7 +28,7 @@ spec.loader.exec_module(helper)
 
 MODEL = 'gemini-3-pro-image-preview'
 CAST = J / '_research/comic-cast-20260913.jpeg'
-POST = J / 'posts/32-success-for-whom'
+POST = J / 'posts/37-success-for-whom'
 COMICS = POST / 'comics.md'
 LEGACY = '30-success-for-whom'
 PANEL_RE = re.compile(r'<!-- comic-panel\s+(\{.*?\})\s*-->', re.S)
@@ -104,7 +104,7 @@ def main() -> int:
         previous = asset.read_bytes()
         backups = J / '_research/discarded-comic-variants'
         backups.mkdir(exist_ok=True)
-        (backups / f'32-success-for-whom-comic-{panel_id}-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
+        (backups / f'37-success-for-whom-comic-{panel_id}-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
         asset.write_bytes(data)
         print('written', asset.relative_to(ROOT), hashlib.sha256(data).hexdigest(), flush=True)
     return 0

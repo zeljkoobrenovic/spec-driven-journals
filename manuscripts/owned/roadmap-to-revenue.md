@@ -1,7 +1,7 @@
 {id: roadmap-to-revenue}
-# 12. Test Revenue Assumptions: Do Customers Respond as Expected?
+# 17. Test Revenue Assumptions: Do Customers Respond as Expected?
 
-![Test Revenue Assumptions: Do Customers Respond as Expected? — logo](private-techuity/posts/10-roadmap-to-revenue/assets/images/10-roadmap-to-revenue/logo.jpeg)
+![Test Revenue Assumptions: Do Customers Respond as Expected? — logo](private-techuity/posts/16-roadmap-to-revenue/assets/images/16-roadmap-to-revenue/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to trace a product change from customer need through customer behavior to a business result, and let the measured result revise the next commitment.
 
@@ -113,7 +113,7 @@ A usable proposal therefore includes a **conversion plan**: how the released tim
 
 The plan names three possible conversions, and the review has to say which one happened. The released time serves waiting customers. Or it avoids a supplier’s invoice or a hire. Or it stays unused, because something else is holding customers up. The step that limits how fast the whole process can go is called the **bottleneck**.
 
-![Released staff time can support more customers, other product work or avoided future spending while current payroll continues.](private-techuity/posts/10-roadmap-to-revenue/assets/images/10-roadmap-to-revenue/freed-time-conversion-plan.jpeg)
+![Released staff time can support more customers, other product work or avoided future spending while current payroll continues.](private-techuity/posts/16-roadmap-to-revenue/assets/images/16-roadmap-to-revenue/freed-time-conversion-plan.jpeg)
 
 **Figure 1:** *Time saved becomes useful capacity through a plan; it does not automatically reduce the payroll bill.*
 
@@ -134,7 +134,7 @@ That comparison leaves differences that “comparable customers” does not remo
 
 None of this makes the result useless. It means the honest claim is “the setup step plausibly helped produce the reduction, with these measurements and these unresolved differences”. It is not a precise claim that the product change alone caused it. Interviews can explain how the change helped; an enthusiastic testimonial is not a financial calculation.
 
-![An observed onboarding improvement is checked against the product change, customer mix and other initiatives using comparable groups.](private-techuity/posts/10-roadmap-to-revenue/assets/images/10-roadmap-to-revenue/check-what-explains-the-result.jpeg)
+![An observed onboarding improvement is checked against the product change, customer mix and other initiatives using comparable groups.](private-techuity/posts/16-roadmap-to-revenue/assets/images/16-roadmap-to-revenue/check-what-explains-the-result.jpeg)
 
 **Figure 2:** *An observed improvement needs a comparison that can reveal other explanations.*
 
@@ -215,7 +215,7 @@ The rest of the decision record:
 
 That is the chain breaking in the ordinary way. The link from setup step to effort held as far as the comparison can show: the reduction can’t be credited to the product change alone, but the evidence supports it. The link from released effort to customers served did not hold. The measurement did its job, because it changed the next commitment instead of decorating the last one. The [Practical Tools for Ownership and Technology Decisions](#toolkit)’s outcome and contribution ledger (Tool 6) is where the baseline, the committed and incurred cost, the observed result, the projection and the open work are recorded so the next review starts from them.
 
-The pilot’s result raises the next constraint. The remaining hours sit with customer data and with one specialist’s knowledge, and the plan still assumes onboarding volume grows. Whether the software and the team can deliver repeatable setup at that volume is the question of the chapter [Assess Capability: Can the Team Deliver?](#can-the-team-deliver); the organizational response, the chapter [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring), now follows it directly in Part III.
+The pilot’s result raises the next constraint. The remaining hours sit with customer data and with one specialist’s knowledge, and the plan still assumes onboarding volume grows. Whether the software and the team can deliver repeatable setup at that volume is the question of the chapter [Assess Capability: Can the Team Deliver?](#can-the-team-deliver); the organizational response, the chapter [Scale the Team Up: Headcount Is Not Capacity](#fix-decisions-before-hiring), opens Part V.
 
 {id: roadmap-to-revenue--questions-to-consider}
 ## Questions to Consider

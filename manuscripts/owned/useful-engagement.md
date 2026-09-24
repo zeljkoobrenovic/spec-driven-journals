@@ -1,7 +1,7 @@
 {id: useful-engagement}
-# 23. Set the Terms of Help: Agree the Work, Authority and Handover
+# 13. Set the Terms of Help: Agree the Work, Authority and Handover
 
-![Set the Terms of Help: Agree the Work, Authority and Handover — logo](private-techuity/posts/20-useful-engagement/assets/images/20-useful-engagement/logo.jpeg)
+![Set the Terms of Help: Agree the Work, Authority and Handover — logo](private-techuity/posts/12-useful-engagement/assets/images/12-useful-engagement/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to turn a request for help into a charter with resources, authority, evidence and a review date, then carry it through a scope change to a tested handover.
 
@@ -15,7 +15,7 @@
 > * **External help consumes internal time.** Ten specialist days, capped at €15,000, need six engineering days, two customer-team sessions and the product leader’s review; without those, the specialist’s availability doesn’t make the engagement feasible.
 > * **Let the review change the work.** When evidence shows a different constraint, the charter says who may redirect the remaining days, which work stops and whether the budget still fits. The engagement ends with a capability, a decision or an understood continuing service.
 
-Larkspur is the fictional software company this book follows. It sells scheduling software, and every new customer has to be **onboarded** — set up on the software and made ready to use it. Today one person does most of that work: Larkspur’s own **implementation specialist**, an employee who configures each new customer by hand. An investor now offers Larkspur a second, quite different person: an **outside specialist** from the investment firm’s own bench, lent for a few weeks to make that setup work repeatable. Keeping the two apart matters for the rest of this chapter. The employee is the dependency the company wants to remove; the visitor is the help brought in to remove it.
+Larkspur is the fictional software company this book follows. It sells scheduling software, and every new customer has to be **onboarded** — set up on the software and made ready to use it. Today one person does most of that work: Larkspur’s own **implementation specialist**, an employee who configures each new customer by hand. (How such a dependence is found and measured is shown later, in the chapters [Assess Capability: Can the Team Deliver?](#can-the-team-deliver) and [Scale the Team Up: Headcount Is Not Capacity](#fix-decisions-before-hiring); this chapter takes it as given.) An investor now offers Larkspur a second, quite different person: an **outside specialist** from the investment firm’s own bench, lent for a few weeks to make that setup work repeatable. Keeping the two apart matters for the rest of this chapter. The employee is the dependency the company wants to remove; the visitor is the help brought in to remove it.
 
 Everyone welcomes the offer. But suppose Larkspur accepted it just as it was made, with nothing agreed. This is what could happen: two weeks later, the outside specialist has interviewed the same engineers three times. The customer team still doesn’t know what will change or who is paying for the work.
 
@@ -62,7 +62,7 @@ The **investor-side sponsor** is the person in the investment firm backing the e
 
 This agreement is what rules out the imagined opening. The specialist’s access is listed, the interviews have a stated purpose and an engineer in the room, and the customer team knows on day one what will change and who is paying. The [Practical Tools for Ownership and Technology Decisions](#toolkit) provides a reusable version; its value comes from resolving these questions, not from completing every field.
 
-![An engagement agreement connects the expected result with people, cost, decision rights, information use and review.](private-techuity/posts/20-useful-engagement/assets/images/20-useful-engagement/support-engagement-agreement.jpeg)
+![An engagement agreement connects the expected result with people, cost, decision rights, information use and review.](private-techuity/posts/12-useful-engagement/assets/images/12-useful-engagement/support-engagement-agreement.jpeg)
 
 **Figure 1:** *Make the practical conditions of the help concrete before the engagement consumes time.*
 
@@ -147,7 +147,7 @@ A **handover** transfers the knowledge and responsibilities needed to continue t
 
 Not every engagement ends this way, and it doesn’t need to. Three outcomes are legitimate. A **capability** the company can now run itself. A **decision** the company can now make better, which may be that the original assignment was aimed at the wrong constraint. Or an **understood continuing service**, where scarce specialist help is kept on purpose, with its cost, availability and responsibilities agreed. What no engagement should leave is a critical dependency that nobody planned to fund.
 
-![Support can leave an internal capability, a better-supported decision or an explicit continuing service.](private-techuity/posts/20-useful-engagement/assets/images/20-useful-engagement/three-useful-support-endings.jpeg)
+![Support can leave an internal capability, a better-supported decision or an explicit continuing service.](private-techuity/posts/12-useful-engagement/assets/images/12-useful-engagement/three-useful-support-endings.jpeg)
 
 **Figure 2:** *Agree what remains useful after the initial assignment and who will sustain it.*
 

@@ -1,5 +1,5 @@
 {id: toolkit}
-# 38. Practical Tools for Ownership and Technology Decisions
+# Practical Tools for Ownership and Technology Decisions
 
 ![Practical Tools for Ownership and Technology Decisions — logo](private-techuity/posts/toolkit/assets/images/toolkit/logo.jpeg)
 
@@ -37,7 +37,7 @@ The tools keep their original numbers because chapters and earlier readers cite 
 | **Measure** | Did the work help, and is the benefit capacity or cash? | Outcome and contribution ledger — [Tool 6](#toolkit--tool-6); small scorecard — [Tool 7](#toolkit--tool-7) | [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue), [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill) |
 | **Revise or hand over** | We are combining or separating businesses; what must continue? | Integration or separation plan — [Tool 9](#toolkit--tool-9) | [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#acquisition-adds-work-first) |
 | **Revise or hand over** | Funding or ownership is changing; what evidence and obligations must travel with the work? | Funding or ownership handover — [Tool 10](#toolkit--tool-10) | [Manage the Handover: Carry Forward the Evidence and Obligations](#handover-of-obligations), [Manage Funding Delays: Revise the Cash Plan and Commitments](#the-financing-slipped) |
-| **Revise or hand over** | The headcount plan has to shrink, or an investor proposes an appointment; who decides, what stops, and what are the people owed? | Workforce decision — [Tool 13](#toolkit--tool-13) | [Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff), [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring) |
+| **Revise or hand over** | The headcount plan has to shrink, or an investor proposes an appointment; who decides, what stops, and what are the people owed? | Workforce decision — [Tool 13](#toolkit--tool-13) | [Scale the Team Down: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff), [Scale the Team Up: Headcount Is Not Capacity](#fix-decisions-before-hiring) |
 
 Tool 12 (choose the combination) comes before Tool 5 (commit to one initiative) in this order: each initiative can be feasible on its own while the combination is not.
 
@@ -380,7 +380,7 @@ Record the reason for the selected combination in ordinary language. A score can
 {id: toolkit--tool-13}
 ## 13. Record a Workforce Decision
 
-Use when an investor’s request, a funding condition or the company’s own cash forecast means the headcount plan has to change: a reduction, a freeze that becomes permanent, or a consolidation after an acquisition. See the chapter [Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff) for the worked reduction and [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring) for the knowledge-transfer test and for an investor-proposed appointment, which uses the first three rows and the role-design fields of Tool 5 rather than a separate form. Reuse Tool 1’s Authority row and Tool 12’s option comparison rather than copying them.
+Use when an investor’s request, a funding condition or the company’s own cash forecast means the headcount plan has to change: a reduction, a freeze that becomes permanent, or a consolidation after an acquisition. See the chapter [Scale the Team Down: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff) for the worked reduction and [Scale the Team Up: Headcount Is Not Capacity](#fix-decisions-before-hiring) for the knowledge-transfer test and for an investor-proposed appointment, which uses the first three rows and the role-design fields of Tool 5 rather than a separate form. Reuse Tool 1’s Authority row and Tool 12’s option comparison rather than copying them.
 
 | Field | Record |
 | --- | --- |

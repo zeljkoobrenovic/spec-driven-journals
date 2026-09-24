@@ -1,27 +1,27 @@
-# Editorial review: PART IV — Beyond Money: Getting Useful Help From Your Investor
+# Editorial review: PART III — Turning Investor Expectations Into Commitments
 
-Reassessed 15 September 2026 from the full introduction, previous review, revision log and all three chapters it introduces.
+Reassessed 15 September 2026 from the full introduction, previous review, revision log, configured order and all nine chapters it introduces.
 
 ## Current assessment
 
-This is now a strong part introduction. A capability gap leads to three distinct decisions: understand the adviser's role, choose a source of help, and agree an engagement. The compressed provider paragraph illustrates differences in capacity and conditions without repeating the earlier investor taxonomy. Alternatives outside the investor's network make the company-side perspective credible.
+The three groups give this long part a usable shape: choose work and establish evidence, examine delivery and organization, then consider specific technical and acquisition decisions. Moving the organization chapter immediately after delivery is a substantive improvement. Readers can now investigate a decision bottleneck before interpreting it as a need for more people or a new architecture.
 
-The allowance for a deliberately funded continuing specialist service is clear and valuable. It prevents “capability left behind” from implying that every specialty must become an internal team. Terminology, tone and pacing are proportionate; the conclusion names the accountable company leader and hands the reader into the lifecycle part. Preserve this structure and the current title.
+The introduction makes company investment broader than a valuation exercise, gives cash and scarce skills equal attention, and retains one compact explanation of how assumptions vary across financing arrangements. Its opening, learning path and transition into support each serve a distinct purpose. The revised structure should be preserved.
 
 ## Active recommendations
 
-There is no essential local correction. **Low-impact preference:** the learning outcome and “By the end” paragraph repeat the three-step route; one could be shortened if the collection's openings are streamlined. The repetition is small and may help a reader entering at this part.
+- **Low — Widen the handoff to Part IV by a few words.** “People and connections around the investor” describes one route, while Part IV now explicitly compares peers, independent specialists, hires and investor support. “Help from the investor or another source” better previews that choice.
+- **Low — Keep the learning path at its present level of detail.** The nine chapters now contain decisions, costs and review points. Repeating those figures here would make later consistency repairs harder. This is a preservation recommendation, not a request for more material.
 
-The underlying sourcing and engagement chapters now justify their separate places, although their pilot calendar and specialist budget still need reconciliation. Track those issues in the [sourcing review](../19-help-that-changes-capability/REVIEW.md) and [engagement review](../20-useful-engagement/REVIEW.md), rather than combining the chapters simply to comply with the earlier optional suggestion.
+No high- or medium-impact local rewrite is required. Several promised funded examples still contain unreconciled costs and conditions; see the [collection review](../REVIEW.md). Those defects belong in the worked chapters rather than being concealed by a vaguer introduction.
 
 ## Changes since the previous review
 
 | Previous recommendation | Current disposition |
 | --- | --- |
-| Preserve role → source → engagement boundaries | **Resolved:** the introduction states the jobs and the chapters substantially perform them. |
-| Retain continuing services as a legitimate result | **Resolved locally:** this allowance also survives in the toolkit and finale. |
-| Shorten the investor-category recap | **Resolved through an effective compact alternative.** |
-| Harmonize the Part IV title | **Resolved:** the guide and configuration use the current title. |
-| Consider combining the final two chapters for a shorter edition | **Superseded:** their distinct decisions now justify keeping both. |
+| Group the nine-chapter route into manageable moves | **Resolved.** |
+| Place organization next to delivery | **Resolved:** introduction, configuration and chapter handoffs agree. |
+| Retain one concise explanation of alternate financing settings | **Resolved:** the introduction supplies shared context without demanding a mini-case in every chapter. |
+| Reduce repetitive framing | **Resolved:** the page now functions as a map. |
 
-No new outline or factual verification issue arises on this page.
+No further outline or companion format is needed for this introduction.

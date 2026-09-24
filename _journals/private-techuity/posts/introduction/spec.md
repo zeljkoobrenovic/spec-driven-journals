@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-23
+revised: 2026-09-24
 ---
 
 # Spec: Owned — Purpose and Reading Guide
@@ -15,12 +15,12 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
-- Add the investor-network learning chapter after operating-model blueprints, a direct reading route and the configured main chapters in the contents (35 as of 23 September 2026). Keep the six parts and existing public links.
+- Add the investor-network learning chapter after operating-model blueprints, a direct reading route and the configured main chapters in the contents (35 as of 23 September 2026). Keep the seven parts (Part IV SCALE added 2026-09-24) and existing public links.
 
 - Keep the six part introductions unnumbered in the manuscript when their visible titles omit the Part I–VI prefix; use their stable matching `part-N` permalinks to retain the configured chapter sequence.
-- Include operating-model blueprints first after the Part IV introduction and technology operating partners last in Part IV, with the adviser chapter immediately before it; show every configured main chapter and retain the route for agreeing the investor–company operating arrangement.
+- Include operating-model blueprints first after the Part V introduction and technology operating partners last in Part V, with the adviser chapter immediately before it; show every configured main chapter and retain the route for agreeing the investor–company operating arrangement.
 
-- Provide a route for readers encountering the technology operating partner function within Part IV.
+- Provide a route for readers encountering the technology operating partner function within Part V.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Retain the four-question figure. In the six-part overview position, add a new framework illustration with Understand, Align, Commit, Collaborate, Lead and Learn connected around the shared purpose of commitments the company can keep. Show a reading sequence and a return from lessons to reconsidering assumptions. Explain that the parts are responsibilities to revisit as conditions change. Save the new asset separately and retain the earlier reading-journey artwork. Use the book’s ivory, navy, muted teal and ochre style, readable labels, descriptive alt text and a numbered caption.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
@@ -60,11 +60,13 @@ See the bibliography and the relevant chapters. The source registry records cons
 
 ## Changelog
 
+- 2026-09-24 (final order): eight parts, I UNDERSTAND, II ALIGN, III COLLABORATE, IV COMMIT, V SCALE, VI SUSTAIN, VII LEAD, VIII LEARN. Part list, contents (chapters 10–29 renumbered), decision-route table, format counts and the framework figure (`owned-eight-part-framework.jpeg`) updated; the earlier same-day seven-part entry is superseded.
+- 2026-09-24 (Part IV SCALE): Seven parts. New Part IV description added to the part list and the contents; former Parts IV–VI renumbered V–VII with their part-intro links; chapters renumbered 13–29 in the contents (34 main chapters unchanged); the seven-part framework figure replaces the six-part one (new asset `owned-seven-part-framework.jpeg`); counts of part introductions corrected to seven; the decision-route table points to the Part III or Part IV chapter for an area.
 - 2026-09-23 (in-depth review round 3, INTRO-002, INTRO-008, INTRO-009, INTRO-010, INTRO-011): interest glossed at the lender definition and public development banks described in the evidence section; the staff-reduction route’s further-reading cell shortened to a three-way contrast; the ownership-scope paragraph split into coverage, where the money goes and comparison cases; the cash-forecast sentence split so layoff payments and later savings are stated plainly; the book manuscript and `Book.txt` re-exported with all configured chapters so the exported introduction’s routes and contents are working links.
 - 2026-09-23 (in-depth review round 2, INTRO-001, INTRO-002, INTRO-006, INTRO-007, INTRO-MAJOR-1): summary-length statement restated as a target that some current drafts exceed; chapter-title vocabulary (revenue, profit, cash, cash flow, equity, carry, headcount versus capacity, due diligence, exit, operating earnings, resilience, cloud costs, lenders) explained before the routes table; AI given a familiar example; carry attributed to the fund manager, not to investors in general; outside investor defined with the distinction between new company funding and buying existing owners’ shares; Figure 1 regenerated so the separation arrow leads away from the larger building, alt text rewritten to the visible content, and the published copy resynchronized with the source.
 - 2026-09-23 (in-depth review round 1, INTRO-001 to INTRO-005, INTRO-MINOR-3, INTRO-MAJOR-1): format promise restated from the current files (35 chapters, all with article, TL;DR and comic artwork; summary target with documented exceptions; page versus panel comics); shared example described as six stages across nine chapters including the data-foundations chapter, with the financing-delay and layoff pair as a separate connected example; finance vocabulary glossed at first use; routes table given a start column; six-part overview as bullets; Figure 1 regenerated with plain change examples, no letters and an approval cue. Stale 34-chapter criteria reconciled to the configured 35.
 - 2026-09-23 (portfolio appendix): Add the recreated Appendix section and its Grounded Architecture chapter to the reading routes, format note and contents; 47 configured pages, 35 main chapters unchanged.
-- 2026-09-22 (investor learning): Add the investor-network learning chapter after operating-model blueprints, a direct reading route and 34 main chapters in the contents. Keep the six parts and existing public links.
+- 2026-09-22 (investor learning): Add the investor-network learning chapter after operating-model blueprints, a direct reading route and 34 main chapters in the contents. Keep the seven parts (Part IV SCALE added 2026-09-24) and existing public links.
 
 - 2026-09-22: Reconcile reading-format coverage after adding TL;DR and illustrated Comic modalities to operating-model blueprints and technology operating partners. All 33 main chapters now provide all three formats.
 

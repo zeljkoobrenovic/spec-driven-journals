@@ -4,7 +4,7 @@
 
 The author accepted a dedicated chapter about investor support through knowledge sharing, seminars, summits, conferences, peer communities and road trips, starting with the supplied Prosus China visit. During drafting, the author added CTO Starter Kit and supplied its public start page and GitHub repository.
 
-The new chapter is `posts/18a-learn-through-investors-network/`, permalink `learn-through-investors-network`. It is displayed as Chapter 20, after operating-model blueprints and before sourcing help. The sourcing-to-engagement handoff stays intact. Existing source paths were retained because the workspace already contained substantial editorial work; configuration supplies reading order. The journal now has 34 main chapters and 45 configured pages.
+The new chapter is `posts/10-learn-through-investors-network/`, permalink `learn-through-investors-network`. It is displayed as Chapter 20, after operating-model blueprints and before sourcing help. The sourcing-to-engagement handoff stays intact. Existing source paths were retained because the workspace already contained substantial editorial work; configuration supplies reading order. The journal now has 34 main chapters and 45 configured pages.
 
 ## Editorial choices
 

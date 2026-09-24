@@ -1,7 +1,7 @@
 {id: operating-model-blueprints}
-# 20. Plan Investor Support: Match the Help to Company Priorities
+# 10. Plan Investor Support: Match the Help to Company Priorities
 
-![Plan Investor Support: Match the Help to Company Priorities — logo](private-techuity/posts/18-operating-model-blueprints/assets/images/operating-model-blueprints/logo.png)
+![Plan Investor Support: Match the Help to Company Priorities — logo](private-techuity/posts/09-operating-model-blueprints/assets/images/operating-model-blueprints/logo.png)
 
 > **IN THIS SECTION, YOU WILL:** Match business priorities to four ways of working with an investor, connect them to the company’s internal organization, and write a blueprint that makes authority, capacity and review explicit.
 
@@ -15,7 +15,7 @@ Suppose an investor — someone who has put money into the business expecting a 
 
 An **operating model** is the arrangement of people, responsibilities, decisions, work and information through which a business carries out its strategy. A **blueprint** makes that arrangement specific enough to discuss and test. It describes the work people will do together, including the resources and authority on which it depends.
 
-This chapter offers a selection guide and four proposed blueprints for a product or technology leader working with investors. Most of the published evidence comes from **private equity (PE)**: a kind of ownership investment made outside the public stock market, where shares in listed companies are bought and sold. PE firms buy ownership stakes in companies that are not listed there, using money pooled from other investors in a **fund**. The businesses a fund has invested in are its **portfolio**, and each one is a **portfolio company**. The designs are the book’s synthesis, intended for adaptation; they are neither a standard industry classification nor a ranking of investors. The closing chapter of Part IV, [Understand Technology Operating Partners: How They Work With Your Team](#tech-operating-partner), explains one important function within them. Here the subject is the wider working arrangement.
+This chapter offers a selection guide and four proposed blueprints for a product or technology leader working with investors. Most of the published evidence comes from **private equity (PE)**: a kind of ownership investment made outside the public stock market, where shares in listed companies are bought and sold. PE firms buy ownership stakes in companies that are not listed there, using money pooled from other investors in a **fund**. The businesses a fund has invested in are its **portfolio**, and each one is a **portfolio company**. The designs are the book’s synthesis, intended for adaptation; they are neither a standard industry classification nor a ranking of investors. The closing chapter of Part III, [Understand Technology Operating Partners: How They Work With Your Team](#tech-operating-partner), explains one important function within them. Here the subject is the wider working arrangement.
 
 {id: operating-model-blueprints--connect-two-designs}
 ## Connect Two Designs
@@ -30,7 +30,7 @@ Bain’s February 2026 analysis argues for examining commercial, operational and
 
 For each proposed improvement, identify what is missing. A decision blocked at the **board** — the group of directors that governs the company, oversees its direction and approves its largest decisions — needs an approval route. A technology officer facing an unfamiliar **acquisition**, the purchase of another business, may need experienced advice. Testing whether an **artificial intelligence (AI)** feature — software that performs tasks normally needing human judgment, such as reading a customer’s written complaint and proposing an answer — works well enough to put in front of customers may need a specialist. A company managing several integrations may need dedicated execution capacity. Describing the constraint makes the choice of support easier to defend.
 
-![On the left, four investor-involvement choices: board, adviser, specialists and embedded people working inside the company. On the right, three company-organization choices: local teams, common standards and a shared service. An agreed blueprint connects the two sides.](private-techuity/posts/18-operating-model-blueprints/assets/images/operating-model-blueprints/two-connected-operating-models.png)
+![On the left, four investor-involvement choices: board, adviser, specialists and embedded people working inside the company. On the right, three company-organization choices: local teams, common standards and a shared service. An agreed blueprint connects the two sides.](private-techuity/posts/09-operating-model-blueprints/assets/images/operating-model-blueprints/two-connected-operating-models.png)
 
 **Figure 1:** *Choose investor support and company organization separately, then connect them through an explicit agreement about authority, people, funding and review. The figure’s fourth investor choice,* Embedded, *is the dedicated execution described in Blueprint 4: people assigned to work inside the company’s own teams.*
 
@@ -62,7 +62,7 @@ A company can combine these arrangements across different work. A specialist ass
 
 This fits a company whose leaders have the capability and capacity to execute an agreed plan. The investor contributes through the board, investment decisions and selected discussions. Product and technology leaders turn the plan into priorities, staffing and delivery through the company’s management structure.
 
-![The board agrees the plan and reviews it with company leaders, who make delivery decisions and allocate funded product and engineering capacity.](private-techuity/posts/18-operating-model-blueprints/assets/images/operating-model-blueprints/blueprint-1-board-oversight.jpeg)
+![The board agrees the plan and reviews it with company leaders, who make delivery decisions and allocate funded product and engineering capacity.](private-techuity/posts/09-operating-model-blueprints/assets/images/operating-model-blueprints/blueprint-1-board-oversight.jpeg)
 
 **Figure 2:** *Board oversight works through an agreed plan and review. Company leaders retain delegated delivery decisions and need funded people to carry them out.*
 
@@ -79,7 +79,7 @@ For a product team, this might mean the board agrees the funded growth prioritie
 
 This fits a bounded need for experience or challenge when the company can supply implementation capacity. An adviser might help a first-time technology officer assess an acquisition, help a product officer examine a product investment, or coach a leadership team through a change it has not made before.
 
-![An operating adviser contributes judgment under an agreed remit; a company leader makes the decision and the company team supplies implementation capacity.](private-techuity/posts/18-operating-model-blueprints/assets/images/operating-model-blueprints/blueprint-2-operating-adviser.jpeg)
+![An operating adviser contributes judgment under an agreed remit; a company leader makes the decision and the company team supplies implementation capacity.](private-techuity/posts/09-operating-model-blueprints/assets/images/operating-model-blueprints/blueprint-2-operating-adviser.jpeg)
 
 **Figure 3:** *The adviser contributes experience and challenge to a company decision. Management keeps the agreed authority and commits the people needed for implementation.*
 
@@ -96,7 +96,7 @@ A broad calendar invitation or a monthly presentation supplies little evidence o
 
 This fits recurring needs for expertise that each company cannot justify maintaining in full: checking security risks and protections, pricing analysis, executive recruitment, building and maintaining the systems that hold the company’s data, or testing whether an AI system works well enough for its intended use. Specialists may belong to the investor, a provider or another explicitly agreed service arrangement.
 
-![Shared specialists have competing requests; a named assignment agrees people, dates and cost with an assignment owner inside the company, whose local team implements and operates the result.](private-techuity/posts/18-operating-model-blueprints/assets/images/operating-model-blueprints/blueprint-3-shared-specialists.jpeg)
+![Shared specialists have competing requests; a named assignment agrees people, dates and cost with an assignment owner inside the company, whose local team implements and operates the result.](private-techuity/posts/09-operating-model-blueprints/assets/images/operating-model-blueprints/blueprint-3-shared-specialists.jpeg)
 
 **Figure 4:** *Shared expertise becomes usable through a specific assignment. Agree people, dates and cost, with a named company lead and local capacity to use the work.*
 
@@ -115,7 +115,7 @@ For a **pilot** — a limited trial run before broader use — of an AI feature,
 
 This fits work that needs sustained coordination or leadership beyond the existing team’s available capacity. Examples include a major integration, a difficult systems transition or a temporary gap in an executive role. A dedicated **program leader** who coordinates related work, a delivery team **embedded** inside the company’s own teams, and an **interim** — temporary — executive are different assignments; choose and describe the one required. This is the arrangement Figure 1 labels *Embedded*.
 
-![An illustrative program leader reports to the company’s chief executive officer, labelled CEO in the diagram, and works with assigned people inside the company, with scope, budget and a planned handover to a permanent owner; investor review runs through the same chief executive.](private-techuity/posts/18-operating-model-blueprints/assets/images/operating-model-blueprints/blueprint-4-dedicated-execution.jpeg)
+![An illustrative program leader reports to the company’s chief executive officer, labelled CEO in the diagram, and works with assigned people inside the company, with scope, budget and a planned handover to a permanent owner; investor review runs through the same chief executive.](private-techuity/posts/09-operating-model-blueprints/assets/images/operating-model-blueprints/blueprint-4-dedicated-execution.jpeg)
 
 **Figure 5:** *In this illustrative program assignment, the company agrees the reporting line, authority, people and budget. The diagram’s CEO is the chief executive officer. A planned handover keeps continuing ownership visible.*
 
@@ -123,11 +123,11 @@ McKinsey’s June 2026 article discusses additional transformation leadership in
 
 **Authority and resources.** Specify the reporting line, budget, decisions delegated to the appointee and the work their people will do. A program leader may coordinate dependencies without controlling each function’s priorities. An interim technology officer may hold executive authority through a formal appointment. Establish how the chief executive resolves disputes and who remains responsible for existing customer services.
 
-**Working practice.** Give the assignment one place in the company’s plan. Identify which employees are allocated, how continuing work is covered and which commitments move. Agree progress reviews around completed work, remaining dependencies and decisions needed. Investor reporting should use that evidence. [Assess Capability: Can the Team Deliver?](#can-the-team-deliver) and [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring) help distinguish additional people from usable capacity.
+**Working practice.** Give the assignment one place in the company’s plan. Identify which employees are allocated, how continuing work is covered and which commitments move. Agree progress reviews around completed work, remaining dependencies and decisions needed. Investor reporting should use that evidence. [Assess Capability: Can the Team Deliver?](#can-the-team-deliver) and [Scale the Team Up: Headcount Is Not Capacity](#fix-decisions-before-hiring) help distinguish additional people from usable capacity.
 
 **Review and change.** Set a review date and a condition for handover at the start. Look for delivery progress, service stability and whether the permanent organization can sustain the change. A **program office** — a small team that supports the planning and tracking of the work — that only collects updates leaves execution capacity unresolved. An interim leader who becomes indispensable without a succession plan leaves a continuing dependency. Extend, revise or end the assignment through the agreed authority route, with the cost and displaced work visible.
 
-![Four equal panels pair a decision route with board oversight, experienced judgment with an adviser, specialist skill with shared experts, and execution capacity with dedicated company work.](private-techuity/posts/18-operating-model-blueprints/assets/images/operating-model-blueprints/four-needs-four-contributions.png)
+![Four equal panels pair a decision route with board oversight, experienced judgment with an adviser, specialist skill with shared experts, and execution capacity with dedicated company work.](private-techuity/posts/09-operating-model-blueprints/assets/images/operating-model-blueprints/four-needs-four-contributions.png)
 
 **Figure 6:** *Match the contribution to the missing decision route, judgment, expertise or execution capacity. Several arrangements can support different parts of the same plan.*
 
@@ -186,7 +186,7 @@ The blueprint made that revision possible: available people, decision rights and
 
 At that review, management can decide whether the program assignment should end, continue with a narrower scope, or be replaced by a permanent group capability. Restarting the service for customers would be one of those decisions, with its own approval and its own committed people and funding; nothing beyond week twelve is reserved in advance. The example proposes a sequence of decisions. It makes no claim about **revenue actually earned** — income earned from products or services already supplied, rather than income merely forecast — or about **investment returns**, the investor’s eventual gain or loss on the money it put in.
 
-![In the fictional identity pilot, a specialist works for six weeks and a program leader for twelve; at week six the timeline turns to a narrow rollout — extending the service to only two volunteer customers — while week twelve leaves the assignment’s continuation open between ending, extending and making it permanent.](private-techuity/posts/18-operating-model-blueprints/assets/images/operating-model-blueprints/pilot-review-and-handover.png)
+![In the fictional identity pilot, a specialist works for six weeks and a program leader for twelve; at week six the timeline turns to a narrow rollout — extending the service to only two volunteer customers — while week twelve leaves the assignment’s continuation open between ending, extending and making it permanent.](private-techuity/posts/09-operating-model-blueprints/assets/images/operating-model-blueprints/pilot-review-and-handover.png)
 
 **Figure 7:** *The fictional pilot commits people for defined periods. The six-week review changes scope; the twelve-week review decides whether the assignment ends, continues or becomes a permanent capability. The diagram’s* Narrow rollout *is the smaller next step — extending the service to two volunteer customers rather than to everyone. That narrow rollout closes at week ten, when both customers return to their original sign-ins, so weeks eleven and twelve carry only the preparation of the next proposal.*
 

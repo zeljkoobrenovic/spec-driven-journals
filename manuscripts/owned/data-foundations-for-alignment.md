@@ -1,5 +1,5 @@
 {id: data-foundations-for-alignment}
-# 37. Appendix: Data Foundations for Alignment With Investors
+# Appendix: Data Foundations for Alignment With Investors
 
 ![Appendix: Data Foundations for Alignment With Investors — logo](private-techuity/posts/data-foundations-for-alignment/assets/images/data-foundations-for-alignment/logo.jpeg)
 
@@ -245,7 +245,7 @@ Passing lets Priya request a further stage; it approves nothing by itself.
 
 [Tool 15](#toolkit--tool-15) gives the measure record used above. For a measure that is going into an investor conversation, fill in the definition, source, owner, refresh frequency and boundaries; then, for each figure you report from it, the baseline, the comparison, the kind (actual, target, forecast or assumption — or committed, for a resource the board has authorized) and the decision it informs. If a measure cannot be given an owner or a decision, it probably should not be in the pack.
 
-Part II established who decides, what each party stands to gain or lose and how the relationship behaves under pressure; this appendix has assembled the evidence all three depend on. Part III shows what this evidence is for: choosing among things the company cannot all afford, and committing only to what it can deliver — [COMMIT: Turn Expectations Into Work You Can Deliver](#part-3) and [Set Priorities: You Cannot Fund Everything at Once](#cannot-fund-everything).
+Part II established who decides, what each party stands to gain or lose and how the relationship behaves under pressure; this appendix has assembled the evidence all three depend on. Part IV shows what this evidence is for: choosing among things the company cannot all afford, and committing only to what it can deliver — [COMMIT: Turn Expectations Into Work You Can Deliver](#part-4) and [Set Priorities: You Cannot Fund Everything at Once](#cannot-fund-everything).
 
 {id: data-foundations-for-alignment--questions-to-consider}
 ## Questions to Consider

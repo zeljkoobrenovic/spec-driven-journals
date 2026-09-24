@@ -1,5 +1,5 @@
 {id: grounded-architecture-portfolio}
-# 36. Appendix: Grounded Architecture Across an Investment Portfolio
+# Appendix: Grounded Architecture Across an Investment Portfolio
 
 ![Appendix: Grounded Architecture Across an Investment Portfolio — logo](private-techuity/posts/grounded-architecture-portfolio/assets/images/grounded-architecture-portfolio/logo.jpeg)
 
@@ -111,7 +111,7 @@ The design rule that follows is the appendix’s central recommendation for the 
 
 **Figure 4:** *Decide the mix per company and write it down. The instruments are the same; the settings follow the investor's rights, the company's autonomy and the investment's objectives.*
 
-Transformation support, the third part of the operating model, becomes in the portfolio setting the investor’s **value creation plan**: the intended improvements that turn an investment thesis into company work. Grounded Architecture’s contribution is to insist that the plan be grounded before it is executed: evidence about the current state from the data pillar, the right people connected through the network, and decision boundaries agreed before anyone is asked to change anything. [S115: Transforming organizations with Grounded Architecture](https://grounded-architecture.io/transforming) A value creation plan written before the landscape has been mapped is a set of assumptions, and Part V of this book follows what happens when assumptions meet diligence.
+Transformation support, the third part of the operating model, becomes in the portfolio setting the investor’s **value creation plan**: the intended improvements that turn an investment thesis into company work. Grounded Architecture’s contribution is to insist that the plan be grounded before it is executed: evidence about the current state from the data pillar, the right people connected through the network, and decision boundaries agreed before anyone is asked to change anything. [S115: Transforming organizations with Grounded Architecture](https://grounded-architecture.io/transforming) A value creation plan written before the landscape has been mapped is a set of assumptions, and Part VII of this book follows what happens when assumptions meet diligence.
 
 {id: grounded-architecture-portfolio--a-fictional-illustration}
 ## A Fictional Illustration
@@ -142,7 +142,7 @@ These are potential benefits, and they carry a risk worth stating. Evidence that
 {id: grounded-architecture-portfolio--what-this-appendix-does-not-establish}
 ## What This Appendix Does Not Establish
 
-Grounded Architecture is the author’s framework, and its pages are a practitioner’s account of a method and its requirements rather than a study of its effects. Applying it inside an organization is what the framework describes; applying it across a portfolio is this appendix’s proposal, drawn from the resemblance between the two settings and from the investor–company material in Part IV. No source consulted here measures the effect of shared analytics or collaborative networks on investment outcomes, and the fictional Tidewater example illustrates the proposal rather than testing it. The proposal is offered because the alternative, questionnaires, stale slides and rules issued without understanding, is one I have watched fail in both settings.
+Grounded Architecture is the author’s framework, and its pages are a practitioner’s account of a method and its requirements rather than a study of its effects. Applying it inside an organization is what the framework describes; applying it across a portfolio is this appendix’s proposal, drawn from the resemblance between the two settings and from the investor–company material in Part III. No source consulted here measures the effect of shared analytics or collaborative networks on investment outcomes, and the fictional Tidewater example illustrates the proposal rather than testing it. The proposal is offered because the alternative, questionnaires, stale slides and rules issued without understanding, is one I have watched fail in both settings.
 
 {id: grounded-architecture-portfolio--questions-to-consider}
 ## Questions to Consider

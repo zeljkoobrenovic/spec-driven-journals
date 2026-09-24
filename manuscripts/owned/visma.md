@@ -1,7 +1,7 @@
 {id: visma}
-# 32. Visma: Continuity of Manager Is Not Continuity of Money
+# 34. Visma: Continuity of Manager Is Not Continuity of Money
 
-![Visma: Continuity of Manager Is Not Continuity of Money — logo](private-techuity/posts/29-visma/assets/images/27-visma/logo.jpeg)
+![Visma: Continuity of Manager Is Not Continuity of Money — logo](private-techuity/posts/33-visma/assets/images/27-visma/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to look behind a familiar investment firm to the funds and shareholders that actually own the company, and to check that two profit figures for the same year were calculated the same way before you budget for acquisitions and shared support.
 
@@ -59,7 +59,7 @@ Even this partial map shows the title’s point. The manager’s name is constan
 
 What the map cannot show is equally important: the cash each fund paid in and took out, the net return any fund actually realized (what its investors got back relative to what they put in, after costs), the conflicts examined in each transaction, and how much of any round reached the company as new funding rather than paying departing shareholders. The €19 billion valuation is not cash distributed to investors, and it is not cash for the company.
 
-![A company and investment firm can maintain a long relationship while the underlying funds and investors change.](private-techuity/posts/29-visma/assets/images/27-visma/continuity-with-changing-investors.jpeg)
+![A company and investment firm can maintain a long relationship while the underlying funds and investors change.](private-techuity/posts/33-visma/assets/images/27-visma/continuity-with-changing-investors.jpeg)
 
 **Figure 1:** *Continuity of familiar people does not establish that the investment and decision rights are unchanged.*
 
@@ -120,7 +120,7 @@ Technology creates a similar measurement problem. An integration team can be cha
 
 The chapter [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem) adds a different angle on the same measurement problem: a later owner inheriting accumulated acquisition work and a partial reporting period.
 
-![Repeated acquisitions draw on reusable checks before buying, integration choices and shared support while requiring explicit local decision rights.](private-techuity/posts/29-visma/assets/images/27-visma/repeat-acquisitions-as-capability.jpeg)
+![Repeated acquisitions draw on reusable checks before buying, integration choices and shared support while requiring explicit local decision rights.](private-techuity/posts/33-visma/assets/images/27-visma/repeat-acquisitions-as-capability.jpeg)
 
 **Figure 2:** *When acquisitions recur, their support and integration demands belong in the operating model and its cash plan. “Repeatable diligence” in the figure means the checks a buyer runs on a company before purchase, reused from deal to deal.*
 

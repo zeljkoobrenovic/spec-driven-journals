@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate or re-letter legacy comic panels of 27-handover-of-obligations (asset slug 25-handover-of-obligations).
+"""Regenerate or re-letter legacy comic panels of 32-handover-of-obligations (asset slug 25-handover-of-obligations).
 
 In-depth review 23 September 2026: HND-010 (panel 2's binder tabs were
 malformed lettering), HND-001 (panel 3's bubble said "Paid" for incurred
@@ -31,7 +31,7 @@ spec.loader.exec_module(helper)
 
 MODEL = 'gemini-3-pro-image-preview'
 CAST = J / '_research/comic-cast-20260913.jpeg'
-POST = J / 'posts/27-handover-of-obligations'
+POST = J / 'posts/32-handover-of-obligations'
 COMICS = POST / 'comics.md'
 LEGACY = '25-handover-of-obligations'
 PANEL_RE = re.compile(r'<!-- comic-panel\s+(\{.*?\})\s*-->', re.S)
@@ -112,7 +112,7 @@ def retext(panel_id: str, old: str, new: str, key: str) -> None:
     previous = asset.read_bytes()
     backups = J / '_research/discarded-comic-variants'
     backups.mkdir(exist_ok=True)
-    (backups / f'27-handover-of-obligations-comic-{panel_id}-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
+    (backups / f'32-handover-of-obligations-comic-{panel_id}-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
     asset.write_bytes(data)
     print('retexted', asset.relative_to(ROOT), hashlib.sha256(data).hexdigest(), flush=True)
 
@@ -138,7 +138,7 @@ def main() -> int:
         previous = asset.read_bytes()
         backups = J / '_research/discarded-comic-variants'
         backups.mkdir(exist_ok=True)
-        (backups / f'27-handover-of-obligations-comic-{panel_id}-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
+        (backups / f'32-handover-of-obligations-comic-{panel_id}-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
         asset.write_bytes(data)
         print('written', asset.relative_to(ROOT), hashlib.sha256(data).hexdigest(), flush=True)
     return 0

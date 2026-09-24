@@ -1,5 +1,5 @@
 {id: obligations-before-budget}
-# 7. Understand Cash Flow: Confirm the Cash Before You Commit
+# 6. Understand Cash Flow: Confirm the Cash Before You Commit
 
 ![Understand Cash Flow: Confirm the Cash Before You Commit — logo](private-techuity/posts/05-obligations-before-budget/assets/images/05-obligations-before-budget/logo.jpeg)
 
@@ -28,7 +28,7 @@ Three terms carry the calculation. The earnings measure used here is **EBITDA**:
 {id: obligations-before-budget--from-earnings-to-the-cash-you-can-actually-spend}
 ## From Earnings to the Cash You Can Actually Spend
 
-Take Larkspur, the fictional scheduling-software company from the chapter [Understand Funding Choices: Match the Money to the Work](#raise-what-you-need), now a few years past its **buyout**, the purchase of the company by investors. Larkspur’s buyout was financed largely with borrowing, which makes it a **leveraged buyout**, and the company still carries that borrowing. The annual planning example below uses millions of euros and is this chapter’s own fictional scenario: it is separate from the generic buyout calculation in the chapter [Understand Investor Returns: Same Performance, Different Outcomes](#three-different-returns), from the smaller funding comparison in the previous chapter and from the first-hundred-days ledger of Part V, although it reuses the cost basis and decision rules of the pilot, the small trial priced in the next section. It is a simplified management model, not a cash-flow statement prepared under formal accounting rules. EBITDA already includes payroll and ordinary operating costs; capitalized development is listed separately so those cash payments don’t look as if they’ve disappeared.
+Take Larkspur, the fictional scheduling-software company from the chapter [Understand Funding Choices: Match the Money to the Work](#raise-what-you-need), now a few years past its **buyout**, the purchase of the company by investors. Larkspur’s buyout was financed largely with borrowing, which makes it a **leveraged buyout**, and the company still carries that borrowing. The annual planning example below uses millions of euros and is this chapter’s own fictional scenario: it is separate from the generic buyout calculation in the chapter [Understand Investor Returns: Same Performance, Different Outcomes](#three-different-returns), from the smaller funding comparison in the previous chapter and from the first-hundred-days ledger of Part VII, although it reuses the cost basis and decision rules of the pilot, the small trial priced in the next section. It is a simplified management model, not a cash-flow statement prepared under formal accounting rules. EBITDA already includes payroll and ordinary operating costs; capitalized development is listed separately so those cash payments don’t look as if they’ve disappeared.
 
 | Cash bridge | €m |
 | --- | ---: |
@@ -94,7 +94,7 @@ The working-capital line explains why sales growth can absorb cash. Larkspur gre
 | Evidence date | Day 90, 1 April: Priya reports the eight-customer cohort’s average hours |
 | Fallback | Extend the specialist for one quarter (€37,500) and defer the rest, if the specialist is available (held open by an option until day 100; asked afresh at mid-year) and Sam’s revised forecast covers each payment date |
 
-**Scenario note.** The pilot’s cost basis and decision rules are shared with the chapter [Understand Funding Choices: Match the Money to the Work](#raise-what-you-need) and the day-100 ledger of Part V, and the onboarding constraint is supported by customer evidence, as in the chapter [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue). The maintenance timing deliberately differs: those chapters place the first year of maintenance in the financial year after the step ships; here the charge starts the month the step enters service.
+**Scenario note.** The pilot’s cost basis and decision rules are shared with the chapter [Understand Funding Choices: Match the Money to the Work](#raise-what-you-need) and the day-100 ledger of Part VII, and the onboarding constraint is supported by customer evidence, as in the chapter [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue). The maintenance timing deliberately differs: those chapters place the first year of maintenance in the financial year after the step ships; here the charge starts the month the step enters service.
 
 | Option | Additional cash reserved this year | Engineer-weeks | Next decision date | Who decides |
 | --- | ---: | ---: | --- | --- |

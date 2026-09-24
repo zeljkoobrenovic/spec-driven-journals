@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Critically Evaluate AI Costs: Measure the Return per Task and per Period</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">OWNED: Product &amp; Engineering Leadership Under Investors</a><span class="nav-right"><a class="nav-prev" href="cheaper-cloud-bill.html" title="Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="part-7.html" title="LEAD: Manage Funding and Ownership Changes">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part VI — SUSTAIN: Keep the Technology You Run Worth Its Cost</p>
+        <h1>Critically Evaluate AI Costs: Measure the Return per Task and per Period</h1>
+        <p class="byline">Željko Obrenović  ·  2026-09-24  ·  17 min read · <a class="spec-link" href="ai-worth-its-cost.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/29-ai-worth-its-cost/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/29-ai-worth-its-cost/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">OWNED: Product &amp; Engineering Leadership Under Investors</a><span class="nav-right"><a class="nav-prev" href="cheaper-cloud-bill.html" title="Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="part-7.html" title="LEAD: Manage Funding and Ownership Changes">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Critically Evaluate AI Costs: Measure the Return per Task and per Period", "date": "2026-09-24", "author": "Željko Obrenović", "excerpt": "Read the running cost and the return of the AI you already run the way you read a cloud bill: per useful customer task, on one comparable basis, with usage, rates and construction separated, then decide how much to commit under a stated demand range and record the exposure that remains.", "permalink": "ai-worth-its-cost", "timetoread": "17 min read", "logo": "assets/images/29-ai-worth-its-cost/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)", "icon": "assets/icons/29-ai-worth-its-cost.png"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS SECTION, YOU WILL:** Learn to compute the return on an AI feature or tool for a stated period from figures you actually have, to explain why an AI bill grows faster than revenue, and to decide how much to commit to a vendor under a stated demand range, so that “what is our AI ROI” gets an answer with a unit, a period and a condition attached.\n\n> **WHY INVESTORS CARE:** AI features are sold on a subscription and paid for by usage. An investor sees the subscription revenue in the plan and the usage bill in the accounts, and wants to know whether the gap between them is a margin, a trend or a promise.\n\n> **WHY YOU SHOULD CARE:** A licence is a cost you set once. A token bill is a cost your customers, your engineers and your vendor all move without asking you, and it can turn a profitable feature into a loss-making one while the dashboard still shows growth.\n\n\n> **KEY POINTS:**\n>\n> * **Measure per useful customer task, on one basis.** Cost per token or per model call is the vendor’s unit. Cost per document sorted and accepted, per ticket resolved, per change completed is the company’s, and only that unit can be set against a price.\n> * **Separate why the bill changed.** Usage (more customers, more documents), rates (the vendor’s price per token) and construction (longer prompts, more context, retries, larger models) move the bill for different reasons, have different owners and take different remedies. A price cut can hide a construction cost that doubled.\n> * **Return has a period and a condition, and a commitment has a floor.** State the return for a dated period under the quality and review conditions that make it true, set the stop and reprice rules before the review, and size any committed spend at the low end of a demand range the company can pay for.\n\n<br>\nThe chapter [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](cheaper-cloud-bill.html) showed why a cloud bill has to be read through useful service, a comparable basis and the reasons costs change before anyone calls it an improvement. AI spending is a cloud bill with two additional habits. It is metered in **tokens**, the units in which AI services count the text a model reads and writes, so the cost of the same feature moves with how the feature is built as well as with how much it is used. And it is sold to the investor as a return: an **AI feature** with a monthly price, an **AI tool** that saves staff time. Both claims are checked here on money, the way [Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount](scale-the-team-with-ai.html) checks them on capacity.\n\nLarkspur is the fictional scheduling-software company this book follows. Alex leads technology as chief technology officer (CTO), Priya leads product, Ines is the chief executive who leads the company, Sam leads finance, and Morgan is the technology adviser to Larkspur’s investor. The chapter [Clarify AI Strategy: Three Different Investment Questions](ai-strategy-three-questions.html) left two AI investments with dated gates. The document-sorting feature, which sorts a customer’s incoming inspection documents into categories before maintenance is scheduled, passed its release gate on 11 December 2026: at least 95% of ordinary documents sorted correctly, no safety-relevant document missed, review effort below 1.5 hours a week, two of three trial customers willing to keep paying €300 a month. The board funded general release in the 2027 operating plan, and the feature went on sale to all customers on 1 April 2027. The support assistant that drafts responses for Larkspur’s six support agents passed its own check and runs at about €8,000 a year. Those results are taken as given here; this chapter is about what happens next. Every figure is fictional, and the shared Larkspur ledger that runs through the chapters [Plan the First Hundred Days: Turn Expectations Into Funded Work](first-hundred-days.html) and [Manage the Handover: Carry Forward the Evidence and Obligations](handover-of-obligations.html) is not touched.\n\nIt is September 2027. Forty customers pay for the sorting feature. Sam has noticed that the vendor’s bill has grown faster than the feature’s revenue for four months running, and Morgan has asked, ahead of the next board meeting, for “the AI ROI”. Both want a number. The chapter gives them one, with the unit, the period and the condition that make it true.\n\n## Choose a Unit That Explains the Business\n\nThe vendor bills per million tokens, and Larkspur’s engineers can tell you the tokens per **model call**, one request sent to the model and its answer. Neither is the company’s unit. Larkspur charges a customer €300 a month for documents sorted so that a planner can schedule without reading them, and the useful unit is therefore **a document sorted and accepted**: classified by the feature and not corrected by the customer afterwards. Rejected classifications cost tokens and earn nothing.\n\nThe same choice applies to the internal tools. The support assistant’s unit is a ticket resolved without being reopened, inherited from the pilot in [Clarify AI Strategy: Three Different Investment Questions](ai-strategy-three-questions.html); the coding tool’s unit, from [Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount](scale-the-team-with-ai.html), is a change completed with the old quality checks. A cost per token can fall while the cost per useful unit rises, because the number of tokens the feature spends to produce one accepted result is not fixed. That is the first fact about AI spending and the one a licence never had: **the construction of the feature is a cost driver**, and construction is decided by the company’s own engineers.\n\nThree things move the tokens spent per document, and Larkspur’s feature has moved all three since the trial. The **prompt**, the instructions and examples sent to the model with each document, grew when Priya added rules learned from the trial. The **context**, the extra material the feature retrieves and sends along, grew when Alex added similar past documents from the same customer to hold accuracy on unusual formats. And **retries**, repeat calls when the first answer fails a check, grew when the safety check was made stricter, because a document that fails the check is sent again with a larger model. Each of these was a reasonable product decision. Together they raised the tokens per document by about 80% between April and August, and nobody had set that figure against the price.\n\n## Put Every Figure on the Same Basis\n\nSam’s observation that the bill grows faster than revenue is true and, on its own, uninformative. The table puts two months on one basis, cost assigned to the period as the cloud chapter defines it, and separates money that leaves the company from employees’ time that is already paid for.\n\n| Feature, monthly | April 2027 | August 2027 |\n| --- | ---: | ---: |\n| Paying customers | 20 | 40 |\n| Revenue at €300 | €6,000 | €12,000 |\n| Documents processed | 9,000 | 26,000 |\n| Documents accepted (96%) | 8,640 | 24,960 |\n| Model and hosting charges (cash) | €1,400 | €5,840 |\n| Evaluation and monitoring upkeep: sampled review, test set runs (cash) | €1,200 | €1,600 |\n| **Running cost, cash** | **€2,600** | **€7,440** |\n| Engineering time keeping the feature working (time, cost-based estimate) | €2,250 (a quarter of one engineer) | €4,500 (half of one engineer) |\n| Support load from the feature (time, cost-based estimate) | €400 | €1,200 |\n| **Margin after cash running cost** | **€3,400** | **€4,560** |\n| **Margin after cash and time** | **€750** | **−€1,140** |\n| Running cash cost per customer | €130 | €186 |\n| Cash cost per accepted document | €0.30 | €0.30 |\n\nRead across and the picture is more precise than “growing faster than revenue”. Cash cost per accepted document is flat, because the fixed upkeep is spread over more documents even as the model charges per document rose. Cash cost per customer rose from €130 to €186 against a €300 price, because customers send more documents than the trial customers did and each document costs more tokens. And after the engineers’ time, the feature loses money in August, which nobody had seen because engineering time is not on the vendor’s invoice.\n\nThe figures labelled cost-based estimates are not cash; they are the price of the work the engineers would otherwise do, and that work has to be named. Half an engineer on a feature that earns €12,000 a month is half an engineer not on the second country’s rules. Whether Larkspur counts that time against the feature depends on the question being asked: a cash forecast uses the cash lines; a decision about whether to keep the feature uses both.\n\n## Separate Usage, Rates and Construction\n\nThe model charges rose from €1,400 to €5,840. Three causes, in the order Larkspur applies them, and the order matters because the effects multiply:\n\n| Cause | What changed | Effect on the August bill | Who owns it | Remedy |\n| --- | --- | ---: | --- | --- |\n| **Usage** | 9,000 documents became 26,000: twice the customers, and 650 documents a month each instead of 450 | +€2,656 at April’s cost per document | Sales and customers; the growth the plan wanted | None needed if the price covers it; a per-document allowance in the price if it does not |\n| **Construction** | Tokens per document up about 80%: longer prompt, retrieved context, retries to a larger model | +€3,245 | Product and engineering | Trim the prompt, cap the context, route easy documents to a smaller model, cache repeated context; each a measured engineering change |\n| **Rates** | The vendor cut its list price per token by 20% in June | −€1,460 | The vendor | None available; note that the cut hid most of the construction increase |\n| **Total** | | **€5,840** | | |\n\nThe cloud chapter separated usage, rates and architecture for the same reason: each has a different owner and a different remedy, and a bill that reports only the total lets the wrong person be blamed. Here the finding is uncomfortable for the product side. The June price cut was reported to the board as good news; without it the bill would have been over €7,000, and the reason is a set of product decisions, each defensible, whose cost per document nobody tracked.\n\n![A bridge chart from April's €1,400 of model charges to August's €5,840. Usage adds €2,656, construction adds €3,245, and the vendor's rate cut removes €1,460, so the bill peaks above the August total before the price cut brings it down.](assets/images/29-ai-worth-its-cost/usage-construction-rates-bridge.jpeg)\n**Figure 1:** *The August bill in its three parts. Usage added €2,656, construction added €3,245, and the vendor's June price cut took €1,460 off, which is why the reported total hid most of the construction increase. Each part has a different owner and a different remedy.*\n\n**Do not count the same saving twice.** Alex proposes construction work: a shorter prompt, a cap on retrieved context, a smaller model for documents the checks pass easily, and caching of the context that repeats within a customer. He estimates it cuts tokens per document by about 35% at unchanged quality, two engineer-weeks of work, tested on the same 200-document samples the release gate used. If that work is done, the volume eligible for any vendor discount falls with it. The commitment decision below is therefore made after the construction change, not before, so that Larkspur does not commit to paying for tokens it is about to stop using.\n\n## Return With a Unit, a Period and a Condition\n\n**Return on investment (ROI)** is the benefit of an investment net of its cost, divided by the cost, for a stated period. Every word in that sentence does work, and the one most often dropped is the period. An AI feature does not have an ROI; it has an ROI for April to September 2027 under the conditions that held then.\n\nThree different numbers answer “what is the sorting feature worth”, and they should never be added.\n\n- **Customer value.** At the trial’s measured review effort, a customer saves about 10.8 hours of a planner’s time a month, worth roughly €540 at a loaded hourly cost of €50. That is why the customer buys. It is not Larkspur’s money.\n- **Revenue.** €300 a month per customer: 190 customer-months from April to September, €57,000. It is Larkspur’s money before costs.\n- **Cash return.** Revenue less the cash running cost, which grew from €2,600 to about €7,600 a month over the period: roughly €30,000 of running cost, leaving about €27,000 of cash over six months.\n\n![Three cards separated by crossed-out plus signs. Customer value: €540 a month, the customer's money. Revenue: €57,000 from April to September. Cash return: about €27,000 after running cost.](assets/images/29-ai-worth-its-cost/three-numbers-never-added.jpeg)\n**Figure 2:** *Three answers to what the sorting feature is worth, and none of them adds to the others. Customer value is the planner time a customer saves and is the customer's money; revenue is Larkspur's money before costs; cash return is what remains after the cash running cost for the stated period.*\n\nOn that basis the feature’s **running return** for April to September 2027 is about €27,000 on €30,000 of running cost, roughly 90%, on the condition that quality stayed above the release threshold and review effort below 1.5 hours a week, which the monthly samples show it did. That is the honest answer to Morgan’s question about the feature as it runs. It is not the answer to whether the feature has paid for itself: the trial cost €45,000 of cash and six engineer-weeks, and general release cost a further ten engineer-weeks, about €22,000 as a cost-based estimate. Against those one-off costs the feature is still about €18,000 of cash short after six months, and about €40,000 short if the engineers’ time is charged. At the August margin it recovers the cash in another three to four months and the time never, unless the construction work lands. Both statements are true, for different questions, and the board should hear both.\n\nThe internal tool shows why the period matters even more. The support assistant’s 2027 benefit was a hire deferred: about €32,000 of employment cost avoided, less €8,000 of licences and upkeep, about €24,000 of cash, on the condition that quality held and ticket volume stayed under 1,400 a month. That is a 2027 return of about 300% on the tool’s running cost. It is a **benefit of that period**. In 2028 the same tool costs the same €8,000 and defers nothing by itself; a further return requires a further operating change, another hire not made or capacity used for work that earns. A tool whose return was a one-off deferral, reported as if it recurred, is how an internal AI programme ends up with a large cumulative ROI and no cash to show for it.\n\n## A Commitment Changes Future Spending\n\nIn September the vendor offers Larkspur a **committed-spend agreement** for 2028: promise a fixed monthly amount for twelve months and pay 25% less per token on everything, with usage above the commitment billed at list price. The offer is worth considering, and it is a floor under next year’s cost whatever next year brings. The 25% and the amounts are assumptions for this example, not a vendor’s published terms.\n\nLarkspur follows the cloud chapter’s method. Demand is measured as what the feature’s usage would cost at flexible list prices, after the construction work, so every option is compared against one yardstick.\n\n**Demand range.** With the 35% construction saving applied, the August bill would have been about €3,800 of model charges. The board’s 2028 forecast, approved in the autumn planning round, puts the feature between 35 customers, if renewals disappoint, and 80, if the second country signs, at 650 documents a month each: model charges between about €5,000 and €14,000 a month at flexible prices, with €10,000 the expected case. A **stress case** of €3,000, the largest customers leaving or a substitute product arriving as the chapter [Clarify AI Strategy: Three Different Investment Questions](ai-strategy-three-questions.html) described, is kept to test the decision, not as a forecast.\n\n**Funding condition.** The board has approved a 2028 cash provision for supplier payments covering the forecast range, and Ines has standing permission to sign contracts of a year or less. No plan and no cash exist beyond 31 December 2028, so a longer commitment is not on the table, as in the cloud chapter.\n\n| Option, monthly | Cost at €5,000 demand | Cost at €10,000 demand | Cost at €14,000 demand | Cost at €3,000 stress case |\n| --- | ---: | ---: | ---: | ---: |\n| A. Stay flexible at list price | €5,000 | €10,000 | €14,000 | €3,000 |\n| B. Commit €6,000 fixed, covering €8,000 of flexible usage; usage above that at list | €6,000 | €8,000 | €12,000 | €6,000 |\n| C. Commit €3,750 fixed, covering €5,000 of flexible usage; usage above that at list | €3,750 | €8,750 | €12,750 | €3,750 |\n\nOption B saves €2,000 a month at expected and high demand, costs €1,000 more at the low end and €3,000 more in the stress case. Option C saves €1,250 a month at every point in the stated range and costs €750 more in the stress case. **Larkspur chooses Option C**, sized at the low end of the range, after the construction work has been measured on the same samples, so the commitment covers tokens the feature will actually use.\n\n![A vertical scale of monthly model charges. A shaded band marks the 2028 demand range from €5,000 low to €14,000 high with €10,000 expected. Option C's committed floor of €3,750 lies below the band; Option B's floor of €6,000 lies inside it. A €3,000 stress case sits below both.](assets/images/29-ai-worth-its-cost/commitment-floor-against-demand-range.jpeg)\n**Figure 3:** *A commitment is a floor under next year's cost. Option C's €3,750 floor sits below the low end of the range the board approved, so it saves €1,250 a month at every point in the range and costs €750 more only in the stress case. Option B's €6,000 floor sits inside the range, saving more at expected demand but costing more exactly when the feature is losing customers.*\n\n**What the contract says**, and what Sam checks before Ines signs, differs from the cloud contract in three clauses that AI vendors add. The **model retirement** clause: the vendor may retire the model version the feature is built on with six months’ notice, and committed spend transfers to the successor model at that model’s price, so a commitment can be honoured on a model the company has not tested; Larkspur asks for, and gets, the right to run its release-gate samples on the successor before the switch and to end the commitment if the samples fail. The **price change** clause: list prices may change with thirty days’ notice, and the 25% applies to the list price on the day, so a price rise raises the committed spend’s buying power but not its cost, while a price cut reduces what the same money buys in discount terms; the fixed €3,750 is owed either way. The **data** clause: the terms on retention and training use of customer documents, reviewed against the questions the NIST profile poses, unchanged from the trial and confirmed in writing. [S18: NIST generative AI profile](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf) As with the cloud commitment, the agreement cannot be cancelled early, cannot be transferred without the vendor’s consent, and expires on 31 December 2028 with no automatic renewal; December’s overage is billed in January and paid in February 2029, which Sam reserves inside the 2028 provision.\n\n**Why the others are rejected.** Option B’s extra €750 of saving exists only at expected demand and above, and is bought with a floor €2,250 higher in the case where the feature is losing customers, which is exactly the case in which Larkspur would want to spend less. Option A is rejected because €1,250 a month with no downside inside the range is real money. A three-year offer, at a larger discount, is not compared, because no plan exists for the years it would bind.\n\nRecorded, the decision reads:\n\n| Element | What was decided |\n| --- | --- |\n| Chosen | Construction work first (two engineer-weeks, measured on the release-gate samples), then Option C: €3,750 a month committed for 2028, usage above it at list price |\n| Rejected | Option B, for its floor in the low case; Option A, for leaving a range-wide saving; any multi-year term, for binding years nobody has funded |\n| Funding | €45,000 over 2028 from the approved cash provision, paid monthly in advance; overage settled in arrears from the same provision, with the February 2029 tail reserved |\n| Authority | Ines, under her standing permission for contracts of a year or less; Sam confirms the cash and the three AI clauses; Alex is accountable for the construction work and the successor-model test; Priya for the price and renewal rules below |\n| Review | Monthly against the unit figures in the table above; the contract reopened by any of the events below |\n| Evidence that would reopen the decision | Flexible-price usage below €5,000 for two consecutive months; a construction change that cuts usage below the committed level; a model-retirement notice; a proposal to sell the company or separate part of it, since the obligation travels with the operating company that signed it |\n\n## Set the Stop and Reprice Rules Before the Review\n\nA feature that was worth its cost in April can stop being worth it in October for four different reasons, and the response to each is decided now, so that the October meeting applies a rule rather than invents one. The customer promise from the trial still holds and still bounds the rules: a customer keeps the feature for as long as quality holds and Ines renews the approval; nothing here promises more than that.\n\n- **Running cost per customer above €150, half the price, for two consecutive months.** Priya first checks construction, because that is the cause Larkspur controls; if construction is already at the measured minimum, the price is changed, either a per-document allowance above which documents are charged, or a higher tier for heavy users. No customer is moved to a new price without the notice the contract gives.\n- **Ordinary-sample accuracy below 95% or any safety-relevant document missed in a monthly sample.** The feature falls back to the review-aid mode the trial defined, in which a person confirms every classification, for all customers, that day; it returns to automated sorting only when a fresh sample passes. Throughput and cost do not enter this rule at any value.\n- **A vendor list-price rise of 30% or more, or a retirement notice whose successor fails the samples.** A decision within sixty days between the successor, another vendor’s model tested on the same samples, and the review-aid mode; the committed spend continues to be owed during the sixty days, which is why the notice period was negotiated.\n- **Fewer than 80% of customers renewing the feature at €300 at their annual renewal.** A reprice test with the next twenty renewals, run the way the trial tested willingness to pay, before the price is changed for everyone.\n\nThe counterargument deserves its own rule. A feature can be worth keeping at a loss for a period if it wins renewals of the main product: a customer who leaves takes €2,400 a month of scheduling revenue with them, and the sorting feature may be what keeps them. Larkspur allows exactly that, with a limit: a loaded loss of up to €1,000 a month on the feature is accepted until 31 March 2028 if customers with the feature renew the main product at a rate at least ten points above customers without it, measured on the renewals that fall in the period. The loss is stated in the monthly report as a loss, not netted into “platform value”, and on 31 March the rule expires and the feature has to stand on its own figures or be repriced. The evidence that would change the judgment is the renewal comparison itself: if the gap is smaller than ten points, the retention argument was a story, and the feature is judged on its cash.\n\n## What to Say When the Investor Asks\n\nMorgan’s three questions, and the answers that point at the method rather than at a single number:\n\n**“What is our AI ROI?”** For the sorting feature, a running return of about 90% on cash running cost for April to September 2027, quality and review conditions holding, with the one-off trial and release costs not yet recovered in cash by about €18,000; for the support assistant, about 300% for 2027 on a hire deferred, a benefit of that year that does not recur by itself. Two figures, each with a period and a condition, and neither one a property of “our AI”.\n\n**“Why is the AI bill growing faster than revenue?”** Usage doubled with the customers the plan wanted; construction raised tokens per document by 80% through product decisions that held quality; a 20% vendor price cut hid most of that. The construction share is Larkspur’s to fix, and the fix is measured before the vendor commitment is sized.\n\n**“Should we commit to a bigger contract?”** A one-year commitment sized at the low end of the approved demand range, after the construction work, saves €1,250 a month across the range and costs €750 a month in the stress case; a larger one buys €750 more in the good case with a floor €2,250 higher in the bad one; nothing longer than the year the board has funded. The obligation travels with the company, which matters if ownership changes.\n\nThose answers are longer than a number. They are also what an investor who has read [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](cheaper-cloud-bill.html) will recognize as the same discipline applied to a newer bill, and the adviser who wanted a benchmark will find that the unit figures are what a benchmark would need to be made of.\n\nLarkspur’s AI is now worth its cost on stated terms, for a stated period, with rules for the day it stops being so. The chapter [Build And Test Resilience: Backups Are Not Enough](prove-you-can-restore.html) set the same shape for resilience, a saving counts only after the quality it depends on has been tested, and the chapter [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](cheaper-cloud-bill.html) supplied the method. Part VII follows the company through funding and ownership changes, where a committed contract like this one is among the obligations the chapter [Manage the Handover: Carry Forward the Evidence and Obligations](handover-of-obligations.html) carries to the next decision-maker.\n\n## Questions to Consider\n\n1. *For each AI feature or tool you run, what is the useful unit, and can you state its cash cost per unit for last month on the same basis as the month before?*\n2. *Of last quarter’s change in your AI bill, how much was usage, how much rates and how much construction, and who owns each part?*\n3. *For the return figure you last reported, what period and what quality condition does it belong to, and did it include a one-off benefit that will not recur?*\n4. *If a vendor offered you a committed-spend discount today, what demand range and what funded period would you size it against, and what do the retirement, price-change and data clauses say?*\n\n## To Probe Further\n\n- **[FinOps for AI Overview](https://www.finops.org/wg/finops-for-ai-overview/)** — FinOps Foundation, 2026.<br>*The practice body's own account of why token-based billing needs a cost per inference and a demand forecast before any commitment, the step this chapter takes with Larkspur's sorting feature.*\n- **[Tokenomics: Managing AI Value in SaaS Model Token Costs](https://www.finops.org/wg/token-economics-saas/)** — FinOps Foundation, 2026.<br>*Works through the gap this chapter opens between a subscription sold per seat and a bill paid per token, and moves from token counts to cost per successful outcome.*\n- **[Emerging Patterns in Building GenAI Products](https://martinfowler.com/articles/gen-ai-patterns/)** — Bharani Subramaniam and Martin Fowler, martinfowler.com, 2025.<br>*Describes the construction choices, from retrieval to guardrails, whose extra model calls make up the construction share of the bill this chapter separates from usage and rates.*\n- **[A Survey on Efficient Inference for Large Language Models](https://arxiv.org/abs/2404.14294)** — Zixuan Zhou and colleagues, arXiv, 2024.<br>*A technical map of where the cost of answering one request comes from, for a reader who wants to know what an engineer can change and what only the vendor can.*\n- **[Welcome to LLMflation – LLM inference cost is going down fast](https://a16z.com/llmflation-llm-inference-cost/)** — Guido Appenzeller, Andreessen Horowitz, 2024.<br>*An investor's estimate of how fast the price per token falls and why, which is the case for the price-change and model-retirement clauses this chapter asks Sam to check.*\n- **[The New Business of AI (and How It's Different From Traditional Software)](https://a16z.com/the-new-business-of-ai-and-how-its-different-from-traditional-software/)** — Martin Casado and Matt Bornstein, Andreessen Horowitz, 2020.<br>*The investor's argument that AI products carry lower gross margins than licensed software, which is the expectation behind Morgan's question about the gap between subscription revenue and the usage bill.*\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {}, "blocks": [{"type": "markdown", "content": "**Artificial intelligence (AI)** spending is a cloud bill metered in **tokens** — the units AI services use to count the text a model reads and writes — so a feature’s cost moves with how it is built as well as how much it is used. In the fictional Larkspur scenario, September 2027, forty customers pay €300 a month for a feature that sorts inspection documents. The bill has outgrown revenue for four months, and Morgan, the investor’s technology adviser, asks for “the AI ROI”. The answer needs a unit, a period and a condition.\n\n![AI cost is read per document accepted, split into usage, rates and construction, stated as a return for a period under a quality condition, and committed at the low end of a demand range.](assets/images/29-ai-worth-its-cost/summary-at-a-glance.jpeg)\n**Figure 1:** *Measure AI per useful task, separate why the bill moved, and commit only at the low end of a funded range.*\n\n**Choose the company’s unit.** Vendors bill per token or per **model call** — one request to the model and its answer. Larkspur’s unit is **a document sorted and accepted** without correction. Tokens per document rose about 80% from April to August as prompts, retrieved context and retries grew.\n\n**Put two months on one basis.** April: 20 customers, €6,000 revenue, €2,600 cash running cost, €750 left after engineers’ and support time. August: 40 customers, €12,000 revenue, €7,440 cash running cost, **a €1,140 loss** after time. Cash cost per accepted document held at €0.30; per customer it rose from €130 to €186 against a €300 price.\n\n**Separate why the bill changed.** Model charges rose from €1,400 to €5,840: **usage** (twice the customers, more documents each) added €2,656, **construction** (longer prompts, more context, retries) added €3,245, and a 20% vendor price cut removed €1,460, hiding most of the construction rise. Alex, the technology leader, proposes construction work to cut tokens per document by 35%.\n\n**Return has a period and a condition.** **Return on investment (ROI)** is benefit net of cost, divided by cost, for a stated period. April to September 2027: €57,000 revenue, about €30,000 running cost, about €27,000 of cash — roughly 90%, on the condition that accuracy stayed above 95% and review effort below 1.5 hours a week. The one-off trial and release costs remain about €18,000 short in cash. The support assistant returned about 300% in 2027 on a deferred hire, a benefit of that year only.\n\n**Commit at the low end, after the construction work.** The vendor offers **committed spend** for 2028: a fixed monthly amount for twelve months at 25% less per token. The board forecasts 2028 model charges between €5,000 and €14,000 a month, with a €3,000 stress case. Committing €3,750 to cover €5,000 of usage (Option C) saves €1,250 a month across the range and costs €750 more in the stress case. Larkspur chooses C, €45,000 over 2028, signed by Ines, the chief executive, under her one-year permission.\n\n**Set the stop rules first.** Running cost per customer above €150 for two months: fix construction, then reprice. Accuracy below 95% or a safety document missed: review-aid mode that day. A 30% vendor price rise: decide within sixty days. Fewer than 80% renewing at €300: a reprice test. A loss of up to €1,000 a month is tolerated until 31 March 2028 only if the feature lifts main-product renewals by ten points.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "<!-- comic-style\n{\n  \"cast\": \"MORGAN: a thoughtful investor technology adviser with short dark hair and a green jacket, used in the fund scenarios. ALEX: a practical CTO, a brown-skinned man with short, tight dark curls close to his head and blue rolled-up sleeves. SAM: a CFO, a man with short brown hair, round glasses and an amber cardigan. PRIYA: a product leader with straight dark hair and plum sleeves. INES: a CEO with short grey hair and a navy jacket. All are fictional; none represents a person in a real case.\",\n  \"style\": \"Clean editorial explainer comic pages, each one image of three stacked full-width strips: navy ink outlines, restrained green, blue and amber accents on warm ivory, generous space, expressive people and simple physical props. Dialogue, short labels and the supplied amounts are lettered in the artwork, exactly as scripted. Money bags, coins and banknotes are plain and undecorated; the euro sign appears only inside supplied text, and arrows, documents and screens carry plain lines, never lettering. No photorealism, logos, titles or unsupplied text. Keep the same character appearances throughout the journal.\",\n  \"reference\": \"_research/comic-cast-20260913.jpeg\",\n  \"identity\": {\n    \"Morgan\": \"MORGAN is a light-skinned WOMAN with a short, straight, JET-BLACK bob cut level with her jaw and a straight fringe across her forehead (never brown hair, never a side parting), and a bright green jacket over a white top, first person in the reference; her face must match the reference sheet exactly.\",\n    \"Alex\": \"ALEX is a medium-brown-skinned MAN with a masculine face, broad shoulders and a straight masculine build, SHORT tight dark curls close to his head (not a large afro), a blue rolled-sleeve shirt and blue jeans, second person in the reference; fill his face, neck and hands with the same brown skin color in every strip.\",\n    \"Sam\": \"SAM is a light-skinned MAN with a masculine face and SHORT brown hair cropped above his ears (never a bob, never chin-length hair, never a woman), round glasses and an amber cardigan over a white shirt, third person in the reference.\",\n    \"Priya\": \"PRIYA is a brown-skinned WOMAN with straight shoulder-length dark hair and a plum blouse, fourth person in the reference.\",\n    \"Ines\": \"INES is a light-skinned OLDER WOMAN with a short GREY bob (grey hair, never dark) and a navy jacket, fifth person in the reference.\"\n  },\n  \"short\": {\n    \"Morgan\": \"a light-skinned woman with a jet-black jaw-length bob and fringe, in a bright green jacket\",\n    \"Alex\": \"a brown-skinned man with short tight dark curls, in a blue rolled-sleeve shirt\",\n    \"Sam\": \"a light-skinned man with short brown hair and round glasses, in an amber cardigan over a collared white shirt\",\n    \"Priya\": \"a brown-skinned woman with straight shoulder-length dark hair, in a plum blouse\",\n    \"Ines\": \"an older light-skinned woman with a short grey bob, in a navy jacket\"\n  }\n}\n-->\n\n**Comic.** Larkspur is a fictional company that sells scheduling software and, since April 2027, an AI feature that sorts a customer’s inspection documents for €300 a month. Forty customers pay for it. The vendor’s bill has grown faster than the feature’s revenue for four months, and Morgan, the technology adviser working for Larkspur’s investor, has asked for “the AI ROI” before the next board meeting. Every figure is fictional.\n\n<!-- comic-page\n{\n  \"id\": \"01-a-number-with-a-unit\",\n  \"title\": \"A number with a unit\",\n  \"asset\": \"assets/images/29-ai-worth-its-cost/comic-page-01-a-number-with-a-unit.jpeg\",\n  \"aspect_ratio\": \"3:4\",\n  \"cast\": [\n    \"Morgan\",\n    \"Alex\",\n    \"Priya\"\n  ],\n  \"strips\": [\n    {\n      \"scene\": \"Morgan, at the left, holds up one large card with both hands, facing the reader. Alex, at the right, holds his hands open.\",\n      \"labels\": [\n        \"WHAT IS OUR AI ROI?\"\n      ],\n      \"label_notes\": \"The label is the large card Morgan holds up.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Morgan\",\n          \"text\": \"Before the board meets: what is our AI ROI?\"\n        },\n        {\n          \"who\": \"Alex\",\n          \"text\": \"A number with a unit, a period and a condition. Start with the unit.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"A pinboard with exactly three large index cards pinned side by side in one row with clear gaps between them, every word fully visible. Alex, at the left of the pinboard, gestures toward the first two cards with an open hand. Priya, at the right of the pinboard, points at the third card.\",\n      \"labels\": [\n        \"PER MILLION TOKENS\",\n        \"PER MODEL CALL\",\n        \"PER DOCUMENT ACCEPTED\"\n      ],\n      \"label_notes\": \"One label per index card, in this left-to-right order.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Alex\",\n          \"text\": \"Tokens are the vendor's unit. A model call is one request and its answer.\"\n        },\n        {\n          \"who\": \"Priya\",\n          \"text\": \"Ours is a document sorted and accepted. A rejected one costs tokens, earns nothing.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"A whiteboard with one large heading line and, under it, exactly three short lines of large, neat handwriting, each line fully visible. Priya, at the left of the whiteboard, gestures toward it with an open hand. Alex, at the right of the whiteboard, points at the heading. Everyone stands to the side of the board, clear of it; no head, hand, marker or speech bubble covers any of its lettering.\",\n      \"labels\": [\n        \"TOKENS PER DOCUMENT: UP 80%\",\n        \"LONGER PROMPT\",\n        \"MORE RETRIEVED CONTEXT\",\n        \"RETRIES TO LARGER MODEL\"\n      ],\n      \"label_notes\": \"TOKENS PER DOCUMENT: UP 80% is the heading; the other three are the three lines under it, top to bottom.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Priya\",\n          \"text\": \"Each was a sound product decision, made between April and August.\"\n        },\n        {\n          \"who\": \"Alex\",\n          \"text\": \"Together they raised tokens per document 80%. Nobody set that against the price.\"\n        }\n      ]\n    }\n  ],\n  \"alt\": \"Comic page in three strips: Morgan holds a card asking what is our AI ROI; three cards compare per million tokens, per model call and per document accepted; a whiteboard shows tokens per document up 80% from a longer prompt, more retrieved context and retries to a larger model.\",\n  \"caption\": \"AI services are metered in tokens, the units in which they count the text a model reads and writes; a model call is one request sent to the model and its answer. Neither is the company’s unit. Larkspur charges €300 a month for documents sorted so that a planner can schedule without reading them, so its unit is a document sorted and accepted without correction. The tokens spent per document are not fixed: between April and August 2027 a longer prompt, more retrieved context and retries to a larger model raised them about 80%. Alex leads technology; Priya leads product.\",\n  \"status\": \"generated\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference\": \"_research/comic-cast-20260913.jpeg\",\n    \"sha256\": \"56cddcd29b52f9ca7b5df825e3e0fcd29d80f6463125ed656c918fa18cf8cdfc\"\n  }\n}\n-->\n\n![Comic page in three strips: Morgan holds a card asking what is our AI ROI; three cards compare per million tokens, per model call and per document accepted; a whiteboard shows tokens per document up 80% from a longer prompt, more retrieved context and retries to a larger model.](assets/images/29-ai-worth-its-cost/comic-page-01-a-number-with-a-unit.jpeg)\n\n**Page 1: A number with a unit.** AI services are metered in tokens, the units in which they count the text a model reads and writes; a model call is one request sent to the model and its answer. Neither is the company’s unit. Larkspur charges €300 a month for documents sorted so that a planner can schedule without reading them, so its unit is a document sorted and accepted without correction. The tokens spent per document are not fixed: between April and August 2027 a longer prompt, more retrieved context and retries to a larger model raised them about 80%. Alex leads technology; Priya leads product.\n\n- *Strip 1.* **Morgan:** “Before the board meets: what is our AI ROI?” **Alex:** “A number with a unit, a period and a condition. Start with the unit.”\n- *Strip 2.* **Alex:** “Tokens are the vendor's unit. A model call is one request and its answer.” **Priya:** “Ours is a document sorted and accepted. A rejected one costs tokens, earns nothing.”\n- *Strip 3.* **Priya:** “Each was a sound product decision, made between April and August.” **Alex:** “Together they raised tokens per document 80%. Nobody set that against the price.”\n\n<!-- comic-page\n{\n  \"id\": \"02-two-months-on-one-basis\",\n  \"title\": \"Two months on one basis\",\n  \"asset\": \"assets/images/29-ai-worth-its-cost/comic-page-02-two-months-on-one-basis.jpeg\",\n  \"aspect_ratio\": \"3:4\",\n  \"cast\": [\n    \"Sam\",\n    \"Alex\",\n    \"Priya\"\n  ],\n  \"strips\": [\n    {\n      \"scene\": \"A whiteboard with three lines of large, neat handwriting, each line fully visible. Sam, at the left of the whiteboard, gestures toward it with an open hand. Alex, at the right of the whiteboard, reads down the lines. Everyone stands to the side of the board, clear of it; no head, hand, marker or speech bubble covers any of its lettering.\",\n      \"narration\": \"April 2027, monthly, all on one basis.\",\n      \"labels\": [\n        \"20 CUSTOMERS: €6,000 REVENUE\",\n        \"CASH RUNNING COST: €2,600\",\n        \"AFTER STAFF TIME: +€750\"\n      ],\n      \"label_notes\": \"The three labels are the three lines on the whiteboard, top to bottom.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Sam\",\n          \"text\": \"Revenue, then cash running cost, then the engineers' and support time.\"\n        },\n        {\n          \"who\": \"Alex\",\n          \"text\": \"In April the feature still earned €750 after everything.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"A second whiteboard with three lines of large, neat handwriting, each line fully visible, drawn identically to the first. Sam, at the left of the whiteboard, points at the third line from the side. Priya, at the right of the whiteboard, frowns at it. Everyone stands to the side of the board, clear of it; no head, hand, marker or speech bubble covers any of its lettering.\",\n      \"narration\": \"August 2027, same lines.\",\n      \"labels\": [\n        \"40 CUSTOMERS: €12,000 REVENUE\",\n        \"CASH RUNNING COST: €7,440\",\n        \"AFTER STAFF TIME: −€1,140\"\n      ],\n      \"label_notes\": \"The three labels are the three lines on the whiteboard, top to bottom.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Sam\",\n          \"text\": \"Twice the customers, and after the engineers' time August loses €1,140.\"\n        },\n        {\n          \"who\": \"Priya\",\n          \"text\": \"Engineering time is not on the vendor's invoice. Nobody saw it.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"Alex, at the left, holds up two large cards, one in each hand, facing the reader, every word fully visible. Sam, at the right, holds up one smaller card with a single figure.\",\n      \"labels\": [\n        \"PER DOCUMENT: €0.30 TO €0.30\",\n        \"PER CUSTOMER: €130 TO €186\",\n        \"PRICE: €300\"\n      ],\n      \"label_notes\": \"PER DOCUMENT: €0.30 TO €0.30 is the card in Alex's left hand, at the left of the strip; PER CUSTOMER: €130 TO €186 is the card in his right hand; PRICE: €300 is the card Sam holds.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Alex\",\n          \"text\": \"Cash per accepted document is flat. Cash per customer is up, against €300.\"\n        },\n        {\n          \"who\": \"Sam\",\n          \"text\": \"Customers send more documents, and each one costs more tokens.\"\n        }\n      ]\n    }\n  ],\n  \"alt\": \"Comic page in three strips: an April whiteboard shows 20 customers, €6,000 revenue, €2,600 cash running cost and €750 left after staff time; an August whiteboard shows 40 customers, €12,000 revenue, €7,440 cash running cost and a €1,140 loss after staff time; Alex holds cards reading per document €0.30 to €0.30 and per customer €130 to €186, and Sam holds a card reading price €300.\",\n  \"caption\": \"Sam leads finance. Cash running cost is the vendor’s model and hosting charges plus evaluation and monitoring upkeep. Engineering and support time are cost-based estimates, the price of work the staff would otherwise do; a cash forecast leaves them out, a decision about keeping the feature counts them. On that basis April earned €750 and August lost €1,140. Cash cost per accepted document stayed at €0.30, because fixed upkeep is spread over more documents, while cash cost per customer rose from €130 to €186 against the €300 price.\",\n  \"status\": \"generated\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference\": \"_research/comic-cast-20260913.jpeg\",\n    \"sha256\": \"6aacef69e1ad502e6c30829a62ae6d3593fc50929b967daf46e8855637b75538\"\n  }\n}\n-->\n\n![Comic page in three strips: an April whiteboard shows 20 customers, €6,000 revenue, €2,600 cash running cost and €750 left after staff time; an August whiteboard shows 40 customers, €12,000 revenue, €7,440 cash running cost and a €1,140 loss after staff time; Alex holds cards reading per document €0.30 to €0.30 and per customer €130 to €186, and Sam holds a card reading price €300.](assets/images/29-ai-worth-its-cost/comic-page-02-two-months-on-one-basis.jpeg)\n\n**Page 2: Two months on one basis.** Sam leads finance. Cash running cost is the vendor’s model and hosting charges plus evaluation and monitoring upkeep. Engineering and support time are cost-based estimates, the price of work the staff would otherwise do; a cash forecast leaves them out, a decision about keeping the feature counts them. On that basis April earned €750 and August lost €1,140. Cash cost per accepted document stayed at €0.30, because fixed upkeep is spread over more documents, while cash cost per customer rose from €130 to €186 against the €300 price.\n\n- *Strip 1.* *Narration:* April 2027, monthly, all on one basis. **Sam:** “Revenue, then cash running cost, then the engineers' and support time.” **Alex:** “In April the feature still earned €750 after everything.”\n- *Strip 2.* *Narration:* August 2027, same lines. **Sam:** “Twice the customers, and after the engineers' time August loses €1,140.” **Priya:** “Engineering time is not on the vendor's invoice. Nobody saw it.”\n- *Strip 3.* **Alex:** “Cash per accepted document is flat. Cash per customer is up, against €300.” **Sam:** “Customers send more documents, and each one costs more tokens.”\n\n<!-- comic-page\n{\n  \"id\": \"03-why-the-bill-changed\",\n  \"title\": \"Why the bill changed\",\n  \"asset\": \"assets/images/29-ai-worth-its-cost/comic-page-03-why-the-bill-changed.jpeg\",\n  \"aspect_ratio\": \"3:4\",\n  \"cast\": [\n    \"Alex\",\n    \"Sam\",\n    \"Priya\"\n  ],\n  \"strips\": [\n    {\n      \"scene\": \"A whiteboard with one heading line and, under it, exactly three lines of large, neat handwriting, each line fully visible. Alex, at the left of the whiteboard, gestures toward it with an open hand. Sam, at the right of the whiteboard, reads down the lines. Everyone stands to the side of the board, clear of it; no head, hand, marker or speech bubble covers any of its lettering.\",\n      \"narration\": \"Model charges, April to August.\",\n      \"labels\": [\n        \"€1,400 TO €5,840\",\n        \"USAGE: +€2,656\",\n        \"CONSTRUCTION: +€3,245\",\n        \"RATES: −€1,460\"\n      ],\n      \"label_notes\": \"€1,400 TO €5,840 is the heading; the other three are the lines under it, top to bottom.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Alex\",\n          \"text\": \"Three causes, applied in this order. Each has a different owner.\"\n        },\n        {\n          \"who\": \"Sam\",\n          \"text\": \"Customers, product and engineering, the vendor. Different remedies too.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"Priya, at the left, holds up one large card with both hands, facing the reader. Sam, at the right, raises an eyebrow.\",\n      \"labels\": [\n        \"VENDOR PRICE CUT: 20%\"\n      ],\n      \"label_notes\": \"The label is the large card Priya holds up.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Sam\",\n          \"text\": \"The June price cut went to the board as good news.\"\n        },\n        {\n          \"who\": \"Priya\",\n          \"text\": \"It hid the construction rise. Without it the bill passes €7,000.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"A pinboard with exactly four large index cards pinned side by side in one row with clear gaps between them, every word fully visible. Alex, at the left of the pinboard, gestures toward the cards with an open hand. Sam, at the right of the pinboard, rests a hand on a fifth card pinned at the lower right, facing the reader.\",\n      \"labels\": [\n        \"SHORTER PROMPT\",\n        \"CAPPED CONTEXT\",\n        \"SMALLER MODEL, EASY DOCUMENTS\",\n        \"CACHED CONTEXT\",\n        \"TOKENS PER DOCUMENT: −35%\"\n      ],\n      \"label_notes\": \"The first four labels are the four pinned cards, in this left-to-right order; TOKENS PER DOCUMENT: −35% is the fifth card, pinned at the lower right beside Sam.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Alex\",\n          \"text\": \"Two engineer-weeks, tested on the release-gate samples, quality unchanged.\"\n        },\n        {\n          \"who\": \"Sam\",\n          \"text\": \"Do it before we commit, or we pay for tokens we'll stop using.\"\n        }\n      ]\n    }\n  ],\n  \"alt\": \"Comic page in three strips: a whiteboard splits the rise in model charges from €1,400 to €5,840 into usage plus €2,656, construction plus €3,245 and rates minus €1,460; Priya holds a card reading vendor price cut 20%; four cards list shorter prompt, capped context, smaller model for easy documents and cached context, and a fifth card beside Sam reads tokens per document minus 35%.\",\n  \"caption\": \"Usage is more customers sending more documents; rates are the vendor’s price per token; construction is how the feature is built, the prompts, context, retries and model size the company’s own engineers choose. Applied in that order, usage added €2,656 to the August bill, construction €3,245, and a 20% June price cut took €1,460 off, hiding most of the construction rise. Alex’s construction work is estimated to cut tokens per document by about 35% at unchanged quality; it is done before the vendor commitment is sized, so the same saving is not counted twice.\",\n  \"status\": \"generated\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference\": \"_research/comic-cast-20260913.jpeg\",\n    \"sha256\": \"0d160dcdc4cb1deea0b0cad6e15b261c95a122968693f9f171b8fd8b0d5e221c\"\n  }\n}\n-->\n\n![Comic page in three strips: a whiteboard splits the rise in model charges from €1,400 to €5,840 into usage plus €2,656, construction plus €3,245 and rates minus €1,460; Priya holds a card reading vendor price cut 20%; four cards list shorter prompt, capped context, smaller model for easy documents and cached context, and a fifth card beside Sam reads tokens per document minus 35%.](assets/images/29-ai-worth-its-cost/comic-page-03-why-the-bill-changed.jpeg)\n\n**Page 3: Why the bill changed.** Usage is more customers sending more documents; rates are the vendor’s price per token; construction is how the feature is built, the prompts, context, retries and model size the company’s own engineers choose. Applied in that order, usage added €2,656 to the August bill, construction €3,245, and a 20% June price cut took €1,460 off, hiding most of the construction rise. Alex’s construction work is estimated to cut tokens per document by about 35% at unchanged quality; it is done before the vendor commitment is sized, so the same saving is not counted twice.\n\n- *Strip 1.* *Narration:* Model charges, April to August. **Alex:** “Three causes, applied in this order. Each has a different owner.” **Sam:** “Customers, product and engineering, the vendor. Different remedies too.”\n- *Strip 2.* **Sam:** “The June price cut went to the board as good news.” **Priya:** “It hid the construction rise. Without it the bill passes €7,000.”\n- *Strip 3.* **Alex:** “Two engineer-weeks, tested on the release-gate samples, quality unchanged.” **Sam:** “Do it before we commit, or we pay for tokens we'll stop using.”\n\n<!-- comic-page\n{\n  \"id\": \"04-a-return-with-a-period\",\n  \"title\": \"A return with a period\",\n  \"asset\": \"assets/images/29-ai-worth-its-cost/comic-page-04-a-return-with-a-period.jpeg\",\n  \"aspect_ratio\": \"3:4\",\n  \"cast\": [\n    \"Sam\",\n    \"Morgan\",\n    \"Ines\"\n  ],\n  \"strips\": [\n    {\n      \"scene\": \"A whiteboard with one heading line and, under it, exactly three lines of large, neat handwriting, each line fully visible. Sam, at the left of the whiteboard, gestures toward it with an open hand. Morgan, at the right of the whiteboard, reads down the lines. Everyone stands to the side of the board, clear of it; no head, hand, marker or speech bubble covers any of its lettering.\",\n      \"narration\": \"Return on investment: benefit net of cost, over cost, for a period.\",\n      \"labels\": [\n        \"APRIL TO SEPTEMBER 2027\",\n        \"REVENUE €57,000\",\n        \"RUNNING COST ABOUT €30,000\",\n        \"CASH ABOUT €27,000: 90%\"\n      ],\n      \"label_notes\": \"APRIL TO SEPTEMBER 2027 is the heading; the other three are the lines under it, top to bottom.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Sam\",\n          \"text\": \"About 90% on running cost, six months, quality and review effort within the gate.\"\n        },\n        {\n          \"who\": \"Morgan\",\n          \"text\": \"That is the feature as it runs. Has it paid for itself?\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"A second whiteboard with exactly three lines of large, neat handwriting, each line fully visible. Sam, at the left of the whiteboard, points at the second line from the side. Morgan, at the right of the whiteboard, nods. Everyone stands to the side of the board, clear of it; no head, hand, marker or speech bubble covers any of its lettering.\",\n      \"narration\": \"One-off trial and release costs, still unrecovered.\",\n      \"labels\": [\n        \"TRIAL: €45,000 + SIX WEEKS\",\n        \"CASH SHORT: ABOUT €18,000\",\n        \"WITH STAFF TIME: ABOUT €40,000\"\n      ],\n      \"label_notes\": \"The three labels are the three lines on the whiteboard, top to bottom.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Sam\",\n          \"text\": \"Not yet. Three or four more months at August's margin recover the cash.\"\n        },\n        {\n          \"who\": \"Morgan\",\n          \"text\": \"Two answers to two questions. The board should hear both.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"A wall calendar strip hangs high on the wall, above everyone's heads, showing exactly two equal blocks side by side, each with a heading and one line under it. Ines, at the left, points up at the first block. Sam, at the right, points up at the second block. Nothing covers the lettering.\",\n      \"labels\": [\n        \"2027: HIRE DEFERRED\",\n        \"ABOUT €24,000 CASH: 300%\",\n        \"2028: SAME €8,000 TOOL\",\n        \"DEFERS NOTHING BY ITSELF\"\n      ],\n      \"label_notes\": \"2027: HIRE DEFERRED is the heading of the first block and ABOUT €24,000 CASH: 300% its line; 2028: SAME €8,000 TOOL is the heading of the second block and DEFERS NOTHING BY ITSELF its line.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Ines\",\n          \"text\": \"The support assistant returned 300% in 2027 on a hire we did not make.\"\n        },\n        {\n          \"who\": \"Sam\",\n          \"text\": \"A benefit of that year. Next year needs a new operating change.\"\n        }\n      ]\n    }\n  ],\n  \"alt\": \"Comic page in three strips: a whiteboard gives April to September 2027 revenue of €57,000, running cost of about €30,000 and cash of about €27,000, a 90% return; a second whiteboard lists the €45,000 and six-week trial and shows the feature still about €18,000 short in cash and about €40,000 short with staff time; a calendar contrasts 2027, a hire deferred worth about €24,000 cash and 300%, with 2028, the same €8,000 tool deferring nothing by itself.\",\n  \"caption\": \"Return on investment is the benefit of an investment net of its cost, divided by the cost, for a stated period. For April to September 2027 the sorting feature earned €57,000 and cost about €30,000 to run, about €27,000 of cash or roughly 90%, on the condition that accuracy stayed above 95% and review effort below 1.5 hours a week. The trial cost €45,000 of cash and six engineer-weeks and general release ten more, so in cash the feature is still about €18,000 short, and about €40,000 short if staff time is charged. Ines is the chief executive. The support assistant’s 2027 return, about €24,000 of cash on €8,000 of licences and upkeep, came from one hire deferred; the same tool in 2028 costs the same and defers nothing unless the company makes another change.\",\n  \"status\": \"generated\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference\": \"_research/comic-cast-20260913.jpeg\",\n    \"sha256\": \"fe5da50d86c5baccfe8b50a1041eb1d582bb63b0f7131aad584008b42a8af591\"\n  }\n}\n-->\n\n![Comic page in three strips: a whiteboard gives April to September 2027 revenue of €57,000, running cost of about €30,000 and cash of about €27,000, a 90% return; a second whiteboard lists the €45,000 and six-week trial and shows the feature still about €18,000 short in cash and about €40,000 short with staff time; a calendar contrasts 2027, a hire deferred worth about €24,000 cash and 300%, with 2028, the same €8,000 tool deferring nothing by itself.](assets/images/29-ai-worth-its-cost/comic-page-04-a-return-with-a-period.jpeg)\n\n**Page 4: A return with a period.** Return on investment is the benefit of an investment net of its cost, divided by the cost, for a stated period. For April to September 2027 the sorting feature earned €57,000 and cost about €30,000 to run, about €27,000 of cash or roughly 90%, on the condition that accuracy stayed above 95% and review effort below 1.5 hours a week. The trial cost €45,000 of cash and six engineer-weeks and general release ten more, so in cash the feature is still about €18,000 short, and about €40,000 short if staff time is charged. Ines is the chief executive. The support assistant’s 2027 return, about €24,000 of cash on €8,000 of licences and upkeep, came from one hire deferred; the same tool in 2028 costs the same and defers nothing unless the company makes another change.\n\n- *Strip 1.* *Narration:* Return on investment: benefit net of cost, over cost, for a period. **Sam:** “About 90% on running cost, six months, quality and review effort within the gate.” **Morgan:** “That is the feature as it runs. Has it paid for itself?”\n- *Strip 2.* *Narration:* One-off trial and release costs, still unrecovered. **Sam:** “Not yet. Three or four more months at August's margin recover the cash.” **Morgan:** “Two answers to two questions. The board should hear both.”\n- *Strip 3.* **Ines:** “The support assistant returned 300% in 2027 on a hire we did not make.” **Sam:** “A benefit of that year. Next year needs a new operating change.”\n\n<!-- comic-page\n{\n  \"id\": \"05-size-the-commitment-to-the-range\",\n  \"title\": \"Size the commitment to the range\",\n  \"asset\": \"assets/images/29-ai-worth-its-cost/comic-page-05-size-the-commitment-to-the-range.jpeg\",\n  \"aspect_ratio\": \"3:4\",\n  \"cast\": [\n    \"Priya\",\n    \"Sam\",\n    \"Ines\",\n    \"Alex\"\n  ],\n  \"strips\": [\n    {\n      \"scene\": \"High on the wall, above everyone's heads, runs a horizontal scale with a bracket marking a range in its middle, a label above the bracket, and a single mark to the left of the bracket with its own label. Priya, at the left, points up at the bracket. Sam, at the right, points up at the mark to its left. Nothing covers the lettering.\",\n      \"narration\": \"2028 model charges at flexible prices, after the construction work.\",\n      \"labels\": [\n        \"2028 RANGE: €5k–€14k\",\n        \"STRESS CASE: €3k\"\n      ],\n      \"label_notes\": \"2028 RANGE: €5k–€14k is the label above the bracket; STRESS CASE: €3k is the label on the single mark to the left of the bracket.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Priya\",\n          \"text\": \"The board's forecast: 35 to 80 customers, 650 documents each. €10,000 expected.\"\n        },\n        {\n          \"who\": \"Sam\",\n          \"text\": \"€3,000 is a stress case, a harsh test, not a forecast.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"A wall calendar strip hangs high on the wall, showing one long solid block with a heading and, after it, a dashed empty outline with its own label. Ines, at the left, points up at the solid block. Sam, at the right, looks up at the dashed outline. Nothing covers the lettering.\",\n      \"labels\": [\n        \"2028: CASH PROVISION APPROVED\",\n        \"2029 ONWARD: NOTHING FUNDED\"\n      ],\n      \"label_notes\": \"2028: CASH PROVISION APPROVED is the heading on the solid block; 2029 ONWARD: NOTHING FUNDED is the label on the dashed outline.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Ines\",\n          \"text\": \"A year or less sits inside my standing permission to sign.\"\n        },\n        {\n          \"who\": \"Sam\",\n          \"text\": \"Nothing is funded past December 2028, so nothing longer is on the table.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"A whiteboard with one heading line and, under it, exactly three lines of large, neat handwriting, each line fully visible. Alex, at the left of the whiteboard, gestures toward it with an open hand. Sam, at the right of the whiteboard, points at the third line from the side. Everyone stands to the side of the board, clear of it; no head, hand, marker or speech bubble covers any of its lettering.\",\n      \"narration\": \"Monthly cost at €5k, €10k, €14k of demand, and the €3k stress case.\",\n      \"labels\": [\n        \"25% OFF FOR A YEAR\",\n        \"A FLEXIBLE: 5/10/14/3\",\n        \"B FIXED €6k: 6/8/12/6\",\n        \"C FIXED €3.75k: 3.75/8.75/12.75/3.75\"\n      ],\n      \"label_notes\": \"25% OFF FOR A YEAR is the heading; the other three are the lines under it, top to bottom; all figures are thousands of euros a month.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Alex\",\n          \"text\": \"C saves €1,250 at every point in the range, €750 more under stress.\"\n        },\n        {\n          \"who\": \"Sam\",\n          \"text\": \"B saves €2,000 at the top, costs €3,000 more under stress. Take C.\"\n        }\n      ]\n    }\n  ],\n  \"alt\": \"Comic page in three strips: a scale shows the 2028 range of €5,000 to €14,000 of monthly model charges with a €3,000 stress case beside it; a calendar shows a 2028 cash provision approved and nothing funded from 2029; a whiteboard tabulates three options at 25% off for a year, A flexible 5, 10, 14 and 3, B fixed at €6,000 giving 6, 8, 12 and 6, and C fixed at €3,750 giving 3.75, 8.75, 12.75 and 3.75, in thousands of euros a month.\",\n  \"caption\": \"The vendor offers a committed-spend agreement for 2028: a fixed monthly amount for twelve months, 25% less per token, usage above it at list price. The 25% and the amounts are assumptions for the example. Demand is measured as what the feature’s usage would cost at flexible list prices after the construction work, so every option is compared on one yardstick: €5,000 to €14,000 a month across the board’s 35-to-80-customer forecast, €10,000 expected, €3,000 as a stress case. Option B commits €6,000 to cover €8,000 of usage; Option C commits €3,750 to cover €5,000. C saves €1,250 a month everywhere in the range and costs €750 more in the stress case; B saves more only at expected demand and above, with a floor €2,250 higher where the feature is losing customers. Larkspur chooses C, sized at the low end of a range the board has funded.\",\n  \"status\": \"generated\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference\": \"_research/comic-cast-20260913.jpeg\",\n    \"sha256\": \"505f87da7f5a9d587f07b67f04a29a1c0bddf930f25609a43abb23fc7a3c6c8e\"\n  }\n}\n-->\n\n![Comic page in three strips: a scale shows the 2028 range of €5,000 to €14,000 of monthly model charges with a €3,000 stress case beside it; a calendar shows a 2028 cash provision approved and nothing funded from 2029; a whiteboard tabulates three options at 25% off for a year, A flexible 5, 10, 14 and 3, B fixed at €6,000 giving 6, 8, 12 and 6, and C fixed at €3,750 giving 3.75, 8.75, 12.75 and 3.75, in thousands of euros a month.](assets/images/29-ai-worth-its-cost/comic-page-05-size-the-commitment-to-the-range.jpeg)\n\n**Page 5: Size the commitment to the range.** The vendor offers a committed-spend agreement for 2028: a fixed monthly amount for twelve months, 25% less per token, usage above it at list price. The 25% and the amounts are assumptions for the example. Demand is measured as what the feature’s usage would cost at flexible list prices after the construction work, so every option is compared on one yardstick: €5,000 to €14,000 a month across the board’s 35-to-80-customer forecast, €10,000 expected, €3,000 as a stress case. Option B commits €6,000 to cover €8,000 of usage; Option C commits €3,750 to cover €5,000. C saves €1,250 a month everywhere in the range and costs €750 more in the stress case; B saves more only at expected demand and above, with a floor €2,250 higher where the feature is losing customers. Larkspur chooses C, sized at the low end of a range the board has funded.\n\n- *Strip 1.* *Narration:* 2028 model charges at flexible prices, after the construction work. **Priya:** “The board's forecast: 35 to 80 customers, 650 documents each. €10,000 expected.” **Sam:** “€3,000 is a stress case, a harsh test, not a forecast.”\n- *Strip 2.* **Ines:** “A year or less sits inside my standing permission to sign.” **Sam:** “Nothing is funded past December 2028, so nothing longer is on the table.”\n- *Strip 3.* *Narration:* Monthly cost at €5k, €10k, €14k of demand, and the €3k stress case. **Alex:** “C saves €1,250 at every point in the range, €750 more under stress.” **Sam:** “B saves €2,000 at the top, costs €3,000 more under stress. Take C.”\n\n<!-- comic-page\n{\n  \"id\": \"06-the-contract-and-the-stop-rules\",\n  \"title\": \"The contract and the stop rules\",\n  \"asset\": \"assets/images/29-ai-worth-its-cost/comic-page-06-the-contract-and-the-stop-rules.jpeg\",\n  \"aspect_ratio\": \"3:4\",\n  \"cast\": [\n    \"Ines\",\n    \"Sam\",\n    \"Alex\",\n    \"Priya\"\n  ],\n  \"strips\": [\n    {\n      \"scene\": \"Ines, at the left, sits at a desk and signs a contract that she holds up slightly so that its heading reads upright for the reader; it carries a heading and exactly two short lines above a plain seal. Sam sits at the same desk, at the right, with a checklist on a clipboard that carries only plain tick boxes.\",\n      \"labels\": [\n        \"COMMITTED SPEND: 2028\",\n        \"€3,750 MONTHLY, €45,000 IN ALL\",\n        \"EXPIRES 31 DECEMBER 2028\"\n      ],\n      \"label_notes\": \"COMMITTED SPEND: 2028 is the heading of the contract; the other two are its two lines, top to bottom.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Ines\",\n          \"text\": \"Signed only after the construction saving is measured on the samples.\"\n        },\n        {\n          \"who\": \"Sam\",\n          \"text\": \"Owed whether we use it or not. Cannot be cancelled. No automatic renewal.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"A pinboard with exactly three large index cards pinned side by side in one row with clear gaps between them, every word fully visible. Sam, at the left of the pinboard, gestures toward the cards with an open hand. Alex, at the right of the pinboard, points at the first card.\",\n      \"labels\": [\n        \"MODEL RETIREMENT: SIX MONTHS' NOTICE\",\n        \"PRICE CHANGE: 30 DAYS' NOTICE\",\n        \"DATA TERMS: CONFIRMED IN WRITING\"\n      ],\n      \"label_notes\": \"One label per index card, in this left-to-right order.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Sam\",\n          \"text\": \"Three clauses AI vendors add. I check each before Ines signs.\"\n        },\n        {\n          \"who\": \"Alex\",\n          \"text\": \"We run our release-gate samples on any successor model before we switch.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"A pinboard with exactly four large index cards pinned side by side in one row with clear gaps between them, every word fully visible. Priya, at the left of the pinboard, gestures toward the cards with an open hand. Ines, at the right of the pinboard, nods.\",\n      \"labels\": [\n        \"COST PER CUSTOMER OVER €150\",\n        \"ACCURACY UNDER 95%\",\n        \"VENDOR PRICE UP 30%\",\n        \"RENEWALS UNDER 80%\"\n      ],\n      \"label_notes\": \"One label per index card, in this left-to-right order.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Priya\",\n          \"text\": \"Four stop rules, decided now: reprice, review-aid mode, sixty-day decision, reprice test.\"\n        },\n        {\n          \"who\": \"Ines\",\n          \"text\": \"So the October meeting applies a rule instead of inventing one.\"\n        }\n      ]\n    }\n  ],\n  \"alt\": \"Comic page in three strips: Ines signs a contract headed committed spend 2028, €3,750 monthly and €45,000 in all, expiring 31 December 2028, while Sam holds a checklist; three cards name the model-retirement clause with six months’ notice, the price-change clause with 30 days’ notice, and data terms confirmed in writing; four cards give the stop rules, cost per customer over €150, accuracy under 95%, vendor price up 30% and renewals under 80%.\",\n  \"caption\": \"Ines signs under her standing permission for contracts of a year or less; the obligation is the operating company’s, cannot be cancelled or transferred, and expires with no automatic renewal. Sam checks the three clauses AI vendors add: the vendor may retire the model with six months’ notice, and Larkspur wins the right to test the successor on its release-gate samples first; list prices may change with thirty days’ notice, and the fixed €3,750 is owed either way; the terms on retention and training use of customer documents stay as in the trial, in writing. The stop rules are set before the review: running cost per customer above €150 for two months means construction first, then a reprice; accuracy below 95% or a missed safety document means review-aid mode that day; a 30% price rise or a failed successor means a decision within sixty days; fewer than 80% renewing at €300 means a reprice test. A loss of up to €1,000 a month is tolerated until 31 March 2028 only if customers with the feature renew the main product at least ten points more often.\",\n  \"status\": \"generated\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference\": \"_research/comic-cast-20260913.jpeg\",\n    \"sha256\": \"b808c11d71d0d8fd03f7771097d6a45022495d4f25818c1220fab1b0ca687991\"\n  }\n}\n-->\n\n![Comic page in three strips: Ines signs a contract headed committed spend 2028, €3,750 monthly and €45,000 in all, expiring 31 December 2028, while Sam holds a checklist; three cards name the model-retirement clause with six months’ notice, the price-change clause with 30 days’ notice, and data terms confirmed in writing; four cards give the stop rules, cost per customer over €150, accuracy under 95%, vendor price up 30% and renewals under 80%.](assets/images/29-ai-worth-its-cost/comic-page-06-the-contract-and-the-stop-rules.jpeg)\n\n**Page 6: The contract and the stop rules.** Ines signs under her standing permission for contracts of a year or less; the obligation is the operating company’s, cannot be cancelled or transferred, and expires with no automatic renewal. Sam checks the three clauses AI vendors add: the vendor may retire the model with six months’ notice, and Larkspur wins the right to test the successor on its release-gate samples first; list prices may change with thirty days’ notice, and the fixed €3,750 is owed either way; the terms on retention and training use of customer documents stay as in the trial, in writing. The stop rules are set before the review: running cost per customer above €150 for two months means construction first, then a reprice; accuracy below 95% or a missed safety document means review-aid mode that day; a 30% price rise or a failed successor means a decision within sixty days; fewer than 80% renewing at €300 means a reprice test. A loss of up to €1,000 a month is tolerated until 31 March 2028 only if customers with the feature renew the main product at least ten points more often.\n\n- *Strip 1.* **Ines:** “Signed only after the construction saving is measured on the samples.” **Sam:** “Owed whether we use it or not. Cannot be cancelled. No automatic renewal.”\n- *Strip 2.* **Sam:** “Three clauses AI vendors add. I check each before Ines signs.” **Alex:** “We run our release-gate samples on any successor model before we switch.”\n- *Strip 3.* **Priya:** “Four stop rules, decided now: reprice, review-aid mode, sixty-day decision, reprice test.” **Ines:** “So the October meeting applies a rule instead of inventing one.”\n\n<!-- comic-page\n{\n  \"id\": \"07-three-questions-three-answers\",\n  \"title\": \"Three questions, three answers\",\n  \"asset\": \"assets/images/29-ai-worth-its-cost/comic-page-07-three-questions-three-answers.jpeg\",\n  \"aspect_ratio\": \"3:4\",\n  \"cast\": [\n    \"Morgan\",\n    \"Sam\",\n    \"Alex\",\n    \"Ines\"\n  ],\n  \"strips\": [\n    {\n      \"scene\": \"Morgan, at the left, holds up one large card with both hands, facing the reader. Sam, at the right, holds up a smaller card with a single line, facing the reader.\",\n      \"labels\": [\n        \"WHAT IS OUR AI ROI?\",\n        \"TWO FIGURES, TWO PERIODS\"\n      ],\n      \"label_notes\": \"WHAT IS OUR AI ROI? is the large card Morgan holds; TWO FIGURES, TWO PERIODS is the card Sam holds.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Morgan\",\n          \"text\": \"So: what is our AI ROI?\"\n        },\n        {\n          \"who\": \"Sam\",\n          \"text\": \"Feature: 90% running, April to September, one-off costs unrecovered. Assistant: 300% for 2027.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"Morgan, at the left, holds up one large card with both hands, facing the reader. Alex, at the right, holds up a smaller card with a single line, facing the reader.\",\n      \"labels\": [\n        \"BILL OUTGROWS REVENUE. WHY?\",\n        \"USAGE, CONSTRUCTION, RATES\"\n      ],\n      \"label_notes\": \"BILL OUTGROWS REVENUE. WHY? is the large card Morgan holds; USAGE, CONSTRUCTION, RATES is the card Alex holds.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Alex\",\n          \"text\": \"Usage doubled, construction added 80% per document, a price cut hid it.\"\n        },\n        {\n          \"who\": \"Morgan\",\n          \"text\": \"The construction share is yours to fix, and measured before you commit.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"Morgan, at the left, holds up one large card with both hands, facing the reader. Ines, at the right, holds up a smaller card with a single line, facing the reader.\",\n      \"labels\": [\n        \"SHOULD WE COMMIT MORE?\",\n        \"ONE YEAR, LOW END\"\n      ],\n      \"label_notes\": \"SHOULD WE COMMIT MORE? is the large card Morgan holds; ONE YEAR, LOW END is the card Ines holds.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Ines\",\n          \"text\": \"One year, sized at the low end: €1,250 a month saved across the range.\"\n        },\n        {\n          \"who\": \"Morgan\",\n          \"text\": \"And the obligation travels with the company if ownership changes.\"\n        }\n      ]\n    }\n  ],\n  \"alt\": \"Comic page in three strips: Morgan asks what is our AI ROI and Sam answers two figures, two periods; Morgan asks why the bill outgrows revenue and Alex answers usage, construction, rates; Morgan asks should we commit more and Ines answers one year, at the low end.\",\n  \"caption\": \"Each answer points at the method rather than at one number. The feature returned about 90% on cash running cost for April to September 2027 with quality and review conditions holding, and its one-off trial and release costs are still about €18,000 short in cash; the support assistant returned about 300% for 2027 on a hire deferred, a benefit of that year. The bill outgrew revenue because usage doubled, construction raised tokens per document by 80%, and a 20% price cut hid most of that. The one-year commitment, sized at the low end of the funded range after the construction work, saves €1,250 a month across the range and costs €750 a month in the stress case; a committed contract is an obligation of the operating company and travels with it if ownership changes.\",\n  \"status\": \"generated\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference\": \"_research/comic-cast-20260913.jpeg\",\n    \"sha256\": \"27462898d56fa319d9edcda3a67f51f884724f7c6135620e243960d016791a71\"\n  }\n}\n-->\n\n![Comic page in three strips: Morgan asks what is our AI ROI and Sam answers two figures, two periods; Morgan asks why the bill outgrows revenue and Alex answers usage, construction, rates; Morgan asks should we commit more and Ines answers one year, at the low end.](assets/images/29-ai-worth-its-cost/comic-page-07-three-questions-three-answers.jpeg)\n\n**Page 7: Three questions, three answers.** Each answer points at the method rather than at one number. The feature returned about 90% on cash running cost for April to September 2027 with quality and review conditions holding, and its one-off trial and release costs are still about €18,000 short in cash; the support assistant returned about 300% for 2027 on a hire deferred, a benefit of that year. The bill outgrew revenue because usage doubled, construction raised tokens per document by 80%, and a 20% price cut hid most of that. The one-year commitment, sized at the low end of the funded range after the construction work, saves €1,250 a month across the range and costs €750 a month in the stress case; a committed contract is an obligation of the operating company and travels with it if ownership changes.\n\n- *Strip 1.* **Morgan:** “So: what is our AI ROI?” **Sam:** “Feature: 90% running, April to September, one-off costs unrecovered. Assistant: 300% for 2027.”\n- *Strip 2.* **Alex:** “Usage doubled, construction added 80% per document, a price cut hid it.” **Morgan:** “The construction share is yours to fix, and measured before you commit.”\n- *Strip 3.* **Ines:** “One year, sized at the low end: €1,250 a month saved across the range.” **Morgan:** “And the obligation travels with the company if ownership changes.”\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

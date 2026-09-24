@@ -1,13 +1,13 @@
 ---
 status: accepted
-revised: 2026-09-23
+revised: 2026-09-24
 ---
 
-# Spec: PART VI — Lessons from the Field
+# Spec: PART V — SUSTAIN: Keep the Technology You Run Worth Its Cost
 
 ## Intent
 
-Frame historical cases as tests concentrated on private equity and related ownership transitions. Separate observed outcomes, hypotheses about mechanisms and questions for other ownership arrangements.
+Introduce the part about keeping the technology the company already runs worth its cost, gathering recurring, self-contained questions a leader under investors keeps being asked about the existing estate: a lower cloud bill and backups that must actually restore. The part is expected to grow (a technical-debt chapter is planned). Show that the chapters apply one method (comparable basis, reasons for change, commitment under a stated range, recorded remaining exposure) and that none depends on the others.
 
 ## Audience
 
@@ -15,28 +15,19 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
-- Include exactly one chapter overview at the start of the learning path, in addition to the existing header logo. Give every configured chapter its own box, use short recognizable title labels without duplicating chapter numbers, and connect the chapters to the part's overall purpose.
-- Bring the four case chapters into the closing synthesis. Show the common evidence-to-mechanism-to-decision method and preserve the distinction between independent histories and a causal sequence.
-- Generate the overview through the Gemini API, matching the book's ivory, navy, teal and ochre illustration style. Publish one JPEG with descriptive alt text and a prose caption, and preserve it in the manuscript export. Keep the linked chapter walkthrough as the full-title reading guide.
-- Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
-- Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
-- Keep historical findings within their source scope and label new comparative scenarios as fictional.
-- Orient a beginner using ordinary language, briefly recall what the previous part established, and explain the next learning step without assuming later vocabulary. Explain every finance term at first use in plain words: name the investment firm behind a reported gain, distinguish operating earnings (accounting profit before borrowing costs and income tax) from cash the company can spend, say what bankruptcy is (a court process for a company that cannot pay its debts) and name the bankruptcy filing as such, and say what private equity, a strategic acquisition, a sale of an investment (an exit), a secondary sale and an investment manager are before relying on them. Define private equity without making borrowing or whole-company purchases universal: investment firms pool investors' money to buy ownership in companies, often with borrowing, aiming to sell later. Distinguish the company's managers from the investment manager (the firm managing investors' money). Say what shares are (units of ownership in a company) the first time the word appears. In the case map, replace shorthand with plain descriptions: leaving some costs out of a profit calculation, making acquired systems work together, financial results covering less than a full year, borrowing that must be repaid. In the TeamSystem row, keep what an owner inherits (products, unconnected acquired systems, borrowing) apart from the reporting-period lesson, and say why accounts for part of a year mislead: they distort growth comparisons. Prefer plain phrases ("sale of an investment", "existing owners selling their shares") to specialist shorthand.
-- Say why the part exists and what its chapters do together, in under 400 reader-visible words, counted after the `[[…]]` chapter links expand to their titles (title, byline and image alt text excluded). Include one sentence connecting Part V's leadership decisions to this part's historical tests.
-- Describe the structure as four case chapters covering five companies plus a closing comparison; never let a company count stand in for a chapter count.
-- Walk the chapters in order, one line each, showing why that order. Name each chapter by its linked title rather than a number, so the list survives renumbering. The case map gives each chapter one plain-language question and a short historical window; detailed filing dates and source qualifications stay in the case chapters, but the distinction between the ownership period examined and later follow-up events is kept.
-- State only what the case chapters demonstrate. For Toys R Us that is that positive operating earnings did not mean cash was available for product investment and that suppliers demanding earlier payment increased the pressure; the introduction must not claim that a particular project was refused funding or would otherwise have succeeded. Wherever the introduction or its overview names the Toys R Us measure, qualify it (operating earnings, or profit before borrowing costs and tax); the overview card and the alt text ask about cash generated by operations, not cash held, because the company still held cash at its year end while a year of operations generated almost none.
-- The chapter overview's labels must read standalone: each case card states its own question in ordinary words, the method line uses plain verbs ("What happened → What might explain it → What a leader could change"), and the alt text conveys the four case-specific questions. Lay the cards out one per row so the lettering stays legible at about 327 CSS pixels (a phone), and keep one Gemini JPEG in the manuscript export.
-- State what the reader should be able to do by the end — and, where it matters, what the part will not give them.
-- Hand off to the next part in the closing line with a sentence that stays grammatical once the `[[toolkit]]` link expands to its full title (the title is plural).
+- Include exactly one chapter overview at the start of the learning path, in addition to the header logo: one card per chapter stacked in one column for phone reading, plain second-line labels, no arrows implying sequence, and alt text a newcomer can follow. Generate it through the Gemini API in the book’s ivory, navy, teal and ochre style; publish one JPEG with descriptive alt text and a prose caption, and preserve it in the manuscript export.
+- Provide a distinctive article header logo and a simple navigation icon with unique asset paths, consistent with the journal’s visual style.
+- Recall in one sentence the discipline of Parts III and IV; explain cloud, backup and restore in plain words at first use; say that the chapters are independent and may be read as the decision requires.
+- Describe each chapter through the question it answers, one line each, named by its linked title rather than a number so the list survives renumbering.
+- State what the reader should be able to do by the end, in under 400 authored words (each `[[…]]` link counted as one word; title, byline and alt text excluded), and hand off to the next part in the closing line.
 
 ## Non-goals
 
-Summarising the chapters' arguments, which would make the part introduction a substitute for reading them. No new claims, no evidence of its own, no worked examples.
+Summarising the chapters’ arguments. No new claims, no evidence of its own, no worked examples.
 
 ## Modalities
 
-Article with one chapter-overview diagram. These are short orientation pieces; a TL;DR of a 400-word introduction would duplicate it, and a comic would imply an argument the piece does not make.
+Article with one chapter-overview diagram, like the other part introductions.
 
 ## Open questions
 
@@ -44,9 +35,7 @@ None for the agreed part structure. Introductions remain unnumbered; chapter rea
 
 ## Decision log
 
-- 2026-09-13: The author requested Owned and substantive comparative treatment of leadership under investors; this supersedes the previous private-equity-first framing.
-- **2026-09-13: Added as unnumbered part openers.** The author asked for an introduction chapter per part. Unnumbered was chosen over numbered so that no existing chapter renumbers and every cross-reference and reading route keeps working.
-- Length capped at ~400 words so an introduction cannot start competing with the chapters it introduces.
+- 2026-09-24: The author asked for a separate section for the cloud-cost, resilience and AI-strategy chapters (the AI chapter was then moved on to Part III the same day, as an investment-choice chapter), in the same request that moved the funding-delay chapter into Part III. First drafted as EVALUATE; the author preferred SUSTAIN (the health of the existing technology estate, which also fits the planned technical-debt chapter). Placed after SCALE and before COLLABORATE so the applied spending questions follow the commitment and sizing parts they apply.
 
 ## Sources
 
@@ -54,17 +43,7 @@ The journal's current config.yaml and the configured chapter introductions. Thes
 
 ## Changelog
 
-- 2026-09-23: In-depth review round 3 (P6-001). Require shares to be explained as units of ownership at first use, and require the TeamSystem case-map question to separate what an owner inherits from the reporting-period lesson, stating that accounts for part of a year distort growth comparisons. Permalink unchanged.
-- 2026-09-23: In-depth review round 2 (P6-001, P6-003, P6-006, P6-007). Extend the plain-language requirement to bankruptcy and the bankruptcy filing, the investment manager versus the company's managers, and the case-map shorthand (adjusted profit, integration, part-year accounts, financing commitments); qualify the private-equity definition so borrowing and whole-company purchases are not universal; require the Toys R Us measure to be named as operating earnings and cash generated to be distinguished from cash held, in the prose and in the overview artwork; require a closing sentence that survives the plural toolkit title. Permalink unchanged.
-- 2026-09-23: In-depth review round 1 (P6-001 to P6-005). Require plain-language explanations of the finance terms the opening and case map rely on, a one-sentence bridge from Part V, "four case chapters covering five companies" wording, a compressed case map with one question per chapter, a Toys R Us row limited to the demonstrated lesson, and a self-contained stacked chapter overview whose alt text carries each case's question; restate the length cap as reader-visible words after link expansion. Permalink unchanged.
-- 2026-09-22: Add one visual chapter framework at the author's request, showing the learning connections and the part's shared outcome. Generate an image through the Gemini API as explicitly requested, with alt text and a caption; retain the linked walkthrough and stable permalinks.
-- 2026-09-15: Match the case-map windows to the expanded chapter evidence (Hilton’s OnQ dated by 2003/2005 pre-buyout filings; Skype’s technology steps dated inside 2009–2011; Visma’s 2006–2023 transaction map with a 2024 financial comparison; TeamSystem’s 2000–2017 analysis with later events to the 2024 realization report; Toys R Us’s September 2017 filing) and narrow “kept apart throughout” to the reader’s method. Permalink unchanged.
-- 2026-09-14: Open with a concrete contrast, add a case-purpose map (case, historical window, decision illuminated), reflect the retitled Toys R Us and TeamSystem chapters and introduce the finale as synthesis. Permalink unchanged.
-- 2026-09-13: Align the specification heading with the current part-introduction title.
-- 2026-09-13: Extend the illustrated edition to post logos, navigation icons and, where applicable, the existing six-panel comics.
-- 2026-09-13: Reconcile the revised article and applicable reading formats with the Owned contract; specification accepted as matching the draft manuscript.
-- 2026-09-13: Revise the contract for Owned before adapting the article and its reading formats.
-- 2026-09-13: Apply the agreed company-leader perspective, private-equity focus with wider applications, and revised part structure.
-- 2026-09-13: Revise for readers starting from scratch; define terms before use, explain reasoning steps, and connect the configured chapter sequence.
-- 2026-09-13: Chapter walkthroughs changed from "**Chapter N** does X" to linked titles. Numbers were duplicated state that would silently rot if a chapter moved; the build renders link text from the target's title, so this stays correct automatically.
-- 2026-09-13: Created.
+- 2026-09-24 (order): Chapter order technical debt, resilience, cloud costs, AI costs; the introduction says the first chapter frames the estate on three columns and the others deepen one each; overview regenerated in that order.
+- 2026-09-24 (order and contents): Chapter order resilience, cloud costs, AI costs (the new [[ai-worth-its-cost]] added as the third chapter, cloud costs moved directly before it at the author's request); learning path, term order, alt text and opening line updated; overview to be regenerated with three cards in this order.
+- 2026-09-24 (part order): SUSTAIN renumbered to Part VI (folder `part-6-intro`, permalink `part-6`); opening recalls Parts IV and V; closing hands off to Part VII (LEAD). Overview regenerated with two cards after the AI chapter left.
+- 2026-09-24: Created. Two chapters moved in from Part III (the AI strategy chapter stayed in Part III after a second decision); later parts renumbered VI–VIII. Overview figure, logo and icon pending generation.

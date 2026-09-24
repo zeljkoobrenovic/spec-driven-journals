@@ -1,7 +1,7 @@
 {id: help-that-changes-capability}
-# 22. Choose the Right Help: Compare Investor Support With Other Options
+# 12. Choose the Right Help: Compare Investor Support With Other Options
 
-![Choose the Right Help: Compare Investor Support With Other Options — logo](private-techuity/posts/19-help-that-changes-capability/assets/images/19-help-that-changes-capability/logo.jpeg)
+![Choose the Right Help: Compare Investor Support With Other Options — logo](private-techuity/posts/11-help-that-changes-capability/assets/images/11-help-that-changes-capability/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to name a capability gap, compare the investor’s people and networks with the help available elsewhere, and write the request for a first step.
 
@@ -15,7 +15,7 @@
 > * **Compare the investor’s access with the alternatives.** An investor may reach relevant people faster; a peer, an independent specialist or a hire may fit better. Judge each route by availability, company effort, cost and relevant experience.
 > * **Borrow experience with its context attached**, and make any continuing dependence explicit. Finish with a written request that names the result, the source and the accountable company leader.
 
-Larkspur has money to improve customer onboarding, the setup required before a new customer can use its software. It lacks experience designing a repeatable process. Hiring a permanent leader would take months, while asking the same engineers to invent the process alongside their existing work could delay it further.
+Larkspur has money to improve customer onboarding, the setup required before a new customer can use its software. It lacks experience designing a repeatable process. Hiring a permanent leader would take months, while asking the same engineers to invent the process alongside their existing work could delay it further. How such a gap is found, by tracing the setup work through the company, is the subject of the chapters [Assess Capability: Can the Team Deliver?](#can-the-team-deliver) and [Scale the Team Up: Headcount Is Not Capacity](#fix-decisions-before-hiring) later in the book; here it is taken as given.
 
 An investor may give Larkspur faster access to relevant people and experience. Compare that access with the help the company could obtain elsewhere, including the time and obligations each route brings.
 
@@ -59,7 +59,7 @@ Use the map as possibilities to investigate, not a promised service catalogue:
 
 The best route may be outside the investor’s network. Assess the support against the same company need whoever introduced it.
 
-![A company need can be matched to investor specialists, peers, customer contacts or external providers after checking fit and availability.](private-techuity/posts/19-help-that-changes-capability/assets/images/19-help-that-changes-capability/need-before-support-source.jpeg)
+![A company need can be matched to investor specialists, peers, customer contacts or external providers after checking fit and availability.](private-techuity/posts/11-help-that-changes-capability/assets/images/11-help-that-changes-capability/need-before-support-source.jpeg)
 
 **Figure 1:** *Start with the capability the company needs, then compare credible sources of help.*
 
@@ -148,7 +148,7 @@ When the investor’s help is recruiting, three separate things stay with the co
 - **Disclosed interests.** Anything that could pull the recommendation — a candidate the investor has worked with before, or a search firm the investor pays — is declared and written down, then assessed. A prior relationship is a potential conflict to weigh, not automatically a disqualification.
 - **Accountability.** The company appoints the person, manages them and answers for the result. An introduction does not transfer that.
 
-The chapter [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring) works an investor-proposed **chief product officer**, the senior leader responsible for what the product should become, through that test.
+The chapter [Scale the Team Up: Headcount Is Not Capacity](#fix-decisions-before-hiring) works an investor-proposed **chief product officer**, the senior leader responsible for what the product should become, through that test.
 
 {id: help-that-changes-capability--borrow-experience-with-its-context-attached}
 ## Borrow Experience With Its Context Attached
@@ -159,7 +159,7 @@ Starting a new capability can combine temporary expertise with internal accounta
 
 Temporary help doesn’t always need to end in complete independence. A company may sensibly keep buying a scarce specialist service. It should understand the continuing cost, availability and responsibilities rather than discover the dependence when the first assignment finishes. The engagement review in the chapter [Set the Terms of Help: Agree the Work, Authority and Handover](#useful-engagement) is where that choice is made explicit.
 
-![A small joint assignment gives the company a method it can repeat, with any continuing external dependence made explicit.](private-techuity/posts/19-help-that-changes-capability/assets/images/19-help-that-changes-capability/support-builds-internal-capability.jpeg)
+![A small joint assignment gives the company a method it can repeat, with any continuing external dependence made explicit.](private-techuity/posts/11-help-that-changes-capability/assets/images/11-help-that-changes-capability/support-builds-internal-capability.jpeg)
 
 **Figure 2:** *Useful support leaves a capability the company can use or a continuing service it understands.*
 

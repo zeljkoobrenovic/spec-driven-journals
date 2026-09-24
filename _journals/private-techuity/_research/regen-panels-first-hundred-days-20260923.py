@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate legacy comic panels of 24-first-hundred-days (assets under 22-first-hundred-days/).
+"""Regenerate legacy comic panels of 31-first-hundred-days (assets under 22-first-hundred-days/).
 
 In-depth review finding FHD-007 (23 September 2026): panels 3 to 6 carried labels that
 did not match the case (invented priorities, unsupported outcome claims, "historical case"
@@ -23,7 +23,7 @@ spec = importlib.util.spec_from_file_location('owned_generate_comics', HERE / 'g
 gc = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(gc)
 
-POST = gc.J / 'posts/24-first-hundred-days'
+POST = gc.J / 'posts/31-first-hundred-days'
 COMICS = POST / 'comics.md'
 IDENTITIES = gc.IDENTITIES.replace('Do not write numerical balances, amounts or dates on any prop. ', '')
 
@@ -69,7 +69,7 @@ def main() -> int:
         data, _, _ = gc.helper.normalize_image_bytes_for_target(data, mime, asset)
         assert gc.helper.detect_image_mime(data) == 'image/jpeg'
         previous = asset.read_bytes()
-        (backups / f'24-first-hundred-days-comic-{pid}-{gc.sha(previous)[:12]}.jpeg').write_bytes(previous)
+        (backups / f'31-first-hundred-days-comic-{pid}-{gc.sha(previous)[:12]}.jpeg').write_bytes(previous)
         asset.write_bytes(data)
         item['status'] = 'generated'
         item['generation'] = {'model': gc.MODEL, 'reference_id': 'owned-cast-20260913', 'sha256': gc.sha(data)}

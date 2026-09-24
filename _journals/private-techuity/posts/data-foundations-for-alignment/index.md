@@ -249,7 +249,7 @@ Passing lets Priya request a further stage; it approves nothing by itself.
 
 [Tool 15](toolkit.html#tool-15) gives the measure record used above. For a measure that is going into an investor conversation, fill in the definition, source, owner, refresh frequency and boundaries; then, for each figure you report from it, the baseline, the comparison, the kind (actual, target, forecast or assumption — or committed, for a resource the board has authorized) and the decision it informs. If a measure cannot be given an owner or a decision, it probably should not be in the pack.
 
-Part II established who decides, what each party stands to gain or lose and how the relationship behaves under pressure; this appendix has assembled the evidence all three depend on. Part III shows what this evidence is for: choosing among things the company cannot all afford, and committing only to what it can deliver — [[part-3]] and [[cannot-fund-everything]].
+Part II established who decides, what each party stands to gain or lose and how the relationship behaves under pressure; this appendix has assembled the evidence all three depend on. Part IV shows what this evidence is for: choosing among things the company cannot all afford, and committing only to what it can deliver — [[part-4]] and [[cannot-fund-everything]].
 
 ## Questions to Consider
 

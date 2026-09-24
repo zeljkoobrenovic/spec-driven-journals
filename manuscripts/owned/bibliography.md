@@ -1,5 +1,5 @@
 {id: bibliography}
-# 41. Bibliography and Evidence Guide
+# Bibliography and Evidence Guide
 
 ![Bibliography and Evidence Guide — logo](private-techuity/posts/bibliography/assets/images/bibliography/logo.jpeg)
 
@@ -24,8 +24,8 @@ Use this table to find evidence by question. A source can appear under more than
 | --- | --- | --- |
 | Valuation, earnings measures and investor returns | S03, S04, S05, S06, S52, S53, S73, S74 | [Understand Valuation: An Estimate, Not a Fact](#valuation-is-an-estimate), [Understand Investor Returns: Same Performance, Different Outcomes](#three-different-returns), [Fund Economics: Fees, Distributions and Performance Reports](#fund-economics) |
 | Cash, funding forms and financing documents | S01, S02, S07, S54, S55, S56, S57, S58, S59, S60, S61, S72 | [Understand Expectations: Customers, Lenders and Investors](#customers-lenders-investors), [Understand Funding and Control: An Investment Announcement Is Not a Budget](#announcement-is-not-a-budget), [Understand Cash Flow: Confirm the Cash Before You Commit](#obligations-before-budget) |
-| Governance, rights and incentives | S01, S02, S04, S61, S76 | [Clarify Authority: Decide Who Decides Before You Disagree](#decide-who-decides), [Compare Incentives and Stakes: Equity, Carry and Jobs](#different-bets), [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring) |
-| Workforce reductions and employment process | S77, S78 | [Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff) |
+| Governance, rights and incentives | S01, S02, S04, S61, S76 | [Clarify Authority: Decide Who Decides Before You Disagree](#decide-who-decides), [Compare Incentives and Stakes: Equity, Carry and Jobs](#different-bets), [Scale the Team Up: Headcount Is Not Capacity](#fix-decisions-before-hiring) |
+| Workforce reductions and employment process | S77, S78 | [Scale the Team Down: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff) |
 | Delivery, architecture and cloud cost | S13, S14, S15, S16, S53, S75 | [Assess Capability: Can the Team Deliver?](#can-the-team-deliver), [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue), [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill) |
 | Security and resilience | S17 | [Build And Test Resilience: Backups Are Not Enough](#prove-you-can-restore) |
 | AI evidence | S18, S19, S20, S21, S63 | [Clarify AI Strategy: Three Different Investment Questions](#ai-strategy-three-questions) |
@@ -205,7 +205,7 @@ DORA / Google Cloud. [2024 Accelerate State of DevOps Report](https://dora.dev/r
 
 **Evidence type:** Original industry survey. **Consulted scope:** Report landing page, findings summary, and errata consulted; no independent reanalysis of the full survey. Associations support questions about operating conditions, not automatic causal or financial claims.
 
-**Used in:** [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue), [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring).
+**Used in:** [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue), [Scale the Team Up: Headcount Is Not Capacity](#fix-decisions-before-hiring).
 
 {id: bibliography--s16-finops-unit-economics}
 ### S16 — FinOps unit economics
@@ -745,7 +745,7 @@ Avalyn Pharma Inc. [Amended and Restated Investors' Rights Agreement, sections 3
 
 **Evidence type:** Filed contract between a company and its investors. **Consulted scope:** Section 3.2, read for a right granted to each major investor and its authorized representatives to visit and inspect the company's properties, examine its corporate and financial records and discuss its affairs, finances and accounts with its officers, during normal business hours, with carve-outs for trade secrets, confidential information and material whose disclosure would affect attorney-client privilege, and excluding investors the board has determined to be competitors. Section 5.4(g), read on September 16, 2026, which lists among the board matters requiring the preferred directors' approval the decision to "hire, terminate, or change the compensation of the executive officers, including approving any option grants or stock awards to executive officers". One filed example showing that such rights are commonly written down in advance; it does not establish what any other company's agreement grants.
 
-**Used in:** [Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?](#investors-adviser), [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring).
+**Used in:** [Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?](#investors-adviser), [Scale the Team Up: Headcount Is Not Capacity](#fix-decisions-before-hiring).
 
 {id: bibliography--s77-council-directive-98-59-ec}
 ### S77 — Council Directive 98/59/EC
@@ -754,7 +754,7 @@ Council of the European Union. [Council Directive 98/59/EC of 20 July 1998 on th
 
 **Evidence type:** Union legislation. **Consulted scope:** Article 1(1)(a), the definition (dismissals for reasons not related to the individual workers) and the two alternative tests member states choose between (over 30 days: at least 10 dismissals in establishments normally employing more than 20 and fewer than 100 workers, at least 10% in those employing at least 100 and fewer than 300, at least 30 in those employing 300 or more; or over 90 days: at least 20 whatever the establishment’s size); the second subparagraph of Article 1(1), under which other terminations on the employer’s initiative for reasons unrelated to the individual are assimilated to redundancies provided there are at least five redundancies; Article 2(1) and (2), consultation of workers’ representatives in good time with a view to reaching an agreement, covering ways of avoiding or reducing the redundancies and mitigating their consequences; Article 3(1), written notification of the competent public authority; Article 4(1), the 30-day period after notification before the redundancies take effect, without prejudice to individual notice rights; and Article 5, member states’ freedom to apply more favourable provisions. Rechecked September 16, 2026 for the band boundaries. Minimum requirements that member states transpose and may exceed; not the law of any particular country, and the book does not say which law governs the fictional company. Later amendments were not reviewed.
 
-**Used in:** [Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff).
+**Used in:** [Scale the Team Down: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff).
 
 {id: bibliography--s78-us-warn-act-29-u-s-c-21012102}
 ### S78 — US WARN Act, 29 U.S.C. §§ 2101–2102
@@ -763,7 +763,7 @@ United States Code, Title 29, Chapter 23. [§ 2101, Definitions; exclusions from
 
 **Evidence type:** Federal statute. **Consulted scope:** § 2101(a)(1), employer (100 or more employees excluding part-time employees, or 100 or more who in aggregate work at least 4,000 hours a week exclusive of overtime); (a)(2), plant closing (a shutdown of a single site, or of facilities or operating units within it, causing an employment loss for 50 or more employees excluding part-time employees within any 30-day period); (a)(3), mass layoff (a reduction in force not resulting from a plant closing that causes an employment loss at a single site within any 30-day period for at least 33 percent of the employees and at least 50 employees, or for at least 500, excluding part-time employees); (a)(8), part-time employee; § 2102(a), the 60-day written notice and its recipients (the employees’ representatives or the employees, the state’s rapid-response entity and the chief elected local official); § 2102(b), the reduced-notice exceptions (faltering company, unforeseeable business circumstances, natural disaster); and § 2102(d), aggregation of smaller employment losses within any 90-day period unless they arise from separate and distinct actions and causes. Rechecked September 16, 2026. The implementing regulations at 20 CFR Part 639 and state notice laws were not reviewed.
 
-**Used in:** [Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff).
+**Used in:** [Scale the Team Down: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff).
 
 {id: bibliography--s79-korn-ferry-on-technology-operating-partners}
 ### S79 — Korn Ferry on technology operating partners
@@ -1144,7 +1144,7 @@ Both pages read. One role brief, not an industry-wide mandate. Heading/body titl
 
 Both domain overviews, technology-capability input and audit, structured record inventories, and selected substantive tutorials/models read. Not every repeated generated HTML/JSON prose field was read line by line. Proposals, example values, and null baselines are not verified operating results.
 
-**Used in:** No chapter cites P02 directly. It is recorded as an intellectual input to the drafting of the support and role chapters (Part IV); the book states its own reasoning in ordinary terms, and readers do not need to learn the Productscapes model.
+**Used in:** No chapter cites P02 directly. It is recorded as an intellectual input to the drafting of the support and role chapters (Part III); the book states its own reasoning in ordinary terms, and readers do not need to learn the Productscapes model.
 
 {id: bibliography--remaining-research-limits}
 ## Remaining Research Limits

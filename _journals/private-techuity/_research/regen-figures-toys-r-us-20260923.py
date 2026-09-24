@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate two figures of 30-toys-r-us (archived under the legacy key 28-toys-r-us).
+"""Regenerate two figures of 35-toys-r-us (archived under the legacy key 28-toys-r-us).
 
 In-depth review 23 September 2026, round 1:
 - TRU-007: the TL;DR overview labelled two different symbols STAKEHOLDER EFFECTS and used
@@ -32,7 +32,7 @@ spec.loader.exec_module(helper)
 
 MODEL = 'gemini-3-pro-image-preview'
 LEGACY_KEY = '28-toys-r-us'
-POST = J / 'posts/30-toys-r-us'
+POST = J / 'posts/35-toys-r-us'
 
 STYLE = ('Create one finished explanatory illustration for Owned, a practical book for product and '
          'engineering leaders. Landscape 16:9. Editorial ink-and-color diagram on a warm ivory background '
@@ -132,7 +132,7 @@ def accept(fid: str, note: str) -> None:
     data = fig['candidate'].read_bytes()
     previous = fig['asset'].read_bytes()
     fig['discard_dir'].mkdir(exist_ok=True)
-    (fig['discard_dir'] / f"30-toys-r-us-{fid}-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg").write_bytes(previous)
+    (fig['discard_dir'] / f"35-toys-r-us-{fid}-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg").write_bytes(previous)
     fig['asset'].write_bytes(data)
     digest = hashlib.sha256(data).hexdigest()
     archive = json.loads(fig['archive'].read_text())

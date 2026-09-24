@@ -1,7 +1,7 @@
 {id: fix-decisions-before-hiring}
-# 14. Trace the Work: Headcount Is Not Capacity
+# 21. Scale the Team Up: Headcount Is Not Capacity
 
-![Trace the Work: Headcount Is Not Capacity — logo](private-techuity/posts/12-fix-decisions-before-hiring/assets/images/12-fix-decisions-before-hiring/logo.jpeg)
+![Scale the Team Up: Headcount Is Not Capacity — logo](private-techuity/posts/20-fix-decisions-before-hiring/assets/images/20-fix-decisions-before-hiring/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to trace one piece of work through the company, separate decision, knowledge and staffing constraints, assess leaders in their system and decide what hiring the plan needs.
 
@@ -45,7 +45,7 @@ Here is one of Larkspur’s pricing changes, traced by Alex, who leads technolog
 | Commit to production | 1 | The second clock, under two days in the assessment. DORA (DevOps Research and Assessment), a research program on software delivery, calls it change lead time. In this fictional trace the commit that starts the clock is recorded only after the change is built and signed off. Many teams commit earlier and more often |
 | **Request to production** | **16** | **About three weeks; two days of building, one of release, thirteen of waiting** |
 
-![Two rows compare the same five stages of one customer request. Today: three waiting stages (rule approval 3 days, specialist review 7 days, invoice sign-off 3 days) surround build and test (2 days) and release (1 day), totalling 16 working days. A second row headed “Forecast: 10 working days” crosses out the rule-approval wait and the invoice sign-off wait, each tagged separately “Delegated: 3 days saved”, while the 7-day specialist review remains, tagged “Knowledge gap: still 7 days”. A banner across the whole row reads “Forecast total: 6 days saved, no new hire”. The days saved are forecast, not measured.](private-techuity/posts/12-fix-decisions-before-hiring/assets/images/12-fix-decisions-before-hiring/work-crosses-team-boundaries.jpeg)
+![Two rows compare the same five stages of one customer request. Today: three waiting stages (rule approval 3 days, specialist review 7 days, invoice sign-off 3 days) surround build and test (2 days) and release (1 day), totalling 16 working days. A second row headed “Forecast: 10 working days” crosses out the rule-approval wait and the invoice sign-off wait, each tagged separately “Delegated: 3 days saved”, while the 7-day specialist review remains, tagged “Knowledge gap: still 7 days”. A banner across the whole row reads “Forecast total: 6 days saved, no new hire”. The days saved are forecast, not measured.](private-techuity/posts/20-fix-decisions-before-hiring/assets/images/20-fix-decisions-before-hiring/work-crosses-team-boundaries.jpeg)
 
 **Figure 1:** *The upper row is the trace in the table above: five stages, sixteen working days, three of them waits. The lower row looks ahead to the delegation described in the next section. Each of the two approval waits is removed and each saves three days; the banner gives their combined six. It is a forecast, not a measurement. The seven-day specialist queue stays in both rows, because it is a knowledge constraint rather than a decision one — which is why the hire that follows is one billing engineer and not a second team.*
 
@@ -177,7 +177,7 @@ Success for a role is assessed on what it was appointed to enable, stated at app
 
 An appointment made without that statement is judged, later, on whatever the board is worried about at the time.
 
-The opposite movement, a plan that has to shrink rather than grow, has its own chapter: [Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff) follows a reduction from the investor’s request to the people it affects.
+The opposite movement, a plan that has to shrink rather than grow, has its own chapter: [Scale the Team Down: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff) follows a reduction from the investor’s request to the people it affects.
 
 {id: fix-decisions-before-hiring--cheaper-locations-do-not-automatically-save-money}
 ## Cheaper Locations Do Not Automatically Save Money
@@ -190,7 +190,7 @@ In a fictional case, replacing €1 million of annual external development spend
 
 The more important question is **whether the work can be transferred coherently**. If every decision depends on a small group elsewhere, lower hourly cost may come with more waiting and rework; Larkspur’s queue would simply acquire a time zone. A bounded product or service responsibility, adequate context and a clear escalation path, the agreed route for getting help or a higher-level decision, can matter more than geography.
 
-![The cost of a team change includes transition spending and continuing coordination and support, as well as pay.](private-techuity/posts/12-fix-decisions-before-hiring/assets/images/12-fix-decisions-before-hiring/full-cost-of-a-team-change.jpeg)
+![The cost of a team change includes transition spending and continuing coordination and support, as well as pay.](private-techuity/posts/20-fix-decisions-before-hiring/assets/images/20-fix-decisions-before-hiring/full-cost-of-a-team-change.jpeg)
 
 **Figure 2:** *Compare the complete delivery model over time, including the cost of reaching it. The salary on the price tag is only one item. The basket adds one-time transition costs, such as recruitment and the overlap of old and new teams, to the costs that continue every year. “Total cost of ownership” is the drawing’s label for the whole sum over the period compared: setting the arrangement up, running it and changing over to it.*
 

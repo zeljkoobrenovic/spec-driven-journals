@@ -15,7 +15,7 @@ Company product and engineering leaders, including people who inherited an inves
 
 ## Success criteria
 
-- Place the chapter in the Appendix, after [[grounded-architecture-portfolio]], as optional depth that Part II's chapters and [[part-3]] rely on; keep the hand-off to [[part-3]] and [[cannot-fund-everything]], where the evidence is used to choose and fund work. The folder stays `08a-` on disk so existing paths remain stable; the appendix is unnumbered.
+- Place the chapter in the Appendix, after [[grounded-architecture-portfolio]], as optional depth that Part II's chapters and [[part-4]] rely on; keep the hand-off to [[part-4]] and [[cannot-fund-everything]], where the evidence is used to choose and fund work. The folder stays `08a-` on disk so existing paths remain stable; the appendix is unnumbered.
 - Cover the three requested areas with enough specificity to act on, and make their connection the argument rather than three separate lists:
   - **Financial and business:** revenue, profitability, cash flow, cost structure, unit economics, customer retention, sales pipeline, and the assumptions behind growth forecasts.
   - **Planning and execution:** strategic priorities, investment plans, roadmaps, milestones, resource allocation, dependencies, delivery performance, and the gap between commitments and outcomes.

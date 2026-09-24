@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Manage Technical Debt: Fund the Fix by the Cost, the Risk and the Speed It Buys</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">OWNED: Product &amp; Engineering Leadership Under Investors</a><span class="nav-right"><a class="nav-prev" href="part-6.html" title="SUSTAIN: Keep the Technology You Run Worth Its Cost">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="prove-you-can-restore.html" title="Build And Test Resilience: Backups Are Not Enough">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part VI — SUSTAIN: Keep the Technology You Run Worth Its Cost</p>
+        <h1>Manage Technical Debt: Fund the Fix by the Cost, the Risk and the Speed It Buys</h1>
+        <p class="byline">Željko Obrenović  ·  2026-09-24  ·  19 min read · <a class="spec-link" href="manage-technical-debt.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/26-manage-technical-debt/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/26-manage-technical-debt/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">OWNED: Product &amp; Engineering Leadership Under Investors</a><span class="nav-right"><a class="nav-prev" href="part-6.html" title="SUSTAIN: Keep the Technology You Run Worth Its Cost">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="prove-you-can-restore.html" title="Build And Test Resilience: Backups Are Not Enough">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Manage Technical Debt: Fund the Fix by the Cost, the Risk and the Speed It Buys", "date": "2026-09-24", "author": "Željko Obrenović", "excerpt": "Treat technical debt as a monthly carrying cost with three columns, what it costs, what risk it carries and what it slows, put each item on figures the company already has, present the fix to the board by the revenue it protects, the risk it removes and the decision it keeps open, and fund large refactors and migrations in tranches released by measured gates.", "permalink": "manage-technical-debt", "timetoread": "19 min read", "logo": "assets/images/26-manage-technical-debt/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)", "icon": "assets/icons/26-manage-technical-debt.png"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS SECTION, YOU WILL:** Learn to put technical debt on a carrying cost with three columns, cost, risk and speed, using figures the company already has; to sort the debt by where it came from so each part has an owner and a remedy; to present a reduction project to the board by what it protects, removes and keeps open; and to fund a large refactor or migration in tranches, each released by a measured gate.\n\n> **WHY INVESTORS CARE:** An investor hears “technical debt” as a request for money that changes nothing a customer can see, and hears “rewrite” as a year of engineering with the benefit at the end. It will fund either when it can see, per month, what the debt costs, what it risks and what it slows, and what each tranche of spending removes.\n\n> **WHY YOU SHOULD CARE:** A percentage, an issue count or a rewrite proposal gives the board nothing to decide with. A register with three columns per item lets the same board that questions the cloud bill fund the fix for the same reasons, and lets you say which debt you are choosing to carry, until when, and why.\n\n\n> **KEY POINTS:**\n>\n> * **Debt is a carrying cost per month with three columns.** What it costs to run (workaround hours, old licences and hosting), what risk it carries (incidents, unsupported or insecure components, a restore that fails, a vendor’s dated retirement) and what it slows (lead time on the changes customers pay for, deals the product cannot take). Never a count, a percentage or a ratio.\n> * **Present the fix by what it buys.** The revenue it protects or enables, the cost or risk it removes, and, only where a real dated decision is being kept open, the decision it preserves. The board will not see the failures the fix prevented, so show the register before and after.\n> * **Large projects are transitions, funded in tranches.** Each tranche is released against a measured reduction in the three columns; the rewrite whose benefit arrives at the end is right only when a hard date forces it, and living with an item is a decision with a stated cost and a review date, not an absence of one.\n\n<br>\n**Technical debt** is the cost a company carries because its software was built, or has aged, in ways that make it slower, riskier or more expensive to change than it needs to be. Some of it was a deliberate shortcut taken with a date attached. Some of it is growth that outran a design that was right at the time. Some of it arrived with a company that was bought, and some of it is a platform or a vendor that is going away. The word suggests a single number that could be paid off; what the company actually carries is three costs every month, and a **refactor** (reworking software without changing what it does for customers), a **migration** (moving software or data from one platform, system or vendor to another) or a **rewrite** (replacing a system with a new one) is a project that buys those costs down.\n\nThe chapters that follow in this part put a metered bill, the cloud bill in [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](cheaper-cloud-bill.html) and the AI bill in [Critically Evaluate AI Costs: Measure the Return per Task and per Period](ai-worth-its-cost.html), on a unit of useful work, one comparable basis and the reasons it changed before deciding what to commit, and [Build And Test Resilience: Backups Are Not Enough](prove-you-can-restore.html) tests the risk behind a saving before the saving is counted. Technical debt is the bill without an invoice. This chapter gives it the same treatment first, because its register is where the three columns the later chapters deepen come from. Larkspur is the fictional scheduling-software company this book follows. Alex leads technology as chief technology officer (CTO), Priya leads product, Ines is the chief executive who leads the company, Sam leads finance, and Morgan is the technology adviser to Larkspur’s investor. Every figure is fictional, and the shared Larkspur ledger that runs through the chapters [Plan the First Hundred Days: Turn Expectations Into Funded Work](first-hundred-days.html) and [Manage the Handover: Carry Forward the Evidence and Obligations](handover-of-obligations.html) is not touched.\n\nLarkspur has already paid one such debt down. The chapter [Plan for Growth: Decide What (Not) to Change in Your Systems](growth-into-design.html) chose to separate the country-specific billing rules out of the **invoicing module**, the part of the software that prepares customer invoices, into a component Larkspur owns. The month-four replay of last year’s invoices passed, the second country went live in month eight, and the billing engineer now maintains the component; a new country is configuration rather than a change to fragile code. That project is the model for what follows: a stated requirement, a gate, a fallback and a benefit that arrived when the tranche did, not at the end of a rewrite. It is October 2027. Morgan, preparing the board’s annual technology review, has asked Alex two questions in one sentence: how much technical debt does Larkspur have, and would it not be simpler to rewrite the old parts?\n\n## A Carrying Cost With Three Columns\n\nThe first question has a wrong answer that sounds precise. A static-analysis tool will produce an issue count; a consultant will produce a percentage of the codebase; both put a number on something the board cannot act on. The useful answer is a **carrying cost**: what the debt costs the company each month while it remains, in three columns that the board already knows how to read.\n\n| Column | What it counts | Where the figure comes from |\n| --- | --- | --- |\n| **Cost carried** | Engineering hours spent on workarounds, manual steps and repeated fixes; licences and hosting for the old component that a current design would not need | The trace from [Scale the Team Up: Headcount Is Not Capacity](fix-decisions-before-hiring.html); the cloud bill’s unit figures from [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](cheaper-cloud-bill.html); labelled cash or cost-based estimate |\n| **Risk carried** | Incidents the component causes; components no longer supported or patched; a restore that fails or takes too long; a vendor’s retirement with a date | The incident log; the vendor’s support dates; the restore evidence from [Build And Test Resilience: Backups Are Not Enough](prove-you-can-restore.html); the retirement notice from [Critically Evaluate AI Costs: Measure the Return per Task and per Period](ai-worth-its-cost.html) |\n| **Speed lost** | Lead time on the change types customers pay for; releases that cannot ship; deals the product cannot take because of a limit the design imposes | The same trace, per change type; the sales log of declined or delayed deals, stated as revenue not won, never as a loss |\n\nThe third column is the one a cost discussion leaves out, and it is often the largest. A design that caps the size of customer the product can serve does not appear on any bill. It appears as prospects the sales team stopped calling.\n\n![An open ledger page ruled into three columns headed Cost carried, Risk carried and Speed lost, each with simple objects: coins and a clock, a cracked shield and a torn calendar, and an arrow slowed by a wall.](assets/images/26-manage-technical-debt/carrying-cost-three-columns.jpeg)\n**Figure 1:** *Technical debt is a carrying cost read every month in three columns: what it costs to keep, what risk it carries and what it slows. A count of issues or a percentage of the codebase belongs in none of them.*\n\nAlex builds the register with Priya and Sam over two weeks. Five items are enough to show the shape; a real register is rarely longer than ten, because an item that cannot be put on the three columns is not yet understood well enough to fund.\n\n| Item | Origin | Cost carried, per month | Risk carried | Speed lost |\n| --- | --- | --- | --- | --- |\n| **1. Invoicing module, remaining tangles.** The country rules are out; pricing and discount logic is still coupled into the module and still passes through the two specialists | Growth outran the design | About 6 engineer-days of workarounds and specialist review, a cost-based estimate of about €3,000 | Two invoice incidents a quarter, each customer-visible | Pricing changes still take about 8 working days; the catalogue of pre-approved rule types from the hiring chapter cannot grow without a code change |\n| **2. Reporting stack on an unsupported framework version.** The vendor’s security patches ended on 31 March 2027 | Ageing platform | €1,500 of hosting on servers kept only for it, cash; about 2 engineer-days of patch workarounds, cost-based | Unsupported for six months; one known class of vulnerability unpatched; outside the scope of the June restore test, and a rehearsal took two days to bring back | Blocks the security questionnaire of Larkspur’s largest prospect, whose review requires supported components by the first quarter of 2028 |\n| **3. Scheduling engine, single-node design.** Each region’s schedule computation runs on one large server | Growth outran the design | About €4,000 of hosting above what a design that spreads the work would need, cash; rightsizing in the cloud chapter’s sense is blocked by the design | One server per region; a failover rehearsal took 45 minutes against the two-second, 99.9% promise; the last two incidents of the year came from it | Customers above about 400 technicians cannot be served; two such prospects declined this year, about €6,000 a month each in revenue not won; every performance fix takes weeks |\n| **4. AI sorting feature, prompt logic in code.** The trial’s shortcut, recorded on 11 December 2026 with Priya as owner and a revisit at 30 customers | Deliberate, dated shortcut | Every prompt change is a release: about 2 engineer-days a month, cost-based | Low | The construction work in [Critically Evaluate AI Costs: Measure the Return per Task and per Period](ai-worth-its-cost.html) waits on the release cycle instead of a settings change |\n| **5. Retiring vendor model.** Notice received 30 September 2027: the model the sorting feature runs on retires on 31 March 2028 | Retiring vendor | None yet | The feature stops on the date unless the successor passes the release-gate samples | None |\n\nTwo lessons are already in the table. **Origin decides the owner and the usual remedy.** Growth that outran a design is the product and engineering leaders’ to fix, in tranches, as the invoicing extraction was. An ageing platform or a retiring vendor has a date that nobody inside the company chose, and its remedy is sequenced by that date. An acquired system that never learned to work with the rest, which Larkspur does not have and the chapter [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](teamsystem.html) shows accumulating over years, belongs to whoever owns the integration decision in [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](acquisition-adds-work-first.html). And **a deliberate shortcut with a date and an owner is not a failure**; item 4 was the right call in December and is being revisited on its own terms. An undated one is a failure of record, whatever the code looks like.\n\n## Where the Debt Came From\n\nThe origins deserve a moment each, because the board will ask, reasonably, how the company got here, and the answer is different for each item.\n\n**A deliberate, dated shortcut** is a decision the company made with its eyes open: ship the trial with the prompt in code, revisit when the feature has thirty customers. The record is what makes it debt rather than neglect. The only failure available is forgetting the date, which is why the register carries the revisit condition next to the item.\n\n**Growth that outran a design** is the ordinary condition of a company that is doing well. The single-node scheduling engine was the right design for customers with forty technicians; it was not wrong when it was built, and it is wrong now. The invoicing module coupled its country rules because there was one country. This is the debt the chapter [Plan for Growth: Decide What (Not) to Change in Your Systems](growth-into-design.html) taught the company to treat as a design choice among options, and it is the debt this chapter funds in tranches, because it has no external date and its benefit can be taken in stages.\n\n**An acquired system not yet integrated** carries the previous owner’s shortcuts and its own; the chapter [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](acquisition-adds-work-first.html) treats the integration as a boundary transition, and the chapter [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](teamsystem.html) shows what happens when the transitions are deferred deal after deal. Larkspur has none today. The register has a row for it because the investor’s plan has a third country and, possibly, a purchase.\n\n**An ageing platform or a retiring vendor** is the one origin with a date the company does not control. Its remedy is not a design question but a scheduling one, and it goes first when the date is closer than the size of its carrying cost would suggest.\n\n## Present the Fix by What It Buys\n\nMorgan’s second question, about rewriting, is answered by first answering a question Morgan did not ask: what would a fix buy? The board reads a technology investment the way it reads any other, and the author’s [Grounded Architecture](https://grounded-architecture.io/economics) framework, applied to a portfolio in the appendix chapter [Appendix: Grounded Architecture Across an Investment Portfolio](grounded-architecture-portfolio.html), sorts the benefits of architecture work into what raises or protects revenue and what reduces cost or risk, with a third kind of value that is easy to overstate: the decision a design keeps open. Larkspur uses those three as ordinary words.\n\n- **Revenue protected or enabled.** Two prospects above 400 technicians, about €12,000 a month between them, that the scheduling engine cannot serve; the largest prospect’s security review, which the reporting stack fails. Revenue not won is stated as such: it is a reason to fund the work, not a loss the company has booked.\n- **Cost or risk removed.** €1,500 a month of hosting kept for the old reporting stack; about €4,000 a month of oversized servers; a 45-minute failover against a two-second promise; an unsupported component with a known vulnerability class.\n- **A decision kept open.** Splitting the schedule computation from the rest of the engine keeps open, at a known price, the later decision to replace the engine’s core, which Larkspur would take only if the evidence after the split says the ceiling remains. Gregor Hohpe’s description of architecture as selling options, the right but not the obligation to make a later decision at a price fixed now, is the idea; its value rises with uncertainty, and Larkspur has plenty. [Architecture: Selling Options](https://architectelevator.com/architecture/architecture-options/)\n\nThe third kind is used with a named decision and a date, never as a general virtue, because it cannot be priced. Neither can the first two with precision. Martin Fowler’s argument that high internal quality makes later change cheaper is the reason the invoicing extraction paid for itself within two years, and his own caveat is that nobody can measure the functionality a team delivers well enough to draw the crossover exactly. [Is High Quality Software Worth the Cost?](https://martinfowler.com/articles/is-quality-worth-cost.html) So the fix is judged on the columns it moves in the register, before and after, with the dates the moves are measured. That is a claim the board can check.\n\nThere is a reason boards under-fund this work even when the register is clear, and it should be named rather than resented. Nelson Repenning and John Sterman showed why improvement programmes are starved: the benefit of a problem that never happened is invisible, while the effort to prevent it is on this quarter’s budget, so organisations keep working harder on the symptoms instead of working better on the cause. [Nobody Ever Gets Credit for Fixing Problems that Never Happened](https://web.mit.edu/nelsonr/www/Repenning=Sterman_CMR_su01_.pdf) The register is the answer. It turns “nothing happened” into a measured difference: incidents per quarter before and after, failover time before and after, lead time before and after. A board that is shown the after column is not being asked to take the fix on faith.\n\n## Large Projects Are Transitions\n\nNow the rewrite question, on the item where it is most tempting: the scheduling engine. Alex compares three ways to reduce item 3, on one basis. Effort is counted in **engineer-weeks**, one person working one week, and labelled as cash or as a cost-based estimate of existing time, as the neighbouring chapters do.\n\n| | A. Rewrite the engine | B. Tranches with gates | C. Live with it |\n| --- | --- | --- | --- |\n| What it is | A new engine that spreads the work across servers, built alongside the old one, switched over when complete | Tranche 1: split the schedule computation from the web layer so it can run on a second server and fail over. Tranche 2: partition computations by customer so the largest run on their own workers. Tranche 3, only if the evidence after tranche 2 says the ceiling remains: replace the computation core | Keep the design; state its cost and review it |\n| Effort and cash | Four engineers for nine months, about 150 engineer-weeks, a cost-based estimate of about €300,000; €40,000 of cash for tooling and three months of **dual running**, operating the old and new engines side by side | Tranche 1: two engineers for three months, about 26 engineer-weeks, about €50,000 cost-based, €8,000 cash. Tranche 2: two engineers for four months, about €65,000 cost-based, €10,000 cash. Tranche 3: priced only if reached | Nothing new; the carrying cost continues |\n| When the benefit arrives | Month nine at the earliest, all three columns at once, and nothing customer-visible before then | Tranche 1 at month three: failover and rightsizing. Tranche 2 at month seven: large customers. Each measured before the next is funded | Never |\n| What waits | The customer portal redesign for two quarters; every performance fix during the build, because the old engine is frozen | The customer portal redesign for one quarter | Nothing; the declined prospects keep declining |\n| Risk | The switch-over is the moment every risk arrives together; the old engine is frozen for nine months; if the new one is late, both are paid for | Each tranche touches the live engine, so each carries **regression risk**, the danger of breaking what already worked, and each is tested against last year’s schedules in replay before it goes live, as the invoicing extraction was | The next incident, and the next declined prospect |\n| Money that no longer counts | After month five, about €170,000 of effort is spent whether the rewrite finishes or stops; the decision to continue is about the remaining €130,000 and the old engine’s frozen months, not about what is gone | After tranche 1, about €58,000 is spent and the failover benefit is already in hand; the decision to fund tranche 2 is about tranche 2 | Nothing is spent |\n\nThe rewrite is the option with the benefit at the end, and the table shows what that costs even when it succeeds: nine months in which the old engine is frozen, a switch-over in which every risk arrives at once, and a sum that stops counting only when the whole of it has been spent. The chapter [Plan for Growth: Decide What (Not) to Change in Your Systems](growth-into-design.html) made the same point about money already gone: what has been spent should not tip the decision, and the tranche plan is the shape that keeps the remaining decision small.\n\n![Two timelines: a rewrite drawn as one long bar with its only benefit at month nine and a price tag of 340,000 euro, against a tranche plan drawn as two shorter bars with gates and benefits at month three and month seven and a first-tranche price tag of 58,000 euro.](assets/images/26-manage-technical-debt/rewrite-versus-tranches.jpeg)\n**Figure 2:** *The rewrite carries its whole benefit to month nine and its whole price with it. The tranche plan puts a measured benefit in hand at month three and again at month seven, and each gate decides whether the next tranche is funded.*\n\n**When the rewrite is right anyway.** Item 2 is the case. The reporting stack’s framework is unsupported since March, a prospect’s security review requires supported components by the first quarter of 2028, and there is no half-way state that satisfies either: the stack is on the old version or the new one. Its migration is a small rewrite with the benefit at the end, six engineer-weeks and about €5,000 of cash, and it is done first, in November and December 2027, ahead of item 3 whose carrying cost is larger, because a hard date outranks a large number. The **sequencing rule** is written into the register: items with an external date are ordered by the date; the rest are ordered by carrying cost per tranche of effort.\n\n![Five record cards in a row: the first two carry calendar icons under a bracket labeled Dated items first, the next three carry coin stacks of decreasing height under a bracket labeled Then by carrying cost, above an arrow labeled Order of work.](assets/images/26-manage-technical-debt/sequencing-rule.jpeg)\n**Figure 3:** *The sequencing rule written into the register: items with an external date go first, in date order; the rest follow in order of carrying cost per tranche of effort. A hard date outranks a large number.*\n\nItem 5 is the same rule with a longer fuse. The successor model is tested against the release-gate samples in January 2028, three months before the retirement date, so that the sixty-day decision window negotiated in [Critically Evaluate AI Costs: Measure the Return per Task and per Period](ai-worth-its-cost.html) is not spent discovering the problem.\n\n## The Decision, Recorded\n\nAlex and Priya propose, Sam tests the cash, and Ines decides within the authority she has. The board is not asked for money now; it is told what the register says and what it will be asked for in the 2028 plan.\n\n| Element | What was decided |\n| --- | --- |\n| Chosen | The reporting-stack migration in November and December 2027 (item 2), then tranche 1 of the scheduling engine from January to March 2028 (item 3), then the successor-model test in January (item 5). Item 4 is folded into the AI construction work already funded. Item 1 is carried, with its cost stated, until the pricing catalogue’s next extension needs it |\n| Rejected | The engine rewrite, for the frozen months, the single switch-over and the sum that stops counting only at the end; living with item 3, because the two declined prospects and the failover time are now on the register with figures; deferring item 2 until item 3 is done, because item 2 has a date and item 3 does not |\n| Funding | Item 2: €5,000 of cash from the 2027 operating budget, within Ines’s delegation; the six engineer-weeks come from the customer portal redesign, which waits one quarter and is told so. Tranche 1: €8,000 of cash and two engineers for a quarter, requested in the 2028 operating plan the board approves in January; tranche 2 is not requested until tranche 1’s gate is passed |\n| Scarce capacity | The two invoicing specialists are not in any of this work; item 1 stays where it is partly for that reason. The engineers on tranche 1 are named, and the portal redesign is the work that moves |\n| Authority | Ines authorizes item 2 and the January test under her delegation. Tranche 1 is inside the 2028 plan and is the board’s to approve with the plan; tranche 2 is a separate line the board sees only with tranche 1’s measured result. A rewrite would have been a board decision on its own, at €340,000 |\n| Gate for tranche 2 | By 31 March 2028: failover of the scheduling service rehearsed in under five minutes; the region’s server rightsized with the hosting line down by at least €1,500 a month; no new incident attributable to the split in the quarter; lead time on performance fixes unchanged or better. All four met: tranche 2 is funded from April. Failover and hosting met but an incident attributable to the split: tranche 2 waits one further quarter of incident-free operation, then proceeds. Failover not met: the split is reviewed for design, not rushed, and tranche 2 is not funded until it is |\n| Register cadence | Reviewed every quarter with the cloud bill; an item’s three columns are re-measured, an item with a new external date moves to the front, and any item carried is carried with a written reason and a review date |\n| Evidence that would reopen the decision | A third incident from the engine before tranche 1 starts brings tranche 1 forward and delays the portal redesign a second quarter; the largest prospect withdrawing removes item 2’s date but not its unsupported status, so item 2 proceeds on risk alone; a purchase of another company adds an integration row whose date is the deal’s |\n\nThe counterargument is in the table, and it deserves to be said plainly: **some debt is worth carrying**, and saying so is honest. Item 1 costs about €3,000 a month of cost-based time and two incidents a quarter, and the work to remove it would take the two specialists the company can least spare. Larkspur’s investor expects to hold its share for about four more years, and item 1 may well be carried to that exit. What makes that a decision rather than neglect is that the cost is stated, the reason is written and a review date is set. The evidence that would change it is the same evidence that put it on the register: a rise in the workaround hours, a third incident in a quarter, or a pricing change the catalogue cannot absorb. A leader who says “we are choosing to carry this, at this cost, until this date” has answered the investor’s question; a leader who says “it is fine” has not.\n\n## What to Say When the Investor Asks\n\n**“How much technical debt do we have?”** Five items on a register with three columns each. Carried, they cost about €8,500 a month of cash and cost-based time, two incidents a quarter and a 45-minute failover, and they stop us serving customers above 400 technicians, about €12,000 a month of revenue we are not winning. Two of the five have external dates and go first. One we are choosing to carry, at a stated cost, to a stated date.\n\n**“Why not just rewrite it?”** A rewrite of the engine is nine frozen months, one switch-over where every risk arrives together, and about €340,000 that stops counting only when all of it is spent. The tranche plan puts failover and rightsizing in hand by March for about €58,000, funds the large-customer work only against that result, and keeps the core replacement as a decision we can still take at a known price. The one rewrite we are doing is the reporting stack, because it has a date and no half-way state.\n\n**“Why fund work customers will not see?”** Because the register shows what they do see: two incidents a quarter, a prospect we cannot pass a security review for, two prospects we cannot serve. The after column is the evidence: incidents, failover time, lead time and the hosting line, measured on the same basis before and after each tranche.\n\nWith the register kept and reviewed with the bill, the technology the company runs has a stated cost, a stated risk and a stated speed, and a plan for each. The next three chapters take one column each: [Build And Test Resilience: Backups Are Not Enough](prove-you-can-restore.html) the risk a saving can hide, [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](cheaper-cloud-bill.html) the cost of a metered service per useful unit, and [Critically Evaluate AI Costs: Measure the Return per Task and per Period](ai-worth-its-cost.html) the return on the newest such bill. A register like this is also what a buyer’s investigation looks for in the chapter [Use Diligence: Correct the Plan Before It Is Signed](diligence-corrects-the-plan.html), and the debt the company chose to carry is among the obligations the chapter [Manage the Handover: Carry Forward the Evidence and Obligations](handover-of-obligations.html) passes to the next decision-maker.\n\n## Questions to Consider\n\n1. *List the five largest items of technical debt you carry. For each, can you state its cost per month, the risk it carries and what it slows, from figures you already have?*\n2. *Which of your items has an external date, a support end, a retirement, a customer’s review, and is it sequenced by that date or by its size?*\n3. *For the project most often proposed as a rewrite, what would the first tranche be, what would its gate measure, and what would still be a decision after it?*\n4. *Which debt are you choosing to carry, at what stated cost, until what date, and who has been told?*\n\n## To Probe Further\n\n- **[The WyCash Portfolio Management System](https://c2.com/doc/oopsla92.html)** — Ward Cunningham, OOPSLA experience report, 1992.<br>*The two-paragraph origin of the debt metaphor, where Cunningham already says a little debt speeds development so long as it is paid back promptly, which is the dated shortcut of item 4.*\n- **[Technical Debt: From Metaphor to Theory and Practice](https://www.sei.cmu.edu/library/technical-debt-from-metaphor-to-theory-and-practice/)** — Philippe Kruchten, Robert Nord and Ipek Ozkaya, IEEE Software, 2012.<br>*A short, freely readable argument for keeping debt items on one backlog with the feature work and deciding them by cost and value, which is what the register does.*\n- **[Managing Technical Debt: Reducing Friction in Software Development](https://www.sei.cmu.edu/library/managing-technical-debt-reducing-friction-in-software-development/)** — Philippe Kruchten, Robert Nord and Ipek Ozkaya, Addison-Wesley, 2019.<br>*The book-length treatment of the same authors' method for identifying debt items, costing them and paying them off over time, useful when a register grows past ten items.*\n- **[Technical Debt Quadrant](https://martinfowler.com/bliki/TechnicalDebtQuadrant.html)** — Martin Fowler, 2009.<br>*Sorts debt into deliberate or inadvertent and prudent or reckless, a finer cut than this chapter's four origins that helps when the board asks how the company got here.*\n- **[Strangler Fig](https://martinfowler.com/bliki/StranglerFigApplication.html)** — Martin Fowler, 2004, revised 2024.<br>*The pattern behind the tranche plan, replacing a system piece by piece around the live one so each step returns value and the single switch-over never happens.*\n- **[Online Migrations at Scale](https://stripe.com/blog/online-migrations)** — Jacqueline Xu, Stripe engineering blog, 2017.<br>*One company's own account of moving hundreds of millions of records in four gated phases, dual writing, verified reads, moved writes and removed old code, with no downtime.*\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {}, "blocks": [{"type": "markdown", "content": "**Technical debt** is the cost a company carries because its software was built, or has aged, so that it is slower, riskier or dearer to change than it needs to be. In the fictional Larkspur scenario, the investor’s technology adviser asks how much technical debt the scheduling-software company has and whether to rewrite the old parts. Issue counts and percentages answer neither. The answer is a **carrying cost** — what each item costs per month — in three columns the board already reads.\n\n![A technical-debt register with three columns, cost carried, risk carried and speed lost, feeding a rewrite path whose benefit arrives only at the end and a tranche path with gates that release the next stage, with dated items sequenced first.](assets/images/26-manage-technical-debt/summary-at-a-glance.jpeg)\n**Figure 1:** *Put each item on three monthly columns, then fund the fix in tranches released by measured gates.*\n\n**Cost carried** counts workaround hours and the old component’s licences and hosting. **Risk carried** counts incidents, unsupported components, failed restores and a vendor’s dated retirement. **Speed lost** counts lead time on the changes customers pay for and deals the product cannot take, stated as revenue not won. Larkspur’s five register items (invoicing tangles, an unsupported reporting stack, a single-server scheduling engine capped at about 400 technicians, prompt logic in code, a vendor model retiring 31 March 2028) cost about €8,500 a month, two incidents a quarter, a 45-minute failover and €12,000 a month not won.\n\nEach item’s **origin** decides its owner and remedy: a dated shortcut with an owner is not a failure, an undated one is; growth that outran a design is fixed in stages; an ageing platform or retiring vendor is sequenced by its date.\n\nA fix is presented by what it buys: revenue protected or enabled, cost or risk removed and, only where a real dated decision is kept open, the decision preserved. None can be priced exactly, so the work is judged on the columns it moves. Boards under-fund it because a prevented failure is invisible while its cost sits on this quarter’s budget; the register’s before-and-after figures make “nothing happened” measurable.\n\nFor the scheduling engine, a **rewrite** (replacing the system with a new one) means nine frozen months, one switch-over carrying every risk, and about €340,000 that stops counting only when all of it is spent. A **tranche** plan — funding a **refactor** (reworking software without changing what it does) in stages, each released by a measured gate — puts failover and rightsizing in hand at month three for about €58,000, serves the largest customers from month seven, and keeps the core replacement as an open decision. Living with it costs the same every month.\n\n**The decision.** The reporting stack’s **migration** (moving software to a supported platform) goes first, in November and December 2027: a hard date outranks a large number. Ines, the chief executive, authorizes it within her delegation. Engine tranche 1 follows from January 2028 in the board-approved plan; tranche 2 is requested only with tranche 1’s measured result. The gate, by 31 March 2028: failover rehearsed in under five minutes, hosting down at least €1,500 a month, no incident from the split, lead time no worse. The invoicing tangles are carried deliberately, at about €3,000 a month, with a written reason and a review date; the register is reviewed quarterly with the cloud bill.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "<!-- comic-style\n{\n  \"cast\": \"MORGAN: a thoughtful investor technology adviser with short dark hair and a green jacket, used in the fund scenarios. ALEX: a practical CTO, a brown-skinned man with short, tight dark curls close to his head and blue rolled-up sleeves. SAM: a CFO, a man with short brown hair, round glasses and an amber cardigan. PRIYA: a product leader with straight dark hair and plum sleeves. INES: a CEO with short grey hair and a navy jacket. All are fictional; none represents a person in a real case.\",\n  \"style\": \"Clean editorial explainer comic pages, each one image of three stacked full-width strips: navy ink outlines, restrained green, blue and amber accents on warm ivory, generous space, expressive people and simple physical props. Dialogue, short labels and the supplied amounts are lettered in the artwork, exactly as scripted. Money bags, coins and banknotes are plain and undecorated; the euro sign appears only inside supplied text, and arrows, documents and screens carry plain lines, never lettering. No photorealism, logos, titles or unsupplied text. Keep the same character appearances throughout the journal.\",\n  \"reference\": \"_research/comic-cast-20260913.jpeg\",\n  \"identity\": {\n    \"Morgan\": \"MORGAN is a light-skinned WOMAN with a short, straight, JET-BLACK bob cut level with her jaw and a straight fringe across her forehead (never brown hair, never a side parting), and a bright green jacket over a white top, first person in the reference; her face must match the reference sheet exactly.\",\n    \"Alex\": \"ALEX is a medium-brown-skinned MAN with a masculine face, broad shoulders and a straight masculine build, SHORT tight dark curls close to his head (not a large afro), a blue rolled-sleeve shirt and blue jeans, second person in the reference; fill his face, neck and hands with the same brown skin color in every strip.\",\n    \"Sam\": \"SAM is a light-skinned MAN with a masculine face and SHORT brown hair cropped above his ears (never a bob, never chin-length hair, never a woman), round glasses and an amber cardigan over a white shirt, third person in the reference.\",\n    \"Priya\": \"PRIYA is a brown-skinned WOMAN with straight shoulder-length dark hair and a plum blouse, fourth person in the reference.\",\n    \"Ines\": \"INES is a light-skinned OLDER WOMAN with a short GREY bob (grey hair, never dark) and a navy jacket, fifth person in the reference.\"\n  },\n  \"short\": {\n    \"Morgan\": \"a light-skinned woman with a jet-black jaw-length bob and fringe, in a bright green jacket\",\n    \"Alex\": \"a brown-skinned man with short tight dark curls, in a blue rolled-sleeve shirt\",\n    \"Sam\": \"a light-skinned man with short brown hair and round glasses, in an amber cardigan over a collared white shirt\",\n    \"Priya\": \"a brown-skinned woman with straight shoulder-length dark hair, in a plum blouse\",\n    \"Ines\": \"an older light-skinned woman with a short grey bob, in a navy jacket\"\n  }\n}\n-->\n\n**Comic.** Larkspur is a fictional company that sells scheduling software, and an investor owns a large stake in it. Preparing the board's annual technology review, the investor's adviser asks two questions: how much technical debt does the company have, and would it not be simpler to rewrite the old parts? Seven pages show Larkspur answering with a register of five items, each with a monthly carrying cost in three columns, and funding the first fix in tranches released by measured gates, with one dated item going first and one item deliberately carried.\n\nThe people: Morgan advises the investor, Alex leads technology, Priya leads product, Sam leads finance, and Ines is the chief executive, who can approve spending inside the limit the board has set. All are fictional, and every amount and date is invented for the example.\n\n<!-- comic-page\n{\n  \"id\": \"01-two-questions-one-wrong-answer\",\n  \"title\": \"Two questions, and the wrong kind of answer\",\n  \"asset\": \"assets/images/26-manage-technical-debt/comic-page-01-two-questions-one-wrong-answer.jpeg\",\n  \"aspect_ratio\": \"3:4\",\n  \"cast\": [\n    \"Morgan\",\n    \"Alex\",\n    \"Priya\"\n  ],\n  \"strips\": [\n    {\n      \"scene\": \"Morgan, at the left, holds out one short note with two large lines of lettering, facing the reader. Alex, at the right, reads it. The note is the only prop in the strip.\",\n      \"labels\": [\n        \"HOW MUCH TECHNICAL DEBT?\",\n        \"WHY NOT REWRITE?\"\n      ],\n      \"label_notes\": \"The two labels are the two lines of the note Morgan holds, one under the other.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Morgan\",\n          \"text\": \"Two questions for the board's review: how much debt, and why not rewrite?\"\n        },\n        {\n          \"who\": \"Alex\",\n          \"text\": \"A count or a percentage would answer neither. Give me two weeks.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"A pinboard high on the wall, above everyone's heads with exactly three index cards pinned side by side in one row with clear gaps; the first two cards each have one single diagonal line struck through them and the third has a bold border. Alex, at the left, gestures up toward the third card with an open hand. Priya, at the right, nods. No head, hand, marker or bubble covers the lettering.\",\n      \"labels\": [\n        \"ISSUE COUNT\",\n        \"PERCENT OF CODE\",\n        \"CARRYING COST PER MONTH\"\n      ],\n      \"label_notes\": \"One label per card, in this left-to-right order; the first two are struck through, the third has the bold border.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Alex\",\n          \"text\": \"Debt is what the software costs us each month while it stays.\"\n        },\n        {\n          \"who\": \"Priya\",\n          \"text\": \"A carrying cost. The board already knows how to read one of those.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"A whiteboard high on the wall, above everyone's heads divided into exactly three columns by two vertical lines; each column has a bold heading and one short line under it. Priya, at the left, and Alex, at the right, each gesture up at the board with an open hand. No head, hand, marker or bubble covers the lettering.\",\n      \"labels\": [\n        \"COST CARRIED\",\n        \"RISK CARRIED\",\n        \"SPEED LOST\",\n        \"WORKAROUND HOURS, OLD HOSTING\",\n        \"INCIDENTS, UNSUPPORTED, RETIRING\",\n        \"LEAD TIME, DEALS LOST\"\n      ],\n      \"label_notes\": \"The first three labels are the three column headings, left to right; the last three are the single line under each heading, in the same order.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Alex\",\n          \"text\": \"Three columns per item: what it costs, what it risks, what it slows.\"\n        },\n        {\n          \"who\": \"Priya\",\n          \"text\": \"The third is the one a cost discussion leaves out. It's often the largest.\"\n        }\n      ]\n    }\n  ],\n  \"alt\": \"Comic page in three strips: Morgan hands Alex a note asking how much technical debt and why not rewrite, and Alex says a count or a percentage answers neither; three cards read issue count and percent of code, both struck through, and carrying cost per month in bold; a whiteboard shows three columns, cost carried with workaround hours and old hosting, risk carried with incidents, unsupported and retiring, and speed lost with lead time and deals lost.\",\n  \"caption\": \"Every amount and date in this comic is invented for the example. Larkspur is a fictional company that sells scheduling software; an investor owns a large stake in it. Technical debt is the cost a company carries because its software was built, or has aged, in ways that make it slower, riskier or dearer to change than it needs to be. Morgan advises the investor; Alex leads technology; Priya leads product. A carrying cost is what an item costs the company each month while it remains, in three columns: cost carried, risk carried and speed lost.\",\n  \"status\": \"generated\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference\": \"_research/comic-cast-20260913.jpeg\",\n    \"sha256\": \"e570af06ef46e83d680c7cedbb965686e89e92728863950a30a1abed793887e0\"\n  }\n}\n-->\n\n![Comic page in three strips: Morgan hands Alex a note asking how much technical debt and why not rewrite, and Alex says a count or a percentage answers neither; three cards read issue count and percent of code, both struck through, and carrying cost per month in bold; a whiteboard shows three columns, cost carried with workaround hours and old hosting, risk carried with incidents, unsupported and retiring, and speed lost with lead time and deals lost.](assets/images/26-manage-technical-debt/comic-page-01-two-questions-one-wrong-answer.jpeg)\n\n**Page 1: Two questions, and the wrong kind of answer.** Every amount and date in this comic is invented for the example. Larkspur is a fictional company that sells scheduling software; an investor owns a large stake in it. Technical debt is the cost a company carries because its software was built, or has aged, in ways that make it slower, riskier or dearer to change than it needs to be. Morgan advises the investor; Alex leads technology; Priya leads product. A carrying cost is what an item costs the company each month while it remains, in three columns: cost carried, risk carried and speed lost.\n\n- *Strip 1.* **Morgan:** “Two questions for the board's review: how much debt, and why not rewrite?” **Alex:** “A count or a percentage would answer neither. Give me two weeks.”\n- *Strip 2.* **Alex:** “Debt is what the software costs us each month while it stays.” **Priya:** “A carrying cost. The board already knows how to read one of those.”\n- *Strip 3.* **Alex:** “Three columns per item: what it costs, what it risks, what it slows.” **Priya:** “The third is the one a cost discussion leaves out. It's often the largest.”\n\n<!-- comic-page\n{\n  \"id\": \"02-five-items-four-origins\",\n  \"title\": \"Five items, and where each came from\",\n  \"asset\": \"assets/images/26-manage-technical-debt/comic-page-02-five-items-four-origins.jpeg\",\n  \"aspect_ratio\": \"3:4\",\n  \"cast\": [\n    \"Alex\",\n    \"Priya\",\n    \"Sam\"\n  ],\n  \"strips\": [\n    {\n      \"scene\": \"A pinboard high on the wall, above everyone's heads with exactly five index cards pinned side by side in one row with clear gaps, each card carrying its numeral and a short line. Alex, at the left, gestures up at the row with an open hand. Priya, at the right, points up at the fifth card. No head, hand, marker or bubble covers the lettering.\",\n      \"labels\": [\n        \"1 INVOICING TANGLES\",\n        \"2 REPORTING STACK, UNSUPPORTED\",\n        \"3 SCHEDULING ENGINE, ONE SERVER\",\n        \"4 AI PROMPT IN CODE\",\n        \"5 VENDOR MODEL RETIRING\"\n      ],\n      \"label_notes\": \"One label per card, in this left-to-right order, the numeral first on each card.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Alex\",\n          \"text\": \"Five items. A real register is rarely longer than ten.\"\n        },\n        {\n          \"who\": \"Priya\",\n          \"text\": \"The vendor model retires on 31 March 2028. That one has a date.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"A whiteboard high on the wall, above everyone's heads with exactly four lines of lettering, one under the other, each pairing an origin with its remedy. Priya, at the left, and Alex, at the right, stand clear of the board and gesture up at it with open hands. No head, hand, marker or bubble covers the lettering.\",\n      \"labels\": [\n        \"DATED SHORTCUT: REVISIT ON DATE\",\n        \"GROWTH OUTRAN DESIGN: TRANCHES\",\n        \"AGEING PLATFORM: BY THE DATE\",\n        \"RETIRING VENDOR: BY THE DATE\"\n      ],\n      \"label_notes\": \"The four labels are the four lines of the whiteboard, top to bottom.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Priya\",\n          \"text\": \"Item 4 was a deliberate shortcut, dated, owned by me. Not a failure.\"\n        },\n        {\n          \"who\": \"Alex\",\n          \"text\": \"An undated one is. And a date nobody inside chose goes first.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"A whiteboard high on the wall, above everyone's heads with exactly four large lines of lettering, one under the other. Sam, at the left, and Alex, at the right, stand clear of the board; Sam gestures up at it with an open hand. No head, hand, marker or bubble covers the lettering.\",\n      \"labels\": [\n        \"ABOUT €8,500 A MONTH\",\n        \"2 INCIDENTS A QUARTER\",\n        \"FAILOVER: 45 MINUTES\",\n        \"€12,000 A MONTH NOT WON\"\n      ],\n      \"label_notes\": \"The four labels are the four lines of the whiteboard, top to bottom.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Sam\",\n          \"text\": \"Carried, the five cost about €8,500 a month of cash and time.\"\n        },\n        {\n          \"who\": \"Alex\",\n          \"text\": \"And two prospects above 400 technicians we can't serve: revenue not won.\"\n        }\n      ]\n    }\n  ],\n  \"alt\": \"Comic page in three strips: five cards on a pinboard read invoicing tangles, reporting stack unsupported, scheduling engine one server, AI prompt in code, and vendor model retiring; a whiteboard pairs each origin with its remedy, dated shortcut revisit on date, growth outran design tranches, ageing platform and retiring vendor by the date; a second whiteboard totals the register at about €8,500 a month, two incidents a quarter, a 45-minute failover and €12,000 a month not won.\",\n  \"caption\": \"Larkspur's register has five items. The origin of each decides who owns it and what the remedy usually is; a deliberate shortcut recorded with a date and an owner is not a failure, an undated one is. Carried, the five cost about €8,500 a month of cash and cost-based engineering time, two customer-visible incidents a quarter and a 45-minute failover, and the scheduling engine's single-server design turns away customers above about 400 technicians, about €12,000 a month of revenue not won. Sam leads finance.\",\n  \"status\": \"generated\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference\": \"_research/comic-cast-20260913.jpeg\",\n    \"sha256\": \"7f623e1a1ade39b9d6e88cd9798c395963e3c35ab81208cf91e68789c721a508\"\n  }\n}\n-->\n\n![Comic page in three strips: five cards on a pinboard read invoicing tangles, reporting stack unsupported, scheduling engine one server, AI prompt in code, and vendor model retiring; a whiteboard pairs each origin with its remedy, dated shortcut revisit on date, growth outran design tranches, ageing platform and retiring vendor by the date; a second whiteboard totals the register at about €8,500 a month, two incidents a quarter, a 45-minute failover and €12,000 a month not won.](assets/images/26-manage-technical-debt/comic-page-02-five-items-four-origins.jpeg)\n\n**Page 2: Five items, and where each came from.** Larkspur's register has five items. The origin of each decides who owns it and what the remedy usually is; a deliberate shortcut recorded with a date and an owner is not a failure, an undated one is. Carried, the five cost about €8,500 a month of cash and cost-based engineering time, two customer-visible incidents a quarter and a 45-minute failover, and the scheduling engine's single-server design turns away customers above about 400 technicians, about €12,000 a month of revenue not won. Sam leads finance.\n\n- *Strip 1.* **Alex:** “Five items. A real register is rarely longer than ten.” **Priya:** “The vendor model retires on 31 March 2028. That one has a date.”\n- *Strip 2.* **Priya:** “Item 4 was a deliberate shortcut, dated, owned by me. Not a failure.” **Alex:** “An undated one is. And a date nobody inside chose goes first.”\n- *Strip 3.* **Sam:** “Carried, the five cost about €8,500 a month of cash and time.” **Alex:** “And two prospects above 400 technicians we can't serve: revenue not won.”\n\n<!-- comic-page\n{\n  \"id\": \"03-present-the-fix-by-what-it-buys\",\n  \"title\": \"Present the fix by what it buys\",\n  \"asset\": \"assets/images/26-manage-technical-debt/comic-page-03-present-the-fix-by-what-it-buys.jpeg\",\n  \"aspect_ratio\": \"3:4\",\n  \"cast\": [\n    \"Alex\",\n    \"Ines\",\n    \"Sam\"\n  ],\n  \"strips\": [\n    {\n      \"scene\": \"A pinboard high on the wall, above everyone's heads with exactly three index cards pinned side by side in one row with clear gaps. Alex, at the left, gestures up at the cards with an open hand. Ines, at the right, listens with her arms folded. No head, hand, marker or bubble covers the lettering.\",\n      \"labels\": [\n        \"REVENUE PROTECTED OR ENABLED\",\n        \"COST OR RISK REMOVED\",\n        \"A DECISION KEPT OPEN\"\n      ],\n      \"label_notes\": \"One label per card, in this left-to-right order.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Alex\",\n          \"text\": \"The board reads a fix like any investment: protects, removes, or keeps open.\"\n        },\n        {\n          \"who\": \"Ines\",\n          \"text\": \"Kept open only for a named decision with a date, never a general virtue.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"A whiteboard high on the wall, above everyone's heads drawn as a small table: two column headings across the top and three row labels down the left side, with the six cells under the headings empty. Sam, at the left, and Alex, at the right, stand clear of the board and gesture up at it with open hands. No head, hand, marker or bubble covers the lettering.\",\n      \"labels\": [\n        \"BEFORE\",\n        \"AFTER\",\n        \"INCIDENTS PER QUARTER\",\n        \"FAILOVER TIME\",\n        \"LEAD TIME\"\n      ],\n      \"label_notes\": \"BEFORE and AFTER are the two column headings; the other three are the row labels, top to bottom.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Sam\",\n          \"text\": \"Nobody gets credit for a failure that never happened. The effort is this quarter's.\"\n        },\n        {\n          \"who\": \"Alex\",\n          \"text\": \"So we measure before and after. That's a claim the board can check.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"A pinboard high on the wall, above everyone's heads with exactly four index cards pinned side by side in one row with clear gaps. Alex, at the left, gestures up at the cards with an open hand. Ines, at the right, points up at the fourth card. No head, hand, marker or bubble covers the lettering.\",\n      \"labels\": [\n        \"2 PROSPECTS: €12,000 A MONTH\",\n        \"€4,000 HOSTING ABOVE NEED\",\n        \"45-MINUTE FAILOVER\",\n        \"CORE REPLACEMENT: KEPT OPEN\"\n      ],\n      \"label_notes\": \"One label per card, in this left-to-right order.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Alex\",\n          \"text\": \"For the engine: two prospects, oversized servers, a 45-minute failover against a two-second promise.\"\n        },\n        {\n          \"who\": \"Ines\",\n          \"text\": \"Nothing here prices exactly. So judge the fix by the columns it moves.\"\n        }\n      ]\n    }\n  ],\n  \"alt\": \"Comic page in three strips: three cards read revenue protected or enabled, cost or risk removed, and a decision kept open; a before-and-after table lists incidents per quarter, failover time and lead time with empty cells, while Sam says nobody gets credit for a failure that never happened; four cards for the scheduling engine read two prospects €12,000 a month, €4,000 hosting above need, 45-minute failover, and core replacement kept open.\",\n  \"caption\": \"A reduction project is presented the way the board reads any investment: the revenue it protects or enables, the cost or risk it removes and, only where a real dated decision is being kept open, the decision it preserves. None of the three can be priced exactly, so the work is judged on the register columns it moves, measured before and after. The board rarely sees the failures a fix prevented, because a prevented failure is invisible while the effort sits on this quarter's budget; the after column is the answer. Ines is the chief executive.\",\n  \"status\": \"generated\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference\": \"_research/comic-cast-20260913.jpeg\",\n    \"sha256\": \"7a66487b9b7018d75f93d31672f6bdd9a31f5ccfeb0d9fd4aa63b2597bc04abe\"\n  }\n}\n-->\n\n![Comic page in three strips: three cards read revenue protected or enabled, cost or risk removed, and a decision kept open; a before-and-after table lists incidents per quarter, failover time and lead time with empty cells, while Sam says nobody gets credit for a failure that never happened; four cards for the scheduling engine read two prospects €12,000 a month, €4,000 hosting above need, 45-minute failover, and core replacement kept open.](assets/images/26-manage-technical-debt/comic-page-03-present-the-fix-by-what-it-buys.jpeg)\n\n**Page 3: Present the fix by what it buys.** A reduction project is presented the way the board reads any investment: the revenue it protects or enables, the cost or risk it removes and, only where a real dated decision is being kept open, the decision it preserves. None of the three can be priced exactly, so the work is judged on the register columns it moves, measured before and after. The board rarely sees the failures a fix prevented, because a prevented failure is invisible while the effort sits on this quarter's budget; the after column is the answer. Ines is the chief executive.\n\n- *Strip 1.* **Alex:** “The board reads a fix like any investment: protects, removes, or keeps open.” **Ines:** “Kept open only for a named decision with a date, never a general virtue.”\n- *Strip 2.* **Sam:** “Nobody gets credit for a failure that never happened. The effort is this quarter's.” **Alex:** “So we measure before and after. That's a claim the board can check.”\n- *Strip 3.* **Alex:** “For the engine: two prospects, oversized servers, a 45-minute failover against a two-second promise.” **Ines:** “Nothing here prices exactly. So judge the fix by the columns it moves.”\n\n<!-- comic-page\n{\n  \"id\": \"04-rewrite-tranches-or-live-with-it\",\n  \"title\": \"Rewrite, tranches, or live with it\",\n  \"asset\": \"assets/images/26-manage-technical-debt/comic-page-04-rewrite-tranches-or-live-with-it.jpeg\",\n  \"aspect_ratio\": \"3:4\",\n  \"cast\": [\n    \"Alex\",\n    \"Priya\",\n    \"Sam\"\n  ],\n  \"strips\": [\n    {\n      \"scene\": \"On a table stand exactly three upright cards side by side with clear gaps, each with a heading and lines of lettering facing the reader; the first card has three lines, the second three lines, the third two lines. Alex, at the left of the table, and Priya, at the right of the table, each gesture toward the cards with an open hand held well above them; no hand, arm or bubble covers any card.\",\n      \"labels\": [\n        \"A: REWRITE THE ENGINE\",\n        \"9 MONTHS, ABOUT €340,000\",\n        \"BENEFIT AT MONTH 9\",\n        \"B: TRANCHES WITH GATES\",\n        \"TRANCHE 1: €58,000\",\n        \"FAILOVER AT MONTH 3\",\n        \"C: LIVE WITH IT\",\n        \"COST CONTINUES\"\n      ],\n      \"label_notes\": \"The first three labels are the three lines of card A, top to bottom; the next three are card B; the last two are card C.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Alex\",\n          \"text\": \"Three ways to reduce item 3, on one basis: effort, cash, benefit date.\"\n        },\n        {\n          \"who\": \"Priya\",\n          \"text\": \"A rewrite gives nothing customer-visible before month nine. Tranche 1 gives failover at three.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"A long horizontal timeline high on the wall, above everyone's heads with exactly four tick marks in total, one tick directly under each of the four labels and no other tick anywhere. Above the line lies one long plain bar reaching from the first tick to the fourth, with one small flag standing at its right end. Below the line lie two shorter plain bars: one from the first tick to the second with a flag at its right end, then a small closed barrier gate, then one from the second tick to the third with a flag at its right end. Sam, at the left, and Alex, at the right, stand below the timeline and gesture up at it with open hands. No head, hand, marker or bubble covers the lettering.\",\n      \"labels\": [\n        \"MONTH 0\",\n        \"MONTH 3\",\n        \"MONTH 7\",\n        \"MONTH 9\",\n        \"REWRITE\",\n        \"TRANCHE 1\",\n        \"GATE\",\n        \"TRANCHE 2\"\n      ],\n      \"label_notes\": \"The four MONTH labels sit over the four ticks, left to right; REWRITE is lettered on the long upper bar; TRANCHE 1 on the first lower bar, GATE beside the barrier, TRANCHE 2 on the second lower bar.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Sam\",\n          \"text\": \"Rewrite: the old engine frozen nine months, then every risk arrives at the switch-over.\"\n        },\n        {\n          \"who\": \"Alex\",\n          \"text\": \"Tranches: failover at month three, large customers at month seven, each measured first.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"A whiteboard high on the wall, above everyone's heads with exactly four lines of lettering, one under the other, the first two lines about the rewrite and the last two about tranche 1. Sam, at the left, and Priya, at the right, stand clear of the board; Priya gestures up at the last two lines with an open hand. No head, hand, marker or bubble covers the lettering.\",\n      \"labels\": [\n        \"REWRITE, MONTH 5:\",\n        \"€170,000 GONE, €130,000 TO DECIDE\",\n        \"TRANCHE 1 DONE:\",\n        \"€58,000 SPENT, FAILOVER IN HAND\"\n      ],\n      \"label_notes\": \"The four labels are the four lines of the whiteboard, top to bottom.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Sam\",\n          \"text\": \"Halfway through a rewrite, €170,000 is gone whether it finishes or stops.\"\n        },\n        {\n          \"who\": \"Priya\",\n          \"text\": \"After tranche 1, €58,000 is spent and the benefit is already in hand.\"\n        }\n      ]\n    }\n  ],\n  \"alt\": \"Comic page in three strips: three cards compare A, rewrite the engine, nine months and about €340,000 with the benefit at month nine, B, tranches with gates, tranche 1 at €58,000 with failover at month three, and C, live with it, cost continues; a timeline with ticks at months 0, 3, 7 and 9 shows one long rewrite bar ending in a single flag against two tranche bars with flags at months 3 and 7 and a gate between; a whiteboard reads rewrite month 5, €170,000 gone and €130,000 to decide, against tranche 1 done, €58,000 spent and failover in hand.\",\n  \"caption\": \"For the scheduling engine, a rewrite (replacing the system with a new one) costs about €340,000 over nine months with the old engine frozen and every risk arriving at one switch-over. A tranche plan funds the work in stages, each released by a measured gate: tranche 1 splits the schedule computation so it can fail over, about €58,000, benefit at month three; tranche 2 partitions the largest customers, benefit at month seven; replacing the core stays a later decision. Living with it keeps the carrying cost. Money already spent should not tip the decision; after tranche 1 the remaining decision is only about tranche 2.\",\n  \"status\": \"generated\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference\": \"_research/comic-cast-20260913.jpeg\",\n    \"sha256\": \"841aa9c9b9fb9b570ffc02d3b6e3a183060017fb6258df4f7cafba8797eb80a7\"\n  }\n}\n-->\n\n![Comic page in three strips: three cards compare A, rewrite the engine, nine months and about €340,000 with the benefit at month nine, B, tranches with gates, tranche 1 at €58,000 with failover at month three, and C, live with it, cost continues; a timeline with ticks at months 0, 3, 7 and 9 shows one long rewrite bar ending in a single flag against two tranche bars with flags at months 3 and 7 and a gate between; a whiteboard reads rewrite month 5, €170,000 gone and €130,000 to decide, against tranche 1 done, €58,000 spent and failover in hand.](assets/images/26-manage-technical-debt/comic-page-04-rewrite-tranches-or-live-with-it.jpeg)\n\n**Page 4: Rewrite, tranches, or live with it.** For the scheduling engine, a rewrite (replacing the system with a new one) costs about €340,000 over nine months with the old engine frozen and every risk arriving at one switch-over. A tranche plan funds the work in stages, each released by a measured gate: tranche 1 splits the schedule computation so it can fail over, about €58,000, benefit at month three; tranche 2 partitions the largest customers, benefit at month seven; replacing the core stays a later decision. Living with it keeps the carrying cost. Money already spent should not tip the decision; after tranche 1 the remaining decision is only about tranche 2.\n\n- *Strip 1.* **Alex:** “Three ways to reduce item 3, on one basis: effort, cash, benefit date.” **Priya:** “A rewrite gives nothing customer-visible before month nine. Tranche 1 gives failover at three.”\n- *Strip 2.* **Sam:** “Rewrite: the old engine frozen nine months, then every risk arrives at the switch-over.” **Alex:** “Tranches: failover at month three, large customers at month seven, each measured first.”\n- *Strip 3.* **Sam:** “Halfway through a rewrite, €170,000 is gone whether it finishes or stops.” **Priya:** “After tranche 1, €58,000 is spent and the benefit is already in hand.”\n\n<!-- comic-page\n{\n  \"id\": \"05-the-dated-item-goes-first\",\n  \"title\": \"A hard date outranks a large number\",\n  \"asset\": \"assets/images/26-manage-technical-debt/comic-page-05-the-dated-item-goes-first.jpeg\",\n  \"aspect_ratio\": \"3:4\",\n  \"cast\": [\n    \"Alex\",\n    \"Priya\",\n    \"Ines\"\n  ],\n  \"strips\": [\n    {\n      \"scene\": \"A long horizontal timeline high on the wall, above everyone's heads with exactly three labelled ticks, one tick directly under each label and no tick anywhere without a label over it. Priya, at the left, and Alex, at the right, stand below the timeline; Priya points up at the middle label. No head, hand, marker or bubble covers the lettering.\",\n      \"labels\": [\n        \"PATCHES ENDED 31 MAR 2027\",\n        \"SECURITY REVIEW: Q1 2028\",\n        \"MODEL RETIRES 31 MAR 2028\"\n      ],\n      \"label_notes\": \"The three labels sit over the three ticks, left to right.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Priya\",\n          \"text\": \"Our largest prospect's security review needs supported components by the first quarter of 2028.\"\n        },\n        {\n          \"who\": \"Alex\",\n          \"text\": \"The reporting stack has been unsupported since March. There is no half-way state.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"On a table stands one upright card with a heading and two lines of lettering facing the reader; it is the only prop on the table. Alex, at the left of the table, gestures at the card with an open hand. Ines, at the right of the table, nods. Nothing covers the lettering.\",\n      \"labels\": [\n        \"REPORTING STACK MIGRATION\",\n        \"6 ENGINEER-WEEKS, €5,000 CASH\",\n        \"NOVEMBER–DECEMBER 2027\"\n      ],\n      \"label_notes\": \"The three labels are the heading and two lines of the card, top to bottom.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Alex\",\n          \"text\": \"A small rewrite, benefit at the end: the one case where that's right.\"\n        },\n        {\n          \"who\": \"Ines\",\n          \"text\": \"It goes before item 3. A hard date outranks a large number.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"A whiteboard high on the wall, above everyone's heads with exactly three lines of lettering, one under the other. Priya, at the left, and Ines, at the right, stand clear of the board and gesture up at it with open hands. No head, hand, marker or bubble covers the lettering.\",\n      \"labels\": [\n        \"DATED ITEMS: BY THE DATE\",\n        \"THE REST: BY CARRYING COST\",\n        \"SUCCESSOR MODEL TEST: JANUARY 2028\"\n      ],\n      \"label_notes\": \"The three labels are the three lines of the whiteboard, top to bottom.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Priya\",\n          \"text\": \"Same rule, longer fuse: the successor model is tested in January.\"\n        },\n        {\n          \"who\": \"Ines\",\n          \"text\": \"Three months before the retirement, so the decision window isn't spent finding the problem.\"\n        }\n      ]\n    }\n  ],\n  \"alt\": \"Comic page in three strips: a timeline marks patches ended 31 March 2027, security review in the first quarter of 2028, and model retires 31 March 2028; a card reads reporting stack migration, six engineer-weeks and €5,000 cash, November to December 2027, and Ines says a hard date outranks a large number; a whiteboard gives the sequencing rule, dated items by the date, the rest by carrying cost, successor model test January 2028.\",\n  \"caption\": \"A migration moves software from one platform or vendor to another. The reporting stack's framework has been unsupported since March 2027 and the largest prospect's security review requires supported components by the first quarter of 2028; there is no half-way state, so its migration is a small rewrite with the benefit at the end, the one situation in which that shape is right. It goes first, ahead of the scheduling engine whose carrying cost is larger. An engineer-week is one person working one week. The successor to the retiring vendor model is tested in January 2028, three months before the retirement date.\",\n  \"status\": \"generated\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference\": \"_research/comic-cast-20260913.jpeg\",\n    \"sha256\": \"254c49419ee7cdc822c32cb38b35c6cd2d81d3dd6a1c311fd192efb1c53c4332\"\n  }\n}\n-->\n\n![Comic page in three strips: a timeline marks patches ended 31 March 2027, security review in the first quarter of 2028, and model retires 31 March 2028; a card reads reporting stack migration, six engineer-weeks and €5,000 cash, November to December 2027, and Ines says a hard date outranks a large number; a whiteboard gives the sequencing rule, dated items by the date, the rest by carrying cost, successor model test January 2028.](assets/images/26-manage-technical-debt/comic-page-05-the-dated-item-goes-first.jpeg)\n\n**Page 5: A hard date outranks a large number.** A migration moves software from one platform or vendor to another. The reporting stack's framework has been unsupported since March 2027 and the largest prospect's security review requires supported components by the first quarter of 2028; there is no half-way state, so its migration is a small rewrite with the benefit at the end, the one situation in which that shape is right. It goes first, ahead of the scheduling engine whose carrying cost is larger. An engineer-week is one person working one week. The successor to the retiring vendor model is tested in January 2028, three months before the retirement date.\n\n- *Strip 1.* **Priya:** “Our largest prospect's security review needs supported components by the first quarter of 2028.” **Alex:** “The reporting stack has been unsupported since March. There is no half-way state.”\n- *Strip 2.* **Alex:** “A small rewrite, benefit at the end: the one case where that's right.” **Ines:** “It goes before item 3. A hard date outranks a large number.”\n- *Strip 3.* **Priya:** “Same rule, longer fuse: the successor model is tested in January.” **Ines:** “Three months before the retirement, so the decision window isn't spent finding the problem.”\n\n<!-- comic-page\n{\n  \"id\": \"06-the-decision-and-the-gate\",\n  \"title\": \"The decision, and the gate for tranche 2\",\n  \"asset\": \"assets/images/26-manage-technical-debt/comic-page-06-the-decision-and-the-gate.jpeg\",\n  \"aspect_ratio\": \"3:4\",\n  \"cast\": [\n    \"Ines\",\n    \"Alex\",\n    \"Sam\"\n  ],\n  \"strips\": [\n    {\n      \"scene\": \"One decision sheet is pinned flat high on the wall, above everyone's heads, its heading and four lines of lettering facing the reader; it is the only lettered object. Below it Ines sits at a desk signing a plain page that carries only ruled lines. Alex stands at the right of the desk. No head, hand, pen or bubble covers the lettering.\",\n      \"labels\": [\n        \"DECISION: STACK NOV–DEC 2027\",\n        \"THEN ENGINE TRANCHE 1\",\n        \"JAN–MAR 2028, €8,000 CASH\",\n        \"REJECTED: REWRITE, €340,000\"\n      ],\n      \"label_notes\": \"The four labels are the four lines of the sheet, top to bottom.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Ines\",\n          \"text\": \"Item 2 is within my delegation. Tranche 1 goes in the 2028 plan.\"\n        },\n        {\n          \"who\": \"Alex\",\n          \"text\": \"The board sees tranche 2 only with tranche 1's measured result.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"A whiteboard high on the wall, above everyone's heads with a two-line heading and exactly four lines of lettering under it, one under the other. Alex, at the left, and Sam, at the right, stand clear of the board and gesture up at it with open hands. No head, hand, marker or bubble covers the lettering.\",\n      \"labels\": [\n        \"GATE FOR TRANCHE 2\",\n        \"BY 31 MARCH 2028\",\n        \"FAILOVER UNDER 5 MINUTES\",\n        \"HOSTING DOWN €1,500 A MONTH\",\n        \"NO INCIDENT FROM THE SPLIT\",\n        \"LEAD TIME NO WORSE\"\n      ],\n      \"label_notes\": \"The first two labels are the two heading lines; the other four are the four lines under them, top to bottom.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Alex\",\n          \"text\": \"Failover from 45 minutes to under five. All four met, tranche 2 starts April.\"\n        },\n        {\n          \"who\": \"Sam\",\n          \"text\": \"An incident from the split: wait one clean quarter. Failover missed: review the design.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"A pinboard high on the wall, above everyone's heads with exactly three index cards pinned side by side in one row with clear gaps. Sam, at the left, gestures up at the first card with an open hand. Alex, at the right, points up at the third card. No head, hand, marker or bubble covers the lettering.\",\n      \"labels\": [\n        \"PORTAL REDESIGN WAITS ONE QUARTER\",\n        \"TRANCHE 1 ENGINEERS: NAMED\",\n        \"INVOICING SPECIALISTS: NOT INVOLVED\"\n      ],\n      \"label_notes\": \"One label per card, in this left-to-right order.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Sam\",\n          \"text\": \"The engineer-weeks come from the portal redesign, which waits one quarter.\"\n        },\n        {\n          \"who\": \"Alex\",\n          \"text\": \"And the two invoicing specialists are in none of this work.\"\n        }\n      ]\n    }\n  ],\n  \"alt\": \"Comic page in three strips: Ines signs a decision sheet reading stack November to December 2027, then engine tranche 1, January to March 2028 with €8,000 cash, rejected rewrite at €340,000; a whiteboard states the gate for tranche 2 by 31 March 2028, failover under five minutes, hosting down €1,500 a month, no incident from the split, lead time no worse; three cards read portal redesign waits one quarter, tranche 1 engineers named, invoicing specialists not involved.\",\n  \"caption\": \"Ines authorizes the reporting-stack migration and the January model test within her delegation; tranche 1 of the engine, €8,000 of cash and two named engineers for a quarter, is requested in the 2028 plan the board approves, and tranche 2 is a separate line the board sees only with tranche 1's measured result. A rewrite would have been a board decision on its own, at €340,000. The gate names a reduction in each column and what happens when it is met, missed or falls between. The customer portal redesign is the work that waits, and it is told so.\",\n  \"status\": \"generated\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference\": \"_research/comic-cast-20260913.jpeg\",\n    \"sha256\": \"6607a354d4175d82dfd02715a026b6b41e53b7c83b835dc18a6fd1f516fc7d09\"\n  }\n}\n-->\n\n![Comic page in three strips: Ines signs a decision sheet reading stack November to December 2027, then engine tranche 1, January to March 2028 with €8,000 cash, rejected rewrite at €340,000; a whiteboard states the gate for tranche 2 by 31 March 2028, failover under five minutes, hosting down €1,500 a month, no incident from the split, lead time no worse; three cards read portal redesign waits one quarter, tranche 1 engineers named, invoicing specialists not involved.](assets/images/26-manage-technical-debt/comic-page-06-the-decision-and-the-gate.jpeg)\n\n**Page 6: The decision, and the gate for tranche 2.** Ines authorizes the reporting-stack migration and the January model test within her delegation; tranche 1 of the engine, €8,000 of cash and two named engineers for a quarter, is requested in the 2028 plan the board approves, and tranche 2 is a separate line the board sees only with tranche 1's measured result. A rewrite would have been a board decision on its own, at €340,000. The gate names a reduction in each column and what happens when it is met, missed or falls between. The customer portal redesign is the work that waits, and it is told so.\n\n- *Strip 1.* **Ines:** “Item 2 is within my delegation. Tranche 1 goes in the 2028 plan.” **Alex:** “The board sees tranche 2 only with tranche 1's measured result.”\n- *Strip 2.* **Alex:** “Failover from 45 minutes to under five. All four met, tranche 2 starts April.” **Sam:** “An incident from the split: wait one clean quarter. Failover missed: review the design.”\n- *Strip 3.* **Sam:** “The engineer-weeks come from the portal redesign, which waits one quarter.” **Alex:** “And the two invoicing specialists are in none of this work.”\n\n<!-- comic-page\n{\n  \"id\": \"07-carried-on-purpose\",\n  \"title\": \"Carried on purpose, and the investor's answers\",\n  \"asset\": \"assets/images/26-manage-technical-debt/comic-page-07-carried-on-purpose.jpeg\",\n  \"aspect_ratio\": \"3:4\",\n  \"cast\": [\n    \"Ines\",\n    \"Alex\",\n    \"Morgan\"\n  ],\n  \"strips\": [\n    {\n      \"scene\": \"Ines, at the left, holds up one card so that its three lines of lettering read upright for the reader; it is the only prop in the strip. Alex, at the right, nods. Nothing covers the lettering.\",\n      \"labels\": [\n        \"CARRIED: INVOICING TANGLES\",\n        \"ABOUT €3,000 A MONTH\",\n        \"REVIEW EVERY QUARTER\"\n      ],\n      \"label_notes\": \"The three labels are the three lines of the card, top to bottom.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Ines\",\n          \"text\": \"Some debt is worth carrying. Item 1 stays, at this cost, until this date.\"\n        },\n        {\n          \"who\": \"Alex\",\n          \"text\": \"Written reason, review date. A third incident in a quarter reopens it.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"A pinboard high on the wall, above everyone's heads with exactly three index cards pinned side by side in one row with clear gaps. Morgan, at the left, looks up at the cards. Alex, at the right, gestures up at them with an open hand. No head, hand, marker or bubble covers the lettering.\",\n      \"labels\": [\n        \"5 ITEMS, ABOUT €8,500 MONTHLY\",\n        \"2 INCIDENTS A QUARTER\",\n        \"€12,000 A MONTH NOT WON\"\n      ],\n      \"label_notes\": \"One label per card, in this left-to-right order.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Morgan\",\n          \"text\": \"So: how much technical debt do you have?\"\n        },\n        {\n          \"who\": \"Alex\",\n          \"text\": \"Five items: about €8,500 a month, two incidents a quarter, €12,000 not won.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"On a table stand exactly two upright cards side by side with a clear gap, their lettering facing the reader; they are the only props on the table. Morgan, at the left of the table, looks at the cards. Alex, at the right of the table, gestures at the second card with an open hand. Nothing covers the lettering.\",\n      \"labels\": [\n        \"REWRITE: €340,000, MONTH 9\",\n        \"TRANCHE 1: €58,000, MONTH 3\"\n      ],\n      \"label_notes\": \"One label per card, in this left-to-right order.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Morgan\",\n          \"text\": \"And why not just rewrite it?\"\n        },\n        {\n          \"who\": \"Alex\",\n          \"text\": \"Nine frozen months, €340,000 counted only at the end. Tranche 1: failover by March.\"\n        }\n      ]\n    }\n  ],\n  \"alt\": \"Comic page in three strips: Ines holds a card reading carried, invoicing tangles, about €3,000 a month, review every quarter, and says some debt is worth carrying; Morgan asks how much technical debt Larkspur has and Alex answers with three cards, five items about €8,500 a month, two incidents a quarter, €12,000 a month not won; Morgan asks why not rewrite and two cards compare rewrite €340,000 at month nine with tranche 1 €58,000 at month three.\",\n  \"caption\": \"Some debt is worth carrying, and saying so is honest. The invoicing module's remaining tangles cost about €3,000 a month and two incidents a quarter, and removing them would take the two specialists the company can least spare; the item is carried with a written reason and a review date, which makes it a decision rather than neglect. Morgan's two questions are answered from the register and the tranche plan: five items on three columns, and a first tranche that buys failover by March for about €58,000 against a €340,000 rewrite whose benefit arrives at month nine.\",\n  \"status\": \"generated\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference\": \"_research/comic-cast-20260913.jpeg\",\n    \"sha256\": \"e9e6e286973b4d843677e132bc6470871083a536d72f408a0e061b97861865d4\"\n  }\n}\n-->\n\n![Comic page in three strips: Ines holds a card reading carried, invoicing tangles, about €3,000 a month, review every quarter, and says some debt is worth carrying; Morgan asks how much technical debt Larkspur has and Alex answers with three cards, five items about €8,500 a month, two incidents a quarter, €12,000 a month not won; Morgan asks why not rewrite and two cards compare rewrite €340,000 at month nine with tranche 1 €58,000 at month three.](assets/images/26-manage-technical-debt/comic-page-07-carried-on-purpose.jpeg)\n\n**Page 7: Carried on purpose, and the investor's answers.** Some debt is worth carrying, and saying so is honest. The invoicing module's remaining tangles cost about €3,000 a month and two incidents a quarter, and removing them would take the two specialists the company can least spare; the item is carried with a written reason and a review date, which makes it a decision rather than neglect. Morgan's two questions are answered from the register and the tranche plan: five items on three columns, and a first tranche that buys failover by March for about €58,000 against a €340,000 rewrite whose benefit arrives at month nine.\n\n- *Strip 1.* **Ines:** “Some debt is worth carrying. Item 1 stays, at this cost, until this date.” **Alex:** “Written reason, review date. A third incident in a quarter reopens it.”\n- *Strip 2.* **Morgan:** “So: how much technical debt do you have?” **Alex:** “Five items: about €8,500 a month, two incidents a quarter, €12,000 not won.”\n- *Strip 3.* **Morgan:** “And why not just rewrite it?” **Alex:** “Nine frozen months, €340,000 counted only at the end. Tranche 1: failover by March.”\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

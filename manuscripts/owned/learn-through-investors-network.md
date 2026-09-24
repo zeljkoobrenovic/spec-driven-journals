@@ -1,7 +1,7 @@
 {id: learn-through-investors-network}
-# 21. Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives
+# 11. Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives
 
-![Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives — logo](private-techuity/posts/18a-learn-through-investors-network/assets/images/18a-learn-through-investors-network/logo.jpeg)
+![Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives — logo](private-techuity/posts/10-learn-through-investors-network/assets/images/10-learn-through-investors-network/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to choose useful learning opportunities, build continuing relationships with peers and bring outside experience into your company with its context intact.
 
@@ -32,7 +32,7 @@ For a purchasing decision, ask for relevant experience with the specific problem
 
 Agree how much time the company can give to learning without demanding a predetermined answer. A leader who must return with an immediate project may mistake the most impressive demonstration for the most relevant opportunity. A leader with permission to return with sharper questions can investigate before making a commitment.
 
-![Investor introductions lead to encounters and shared reflection, with three possible paths: better questions, continuing relationships or a local experiment.](private-techuity/posts/18a-learn-through-investors-network/assets/images/18a-learn-through-investors-network/connections-to-learning.jpeg)
+![Investor introductions lead to encounters and shared reflection, with three possible paths: better questions, continuing relationships or a local experiment.](private-techuity/posts/10-learn-through-investors-network/assets/images/10-learn-through-investors-network/connections-to-learning.jpeg)
 
 **Figure 1:** *Connections create opportunities to learn. Shared reflection can produce better questions, continuing relationships or an experiment; an encounter does not automatically produce a business result.*
 
@@ -91,7 +91,7 @@ An investor-supported community could use that approach to maintain a shared sta
 
 Give people a reason to use and improve the collection. A seminar can point to a resource; a peer discussion can expose a missing example; a member can contribute a correction after trying it. **The resource supports the conversation, and the conversation keeps the resource useful.**
 
-![A clockwise loop connects shared resources, illustrated by CTO Starter Kit, with peer conversations, local experience, and corrections and cases that improve the collection.](private-techuity/posts/18a-learn-through-investors-network/assets/images/18a-learn-through-investors-network/resources-and-peer-conversations.jpeg)
+![A clockwise loop connects shared resources, illustrated by CTO Starter Kit, with peer conversations, local experience, and corrections and cases that improve the collection.](private-techuity/posts/10-learn-through-investors-network/assets/images/10-learn-through-investors-network/resources-and-peer-conversations.jpeg)
 
 **Figure 2:** *A proposed pattern for an investor-supported community: resources such as CTO Starter Kit support conversations, and members’ experience gives them useful cases and corrections to share.*
 
@@ -121,7 +121,7 @@ The investor arranges the introductions without a programme fee. Northline’s c
 
 At one host, Mira sees suggested orders reviewed inside the screen staff already use to manage stock. She initially attributes acceptance to the quality of the AI. The person who places the orders explains that reliable product records (correct product codes, pack sizes and stock counts), clear reasons for each suggestion and an easy way to change it matter just as much in daily work. This is the host’s explanation, which the visitors have not independently tested.
 
-![Four stages in the fictional Northline visit: observe review inside the everyday work; hear the host’s explanation about reliable data and easy corrections; compare the uneven product records of Northline’s customers back home; ask what helps those customers trust a suggestion.](private-techuity/posts/18a-learn-through-investors-network/assets/images/18a-learn-through-investors-network/bring-the-question-home.jpeg)
+![Four stages in the fictional Northline visit: observe review inside the everyday work; hear the host’s explanation about reliable data and easy corrections; compare the uneven product records of Northline’s customers back home; ask what helps those customers trust a suggestion.](private-techuity/posts/10-learn-through-investors-network/assets/images/10-learn-through-investors-network/bring-the-question-home.jpeg)
 
 **Figure 3:** *The fictional visit changes Northline’s question. The observed work steps, the host’s explanation and the varying records of Northline’s customers remain distinct; the next step is further inquiry with those customers.*
 

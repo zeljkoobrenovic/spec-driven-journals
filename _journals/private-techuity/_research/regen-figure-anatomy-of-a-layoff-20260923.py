@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""One-off driver: regenerate Figure 2 of 26-anatomy-of-a-layoff.
+"""One-off driver: regenerate Figure 2 of 22-anatomy-of-a-layoff.
 
 In-depth review 23 September 2026, finding LAY-009: the first render drew the
 unchanged onboarding workbench much larger after the reduction and carried no
@@ -25,7 +25,7 @@ sys.path.insert(0, str(SCRIPTS))
 
 import generate_illustrations_nanobanana as gen  # noqa: E402
 
-POST = ROOT / "_journals/private-techuity/posts/26-anatomy-of-a-layoff"
+POST = ROOT / "_journals/private-techuity/posts/22-anatomy-of-a-layoff"
 
 STYLE = (
     "Create one finished explanatory illustration for Owned, a practical book for "

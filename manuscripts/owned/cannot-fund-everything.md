@@ -1,7 +1,7 @@
 {id: cannot-fund-everything}
-# 11. Set Priorities: You Cannot Fund Everything at Once
+# 16. Set Priorities: You Cannot Fund Everything at Once
 
-![Set Priorities: You Cannot Fund Everything at Once — logo](private-techuity/posts/09-cannot-fund-everything/assets/images/09-cannot-fund-everything/logo.jpeg)
+![Set Priorities: You Cannot Fund Everything at Once — logo](private-techuity/posts/15-cannot-fund-everything/assets/images/15-cannot-fund-everything/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to choose a combination of work that fits both the cash and the team time available, and revise the whole combination when a test fails.
 
@@ -95,7 +95,7 @@ The remaining €220,000 and six weeks provide room for uncertainty and for a la
 
 An estimated score can help organize this conversation, but it shouldn’t hide that an agreed obligation, a speculative product opportunity and a learning step answer different questions. **Explain the trade-off in words** as well as numbers.
 
-![A group of projects must fit both the cash budget and the available team and specialist time.](private-techuity/posts/09-cannot-fund-everything/assets/images/09-cannot-fund-everything/money-and-capacity-two-limits.jpeg)
+![A group of projects must fit both the cash budget and the available team and specialist time.](private-techuity/posts/15-cannot-fund-everything/assets/images/15-cannot-fund-everything/money-and-capacity-two-limits.jpeg)
 
 **Figure 1:** *A project can be affordable and still be impossible to schedule.*
 
@@ -108,7 +108,7 @@ For the portal, the research is the first stage; the next decision might be to b
 
 Check the connections between stages. Can the company operate safely if it stops after the first? **Who maintains anything already delivered?** What spending is unavoidable once the first commitment is made? The setup step’s yearly upkeep is that kind of cost, which is why the record carries it from day 0. Some transitions require a larger coordinated commitment, which should be visible from the start.
 
-![An initial funded test leads to a review before the company expands, changes or stops the work.](private-techuity/posts/09-cannot-fund-everything/assets/images/09-cannot-fund-everything/staged-investment-with-review.jpeg)
+![An initial funded test leads to a review before the company expands, changes or stops the work.](private-techuity/posts/15-cannot-fund-everything/assets/images/15-cannot-fund-everything/staged-investment-with-review.jpeg)
 
 **Figure 2:** *Commit enough to answer the next decision, then use the evidence before committing more.*
 

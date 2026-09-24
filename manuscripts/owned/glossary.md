@@ -1,5 +1,5 @@
 {id: glossary}
-# 40. Glossary
+# Glossary
 
 ![Glossary — logo](private-techuity/posts/glossary/assets/images/glossary/logo.jpeg)
 
@@ -89,7 +89,7 @@ These definitions support the comparisons in the chapter [Understand Funding Cho
 | Net cash burn | Cash spending minus cash receipts over a stated period when spending is greater. |
 | Collected revenue | Money customers have actually paid in the period, as distinct from revenue invoiced, recognized or forecast. A cash plan is built on it. |
 | Fully loaded cost | The full monthly or annual cost of an employee: salary plus employer charges, benefits, equipment and tools. It is the figure that changes when a person joins or leaves. |
-| One-off cost / recurring saving | A cost paid once (severance, a transition, a contract exit) against a saving that repeats each period once it has fully arrived. Compare them by date, not as two totals ([Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff)). |
+| One-off cost / recurring saving | A cost paid once (severance, a transition, a contract exit) against a saving that repeats each period once it has fully arrived. Compare them by date, not as two totals ([Scale the Team Down: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff)). |
 | Runway | Estimated time until available cash reaches a stated limit under a cash forecast. Cash divided by constant net burn is a simplifying illustration. |
 | Minimum operating reserve | The amount of cash a board agrees the company will not fall below, so that a slip can be absorbed while a decision is taken. Reaching it is a dated event a plan is measured against, not the moment the money runs out ([Manage Funding Delays: Revise the Cash Plan and Commitments](#the-financing-slipped)). |
 | Bridge (bridge loan, bridge financing) | A shorter, smaller financing, often from the existing investors, meant to carry the company until a larger round or other event closes. It is an investment decision on the investor’s side, may carry conditions the company must meet before the money is transferred, and is not cash until it is drawn. |
@@ -152,7 +152,7 @@ The chapters keep three questions separate: who owns shares, who is accountable 
 | Reserved matters | Matters that require approval from a designated party, often the board or a shareholder, under the company’s agreements. |
 | Investor director | A board member appointed by an investor under the agreements. The seat is a formal right; what the director may veto or consent to depends on the reserved matters, not on the title. |
 | Operating plan | The company’s plan for a period, with its revenue, costs, headcount and initiatives. The body that approves it also approves material changes to it; spending inside it is usually delegated to executives. |
-| Funding condition | A condition attached to money: a bridge drawn only once a cost plan is adopted, a round that wants a particular executive in place. It is neither an approval right nor influence; the company meets it or does without the money ([Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff)). |
+| Funding condition | A condition attached to money: a bridge drawn only once a cost plan is adopted, a round that wants a particular executive in place. It is neither an approval right nor influence; the company meets it or does without the money ([Scale the Team Down: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff)). |
 | Mandate | The agreed scope of investments, responsibilities or authority. State which meaning applies. |
 | Escalation | Taking an unresolved issue to someone authorized or equipped to act, through a path agreed in advance. |
 | Financial sponsor | The investment firm behind a transaction, acting for its fund. This is the usual meaning of “sponsor” in deal documents. |
@@ -300,10 +300,10 @@ See the chapters [Set Priorities: You Cannot Fund Everything at Once](#cannot-fu
 | Headcount plan | The roles a plan funds, by period, and the roles that are conditional on money or evidence not yet received. Hires outside it, and reductions to it, need whoever approves the plan ([Clarify Authority: Decide Who Decides Before You Disagree](#decide-who-decides)). |
 | Hiring freeze | A decision to fill no new or vacant roles for a period. It saves only what would otherwise have been spent; a freeze already in force adds nothing to a later reduction. |
 | Redeployment | Moving people from work that ends or stops to work that continues, so that a gap is filled without a hire and a role is kept without a dismissal. |
-| Reduction in force (layoff, redundancy) | Ending roles, and the employment of the people in them, because the work stops or the plan can no longer fund it. Choose the roles by the work that stops; the terms and the process belong to the jurisdiction ([Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff)). |
+| Reduction in force (layoff, redundancy) | Ending roles, and the employment of the people in them, because the work stops or the plan can no longer fund it. Choose the roles by the work that stops; the terms and the process belong to the jurisdiction ([Scale the Team Down: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff)). |
 | Notice period | The time between telling a person their employment ends and the end itself, set by contract or law and paid whether or not it is worked. It delays the saving from a reduction. |
 | Severance | A payment on ending employment, set by law, contract or company policy, paid before the saving from a reduction begins. |
-| Collective consultation | A legal duty, in some jurisdictions above a threshold number of dismissals counted per establishment over a stated window, to consult employee representatives before dismissals take effect; often paired with a separate duty to notify a public authority, after which a waiting period runs. The thresholds and the two duties together decide the calendar of a reduction; national law can go further than the floor a directive sets ([Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff)). |
+| Collective consultation | A legal duty, in some jurisdictions above a threshold number of dismissals counted per establishment over a stated window, to consult employee representatives before dismissals take effect; often paired with a separate duty to notify a public authority, after which a waiting period runs. The thresholds and the two duties together decide the calendar of a reduction; national law can go further than the floor a directive sets ([Scale the Team Down: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff)). |
 | Accrued leave | Holiday or leave a person has earned but not yet taken. On leaving it is usually paid out, and counts among the one-off costs of a reduction. |
 | Fixed-term contract | Employment with an agreed end date, used in this book to retain a departing specialist for a defined piece of work. Its cost and end date belong in the cash table. |
 | Outplacement | Help with finding the next job, paid for by the employer as part of a departure package. |

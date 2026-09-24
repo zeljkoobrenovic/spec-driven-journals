@@ -1,5 +1,5 @@
 {id: different-bets}
-# 9. Compare Incentives and Stakes: Equity, Carry and Jobs
+# 8. Compare Incentives and Stakes: Equity, Carry and Jobs
 
 ![Compare Incentives and Stakes: Equity, Carry and Jobs — logo](private-techuity/posts/07-different-bets/assets/images/07-different-bets/logo.jpeg)
 
@@ -219,7 +219,7 @@ That three-month delay is what keeps the fund waiting. A sale process wants the 
 
 The record is honest about what it does not solve. Eleven people lose their jobs. In this plan Larkspur commits to severance and a reference for each of them. What the law or their contracts require depends on the country and the contract, and the plan’s commitments may go beyond it. Neither the payment nor the reference makes up for an interrupted career. No company measure offsets that cost, and the sale price that rewards the executives and the fund does not reach them.
 
-The add-on customers’ risk is reduced by staging, not removed. A decision record should say so, with the expected distribution of benefits and burdens, rather than claim that a higher company value makes everyone better off. What the eleven are owed in notice and severance, what work stops in the second location and what the merged team is and is not expected to absorb are operating decisions with their own dates; the chapter [Plan Layoffs: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff) works a reduction through them.
+The add-on customers’ risk is reduced by staging, not removed. A decision record should say so, with the expected distribution of benefits and burdens, rather than claim that a higher company value makes everyone better off. What the eleven are owed in notice and severance, what work stops in the second location and what the merged team is and is not expected to absorb are operating decisions with their own dates; the chapter [Scale the Team Down: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff) works a reduction through them.
 
 Employees may value stable work, development, fair treatment and a viable company after exit. Customers may value continuity, reasonable prices, trustworthy service and being able to take their data to another supplier. Lenders, who have lent the company money, prioritize being repaid on the agreed terms and the protections in the loan agreement. These interests can conflict even when management and the fund both gain from a higher share value. A price increase can improve margin, the part of each sale’s price that is left as profit, while reducing affordability. Combining two software platforms into one can cut costs while forcing customers to move to a product that suits them less. Such decisions need an explicit justification and a plan to reduce the harm.
 
@@ -230,7 +230,7 @@ Read an incentive plan as a set of possible outcomes: who receives a reward, wha
 
 A useful review separates three judgments: the quality of the original decision given the available evidence, the quality of execution, and the result. An intelligent experiment can fail. A poorly justified decision can get lucky. Treating both simply as green or red teaches the wrong lesson, and if every admission leads straight to blame, people learn to report activity and defer interpretation. Reward the early report of a failed assumption, and **use the same facts** with the board and with the team.
 
-The same scrutiny applies when the conclusion is about a person. When an executive’s payout or the fund’s exit timetable depends on a plan being achievable, the judgment that a leader is not up to it can be a convenient explanation for an unrealistic plan; the chapter [Trace the Work: Headcount Is Not Capacity](#fix-decisions-before-hiring) shows how to state and test the reasoning behind a leadership change before recruiting.
+The same scrutiny applies when the conclusion is about a person. When an executive’s payout or the fund’s exit timetable depends on a plan being achievable, the judgment that a leader is not up to it can be a convenient explanation for an unrealistic plan; the chapter [Scale the Team Up: Headcount Is Not Capacity](#fix-decisions-before-hiring) shows how to state and test the reasoning behind a leadership change before recruiting.
 
 Decision rights and incentives describe the arrangement on paper. The next chapter asks how to judge whether a particular investor will honor them when a plan misses, and how Ines compares two investment offers on evidence rather than promises: [Assess Investor Fit: Behavior Under Pressure](#investor-under-pressure).
 

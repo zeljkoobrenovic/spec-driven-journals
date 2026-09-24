@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate comic panel 2 of 21-investors-adviser (legacy asset slug 18-investors-adviser).
+"""Regenerate comic panel 2 of 13-investors-adviser (legacy asset slug 18-investors-adviser).
 
 The journal wrapper `generate_comics.py` asserts that asset paths match the post's
 folder slug; this post was renamed after the illustrated edition, so its assets still
@@ -26,9 +26,9 @@ spec.loader.exec_module(helper)
 
 MODEL = 'gemini-3-pro-image-preview'
 CAST = J / '_research/comic-cast-20260913.jpeg'
-COMICS = J / 'posts/21-investors-adviser/comics.md'
+COMICS = J / 'posts/13-investors-adviser/comics.md'
 PANEL_ID = sys.argv[1] if len(sys.argv) > 1 else '02-scene'
-ASSET = J / f'posts/21-investors-adviser/assets/images/18-investors-adviser/comic-{PANEL_ID}.jpeg'
+ASSET = J / f'posts/13-investors-adviser/assets/images/18-investors-adviser/comic-{PANEL_ID}.jpeg'
 PANEL_RE = re.compile(r'<!-- comic-panel\s+(\{.*?\})\s*-->', re.S)
 
 # Verbatim from generate_comics.py, so the cast stays identical across the journal.
@@ -96,7 +96,7 @@ def main() -> int:
     previous = ASSET.read_bytes()
     backups = J / '_research/discarded-comic-variants'
     backups.mkdir(exist_ok=True)
-    (backups / f'21-investors-adviser-comic-{PANEL_ID}-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
+    (backups / f'13-investors-adviser-comic-{PANEL_ID}-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
     ASSET.write_bytes(data)
     print('written', ASSET, hashlib.sha256(data).hexdigest()[:16])
     return 0

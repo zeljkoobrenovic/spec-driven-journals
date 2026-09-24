@@ -31,4 +31,4 @@ A **minority investor** holds under half the shares but may have negotiated appr
 - [[investor-under-pressure]] asks how the relationship handles pressure, judged by the investor's behavior when results fell short of the plan.
 - The appendix chapter [[data-foundations-for-alignment]] asks which facts these three chapters use: existing sources, defined once, kept accurate by a named person, with forecasts (what may happen) never read as results (what actually happened).
 
-Begin with [[decide-who-decides]]. Part III then uses these arrangements to choose and deliver product and technology investments.
+Begin with [[decide-who-decides]]. Part III then sets up the working arrangement with the investor and the help it can bring; Part IV uses both to choose and deliver product and technology investments.
