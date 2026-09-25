@@ -12,9 +12,9 @@ icon: "assets/icons/27-prove-you-can-restore.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to state a recovery objective in ordinary language, judge a restore test against it, fund the corrective work, retest and record the exposure that remains.
 
-> **WHY INVESTORS CARE:** An outage the company cannot recover from costs it customers, refunds or reductions in customers’ bills, and repair work, and a buyer who discovers that late pays less for the business or walks away. Evidence of a tested recovery is what lets that risk be accepted knowingly rather than found out in a crisis or during a sale.
+> **WHY INVESTORS CARE:** An outage the company cannot recover from costs it customers, refunds or bill reductions, and repair work. A buyer who discovers the weakness late pays less for the business or walks away. Evidence of a tested recovery is what lets that risk be accepted knowingly rather than found out in a crisis or during a sale.
 
-> **WHY YOU SHOULD CARE:** A completed backup is not evidence that dispatch can resume within four hours; the difference is usually discovered on the morning the company can least afford it.
+> **WHY YOU SHOULD CARE:** A completed backup is not evidence that dispatch can resume within four hours. The difference is usually discovered on the morning the company can least afford it.
 
 
 > **KEY POINTS:**
@@ -24,21 +24,25 @@ icon: "assets/icons/27-prove-you-can-restore.png"
 > * After the retest, **record what remains exposed and who accepted it**. A modelled reduction in future losses supports that decision; it is not profit recorded in the accounts.
 
 <br>
-At six in the morning a dispatcher at one of Larkspur’s customers, a maintenance business, opens the scheduling service to assign the day’s jobs. It doesn’t load. Twenty engineers are in vans waiting to be told where to go, and the customers of that business were promised arrival windows the previous afternoon. Every hour the service stays down, the dispatcher is working from memory and a phone. This is a fictional scenario, and it is what the rest of this chapter is about.
+At six in the morning a dispatcher at one of Larkspur’s customers, a maintenance business, opens the scheduling service to assign the day’s jobs. It doesn’t load. Twenty engineers are in vans waiting to be told where to go, and the customers of that business were promised arrival windows the previous afternoon. Every hour the service stays down, the dispatcher is working from memory and a phone. The scenario is fictional, but it is what the rest of this chapter is about.
 
 **Cybersecurity** protects systems and information against threats such as unauthorized access, theft or damage. **Resilience** is the ability to continue or restore essential work through disruption. **Recovery** is the work of restoring service after something goes wrong. The dispatcher doesn’t care which of the three failed. The question for Larkspur is what evidence it has that dispatch would resume, how soon, and what it would cost to obtain that evidence before a real morning like this one.
 
-A company has to fund these capabilities before suffering the loss they’re meant to prevent. That creates two temptations: invent a precise amount of “risk avoided,” or retreat into a checklist that says little about the harm the business is actually open to. Larkspur’s ownership arrangement changes the conditions of the decision rather than the decision itself.
+A company has to fund these capabilities before suffering the loss they are meant to prevent. That creates two temptations: invent a precise amount of “risk avoided,” or retreat into a checklist that says little about the harm the business is actually open to.
 
-Recovery work competes for the same money and time as two other projects in the chapter [[cannot-fund-everything]]: an onboarding pilot, a trial of a simpler way to get new customers set up and running, and a customer portal, a website where customers handle routine tasks themselves instead of asking Larkspur to do it. Day 0 is the day the investment completes, and for the hundred days that follow the company has one approved limit: €500,000 of additional cash and 24 **engineer-weeks**, one engineer-week being one person’s working time for one week. This book calls that limit the **envelope**. Part of it is held back as a **reserve**, money and time deliberately left unassigned so later evidence can direct it, and only the board can release that part. The **board** is the group of directors who oversee the company and approve its major decisions; the investor has a seat on it.
-
-Before investing, specialists examined the company’s technology to test its claims and find problems, an exercise called **technical diligence**. It recorded a finding, D-6: there was no evidence the service could be restored completely.
-
-The Larkspur board approves the plan and its funding. Ines, the chief executive officer (**CEO**), leads the company overall and authorizes spending inside the approved plan. Alex, the chief technology officer (**CTO**), leads technology and is accountable for the result. Sam, the chief financial officer (**CFO**), leads finance and confirms what the plan can still pay for. Priya leads product, and speaks for what customers were promised. Morgan advises the investor on technology: Morgan can help obtain specialist judgment and explain a finding to the investor, but doesn’t decide what Larkspur funds.
-
-The cloud chapter examined observed spending and service quality. Recovery also needs evidence, but part of its benefit is a lower chance or severity of future harm.
+Recovery also differs from a cost such as the cloud bill in the chapter [[cheaper-cloud-bill]], where spending and service quality can be observed directly. Part of recovery’s benefit is a lower chance or severity of future harm, so its evidence has to come from tests rather than from invoices. This chapter follows one recovery objective from a plain-language statement, through a restore test and a funded fix, to a retest and a record of what remains exposed.
 
 The US **National Institute of Standards and Technology (NIST)** publishes Cybersecurity Framework 2.0. Released in February 2024, it groups security outcomes under six headings: Govern (decide who is responsible and for what), Identify (understand what you have and what could go wrong), Protect (put safeguards in place), Detect (notice when something happens), Respond (act on it) and Recover (get back to working). It explicitly avoids prescribing one implementation for every organization. [S17: NIST CSF 2.0](https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf) That makes it a useful source of consistent questions while leaving room for company-specific answers. This chapter stays inside Recover, with Govern and Respond where the case needs them.
+
+## Setting Up the Example: Diligence Finding D-6 at Larkspur
+
+Larkspur is the fictional scheduling-software company this book follows. Its ownership arrangement changes the conditions of the recovery decision rather than the decision itself.
+
+Before investing, specialists examined the company’s technology to test its claims and find problems, an exercise called **technical diligence**. It recorded a finding, D-6: there was no evidence that the service could be restored completely.
+
+Recovery work competes for the same money and time as two other projects in the chapter [[cannot-fund-everything]]: an onboarding pilot, a trial of a simpler way to get new customers set up and running, and a customer portal, a website where customers handle routine tasks themselves instead of asking Larkspur to do it. Day 0 is the board meeting, held just after the investment completed, that adopted the operating plan. For the hundred days that follow, the company has one approved limit: €500,000 of additional cash and 24 **engineer-weeks**, one engineer-week being one person’s working time for one week. This book calls that limit the **envelope**. Part of it is held back as a **reserve**, money and time deliberately left unassigned so that later evidence can direct it, and only the board can release that part. The **board** is the group of directors who oversee the company and approve its major decisions; the investor has a seat on it.
+
+The Larkspur board approves the plan and its funding. Ines, the chief executive officer (**CEO**), leads the company overall and authorizes spending inside the approved plan. Alex, the chief technology officer (**CTO**), leads technology and is accountable for the result. Sam, the chief financial officer (**CFO**), leads finance and confirms what the plan can still pay for. Priya leads product and speaks for what customers were promised. Morgan advises the investor on technology: Morgan can help obtain specialist judgment and explain a finding to the investor, but does not decide what Larkspur funds.
 
 ## State the Objective in Ordinary Language
 

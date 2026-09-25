@@ -14,7 +14,7 @@ icon: "assets/icons/03-three-different-returns.png"
 
 > **WHY INVESTORS CARE:** An investment **fund** pools its investors’ money; the fund’s **manager** chooses what to buy and reports the results to those investors. A reported return combines the company’s performance with the purchase price, the borrowing and the sale. So the manager works on all three, and needs any claim about engineering to be one it can defend in that report.
 
-> **WHY YOU SHOULD CARE:** Investor returns are often treated as a scorecard for product and engineering, yet price, borrowing and timing can change the result without any change in the work; that misreading shapes what you are asked to do.
+> **WHY YOU SHOULD CARE:** Investor returns are often treated as a scorecard for product and engineering, yet price, borrowing and timing can change the result without any change in the work. That misreading shapes what you are asked to do.
 
 
 > **KEY POINTS:**
@@ -26,9 +26,11 @@ icon: "assets/icons/03-three-different-returns.png"
 <br>
 A company can grow its earnings, yet its investor earns less than expected. Another company may become more fragile while an investor receives a profit. To understand either result, we need to follow the **investment** as well as the **business**.
 
-An **investment return** compares what an investor gets back — in cash received or in the value of what it still holds — with what it put in. There is no single way to measure it: some measures ask only **how much** came back, others also ask **how long** it took. And until an investment is sold, the value of what is still held is an estimate, so part of any reported return rests on a judgement rather than on cash in hand.
+An **investment return** compares what an investor gets back (in cash received or in the value of what it still holds) with what it put in. There is no single way to measure it. Some measures ask only **how much** came back, while others also ask **how long** it took. Until an investment is sold, the value of what is still held is an estimate, so part of any reported return rests on a judgement rather than on cash in hand.
 
-Leaders inside the company judge progress by customers served, products shipped and earnings. An investor judges the same company by the return on its holding, which also depends on the price it paid, the money it borrowed and when it sells. That is why an investor can press for a change that a product or engineering leader can’t justify from the business alone: the request often follows from the **mechanics of the investment** rather than from the product. Understanding those mechanics makes such requests easier to anticipate and to question.
+Leaders inside the company judge progress by customers served, products shipped and earnings. An investor judges the same company by the return on its holding, which also depends on the price it paid, the money it borrowed and when it sells. That is why an investor can press for a change that a product or engineering leader cannot justify from the business alone: the request often follows from the **mechanics of the investment** rather than from the product. Understanding those mechanics makes such requests easier to anticipate and to question.
+
+This chapter holds one company’s performance fixed and shows how the purchase price, borrowing, sale price and timing change what the investor gets back. It then explains why a sale gain cannot simply be credited to engineering, extends the example to dilution and a corporate owner, and ends with what product and technology can and cannot claim credit for.
 
 ## One Operating Result, Three Investor Outcomes
 

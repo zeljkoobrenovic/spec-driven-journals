@@ -14,7 +14,7 @@ icon: "assets/icons/08-investor-under-pressure.png"
 
 > **WHY INVESTORS CARE:** An investor that commits in writing to the conditions for providing more money later gives up the freedom to refuse when the time comes. Not every investor can or will do this. One that does is bound only by what the contract says: the conditions must be met, and the company must still make a valid request. One that will not write its conditions down keeps the choice, and the company should plan as if that money is not there.
 
-> **WHY YOU SHOULD CARE:** A plan built on an investor’s promised patience or support fails when the promise does. Past decisions help test promises of support; current terms and available resources determine which promises your plan can rely on.
+> **WHY YOU SHOULD CARE:** A plan built on an investor’s promised patience or support fails when the promise does. Past decisions help test promises of support. Current terms and available resources determine which promises your plan can rely on.
 
 
 > **KEY POINTS:**
@@ -24,13 +24,21 @@ icon: "assets/icons/08-investor-under-pressure.png"
 > * **If the investor is already in place**, use the assessment to change one dependency: the funding date, the approval route or the support commitment. Reassess as the business changes.
 
 <br>
-Ines, the chief executive officer (CEO) of the fictional software company Larkspur, has two **term sheets** on her desk. A term sheet sets out the terms on which an investor proposes to put money into a company in exchange for shares (units of ownership). Both investors promise two things: patient ownership, meaning time for results to arrive, and practical support. To compare them, Ines needs examples of how those promises held up when a company missed its plan: when sales came later than forecast, or a product shipped late. What she is judging is **investor fit**: how well an investor’s terms, resources and behavior match what the company needs.
+When a company raises money, investors usually promise more than money: patience while results arrive, and practical support along the way. Such promises are easy to make while a plan is on track. They are tested when the company falls short of it, and that is when the company learns whether its plan can rely on them. What a leader needs to judge beforehand is **investor fit**: how well an investor’s terms, resources and behavior match what the company needs.
 
-Most product and engineering leaders are not asked to sign a term sheet. They are asked to **deliver a plan whose feasibility depends on the investor’s behavior**. Does funding continue after a missed quarter (three months of the financial year)? Does support arrive in a usable form? Is a delay treated as a problem to solve, or as a reason to change management?
+Most product and engineering leaders are not asked to sign an investor’s terms. They are asked to **deliver a plan whose feasibility depends on the investor’s behavior**. Does funding continue after a missed quarter (three months of the financial year)? Does support arrive in a usable form? Is a delay treated as a problem to solve, or as a reason to change management?
 
-The purpose is not to find a universally good investor. It is to find out whether this partnership can support what Larkspur actually has to do next. The same firm can be a strong fit for one situation and a poor fit for another.
+The purpose is not to find a universally good investor. It is to find out whether a particular partnership can support what the company actually has to do next. The same firm can be a strong fit for one situation and a poor fit for another.
 
-The assessment has two uses, and this chapter shows both. Before a deal, it helps compare offers, as Ines does with her two term sheets. When the investor is already in place, it helps you change one dependency in your plan: the funding date, the approval route or the support commitment. Later, Alex, the chief technology officer (CTO), makes that change to Larkspur’s operating plan once the evidence is in.
+The assessment has two uses, and this chapter shows both. Before a deal, it helps compare offers. When the investor is already in place, it helps you change one dependency in your plan: the funding date, the approval route or the support commitment. The chapter starts from the work the company needs. It then shows how to ask for difficult references, make a support offer reviewable and test the funding horizon, before comparing two investors against the same needs.
+
+## Setting Up the Example: Two Term Sheets for Larkspur
+
+Ines, the chief executive officer (CEO) of Larkspur, the fictional software company this book follows, has two **term sheets** on her desk. A term sheet sets out the terms on which an investor proposes to put money into a company in exchange for shares (units of ownership). Both investors promise two things: patient ownership, meaning time for results to arrive, and practical support. To compare them, Ines needs examples of how those promises held up when a company missed its plan: when sales came later than forecast, or a product shipped late. What she is judging is investor fit.
+
+Ines uses the assessment before the deal, to compare her two term sheets. Later in the chapter, in a separate round where the investor is already in place, Alex, the chief technology officer (CTO), uses it to change one dependency in Larkspur’s operating plan once the evidence is in.
+
+Before comparing the offers, it helps to be clear about who, inside an investment firm, decides whether money is provided.
 
 ## Investors, Funds, Committees, and Boards
 

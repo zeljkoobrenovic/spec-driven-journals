@@ -12,9 +12,9 @@ icon: "assets/icons/25-acquisition-adds-work-first.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn how combining businesses and separating one differ, how to fund the transition and decide what waits, and how to test that a new boundary works.
 
-> **WHY INVESTORS CARE:** A buyer’s case for a purchase can assume combined savings, or independence from a former parent, by a stated date; the investor needs to know what work stands between signing and that date, and what planned product work gives way to it.
+> **WHY INVESTORS CARE:** A buyer’s case for a purchase can assume combined savings, or independence from a former parent, by a stated date. The investor needs to know what work stands between signing and that date, and what planned product work gives way to it.
 
-> **WHY YOU SHOULD CARE:** A transaction plan can assume those benefits before anyone has scheduled the work; the same specialists who carry the product plan will carry the integration, and something will wait.
+> **WHY YOU SHOULD CARE:** A transaction plan can assume those benefits before anyone has scheduled the work. The same specialists who carry the product plan will carry the integration, and something will have to wait.
 
 
 > **KEY POINTS:**
@@ -24,19 +24,23 @@ icon: "assets/icons/25-acquisition-adds-work-first.png"
 > * Integration and separation **use the same specialists as the planned product work**. Decide what waits, who approves the delay and what happens to the date the plan assumed, then test that the boundary works before counting the benefit.
 
 <br>
-An **acquisition** is the purchase of a business, or of a share of its ownership. It can add customers and products to a group immediately. **Integration**, the work of making selected activities operate together, still has to be planned and done. A **carve-out**, the separation of a business from the larger business that owns it — its **parent** — can transfer ownership legally while leaving essential operating dependencies behind.
+Buying a business, or separating one from its owner, can **look like a single event**: a signature, an announcement, a new name in the ownership records. For the teams that run the software, it is the start of a **long piece of work**. Customers, systems, contracts and support have to keep working across a new boundary, and the specialists who carry the product plan usually carry that work too, so something else has to wait.
 
-The two fictional scenarios in this chapter both involve Larkspur, a company that sells scheduling software to firms with staff working in the field. Four people appear in them: **Ines**, Larkspur’s chief executive; **Alex**, who leads technology; **Priya**, who leads product; and **Sam**, who leads finance.
-
-In the first scenario Larkspur is owned by a **buyout fund**. That is a pool of money gathered from many investors and spent on buying companies outright — or on buying enough of one to **control** it, meaning to have the power to decide the things that matter most: who runs it, what it invests in, whether it is sold. The pool is managed by a firm that decides what to buy and is paid for doing so. The money belongs to the investors; the decisions are made by the firm. The plan is to improve each company and sell it again some years later.
-
-The fund’s **deal team** — the people who find and negotiate purchases — proposes buying a smaller company. The fund’s **investment committee**, the group inside the fund that approves purchases, agrees the price and terms. The Larkspur **board**, the directors accountable for the company, approves the integration plan and its budget. Timing also depends on the seller, and on a **regulator’s waiting period**: a legally required pause before certain purchases may be completed, so that competition authorities can review them.
-
-In the second scenario Larkspur is instead a division inside a larger parent, and is being separated from it. The two scenarios use their own dates and figures, separate from each other and from the shared operating-plan record that runs through [[part-7]].
+An **acquisition** is the purchase of a business, or of a share of its ownership. It can add customers and products to a group immediately, but **integration**, the work of making selected activities operate together, still has to be planned and done. A **carve-out** is the separation of a business from the larger business that owns it, its **parent**; it can transfer ownership legally while leaving essential operating dependencies behind.
 
 The plan behind such a transaction can assume savings or independence before the operating teams have checked that the work is possible in the time allowed. It is priced on assumptions about combined savings and separation costs that product and engineering leaders may not have been asked about. Bring those dependencies into the discussion while the scope, the price and the timetable can still change; once the assumptions become the company’s plan, they are obligations the company has to meet.
 
-This chapter closes Part V by taking its question, what a change in size costs before it pays back, to the company’s boundary. An acquisition or separation tests product logic, architecture, costs, security and organization against a transaction timetable with little room for delay. The chapter [[teamsystem]] shows what accumulates when that happens repeatedly.
+This chapter closes Part V by taking its question, what a change in size costs before it pays back, to the company’s boundary. An acquisition or a separation tests product logic, architecture, costs, security and organization against a transaction timetable with little room for delay. The chapter [[teamsystem]] shows what accumulates when that happens repeatedly.
+
+## Setting Up the Examples: Two Larkspur Transactions
+
+The chapter’s two fictional scenarios both involve Larkspur, the company this book follows, which sells scheduling software to firms with staff working in the field. Four people appear in them: **Ines**, Larkspur’s chief executive; **Alex**, who leads technology; **Priya**, who leads product; and **Sam**, who leads finance.
+
+In the first scenario, Larkspur is owned by a **buyout fund**. That is a pool of money gathered from many investors and spent on buying companies outright, or on buying enough of one to **control** it: to have the power to decide the things that matter most, such as who runs it, what it invests in and whether it is sold. The pool is managed by a firm that decides what to buy and is paid for doing so. The money belongs to the investors; the decisions are made by the firm. The plan is to improve each company and sell it again some years later.
+
+The fund’s **deal team**, the people who find and negotiate purchases, proposes buying a smaller company. The fund’s **investment committee**, the group inside the fund that approves purchases, agrees on the price and terms. The Larkspur **board**, the directors accountable for the company, approves the integration plan and its budget. Timing also depends on the seller and on a **regulator’s waiting period**: a legally required pause before certain purchases may be completed, so that competition authorities can review them.
+
+In the second scenario, Larkspur is instead a division inside a larger parent and is being separated from it. The two scenarios use their own dates and figures, separate from each other and from the operating-plan figures that run through [[part-7]].
 
 ## One Principle: A New Boundary, a Continuing Customer Promise
 

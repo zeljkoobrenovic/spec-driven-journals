@@ -12,7 +12,7 @@ icon: "assets/icons/17-roadmap-to-revenue.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to trace a product change from customer need through customer behavior to a business result, and let the measured result revise the next commitment.
 
-> **WHY INVESTORS CARE:** An investor puts money into a company and expects a financial result in return. They judge the result at the end of the chain, not the feature at the start. Staff time freed by a product change can count in their calculations before it changes spending, but only with a plan that says what the time will be used for, and by when. A proposal that stops at freed hours gives them nothing to use when they estimate what the company is worth, or check whether its cash will cover its loan payments.
+> **WHY INVESTORS CARE:** An investor puts money into a company and expects a financial return. It judges the result at the end of the chain, not the feature at the start. Staff time freed by a product change can count in its calculations before spending changes, but only with a plan that says what the time will be used for, and by when. A proposal that stops at freed hours gives the investor nothing to use when estimating what the company is worth or checking whether its cash will cover its loan payments.
 
 > **WHY YOU SHOULD CARE:** A technology benefit reaches the company’s financial plan, its expected income and spending, through a mechanism: more sales income, a payment avoided, staff time released for other work, or a lower risk. The mechanism needs evidence. The link from freed effort to a financial result is the one to test hardest.
 
@@ -21,27 +21,31 @@ icon: "assets/icons/17-roadmap-to-revenue.png"
 >
 > * Start from a **customer need worth serving**. A faster process is only worth building when customers are waiting for what it produces. If an investor expects something from it, write that expectation down.
 > * Distinguish **freed time from money saved**. If the same people are still paid, less effort frees time for other work but does not reduce spending. It becomes a result only when a plan puts the time to use.
-> * Check the **whole chain against evidence**. Count the full cost, both what has been agreed and what has been used so far. Compare like groups. Keep measured hours apart from yearly estimates, name the explanations you can’t rule out, and let the measured result change the next commitment.
+> * Check the **whole chain against evidence**. Count the full cost, both what has been agreed and what has been used so far. Compare like groups. Keep measured hours apart from yearly estimates, name the explanations you cannot rule out, and let the measured result change the next commitment.
 
 <br>
-A product team proposes making customer setup faster. That sounds useful, but what is the benefit? Customers might start using the product sooner. Staff might serve more customers. The company might collect payment earlier. Each possibility needs a different piece of evidence.
+Product and technology teams are often asked to **justify their work in the investor’s language**: what will it do for **revenue**, **margin** or **retention**? The honest answer is rarely a single number. A product change reaches a business result through a chain of steps: it changes what customers can do, which changes how they behave, which eventually shows up in the company’s income and costs. Each step can break, and each needs its own evidence. This chapter follows one change along that chain, from the customer need to the measured result, and shows how that result should shape the next commitment.
 
-A **product roadmap** sets out intended product changes and priorities. A roadmap item describes work. Its **business case** explains the useful result expected from that work, what it will cost and how uncertain it is.
+Take a simple proposal: making customer setup faster. It sounds useful, but what exactly is the benefit? Customers might start using the product sooner. Staff might serve more customers. The company might collect payment earlier. Each possibility needs a different piece of evidence.
 
-A product leader normally has to show that a change is useful. An investor, someone who has put money into the company in return for a share of it, may expect more: that the change supports a particular financial target.
+A **product roadmap** sets out intended product changes and their priorities. A roadmap item describes work; its **business case** explains the useful result expected from that work, what it will cost and how uncertain that result is.
+
+A product leader normally has to show that a change is useful. An investor, someone who has put money into the company in return for a share of it, may expect more: evidence that the change supports a particular financial target. Four terms describe those targets:
 
 - **Revenue** is the income a company earns from selling its product. It is recorded when it is earned, which can be before the customer pays.
 - **Profit** is what is left of revenue after the costs of the same period.
 - **Margin** is a stated profit measure divided by revenue. A profit of €20 on revenue of €100 is a 20% margin.
 - **Retention** means keeping customers, or their revenue, over a stated period.
 
-The investor’s target might be faster revenue growth, a higher margin or better retention. Make that expectation explicit, then test whether the benefit and its timing are credible. The chain from work to result is the part an investor’s adviser will examine, so it is the part the proposal must demonstrate rather than assume.
+The investor’s target might be faster revenue growth, a higher margin or better retention. Make that expectation explicit, then test whether the benefit and its timing are credible. The chain from work to result is what an investor’s adviser will examine, so the proposal must demonstrate it rather than assume it.
 
-**The example.** Larkspur is a fictional company selling scheduling software. **Onboarding** is the setup and help a customer needs before using that software successfully. One customer’s setup is called an **implementation**. The chapter [[cannot-fund-everything]] chose a smaller setup change over a full customer portal because customer evidence supported it. Here we look at that one change: how could it produce a useful customer and business result, and did it?
+## Setting Up the Example: One Setup Change at Larkspur
 
-**The people.** Priya leads product and is accountable for the setup change. Alex leads engineering. Sam leads finance. Morgan advises the investor on technology. The **board**, the directors who oversee the company’s major decisions, approves the money. Days are counted from **day zero**, the board meeting, held when the investment was completed, that adopted the company’s operating plan.
+Larkspur is the fictional company this book follows; it sells scheduling software. **Onboarding** is the setup and help a customer needs before using that software successfully, and one customer’s setup is called an **implementation**. In the chapter [[cannot-fund-everything]], Larkspur chose a smaller setup change over a full customer portal because customer evidence supported it. This chapter looks at that one change: how could it produce a useful customer and business result, and did it?
 
-**Two kinds of work.** Engineers build the setup change; their effort is counted in **engineer-weeks**, one engineer’s work for one week. The implementation team sets customers up; its effort is counted in staff hours per customer. The two are different people and different budgets, so the chapter keeps them apart.
+**The people.** Priya leads product and is accountable for the setup change. Alex leads engineering. Sam leads finance. Morgan advises the investor on technology. The **board**, the directors who oversee the company’s major decisions, approves the money. Days are counted from **day zero**: the board meeting, held just after the investment was completed, that adopted the company’s operating plan.
+
+**Two kinds of work.** Engineers build the setup change; their effort is counted in **engineer-weeks**, one engineer’s work for one week. The implementation team sets customers up; its effort is counted in staff hours per customer. They involve different people and different budgets, so the chapter keeps them apart.
 
 ## Start With a Need Worth Serving
 

@@ -12,7 +12,7 @@ icon: "assets/icons/23-the-financing-slipped.png"
 
 > **IN THIS SECTION, YOU WILL:** Follow one fictional company, Larkspur, whose new investment was expected in September and now looks likely in December. Learn to name how far the money has really got, put cash and commitments on a calendar, and choose one fallback in time.
 
-> **WHY INVESTORS CARE:** New investment can slip on the investors’ side as well as the company’s, for example while it waits for an internal approval or a second investor. Investors need management to hold a dated fallback, not a hope.
+> **WHY INVESTORS CARE:** New investment can slip on the investors’ side as well as the company’s, for example while it waits for an internal approval or a second investor. Investors need management to have a dated fallback ready, not a hope.
 
 > **WHY YOU SHOULD CARE:** A plan that spends money that has not arrived falls below its cash safety limit on a predictable date. Decide before job offers and signed contracts decide for you.
 
@@ -24,16 +24,21 @@ icon: "assets/icons/23-the-financing-slipped.png"
 > * **Authorize one fallback.** The board chooses the plan that runs now, names who pursues the missing money and sets in advance what must happen before deferred spending restarts. Customers and the team are told which plan is running.
 
 <br>
+Plans are often built on **money that has not arrived yet**. A new investment is expected by a certain date, and hires, contracts and customer promises are lined up to start when it lands. Then the date moves. The work may be going well, but the plan now spends money the company does not have, and every week of waiting brings it closer to its cash safety limit. The real risk is not the delay itself; it is letting job offers and signed contracts make the decision before anyone has made it deliberately.
+
+This chapter shows how to respond: name how far the expected money has really got, put cash and commitments on a calendar, find the last date a decision can still change them, and have the board choose one fallback in time. The chapter [[first-hundred-days]], in Part VII, builds a funded plan on money expected by a date; this chapter follows what happens when the money behind such a plan moves.
+
+## Setting Up the Example: Larkspur’s Round Moves to December
+
+Larkspur, the fictional company this book follows, sells scheduling software to businesses whose staff work in the field, such as maintenance firms. In June it was in serious talks with a **lead investor**, the investor who negotiates the terms and usually puts in the largest share, about a €4 million **round**: new investment raised from investors, who receive **shares**, stakes in the ownership of the company, in exchange. The talks pointed to **closing**, the day the investment completes and the money is transferred, on 15 September.
+
+The plan for the second half of the year was built on that date. It included two hires starting on 1 September and a contract for a **customer portal**, a website where customers handle routine tasks themselves. By early July the talks still look serious, but closing now looks likely in mid-December.
+
+The work itself is on schedule. The **onboarding pilot**, a trial of a faster way to get new customers set up, continues. So does the **recovery work**, which makes sure the **dispatch service**, the software that sends field staff to their jobs, can be restored quickly after a failure. What has slipped is the funding, not the work, and the company must change its funding assumption before that assumption turns into a delivery promise it cannot keep.
+
+Every figure here is invented, and this example stands on its own: its cash, spending, hires and dates differ from the Larkspur figures in the chapters [[first-hundred-days]] and [[handover-of-obligations]].
 
 ## The Funding Slipped, Not the Work
-
-Larkspur, a fictional company, sells scheduling software to businesses whose staff work in the field, such as maintenance firms. In June it was in serious talks with a **lead investor**, the investor who negotiates the terms and usually puts in the largest share, about a €4 million **round**: new investment raised from investors, who receive **shares**, stakes in the ownership of the company, in exchange. The talks pointed to **closing**, the day the investment completes and the money is transferred, on 15 September.
-
-The plan for the second half of the year was built on that date. It included two hires starting on 1 September and a contract for a **customer portal**, a website where customers handle routine tasks themselves. In early July the talks still look serious, but closing now looks likely in mid-December.
-
-The work itself is on schedule. The **onboarding pilot**, a trial of a faster way to get new customers set up, continues. So does the **recovery work**, which makes sure the **dispatch service**, the software that sends field staff to their jobs, can be restored quickly after a failure. The company must change a funding assumption before it turns into a delivery promise it cannot keep.
-
-The chapter [[first-hundred-days]], in Part VII, builds a funded plan on money expected by a date; this chapter follows what happens when the money behind such a plan moves. Every figure here is invented, and this example stands on its own: its cash, spending, hires and dates are not the same as the Larkspur figures in the chapters [[first-hundred-days]] and [[handover-of-obligations]].
 
 The plan is what the existing investors backed when they put money in. They could also lend the company a **bridge**, a short-term loan meant to carry it until the round arrives, but lending more is an investment decision for them and needs their own approval. So before committing to anything that spends the expected money, establish three facts: what stage the money has reached, who has the authority to change the plan, and the date by which the choice must be made. Here that date is set by two job offers and a contract signature, described below.
 

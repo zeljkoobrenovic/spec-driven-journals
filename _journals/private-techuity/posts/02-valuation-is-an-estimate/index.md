@@ -29,8 +29,8 @@ Suppose someone tells you a company is **worth** €60 million. Product and engi
 
 Reading a valuation starts with two questions. **What is being valued**: the operating business, or the shares its owners hold? And **how was the estimate made**? Neither can be answered without first understanding the business’s own numbers, so this chapter has two stages:
 
-- **Read the business’s numbers,** introduces revenue, profit and cash flow, and ends with a short checkpoint on the €60 million.
-- **Interpret a valuation,** separates the value of the business from the value of its shares, works through three common ways of estimating value, explains why a funding-round price answers a different question, and ends with one operating assumption a leader can challenge.
+- **Read the business’s numbers** introduces revenue, profit and cash flow, and ends with a short checkpoint on the €60 million.
+- **Interpret a valuation** separates the value of the business from the value of its shares, works through three common ways of estimating value, explains why a funding-round price answers a different question, and ends with one operating assumption a leader can challenge.
 
 ## Read the Business’s Numbers
 

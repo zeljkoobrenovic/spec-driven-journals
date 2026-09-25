@@ -12,7 +12,7 @@ icon: "assets/icons/22-first-hundred-days.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to turn one finding from **due diligence**, the investigation an investor makes before investing, into a plan with an accountable person, approved money, protected engineering time and decision dates, and let the day-100 review change that plan.
 
-> **WHY INVESTORS CARE:** An investment rests on an **investment thesis**, the investor’s explanation of why it should succeed and what must be true for that to happen. The first months show whether the thesis holds. A funded plan with dated reviews gives the investor evidence; an untested list gives only reassurance.
+> **WHY INVESTORS CARE:** An investment rests on an **investment thesis**, the investor’s explanation of why it should succeed and what must be true for that to happen. The first months show whether the thesis holds. A funded plan with dated reviews gives the investor evidence. An untested list gives only reassurance.
 
 > **WHY YOU SHOULD CARE:** Expectations formed while the deal was negotiated either become a plan the company can pay for and staff, or harden into commitments nobody tested. The early months decide which.
 
@@ -20,15 +20,19 @@ icon: "assets/icons/22-first-hundred-days.png"
 > **KEY POINTS:**
 >
 > * Use the early period to **establish a funded plan**, not to finish the transformation. A plan exists when each priority has an accountable person, approved money, protected engineering time, a decision date and a prerequisite, and when postponed work has a recorded decision.
-> * Carry the diligence findings in **by identifier**. Confirm each one with the people who will do the work. The investigation had incomplete access, and when management’s evidence differs it should change the funding or the order of work.
+> * Carry the diligence findings in **by identifier**. Confirm each one with the people who will do the work. The investigation had incomplete access, and when management’s evidence differs, that evidence should change the funding or the order of work.
 > * **Review the plan, not its completion rate.** The day-100 review should confirm or revise the plan on evidence: an assumption kept or replaced, a postponement kept or lifted, money moved from the reserve with the board’s approval. Finishing every task is not the test.
 
 <br>
 New funding or an ownership change opens an early period in which expectations must become an agreed **operating plan**: what the business will do, who will do it and what money and time it needs. A hundred days is a useful planning horizon. It is neither enough to transform most businesses nor the right deadline for every commitment.
 
-A deal can change the company’s money, its owners’ rights, the expectations placed on it and its review timetable. Many of those expectations were formed during the investigation rather than inside the company. Not every deal adds cash to the company. When investors buy newly issued **shares**, the units of ownership in a company, the money goes to the company; when they buy existing shares, it goes to the owners who sell. The first job is to establish which of these changed, and which of them actually change the company’s existing plan.
+A deal can change the company’s money, its owners’ rights, the expectations placed on it and its review timetable. Many of those expectations were formed during the investigation rather than inside the company. Not every deal adds cash to the company. When investors buy newly issued **shares** (units of ownership in a company), the money goes to the company. When they buy existing shares, it goes to the owners who sell. The first job is to establish which of these changed, and which of them actually change the company’s existing plan.
 
-**Larkspur**, the fictional company this book follows, sells scheduling software: businesses use it to decide which of their field staff does which job, and when. Every new customer needs **onboarding**, also called **implementation**: Larkspur’s staff set the software up with that customer’s settings and data until it is ready for real use. The chapter [[diligence-corrects-the-plan]] followed the investigation before a **growth investment** in Larkspur, an investment meant to pay for the company’s expansion. It produced three important findings.
+This chapter shows how to turn those expectations into a funded plan. It starts by establishing what actually changed, confirms the inherited findings with the people who will deliver them, funds and sequences the work of the first hundred days, and ends with a day-100 review that judges the plan rather than its completion rate.
+
+## Setting Up the Example: Larkspur After Its Growth Investment
+
+**Larkspur**, the fictional company this book follows, sells scheduling software: businesses use it to decide which of their field staff does which job, and when. Every new customer needs **onboarding**, also called **implementation**: Larkspur’s staff set the software up with that customer’s settings and data until it is ready for real use. The chapter [[diligence-corrects-the-plan]] followed the investigation before a **growth investment** in Larkspur, an investment meant to pay for the company’s expansion. That investigation produced three important findings.
 
 Five people and the board carry the example:
 
@@ -39,7 +43,7 @@ Five people and the board carry the example:
 - **Morgan** is the investor’s technology adviser, who ran the technical part of the investigation.
 - The **board** is the group of directors who oversee the company and approve its major decisions and spending.
 
-Every figure is fictional. The same record of money and time runs through the chapters [[cannot-fund-everything]], [[prove-you-can-restore]], [[roadmap-to-revenue]] and [[handover-of-obligations]].
+Every figure is fictional. The same Larkspur figures run through the chapters [[cannot-fund-everything]], [[prove-you-can-restore]], [[roadmap-to-revenue]] and [[handover-of-obligations]]. The first step is to establish what the investment actually changed at Larkspur.
 
 ## What Actually Changed
 

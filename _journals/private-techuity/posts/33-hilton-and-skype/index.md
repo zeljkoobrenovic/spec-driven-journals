@@ -24,9 +24,15 @@ icon: "assets/icons/26-hilton-and-skype.png"
 > * Follow what happens to the **product and people**. A completed sale does not establish whether customers and employees benefited over the longer term.
 
 <br>
-Hilton operates a hotel business and brand network. Skype provided internet calling and communications software. Both were owned for a time by **private equity** investors: firms that buy companies with money pooled from outside investors, own them for some years, and then sell. Both sales were valuable, but they came by very different paths, and they need different explanations: **Hilton needs a financing explanation; Skype needs an explanation of technology rights and of what one particular buyer valued.**
+Exits matter to product and engineering leaders because much of what investors ask for during ownership is justified by the sale they expect to make. The book’s central distinction applies here: an exit is an event to explain, not proof that every earlier decision worked. The sale price alone does not say whether the result came from better operations, financing changes, market recovery or the buyer’s own interests.
 
-Comparing them helps apply the book’s central distinction: an exit is an event to explain rather than proof that every earlier decision worked. Exits matter to product and engineering leaders because much of what investors ask for during ownership is justified by the sale they expect to make. A **sponsor** is the investment firm behind a transaction. Its account is useful evidence about its stated actions and reported result, but may emphasize favorable interpretations.
+This chapter applies that distinction to two historical sales by **private equity** investors: firms that buy companies with money pooled from outside investors, own them for some years, and then sell. It follows Hilton’s ownership period from 2007 to 2018, then how Skype’s rights to its technology were established before expansion, and ends with the operating question each case asks.
+
+## Setting Up the Cases: Two Valuable Sales by Different Paths
+
+Hilton operates a hotel business and brand network. Skype provided internet calling and communications software. Both were owned for a time by private equity investors. Both sales were valuable, but they came by very different paths, and they need different explanations: **Hilton needs a financing explanation, and Skype needs an explanation of technology rights and of what one particular buyer valued.**
+
+A **sponsor** is the investment firm behind a transaction. Its account is useful evidence about its stated actions and reported result, but it may emphasize favorable interpretations.
 
 | | Hilton | Skype |
 | --- | --- | --- |

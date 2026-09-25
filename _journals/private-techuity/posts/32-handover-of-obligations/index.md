@@ -12,9 +12,9 @@ icon: "assets/icons/25-handover-of-obligations.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to keep the evidence while the work happens, to trace who receives money and who keeps ownership in each kind of deal, and to hand over the unfinished work together with the company.
 
-> **WHY INVESTORS CARE:** An investor in a private company owns part of it through **shares**, units of ownership that are not traded on a stock exchange. It often gets most of its money back only when it sells that part, its **stake**, in a later deal; some may come earlier as **distributions**, payments passed on to the owners while they still own the company. Either way, a handover with the evidence and the unfinished work attached supports the price and what the seller must tell the buyer. Surprises found afterwards can come back as **claims**, demands for compensation, and as damage to reputation.
+> **WHY INVESTORS CARE:** An investor in a private company owns part of it through **shares**, units of ownership that are not traded on a stock exchange. It often gets most of its money back only when it sells that part, its **stake**, in a later deal. Some may come earlier as **distributions**, payments passed on to the owners while they still own the company. Either way, a handover with the evidence and the unfinished work attached supports the price and what the seller must tell the buyer. Surprises found afterwards can come back as **claims**, demands for compensation, and as damage to reputation.
 
-> **WHY YOU SHOULD CARE:** The customer contracts, the half-finished migration and the postponed hire are still there the morning after a deal; if they are not handed over with the company, they are discovered by whoever inherits them.
+> **WHY YOU SHOULD CARE:** The customer contracts, the half-finished migration and the postponed hire are still there the morning after a deal. If they are not handed over with the company, whoever inherits them discovers them.
 
 
 > **KEY POINTS:**
@@ -26,9 +26,11 @@ icon: "assets/icons/25-handover-of-obligations.png"
 <br>
 On the morning after a company changes investors or owners, its signed customer contracts are still there. So are the recovery time it has promised customers, the half-finished move of customers onto a new system and the hire it postponed. The deal changed who owns the company, or who owns part of it. It did not change the work.
 
-These changes come in several forms, explained later in the chapter: new investment, a sale of existing shares, a change inside the fund that owns them, a stock-market listing and a sale of control. A sale is one possible event, not the inevitable next stage. The same record has to serve continued ownership, another round of investment and a change of controlling shareholder.
+These changes come in several forms, explained later in the chapter: new investment, a sale of existing shares, a change inside the fund that owns them, a stock-market listing and a sale of control. A sale is one possible event, not the inevitable next stage. The same evidence has to serve continued ownership, another round of investment and a change of controlling shareholder.
 
-The chapters [[the-financing-slipped]] and [[anatomy-of-a-layoff]] ended with dated decision records. This chapter follows such records into an ownership event, whichever form it takes. The Larkspur figures in this chapter are fictional and belong to the chain that runs from the chapter [[diligence-corrects-the-plan]] through the chapter [[first-hundred-days]] to this handover. The delayed-financing and reduction chapters work a deliberately separate scenario with its own cash, spending, people and dates; their figures are not part of this record.
+The chapters [[the-financing-slipped]] and [[anatomy-of-a-layoff]] ended with dated decision records. This chapter follows such records into an ownership event, whichever form it takes. It shows how to keep the evidence while the work happens, how to trace who receives cash and who keeps an interest in each kind of deal, and how to hand over the unfinished obligations together with the company.
+
+The Larkspur figures in this chapter are fictional. They are the same Larkspur figures that run from the chapter [[diligence-corrects-the-plan]] through the chapter [[first-hundred-days]] to this handover. The delayed-financing and reduction chapters work a deliberately separate scenario with its own cash, spending, people and dates, so their figures do not appear here.
 
 ## Keep the Evidence During the Work
 

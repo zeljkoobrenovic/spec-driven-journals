@@ -12,9 +12,9 @@ icon: "assets/icons/04-raise-what-you-need.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to size the work the company must do next, compare the funding arrangements that could support it, and act on an arrangement you inherited.
 
-> **WHY INVESTORS CARE:** A **raise** is the act of obtaining money from outside the company, and a **round** is one such financing event. A raise that is too small can force a rescue round, urgent money taken to avoid running out of cash and usually on worse terms; one that is too large can dilute returns, spreading the same gain over more money invested, and fund work that was never justified. Sizing trades off the ownership given up, the reserve kept and the risk of having to raise again, and investors weigh that trade-off against the plan for the same reasons the company should.
+> **WHY INVESTORS CARE:** A **raise** is the act of obtaining money from outside the company, and a **round** is one such financing event. A raise that is too small can force a rescue round, urgent money taken to avoid running out of cash, usually on worse terms. A raise that is too large can dilute returns, spreading the same gain over more money invested, and fund work that was never justified. Sizing trades off the ownership given up, the reserve kept and the risk of having to raise again, and investors weigh that trade-off against the plan for the same reasons the company should.
 
-> **WHY YOU SHOULD CARE:** Funding that does not match the work either starves a plan or buys it with rights, obligations and expectations the company cannot afford; the mismatch lands on the people who have to deliver.
+> **WHY YOU SHOULD CARE:** Funding that does not match the work either starves a plan or buys it with rights, obligations and expectations the company cannot afford. Either way, the mismatch lands on the people who have to deliver.
 
 
 > **KEY POINTS:**
@@ -26,9 +26,11 @@ icon: "assets/icons/04-raise-what-you-need.png"
 <br>
 A business has customers and a useful product. Its founder might want money to expand it, or might want to retire and sell their shares, the units of ownership in the company. Those are different needs, even if both conversations begin with “we need an investor.”
 
-The preceding chapters explained funding, ownership, valuation (what a business is estimated to be worth) and returns (what an investor gets back for the money put in). This chapter uses them to answer a narrower question: **how much money does the next piece of work actually need**, and which arrangement can supply it without attaching **conditions** the work can’t meet?
+The preceding chapters explained funding, ownership, valuation (what a business is estimated to be worth) and returns (what an investor gets back for the money put in). This chapter uses them to answer a narrower question: **how much money does the next piece of work actually need**, and which arrangement can supply it without attaching **conditions** the work cannot meet?
 
 Product and engineering leaders may not choose the investor, but they inherit the consequences of the choice. The terms of the funding, the conditions attached to the money, and the investor’s expectations affect the pace at which results are expected, how much loss the shareholders will tolerate and how long the plan has before it is judged. Those **terms come from the agreement**, not from the category on the investor’s website: two growth investors can offer different rights and different patience. A migration (moving customers or data from an old system to a new one) or a product bet that fits one set of terms can be unaffordable or unwanted under another.
+
+The chapter first separates the owner, the financing and the situation, then sizes the work before naming the investor. It ends by treating control and partnership as separate questions and by revisiting the fit when the plan changes.
 
 ## Separate the Owner, the Financing and the Situation
 

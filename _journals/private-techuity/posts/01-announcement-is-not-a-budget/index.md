@@ -28,11 +28,13 @@ Your company announces a €100 million investment. It is natural to expect a la
 
 Start with the headline figure. It may be a **valuation**, an estimate of what the whole company is worth after the investment, or the amount that **changes hands** in the transaction. The two can differ widely, and even the amount that changes hands need not reach the business.
 
-Where that money goes depends on what is bought. A **share** is a unit of ownership in a company; its holder is a **shareholder**. Money paid for **newly issued shares** goes to the company that issues them, which is called a **primary share issue**. Money paid for **existing shares** goes to the shareholder who sells them, which is called a **secondary share sale**. Part of the amount may also repay old loans or cover **transaction costs**, the legal and advisory fees of arranging the deal. Company cash can grow in other ways too: a lender may make the company a loan as part of the same arrangement, or an owner may separately agree to fund it.
+Where that money goes depends on what is bought. A **share** is a unit of ownership in a company, and its holder is a **shareholder**. Money paid for **newly issued shares** goes to the company that issues them, which is called a **primary share issue**. Money paid for **existing shares** goes to the shareholder who sells them, which is called a **secondary share sale**. Part of the amount may also repay old loans or cover **transaction costs**, the legal and advisory fees of arranging the deal. Company cash can grow in other ways too: a lender may make the company a loan as part of the same arrangement, or an owner may separately agree to fund it.
 
-Timing matters as well. In this chapter's examples, the money arrives at **closing**, the day the transaction is completed and the agreed payments are made, not on the day of the announcement.
+Timing matters as well. In this chapter’s examples, the money arrives at **closing**, the day the transaction is completed and the agreed payments are made, not on the day of the announcement.
 
 These questions apply under every ownership arrangement. A transaction changes the answers, because what reaches the business depends on how the deal is structured and on the conditions attached to it.
+
+This chapter shows how to map a funding arrangement before relying on its money. It separates the organizations involved in a fund-backed buyout, distinguishes a fund’s commitments from actual payments, and explains how fees and profit sharing shape incentives and why owning a company does not mean running it. It ends by completing a funding-and-authority record for one Larkspur hire.
 
 ## Map the Arrangement Before Relying on the Money
 

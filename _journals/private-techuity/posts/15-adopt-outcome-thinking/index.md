@@ -24,6 +24,12 @@ icon: "assets/icons/15-adopt-outcome-thinking.png"
 > * **Connect the business outcome to the investor’s numbers on an honest timetable.** Say which investor measure it feeds, when the effect can first be observed, and refuse to grade a slow effect on a fast clock.
 
 <br>
+A new investment usually makes it easier to grow a team and start new work. **More money** and **more people** make more activity possible, but **being busy** is not the same as getting results. A team can deliver everything on its plan and still leave customers, the company and the investor no better off than before. Turning the extra capacity into results that matter, while balancing the different interests of customers, the company and its investors, takes an **evidence-based way** of deciding what the work is *for* and of checking whether it had the intended effect.
+
+Investors often ask for this in a single question: “What is your north star?” A **north star** is one guiding measure the whole company steers by. Answered with a feature list, it tells the investor nothing; answered with a single number, it tells the team nothing. This chapter answers it with an **outcome record**: one change for customers, one business result that change should feed, the measures between them, who is responsible for each measure, and the dates on which they are reviewed.
+
+## Setting Up the Example: Larkspur After Closing
+
 Larkspur, the fictional scheduling-software company this book follows, sells software that plans maintenance work for businesses whose staff work in the field. Alex leads **technology** as chief technology officer (CTO). Priya leads **product**, the team that decides what the software should do and for whom. Ines is the chief executive who leads the company, and Sam leads finance. Morgan is the technology adviser to Larkspur’s investor. Every figure is fictional.
 
 It is the week after **closing**, the day the investment was completed. Within days of closing, the **board**, the group that oversees the company, met and adopted the operating plan. That meeting is **day 0**. The chapters count project days from it, so day 20 and day 90 below are days after that board meeting, not after closing.
@@ -32,7 +38,7 @@ The plan the investor agreed to at closing expects **50% more new customers** in
 
 Priya has three requests on her list: a **new customer portal**, a website through which customers would manage their own accounts; **simpler setup** for new customers; and the **recovery work** Alex wants, so that the scheduling service can be restored more quickly and easily after a failure. The chapter [[cannot-fund-everything]] will choose among them against the cash and the team time the board approves. Before it can, someone has to say what the work is *for*. Larkspur could deliver a setup feature next quarter and still change nothing for its customers, if the delay they suffer comes from somewhere else.
 
-Morgan asks the question in the form investors use: “What is your north star?” A **north star** is one guiding measure the whole company steers by. Answered with a feature list, it tells the investor nothing; answered with a single number, it tells the team nothing. This chapter answers it with an **outcome record**: one change for customers, one business result it should feed, the measures between them, who is responsible for each, and the dates on which they are reviewed. The setup facts below are the ones the chapters [[first-hundred-days]] and [[roadmap-to-revenue]] also use; this chapter adds no new ones.
+So when Morgan asks the north-star question, the rest of this chapter builds Larkspur’s outcome record in answer. The setup facts it uses are the same ones the chapters [[first-hundred-days]] and [[roadmap-to-revenue]] use; this chapter adds no new ones.
 
 ## Outcomes, Not Outputs
 

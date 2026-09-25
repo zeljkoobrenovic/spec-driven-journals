@@ -12,7 +12,7 @@ icon: "assets/icons/00-customers-lenders-investors.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn what customers, lenders and shareholders each expect in return for their money, and follow one €100,000 need through all three routes to a decision.
 
-> **WHY INVESTORS CARE:** Lenders are investors too. Shareholders expect the rights attached to their shares, and lenders expect repayment and the protections written into their loan contracts; each prices its money accordingly. Establish which financing arrangement supplies the money before treating it as a budget.
+> **WHY INVESTORS CARE:** Lenders are investors too. Shareholders expect the rights attached to their shares, and lenders expect repayment and the protections written into their loan contracts. Each prices its money accordingly. Establish which financing arrangement supplies the money before treating it as a budget.
 
 > **WHY YOU SHOULD CARE:** Every commitment you make to a team is paid for by someone who expects something back. If you do not know what they expect, you cannot know which promises the company can keep.
 
@@ -26,9 +26,9 @@ icon: "assets/icons/00-customers-lenders-investors.png"
 <br>
 A company needs cash to pay people, buy supplies and develop its products, often before its customers pay. **Financing** means arranging that money, and the source matters because each one brings different costs, expectations and rights.
 
-Product and engineering leaders usually meet money as a **budget**: an approved amount that their team may spend on agreed work over a set period, typically a year. A budget shows how much may be spent, but not where the money came from or what the company owes in return. This chapter follows one need through three funding routes so that the terms behind a budget become as visible as the amount.
+Product and engineering leaders usually meet money as a **budget**: an approved amount that their team may spend on agreed work over a set period, typically a year. A budget shows how much may be spent, but not where the money came from or what the company owes in return. This chapter follows one need through three funding routes so that the terms behind a budget become as visible as the amount. It first sets up the example, then describes the four common ways cash reaches a business and what a share represents. It then compares the same need funded three ways, and ends with a brief look at public and private ownership and at investor labels.
 
-## Larkspur Needs €100,000
+## Setting Up the Example: Larkspur Needs €100,000
 
 Larkspur is the fictional scheduling-software company used throughout this book. Three customers want a new **dispatch feature**, which assigns jobs to field workers and sends each of them their schedule, and they want it by 1 March. Finishing the feature and **onboarding** those customers, meaning setting them up on the product and moving their data across, will take about €100,000 that Larkspur does not have.
 

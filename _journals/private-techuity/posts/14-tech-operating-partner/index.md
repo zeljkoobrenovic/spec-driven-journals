@@ -34,7 +34,7 @@ Two planning documents shape that work. An **investment thesis** is the investor
 
 The preceding chapter, [[investors-adviser]], explains how to work with an individual adviser. This chapter steps back to look at the function that supplies such advisers: why it matters, how it can be organized and what a good contribution looks like. The practical agreements for any piece of help are covered in [[help-that-changes-capability]] and [[useful-engagement]].
 
-## The Example: One AI Tool, Three Companies
+## Setting Up the Example: One AI Tool, Three Companies
 
 One fictional case runs through the chapter. An investment firm wants three of the software companies it owns to adopt the same **AI support tool**. The tool drafts replies to customer questions based on past support records, and staff check each draft before it is sent.
 

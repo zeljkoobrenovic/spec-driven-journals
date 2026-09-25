@@ -12,23 +12,33 @@ icon: "assets/icons/24-growth-into-design.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to recover the business requirement behind a request for flexibility, compare implementation options against it and choose one with its funded transition.
 
-> **WHY INVESTORS CARE:** Growth is the assumption the valuation rests on; investors need the design choice that makes it possible to be funded, dated and reversible, not a request for flexibility with no cost attached.
+> **WHY INVESTORS CARE:** Growth is the assumption the valuation rests on. Investors need the design choice that makes it possible to be funded, dated and reversible, not a request for flexibility with no cost attached.
 
-> **WHY YOU SHOULD CARE:** “Make it more flexible” funds nothing on its own; a design chosen without the recovered business requirement is either over-built or wrong, and both cost cash before benefits arrive.
+> **WHY YOU SHOULD CARE:** “Make it more flexible” funds nothing on its own. A design chosen without the recovered business requirement is either over-built or wrong, and both cost cash before any benefits arrive.
 
 
 > **KEY POINTS:**
 >
 > * An investor’s growth assumption reaches the team as a request for flexibility. **Recover the business requirement** before comparing designs: which changes must become easier, for which customers, by when.
-> * Compare **options against that requirement**, not against each other’s fashion: the same customer need, delivery date, ongoing responsibility and cash limit. Choose one under stated assumptions and name the evidence that would reverse it.
+> * Compare **options against that requirement**, not against which is more fashionable: the same customer need, delivery date, ongoing responsibility and cash limit. Choose one under stated assumptions and name the evidence that would reverse it.
 > * Follow **spending and benefits through time**. An attractive future saving still needs funding before it arrives, and a design that adds operating responsibility adds a cost line the next review will question.
 
 <br>
-Larkspur is a fictional company that sells scheduling software to business customers, and an investor owns a large share of it. Suppose that investor expects Larkspur to grow quickly, and the technology team is asked to make the software “more flexible.” The request leaves out its reasoning, and that is the condition this chapter starts from. Any company translates financial expectations into technical work; what is particular here is that the assumption arrived as a demand, with the customers, dates and constraints behind it left with the investor. The leader’s task is to recover that reasoning, which changes must become easier for the growth to happen, and turn it into an implementation choice the company can fund.
+Investors rarely hand a technology team a design brief. They hand over an **expectation**, such as fast growth, higher margins or entry into new markets, and it reaches the team as a vague request: make the software “more flexible.” The request leaves out its reasoning: which customers, which changes, by when and at what cost. Without that reasoning, a team can build too much or build the wrong thing, and either way it spends cash before any benefit arrives. Every company **translates financial expectations into technical work**; the difficulty here is that the assumption arrives as a demand, with the customers, dates and constraints behind it left with the investor.
 
-A **valuation assumption** is a belief used when estimating what a business is worth, such as an expectation of future sales or profit. An **operating requirement** states what the company must do to make that belief plausible. An **implementation choice** is how the company meets that requirement in its technology: how the systems are structured, what is built, what is bought, and how the parts fit together. The examples below come mostly from software a company builds; the same reasoning applies across the landscape of systems, suppliers and integrations the company runs, when the choice is which supplier system to adopt or how deeply to integrate it.
+Three terms help keep that translation honest. A **valuation assumption** is a belief used when estimating what a business is worth, such as an expectation of future sales or profit. An **operating requirement** states what the company must do to make that belief plausible. An **implementation choice** is how the company meets that requirement in its technology: how the systems are structured, what is built, what is bought, and how the parts fit together. The examples below come mostly from software a company builds, but the same reasoning applies across the systems, suppliers and integrations a company runs, when the choice is which supplier system to adopt or how deeply to integrate it.
 
-The chapter [[can-the-team-deliver]] produced the assessment this chapter uses. Its finding for fictional Larkspur’s second country was: *market entry depends on coordinated changes to billing, legal work, support and product configuration, because the country rules are coupled into the invoicing module that all four read; every engineering change to those rules passes through the same two specialists and takes about three weeks end to end.* The chapter [[fix-decisions-before-hiring]] dealt with the organizational half: delegation removed the decision waits, and one billing engineer is being brought into the module. This chapter takes the system half and chooses. One word in that finding carries the whole problem: the rules are **coupled** into the module, meaning they are written into the same body of code as everything else it does, so a change meant for one country can disturb work that has nothing to do with it — which is why only two people are trusted to make one.
+The leader’s task is to recover the **reasoning behind the request**, meaning which changes must become easier for the growth to happen, and turn it into an **implementation choice** the company can fund. This chapter shows how: recover the requirement, compare options against it, and follow spending and benefits through time.
+
+## Setting Up the Example: Larkspur’s Second Country and Its Invoicing Module
+
+Larkspur is the fictional company this book follows; it sells scheduling software to business customers, and an investor owns a large share of it. The investor expects Larkspur to grow quickly, including into a second country, and the technology team has been asked to make the software “more flexible.”
+
+The chapter [[can-the-team-deliver]] produced the assessment this chapter uses. Its finding for Larkspur’s second country was: *market entry depends on coordinated changes to billing, legal work, support and product configuration, because the country rules are coupled into the invoicing module that all four read; every engineering change to those rules passes through the same two specialists and takes about three weeks end to end.*
+
+The chapter [[fix-decisions-before-hiring]] dealt with the organizational half of that finding: delegation removed the decision waits, and one billing engineer is being brought into the module. This chapter takes the system half and makes the choice.
+
+One word in the finding carries the whole problem: the rules are **coupled** into the module. They are written into the same body of code as everything else the module does, so a change meant for one country can disturb work that has nothing to do with it. That is why only two people are trusted to make such changes.
 
 ## Recover the Requirement
 

@@ -20,17 +20,21 @@ icon: "assets/icons/11-help-that-changes-capability.png"
 > **KEY POINTS:**
 >
 > * Ask for the help a **specific company problem** requires. Describe the missing capability through the work that fails or takes too long, and say which kind of request you are making.
-> * **Compare the investor’s access with the alternatives.** An investor may reach relevant people faster; a peer, an independent specialist or a hire may fit better. Judge each route by availability, company effort, cost and relevant experience.
+> * **Compare the investor’s access with the alternatives.** An investor may reach relevant people faster. A peer, an independent specialist or a hire may fit better. Judge each route by availability, company effort, cost and relevant experience.
 > * **Borrow experience with its context attached**, and make any continuing dependence explicit. Finish with a written request that names the result, the source and the accountable company leader.
 
 <br>
-Larkspur has money to improve customer onboarding, the setup required before a new customer can use its software. It **lacks experience** in designing a repeatable process for it. Hiring a permanent leader would take months, while asking the same engineers to invent the process alongside their existing work could delay it further. Two later chapters, [[can-the-team-deliver]] and [[fix-decisions-before-hiring]], show how to find such a gap by tracing the setup work through the company; here the gap is taken as given.
+Sooner or later, many companies find a gap they cannot close alone: work that fails or takes too long because nobody inside has done it well before. Many investors offer help with such gaps, through their own specialists, the other companies they have invested in and their wider contacts. That help can be fast and relevant. It can also be the help that happens to be available rather than the help the gap needs, and accepting it still costs scarce team time. The useful question is therefore not whether to accept the investor’s help, but which source of help, inside or outside the investor’s network, will leave the company able to do the work itself.
 
-An investor may give Larkspur **faster access to relevant people and experience**. To judge whether that access is worth having, compare it with the help the company could obtain elsewhere, including the time and obligations each route brings.
-
-A **stronger company is worth more**, which raises the value of the investor’s holding, the ownership stake it bought and will one day sell. But a firm that runs a shared team of advisers also wants that team busy enough to **justify its cost**, the goodwill of the other companies it has invested in, and a reputation that attracts the next founder. The offer is genuine, but it is not disinterested, and neither fact makes it the best route.
+A **stronger company is worth more**, which raises the value of the investor’s holding: the ownership stake it bought and will one day sell. But a firm that runs a shared team of advisers also wants three other things: that team busy enough to **justify its cost**, the goodwill of the other companies it has invested in, and a reputation that attracts the next founder. Its offer of help is genuine, but it is not disinterested, and neither fact makes it the best route.
 
 The earlier chapter [[operating-model-blueprints]] connected the investor–company working arrangement with the company’s own organization, authority and resources. The previous chapter, [[learn-through-investors-network]], explored learning that can reveal new possibilities and needs. This chapter is about sourcing help. It starts with the company’s need, sets out four kinds of request, then compares credible sources for the same need, including sources outside the investor’s network. It ends with a written request, which the chapter [[useful-engagement]] turns into a **charter**: the short written agreement that fixes what the helper will do, for how long, at what cost and under whose direction.
+
+## Setting Up the Example: Larkspur’s Onboarding Gap
+
+Larkspur, the fictional scheduling-software company this book follows, has money to improve customer onboarding: the setup required before a new customer can use its software. It **lacks experience** in designing a repeatable process for that setup. Hiring a permanent leader would take months. Asking the same engineers to invent the process alongside their existing work could delay it further. Two later chapters, [[can-the-team-deliver]] and [[fix-decisions-before-hiring]], show how to find such a gap by tracing the setup work through the company. Here the gap is taken as given.
+
+An investor may give Larkspur **faster access to relevant people and experience**. To judge whether that access is worth having, Larkspur has to compare it with the help it could obtain elsewhere, including the time and obligations each route brings. The first step is to name the capability it actually lacks.
 
 ## Name the Capability You Need
 

@@ -12,9 +12,9 @@ icon: "assets/icons/19-can-the-team-deliver.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to assess whether the software and the team can deliver the plan, and produce a finding that names the obstacle that most limits the plan (its **binding constraint**), the evidence, and what a transition would cost in money and time.
 
-> **WHY INVESTORS CARE:** An investor puts money into a company expecting a return. Its reasoning for doing so, the investment case, assumes the systems and the team can support the plan. An assessment that finds the biggest obstacle early lets the investor reconsider the price it is willing to pay, or agree a different order and timing of work, rather than discover the problem through a missed deadline.
+> **WHY INVESTORS CARE:** An investor puts money into a company expecting a return. Its reasoning for doing so, the investment case, assumes the systems and the team can support the plan. An assessment that finds the biggest obstacle early lets the investor reconsider the price it is willing to pay, or agree on a different order and timing of work, rather than discover the problem through a missed deadline.
 
-> **WHY YOU SHOULD CARE:** If the investment plan assumes a country launch before the systems have been assessed, the assessment tests whether the date and budget are credible, and gives the board, the directors who oversee the company, its first grounded view of what the plan will cost and when it can arrive.
+> **WHY YOU SHOULD CARE:** If the investment plan assumes a launch in a new country before the systems have been assessed, the assessment tests whether the date and budget are credible. It also gives the board, the directors who oversee the company, its first grounded view of what the plan will cost and when it can be delivered.
 
 
 > **KEY POINTS:**
@@ -24,13 +24,19 @@ icon: "assets/icons/19-can-the-team-deliver.png"
 > * End with **a finding the next decisions can use**: the obstacle that most limits the plan, the evidence behind it, what is uncertain, and what a transition would cost, over what period, and when its first benefit could appear.
 
 <br>
-Larkspur, the fictional scheduling-software company, plans to serve customers in a second country. Its board has a plan that proposes the first paying customers there within twelve months. Its software assumes one set of tax and pricing rules, its contracts cover one market, and its support team works in one language. Which changes are needed before expansion can succeed?
+Investment plans often **fix a destination and a date** before anyone has looked closely at the technology: a new market next year, twice as many customers, a new product line. That does not make the plan wrong. It does mean that someone has to check whether the company’s software, and the people who build and run it, can **actually carry the plan**, and what it would take if they cannot. That answer should arrive before the company commits money or makes promises to customers, not after a missed deadline.
 
-The expansion date was proposed before anyone assessed the plan’s **dependencies**: the other work, systems and people it relies on. That is the condition this chapter starts from, and it is a common one. An investor’s growth assumption or a board’s plan can fix a destination and a timetable before anyone has examined the technology closely. That does not make the plan wrong. It changes the order of the work.
+This chapter shows how to make that assessment. It starts from what the plan requires, judges the systems and the team by their consequences for that work, and ends with a **finding**: the obstacle that most limits the plan, the evidence for it, and what a transition would cost in money and time. The assessment covers people as well as software, because the people who run the systems are part of what the company can do. It works the same way whether the systems are built in-house, bought from suppliers or assembled from both.
 
-Alex, Larkspur’s technology leader, has to establish three things before the company commits money or makes a promise to a customer: what the systems and the team can support today, what must change in the plan, and what changing it would cost. That takes more than a look at the software, because the people who run it are part of what the company can do. The systems may be built in-house, bought from suppliers or assembled from both; the assessment is the same.
+The chapter [[roadmap-to-revenue]] connected a proposed change to customer and business results; this chapter produces the assessment those results depend on. It stops at the finding. The organizational response to that finding is the subject of the chapter [[fix-decisions-before-hiring]], and the choice among implementations is the subject of the chapter [[growth-into-design]].
 
-The chapter [[roadmap-to-revenue]] connected a proposed change to customer and business results. This chapter produces the assessment those results depend on. It stops at a finding. The organizational response to that finding is the subject of the chapter [[fix-decisions-before-hiring]]; the choice among implementations is the subject of the chapter [[growth-into-design]].
+## Setting Up the Example: A Second Country for Larkspur
+
+Larkspur, the fictional scheduling-software company this book follows, plans to serve customers in a second country. The board has a plan that proposes the first paying customers there within twelve months. But Larkspur’s software assumes one set of tax and pricing rules, its contracts cover one market, and its support team works in one language. Which changes are needed before the expansion can succeed?
+
+The expansion date was proposed before anyone assessed the plan’s **dependencies**: the other work, systems and people it relies on. This is a common situation, and it changes the order of the work: the assessment has to come first.
+
+Alex, Larkspur’s technology leader, has to establish three things before the company commits money or makes a promise to a customer: what the systems and the team can support today, what must change in the plan, and what changing it would cost.
 
 ## Translate the Business Plan Into Required Capabilities
 

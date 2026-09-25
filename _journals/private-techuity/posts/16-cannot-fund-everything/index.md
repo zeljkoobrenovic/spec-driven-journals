@@ -12,9 +12,9 @@ icon: "assets/icons/16-cannot-fund-everything.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to choose a combination of work that fits both the cash and the team time available, and revise the whole combination when a test fails.
 
-> **WHY INVESTORS CARE:** Larkspur’s investor agreed to fund growth on one assumption: the company can take on many more new customers without adding staff at the same rate. The work that tests that assumption needs the same engineers as an improvement the company has already promised. A plan that gives the same people to both shows up later as delays, in front of the board where the investor sits.
+> **WHY INVESTORS CARE:** Larkspur’s investor agreed to fund growth on one assumption: the company can take on many more new customers without adding staff at the same rate. The work that tests that assumption needs the same engineers as an improvement the company has already promised. A plan that assigns the same people to both will later show up as delays, in front of the board on which the investor sits.
 
-> **WHY YOU SHOULD CARE:** A plan that fits the cash but not the team time, or ignores an agreed obligation, gets overrun by the limit nobody counted. Choosing a combination the company can deliver is what makes its commitments worth something.
+> **WHY YOU SHOULD CARE:** A plan that fits the cash but not the team time, or that ignores an agreed obligation, will be overrun by the limit nobody counted. Choosing a combination the company can deliver is what makes its commitments worth something.
 
 
 > **KEY POINTS:**
@@ -24,9 +24,19 @@ icon: "assets/icons/16-cannot-fund-everything.png"
 > * Make the **next review part of the decision**, and revise the whole combination, not just one project, when a test fails or new evidence arrives.
 
 <br>
-Larkspur is the fictional company this book follows; it sells scheduling software to maintenance businesses. Its investor wants faster growth. Priya, the product leader, has requests for a new customer portal, an online workspace where customers manage their own work. Alex, the technology leader, wants to improve recovery from system failures. The customer team wants simpler setup for new accounts. Each request has a plausible benefit, and the chapter [[adopt-outcome-thinking]] has already agreed which customer and business outcomes the work is for. They can’t all use the same people at the same time.
+After an investment, there is rarely a shortage of good ideas. The investor wants faster growth, product has features customers are asking for, technology has risks it wants to reduce, and the customer team has problems it sees every day. Each request can look worthwhile on its own. The difficulty is that they all compete for the same two limited resources: money, and the time of the people who would do the work. A plan that **checks only the budget** can look affordable and **still fail**, because the same engineers have been counted twice.
 
-A **company investment** commits resources now in the expectation of a future benefit. **Team capacity** is the time and capability people have available to do the work. Choosing investments needs both a cash plan and a capacity plan. This chapter shows one way to make the choice, as a proposed working method illustrated with fictional figures.
+A **company investment** commits resources now in the expectation of a future benefit. **Team capacity** is the time and capability people have available to do the work. Choosing investments therefore needs both a cash plan and a capacity plan, and a way to decide what goes first when the two cannot cover everything. This chapter shows one way to make that choice. It is a proposed working method rather than an established standard, illustrated with fictional figures to help you become familiar with the topic.
+
+## Setting Up the Example: Three Requests, One Team
+
+Larkspur is the fictional company this book follows; it sells scheduling software to maintenance businesses. Its investor wants faster growth, and three requests are competing for the same people:
+
+- Priya, the product leader, wants a **new customer portal**, an online workspace where customers manage their own work.
+- Alex, the technology leader, wants to improve **recovery from system failures**.
+- The customer team wants **simpler setup** for new accounts.
+
+Each request has a plausible benefit, and the chapter [[adopt-outcome-thinking]] has already agreed which customer and business outcomes the work is for. But the requests cannot all use the same people at the same time. The next section sets out the limits the board has approved and what each request would need.
 
 ## Competing Requests, Two Limits
 

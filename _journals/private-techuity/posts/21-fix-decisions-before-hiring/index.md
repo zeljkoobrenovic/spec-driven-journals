@@ -12,9 +12,9 @@ icon: "assets/icons/21-fix-decisions-before-hiring.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to trace one piece of work through the company, separate decision, knowledge and staffing constraints, assess leaders in their system and decide what hiring the plan needs.
 
-> **WHY INVESTORS CARE:** Headcount, the number of people a company employs or has approved to hire, is one of the few levers an investor can see and fund; it wants to know whether the money buys capacity or buys people who wait behind the same bottleneck.
+> **WHY INVESTORS CARE:** Headcount, the number of people a company employs or has approved to hire, is one of the few levers an investor can see and fund. It wants to know whether the money buys capacity or just buys people who wait behind the same bottleneck.
 
-> **WHY YOU SHOULD CARE:** Hiring into a queue made of unclear authority and concentrated knowledge buys people who wait; the diagnosis decides whether new people help, and what shape the hire should take.
+> **WHY YOU SHOULD CARE:** Hiring into a queue caused by unclear authority and concentrated knowledge buys people who wait. The diagnosis decides whether new people will help, and what shape the hire should take.
 
 
 > **KEY POINTS:**
@@ -26,11 +26,13 @@ icon: "assets/icons/21-fix-decisions-before-hiring.png"
 <br>
 New investment naturally opens room to hire. The money that funds the plan can also pay salaries, and investors often push for it to turn into people quickly: headcount is visible, easy to report and easy to compare with the plan. The pressure is understandable, but **hiring naively can backfire**. When work waits on unclear authority and on knowledge held by a few people, new hires join the same queue. They need training from the specialists who are already the bottleneck, they add coordination, and the waits can grow rather than shrink. The friction in how the company decides and delivers has to be found before the hiring plan is written.
 
-For instance, a company buys a new tool for delivering software, adopts a new architecture (a new overall structure for its software), and recruits engineers in a lower-cost location. Six months later, decisions still wait for the same executive, priorities still change every week, and the same two people resolve every problem in the live system that customers use.
+The plan funded new resources, but not the management time and decision changes needed to use them. An **operating model** is the arrangement of responsibilities, teams and processes through which work gets done. **Capability** is what that arrangement lets people do reliably. Every investment in the preceding chapters depends on people with the time, knowledge and authority to do the work. An investment case, the argument for committing money to a plan, is not complete if it funds the work without funding the capacity to do it.
 
-The plan funded new resources, but it has not funded the management time and decision changes needed to use them. An **operating model** is the arrangement of responsibilities, teams and processes through which work gets done. **Capability** is what that arrangement lets people do reliably. Delivering the investments in the preceding chapters depends on people with the time, knowledge and authority to do the work, and an investment case, the argument for committing money to a plan, isn’t complete if it funds the work without funding the capacity to do it.
+This chapter shows how to find what a queue is made of, change the decisions that cause it, and only then decide what hiring the plan needs. It also shows how to assess leaders in the system they work in, rather than in isolation.
 
-This chapter starts from the finding in the chapter [[can-the-team-deliver]]. Larkspur is the fictional company this book follows; it sells scheduling software. That chapter read two clocks for a change to Larkspur’s pricing rules, the rules that decide what customers are charged. The first clock runs from the customer’s request until the change is in **production**, the live system customers use. It shows about three weeks.
+## Setting Up the Example: A Three-Week Pricing Change
+
+Larkspur is the fictional company this book follows; it sells scheduling software. This example starts from the finding in the chapter [[can-the-team-deliver]], which read two clocks for a change to Larkspur’s pricing rules, the rules that decide what customers are charged. The first clock runs from the customer’s request until the change is in **production**, the live system customers use. It shows about three weeks.
 
 The second clock starts at the **commit**, the moment an engineer records a version of a code change in the team’s shared version history. A commit is a record, not a finish line: recorded code need not be complete or ready for customers. The clock stops when the change is **released**, that is, put into use in production. Recording and releasing are separate events, and the second clock measures the time between them. It shows under two days.
 
