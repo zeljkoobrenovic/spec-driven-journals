@@ -1,7 +1,7 @@
 {id: prove-you-can-restore}
-# 27. Build And Test Resilience: Backups Are Not Enough
+# 28. Build And Test Resilience: Backups Are Not Enough
 
-![Build And Test Resilience: Backups Are Not Enough — logo](private-techuity/posts/26-prove-you-can-restore/assets/images/26-prove-you-can-restore/logo.jpeg)
+![Build And Test Resilience: Backups Are Not Enough — logo](private-techuity/posts/27-prove-you-can-restore/assets/images/27-prove-you-can-restore/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to state a recovery objective in ordinary language, judge a restore test against it, fund the corrective work, retest and record the exposure that remains.
 
@@ -65,7 +65,7 @@ Against the objective, the test failed twice over. Eleven hours against four. A 
 
 That is also what a restore test has to demonstrate: not that data came back, but that it is complete and consistent, that the right people can reach it, that the application and the services it depends on start against it, and that a dispatcher can assign a job end to end within the objective. A **certification**, a formal statement that specified requirements were met under a particular assessment process, is read the same way: which organization, systems, requirements and period it covers. It isn’t a guarantee that every part of the company is secure today.
 
-![Three claim-and-evidence pairs: what we intend to do rests on a written policy; the safeguard ran rests on a watched test; recovered in this tested case rests on a timed restore.](private-techuity/posts/26-prove-you-can-restore/assets/images/26-prove-you-can-restore/security-claims-and-proof.jpeg)
+![Three claim-and-evidence pairs: what we intend to do rests on a written policy; the safeguard ran rests on a watched test; recovered in this tested case rests on a timed restore.](private-techuity/posts/27-prove-you-can-restore/assets/images/27-prove-you-can-restore/security-claims-and-proof.jpeg)
 
 **Figure 1:** *Match the evidence to the capability you say the company has — and note that the recovery claim only covers the case that was tested.*
 
@@ -111,7 +111,7 @@ A practical exercise tests a plausible scenario. Larkspur’s: the scheduling se
 
 Legal notification deadlines, sector requirements and contractual duties vary and can change. In a live incident, the organization needs current advice for its jurisdictions and facts. This chapter supplies the operating questions, not a universal deadline.
 
-![A four-stage loop: spot the problem, assess impact and options, rebuild on a separate test system until the service works again, then record fixes and retest, with one named person responsible at the centre.](private-techuity/posts/26-prove-you-can-restore/assets/images/26-prove-you-can-restore/incident-restoration-practice.jpeg)
+![A four-stage loop: spot the problem, assess impact and options, rebuild on a separate test system until the service works again, then record fixes and retest, with one named person responsible at the centre.](private-techuity/posts/27-prove-you-can-restore/assets/images/27-prove-you-can-restore/incident-restoration-practice.jpeg)
 
 **Figure 2:** *Restoration is a capability to practise and verify: spot the problem, weigh the options, rebuild and check, then record what to fix — with one named person responsible throughout.*
 

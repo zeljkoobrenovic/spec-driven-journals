@@ -1,7 +1,7 @@
 {id: roadmap-to-revenue}
-# 17. Test Revenue Assumptions: Do Customers Respond as Expected?
+# 18. Test Revenue Assumptions: Do Customers Respond as Expected?
 
-![Test Revenue Assumptions: Do Customers Respond as Expected? — logo](private-techuity/posts/16-roadmap-to-revenue/assets/images/16-roadmap-to-revenue/logo.jpeg)
+![Test Revenue Assumptions: Do Customers Respond as Expected? — logo](private-techuity/posts/17-roadmap-to-revenue/assets/images/17-roadmap-to-revenue/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to trace a product change from customer need through customer behavior to a business result, and let the measured result revise the next commitment.
 
@@ -113,7 +113,7 @@ A usable proposal therefore includes a **conversion plan**: how the released tim
 
 The plan names three possible conversions, and the review has to say which one happened. The released time serves waiting customers. Or it avoids a supplier’s invoice or a hire. Or it stays unused, because something else is holding customers up. The step that limits how fast the whole process can go is called the **bottleneck**.
 
-![Released staff time can support more customers, other product work or avoided future spending while current payroll continues.](private-techuity/posts/16-roadmap-to-revenue/assets/images/16-roadmap-to-revenue/freed-time-conversion-plan.jpeg)
+![Released staff time can support more customers, other product work or avoided future spending while current payroll continues.](private-techuity/posts/17-roadmap-to-revenue/assets/images/17-roadmap-to-revenue/freed-time-conversion-plan.jpeg)
 
 **Figure 1:** *Time saved becomes useful capacity through a plan; it does not automatically reduce the payroll bill.*
 
@@ -134,7 +134,7 @@ That comparison leaves differences that “comparable customers” does not remo
 
 None of this makes the result useless. It means the honest claim is “the setup step plausibly helped produce the reduction, with these measurements and these unresolved differences”. It is not a precise claim that the product change alone caused it. Interviews can explain how the change helped; an enthusiastic testimonial is not a financial calculation.
 
-![An observed onboarding improvement is checked against the product change, customer mix and other initiatives using comparable groups.](private-techuity/posts/16-roadmap-to-revenue/assets/images/16-roadmap-to-revenue/check-what-explains-the-result.jpeg)
+![An observed onboarding improvement is checked against the product change, customer mix and other initiatives using comparable groups.](private-techuity/posts/17-roadmap-to-revenue/assets/images/17-roadmap-to-revenue/check-what-explains-the-result.jpeg)
 
 **Figure 2:** *An observed improvement needs a comparison that can reveal other explanations.*
 

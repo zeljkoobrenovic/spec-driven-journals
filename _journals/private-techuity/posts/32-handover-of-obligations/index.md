@@ -24,7 +24,7 @@ icon: "assets/icons/25-handover-of-obligations.png"
 > * **A handover is accepted when each open obligation has an accountable leader on the receiving side.** Hand over the record with its open work and continuing cost, agree any follow-up role explicitly, and treat later results as evidence to learn from rather than a verdict on the previous owners.
 
 <br>
-On the morning after a company changes investors or owners, its signed customer contracts are still there. So are the recovery time it has promised customers, the half-finished move of customers onto a new system and the hire it postponed. The deal changed who owns the company, or who owns part of it. It did not change the work. This chapter is about handing that work over, not only the shares.
+On the morning after a company changes investors or owners, its signed customer contracts are still there. So are the recovery time it has promised customers, the half-finished move of customers onto a new system and the hire it postponed. The deal changed who owns the company, or who owns part of it. It did not change the work.
 
 These changes come in several forms, explained later in the chapter: new investment, a sale of existing shares, a change inside the fund that owns them, a stock-market listing and a sale of control. A sale is one possible event, not the inevitable next stage. The same record has to serve continued ownership, another round of investment and a change of controlling shareholder.
 
@@ -41,7 +41,7 @@ The company should be able to explain:
 - its **material** risks, those important enough to change a buyer’s or investor’s decision;
 - who owns its software and other **intellectual property**, the legal rights to its code, designs, brand and inventions, and which businesses it has bought before.
 
-It should also be able to back up every claim that its technology work saved or earned money. The evidence differs by initiative:
+It should also be able to back up every claim that its technology work saved or earned money.
 
 - For a **cloud** initiative, work on the computing services the company rents from a provider instead of running its own servers: the starting cost, the changes made, the adjustment for how much usage grew or shrank, the costs after any offsetting savings, and the effect on the service (see the chapter [[cheaper-cloud-bill]]).
 - For a move to a new platform: the groups of customers moved, the customers lost, the cost of running the old and new systems at the same time, and the unfinished obligations.
@@ -60,7 +60,7 @@ Before the investment, the investor’s investigation of the company (**due dili
 
 At day 0 the board set an **envelope**: a limit of €500,000 of additional cash and 24 **engineer-weeks** (one engineer’s working time for one week) that the plan could commit over its first hundred days. It is an authorization limit, not a bank balance or money already spent. One part went to **ONB-1, the onboarding pilot**: a trial of one reusable setup step, which the plan’s model assumed would bring effort down to about 50 hours per customer. Two other projects, described below, took further parts. The rest stayed as a **reserve**, the part of the envelope not yet assigned to any work.
 
-The record keeps three money words apart. **Committed** means approved for named work. **Incurred** means the work or services have been received. **Paid** means the cash has actually left the company. An incurred cost is not necessarily paid; an invoice can still be open. After the day-100 review, the entry for D-3 and ONB-1 reads as follows (fictional figures):
+**Committed** means approved for named work. **Incurred** means the work or services have been received. **Paid** means the cash has actually left the company. An incurred cost is not necessarily paid; an invoice can still be open. After the day-100 review, the entry for D-3 and ONB-1 reads as follows (fictional figures):
 
 | Field | Entry |
 | --- | --- |
@@ -124,13 +124,13 @@ Transactions that look alike in a headline move money and authority differently.
 | Initial public offering (IPO): the company’s first sale of shares to the public, after which the shares are **listed** and traded on a stock exchange | The company for new shares; selling shareholders for existing shares | Public shareholders; founders and existing investors may keep shares, and share classes with extra votes or voting agreements can keep control with them | Cash from new shares, plus public reporting duties and new ways to raise money |
 | Sale of control: a buyer acquires enough shares to direct the company | The selling shareholders | The buyer; sellers may keep a **minority interest**, a stake too small to control decisions | Nothing directly; new authority over the plan |
 
-Two forms deserve care. “Secondary sale” is used both for a sale of company shares and for a sale of a fund interest. The first can bring a new shareholder with rights over the company. The second leaves the company’s shareholder, the fund, unchanged. What may change is the patience and the priorities of the investors behind that fund, which is why “nothing changes” is a stronger claim than the fact supports. Ask which is meant.
+“Secondary sale” is used both for a sale of company shares and for a sale of a fund interest. The first can bring a new shareholder with rights over the company. The second leaves the company’s shareholder, the fund, unchanged. What may change is the patience and the priorities of the investors behind that fund, which is why “nothing changes” is a stronger claim than the fact supports. Ask which is meant.
 
 A **continuation transaction** needs attention to price and to possible **conflicts of interest**: the manager stands on both sides, selling from the old fund and buying for the new one, while acting for the investors leaving and those rolling over. The Institutional Limited Partners Association (ILPA), which represents investors in private funds, treats these manager-led transfers as a governance issue in its principles. [S02: ILPA principles](https://ilpa.org/wp-content/uploads/2019/06/ILPA-Principles-3.0_2019.pdf)
 
-Do not read what the investors actually made from a transaction announcement. Keep three figures apart. **Proceeds** are the money actually received from a sale. The **realized return** is the gain or loss on what was sold: the proceeds compared with the money originally invested, after fees and other costs, and allowing for when the money went in and came out. An investor that put in €100 and later receives €120 has €120 of proceeds but a €20 gain before fees and taxes; the same €20 is a better result earned in one year than in five. Any stake still held has only an estimated value until it, too, is sold.
+Do not read what the investors actually made from a transaction announcement. **Proceeds** are the money actually received from a sale. The **realized return** is the gain or loss on what was sold: the proceeds compared with the money originally invested, after fees and other costs, and allowing for when the money went in and came out. An investor that put in €100 and later receives €120 has €120 of proceeds but a €20 gain before fees and taxes; the same €20 is a better result earned in one year than in five. Any stake still held has only an estimated value until it, too, is sold.
 
-Follow the actual proceeds, the money invested, the stakes kept, the costs and the dates when money was passed on to fund investors. The return mechanics in the chapter [[three-different-returns]] still apply when a company is described as an exit success. The cases show why. Hilton’s **financial sponsor**, the investment firm that owned it, described its final stake sale in 2018, while Visma’s 2023 announcement described another transaction within a continuing ownership relationship. [S24: Blackstone 2018 investor call](https://ir.blackstone.com/files/doc_events/BLACKSTONE-Second-Quarter-2018-Earnings-Investor-Call.pdf) [S30: Visma 2023 transaction](https://www.visma.com/newsroom/visma-attracts-new-investors-for-further-international-expansion-in-a-transaction-valuing-the-company-at-eur-19-billion-59703d9f) These are different contexts for turning an investment into money. Reconstruct which fund or company held the investment, and its **cash flows**, every dated payment in and out, before calling either a complete fund outcome; see the chapters [[hilton-and-skype]] and [[visma]].
+Follow the actual proceeds, the money invested, the stakes kept, the costs and the dates when money was passed on to fund investors. The return mechanics in the chapter [[three-different-returns]] still apply when a company is described as an exit success. Hilton’s **financial sponsor**, the investment firm that owned it, described its final stake sale in 2018, while Visma’s 2023 announcement described another transaction within a continuing ownership relationship. [S24: Blackstone 2018 investor call](https://ir.blackstone.com/files/doc_events/BLACKSTONE-Second-Quarter-2018-Earnings-Investor-Call.pdf) [S30: Visma 2023 transaction](https://www.visma.com/newsroom/visma-attracts-new-investors-for-further-international-expansion-in-a-transaction-valuing-the-company-at-eur-19-billion-59703d9f) Reconstruct which fund or company held the investment, and its **cash flows**, every dated payment in and out, before calling either a complete fund outcome; see the chapters [[hilton-and-skype]] and [[visma]].
 
 ## Authority Changes Even When the Name Does Not
 
@@ -153,7 +153,7 @@ The company leader’s success in a transition is a working handover with unders
 
 ## The Accepted Handover Record
 
-A handover is accepted, not merely sent. The record lists, for each important initiative and open obligation: the baseline, the cost incurred to date, what has been paid and the continuing cost, the observed result and its uncertainty, the open work with its funding status, and the accountable leader on both sides. The receiving decision-maker signs for it. Tool 10 in the [[toolkit]] gives the format.
+The record lists, for each important initiative and open obligation: the baseline, the cost incurred to date, what has been paid and the continuing cost, the observed result and its uncertainty, the open work with its funding status, and the accountable leader on both sides. The receiving decision-maker signs for it. Tool 10 in the [[toolkit]] gives the format.
 
 In the Larkspur chain, the three entries above (ONB-1, KNW-1 and REC-1) and the whole-plan table form the record. The receiving side inherits the two reserve draws, the postponed expansion and the postponed hires as decisions with recorded reasons, not as gaps. If the receiving leader wants to reverse any of them, the record shows what evidence the reversal should answer.
 
@@ -177,7 +177,7 @@ Without the exception and the review date, the acknowledgment would be a receipt
 
 ## Permitted Follow-Up and Learning
 
-A handover is a chance for both company leaders and the investor to learn. Where public evidence or authorized access permits, revisit whether the company sustained its capabilities and whether the buyer experienced the promised benefits and the disclosed obligations.
+Where public evidence or authorized access permits, revisit whether the company sustained its capabilities and whether the buyer experienced the promised benefits and the disclosed obligations.
 
 Any involvement after a handover needs an agreed role and appropriate access; it is not a right that survives the transaction. The point is to check the durability claims made during ownership. Later deterioration does not automatically prove that the prior owners failed; market conditions and subsequent decisions matter. Later success does not prove that every prior intervention was necessary. A consistent record makes it possible to learn from the whole ownership period: what was expected, what was tried, what happened and what still needs work.
 

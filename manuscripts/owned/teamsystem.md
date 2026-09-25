@@ -1,7 +1,7 @@
 {id: teamsystem}
-# 36. TeamSystem: Each New Owner Inherits Progress and Unfinished Work
+# 37. TeamSystem: Each New Owner Inherits Progress and Unfinished Work
 
-![TeamSystem: Each New Owner Inherits Progress and Unfinished Work — logo](private-techuity/posts/35-teamsystem/assets/images/29-teamsystem/logo.jpeg)
+![TeamSystem: Each New Owner Inherits Progress and Unfinished Work — logo](private-techuity/posts/36-teamsystem/assets/images/29-teamsystem/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Follow TeamSystem, an Italian business-software group, through a chain of owners, and learn how the period a report covers and the earnings measure it uses change what the results appear to say.
 
@@ -91,7 +91,7 @@ Palamon reports a 4.1× return for its earlier ownership episode. [S45: Palamon 
 
 A **buyout** is the purchase of a controlling stake in a company; a **secondary buyout** sells a company from one private-equity owner to another. For management, it creates another distinction: the company continues, but the new shareholder's investment starts at a new price. Earlier operational progress is part of the asset the buyer purchases and can't simply be counted again as new value creation. The incoming investment plan needs its own credible future improvements and the money to pay for them.
 
-![A partial exit generates cash for the sold stake while the retained stake continues to carry an estimated value.](private-techuity/posts/35-teamsystem/assets/images/29-teamsystem/partial-exit-cash-and-retained-value.jpeg)
+![A partial exit generates cash for the sold stake while the retained stake continues to carry an estimated value.](private-techuity/posts/36-teamsystem/assets/images/29-teamsystem/partial-exit-cash-and-retained-value.jpeg)
 
 **Figure 1:** *Separate money already received from the estimated value of ownership that remains.*
 
@@ -203,7 +203,7 @@ The proposed application is to carry a consistent record of commitments, costs a
 
 That method can also help through another round of new investment or entry into a corporate group. TeamSystem's disclosed history doesn't establish results for those settings; it gives a concrete reason to ask **what operating work survives the transaction**. This is a proposed leadership practice, distinct from the observed company history.
 
-![The company carries products, customers, integration work and obligations through successive changes of owner.](private-techuity/posts/35-teamsystem/assets/images/29-teamsystem/company-history-across-successive-owners.jpeg)
+![The company carries products, customers, integration work and obligations through successive changes of owner.](private-techuity/posts/36-teamsystem/assets/images/29-teamsystem/company-history-across-successive-owners.jpeg)
 
 **Figure 2:** *Each investor starts with a new investment question, while company responsibilities continue.*
 

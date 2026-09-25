@@ -1,7 +1,7 @@
 {id: anatomy-of-a-layoff}
-# 22. Scale the Team Down: Decide What Work Stops, Not Just Who Leaves
+# 23. Scale the Team Down: Decide What Work Stops, Not Just Who Leaves
 
-![Scale the Team Down: Decide What Work Stops, Not Just Who Leaves — logo](private-techuity/posts/21-anatomy-of-a-layoff/assets/images/24-anatomy-of-a-layoff/logo.jpeg)
+![Scale the Team Down: Decide What Work Stops, Not Just Who Leaves — logo](private-techuity/posts/22-anatomy-of-a-layoff/assets/images/24-anatomy-of-a-layoff/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to turn a request to cut staff into an operating plan: find where the pressure actually comes from, compare the alternatives by how much cash each leaves month by month, choose roles by the work that stops, and plan for the people who leave and the people who remain.
 
@@ -141,7 +141,7 @@ The same arithmetic, run without R2 or without the bridge, gives the comparison 
 | R2, no bridge | €445,000 | Below the reserve | About 10 January | No bridge to meet it for |
 | No bridge, no R2 (R1 only) | €500,000 | Below the reserve | About 20 January | No bridge to meet it for |
 
-![Line chart of Larkspur’s month-end cash from 1 October to August, in euros, against a dashed reserve line at €400,000. With the bridge and R2, cash falls to €800,000 in October, rises to €1,220,000 in November when the bridge arrives, and falls to €488,000 on 30 June, reaching the reserve in the first week of August. With the bridge but no R2, a comparison that fails the bridge’s condition, cash rises to €1,250,000 in November and falls to €200,000 on 30 June, crossing the reserve about 20 May. With R2 but no bridge, cash falls to €445,000 in December and crosses the reserve about 10 January.](private-techuity/posts/21-anatomy-of-a-layoff/assets/images/24-anatomy-of-a-layoff/cash-by-date-under-three-plans.jpeg)
+![Line chart of Larkspur’s month-end cash from 1 October to August, in euros, against a dashed reserve line at €400,000. With the bridge and R2, cash falls to €800,000 in October, rises to €1,220,000 in November when the bridge arrives, and falls to €488,000 on 30 June, reaching the reserve in the first week of August. With the bridge but no R2, a comparison that fails the bridge’s condition, cash rises to €1,250,000 in November and falls to €200,000 on 30 June, crossing the reserve about 20 May. With R2 but no bridge, cash falls to €445,000 in December and crosses the reserve about 10 January.](private-techuity/posts/22-anatomy-of-a-layoff/assets/images/24-anatomy-of-a-layoff/cash-by-date-under-three-plans.jpeg)
 
 **Figure 1:** *Month-end cash under three plans, plotted from Sam’s forecast. At Larkspur’s notice periods and severance the reduction’s leaving costs come before its savings: it makes the bridge last longer and cannot stand in for it. Compare costs, savings and funding by date before assuming either result.*
 
@@ -198,7 +198,7 @@ A record like this is **what distinguishes a decision from a number**. It shows 
 
 The reduction is chosen by work, so the organization that results can be described by work. In the base case, once the retained specialist leaves on 31 March, Larkspur has twelve engineers besides Alex from 1 April: four on the onboarding pilot, and eight on a core team. The core team is the original five, the two engineers redeployed from the recovery work when it ends in December, and the one remaining second-country engineer, who brings the second-country rules with them. Until the retained second-country specialist leaves, on 31 March or later if the transfer test described below fails, the specialist works alongside that team on the rules and the second customer’s configuration, so any extra months have thirteen engineers besides Alex. Product and design are Priya, one product manager and one designer, both with the onboarding and core teams. Implementation and support are unchanged, because the collected revenue depends on them.
 
-![Two panels. Left, titled 1 October, 16 engineers: five workbenches labelled onboarding 4, recovery 2, core 5, second country 3 and mobile app 2. Right, titled 1 April, 12 engineers, with the subheading base case, specialist left 31 March: an onboarding bench labelled 4, the same size as before and tagged unchanged; a longer core bench labelled 8, with tags showing 2 from recovery and 1 from the second country; and the mobile app bench covered and tagged stopped.](private-techuity/posts/21-anatomy-of-a-layoff/assets/images/24-anatomy-of-a-layoff/team-by-work-before-and-after.jpeg)
+![Two panels. Left, titled 1 October, 16 engineers: five workbenches labelled onboarding 4, recovery 2, core 5, second country 3 and mobile app 2. Right, titled 1 April, 12 engineers, with the subheading base case, specialist left 31 March: an onboarding bench labelled 4, the same size as before and tagged unchanged; a longer core bench labelled 8, with tags showing 2 from recovery and 1 from the second country; and the mobile app bench covered and tagged stopped.](private-techuity/posts/22-anatomy-of-a-layoff/assets/images/24-anatomy-of-a-layoff/team-by-work-before-and-after.jpeg)
 
 **Figure 2:** *Describe the team after a reduction by the work it keeps, the work it stops and the work it absorbs. In the base case, with the retained specialist gone on 31 March: onboarding unchanged at four engineers, a core team of eight that now carries the recovery pair and the narrowed second-country work, and the mobile app stopped. If the specialist stays longer, a thirteenth engineer remains until they leave.*
 

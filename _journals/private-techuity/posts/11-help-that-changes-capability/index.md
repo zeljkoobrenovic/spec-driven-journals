@@ -28,7 +28,7 @@ Larkspur has money to improve customer onboarding, the setup required before a n
 
 An investor may give Larkspur faster access to relevant people and experience. Compare that access with the help the company could obtain elsewhere, including the time and obligations each route brings.
 
-Investors offer support for mixed reasons. A stronger company is worth more, which raises the value of the investor’s **holding** — the ownership stake it bought and will one day sell. But a firm that runs a shared team of advisers also wants that team busy enough to justify its cost, wants the goodwill of the other companies it has invested in, and wants a reputation that attracts the next founder. The offer is real and not free of interest; neither fact makes it the best route.
+A stronger company is worth more, which raises the value of the investor’s **holding** — the ownership stake it bought and will one day sell. But a firm that runs a shared team of advisers also wants that team busy enough to justify its cost, wants the goodwill of the other companies it has invested in, and wants a reputation that attracts the next founder. The offer is real and not free of interest; neither fact makes it the best route.
 
 The earlier chapter [[operating-model-blueprints]] connected the investor–company working arrangement with the company’s own organization, authority and resources. The previous chapter, [[learn-through-investors-network]], explored learning that can reveal new possibilities and needs. This chapter is about sourcing: the company’s need first, the four kinds of request, then a choice among credible sources for the same need, including sources outside the investor’s network. It ends with a written request, which the chapter [[useful-engagement]] turns into a **charter**: the short written agreement that fixes what the helper will do, for how long, at what cost and under whose direction.
 
@@ -75,13 +75,13 @@ The best route may be outside the investor’s network. Assess the support again
 
 A community of leaders across the investor’s portfolio can provide experience a company would struggle to assemble alone. It can also become an event series organized around the manager’s need to demonstrate activity. Judge a peer session by whether it starts from decisions the participants actually face: a conversation comparing how two companies made customer setup repeatable, what went wrong and what had to exist first is worth an hour; a session in which every **chief technology officer** — the senior leader responsible for technology, often written CTO — presents the same set of performance charts is not.
 
-Two conditions travel with peer help. Information sharing needs a boundary: an anonymized case can still identify a company in a small portfolio, and customer data, employees’ pay and plans for deals such as a sale or acquisition don’t become reusable because the audience shares an owner. And a practice that worked elsewhere should arrive with its context: customers, scale, architecture and the leadership that made it work. Capture those conditions with the practice rather than adopting a playbook.
+Information sharing needs a boundary: an anonymized case can still identify a company in a small portfolio, and customer data, employees’ pay and plans for deals such as a sale or acquisition don’t become reusable because the audience shares an owner. And a practice that worked elsewhere should arrive with its context: customers, scale, architecture and the leadership that made it work. Capture those conditions with the practice rather than adopting a playbook.
 
 ## Compare Credible Alternatives for the Same Need
 
 About a week after the board adopted the plan, Priya, accountable for the onboarding pilot, and Alex, who must find the engineering time, compare four routes to the same result: one setup path made repeatable by the end of a six-week assignment.
 
-Three terms carry the dates. **Closing** is the day the investment legally completes and the money changes hands. Within days of it the Larkspur board met and adopted the operating plan, and in this example that meeting is day 0, the start of the first hundred days; every date below counts from it. The plan **committed** €180,000 and 12 engineer-weeks to the onboarding **pilot** ONB-1 — a limited trial before any wider commitment, named so it can be followed through later reviews. Committed means agreed to spend, which is not the same as spent. An **engineer-week** is one engineer’s working time for a week, so 12 engineer-weeks is three months of one engineer, or six weeks of two.
+**Closing** is the day the investment legally completes and the money changes hands. Within days of it the Larkspur board met and adopted the operating plan, and in this example that meeting is day 0, the start of the first hundred days; every date below counts from it. The plan **committed** €180,000 and 12 engineer-weeks to the onboarding **pilot** ONB-1 — a limited trial before any wider commitment, named so it can be followed through later reviews. Committed means agreed to spend, which is not the same as spent. An **engineer-week** is one engineer’s working time for a week, so 12 engineer-weeks is three months of one engineer, or six weeks of two.
 
 Still ahead are two checkpoints: at day 90 Priya measures the **cohort** — the eight pilot customers whose setups are measured together — and at day 100 the **board**, the directors who oversee the company and approve its major decisions, reviews what that measurement shows. The comparison is fictional and uses the figures from the shared Larkspur chain; the categories are what to compare, not a claim about what any investor offers.
 
@@ -117,7 +117,7 @@ The decision, in short labelled parts:
 
 **If the fallback is needed: what triggers it, and when it would run.** The independent route is not being run in parallel. No procurement is under way, because running two selections at once would spend the selection time twice. It starts only on a trigger: the investor’s specialist becoming unavailable or failing the reference check. Triggered on day 21, its seven-to-nine-week search and contracting would put the start at about day 70 to 84, and the six-week assignment would end about day 112 to 126 — past the day-100 board review entirely. Even a request made on day 7, before any trigger existed, would only end about day 98 to 112.
 
-**What the board would get instead.** The problem is not that nothing could be tested by then; the engineer could try parts of a new path earlier. It is what the board agreed to read at day 100: the measured effort of a cohort of eight customers set up on the finished path. That figure cannot exist before the path does. On the fallback, Priya would go to the day-100 review with an unfinished assignment, no cohort figure and a revised measurement date rather than a result.
+**What the board would get instead.** The problem is not that nothing could be tested by then; the engineer could try parts of a new path earlier. It is what the board agreed to read at day 100: the measured effort of a cohort of eight customers set up on the finished path. On the fallback, Priya would go to the day-100 review with an unfinished assignment, no cohort figure and a revised measurement date rather than a result.
 
 **What the engineer does while waiting.** Between the trigger and the new start, Alex’s six engineer-days go back to the customer-portal research they came from. The **baseline** — the starting measurement that later results are compared against — is still taken at day 20 either way, because it is reconstructed from Larkspur’s own records and needs no specialist.
 
@@ -143,7 +143,7 @@ An introduction can give a product team access it would otherwise struggle to ge
 
 Investors tend to introduce people from companies they already know, who may differ from the customers the product intends to serve. Interviews with larger portfolio companies might reveal useful scheduling needs that don’t match Larkspur’s smaller maintenance-business customers. Priya should compare the insights with evidence from the intended market before changing the roadmap, and a commercial introduction needs an accountable relationship owner and a view of the delivery work a sale would create. More opportunities can worsen the onboarding constraint the company is trying to fix.
 
-The same applies to people. An investor’s network may help identify candidates or someone who can assess a role. Begin with the work the company needs; a prestigious introduction isn’t evidence of fit. Hiring is also only one way to develop capability: coaching an existing leader or helping several teams practice a skill can be more appropriate than adding a senior role.
+An investor’s network may help identify candidates or someone who can assess a role. Begin with the work the company needs; a prestigious introduction isn’t evidence of fit. Hiring is also only one way to develop capability: coaching an existing leader or helping several teams practice a skill can be more appropriate than adding a senior role.
 
 When the investor’s help is recruiting, three separate things stay with the company:
 
@@ -155,11 +155,11 @@ The chapter [[fix-decisions-before-hiring]] works an investor-proposed **chief p
 
 ## Borrow Experience With Its Context Attached
 
-Ask what assumptions travel with a reused practice. A tool developed for a much larger business may need administration your team can’t support. Shared purchasing terms may be attractive while the cost of changing suppliers outweighs the benefit. **Borrow experience with its context attached.**
+Ask what assumptions travel with a reused practice. A tool developed for a much larger business may need administration your team can’t support. Shared purchasing terms may be attractive while the cost of changing suppliers outweighs the benefit.
 
 Starting a new capability can combine temporary expertise with internal accountability. Judge the result through actual customer setups and **the team’s ability to repeat the work**; a presentation of what an improved process could look like is a different deliverable.
 
-Temporary help doesn’t always need to end in complete independence. A company may sensibly keep buying a scarce specialist service. It should understand the continuing cost, availability and responsibilities rather than discover the dependence when the first assignment finishes. The engagement review in the chapter [[useful-engagement]] is where that choice is made explicit.
+A company may sensibly keep buying a scarce specialist service. It should understand the continuing cost, availability and responsibilities rather than discover the dependence when the first assignment finishes. The engagement review in the chapter [[useful-engagement]] is where that choice is made explicit.
 
 ![A small joint assignment gives the company a method it can repeat, with any continuing external dependence made explicit.](assets/images/11-help-that-changes-capability/support-builds-internal-capability.jpeg)
 **Figure 2:** *Useful support leaves a capability the company can use or a continuing service it understands.*
@@ -181,7 +181,7 @@ Behind the sentence sit the decisions made above: the result (one repeatable pat
 
 ## To Probe Further
 
-The first three sources concern **venture capital**: investment in young companies with growth potential, in exchange for a share of the ownership. A company that has taken such investment is **venture-backed**. The fourth is a survey of a different population, described where it appears.
+The first three sources concern **venture capital**: investment in young companies with growth potential, in exchange for a share of the ownership. A company that has taken such investment is **venture-backed**.
 
 - **[Venture Capital and the Professionalization of Start-Up Firms: Empirical Evidence](https://doi.org/10.1111/1540-6261.00419)** — Thomas Hellmann and Manju Puri, The Journal of Finance, 2002.<br>*Evidence from a sample of Silicon Valley start-ups — young companies still establishing themselves — that venture-backed companies adopt formal policies sooner and more often replace the founder in the chief executive role, showing the hiring and leadership support this chapter describes as a pattern with a less comfortable side.*
 - **[The Impact of Venture Capital Monitoring](https://doi.org/10.1111/jofi.12370)** — Shai Bernstein, Xavier Giroud and Richard Townsend, The Journal of Finance, 2016.<br>*Uses changes in travel time between venture investors and their companies to separate the effect of investor involvement from the effect of choosing good companies; a population-level estimate for venture-backed firms, not a way to judge whether one engagement like Larkspur’s worked.*

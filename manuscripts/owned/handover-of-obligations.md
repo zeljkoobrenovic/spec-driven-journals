@@ -1,7 +1,7 @@
 {id: handover-of-obligations}
-# 32. Manage the Handover: Carry Forward the Evidence and Obligations
+# 33. Manage the Handover: Carry Forward the Evidence and Obligations
 
-![Manage the Handover: Carry Forward the Evidence and Obligations — logo](private-techuity/posts/31-handover-of-obligations/assets/images/25-handover-of-obligations/logo.jpeg)
+![Manage the Handover: Carry Forward the Evidence and Obligations — logo](private-techuity/posts/32-handover-of-obligations/assets/images/25-handover-of-obligations/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to keep the evidence while the work happens, to trace who receives money and who keeps ownership in each kind of deal, and to hand over the unfinished work together with the company.
 
@@ -41,7 +41,7 @@ It should also be able to back up every claim that its technology work saved or 
 
 These are stronger materials than a list of projects because they show the limits of what is known. A coherent story is useful only when its supporting evidence is available and its uncertainties stay visible.
 
-![A record of baselines, costs, results, uncertainty and unfinished work supports successive funding and ownership decisions.](private-techuity/posts/19-the-financing-slipped/assets/images/23-the-financing-slipped/evidence-carried-through-ownership.jpeg)
+![A record of baselines, costs, results, uncertainty and unfinished work supports successive funding and ownership decisions.](private-techuity/posts/20-the-financing-slipped/assets/images/23-the-financing-slipped/evidence-carried-through-ownership.jpeg)
 
 **Figure 1:** *Keep the evidence during the work so the next decision can examine what actually changed.*
 

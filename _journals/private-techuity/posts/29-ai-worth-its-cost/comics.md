@@ -20,7 +20,7 @@
 }
 -->
 
-**Comic.** Larkspur is a fictional company that sells scheduling software and, since April 2027, an AI feature that sorts a customer’s inspection documents for €300 a month. Forty customers pay for it. The vendor’s bill has grown faster than the feature’s revenue for four months, and Morgan, the technology adviser working for Larkspur’s investor, has asked for “the AI ROI” before the next board meeting. Every figure is fictional.
+**Comic.** Larkspur is a fictional company that sells scheduling software and, since April 2027, an AI feature (artificial intelligence: software that uses a trained model to do a task) that sorts a customer’s inspection documents for €300 a month. Forty customers pay for it. Larkspur buys the model’s work from a vendor by the token, the pieces of text the model reads and writes, so the bill moves while the price stays fixed, and it has grown faster than the feature’s revenue for four months. Morgan, the technology adviser working for Larkspur’s investor, has asked for “the AI ROI” before the next board meeting: return on investment, the money an investment leaves after its costs, divided by those costs, for a stated period. Every figure is fictional.
 
 <!-- comic-page
 {
@@ -73,12 +73,12 @@
     {
       "scene": "A whiteboard with one large heading line and, under it, exactly three short lines of large, neat handwriting, each line fully visible. Priya, at the left of the whiteboard, gestures toward it with an open hand. Alex, at the right of the whiteboard, points at the heading. Everyone stands to the side of the board, clear of it; no head, hand, marker or speech bubble covers any of its lettering.",
       "labels": [
-        "TOKENS PER DOCUMENT: UP 80%",
+        "COST PER DOCUMENT: UP 80%",
         "LONGER PROMPT",
         "MORE RETRIEVED CONTEXT",
         "RETRIES TO LARGER MODEL"
       ],
-      "label_notes": "TOKENS PER DOCUMENT: UP 80% is the heading; the other three are the three lines under it, top to bottom.",
+      "label_notes": "COST PER DOCUMENT: UP 80% is the heading; the other three are the three lines under it, top to bottom.",
       "bubbles": [
         {
           "who": "Priya",
@@ -86,29 +86,29 @@
         },
         {
           "who": "Alex",
-          "text": "Together they raised tokens per document 80%. Nobody set that against the price."
+          "text": "Together they raised model cost per document 80% at unchanged prices. Nobody checked."
         }
       ]
     }
   ],
-  "alt": "Comic page in three strips: Morgan holds a card asking what is our AI ROI; three cards compare per million tokens, per model call and per document accepted; a whiteboard shows tokens per document up 80% from a longer prompt, more retrieved context and retries to a larger model.",
-  "caption": "AI services are metered in tokens, the units in which they count the text a model reads and writes; a model call is one request sent to the model and its answer. Neither is the company’s unit. Larkspur charges €300 a month for documents sorted so that a planner can schedule without reading them, so its unit is a document sorted and accepted without correction. The tokens spent per document are not fixed: between April and August 2027 a longer prompt, more retrieved context and retries to a larger model raised them about 80%. Alex leads technology; Priya leads product.",
+  "alt": "Comic page in three strips: Morgan holds a card asking what is our AI ROI; three cards compare per million tokens, per model call and per document accepted; a whiteboard shows cost per document up 80% from a longer prompt, more retrieved context and retries to a larger model.",
+  "caption": "AI, artificial intelligence, is software that uses a trained model to do a task; ROI, return on investment, is the money an investment leaves after its costs, divided by those costs, for a stated period. AI services are metered in tokens, the pieces of text a model reads and writes; a model call is one request sent to the model and its answer. Neither is the company’s unit. Larkspur charges €300 a month for documents sorted so that a planner can schedule without reading them, so its unit is a document sorted and accepted without correction; a rejected classification costs tokens and delivers nothing useful. What a document costs is not fixed: between April and August 2027 a longer prompt (the instructions sent with each document), more retrieved context (extra material sent along) and retries (repeat requests after a failed check) to a larger, costlier model raised the model cost per document by about 80% at unchanged vendor prices. That measure includes which model handled each request, so it is a cost, not a bare token count. Morgan advises the investor, who has put money into Larkspur expecting a return; Alex leads technology; Priya leads product.",
   "status": "generated",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
-    "sha256": "56cddcd29b52f9ca7b5df825e3e0fcd29d80f6463125ed656c918fa18cf8cdfc"
+    "sha256": "2427bf461ab5b8fd86d70175ea5340e6563aa6ab0c088509716151ceb9e7dbc0"
   }
 }
 -->
 
-![Comic page in three strips: Morgan holds a card asking what is our AI ROI; three cards compare per million tokens, per model call and per document accepted; a whiteboard shows tokens per document up 80% from a longer prompt, more retrieved context and retries to a larger model.](assets/images/29-ai-worth-its-cost/comic-page-01-a-number-with-a-unit.jpeg)
+![Comic page in three strips: Morgan holds a card asking what is our AI ROI; three cards compare per million tokens, per model call and per document accepted; a whiteboard shows cost per document up 80% from a longer prompt, more retrieved context and retries to a larger model.](assets/images/29-ai-worth-its-cost/comic-page-01-a-number-with-a-unit.jpeg)
 
-**Page 1: A number with a unit.** AI services are metered in tokens, the units in which they count the text a model reads and writes; a model call is one request sent to the model and its answer. Neither is the company’s unit. Larkspur charges €300 a month for documents sorted so that a planner can schedule without reading them, so its unit is a document sorted and accepted without correction. The tokens spent per document are not fixed: between April and August 2027 a longer prompt, more retrieved context and retries to a larger model raised them about 80%. Alex leads technology; Priya leads product.
+**Page 1: A number with a unit.** AI, artificial intelligence, is software that uses a trained model to do a task; ROI, return on investment, is the money an investment leaves after its costs, divided by those costs, for a stated period. AI services are metered in tokens, the pieces of text a model reads and writes; a model call is one request sent to the model and its answer. Neither is the company’s unit. Larkspur charges €300 a month for documents sorted so that a planner can schedule without reading them, so its unit is a document sorted and accepted without correction; a rejected classification costs tokens and delivers nothing useful. What a document costs is not fixed: between April and August 2027 a longer prompt (the instructions sent with each document), more retrieved context (extra material sent along) and retries (repeat requests after a failed check) to a larger, costlier model raised the model cost per document by about 80% at unchanged vendor prices. That measure includes which model handled each request, so it is a cost, not a bare token count. Morgan advises the investor, who has put money into Larkspur expecting a return; Alex leads technology; Priya leads product.
 
 - *Strip 1.* **Morgan:** “Before the board meets: what is our AI ROI?” **Alex:** “A number with a unit, a period and a condition. Start with the unit.”
 - *Strip 2.* **Alex:** “Tokens are the vendor's unit. A model call is one request and its answer.” **Priya:** “Ours is a document sorted and accepted. A rejected one costs tokens, earns nothing.”
-- *Strip 3.* **Priya:** “Each was a sound product decision, made between April and August.” **Alex:** “Together they raised tokens per document 80%. Nobody set that against the price.”
+- *Strip 3.* **Priya:** “Each was a sound product decision, made between April and August.” **Alex:** “Together they raised model cost per document 80% at unchanged prices. Nobody checked.”
 
 <!-- comic-page
 {
@@ -127,18 +127,18 @@
       "narration": "April 2027, monthly, all on one basis.",
       "labels": [
         "20 CUSTOMERS: €6,000 REVENUE",
-        "CASH RUNNING COST: €2,600",
+        "SUPPLIER RUNNING COST: €2,600",
         "AFTER STAFF TIME: +€750"
       ],
       "label_notes": "The three labels are the three lines on the whiteboard, top to bottom.",
       "bubbles": [
         {
           "who": "Sam",
-          "text": "Revenue, then cash running cost, then the engineers' and support time."
+          "text": "Revenue, then supplier running cost, then engineers' and support time at salary cost."
         },
         {
           "who": "Alex",
-          "text": "In April the feature still earned €750 after everything."
+          "text": "In April the feature still earned €750 after those costs."
         }
       ]
     },
@@ -147,14 +147,14 @@
       "narration": "August 2027, same lines.",
       "labels": [
         "40 CUSTOMERS: €12,000 REVENUE",
-        "CASH RUNNING COST: €7,440",
-        "AFTER STAFF TIME: −€1,140"
+        "SUPPLIER RUNNING COST: €7,424",
+        "AFTER STAFF TIME: −€1,124"
       ],
       "label_notes": "The three labels are the three lines on the whiteboard, top to bottom.",
       "bubbles": [
         {
           "who": "Sam",
-          "text": "Twice the customers, and after the engineers' time August loses €1,140."
+          "text": "Twice the customers, and after staff time August loses €1,124."
         },
         {
           "who": "Priya",
@@ -173,7 +173,7 @@
       "bubbles": [
         {
           "who": "Alex",
-          "text": "Cash per accepted document is flat. Cash per customer is up, against €300."
+          "text": "Supplier cost per accepted document is flat. Per customer it is up, against €300."
         },
         {
           "who": "Sam",
@@ -182,24 +182,24 @@
       ]
     }
   ],
-  "alt": "Comic page in three strips: an April whiteboard shows 20 customers, €6,000 revenue, €2,600 cash running cost and €750 left after staff time; an August whiteboard shows 40 customers, €12,000 revenue, €7,440 cash running cost and a €1,140 loss after staff time; Alex holds cards reading per document €0.30 to €0.30 and per customer €130 to €186, and Sam holds a card reading price €300.",
-  "caption": "Sam leads finance. Cash running cost is the vendor’s model and hosting charges plus evaluation and monitoring upkeep. Engineering and support time are cost-based estimates, the price of work the staff would otherwise do; a cash forecast leaves them out, a decision about keeping the feature counts them. On that basis April earned €750 and August lost €1,140. Cash cost per accepted document stayed at €0.30, because fixed upkeep is spread over more documents, while cash cost per customer rose from €130 to €186 against the €300 price.",
+  "alt": "Comic page in three strips: an April whiteboard shows 20 customers, €6,000 revenue, €2,600 supplier running cost and €750 left after staff time; an August whiteboard shows 40 customers, €12,000 revenue, €7,424 supplier running cost and a €1,124 loss after staff time; Alex holds cards reading per document €0.30 to €0.30 and per customer €130 to €186, and Sam holds a card reading price €300.",
+  "caption": "Sam leads finance. Supplier running cost is the vendor’s token charges plus upkeep (sampled review, test-set runs and hosting, the paid computing that runs the feature’s own parts), counted in the month the work was done whichever month the bill is paid. Engineering and support time are allocations of salaries already in the payroll, the wages paid whether or not the feature exists, valued at cost; a cash forecast, the plan of money expected to enter and leave the company, leaves them out because payroll is already in it, and a decision about keeping the feature counts them. On that basis April earned €750 and August lost €1,124. Supplier cost per accepted document stayed at about €0.30, because the largely fixed upkeep is spread over nearly three times as many documents, while supplier cost per customer rose from €130 to about €186 against the €300 price.",
   "status": "generated",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
-    "sha256": "6aacef69e1ad502e6c30829a62ae6d3593fc50929b967daf46e8855637b75538"
+    "sha256": "47b96f603a046eee98832ef1055073b6b6defef23de465ab0ed3d640ff98947a"
   }
 }
 -->
 
-![Comic page in three strips: an April whiteboard shows 20 customers, €6,000 revenue, €2,600 cash running cost and €750 left after staff time; an August whiteboard shows 40 customers, €12,000 revenue, €7,440 cash running cost and a €1,140 loss after staff time; Alex holds cards reading per document €0.30 to €0.30 and per customer €130 to €186, and Sam holds a card reading price €300.](assets/images/29-ai-worth-its-cost/comic-page-02-two-months-on-one-basis.jpeg)
+![Comic page in three strips: an April whiteboard shows 20 customers, €6,000 revenue, €2,600 supplier running cost and €750 left after staff time; an August whiteboard shows 40 customers, €12,000 revenue, €7,424 supplier running cost and a €1,124 loss after staff time; Alex holds cards reading per document €0.30 to €0.30 and per customer €130 to €186, and Sam holds a card reading price €300.](assets/images/29-ai-worth-its-cost/comic-page-02-two-months-on-one-basis.jpeg)
 
-**Page 2: Two months on one basis.** Sam leads finance. Cash running cost is the vendor’s model and hosting charges plus evaluation and monitoring upkeep. Engineering and support time are cost-based estimates, the price of work the staff would otherwise do; a cash forecast leaves them out, a decision about keeping the feature counts them. On that basis April earned €750 and August lost €1,140. Cash cost per accepted document stayed at €0.30, because fixed upkeep is spread over more documents, while cash cost per customer rose from €130 to €186 against the €300 price.
+**Page 2: Two months on one basis.** Sam leads finance. Supplier running cost is the vendor’s token charges plus upkeep (sampled review, test-set runs and hosting, the paid computing that runs the feature’s own parts), counted in the month the work was done whichever month the bill is paid. Engineering and support time are allocations of salaries already in the payroll, the wages paid whether or not the feature exists, valued at cost; a cash forecast, the plan of money expected to enter and leave the company, leaves them out because payroll is already in it, and a decision about keeping the feature counts them. On that basis April earned €750 and August lost €1,124. Supplier cost per accepted document stayed at about €0.30, because the largely fixed upkeep is spread over nearly three times as many documents, while supplier cost per customer rose from €130 to about €186 against the €300 price.
 
-- *Strip 1.* *Narration:* April 2027, monthly, all on one basis. **Sam:** “Revenue, then cash running cost, then the engineers' and support time.” **Alex:** “In April the feature still earned €750 after everything.”
-- *Strip 2.* *Narration:* August 2027, same lines. **Sam:** “Twice the customers, and after the engineers' time August loses €1,140.” **Priya:** “Engineering time is not on the vendor's invoice. Nobody saw it.”
-- *Strip 3.* **Alex:** “Cash per accepted document is flat. Cash per customer is up, against €300.” **Sam:** “Customers send more documents, and each one costs more tokens.”
+- *Strip 1.* *Narration:* April 2027, monthly, all on one basis. **Sam:** “Revenue, then supplier running cost, then engineers' and support time at salary cost.” **Alex:** “In April the feature still earned €750 after those costs.”
+- *Strip 2.* *Narration:* August 2027, same lines. **Sam:** “Twice the customers, and after staff time August loses €1,124.” **Priya:** “Engineering time is not on the vendor's invoice. Nobody saw it.”
+- *Strip 3.* **Alex:** “Supplier cost per accepted document is flat. Per customer it is up, against €300.” **Sam:** “Customers send more documents, and each one costs more tokens.”
 
 <!-- comic-page
 {
@@ -217,12 +217,12 @@
       "scene": "A whiteboard with one heading line and, under it, exactly three lines of large, neat handwriting, each line fully visible. Alex, at the left of the whiteboard, gestures toward it with an open hand. Sam, at the right of the whiteboard, reads down the lines. Everyone stands to the side of the board, clear of it; no head, hand, marker or speech bubble covers any of its lettering.",
       "narration": "Model charges, April to August.",
       "labels": [
-        "€1,400 TO €5,840",
-        "USAGE: +€2,656",
-        "CONSTRUCTION: +€3,245",
-        "RATES: −€1,460"
+        "€1,400 TO €5,824",
+        "USAGE: +€2,644",
+        "CONSTRUCTION: +€3,236",
+        "RATES: −€1,456"
       ],
-      "label_notes": "€1,400 TO €5,840 is the heading; the other three are the lines under it, top to bottom.",
+      "label_notes": "€1,400 TO €5,824 is the heading; the other three are the lines under it, top to bottom.",
       "bubbles": [
         {
           "who": "Alex",
@@ -247,7 +247,7 @@
         },
         {
           "who": "Priya",
-          "text": "It hid the construction rise. Without it the bill passes €7,000."
+          "text": "It offset under half the construction rise. Without it: about €7,300."
         }
       ]
     },
@@ -258,9 +258,9 @@
         "CAPPED CONTEXT",
         "SMALLER MODEL, EASY DOCUMENTS",
         "CACHED CONTEXT",
-        "TOKENS PER DOCUMENT: −35%"
+        "COST PER DOCUMENT: −35%"
       ],
-      "label_notes": "The first four labels are the four pinned cards, in this left-to-right order; TOKENS PER DOCUMENT: −35% is the fifth card, pinned at the lower right beside Sam.",
+      "label_notes": "The first four labels are the four pinned cards, in this left-to-right order; COST PER DOCUMENT: −35% is the fifth card, pinned at the lower right beside Sam.",
       "bubbles": [
         {
           "who": "Alex",
@@ -273,23 +273,25 @@
       ]
     }
   ],
-  "alt": "Comic page in three strips: a whiteboard splits the rise in model charges from €1,400 to €5,840 into usage plus €2,656, construction plus €3,245 and rates minus €1,460; Priya holds a card reading vendor price cut 20%; four cards list shorter prompt, capped context, smaller model for easy documents and cached context, and a fifth card beside Sam reads tokens per document minus 35%.",
-  "caption": "Usage is more customers sending more documents; rates are the vendor’s price per token; construction is how the feature is built, the prompts, context, retries and model size the company’s own engineers choose. Applied in that order, usage added €2,656 to the August bill, construction €3,245, and a 20% June price cut took €1,460 off, hiding most of the construction rise. Alex’s construction work is estimated to cut tokens per document by about 35% at unchanged quality; it is done before the vendor commitment is sized, so the same saving is not counted twice.",
+  "alt": "Comic page in three strips: a whiteboard splits the rise in model charges from €1,400 to €5,824 into usage plus €2,644, construction plus €3,236 and rates minus €1,456; Priya holds a card reading vendor price cut 20%; four cards list shorter prompt, capped context, smaller model for easy documents and cached context, and a fifth card beside Sam reads cost per document minus 35%.",
+  "caption": "Usage is more customers sending more documents (9,000 became 26,000 a month); construction is how the feature is built, the prompts, context, retries and model size the company’s own engineers choose; rates are the vendor’s price per token. The three are applied in that order, usage, then construction, then rates, because the effects multiply and the order decides how much each is credited with. Computed from April’s cost per document, usage added €2,644 to the August bill, construction €3,236, and a 20% June price cut took €1,456 off, offsetting about 45% of the construction rise.\n\nAlex’s construction work is estimated to cut the model cost per document by about 35% at unchanged vendor prices and unchanged quality, in two engineer-weeks (one person’s full working week of effort each), tested on the release-gate samples, the document sets whose results were required before general release. Part of the saving is fewer tokens, from the shorter prompt and the capped context; part is cheaper tokens, from a smaller model for easy documents and from cached context (material that repeats between requests, kept so it is not processed again and billed at a reduced rate). A cheaper model can cut the bill with the token count unchanged, which is why the measure is cost, not tokens. The work is done before the vendor commitment is sized, so the same saving is not counted twice.",
   "status": "generated",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
-    "sha256": "0d160dcdc4cb1deea0b0cad6e15b261c95a122968693f9f171b8fd8b0d5e221c"
+    "sha256": "8bc3cd4ea1a7f8206838274890e46b000ea76ef551d132f9f0cead5b1c6fd7d8"
   }
 }
 -->
 
-![Comic page in three strips: a whiteboard splits the rise in model charges from €1,400 to €5,840 into usage plus €2,656, construction plus €3,245 and rates minus €1,460; Priya holds a card reading vendor price cut 20%; four cards list shorter prompt, capped context, smaller model for easy documents and cached context, and a fifth card beside Sam reads tokens per document minus 35%.](assets/images/29-ai-worth-its-cost/comic-page-03-why-the-bill-changed.jpeg)
+![Comic page in three strips: a whiteboard splits the rise in model charges from €1,400 to €5,824 into usage plus €2,644, construction plus €3,236 and rates minus €1,456; Priya holds a card reading vendor price cut 20%; four cards list shorter prompt, capped context, smaller model for easy documents and cached context, and a fifth card beside Sam reads cost per document minus 35%.](assets/images/29-ai-worth-its-cost/comic-page-03-why-the-bill-changed.jpeg)
 
-**Page 3: Why the bill changed.** Usage is more customers sending more documents; rates are the vendor’s price per token; construction is how the feature is built, the prompts, context, retries and model size the company’s own engineers choose. Applied in that order, usage added €2,656 to the August bill, construction €3,245, and a 20% June price cut took €1,460 off, hiding most of the construction rise. Alex’s construction work is estimated to cut tokens per document by about 35% at unchanged quality; it is done before the vendor commitment is sized, so the same saving is not counted twice.
+**Page 3: Why the bill changed.** Usage is more customers sending more documents (9,000 became 26,000 a month); construction is how the feature is built, the prompts, context, retries and model size the company’s own engineers choose; rates are the vendor’s price per token. The three are applied in that order, usage, then construction, then rates, because the effects multiply and the order decides how much each is credited with. Computed from April’s cost per document, usage added €2,644 to the August bill, construction €3,236, and a 20% June price cut took €1,456 off, offsetting about 45% of the construction rise.
+
+Alex’s construction work is estimated to cut the model cost per document by about 35% at unchanged vendor prices and unchanged quality, in two engineer-weeks (one person’s full working week of effort each), tested on the release-gate samples, the document sets whose results were required before general release. Part of the saving is fewer tokens, from the shorter prompt and the capped context; part is cheaper tokens, from a smaller model for easy documents and from cached context (material that repeats between requests, kept so it is not processed again and billed at a reduced rate). A cheaper model can cut the bill with the token count unchanged, which is why the measure is cost, not tokens. The work is done before the vendor commitment is sized, so the same saving is not counted twice.
 
 - *Strip 1.* *Narration:* Model charges, April to August. **Alex:** “Three causes, applied in this order. Each has a different owner.” **Sam:** “Customers, product and engineering, the vendor. Different remedies too.”
-- *Strip 2.* **Sam:** “The June price cut went to the board as good news.” **Priya:** “It hid the construction rise. Without it the bill passes €7,000.”
+- *Strip 2.* **Sam:** “The June price cut went to the board as good news.” **Priya:** “It offset under half the construction rise. Without it: about €7,300.”
 - *Strip 3.* **Alex:** “Two engineer-weeks, tested on the release-gate samples, quality unchanged.” **Sam:** “Do it before we commit, or we pay for tokens we'll stop using.”
 
 <!-- comic-page
@@ -306,18 +308,18 @@
   "strips": [
     {
       "scene": "A whiteboard with one heading line and, under it, exactly three lines of large, neat handwriting, each line fully visible. Sam, at the left of the whiteboard, gestures toward it with an open hand. Morgan, at the right of the whiteboard, reads down the lines. Everyone stands to the side of the board, clear of it; no head, hand, marker or speech bubble covers any of its lettering.",
-      "narration": "Return on investment: benefit net of cost, over cost, for a period.",
+      "narration": "Return on investment: money left after costs, over costs, for a period.",
       "labels": [
-        "APRIL TO SEPTEMBER 2027",
+        "APRIL TO SEPTEMBER 2027, PROJECTED",
         "REVENUE €57,000",
-        "RUNNING COST ABOUT €30,000",
-        "CASH ABOUT €27,000: 90%"
+        "SUPPLIER RUNNING COST ABOUT €30,100",
+        "€26,900 BEFORE STAFF COSTS: 90%"
       ],
-      "label_notes": "APRIL TO SEPTEMBER 2027 is the heading; the other three are the lines under it, top to bottom.",
+      "label_notes": "APRIL TO SEPTEMBER 2027, PROJECTED is the heading; the other three are the lines under it, top to bottom.",
       "bubbles": [
         {
           "who": "Sam",
-          "text": "About 90% on running cost, six months, quality and review effort within the gate."
+          "text": "Contribution: about 90% on supplier running cost, before staff costs. September estimated, quality held."
         },
         {
           "who": "Morgan",
@@ -326,64 +328,73 @@
       ]
     },
     {
-      "scene": "A second whiteboard with exactly three lines of large, neat handwriting, each line fully visible. Sam, at the left of the whiteboard, points at the second line from the side. Morgan, at the right of the whiteboard, nods. Everyone stands to the side of the board, clear of it; no head, hand, marker or speech bubble covers any of its lettering.",
+      "scene": "A second whiteboard with exactly four lines of large, neat handwriting, each line fully visible. Sam, at the left of the whiteboard, points at the third line from the side. Morgan, at the right of the whiteboard, nods. Everyone stands to the side of the board, clear of it; no head, hand, marker or speech bubble covers any of its lettering.",
       "narration": "One-off trial and release costs, still unrecovered.",
       "labels": [
-        "TRIAL: €45,000 + SIX WEEKS",
-        "CASH SHORT: ABOUT €18,000",
-        "WITH STAFF TIME: ABOUT €40,000"
+        "TRIAL: €45,000 + SIX ENGINEER-WEEKS",
+        "RELEASE: TEN ENGINEER-WEEKS",
+        "SHORT BEFORE STAFF TIME: €18,000",
+        "SHORT WITH STAFF TIME: €79,000"
       ],
-      "label_notes": "The three labels are the three lines on the whiteboard, top to bottom.",
+      "label_notes": "The four labels are the four lines on the whiteboard, top to bottom.",
       "bubbles": [
         {
           "who": "Sam",
-          "text": "Not yet. Three or four more months at August's margin recover the cash."
+          "text": "Not yet. About four more months at August's contribution recover that €18,000."
         },
         {
           "who": "Morgan",
-          "text": "Two answers to two questions. The board should hear both."
+          "text": "Staff time never, at August's figures. The board should hear both."
         }
       ]
     },
     {
       "scene": "A wall calendar strip hangs high on the wall, above everyone's heads, showing exactly two equal blocks side by side, each with a heading and one line under it. Ines, at the left, points up at the first block. Sam, at the right, points up at the second block. Nothing covers the lettering.",
       "labels": [
-        "2027: HIRE DEFERRED",
-        "ABOUT €24,000 CASH: 300%",
-        "2028: SAME €8,000 TOOL",
+        "2027: HIRE MOVED TO OCTOBER",
+        "€32,000 LESS €8,000: €24,000",
+        "2028: LICENCES + UPKEEP, €8,600",
         "DEFERS NOTHING BY ITSELF"
       ],
-      "label_notes": "2027: HIRE DEFERRED is the heading of the first block and ABOUT €24,000 CASH: 300% its line; 2028: SAME €8,000 TOOL is the heading of the second block and DEFERS NOTHING BY ITSELF its line.",
+      "label_notes": "2027: HIRE MOVED TO OCTOBER is the heading of the first block and €32,000 LESS €8,000: €24,000 its line; 2028: LICENCES + UPKEEP, €8,600 is the heading of the second block and DEFERS NOTHING BY ITSELF its line.",
       "bubbles": [
         {
           "who": "Ines",
-          "text": "The support assistant returned 300% in 2027 on a hire we did not make."
+          "text": "Deferred hire, April to October: 300% on licences and upkeep, 220% with rollout time."
         },
         {
           "who": "Sam",
-          "text": "A benefit of that year. Next year needs a new operating change."
+          "text": "A benefit of that year, projected until it closes. 2028 needs a new change."
         }
       ]
     }
   ],
-  "alt": "Comic page in three strips: a whiteboard gives April to September 2027 revenue of €57,000, running cost of about €30,000 and cash of about €27,000, a 90% return; a second whiteboard lists the €45,000 and six-week trial and shows the feature still about €18,000 short in cash and about €40,000 short with staff time; a calendar contrasts 2027, a hire deferred worth about €24,000 cash and 300%, with 2028, the same €8,000 tool deferring nothing by itself.",
-  "caption": "Return on investment is the benefit of an investment net of its cost, divided by the cost, for a stated period. For April to September 2027 the sorting feature earned €57,000 and cost about €30,000 to run, about €27,000 of cash or roughly 90%, on the condition that accuracy stayed above 95% and review effort below 1.5 hours a week. The trial cost €45,000 of cash and six engineer-weeks and general release ten more, so in cash the feature is still about €18,000 short, and about €40,000 short if staff time is charged. Ines is the chief executive. The support assistant’s 2027 return, about €24,000 of cash on €8,000 of licences and upkeep, came from one hire deferred; the same tool in 2028 costs the same and defers nothing unless the company makes another change.",
+  "alt": "Comic page in three strips: a whiteboard gives projected April to September 2027 revenue of €57,000, supplier running cost of about €30,100 and contribution of about €26,900, a 90% return before staff costs; a second whiteboard lists the €45,000 and six-engineer-week trial and the ten-engineer-week release, with the feature still €18,000 short before staff time and €79,000 short with staff time; a calendar contrasts 2027, the hire moved to October and €32,000 less €8,000 giving €24,000, with 2028, seven licences plus upkeep costing €8,600 a year and deferring nothing by themselves; Ines says 300% on licences and upkeep, 220% with rollout time.",
+  "caption": "Return on investment is the money an investment leaves after its costs, divided by those costs, for a stated period. For April to September 2027, with September estimated at August’s level, the sorting feature earned €57,000 and cost about €30,100 in supplier running cost, leaving about €26,900 of contribution before payroll, roughly 90%, a projection until September closes, on the condition that accuracy stayed at or above 95%, no safety document was missed and review effort stayed below 1.5 hours a week per customer. Supplier bills count in the month of the work, so September’s bill, paid in October, is inside the figure: it is a contribution, not money in the bank.\n\nThat 90% is a return before staff costs: it counts only what is paid to suppliers, not the engineering and support time the feature consumes. Charging that time at salary cost, €27,700 over the same six months, leaves the period about €800 short (€26,902 less €27,700), before the one-off costs. Read without that qualification, 90% would pass for operating profitability.\n\nThe trial cost €45,000 and six engineer-weeks (one person’s full working week of effort each) and the release build ten more; with the operating months’ engineering and support time added, the feature is still about €18,000 short before staff time and about €79,000 short if staff time is charged at salary cost. August’s contribution of €4,576 a month, on the same basis, recovers the €18,000 in about four months.\n\nInes is the chief executive, who leads the company. The support assistant’s 2027 return is projected, not earned yet. A seventh support agent (a person answering tickets, customers’ recorded requests for help) was planned for April at an employment cost of €64,000 a year, salary plus employer charges; the start moved to October, so six months of that cost, €32,000, is not paid in 2027. Less €8,000 of licences (paid permission to use the software) and upkeep, that leaves about €24,000, or 300% of those recurring payments, provided the hire stays deferred, quality holds, tickets stay under about 1,400 a month and no paid cover is bought meanwhile.\n\nThe 300% leaves out one cost: about €2,000 of existing staff time spent rolling the assistant out and training the agents in 2027. Counted too, the costs are €10,000, €22,000 remains, and the return is 220%. The seventh agent works without the assistant during induction in 2027; in 2028 seven licences, €4,200, plus €4,400 of upkeep bring the tool to about €8,600 a year, and it defers nothing unless the company makes another change.",
   "status": "generated",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
-    "sha256": "fe5da50d86c5baccfe8b50a1041eb1d582bb63b0f7131aad584008b42a8af591"
+    "sha256": "46ce3b523d757857dc461dc47094c5270f027854a8116fa728347ce4d8df1bbc"
   }
 }
 -->
 
-![Comic page in three strips: a whiteboard gives April to September 2027 revenue of €57,000, running cost of about €30,000 and cash of about €27,000, a 90% return; a second whiteboard lists the €45,000 and six-week trial and shows the feature still about €18,000 short in cash and about €40,000 short with staff time; a calendar contrasts 2027, a hire deferred worth about €24,000 cash and 300%, with 2028, the same €8,000 tool deferring nothing by itself.](assets/images/29-ai-worth-its-cost/comic-page-04-a-return-with-a-period.jpeg)
+![Comic page in three strips: a whiteboard gives projected April to September 2027 revenue of €57,000, supplier running cost of about €30,100 and contribution of about €26,900, a 90% return before staff costs; a second whiteboard lists the €45,000 and six-engineer-week trial and the ten-engineer-week release, with the feature still €18,000 short before staff time and €79,000 short with staff time; a calendar contrasts 2027, the hire moved to October and €32,000 less €8,000 giving €24,000, with 2028, seven licences plus upkeep costing €8,600 a year and deferring nothing by themselves; Ines says 300% on licences and upkeep, 220% with rollout time.](assets/images/29-ai-worth-its-cost/comic-page-04-a-return-with-a-period.jpeg)
 
-**Page 4: A return with a period.** Return on investment is the benefit of an investment net of its cost, divided by the cost, for a stated period. For April to September 2027 the sorting feature earned €57,000 and cost about €30,000 to run, about €27,000 of cash or roughly 90%, on the condition that accuracy stayed above 95% and review effort below 1.5 hours a week. The trial cost €45,000 of cash and six engineer-weeks and general release ten more, so in cash the feature is still about €18,000 short, and about €40,000 short if staff time is charged. Ines is the chief executive. The support assistant’s 2027 return, about €24,000 of cash on €8,000 of licences and upkeep, came from one hire deferred; the same tool in 2028 costs the same and defers nothing unless the company makes another change.
+**Page 4: A return with a period.** Return on investment is the money an investment leaves after its costs, divided by those costs, for a stated period. For April to September 2027, with September estimated at August’s level, the sorting feature earned €57,000 and cost about €30,100 in supplier running cost, leaving about €26,900 of contribution before payroll, roughly 90%, a projection until September closes, on the condition that accuracy stayed at or above 95%, no safety document was missed and review effort stayed below 1.5 hours a week per customer. Supplier bills count in the month of the work, so September’s bill, paid in October, is inside the figure: it is a contribution, not money in the bank.
 
-- *Strip 1.* *Narration:* Return on investment: benefit net of cost, over cost, for a period. **Sam:** “About 90% on running cost, six months, quality and review effort within the gate.” **Morgan:** “That is the feature as it runs. Has it paid for itself?”
-- *Strip 2.* *Narration:* One-off trial and release costs, still unrecovered. **Sam:** “Not yet. Three or four more months at August's margin recover the cash.” **Morgan:** “Two answers to two questions. The board should hear both.”
-- *Strip 3.* **Ines:** “The support assistant returned 300% in 2027 on a hire we did not make.” **Sam:** “A benefit of that year. Next year needs a new operating change.”
+That 90% is a return before staff costs: it counts only what is paid to suppliers, not the engineering and support time the feature consumes. Charging that time at salary cost, €27,700 over the same six months, leaves the period about €800 short (€26,902 less €27,700), before the one-off costs. Read without that qualification, 90% would pass for operating profitability.
+
+The trial cost €45,000 and six engineer-weeks (one person’s full working week of effort each) and the release build ten more; with the operating months’ engineering and support time added, the feature is still about €18,000 short before staff time and about €79,000 short if staff time is charged at salary cost. August’s contribution of €4,576 a month, on the same basis, recovers the €18,000 in about four months.
+
+Ines is the chief executive, who leads the company. The support assistant’s 2027 return is projected, not earned yet. A seventh support agent (a person answering tickets, customers’ recorded requests for help) was planned for April at an employment cost of €64,000 a year, salary plus employer charges; the start moved to October, so six months of that cost, €32,000, is not paid in 2027. Less €8,000 of licences (paid permission to use the software) and upkeep, that leaves about €24,000, or 300% of those recurring payments, provided the hire stays deferred, quality holds, tickets stay under about 1,400 a month and no paid cover is bought meanwhile.
+
+The 300% leaves out one cost: about €2,000 of existing staff time spent rolling the assistant out and training the agents in 2027. Counted too, the costs are €10,000, €22,000 remains, and the return is 220%. The seventh agent works without the assistant during induction in 2027; in 2028 seven licences, €4,200, plus €4,400 of upkeep bring the tool to about €8,600 a year, and it defers nothing unless the company makes another change.
+
+- *Strip 1.* *Narration:* Return on investment: money left after costs, over costs, for a period. **Sam:** “Contribution: about 90% on supplier running cost, before staff costs. September estimated, quality held.” **Morgan:** “That is the feature as it runs. Has it paid for itself?”
+- *Strip 2.* *Narration:* One-off trial and release costs, still unrecovered. **Sam:** “Not yet. About four more months at August's contribution recover that €18,000.” **Morgan:** “Staff time never, at August's figures. The board should hear both.”
+- *Strip 3.* **Ines:** “Deferred hire, April to October: 300% on licences and upkeep, 220% with rollout time.” **Sam:** “A benefit of that year, projected until it closes. 2028 needs a new change.”
 
 <!-- comic-page
 {
@@ -400,20 +411,20 @@
   "strips": [
     {
       "scene": "High on the wall, above everyone's heads, runs a horizontal scale with a bracket marking a range in its middle, a label above the bracket, and a single mark to the left of the bracket with its own label. Priya, at the left, points up at the bracket. Sam, at the right, points up at the mark to its left. Nothing covers the lettering.",
-      "narration": "2028 model charges at flexible prices, after the construction work.",
+      "narration": "2028 model charges at list prices, after the construction work.",
       "labels": [
-        "2028 RANGE: €5k–€14k",
-        "STRESS CASE: €3k"
+        "2028 RANGE: €3,300 TO €7,600",
+        "STRESS CASE: €2,000"
       ],
-      "label_notes": "2028 RANGE: €5k–€14k is the label above the bracket; STRESS CASE: €3k is the label on the single mark to the left of the bracket.",
+      "label_notes": "2028 RANGE: €3,300 TO €7,600 is the label above the bracket; STRESS CASE: €2,000 is the label on the single mark to the left of the bracket.",
       "bubbles": [
         {
           "who": "Priya",
-          "text": "The board's forecast: 35 to 80 customers, 650 documents each. €10,000 expected."
+          "text": "The board's forecast: 35 to 80 customers, 650 documents each. €5,200 expected."
         },
         {
           "who": "Sam",
-          "text": "€3,000 is a stress case, a harsh test, not a forecast."
+          "text": "€2,000 is a stress case, a harsh test, not a forecast."
         }
       ]
     },
@@ -421,9 +432,9 @@
       "scene": "A wall calendar strip hangs high on the wall, showing one long solid block with a heading and, after it, a dashed empty outline with its own label. Ines, at the left, points up at the solid block. Sam, at the right, looks up at the dashed outline. Nothing covers the lettering.",
       "labels": [
         "2028: CASH PROVISION APPROVED",
-        "2029 ONWARD: NOTHING FUNDED"
+        "2029 ONWARD: NO USAGE FUNDED"
       ],
-      "label_notes": "2028: CASH PROVISION APPROVED is the heading on the solid block; 2029 ONWARD: NOTHING FUNDED is the label on the dashed outline.",
+      "label_notes": "2028: CASH PROVISION APPROVED is the heading on the solid block; 2029 ONWARD: NO USAGE FUNDED is the label on the dashed outline.",
       "bubbles": [
         {
           "who": "Ines",
@@ -431,50 +442,58 @@
         },
         {
           "who": "Sam",
-          "text": "Nothing is funded past December 2028, so nothing longer is on the table."
+          "text": "Only 2028 usage is funded; its payments run into early 2029. Nothing longer."
         }
       ]
     },
     {
-      "scene": "A whiteboard with one heading line and, under it, exactly three lines of large, neat handwriting, each line fully visible. Alex, at the left of the whiteboard, gestures toward it with an open hand. Sam, at the right of the whiteboard, points at the third line from the side. Everyone stands to the side of the board, clear of it; no head, hand, marker or speech bubble covers any of its lettering.",
-      "narration": "Monthly cost at €5k, €10k, €14k of demand, and the €3k stress case.",
+      "scene": "A whiteboard divided by one vertical line into two columns, each column with a heading line and exactly two short lines of large, neat handwriting under it, every line fully visible. Alex, at the left of the whiteboard, gestures toward the left column with an open hand. Sam, at the right of the whiteboard, points at the right column from the side. Everyone stands to the side of the board, clear of it; no head, hand, marker or speech bubble covers any of its lettering.",
+      "narration": "Fixed monthly payment, 25% off the usage it covers, the rest at list.",
       "labels": [
-        "25% OFF FOR A YEAR",
-        "A FLEXIBLE: 5/10/14/3",
-        "B FIXED €6k: 6/8/12/6",
-        "C FIXED €3.75k: 3.75/8.75/12.75/3.75"
+        "C: €2,400 FLOOR",
+        "SAVES €800 ACROSS RANGE",
+        "€400 WORSE UNDER STRESS",
+        "B: €3,900 FLOOR",
+        "SAVES €1,300 EXPECTED",
+        "€600 WORSE AT LOW END"
       ],
-      "label_notes": "25% OFF FOR A YEAR is the heading; the other three are the lines under it, top to bottom; all figures are thousands of euros a month.",
+      "label_notes": "C: €2,400 FLOOR is the heading of the left column, with SAVES €800 ACROSS RANGE and €400 WORSE UNDER STRESS as its two lines; B: €3,900 FLOOR is the heading of the right column, with SAVES €1,300 EXPECTED and €600 WORSE AT LOW END as its two lines.",
       "bubbles": [
         {
           "who": "Alex",
-          "text": "C saves €1,250 at every point in the range, €750 more under stress."
+          "text": "C saves €800 at every point in the range, €400 more under stress."
         },
         {
           "who": "Sam",
-          "text": "B saves €2,000 at the top, costs €3,000 more under stress. Take C."
+          "text": "B saves €1,300 at expected demand but costs more when customers leave. Take C."
         }
       ]
     }
   ],
-  "alt": "Comic page in three strips: a scale shows the 2028 range of €5,000 to €14,000 of monthly model charges with a €3,000 stress case beside it; a calendar shows a 2028 cash provision approved and nothing funded from 2029; a whiteboard tabulates three options at 25% off for a year, A flexible 5, 10, 14 and 3, B fixed at €6,000 giving 6, 8, 12 and 6, and C fixed at €3,750 giving 3.75, 8.75, 12.75 and 3.75, in thousands of euros a month.",
-  "caption": "The vendor offers a committed-spend agreement for 2028: a fixed monthly amount for twelve months, 25% less per token, usage above it at list price. The 25% and the amounts are assumptions for the example. Demand is measured as what the feature’s usage would cost at flexible list prices after the construction work, so every option is compared on one yardstick: €5,000 to €14,000 a month across the board’s 35-to-80-customer forecast, €10,000 expected, €3,000 as a stress case. Option B commits €6,000 to cover €8,000 of usage; Option C commits €3,750 to cover €5,000. C saves €1,250 a month everywhere in the range and costs €750 more in the stress case; B saves more only at expected demand and above, with a floor €2,250 higher where the feature is losing customers. Larkspur chooses C, sized at the low end of a range the board has funded.",
+  "alt": "Comic page in three strips: a scale shows the 2028 range of €3,300 to €7,600 of monthly model charges with a €2,000 stress case beside it; a calendar shows a 2028 cash provision approved and no usage funded from 2029; a whiteboard compares Option C, a €2,400 floor that saves €800 across the range and is €400 worse under stress, with Option B, a €3,900 floor that saves €1,300 at expected demand and is €600 worse at the low end.",
+  "caption": "The vendor offers a committed-spend agreement for 2028: a fixed monthly payment for twelve months, 25% less per token on the usage that payment covers, usage above it at list price, the vendor’s standard price; the fixed payment is owed whether the usage arrives or not. The 25% and the amounts are assumptions for the example.\n\nDemand is what the feature’s usage would cost at list prices after the construction work: the board’s forecast of 35 to 80 customers at 650 documents each, at about 14.6 cents a document, gives about €3,300 to €7,600 a month, €5,200 expected, with €2,000 as a stress case, a deliberately harsh test rather than a forecast.\n\nInes has standing permission, continuing authority from the board, to sign contracts of a year or less, and the board has approved a 2028 cash provision, money set aside in the plan for these payments. No usage beyond December 2028 is funded, so nothing longer is on the table. Usage above the allowance is invoiced on the first day of the next month and due 45 days later, so November’s is due by 15 January 2029 and December’s by 15 February 2029. The provision reserves those payments up to 15 February; that is money for 2028 work, not a further year of usage.\n\nOption B commits €3,900 to cover €5,200 of usage; Option C commits €2,400 to cover €3,200. C saves €800 a month everywhere in the range and costs €400 more in the stress case; B saves €1,300 at expected demand and above but costs €600 more at the low end and €1,900 more under stress, with its floor exactly where the feature is losing customers. Larkspur chooses C, sized at the low end of a range the board has funded.",
   "status": "generated",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
-    "sha256": "505f87da7f5a9d587f07b67f04a29a1c0bddf930f25609a43abb23fc7a3c6c8e"
+    "sha256": "ad2a1231979586dc8bf9f1d9d161639106fb65c1d3aa4e697a49b5fce07158a0"
   }
 }
 -->
 
-![Comic page in three strips: a scale shows the 2028 range of €5,000 to €14,000 of monthly model charges with a €3,000 stress case beside it; a calendar shows a 2028 cash provision approved and nothing funded from 2029; a whiteboard tabulates three options at 25% off for a year, A flexible 5, 10, 14 and 3, B fixed at €6,000 giving 6, 8, 12 and 6, and C fixed at €3,750 giving 3.75, 8.75, 12.75 and 3.75, in thousands of euros a month.](assets/images/29-ai-worth-its-cost/comic-page-05-size-the-commitment-to-the-range.jpeg)
+![Comic page in three strips: a scale shows the 2028 range of €3,300 to €7,600 of monthly model charges with a €2,000 stress case beside it; a calendar shows a 2028 cash provision approved and no usage funded from 2029; a whiteboard compares Option C, a €2,400 floor that saves €800 across the range and is €400 worse under stress, with Option B, a €3,900 floor that saves €1,300 at expected demand and is €600 worse at the low end.](assets/images/29-ai-worth-its-cost/comic-page-05-size-the-commitment-to-the-range.jpeg)
 
-**Page 5: Size the commitment to the range.** The vendor offers a committed-spend agreement for 2028: a fixed monthly amount for twelve months, 25% less per token, usage above it at list price. The 25% and the amounts are assumptions for the example. Demand is measured as what the feature’s usage would cost at flexible list prices after the construction work, so every option is compared on one yardstick: €5,000 to €14,000 a month across the board’s 35-to-80-customer forecast, €10,000 expected, €3,000 as a stress case. Option B commits €6,000 to cover €8,000 of usage; Option C commits €3,750 to cover €5,000. C saves €1,250 a month everywhere in the range and costs €750 more in the stress case; B saves more only at expected demand and above, with a floor €2,250 higher where the feature is losing customers. Larkspur chooses C, sized at the low end of a range the board has funded.
+**Page 5: Size the commitment to the range.** The vendor offers a committed-spend agreement for 2028: a fixed monthly payment for twelve months, 25% less per token on the usage that payment covers, usage above it at list price, the vendor’s standard price; the fixed payment is owed whether the usage arrives or not. The 25% and the amounts are assumptions for the example.
 
-- *Strip 1.* *Narration:* 2028 model charges at flexible prices, after the construction work. **Priya:** “The board's forecast: 35 to 80 customers, 650 documents each. €10,000 expected.” **Sam:** “€3,000 is a stress case, a harsh test, not a forecast.”
-- *Strip 2.* **Ines:** “A year or less sits inside my standing permission to sign.” **Sam:** “Nothing is funded past December 2028, so nothing longer is on the table.”
-- *Strip 3.* *Narration:* Monthly cost at €5k, €10k, €14k of demand, and the €3k stress case. **Alex:** “C saves €1,250 at every point in the range, €750 more under stress.” **Sam:** “B saves €2,000 at the top, costs €3,000 more under stress. Take C.”
+Demand is what the feature’s usage would cost at list prices after the construction work: the board’s forecast of 35 to 80 customers at 650 documents each, at about 14.6 cents a document, gives about €3,300 to €7,600 a month, €5,200 expected, with €2,000 as a stress case, a deliberately harsh test rather than a forecast.
+
+Ines has standing permission, continuing authority from the board, to sign contracts of a year or less, and the board has approved a 2028 cash provision, money set aside in the plan for these payments. No usage beyond December 2028 is funded, so nothing longer is on the table. Usage above the allowance is invoiced on the first day of the next month and due 45 days later, so November’s is due by 15 January 2029 and December’s by 15 February 2029. The provision reserves those payments up to 15 February; that is money for 2028 work, not a further year of usage.
+
+Option B commits €3,900 to cover €5,200 of usage; Option C commits €2,400 to cover €3,200. C saves €800 a month everywhere in the range and costs €400 more in the stress case; B saves €1,300 at expected demand and above but costs €600 more at the low end and €1,900 more under stress, with its floor exactly where the feature is losing customers. Larkspur chooses C, sized at the low end of a range the board has funded.
+
+- *Strip 1.* *Narration:* 2028 model charges at list prices, after the construction work. **Priya:** “The board's forecast: 35 to 80 customers, 650 documents each. €5,200 expected.” **Sam:** “€2,000 is a stress case, a harsh test, not a forecast.”
+- *Strip 2.* **Ines:** “A year or less sits inside my standing permission to sign.” **Sam:** “Only 2028 usage is funded; its payments run into early 2029. Nothing longer.”
+- *Strip 3.* *Narration:* Fixed monthly payment, 25% off the usage it covers, the rest at list. **Alex:** “C saves €800 at every point in the range, €400 more under stress.” **Sam:** “B saves €1,300 at expected demand but costs more when customers leave. Take C.”
 
 <!-- comic-page
 {
@@ -490,21 +509,21 @@
   ],
   "strips": [
     {
-      "scene": "Ines, at the left, sits at a desk and signs a contract that she holds up slightly so that its heading reads upright for the reader; it carries a heading and exactly two short lines above a plain seal. Sam sits at the same desk, at the right, with a checklist on a clipboard that carries only plain tick boxes.",
+      "scene": "Ines, at the left, sits at a desk holding up an unsigned contract so that its heading reads upright for the reader; it carries a heading and exactly two short lines above an empty signature line, and a capped pen lies on the desk beside her hand, not in it. Sam sits at the same desk, at the right, with a checklist on a clipboard that carries only plain tick boxes.",
       "labels": [
         "COMMITTED SPEND: 2028",
-        "€3,750 MONTHLY, €45,000 IN ALL",
-        "EXPIRES 31 DECEMBER 2028"
+        "€2,400 MONTHLY, €28,800 IN ALL",
+        "SIGNATURE: NOVEMBER 2027"
       ],
       "label_notes": "COMMITTED SPEND: 2028 is the heading of the contract; the other two are its two lines, top to bottom.",
       "bubbles": [
         {
           "who": "Ines",
-          "text": "Signed only after the construction saving is measured on the samples."
+          "text": "Approved in September, on one condition. I sign in November, after October's measured bill."
         },
         {
           "who": "Sam",
-          "text": "Owed whether we use it or not. Cannot be cancelled. No automatic renewal."
+          "text": "Owed whether we use it or not. No early exit, except one we negotiated."
         }
       ]
     },
@@ -519,27 +538,29 @@
       "bubbles": [
         {
           "who": "Sam",
-          "text": "Three clauses AI vendors add. I check each before Ines signs."
+          "text": "A price rise means €2,400 buys fewer tokens; transfer needs the vendor's consent."
         },
         {
           "who": "Alex",
-          "text": "We run our release-gate samples on any successor model before we switch."
+          "text": "Successor fails our samples? We give notice; fixed payments stop on the retirement date."
         }
       ]
     },
     {
-      "scene": "A pinboard with exactly four large index cards pinned side by side in one row with clear gaps between them, every word fully visible. Priya, at the left of the pinboard, gestures toward the cards with an open hand. Ines, at the right of the pinboard, nods.",
+      "scene": "A pinboard with exactly six large index cards pinned in two rows of three with clear gaps between them, every word fully visible. Priya, at the left of the pinboard, gestures toward the cards with an open hand. Ines, at the right of the pinboard, nods.",
       "labels": [
         "COST PER CUSTOMER OVER €150",
         "ACCURACY UNDER 95%",
+        "ANY SAFETY DOCUMENT MISSED",
+        "REVIEW 1.5 HOURS PER CUSTOMER-WEEK",
         "VENDOR PRICE UP 30%",
         "RENEWALS UNDER 80%"
       ],
-      "label_notes": "One label per index card, in this left-to-right order.",
+      "label_notes": "One label per index card: the first three on the top row left to right, the last three on the bottom row left to right.",
       "bubbles": [
         {
           "who": "Priya",
-          "text": "Four stop rules, decided now: reprice, review-aid mode, sixty-day decision, reprice test."
+          "text": "Rules decided now: reprice, review-aid mode or suspend, remeasure, sixty-day decision, reprice test."
         },
         {
           "who": "Ines",
@@ -548,24 +569,38 @@
       ]
     }
   ],
-  "alt": "Comic page in three strips: Ines signs a contract headed committed spend 2028, €3,750 monthly and €45,000 in all, expiring 31 December 2028, while Sam holds a checklist; three cards name the model-retirement clause with six months’ notice, the price-change clause with 30 days’ notice, and data terms confirmed in writing; four cards give the stop rules, cost per customer over €150, accuracy under 95%, vendor price up 30% and renewals under 80%.",
-  "caption": "Ines signs under her standing permission for contracts of a year or less; the obligation is the operating company’s, cannot be cancelled or transferred, and expires with no automatic renewal. Sam checks the three clauses AI vendors add: the vendor may retire the model with six months’ notice, and Larkspur wins the right to test the successor on its release-gate samples first; list prices may change with thirty days’ notice, and the fixed €3,750 is owed either way; the terms on retention and training use of customer documents stay as in the trial, in writing. The stop rules are set before the review: running cost per customer above €150 for two months means construction first, then a reprice; accuracy below 95% or a missed safety document means review-aid mode that day; a 30% price rise or a failed successor means a decision within sixty days; fewer than 80% renewing at €300 means a reprice test. A loss of up to €1,000 a month is tolerated until 31 March 2028 only if customers with the feature renew the main product at least ten points more often.",
+  "alt": "Comic page in three strips: Ines holds an unsigned contract headed committed spend 2028, €2,400 monthly and €28,800 in all, signature November 2027, while Sam holds a checklist; three cards name the model-retirement clause with six months’ notice, the price-change clause with 30 days’ notice, and data terms confirmed in writing; six cards give the stop rules, cost per customer over €150, accuracy under 95%, any safety document missed, review 1.5 hours per customer-week, vendor price up 30% and renewals under 80%.",
+  "caption": "The September review approves Option C on one condition: the construction saving must show on the release-gate samples and in October’s bill. Ines, who has standing permission to sign contracts of a year or less, signs in November once Sam has both. The obligation is then the operating company’s, the business that signed it: it runs from 1 January to 31 December 2028 with no automatic renewal, cannot be cancelled early even if the feature is withdrawn, and cannot be transferred without the vendor’s written consent. Sam checks the three clauses AI vendors add.\n\nThe vendor may retire the model with six months’ notice. Larkspur negotiated three rights: usable access to the successor with that notice or within thirty days of it; the right to test it on its release-gate samples (the document sets whose results were required before release); and the right to end the commitment on the retirement date, either because the samples fail or because usable access has not arrived sixty days before the retirement date. That is the one exception to non-cancellation.\n\nTwo deadlines matter. The testing window is the sixty days after access, in which the samples are run and a failure notified. The access deadline is sixty days before the retirement date: with no access by then, Larkspur gives its notice that day. For a notice on 1 February 2028 and retirement on 1 August, the access deadline is 2 June. Either way, the last fixed payment is July’s; nothing fixed is owed from August.\n\nWhat runs after the retirement date depends on the result. A successor that passes in time keeps the commitment running at its discounted price. Once the commitment has ended, everything is at flexible list prices, and ending it is a right, not a replacement model: sorting continues only on a model that has passed the samples; a model that ran the samples and failed can carry review-aid mode, a planner confirming each classification, for customers who confirm the planner time; if no model was measured at all, sorting is suspended and the service change agreed with each customer.\n\nList prices may change with thirty days’ notice: the fixed €2,400 does not change, but a higher price means it covers fewer tokens and more usage is charged at list, while a lower price means it covers more. The terms on how long customer documents are kept and whether they train the vendor’s models stay as in the trial, in writing.\n\nThe stop rules are set before the review so that the October meeting applies one instead of inventing one. Running cost per customer above €150 for two months means construction first, then a reprice. Accuracy below 95% on the ordinary sample or any missed document in the separate safety sample means review-aid mode that day, if the customer confirms a planner has the time; otherwise sorting is suspended and the service change is agreed with the customer.\n\nReview effort at or above 1.5 hours a week for one customer means construction first, then remeasuring the time saved against that customer’s sorting by hand and agreeing a revised scope or price, or withdrawing the feature for them, since a higher fee alone would not give the customer back its time. A 30% price rise means a decision within sixty days of its notice, with the fixed payment still owed; a successor that fails the samples, or has no access by the access deadline, means a decision by the end of the testing window or on that deadline. Fewer than 80% renewing at €300 means a reprice test.\n\nA loss of up to €1,000 a month is tolerated until 31 March 2028 while customers with the feature renew the main product at least ten percentage points more often, for example 85% against 75%, in comparable groups of at least twenty. That is a provisional comparison, not proof that the feature causes renewals, and the rule expires regardless.",
   "status": "generated",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
-    "sha256": "b808c11d71d0d8fd03f7771097d6a45022495d4f25818c1220fab1b0ca687991"
+    "sha256": "87e994b7741f9f979306f1169e610fef9ba96a9c869e25ad3ac8170b6da0f7d6"
   }
 }
 -->
 
-![Comic page in three strips: Ines signs a contract headed committed spend 2028, €3,750 monthly and €45,000 in all, expiring 31 December 2028, while Sam holds a checklist; three cards name the model-retirement clause with six months’ notice, the price-change clause with 30 days’ notice, and data terms confirmed in writing; four cards give the stop rules, cost per customer over €150, accuracy under 95%, vendor price up 30% and renewals under 80%.](assets/images/29-ai-worth-its-cost/comic-page-06-the-contract-and-the-stop-rules.jpeg)
+![Comic page in three strips: Ines holds an unsigned contract headed committed spend 2028, €2,400 monthly and €28,800 in all, signature November 2027, while Sam holds a checklist; three cards name the model-retirement clause with six months’ notice, the price-change clause with 30 days’ notice, and data terms confirmed in writing; six cards give the stop rules, cost per customer over €150, accuracy under 95%, any safety document missed, review 1.5 hours per customer-week, vendor price up 30% and renewals under 80%.](assets/images/29-ai-worth-its-cost/comic-page-06-the-contract-and-the-stop-rules.jpeg)
 
-**Page 6: The contract and the stop rules.** Ines signs under her standing permission for contracts of a year or less; the obligation is the operating company’s, cannot be cancelled or transferred, and expires with no automatic renewal. Sam checks the three clauses AI vendors add: the vendor may retire the model with six months’ notice, and Larkspur wins the right to test the successor on its release-gate samples first; list prices may change with thirty days’ notice, and the fixed €3,750 is owed either way; the terms on retention and training use of customer documents stay as in the trial, in writing. The stop rules are set before the review: running cost per customer above €150 for two months means construction first, then a reprice; accuracy below 95% or a missed safety document means review-aid mode that day; a 30% price rise or a failed successor means a decision within sixty days; fewer than 80% renewing at €300 means a reprice test. A loss of up to €1,000 a month is tolerated until 31 March 2028 only if customers with the feature renew the main product at least ten points more often.
+**Page 6: The contract and the stop rules.** The September review approves Option C on one condition: the construction saving must show on the release-gate samples and in October’s bill. Ines, who has standing permission to sign contracts of a year or less, signs in November once Sam has both. The obligation is then the operating company’s, the business that signed it: it runs from 1 January to 31 December 2028 with no automatic renewal, cannot be cancelled early even if the feature is withdrawn, and cannot be transferred without the vendor’s written consent. Sam checks the three clauses AI vendors add.
 
-- *Strip 1.* **Ines:** “Signed only after the construction saving is measured on the samples.” **Sam:** “Owed whether we use it or not. Cannot be cancelled. No automatic renewal.”
-- *Strip 2.* **Sam:** “Three clauses AI vendors add. I check each before Ines signs.” **Alex:** “We run our release-gate samples on any successor model before we switch.”
-- *Strip 3.* **Priya:** “Four stop rules, decided now: reprice, review-aid mode, sixty-day decision, reprice test.” **Ines:** “So the October meeting applies a rule instead of inventing one.”
+The vendor may retire the model with six months’ notice. Larkspur negotiated three rights: usable access to the successor with that notice or within thirty days of it; the right to test it on its release-gate samples (the document sets whose results were required before release); and the right to end the commitment on the retirement date, either because the samples fail or because usable access has not arrived sixty days before the retirement date. That is the one exception to non-cancellation.
+
+Two deadlines matter. The testing window is the sixty days after access, in which the samples are run and a failure notified. The access deadline is sixty days before the retirement date: with no access by then, Larkspur gives its notice that day. For a notice on 1 February 2028 and retirement on 1 August, the access deadline is 2 June. Either way, the last fixed payment is July’s; nothing fixed is owed from August.
+
+What runs after the retirement date depends on the result. A successor that passes in time keeps the commitment running at its discounted price. Once the commitment has ended, everything is at flexible list prices, and ending it is a right, not a replacement model: sorting continues only on a model that has passed the samples; a model that ran the samples and failed can carry review-aid mode, a planner confirming each classification, for customers who confirm the planner time; if no model was measured at all, sorting is suspended and the service change agreed with each customer.
+
+List prices may change with thirty days’ notice: the fixed €2,400 does not change, but a higher price means it covers fewer tokens and more usage is charged at list, while a lower price means it covers more. The terms on how long customer documents are kept and whether they train the vendor’s models stay as in the trial, in writing.
+
+The stop rules are set before the review so that the October meeting applies one instead of inventing one. Running cost per customer above €150 for two months means construction first, then a reprice. Accuracy below 95% on the ordinary sample or any missed document in the separate safety sample means review-aid mode that day, if the customer confirms a planner has the time; otherwise sorting is suspended and the service change is agreed with the customer.
+
+Review effort at or above 1.5 hours a week for one customer means construction first, then remeasuring the time saved against that customer’s sorting by hand and agreeing a revised scope or price, or withdrawing the feature for them, since a higher fee alone would not give the customer back its time. A 30% price rise means a decision within sixty days of its notice, with the fixed payment still owed; a successor that fails the samples, or has no access by the access deadline, means a decision by the end of the testing window or on that deadline. Fewer than 80% renewing at €300 means a reprice test.
+
+A loss of up to €1,000 a month is tolerated until 31 March 2028 while customers with the feature renew the main product at least ten percentage points more often, for example 85% against 75%, in comparable groups of at least twenty. That is a provisional comparison, not proof that the feature causes renewals, and the rule expires regardless.
+
+- *Strip 1.* **Ines:** “Approved in September, on one condition. I sign in November, after October's measured bill.” **Sam:** “Owed whether we use it or not. No early exit, except one we negotiated.”
+- *Strip 2.* **Sam:** “A price rise means €2,400 buys fewer tokens; transfer needs the vendor's consent.” **Alex:** “Successor fails our samples? We give notice; fixed payments stop on the retirement date.”
+- *Strip 3.* **Priya:** “Rules decided now: reprice, review-aid mode or suspend, remeasure, sixty-day decision, reprice test.” **Ines:** “So the October meeting applies a rule instead of inventing one.”
 
 <!-- comic-page
 {
@@ -584,9 +619,10 @@
       "scene": "Morgan, at the left, holds up one large card with both hands, facing the reader. Sam, at the right, holds up a smaller card with a single line, facing the reader.",
       "labels": [
         "WHAT IS OUR AI ROI?",
-        "TWO FIGURES, TWO PERIODS"
+        "FEATURE 90%: APR–SEP 2027",
+        "ASSISTANT 300%: 2027"
       ],
-      "label_notes": "WHAT IS OUR AI ROI? is the large card Morgan holds; TWO FIGURES, TWO PERIODS is the card Sam holds.",
+      "label_notes": "WHAT IS OUR AI ROI? is the large card Morgan holds; FEATURE 90%: APR–SEP 2027 and ASSISTANT 300%: 2027 are the two lines, top to bottom, of the card Sam holds.",
       "bubbles": [
         {
           "who": "Morgan",
@@ -594,7 +630,7 @@
         },
         {
           "who": "Sam",
-          "text": "Feature: 90% running, April to September, one-off costs unrecovered. Assistant: 300% for 2027."
+          "text": "Projected, quality holding. Feature before staff costs; assistant before rollout time, hire deferred April–October."
         }
       ]
     },
@@ -608,7 +644,7 @@
       "bubbles": [
         {
           "who": "Alex",
-          "text": "Usage doubled, construction added 80% per document, a price cut hid it."
+          "text": "Documents nearly tripled, construction added 80% per document, a price cut offset part."
         },
         {
           "who": "Morgan",
@@ -626,7 +662,7 @@
       "bubbles": [
         {
           "who": "Ines",
-          "text": "One year, sized at the low end: €1,250 a month saved across the range."
+          "text": "One year, sized at the low end: €800 a month saved across the range."
         },
         {
           "who": "Morgan",
@@ -635,21 +671,27 @@
       ]
     }
   ],
-  "alt": "Comic page in three strips: Morgan asks what is our AI ROI and Sam answers two figures, two periods; Morgan asks why the bill outgrows revenue and Alex answers usage, construction, rates; Morgan asks should we commit more and Ines answers one year, at the low end.",
-  "caption": "Each answer points at the method rather than at one number. The feature returned about 90% on cash running cost for April to September 2027 with quality and review conditions holding, and its one-off trial and release costs are still about €18,000 short in cash; the support assistant returned about 300% for 2027 on a hire deferred, a benefit of that year. The bill outgrew revenue because usage doubled, construction raised tokens per document by 80%, and a 20% price cut hid most of that. The one-year commitment, sized at the low end of the funded range after the construction work, saves €1,250 a month across the range and costs €750 a month in the stress case; a committed contract is an obligation of the operating company and travels with it if ownership changes.",
+  "alt": "Comic page in three strips: Morgan asks what is our AI ROI and Sam holds a card reading feature 90%, April to September 2027, and assistant 300%, 2027, saying both are projected with quality holding, the feature’s before staff costs and the assistant’s before rollout time with the hire deferred from April to October; Morgan asks why the bill outgrows revenue and Alex answers usage, construction, rates; Morgan asks should we commit more and Ines answers one year, at the low end.",
+  "caption": "Each answer points at the method rather than at one number, and both return figures are projections at the September review.\n\nWhat is our AI ROI? The feature’s running return is about 90% on supplier running cost for April to September 2027, before staff costs, September estimated, with accuracy and review conditions holding. Charging staff time leaves the six months about €800 short, and the one-off trial and release costs are still about €18,000 short before staff time, about €79,000 with it. The support assistant’s 300% for 2027 is a return on its licences and upkeep, 220% once the €2,000 of rollout time is counted. It rests on a hire deferred from April to October, a benefit of that year only, confirmed when the year closes and only if the hire stays deferred and quality holds.\n\nWhy is the bill outgrowing revenue? Customers doubled and documents nearly tripled, construction raised the model cost per document by 80% at unchanged prices, and a 20% price cut offset under half of that.\n\nShould we commit more? The one-year commitment, sized at the low end of the funded range after the construction work, saves €800 a month across the range and costs €400 a month more in the stress case. A committed contract is an obligation of the operating company, the business that signed it, and travels with it if ownership changes.",
   "status": "generated",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
-    "sha256": "27462898d56fa319d9edcda3a67f51f884724f7c6135620e243960d016791a71"
+    "sha256": "7e38f2c515d01be199354f0569a61e4dcbeb9fb5f9cfc52a250218daa0265463"
   }
 }
 -->
 
-![Comic page in three strips: Morgan asks what is our AI ROI and Sam answers two figures, two periods; Morgan asks why the bill outgrows revenue and Alex answers usage, construction, rates; Morgan asks should we commit more and Ines answers one year, at the low end.](assets/images/29-ai-worth-its-cost/comic-page-07-three-questions-three-answers.jpeg)
+![Comic page in three strips: Morgan asks what is our AI ROI and Sam holds a card reading feature 90%, April to September 2027, and assistant 300%, 2027, saying both are projected with quality holding, the feature’s before staff costs and the assistant’s before rollout time with the hire deferred from April to October; Morgan asks why the bill outgrows revenue and Alex answers usage, construction, rates; Morgan asks should we commit more and Ines answers one year, at the low end.](assets/images/29-ai-worth-its-cost/comic-page-07-three-questions-three-answers.jpeg)
 
-**Page 7: Three questions, three answers.** Each answer points at the method rather than at one number. The feature returned about 90% on cash running cost for April to September 2027 with quality and review conditions holding, and its one-off trial and release costs are still about €18,000 short in cash; the support assistant returned about 300% for 2027 on a hire deferred, a benefit of that year. The bill outgrew revenue because usage doubled, construction raised tokens per document by 80%, and a 20% price cut hid most of that. The one-year commitment, sized at the low end of the funded range after the construction work, saves €1,250 a month across the range and costs €750 a month in the stress case; a committed contract is an obligation of the operating company and travels with it if ownership changes.
+**Page 7: Three questions, three answers.** Each answer points at the method rather than at one number, and both return figures are projections at the September review.
 
-- *Strip 1.* **Morgan:** “So: what is our AI ROI?” **Sam:** “Feature: 90% running, April to September, one-off costs unrecovered. Assistant: 300% for 2027.”
-- *Strip 2.* **Alex:** “Usage doubled, construction added 80% per document, a price cut hid it.” **Morgan:** “The construction share is yours to fix, and measured before you commit.”
-- *Strip 3.* **Ines:** “One year, sized at the low end: €1,250 a month saved across the range.” **Morgan:** “And the obligation travels with the company if ownership changes.”
+What is our AI ROI? The feature’s running return is about 90% on supplier running cost for April to September 2027, before staff costs, September estimated, with accuracy and review conditions holding. Charging staff time leaves the six months about €800 short, and the one-off trial and release costs are still about €18,000 short before staff time, about €79,000 with it. The support assistant’s 300% for 2027 is a return on its licences and upkeep, 220% once the €2,000 of rollout time is counted. It rests on a hire deferred from April to October, a benefit of that year only, confirmed when the year closes and only if the hire stays deferred and quality holds.
+
+Why is the bill outgrowing revenue? Customers doubled and documents nearly tripled, construction raised the model cost per document by 80% at unchanged prices, and a 20% price cut offset under half of that.
+
+Should we commit more? The one-year commitment, sized at the low end of the funded range after the construction work, saves €800 a month across the range and costs €400 a month more in the stress case. A committed contract is an obligation of the operating company, the business that signed it, and travels with it if ownership changes.
+
+- *Strip 1.* **Morgan:** “So: what is our AI ROI?” **Sam:** “Projected, quality holding. Feature before staff costs; assistant before rollout time, hire deferred April–October.”
+- *Strip 2.* **Alex:** “Documents nearly tripled, construction added 80% per document, a price cut offset part.” **Morgan:** “The construction share is yours to fix, and measured before you commit.”
+- *Strip 3.* **Ines:** “One year, sized at the low end: €800 a month saved across the range.” **Morgan:** “And the obligation travels with the company if ownership changes.”

@@ -1,4 +1,4 @@
-Productive alignment needs evidence everyone trusts. **Shared data does not produce agreement; it makes disagreement useful** — people reading the same defined, sourced, dated figures can find exactly where their views diverge, instead of arguing about what is true.
+**Shared data does not produce agreement; it makes disagreement useful** — people reading the same defined, sourced, dated figures can find exactly where their views diverge, instead of arguing about what is true.
 
 ![Five ordinary sources feed one curated layer, which supports three connected areas of evidence: financial and business, planning and execution, and product and technology.](assets/images/08a-data-foundations-for-alignment/three-areas-one-foundation.jpeg)
 **Figure 1:** *One curated layer, built from sources the company already keeps, supports three areas of evidence. The areas are connected to each other, not ranked.*

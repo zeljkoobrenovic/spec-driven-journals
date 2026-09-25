@@ -16,9 +16,9 @@ A **minority investor** holds under half the shares but may have negotiated appr
 {id: part-2--the-learning-path}
 ## The Learning Path
 
-![Four chapters stacked in one column under the heading ALIGN. Clarify authority (Who can decide and deliver?) leads to Compare incentives and stakes (What does each party gain or risk?), then to Assess investor fit (How does the relationship handle pressure?). A return arrow labelled Revisit the arrangements runs from the third chapter back to the first. Beneath them, Build shared evidence (Which facts are we using?) is drawn as a foundation used by all three. A final banner reads Accountable decisions with competing demands explicit.](private-techuity/posts/part-2-intro/assets/images/part-2-intro/chapter-overview.jpeg)
+![Four chapters under the heading ALIGN. In one row, Clarify authority (Who can decide and deliver?) leads to Compare incentives and stakes (What does each party gain or risk?), then to Assess investor fit (How does the relationship handle pressure?). A return arrow labelled Revisit the arrangements runs from the third chapter back to the first. Beneath them, Build shared evidence (Which facts are we using?) is drawn as a foundation used by all three. A final banner reads Accountable decisions with competing demands explicit.](private-techuity/posts/part-2-intro/assets/images/part-2-intro/chapter-overview.jpeg)
 
-**Figure 1:** *Three chapters rest on shared evidence and lead to accountable decisions; pressure can reopen the arrangements.* [Open diagram at full size](private-techuity/posts/part-2-intro/assets/images/part-2-intro/chapter-overview.jpeg)
+**Figure 1:** *Three chapters rest on shared evidence and lead to accountable decisions; pressure can reopen the arrangements.*
 
 - [Clarify Authority: Decide Who Decides Before You Disagree](#decide-who-decides) asks who can decide and deliver: who proposes, approves, funds and delivers one piece of work.
 - [Compare Incentives and Stakes: Equity, Carry and Jobs](#different-bets) asks what each party gains or risks: leaders through shares (equity), the fund manager through its share of investment profits (carry, short for carried interest), employees through jobs.

@@ -14,7 +14,7 @@ Read each case in three steps: **what the sources show**, what might explain it,
 {id: part-8--the-learning-path}
 ## The Learning Path
 
-![Four independent case chapters stacked under the heading LEARN, each with its own question: Hilton and Skype, explain the investors’ successful sale; Visma, which investors paid and which received money; Toys R Us, why profit before borrowing costs and tax generated almost no cash; TeamSystem, what commitments pass to each new owner. A bracket gathers the four into one reading method, what happened, what might explain it, what a leader could change, which leads to the closing chapter, Success for whom, and for how long, asking who gained, who paid and what the company can still do. A final banner reads Make judgments the evidence supports.](private-techuity/posts/part-8-intro/assets/images/part-8-intro/chapter-overview.jpeg)
+![Four independent case chapters in one row under the heading LEARN, each with its own question: Hilton and Skype, explain the investors’ successful sale; Visma, which investors paid and which received money; Toys R Us, why profit before borrowing costs and tax generated almost no cash; TeamSystem, what commitments pass to each new owner. A bracket gathers the four into one reading method, what happened, what might explain it, what a leader could change, which leads to the closing chapter, Success for whom, and for how long, asking who gained, who paid and what the company can still do. A final banner reads Make judgments the evidence supports.](private-techuity/posts/part-8-intro/assets/images/part-8-intro/chapter-overview.jpeg)
 
 **Figure 1:** *Four cases, one reading method, one closing comparison.*
 

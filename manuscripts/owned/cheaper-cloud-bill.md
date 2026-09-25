@@ -1,7 +1,7 @@
 {id: cheaper-cloud-bill}
-# 28. Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better
+# 29. Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better
 
-![Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better — logo](private-techuity/posts/27-cheaper-cloud-bill/assets/images/27-cheaper-cloud-bill/logo.jpeg)
+![Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better — logo](private-techuity/posts/28-cheaper-cloud-bill/assets/images/28-cheaper-cloud-bill/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to put cloud bills on one comparable basis, separate why they changed, and decide how much to commit before calling a lower bill an improvement.
 
@@ -73,7 +73,7 @@ Removing unused resources can yield fairly direct savings. **Rightsizing** means
 
 **Do not count the same saving twice**. If rightsizing reduces the volume eligible for a discounted commitment, the two headline opportunities aren’t necessarily additive. A model should apply changes in a stated order and calculate the combined result.
 
-![A cloud bill connects to three dials. Demand — how much work customers ask for, shown as completed appointments. Price agreed with the supplier for each unit of computing. Resource use, showing computing that does useful work beside computing left unused. A counter below records the appointments completed.](private-techuity/posts/27-cheaper-cloud-bill/assets/images/27-cheaper-cloud-bill/three-drivers-of-cloud-cost.jpeg)
+![A cloud bill connects to three dials. Demand — how much work customers ask for, shown as completed appointments. Price agreed with the supplier for each unit of computing. Resource use, showing computing that does useful work beside computing left unused. A counter below records the appointments completed.](private-techuity/posts/28-cheaper-cloud-bill/assets/images/28-cheaper-cloud-bill/three-drivers-of-cloud-cost.jpeg)
 
 **Figure 1:** *Three dials move the bill. **Demand** is how much work customers ask for — for Larkspur, appointments to be scheduled. **Price** is what the supplier charges for each unit of computing. **Resource use** is how much computing that work actually consumes, which depends on the software design as well as on demand: the same 1,250 appointments cost more if the software leaves capacity idle. Separate the three before deciding whether the service became more efficient.*
 
@@ -86,7 +86,7 @@ Assume a fixed €35,000 a month replaces the €50,000 flexible bill. At unchan
 
 A discount on unused capacity is still an expense. A contract that makes switching expensive can be reasonable, but the loss of flexibility should be visible when it’s approved.
 
-![Two bar comparisons on one scale. At stable demand, flexible spending is €50,000 a month against €35,000 for the committed contract. At lower demand, flexible spending is €20,000 against the same €35,000 commitment.](private-techuity/posts/27-cheaper-cloud-bill/assets/images/27-cheaper-cloud-bill/fixed-commitment-changing-demand.jpeg)
+![Two bar comparisons on one scale. At stable demand, flexible spending is €50,000 a month against €35,000 for the committed contract. At lower demand, flexible spending is €20,000 against the same €35,000 commitment.](private-techuity/posts/28-cheaper-cloud-bill/assets/images/28-cheaper-cloud-bill/fixed-commitment-changing-demand.jpeg)
 
 **Figure 2:** *The same €35,000 commitment saves €15,000 a month against €50,000 of flexible spending and costs €15,000 more against €20,000. Test the commitment against lower demand as well as the forecast that makes it attractive.*
 

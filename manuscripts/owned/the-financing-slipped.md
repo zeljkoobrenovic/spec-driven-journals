@@ -1,7 +1,7 @@
 {id: the-financing-slipped}
-# 20. Manage Funding Delays: Revise the Cash Plan and Commitments
+# 21. Manage Funding Delays: Revise the Cash Plan and Commitments
 
-![Manage Funding Delays: Revise the Cash Plan and Commitments — logo](private-techuity/posts/19-the-financing-slipped/assets/images/23-the-financing-slipped/logo.jpeg)
+![Manage Funding Delays: Revise the Cash Plan and Commitments — logo](private-techuity/posts/20-the-financing-slipped/assets/images/23-the-financing-slipped/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Follow one fictional company, Larkspur, whose new investment was expected in September and now looks likely in December. Learn to name how far the money has really got, put cash and commitments on a calendar, and choose one fallback in time.
 
@@ -181,7 +181,7 @@ Second, the deeper reduction appears in no row as a remedy. It needs its own boa
 
 **A corporate parent withdrawing budget.** Here the product belongs to a larger group, and the **parent company**, the company that owns it, decides how much money each of its businesses receives. A new group strategy reduces the allocation to the product. Reconfirm which part of the parent now funds the product and answers for it, what remains funded, and which promises to external customers continue regardless. A reorganization inside the parent is not an instruction to let local obligations become ownerless. The latest useful date is set by the parent’s budget cycle and the company’s own contract renewals, and the escalation goes to whoever in the parent is authorized to fund or release the obligation.
 
-![Funding, refinancing, continued ownership and sale are possible paths from a review; company operations continue through them.](private-techuity/posts/19-the-financing-slipped/assets/images/23-the-financing-slipped/ownership-paths-and-replanning.jpeg)
+![Funding, refinancing, continued ownership and sale are possible paths from a review; company operations continue through them.](private-techuity/posts/20-the-financing-slipped/assets/images/23-the-financing-slipped/ownership-paths-and-replanning.jpeg)
 
 **Figure 1:** *A funding delay sends the operating plan back to a review junction. Further funding, refinancing, continued ownership and a sale are all possible paths, and the company’s service to customers continues through every one of them, so the plan needs a fallback that works on each.*
 

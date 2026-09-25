@@ -7,16 +7,20 @@
 
 An **investor** commits money expecting a financial gain, by funding the company or by buying shares (units of ownership) from an existing owner; its **thesis** explains why it expects that gain. Parts II and III established who decides, which approvals you need and how you work with the investor; this part turns the thesis into work within those limits. When a limit or assumption must change, return for a decision rather than commit beyond your authority.
 
-Suppose new customers struggle to get set up. If further money is uncertain, a small trial must first show customers want the fix. If the plan is expansion abroad, the fix must work there too. If the company has borrowed, loan repayment dates may set the timing. If another company owns the business, the fix may need to connect to systems its sister companies use to sell and serve customers. These are assumptions, not rules for investor types.
+Suppose new customers struggle to get set up. If further money is uncertain, a small trial must first show customers want the fix. If the plan is expansion abroad, the fix must work there too. If another company owns the business, the fix may need to connect to systems its sister companies use to sell and serve customers. These are assumptions, not rules for investor types.
 
 Keep three things visible: **the benefit you expect, how long the available money covers the work, and which other work must wait**.
 
 {id: part-4--the-learning-path}
 ## The Learning Path
 
-![Five chapters in three moves under the heading COMMIT. First, choose and justify the work: set priorities to fit cash and team time, test whether the change brings sales, then separate the three investment questions inside an AI strategy request (artificial intelligence is software that predicts or generates content from data): sell it, use it, or be replaced by it. Second, assess what delivery requires: find what the software and the team can support and what a transition would cost. Third, revise when the money is late: put cash and commitments on a calendar and choose one fallback in time. All lead to one outcome: fund feasible work and review the evidence.](private-techuity/posts/part-4-intro/assets/images/part-4-intro/chapter-overview.jpeg)
+![Six chapters in four moves under the heading COMMIT. First, agree what the work is for: adopt outcome thinking, pairing one customer outcome with one business outcome and the investor metric it feeds. Second, choose and justify the work: set priorities to fit cash and team time, test whether the change brings sales, then separate the three investment questions inside an AI strategy request (artificial intelligence is software that predicts or generates content from data): sell it, use it, or be replaced by it. Third, assess what delivery requires: find what the software and the team can support and what a transition would cost. Fourth, revise when the money is late: put cash and commitments on a calendar and choose one fallback in time. All lead to one outcome: fund feasible work and review the evidence.](private-techuity/posts/part-4-intro/assets/images/part-4-intro/chapter-overview.jpeg)
 
-**Figure 1:** *Three chapters establish what deserves money, one what delivery requires, and one what changes when the expected money is late.*
+**Figure 1:** *One chapter agrees what the work is for; three establish what deserves money, one what delivery requires, one what changes when money is late.*
+
+**Agree what the work is for.**
+
+- [Adopt Outcome Thinking: Balance Customer and Business KPIs](#adopt-outcome-thinking): which customer and business results does the work move, and which investor metric, on what clock?
 
 **Choose and justify the work.**
 
@@ -34,4 +38,4 @@ Keep three things visible: **the benefit you expect, how long the available mone
 
 By the end, you can explain which work deserves money and people, and what evidence would change the plan; benefit includes customer results and capability, not only money.
 
-Begin with [Set Priorities: You Cannot Fund Everything at Once](#cannot-fund-everything). Part V then changes the team, the systems and the company’s boundary with the same discipline, and Part VI keeps the technology you already run worth its cost.
+Begin with [Adopt Outcome Thinking: Balance Customer and Business KPIs](#adopt-outcome-thinking). Part V then changes the team, the systems and the company’s boundary, and Part VI keeps the technology you already run worth its cost.

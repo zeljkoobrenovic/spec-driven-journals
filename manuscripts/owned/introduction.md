@@ -128,7 +128,7 @@ The delayed-financing chapter ([Manage Funding Delays: Revise the Cash Plan and 
 {id: introduction--choose-a-reading-format}
 ## Choose a Reading Format
 
-All thirty-seven main chapters provide an **Article**, a short **TL;DR** summary and an illustrated **Comic**, with captions and dialogue transcripts. TL;DR means “too long; didn’t read.” Summaries aim for 300–500 words; some current drafts run longer than that target. Most comics are pages of stacked strips with the dialogue drawn into the artwork; the three case comics on Visma, Toys R Us and TeamSystem use single-scene panels. The eight part introductions, the appendix and the reference pages use only the Article format. These counts describe the files at the time of writing and are rechecked as chapters are revised.
+All thirty-eight main chapters provide an **Article**, a short **TL;DR** summary and an illustrated **Comic**, with captions and dialogue transcripts. TL;DR means “too long; didn’t read.” Summaries aim for 300–500 words; some current drafts run longer than that target. Most comics are pages of stacked strips with the dialogue drawn into the artwork; the three case comics on Visma, Toys R Us and TeamSystem use single-scene panels. The eight part introductions, the appendix and the reference pages use only the Article format. These counts describe the files at the time of writing and are rechecked as chapters are revised.
 
 For a shorter first pass, read the part introductions and chapter summaries. The formats are companions rather than substitutes. Each one is written to reach the same decision and to keep the conditions that decide whether that decision holds; what varies is depth: the article gives the fullest calculations, the discussion of sources and the alternative cases, while every format keeps the conditions that would change the decision. The summaries and comics of this September 2026 revision are still being reconciled chapter by chapter, so where a short format and the article disagree, the article is the one to trust.
 
@@ -180,48 +180,49 @@ The site navigation lists the same chapters; this list is here for lookup.
 ### Part IV — COMMIT: Turn Expectations Into Work You Can Deliver
 
 - [COMMIT: Turn Expectations Into Work You Can Deliver](#part-4) — part introduction
-- **16.** [Set Priorities: You Cannot Fund Everything at Once](#cannot-fund-everything)
-- **17.** [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue)
-- **18.** [Clarify AI Strategy: Three Different Investment Questions](#ai-strategy-three-questions)
-- **19.** [Assess Capability: Can the Team Deliver?](#can-the-team-deliver)
-- **20.** [Manage Funding Delays: Revise the Cash Plan and Commitments](#the-financing-slipped)
+- **16.** [Adopt Outcome Thinking: Balance Customer and Business KPIs](#adopt-outcome-thinking)
+- **17.** [Set Priorities: You Cannot Fund Everything at Once](#cannot-fund-everything)
+- **18.** [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue)
+- **19.** [Clarify AI Strategy: Three Different Investment Questions](#ai-strategy-three-questions)
+- **20.** [Assess Capability: Can the Team Deliver?](#can-the-team-deliver)
+- **21.** [Manage Funding Delays: Revise the Cash Plan and Commitments](#the-financing-slipped)
 
 {id: introduction--part-v-scale-change-the-team-the-systems-and-the-company-deliberately}
 ### Part V — SCALE: Change the Team, the Systems and the Company Deliberately
 
 - [SCALE: Change the Team, the Systems and the Company Deliberately](#part-5) — part introduction
-- **21.** [Scale the Team Up: Headcount Is Not Capacity](#fix-decisions-before-hiring)
-- **22.** [Scale the Team Down: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff)
-- **23.** [Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount](#scale-the-team-with-ai)
-- **24.** [Plan for Growth: Decide What (Not) to Change in Your Systems](#growth-into-design)
-- **25.** [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#acquisition-adds-work-first)
+- **22.** [Scale the Team Up: Headcount Is Not Capacity](#fix-decisions-before-hiring)
+- **23.** [Scale the Team Down: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff)
+- **24.** [Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount](#scale-the-team-with-ai)
+- **25.** [Plan for Growth: Decide What (Not) to Change in Your Systems](#growth-into-design)
+- **26.** [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#acquisition-adds-work-first)
 
 {id: introduction--part-vi-sustain-keep-the-technology-you-run-worth-its-cost}
 ### Part VI — SUSTAIN: Keep the Technology You Run Worth Its Cost
 
 - [SUSTAIN: Keep the Technology You Run Worth Its Cost](#part-6) — part introduction
-- **26.** [Manage Technical Debt: Fund the Fix by the Cost, the Risk and the Speed It Buys](#manage-technical-debt)
-- **27.** [Build And Test Resilience: Backups Are Not Enough](#prove-you-can-restore)
-- **28.** [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill)
-- **29.** [Critically Evaluate AI Costs: Measure the Return per Task and per Period](#ai-worth-its-cost)
+- **27.** [Manage Technical Debt: Fund the Fix by the Cost, the Risk and the Speed It Buys](#manage-technical-debt)
+- **28.** [Build And Test Resilience: Backups Are Not Enough](#prove-you-can-restore)
+- **29.** [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill)
+- **30.** [Critically Evaluate AI Costs: Measure the Return per Task and per Period](#ai-worth-its-cost)
 
 {id: introduction--part-vii-lead-manage-funding-and-ownership-changes}
 ### Part VII — LEAD: Manage Funding and Ownership Changes
 
 - [LEAD: Manage Funding and Ownership Changes](#part-7) — part introduction
-- **30.** [Use Diligence: Correct the Plan Before It Is Signed](#diligence-corrects-the-plan)
-- **31.** [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days)
-- **32.** [Manage the Handover: Carry Forward the Evidence and Obligations](#handover-of-obligations)
+- **31.** [Use Diligence: Correct the Plan Before It Is Signed](#diligence-corrects-the-plan)
+- **32.** [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days)
+- **33.** [Manage the Handover: Carry Forward the Evidence and Obligations](#handover-of-obligations)
 
 {id: introduction--part-viii-learn-lessons-from-the-field}
 ### Part VIII — LEARN: Lessons From the Field
 
 - [LEARN: Lessons From the Field](#part-8) — part introduction
-- **33.** [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype)
-- **34.** [Visma: Continuity of Manager Is Not Continuity of Money](#visma)
-- **35.** [Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us)
-- **36.** [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem)
-- **37.** [Success for Whom, and for How Long?](#success-for-whom)
+- **34.** [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype)
+- **35.** [Visma: Continuity of Manager Is Not Continuity of Money](#visma)
+- **36.** [Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us)
+- **37.** [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem)
+- **38.** [Success for Whom, and for How Long?](#success-for-whom)
 
 {id: introduction--appendix}
 ### Appendix

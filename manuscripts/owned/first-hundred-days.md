@@ -1,7 +1,7 @@
 {id: first-hundred-days}
-# 31. Plan the First Hundred Days: Turn Expectations Into Funded Work
+# 32. Plan the First Hundred Days: Turn Expectations Into Funded Work
 
-![Plan the First Hundred Days: Turn Expectations Into Funded Work — logo](private-techuity/posts/30-first-hundred-days/assets/images/22-first-hundred-days/logo.jpeg)
+![Plan the First Hundred Days: Turn Expectations Into Funded Work — logo](private-techuity/posts/31-first-hundred-days/assets/images/22-first-hundred-days/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to turn one finding from **due diligence**, the investigation an investor makes before investing, into a plan with an accountable person, approved money, protected engineering time and decision dates, and let the day-100 review change that plan.
 
@@ -131,7 +131,7 @@ These are decision thresholds, not the target. The plan’s illustrative model, 
 
 This plan does not promise that the second country is open by day 100. It creates the evidence needed to **fund and sequence that expansion**. A short early plan should reduce uncertainty and establish capability, not disguise a multi-year program as a quick win.
 
-![Ideas become operating commitments when outcomes, responsibility, funding, capacity and review dates are agreed.](private-techuity/posts/30-first-hundred-days/assets/images/22-first-hundred-days/priorities-become-commitments.jpeg)
+![Ideas become operating commitments when outcomes, responsibility, funding, capacity and review dates are agreed.](private-techuity/posts/31-first-hundred-days/assets/images/22-first-hundred-days/priorities-become-commitments.jpeg)
 
 **Figure 1:** *An early priority list becomes a plan through explicit decisions and resources.*
 
@@ -142,7 +142,7 @@ A **dependency** is something that must happen first. Map dependencies before pr
 
 Separate actions useful under several plausible plans from investments that depend on an assumption still being tested. REC-1 and KNW-1 are worthwhile whether or not the second country opens. ONB-1 is the learning step that improves the larger decision, which is why it was funded first and expansion was not.
 
-![Projects that depend on the same specialist or prerequisite need deliberate sequencing.](private-techuity/posts/30-first-hundred-days/assets/images/22-first-hundred-days/dependencies-before-parallel-projects.jpeg)
+![Projects that depend on the same specialist or prerequisite need deliberate sequencing.](private-techuity/posts/31-first-hundred-days/assets/images/22-first-hundred-days/dependencies-before-parallel-projects.jpeg)
 
 **Figure 2:** *Adding projects cannot create the capacity or prerequisites they depend on.*
 

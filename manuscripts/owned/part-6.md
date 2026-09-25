@@ -14,7 +14,7 @@ Each chapter follows one method: put the spending on a comparable basis, separat
 {id: part-6--the-learning-path}
 ## The Learning Path
 
-![Four chapters stacked under the heading SUSTAIN: Manage technical debt, fund the fix by the cost, the risk and the speed it buys, framing the part with three columns; then three applications of one method: Build and test resilience, backups are not enough; Critically evaluate cloud costs, a lower bill is not always better; Critically evaluate AI costs, measure the return per task and per period. A final banner reads Keep the technology you run worth its cost.](private-techuity/posts/part-6-intro/assets/images/part-6-intro/chapter-overview.jpeg)
+![Four chapters under the heading SUSTAIN: Manage technical debt, fund the fix by the cost, the risk and the speed it buys, framing the part with three columns; then, in one row, three applications of one method: Build and test resilience, backups are not enough; Critically evaluate cloud costs, a lower bill is not always better; Critically evaluate AI costs, measure the return per task and per period. A final banner reads Keep the technology you run worth its cost.](private-techuity/posts/part-6-intro/assets/images/part-6-intro/chapter-overview.jpeg)
 
 **Figure 1:** *One chapter frames the estate; three deepen risk, cost and return.*
 

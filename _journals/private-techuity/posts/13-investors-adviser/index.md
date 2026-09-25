@@ -30,19 +30,19 @@ An **investor’s technology adviser** is a person the investment firm employs o
 
 What distinguishes this adviser from other outside experts is not privileged access or multiple responsibilities; a board-appointed consultant can have both. This adviser reports to the investment firm, so the company needs to understand both the operating assignment and how findings may inform the investor’s decisions. Working that out is the company technology leader’s job, and it starts before sensitive information is shared.
 
-The earlier Part III chapters established the working arrangement, the choice of help and the written agreement that records what a piece of advisory work covers. We now examine the person who may connect those needs to the investor’s resources. This chapter establishes the adviser’s assignment, separates influence from authority, works through what happens when the role changes and ends by returning to the planning meeting. Sourcing help is the subject of the chapter [[help-that-changes-capability]]; the mechanics of an engagement belong to the chapter [[useful-engagement]].
+The earlier Part III chapters established the working arrangement, the choice of help and the written agreement that records what a piece of advisory work covers. Sourcing help is the subject of the chapter [[help-that-changes-capability]]; the mechanics of an engagement belong to the chapter [[useful-engagement]].
 
 ## Establish the Assignment and the Reporting Relationship
 
 The supplied investment-firm role brief gives a detailed example of an adviser working across investments. It doesn’t establish a position every investor has, or confer authority over a company’s CTO or product leader. [P01: supplied role brief](bibliography.html)
 
-Investors differ in what they can offer. A **venture investor** backs young companies that might grow very large but might also fail; its useful contact is often a **partner** — one of the firm’s senior people, who decide which companies it invests in — or a hiring specialist, or someone introduced for a single problem. A **growth investor** funds the expansion of a company that already has customers and money coming in from sales, and may offer advisers who have run that kind of expansion before. A **corporate owner** is another operating company that owns this one, and may supply its own specialists in how systems across the group fit together, or in protecting systems and data; those people usually also enforce the parent company’s internal policy. Some investors provide no operating support at all.
+A **venture investor** backs young companies that might grow very large but might also fail; its useful contact is often a **partner** — one of the firm’s senior people, who decide which companies it invests in — or a hiring specialist, or someone introduced for a single problem. A **growth investor** funds the expansion of a company that already has customers and money coming in from sales, and may offer advisers who have run that kind of expansion before. A **corporate owner** is another operating company that owns this one, and may supply its own specialists in how systems across the group fit together, or in protecting systems and data; those people usually also enforce the parent company’s internal policy. Some investors provide no operating support at all.
 
-Four questions settle most of the ambiguity: Who does the person work for? What is their assignment with this company? How much time can they give? Which decisions, if any, are they authorized to make? The last question matters most. Deciding is not one more kind of help; it is authority that may or may not attach to an assignment, and it has to be granted by someone entitled to grant it.
+Four questions settle most of the ambiguity: Who does the person work for? What is their assignment with this company? How much time can they give? Which decisions, if any, are they authorized to make? Deciding is not one more kind of help; it is authority that may or may not attach to an assignment, and it has to be granted by someone entitled to grant it.
 
 Behind the four questions sits whatever the company has already promised its owners in writing. A **shareholder** owns part of the company, and the **shareholder agreement** or **investors’ rights agreement** is the contract setting out what those owners may do.
 
-What such a contract typically grants is access. Qualifying investors — those owning at least the share of the company the contract names — and the people they authorize to act for them, such as an adviser like Morgan, commonly get the right to inspect records and to discuss the company’s affairs with its senior executives, for the purpose of monitoring and deciding on their investment.
+Qualifying investors — those owning at least the share of the company the contract names — and the people they authorize to act for them, such as an adviser like Morgan, commonly get the right to inspect records and to discuss the company’s affairs with its senior executives, for the purpose of monitoring and deciding on their investment.
 
 Those rights stop at stated limits. A **trade secret** is valuable information the company keeps confidential, such as a method competitors do not have. **Legal privilege** protects certain lawyer–client communications from compelled disclosure, subject to the rules that apply.
 
@@ -50,7 +50,7 @@ One filed example is [S76: section 3.2 (Inspection Rights) of Avalyn Pharma’s 
 
 ## Understand Which Job the Adviser Is Doing
 
-The adviser may contribute to several different decisions. **Due diligence** is the investigation that informs an investment decision. **Coaching** helps a person develop their own judgment and practice. **Operating support** helps the company improve how work gets done. A specific assignment may also give the adviser formal oversight or temporary delivery responsibilities.
+**Due diligence** is the investigation that informs an investment decision. **Coaching** helps a person develop their own judgment and practice. **Operating support** helps the company improve how work gets done. A specific assignment may also give the adviser formal oversight or temporary delivery responsibilities.
 
 These purposes can overlap, but everyone involved should know which apply. The last column says what the people doing the work should hear when the adviser speaks: an assessment finding, a recommendation or an authorized instruction. If employees cannot say which of the three they are hearing, the assignment has not been explained.
 
@@ -76,7 +76,7 @@ The investor’s adviser can carry substantial influence even when the service i
 
 The remedy is the decision map from that chapter, applied to the adviser by name. State which questions Morgan can recommend on, which the accountable company leader decides and which need board approval. Then tell the people doing the work. An engineer who hears a suggestion from Morgan should be able to answer “Who is authorized to decide?” without asking a manager.
 
-Hands-on work isn’t the same as taking over. Morgan might help work out why a new version of the software broke when it went live, alongside the engineers, and then hand the improvement plan back to Alex. The test is whether company capability strengthens and responsibility stays understandable after the intervention ends.
+Morgan might help work out why a new version of the software broke when it went live, alongside the engineers, and then hand the improvement plan back to Alex. The test is whether company capability strengthens and responsibility stays understandable after the intervention ends.
 
 ![Outside a box labelled company, a person labelled adviser sends a dashed arrow labelled advice to the company leader’s desk, labelled decision. A separate arrow carries information from the desk out through a gate labelled agreed access.](assets/images/18-investors-adviser/advice-and-accountability-boundary.jpeg)
 **Figure 2:** *Influence, access and formal decision authority need separate agreements.*
@@ -87,7 +87,7 @@ The hardest case is a change of role that nobody announces. It is fictional here
 
 For three months Morgan has met Alex monthly to help him develop as a leader: how he runs the engineering managers, where he avoids conflict, which decisions he delays. Alex has been candid, because candor is what makes coaching useful. Then the investment firm’s **deal team** — the people at the firm who handle this particular investment — asks Morgan for a written view of whether Larkspur’s technology leadership can carry the plan. They are preparing the paper the directors will read before deciding whether the company should expand into a second country. Morgan knows more about Alex than any assessment interview would reveal.
 
-Nothing improper has yet happened. Morgan reports to the firm, and the firm is entitled to ask its adviser for a view. What matters is what happens next.
+Nothing improper has yet happened. Morgan reports to the firm, and the firm is entitled to ask its adviser for a view.
 
 **What Alex can ask before sharing anything sensitive.** These questions belong at the start of any coaching arrangement, and Alex can ask them again the moment the role changes: What is this conversation for? Who will receive what I say, in what form? Does it feed a formal assessment, now or later? What are you already entitled to see and ask under the investment agreements, and what are you obliged to report regardless of what we agree? Will you tell me if the purpose changes?
 
@@ -101,13 +101,13 @@ Nobody else can release them on his behalf. Alex is the person the rule protects
 
 If Morgan wants to use what coaching revealed, there are three honest routes and no fourth: ask Alex to agree in writing, write the assessment from independently obtained evidence and say so, or tell the firm that the coaching relationship makes Morgan the wrong person to assess Alex and let it appoint someone else.
 
-**Who can authorize the changed assignment.** Start with what already exists. The firm is entitled to ask its adviser for an opinion. The investment agreements may already give it, and the people it authorizes, rights to information and to discussion with senior company executives for monitoring its investment. Morgan can form a view from those sources without anyone’s new permission.
+**Who can authorize the changed assignment.** The firm is entitled to ask its adviser for an opinion. The investment agreements may already give it, and the people it authorizes, rights to information and to discussion with senior company executives for monitoring its investment. Morgan can form a view from those sources without anyone’s new permission.
 
 What the firm cannot do on its own is turn that view into an assessment commissioned by the company: new access to staff and records for the purpose, or interviews with Alex’s managers. In Larkspur’s agreed arrangement those need Ines to agree the scope, the evidence Morgan may use and the form of the report. Where the assessment informs a decision the directors will take, the board agrees it instead.
 
-Two different permissions are in play, and it is worth keeping them apart. Ines or the board can authorize the *work*. Only Alex can release the *coaching material*, because the agreement protects what he said and he is the one it protects. Morgan therefore checks what the existing information rights already cover, then puts the new purpose and any additional access to Ines — and puts the question of the coaching sessions to Alex, separately.
+Ines or the board can authorize the *work*. Only Alex can release the *coaching material*, because the agreement protects what he said and he is the one it protects. Morgan therefore checks what the existing information rights already cover, then puts the new purpose and any additional access to Ines — and puts the question of the coaching sessions to Alex, separately.
 
-The same discipline applies in the other direction. Suppose the firm proposes that Morgan take over running the **onboarding** work — getting newly signed customers set up and running on the product — for three months because Alex is stretched. Directing company work needs authority the company has actually granted. The board authorizes such a temporary assignment, with its duration, its resources and who Morgan reports to, or it does not happen. Neither side should discover the change from a meeting invitation.
+Suppose the firm proposes that Morgan take over running the **onboarding** work — getting newly signed customers set up and running on the product — for three months because Alex is stretched. Directing company work needs authority the company has actually granted. The board authorizes such a temporary assignment, with its duration, its resources and who Morgan reports to, or it does not happen. Neither side should discover the change from a meeting invitation.
 
 **How employees are informed.** Ines tells the engineering managers, in writing, what Morgan is now doing and until when: “Morgan is preparing a leadership assessment for the board’s expansion decision; conversations for that purpose will be announced as such; day-to-day priorities continue to come from Alex.” If the assignment is interim delivery leadership, the note says which decisions Morgan is authorized to make and which still go to Alex or Ines.
 
@@ -115,7 +115,7 @@ Alex does not need to like the assessment. He needs to know it is happening, wha
 
 ## Build a Shared Account of the Situation
 
-A productive relationship needs consistent facts. Explain customer commitments, existing constraints and why the team made earlier choices. Ask the adviser which investment assumptions depend on those capabilities and what evidence could change their view.
+Explain customer commitments, existing constraints and why the team made earlier choices. Ask the adviser which investment assumptions depend on those capabilities and what evidence could change their view.
 
 Disagreement improves that account when both sides state what would overturn their position. Take the example developed in the chapter [[diligence-corrects-the-plan]]. Morgan sampled five recent onboarding implementations; across those five, onboarding averaged about eighty hours each. In three of the five, the setup needed one particular specialist’s manual work. Morgan and Alex accept both of those observations and disagree about what they mean.
 
@@ -123,7 +123,7 @@ Morgan’s concern is a hypothesis about capacity, not a measured rule: if that 
 
 Neither is asked to concede. Both explanations are written down, and one measurement is agreed in advance. For the next group of customers, record how the hours actually divide between three kinds of work: fixing customer data, working around what the product cannot yet do, and the rest of the setup work — the customer sessions and rework that also sit inside that eighty-hour average.
 
-Recording the rest matters. Forcing every hour that is not data cleaning into “product limitation” would invent a finding rather than measure one. The measurement does not declare either person right. It shows how much work each explanation accounts for, and that decides where the next money should go.
+Forcing every hour that is not data cleaning into “product limitation” would invent a finding rather than measure one. The measurement does not declare either person right. It shows how much work each explanation accounts for, and that decides where the next money should go.
 
 An adviser should be able to revise an assessment, and a company leader should be able to reconsider a familiar practice, without either treating the revision as a personal defeat.
 
@@ -131,7 +131,7 @@ The company shouldn’t need one confident story for the investor and another ac
 
 ## Back to the Planning Meeting
 
-The opening scene resolves with a short agreement reached before the plan is discussed. Four statements are enough.
+The opening scene resolves with a short agreement reached before the plan is discussed.
 
 - **Why Morgan is here.** Morgan attends as the investment firm’s technology adviser. What Morgan says about the plan is a recommendation.
 - **Who decides.** Alex decides the technical plan, up to the spending already approved. Ines and the board decide anything above it.

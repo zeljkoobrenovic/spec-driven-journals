@@ -7,7 +7,7 @@ Start with the **business function that must keep working** and write its recove
 
 **A saved copy of the data is not evidence the service can be rebuilt from it.** The investor's pre-investment checks found three years of error-free backups and no restore attempt. The day-45 test took eleven hours: the account that could read the copies belonged to a departed engineer, and Larkspur’s copies loaded only into the release of data-storage software that wrote them, found on a retired machine and installed by hand. The data came back a night old: a failure on both counts, neither fix repeatable.
 
-A failed test is a finding with a price, and that price was already spent. The hundred-day limit set by the **board**, the company's directors, was €500,000 and 24 **engineer-weeks** — one person's work for one week each. It carried this item at **€80,000 and four of them**, gone by day 45.
+The hundred-day limit set by the **board**, the company's directors, was €500,000 and 24 **engineer-weeks** — one person's work for one week each. It carried this item at **€80,000 and four of them**, gone by day 45.
 
 The correction buys a repeatable version of each fix: separate test systems on the live service's software release, emergency access details in one controlled store two named people can use, and a written rehearsal. It costs **€20,000 and two engineer-weeks** from money the board held back — a draw only the board approves, which it did, setting a day-85 retest. Total: €100,000, six engineer-weeks.
 

@@ -26,9 +26,9 @@ icon: "assets/icons/21-diligence-corrects-the-plan.png"
 <br>
 **Larkspur**, the fictional company this book follows, sells scheduling software to businesses whose staff work in the field. Every new customer needs **onboarding**, which this chapter also calls **implementation**: Larkspur’s staff set the software up with that customer’s settings and data until it is ready for real use, a moment called **go-live**. The people who do this work are the **implementation team**.
 
-An investor is considering an investment in Larkspur. Its **diligence report**, the written findings of its investigation, identifies a **bottleneck** in onboarding: much of the setup waits for one implementation specialist’s manual work. Yet the investment plan still assumes Larkspur can onboard twice as many customers a year with the same implementation team. The report has described a problem without resolving what it means for the deal. This chapter shows what resolving it looks like.
+An investor is considering an investment in Larkspur. Its **diligence report**, the written findings of its investigation, identifies a **bottleneck** in onboarding: much of the setup waits for one implementation specialist’s manual work. Yet the investment plan still assumes Larkspur can onboard twice as many customers a year with the same implementation team. The report has described a problem without resolving what it means for the deal.
 
-Three fictional people carry the example. **Alex** is Larkspur’s **chief technology officer (CTO)**, the leader responsible for its technology. **Priya** leads product: what the software does and how it works for customers. **Morgan** is the investment firm’s technology adviser, who ran the technical part of the investigation.
+**Alex** is Larkspur’s **chief technology officer (CTO)**, the leader responsible for its technology. **Priya** leads product: what the software does and how it works for customers. **Morgan** is the investment firm’s technology adviser, who ran the technical part of the investigation.
 
 **Technical due diligence** investigates a company’s product and technology, what they depend on, what they cost and what could go wrong, before an investment. In this transaction, it tests the product, technology and team assumptions behind the proposed investment: whether Larkspur can double onboarding volume without a matching increase in implementation staff. Its findings feed the price, the funding, the risks accepted, the conditions of the deal and the operating plan the company will later be held to.
 
@@ -40,7 +40,7 @@ Part III explained how to use investor support. Part VII follows the company lea
 
 ## What You Can Do Depends on When You Have Access
 
-Most investments happen in two steps. At **signing**, the investor and the sellers, or the company, sign the agreement and commit to its terms. At **closing**, also called completion, the deal is carried out: the money is paid and the shares change hands. Some deals sign and close on the same day. Others have weeks in between, for example while a regulator gives approval or the investor arranges its own financing.
+At **signing**, the investor and the sellers, or the company, sign the agreement and commit to its terms. At **closing**, also called completion, the deal is carried out: the money is paid and the shares change hands. Some deals sign and close on the same day. Others have weeks in between, for example while a regulator gives approval or the investor arranges its own financing.
 
 The company leader’s access varies with the transaction, and the title’s promise depends on it. These are operating opportunities the agreed transaction process may give you, not universal rights.
 
@@ -77,17 +77,17 @@ A demonstration of onboarding can support a discussion of how easy the software 
 
 ## Sample the Work, Not Just the Presentation
 
-Help the reviewers connect management’s explanation with evidence from actual work. Offer a recent customer implementation, an important **release** (a new version of the software put into use), an **incident** (a failure that disrupted customers) and a difficult decision about what to build first. Explain how the examples were selected and which situations they represent. Showing only the company’s best work can leave the future plan resting on a misleading picture.
+Offer a recent customer implementation, an important **release** (a new version of the software put into use), an **incident** (a failure that disrupted customers) and a difficult decision about what to build first. Explain how the examples were selected and which situations they represent. Showing only the company’s best work can leave the future plan resting on a misleading picture.
 
 A **sample** cannot establish everything. Record the full group the examples came from and why these were chosen. If the company serves several very different products or customer groups, say which were inspected. Do not describe a short review of one part of the code as a complete assessment of engineering.
 
-Confidence should reflect evidence quality and coverage. “High confidence” is not an adjective for the assessor’s experience. It should mean the conclusion has strong supporting evidence within a stated scope and that serious alternative explanations were examined.
+“High confidence” is not an adjective for the assessor’s experience. It should mean the conclusion has strong supporting evidence within a stated scope and that serious alternative explanations were examined.
 
 Skype’s **registration filing**, the document a company files with the US securities regulator before offering shares to the public, describes the settlement of a lawsuit and the acquisition of rights to core technology. [S27: Skype registration filing](https://www.sec.gov/Archives/edgar/data/1498209/000119312511096544/ds1a.htm) As the case in the chapter [[hilton-and-skype]] explains, a product can depend on a legal and technical boundary that a review of code quality would miss. Diligence should ask whether the company can use and develop what the thesis assumes it owns.
 
 ## Finding D-3: Onboarding Depends on One Specialist’s Manual Configuration
 
-A material finding needs a stable identifier, here **D-3**, so it can be followed into later plans and reviews. It also needs a record that separates what was observed from what someone reported, what the reviewer inferred and what remains unknown. “Technical debt: high”, a label for the future cost of past shortcuts in the software, conveys none of that. Here is the finding from the opening, completed. Every figure is fictional.
+A material finding needs a stable identifier, here **D-3**, so it can be followed into later plans and reviews. It also needs a record that separates what was observed from what someone reported, what the reviewer inferred and what remains unknown. “Technical debt: high”, a label for the future cost of past shortcuts in the software, conveys none of that. Every figure is fictional.
 
 First, four words the record uses:
 
@@ -188,7 +188,7 @@ This is a proposed assessment structure, not a tested score that predicts outcom
 
 ## The One-Page Thesis Summarizes the Findings
 
-Two records do different jobs. The finding record above holds evidence, options and a response for one important issue. The **Technology Investment Thesis** is a one-page statement of what the investment depends on from product, technology and people: the technology advantage, main constraint, required investment, leadership needs, AI opportunity or threat, expected business outcome and serious uncertainties. It does not repeat the findings; it summarizes and links them. For Larkspur, the constraint line points at D-3, the leadership line at D-5 and the uncertainty line at D-6, each with the agreed response and the evidence still needed. The [[toolkit]] shows the finding record, the thesis page and the initiative record moving through the same stages.
+The finding record above holds evidence, options and a response for one important issue. The **Technology Investment Thesis** is a one-page statement of what the investment depends on from product, technology and people: the technology advantage, main constraint, required investment, leadership needs, AI opportunity or threat, expected business outcome and serious uncertainties. It does not repeat the findings; it summarizes and links them. For Larkspur, the constraint line points at D-3, the leadership line at D-5 and the uncertainty line at D-6, each with the agreed response and the evidence still needed. The [[toolkit]] shows the finding record, the thesis page and the initiative record moving through the same stages.
 
 Conciseness works only when readers can inspect the basis. Keep links to findings, scenario assumptions, source dates and specialist assessments. **Include the downside**: if the pilot takes twice as long, can the company still operate within the money it has? If Alex, the CTO, leaves, which assumptions become invalid?
 
@@ -196,7 +196,7 @@ Conciseness works only when readers can inspect the basis. Keep links to finding
 
 At closing, ask for the material findings to be reviewed with the company leaders who will be accountable for the business plan. Ask each accountable leader to record agreement, disagreement or a need for more evidence. Receiving a report does not mean someone has accepted responsibility or funding for its recommendations. When new evidence changes the interpretation, keep the original reasoning and explain the revision, so that company leaders and the investor can later judge whether the investigation asked the right questions.
 
-Useful diligence either supports an important assumption with evidence or shows why the decision should change. Its value comes from reducing uncertainty about a real investment choice, including when the original plan turns out to be right.
+Useful diligence either supports an important assumption with evidence or shows why the decision should change.
 
 For Larkspur, the next question is what D-3 costs once it is inside a board-authorized budget, with two other findings competing for the same engineer-weeks. Priya records acceptance within ten days of closing. The finding then becomes a funded priority with its own budget, protected capacity, a baseline by day 20 and a day-90 cohort measurement that the board decides on at day 100: the chapter [[first-hundred-days]].
 

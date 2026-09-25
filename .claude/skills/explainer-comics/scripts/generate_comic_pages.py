@@ -268,7 +268,9 @@ def render(comics_path: Path, style_block: str, intro: str, pages: list[dict]) -
         out += [PAGE_START + "\n" + json.dumps(page, ensure_ascii=False, indent=2) + "\n" + panels.END, ""]
         if image_path.exists():
             out += [f"![{page['alt']}]({page['asset']})", ""]
-        out += [f"**Page {number}: {page['title']}.** {page['caption']}", ""]
+        # A title that already ends in terminal punctuation ("…north star?") gets no extra full stop.
+        title_end = "" if page["title"].rstrip().endswith((".", "?", "!")) else "."
+        out += [f"**Page {number}: {page['title']}{title_end}** {page['caption']}", ""]
         # The transcript keeps the dialogue readable independently of the image text.
         for n, strip in enumerate(page["strips"], start=1):
             parts = [f"*Narration:* {strip['narration']}"] if strip.get("narration") else []

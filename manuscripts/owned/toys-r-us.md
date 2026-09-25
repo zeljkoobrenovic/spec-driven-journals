@@ -1,7 +1,7 @@
 {id: toys-r-us}
-# 35. Toys R Us: Positive Operating Earnings, Too Little Cash
+# 36. Toys R Us: Positive Operating Earnings, Too Little Cash
 
-![Toys R Us: Positive Operating Earnings, Too Little Cash — logo](private-techuity/posts/34-toys-r-us/assets/images/28-toys-r-us/logo.jpeg)
+![Toys R Us: Positive Operating Earnings, Too Little Cash — logo](private-techuity/posts/35-toys-r-us/assets/images/28-toys-r-us/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn how positive operating earnings, a reported net loss and a supplier cash shock combined, and what a technology transition needed before it could be funded.
 
@@ -117,7 +117,7 @@ The mechanism holds even without accepting every estimate: the product on the sh
 
 The engineering implication is sequencing. A product improvement expected to pay off over several years can't supply cash for stock next week. Technology leaders should make the different clocks visible rather than accept one “transition timeline” that treats customer adoption, debt service, supplier payments and product delivery as interchangeable. In an engagement, that means a joint operating and cash review: which customer-critical projects can still finish, **which commitments can be reduced safely**, which suppliers are indispensable, and what evidence would trigger a change of plan.
 
-![A long-term improvement plan and near-term supplier and debt payments operate on different time horizons.](private-techuity/posts/34-toys-r-us/assets/images/28-toys-r-us/long-term-plan-short-term-cash.jpeg)
+![A long-term improvement plan and near-term supplier and debt payments operate on different time horizons.](private-techuity/posts/35-toys-r-us/assets/images/28-toys-r-us/long-term-plan-short-term-cash.jpeg)
 
 **Figure 1:** *A valuable future capability cannot fund the payments required to reach it.*
 
@@ -153,7 +153,7 @@ Debt service reduces room for other uses of cash, all else equal. Competition ca
 
 The case evidence supports investigating that interaction. It doesn't prove that removing debt would have guaranteed success, that a better digital product would have overcome every constraint, or that the retailer was inevitably doomed regardless of ownership. The original financing and each later choice about refinancing, stores, technology and cost reductions were decisions made under uncertainty; judging them requires the expectations and alternatives at the time, not just knowledge of the outcome. The useful analytical questions are comparative: what investment was required to compete, could the company fund it if sales fell or payments arrived late, and which choices preserved options rather than consuming them?
 
-![Competition, the cost of carrying out improvements, debt service and supplier terms each press on the retailer's cash, which can lead to less cash available for investment; dashed links mark possible reinforcing effects, not measured ones.](private-techuity/posts/34-toys-r-us/assets/images/28-toys-r-us/interacting-business-and-financing-pressures.jpeg)
+![Competition, the cost of carrying out improvements, debt service and supplier terms each press on the retailer's cash, which can lead to less cash available for investment; dashed links mark possible reinforcing effects, not measured ones.](private-techuity/posts/35-toys-r-us/assets/images/28-toys-r-us/interacting-business-and-financing-pressures.jpeg)
 
 **Figure 2:** *Four pressures can reduce the cash available for investment; the dashed links are possible reinforcements, not measured causes.*
 

@@ -5,7 +5,7 @@
 
 “Valued on growth” is incomplete until it says which customers, what they need and **what it will cost to serve them**. Larkspur’s recovered requirement: invoice, contract with, support and set up customers in a second country under its tax and pricing rules, with **the first customer payments received within twelve months**, and each further country cheaper to add than the last, because the investor’s plan assumes a third.
 
-Earlier chapters found the constraint and relieved the queue around it: the country-specific rules are written into the same code as the rest of the invoicing module, so a change for one country can disturb everything else, and only two specialists can safely make one. This chapter chooses the system change.
+Earlier chapters found the constraint and relieved the queue around it: the country-specific rules are written into the same code as the rest of the invoicing module, so a change for one country can disturb everything else, and only two specialists can safely make one.
 
 An **implementation choice** is how the company meets a requirement in its technology. **Modularity** — dividing software into parts that each have a clear job — can make selected changes easier on its own, without splitting the software into many separately run services, which is a different decision. Judge dependence on one supplier or one person by its likely impact against the cost of the alternatives, not by how rarely it bites.
 

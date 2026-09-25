@@ -24,7 +24,7 @@ These are **proposed working tools** for company leaders applying the book’s f
 
 ## Minimum Use
 
-You don’t need fifteen documents. The smallest adequate record answers five questions in one place: what we know and how we know it; which options were compared; what was committed (cash by period, team time, the accountable company leader, the review date and who can decide); what was observed against the baseline; and what remains open. A small company can keep all of that on **one evolving page** per finding or initiative, adding a section at each stage. The tools below describe the fields each stage needs; they are not separate forms to copy into. Use the same finding or initiative identifier (D-3, ONB-1) throughout, so a reader can trace a number back to its evidence.
+The smallest adequate record answers five questions in one place: what we know and how we know it; which options were compared; what was committed (cash by period, team time, the accountable company leader, the review date and who can decide); what was observed against the baseline; and what remains open. A small company can keep all of that on **one evolving page** per finding or initiative, adding a section at each stage. The tools below describe the fields each stage needs; they are not separate forms to copy into. Use the same finding or initiative identifier (D-3, ONB-1) throughout, so a reader can trace a number back to its evidence.
 
 ## Find the Record for Your Decision Stage
 
@@ -48,7 +48,7 @@ The tools keep their original numbers because chapters and earlier readers cite 
 
 Tool 12 (choose the combination) comes before Tool 5 (commit to one initiative) in this order: each initiative can be feasible on its own while the combination is not.
 
-A few labels are used throughout. An **initiative** is a defined piece of improvement work. A **baseline** records the starting situation. A **dependency** is something required before other work can proceed. A **material finding** is important enough to affect a decision. For responsibility, the records use **accountable company leader**: the person who is authorized to make the operating decision and answers for its result. **Shareholder** is reserved for ownership of the company. A person is never the “owner” of a decision in these records.
+An **initiative** is a defined piece of improvement work. A **baseline** records the starting situation. A **dependency** is something required before other work can proceed. A **material finding** is important enough to affect a decision. For responsibility, the records use **accountable company leader**: the person who is authorized to make the operating decision and answers for its result. **Shareholder** is reserved for ownership of the company. A person is never the “owner” of a decision in these records.
 
 Restrict distribution according to the engagement and company permissions. A filled template doesn’t establish that its claims are true: preserve dates, definitions, evidence links and disagreement.
 
@@ -88,7 +88,7 @@ The board cannot fund every response, so the options are compared on cash and te
 
 ### <a id="stage-3"></a>Stage 3 — The Initiative, Pending and Authorized (Tool 5)
 
-The same initiative record is shown twice. The left column is the state many plans stop at: a sensible proposal that still asks someone else to supply the money, the name and the date. The right column is what the board actually authorized. The difference between the columns is the decision.
+The same initiative record is shown twice. The left column is the state many plans stop at: a sensible proposal that still asks someone else to supply the money, the name and the date. The right column is what the board actually authorized.
 
 | Field | ONB-1 — pending | ONB-1 — authorized |
 | --- | --- | --- |

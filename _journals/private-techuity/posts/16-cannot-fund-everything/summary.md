@@ -3,7 +3,7 @@ A **company investment** commits resources now for an expected future benefit. I
 ![Investment options are constrained by both cash and team capacity, with staged choices revised as evidence changes.](assets/images/16-cannot-fund-everything/summary-at-a-glance.jpeg)
 **Figure 1:** *Choose a feasible combination and preserve room to learn.*
 
-Larkspur, a fictional scheduling-software company, has a new investor. Its board, the directors who oversee the company, limits new commitments in the first hundred days after the investment to €500,000 of additional cash and 24 **engineer-weeks**. One engineer-week is one person’s working time for one week. Routine work is already budgeted. Ines, the chief executive officer, proposes the plan; the board approves. Four proposals compete. The customer portal would be an online workspace customers use themselves.
+Larkspur, a fictional scheduling-software company, has a new investor. Its board, the directors who oversee the company, limits new commitments in the first hundred days after the investment to €500,000 of additional cash and 24 **engineer-weeks**. One engineer-week is one person’s working time for one week. Routine work is already budgeted. Ines, the chief executive officer, proposes the plan; the board approves. The customer portal would be an online workspace customers use themselves.
 
 | Proposal | Additional cash | Engineer-weeks |
 | --- | ---: | ---: |

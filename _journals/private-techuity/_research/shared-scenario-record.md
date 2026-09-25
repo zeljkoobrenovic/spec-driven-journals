@@ -8,7 +8,7 @@ Two read-only synthesis passes inventoried every passage of the shared Larkspur 
 ## A. The shared initiative chain (D-3 → ONB-1 / KNW-1 / REC-1 → day-100 → handover)
 Used by: 16-diligence, 22-first-hundred-days, 16-cannot-fund-everything, 27-prove-you-can-restore, 31-handover, toolkit, 17-roadmap-to-revenue, 06-decide-who-decides (board update), 29/30 (engagement), 24 (finale), part-7-intro, introduction.
 
-Days count from closing (day 0 = the board meeting that adopts the operating plan).
+Days count from day 0: the board meeting, held within days after closing, that adopts the operating plan. Closing itself is not day 0, and the gap between them is not assumed to be zero (clarified 24 September 2026, in-depth review of adopt-outcome-thinking, AOT-019).
 
 | Day | Event | Committed (cum.) | Incurred (cum.) | Eng-weeks committed of 24 | Reserve (cash / weeks) | Approver |
 |---|---|---|---|---|---|---|

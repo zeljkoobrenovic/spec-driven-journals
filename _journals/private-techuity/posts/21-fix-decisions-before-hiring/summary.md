@@ -1,5 +1,7 @@
 A plan can fund tools, a cheaper location or more people and still leave work waiting on one executive and two experts.
 
+New investment opens room to hire, and investors often push for visible headcount. **Hiring naively can backfire**: where work waits on unclear authority and a few experts, new people join the same queue, need training from those experts and add coordination.
+
 ![Customer work exposes queues, knowledge dependencies and decision handoffs, supported by skills, authority, capacity and a funded transition.](assets/images/21-fix-decisions-before-hiring/summary-at-a-glance.jpeg)
 **Figure 1:** *Design teams around the work, knowledge and decisions customers depend on.*
 

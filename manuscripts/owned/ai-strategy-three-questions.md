@@ -1,7 +1,7 @@
 {id: ai-strategy-three-questions}
-# 18. Clarify AI Strategy: Three Different Investment Questions
+# 19. Clarify AI Strategy: Three Different Investment Questions
 
-![Clarify AI Strategy: Three Different Investment Questions — logo](private-techuity/posts/17-ai-strategy-three-questions/assets/images/17-ai-strategy-three-questions/logo.jpeg)
+![Clarify AI Strategy: Three Different Investment Questions — logo](private-techuity/posts/18-ai-strategy-three-questions/assets/images/18-ai-strategy-three-questions/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to separate the three investment questions inside an AI strategy request and give each its evidence, cost, quality threshold and decision.
 
@@ -29,7 +29,7 @@ Two narrower terms recur alongside AI. **Generative AI** is the part of it that 
 
 The chapter takes the three questions in turn. For each it states the decision to be made, the evidence required and one Larkspur example with costs, a quality threshold, a dated gate and the action that follows. It first settles who coordinates the answers, because the three questions cross departmental boundaries. The analysis is dated September 2026; the three Larkspur tests are authorized that month and start in the week of 5 October 2026, each with its own budget and dates. The cited experiments describe particular earlier tools and populations. The value chain from the chapter [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue) and the uncertainty discussed in the chapter [Build And Test Resilience: Backups Are Not Enough](#prove-you-can-restore) stay useful throughout; an investor’s adviser can help within the boundaries described in the chapter [Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?](#investors-adviser); and these tests are funded separately rather than drawn from the hundred-day budget of the chapter [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days).
 
-![AI can create a product opportunity, improve an operating workflow or threaten the current product; each question needs its own evidence.](private-techuity/posts/17-ai-strategy-three-questions/assets/images/17-ai-strategy-three-questions/three-ai-investment-questions.jpeg)
+![AI can create a product opportunity, improve an operating workflow or threaten the current product; each question needs its own evidence.](private-techuity/posts/18-ai-strategy-three-questions/assets/images/18-ai-strategy-three-questions/three-ai-investment-questions.jpeg)
 
 **Figure 1:** *Separate the investment questions before choosing an experiment or making a commitment.*
 
@@ -105,7 +105,7 @@ Saved time is capacity, not cash. It becomes a saving only through a further ope
 >
 > In February 2026 METR reported that its follow-up had serious selection and measurement problems: developers and tasks were increasingly excluded from the measured sample, and running several AI agents at once complicated time measurement. The researchers’ own inference was that the excluded participants and tasks were likely to benefit more from AI; that is their judgment, not a measured property of the excluded cases, and they called the new data a weak guide to the size of current effects. [S21: METR 2026 update](https://metr.org/blog/2026-02-24-uplift-update/) These studies are not competing universal laws. Their differences show why context, task selection, tool version and outcome definition belong in the decision, and a favorable coding result is only one step in delivery: product decisions, review, testing, release and customer adoption can become the limiting steps.
 
-![A baseline and an AI-assisted workflow are compared across preparation, production, review, correction and delivery.](private-techuity/posts/17-ai-strategy-three-questions/assets/images/17-ai-strategy-three-questions/measure-the-whole-ai-workflow.jpeg)
+![A baseline and an AI-assisted workflow are compared across preparation, production, review, correction and delivery.](private-techuity/posts/18-ai-strategy-three-questions/assets/images/18-ai-strategy-three-questions/measure-the-whole-ai-workflow.jpeg)
 
 **Figure 2:** *Measure the complete local workflow and its output before converting a task result into a financial promise.*
 

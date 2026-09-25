@@ -32,11 +32,11 @@ In this chapter's examples, the money arrives at **closing**, the day the transa
 
 An announcement describes a transaction, an agreed exchange between the parties. To turn it into a hiring plan, establish how much cash reaches the business, when it arrives and who can authorize its use. These questions matter under every ownership arrangement; a transaction changes the conditions of the answer, because the amount that reaches the business depends on how the deal was structured and on the conditions attached to it.
 
-In the chapter [[customers-lenders-investors]] we traced €100,000 through a prepayment (money paid before the service is delivered), a loan and a share issue — one payment at a time. This chapter zooms out from single payments to whole deals: arrangements that change who owns or controls the company. It compares three: a **minority funding round**, one occasion on which the company raises money by selling less than half its shares to investors; a **buyout**, the purchase of control of the company, here paid for by an **investment fund**, a pool of investors' money managed under agreed rules; and ownership by a larger operating company, a **corporate group**. It explains the fund structure behind the buyout, and ends with the one-page record that turns Alex's hiring assumption into an authorized plan.
+In the chapter [[customers-lenders-investors]] we traced €100,000 through a prepayment (money paid before the service is delivered), a loan and a share issue — one payment at a time. This chapter zooms out from single payments to whole deals: arrangements that change who owns or controls the company. It compares three: a **minority funding round**, one occasion on which the company raises money by selling less than half its shares to investors; a **buyout**, the purchase of control of the company, here paid for by an **investment fund**, a pool of investors' money managed under agreed rules; and ownership by a larger operating company, a **corporate group**.
 
 ## Map the Arrangement Before Relying on the Money
 
-Consider three alternative, fictional Larkspur announcements. In each, Alex wants to hire more **onboarding engineers**, who set new customers up on the product and move their data across. The number in the announcement cannot approve those hires.
+Consider three alternative, fictional Larkspur announcements. In each, Alex wants to hire more **onboarding engineers**, who set new customers up on the product and move their data across.
 
 | Announcement | Where money goes under these assumptions | What Alex needs to establish |
 | --- | --- | --- |
@@ -48,7 +48,7 @@ If an existing investor joins another round, that doesn't mean every shareholder
 
 Identify the shareholder, the entity supplying cash, the person authorized to commit it and any conditions before payment. Include the date by which a promised decision must arrive for the engineering plan to stay feasible. The end of this chapter shows that page completed for the first announcement.
 
-The next sections explain a fund-backed arrangement in detail. **Venture investors**, who fund young businesses with uncertain prospects, and **growth investors**, who fund the expansion of established businesses, usually without buying control, can also use funds; corporate and individual owners may use different structures. Don't invent a fund, a holding company or a fixed sale deadline when the arrangement has none.
+**Venture investors**, who fund young businesses with uncertain prospects, and **growth investors**, who fund the expansion of established businesses, usually without buying control, can also use funds; corporate and individual owners may use different structures. Don't invent a fund, a holding company or a fixed sale deadline when the arrangement has none.
 
 ## A Fund-Backed Buyout Can Involve Four Separate Organizations
 
@@ -61,7 +61,7 @@ A useful starting map separates four types of **entity**, meaning an organizatio
 | **Holding vehicle** | A company set up to hold the investment; it may also borrow. | Hold ownership and meet its own obligations |
 | **Portfolio company** | The operating business: sells to customers, employs people and pays suppliers. | Serve customers, meet obligations and sustain the business |
 
-The map below shows how money moves between them in a fund-backed buyout. Three labels need explaining first. The fund’s investors are called **limited partners (LPs)**; they promise money to the fund and pay it in when the fund asks, a request called a **capital call**. The fund buys ownership, called **equity**, in the holding vehicle. When an investment is sold, the fund pays the money out to its investors; each such payment is a **distribution**, made in an order the fund agreement sets. The map is conceptual, not a legal organization chart, and it illustrates one form of investor ownership, not every form. Read the arrows from the investors and lenders toward the business, then follow the sale proceeds back to the fund’s investors:
+The map below shows how money moves between them in a fund-backed buyout. The fund’s investors are called **limited partners (LPs)**; they promise money to the fund and pay it in when the fund asks, a request called a **capital call**. The fund buys ownership, called **equity**, in the holding vehicle. When an investment is sold, the fund pays the money out to its investors; each such payment is a **distribution**, made in an order the fund agreement sets. The map is conceptual, not a legal organization chart, and it illustrates one form of investor ownership, not every form. Read the arrows from the investors and lenders toward the business, then follow the sale proceeds back to the fund’s investors:
 
 ---begin mermaid---
 flowchart TD
@@ -77,11 +77,11 @@ flowchart TD
   F -->|Distributions to investors under the agreed sharing rules| LP
 ---end mermaid---
 
-One clarification about the sale route concerns which shares change hands. In this diagram the future buyer purchases the **portfolio company's shares from the holding vehicle**, so the payment lands in the holding vehicle, which repays its lenders and passes what remains to the fund. In other transactions the buyer purchases the holding vehicle itself from the fund, and the payment goes to the fund directly with the borrowing still attached to what was bought. Either way, the buyer pays for existing shares; the payment comes from that buyer, not from the company's customers, and none of it is new money for the operating business unless the agreement says so. A real financing review also needs the intermediate companies, taxes, the lenders’ contractual protections (such as approval rights over particular actions) and any other investors.
+In this diagram the future buyer purchases the **portfolio company's shares from the holding vehicle**, so the payment lands in the holding vehicle, which repays its lenders and passes what remains to the fund. In other transactions the buyer purchases the holding vehicle itself from the fund, and the payment goes to the fund directly with the borrowing still attached to what was bought. Either way, the buyer pays for existing shares; the payment comes from that buyer, not from the company's customers, and none of it is new money for the operating business unless the agreement says so. A real financing review also needs the intermediate companies, taxes, the lenders’ contractual protections (such as approval rights over particular actions) and any other investors.
 
 Two consequences follow from the map.
 
-**"The firm has capital" is not a statement about you.** Capital here means money available to invest. A firm may be raising a €2 billion (two thousand million) fund while the fund that owns your company has already placed all the money it may invest and is near the end of its agreed lifetime. Those are different pots. An investment from the new fund would need its own justification and approvals under the relevant agreements; it isn't an automatic source of support for the older fund’s company.
+**"The firm has capital" is not a statement about you.** Capital here means money available to invest. A firm may be raising a €2 billion (two thousand million) fund while the fund that owns your company has already placed all the money it may invest and is near the end of its agreed lifetime. An investment from the new fund would need its own justification and approvals under the relevant agreements; it isn't an automatic source of support for the older fund’s company.
 
 **Locate the borrowing as well as the cash.** Debt, money borrowed that must be repaid, can sit in a holding company, an operating company or several entities. The company’s **balance sheet**, a statement at one date of what it owns (its assets), what it owes and what is left for its owners (its equity), needs reading at the relevant level. Payments required elsewhere in the ownership structure may still depend on cash from the operating business. Ask finance to explain those connections.
 
@@ -111,9 +111,9 @@ Follow one fictional LP with a €10 million commitment:
 
 </div>
 
-The row that matters is year 3. **A valuation increase pays nobody.** It's an estimate, not a transfer, and the LP can't spend it. That distinction runs through the whole book: the moment a company is said to be worth more is not the moment anyone receives anything.
+The row that matters is year 3. **A valuation increase pays nobody.** It's an estimate, not a transfer, and the LP can't spend it.
 
-An agreement may let the fund reinvest proceeds or require an investor to return an earlier payment under stated conditions. Those details change cash timing. The basic distinction stands: a promise, a payment and a valuation estimate are three different events.
+An agreement may let the fund reinvest proceeds or require an investor to return an earlier payment under stated conditions. The basic distinction stands: a promise, a payment and a valuation estimate are three different events.
 
 A fund's life includes fundraising, investing, supporting companies, selling investments or otherwise receiving proceeds, and eventually closing the fund. These phases overlap. The **investment period**, the years in which the fund may make new investments, and the fund's **term**, its overall planned lifetime, are different clocks; extensions of either and reinvestment provisions depend on the agreement. The **Institutional Limited Partners Association (ILPA)** represents investors in private funds, funds whose investors join under privately agreed terms rather than through a public market. Its principles are recommendations, not terms binding every fund. [S02: ILPA principles](https://ilpa.org/wp-content/uploads/2019/06/ILPA-Principles-3.0_2019.pdf)
 
@@ -168,13 +168,13 @@ Return to the first announcement: investors buy €8m of newly issued shares in 
 
 Ordinary spending under the plan does not reopen it; the plan already assumes that cash falls. What reopens it is a shortfall against the forecast.
 
-Had the second announcement been the real one, the record would look different in its first three rows. The €40m paid the founder. Larkspur's own cash did not change. Any new hire would then have to be paid by Larkspur from its available cash and the cash it expects to generate from running the business. The only alternative is a separate funding commitment, which the record would have to name together with its own approver and conditions. The page is the same; the answers are what change.
+Had the second announcement been the real one, the record would look different in its first three rows. The €40m paid the founder. Larkspur's own cash did not change. Any new hire would then have to be paid by Larkspur from its available cash and the cash it expects to generate from running the business. The only alternative is a separate funding commitment, which the record would have to name together with its own approver and conditions.
 
 ## From Money and Authority to Value
 
 Customer payments sustain the operating business. Investors, lenders and future buyers can also bring cash into the wider arrangement. Keeping those sources separate explains why an investor with plenty of money and a company short of cash can coexist.
 
-You can now trace who supplies cash, who receives it and which body makes a decision, and you have seen the record that turns an announcement into an authorized hire. One question from the opening remains: what the €100 million meant. A headline may name the purchase price, new funding or a valuation, and the three can differ. The next chapter explains how to identify and interpret the valuation. That needs three basic financial ideas, sales, profit and cash, which we develop in the chapter [[valuation-is-an-estimate]].
+One question from the opening remains: what the €100 million meant. A headline may name the purchase price, new funding or a valuation, and the three can differ. The next chapter explains how to identify and interpret the valuation. That needs three basic financial ideas, sales, profit and cash, which we develop in the chapter [[valuation-is-an-estimate]].
 
 ## Questions to Consider
 

@@ -19,7 +19,7 @@ A **commitment** — promising to pay a fixed amount for a fixed term — lowers
 
 Credits, minimum payments and change-of-owner terms change the bill, not the computing used. Check who legally signs, and whether the commitment survives a **carve-out** — selling or separating part of the company. Keep service quality as the final test: work completed, **latency** (how long a user waits), failed requests and recovery after failure.
 
-Track the **opportunity** modelled, the **change implemented** and the **observed net effect** separately. Stretching €9,000 a month into €108,000 a year is a labelled estimate, not an observation. Larkspur’s answer has two time frames.
+Track the **opportunity** modelled, the **change implemented** and the **observed net effect** separately. Stretching €9,000 a month into €108,000 a year is a labelled estimate, not an observation.
 
 **What already happened (2026).** Unit cost improved, the plan was missed. The money is spent; nothing signed now changes it.
 

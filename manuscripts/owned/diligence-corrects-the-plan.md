@@ -1,7 +1,7 @@
 {id: diligence-corrects-the-plan}
-# 30. Use Diligence: Correct the Plan Before It Is Signed
+# 31. Use Diligence: Correct the Plan Before It Is Signed
 
-![Use Diligence: Correct the Plan Before It Is Signed — logo](private-techuity/posts/29-diligence-corrects-the-plan/assets/images/21-diligence-corrects-the-plan/logo.jpeg)
+![Use Diligence: Correct the Plan Before It Is Signed — logo](private-techuity/posts/30-diligence-corrects-the-plan/assets/images/21-diligence-corrects-the-plan/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to help **due diligence**, the investigation an investor makes into a company before investing, test the assumptions behind a proposed investment. You will use the access you actually have and turn one important finding into a recorded decision.
 
@@ -65,7 +65,7 @@ A generic checklist of how the software is built can still contribute, but it sh
 
 A demonstration of onboarding can support a discussion of how easy the software is to use. It cannot by itself justify a forecast of doubled volume or a claim that the system is ready for a second country. Priya and Alex should separate what is working, what the plan assumes and the funded work needed to close the gap, and **record the conditions** before the story becomes an unconditional commitment.
 
-![Diagram: the assumption “expand customer onboarding” becomes the question “can we speed up setup time?”, tested against a software release, a support case and a customer setup; the three outcomes, confirm, revise or uncertain, each lead back to the assumption.](private-techuity/posts/29-diligence-corrects-the-plan/assets/images/21-diligence-corrects-the-plan/investment-assumption-to-evidence.jpeg)
+![Diagram: the assumption “expand customer onboarding” becomes the question “can we speed up setup time?”, tested against a software release, a support case and a customer setup; the three outcomes, confirm, revise or uncertain, each lead back to the assumption.](private-techuity/posts/30-diligence-corrects-the-plan/assets/images/21-diligence-corrects-the-plan/investment-assumption-to-evidence.jpeg)
 
 **Figure 1:** *Diligence is useful when evidence can confirm or change an investment assumption. The assumption becomes a concrete question, tested against samples of actual work: a release (a software version put into use), a support case (a customer’s recorded request for help; the ticket number is illustrative) and one customer’s setup. The evidence may confirm the assumption or require revising it. If it leaves the question uncertain, more evidence is collected before the assumption is relied on.*
 
@@ -166,7 +166,7 @@ Two further material findings were recorded the same way and travel into the ear
 
 The authorized investment decision-makers may proceed, change the terms or resources, require a condition, delay for evidence or decline. Company leaders contribute the operating facts and feasible alternatives. They should not make promises about prices or deal terms beyond their authority.
 
-![A finding with its uncertainty note leads to four possible responses — price, funding, accepted risk or operating plan — and every response passes through one decision record naming the approver, accountable leader, uncertainty and review date before action follows.](private-techuity/posts/29-diligence-corrects-the-plan/assets/images/21-diligence-corrects-the-plan/finding-to-funded-action.jpeg)
+![A finding with its uncertainty note leads to four possible responses — price, funding, accepted risk or operating plan — and every response passes through one decision record naming the approver, accountable leader, uncertainty and review date before action follows.](private-techuity/posts/30-diligence-corrects-the-plan/assets/images/21-diligence-corrects-the-plan/finding-to-funded-action.jpeg)
 
 **Figure 2:** *Whatever the response, it is recorded with an approver, an accountable leader and a review date before anyone acts on it.*
 

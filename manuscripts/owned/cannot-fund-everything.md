@@ -1,7 +1,7 @@
 {id: cannot-fund-everything}
-# 16. Set Priorities: You Cannot Fund Everything at Once
+# 17. Set Priorities: You Cannot Fund Everything at Once
 
-![Set Priorities: You Cannot Fund Everything at Once — logo](private-techuity/posts/15-cannot-fund-everything/assets/images/15-cannot-fund-everything/logo.jpeg)
+![Set Priorities: You Cannot Fund Everything at Once — logo](private-techuity/posts/16-cannot-fund-everything/assets/images/16-cannot-fund-everything/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to choose a combination of work that fits both the cash and the team time available, and revise the whole combination when a test fails.
 
@@ -15,7 +15,7 @@
 > * Sort the requests by **what they rest on**: an agreed obligation, tested customer evidence or an assumption. A growth target starts the discussion; it does not choose the project.
 > * Make the **next review part of the decision**, and revise the whole combination, not just one project, when a test fails or new evidence arrives.
 
-Larkspur is the fictional company this book follows; it sells scheduling software to maintenance businesses. Its investor wants faster growth. Priya, the product leader, has requests for a new customer portal, an online workspace where customers manage their own work. Alex, the technology leader, wants to improve recovery from system failures. The customer team wants simpler setup for new accounts. Each request has a plausible benefit. They can’t all use the same people at the same time.
+Larkspur is the fictional company this book follows; it sells scheduling software to maintenance businesses. Its investor wants faster growth. Priya, the product leader, has requests for a new customer portal, an online workspace where customers manage their own work. Alex, the technology leader, wants to improve recovery from system failures. The customer team wants simpler setup for new accounts. Each request has a plausible benefit, and the chapter [Adopt Outcome Thinking: Balance Customer and Business KPIs](#adopt-outcome-thinking) has already agreed which customer and business outcomes the work is for. They can’t all use the same people at the same time.
 
 A **company investment** commits resources now in the expectation of a future benefit. **Team capacity** is the time and capability people have available to do the work. Choosing investments needs both a cash plan and a capacity plan. This chapter shows one way to make the choice, as a proposed working method illustrated with fictional figures.
 
@@ -95,7 +95,7 @@ The remaining €220,000 and six weeks provide room for uncertainty and for a la
 
 An estimated score can help organize this conversation, but it shouldn’t hide that an agreed obligation, a speculative product opportunity and a learning step answer different questions. **Explain the trade-off in words** as well as numbers.
 
-![A group of projects must fit both the cash budget and the available team and specialist time.](private-techuity/posts/15-cannot-fund-everything/assets/images/15-cannot-fund-everything/money-and-capacity-two-limits.jpeg)
+![A group of projects must fit both the cash budget and the available team and specialist time.](private-techuity/posts/16-cannot-fund-everything/assets/images/16-cannot-fund-everything/money-and-capacity-two-limits.jpeg)
 
 **Figure 1:** *A project can be affordable and still be impossible to schedule.*
 
@@ -108,7 +108,7 @@ For the portal, the research is the first stage; the next decision might be to b
 
 Check the connections between stages. Can the company operate safely if it stops after the first? **Who maintains anything already delivered?** What spending is unavoidable once the first commitment is made? The setup step’s yearly upkeep is that kind of cost, which is why the record carries it from day 0. Some transitions require a larger coordinated commitment, which should be visible from the start.
 
-![An initial funded test leads to a review before the company expands, changes or stops the work.](private-techuity/posts/15-cannot-fund-everything/assets/images/15-cannot-fund-everything/staged-investment-with-review.jpeg)
+![An initial funded test leads to a review before the company expands, changes or stops the work.](private-techuity/posts/16-cannot-fund-everything/assets/images/16-cannot-fund-everything/staged-investment-with-review.jpeg)
 
 **Figure 2:** *Commit enough to answer the next decision, then use the evidence before committing more.*
 

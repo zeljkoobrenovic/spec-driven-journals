@@ -13,4 +13,4 @@ Skype's ownership lasted about two years. In 2009 eBay sold about 70% of it to a
 
 Skype's retirement in May 2025 belongs to the **later product history**; it neither erases the 2011 investor outcome nor shows that earlier decisions caused it. [S29: Microsoft Skype retirement](https://support.microsoft.com/en-us/skype/22ccebb6-0cf9-4e1d-916f-aaf978e1b129)
 
-Neither case supplies complete money-in-and-out records, an independent split of the gain, or a comparison of employee and customer outcomes across the ownership periods. **Hilton asks whether the company has financing and time for the operating plan. Skype asks whether it controls the rights the product depends on and what a particular buyer values.** Neither answer can be read from the sale price alone.
+Neither case supplies complete money-in-and-out records, an independent split of the gain, or a comparison of employee and customer outcomes across the ownership periods. **Hilton asks whether the company has financing and time for the operating plan. Skype asks whether it controls the rights the product depends on and what a particular buyer values.**

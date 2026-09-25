@@ -1,7 +1,7 @@
 {id: success-for-whom}
-# 37. Success for Whom, and for How Long?
+# 38. Success for Whom, and for How Long?
 
-![Success for Whom, and for How Long? — logo](private-techuity/posts/36-success-for-whom/assets/images/30-success-for-whom/logo.jpeg)
+![Success for Whom, and for How Long? — logo](private-techuity/posts/37-success-for-whom/assets/images/30-success-for-whom/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to bring the book’s cases together, apply a durable-success standard to one final company decision, and keep investor returns, stakeholder consequences and the evidence in scope.
 
@@ -62,7 +62,7 @@ The table below keeps each stakeholder group’s outcome separate. It also disti
 
 These columns are not an additive score. A gain for one group **does not mathematically offset harm** to another. Some decisions require choosing between conflicting interests. The people authorized to decide should explain whose interests take priority, why, and how the resulting harm will be addressed. The next section shows what that looks like when the answer is not obvious.
 
-![Investor, customer, employee, supplier and future-capability outcomes each require their own account.](private-techuity/posts/36-success-for-whom/assets/images/30-success-for-whom/separate-stakeholder-outcomes.jpeg)
+![Investor, customer, employee, supplier and future-capability outcomes each require their own account.](private-techuity/posts/37-success-for-whom/assets/images/30-success-for-whom/separate-stakeholder-outcomes.jpeg)
 
 **Figure 1:** *An attractive investment result does not answer every question about who benefited or bore the cost.*
 
@@ -140,7 +140,7 @@ The cases make the same temporal point from the company’s side. Skype’s valu
 
 The same measures apply under continued ownership and to other events. A **funding round**, one episode of raising investment, that issues new shares, new units of ownership sold to investors, supplies resources under agreed terms; it does not prove the product is useful or that the next round will happen. A corporate integration milestone can be completed while customers still face migration problems. Treat the investor’s next milestone as one constraint and one result within a longer operating responsibility.
 
-![Cycle diagram: operating capability leads to useful customer outcomes, which bring in cash to sustain work, which funds reinvestment, which renews operating capability; three question boxes ask who benefits, who bears costs and what could change.](private-techuity/posts/36-success-for-whom/assets/images/30-success-for-whom/value-that-can-continue.jpeg)
+![Cycle diagram: operating capability leads to useful customer outcomes, which bring in cash to sustain work, which funds reinvestment, which renews operating capability; three question boxes ask who benefits, who bears costs and what could change.](private-techuity/posts/37-success-for-whom/assets/images/30-success-for-whom/value-that-can-continue.jpeg)
 
 **Figure 2:** *A durable plan explains how useful work can continue and what evidence would justify changing course. Operating capability enables useful customer outcomes; the cash they bring in sustains the work and funds reinvestment, which renews capability. At each stage, ask who benefits, who bears the costs and what could change.*
 

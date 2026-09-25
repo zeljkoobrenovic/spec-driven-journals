@@ -1,7 +1,7 @@
 {id: acquisition-adds-work-first}
-# 25. Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value
+# 26. Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value
 
-![Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value — logo](private-techuity/posts/24-acquisition-adds-work-first/assets/images/24-acquisition-adds-work-first/logo.jpeg)
+![Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value — logo](private-techuity/posts/25-acquisition-adds-work-first/assets/images/25-acquisition-adds-work-first/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn how combining businesses and separating one differ, how to fund the transition and decide what waits, and how to test that a new boundary works.
 
@@ -76,7 +76,7 @@ The same boundary question governs group standards. Common security expectations
 
 The Skype case in the chapter [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype) shows why ownership of essential technology can be a transaction issue. **Intellectual property (IP)** means legal rights over assets such as software and inventions. Skype’s filings before the sale describe settling a dispute and acquiring core technology rights, alongside investment in the product and its supporting systems. [S27: Skype registration filing](https://www.sec.gov/Archives/edgar/data/1498209/000119312511096544/ds1a.htm) The bounded lesson is to inspect the capability boundary, not just the source code.
 
-![Three equal columns. Separate operations: two products with their own teams, joined only by a sales agreement. Shared services: two products resting on one bar of shared tools and data services. Combined product: one product resting on one combined customer record. Under each column, a card asking which benefit.](private-techuity/posts/24-acquisition-adds-work-first/assets/images/24-acquisition-adds-work-first/integration-depth-by-benefit.jpeg)
+![Three equal columns. Separate operations: two products with their own teams, joined only by a sales agreement. Shared services: two products resting on one bar of shared tools and data services. Combined product: one product resting on one combined customer record. Under each column, a card asking which benefit.](private-techuity/posts/25-acquisition-adds-work-first/assets/images/25-acquisition-adds-work-first/integration-depth-by-benefit.jpeg)
 
 **Figure 1:** *Three choices, not three stages: a sales agreement between separate businesses, shared services under separate products, or one product on one combined customer record. Each has to name the benefit that justifies it and fund its transition.*
 
@@ -224,7 +224,7 @@ Either way the transaction’s funding is re-opened on the new figures, and the 
 
 Figure 2 draws the problem the whole calendar exists to solve. On the left, inside the parent’s boundary, the **business unit** — the part being separated — hangs off four services it does not own: an **identity service** (the sign-in and account controls described above — what decides who is allowed into which system), a **billing service** (charging customers and collecting the money), a **support service** (answering customers when something is wrong) and an **infrastructure service** (the computers, storage and network the software actually runs on). Drawing the separation line cuts all four connections at once. On the right, the independent company needs each one replaced by something it owns or by a written agreement to keep using the parent’s — and the gold arrows mark where neither exists yet. Those are the gaps that become someone’s milestone, or become a negotiation held under time pressure.
 
-![Two boxes either side of a vertical separation line. Inside the parent boundary a business unit depends on four services: identity, billing, support and infrastructure. Each connection is cut at the line and marked with a question mark. Inside the independent company boundary the same four services are shown in gold, unconnected, under the heading replacement or temporary agreement needed.](private-techuity/posts/24-acquisition-adds-work-first/assets/images/24-acquisition-adds-work-first/carveout-hidden-dependencies.jpeg)
+![Two boxes either side of a vertical separation line. Inside the parent boundary a business unit depends on four services: identity, billing, support and infrastructure. Each connection is cut at the line and marked with a question mark. Inside the independent company boundary the same four services are shown in gold, unconnected, under the heading replacement or temporary agreement needed.](private-techuity/posts/25-acquisition-adds-work-first/assets/images/25-acquisition-adds-work-first/carveout-hidden-dependencies.jpeg)
 
 **Figure 2:** *Separation cuts four connections at once: sign-in and account control, customer billing, customer support, and the computers and network the product runs on. Each needs a funded replacement or a written agreement to keep using the parent’s — independence takes working capabilities, rights and money, not just a change of owner.*
 

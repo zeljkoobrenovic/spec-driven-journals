@@ -1,7 +1,7 @@
 {id: growth-into-design}
-# 24. Plan for Growth: Decide What (Not) to Change in Your Systems
+# 25. Plan for Growth: Decide What (Not) to Change in Your Systems
 
-![Plan for Growth: Decide What (Not) to Change in Your Systems — logo](private-techuity/posts/23-growth-into-design/assets/images/23-growth-into-design/logo.jpeg)
+![Plan for Growth: Decide What (Not) to Change in Your Systems — logo](private-techuity/posts/24-growth-into-design/assets/images/24-growth-into-design/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to recover the business requirement behind a request for flexibility, compare implementation options against it and choose one with its funded transition.
 
@@ -71,7 +71,7 @@ A growth-oriented company might need modular boundaries because teams must chang
 
 A company that buys most of its systems faces the same question in a different form: flexibility comes from staying close to the supplier’s intended use, so upgrades stay routine, and from keeping its own distinctive work in parts it controls. Heavy customization loses both, and the knowledge of why the product was changed leaves with the people who changed it. Equally, a blanket preference for the lowest immediate cost is not an earnings strategy. A reliable **managed service**, operated by a supplier on the company’s behalf, can cost more on an invoice while reducing the total work of operating the product; a commitment that lowers this year’s price for the computers and services running the software may limit the ability to shrink or change later.
 
-![Three rows. On the left, three business priorities: “New markets”, “Lower running cost” and “Possible future separation”. An arrow leads from each to a question card on the right, every card marked with a question-mark badge. The cards read “Which rules can change by settings?”, “Which steps can be simplified?” and “Which responsibilities can be separated, and can the data move?” — the last drawn as two blocks being gently pulled apart, each with its own store of data. An amber note on the right reads “Every answer has trade-offs”, with dotted arrows curving back to all three cards.](private-techuity/posts/23-growth-into-design/assets/images/23-growth-into-design/business-priorities-design-tradeoffs.jpeg)
+![Three rows. On the left, three business priorities: “New markets”, “Lower running cost” and “Possible future separation”. An arrow leads from each to a question card on the right, every card marked with a question-mark badge. The cards read “Which rules can change by settings?”, “Which steps can be simplified?” and “Which responsibilities can be separated, and can the data move?” — the last drawn as two blocks being gently pulled apart, each with its own store of data. An amber note on the right reads “Every answer has trade-offs”, with dotted arrows curving back to all three cards.](private-techuity/posts/24-growth-into-design/assets/images/24-growth-into-design/business-priorities-design-tradeoffs.jpeg)
 
 **Figure 1:** *Each business priority opens a different question to examine, not a prescribed technical answer, and every answer carries trade-offs. A need to separate part of the business later asks which responsibilities can be pulled apart and whether the data can be moved — it does not by itself require splitting the software into separately released and separately run services.*
 
@@ -158,7 +158,7 @@ One trap follows directly. **Present value** is what a future sum is worth today
 
 If Larkspur can’t fund the first year, the project may be **economically attractive and currently infeasible**. It could phase the work, seek funding or choose another intervention. Valuation doesn’t remove the financing constraint.
 
-![Cash is spent before implementation produces recurring net savings, leaving a period that must be funded.](private-techuity/posts/23-growth-into-design/assets/images/23-growth-into-design/cash-before-benefits.jpeg)
+![Cash is spent before implementation produces recurring net savings, leaving a period that must be funded.](private-techuity/posts/24-growth-into-design/assets/images/24-growth-into-design/cash-before-benefits.jpeg)
 
 **Figure 2:** *A promising future saving still needs an affordable route through the implementation period.*
 

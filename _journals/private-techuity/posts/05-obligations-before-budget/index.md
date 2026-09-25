@@ -28,7 +28,7 @@ The **board**, the group of directors that oversees the company on the sharehold
 
 An ownership arrangement changes the conditions of that calculation; it does not create the gap. Borrowing taken on to buy the company adds contractual interest and repayment dates. A shareholders’ agreement, the contract among the owners, may require payouts to them or set spending thresholds above which their approval is needed. A corporate parent, a company that owns this one, may set an allocation, the budget it assigns. Establish the actual payments, the authority and the dates before committing. The chapter [[valuation-is-an-estimate]] distinguished earnings from cash in principle; this chapter applies the distinction to one funding decision.
 
-Three terms carry the calculation. The earnings measure used here is **EBITDA**: earnings before interest, taxes, depreciation and amortization. Interest is the cost of borrowing. Depreciation and amortization spread the cost of an asset, such as equipment or software the company built, across the years it is used, instead of counting all of it in the year it was bought; depreciation is the label for physical assets, amortization for assets without physical form, such as software. EBITDA is a profit measure that leaves all four out. It is not a bank balance, and it leaves out several payments a business must make.
+The earnings measure used here is **EBITDA**: earnings before interest, taxes, depreciation and amortization. Interest is the cost of borrowing. Depreciation and amortization spread the cost of an asset, such as equipment or software the company built, across the years it is used, instead of counting all of it in the year it was bought; depreciation is the label for physical assets, amortization for assets without physical form, such as software. EBITDA is a profit measure that leaves all four out. It is not a bank balance, and it leaves out several payments a business must make.
 
 **Capital expenditure**, often shortened to **capex**, is spending on assets that will be used for years: equipment, or software development that qualifies under accounting rules. Recording such spending as an asset, rather than as a cost of the year, is called **capitalization**. The cash is still spent in full; only the timing of the cost in the profit figure changes.
 
@@ -62,7 +62,7 @@ Alex, who leads engineering, wants €1 million to automate customer onboarding,
 | Additional working capital | A consequence of growth and payment terms | Collection terms, prepayments and the pace of growth |
 | Owner distributions (none in this model) | A proposal, unless the shareholders’ agreement, or the terms of a class of shares with priority payment rights, requires them | The board and shareholders, under those agreements and the legal rules on distributions |
 
-The working-capital line explains why sales growth can absorb cash. Larkspur grew, so more customers owed it money at year end than at the start: about €1 million more invoiced but not yet collected. The sales are recorded, the cash isn’t in. Annual subscriptions paid in advance work the other way and produce cash before the sale is counted as revenue, the income recorded in the accounts. These timing differences can be economically helpful while still creating future service obligations.
+Larkspur grew, so more customers owed it money at year end than at the start: about €1 million more invoiced but not yet collected. The sales are recorded, the cash isn’t in. Annual subscriptions paid in advance work the other way and produce cash before the sale is counted as revenue, the income recorded in the accounts. These timing differences can be economically helpful while still creating future service obligations.
 
 ![An earnings estimate must be reconciled with cash balances, receipts, payments and reserves before a spending commitment.](assets/images/05-obligations-before-budget/earnings-to-dated-cash-plan.jpeg)
 **Figure 1:** *An annual residual is a planning result; available cash also depends on balances, obligations and dates.*
@@ -83,7 +83,7 @@ The working-capital line explains why sales growth can absorb cash. Larkspur gre
 
 **The mid-year fallback.** No option covers the mid-year fallback: on 30 June Sam asks the firm whether the same specialist, or another contractor briefed by the implementation team, is available for the third quarter at the same rate. If neither is, that fallback is not available, the implementation team carries the peak with the step as it stands, and the expansion question goes to the budget round. Either fallback therefore has two conditions: an available specialist and cash above the reserve on each payment date.
 
-**What the pilot leaves out.** The pilot carries no transition budget. Migrating existing configurations and running the old and new processes side by side belong to a second stage and would be priced there, as the funding example in the chapter [[raise-what-you-need]] prices them.
+**What the pilot leaves out.** Migrating existing configurations and running the old and new processes side by side belong to a second stage and would be priced there, as the funding example in the chapter [[raise-what-you-need]] prices them.
 
 **The calendar.** Day 0 is the first day of the financial year, when Ines approves. The step is usable from about day 35, in early February. The implementation team then sets up the first eight customers with it between day 35 and day 90. At day 90, which is 1 April, Priya measures the average staff hours per customer across that **cohort**, the group of eight customers measured together.
 
@@ -127,7 +127,7 @@ The working-capital line explains why sales growth can absorb cash. Larkspur gre
 5. About month six, the end of June, if scheduled: the second-stage gate. A further cohort at or below 50 hours with waiting time down qualifies a second stage for the board’s consideration; the stage still needs its own priced, funded approval. A miss returns the expansion question to the budget round.
 6. The next annual budget round: the default forum for any expansion the board did not bring forward.
 
-**What would change the decision.** The decision rules are the shared ones. A first cohort below 60 hours per customer at day 90, with customers paying on or ahead of plan, is the case for asking the board at day 100 to schedule the month-six review rather than wait for the budget round; the second stage is still released only after that gate and its own approval. A cohort between 60 and 70 hours, with much of the remaining effort traced to customer data quality rather than the setup step, would redirect the next step to a data-quality fix before any second stage. A cohort above 70 hours, or a weak first half in collections, would fall back to option 1’s specialist for one quarter, if available, and defer the rest.
+**What would change the decision.** A first cohort below 60 hours per customer at day 90, with customers paying on or ahead of plan, is the case for asking the board at day 100 to schedule the month-six review rather than wait for the budget round; the second stage is still released only after that gate and its own approval. A cohort between 60 and 70 hours, with much of the remaining effort traced to customer data quality rather than the setup step, would redirect the next step to a data-quality fix before any second stage. A cohort above 70 hours, or a weak first half in collections, would fall back to option 1’s specialist for one quarter, if available, and defer the rest.
 
 **The fallback’s cash check.** The fallback is not a refund. Nothing of the build is cancellable; only the maintenance stops if the step is withdrawn. It has two triggers with different dates, so it needs two checks. Both use the same stated conventions: the €0.5 million residual arrives at about €125,000 a quarter in the base plan and is counted at each quarter end; about €90,000 of the build is paid by day 90 and the remaining €90,000 in two €45,000 instalments, on 30 June and 30 September; maintenance is charged €2,500 at the end of each month from February; and one quarter of the specialist costs €37,500 at the shared rate, paid as €12,500 a month.
 
@@ -202,7 +202,7 @@ Under corporate ownership, replace the hoped-for round with the relevant parent-
 
 ## Debt Changes the Consequences of Being Wrong
 
-Interest is the cost of borrowing. Principal repayment returns the borrowed amount. The **maturity date** is when a loan is due for repayment. Meeting it can require **refinancing**, replacing the loan with a new one, even if every interest payment was made on time.
+The **maturity date** is when a loan is due for repayment. Meeting it can require **refinancing**, replacing the loan with a new one, even if every interest payment was made on time.
 
 **Covenants** are contractual conditions attached to borrowing. Some are tested periodically, such as a leverage ratio checked at year end; others restrict actions at any time, such as taking on new debt without the lender’s consent, which is why option 3 above needed the existing lender’s consent as well as a willing new lender.
 
@@ -210,7 +210,7 @@ A covenant might, for example, cap net debt divided by EBITDA at 5×, five times
 
 If the ratio breaches the agreed limit, the contract may give lenders additional rights, subject to its terms and any chance to correct the breach. The company may need to negotiate a waiver, pay extra fees or change its financing or spending plan. **This is why one bad quarter can freeze a migration budget that was approved in the last one.** Exact definitions and consequences live in the financing documents, and they vary.
 
-A simple downside scenario shows the operating significance. Suppose a company carries €60 million of **floating-rate debt**, borrowing whose interest rate moves with the market, so the cost can rise without anything changing inside the business. At 6% annually, interest is €3.6 million. At 9%, it becomes €5.4 million. (These are round numbers for the rate illustration, not Larkspur’s €4.0 million above.) The €1.8 million difference can consume more cash than an entire technology initiative. If EBITDA also falls, the company faces weaker earnings and higher financing costs at the same time. This is arithmetic under stated assumptions, not a forecast of interest rates.
+Suppose a company carries €60 million of **floating-rate debt**, borrowing whose interest rate moves with the market, so the cost can rise without anything changing inside the business. At 6% annually, interest is €3.6 million. At 9%, it becomes €5.4 million. (These are round numbers for the rate illustration, not Larkspur’s €4.0 million above.) The €1.8 million difference can consume more cash than an entire technology initiative. If EBITDA also falls, the company faces weaker earnings and higher financing costs at the same time. This is arithmetic under stated assumptions, not a forecast of interest rates.
 
 A lender’s leverage calculation may use a different EBITDA definition from management’s operating report. It might include an anticipated **synergy**, a benefit expected from combining acquired businesses, before that benefit produces cash. Leaders should know both the contractual measure and a conservative view of the business’s ability to pay.
 
@@ -218,11 +218,11 @@ This is why the technology plan for improving the business, which investors call
 
 ## Accounting Changes the Picture, Not the Work
 
-A technology leader who reports an EBITDA improvement should be able to say whether the work became more effective, whether the accounting changed, or both. The second possibility needs one rule explained.
+A technology leader who reports an EBITDA improvement should be able to say whether the work became more effective, whether the accounting changed, or both.
 
 Under International Accounting Standard 38 (**IAS 38**), the international rule on intangible assets, assets without physical form such as software, research spending (investigating whether something is possible) is expensed, counted as a cost in the year’s profit; development spending (applying what is known to build a product or process) that meets specified criteria is recognized as an intangible asset instead. The treatment depends on the facts and applicable standards. It isn’t a discretionary device for meeting an EBITDA target. [S07: IAS 38 overview](https://www.ifrs.org/issued-standards/list-of-standards/ias-38-intangible-assets/)
 
-To isolate the accounting effect, consider a separate €1 million development-spending example. The table compares recognizing the spending immediately as an expense with recognizing it as an asset. In practice the applicable criteria decide the treatment; management can’t simply choose the column with higher EBITDA:
+To isolate the accounting effect, consider a separate €1 million development-spending example. In practice the applicable criteria decide the treatment; management can’t simply choose the column with higher EBITDA:
 
 | Measure (illustrative amounts, € millions) | Expensed | Capitalized |
 | --- | ---: | ---: |
@@ -251,7 +251,7 @@ What to do when expected funding does not arrive on time, and on which date each
 
 The question is not which option maximizes an earnings measure but which plan gives the company the strongest feasible ability to serve customers and meet its obligations. Three priced options with decision dates, as in the onboarding example, are a much stronger basis for arguing that technology deserves investment than one unpriced request.
 
-Part I has followed the money from funding to company cash. Each option above named who decides; Part II asks where that authority comes from, what an approval record looks like and what to do when the people who must agree don’t. Begin with [[part-2]], then the chapter [[decide-who-decides]].
+Each option above named who decides; Part II asks where that authority comes from, what an approval record looks like and what to do when the people who must agree don’t. Begin with [[part-2]], then the chapter [[decide-who-decides]].
 
 ## Questions to Consider
 

@@ -57,15 +57,15 @@ The training row’s figure is in brackets because it is outside that comparison
 
 The second row concerns **setup**, the work of helping a new customer configure the product and start using it. Other chapters call the same work onboarding or implementation, and the people who do it the implementation team. The last two rows are stages of one idea: the portal research comes before a full build. The table shows what funding both stages would require; the company still has to decide whether the research justifies that later commitment.
 
-KNW-1 changes neither total. The **scheduling engine** is the software that works out which job goes to which person and when. Diligence found that only one specialist could **release** it, meaning put a new version into use, and recover it after a failure. KNW-1 has that specialist teach a second engineer to do both. It needs no additional cash, because both people are existing employees paid from the operating budget.
+The **scheduling engine** is the software that works out which job goes to which person and when. Diligence found that only one specialist could **release** it, meaning put a new version into use, and recover it after a failure. KNW-1 has that specialist teach a second engineer to do both. It needs no additional cash, because both people are existing employees paid from the operating budget.
 
 Being paid is not the same as being free, so the plan counts their time too. The specialist gives four weeks. The second engineer, who already works on the engine, spends about the same four weeks alongside the specialist during the first 60 days, on real releases and a recovery rehearsal. That makes about eight person-weeks in all, the figure in the table. None of it comes from the 24, which were counted after both people’s KNW-1 time had been set aside, so no week is counted twice. The price is paid in ordinary work: Alex postpones non-urgent changes to the scheduling engine for those weeks, and urgent fixes still come first. The row is in the table so that nothing else can claim that time.
 
-The totals are only a first check. Confirm that the required specialists are available in the weeks each project needs them. Twenty-four engineer-weeks spread across several teams or months may not support a plan that needs the same specialist for twelve consecutive weeks.
+Confirm that the required specialists are available in the weeks each project needs them. Twenty-four engineer-weeks spread across several teams or months may not support a plan that needs the same specialist for twelve consecutive weeks.
 
 ## Sort the Rows by What They Rest On
 
-Before choosing among the rows, establish what each one depends on. The table gives every row the same shape; the rows are not the same kind of choice.
+The table gives every row the same shape; the rows are not the same kind of choice.
 
 **An agreed obligation.** Some work protects an existing commitment: continuing a contracted service, meeting an applicable requirement or resolving a risk the company has decided it can’t accept. At Larkspur the recovery requirement above is one: Ines approved it, and customers plan their mornings around it. The restoration row is what proving and meeting it costs. KNW-1 is the other obligation on the table: the company decided not to carry the risk of one person being the only one who can release and recover the scheduling engine. That doesn’t make every proposed security or maintenance project mandatory. Establish the specific obligation or failure scenario, the minimum acceptable result and the feasible alternatives, with specialist interpretation where necessary. The company still chooses how to meet the need.
 
@@ -77,7 +77,7 @@ Before choosing among the rows, establish what each one depends on. The table gi
 
 ## The Condition That Applies Here
 
-Having an investor changes the conditions of the decision. Establish the actual funding, authority and deadline before committing. In this exercise the condition is specific. Larkspur’s growth funding, the money the investor put in to pay for expansion, was agreed on a plan with one central assumption: the company can set up many more new customers without the implementation team growing at the same rate. The plan’s own test is one and a half times as many new customers with the same team.
+Having an investor changes the conditions of the decision. Establish the actual funding, authority and deadline before committing. Larkspur’s growth funding, the money the investor put in to pay for expansion, was agreed on a plan with one central assumption: the company can set up many more new customers without the implementation team growing at the same rate. The plan’s own test is one and a half times as many new customers with the same team.
 
 That gives the setup row a priority the company’s own view might not. The setup change is run as a **pilot**, a limited trial, with a first **cohort**: a group of customers set up the new way and measured together. The pilot’s evidence is a condition of the next expansion step. Other funding arrangements set other conditions; the chapter [[raise-what-you-need]] compares them, and the [[introduction]] explains how the book’s alternative scenarios relate to each other.
 
@@ -96,7 +96,7 @@ Record the decision in full:
 - **Authority:** Ines proposes; the board approves the plan and the envelope. Inside the approved plan Ines authorizes spending; any draw on the reserve, and any change to what the envelope funds, stays with the board. The chapter [[decide-who-decides]] records that delegation rule. Alex is accountable for restoration and KNW-1, Priya for the setup change and the research.
 - **Evidence that would change it:** research showing the portal is essential to retain a major customer, or the first setup cohort showing no reduction in effort.
 
-The remaining €220,000 and six weeks provide room for uncertainty and for a later decision. They aren’t automatically savings or permission to start another project, and drawing on them is the board’s decision, not Ines’s. The review below shows what part of them was for.
+The remaining €220,000 and six weeks provide room for uncertainty and for a later decision. They aren’t automatically savings or permission to start another project, and drawing on them is the board’s decision, not Ines’s.
 
 An estimated score can help organize this conversation, but it shouldn’t hide that an agreed obligation, a speculative product opportunity and a learning step answer different questions. **Explain the trade-off in words** as well as numbers.
 
@@ -109,14 +109,14 @@ A **funding stage** commits resources for a defined piece of work before decidin
 
 For the portal, the research is the first stage; the next decision might be to build a narrow function, investigate another need or stop. For restoration, the stage is the test itself: can the service recover within the agreed conditions?
 
-Check the connections between stages. Can the company operate safely if it stops after the first? **Who maintains anything already delivered?** What spending is unavoidable once the first commitment is made? The setup step’s yearly upkeep is that kind of cost, which is why the record carries it from day 0. Some transitions require a larger coordinated commitment, which should be visible from the start.
+Can the company operate safely if it stops after the first? **Who maintains anything already delivered?** What spending is unavoidable once the first commitment is made? The setup step’s yearly upkeep is that kind of cost, which is why the record carries it from day 0. Some transitions require a larger coordinated commitment, which should be visible from the start.
 
 ![An initial funded test leads to a review before the company expands, changes or stops the work.](assets/images/16-cannot-fund-everything/staged-investment-with-review.jpeg)
 **Figure 2:** *Commit enough to answer the next decision, then use the evidence before committing more.*
 
 ## Review the Combination, Not Just Each Project
 
-New evidence can change the whole plan, and in this exercise it did. Restoration had been approved at €80,000 and four engineer-weeks. By the day-45 test all of it had been spent: on a **restore environment**, a separate set of systems on which the service can be rebuilt; on access to the **backups**, the saved copies of the company’s data; on backing up schedule data every fifteen minutes instead of once a night; and on the test itself.
+Restoration had been approved at €80,000 and four engineer-weeks. By the day-45 test all of it had been spent: on a **restore environment**, a separate set of systems on which the service can be rebuilt; on access to the **backups**, the saved copies of the company’s data; on backing up schedule data every fifteen minutes instead of once a night; and on the test itself.
 
 The test failed both parts of the requirement. The service came back after eleven hours against the agreed four, for two reasons. The account that could read the backups belonged to an engineer who had left, so nobody held a working **credential**, the information that proves someone may access a system. And the backup could only be loaded by the version of the database software it was made with, which could no longer be installed. (The database stores and organizes the application’s data.)
 
@@ -124,7 +124,7 @@ When the service did come back, its data was from the previous night. The fiftee
 
 The €80,000 and four weeks are **sunk cost**: resources already spent that can’t be recovered. They belong in the record, but they are not a reason to spend more. The next commitment depends on remaining costs and expected benefits, and here the obligation has not gone away.
 
-The correction has three parts. The restore environment is kept on the same database version as the live service. The backup credentials move out of one person’s account into a single, centrally controlled store for access credentials, which records who may use them. An emergency procedure that two named people can carry out goes with it. And a written rehearsal includes the missing step that applies the fifteen-minute backups. With a retest, this needs about €20,000 and two more engineer-weeks.
+The restore environment is kept on the same database version as the live service. The backup credentials move out of one person’s account into a single, centrally controlled store for access credentials, which records who may use them. An emergency procedure that two named people can carry out goes with it. And a written rehearsal includes the missing step that applies the fifteen-minute backups. With a retest, this needs about €20,000 and two more engineer-weeks.
 
 Those can only come from the reserve, and the reserve is the board’s. Ines’s delegation covers spending inside the approved plan; it excludes any draw on the reserve and any change to what the envelope funds (the chapter [[decide-who-decides]] records the rule). So around day 47 Ines asks the board, and the board approves. The revised commitment:
 
@@ -136,11 +136,11 @@ Those can only come from the reserve, and the reserve is the board’s. Ines’s
 
 The retest at day 85 passed both parts: dispatch was working again within four hours, with under fifteen minutes of schedule updates lost. It proved that for one kind of failure: the loss of the application environment, meaning the servers, database and configuration the service runs on.
 
-The limit of that proof is about place. Larkspur rents its computing from a cloud provider, and a **cloud region** is one geographic group of that provider’s computing facilities. In the retest the region itself kept working, and Larkspur rebuilt its own systems inside it from the backups. If the whole region were unavailable, there would be nowhere in it to rebuild, and the service would have to come back in another location. That larger failure was not tested, and the record lists it as a risk that remains.
+Larkspur rents its computing from a cloud provider, and a **cloud region** is one geographic group of that provider’s computing facilities. In the retest the region itself kept working, and Larkspur rebuilt its own systems inside it from the backups. If the whole region were unavailable, there would be nowhere in it to rebuild, and the service would have to come back in another location. That larger failure was not tested, and the record lists it as a risk that remains.
 
-The sequence continued in the same way. At the day-100 review the board approved another €40,000 and the last four unallocated engineer-weeks for a data-quality step: checking and correcting each customer’s data before setup begins. The first setup cohort had pointed there, because about 40% of the setup hours that remained traced to problems in customers’ data. That took the envelope to €340,000 committed and all 24 engineer-weeks allocated, with €160,000 of cash still uncommitted.
+At the day-100 review the board approved another €40,000 and the last four unallocated engineer-weeks for a data-quality step: checking and correcting each customer’s data before setup begins. The first setup cohort had pointed there, because about 40% of the setup hours that remained traced to problems in customers’ data. That took the envelope to €340,000 committed and all 24 engineer-weeks allocated, with €160,000 of cash still uncommitted.
 
-Allocated does not mean finished, and committed does not mean spent. At day 100 the setup change had used about ten of its twelve weeks, and about €90,000 of its €180,000 had been **incurred**, meaning the work or services had been received. The other €90,000 falls due over the next two quarters, and the data-quality step’s four weeks were all still to come. The chapter [[first-hundred-days]] carries that review, with a table of what was committed and what was incurred. The point here is that each step changed the combination, and each was decided by the body that owned the reserve.
+Allocated does not mean finished, and committed does not mean spent. At day 100 the setup change had used about ten of its twelve weeks, and about €90,000 of its €180,000 had been **incurred**, meaning the work or services had been received. The other €90,000 falls due over the next two quarters, and the data-quality step’s four weeks were all still to come. The chapter [[first-hundred-days]] carries that review, with a table of what was committed and what was incurred.
 
 Review the starting assumptions, actual spending, team burden and observed outcomes together, not project by project. A supplier failure may use the spare capacity. Customer research may invalidate an expected benefit. One completed improvement may remove the need for another. Decide which work continues, which changes and which stops.
 

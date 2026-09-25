@@ -1,7 +1,7 @@
 {id: can-the-team-deliver}
-# 19. Assess Capability: Can the Team Deliver?
+# 20. Assess Capability: Can the Team Deliver?
 
-![Assess Capability: Can the Team Deliver? — logo](private-techuity/posts/18-can-the-team-deliver/assets/images/18-can-the-team-deliver/logo.jpeg)
+![Assess Capability: Can the Team Deliver? — logo](private-techuity/posts/19-can-the-team-deliver/assets/images/19-can-the-team-deliver/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to assess whether the software and the team can deliver the plan, and produce a finding that names the obstacle that most limits the plan (its **binding constraint**), the evidence, and what a transition would cost in money and time.
 
@@ -45,7 +45,7 @@ EBITDA is not cash, and a higher figure does not show that a project can be paid
 
 These priorities overlap. Reliable deployment reduces both the cost of failure and the time needed to experiment. A useful assessment describes the capability required and the trade-offs, rather than picking a technology from the financial target.
 
-![A business need, faster onboarding of customers, points to the two parts of the system that limit it, configuration and billing, before three options are compared: a small change, a staged replacement or a full replacement.](private-techuity/posts/18-can-the-team-deliver/assets/images/18-can-the-team-deliver/business-need-to-system-choice.jpeg)
+![A business need, faster onboarding of customers, points to the two parts of the system that limit it, configuration and billing, before three options are compared: a small change, a staged replacement or a full replacement.](private-techuity/posts/19-can-the-team-deliver/assets/images/19-can-the-team-deliver/business-need-to-system-choice.jpeg)
 
 **Figure 1:** *Start with the constraint the company needs to remove, then compare ways to remove it.*
 
@@ -116,7 +116,7 @@ The annual model in the chapter [Understand Cash Flow: Confirm the Cash Before Y
 
 The plan should define which capability migrates first, how value appears before the whole program is complete, and what happens if the program stops. A staged approach is useful only if intermediate states can operate safely. Dividing an inseparable replacement into nominal phases doesn’t reduce the underlying risk. Also identify **the retirement condition**: if customers remain indefinitely on the old product, the expected maintenance saving never arrives; if forced migration loses valuable customers, the lost customers could cost more than the saving.
 
-![The current and new systems run side by side while data migration, customer support and training take place; the old system retires only after a readiness check, and bands for cash and team capacity run underneath for the whole period. The bands carry no amounts or dates.](private-techuity/posts/18-can-the-team-deliver/assets/images/18-can-the-team-deliver/fund-the-system-overlap.jpeg)
+![The current and new systems run side by side while data migration, customer support and training take place; the old system retires only after a readiness check, and bands for cash and team capacity run underneath for the whole period. The bands carry no amounts or dates.](private-techuity/posts/19-can-the-team-deliver/assets/images/19-can-the-team-deliver/fund-the-system-overlap.jpeg)
 
 **Figure 2:** *The investment includes the path to the new system and the cost of keeping customers served along the way.*
 

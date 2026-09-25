@@ -14,9 +14,9 @@ These events follow no fixed order, and how much each changes the leadership wor
 {id: part-7--the-learning-path}
 ## The Learning Path
 
-![Three chapters stacked in one column under the heading LEAD, following a customer setup problem where some setups depend on one specialist: Use diligence (check the business before the deal is signed) leads to Plan the first hundred days (fund the work and review the finding), which leads to Manage the handover (pass on the evidence and unfinished promises). A final banner reads Account for decisions, evidence and promises through change.](private-techuity/posts/part-7-intro/assets/images/part-7-intro/chapter-overview.jpeg)
+![Three chapters in one row under the heading LEAD, following a customer setup problem where some setups depend on one specialist: Use diligence (check the business before the deal is signed) leads to Plan the first hundred days (fund the work and review the finding), which leads to Manage the handover (pass on the evidence and unfinished promises). A final banner reads Account for decisions, evidence and promises through change.](private-techuity/posts/part-7-intro/assets/images/part-7-intro/chapter-overview.jpeg)
 
-**Figure 1:** *Three chapters follow the onboarding finding from diligence to handover.* [Open diagram at full size](private-techuity/posts/part-7-intro/assets/images/part-7-intro/chapter-overview.jpeg)
+**Figure 1:** *Three chapters follow the onboarding finding from diligence to handover.*
 
 The onboarding finding runs through all three chapters, as it did through the earlier chapters of Parts III and IV, where Larkspur asked its investor for help and ran a limited trial of a new setup step. The separate delayed-financing scenario, with its own cash, people and dates, is the chapter [Manage Funding Delays: Revise the Cash Plan and Commitments](#the-financing-slipped) in Part IV; the reduction it can force is the chapter [Scale the Team Down: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff) in Part V.
 
