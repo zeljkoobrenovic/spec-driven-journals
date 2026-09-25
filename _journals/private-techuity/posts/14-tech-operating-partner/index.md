@@ -10,26 +10,41 @@ logo_credit: "Image generated with OpenAI imagegen."
 icon: "assets/icons/tech-operating-partner.png"
 ---
 
-> **IN THIS SECTION, YOU WILL:** Understand why technology operating partners are becoming more important, how their role compares with company product and technology leadership, how they help the companies an investor owns to hire, and how artificial intelligence (AI) changes their work.
+> **IN THIS SECTION, YOU WILL:** Understand why technology operating partners are becoming more important, how their role compares with company product and technology leadership, how they help the companies an investor owns with hiring, and how artificial intelligence (AI) changes their work.
+
+> **WHY INVESTORS CARE:** More of an investor’s expected gain now depends on software, data and delivery: growing the product, combining acquired businesses and deciding where AI helps or threatens the plan. Someone with technology judgment has to test those assumptions before the investor commits money and follow them through after it does. The operating partner function is how many investment firms supply that judgment across the companies they own.
+
+> **WHY YOU SHOULD CARE:** A technology operating partner can bring experience, access and a second opinion your team would not otherwise have, or add requests and expectations nobody has agreed. Knowing what the role is for, and where company leadership stays with you, lets you use the help without giving away decisions that remain yours.
 
 > **KEY POINTS:**
 >
-> * **Technology judgment increasingly belongs inside the investor’s plan.** When an investor’s expectations for growth, profit or buying other businesses depend on software, data and delivery, someone qualified needs to test those expectations and follow what happens.
+> * **Technology judgment increasingly belongs inside the investor’s plan.** When an investor’s expectations for growth, profit or buying other businesses depend on software, data and delivery, someone qualified needs to test those expectations and track what happens.
 > * **The work runs across the whole investment.** It can link the checks made before buying, the work the company funds, leadership and hiring, specialist help, learning across companies and preparation for a sale. One person rarely supplies all the expertise needed.
 > * **Judge the contribution by company results and clearer decisions.** Agree authority, availability, costs and evidence for each assignment; a senior title settles none of them.
 
 <br>
-An investment plan assumes that a software company can serve twice as many customers, absorb a business it has bought and launch a product that uses **artificial intelligence (AI)**: software that can, for example, draft text or find patterns in data. Each ambition enters the **financial forecast**, the investor’s estimate of future sales, costs and profit. Someone must determine what the systems and people can support, what needs funding and what should change when the evidence contradicts the forecast.
 
-The evidence here principally concerns **private equity**: investment in companies whose shares are not traded on a stock exchange. An **investment firm** raises money from outside investors, such as pension funds, and pools it in a **fund** that the firm manages. The fund buys all or part of each company, usually for several years, and later sells its stake. Before buying, the firm carries out **due diligence**: checks on the company’s claims, its risks and the work it will need after the purchase.
+Imagine an investment plan that assumes a software company can serve twice as many customers, absorb a business it has bought and launch a product that uses **artificial intelligence (AI)**, software that can, for example, draft text or find patterns in data. Each of these ambitions feeds into the **financial forecast**, the investor’s estimate of future sales, costs and profit. Someone has to work out what the company’s systems and people can actually support, what needs funding, and what should change when the evidence contradicts the forecast.
 
-A **technology operating partner**, also described as a **technical operating partner**, is a senior practitioner working with an investment firm and its **portfolio companies**, the businesses in which it invests. The function brings technical and operating judgment to investment decisions and helps company leaders deliver the improvements those decisions depend on. A firm may employ one partner, maintain a specialist team or engage external support. EE Solutions describes this continuity between assessment and execution as central to the role. [S80: EE Solutions, technology operating partner](https://www.eesolutions.io/insights/technology-operating-partner-private-capital/)
+Plans like this are increasingly common. More of an investor’s expected gain now rests on software, data and the ability to deliver, so technology judgment is needed both before the investor commits money and long after. Many investment firms supply that **judgment through a dedicated role**.
 
-An **investment thesis** is the investor’s explanation of why an investment should succeed. A **value creation plan** turns that explanation into intended improvements. Product and engineering leaders encounter the operating function where those improvements depend on their company’s technology and ability to deliver.
+That role is the **technology operating partner**, sometimes called a **technical operating partner**: a senior practitioner who works with an investment firm and its **portfolio companies**, the businesses it has invested in. The partner brings technical and operating judgment to investment decisions, then helps company leaders deliver the improvements those decisions depend on. EE Solutions describes this link between assessing and delivering as central to the role. [S80: EE Solutions, technology operating partner](https://www.eesolutions.io/insights/technology-operating-partner-private-capital/) A firm may employ one partner, build a specialist team or bring in outside support.
 
-One fictional case runs through the chapter. An investment firm wants three of its software companies to adopt the same **AI support tool**. The tool drafts replies to customer questions from past support records, and staff check each draft before it is sent. The first company has reliable support records. The second cannot yet show that its customers’ permissions allow their records to be used this way. The third receives most of its complaints because its core service keeps failing. A useful operating partner helps each company see which problem it actually has and what to do first.
+Two planning documents shape that work. An **investment thesis** is the investor’s explanation of why an investment should succeed. A **value creation plan** turns that explanation into specific intended improvements. Product and engineering leaders meet the operating partner wherever those improvements depend on their company’s technology and its ability to deliver.
 
-The preceding chapter explains how to work with an individual adviser. This chapter steps back to examine the function that supplies that adviser: why it matters, how it can be organized and what its contribution should look like. The practical agreements remain in [[investors-adviser]], [[help-that-changes-capability]] and [[useful-engagement]].
+The preceding chapter, [[investors-adviser]], explains how to work with an individual adviser. This chapter steps back to look at the function that supplies such advisers: why it matters, how it can be organized and what a good contribution looks like. The practical agreements for any piece of help are covered in [[help-that-changes-capability]] and [[useful-engagement]].
+
+## The Example: One AI Tool, Three Companies
+
+One fictional case runs through the chapter. An investment firm wants three of the software companies it owns to adopt the same **AI support tool**. The tool drafts replies to customer questions based on past support records, and staff check each draft before it is sent.
+
+The tool is the same, but the three companies start from different places:
+
+- **The first** has reliable support records, so it can test whether the tool actually helps.
+- **The second** has the records but cannot yet show that its customers’ permissions allow them to be used this way. Being able to open a record is not the same as being allowed to feed it into the tool.
+- **The third** receives most of its complaints because its core service keeps failing. Faster replies would not fix the cause.
+
+A useful operating partner helps each company see which situation it is actually in and what to do first. The chapter returns to the three companies when it discusses authority, staffing and how to judge results.
 
 ## Why the Function Is Becoming More Important
 

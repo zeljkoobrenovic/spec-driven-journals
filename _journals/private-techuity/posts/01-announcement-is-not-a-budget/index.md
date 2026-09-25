@@ -12,7 +12,7 @@ icon: "assets/icons/01-announcement-is-not-a-budget.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to trace who owns the company, who supplies its money and who can approve spending it.
 
-> **WHY INVESTORS CARE:** Investors and managers need to agree what money is actually available and who may approve spending, so that approvals apply to an agreed plan rather than to a headline.
+> **WHY INVESTORS CARE:** Investors and managers need to agree on what money is actually available and who may approve spending it, so that approvals apply to an agreed plan rather than to a headline figure.
 
 > **WHY YOU SHOULD CARE:** A hiring plan built on the announced figure is built on money the company may never see.
 
@@ -20,35 +20,33 @@ icon: "assets/icons/01-announcement-is-not-a-budget.png"
 > **KEY POINTS:**
 >
 > * Find out **who receives the investment money**. Buying a founder’s shares pays the founder; buying new shares can put money into the company.
-> * **Separate the organizations involved**. The investment firm, its fund, the company used to hold the investment, and the business serving customers can have different money and obligations.
-> * Distinguish **an estimate from a payment**. Saying an investment is worth more does not mean its owners have received cash, and a headline figure does not authorize a hire until the payer, the approver and the conditions are on the same page.
+> * **Separate the organizations involved**. The investment firm, its fund, the company used to hold the investment, and the business serving customers can each hold different money and carry different obligations.
+> * Distinguish **an estimate from a payment**. An investment that is said to be worth more has not paid its owners any cash, and a headline figure does not authorize a hire until the payer, the approver and the conditions are all known.
 
 <br>
-Your company announces a €100 million investment. It's natural to expect a larger hiring or product **budget**, an amount of spending that someone with authority has approved. But the headline figure may be a **valuation**, an estimate of what the whole company is worth (after investment), or the amount that changes hands in the transaction, and those two numbers can differ. Even the amount that changes hands need not reach the business.
+Your company announces a €100 million investment. It is natural to expect a larger hiring or product **budget**: an amount of spending that someone with authority has approved. But an announcement describes a **transaction**, an agreed exchange between parties, not a budget. Before building a hiring plan on it, establish three things: **how much cash reaches the business, when it arrives and who can authorize spending it**.
 
-A **share** is a unit of ownership in a company; its holder is a **shareholder**. Of the money paid for shares, payment for **newly issued shares** goes to the company that issues them: a **primary share issue**. Payment for **existing shares** goes to the shareholder selling them: a **secondary share sale**. Other parts of the amount may repay old loans or pay **transaction costs**, the legal and advisory fees of arranging the deal. Company cash can also grow in other ways, for example when a lender makes the company a loan as part of the same arrangement, or when an owner separately agrees to fund it.
+Start with the headline figure. It may be a **valuation**, an estimate of what the whole company is worth after the investment, or the amount that **changes hands** in the transaction. The two can differ widely, and even the amount that changes hands need not reach the business.
 
-In this chapter's examples, the money arrives at **closing**, the day the transaction is completed and the agreed payments are made, not at the announcement.
+Where that money goes depends on what is bought. A **share** is a unit of ownership in a company; its holder is a **shareholder**. Money paid for **newly issued shares** goes to the company that issues them, which is called a **primary share issue**. Money paid for **existing shares** goes to the shareholder who sells them, which is called a **secondary share sale**. Part of the amount may also repay old loans or cover **transaction costs**, the legal and advisory fees of arranging the deal. Company cash can grow in other ways too: a lender may make the company a loan as part of the same arrangement, or an owner may separately agree to fund it.
 
-An announcement describes a transaction, an agreed exchange between the parties. To turn it into a hiring plan, establish how much cash reaches the business, when it arrives and who can authorize its use. These questions matter under every ownership arrangement; a transaction changes the conditions of the answer, because the amount that reaches the business depends on how the deal was structured and on the conditions attached to it.
+Timing matters as well. In this chapter's examples, the money arrives at **closing**, the day the transaction is completed and the agreed payments are made, not on the day of the announcement.
 
-In the chapter [[customers-lenders-investors]] we traced €100,000 through a prepayment (money paid before the service is delivered), a loan and a share issue — one payment at a time. This chapter zooms out from single payments to whole deals: arrangements that change who owns or controls the company. It compares three: a **minority funding round**, one occasion on which the company raises money by selling less than half its shares to investors; a **buyout**, the purchase of control of the company, here paid for by an **investment fund**, a pool of investors' money managed under agreed rules; and ownership by a larger operating company, a **corporate group**.
+These questions apply under every ownership arrangement. A transaction changes the answers, because what reaches the business depends on how the deal is structured and on the conditions attached to it.
 
 ## Map the Arrangement Before Relying on the Money
 
-Consider three alternative, fictional Larkspur announcements. In each, Alex wants to hire more **onboarding engineers**, who set new customers up on the product and move their data across.
+Consider three alternative fictional Larkspur announcements from the perspective of Alex, the CTO, who wants to hire more **onboarding engineers**: the people who set new customers up on the product and move their data across.
 
 | Announcement | Where money goes under these assumptions | What Alex needs to establish |
 | --- | --- | --- |
-| Investors buy €8 million (€8m) of newly issued shares, less than half the company | The company receives €8m at closing, before transaction costs | Which operating plan is approved, what approvals apply and how long that plan can be funded |
-| A fund buys the founder’s shares for €40m | The selling founder receives the purchase money | Whether separate company funding exists and which payments any borrowing behind the purchase requires |
+| Investors buy €8 million (€8m) of newly issued shares, amounting to less than half of the company | The company receives €8m at closing, before transaction costs | Which operating plan is approved, which approvals apply and how long the company can fund that plan |
+| A fund buys the founder’s shares for €40m | The selling founder receives the purchase money | Whether separate company funding exists, and which payments any borrowing behind the purchase requires |
 | A corporate group buys Larkspur | Selling shareholders receive the agreed share price | Which group entity funds future work and how the local budget relates to the parent’s priorities |
 
-If an existing investor joins another round, that doesn't mean every shareholder contributes again. If a corporate investor buys a minority stake, less than half the shares, that doesn't automatically make the company part of the parent’s operating hierarchy. Draw the actual arrangement.
+Whichever announcement applies, identify the **shareholder**, the organization supplying the cash, the **person authorized** to commit it and any **conditions** that must be met before payment. Also note the **date** by which a promised decision must arrive for the engineering plan to remain feasible.
 
-Identify the shareholder, the entity supplying cash, the person authorized to commit it and any conditions before payment. Include the date by which a promised decision must arrive for the engineering plan to stay feasible. The end of this chapter shows that page completed for the first announcement.
-
-**Venture investors**, who fund young businesses with uncertain prospects, and **growth investors**, who fund the expansion of established businesses, usually without buying control, can also use funds; corporate and individual owners may use different structures. Don't invent a fund, a holding company or a fixed sale deadline when the arrangement has none.
+Every investment has its **own terms**, which do not follow automatically from earlier arrangements. If an existing investor joins another funding round, that does not mean every shareholder contributes again. If a corporate investor buys a minority stake (less than half of the shares), that does not automatically make the company part of the parent’s operating hierarchy. Draw the actual arrangement, and do not assume a fund, a holding company or a fixed sale deadline unless the deal has one.
 
 ## A Fund-Backed Buyout Can Involve Four Separate Organizations
 

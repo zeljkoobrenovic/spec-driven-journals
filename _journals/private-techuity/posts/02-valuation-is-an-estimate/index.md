@@ -12,26 +12,27 @@ icon: "assets/icons/02-valuation-is-an-estimate.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to read a business’s sales, profit and cash, then interpret a valuation: what is being valued, how the estimate was built and which of its assumptions your plan is being asked to support.
 
-> **WHY INVESTORS CARE:** An investor managing money for others may need to report an estimated value of the company and explain the assumptions behind it. It may therefore ask management which of those assumptions the operating plan can support, and which it cannot.
+> **WHY INVESTORS CARE:** Investors who manage money for others, such as investment funds, may have to report an estimated value for each company they hold and explain the assumptions behind it. They will therefore ask management which of those assumptions the operating plan can support, and which it cannot.
 
-> **WHY YOU SHOULD CARE:** A valuation may shape the targets proposed for your team: how fast sales should grow, what **margin** (profit as a percentage of sales) the business should earn, and which costs should fall. Identify its purpose and read how the estimate was built before adopting them.
+> **WHY YOU SHOULD CARE:** A valuation may shape the targets proposed for your team: how fast sales should grow, what **margin** (profit as a percentage of sales) the business should earn, and which costs should fall. Before accepting those targets, find out what the valuation was for and how it was built.
 
 
 > **KEY POINTS:**
 >
 > * **Sales, profit and cash** answer different questions. A business can record a sale or a profit before receiving the customer’s money.
-> * A valuation is an **estimate for a date and a purpose**. Its assumptions can become growth, margin and cost targets that leaders must examine.
-> * The **business’s value and the shareholders’ share of it** differ. Borrowing, and other rights to be paid from the business before the shareholders, explain the difference.
+> * A valuation is an **estimate for a date and a purpose**. Its assumptions can become growth, margin and cost targets, which leaders should examine before accepting them.
+> * The **value of the business and the value of its shares** differ. The gap is made up of debt and any other claims that must be paid before shareholders receive anything.
 
 <br>
 
-Product and engineering leaders rarely need to produce a valuation. They do need to read one, because the targets derived from it decide which technology work is funded and which is questioned.
+Suppose someone tells you a company is **worth** €60 million. Product and engineering leaders rarely need to produce a **valuation** like that, but they do need to understand one. Valuations drive ambitions, and the goals derived from them decide which work gets funded and which gets questioned.
 
-Suppose someone says a company is worth €60 million. Before interpreting that number, ask what is being valued: the operating business, or the shares its owners hold? Then ask how the estimate was made.
+Reading a valuation starts with two questions. **What is being valued**: the operating business, or the shares its owners hold? And **how was the estimate made**? Neither can be answered without first understanding the business’s own numbers, so this chapter has two stages:
 
-**Stage 1, Read the business’s numbers,** introduces revenue, profit and cash flow and ends with a short checkpoint. **Stage 2, Interpret a valuation,** separates business value from shareholder value, works through three common ways of estimating value, and ends with one operating assumption a leader can challenge.
+- **Read the business’s numbers,** introduces revenue, profit and cash flow, and ends with a short checkpoint on the €60 million.
+- **Interpret a valuation,** separates the value of the business from the value of its shares, works through three common ways of estimating value, explains why a funding-round price answers a different question, and ends with one operating assumption a leader can challenge.
 
-## Stage 1: Read the Business’s Numbers
+## Read the Business’s Numbers
 
 ### Revenue, Earnings and Cash Are Three Different Things
 
@@ -82,7 +83,7 @@ Return to the opening number with the fictional income statement in hand. The ta
 
 If the answers are unclear, you cannot yet tell what the number is claiming.
 
-## Stage 2: Interpret a Valuation
+## Interpret a Valuation
 
 ### A Valuation Is an Estimate, Not a Number You Look Up
 
@@ -171,7 +172,7 @@ If the answers are “nothing specific,” “not yet” and “nobody,” the a
 
 ## What to Carry Forward
 
-Stage 1 gave you three measures that describe different events: revenue records sales, profit deducts a specified set of costs, and cash flow follows actual payments. Stage 2 gave you the bridge from business value to share value, three ways to estimate value, together with the check on which of those two values each method produces, and the habit of reading a valuation as a bundle of assumptions to be tested rather than a fact to be met.
+Reading the business's numbers gave you three measures that describe different events: revenue records sales, profit deducts a specified set of costs, and cash flow follows actual payments. Interpreting a valuation gave you the bridge from business value to share value, three ways to estimate value, together with the check on which of those two values each method produces, and the habit of reading a valuation as a bundle of assumptions to be tested rather than a fact to be met.
 
 You can now ask which value is being quoted and which assumptions need testing. The next question is what the investor expects to get back from it, and why two investors holding the same company through the same performance can report very different results: the chapter [[three-different-returns]].
 

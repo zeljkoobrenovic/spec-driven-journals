@@ -12,9 +12,9 @@ icon: "assets/icons/18-investors-adviser.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to establish the investor adviser’s assignment and reporting relationship, separate influence from authority, and handle a change of role before sharing sensitive information.
 
-> **WHY INVESTORS CARE:** An investor is someone who has put money into the company expecting a financial gain from it, and its **information rights** are whatever the company has agreed it may see and ask about. The adviser is one of the investor’s main channels for using those rights and forming the views behind its decisions; the investor needs the role to be clear so that its findings are trusted and its advice is not mistaken for instruction.
+> **WHY INVESTORS CARE:** An investor has put money into the company in the expectation of a financial gain. Its **information rights** are whatever the company has agreed it may see and ask about. The adviser is one of the investor’s main channels for using those rights and for forming the views behind its decisions. The investor needs the role to be clear, so that the adviser’s findings are trusted and their advice is not mistaken for an instruction.
 
-> **WHY YOU SHOULD CARE:** An adviser who reports to the investment firm can help, assess and, without an explicit assignment, appear to decide; what you share and how it is used depends on knowing which role is in play.
+> **WHY YOU SHOULD CARE:** An adviser who reports to the investment firm can help you, assess you and, unless the assignment is explicit, appear to decide for you. What you should share, and how it will be used, depends on knowing which role is in play.
 
 
 > **KEY POINTS:**
@@ -26,11 +26,11 @@ icon: "assets/icons/18-investors-adviser.png"
 <br>
 A technology specialist employed by the investor joins your planning meeting. They understand the product and offer useful ideas. Your engineers want to know whether the ideas are suggestions, a new assessment or instructions they should act on.
 
-An **investor’s technology adviser** is a person the investment firm employs or engages to form its own view of a company’s technology and, often, to help improve it. In this book the supplied example of that role is the **Technology Principal**, and Morgan holds it in the fictional Larkspur scenarios. A **chief technology officer (CTO)** leads technology inside the company; at Larkspur that is Alex. The adviser can test assumptions and improve company work. The company leader carries the continuing operating responsibility.
+An **investor’s technology adviser** is a person the investment firm employs or engages to form its own view of a company’s technology and, often, to help improve it. In this book, that role is called the **Technology Principal**, and Morgan holds it in the fictional Larkspur scenarios. A **chief technology officer (CTO)** leads technology inside the company; at Larkspur that is Alex. The adviser can test assumptions and help improve the company’s work, but the company’s own leader keeps the continuing operating responsibility.
 
-What distinguishes this adviser from other outside experts is not privileged access or multiple responsibilities; a board-appointed consultant can have both. This adviser reports to the investment firm, so the company needs to understand both the operating assignment and how findings may inform the investor’s decisions. Working that out is the company technology leader’s job, and it starts before sensitive information is shared.
+What sets this adviser apart from other outside experts is not privileged access or a mix of responsibilities; a consultant appointed by the board can have both. It is the reporting line: this adviser reports to the investment firm, so the company needs to understand both the operating assignment and how the adviser’s findings may inform the investor’s decisions. Working that out is the job of the company’s technology leader, and it has to start before any sensitive information is shared.
 
-The earlier Part III chapters established the working arrangement, the choice of help and the written agreement that records what a piece of advisory work covers. Sourcing help is the subject of the chapter [[help-that-changes-capability]]; the mechanics of an engagement belong to the chapter [[useful-engagement]].
+The earlier Part III chapters covered the working arrangement, the choice of help and the written agreement for a piece of advisory work: sourcing help is the subject of the chapter [[help-that-changes-capability]], and the mechanics of an engagement are covered in the chapter [[useful-engagement]]. This chapter focuses on the adviser’s role itself.
 
 ## Establish the Assignment and the Reporting Relationship
 

@@ -12,21 +12,21 @@ icon: "assets/icons/00-customers-lenders-investors.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn what customers, lenders and shareholders each expect in return for their money, and follow one €100,000 need through all three routes to a decision.
 
-> **WHY INVESTORS CARE:** Lenders are investors too. Shareholders expect the rights attached to their shares; lenders expect the repayment and the protections written into their contracts; each sets its price accordingly. Establish which financing arrangement supplies this money before treating it as a budget.
+> **WHY INVESTORS CARE:** Lenders are investors too. Shareholders expect the rights attached to their shares, and lenders expect repayment and the protections written into their loan contracts; each prices its money accordingly. Establish which financing arrangement supplies the money before treating it as a budget.
 
-> **WHY YOU SHOULD CARE:** Every commitment you make to a team is paid for by someone who expects something back; if you do not know what, you cannot know which promises the company can keep.
+> **WHY YOU SHOULD CARE:** Every commitment you make to a team is paid for by someone who expects something back. If you do not know what they expect, you cannot know which promises the company can keep.
 
 
 > **KEY POINTS:**
 >
 > * Where money comes from affects **what the company must do in return**. Customers expect a product or service, lenders expect repayment, and shareholders receive ownership rights.
 > * Buying a share means **buying part of a company**. Only newly issued shares put money into the company; buying existing shares pays the seller.
-> * A budget tells you how much you may spend. **The funding terms tell you when you may spend it, which approvals you need and what the company must deliver in return.** Establish the actual arrangement before turning funding or a change of owner into a product commitment.
+> * A budget tells you how much you may spend. **The funding terms tell you when you may spend it, which approvals you need and what the company must deliver in return.** Establish the actual arrangement before turning new funding or a change of ownership into a product commitment.
 
 <br>
-A company needs cash to pay people, buy supplies and develop its products, often before its customers pay. **Financing** means arranging that money, and the source matters because each arrangement brings different costs, expectations and rights.
+A company needs cash to pay people, buy supplies and develop its products, often before its customers pay. **Financing** means arranging that money, and the source matters because each one brings different costs, expectations and rights.
 
-Product and engineering leaders usually meet money as a budget. This chapter follows one need through three funding routes so that the terms behind the budget become as visible as the amount.
+Product and engineering leaders usually meet money as a **budget**: an approved amount that their team may spend on agreed work over a set period, typically a year. A budget shows how much may be spent, but not where the money came from or what the company owes in return. This chapter follows one need through three funding routes so that the terms behind a budget become as visible as the amount.
 
 ## Larkspur Needs €100,000
 

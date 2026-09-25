@@ -12,7 +12,7 @@ icon: "assets/icons/08-investor-under-pressure.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to judge an investor by evidence of how it behaved when a company fell short of its plan, compare two offers on that evidence, and change one dependency when the investor is already in place.
 
-> **WHY INVESTORS CARE:** An investor that writes down the conditions for giving a company more money later gives up its freedom to refuse when the time comes. Not every investor can or will. One that does is bound only by what the contract says: the conditions must be met, and the company must still make a valid request. One that won’t write its conditions down keeps the choice, and the company should plan as if the money is not there.
+> **WHY INVESTORS CARE:** An investor that commits in writing to the conditions for providing more money later gives up the freedom to refuse when the time comes. Not every investor can or will do this. One that does is bound only by what the contract says: the conditions must be met, and the company must still make a valid request. One that will not write its conditions down keeps the choice, and the company should plan as if that money is not there.
 
 > **WHY YOU SHOULD CARE:** A plan built on an investor’s promised patience or support fails when the promise does. Past decisions help test promises of support; current terms and available resources determine which promises your plan can rely on.
 
@@ -24,31 +24,33 @@ icon: "assets/icons/08-investor-under-pressure.png"
 > * **If the investor is already in place**, use the assessment to change one dependency: the funding date, the approval route or the support commitment. Reassess as the business changes.
 
 <br>
-Ines, the chief executive officer (CEO) of the fictional software company Larkspur, has two **term sheets** on her desk. A term sheet sets out the terms on which an investor proposes to put money into a company in exchange for shares, which are units of ownership. Both investors promise patient ownership, meaning time for results to arrive, and practical support. To compare them, she needs examples of how those promises worked when a company missed its plan: sales came later than forecast, or a product shipped late.
+Ines, the chief executive officer (CEO) of the fictional software company Larkspur, has two **term sheets** on her desk. A term sheet sets out the terms on which an investor proposes to put money into a company in exchange for shares (units of ownership). Both investors promise two things: patient ownership, meaning time for results to arrive, and practical support. To compare them, Ines needs examples of how those promises held up when a company missed its plan: when sales came later than forecast, or a product shipped late. What she is judging is **investor fit**: how well an investor’s terms, resources and behavior match what the company needs.
 
-The **investor** here is an investment firm. The firm manages a **fund**: a pool of money that outside institutions and individuals, the fund’s own investors, have promised to it for an agreed number of years. A group inside the firm, the **investment committee**, approves each investment. A **follow-on** is more money from the same investor after its first investment. On the company’s side, the **shareholders** own the shares, and the **board** is the group that oversees the company’s major decisions on their behalf.
+Most product and engineering leaders are not asked to sign a term sheet. They are asked to **deliver a plan whose feasibility depends on the investor’s behavior**. Does funding continue after a missed quarter (three months of the financial year)? Does support arrive in a usable form? Is a delay treated as a problem to solve, or as a reason to change management?
 
-**Investor fit** means how well an investor’s terms, resources and behavior match what the company needs. A reassuring description is a starting point for investigation.
+The purpose is not to find a universally good investor. It is to find out whether this partnership can support what Larkspur actually has to do next. The same firm can be a strong fit for one situation and a poor fit for another.
 
-Most product and engineering leaders aren’t asked to sign a term sheet. They’re asked to deliver a plan whose feasibility depends on the investor’s behavior. Does funding continue after a missed quarter (three months of the financial year)? Does support arrive in a usable form? Is a delay treated as a problem to solve or a reason to change management?
+The assessment has two uses, and this chapter shows both. Before a deal, it helps compare offers, as Ines does with her two term sheets. When the investor is already in place, it helps you change one dependency in your plan: the funding date, the approval route or the support commitment. Later, Alex, the chief technology officer (CTO), makes that change to Larkspur’s operating plan once the evidence is in.
 
-If the investor is already in place, use this assessment to change one dependency in your plan: the funding date, the approval route or the support commitment. This chapter shows both uses: the comparison Ines makes between the two offers, and the change Alex, the chief technology officer (CTO), makes to the operating plan once the evidence is in.
+## Investors, Funds, Committees, and Boards
 
-The purpose isn’t to find a universally good investor. It’s to find out whether this partnership can support what Larkspur actually has to do next. The same firm can be a strong fit for one situation and a poor fit for another.
+The **investor** in this chapter is an investment firm. The firm typically manages a **fund**: a pool of money that outside institutions and individuals, the fund’s own investors, have promised to it for an agreed number of years. Inside the firm, a group called the **investment committee** approves each investment, including any **follow-on**: more money from the same investor after its first investment. A partner’s assurance about future money is therefore not the same as a committee’s decision.
+
+On the company’s side, the **shareholders** own the shares, and the **board** oversees the company’s major decisions on their behalf.
 
 ## Begin With the Work the Company Needs
 
-Before assessing an investor’s capabilities, write a short account of the company’s next difficult decisions and what the investor would need to contribute to each: money, expertise, customer access, hiring support, patience, or workable governance (the rules about who may decide, approve or block a company action). This stops “operating support”, practical help with running or improving the company, from staying an attractive but undefined phrase.
+Before assessing an investor’s capabilities, write a short account of the **company’s next difficult decisions** and what the investor would need to contribute to each: money, expertise, customer access, hiring support, patience, or workable governance (the rules about who may decide, approve or block a company action). Writing this down keeps “operating support” (practical help with running or improving the company) from remaining an **attractive but undefined phrase**.
 
-**Onboarding** is getting a new customer set up to use Larkspur’s software. One customer’s setup is an *implementation*, and today it takes about 80 hours of Larkspur’s staff time. A **pilot** is a small trial: here, automating part of that setup for a small group of customers and measuring whether the hours fall.
+Larkspur’s first decision concerns **onboarding**: getting a new customer set up to use its software. Setting up one customer is an *implementation*, and today it takes about 80 hours of Larkspur’s staff time. A **pilot** is a small trial; here, it would automate part of that setup for a small group of customers and measure whether the hours fall. The table sets out the three decisions Larkspur faces and what each needs from an investor.
 
 | Next decision | What Larkspur needs from the investor |
 | --- | --- |
-| Automate onboarding, starting with a pilot | Someone who has seen an onboarding automation done; patience through a pilot that may show the assumptions were wrong |
+| Automate onboarding, starting with a pilot | Someone who has seen onboarding automated before; patience through a pilot that may show the assumptions were wrong |
 | Enter a second country | A follow-on about a year from now, on conditions known today; hiring support in the new market |
 | Replace the retiring founder’s customer relationships and knowledge | Time for a transition through at least two release cycles (the periods between planned software releases), and a board that does not treat the founder’s departure as a reason to change the rest of management |
 
-A firm can advertise a broad *support platform*: its network of in-house experts, advisers and services for the companies it owns. KKR Capstone, for example, describes capabilities across growth, digital work, operations and external experts. Such descriptions establish the services a firm says it can offer, not their availability, effectiveness or suitability for a specific company. [S22: KKR Capstone description](https://www.kkr.com/approach/capstone)
+A firm can advertise a broad *support platform*: its network of in-house experts, advisers and services for the companies it owns. KKR Capstone, for example, describes capabilities across growth, digital work, operations and external experts. Such descriptions show the services a firm says it can offer, not their availability, effectiveness or suitability for a specific company. [S22: KKR Capstone description](https://www.kkr.com/approach/capstone)
 
 ## Ask for the Difficult References
 

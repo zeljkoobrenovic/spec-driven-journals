@@ -12,25 +12,25 @@ icon: "assets/icons/11-help-that-changes-capability.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to name a capability gap, compare the investor’s people and networks with the help available elsewhere, and write the request for a first step.
 
-> **WHY INVESTORS CARE:** A **fund manager** — the firm that pools other people’s money into a fund and decides where to invest it — often promises help with running the business, both to the people whose money it manages and to the founders it hopes to back. That help earns its cost only when it changes what the company can do, so the investor needs the request to be specific.
+> **WHY INVESTORS CARE:** A **fund manager**, the firm that pools other people’s money into a fund and decides where to invest it, often promises practical help to the companies it invests in. It makes that promise both to the people whose money it manages and to the founders it hopes to back. That help earns its cost only when it changes what the company can do, so the investor needs the request to be specific.
 
-> **WHY YOU SHOULD CARE:** Accepting the help on offer rather than the help the gap needs consumes scarce team time and can leave a dependence nobody planned; comparing routes is what makes the help useful.
+> **WHY YOU SHOULD CARE:** Accepting the help that is on offer, rather than the help the gap needs, consumes scarce team time and can leave a dependence nobody planned. Comparing routes is what makes the help useful.
 
 
 > **KEY POINTS:**
 >
-> * Ask for the help a **specific company problem** requires. Name the capability through the work that fails or takes too long, and say which kind of request you are making.
+> * Ask for the help a **specific company problem** requires. Describe the missing capability through the work that fails or takes too long, and say which kind of request you are making.
 > * **Compare the investor’s access with the alternatives.** An investor may reach relevant people faster; a peer, an independent specialist or a hire may fit better. Judge each route by availability, company effort, cost and relevant experience.
 > * **Borrow experience with its context attached**, and make any continuing dependence explicit. Finish with a written request that names the result, the source and the accountable company leader.
 
 <br>
-Larkspur has money to improve customer onboarding, the setup required before a new customer can use its software. It lacks experience designing a repeatable process. Hiring a permanent leader would take months, while asking the same engineers to invent the process alongside their existing work could delay it further. How such a gap is found, by tracing the setup work through the company, is the subject of the chapters [[can-the-team-deliver]] and [[fix-decisions-before-hiring]] later in the book; here it is taken as given.
+Larkspur has money to improve customer onboarding, the setup required before a new customer can use its software. It **lacks experience** in designing a repeatable process for it. Hiring a permanent leader would take months, while asking the same engineers to invent the process alongside their existing work could delay it further. Two later chapters, [[can-the-team-deliver]] and [[fix-decisions-before-hiring]], show how to find such a gap by tracing the setup work through the company; here the gap is taken as given.
 
-An investor may give Larkspur faster access to relevant people and experience. Compare that access with the help the company could obtain elsewhere, including the time and obligations each route brings.
+An investor may give Larkspur **faster access to relevant people and experience**. To judge whether that access is worth having, compare it with the help the company could obtain elsewhere, including the time and obligations each route brings.
 
-A stronger company is worth more, which raises the value of the investor’s **holding** — the ownership stake it bought and will one day sell. But a firm that runs a shared team of advisers also wants that team busy enough to justify its cost, wants the goodwill of the other companies it has invested in, and wants a reputation that attracts the next founder. The offer is real and not free of interest; neither fact makes it the best route.
+A **stronger company is worth more**, which raises the value of the investor’s holding, the ownership stake it bought and will one day sell. But a firm that runs a shared team of advisers also wants that team busy enough to **justify its cost**, the goodwill of the other companies it has invested in, and a reputation that attracts the next founder. The offer is genuine, but it is not disinterested, and neither fact makes it the best route.
 
-The earlier chapter [[operating-model-blueprints]] connected the investor–company working arrangement with the company’s own organization, authority and resources. The previous chapter, [[learn-through-investors-network]], explored learning that can reveal new possibilities and needs. This chapter is about sourcing: the company’s need first, the four kinds of request, then a choice among credible sources for the same need, including sources outside the investor’s network. It ends with a written request, which the chapter [[useful-engagement]] turns into a **charter**: the short written agreement that fixes what the helper will do, for how long, at what cost and under whose direction.
+The earlier chapter [[operating-model-blueprints]] connected the investor–company working arrangement with the company’s own organization, authority and resources. The previous chapter, [[learn-through-investors-network]], explored learning that can reveal new possibilities and needs. This chapter is about sourcing help. It starts with the company’s need, sets out four kinds of request, then compares credible sources for the same need, including sources outside the investor’s network. It ends with a written request, which the chapter [[useful-engagement]] turns into a **charter**: the short written agreement that fixes what the helper will do, for how long, at what cost and under whose direction.
 
 ## Name the Capability You Need
 

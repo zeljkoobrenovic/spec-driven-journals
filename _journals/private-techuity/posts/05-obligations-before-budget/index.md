@@ -12,27 +12,34 @@ icon: "assets/icons/05-obligations-before-budget.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to work from a positive earnings figure to the cash actually available, separate the payments the company must make from the ones it chooses, and price the options for an initiative the company can fund.
 
-> **WHY INVESTORS CARE:** Interest on borrowing, tax and any growth in unpaid customer invoices come out of the same cash that would fund the product plan. An investor whose financing depends on that cash needs management to see the whole calculation before it commits to spending.
+> **WHY INVESTORS CARE:** Interest on borrowing, tax and any growth in unpaid customer invoices come out of the same cash that would fund the product plan. An investor whose financing depends on that cash needs management to see the whole calculation before committing to any spending.
 
-> **WHY YOU SHOULD CARE:** Positive earnings can coexist with an unfunded initiative. A leader who cannot find the cash behind the budget makes promises that finance cannot honor.
+> **WHY YOU SHOULD CARE:** Positive earnings can coexist with an unfunded initiative. A leader who cannot find the cash behind a budget may make promises that the finance team cannot honor.
 
 
 > **KEY POINTS:**
 >
-> * **A positive earnings figure does not establish the cash available** for a new initiative. Work from it to the cash left after investment, taxes, financing payments and any increase in what customers still owe; add the cash already in the bank; then check the dates and the restrictions on that cash.
-> * In that calculation, **separate the payments the company must make from the ones it chooses**: ordinary payroll is already inside the earnings figure; interest and loan repayments move only under the loan’s terms or a change agreed with the lender; planned investment and proposed payouts to owners are decisions. Bring priced options with decision dates, not one unfunded request.
-> * **Accounting does not remove the cost of work**, and a company spending more than it collects must decide before its cash runs out. Recording development spending as an asset changes when the cost enters profit; the cash still leaves.
+> * **A positive earnings figure does not establish the cash available** for a new initiative. Start from it, subtract investment, taxes, financing payments and any increase in what customers still owe, and add the cash already in the bank. Then check when that cash is available and what restrictions apply to it.
+> * In that calculation, **separate the payments the company must make from the ones it chooses**. Ordinary payroll is already inside the earnings figure; interest and loan repayments change only under the loan’s terms or with the lender’s agreement; planned investment and proposed payouts to owners are decisions. Bring priced options with decision dates, not one unfunded request.
+> * **Accounting does not remove the cost of work**, and a company spending more than it collects must make its decisions before its cash runs out. Recording development spending as an asset changes when the cost enters profit; the cash still leaves.
 
 <br>
-The **board**, the group of directors that oversees the company on the shareholders’ behalf, sees a growing measure of operating earnings, the profit from running the business before the costs of financing and tax. The engineering team is told there is no money for an essential migration, the move of a core system onto newer technology. Both can be true. The earnings figure has not yet been worked through to the payments that come out of it, or compared with the cash the company actually holds and the dates and restrictions on that cash. Only after that **reconciliation**, the step-by-step calculation from one figure to the other, do you know how much of the earnings figure is yours to commit.
+The **board**, the group of directors that oversees the company on the shareholders’ behalf, sees **operating earnings growing**: the profit from running the business, before the costs of financing and tax. At the same time, the **engineering team** is told there is **no money for an essential migration**, such as moving a core system onto newer technology. Both can be true, because earnings are not cash. To know how much of the earnings figure is yours to commit, work through the payments that come out of it, then compare the result with the cash the company actually holds, including when that cash is available and any restrictions on it. That step-by-step calculation from one figure to the other is called a **reconciliation**.
 
-An ownership arrangement changes the conditions of that calculation; it does not create the gap. Borrowing taken on to buy the company adds contractual interest and repayment dates. A shareholders’ agreement, the contract among the owners, may require payouts to them or set spending thresholds above which their approval is needed. A corporate parent, a company that owns this one, may set an allocation, the budget it assigns. Establish the actual payments, the authority and the dates before committing. The chapter [[valuation-is-an-estimate]] distinguished earnings from cash in principle; this chapter applies the distinction to one funding decision.
+The **ownership arrangement** changes the inputs to that calculation. Borrowing taken on to buy the company adds **contractual interest** and **repayment dates**. A shareholders’ agreement, the contract among the owners, may require **payouts** to them or set **spending thresholds** above which their approval is needed. A corporate parent, the company that owns this one, may set an **allocation**: the budget it assigns to this company from the group’s total. Establish the actual payments, the authority and the dates before committing. The chapter [[valuation-is-an-estimate]] distinguished earnings from cash in principle; this chapter applies that distinction to one funding decision.
 
-The earnings measure used here is **EBITDA**: earnings before interest, taxes, depreciation and amortization. Interest is the cost of borrowing. Depreciation and amortization spread the cost of an asset, such as equipment or software the company built, across the years it is used, instead of counting all of it in the year it was bought; depreciation is the label for physical assets, amortization for assets without physical form, such as software. EBITDA is a profit measure that leaves all four out. It is not a bank balance, and it leaves out several payments a business must make.
+## EBITDA, Capex and Working Capital
 
-**Capital expenditure**, often shortened to **capex**, is spending on assets that will be used for years: equipment, or software development that qualifies under accounting rules. Recording such spending as an asset, rather than as a cost of the year, is called **capitalization**. The cash is still spent in full; only the timing of the cost in the profit figure changes.
+Three terms recur in the calculation that follows.
 
-**Working capital**, in this simplified model, is money tied up in invoices customers have not yet paid and in inventory, the stock of goods held for sale or use, less the bills the company itself has not yet paid to suppliers. The bridge adjusts for the change over the year, not the whole amount owed. For example, if customers owed €2 million at the start of a year and €3 million at the end, the adjustment is €1 million, not €3 million: sales recorded but not yet paid for. Cash comes back only when customers pay what they owe; writing off an invoice that will never be paid reduces the amount owed but brings in nothing. Growth can raise the need for working capital if customers pay after the company incurs costs. Customers who pay in advance produce the opposite effect.
+The earnings figure most often used is **EBITDA**: earnings before interest, taxes, depreciation and amortization. **Interest** is the cost of borrowing, and taxes here means income taxes. **Depreciation and amortization** spread the **cost** of an asset across the years it is used, instead of counting it all in the year it was bought. Depreciation applies to physical assets, such as equipment; amortization applies to assets without physical form, such as software the company built. EBITDA leaves all four items out. It is a profit measure, not a bank balance, and it excludes several payments the business must still make.
+
+**Capital expenditure**, or **capex**, is **spending on assets that will be used for years**, such as equipment, or software development that qualifies as an asset under **accounting rules**. Recording that spending as an asset, rather than as a cost of the year in which it happens, is called **capitalization**. The cash is still spent in full; only the timing of the cost in the profit figure changes.
+
+**Working capital** is the money tied up in running the business day to day. In this simplified model, it is the invoices customers have not yet paid plus inventory (goods held for sale or use), minus the bills the company has not yet paid its suppliers. The calculation in the next section adjusts only for the **change** in working capital over the year, not the whole amount. For example, if customers owed €2 million at the start of the year and €3 million at the end, the adjustment is €1 million, not €3 million: sales recorded but not yet paid for. That cash arrives only when customers pay; writing off an invoice that will never be paid reduces the amount owed but brings in nothing. Growth can therefore increase the need for working capital when the company incurs costs before its customers pay. Customers who pay in advance have the opposite effect.
+
+![Three panels: EBITDA with interest, taxes, depreciation and amortization peeled away from a profit sheet; capex as cash paid now but spread across five years in profit; working capital as unpaid invoices growing from 2 million to 3 million, leaving 1 million of sales not yet paid in cash.](assets/images/05-obligations-before-budget/ebitda-capex-working-capital.jpeg)
+**Figure 1:** *Each term marks a gap between profit and cash: items EBITDA leaves out, spending paid now but expensed later, and sales not yet collected.*
 
 ## From Earnings to the Cash You Can Actually Spend
 
@@ -65,7 +72,7 @@ Alex, who leads engineering, wants €1 million to automate customer onboarding,
 Larkspur grew, so more customers owed it money at year end than at the start: about €1 million more invoiced but not yet collected. The sales are recorded, the cash isn’t in. Annual subscriptions paid in advance work the other way and produce cash before the sale is counted as revenue, the income recorded in the accounts. These timing differences can be economically helpful while still creating future service obligations.
 
 ![An earnings estimate must be reconciled with cash balances, receipts, payments and reserves before a spending commitment.](assets/images/05-obligations-before-budget/earnings-to-dated-cash-plan.jpeg)
-**Figure 1:** *An annual residual is a planning result; available cash also depends on balances, obligations and dates.*
+**Figure 2:** *An annual residual is a planning result; available cash also depends on balances, obligations and dates.*
 
 ## Three Priced Options for the €1 Million Initiative
 
@@ -198,7 +205,7 @@ The leadership response is to agree what evidence the hires would produce, stage
 Under corporate ownership, replace the hoped-for round with the relevant parent-company allocation and approval. Under profitable growth, include the timing of customer receipts and the spending needed to serve them. In each case, the proposal needs a funded path through the next important decision.
 
 ![Current cash funds work only until it is spent; delayed funding requires decisions before the runway ends.](assets/images/05-obligations-before-budget/runway-and-funding-decision.jpeg)
-**Figure 2:** *Make the next funding decision and the fallback plan visible before taking on permanent commitments.*
+**Figure 3:** *Make the next funding decision and the fallback plan visible before taking on permanent commitments.*
 
 ## Debt Changes the Consequences of Being Wrong
 
