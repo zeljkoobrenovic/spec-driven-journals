@@ -1,5 +1,5 @@
 #!/usr/bin/env python3.11
-"""Render Figure 1 of 22-anatomy-of-a-layoff as a chart plotted from the cash model.
+"""Render Figure 1 of 23-anatomy-of-a-layoff as a chart plotted from the cash model.
 
 In-depth review 23 September 2026, finding LAY-001: the Gemini illustration
 started all three lines together, showed no November bridge receipt, crossed
@@ -22,7 +22,7 @@ from html import escape
 from pathlib import Path
 
 J = Path(__file__).resolve().parents[1]
-POST = J / 'posts/22-anatomy-of-a-layoff'
+POST = J / 'posts/23-anatomy-of-a-layoff'
 ASSET = POST / 'assets/images/24-anatomy-of-a-layoff/cash-by-date-under-three-plans.jpeg'
 ARCHIVE = J / '_research/discarded-illustration-variants'
 
@@ -161,7 +161,7 @@ def main() -> int:
     if out == ASSET and ASSET.exists():
         previous = ASSET.read_bytes()
         ARCHIVE.mkdir(exist_ok=True)
-        (ARCHIVE / f'22-anatomy-of-a-layoff-cash-by-date-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
+        (ARCHIVE / f'23-anatomy-of-a-layoff-cash-by-date-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
     out.write_bytes(data)
     (out.with_suffix('.svg') if out != ASSET else Path('/tmp/anatomy-cash-chart.svg')).write_text(svg)
     print('written', out, hashlib.sha256(data).hexdigest())

@@ -8,7 +8,7 @@ This is a living journal and a work in progress: a draft built by [Željko Obren
 
 Start with [the purpose and reading guide](posts/introduction/index.md). It explains the company leader’s responsibilities, the comparative ownership lens, the fictional company and routes for different funding and ownership situations.
 
-The book contains 38 main chapters across eight parts. All 38 main chapters have an article, a summary and an illustrated comic with captions and dialogue transcripts. Summaries normally target 300–500 words; individual specs record justified exceptions. Comics use individual panels or pages of stacked strips; operating-model blueprints and technology operating partners each have five comic pages. The edition includes 47 header logos, 47 navigation icons and a dedicated Owned journal logo. Six part introductions, two appendix chapters and five guide/reference pages bring the configured total to **47 pages**, each with a companion specification. The technology operating partner chapter includes three explanatory figures covering portfolio support, hiring and AI decisions. The Grounded Architecture appendix includes four explanatory figures: the two settings compared, reusing the method while keeping the data, connector rather than controller, and the governance mix per company. The operating-model blueprints chapter includes seven explanatory figures: the connected models, a dedicated visual for each of the four blueprints, the support-choice overview and fictional pilot reviews.
+The book contains 39 main chapters across eight parts. All 39 main chapters have an article, a summary and an illustrated comic with captions and dialogue transcripts. Summaries normally target 300–500 words; individual specs record justified exceptions. Comics use individual panels or pages of stacked strips; operating-model blueprints and technology operating partners each have five comic pages. The edition includes 47 header logos, 47 navigation icons and a dedicated Owned journal logo. Six part introductions, one appendix chapter and five guide/reference pages bring the configured total to **47 pages**, each with a companion specification. The technology operating partner chapter includes three explanatory figures covering portfolio support, hiring and AI decisions. The Grounded Architecture appendix includes four explanatory figures: the two settings compared, reusing the method while keeping the data, connector rather than controller, and the governance mix per company. The operating-model blueprints chapter includes seven explanatory figures: the connected models, a dedicated visual for each of the four blueprints, the support-choice overview and fictional pilot reviews.
 
 ## Contents
 
@@ -51,57 +51,57 @@ Turn investor expectations into feasible commitments to customers, systems and t
 
 - [[part-4]] — part introduction
 - **16.** [[adopt-outcome-thinking]]
-- **17.** [[cannot-fund-everything]]
-- **18.** [[roadmap-to-revenue]]
-- **19.** [[ai-strategy-three-questions]]
-- **20.** [[can-the-team-deliver]]
-- **21.** [[the-financing-slipped]]
+- **17.** [[have-your-numbers-ready]]
+- **18.** [[cannot-fund-everything]]
+- **19.** [[roadmap-to-revenue]]
+- **20.** [[ai-strategy-three-questions]]
+- **21.** [[can-the-team-deliver]]
+- **22.** [[the-financing-slipped]]
 
 ### Part V — SCALE: Change the Team, the Systems and the Company Deliberately
 
 Change the company’s size and shape on purpose: add people only where the work needs them, stop work before cutting jobs, change systems for expected growth, and account for the work a purchase or a separation adds.
 
 - [[part-5]] — part introduction
-- **22.** [[fix-decisions-before-hiring]]
-- **23.** [[anatomy-of-a-layoff]]
-- **24.** [[scale-the-team-with-ai]]
-- **25.** [[growth-into-design]]
-- **26.** [[acquisition-adds-work-first]]
+- **23.** [[fix-decisions-before-hiring]]
+- **24.** [[anatomy-of-a-layoff]]
+- **25.** [[scale-the-team-with-ai]]
+- **26.** [[growth-into-design]]
+- **27.** [[acquisition-adds-work-first]]
 
 ### Part VI — SUSTAIN: Keep the Technology You Run Worth Its Cost
 
 Keep the technology the company already runs worth its cost: put a lower cloud bill on a comparable basis and prove that backups restore the service before calling either an improvement.
 
 - [[part-6]] — part introduction
-- **27.** [[manage-technical-debt]]
-- **28.** [[prove-you-can-restore]]
-- **29.** [[cheaper-cloud-bill]]
-- **30.** [[ai-worth-its-cost]]
+- **28.** [[manage-technical-debt]]
+- **29.** [[prove-you-can-restore]]
+- **30.** [[cheaper-cloud-bill]]
+- **31.** [[ai-worth-its-cost]]
 
 ### Part VII — LEAD: Managing Funding and Ownership Changes
 
 Lead through diligence, the early funded plan and the handover of continuing obligations.
 
 - [[part-7]] — part introduction
-- **31.** [[diligence-corrects-the-plan]]
-- **32.** [[first-hundred-days]]
-- **33.** [[handover-of-obligations]]
+- **32.** [[diligence-corrects-the-plan]]
+- **33.** [[first-hundred-days]]
+- **34.** [[handover-of-obligations]]
 
 ### Part VIII — LEARN FROM OTHERS: Lessons from the Field
 
 Test leadership judgments against specific histories while keeping the evidence in scope.
 
 - [[part-8]] — part introduction
-- **34.** [[hilton-and-skype]]
-- **35.** [[visma]]
-- **36.** [[toys-r-us]]
-- **37.** [[teamsystem]]
-- **38.** [[success-for-whom]]
+- **35.** [[hilton-and-skype]]
+- **36.** [[visma]]
+- **37.** [[toys-r-us]]
+- **38.** [[teamsystem]]
+- **39.** [[success-for-whom]]
 
 ### Appendix
 
 - [[grounded-architecture-portfolio]] — the author’s Grounded Architecture framework applied across a portfolio: reuse the data and people foundations, adapt the operating model.
-- [[data-foundations-for-alignment]] — the data foundations behind alignment: evidence from existing sources, defined once, owned by name, kept current and labelled so a forecast is never mistaken for a result.
 
 ### Reference Material
 
@@ -111,6 +111,8 @@ Test leadership judgments against specific histories while keeping the evidence 
 - [[bibliography]] — sources, consultation dates and evidence limits.
 
 ## Editorial Status
+
+On 25 September 2026, the chapter [[have-your-numbers-ready]] was added to Part IV after the outcome-thinking chapter, at the author’s request, and the data-foundations appendix was removed; its measure record, labelling rule, internal-and-shared boundary and product-operations link now live in the new chapter, and every earlier link to the appendix points there. Its folder is `16-have-your-numbers-ready`, and the folders of later chapters were renumbered 17–38 the same day.
 
 On 23 September 2026, the data-foundations chapter moved from the end of Part II to the Appendix, after the Grounded Architecture chapter, at the author’s request. Chapters 11–35 became 10–34; the folder name `data-foundations-for-alignment` and the permalink are unchanged.
 

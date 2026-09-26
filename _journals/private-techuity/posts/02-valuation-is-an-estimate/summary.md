@@ -13,10 +13,10 @@ Three approaches estimate value:
 
 - **Market comparisons** use multiples: €60 million is 3× this company’s revenue or 15× its EBITDA, two expressions of one price. An assumed 12× EBITDA would give €48 million, so examine its comparisons.
 - **Discounted cash flow** converts expected future cash into today’s value. Both give business value.
-- **Asset-based valuation** adds up what the business owns (its assets) and subtracts what it owes. It already subtracts borrowing, so the result is closer to equity value; do not deduct the same debt again.
+- **Asset-based valuation** adds what the business owns (its assets) and subtracts what it owes. It already subtracts borrowing, so the result is closer to equity value; do not deduct the same debt again.
 
 Growth influences all three; it is not a separate method.
 
 A funding round answers another question. In a separate fictional round, the shares are worth €8m just before new funding (the **pre-money valuation**). An investor pays €2m for newly issued shares, so they are worth €10m immediately after (the **post-money valuation**) and the new investor owns €2m / €10m = 20%, assuming identical rights and no other adjustments. The company receives €2m, not €10m.
 
-If the model behind the €60 million assumes the cost of setting up each new customer falls as sales grow, ask which change produces that reduction, when it becomes usable and who funds it. If none is named, the target needs revising before the plan does; [[growth-into-design]] chooses the system change. [[three-different-returns]] then shows why one performance can produce very different investor returns.
+If the model behind the €60 million assumes the cost of setting up each new customer falls as sales grow, ask which change produces that reduction, when it becomes usable and who funds it. If none is named, the target needs revising before the plan does; [[growth-into-design]] chooses the system change. [[three-different-returns]] then shows why one performance can produce different investor returns.

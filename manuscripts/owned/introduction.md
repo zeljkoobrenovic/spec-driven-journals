@@ -1,5 +1,7 @@
+{mainmatter}
+
 {id: introduction}
-# Introduction & Reading Guide
+# 1. Introduction & Reading Guide
 
 ![Introduction & Reading Guide — logo](private-techuity/posts/introduction/assets/images/introduction/logo.jpeg)
 
@@ -49,8 +51,8 @@ The [Glossary](#glossary) covers the rest.
 | Agree or reset how we work with the investor | [Plan Investor Support: Match the Help to Company Priorities](#operating-model-blueprints) | [Clarify Authority: Decide Who Decides Before You Disagree](#decide-who-decides), [Set the Terms of Help: Agree the Work, Authority and Handover](#useful-engagement) |
 | Investor help is on offer | [Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?](#investors-adviser) | [Choose the Right Help: Compare Investor Support With Other Options](#help-that-changes-capability), [Set the Terms of Help: Agree the Work, Authority and Handover](#useful-engagement) |
 | Explore the investor’s network: its events, and the leaders of the other companies it has invested in | [Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives](#learn-through-investors-network) | the [Practical Tools for Ownership and Technology Decisions](#toolkit) learning brief, then [Choose the Right Help: Compare Investor Support With Other Options](#help-that-changes-capability) when a specific need emerges |
-| The investor wants better reporting, or we keep arguing about what a number means | [Appendix: Data Foundations for Alignment With Investors](#data-foundations-for-alignment) | the [Practical Tools for Ownership and Technology Decisions](#toolkit) measure record, then [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue) for the benefit arithmetic |
-| The investor wants to oversee technology across all the companies it has invested in (its portfolio) | [Appendix: Grounded Architecture Across an Investment Portfolio](#grounded-architecture-portfolio) | [Plan Investor Support: Match the Help to Company Priorities](#operating-model-blueprints), [Appendix: Data Foundations for Alignment With Investors](#data-foundations-for-alignment) |
+| The investor wants better reporting, or we keep arguing about what a number means | [Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards](#have-your-numbers-ready) | the [Practical Tools for Ownership and Technology Decisions](#toolkit) measure record, then [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue) for the benefit arithmetic |
+| The investor wants to oversee technology across all the companies it has invested in (its portfolio) | [Appendix: Grounded Architecture Across an Investment Portfolio](#grounded-architecture-portfolio) | [Plan Investor Support: Match the Help to Company Priorities](#operating-model-blueprints), [Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards](#have-your-numbers-ready) |
 | The company is about to be bought, or to take new investment | [Use Diligence: Correct the Plan Before It Is Signed](#diligence-corrects-the-plan) | [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days), [Manage the Handover: Carry Forward the Evidence and Obligations](#handover-of-obligations) |
 | Owners want more growth or profit than the team can support | [Understand Funding Choices: Match the Money to the Work](#raise-what-you-need) | [Set Priorities: You Cannot Fund Everything at Once](#cannot-fund-everything), [Scale the Team Up: Headcount Is Not Capacity](#fix-decisions-before-hiring) |
 | Investor requests compete with customer needs | [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue) | [Clarify Authority: Decide Who Decides Before You Disagree](#decide-who-decides), [Assess Investor Fit: Behavior Under Pressure](#investor-under-pressure), [Success for Whom, and for How Long?](#success-for-whom) |
@@ -118,7 +120,7 @@ One shared example is the deliberate exception, and it is the main one. A single
 2. the funded early plan, [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days), which sets one approved budget and allocation of staff time for the first hundred days, and [Set Priorities: You Cannot Fund Everything at Once](#cannot-fund-everything), which chooses within that budget to run a **pilot** (a limited trial of automated onboarding before any larger commitment) and revises the choice when a test fails;
 3. the recovery test funded beside the pilot, [Build And Test Resilience: Backups Are Not Enough](#prove-you-can-restore), which checks that a failed system and its data can be restored;
 4. the investor’s support for the pilot, [Choose the Right Help: Compare Investor Support With Other Options](#help-that-changes-capability) and [Set the Terms of Help: Agree the Work, Authority and Handover](#useful-engagement);
-5. the pilot’s measured outcome and the decision it supports, [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue), and the data behind those numbers, [Appendix: Data Foundations for Alignment With Investors](#data-foundations-for-alignment);
+5. the pilot’s measured outcome and the decision it supports, [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue), and how those numbers are defined, owned and labelled, [Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards](#have-your-numbers-ready);
 6. the handover of what was paid, owed and left undone, [Manage the Handover: Carry Forward the Evidence and Obligations](#handover-of-obligations).
 
 The [Practical Tools for Ownership and Technology Decisions](#toolkit) shows the record those chapters write, stage by stage. Follow that example to see one decision carried all the way through, from evidence to money to what was left undone.
@@ -128,7 +130,7 @@ The delayed-financing chapter ([Manage Funding Delays: Revise the Cash Plan and 
 {id: introduction--choose-a-reading-format}
 ## Choose a Reading Format
 
-All thirty-eight main chapters provide an **Article**, a short **TL;DR** summary and an illustrated **Comic**, with captions and dialogue transcripts. TL;DR means “too long; didn’t read.” Summaries aim for 300–500 words; some current drafts run longer than that target. Most comics are pages of stacked strips with the dialogue drawn into the artwork; the three case comics on Visma, Toys R Us and TeamSystem use single-scene panels. The eight part introductions, the appendix and the reference pages use only the Article format. These counts describe the files at the time of writing and are rechecked as chapters are revised.
+All thirty-nine main chapters provide an **Article**, a short **TL;DR** summary and an illustrated **Comic**, with captions and dialogue transcripts. TL;DR means “too long; didn’t read.” Summaries aim for 300–500 words; some current drafts run longer than that target. Most comics are pages of stacked strips with the dialogue drawn into the artwork; the three case comics on Visma, Toys R Us and TeamSystem use single-scene panels. The eight part introductions, the appendix and the reference pages use only the Article format. These counts describe the files at the time of writing and are rechecked as chapters are revised.
 
 For a shorter first pass, read the part introductions and chapter summaries. The formats are companions rather than substitutes. Each one is written to reach the same decision and to keep the conditions that decide whether that decision holds; what varies is depth: the article gives the fullest calculations, the discussion of sources and the alternative cases, while every format keeps the conditions that would change the decision. The summaries and comics of this September 2026 revision are still being reconciled chapter by chapter, so where a short format and the article disagree, the article is the one to trust.
 
@@ -181,54 +183,54 @@ The site navigation lists the same chapters; this list is here for lookup.
 
 - [COMMIT: Turn Expectations Into Work You Can Deliver](#part-4) — part introduction
 - **16.** [Adopt Outcome Thinking: Balance Customer and Business KPIs](#adopt-outcome-thinking)
-- **17.** [Set Priorities: You Cannot Fund Everything at Once](#cannot-fund-everything)
-- **18.** [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue)
-- **19.** [Clarify AI Strategy: Three Different Investment Questions](#ai-strategy-three-questions)
-- **20.** [Assess Capability: Can the Team Deliver?](#can-the-team-deliver)
-- **21.** [Manage Funding Delays: Revise the Cash Plan and Commitments](#the-financing-slipped)
+- **17.** [Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards](#have-your-numbers-ready)
+- **18.** [Set Priorities: You Cannot Fund Everything at Once](#cannot-fund-everything)
+- **19.** [Test Revenue Assumptions: Do Customers Respond as Expected?](#roadmap-to-revenue)
+- **20.** [Clarify AI Strategy: Three Different Investment Questions](#ai-strategy-three-questions)
+- **21.** [Assess Capability: Can the Team Deliver?](#can-the-team-deliver)
+- **22.** [Manage Funding Delays: Revise the Cash Plan and Commitments](#the-financing-slipped)
 
 {id: introduction--part-v-scale-change-the-team-the-systems-and-the-company-deliberately}
 ### Part V — SCALE: Change the Team, the Systems and the Company Deliberately
 
 - [SCALE: Change the Team, the Systems and the Company Deliberately](#part-5) — part introduction
-- **22.** [Scale the Team Up: Headcount Is Not Capacity](#fix-decisions-before-hiring)
-- **23.** [Scale the Team Down: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff)
-- **24.** [Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount](#scale-the-team-with-ai)
-- **25.** [Plan for Growth: Decide What (Not) to Change in Your Systems](#growth-into-design)
-- **26.** [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#acquisition-adds-work-first)
+- **23.** [Scale the Team Up: Headcount Is Not Capacity](#fix-decisions-before-hiring)
+- **24.** [Scale the Team Down: Decide What Work Stops, Not Just Who Leaves](#anatomy-of-a-layoff)
+- **25.** [Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount](#scale-the-team-with-ai)
+- **26.** [Plan for Growth: Decide What (Not) to Change in Your Systems](#growth-into-design)
+- **27.** [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#acquisition-adds-work-first)
 
 {id: introduction--part-vi-sustain-keep-the-technology-you-run-worth-its-cost}
 ### Part VI — SUSTAIN: Keep the Technology You Run Worth Its Cost
 
 - [SUSTAIN: Keep the Technology You Run Worth Its Cost](#part-6) — part introduction
-- **27.** [Manage Technical Debt: Fund the Fix by the Cost, the Risk and the Speed It Buys](#manage-technical-debt)
-- **28.** [Build And Test Resilience: Backups Are Not Enough](#prove-you-can-restore)
-- **29.** [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill)
-- **30.** [Critically Evaluate AI Costs: Measure the Return per Task and per Period](#ai-worth-its-cost)
+- **28.** [Manage Technical Debt: Fund the Fix by the Cost, the Risk and the Speed It Buys](#manage-technical-debt)
+- **29.** [Build And Test Resilience: Backups Are Not Enough](#prove-you-can-restore)
+- **30.** [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#cheaper-cloud-bill)
+- **31.** [Critically Evaluate AI Costs: Measure the Return per Task and per Period](#ai-worth-its-cost)
 
 {id: introduction--part-vii-lead-manage-funding-and-ownership-changes}
 ### Part VII — LEAD: Manage Funding and Ownership Changes
 
 - [LEAD: Manage Funding and Ownership Changes](#part-7) — part introduction
-- **31.** [Use Diligence: Correct the Plan Before It Is Signed](#diligence-corrects-the-plan)
-- **32.** [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days)
-- **33.** [Manage the Handover: Carry Forward the Evidence and Obligations](#handover-of-obligations)
+- **32.** [Use Diligence: Correct the Plan Before It Is Signed](#diligence-corrects-the-plan)
+- **33.** [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days)
+- **34.** [Manage the Handover: Carry Forward the Evidence and Obligations](#handover-of-obligations)
 
 {id: introduction--part-viii-learn-lessons-from-the-field}
 ### Part VIII — LEARN: Lessons From the Field
 
 - [LEARN: Lessons From the Field](#part-8) — part introduction
-- **34.** [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype)
-- **35.** [Visma: Continuity of Manager Is Not Continuity of Money](#visma)
-- **36.** [Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us)
-- **37.** [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem)
-- **38.** [Success for Whom, and for How Long?](#success-for-whom)
+- **35.** [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype)
+- **36.** [Visma: Continuity of Manager Is Not Continuity of Money](#visma)
+- **37.** [Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us)
+- **38.** [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem)
+- **39.** [Success for Whom, and for How Long?](#success-for-whom)
 
 {id: introduction--appendix}
 ### Appendix
 
 - [Appendix: Grounded Architecture Across an Investment Portfolio](#grounded-architecture-portfolio) — the author’s Grounded Architecture framework applied across a portfolio, the set of companies one investor holds: reuse the shared data and people foundations, adapt the way decisions and responsibilities are organized in each company.
-- [Appendix: Data Foundations for Alignment With Investors](#data-foundations-for-alignment) — the data foundations behind alignment: evidence built from sources the company already has, defined once, owned by name, kept current and labelled so a forecast is never read as a result.
 
 {id: introduction--reference-material}
 ### Reference Material

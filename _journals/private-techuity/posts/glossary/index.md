@@ -94,7 +94,7 @@ These definitions support the comparisons in the chapter [[raise-what-you-need]]
 | Fully loaded cost | The full monthly or annual cost of an employee: salary plus employer charges, benefits, equipment and tools. It is the figure that changes when a person joins or leaves. |
 | One-off cost / recurring saving | A cost paid once (severance, a transition, a contract exit) against a saving that repeats each period once it has fully arrived. Compare them by date, not as two totals ([[anatomy-of-a-layoff]]). |
 | Runway | Estimated time until available cash reaches a stated limit under a cash forecast. Cash divided by constant net burn is a simplifying illustration. |
-| Minimum operating reserve | The amount of cash a board agrees the company will not fall below, so that a slip can be absorbed while a decision is taken. Reaching it is a dated event a plan is measured against, not the moment the money runs out ([[the-financing-slipped]]). |
+| Minimum operating reserve | The amount of cash a board agrees the company will not fall below, so a slip can be absorbed while a decision is taken. Reaching it is a dated event a plan is measured against, not the moment the money runs out ([[the-financing-slipped]]). |
 | Bridge (bridge loan, bridge financing) | A shorter, smaller financing, often from the existing investors, meant to carry the company until a larger round or other event closes. It is an investment decision on the investor’s side, may carry conditions the company must meet before the money is transferred, and is not cash until it is drawn. |
 | Convertible loan | A loan whose repayment can be replaced by shares, typically in the next funding round at agreed terms. Interest may accrue and settle in shares rather than be paid in cash. |
 | Drawdown | The moment a committed loan or facility is actually transferred to the company’s account. Before it, the money is a commitment; after it, cash received. |
@@ -164,7 +164,7 @@ The chapters keep three questions separate: who owns shares, who is accountable 
 | Technology operating partner / technical operating partner | A senior practitioner working with an investment firm across technology assessment and operating support for its portfolio companies. The function may be internal, external or a team; company decision authority requires an explicit basis ([[tech-operating-partner]]). |
 | AI operating partner | An investor-side operating specialist focused on AI-related investment questions and company capabilities. The role may be separate or combined with a technology operating partner; specialist expertise does not transfer company accountability ([[tech-operating-partner]]). |
 | Technology Principal | This book’s supplied example of an investor’s technology adviser role, played by Morgan in the fictional Larkspur examples. A role description for teaching purposes, not evidence about how all advisers work. |
-| Operating team | People associated with an investment firm who help companies improve how they work. Actual services and availability vary; any authority over company decisions has to be granted, not assumed. |
+| Operating team | People associated with an investment firm who help companies improve how they work. Actual services and availability vary; any authority over company decisions must be granted, not assumed. |
 
 ## <a id="earnings"></a>Sales, Earnings and Cash
 
@@ -297,7 +297,7 @@ See the chapters [[cannot-fund-everything]], [[help-that-changes-capability]] an
 | Handover | Transfer of the knowledge, information, evidence and obligations needed to continue work, including at a change of ownership ([[handover-of-obligations]]). |
 | Headcount plan | The roles a plan funds, by period, and the roles that are conditional on money or evidence not yet received. Hires outside it, and reductions to it, need whoever approves the plan ([[decide-who-decides]]). |
 | Hiring freeze | A decision to fill no new or vacant roles for a period. It saves only what would otherwise have been spent; a freeze already in force adds nothing to a later reduction. |
-| Redeployment | Moving people from work that ends or stops to work that continues, so that a gap is filled without a hire and a role is kept without a dismissal. |
+| Redeployment | Moving people from work that ends or stops to work that continues, so a gap is filled without a hire and a role is kept without a dismissal. |
 | Reduction in force (layoff, redundancy) | Ending roles, and the employment of the people in them, because the work stops or the plan can no longer fund it. Choose the roles by the work that stops; the terms and the process belong to the jurisdiction ([[anatomy-of-a-layoff]]). |
 | Notice period | The time between telling a person their employment ends and the end itself, set by contract or law and paid whether or not it is worked. It delays the saving from a reduction. |
 | Severance | A payment on ending employment, set by law, contract or company policy, paid before the saving from a reduction begins. |
@@ -322,14 +322,14 @@ The company-investment sequence begins at the chapters [[cannot-fund-everything]
 | Data room | A controlled collection of information shared for a transaction. |
 | Architecture | A system’s main parts, their responsibilities and their connections. |
 | Grounded Architecture | The author’s framework for architecture practice in large, decentralized organizations: lightweight analytics (data), collaborative networks (people) and an operating model that turns both into decisions. [[grounded-architecture-portfolio]] applies it across a portfolio. |
-| Lightweight Architectural Analytics | Building a current, curated map of systems, technologies, costs, risks and dependencies from sources a company already has (repositories, cloud bills, incident records, finance data) with small tools, rather than buying a platform; see [[data-foundations-for-alignment]]. |
+| Lightweight Architectural Analytics | Building a current, curated map of systems, technologies, costs, risks and dependencies from sources a company already has (repositories, cloud bills, incident records, finance data) with small tools, rather than buying a platform; mentioned in [[have-your-numbers-ready]] and applied across a portfolio in [[grounded-architecture-portfolio]]. |
 | Interface | An agreed way for parts of a system, or different systems, to exchange information. |
 | Modularity / coupling | Dividing software into parts with clear responsibilities / the degree to which parts depend on one another. |
 | Microservices | An architecture of smaller services designed to be deployed separately. Whether each service can actually be released and operated on its own depends on how it was built; coordination and operating costs apply either way. |
 | Configuration / feature flag | Settings that change behavior / a control enabling or disabling selected behavior. |
 | Deployment | Putting a software version into use. |
 | Go-live | The date a customer, or a product, starts being used in production. A promise of go-live is a delivery commitment; a contractual termination right after a later date is a separate remedy, not agreement to that date. |
-| On-call rota | The schedule of engineers on standby for production problems outside working hours. Fewer people on it means more frequent duty for each, which a reduction has to account for. |
+| On-call rota | The schedule of engineers on standby for production problems outside working hours. Fewer people on it means more frequent duty for each, which a reduction must account for. |
 | End-to-end work lead time | Elapsed time from starting a change (for example, when work on it begins) to delivering it to users. Name the start and end points; it includes waiting, approvals and hand-offs. |
 | DORA change lead time | DORA’s defined measure: time from a code commit to that change running in production. Narrower than end-to-end lead time; do not use one number for both. |
 | Tenant isolation | Keeping customers’ data or workloads appropriately separated in a shared service. |
@@ -348,7 +348,7 @@ The company-investment sequence begins at the chapters [[cannot-fund-everything]
 | Recovery objective | An agreed target for how quickly service must resume and how much data may be lost; the fictional Larkspur objective is dispatch within four hours with under fifteen minutes of lost updates ([[prove-you-can-restore]]). |
 | Residual risk | Risk remaining after the chosen protections or actions. |
 | AI system | A machine-based system that, for explicit or implicit objectives, infers from the input it receives how to generate outputs such as predictions, content, recommendations or decisions. This covers both learned (machine-learning) and knowledge-based approaches; this book mainly discusses learning-based systems. |
-| Generative AI | AI systems whose output is new content, such as text, code or images, produced by models trained on large collections of examples. Correctness for the intended use has to be checked. |
+| Generative AI | AI systems whose output is new content, such as text, code or images, produced by models trained on large collections of examples. Correctness for the intended use must be checked. |
 | Model inference | Running a trained model on new input to produce output. It is a recurring operating cost, distinct from the cost of training, licensing or buying the model. |
 | Software as a service (SaaS) | Software accessed as an ongoing subscription service run by the supplier, rather than installed and operated by the customer. |
 | Information technology (IT) | The computing systems, networks and services a company runs, and the function that runs them. |
@@ -359,7 +359,7 @@ The company-investment sequence begins at the chapters [[cannot-fund-everything]
 
 ## <a id="evidence"></a>Evidence and Lasting Outcomes
 
-For application, read the chapter [[success-for-whom]] or use [[toolkit]]; the chapter [[diligence-corrects-the-plan]] shows the observed / reported / inferred split in use, and the chapter [[data-foundations-for-alignment]] covers defining, owning and labelling the figures a company reports.
+For application, read the chapter [[success-for-whom]] or use [[toolkit]]; the chapter [[diligence-corrects-the-plan]] shows the observed / reported / inferred split in use, and the chapter [[have-your-numbers-ready]] covers defining, owning and labelling the figures a company reports.
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -378,7 +378,7 @@ For application, read the chapter [[success-for-whom]] or use [[toolkit]]; the c
 | Generalizability | How far findings can reasonably apply beyond the people, businesses or period studied. |
 | Percentage / percentage point | A relative change / an arithmetic difference between percentages. From 4% to 5% is one percentage point, or a 25% increase relative to 4%. |
 | Stakeholder | A person or group affected by the company, including those who did not choose its owner. |
-| Actual / target / forecast / assumption | An observed and recorded result / what was committed to / a calculation about the future from stated inputs / an input taken as given that may not hold. The chapter [[data-foundations-for-alignment]] asks that every reported figure carry which of the four it is. |
+| Actual / target / forecast / assumption | An observed and recorded result / what was committed to / a calculation about the future from stated inputs / an input taken as given that may not hold. The chapter [[have-your-numbers-ready]] asks that every reported figure carry which of the four it is. |
 | Measure definition | The written statement of exactly what a figure counts, who or what is in scope and what it excludes. Without one, the same measure gives different answers to different people. |
 | Information rights | The reporting an investor is contractually entitled to receive, normally set out in the investment agreement. Applicable law, the governing documents and a board role can add entitlements; beyond those, disclosure is a choice, not an obligation. |
 

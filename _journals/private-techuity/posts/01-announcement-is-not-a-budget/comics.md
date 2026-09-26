@@ -20,7 +20,7 @@
 }
 -->
 
-**Comic.** An announcement describes a transaction, not a budget. Seven pages follow Alex’s wish to hire five engineers after a fictional investment announcement, and show what has to be established before a hire can be authorized: how much cash reaches the business, when it arrives and who can approve its use. Those questions apply under every ownership arrangement; the structure of the deal decides the answers.
+**Comic.** An announcement describes a transaction, not a budget. Seven pages follow Alex’s wish to hire five engineers after a fictional investment announcement, and show what must be established before a hire can be authorized: how much cash reaches the business, when it arrives and who can approve its use. Those questions apply under every ownership arrangement; the structure of the deal decides the answers.
 
 Alex leads technology, Sam leads finance and Ines is the chief executive officer (CEO) of Larkspur, a fictional software company. Morgan is a technology adviser at an investment firm. All are fictional, and so is every figure.
 
@@ -91,7 +91,7 @@ Alex leads technology, Sam leads finance and Ines is the chief executive officer
     }
   ],
   "alt": "Comic page in three strips: Alex waves a €100 million investment announcement and wants to hire five engineers, and Sam says an announcement is not a budget; Sam shows three cards asking how much reaches us, when it arrives and who can approve it; a model building carries a price tag marked valuation €100 million beside a small bag marked new cash with a question mark.",
-  "caption": "Every figure in this comic is fictional. €100 million is €100,000,000. A headline figure may be a valuation, an estimate of what the whole company is worth, or the amount that changes hands in the deal, and even that amount need not reach the business. A budget is spending that someone with authority has approved. To turn an announcement into a hiring plan, establish how much cash reaches the business, when it arrives and who can approve its use. Onboarding engineers set new customers up on the product and move their data across.",
+  "caption": "Every figure in this comic is fictional. €100 million is €100,000,000. A headline figure may be a valuation, an estimate of what the whole company is worth, or the amount changing hands in the deal, and even that amount need not reach the business. A budget is spending that someone with authority has approved. To turn an announcement into a hiring plan, establish how much cash reaches the business, when it arrives and who can approve its use. Onboarding engineers set new customers up on the product and move their data across.",
   "status": "generated",
   "generation": {
     "model": "gemini-3-pro-image-preview",
@@ -103,7 +103,7 @@ Alex leads technology, Sam leads finance and Ines is the chief executive officer
 
 ![Comic page in three strips: Alex waves a €100 million investment announcement and wants to hire five engineers, and Sam says an announcement is not a budget; Sam shows three cards asking how much reaches us, when it arrives and who can approve it; a model building carries a price tag marked valuation €100 million beside a small bag marked new cash with a question mark.](assets/images/01-announcement-is-not-a-budget/comic-page-01-a-headline-is-not-a-budget.jpeg)
 
-**Page 1: A headline is not a budget.** Every figure in this comic is fictional. €100 million is €100,000,000. A headline figure may be a valuation, an estimate of what the whole company is worth, or the amount that changes hands in the deal, and even that amount need not reach the business. A budget is spending that someone with authority has approved. To turn an announcement into a hiring plan, establish how much cash reaches the business, when it arrives and who can approve its use. Onboarding engineers set new customers up on the product and move their data across.
+**Page 1: A headline is not a budget.** Every figure in this comic is fictional. €100 million is €100,000,000. A headline figure may be a valuation, an estimate of what the whole company is worth, or the amount changing hands in the deal, and even that amount need not reach the business. A budget is spending that someone with authority has approved. To turn an announcement into a hiring plan, establish how much cash reaches the business, when it arrives and who can approve its use. Onboarding engineers set new customers up on the product and move their data across.
 
 - *Strip 1.* **Alex:** “€100 million! I can hire five onboarding engineers.” **Sam:** “An announcement is not a budget.”
 - *Strip 2.* **Sam:** “Before you hire, three questions.” **Alex:** “Isn't the answer just €100 million?”

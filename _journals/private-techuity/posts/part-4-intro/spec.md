@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-24
+revised: 2026-09-25
 ---
 
 # Spec: PART III — Turning Investor Expectations Into Commitments
@@ -51,6 +51,7 @@ The journal's current config.yaml and the configured chapter introductions. Thes
 
 ## Changelog
 
+- 2026-09-25 (contents): [[have-your-numbers-ready]] added after [[adopt-outcome-thinking]] in the first move; the learning path now has seven chapters in four moves (2+3+1+1); Figure 1 regenerated (round 5), alt text and caption updated.
 - 2026-09-24 (contents): [[adopt-outcome-thinking]] added as the first chapter, in a new first move “Agree what the work is for”; the learning path now has six chapters in four moves, alt text and caption updated, closing line begins with the new chapter; overview to be regenerated with six cards; kept under 400 words.
 - 2026-09-24 (part order and contents): COMMIT is now Part IV (folder `part-4-intro`, permalink `part-4`). Chapters: set priorities, test revenue assumptions, clarify AI strategy (moved back in from the new SUSTAIN part as an investment-choice chapter), assess capability, manage funding delays (moved in from LEAD). Learning path in three moves (choose and justify, assess what delivery requires, revise when the money is late); overview regenerated three times during the day to match; opening recalls Parts II and III; closing hands off to Part V (SCALE) and Part VI (SUSTAIN).
 - 2026-09-24 (Part IV SCALE): Three chapters ([[fix-decisions-before-hiring]], [[growth-into-design]], [[acquisition-adds-work-first]]) moved to the new Part IV. Learning path reduced to six chapters in three moves (the middle move is now the capability assessment alone), overview alt text, caption and figure regenerated, closing hand-off names Part IV then Part V. Permalink unchanged.

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate legacy comic panels of 22-anatomy-of-a-layoff (asset slug 24-anatomy-of-a-layoff).
+"""Regenerate legacy comic panels of 23-anatomy-of-a-layoff (asset slug 24-anatomy-of-a-layoff).
 
 In-depth review 23 September 2026, finding LAY-009: panel 2's whiteboard showed
 four or five people under every workstream, while the chapter's engineering
@@ -27,7 +27,7 @@ spec.loader.exec_module(helper)
 
 MODEL = 'gemini-3-pro-image-preview'
 CAST = J / '_research/comic-cast-20260913.jpeg'
-POST = J / 'posts/22-anatomy-of-a-layoff'
+POST = J / 'posts/23-anatomy-of-a-layoff'
 COMICS = POST / 'comics.md'
 LEGACY = '24-anatomy-of-a-layoff'
 PANEL_RE = re.compile(r'<!-- comic-panel\s+(\{.*?\})\s*-->', re.S)
@@ -103,7 +103,7 @@ def main() -> int:
         previous = asset.read_bytes()
         backups = J / '_research/discarded-comic-variants'
         backups.mkdir(exist_ok=True)
-        (backups / f'22-anatomy-of-a-layoff-comic-{panel_id}-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
+        (backups / f'23-anatomy-of-a-layoff-comic-{panel_id}-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
         asset.write_bytes(data)
         print('written', asset.relative_to(ROOT), hashlib.sha256(data).hexdigest(), flush=True)
     return 0

@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """Apply the 24 September 2026 round-5 review changes to the comic script of
-26-manage-technical-debt: MTD-030/012 (page 5: test before signing, nothing to
+27-manage-technical-debt: MTD-030/012 (page 5: test before signing, nothing to
 terminate on a failure, fallback starts on the switch day), MTD-004 (page 6:
 portal dates split), MTD-031 (every page's caption lists the words on its boards
 and cards; the intro promises exactly that).
 Run generate_comic_pages.py --render afterwards, then re-letter page 05's strip 3 bubble."""
 import json, re
 from pathlib import Path
-P = Path(__file__).resolve().parents[1] / 'posts/26-manage-technical-debt/comics.md'
+P = Path(__file__).resolve().parents[1] / 'posts/27-manage-technical-debt/comics.md'
 text = P.read_text()
 pat = re.compile(r'<!-- comic-page\n(\{.*?\n\})\n-->', re.S)
 blocks = {}

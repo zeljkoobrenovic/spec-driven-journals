@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate legacy comic panels of 36-teamsystem (asset slug 29-teamsystem).
+"""Regenerate legacy comic panels of 37-teamsystem (asset slug 29-teamsystem).
 
 In-depth review 23 September 2026, round 1 (TS-10): panel 6's small
 'Customer migrations' labels on the paper scroll came out with malformed
@@ -29,7 +29,7 @@ spec.loader.exec_module(helper)
 
 MODEL = 'gemini-3-pro-image-preview'
 CAST = J / '_research/comic-cast-20260913.jpeg'
-POST = J / 'posts/36-teamsystem'
+POST = J / 'posts/37-teamsystem'
 COMICS = POST / 'comics.md'
 LEGACY = '29-teamsystem'
 PANEL_RE = re.compile(r'<!-- comic-panel\s+(\{.*?\})\s*-->', re.S)
@@ -105,7 +105,7 @@ def main() -> int:
         previous = asset.read_bytes()
         backups = J / '_research/discarded-comic-variants'
         backups.mkdir(exist_ok=True)
-        (backups / f'36-teamsystem-comic-{panel_id}-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
+        (backups / f'37-teamsystem-comic-{panel_id}-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
         asset.write_bytes(data)
         print('written', asset.relative_to(ROOT), hashlib.sha256(data).hexdigest(), flush=True)
     return 0

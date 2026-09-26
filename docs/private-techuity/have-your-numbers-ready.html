@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">OWNED: Product &amp; Engineering Leadership Under Investors</a><span class="nav-right"><a class="nav-prev" href="adopt-outcome-thinking.html" title="Adopt Outcome Thinking: Balance Customer and Business KPIs">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="cannot-fund-everything.html" title="Set Priorities: You Cannot Fund Everything at Once">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part IV — COMMIT: Turn Expectations Into Work You Can Deliver</p>
+        <h1>Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards</h1>
+        <p class="byline">Željko Obrenović  ·  2026-09-25  ·  28 min read · <a class="spec-link" href="have-your-numbers-ready.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/16-have-your-numbers-ready/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/16-have-your-numbers-ready/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">OWNED: Product &amp; Engineering Leadership Under Investors</a><span class="nav-right"><a class="nav-prev" href="adopt-outcome-thinking.html" title="Adopt Outcome Thinking: Balance Customer and Business KPIs">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="cannot-fund-everything.html" title="Set Priorities: You Cannot Fund Everything at Once">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards", "date": "2026-09-25", "author": "Željko Obrenović", "excerpt": "Know which numbers an investor relationship runs on, hold a small set of them ready — defined once, owned by name, refreshed on a schedule and labelled so a forecast is never read as a result — and use the same numbers for the investor conversation, for goals and for dashboards.", "permalink": "have-your-numbers-ready", "timetoread": "28 min read", "icon": "assets/icons/16-have-your-numbers-ready.png", "logo": "assets/images/16-have-your-numbers-ready/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS SECTION, YOU WILL:** Learn which measures matter when investors own part of your company, which of them you own and which you must merely understand, how to hold a small set of them ready before anyone asks, and how the same numbers serve the investor conversation, your goals and your dashboards.\n\n> **WHY INVESTORS CARE:** An investor relies on your reports for the work it does not see day to day. A figure that arrives late, is defined differently each quarter or blurs a projection into a result must be given less weight, and that applies to your good news and bad.\n\n> **WHY YOU SHOULD CARE:** The questions arrive before the numbers exist. When they arrive, the answer is assembled in a hurry, each function brings its own version, and a disagreement about what to do turns into an argument about what is true. With the numbers ready, you can show what a commitment costs, what the last one produced and which assumption the plan rests on.\n\n\n> **KEY POINTS:**\n>\n> * **Know the catalogue, then keep a small set.** Money and runway, customers and growth, product outcomes, delivery, technology health and people each have a handful of standard measures. Know what each tells and where it misleads. Report the dozen that your decisions and your outcome record actually need.\n> * **Hold every number ready: defined once, owned by name, refreshed on a schedule, and labelled.** Each figure carries its definition, source, owner and context, and its kind: **actual, target, forecast** or **assumption**, or **committed** for a resource the board has authorized. The most expensive reporting mistake is an accurate projection read as an observed result.\n> * **One set of numbers, three uses.** The same measures feed the investor conversation, the goals teams work to and the dashboards used by the board, the leadership and the teams, each at its own level of detail. Every figure on the board’s page should trace down to work a team is doing.\n\n<br>\nAfter an investment, requests for numbers arrive quickly: a reporting template from the investor, a question from an adviser, the papers for a board meeting a few weeks away. Most companies already hold much of the evidence, in their accounts, time records, incident logs and sales pipelines. But it is **scattered across systems**, defined differently by each function and rarely ready when someone asks. The usual result is a **scramble before every meeting** and an argument about whose figure is right, rather than about what to do.\n\nThis chapter’s argument is not that better numbers produce agreement. It is that **ready numbers make disagreement useful**. Two people looking at the same defined, sourced and dated figures can disagree about what to do and find exactly **where their views part**: a volume assumption, a risk tolerance, a time horizon. Two people looking at different numbers, or at the same number understood differently, argue about reality and never reach the decision.\n\n## Setting Up the Example: Two Requests in One Week\n\nLarkspur, the fictional scheduling-software company this book follows, has just agreed its outcome record in the chapter [Adopt Outcome Thinking: Balance Customer and Business KPIs](adopt-outcome-thinking.html): the one-page record of the change customers should see, the business result it should produce and the measures that connect the two. In the same week, Larkspur receives two requests.\n\nLarkspur’s investor is a fund: a pool of money gathered from many investors and used to buy parts of companies. The fund’s portfolio team, the people who follow the companies it has invested in, sends its standard quarterly reporting template: two pages of financial and operating measures, several of which Larkspur has never calculated. Meanwhile, Morgan, the investor’s technology adviser, asks Priya a simpler question: how long does it take to set up a new customer, and how does she know?\n\nThe raw material for both answers exists. Sam, who leads finance, has monthly accounts. Priya has the specialist’s time records. Alex, the chief technology officer (CTO), has incident records, the cloud bill (the monthly charge for the rented computing the software runs on) and the code repositories. Sales has its pipeline, the list of deals in progress.\n\nNone of it is wrong, but none of it is ready. Nobody has written down what “setup time” means, whether it counts the contract specialist’s hours, or which of the figures in the setup proposal are observed and which are hoped for.\n\nInes, the chief executive, runs the company day to day. She answers to its **board**: the directors who oversee the company for its owners; the investor has a seat on it. The board approves the plan and any spending outside it. Ines has seen what happens next in other companies: the numbers get rebuilt in the fortnight before every board meeting, by whoever cannot refuse, and are argued over each time.\n\n## Start From the Sources You Already Have\n\nThe instinct, when an investor asks for better reporting, is to start a project: a data warehouse (a central store that combines data from many systems for reporting), a business-intelligence tool (software for building reports and dashboards), a quarter of work connecting systems. The evidence mostly exists already, scattered across systems that were never meant to be read together: the finance system, the billing system, the customer records, the sales pipeline, the delivery-tracking tools, the code repositories (where the software’s code is kept, with the record of every change), the cloud bill and the incident records. The work is curating, defining and connecting what is there, not buying a platform.\n\nFor the technology part of that picture, the author has described one lightweight way of doing this elsewhere: [Lightweight Architectural Analytics](https://grounded-architecture.io/analytics), in *Grounded Architecture*, builds a current picture of systems, costs and dependencies from repositories, cloud bills and incident records with small scripts rather than a platform. [S106: Lightweight Architectural Analytics](https://grounded-architecture.io/analytics) The same attitude serves the whole set of numbers in this chapter.\n\n![Six existing records on a shelf feed one teal tray labelled defined once, owned by name, refreshed on a schedule, which supplies six cards: money and runway, customers and growth, product outcomes, delivery, technology health and people.](assets/images/16-have-your-numbers-ready/three-areas-one-foundation.jpeg)\n**Figure 1:** *The numbers mostly exist already. The work is defining and connecting them into one curated layer that supplies every family of measures, not buying a platform.*\n\n## The Catalogue: What Is Worth Measuring\n\nThe measures below recur when a company works with investors. They are grouped in six families. The point of the catalogue is not that you report them all. It is that you know what each tells, who normally produces it and where it misleads, so when one is asked for you are not meeting it for the first time.\n\nA **measure** (or metric) is a defined way of counting something. A **key performance indicator (KPI)** is a measure chosen to track a result that matters. A **leading indicator** moves early and gives warning; a **lagging indicator** confirms later that the result happened. The chapter [Adopt Outcome Thinking: Balance Customer and Business KPIs](adopt-outcome-thinking.html) uses the same vocabulary.\n\n### Money and Runway\n\nFinance produces these. A product or engineering leader should not prepare them, but must understand what they assume, because those assumptions become your commitments. **Profit** is revenue minus expenses, counted when the work is delivered and the costs are incurred. **Cash** is money actually received or paid out. The two can differ for months, for example when a customer pays an invoice late. The chapter [Understand Cash Flow: Confirm the Cash Before You Commit](obligations-before-budget.html) explains why that gap matters.\n\n<div class=\"table-compact\">\n\n| Measure | What it tells you | Where it misleads |\n| --- | --- | --- |\n| **Revenue**, split into **recurring** (subscription fees earned again every month or year) and **one-off** (setup fees, services) | How much the company earns, and how much of it repeats | A single total hides whether growth came from more customers, higher prices or one large deal |\n| **Annual recurring revenue (ARR)** | The yearly value of all current subscriptions, as if each renewed unchanged | It is a snapshot, not revenue earned and not cash received |\n| **Gross margin** | The share of revenue left after the direct cost of serving customers: hosting (renting the computers the software runs on), support and setup | Reclassifying a direct cost as an operating cost — booking setup staff under general operations instead of the cost of serving customers — raises it without changing anything |\n| **Operating costs by function** | Where the money goes: product and engineering, sales and marketing, general and administration | Shares of revenue look precise; they depend on how shared costs, such as rent, are divided between functions |\n| **Burn** | The net cash the company spends in a month when it spends more than it takes in | One month is noise; read it over a quarter |\n| **Runway** | How many months the cash in the bank lasts at the current burn | It assumes the burn stays where it is, which a hiring plan changes |\n| **Cash conversion** | How much of profit becomes cash, after the timing of customer payments and bills | Growth can make it worse: more customers owing money at year end |\n\n<\/div>\n\n![Recurring and one-off revenue pipes join into one revenue pipe, which passes a sieve that drains the cost of serving customers and continues as gross margin into a tank labelled cash in the bank; three cost outlets drain the tank, an arrow marks burn and a calendar marks runway.](assets/images/16-have-your-numbers-ready/money-and-runway.jpeg)\n**Figure 2:** *Money and runway as one tank: what comes in and how much of it repeats, what serving customers costs, where the rest goes, and how many months the level lasts at the current burn.*\n\n### Customers and Growth\n\nSales, customer success (the team that helps existing customers get value from the software) and finance own most of these, and investors read them closely because they show whether growth builds on itself.\n\n<div class=\"table-compact\">\n\n| Measure | What it tells you | Where it misleads |\n| --- | --- | --- |\n| **New customers** and **bookings** (the value of contracts signed) | How fast the company wins business | A booking is a promise to pay, not revenue and not cash |\n| **Net revenue retention (NRR)** | The recurring revenue from the customers the company had a year ago, now against then, counting their growth, cutbacks and departures | Above 100% can hide many departures behind a few large expansions |\n| **Gross revenue retention (GRR)** | The same comparison for the same customers without the growth: how much of their starting revenue stayed | It can never exceed 100%, so it is often left out when it is unflattering |\n| **Customer churn** and **renewal rate** | Churn: customers lost during a period, divided by the customers at its start. Renewal rate: of the contracts that came up for renewal in the period, the share renewed | Different denominators — all customers, or only those due to renew — so one is not simply the other’s complement. The units differ too: churn counts customers, this renewal rate counts contracts, so a customer with two contracts counts once in churn and twice here. Neither is weighted by money, so read them beside the retention figures |\n| **Customer acquisition cost (CAC)** and **payback** | What it costs in sales and marketing to win one customer, and how many months it takes to earn that back from what the customer pays each month minus the cost of serving it | Which costs are counted changes the answer; state them |\n| **Lifetime value (LTV)** | The gross profit a customer is expected to bring over the whole relationship: what it pays, minus the cost of serving it, over the years it is expected to stay | It is a forecast built on retention assumptions, often presented as a fact |\n| **Pipeline** and **conversion rate** | The sales in progress, by stage, and the share of past deals that ended in a signed contract | A pipeline without its conversion history is a list of hopes |\n\n<\/div>\n\n![Left: a funnel from pipeline through conversion rate to new customers, beside a stack of coins for acquisition cost. Right: three bars, last year, kept and kept plus expansion; kept is shorter than last year by a dashed outline for what left or was cut back, and kept plus expansion ends taller than last year; they are tagged gross retention and net retention.](assets/images/16-have-your-numbers-ready/customers-and-growth.jpeg)\n**Figure 3:** *Winning customers and keeping them. Net retention can exceed 100% while many customers leave, because expansion hides the gap; gross retention shows what stayed.*\n\n### Product and Customer Outcomes\n\nThese are the product leader’s own, and the ones most often missing from the board pack, the set of reports the directors receive before each board meeting. The outcome record from [Adopt Outcome Thinking: Balance Customer and Business KPIs](adopt-outcome-thinking.html) chooses which of them matter for this company.\n\n<div class=\"table-compact\">\n\n| Measure | What it tells you | Where it misleads |\n| --- | --- | --- |\n| **Time to first value** (at Larkspur: weeks from signed contract to the first real schedule) | How quickly a customer starts getting what they bought | An average is dragged by one slow customer; the median, the middle value, is steadier |\n| **Activation** (reaching a defined starting point — at Larkspur, as in the outcome record, the day the customer’s account is ready to use; the first real schedule, which can come days or weeks later, is first value) and **depth of use** (how much of the work then runs through the product — at Larkspur, the share of a customer’s technicians scheduled in it) | Activation: whether customers reach a working start, and the date from which early use and month-one support requests are counted. Depth: whether they use the product for the job they bought it for | Logins and clicks count activity, not value |\n| **Cost to serve** (at Larkspur, starting with human hours per customer setup — effort, one part of the cost) | What it costs to set up and support one customer | It shrinks by moving work to suppliers unless every hour counts, whoever pays for it |\n| **Support requests** per customer | Where customers struggle, especially in the first month after activation | Fewer requests can mean customers gave up asking |\n| **Customer feedback scores** | How customers say they feel | A score without the reasons behind it tells you little about what to change |\n\n<\/div>\n\n![A road with four signposts, contract signed, setup, first real schedule and every technician scheduled, with time to first value bracketed from signing to first schedule, staff hours at setup, depth of use at the end, support requests below the road, and a warning card that logins count activity, not value.](assets/images/16-have-your-numbers-ready/product-and-customer-outcomes.jpeg)\n**Figure 4:** *Product outcomes follow the customer: how soon they get value, what setting them up costs, how fully they use the product and where they struggle. Clicks and logins are not on the path.*\n\n### Delivery and Execution\n\nThis family answers whether the company does what it said it would, and it is usually the weakest, because it is nobody’s reporting duty.\n\n<div class=\"table-compact\">\n\n| Measure | What it tells you | Where it misleads |\n| --- | --- | --- |\n| **Commitments against outcomes** | What was promised, what arrived, when, and the difference | Only honest if the commitment is recorded when it is made, not reconstructed later |\n| **Allocation against plan** | How team time is actually split between new capabilities, improvements and maintenance | Most companies find on first measurement that it differs from the plan |\n| **Software delivery measures** from DORA (DevOps Research and Assessment, a research programme on how software teams deliver), listed below the table | Whether the team can change the software quickly and safely | They cover only the part of delivery engineering controls, not the wait before work starts |\n| **Predictability** | How often dated commitments land on their date | Easily gamed by committing only to safe dates |\n\n<\/div>\n\nDORA’s current guide has five delivery measures. Older sources quote the original four, without the last.\n\n- **Change lead time:** how long a change takes from being saved in the code repository to running in the live service.\n- **Deployment frequency:** how often the team deploys, that is, puts changes into the live service.\n- **Change fail rate:** the share of deployments that fail and need immediate repair.\n- **Failed deployment recovery time:** how long recovery from such a failed deployment takes. It does not cover every outage.\n- **Deployment rework rate:** the share of deployments that are unplanned repairs after an incident.\n\nDeploying puts a version into the live service; releasing makes it available to customers. A change can be deployed behind a switch that stays off, and released later by turning the switch on. The chapter [Assess Capability: Can the Team Deliver?](can-the-team-deliver.html) covers what delivery measures can and cannot establish.\n\n![Top: a ledger with columns promised and arrived, two rows flagged, recorded when promised. Bottom: a conveyor where five boxes wait before work starts and the rest pass through build, test, release, the only part the delivery measures see, before reaching customers.](assets/images/16-have-your-numbers-ready/delivery-and-execution.jpeg)\n**Figure 5:** *Delivery evidence has two parts: an honest record of what was promised against what arrived, and delivery measures read with the wait before work starts, which they do not cover.*\n\n### Technology Health and Cost\n\nThe engineering leader owns these outright, and here the absence of a number is most often mistaken for the absence of a problem.\n\n<div class=\"table-compact\">\n\n| Measure | What it tells you | Where it misleads |\n| --- | --- | --- |\n| **Reliability** against an agreed objective, and **incidents** (failures that reach customers) with their impact | Whether customers can count on the service | Uptime, the share of time a service is available, says nothing about the failure that mattered |\n| **Recovery tested** — the date and result of the last restore test | Whether the company can actually bring the service back | A backup that has never been restored is not evidence ([Build And Test Resilience: Backups Are Not Enough](prove-you-can-restore.html)) |\n| **Security findings** (known weaknesses) by severity and age | The protections in place and the obligations still open | A count without age hides the finding that has been open for a year |\n| **Technology cost** per customer and as a share of revenue | Whether the cloud bill and software licence fees grow slower than the business | A total not split by product or customer cannot be weighed against the value they bring ([Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](cheaper-cloud-bill.html)) |\n| **Technical debt register** | Where past shortcuts now slow specific future work | A general complaint about quality is not a register ([Manage Technical Debt: Fund the Fix by the Cost, the Risk and the Speed It Buys](manage-technical-debt.html)) |\n| **Key-person concentration** | Which systems only one person can release or recover | Invisible until that person is away; at Larkspur, diligence — the checks the investor made before investing — found that only one specialist could release the scheduling engine, the part of the software that builds the schedules, and recover it after a failure; releasing means making a new version available to customers |\n\n<\/div>\n\n![A service cabinet in the centre surrounded by six objects: a reliability gauge, a backup box stamped as restore tested, a shield of security findings by age, coins for cost per customer, a technical debt register, and one key on a single hook for the system only one person can release.](assets/images/16-have-your-numbers-ready/technology-health-and-cost.jpeg)\n**Figure 6:** *Technology health made visible: reliability against an agreed objective, a restore that has actually been tested, open findings and their age, cost per customer, the debt register, and the systems only one person can run.*\n\n### People\n\n<div class=\"table-compact\">\n\n| Measure | What it tells you | Where it misleads |\n| --- | --- | --- |\n| **Headcount against plan** | Whether hiring is ahead or behind what the budget assumes | Headcount is a cost, not capacity (usable working time); new people take months to be fully effective |\n| **Unwanted departures** | Whether the company is losing people it wanted to keep | A company-wide rate hides a team that lost half its engineers |\n| **Open roles** and **time to hire** | Whether commitments that assume new people are realistic | An approved role is not a person doing the work |\n\n<\/div>\n\nIndividual performance and pay stay internal; what an investor needs from this family is how people risks affect commitments.\n\n![Twelve chairs in three teams under a dashed headcount-plan line: Team A full, Team B with two empty chairs tagged left, Team C with one open role and one new person still ramping up; a line notes that an approved role is not a person doing the work.](assets/images/16-have-your-numbers-ready/people-measures.jpeg)\n**Figure 7:** *People measures in one row: headcount against plan, departures that a company-wide rate would hide in one team, open roles, and new people who take months to reach full speed.*\n\n## Pick a Small Set\n\nNobody should report all that. Fifteen measures nobody disputes are worth more than ninety nobody trusts.\n\n- **Start from decisions, not from the template.** Ask what the next consequential decision needs. At Larkspur, the next decisions are whether to fund the setup work and, later, whether it worked; the numbers that matter are setup effort, the wait to first schedule and the cost of the work. The investor’s template still gets filled in, but the company’s own set starts from its decisions.\n- **Let the outcome record choose the product numbers.** The customer outcome, the business outcome and the measures between them ([Adopt Outcome Thinking: Balance Customer and Business KPIs](adopt-outcome-thinking.html)) are the product and customer numbers worth having ready. The rest of the catalogue is context.\n- **Add a measure only when a decision needs it.** A measure that has never changed a decision should be retired.\n\nA reasonable shape for the investor conversation is a dozen or so numbers: a few from money and runway, a few from customers and growth, the outcome record’s pair and its leading measures, and a few from delivery and technology health, each chosen because someone decides something with it.\n\n## Hold Each Number Ready\n\nA number is ready when anyone who doubts it can trace it back to its source in under ten minutes, and when everyone who quotes it means the same thing. Most reporting disputes are definition disputes in disguise. Someone reports retention at 94% and someone else at 88% — one counting customers kept, the other the revenue they represent, over different periods — and an hour that should have gone into deciding something disappears into reconciling the two.\n\nFor each measure in the set, record five things — plus, for a figure reported for a group, how the individual records are combined — and keep them with the measure rather than in a document nobody opens. Larkspur’s first entry is the one Morgan asked about:\n\n<div class=\"table-compact\">\n\n| Field | Larkspur’s setup-effort measure |\n| --- | --- |\n| Definition | All human hours spent setting up one customer, end to end — Larkspur’s own staff, the contract implementation specialist and any bought-in data-entry help, whoever pays them — including all time spent checking and correcting the customer’s data |\n| Source | The implementation team’s time records, reconstructed per customer |\n| Owner | Priya, the product leader |\n| Aggregation | The average per setup: total included hours for a group of setups divided by the number of setups in the group |\n| Refresh | Per group of customers set up together (a cohort), reported at each quarterly review |\n| Boundaries | Excludes automated checking by an outside service, which has no hours and is carried separately as a cost |\n\n<\/div>\n\nThe **definition** settles arguments in advance: “whoever pays them” means the figure cannot be improved by moving manual work to a supplier. The **source** makes the figure credible. The **owner** is a person, not a team: someone answerable for the number being right and for saying so when it is not. The **refresh** stops the “how current is this?” exchange that precedes every stale decision. The **boundaries** say what the measure deliberately leaves out, which is where double-counting begins. [Tool 15](toolkit.html#tool-15) gives the record as a template.\n\nThe **aggregation** rule means two people given the same records get the same figure. Take three setups of 65, 75 and 100 hours. They report as 80: 240 hours divided by three setups. They never report as the 240-hour total, or as the middle setup’s 75. The average, rather than the median, fits here because the question is how much effort setups consume in total.\n\nDefine a measure once and change it rarely. When a definition must change, restate the history on the new basis or say plainly that the series breaks. A changed definition presented as a changed result is indistinguishable from bad news being managed.\n\n### Give Each Number Its Context\n\n“80 hours” says nothing until the reader knows what it is compared with, how many observations it rests on and what it is for. Four pieces of context turn a number into something a board can use:\n\n- **Baseline**: what it was before, on the same definition. Larkspur’s 80 hours is, this week, the average of the five setups Morgan examined during diligence, three of which needed the specialist’s manual configuration. It is provisional. Days in this book count from day 0, the board meeting that adopts the operating plan shortly after the investment. The baseline the company will use is to be reconstructed by day 20 from the time records of all twelve setups of the previous two quarters, and the report says so.\n- **Comparison**: what it was expected to be. The setup proposal aims at an average of 50 hours per setup.\n- **Direction and confidence**: which way it is moving and how much weight it carries. Five observations are a starting point, not a trend.\n- **Decision link**: what the figure is used to decide. The plan the board adopts sets the rule in advance for the average of the first group of eight pilot customers (a small trial of the changed setup). The average is measured at day 90 and goes to the board’s review at day 100. Under 60 hours supports a request for the next stage, which the board must still approve; 60 to 70 hours, including exactly 60 or 70, supports a smaller corrective step; over 70 reopens the plan ([Plan the First Hundred Days: Turn Expectations Into Funded Work](first-hundred-days.html)).\n\n**Thresholds agreed before the measurement** settle in advance which response each result points to, so the later review is about what to do, not about what counts as good. They guide the decision rather than make it: the board still weighs the evidence. Ines authorizes spending inside the approved plan. A new stage, a draw on the reserve (money the board set aside for needs the plan did not foresee) or any other spending outside the plan needs the board’s approval ([Clarify Authority: Decide Who Decides Before You Disagree](decide-who-decides.html)). The investor and the company disagree about the threshold in advance, which is the right time to disagree, before either side has a number to defend.\n\n## Label What Kind of Number It Is\n\nPriya’s setup proposal is a page of figures, and they look alike. They are not the same kind of thing.\n\n![Five identical blank cards on a table, tagged actual, target, forecast, assumption and committed; only the actual card is anchored below the table. A line reads same typeface, different kinds.](assets/images/16-have-your-numbers-ready/four-kinds-of-number.jpeg)\n**Figure 8:** *The kinds of statement look identical on a page. The label separates a measured result from a target, a calculation about the future, an input taken as given, and a resource already authorized.*\n\n<div class=\"table-compact\">\n\n| Kind | What it is | In Larkspur’s setup proposal |\n| --- | --- | --- |\n| **Actual** | Observed and recorded, on a stated definition | An average of about 80 staff hours per setup and a median wait of about ten weeks from signing to first real schedule; provisional until the day-20 baseline |\n| **Target** | The result the plan sets out to reach, and by when — a desired outcome, not a promise | 50 hours per setup for the first pilot group, measured at day 90 |\n| **Forecast** | A calculation about the future from stated inputs | €225,000 a year of staff time released: 100 setups a year × 30 fewer hours per setup = 3,000 hours a year, valued at €75 an hour |\n| **Assumption** | An input taken as given, which may not hold | About 100 setups a year; €75 an hour, the fully loaded rate finance uses in plans (pay plus the employer’s other employment costs, per working hour); that the 50-hour target is reached and holds for later customers |\n| **Committed** | A resource the board has authorized — an input, not a result | The contract implementation specialist, €150,000 for months 1 to 12, agreed before the plan and paid from the operating budget, the spending plan for running the business. The proposal’s own €180,000 and twelve engineer-weeks (twelve weeks of one engineer’s working time) become committed only when the board funds them ([Set Priorities: You Cannot Fund Everything at Once](cannot-fund-everything.html)) |\n\n<\/div>\n\nThe forecast is still worth reporting, but written this way it cannot be mistaken for money the company has. It is 3,000 hours of projected capacity a year, at an assumed volume, valued at an assumed rate, on an assumed result. Each assumption carries weight: if volume and rate hold but setups reach only 65 hours, the saving is 15 hours per setup, 1,500 hours a year, and the forecast halves to €112,500.\n\n**Capacity becomes cash only when a payment is actually avoided or additional customers pay in more than serving them costs**, on a date: a contract not extended, a planned hire whose salaries are never paid, or extra customers set up with the freed time whose payments exceed their costs. Deciding not to hire changes nothing in the bank that day; the benefit arrives month by month, as the salaries are not paid. Until then, finance keeps it out of any calculation of what the company can repay.\n\nThe labelling rule is one line, and it is the highest-value habit in this chapter: **every figure in a document that goes to a board or an investor carries its kind.** The cost is a few minutes of preparation. The benefit is that the company never has to explain, six months later, why a result it appeared to report did not arrive. When the first pilot group reports at day 90, the same labels will separate what was measured from what was projected ([Test Revenue Assumptions: Do Customers Respond as Expected?](roadmap-to-revenue.html), [Plan the First Hundred Days: Turn Expectations Into Funded Work](first-hundred-days.html)).\n\n## One Set of Numbers, Three Uses\n\n### In the Investor Conversation\n\nNot everything should go to an investor, and not everything an investor asks for is something it is entitled to receive.\n\n- **Rights against courtesy.** An investor’s **information rights** — the reporting it is entitled to, usually set out in the investment agreement — are specific: typically periodic financial statements, a budget, the record of who owns which shares and sometimes board materials, on a stated schedule. Law and the company’s own governing documents can add entitlements, and a director the investor appointed receives board papers as a director. Beyond those, disclosure is a choice. Check the actual agreements rather than assuming either extreme, and involve qualified advisers where a request touches customer or employee data.\n- **Aggregated, not raw.** The detail that makes a measure useful inside is rarely what makes it useful to a board. Aggregating means combining detailed records into totals or averages: the average for a cohort against baseline and threshold, not every customer’s hours; incident frequency and impact, not every timeline.\n- **Share what supports decisions the recipient takes part in.** The board approves the plan, so it receives the evidence the plan rests on, with its assumptions visible. Investors do not run the engineering team, so they do not need its working detail.\n\n![Dense working detail on the left passes through an open doorway and narrows into a single shared sheet on an easel on the right, tagged with its definition.](assets/images/16-have-your-numbers-ready/internal-and-shared.jpeg)\n**Figure 9:** *The same evidence at two resolutions. What crosses the boundary to the investor is aggregated and carries its definition with it.*\n\n### In Goals\n\nGoals take the same numbers and put a date and a level on them.\n\n- **Set goals on leading measures, report the lagging ones.** A team can move staff hours per setup this quarter; it cannot move renewals until the anniversaries. The outcome record sets which is which ([Adopt Outcome Thinking: Balance Customer and Business KPIs](adopt-outcome-thinking.html)).\n- **Pair a target with a counter-measure.** A measure that becomes a target changes behaviour, and not always the way intended. Setup hours can fall because customers are rushed into using a half-configured account; pairing the hours with month-one support requests shows it when it happens.\n- **Keep the goal’s measure and the reported measure identical.** A team goal on a private definition of “setup time” produces a number the board cannot compare with anything.\n\n### In Dashboards\n\nA dashboard is the same set of numbers, refreshed automatically and shown at the level of detail its readers need. Three layers are usually enough:\n\n<div class=\"table-compact\">\n\n| Layer | Readers and rhythm | What it shows |\n| --- | --- | --- |\n| **Board** | Directors and the investor, quarterly | The dozen numbers, each with its kind, baseline, comparison and the decision it informs; the record of commitments against outcomes |\n| **Leadership** | The executive team, monthly or weekly | The same numbers with their drivers, by product and customer group; the allocation of team time against plan |\n| **Team** | Each team, weekly or daily | The measures of the team’s own areas of work — its lanes — and the counter-measures beside them |\n\n<\/div>\n\nThe test of the three layers is traceability: every figure on the board’s page should lead down to a leadership view and from there to the teams whose work moves it. A board number with nothing beneath it is a number nobody can act on; a team dashboard with nothing above it is work nobody can connect to the plan.\n\n**Automate the refresh, not the interpretation.** A repeatable process keeps a figure current; a person must still say what it means, and the owner named in the measure record is that person.\n\n## Someone Has to Do This Work\n\nFinance owns the accounts, not the definition of setup effort. Engineering owns the repositories and the incident records, not their translation into a board measure. Product owns the roadmap, not the record of what was committed four quarters ago. Left unassigned, the work happens in the fortnight before a board meeting.\n\n**Product operations** is the discipline that has formed around this gap. In the account by Melissa Perri and Denise Tilles, it rests on three pillars, and they map closely onto the catalogue above. [S109: Perri and Tilles, *Product Operations*](https://melissaperri.com/book)\n\n<div class=\"table-compact\">\n\n| Product operations pillar | What it does | The numbers it keeps ready |\n| --- | --- | --- |\n| **Business data and insights** | Gathers how the product and the company are performing from existing business systems, with standardized definitions so leaders can compare across products | Money and runway, customers and growth, cost to serve |\n| **Customer and market insights** | Collects research from outside the company and passes it to the teams that need it | Product and customer outcomes, and the market assumptions behind forecasts |\n| **Process and governance** | Keeps consistent practices for how product work is planned, committed and reviewed | Delivery and execution, especially commitments against outcomes |\n\n<\/div>\n\n**Standardized definitions are the mechanism, not a by-product**: two products can be compared only because both report on the same definition, and someone must maintain it. And **product operations supplies evidence; it does not take the decisions**: the numbers exist so the people with authority, established in [Clarify Authority: Decide Who Decides Before You Disagree](decide-who-decides.html), can decide well.\n\nA small company will not have a product operations team and does not need one to start. It needs the work assigned: a named owner per measure, as the record requires, and one person accountable for the board pack being consistent, current and honest as a whole. At Larkspur, Sam takes the board pack and the money family; Priya the product and customer numbers; Alex delivery and technology health. The function is what this becomes when doing it informally stops working.\n\n## Build It in the Order That Pays\n\nNobody assembles all this at once, and a company that tries produces a large document instead of ready numbers.\n\n1. **Start with the decision in front of you** and the numbers it needs.\n2. **Find where each number already lives**: time records, billing, the finance system, repositories, the cloud bill, incident records.\n3. **Write the definition before the first number**: definition, source, owner, refresh, boundaries.\n4. **Establish the baseline honestly**, from real records, and say how many observations it rests on and where it is weak.\n5. **Agree thresholds in advance** with whoever will act on them — the step most often skipped, and the one that most reliably prevents a dispute.\n6. **Label every figure** by its kind before it leaves the company.\n7. **Automate the refresh** once the definition has survived a quarter, and build the dashboards on top.\n\n## What Ready Numbers Do Not Fix\n\nAn investor and a company can look at the same well-defined figures and still want different things, because they are exposed differently ([Compare Incentives and Stakes: Equity, Carry and Jobs](different-bets.html)). Numbers do not settle a disagreement about risk appetite, time horizon or what the company is for.\n\nA measure can be chosen because it flatters, a threshold set where it is easy to pass, a definition quietly revised in a bad quarter, and a comprehensive pack can bury a real problem in volume. More data makes several of these easier. The defences are those above — definitions that change rarely and visibly, thresholds agreed in advance, figures traceable to sources, a deliberately small set — plus a leader willing to report the number that is not flattering.\n\n## What to Say When the Investor Asks\n\n**“How long does it take to set up a customer, and how do you know?”** About 80 staff hours and about ten weeks to the first real schedule, both provisional, from a sample of five; the baseline from all twelve recent setups follows by day 20. Here is the definition, and Priya owns it.\n\n**“What are your burn and runway?”** Sam’s figures, from the monthly accounts, on the stated definition — and the hiring plan that would change them, with its dates.\n\n**“Why is this number different from last quarter’s?”** Either the business changed or the definition did. If the definition changed, the history is restated on the new basis, or the break is marked on the chart.\n\n**“Can we have direct access to your systems?”** Ask what question the access would answer. Usually the answer is a measure that can be defined and provided properly, with more history and full definitions, on a regular schedule. A figure pulled without its definition creates exactly the disputes the definitions exist to prevent.\n\n**“What is your €225,000 worth in cash?”** Nothing yet. It is a forecast of staff time, resting on three assumptions: about 100 setups a year, €75 an hour, and setups reaching 50 hours and staying there. It becomes cash only on the date a scheduled payment is actually avoided, or when additional customers pay more than serving them costs.\n\nWith the numbers ready and labelled, Larkspur can choose among its requests against the cash and team time the board approves. That is where [Set Priorities: You Cannot Fund Everything at Once](cannot-fund-everything.html) begins.\n\n## Questions to Consider\n\n1. *Take the three figures most often quoted in your investor conversations. For each, can you state the definition, the source, the owner and when it was last refreshed — without asking anyone?*\n2. *Which families of the catalogue are missing from your board pack entirely? Which decision would one number from each of them inform?*\n3. *Look at your last board pack. How many figures in it are actuals, and how many are forecasts or targets printed in the same typeface?*\n4. *Can every figure on your board dashboard be traced to a team whose work moves it? Which cannot, and who would act on them?*\n5. *What does your investor receive by right, and what do you provide by choice? Would your investor answer that question the same way?*\n\n## To Probe Further\n\n- **[Product Operations: How Successful Companies Build Better Products at Scale](https://melissaperri.com/book)** — Melissa Perri and Denise Tilles, 2023.<br>*The fullest treatment of the discipline that keeps these numbers ready: the three pillars, why standardized definitions are the mechanism, and how the function supplies evidence without taking over the decisions.*\n- **[16 Startup Metrics](https://a16z.com/16-startup-metrics/)** — Jeff Jordan, Anu Hariharan, Frank Chen and Preethi Kasireddy, Andreessen Horowitz, 2015.<br>*Investors explaining the metrics founders most often confuse — bookings against revenue, recurring against total revenue, gross profit, customer acquisition cost, burn — which is a useful view of the money and growth families from the other side of the table.*\n- **[DORA’s Software Delivery Performance Metrics](https://dora.dev/guides/dora-metrics/)** — DORA (DevOps Research and Assessment), Google Cloud.<br>*The current definitions of the five delivery measures in the catalogue — the original four plus deployment rework rate — grouped into throughput (how fast changes reach the live service) and instability (how often deployments fail or need unplanned repair).*\n- **[Accelerate: The Science of Lean Software and DevOps](https://itrevolution.com/product/accelerate/)** — Nicole Forsgren, Jez Humble and Gene Kim, IT Revolution, 2018.<br>*The research behind those delivery measures, including what they do and do not establish; useful before quoting them to a board. DevOps is the set of practices that joins building software with running it; Lean is the discipline of improving the flow of work and cutting waste.*\n- **[How to Measure Anything: Finding the Value of Intangibles in Business](https://www.howtomeasureanything.com/)** — Douglas W. Hubbard, Wiley, 3rd edition, 2014.<br>*An argument that measurement exists to reduce uncertainty for a decision, not to achieve precision, and that this holds even for intangibles, things with no physical form such as customer satisfaction. It is the reason this chapter retires any measure with no decision attached.*\n"}]}, {"key": "summary", "label": "TL;DR", "meta": {}, "blocks": [{"type": "markdown", "content": "**Ready numbers do not produce agreement; they make disagreement useful.** With the same defined, dated figures, people find where their views part instead of arguing over the facts.\n\n![Six existing records on a shelf feed one teal tray labelled defined once, owned by name, refreshed on a schedule, which supplies six cards: money and runway, customers and growth, product outcomes, delivery, technology health and people.](assets/images/16-have-your-numbers-ready/three-areas-one-foundation.jpeg)\n**Figure 1:** *Records the company already keeps feed one layer of defined numbers, which supplies six families of measures.*\n\n**The questions arrive before the numbers exist.** At Larkspur, a fictional scheduling-software company, the investor’s adviser asks how long a customer setup takes. The records exist, but nobody has defined “setup time”.\n\n**Know the catalogue.** Know six families of measures, what each tells and where it misleads; report the dozen you need.\n\n- **Money and runway:** revenue, yearly subscription value, the share of revenue left after serving customers, burn (a month’s cash out minus cash in) and runway (how many months the cash lasts at that burn).\n- **Customers and growth:** new contracts, what last year’s customers pay now, customers lost, and the cost of winning one.\n- **Product outcomes:** weeks to a customer’s first real use, depth of use (such as the share of technicians scheduled in it), and the cost of serving each customer.\n- **Delivery:** commitments against what arrived, and how fast and safely software changes reach customers.\n- **Technology health:** reliability, tested recovery, known security weaknesses, technology cost, and systems only one person can run.\n- **People:** hiring against plan, and losing people the company wants to keep.\n\n**Hold each number ready.** Record its definition, source, named owner, refresh schedule and exclusions. For a group figure, state how records combine: Larkspur’s setup effort is total hours divided by the number of setups. Give it context: earlier and expected values, its weight and the decision it informs. Agree thresholds before the result; they point to a response. The chief executive runs the company and approves spending within the plan. A new stage, or spending outside it, needs the **board**: the directors overseeing the company for its owners, including the investor.\n\n**Label its kind.** Larkspur’s average of about 80 staff hours per setup is an **actual** (provisional, from five setups). Fifty hours is a **target**. €225,000 a year is a **forecast**: 100 setups a year × 30 fewer hours each = 3,000 hours a year, valued at €75 an hour. It rests on three **assumptions**: the volume, the rate, and setups reaching 50 hours and staying there. A resource the board has authorized is **committed**. Freed time becomes cash only on the date a scheduled payment is avoided, or when extra customers pay more than serving them costs.\n\n**One set, three uses.**\n\n- **The investor** gets them aggregated — detailed records combined into totals or averages — with definitions, within its rights to information.\n- **Goals** use early-moving measures, each paired with a counter-measure: a second measure that shows harm caused by chasing the first.\n- **Dashboards** show them at board, leadership and team level; every board figure traces to a team’s work.\n\n**Assign the work.** **Product operations**, as Melissa Perri and Denise Tilles describe it, keeps definitions and evidence consistent. A small company names an owner per number and one person for the board pack, the reports the directors receive before each meeting.\n\n[Set Priorities: You Cannot Fund Everything at Once](cannot-fund-everything.html) uses the numbers to choose what to fund.\n"}]}, {"key": "comics", "label": "Comic", "meta": {}, "blocks": [{"type": "markdown", "content": "<!-- comic-style\n{\n  \"cast\": \"MORGAN: a thoughtful investor technology adviser with short dark hair and a green jacket, used in the fund scenarios. ALEX: a practical CTO, a brown-skinned man with short, tight dark curls close to his head and blue rolled-up sleeves. SAM: a CFO, a man with short brown hair, round glasses and an amber cardigan. PRIYA: a product leader with straight dark hair and plum sleeves. INES: a CEO with short grey hair and a navy jacket. All are fictional; none represents a person in a real case.\",\n  \"style\": \"Clean editorial explainer comic pages, each one image of three stacked full-width strips: navy ink outlines, restrained green, blue and amber accents on warm ivory, generous space, expressive people and simple physical props. Dialogue, short labels and the supplied amounts are lettered in the artwork, exactly as scripted. Money bags, coins and banknotes are plain and undecorated; the euro sign appears only inside supplied text, and arrows, documents and screens carry plain lines, never lettering. No photorealism, logos, titles or unsupplied text. Keep the same character appearances throughout the journal.\",\n  \"reference\": \"_research/comic-cast-20260913.jpeg\",\n  \"identity\": {\n    \"Morgan\": \"MORGAN is a light-skinned WOMAN with a short, straight, JET-BLACK bob cut level with her jaw and a straight fringe across her forehead (never brown hair, never a side parting), and a bright green jacket over a white top, first person in the reference; her face must match the reference sheet exactly.\",\n    \"Alex\": \"ALEX is a medium-brown-skinned MAN with a masculine face, broad shoulders and a straight masculine build, SHORT tight dark curls close to his head (not a large afro), a blue rolled-sleeve shirt and blue jeans, second person in the reference; fill his face, neck and hands with the same brown skin color in every strip.\",\n    \"Sam\": \"SAM is a light-skinned MAN with a masculine face and SHORT brown hair cropped above his ears (never a bob, never chin-length hair, never a woman), round glasses and an amber cardigan over a white shirt, third person in the reference.\",\n    \"Priya\": \"PRIYA is a brown-skinned WOMAN with straight shoulder-length dark hair and a plum blouse, fourth person in the reference.\",\n    \"Ines\": \"INES is a light-skinned OLDER WOMAN with a short GREY bob (grey hair, never dark) and a navy jacket, fifth person in the reference.\"\n  },\n  \"short\": {\n    \"Morgan\": \"a light-skinned woman with a jet-black jaw-length bob and fringe, in a bright green jacket\",\n    \"Alex\": \"a brown-skinned man with short tight dark curls, in a blue rolled-sleeve shirt\",\n    \"Sam\": \"a light-skinned man with short brown hair and round glasses, in an amber cardigan over a collared white shirt\",\n    \"Priya\": \"a brown-skinned woman with straight shoulder-length dark hair, in a plum blouse\",\n    \"Ines\": \"an older light-skinned woman with a short grey bob, in a navy jacket\"\n  }\n}\n-->\n\n**Comic.** An investor’s questions arrive before the numbers exist. Seven pages follow the fictional company Larkspur from one plain question — how long does it take to set up a customer, and how do you know? — to numbers held ready: found in records the company already keeps, defined once, owned by name, given their context, labelled by kind, and used for the investor, goals and dashboards.\n\nInes is Larkspur’s chief executive: she runs the company day to day and approves spending inside its plan. She answers to the board, the directors who oversee the company for its owners, the investor among them; the board approves the plan and any spending outside it. Priya leads product, the team that decides what the software should do; Alex leads technology and Sam leads finance. Morgan is the technology adviser to Larkspur’s investor. All are fictional, and so is every figure.\n\n<!-- comic-page\n{\n  \"id\": \"01-the-questions-arrive-first\",\n  \"title\": \"The questions arrive first\",\n  \"asset\": \"assets/images/16-have-your-numbers-ready/comic-page-01-the-questions-arrive-first.jpeg\",\n  \"aspect_ratio\": \"3:4\",\n  \"cast\": [\n    \"Morgan\",\n    \"Priya\",\n    \"Sam\",\n    \"Ines\"\n  ],\n  \"strips\": [\n    {\n      \"scene\": \"Two people stand at one small round table, in this left-to-right order: first Morgan, then Priya. The table is bare.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Morgan\",\n          \"text\": \"How long does a new customer setup take, and how do you know?\"\n        },\n        {\n          \"who\": \"Priya\",\n          \"text\": \"About 80 hours, I think. It depends who you ask.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"Sam stands beside a large board hung high on the wall, above his head. The board is a reporting form with four rows, each row a word on the left and an empty box on the right with a large question mark in it. No head, hand, marker or bubble covers any lettering; everyone stands with hands at their sides or gestures with an open hand from the side.\",\n      \"labels\": [\n        \"ARR\",\n        \"NET REVENUE RETENTION\",\n        \"BURN\",\n        \"RUNWAY\"\n      ],\n      \"label_notes\": \"The four labels are the four row words on the board, one per row, top to bottom; each empty box beside them holds only a question mark.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Sam\",\n          \"text\": \"The investor’s template. Half of these we have never calculated.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"Two people stand behind one long table, in this left-to-right order: first Ines, then Priya. On the table lies one plain wall calendar with one date circled; it is the only thing on the table.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Ines\",\n          \"text\": \"I will not have these rebuilt before every board meeting.\"\n        },\n        {\n          \"who\": \"Priya\",\n          \"text\": \"Then we get them ready now, once.\"\n        }\n      ]\n    }\n  ],\n  \"alt\": \"Comic page in three strips: Morgan asks Priya how long a customer setup takes and how she knows; Sam stands at a reporting form with four empty rows; Ines and Priya decide to get the numbers ready once.\",\n  \"caption\": \"Larkspur is a fictional scheduling-software company; every figure is fictional. The investor’s team sends a reporting template, and its technology adviser asks a simple question nobody can yet answer with a definition.\\n\\nARR (annual recurring revenue) is the yearly value of current subscriptions. Net revenue retention compares the recurring revenue from last year’s customers now with what the same customers brought then, counting their growth, cutbacks and departures. Burn is the cash spent each month beyond what comes in; runway is how many months the cash lasts.\\n\\nBoard text, strip 2: a form with four rows — ARR, NET REVENUE RETENTION, BURN, RUNWAY — each with an empty box and a question mark.\",\n  \"status\": \"generated\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference\": \"_research/comic-cast-20260913.jpeg\",\n    \"sha256\": \"31bf16aaa6b5d63a2e4e09c6cf7167b5943d88795e847e0041d06c8b0f4a017c\"\n  }\n}\n-->\n\n![Comic page in three strips: Morgan asks Priya how long a customer setup takes and how she knows; Sam stands at a reporting form with four empty rows; Ines and Priya decide to get the numbers ready once.](assets/images/16-have-your-numbers-ready/comic-page-01-the-questions-arrive-first.jpeg)\n\n**Page 1: The questions arrive first.** Larkspur is a fictional scheduling-software company; every figure is fictional. The investor’s team sends a reporting template, and its technology adviser asks a simple question nobody can yet answer with a definition.\n\nARR (annual recurring revenue) is the yearly value of current subscriptions. Net revenue retention compares the recurring revenue from last year’s customers now with what the same customers brought then, counting their growth, cutbacks and departures. Burn is the cash spent each month beyond what comes in; runway is how many months the cash lasts.\n\nBoard text, strip 2: a form with four rows — ARR, NET REVENUE RETENTION, BURN, RUNWAY — each with an empty box and a question mark.\n\n- *Strip 1.* **Morgan:** “How long does a new customer setup take, and how do you know?” **Priya:** “About 80 hours, I think. It depends who you ask.”\n- *Strip 2.* **Sam:** “The investor’s template. Half of these we have never calculated.”\n- *Strip 3.* **Ines:** “I will not have these rebuilt before every board meeting.” **Priya:** “Then we get them ready now, once.”\n\n<!-- comic-page\n{\n  \"id\": \"02-the-numbers-are-already-here\",\n  \"title\": \"The numbers are already here\",\n  \"asset\": \"assets/images/16-have-your-numbers-ready/comic-page-02-the-numbers-are-already-here.jpeg\",\n  \"aspect_ratio\": \"3:4\",\n  \"cast\": [\n    \"Alex\",\n    \"Sam\",\n    \"Ines\",\n    \"Priya\"\n  ],\n  \"strips\": [\n    {\n      \"scene\": \"Two people stand behind one long table, in this left-to-right order: first Alex, then Sam. On the table stand exactly five closed plain boxes in one row, with clear gaps between them, each with one printed label on its front facing the reader. The boxes are the only things on the table.\",\n      \"labels\": [\n        \"FINANCE\",\n        \"TIME RECORDS\",\n        \"CLOUD BILL\",\n        \"INCIDENTS\",\n        \"SALES PIPELINE\"\n      ],\n      \"label_notes\": \"One label per box, left to right in this order.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Alex\",\n          \"text\": \"We don’t need a new platform. It’s already in these.\"\n        },\n        {\n          \"who\": \"Sam\",\n          \"text\": \"It needs defining and connecting, not buying.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"A tall cabinet with exactly six drawers stands against a plain wall, two columns of three drawers, each drawer with one label on its front. Ines stands to the left of the cabinet and Priya to the right, both with hands at their sides. No head, hand, marker or bubble covers any lettering; everyone stands with hands at their sides or gestures with an open hand from the side.\",\n      \"labels\": [\n        \"MONEY AND RUNWAY\",\n        \"CUSTOMERS AND GROWTH\",\n        \"PRODUCT OUTCOMES\",\n        \"DELIVERY\",\n        \"TECHNOLOGY HEALTH\",\n        \"PEOPLE\"\n      ],\n      \"label_notes\": \"One label per drawer: left column top to bottom MONEY AND RUNWAY, CUSTOMERS AND GROWTH, PRODUCT OUTCOMES; right column top to bottom DELIVERY, TECHNOLOGY HEALTH, PEOPLE.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Ines\",\n          \"text\": \"Do we report all of these?\"\n        },\n        {\n          \"who\": \"Priya\",\n          \"text\": \"No. We know them all, and report the dozen our decisions need.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"Two people stand behind one long table, in this left-to-right order: first Priya, then Alex. On the table lie exactly three large cards side by side with clear gaps, each with one line of lettering facing the reader. The cards are the only things on the table.\",\n      \"labels\": [\n        \"WEEKS TO FIRST SCHEDULE\",\n        \"STAFF HOURS PER SETUP\",\n        \"ENGINE: ONE PERSON\"\n      ],\n      \"label_notes\": \"One label per card, left to right in this order.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Priya\",\n          \"text\": \"Ours: how long customers wait, and what setup costs us.\"\n        },\n        {\n          \"who\": \"Alex\",\n          \"text\": \"And mine: only one person can release the scheduling engine.\"\n        }\n      ]\n    }\n  ],\n  \"alt\": \"Comic page in three strips: five labelled boxes of existing records; a six-drawer cabinet of measure families; three cards Priya and Alex choose for Larkspur.\",\n  \"caption\": \"The evidence mostly exists already, in systems never meant to be read together. The catalogue has six families of measures; the company knows them all and reports the few its decisions need.\\n\\nThe cloud bill is the monthly charge for the rented computing the software runs on. Incidents are the records of service failures that reached customers. The sales pipeline is the list of deals in progress. The first real schedule is the day a new customer first schedules real work in the product. The scheduling engine is the part of the software that builds the schedules; to release it is to make a new version available to customers. The one-person dependence was found in diligence, the checks the investor made before investing.\\n\\nBoard text: boxes FINANCE, TIME RECORDS, CLOUD BILL, INCIDENTS, SALES PIPELINE; drawers MONEY AND RUNWAY, CUSTOMERS AND GROWTH, PRODUCT OUTCOMES, DELIVERY, TECHNOLOGY HEALTH, PEOPLE; cards WEEKS TO FIRST SCHEDULE, STAFF HOURS PER SETUP, ENGINE: ONE PERSON.\",\n  \"status\": \"generated\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference\": \"_research/comic-cast-20260913.jpeg\",\n    \"sha256\": \"88f37252a905e19ae395839f51b25cf06837dfd65564ac1d864b329647ee4a12\"\n  }\n}\n-->\n\n![Comic page in three strips: five labelled boxes of existing records; a six-drawer cabinet of measure families; three cards Priya and Alex choose for Larkspur.](assets/images/16-have-your-numbers-ready/comic-page-02-the-numbers-are-already-here.jpeg)\n\n**Page 2: The numbers are already here.** The evidence mostly exists already, in systems never meant to be read together. The catalogue has six families of measures; the company knows them all and reports the few its decisions need.\n\nThe cloud bill is the monthly charge for the rented computing the software runs on. Incidents are the records of service failures that reached customers. The sales pipeline is the list of deals in progress. The first real schedule is the day a new customer first schedules real work in the product. The scheduling engine is the part of the software that builds the schedules; to release it is to make a new version available to customers. The one-person dependence was found in diligence, the checks the investor made before investing.\n\nBoard text: boxes FINANCE, TIME RECORDS, CLOUD BILL, INCIDENTS, SALES PIPELINE; drawers MONEY AND RUNWAY, CUSTOMERS AND GROWTH, PRODUCT OUTCOMES, DELIVERY, TECHNOLOGY HEALTH, PEOPLE; cards WEEKS TO FIRST SCHEDULE, STAFF HOURS PER SETUP, ENGINE: ONE PERSON.\n\n- *Strip 1.* **Alex:** “We don’t need a new platform. It’s already in these.” **Sam:** “It needs defining and connecting, not buying.”\n- *Strip 2.* **Ines:** “Do we report all of these?” **Priya:** “No. We know them all, and report the dozen our decisions need.”\n- *Strip 3.* **Priya:** “Ours: how long customers wait, and what setup costs us.” **Alex:** “And mine: only one person can release the scheduling engine.”\n\n<!-- comic-page\n{\n  \"id\": \"03-define-it-once-own-it-by-name\",\n  \"title\": \"Define it once, own it by name\",\n  \"asset\": \"assets/images/16-have-your-numbers-ready/comic-page-03-define-it-once-own-it-by-name.jpeg\",\n  \"aspect_ratio\": \"3:4\",\n  \"cast\": [\n    \"Sam\",\n    \"Alex\",\n    \"Priya\"\n  ],\n  \"strips\": [\n    {\n      \"scene\": \"Two people stand at the two ends of one long table, in this left-to-right order: first Sam, then Alex. Each has one large card standing upright on the table in front of him, lettered facing the reader. The two cards are the only things on the table.\",\n      \"labels\": [\n        \"RETENTION 94%\",\n        \"RETENTION 88%\"\n      ],\n      \"label_notes\": \"RETENTION 94% is the card in front of Sam on the left; RETENTION 88% the card in front of Alex on the right.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Sam\",\n          \"text\": \"Retention is 94%.\"\n        },\n        {\n          \"who\": \"Alex\",\n          \"text\": \"My report says 88%.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"One large record card is pinned high on a plain wall, above everyone’s head, with exactly five lines of lettering, one per line, top to bottom. Priya stands to the right of the card, gesturing to it with an open hand from the side. No head, hand, marker or bubble covers any lettering; everyone stands with hands at their sides or gestures with an open hand from the side.\",\n      \"labels\": [\n        \"STAFF HOURS PER SETUP\",\n        \"ALL HOURS, WHOEVER PAYS\",\n        \"SOURCE: TIME RECORDS\",\n        \"OWNER: PRIYA\",\n        \"REFRESH: EACH QUARTER\",\n        \"EXCLUDES: AUTOMATED CHECKS\"\n      ],\n      \"label_notes\": \"The five lines of the record card, top to bottom in this order; above them the small heading STAFF HOURS PER SETUP.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Priya\",\n          \"text\": \"One record per measure: definition, source, owner, refresh, what it leaves out.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"Two people stand behind one long table, in this left-to-right order: first Sam, then Priya. On the table lies one plain folder; it is the only thing on the table.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Sam\",\n          \"text\": \"Could we cut the hours by sending the work to a supplier?\"\n        },\n        {\n          \"who\": \"Priya\",\n          \"text\": \"Not on this definition. Every hour counts, whoever pays it.\"\n        }\n      ]\n    }\n  ],\n  \"alt\": \"Comic page in three strips: Sam and Alex hold different retention figures; Priya shows a five-line measure record for staff hours per setup; she explains that moving work to a supplier cannot improve the figure.\",\n  \"caption\": \"Most reporting disputes are definition disputes: one retention figure counts customers kept, the other the revenue they pay, over different periods.\\n\\nThe record gives each measure one definition, a source, a named owner, a refresh schedule and what it deliberately leaves out. The group figure is an average: total hours for the setups in the group divided by the number of setups.\\n\\nBoard text: cards RETENTION 94% and RETENTION 88%; record card STAFF HOURS PER SETUP — ALL HOURS, WHOEVER PAYS; SOURCE: TIME RECORDS; OWNER: PRIYA; REFRESH: EACH QUARTER; EXCLUDES: AUTOMATED CHECKS.\",\n  \"status\": \"generated\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference\": \"_research/comic-cast-20260913.jpeg\",\n    \"sha256\": \"5fa3a5c024730bffc9b972050214af947e3e29d121eae8f346367dd18cf2f547\"\n  }\n}\n-->\n\n![Comic page in three strips: Sam and Alex hold different retention figures; Priya shows a five-line measure record for staff hours per setup; she explains that moving work to a supplier cannot improve the figure.](assets/images/16-have-your-numbers-ready/comic-page-03-define-it-once-own-it-by-name.jpeg)\n\n**Page 3: Define it once, own it by name.** Most reporting disputes are definition disputes: one retention figure counts customers kept, the other the revenue they pay, over different periods.\n\nThe record gives each measure one definition, a source, a named owner, a refresh schedule and what it deliberately leaves out. The group figure is an average: total hours for the setups in the group divided by the number of setups.\n\nBoard text: cards RETENTION 94% and RETENTION 88%; record card STAFF HOURS PER SETUP — ALL HOURS, WHOEVER PAYS; SOURCE: TIME RECORDS; OWNER: PRIYA; REFRESH: EACH QUARTER; EXCLUDES: AUTOMATED CHECKS.\n\n- *Strip 1.* **Sam:** “Retention is 94%.” **Alex:** “My report says 88%.”\n- *Strip 2.* **Priya:** “One record per measure: definition, source, owner, refresh, what it leaves out.”\n- *Strip 3.* **Sam:** “Could we cut the hours by sending the work to a supplier?” **Priya:** “Not on this definition. Every hour counts, whoever pays it.”\n\n<!-- comic-page\n{\n  \"id\": \"04-a-number-needs-its-context\",\n  \"title\": \"A number needs its context\",\n  \"asset\": \"assets/images/16-have-your-numbers-ready/comic-page-04-a-number-needs-its-context.jpeg\",\n  \"aspect_ratio\": \"3:4\",\n  \"cast\": [\n    \"Morgan\",\n    \"Priya\",\n    \"Ines\"\n  ],\n  \"strips\": [\n    {\n      \"scene\": \"Two people stand behind one long table, in this left-to-right order: first Morgan, then Priya. One large card stands upright on the table with one line of lettering facing the reader; it is the only thing on the table.\",\n      \"labels\": [\n        \"80 HOURS\"\n      ],\n      \"label_notes\": \"80 HOURS is the only lettering on the standing card.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Morgan\",\n          \"text\": \"80 compared with what? And how many setups?\"\n        },\n        {\n          \"who\": \"Priya\",\n          \"text\": \"Five, from your own diligence sample. It’s provisional.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"One whiteboard hangs high on a plain wall, above everyone’s head, with exactly four large lines of lettering, top to bottom. Priya stands to the right of the board, gesturing with an open hand from the side. No head, hand, marker or bubble covers any lettering; everyone stands with hands at their sides or gestures with an open hand from the side.\",\n      \"labels\": [\n        \"NOW: 5 SETUPS\",\n        \"~80 HOURS PER SETUP, AVERAGE\",\n        \"DAY 20: 12 SETUPS\",\n        \"TARGET: 50 HOURS PER SETUP\"\n      ],\n      \"label_notes\": \"The four lines of the whiteboard, top to bottom in this order.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Priya\",\n          \"text\": \"By day 20, all twelve setups from the last two quarters.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"A long horizontal band is painted on a plain wall, high above everyone’s heads, divided into exactly three coloured zones side by side: green on the left, amber in the middle, red on the right, each zone with one label inside it, and one heading above the whole band. Two people stand below it, in this left-to-right order: first Ines, then Morgan. No head, hand, marker or bubble covers any lettering; everyone stands with hands at their sides or gestures with an open hand from the side.\",\n      \"labels\": [\n        \"DAY-90 RULE: AVERAGE HOURS\",\n        \"UNDER 60: REQUEST NEXT STAGE\",\n        \"60–70: SMALLER STEP\",\n        \"OVER 70: REOPEN PLAN\"\n      ],\n      \"label_notes\": \"DAY-90 RULE: AVERAGE HOURS is the heading above the band; the other three labels sit inside the green, amber and red zones, left to right.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Ines\",\n          \"text\": \"We agree the rule now. A new stage is the board’s call, not mine.\"\n        },\n        {\n          \"who\": \"Morgan\",\n          \"text\": \"Agreed now, before either of us has a number to defend.\"\n        }\n      ]\n    }\n  ],\n  \"alt\": \"Comic page in three strips: a lone card reading 80 hours; a whiteboard giving the five-setup sample, the average of about 80 hours per setup, the day-20 baseline of twelve setups and the 50-hour target; a three-zone band with the day-90 rule for average hours.\",\n  \"caption\": \"A number needs its baseline, what it was expected to be, how much weight it carries and the decision it informs. Setup effort is an average: total hours divided by the number of setups. Day 0 is the board meeting that adopts the plan. At day 90 the average for eight pilot customers, a small trial of the changed setup, is measured; at day 100 the board reviews it. The diligence sample is the five setups Morgan examined during the investor’s checks before investing.\\n\\nThe bands say which response each result points to; they guide the board’s decision. Ines, the chief executive, authorizes spending inside the approved plan; a new stage, or spending outside the plan, needs the board’s approval. Exactly 60 or 70 hours falls in the middle band.\\n\\nBoard text: card 80 HOURS. Whiteboard NOW: 5 SETUPS; ~80 HOURS PER SETUP, AVERAGE; DAY 20: 12 SETUPS; TARGET: 50 HOURS PER SETUP. Band DAY-90 RULE: AVERAGE HOURS — green UNDER 60: REQUEST NEXT STAGE; amber 60–70: SMALLER STEP; red OVER 70: REOPEN PLAN.\",\n  \"status\": \"generated\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference\": \"_research/comic-cast-20260913.jpeg\",\n    \"sha256\": \"c019aac9ee104f790c870e46a579acc7aece559d34e116e300c4b0c3b4757e95\"\n  }\n}\n-->\n\n![Comic page in three strips: a lone card reading 80 hours; a whiteboard giving the five-setup sample, the average of about 80 hours per setup, the day-20 baseline of twelve setups and the 50-hour target; a three-zone band with the day-90 rule for average hours.](assets/images/16-have-your-numbers-ready/comic-page-04-a-number-needs-its-context.jpeg)\n\n**Page 4: A number needs its context.** A number needs its baseline, what it was expected to be, how much weight it carries and the decision it informs. Setup effort is an average: total hours divided by the number of setups. Day 0 is the board meeting that adopts the plan. At day 90 the average for eight pilot customers, a small trial of the changed setup, is measured; at day 100 the board reviews it. The diligence sample is the five setups Morgan examined during the investor’s checks before investing.\n\nThe bands say which response each result points to; they guide the board’s decision. Ines, the chief executive, authorizes spending inside the approved plan; a new stage, or spending outside the plan, needs the board’s approval. Exactly 60 or 70 hours falls in the middle band.\n\nBoard text: card 80 HOURS. Whiteboard NOW: 5 SETUPS; ~80 HOURS PER SETUP, AVERAGE; DAY 20: 12 SETUPS; TARGET: 50 HOURS PER SETUP. Band DAY-90 RULE: AVERAGE HOURS — green UNDER 60: REQUEST NEXT STAGE; amber 60–70: SMALLER STEP; red OVER 70: REOPEN PLAN.\n\n- *Strip 1.* **Morgan:** “80 compared with what? And how many setups?” **Priya:** “Five, from your own diligence sample. It’s provisional.”\n- *Strip 2.* **Priya:** “By day 20, all twelve setups from the last two quarters.”\n- *Strip 3.* **Ines:** “We agree the rule now. A new stage is the board’s call, not mine.” **Morgan:** “Agreed now, before either of us has a number to defend.”\n\n<!-- comic-page\n{\n  \"id\": \"05-label-what-kind-of-number\",\n  \"title\": \"Label what kind of number\",\n  \"asset\": \"assets/images/16-have-your-numbers-ready/comic-page-05-label-what-kind-of-number.jpeg\",\n  \"aspect_ratio\": \"3:4\",\n  \"cast\": [\n    \"Priya\",\n    \"Sam\",\n    \"Morgan\"\n  ],\n  \"strips\": [\n    {\n      \"scene\": \"Two people stand behind one long table, in this left-to-right order: first Priya, then Sam. On the table stand exactly five identical blank cards in one row with clear gaps between them; each card carries one line of lettering and nothing else. The cards are the only things on the table.\",\n      \"labels\": [\n        \"~80 HOURS\",\n        \"50 HOURS\",\n        \"€225,000 A YEAR\",\n        \"100 SETUPS, €75/HOUR\",\n        \"€150,000 SPECIALIST\"\n      ],\n      \"label_notes\": \"One line per card, left to right in this order.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Priya\",\n          \"text\": \"Five figures from my proposal. They all look alike.\"\n        },\n        {\n          \"who\": \"Sam\",\n          \"text\": \"They are not the same kind of thing.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"The same five cards stand on the same table, now each with one coloured paper tag hanging from its top corner. No people in this strip; the five tagged cards are the only things in the strip.\",\n      \"labels\": [\n        \"~80 HOURS\",\n        \"50 HOURS\",\n        \"€225,000 A YEAR\",\n        \"100 SETUPS, €75/HOUR\",\n        \"€150,000 SPECIALIST\",\n        \"ACTUAL\",\n        \"TARGET\",\n        \"FORECAST\",\n        \"ASSUMPTION\",\n        \"COMMITTED\"\n      ],\n      \"label_notes\": \"The five card lines are as before, left to right. The tags, left to right, read ACTUAL, TARGET, FORECAST, ASSUMPTION, COMMITTED, one tag per card.\",\n      \"bubbles\": [],\n      \"narration\": \"The forecast also assumes 50 hours is reached and holds.\"\n    },\n    {\n      \"scene\": \"One whiteboard hangs high on a plain wall, above everyone’s head, with exactly four large lines of lettering, top to bottom. Two people stand below it, in this left-to-right order: first Sam, then Morgan. No head, hand, marker or bubble covers any lettering; everyone stands with hands at their sides or gestures with an open hand from the side.\",\n      \"labels\": [\n        \"100 SETUPS/YEAR × 30 HOURS/SETUP\",\n        \"= 3,000 HOURS/YEAR\",\n        \"VALUED AT €75/HOUR: €225,000/YEAR\",\n        \"NOT CASH RECEIVED\"\n      ],\n      \"label_notes\": \"The four lines of the whiteboard, top to bottom in this order.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Sam\",\n          \"text\": \"Cash comes only when a payment is avoided, or extra customers pay above cost.\"\n        },\n        {\n          \"who\": \"Morgan\",\n          \"text\": \"Then print it as a forecast, not a result.\"\n        }\n      ]\n    }\n  ],\n  \"alt\": \"Comic page in three strips: five untagged cards from the setup proposal; the same cards tagged actual, target, forecast, assumption and committed; a whiteboard working 3,000 hours a year, valued at €225,000 a year, not cash received.\",\n  \"caption\": \"About 80 hours per setup, an average, is observed; 50 hours is the aim. €225,000 a year is arithmetic resting on three assumptions: about 100 setups a year, €75 an hour (pay plus the employer’s other employment costs), and setups reaching 50 hours and staying there. The contract specialist’s €150,000 is already authorized.\\n\\nReleased time becomes cash only on the date a scheduled payment is actually avoided, such as a contract not extended, or when extra customers pay more than serving them costs.\\n\\nBoard text: cards ~80 HOURS (ACTUAL), 50 HOURS (TARGET), €225,000 A YEAR (FORECAST), 100 SETUPS, €75/HOUR (ASSUMPTION), €150,000 SPECIALIST (COMMITTED). Whiteboard 100 SETUPS/YEAR × 30 HOURS/SETUP = 3,000 HOURS/YEAR; VALUED AT €75/HOUR: €225,000/YEAR; NOT CASH RECEIVED.\",\n  \"status\": \"generated\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference\": \"_research/comic-cast-20260913.jpeg\",\n    \"sha256\": \"00c5f660bcbe68e83d972df7db23d22643b2aaa989dbeac0e9f602819220c37c\"\n  }\n}\n-->\n\n![Comic page in three strips: five untagged cards from the setup proposal; the same cards tagged actual, target, forecast, assumption and committed; a whiteboard working 3,000 hours a year, valued at €225,000 a year, not cash received.](assets/images/16-have-your-numbers-ready/comic-page-05-label-what-kind-of-number.jpeg)\n\n**Page 5: Label what kind of number.** About 80 hours per setup, an average, is observed; 50 hours is the aim. €225,000 a year is arithmetic resting on three assumptions: about 100 setups a year, €75 an hour (pay plus the employer’s other employment costs), and setups reaching 50 hours and staying there. The contract specialist’s €150,000 is already authorized.\n\nReleased time becomes cash only on the date a scheduled payment is actually avoided, such as a contract not extended, or when extra customers pay more than serving them costs.\n\nBoard text: cards ~80 HOURS (ACTUAL), 50 HOURS (TARGET), €225,000 A YEAR (FORECAST), 100 SETUPS, €75/HOUR (ASSUMPTION), €150,000 SPECIALIST (COMMITTED). Whiteboard 100 SETUPS/YEAR × 30 HOURS/SETUP = 3,000 HOURS/YEAR; VALUED AT €75/HOUR: €225,000/YEAR; NOT CASH RECEIVED.\n\n- *Strip 1.* **Priya:** “Five figures from my proposal. They all look alike.” **Sam:** “They are not the same kind of thing.”\n- *Strip 2.* *Narration:* The forecast also assumes 50 hours is reached and holds.\n- *Strip 3.* **Sam:** “Cash comes only when a payment is avoided, or extra customers pay above cost.” **Morgan:** “Then print it as a forecast, not a result.”\n\n<!-- comic-page\n{\n  \"id\": \"06-one-set-three-uses\",\n  \"title\": \"One set, three uses\",\n  \"asset\": \"assets/images/16-have-your-numbers-ready/comic-page-06-one-set-three-uses.jpeg\",\n  \"aspect_ratio\": \"3:4\",\n  \"cast\": [\n    \"Morgan\",\n    \"Priya\",\n    \"Alex\",\n    \"Ines\"\n  ],\n  \"strips\": [\n    {\n      \"scene\": \"On the left, a wall covered with many small plain cards and one large grid sheet with plain ruled cells; in the middle, an open doorway frame; on the right, one single sheet on an easel with three plain bars and one paper tag hanging from the easel. Morgan stands to the right of the easel, looking at it. No head, hand, marker or bubble covers any lettering; everyone stands with hands at their sides or gestures with an open hand from the side.\",\n      \"labels\": [\n        \"WORKING DETAIL\",\n        \"SHARED VIEW\",\n        \"WITH ITS DEFINITION\"\n      ],\n      \"label_notes\": \"WORKING DETAIL is a heading above the left wall, SHARED VIEW a heading above the easel, WITH ITS DEFINITION the words on the tag.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Morgan\",\n          \"text\": \"This is what I get? Much less than you hold.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"Two people stand behind one long table, in this left-to-right order: first Priya, then Alex. On the table stand exactly two cards side by side, joined by one short plain chain. The cards and chain are the only things on the table.\",\n      \"labels\": [\n        \"STAFF HOURS PER SETUP\",\n        \"MONTH-ONE SUPPORT REQUESTS\"\n      ],\n      \"label_notes\": \"One label per card, left to right.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Priya\",\n          \"text\": \"Our goal: fewer staff hours per setup.\"\n        },\n        {\n          \"who\": \"Alex\",\n          \"text\": \"Paired with support requests, so nobody rushes customers.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"Three screens are mounted one above the other on a plain wall, stacked vertically, each screen with a short heading and plain bars; one continuous thin line runs from a bar on the top screen down through the middle screen to a bar on the bottom screen. Ines stands to the left of the stack. No head, hand, marker or bubble covers any lettering; everyone stands with hands at their sides or gestures with an open hand from the side.\",\n      \"labels\": [\n        \"BOARD: QUARTERLY\",\n        \"LEADERSHIP: MONTHLY\",\n        \"TEAM: WEEKLY\"\n      ],\n      \"label_notes\": \"One heading per screen, top to bottom in this order.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Ines\",\n          \"text\": \"Every number on the board’s screen traces down to a team’s work.\"\n        }\n      ]\n    }\n  ],\n  \"alt\": \"Comic page in three strips: detailed working records pass through a doorway into one shared sheet tagged with its definition; a goal card chained to a counter-measure card; three stacked dashboards joined by one line from board to team.\",\n  \"caption\": \"The same numbers serve three uses. The investor receives totals or averages, each with its definition. Team goals pair the main measure with a counter-measure, a second measure that shows harm caused by chasing the first. Dashboards show the measures at board, leadership and team level.\\n\\nMonth-one support requests are the setup-related requests for help in the first month after a customer’s account is activated, the day it becomes ready to use.\\n\\nBoard text: WORKING DETAIL; SHARED VIEW; tag WITH ITS DEFINITION. Chained cards STAFF HOURS PER SETUP and MONTH-ONE SUPPORT REQUESTS. Screens BOARD: QUARTERLY; LEADERSHIP: MONTHLY; TEAM: WEEKLY.\",\n  \"status\": \"generated\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference\": \"_research/comic-cast-20260913.jpeg\",\n    \"sha256\": \"0340b893ba92ccd4dcf8c628db774b25f2984f8e7dd36fc07f2c9288fdea8d67\"\n  }\n}\n-->\n\n![Comic page in three strips: detailed working records pass through a doorway into one shared sheet tagged with its definition; a goal card chained to a counter-measure card; three stacked dashboards joined by one line from board to team.](assets/images/16-have-your-numbers-ready/comic-page-06-one-set-three-uses.jpeg)\n\n**Page 6: One set, three uses.** The same numbers serve three uses. The investor receives totals or averages, each with its definition. Team goals pair the main measure with a counter-measure, a second measure that shows harm caused by chasing the first. Dashboards show the measures at board, leadership and team level.\n\nMonth-one support requests are the setup-related requests for help in the first month after a customer’s account is activated, the day it becomes ready to use.\n\nBoard text: WORKING DETAIL; SHARED VIEW; tag WITH ITS DEFINITION. Chained cards STAFF HOURS PER SETUP and MONTH-ONE SUPPORT REQUESTS. Screens BOARD: QUARTERLY; LEADERSHIP: MONTHLY; TEAM: WEEKLY.\n\n- *Strip 1.* **Morgan:** “This is what I get? Much less than you hold.”\n- *Strip 2.* **Priya:** “Our goal: fewer staff hours per setup.” **Alex:** “Paired with support requests, so nobody rushes customers.”\n- *Strip 3.* **Ines:** “Every number on the board’s screen traces down to a team’s work.”\n\n<!-- comic-page\n{\n  \"id\": \"07-numbers-ready\",\n  \"title\": \"Numbers ready\",\n  \"asset\": \"assets/images/16-have-your-numbers-ready/comic-page-07-numbers-ready.jpeg\",\n  \"aspect_ratio\": \"3:4\",\n  \"cast\": [\n    \"Sam\",\n    \"Priya\",\n    \"Alex\",\n    \"Morgan\"\n  ],\n  \"strips\": [\n    {\n      \"scene\": \"One board hangs high on a plain wall, above everyone’s heads, with exactly three large lines of lettering. Three people stand below it in one row, in this left-to-right order: first Sam, then Priya, then Alex. No head, hand, marker or bubble covers any lettering; everyone stands with hands at their sides or gestures with an open hand from the side.\",\n      \"labels\": [\n        \"SAM: MONEY, BOARD PACK\",\n        \"PRIYA: PRODUCT, CUSTOMERS\",\n        \"ALEX: DELIVERY, TECHNOLOGY\"\n      ],\n      \"label_notes\": \"The three lines of the board, top to bottom in this order.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Sam\",\n          \"text\": \"Each number has a named owner. I also own the board pack.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"Two people stand behind one long table, in this left-to-right order: first Morgan, then Sam. On the table stands one card with one line of lettering and one paper tag hanging from its corner; it is the only thing on the table.\",\n      \"labels\": [\n        \"€225,000 A YEAR\",\n        \"FORECAST\"\n      ],\n      \"label_notes\": \"€225,000 A YEAR is the line on the card; FORECAST is the word on the tag.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Morgan\",\n          \"text\": \"What is the €225,000 worth in cash?\"\n        },\n        {\n          \"who\": \"Sam\",\n          \"text\": \"Nothing yet. It’s a forecast of staff time.\"\n        }\n      ]\n    },\n    {\n      \"scene\": \"Two people stand at one small round table, in this left-to-right order: first Morgan, then Priya. On the table lies one record card with plain ruled lines, its short heading reading upright for the reader; it is the only thing on the table.\",\n      \"labels\": [\n        \"STAFF HOURS PER SETUP\"\n      ],\n      \"label_notes\": \"STAFF HOURS PER SETUP is the heading of the record card.\",\n      \"bubbles\": [\n        {\n          \"who\": \"Morgan\",\n          \"text\": \"So: setup time, and how do you know?\"\n        },\n        {\n          \"who\": \"Priya\",\n          \"text\": \"About 80 hours, provisional. Here is the definition.\"\n        }\n      ]\n    }\n  ],\n  \"alt\": \"Comic page in three strips: a board naming Sam, Priya and Alex as owners of the number families; Sam answers that the €225,000 forecast is not yet cash; Priya answers Morgan’s first question with the defined measure.\",\n  \"caption\": \"The board pack is the set of reports the directors receive before each board meeting. In larger companies this work belongs to product operations, a function that keeps evidence and definitions consistent without taking the decisions; a small company names an owner for each number.\\n\\nWith its numbers ready and labelled, Larkspur can choose what to fund against its cash and team time.\\n\\nBoard text: SAM: MONEY, BOARD PACK; PRIYA: PRODUCT, CUSTOMERS; ALEX: DELIVERY, TECHNOLOGY. Card €225,000 A YEAR, tagged FORECAST. Record card STAFF HOURS PER SETUP.\",\n  \"status\": \"generated\",\n  \"generation\": {\n    \"model\": \"gemini-3-pro-image-preview\",\n    \"reference\": \"_research/comic-cast-20260913.jpeg\",\n    \"sha256\": \"62d44b74b57d8d57c06c9714deea076e0f8dda1e53cb524a15e6eec6601a3922\"\n  }\n}\n-->\n\n![Comic page in three strips: a board naming Sam, Priya and Alex as owners of the number families; Sam answers that the €225,000 forecast is not yet cash; Priya answers Morgan’s first question with the defined measure.](assets/images/16-have-your-numbers-ready/comic-page-07-numbers-ready.jpeg)\n\n**Page 7: Numbers ready.** The board pack is the set of reports the directors receive before each board meeting. In larger companies this work belongs to product operations, a function that keeps evidence and definitions consistent without taking the decisions; a small company names an owner for each number.\n\nWith its numbers ready and labelled, Larkspur can choose what to fund against its cash and team time.\n\nBoard text: SAM: MONEY, BOARD PACK; PRIYA: PRODUCT, CUSTOMERS; ALEX: DELIVERY, TECHNOLOGY. Card €225,000 A YEAR, tagged FORECAST. Record card STAFF HOURS PER SETUP.\n\n- *Strip 1.* **Sam:** “Each number has a named owner. I also own the board pack.”\n- *Strip 2.* **Morgan:** “What is the €225,000 worth in cash?” **Sam:** “Nothing yet. It’s a forecast of staff time.”\n- *Strip 3.* **Morgan:** “So: setup time, and how do you know?” **Priya:** “About 80 hours, provisional. Here is the definition.”\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

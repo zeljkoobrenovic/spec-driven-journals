@@ -24,7 +24,7 @@ These are **proposed working tools** for company leaders applying the book’s f
 
 ## Minimum Use
 
-The smallest adequate record answers five questions in one place: what we know and how we know it; which options were compared; what was committed (cash by period, team time, the accountable company leader, the review date and who can decide); what was observed against the baseline; and what remains open. A small company can keep all of that on **one evolving page** per finding or initiative, adding a section at each stage. The tools below describe the fields each stage needs; they are not separate forms to copy into. Use the same finding or initiative identifier (D-3, ONB-1) throughout, so a reader can trace a number back to its evidence.
+The smallest adequate record answers five questions in one place: what we know and how we know it; which options were compared; what was committed (cash by period, team time, the accountable company leader, the review date and who can decide); what was observed against the baseline; and what remains open. A small company can keep all that on **one evolving page** per finding or initiative, adding a section at each stage. The tools below describe the fields each stage needs; they are not separate forms to copy into. Use the same finding or initiative identifier (D-3, ONB-1) throughout, so a reader can trace a number back to its evidence.
 
 ## Find the Record for Your Decision Stage
 
@@ -40,15 +40,15 @@ The tools keep their original numbers because chapters and earlier readers cite 
 | **Obtain help** | What exactly will the adviser or specialist help us do, at what cost, for how long? | Support engagement — [Tool 4](#tool-4) | [[useful-engagement]], [[help-that-changes-capability]] |
 | **Obtain help** | Should we work with this investor at all? | Investor-fit interview — [Tool 8](#tool-8) | [[investor-under-pressure]] |
 | **Learn and explore** | What can we learn through the investor’s network, and what should we revisit afterward? | Learning brief — [Tool 14](#tool-14) | [[learn-through-investors-network]] |
-| **Define the evidence** | We keep arguing about what a number means; how do we define, own and label it before it reaches the board? | Measure record — [Tool 15](#tool-15) | [[data-foundations-for-alignment]] |
+| **Define the evidence** | We keep arguing about what a number means; how do we define, own and label it before it reaches the board? | Measure record — [Tool 15](#tool-15) | [[have-your-numbers-ready]] |
 | **Measure** | Did the work help, and is the benefit capacity or cash? | Outcome and contribution ledger — [Tool 6](#tool-6); small scorecard — [Tool 7](#tool-7) | [[roadmap-to-revenue]], [[cheaper-cloud-bill]] |
 | **Revise or hand over** | We are combining or separating businesses; what must continue? | Integration or separation plan — [Tool 9](#tool-9) | [[acquisition-adds-work-first]] |
 | **Revise or hand over** | Funding or ownership is changing; what evidence and obligations must travel with the work? | Funding or ownership handover — [Tool 10](#tool-10) | [[handover-of-obligations]], [[the-financing-slipped]] |
-| **Revise or hand over** | The headcount plan has to shrink, or an investor proposes an appointment; who decides, what stops, and what are the people owed? | Workforce decision — [Tool 13](#tool-13) | [[anatomy-of-a-layoff]], [[fix-decisions-before-hiring]] |
+| **Revise or hand over** | The headcount plan must shrink, or an investor proposes an appointment; who decides, what stops, and what are the people owed? | Workforce decision — [Tool 13](#tool-13) | [[anatomy-of-a-layoff]], [[fix-decisions-before-hiring]] |
 
 Tool 12 (choose the combination) comes before Tool 5 (commit to one initiative) in this order: each initiative can be feasible on its own while the combination is not.
 
-An **initiative** is a defined piece of improvement work. A **baseline** records the starting situation. A **dependency** is something required before other work can proceed. A **material finding** is important enough to affect a decision. For responsibility, the records use **accountable company leader**: the person who is authorized to make the operating decision and answers for its result. **Shareholder** is reserved for ownership of the company. A person is never the “owner” of a decision in these records.
+An **initiative** is a defined piece of improvement work. A **baseline** records the starting situation. A **dependency** is something required before other work can proceed. A **material finding** is important enough to affect a decision. For responsibility, the records use **accountable company leader**: the person authorized to make the operating decision and answers for its result. **Shareholder** is reserved for ownership of the company. A person is never the “owner” of a decision in these records.
 
 Restrict distribution according to the engagement and company permissions. A filled template doesn’t establish that its claims are true: preserve dates, definitions, evidence links and disagreement.
 
@@ -67,7 +67,7 @@ The scenario: a growth investment whose investment thesis is that Larkspur can d
 | Evidence and access | Morgan’s sample of five implementations, effort records for each, interviews with Alex (CTO) and the implementation specialist. Access limited to one country’s records. |
 | Kind of claim | **Observed:** in three of the five, configuration needed the same specialist’s manual work; average effort ≈ 80 hours per implementation, matching the teaching model in [[roadmap-to-revenue]]. **Reported (Alex):** roughly 40% of the effort comes from poor customer data rather than product limitations. **Inferred (Morgan):** the dependency is structural and will not scale with more sales. **Not established:** representativeness across customer types; the actual split between data quality and product limitation. |
 | Business consequence | The thesis assumes onboarding volume doubles with the same implementation team. If the dependency holds, additional bookings do not become timely revenue. |
-| Alternatives | Alex’s data-quality explanation and Morgan’s structural explanation. They are not exclusive: a structural manual step can consist largely of correcting poor customer data. What the sample established is only that the specialist’s manual work recurs; it did not measure how the hours divide between configuration and data cleaning. Distinguishing evidence: the effort split measured in a pilot cohort, and whether effort falls further once a data-quality step exists. |
+| Alternatives | Alex’s data-quality explanation and Morgan’s structural explanation. They are not exclusive: a structural manual step can consist largely of correcting poor customer data. The sample established only that the specialist’s manual work recurs; it did not measure how the hours divide between configuration and data cleaning. Distinguishing evidence: the effort split measured in a pilot cohort, and whether effort falls further once a data-quality step exists. |
 | Confidence / importance | Evidence: moderate (small sample, one country, two quarters). Importance: high — it changes the first-year volume assumption. |
 | Agreed response | The investment proceeds. First-year onboarding-volume assumption revised from 2× to 1.5×; second-country expansion moved out of year one and made conditional on pilot evidence; a funded onboarding pilot becomes a condition of the early operating plan. Approvers: the fund’s investment committee for the transaction terms; the Larkspur board for the plan and its funding. |
 | Company handoff | Priya (product leader) is the accountable company leader. She records acceptance within ten days of closing; she measures the pilot cohort at day 90, and the board decides on that evidence at the day-100 review. |
@@ -112,8 +112,6 @@ The specialist support that helped build the setup step is a separate record ([T
 
 ### <a id="stage-4"></a>Stage 4 — The Observed Result (Tool 6)
 
-At the day-100 review the ledger entry for ONB-1 reads:
-
 | Field | ONB-1 at day 100 |
 | --- | --- |
 | Baseline and definition | 80 hours of implementation effort per customer, reconstructed by day 20 from the specialist’s time records for the twelve implementations of the previous two quarters; one country. Configuration is under half of those hours; data cleaning is the largest remaining share. |
@@ -127,7 +125,7 @@ At the day-100 review the ledger entry for ONB-1 reads:
 
 ### <a id="stage-5"></a>Stage 5 — The Revised Decision
 
-Before the board can fund anything at day 100, the reserve has to be reconciled, because ONB-1 was not the only initiative drawing on it. The restore test REC-1 failed at day 45, and around day 47 the board — not Ines, because a reserve draw is the board’s — approved €20,000 and 2 engineer-weeks for the correction and a retest, which passed at day 85 (see the chapters [[prove-you-can-restore]] and [[cannot-fund-everything]]). The envelope therefore reads:
+Before the board can fund anything at day 100, the reserve must be reconciled, because ONB-1 was not the only initiative drawing on it. The restore test REC-1 failed at day 45, and around day 47 the board — not Ines, because a reserve draw is the board’s — approved €20,000 and 2 engineer-weeks for the correction and a retest, which passed at day 85 (see the chapters [[prove-you-can-restore]] and [[cannot-fund-everything]]). The envelope therefore reads:
 
 | Point | Committed cash | Engineer-weeks committed of 24 | Reserve | Approver |
 | --- | ---: | ---: | ---: | --- |
@@ -231,7 +229,7 @@ Review service cost and company effort along with satisfaction. Before extending
 
 ## <a id="tool-5"></a>5. Build a Funded Initiative Record
 
-Use for an early operating plan or later intervention. See the chapter [[first-hundred-days]]. The [pending and authorized versions of ONB-1 in Stage 3](#stage-3) show the level of detail to start with, and what has to be added before the record describes funded work.
+Use for an early operating plan or later intervention. See the chapter [[first-hundred-days]]. The [pending and authorized versions of ONB-1 in Stage 3](#stage-3) show the level of detail to start with, and what must be added before the record describes funded work.
 
 | Field | Record |
 | --- | --- |
@@ -362,13 +360,13 @@ Use before approving a combination of projects. See the chapter [[cannot-fund-ev
 | Uncertainty and first stages | What a smaller commitment can test, and what must remain workable if later work does not proceed |
 | Review decision | Evidence, date and authority for continuing, changing, expanding or stopping |
 
-Calculate cash and team time separately. Identify overlapping benefits and costs, as well as prerequisites that prevent projects from running in parallel. A resource estimate should say what it includes; don’t add existing payroll to a proposal a second time if the budget already contains it.
+Calculate cash and team time separately. Identify overlapping benefits and costs, and prerequisites that prevent projects from running in parallel. A resource estimate should say what it includes; don’t add existing payroll to a proposal a second time if the budget already contains it.
 
 Record the reason for the selected combination in ordinary language. A score can organize estimates, but the accountable decision-maker must still explain the trade-off and what evidence would change it.
 
 ## <a id="tool-13"></a>13. Record a Workforce Decision
 
-Use when an investor’s request, a funding condition or the company’s own cash forecast means the headcount plan has to change: a reduction, a freeze that becomes permanent, or a consolidation after an acquisition. See the chapter [[anatomy-of-a-layoff]] for the worked reduction and [[fix-decisions-before-hiring]] for the knowledge-transfer test and for an investor-proposed appointment, which uses the first three rows and the role-design fields of Tool 5 rather than a separate form. Reuse Tool 1’s Authority row and Tool 12’s option comparison rather than copying them.
+Use when an investor’s request, a funding condition or the company’s own cash forecast means the headcount plan must change: a reduction, a freeze that becomes permanent, or a consolidation after an acquisition. See the chapter [[anatomy-of-a-layoff]] for the worked reduction and [[fix-decisions-before-hiring]] for the knowledge-transfer test and for an investor-proposed appointment, which uses the first three rows and the role-design fields of Tool 5 rather than a separate form. Reuse Tool 1’s Authority row and Tool 12’s option comparison rather than copying them.
 
 | Field | Record |
 | --- | --- |
@@ -405,7 +403,7 @@ Better questions and continuing relationships can be worthwhile results. Record 
 
 ## <a id="tool-15"></a>15. Define a Measure Before You Report It
 
-Use before a measure enters a board pack, an investor update or a funding decision. [[data-foundations-for-alignment]] explains the labelling rule and the internal/shared boundary. One short record per measure; if a measure cannot be given an owner or a decision, it probably should not be reported.
+Use before a measure enters a board pack, an investor update or a funding decision. [[have-your-numbers-ready]] explains the labelling rule and the internal/shared boundary. One short record per measure; if a measure cannot be given an owner or a decision, it probably should not be reported.
 
 | Field | Record |
 | --- | --- |
@@ -428,7 +426,7 @@ A forecast keeps its inputs visible: the assumed volume, rate and conversion tha
 
 ## Combining and Revising Records
 
-The records overlap by design, and that is the reason not to copy fields between them. Tools 2, 3 and 5 all mention evidence, resources and responsibility: the thesis links findings, a finding holds the evidence, and the initiative holds the commitment. Reference the finding by its identifier from the other two. Tools 6 and 7 both define outcomes: the ledger explains one initiative’s result, the scorecard chooses the few measures the board watches. Tool 10 reuses the map’s Authority, Money and Time rows and the ledger’s evidence; update those and point to them. Tool 13 reuses the same Authority row and Tool 12’s option comparison for a workforce decision.
+The records overlap by design, so don’t copy fields between them. Tools 2, 3 and 5 all mention evidence, resources and responsibility: the thesis links findings, a finding holds the evidence, and the initiative holds the commitment. Reference the finding by its identifier from the other two. Tools 6 and 7 both define outcomes: the ledger explains one initiative’s result, the scorecard chooses the few measures the board watches. Tool 10 reuses the map’s Authority, Money and Time rows and the ledger’s evidence; update those and point to them. Tool 13 reuses the same Authority row and Tool 12’s option comparison for a workforce decision.
 
 A small company can keep a finding, its initiative and its outcome on one evolving page. Revise the page when evidence arrives, keeping the earlier state visible: the pending version, the authorized version, the observed result and the revised decision are the history a later reader — or a later shareholder — needs. What matters is not the number of documents but whether the next decision can see the last one’s evidence.
 

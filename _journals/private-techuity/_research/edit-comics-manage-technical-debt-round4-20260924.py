@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Apply the 24 September 2026 round-4 review changes to the comic script of
-26-manage-technical-debt (MTD-029 page 4 timeline; MTD-012/020 page 5 fallback caption).
+27-manage-technical-debt (MTD-029 page 4 timeline; MTD-012/020 page 5 fallback caption).
 Run generate_comic_pages.py --render afterwards, then correct page 04's artwork."""
 import json, re
 from pathlib import Path
-P = Path(__file__).resolve().parents[1] / 'posts/26-manage-technical-debt/comics.md'
+P = Path(__file__).resolve().parents[1] / 'posts/27-manage-technical-debt/comics.md'
 text = P.read_text()
 pat = re.compile(r'<!-- comic-page\n(\{.*?\n\})\n-->', re.S)
 blocks = {}

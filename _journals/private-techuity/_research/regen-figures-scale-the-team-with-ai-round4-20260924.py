@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Round 4 of the in-depth review of 23-scale-the-team-with-ai (24 Sept 2026).
+"""Round 4 of the in-depth review of 24-scale-the-team-with-ai (24 Sept 2026).
 
 SAI-018: Figure 3's top rung said 'Continue, extend seats' and the extension rung promised continuation at 20%,
 although a qualifying gain is only eligible to continue if the added review hours are funded. Both results are

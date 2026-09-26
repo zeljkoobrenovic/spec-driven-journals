@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate or re-letter legacy comic panels of 33-hilton-and-skype (asset slug 26-hilton-and-skype).
+"""Regenerate or re-letter legacy comic panels of 34-hilton-and-skype (asset slug 26-hilton-and-skype).
 
 In-depth review 23 September 2026: HSK-008 (panel 1 carried unexplained
 "LBO & IPO" / "PRIVATE EQUITY" document labels and malformed small text;
@@ -33,7 +33,7 @@ spec.loader.exec_module(helper)
 
 MODEL = 'gemini-3-pro-image-preview'
 CAST = J / '_research/comic-cast-20260913.jpeg'
-POST = J / 'posts/33-hilton-and-skype'
+POST = J / 'posts/34-hilton-and-skype'
 COMICS = POST / 'comics.md'
 LEGACY = '26-hilton-and-skype'
 PANEL_RE = re.compile(r'<!-- comic-panel\s+(\{.*?\})\s*-->', re.S)
@@ -97,7 +97,7 @@ def archive(asset: Path, panel_id: str) -> None:
     previous = asset.read_bytes()
     backups = J / '_research/discarded-comic-variants'
     backups.mkdir(exist_ok=True)
-    (backups / f'33-hilton-and-skype-comic-{panel_id}-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
+    (backups / f'34-hilton-and-skype-comic-{panel_id}-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
 
 
 def retext(panel_id: str, old: str, new: str, key: str) -> None:

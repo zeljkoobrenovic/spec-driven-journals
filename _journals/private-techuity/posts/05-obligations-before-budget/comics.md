@@ -20,7 +20,7 @@
 }
 -->
 
-**Comic.** A positive earnings figure does not establish the cash available for a new initiative. Seven pages follow Alex’s €1 million request: from the earnings figure down to the cash that is left, through the payments the company must make and the ones it chooses, past two ways the numbers mislead and one way time runs out, to three priced options, one approval and the dates that follow it.
+**Comic.** A positive earnings figure does not establish the cash available for a new initiative. Seven pages follow Alex’s €1 million request: from the earnings figure to the cash left, through the payments the company must make and those it chooses, past two ways the numbers mislead and one way time runs out, to three priced options, one approval and the dates that follow it.
 
 Alex leads technology, Sam leads finance, Priya leads product and Ines is the chief executive of Larkspur, a fictional company. All are fictional. Pages 3, 4 and 5 step away from Larkspur’s figures; each opens by stating its own. EBITDA is earnings before interest, taxes, depreciation and amortization. The last two spread an asset’s cost over the years it is used. EBITDA is a profit measure, not a bank balance.
 

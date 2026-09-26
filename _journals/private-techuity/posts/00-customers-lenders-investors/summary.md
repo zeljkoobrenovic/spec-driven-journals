@@ -7,7 +7,7 @@ Larkspur, a fictional software company, needs €100,000 to finish a dispatch fe
 
 A **share** is a unit of ownership. Buying **new shares** from a company funds the company; buying a founder’s **existing shares** (a founder started the company) pays the founder.
 
-**The same €100,000 different ways and consequences.** A customer **prepayment**, cash paid before delivery, makes 1 March a contract term, with one month’s service refunded if it slips. A bank loan at a fixed 6% a year means 36 monthly repayments of about €3,040, starting before the customers pay. New shares give an investor about 10%, a seat on the board that oversees the company, a block on unplanned spending above €50,000 and an expected eventual sale.
+**The same €100,000 different ways and consequences.** A customer **prepayment**, cash paid before delivery, makes 1 March a contract term, with one month’s service refunded if it slips. A bank loan at a fixed 6% a year means 36 monthly repayments of about €3,040, starting before the customers pay. New shares give an investor about 10%, a seat on the board that oversees the company, a block on unplanned spending above €50,000 and an expected sale.
 
 Larkspur chose the prepayment. Two engineers, already paid from subscriptions, build it in four weeks (eight **engineer-weeks**, one engineer’s week each) by 13 February. The customers’ cash pays for the map-data licence (permission to use that data), contractors and a €10,000 overrun reserve. The board records its support; the chief executive signs within her delegated permission.
 
@@ -17,6 +17,6 @@ Nothing is promised until she countersigns the orders. If fewer than three are s
 
 On a **stock exchange**, a market for trading shares, investors pay one another, not the company. A **public company**, whose shares trade there, publishes financial information under its rules; a **private company**’s shares do not trade there. [S55: Public-company reporting](https://www.investor.gov/introduction-investing/investing-basics/how-stock-markets-work/public-companies)
 
-Investor labels are orientation, not terms. A **fund** pools money invested for others: **venture** funds buy under half of a young business's shares, **growth** funds back established ones, a **buyout** buys control and a **corporate** investor is another company. [[raise-what-you-need]] compares them.
+Investor labels are orientation, not terms. A **fund** pools money invested for others: **venture** funds buy under half a young business's shares, **growth** funds back established ones, a **buyout** buys control and a **corporate** investor is another company. [[raise-what-you-need]] compares them.
 
 Ask of every funding source **who receives the cash**, **what obligations come with it** and **who approves its use**. [[announcement-is-not-a-budget]] asks the same of a €100 million announcement.

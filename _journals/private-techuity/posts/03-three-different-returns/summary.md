@@ -7,15 +7,13 @@ The fictional example is a **buyout**: a **fund**, a pool of investors’ money 
 
 The company earns €10m a year of **EBITDA**, earnings before interest, taxes, depreciation and amortization: operating earnings before borrowing costs, income taxes and the accounting charges that spread the cost of equipment and similar assets over years. EBITDA is not cash in hand. Over five years EBITDA rises to €15m, and the company repays €20m of debt, a separate assumption about cash left after necessary spending.
 
-Hold all of that fixed and vary only the sale price, a **multiple** of EBITDA (10× means €10 of price per €1 of annual EBITDA). The table assumes no cash offsetting the debt, no investor money in or out before the sale, unchanged ownership, and no fees or sale taxes:
+Hold all that fixed and vary only the sale price, a **multiple** of EBITDA (10× means €10 of price per €1 of annual EBITDA). The table assumes no cash offsetting the debt, no investor money in or out before the sale, unchanged ownership, and no fees or sale taxes:
 
 | Sale price | Business value | Fund receives after €40m of debt | Times its €40m | Per year |
 | --- | ---: | ---: | ---: | ---: |
 | 7× EBITDA | €105m | €65m | 1.6× | about 10% |
 | 10× EBITDA | €150m | €110m | 2.75× | about 22% |
 | 12× EBITDA | €180m | €140m | 3.5× | about 28% |
-
-Proceeds more than double, although nothing about the company changed.
 
 **Business value**, or enterprise value, is the value of the operating business, priced here at annual EBITDA × the assumed multiple. Lenders are repaid first, so the owners’ share, the **equity value**, is business value minus **net debt**, borrowing less cash counted in the deal: at 10×, €150m − €40m = €110m.
 

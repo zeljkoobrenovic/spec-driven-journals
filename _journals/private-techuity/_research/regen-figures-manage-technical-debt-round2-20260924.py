@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate two figures of 26-manage-technical-debt after the in-depth review of 24 September 2026 (round 2).
+"""Regenerate two figures of 27-manage-technical-debt after the in-depth review of 24 September 2026 (round 2).
 
 - MTD-023: Figure 1 carried one unqualified "per month" label over all three columns. New label
   "Reviewed monthly" across the top, "euros per month" only under Cost carried, "own units" under the others.
@@ -24,8 +24,8 @@ sys.modules[spec.name] = helper
 spec.loader.exec_module(helper)
 
 MODEL = 'gemini-3-pro-image-preview'
-KEY = '26-manage-technical-debt'
-POST = J / 'posts/26-manage-technical-debt'
+KEY = '27-manage-technical-debt'
+POST = J / 'posts/27-manage-technical-debt'
 
 STYLE = ('Create one finished explanatory illustration for Owned, a practical book for product and '
          'engineering leaders. Landscape 16:9. Editorial ink-and-color diagram on a warm ivory background '
@@ -48,7 +48,7 @@ FIGURES = {
     'carrying-cost-three-columns': {
         'archive': J / '_research/article-illustration-prompts-20260913.json',
         'discard': J / '_research/discarded-illustration-variants',
-        'asset': POST / 'assets/images/26-manage-technical-debt/carrying-cost-three-columns.jpeg',
+        'asset': POST / 'assets/images/27-manage-technical-debt/carrying-cost-three-columns.jpeg',
         'prompt': STYLE + (
             'A single open ledger page drawn flat on the ivory background, ruled into three tall columns of equal '
             'width. Across the top edge of the page, above all three columns, one small navy label: Reviewed monthly. '
@@ -68,7 +68,7 @@ FIGURES = {
     'summary-at-a-glance': {
         'archive': J / '_research/summary-visual-prompts-20260913.json',
         'discard': J / '_research/discarded-summary-variants',
-        'asset': POST / 'assets/images/26-manage-technical-debt/summary-at-a-glance.jpeg',
+        'asset': POST / 'assets/images/27-manage-technical-debt/summary-at-a-glance.jpeg',
         'prompt': SUMMARY_STYLE + (
             'Three stations from left to right. (1) On the left, one large upright ledger sheet labelled REGISTER at '
             'its top. Under the heading the sheet is divided into exactly three columns headed, left to right, COST '

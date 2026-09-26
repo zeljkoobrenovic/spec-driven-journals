@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate or edit the figures of 23-scale-the-team-with-ai after the in-depth review of 24 Sept 2026.
+"""Regenerate or edit the figures of 24-scale-the-team-with-ai after the in-depth review of 24 Sept 2026.
 
 SAI-003: Figure 1 padlock label "No tool touches this" -> "Unchanged by faster coding alone" (lettering edit).
 SAI-006: Figure 2 bar "Fresh samples, same checks" -> "Every item, same checks" (lettering edit).
@@ -24,7 +24,7 @@ sys.modules[spec.name] = helper
 spec.loader.exec_module(helper)
 
 MODEL = 'gemini-3-pro-image-preview'
-POST = '23-scale-the-team-with-ai'
+POST = '24-scale-the-team-with-ai'
 IMG = J / 'posts' / POST / 'assets/images' / POST
 ILL_ARCHIVE = J / '_research/article-illustration-prompts-20260913.json'
 SUM_ARCHIVE = J / '_research/summary-visual-prompts-20260913.json'

@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Investor Directory</title>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #ffffff; --surface: #ffffff; --ink: #1d1c1a; --muted: #6b6860; --line: #e6e4de;
+    --accent: #1c5cab; --chip: #f2f1ed; --logo-dark: #23221f;
+    /* categorical type colours: validated reference palette, fixed order */
+    --buyout: #2a78d6; --growth: #eb6834; --venture: #1baf7a; --corporate-venture: #eda100;
+    --multi-strategy: #e87ba4; --sovereign-wealth: #008300;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+    font: 15px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 28px 16px 60px; }
+  header h1 { font: 600 28px/1.2 Georgia, "Times New Roman", serif; margin: 0 0 4px; letter-spacing: -.01em; }
+  header p { margin: 0; color: var(--muted); }
+  .controls { position: sticky; top: 0; z-index: 5; background: var(--bg); padding: 14px 0 12px;
+    border-bottom: 1px solid var(--line); margin: 18px 0 20px; display: grid; gap: 10px; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  input[type=search] { flex: 1 1 260px; min-width: 0; padding: 10px 12px; font: inherit; color: var(--ink);
+    background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+  input[type=search]:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  select { padding: 9px 10px; font: inherit; color: var(--ink); background: var(--surface);
+    border: 1px solid var(--line); border-radius: 8px; }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .seg button { font: inherit; padding: 9px 14px; border: 0; background: var(--surface); color: var(--ink); cursor: pointer; }
+  .seg button + button { border-left: 1px solid var(--line); }
+  .seg button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+  .chipbtn { font: inherit; font-size: 13px; padding: 5px 11px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+  .chipbtn[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: 0; }
+  label.toggle { font-size: 13px; color: var(--muted); display: flex; gap: 6px; align-items: center; cursor: pointer; }
+  .count { font-size: 13px; color: var(--muted); margin-left: auto; }
+
+  /* cards */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    display: flex; flex-direction: column; }
+  .logo { height: 150px; display: flex; align-items: center; justify-content: center; padding: 18px 20px;
+    background: #fff; border-bottom: 1px solid var(--line); }
+  .logo.dark { background: var(--logo-dark); }
+  .logo img { width: 100%; height: 100%; max-height: 96px; object-fit: contain; }
+  .logo img.square { width: 100px; height: 100px; }
+  .logo .initials { font: 600 44px Georgia, serif; color: var(--muted); }
+  .body { padding: 14px 16px 16px; display: grid; gap: 8px; flex: 1; align-content: start; }
+  .title { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+  .title h2 { margin: 0; font-size: 17px; font-weight: 600; }
+  .type { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; white-space: nowrap; color: var(--muted); }
+  .facts { font-size: 13px; color: var(--muted); }
+  .focus { margin: 0; font-size: 14px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .tag { font-size: 12px; padding: 2px 8px; border-radius: 999px; background: var(--chip); }
+  .label { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin-bottom: 3px; }
+  .links { display: flex; gap: 14px; margin-top: -2px; font-size: 14px; }
+  a.logo:hover { text-decoration: none; }
+  a.logo:hover img { transform: scale(1.03); }
+  .logo img { transition: transform .15s; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .book { font-size: 12px; color: var(--muted); }
+  .book b { color: var(--ink); font-weight: 600; }
+  mark { background: #fde9a8; color: inherit; border-radius: 2px; }
+  .empty { text-align: center; color: var(--muted); padding: 60px 0; grid-column: 1 / -1; }
+
+  /* bubbles */
+  #bubbles { display: none; }
+  .chart-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; align-items: baseline; margin-bottom: 8px; }
+  .chart-head h2 { margin: 0; font-size: 16px; font-weight: 600; }
+  .chart-head p { margin: 0; font-size: 13px; color: var(--muted); }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--ink); margin: 6px 0 10px; }
+  #chart { width: 100%; position: relative; }
+  #chart svg { display: block; width: 100%; height: auto; }
+  .bubble { cursor: pointer; }
+  .bubble circle.ring { fill: #fff; stroke-width: 3; }
+  .bubble:hover circle.ring, .bubble:focus circle.ring { stroke-width: 5; }
+  .bubble:focus { outline: none; }
+  .bubble text { font-size: 12px; fill: var(--ink); text-anchor: middle; pointer-events: none; }
+  .bubble text.val { fill: var(--muted); font-size: 11px; }
+  .tip { position: absolute; pointer-events: none; background: #fff; border: 1px solid var(--line); border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.12); padding: 8px 10px; font-size: 13px; max-width: 260px; opacity: 0; transition: opacity .1s; }
+  .tip b { display: block; font-size: 14px; }
+  .tip .m { color: var(--muted); }
+  .missing { font-size: 13px; color: var(--muted); margin-top: 10px; }
+  table.data { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
+  table.data th, table.data td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--line); }
+  table.data td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  details summary { cursor: pointer; font-size: 13px; color: var(--accent); margin-top: 14px; }
+  footer { margin-top: 28px; font-size: 12px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Investor Directory</h1>
+    <p>Private equity, growth, venture and corporate investors relevant to OWNED — with links to their sites and portfolios.</p>
+  </header>
+
+  <div class="controls">
+    <div class="row">
+      <input type="search" id="q" placeholder="Search name, focus, portfolio company, city…" autocomplete="off">
+      <select id="country" aria-label="Country"><option value="">All countries</option></select>
+      <select id="sort" aria-label="Sort">
+        <option value="name">Sort: name</option>
+        <option value="aum">Sort: largest AUM</option>
+        <option value="founded">Sort: oldest first</option>
+        <option value="founded-desc">Sort: newest first</option>
+        <option value="mentions">Sort: most mentioned in book</option>
+      </select>
+      <div class="seg" role="group" aria-label="View">
+        <button id="v-cards" aria-pressed="true">Cards</button>
+        <button id="v-bubbles" aria-pressed="false">Bubbles</button>
+      </div>
+    </div>
+    <div class="row" id="types"></div>
+    <div class="row">
+      <label class="toggle"><input type="checkbox" id="inbook"> Only investors mentioned in the book</label>
+      <span class="count" id="count"></span>
+    </div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <section id="bubbles">
+    <div class="chart-head">
+      <h2>Assets under management, approx. USD bn</h2>
+      <p>Bubble area ∝ AUM · ring colour = investor type · click a bubble for its portfolio</p>
+    </div>
+    <div class="legend" id="legend"></div>
+    <div id="chart"><div class="tip" id="tip"></div></div>
+    <div class="missing" id="missing"></div>
+    <details><summary>Show as table</summary><table class="data" id="table"></table></details>
+  </section>
+
+  <footer id="foot"></footer>
+</div>
+
+<script>
+const DATA = {"generated": "2026-09-26", "notes": "Curated list for the OWNED journal. notable_examples are illustrative, not exhaustive ('historic' = exited). aum_approx values are rounded public figures (as of aum_as_of) and should be verified before citing. link_check records the HTTP status at generation time; logo.source 'favicon-service' means the site logo could not be fetched and a favicon was used instead.", "types": {"buyout": "Private equity firm acquiring control stakes, often with debt.", "growth": "Growth-equity / crossover investor taking minority stakes in scaling companies.", "venture": "Venture capital firm funding early- and mid-stage companies for minority stakes.", "corporate-venture": "Investment arm of an operating company, often with strategic aims.", "multi-strategy": "Alternative asset manager running PE alongside credit, real estate, etc.", "sovereign-wealth": "State-owned investor; fund LP and direct co-investor."}, "investors": [{"id": "hg", "name": "Hg", "type": "buyout", "hq": "London, UK", "founded": 2000, "aum_approx": "~$70bn", "aum_as_of": 2024, "stages": ["buyout", "growth"], "focus": "European and transatlantic software and tech-enabled services; majority and minority stakes.", "notable_examples": ["Visma", "TeamSystem", "IRIS Software", "Access Group", "IFS"], "links": {"website": "https://hgcapital.com", "portfolio": "https://hgcapital.com/portfolio"}, "link_check": {"website": {"status": 200, "final_url": "https://hgcapital.com"}, "portfolio": {"status": 200, "final_url": "https://hgcapital.com/portfolio"}}, "logo": {"file": "logos/hg.svg", "source_url": "https://hgcapital.com/favicon/safari-pinned-tab.svg", "source": "site", "background": "light"}, "mentioned_in_posts": ["visma", "teamsystem", "success-for-whom", "bibliography"], "aliases": ["Hg", "HgCapital", "Hg Capital"], "aum_usd_bn": 70, "countries": ["UK"]}, {"id": "kkr", "name": "KKR", "type": "multi-strategy", "hq": "New York, USA", "founded": 1976, "aum_approx": "~$640bn", "aum_as_of": 2025, "stages": ["buyout", "growth", "infrastructure", "credit"], "focus": "Global multi-asset investor; large technology buyout and tech growth practice.", "notable_examples": ["Visma (historic)", "Toys \"R\" Us (historic, with Bain & Vornado)", "BMC Software", "Kokusai Electric"], "links": {"website": "https://www.kkr.com", "portfolio": "https://www.kkr.com/invest/portfolio"}, "link_check": {"website": {"status": 200, "final_url": "https://www.kkr.com"}, "portfolio": {"status": 200, "final_url": "https://www.kkr.com/invest/portfolio"}}, "logo": {"file": "logos/kkr.png", "source_url": "https://www.google.com/s2/favicons?domain=www.kkr.com&sz=256", "source": "favicon-service", "background": "light"}, "mentioned_in_posts": ["decide-who-decides", "investor-under-pressure", "help-that-changes-capability", "tech-operating-partner", "visma", "toys-r-us", "bibliography"], "aliases": ["KKR", "Kohlberg Kravis Roberts"], "aum_usd_bn": 640, "countries": ["USA"]}, {"id": "blackstone", "name": "Blackstone", "type": "multi-strategy", "hq": "New York, USA", "founded": 1985, "aum_approx": "~$1.2tn", "aum_as_of": 2025, "stages": ["buyout", "growth", "real estate", "credit"], "focus": "World's largest alternative asset manager; corporate PE, growth equity and real estate.", "notable_examples": ["Hilton (historic)", "Cvent", "Bumble", "Refinitiv (historic)"], "links": {"website": "https://www.blackstone.com", "portfolio": "https://www.blackstone.com/our-businesses/private-equity/"}, "link_check": {"website": {"status": 200, "final_url": "https://www.blackstone.com"}, "portfolio": {"status": 200, "final_url": "https://www.blackstone.com/our-businesses/private-equity/"}}, "logo": {"file": "logos/blackstone.webp", "source_url": "https://www.blackstone.com/wp-content/uploads/sites/2/2020/01/bx-favicon-192.png?w=180", "source": "site", "background": "light"}, "mentioned_in_posts": ["tech-operating-partner", "handover-of-obligations", "hilton-and-skype", "success-for-whom", "bibliography", "part-8"], "aliases": ["Blackstone"], "aum_usd_bn": 1200, "countries": ["USA"]}, {"id": "hellman-friedman", "name": "Hellman & Friedman", "type": "buyout", "hq": "San Francisco, USA", "founded": 1984, "aum_approx": "~$100bn+", "aum_as_of": 2024, "stages": ["buyout"], "focus": "Large-cap buyouts in software, financial services, healthcare and consumer.", "notable_examples": ["TeamSystem (majority owner since 2016)", "Genesys", "Checkmarx"], "links": {"website": "https://hf.com", "portfolio": "https://hf.com/portfolio/"}, "link_check": {"website": {"status": 200, "final_url": "https://hf.com"}, "portfolio": {"status": 200, "final_url": "https://hf.com/portfolio/"}}, "logo": {"file": "logos/hellman-friedman.png", "source_url": "https://hf.com/wp-content/uploads/2026/03/H-512x512-1-300x300.png", "source": "site", "background": "light"}, "mentioned_in_posts": ["teamsystem", "bibliography"], "aliases": ["Hellman & Friedman", "H&F"], "aum_usd_bn": 100, "countries": ["USA"]}, {"id": "silver-lake", "name": "Silver Lake", "type": "buyout", "hq": "Menlo Park, USA", "founded": 1999, "aum_approx": "~$100bn", "aum_as_of": 2024, "stages": ["buyout", "growth"], "focus": "Technology-focused large-scale investing.", "notable_examples": ["Skype (historic)", "TeamSystem (minority, €600m)", "Dell", "Endeavor", "Qualtrics"], "links": {"website": "https://www.silverlake.com", "portfolio": "https://www.silverlake.com/portfolio/"}, "link_check": {"website": {"status": 200, "final_url": "https://www.silverlake.com"}, "portfolio": {"status": 200, "final_url": "https://www.silverlake.com/portfolio/"}}, "logo": {"file": "logos/silver-lake.svg", "source_url": "https://www.silverlake.com/wp-content/uploads/2022/07/silverlake_logo_white.svg", "source": "site", "background": "dark"}, "mentioned_in_posts": ["hilton-and-skype", "teamsystem", "bibliography"], "aliases": ["Silver Lake"], "aum_usd_bn": 100, "countries": ["USA"]}, {"id": "bain-capital", "name": "Bain Capital", "type": "multi-strategy", "hq": "Boston, USA", "founded": 1984, "aum_approx": "~$185bn", "aum_as_of": 2024, "stages": ["buyout", "growth", "venture", "credit"], "focus": "Multi-asset investor with dedicated tech buyout and venture (Bain Capital Ventures) arms.", "notable_examples": ["Toys \"R\" Us (historic)", "Kioxia", "Zellis", "Rocket Software"], "links": {"website": "https://www.baincapital.com", "portfolio": null}, "link_check": {"website": {"status": 200, "final_url": "https://www.baincapital.com"}, "portfolio": null}, "logo": {"file": "logos/bain-capital.svg", "source_url": "https://www.baincapital.com/themes/custom/baincapital/images/bain-capital-logo.svg", "source": "site", "background": "light"}, "mentioned_in_posts": ["toys-r-us", "teamsystem", "bibliography"], "aliases": ["Bain Capital"], "aum_usd_bn": 185, "countries": ["USA"]}, {"id": "cinven", "name": "Cinven", "type": "buyout", "hq": "London, UK", "founded": 1977, "aum_approx": "~€40bn", "aum_as_of": 2024, "stages": ["buyout"], "focus": "European buyouts across TMT, business services, healthcare and financial services.", "notable_examples": ["Visma (partial exit 2017)", "idealista", "Synlab (historic)"], "links": {"website": "https://www.cinven.com", "portfolio": "https://www.cinven.com/portfolio/"}, "link_check": {"website": {"status": 200, "final_url": "https://www.cinven.com"}, "portfolio": {"status": 200, "final_url": "https://www.cinven.com/portfolio/"}}, "logo": {"file": "logos/cinven.svg", "source_url": "https://www.cinven.com/favicon.svg", "source": "site", "background": "light"}, "mentioned_in_posts": ["visma"], "aliases": ["Cinven"], "aum_usd_bn": 44, "countries": ["UK"]}, {"id": "cvc", "name": "CVC Capital Partners", "type": "multi-strategy", "hq": "Luxembourg / London", "founded": 1981, "aum_approx": "~€200bn", "aum_as_of": 2024, "stages": ["buyout", "growth", "credit", "secondaries"], "focus": "European and Asian buyouts; separate growth (tech) strategy.", "notable_examples": ["Formula One (historic)", "Petco", "Ethniki", "Unilever Tea (ekaterra)"], "links": {"website": "https://www.cvc.com", "portfolio": "https://www.cvc.com/portfolio/our-portfolio/"}, "link_check": {"website": {"status": 200, "final_url": "https://www.cvc.com"}, "portfolio": {"status": 200, "final_url": "https://www.cvc.com/portfolio/our-portfolio/"}}, "logo": {"file": "logos/cvc.webp", "source_url": "https://www.cvc.com/media/brlp5sxf/cvc-282828-logo.png", "source": "site", "background": "light"}, "mentioned_in_posts": [], "aliases": ["CVC Capital Partners"], "aum_usd_bn": 220, "countries": ["Luxembourg", "UK"]}, {"id": "tpg", "name": "TPG", "type": "multi-strategy", "hq": "Fort Worth / San Francisco, USA", "founded": 1992, "aum_approx": "~$240bn", "aum_as_of": 2025, "stages": ["buyout", "growth", "impact", "credit"], "focus": "Global PE with TPG Capital, TPG Growth and TPG Rise; major tech practice.", "notable_examples": ["Visma (co-investor)", "McAfee (historic)", "Nextracker (TPG Rise, historic)", "Wind River (historic)"], "links": {"website": "https://www.tpg.com", "portfolio": "https://www.tpg.com/portfolio"}, "link_check": {"website": {"status": 200, "final_url": "https://www.tpg.com"}, "portfolio": {"status": 200, "final_url": "https://www.tpg.com/portfolio"}}, "logo": {"file": "logos/tpg.svg", "source_url": "https://www.tpg.com/_next/static/media/tpg.c68dc7c1.svg", "source": "site", "background": "light"}, "mentioned_in_posts": ["visma"], "aliases": ["TPG"], "aum_usd_bn": 240, "countries": ["USA"]}, {"id": "vista", "name": "Vista Equity Partners", "type": "buyout", "hq": "Austin, USA", "founded": 2000, "aum_approx": "~$100bn", "aum_as_of": 2024, "stages": ["buyout", "growth", "credit"], "focus": "Enterprise software exclusively; known for a codified operating playbook.", "notable_examples": ["Datto (historic)", "Cvent (historic)", "Ping Identity (historic)", "Duck Creek"], "links": {"website": "https://www.vistaequitypartners.com", "portfolio": "https://www.vistaequitypartners.com/companies/"}, "link_check": {"website": {"status": 200, "final_url": "https://www.vistaequitypartners.com"}, "portfolio": {"status": 200, "final_url": "https://www.vistaequitypartners.com/about/companies/"}}, "logo": {"file": "logos/vista.svg", "source_url": "https://www.vistaequitypartners.com/wp-content/themes/vista-equity/public/build/images/Vista-Logo-Navy.svg", "source": "site", "background": "light"}, "mentioned_in_posts": ["bibliography"], "aliases": ["Vista Equity", "Vista Equity Partners"], "aum_usd_bn": 100, "countries": ["USA"]}, {"id": "thoma-bravo", "name": "Thoma Bravo", "type": "buyout", "hq": "Chicago / San Francisco, USA", "founded": 2008, "aum_approx": "~$180bn", "aum_as_of": 2025, "stages": ["buyout", "growth", "credit"], "focus": "Software and technology buyouts; the largest software-focused PE firm.", "notable_examples": ["SailPoint", "Proofpoint", "Darktrace", "Instructure (historic)"], "links": {"website": "https://www.thomabravo.com", "portfolio": "https://www.thomabravo.com/companies"}, "link_check": {"website": {"status": 200, "final_url": "https://www.thomabravo.com"}, "portfolio": {"status": 200, "final_url": "https://www.thomabravo.com/portfolio"}}, "logo": {"file": "logos/thoma-bravo.png", "source_url": "https://www.google.com/s2/favicons?domain=www.thomabravo.com&sz=256", "source": "favicon-service", "background": "light"}, "mentioned_in_posts": [], "aliases": ["Thoma Bravo"], "aum_usd_bn": 180, "countries": ["USA"]}, {"id": "eqt", "name": "EQT", "type": "multi-strategy", "hq": "Stockholm, Sweden", "founded": 1994, "aum_approx": "~€270bn", "aum_as_of": 2025, "stages": ["buyout", "growth", "venture", "infrastructure"], "focus": "Nordic-rooted global investor with thematic, digitisation-led ownership model.", "notable_examples": ["IFS (with Hg)", "SUSE", "Acronis"], "links": {"website": "https://eqtgroup.com", "portfolio": "https://eqtgroup.com/current-portfolio/"}, "link_check": {"website": {"status": 200, "final_url": "https://eqtgroup.com"}, "portfolio": {"status": 200, "final_url": "https://eqtgroup.com/about/current-portfolio"}}, "logo": {"file": "logos/eqt.svg", "source_url": "https://eqtgroup.com/_next/static/media/eqt-logo-white.1c0p74ev5q03p.svg", "source": "site", "background": "dark"}, "mentioned_in_posts": [], "aliases": ["EQT"], "aum_usd_bn": 297, "countries": ["Sweden"]}, {"id": "permira", "name": "Permira", "type": "buyout", "hq": "London, UK", "founded": 1985, "aum_approx": "~€80bn", "aum_as_of": 2024, "stages": ["buyout", "growth", "credit"], "focus": "European and US buyouts and growth equity; strong technology sector.", "notable_examples": ["Squarespace", "Genesys", "Mimecast", "Informatica (historic)"], "links": {"website": "https://www.permira.com", "portfolio": "https://www.permira.com/portfolio"}, "link_check": {"website": {"status": 200, "final_url": "https://www.permira.com"}, "portfolio": {"status": 200, "final_url": "https://www.permira.com/portfolio/our-portfolio"}}, "logo": {"file": "logos/permira.webp", "source_url": "https://media.permira.com/media/duglf2pa/logowhite.png?format=webp", "source": "site", "background": "dark"}, "mentioned_in_posts": [], "aliases": ["Permira"], "aum_usd_bn": 88, "countries": ["UK"]}, {"id": "advent", "name": "Advent International", "type": "buyout", "hq": "Boston, USA", "founded": 1984, "aum_approx": "~$90bn", "aum_as_of": 2024, "stages": ["buyout", "growth"], "focus": "Global buyouts across business services, healthcare, industrials, retail and technology.", "notable_examples": ["Maxar", "Nexi", "Definitive Healthcare", "Zentiva"], "links": {"website": "https://www.adventinternational.com", "portfolio": "https://www.adventinternational.com/portfolio/"}, "link_check": {"website": {"status": 200, "final_url": "https://www.adventinternational.com"}, "portfolio": {"status": 200, "final_url": "https://www.adventinternational.com/portfolio-stories/"}}, "logo": {"file": "logos/advent.svg", "source_url": "https://www.adventinternational.com/wp-content/uploads/2024/08/Advent-logo-black.svg", "source": "site", "background": "light"}, "mentioned_in_posts": [], "aliases": ["Advent International"], "aum_usd_bn": 90, "countries": ["USA"]}, {"id": "warburg-pincus", "name": "Warburg Pincus", "type": "growth", "hq": "New York, USA", "founded": 1966, "aum_approx": "~$85bn", "aum_as_of": 2024, "stages": ["growth", "buyout"], "focus": "Growth-oriented global PE across technology, financial services, healthcare.", "notable_examples": ["Ant Group", "Bharti Airtel (historic)"], "links": {"website": "https://warburgpincus.com", "portfolio": "https://warburgpincus.com/investments/"}, "link_check": {"website": {"status": 200, "final_url": "https://warburgpincus.com"}, "portfolio": {"status": 200, "final_url": "https://warburgpincus.com/investments/"}}, "logo": {"file": "logos/warburg-pincus.jpg", "source_url": "https://warburgpincus.com/wp-content/uploads/2019/10/cropped-warburgPincus_icon-180x180.jpg", "source": "site", "background": "light"}, "mentioned_in_posts": [], "aliases": ["Warburg Pincus"], "aum_usd_bn": 85, "countries": ["USA"]}, {"id": "francisco-partners", "name": "Francisco Partners", "type": "buyout", "hq": "San Francisco, USA", "founded": 1999, "aum_approx": "~$45bn", "aum_as_of": 2024, "stages": ["buyout", "growth", "credit"], "focus": "Technology and tech-enabled businesses, including carve-outs.", "notable_examples": ["Jamf", "Forcepoint", "The Weather Company", "New Relic"], "links": {"website": "https://www.franciscopartners.com", "portfolio": "https://www.franciscopartners.com/investments"}, "link_check": {"website": {"status": 200, "final_url": "https://www.franciscopartners.com"}, "portfolio": {"status": 200, "final_url": "https://www.franciscopartners.com/investments"}}, "logo": {"file": "logos/francisco-partners.svg", "source_url": "https://www.franciscopartners.com/favicon/safari-pinned-tab.svg", "source": "site", "background": "light"}, "mentioned_in_posts": [], "aliases": ["Francisco Partners"], "aum_usd_bn": 45, "countries": ["USA"]}, {"id": "carlyle", "name": "The Carlyle Group", "type": "multi-strategy", "hq": "Washington, D.C., USA", "founded": 1987, "aum_approx": "~$440bn", "aum_as_of": 2025, "stages": ["buyout", "growth", "credit", "infrastructure"], "focus": "Global multi-asset manager with corporate PE, including technology.", "notable_examples": ["ManTech", "Veritas (historic)", "Beautycounter (historic)"], "links": {"website": "https://www.carlyle.com", "portfolio": "https://www.carlyle.com/portfolio"}, "link_check": {"website": {"status": 403, "final_url": "https://www.carlyle.com"}, "portfolio": {"status": 403, "final_url": "https://www.carlyle.com/portfolio"}}, "logo": {"file": "logos/carlyle.png", "source_url": "https://www.google.com/s2/favicons?domain=www.carlyle.com&sz=256", "source": "favicon-service", "background": "light"}, "mentioned_in_posts": [], "aliases": ["Carlyle"], "aum_usd_bn": 440, "countries": ["USA"]}, {"id": "apax", "name": "Apax Partners", "type": "buyout", "hq": "London, UK", "founded": 1969, "aum_approx": "~$75bn", "aum_as_of": 2024, "stages": ["buyout", "growth", "digital"], "focus": "Tech, services, healthcare and internet/consumer; dedicated Apax Digital growth fund.", "notable_examples": ["Trade Me", "ThoughtWorks (historic)", "idealista (historic)", "Paycor (historic)"], "links": {"website": "https://www.apax.com", "portfolio": "https://www.apax.com/all-investments-listed-alphabetically/"}, "link_check": {"website": {"status": 200, "final_url": "https://www.apax.com"}, "portfolio": {"status": 200, "final_url": "https://www.apax.com/all-investments-listed-alphabetically/"}}, "logo": {"file": "logos/apax.svg", "source_url": "https://www.apax.com/assets/images/logo-main-new.svg", "source": "site", "background": "light"}, "mentioned_in_posts": [], "aliases": ["Apax"], "aum_usd_bn": 75, "countries": ["UK"]}, {"id": "nordic-capital", "name": "Nordic Capital", "type": "buyout", "hq": "Stockholm, Sweden", "founded": 1989, "aum_approx": "~€30bn", "aum_as_of": 2024, "stages": ["buyout"], "focus": "Healthcare, technology & payments, financial services in Europe and North America.", "notable_examples": ["Trustly", "Macrobond", "Signicat"], "links": {"website": "https://www.nordiccapital.com", "portfolio": "https://www.nordiccapital.com/portfolio/"}, "link_check": {"website": {"status": 200, "final_url": "https://www.nordiccapital.com"}, "portfolio": {"status": 200, "final_url": "https://www.nordiccapital.com/portfolio-cases/"}}, "logo": {"file": "logos/nordic-capital.svg", "source_url": "https://www.nordiccapital.com/assets/images/logo.svg", "source": "site", "background": "light"}, "mentioned_in_posts": [], "aliases": ["Nordic Capital"], "aum_usd_bn": 33, "countries": ["Sweden"]}, {"id": "bridgepoint", "name": "Bridgepoint", "type": "buyout", "hq": "London, UK", "founded": 2000, "aum_approx": "~€65bn", "aum_as_of": 2024, "stages": ["buyout", "growth", "credit"], "focus": "European mid-market buyouts and growth; publicly listed manager.", "notable_examples": ["Kyriba (historic)", "Calyx", "PEI Media", "Qualitest"], "links": {"website": "https://www.bridgepointgroup.com", "portfolio": "https://www.bridgepointgroup.com/our-portfolio"}, "link_check": {"website": {"status": 200, "final_url": "https://www.bridgepointgroup.com"}, "portfolio": {"status": 200, "final_url": "https://www.bridgepointgroup.com/our-portfolio"}}, "logo": {"file": "logos/bridgepoint.png", "source_url": "https://www.google.com/s2/favicons?domain=www.bridgepointgroup.com&sz=256", "source": "favicon-service", "background": "light"}, "mentioned_in_posts": [], "aliases": ["Bridgepoint"], "aum_usd_bn": 72, "countries": ["UK"]}, {"id": "apollo", "name": "Apollo Global Management", "type": "multi-strategy", "hq": "New York, USA", "founded": 1990, "aum_approx": "~$800bn", "aum_as_of": 2025, "stages": ["buyout", "credit", "hybrid"], "focus": "Credit-heavy alternative manager; large-cap and distressed PE.", "notable_examples": ["Yahoo", "ADT", "Tenneco"], "links": {"website": "https://www.apollo.com", "portfolio": "https://www.apollo.com/strategies/asset-management/equity/private-equity"}, "link_check": {"website": {"status": 200, "final_url": "https://www.apollo.com"}, "portfolio": {"status": 200, "final_url": "https://www.apollo.com/strategies/asset-management/equity/private-equity"}}, "logo": {"file": "logos/apollo.svg", "source_url": "https://www.apollo.com/content/dam/apolloaem/logo/Apollo%20Footer%20Logo.svg", "source": "site", "background": "dark"}, "mentioned_in_posts": [], "aliases": ["Apollo Global", "Apollo Global Management"], "aum_usd_bn": 800, "countries": ["USA"]}, {"id": "icg", "name": "ICG (Intermediate Capital Group)", "type": "multi-strategy", "hq": "London, UK", "founded": 1989, "aum_approx": "~$100bn", "aum_as_of": 2024, "stages": ["buyout", "credit", "infrastructure", "secondaries"], "focus": "Listed alternative manager spanning structured and private equity, private debt and real assets.", "notable_examples": ["Visma (co-investor)"], "links": {"website": "https://www.icgam.com", "portfolio": null}, "link_check": {"website": {"status": 200, "final_url": "https://www.icgam.com"}, "portfolio": null}, "logo": {"file": "logos/icg.png", "source_url": "https://www.google.com/s2/favicons?domain=www.icgam.com&sz=256", "source": "favicon-service", "background": "light"}, "mentioned_in_posts": ["visma"], "aliases": ["ICG"], "aum_usd_bn": 100, "countries": ["UK"]}, {"id": "montagu", "name": "Montagu Private Equity", "type": "buyout", "hq": "London, UK", "founded": 1968, "aum_approx": "~€15bn", "aum_as_of": 2024, "stages": ["buyout"], "focus": "European mid-market buyouts in software, healthcare data and business-critical services.", "notable_examples": ["Visma (co-investor)"], "links": {"website": "https://www.montagu.com", "portfolio": "https://www.montagu.com/portfolio"}, "link_check": {"website": {"status": 200, "final_url": "https://montagu.com/"}, "portfolio": {"status": 200, "final_url": "https://montagu.com/portfolio/"}}, "logo": {"file": "logos/montagu.svg", "source_url": "https://montagu.com/wp-content/themes/montagu/img/logo.svg", "source": "site", "background": "light"}, "mentioned_in_posts": ["visma"], "aliases": ["Montagu"], "aum_usd_bn": 16, "countries": ["UK"]}, {"id": "gic", "name": "GIC", "type": "sovereign-wealth", "hq": "Singapore", "founded": 1981, "aum_approx": "undisclosed (estimated >$700bn)", "aum_as_of": null, "stages": ["direct PE", "fund LP", "growth"], "focus": "Singapore's sovereign wealth fund; invests as LP in PE funds and directly alongside sponsors.", "notable_examples": ["Visma (co-investor)"], "links": {"website": "https://www.gic.com.sg", "portfolio": null}, "link_check": {"website": {"status": 200, "final_url": "https://www.gic.com.sg"}, "portfolio": null}, "logo": {"file": "logos/gic.jpg", "source_url": "https://www.gic.com.sg/tachyon/2025/02/GIC_Master_Logo_RGB_Full-Colour.jpg?fit=50%2C33", "source": "site", "background": "light"}, "mentioned_in_posts": ["visma"], "aliases": ["GIC"], "aum_usd_bn": 700, "countries": ["Singapore"]}, {"id": "insight-partners", "name": "Insight Partners", "type": "growth", "hq": "New York, USA", "founded": 1995, "aum_approx": "~$90bn", "aum_as_of": 2024, "stages": ["venture", "growth", "buyout"], "focus": "Software ScaleUp investing from early growth to buyout; Insight Onsite operator team.", "notable_examples": ["Wiz", "Monday.com", "Veeam", "Checkmarx (historic)"], "links": {"website": "https://www.insightpartners.com", "portfolio": "https://www.insightpartners.com/portfolio/"}, "link_check": {"website": {"status": 200, "final_url": "https://www.insightpartners.com"}, "portfolio": {"status": 200, "final_url": "https://www.insightpartners.com/portfolio/"}}, "logo": {"file": "logos/insight-partners.png", "source_url": "https://www.google.com/s2/favicons?domain=www.insightpartners.com&sz=256", "source": "favicon-service", "background": "light"}, "mentioned_in_posts": ["learn-through-investors-network", "bibliography"], "aliases": ["Insight Partners"], "aum_usd_bn": 90, "countries": ["USA"]}, {"id": "general-atlantic", "name": "General Atlantic", "type": "growth", "hq": "New York, USA", "founded": 1980, "aum_approx": "~$100bn", "aum_as_of": 2025, "stages": ["growth"], "focus": "Global growth equity in technology, financial services, healthcare, consumer.", "notable_examples": ["Airbnb (historic)", "ByteDance", "Squarespace (historic)", "Doctolib"], "links": {"website": "https://www.generalatlantic.com", "portfolio": "https://www.generalatlantic.com/portfolio/"}, "link_check": {"website": {"status": 200, "final_url": "https://www.generalatlantic.com"}, "portfolio": {"status": 200, "final_url": "https://www.generalatlantic.com/investments/"}}, "logo": {"file": "logos/general-atlantic.svg", "source_url": "https://www.generalatlantic.com/wp-content/uploads/2024/07/general-atlantic-logo.svg", "source": "site", "background": "light"}, "mentioned_in_posts": [], "aliases": ["General Atlantic"], "aum_usd_bn": 100, "countries": ["USA"]}, {"id": "summit-partners", "name": "Summit Partners", "type": "growth", "hq": "Boston, USA", "founded": 1984, "aum_approx": "~$45bn", "aum_as_of": 2024, "stages": ["growth", "credit"], "focus": "Growth equity for profitable, founder-led companies in tech, healthcare and services.", "notable_examples": ["Avast (historic)", "Ubiquiti (historic)"], "links": {"website": "https://www.summitpartners.com", "portfolio": "https://www.summitpartners.com/companies"}, "link_check": {"website": {"status": 200, "final_url": "https://www.summitpartners.com"}, "portfolio": {"status": 200, "final_url": "https://www.summitpartners.com/portfolio"}}, "logo": {"file": "logos/summit-partners.svg", "source_url": "https://cdn.prod.website-files.com/654370a6dee9bc89637af1eb/65439735c0bb177dded47bea_Logo.svg", "source": "site", "background": "dark"}, "mentioned_in_posts": [], "aliases": ["Summit Partners"], "aum_usd_bn": 45, "countries": ["USA"]}, {"id": "ta-associates", "name": "TA Associates", "type": "growth", "hq": "Boston, USA", "founded": 1968, "aum_approx": "~$65bn", "aum_as_of": 2024, "stages": ["growth", "buyout"], "focus": "Growth-oriented PE in technology, healthcare, financial and business services.", "notable_examples": ["Aptean", "Idera", "Netsmart"], "links": {"website": "https://www.ta.com", "portfolio": "https://www.ta.com/portfolio/"}, "link_check": {"website": {"status": 200, "final_url": "https://www.ta.com"}, "portfolio": {"status": 200, "final_url": "https://www.ta.com/portfolio/"}}, "logo": {"file": "logos/ta-associates.svg", "source_url": "https://www.ta.com/favicon/safari-pinned-tab.svg", "source": "site", "background": "light"}, "mentioned_in_posts": [], "aliases": ["TA Associates"], "aum_usd_bn": 65, "countries": ["USA"]}, {"id": "tiger-global", "name": "Tiger Global Management", "type": "growth", "hq": "New York, USA", "founded": 2001, "aum_approx": "~$50bn", "aum_as_of": 2024, "stages": ["venture", "growth", "public equity"], "focus": "Crossover investor; fast, high-volume growth rounds in the 2020–2021 cycle.", "notable_examples": ["Checkout.com", "Flipkart (historic)", "Facebook (historic)"], "links": {"website": "https://www.tigerglobal.com", "portfolio": null}, "link_check": {"website": {"status": 200, "final_url": "https://www.tigerglobal.com"}, "portfolio": null}, "logo": {"file": "logos/tiger-global.png", "source_url": "https://www.tigerglobal.com/Templates/TigerGlobal/media/logo.png", "source": "site", "background": "light"}, "mentioned_in_posts": [], "aliases": ["Tiger Global"], "aum_usd_bn": 50, "countries": ["USA"]}, {"id": "softbank-vision-fund", "name": "SoftBank Vision Fund", "type": "growth", "hq": "Tokyo / London", "founded": 2017, "aum_approx": "~$100bn fund I + ~$56bn fund II (committed)", "aum_as_of": 2023, "stages": ["growth", "late venture"], "focus": "Mega-round late-stage tech investing, backed by SoftBank Group.", "notable_examples": ["ByteDance", "Coupang", "DoorDash (historic)", "WeWork (historic)"], "links": {"website": "https://visionfund.com", "portfolio": "https://visionfund.com/portfolio"}, "link_check": {"website": {"status": 200, "final_url": "https://visionfund.com"}, "portfolio": {"status": 200, "final_url": "https://visionfund.com/portfolio"}}, "logo": null, "mentioned_in_posts": [], "aliases": ["SoftBank", "Vision Fund"], "aum_usd_bn": 156, "countries": ["Japan", "UK"]}, {"id": "a16z", "name": "Andreessen Horowitz (a16z)", "type": "venture", "hq": "Menlo Park, USA", "founded": 2009, "aum_approx": "~$45bn", "aum_as_of": 2024, "stages": ["seed", "venture", "growth"], "focus": "Stage-agnostic venture with a large in-house platform team; software, bio, crypto, AI.", "notable_examples": ["Skype (early investor)", "GitHub (historic)", "Databricks", "Coinbase"], "links": {"website": "https://a16z.com", "portfolio": "https://a16z.com/portfolio/"}, "link_check": {"website": {"status": 200, "final_url": "https://a16z.com"}, "portfolio": {"status": 200, "final_url": "https://a16z.com/portfolio/"}}, "logo": {"file": "logos/a16z.png", "source_url": "https://d1lamhf6l6yk6d.cloudfront.net/uploads/2025/06/Favicon-%E2%80%94-180x180px.png", "source": "site", "background": "light"}, "mentioned_in_posts": ["have-your-numbers-ready", "cheaper-cloud-bill", "ai-worth-its-cost"], "aliases": ["Andreessen Horowitz", "a16z"], "aum_usd_bn": 45, "countries": ["USA"]}, {"id": "sequoia", "name": "Sequoia Capital", "type": "venture", "hq": "Menlo Park, USA", "founded": 1972, "aum_approx": "n/a (evergreen fund structure)", "aum_as_of": null, "stages": ["seed", "venture", "growth"], "focus": "Seed-to-growth venture; US/Europe (HongShan and Peak XV spun out in 2023–24).", "notable_examples": ["Apple (historic)", "Google (historic)", "Stripe", "Klarna"], "links": {"website": "https://www.sequoiacap.com", "portfolio": "https://www.sequoiacap.com/our-companies/"}, "link_check": {"website": {"status": 200, "final_url": "https://sequoiacap.com/"}, "portfolio": {"status": 200, "final_url": "https://sequoiacap.com/our-companies"}}, "logo": {"file": "logos/sequoia.png", "source_url": "https://www.google.com/s2/favicons?domain=www.sequoiacap.com&sz=256", "source": "favicon-service", "background": "light"}, "mentioned_in_posts": [], "aliases": ["Sequoia"], "aum_usd_bn": null, "countries": ["USA"]}, {"id": "accel", "name": "Accel", "type": "venture", "hq": "Palo Alto, USA / London, UK", "founded": 1983, "aum_approx": "n/a", "aum_as_of": null, "stages": ["seed", "venture", "growth"], "focus": "Early and growth venture in the US, Europe and India.", "notable_examples": ["Facebook (historic)", "Slack (historic)", "Spotify", "Atlassian"], "links": {"website": "https://www.accel.com", "portfolio": "https://www.accel.com/relationships"}, "link_check": {"website": {"status": 200, "final_url": "https://www.accel.com"}, "portfolio": {"status": 200, "final_url": "https://www.accel.com/companies"}}, "logo": {"file": "logos/accel.png", "source_url": "https://www.accel.com/icon.png?icon.399ir6exptelf.png", "source": "site", "background": "light"}, "mentioned_in_posts": [], "aliases": ["Accel"], "aum_usd_bn": null, "countries": ["USA", "UK"]}, {"id": "index-ventures", "name": "Index Ventures", "type": "venture", "hq": "London, UK / San Francisco, USA", "founded": 1996, "aum_approx": "n/a", "aum_as_of": null, "stages": ["seed", "venture", "growth"], "focus": "Transatlantic venture; publishes widely used option-plan guidance (OptionPlan).", "notable_examples": ["Skype (early investor)", "Revolut", "Figma", "Adyen"], "links": {"website": "https://www.indexventures.com", "portfolio": "https://www.indexventures.com/companies/"}, "link_check": {"website": {"status": 200, "final_url": "https://www.indexventures.com"}, "portfolio": {"status": 200, "final_url": "https://www.indexventures.com/companies/"}}, "logo": {"file": "logos/index-ventures.png", "source_url": "https://www.google.com/s2/favicons?domain=www.indexventures.com&sz=256", "source": "favicon-service", "background": "light"}, "mentioned_in_posts": [], "aliases": ["Index Ventures"], "aum_usd_bn": null, "countries": ["UK", "USA"]}, {"id": "balderton", "name": "Balderton Capital", "type": "venture", "hq": "London, UK", "founded": 2000, "aum_approx": "~$4bn+", "aum_as_of": 2024, "stages": ["seed", "series A", "growth"], "focus": "European early-stage and growth venture; publishes employee-equity guidance.", "notable_examples": ["Revolut", "Wayve", "GoCardless"], "links": {"website": "https://www.balderton.com", "portfolio": "https://www.balderton.com/companies/"}, "link_check": {"website": {"status": 200, "final_url": "https://www.balderton.com"}, "portfolio": {"status": 200, "final_url": "https://www.balderton.com/companies/"}}, "logo": {"file": "logos/balderton.svg", "source_url": "https://www.balderton.com/wp-content/uploads/2023/10/logo-dark.svg", "source": "site", "background": "dark"}, "mentioned_in_posts": ["learn-through-investors-network", "bibliography"], "aliases": ["Balderton"], "aum_usd_bn": 4, "countries": ["UK"]}, {"id": "atomico", "name": "Atomico", "type": "venture", "hq": "London, UK", "founded": 2006, "aum_approx": "~$5bn+", "aum_as_of": 2024, "stages": ["series A", "growth"], "focus": "European tech venture founded by Skype co-founder Niklas Zennström; State of European Tech report.", "notable_examples": ["Klarna", "Lilium", "Graphcore", "Supercell (historic)"], "links": {"website": "https://atomico.com", "portfolio": "https://atomico.com/portfolio"}, "link_check": {"website": {"status": 429, "final_url": "https://atomico.com"}, "portfolio": {"status": 429, "final_url": "https://atomico.com/portfolio"}}, "logo": {"file": "logos/atomico.png", "source_url": "https://www.google.com/s2/favicons?domain=atomico.com&sz=256", "source": "favicon-service", "background": "light"}, "mentioned_in_posts": [], "aliases": ["Atomico"], "aum_usd_bn": 5, "countries": ["UK"]}, {"id": "lightspeed", "name": "Lightspeed Venture Partners", "type": "venture", "hq": "Menlo Park, USA", "founded": 2000, "aum_approx": "~$25bn+", "aum_as_of": 2024, "stages": ["seed", "venture", "growth"], "focus": "Multi-stage venture in enterprise, consumer, fintech and AI.", "notable_examples": ["Snap", "Mistral AI", "Rubrik", "Nutanix"], "links": {"website": "https://lsvp.com", "portfolio": "https://lsvp.com/portfolio/"}, "link_check": {"website": {"status": 200, "final_url": "https://lsvp.com"}, "portfolio": {"status": 200, "final_url": "https://lsvp.com/companies/"}}, "logo": {"file": "logos/lightspeed.svg", "source_url": "https://lsvp.com/wp-content/themes/lsvp/assets/images/logo-alt.svg", "source": "site", "background": "light"}, "mentioned_in_posts": [], "aliases": ["Lightspeed Venture"], "aum_usd_bn": 25, "countries": ["USA"]}, {"id": "benchmark", "name": "Benchmark", "type": "venture", "hq": "San Francisco, USA", "founded": 1995, "aum_approx": "n/a (small fixed-size funds)", "aum_as_of": null, "stages": ["series A"], "focus": "Equal-partnership early-stage venture with deliberately small funds.", "notable_examples": ["eBay (historic)", "Uber (historic)", "Twitter (historic)", "Snap"], "links": {"website": "https://www.benchmark.com", "portfolio": null}, "link_check": {"website": {"status": 200, "final_url": "https://www.benchmark.com"}, "portfolio": null}, "logo": null, "mentioned_in_posts": [], "aliases": ["Benchmark Capital"], "aum_usd_bn": null, "countries": ["USA"]}, {"id": "kleiner-perkins", "name": "Kleiner Perkins", "type": "venture", "hq": "Menlo Park, USA", "founded": 1972, "aum_approx": "n/a", "aum_as_of": null, "stages": ["seed", "venture", "growth"], "focus": "Early venture and KP Select growth funds.", "notable_examples": ["Google (historic)", "Amazon (historic)", "Figma", "Rippling"], "links": {"website": "https://www.kleinerperkins.com", "portfolio": "https://www.kleinerperkins.com/partnerships/"}, "link_check": {"website": {"status": 200, "final_url": "https://www.kleinerperkins.com"}, "portfolio": {"status": 200, "final_url": "https://www.kleinerperkins.com/partnerships/"}}, "logo": {"file": "logos/kleiner-perkins.png", "source_url": "https://www.google.com/s2/favicons?domain=www.kleinerperkins.com&sz=256", "source": "favicon-service", "background": "light"}, "mentioned_in_posts": [], "aliases": ["Kleiner Perkins"], "aum_usd_bn": null, "countries": ["USA"]}, {"id": "greylock", "name": "Greylock", "type": "venture", "hq": "Menlo Park, USA", "founded": 1965, "aum_approx": "n/a", "aum_as_of": null, "stages": ["seed", "series A"], "focus": "Early-stage enterprise and consumer software; Blitzscaling authors.", "notable_examples": ["LinkedIn (historic)", "Airbnb (historic)", "Palo Alto Networks (historic)", "Figma"], "links": {"website": "https://greylock.com", "portfolio": "https://greylock.com/portfolio/"}, "link_check": {"website": {"status": 200, "final_url": "https://greylock.com"}, "portfolio": {"status": 200, "final_url": "https://greylock.com/portfolio/"}}, "logo": {"file": "logos/greylock.ico", "source_url": "https://greylock.com/favicon.ico?favicon.12_74lqp1fvbm.ico", "source": "site", "background": "light"}, "mentioned_in_posts": [], "aliases": ["Greylock"], "aum_usd_bn": null, "countries": ["USA"]}, {"id": "northzone", "name": "Northzone", "type": "venture", "hq": "Stockholm / London", "founded": 1996, "aum_approx": "~€3bn+", "aum_as_of": 2024, "stages": ["seed", "series A", "growth"], "focus": "European early-stage venture.", "notable_examples": ["Spotify (early investor)", "Klarna", "Trustpilot", "Personio"], "links": {"website": "https://northzone.com", "portfolio": "https://northzone.com/portfolio"}, "link_check": {"website": {"status": 200, "final_url": "https://northzone.com"}, "portfolio": {"status": 200, "final_url": "https://northzone.com/portfolio"}}, "logo": {"file": "logos/northzone.png", "source_url": "https://cdn.prod.website-files.com/6a42cde2da0ec82a02565414/6a79b7679bc27cb64ffb0157_Webclip.png", "source": "site", "background": "light"}, "mentioned_in_posts": [], "aliases": ["Northzone"], "aum_usd_bn": 3, "countries": ["Sweden", "UK"]}, {"id": "creandum", "name": "Creandum", "type": "venture", "hq": "Stockholm, Sweden", "founded": 2003, "aum_approx": "~€1.5bn+", "aum_as_of": 2024, "stages": ["seed", "series A"], "focus": "European seed and early-stage venture.", "notable_examples": ["Spotify (first investor)", "Klarna", "Kahoot!", "Pleo"], "links": {"website": "https://creandum.com", "portfolio": "https://creandum.com/commitments/"}, "link_check": {"website": {"status": 200, "final_url": "https://creandum.com"}, "portfolio": {"status": 200, "final_url": "https://creandum.com/commitments/"}}, "logo": {"file": "logos/creandum.png", "source_url": "https://www.google.com/s2/favicons?domain=creandum.com&sz=256", "source": "favicon-service", "background": "light"}, "mentioned_in_posts": [], "aliases": ["Creandum"], "aum_usd_bn": 2, "countries": ["Sweden"]}, {"id": "battery-ventures", "name": "Battery Ventures", "type": "venture", "hq": "Boston, USA", "founded": 1983, "aum_approx": "~$13bn+", "aum_as_of": 2024, "stages": ["venture", "growth", "buyout"], "focus": "Technology investing across venture, growth and buyouts; publishes the OpenCloud report.", "notable_examples": ["Coupa (historic)"], "links": {"website": "https://www.battery.com", "portfolio": "https://www.battery.com/list-of-all-companies/"}, "link_check": {"website": {"status": 200, "final_url": "https://www.battery.com"}, "portfolio": {"status": 200, "final_url": "https://www.battery.com/list-of-all-companies/"}}, "logo": {"file": "logos/battery-ventures.svg", "source_url": "https://www.battery.com/wp-content/uploads/2021/02/Battery-Logo-White.svg", "source": "site", "background": "dark"}, "mentioned_in_posts": [], "aliases": ["Battery Ventures"], "aum_usd_bn": 13, "countries": ["USA"]}, {"id": "gv", "name": "GV (Google Ventures)", "type": "corporate-venture", "hq": "Mountain View, USA", "founded": 2009, "aum_approx": "~$10bn", "aum_as_of": 2024, "stages": ["seed", "venture", "growth"], "focus": "Alphabet's venture arm; life sciences and technology.", "notable_examples": ["Uber (historic)", "Slack (historic)", "GitLab", "Stripe"], "links": {"website": "https://www.gv.com", "portfolio": "https://www.gv.com/portfolio/"}, "link_check": {"website": {"status": 200, "final_url": "https://www.gv.com"}, "portfolio": {"status": 200, "final_url": "https://www.gv.com/portfolio"}}, "logo": {"file": "logos/gv.png", "source_url": "https://www.gv.com/favicon.png", "source": "site", "background": "light"}, "mentioned_in_posts": [], "aliases": ["GV", "Google Ventures"], "aum_usd_bn": 10, "countries": ["USA"]}, {"id": "intel-capital", "name": "Intel Capital", "type": "corporate-venture", "hq": "Santa Clara, USA", "founded": 1991, "aum_approx": "n/a", "aum_as_of": null, "stages": ["seed", "venture", "growth"], "focus": "Intel's venture arm; silicon, cloud infrastructure, devices, AI.", "notable_examples": ["VMware (historic)", "Cloudera (historic)", "SambaNova", "Anyscale"], "links": {"website": "https://www.intelcapital.com", "portfolio": "https://www.intelcapital.com/portfolio/"}, "link_check": {"website": {"status": 200, "final_url": "https://www.intelcapital.com"}, "portfolio": {"status": 200, "final_url": "https://www.intelcapital.com/portfolio/"}}, "logo": {"file": "logos/intel-capital.svg", "source_url": "https://www.intelcapital.com/wp-content/themes/intel-capital/dist/images/logo-color.svg", "source": "site", "background": "light"}, "mentioned_in_posts": [], "aliases": ["Intel Capital"], "aum_usd_bn": null, "countries": ["USA"]}, {"id": "salesforce-ventures", "name": "Salesforce Ventures", "type": "corporate-venture", "hq": "San Francisco, USA", "founded": 2009, "aum_approx": "n/a", "aum_as_of": null, "stages": ["venture", "growth"], "focus": "Salesforce's investment arm; enterprise software and AI, often with a strategic partnership.", "notable_examples": ["Anthropic", "Snowflake (historic)", "Zoom (historic)", "Hugging Face"], "links": {"website": "https://salesforceventures.com", "portfolio": "https://salesforceventures.com/portfolio/"}, "link_check": {"website": {"status": 200, "final_url": "https://salesforceventures.com"}, "portfolio": {"status": 200, "final_url": "https://salesforceventures.com/portfolio/"}}, "logo": {"file": "logos/salesforce-ventures.svg", "source_url": "https://salesforceventures.com/wp-content/uploads/2024/10/nav-logo-1.svg", "source": "site", "background": "light"}, "mentioned_in_posts": [], "aliases": ["Salesforce Ventures"], "aum_usd_bn": null, "countries": ["USA"]}, {"id": "m12", "name": "M12 (Microsoft)", "type": "corporate-venture", "hq": "Redmond, USA", "founded": 2016, "aum_approx": "n/a", "aum_as_of": null, "stages": ["series A", "series B"], "focus": "Microsoft's venture fund; enterprise software, AI, security.", "notable_examples": ["Icertis", "Innovaccer"], "links": {"website": "https://m12.vc", "portfolio": "https://m12.vc/portfolio/"}, "link_check": {"website": {"status": 200, "final_url": "https://m12.vc"}, "portfolio": {"status": 200, "final_url": "https://m12.vc/portfolio/"}}, "logo": {"file": "logos/m12.svg", "source_url": "https://m12.vc/wp-content/uploads/2023/03/M12-Logo.svg", "source": "site", "background": "light"}, "mentioned_in_posts": [], "aliases": ["M12"], "aum_usd_bn": null, "countries": ["USA"]}], "aum_usd_bn_note": "aum_usd_bn: aum_approx converted to USD billions (EUR at 1.1); null when not disclosed."};
+const TYPE_LABEL = { "buyout": "Buyout", "growth": "Growth", "venture": "Venture",
+  "corporate-venture": "Corporate VC", "multi-strategy": "Multi-strategy", "sovereign-wealth": "Sovereign wealth" };
+const cssVar = t => getComputedStyle(document.documentElement).getPropertyValue("--" + t).trim();
+const investors = DATA.investors;
+const state = { q: "", types: new Set(), country: "", inbook: false, sort: "name", view: "cards" };
+
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const hl = (s, q) => {
+  const e = esc(s);
+  if (!q) return e;
+  const re = new RegExp("(" + q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "ig");
+  return e.replace(re, "<mark>$1</mark>");
+};
+const fmtAum = v => v == null ? "not disclosed" : v >= 1000 ? `$${(v / 1000).toFixed(1)}tn` : `$${v}bn`;
+const haystack = i => [i.name, i.hq, i.focus, i.type, TYPE_LABEL[i.type], ...(i.aliases || []),
+  ...(i.countries || []), ...(i.stages || []), ...(i.notable_examples || []), ...(i.mentioned_in_posts || [])].join(" ").toLowerCase();
+investors.forEach(i => i._hay = haystack(i));
+
+// Country dropdown (an investor with offices in two countries counts under both)
+const countryCounts = {};
+investors.forEach(i => (i.countries || []).forEach(c => countryCounts[c] = (countryCounts[c] || 0) + 1));
+const countryEl = document.getElementById("country");
+Object.keys(countryCounts).sort((a, b) => countryCounts[b] - countryCounts[a] || a.localeCompare(b)).forEach(c => {
+  const o = document.createElement("option"); o.value = c; o.textContent = `${c} (${countryCounts[c]})`; countryEl.appendChild(o);
+});
+countryEl.addEventListener("change", e => { state.country = e.target.value; render(); });
+
+// Type filter chips (double as the chart legend's colour key)
+const typesEl = document.getElementById("types");
+const presentTypes = Object.keys(TYPE_LABEL).filter(t => investors.some(i => i.type === t));
+presentTypes.forEach(t => {
+  const b = document.createElement("button");
+  b.className = "chipbtn"; b.setAttribute("aria-pressed", "false");
+  const n = investors.filter(i => i.type === t).length;
+  b.innerHTML = `<span class="dot" style="background:var(--${t})"></span>${TYPE_LABEL[t]} <span style="opacity:.6">${n}</span>`;
+  b.onclick = () => {
+    state.types.has(t) ? state.types.delete(t) : state.types.add(t);
+    b.setAttribute("aria-pressed", state.types.has(t)); render();
+  };
+  typesEl.appendChild(b);
+});
+document.getElementById("legend").innerHTML = presentTypes
+  .map(t => `<span><span class="dot" style="background:var(--${t})"></span>${TYPE_LABEL[t]}</span>`).join("");
+
+// Mark square-ish logos (icons) so they are not stretched to the full tile width
+function logoLoaded(img) {
+  if (img.naturalWidth && img.naturalHeight && img.naturalWidth / img.naturalHeight < 1.6) img.classList.add("square");
+}
+
+function card(i, q) {
+  const logo = i.logo
+    ? `<img src="${esc(i.logo.file)}" alt="${esc(i.name)} logo" loading="lazy" onload="logoLoaded(this)">`
+    : `<span class="initials">${esc(i.name.split(/\s+/).map(w => w[0]).join("").slice(0, 3))}</span>`;
+  const facts = [i.hq, i.founded && `founded ${i.founded}`,
+    i.aum_approx && !/^n\/a/.test(i.aum_approx) && `AUM ${i.aum_approx}${i.aum_as_of ? ` (${i.aum_as_of})` : ""}`]
+    .filter(Boolean).map(f => hl(f, q)).join(" · ");
+  const links = [
+    i.links.website && `<a href="${esc(i.links.website)}" target="_blank" rel="noopener">Website ↗</a>`,
+    i.links.portfolio && `<a href="${esc(i.links.portfolio)}" target="_blank" rel="noopener">Portfolio ↗</a>`,
+  ].filter(Boolean).join("");
+  const book = (i.mentioned_in_posts || []).length
+    ? `<div class="book"><b>In the book:</b> ${i.mentioned_in_posts.map(p => hl(p, q)).join(", ")}</div>` : "";
+  return `<article class="card">
+    ${i.links.website
+      ? `<a class="logo ${i.logo && i.logo.background === "dark" ? "dark" : ""}" href="${esc(i.links.website)}" target="_blank" rel="noopener" title="${esc(i.name)} website">${logo}</a>`
+      : `<div class="logo ${i.logo && i.logo.background === "dark" ? "dark" : ""}">${logo}</div>`}
+    <div class="body">
+      <div class="title"><h2>${hl(i.name, q)}</h2>
+        <span class="type"><span class="dot" style="background:var(--${i.type})"></span>${TYPE_LABEL[i.type] || i.type}</span></div>
+      <div class="links">${links}</div>
+      <div class="facts">${facts}</div>
+      <p class="focus">${hl(i.focus, q)}</p>
+      <div class="tags">${(i.stages || []).map(s => `<span class="tag">${hl(s, q)}</span>`).join("")}</div>
+      ${(i.notable_examples || []).length ? `<div><div class="label">Examples</div>
+        <div style="font-size:13px">${i.notable_examples.map(n => hl(n, q)).join(" · ")}</div></div>` : ""}
+      ${book}
+    </div>
+  </article>`;
+}
+
+// ---- bubble chart (d3.pack, area ∝ AUM) ----
+const tip = document.getElementById("tip");
+function drawBubbles(list) {
+  const chart = document.getElementById("chart");
+  chart.querySelector("svg")?.remove();
+  const withAum = list.filter(i => i.aum_usd_bn);
+  const without = list.filter(i => !i.aum_usd_bn);
+  document.getElementById("missing").textContent = without.length
+    ? `Not shown (AUM not disclosed): ${without.map(i => i.name).join(", ")}.` : "";
+  document.getElementById("table").innerHTML = `<tr><th>Investor</th><th>Type</th><th>AUM (as reported)</th><th style="text-align:right">≈ USD bn</th></tr>` +
+    [...withAum].sort((a, b) => b.aum_usd_bn - a.aum_usd_bn).map(i =>
+      `<tr><td>${esc(i.name)}</td><td>${TYPE_LABEL[i.type]}</td><td>${esc(i.aum_approx)}${i.aum_as_of ? ` (${i.aum_as_of})` : ""}</td><td class="num">${i.aum_usd_bn.toLocaleString()}</td></tr>`).join("");
+  if (!withAum.length) return;
+  if (typeof d3 === "undefined") {
+    document.getElementById("missing").textContent = "The chart library (d3) could not load — check your connection. The table below has the same data.";
+    return;
+  }
+
+  const W = Math.max(320, chart.clientWidth), H = Math.round(Math.min(W * 0.72, 900));
+  const root = d3.pack().size([W, H]).padding(4)(
+    d3.hierarchy({ children: withAum }).sum(d => d.aum_usd_bn).sort((a, b) => b.value - a.value));
+  const svg = d3.select(chart).insert("svg", ".tip").attr("viewBox", `0 0 ${W} ${H}`)
+    .attr("role", "img").attr("aria-label", "Bubble chart of investors sized by assets under management");
+  const defs = svg.append("defs");
+
+  const g = svg.selectAll("g").data(root.leaves()).join("g")
+    .attr("class", "bubble").attr("tabindex", 0)
+    .attr("transform", d => `translate(${d.x},${d.y})`);
+
+  g.append("circle").attr("class", "ring").attr("r", d => d.r - 1.5).attr("stroke", d => cssVar(d.data.type));
+  // dark-background logos get a dark inner disc so white artwork stays visible
+  g.filter(d => d.data.logo && d.data.logo.background === "dark")
+    .append("circle").attr("r", d => Math.max(0, d.r - 5)).attr("fill", "#23221f");
+
+  g.each(function (d) {
+    const i = d.data, node = d3.select(this), r = d.r;
+    const showText = r >= 38;
+    if (i.logo) {
+      const id = "clip-" + i.id;
+      defs.append("clipPath").attr("id", id).append("circle").attr("r", Math.max(0, r - 6));
+      const w = r * (showText ? 1.25 : 1.35), h = r * (showText ? 0.8 : 1.1);
+      node.append("image").attr("href", i.logo.file).attr("clip-path", `url(#${id})`)
+        .attr("x", -w / 2).attr("y", showText ? -h * 0.75 : -h / 2).attr("width", w).attr("height", h)
+        .attr("preserveAspectRatio", "xMidYMid meet");
+    } else {
+      node.append("text").attr("dy", ".35em").style("font-size", Math.min(18, r / 2) + "px").text(i.name.split(/\s+/)[0]);
+    }
+    if (showText) {
+      node.append("text").attr("y", r * 0.42).style("font-weight", 600)
+        .style("fill", i.logo && i.logo.background === "dark" ? "#fff" : null)
+        .text(i.name.length > r / 3.6 ? i.name.split(/[ (]/)[0] : i.name);
+      node.append("text").attr("class", "val").attr("y", r * 0.42 + 15)
+        .style("fill", i.logo && i.logo.background === "dark" ? "#cfcdc6" : null).text(fmtAum(i.aum_usd_bn));
+    }
+  });
+
+  const show = (ev, d) => {
+    const i = d.data, box = chart.getBoundingClientRect();
+    tip.innerHTML = `<b>${esc(i.name)}</b><span class="m">${TYPE_LABEL[i.type]} · ${esc(i.hq)}</span><br>
+      AUM ${esc(i.aum_approx)}${i.aum_as_of ? ` (${i.aum_as_of})` : ""} ≈ <b style="display:inline">${fmtAum(i.aum_usd_bn)}</b>
+      ${(i.mentioned_in_posts || []).length ? `<br><span class="m">In the book: ${i.mentioned_in_posts.length} post(s)</span>` : ""}`;
+    const scale = box.width / W;
+    let x = d.x * scale + 14, y = (d.y - d.r) * scale;
+    if (x + 260 > box.width) x = d.x * scale - 274;
+    tip.style.left = Math.max(0, x) + "px"; tip.style.top = Math.max(0, y) + "px"; tip.style.opacity = 1;
+  };
+  const open = d => { const u = d.data.links.portfolio || d.data.links.website; if (u) window.open(u, "_blank", "noopener"); };
+  g.on("mouseenter focus", show).on("mouseleave blur", () => tip.style.opacity = 0)
+   .on("click", (ev, d) => open(d)).on("keydown", (ev, d) => { if (ev.key === "Enter") open(d); });
+}
+
+function filtered() {
+  const q = state.q.trim().toLowerCase();
+  const list = investors.filter(i =>
+    (!q || i._hay.includes(q)) &&
+    (!state.types.size || state.types.has(i.type)) &&
+    (!state.country || (i.countries || []).includes(state.country)) &&
+    (!state.inbook || (i.mentioned_in_posts || []).length));
+  const by = {
+    "name": (a, b) => a.name.localeCompare(b.name),
+    "aum": (a, b) => (b.aum_usd_bn || 0) - (a.aum_usd_bn || 0) || a.name.localeCompare(b.name),
+    "founded": (a, b) => (a.founded || 9999) - (b.founded || 9999),
+    "founded-desc": (a, b) => (b.founded || 0) - (a.founded || 0),
+    "mentions": (a, b) => (b.mentioned_in_posts || []).length - (a.mentioned_in_posts || []).length || a.name.localeCompare(b.name),
+  }[state.sort];
+  return list.sort(by);
+}
+
+function render() {
+  const list = filtered();
+  document.getElementById("count").textContent = `${list.length} of ${investors.length}`;
+  const cards = state.view === "cards";
+  document.getElementById("grid").style.display = cards ? "" : "none";
+  document.getElementById("bubbles").style.display = cards ? "none" : "block";
+  document.getElementById("sort").style.visibility = cards ? "" : "hidden";
+  if (cards) {
+    document.getElementById("grid").innerHTML = list.length
+      ? list.map(i => card(i, state.q.trim())).join("")
+      : `<div class="empty">No investors match “${esc(state.q)}”.</div>`;
+  } else {
+    drawBubbles(list);
+  }
+}
+
+function setView(v) {
+  state.view = v;
+  document.getElementById("v-cards").setAttribute("aria-pressed", v === "cards");
+  document.getElementById("v-bubbles").setAttribute("aria-pressed", v === "bubbles");
+  try { history.replaceState(null, "", v === "bubbles" ? "#bubbles" : location.pathname); } catch (e) {}
+  render();
+}
+
+document.getElementById("q").addEventListener("input", e => { state.q = e.target.value; render(); });
+document.getElementById("sort").addEventListener("change", e => { state.sort = e.target.value; render(); });
+document.getElementById("inbook").addEventListener("change", e => { state.inbook = e.target.checked; render(); });
+document.getElementById("v-cards").onclick = () => setView("cards");
+document.getElementById("v-bubbles").onclick = () => setView("bubbles");
+let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => state.view === "bubbles" && render(), 150); });
+document.getElementById("foot").textContent = `Generated ${DATA.generated}. ${DATA.notes} ${DATA.aum_usd_bn_note || ""}`;
+state.view = location.hash === "#bubbles" ? "bubbles" : "cards";
+setView(state.view);
+</script>
+</body>
+</html>

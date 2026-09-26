@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Round 2 of the in-depth review of 23-scale-the-team-with-ai (24 Sept 2026).
+"""Round 2 of the in-depth review of 24-scale-the-team-with-ai (24 Sept 2026).
 
 SAI-003: Figure 1 padlock label "Unchanged by faster coding alone" -> "Held at 7 days for this calculation" (lettering edit).
 SAI-005: Figure 3 middle rung result gains the extension's terminal outcome (lettering edit).

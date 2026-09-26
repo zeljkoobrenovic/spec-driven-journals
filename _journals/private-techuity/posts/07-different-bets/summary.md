@@ -1,4 +1,4 @@
-**Incentives are rewards and consequences that influence choices.** A fund (investors’ pooled money, run by a fund manager) that buys into a company adds shares for its leaders, an expected sale date for its holding (the exit) and the manager’s own pay. Executives, the fund, employees and customers gain and lose different things, on different timetables.
+**Incentives are rewards and consequences that influence choices.** A fund (investors’ pooled money, run by a fund manager) that buys into a company adds shares for its leaders, an expected sale date for its holding (the exit) and the manager’s pay. Executives, the fund, employees and customers gain and lose different things, on different timetables.
 
 ![An equity percentage is examined through contract terms, cash costs and timing, alongside consequences for employees and customers.](assets/images/07-different-bets/summary-at-a-glance.jpeg)
 **Figure 1:** *Test the actual payout terms and the behavior the reward encourages.*

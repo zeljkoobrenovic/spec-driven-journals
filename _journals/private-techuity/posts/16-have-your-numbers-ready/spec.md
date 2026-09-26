@@ -1,0 +1,79 @@
+---
+status: draft
+revised: 2026-09-25
+---
+
+# Spec: Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards
+
+## Intent
+
+Follow [[adopt-outcome-thinking]] in Part IV with the practical companion to the outcome record: the numbers a product or engineering leader should be able to produce, explain and defend at any time — in a conversation with the investor, when setting goals and when building dashboards. The chapter gives the reader a working catalogue of the measures that matter under investors (money and runway; customers and growth; product and customer outcomes; delivery and execution; technology health and cost; people), each with what it tells, who usually owns it and where it misleads; then shows how to hold a small set of them ready: defined once, owned by name, refreshed on a schedule, given its context and labelled by kind (actual, target, forecast, assumption, committed) so a projection is never read as a result. It closes by showing how the same numbers serve three uses at three resolutions — the investor conversation, goals, and dashboards from the board down to the team — and who in the company does the work (product operations). The reader leaves able to answer an investor's number questions with a record rather than a scramble, and to build a board dashboard whose every figure traces down to a team's work.
+
+The chapter replaces the appendix "Data Foundations for Alignment With Investors", which is removed from the book; it keeps that appendix's strongest ideas (sources you already have, the measure record, number context, the labelling rule, internal versus shared, product operations, build order) and drops its elaborate derivation from Grounded Architecture, which is mentioned once and linked.
+
+## Context
+
+Larkspur, the book's fictional scheduling-software company, in the same week as [[adopt-outcome-thinking]]: the outcome record is agreed; the investor's portfolio team asks for its standard reporting and the first quarterly board pack is being prepared. The chapter uses only facts the shared ledger (`_research/shared-scenario-record.md`) already holds and introduces no new shared figures: setup effort about 80 staff hours per customer and a median wait of about ten weeks, both provisional (Morgan's diligence sample of five, three needing the specialist's manual configuration) until the day-20 baseline of twelve setups; the setup proposal's target of 50 hours; its case of €225,000 a year (100 setups × 30 hours × €75) as capacity, not cash; the proposal's request of €180,000 and twelve engineer-weeks, committed only once the board funds it ([[cannot-fund-everything]]); the contract implementation specialist's €150,000 for months 1–12, agreed before day 0 and paid from the operating budget; the one-person dependence on the scheduling engine (diligence finding D-5); the day-90 decision thresholds (under 60, 60 to 70, over 70 hours) set by the plan ([[first-hundred-days]]). Company-level financial figures (revenue, ARR, cash, burn) are not in the ledger: the chapter names who produces them and how, but gives no Larkspur values for them. Illustrative arithmetic that is not Larkspur's is labelled as such.
+
+## Audience
+
+Product and engineering leaders inside companies working under investors, including leaders who inherit an ownership arrangement. Assume no specialist finance or product-management background; explain necessary terms before use. Investor-side readers are secondary.
+
+## Success criteria
+
+- [ ] **The practical problem first.** The opening blocks state the problem before any vocabulary: the investor's questions arrive before the numbers exist, each function has its own version of a figure, and a number produced in a hurry gets less weight than it deserves. The investor relies on reported figures for work it does not observe day to day; nothing says it cannot verify them.
+- [ ] **Who is who, before any approval rule.** Every format distinguishes the investor (an owner), the board (the directors who oversee the company for its owners, approving the plan and spending outside it) and the chief executive (who runs the company and authorizes spending inside the plan) at the board's first substantive mention, before the day-90 thresholds.
+- [ ] **A working catalogue.** Six groups of measures, each as a table (measure, what it tells you, where it misleads), with every term explained in plain words at first use: money and runway (revenue, recurring revenue, ARR, gross margin, operating costs by function, burn, runway, cash conversion); customers and growth (new customers and bookings, gross and net revenue retention, customer churn and renewal rate with their different denominators and units (churn counts customers, the renewal rate counts contracts, neither weighted by revenue), customer acquisition cost and payback on the monthly amount left after serving the customer, lifetime value on a gross-profit basis with its caution, pipeline and conversion); product and customer outcomes (time to first value, activation defined as in [[adopt-outcome-thinking]] (the day the customer's account is ready to use, the date month-one support requests count from), distinguished from first value (the first real schedule) and from depth of use, cost to serve, support requests, customer feedback scores with their caution); delivery and execution (commitments against outcomes, allocation against plan, the five software delivery measures in DORA's current guide — DORA spelled out as DevOps Research and Assessment, deployment (putting a version into the live service) distinguished from release (making it available to customers), used the same way in the key-person row and the comic, recovery scoped to failed deployments — predictability); technology health and cost (reliability against an objective, tested recovery, security findings, technology cost per customer and as a share of revenue, technical debt register, key-person concentration); people (headcount against plan, unwanted departures, open roles). The catalogue says which the product and engineering leader owns, which they must understand but finance or sales owns, and links the chapters that treat a group in depth. No prevalence claims about what investors "usually" demand; no benchmark values.
+- [ ] **Pick a small set.** A rule for choosing: start from the decisions and the outcome record, a dozen or so numbers for the investor, lanes' measures for teams; add a measure only when a decision needs it.
+- [ ] **Hold each number ready.** The measure record (definition, source, owner, refresh, boundaries — [Tool 15](toolkit.html#tool-15)), illustrated with Larkspur's setup-effort measure, reported as the average (mean) per setup — total included hours divided by the number of setups in the group; day 0 defined (the board meeting that adopts the operating plan) before any numbered day; the four pieces of context (baseline, comparison, direction and confidence, decision link) with thresholds agreed before the result that guide the day-100 board review of the day-90 measurement, recommending a response without approving spending — a new stage, or spending outside the approved plan (such as a draw on the reserve), needs the board's approval, while the chief executive authorizes spending within the plan ([[decide-who-decides]]); definition changes restated or marked as a break.
+- [ ] **Label the kind.** Actual, target, forecast, assumption, and committed for an authorized resource, shown on Larkspur's proposal figures (80 hours provisional actual; 50 hours target; €225,000 a year forecast, shown as 3,000 hours a year valued at €75 an hour, never as an equality between hours and euros; three assumptions — 100 setups a year, €75 an hour, and the 50-hour target reached and sustained — named wherever the forecast is quoted; the contract specialist's €150,000 committed; the pilot request committed only once funded); every finance term (fund, profit, cash) explained where it first carries the argument; capacity is not cash until a dated conversion — a scheduled payment actually avoided, or additional customers paying more than their additional cash costs — stated the same way in every format; one forward sentence to the day-100 result without restating it.
+- [ ] **Three uses, three resolutions.** The investor conversation (information rights against courtesy; aggregated and curated; share what supports decisions the recipient takes part in); goals (goals on leading measures, lagging ones reported; a measure that becomes a target changes behaviour, so pair it with a counter-measure); dashboards in three layers (board, leadership, team) where every board figure traces to team work, with refresh automated and interpretation not.
+- [ ] **Someone does the work.** Product operations as Perri and Tilles describe it (three pillars mapped to the catalogue); a small company names an owner per measure and one person accountable for the board pack.
+- [ ] **Grounded Architecture only mentioned.** One or two sentences naming Lightweight Architectural Analytics as the author's approach for the technology part, with its link; no derivation of the chapter's qualities from it.
+- [ ] **Investor questions answered as they are asked** ("what is your burn and runway?", "why is this number different from last quarter's?", "can we have access to your systems?", "what is your NRR?"), each pointing at the record.
+- [ ] **House rules.** Opening blocks (IN THIS SECTION / WHY INVESTORS CARE / WHY YOU SHOULD CARE), three KEY POINTS, Questions to Consider, To Probe Further with fetched URLs; S-citations for the book's registered sources (S106, S109); a meaningful counterargument (what numbers do not fix); hand-off to [[cannot-fund-everything]]; fictional figures consistent with the shared ledger.
+
+## Non-goals
+
+- Not a finance textbook or a SaaS benchmark report: no target values, no "good" thresholds for any metric.
+- Not the outcome record ([[adopt-outcome-thinking]]), the prioritization arithmetic ([[cannot-fund-everything]]), the pilot measurement ([[roadmap-to-revenue]]) or delivery capability ([[can-the-team-deliver]]); link them.
+- Not a dashboard-tool or data-platform recommendation.
+- No new shared-ledger figures; no Larkspur revenue, ARR, cash or burn values.
+
+## Modalities
+
+- [ ] `checklist.md` — not used in this journal's main chapters.
+- [x] `summary.md` — TL;DR of 300–500 words with one overview visual (reuses Figure 1).
+- [ ] `dialog.md` — not used.
+- [x] `comics.md` — seven comic pages in the journal's three-strip format, same cast as the neighbouring chapters, following one question (how long does a setup take, and how do you know?) from the hook to the defined, labelled answer; every amount traces to the article. Captions explain every finance or technical term the artwork prints (NRR, cloud bill, incidents, sales pipeline, scheduling engine, release, diligence sample, board pack) and carry a text transcript of the lettered boards, cards and bands, so a reader who cannot see the images gets the same numbers, thresholds and authorization limits.
+
+## Open questions
+
+- Whether burn, runway, CAC, GRR and the DORA measures also enter the glossary.
+
+## Decision log
+
+- 2026-09-25: The author asked for a new Part IV chapter after [[adopt-outcome-thinking]] on "Having Your Number Ready": the metrics and measurements handy to track and use with investors, when defining goals and when setting dashboards; inspiration from the appendix *Data Foundations for Alignment With Investors*, which is to be removed; Grounded Architecture only mentioned and linked; the product operations link stays.
+- 2026-09-25: Title "Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards" (imperative, matching the book's chapter titles); permalink `have-your-numbers-ready`. Every former link to the appendix is retargeted to this chapter; the appendix's figures, logo and icon are reused; its comic (day-100 scenes) is not.
+- 2026-09-25 (in-depth review round 1): The catalogue describes DORA's current five delivery measures rather than the original four, because the linked guide is presented as the current definitions. Setup effort is reported as the arithmetic mean per setup, matching the shared ledger's "cohort average effort" in the day-90 rule; the median stays the statistic for waiting time.
+- 2026-09-25 (in-depth review round 2): The key-person row and the comic keep the shared ledger's wording for D-5 ("release and recover"), with release defined as making a new version available to customers, consistent with the deployment/release distinction; the comic artwork is not changed for it. Board authority follows [[cannot-fund-everything]]: Ines authorizes spending inside the approved plan; reserve draws, new stages and changes to funded work go to the board.
+
+- 2026-09-25 (in-depth review round 3): Activation keeps [[adopt-outcome-thinking]]'s definition (the account is ready to use), because that chapter starts the month-one support window from it; the first real schedule is named as first value. The aggregation example uses setups of 65, 75 and 100 hours (average 80, median 75), so the example shows why the rule matters instead of giving the same 80 either way.
+
+## Sources
+
+- The removed appendix *Data Foundations for Alignment With Investors* (git history), its spec and bibliography entries S106–S109.
+- Melissa Perri and Denise Tilles, *Product Operations* (S109).
+- Željko Obrenović, [Lightweight Architectural Analytics](https://grounded-architecture.io/analytics) (S106).
+- Nicole Forsgren, Jez Humble and Gene Kim, *Accelerate* (2018); [DORA's software delivery performance metrics](https://dora.dev/guides/dora-metrics/) (five measures since the original four keys gained deployment rework rate).
+- Douglas W. Hubbard, *How to Measure Anything* (3rd ed., 2014).
+- Book records: [[adopt-outcome-thinking]], [[obligations-before-budget]], [[cannot-fund-everything]], [[roadmap-to-revenue]], [[can-the-team-deliver]], [[prove-you-can-restore]], [[cheaper-cloud-bill]], [[manage-technical-debt]], [[first-hundred-days]], [[decide-who-decides]].
+
+## Changelog
+
+- 2026-09-25: In-depth review round 3 (HNR-003, R08A-005, HNR-007, HNR-008): activation realigned with the outcome record (account ready to use; first real schedule is first value); investor, board and chief executive distinguished at first substantive use in every format; the opening no longer says the investor cannot check the numbers; long record, forecast and comic-caption passages split into single-step paragraphs and sentences.
+- 2026-09-25: In-depth review round 2 (R08A-007, HNR-003, HNR-001, R08A-005, HNR-006): criteria now keep the chief executive's authority inside the approved plan and send a new stage or off-plan spending to the board; churn and renewal named with their different units; release defined as making a version available to customers, distinct from deployment; fund and profit explained locally; comic captions cover cloud bill, incidents and diligence sample.
+- 2026-09-25: In-depth review round 1 (R08A-005/-006/-007/-009/-013/-014, HNR-001 to HNR-005): criteria tightened before the article — DORA's five current measures, churn/renewal denominators, LTV and payback bases, activation versus depth, setup effort as a per-setup average with day 0 defined, thresholds as guidance for the day-100 board review, three named assumptions, two cash routes, hours and euros kept dimensionally separate, and comic text equivalents.
+- 2026-09-25: Comic added at the author's request (seven pages).
+- 2026-09-25: Folders renumbered at the author's request: this chapter is `16-have-your-numbers-ready`; later folders moved up by one (17–38).
+- 2026-09-25: Created as `draft` from the author's request; article and TL;DR written against it.

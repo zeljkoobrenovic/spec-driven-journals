@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Relabel one lettered string on a legacy comic panel of 20-the-financing-slipped.
+"""Relabel one lettered string on a legacy comic panel of 21-the-financing-slipped.
 
 In-depth review round 2, 23 September 2026 (FIN-002): panel 6 showed an
 unexplained "SUPPORT AGREEMENT" that has no role in the story. The document is
@@ -24,7 +24,7 @@ pages = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(pages)
 
 MODEL = 'gemini-3-pro-image-preview'
-POST = J / 'posts/20-the-financing-slipped'
+POST = J / 'posts/21-the-financing-slipped'
 COMICS = POST / 'comics.md'
 PANEL_RE = re.compile(r'<!-- comic-panel\s+(\{.*?\})\s*-->', re.S)
 
@@ -48,7 +48,7 @@ def main() -> int:
     previous = asset.read_bytes()
     backups = J / '_research/discarded-comic-variants'
     backups.mkdir(exist_ok=True)
-    (backups / f'20-the-financing-slipped-comic-{panel_id}-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
+    (backups / f'21-the-financing-slipped-comic-{panel_id}-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
     asset.write_bytes(data)
     print('retexted', asset.relative_to(ROOT), hashlib.sha256(data).hexdigest())
     return 0

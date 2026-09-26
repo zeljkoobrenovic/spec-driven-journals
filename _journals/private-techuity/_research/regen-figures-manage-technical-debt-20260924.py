@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate two figures of 26-manage-technical-debt after the in-depth review of 24 September 2026 (round 1).
+"""Regenerate two figures of 27-manage-technical-debt after the in-depth review of 24 September 2026 (round 1).
 
 - MTD-006: Figure 2 showed €340,000 and €58,000 as simple price tags. New tags separate staff time from
   additional cash (€300,000 time + €40,000 cash; €50,000 time + €8,000 cash) and add tranche 2's tag
@@ -27,8 +27,8 @@ sys.modules[spec.name] = helper
 spec.loader.exec_module(helper)
 
 MODEL = 'gemini-3-pro-image-preview'
-KEY = '26-manage-technical-debt'
-POST = J / 'posts/26-manage-technical-debt'
+KEY = '27-manage-technical-debt'
+POST = J / 'posts/27-manage-technical-debt'
 ARCHIVE = J / '_research/article-illustration-prompts-20260913.json'
 DISCARD = J / '_research/discarded-illustration-variants'
 
@@ -44,7 +44,7 @@ STYLE = ('Create one finished explanatory illustration for Owned, a practical bo
 
 FIGURES = {
     'rewrite-versus-tranches': {
-        'asset': POST / 'assets/images/26-manage-technical-debt/rewrite-versus-tranches.jpeg',
+        'asset': POST / 'assets/images/27-manage-technical-debt/rewrite-versus-tranches.jpeg',
         'prompt': STYLE + (
             'Two horizontal timelines stacked one above the other, each running left to right along a thin navy '
             'baseline with small tick marks. Upper timeline, label at its left in large navy: Rewrite. It is one long '
@@ -68,7 +68,7 @@ FIGURES = {
         'candidate': Path('/tmp/mtd-figure2-candidate.jpeg'),
     },
     'sequencing-rule': {
-        'asset': POST / 'assets/images/26-manage-technical-debt/sequencing-rule.jpeg',
+        'asset': POST / 'assets/images/27-manage-technical-debt/sequencing-rule.jpeg',
         'prompt': STYLE + (
             'A single queue of five simple record cards laid left to right on the ivory background, with a large navy '
             'arrow beneath the whole row pointing right and labeled Order of work. The first two cards each carry a '

@@ -50,7 +50,7 @@ A tutorial on implementing the analytics tooling; a survey of portfolio-monitori
 ## Sources
 
 - **Internal**
-  - [[data-foundations-for-alignment]] — the five requirements and the internal-and-shared boundary the data pillar reuses.
+  - [[have-your-numbers-ready]] — the measure record, the labelling rule and the internal-and-shared boundary the data pillar reuses (replaced the removed data-foundations appendix on 2026-09-25).
   - [[learn-through-investors-network]], [[help-that-changes-capability]], [[useful-engagement]] — the portfolio equivalents of the people pillar's forums, shared expertise and written terms.
   - [[operating-model-blueprints]], [[tech-operating-partner]], [[decide-who-decides]] — the working arrangements, connector role and decision rights the operating model adapts to.
 - **External**

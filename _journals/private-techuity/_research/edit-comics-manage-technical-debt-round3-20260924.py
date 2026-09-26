@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Apply the 24 September 2026 round-3 review text changes to the comic script of
-26-manage-technical-debt (MTD-004/005/012/013/020/024).
+27-manage-technical-debt (MTD-004/005/012/013/020/024).
 Edits the comic-page JSON blocks in place (captions split into short paragraphs); run
 generate_comic_pages.py --render afterwards, then --retext for page 02 and --generate --overwrite for page 05."""
 import json, re
 from pathlib import Path
-P = Path(__file__).resolve().parents[1] / 'posts/26-manage-technical-debt/comics.md'
+P = Path(__file__).resolve().parents[1] / 'posts/27-manage-technical-debt/comics.md'
 text = P.read_text()
 pat = re.compile(r'<!-- comic-page\n(\{.*?\n\})\n-->', re.S)
 blocks = {}

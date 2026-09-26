@@ -20,7 +20,7 @@
 }
 -->
 
-**Comic.** Product and engineering leaders usually meet money as a budget: an amount they may spend. Seven pages follow Larkspur’s fictional €100,000 need through three offers, from customers, a bank and an investor, to show what the funding terms add: when the money may be spent, who must approve it, and what the company must deliver, repay or give up in return.
+**Comic.** Product and engineering leaders usually meet money as a budget: an amount they may spend. Seven pages follow Larkspur’s fictional €100,000 need through three offers, from customers, a bank and an investor, to show what the funding terms add: when the money may be spent, who must approve it, and what the company must deliver, repay or give up.
 
 Alex leads technology, Sam leads finance and Ines is the chief executive of Larkspur, a fictional company at its smallest and earliest stage in this book. All are fictional, and so is every figure.
 
@@ -89,7 +89,7 @@ Alex leads technology, Sam leads finance and Ines is the chief executive of Lark
     }
   ],
   "alt": "Comic page in three strips: Alex and Sam face three waiting customers and a calendar marked 1 March, needing €100,000; Sam empties a jar that leaves only €1,500 a month; Ines lifts the blank tag tied to the first of three €100,000 money bags marked customers, bank and investor.",
-  "caption": "Larkspur is fictional and so is every figure. It is a small software company owned by its founders, the people who started it. The dispatch feature assigns jobs to field workers and sends each of them a schedule. Customer payments, borrowing, money from owners and selling an asset, something the company owns, are four common sources of cash; Larkspur has no spare asset worth €100,000, so three remain. The habit to keep: ask how much cash arrives, and what obligation or ownership change arrives with it.",
+  "caption": "Larkspur is fictional and so is every figure. It is a small software company owned by its founders, the people who started it. The dispatch feature assigns jobs to field workers and sends each a schedule. Customer payments, borrowing, money from owners and selling an asset, something the company owns, are four common sources of cash; Larkspur has no spare asset worth €100,000, so three remain. The habit to keep: ask how much cash arrives, and what obligation or ownership change arrives with it.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
@@ -101,7 +101,7 @@ Alex leads technology, Sam leads finance and Ines is the chief executive of Lark
 
 ![Comic page in three strips: Alex and Sam face three waiting customers and a calendar marked 1 March, needing €100,000; Sam empties a jar that leaves only €1,500 a month; Ines lifts the blank tag tied to the first of three €100,000 money bags marked customers, bank and investor.](assets/images/00-customers-lenders-investors/comic-page-01-what-comes-with-the-money.jpeg)
 
-**Page 1: What comes with the money?.** Larkspur is fictional and so is every figure. It is a small software company owned by its founders, the people who started it. The dispatch feature assigns jobs to field workers and sends each of them a schedule. Customer payments, borrowing, money from owners and selling an asset, something the company owns, are four common sources of cash; Larkspur has no spare asset worth €100,000, so three remain. The habit to keep: ask how much cash arrives, and what obligation or ownership change arrives with it.
+**Page 1: What comes with the money?.** Larkspur is fictional and so is every figure. It is a small software company owned by its founders, the people who started it. The dispatch feature assigns jobs to field workers and sends each a schedule. Customer payments, borrowing, money from owners and selling an asset, something the company owns, are four common sources of cash; Larkspur has no spare asset worth €100,000, so three remain. The habit to keep: ask how much cash arrives, and what obligation or ownership change arrives with it.
 
 - *Strip 1.* **Alex:** “Three customers want the dispatch feature by 1 March.” **Sam:** “Building it takes €100,000 we don't have.”
 - *Strip 2.* **Sam:** “Subscriptions pay today's costs. About €1,500 a month is left.” **Alex:** “So someone else has to fund it.”

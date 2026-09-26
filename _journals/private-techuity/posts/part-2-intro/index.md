@@ -15,11 +15,11 @@ icon: "assets/icons/part-2-intro.png"
 <br>
 Part I established whose money is involved. This part establishes who decides what, which matters most when the plan is under pressure.
 
-**Decision rights** can come from shares (units of ownership), from a **seat on the board** that oversees the company, or from **loan conditions** that limit what the company may do. An **advisory** role may bring access and influence without any decision right. Behind every right sits an agreement, a rule or a permission granted by someone with the authority to grant it; a **job title settles nothing**.
+**Decision rights** can come from shares (units of ownership), from a **seat on the board** that oversees the company, or from **loan conditions** that limit what the company may do. An **advisory** role may bring access and influence without any decision right. Behind every right sits an agreement, a rule or permission from someone authorized to grant it; a **job title settles nothing**.
 
-A **minority investor** holds less than half of the shares but may have negotiated approval rights. A **controlling sponsor** is an investment firm that controls the company through a **fund**: money pooled from investors and run by the firm as the **fund manager**. A **corporate parent** is another company that owns this one. Whoever the owner is, identify what you may decide, **which approvals you need** and who resolves conflicting demands. Even with an investor in place, ask for each decision explicitly and **make its cost clear**.
+A **minority investor** holds less than half the shares but may have negotiated approval rights. A **controlling sponsor** is an investment firm that controls the company through a **fund**: money pooled from investors and run by the firm as the **fund manager**. A **corporate parent** is another company that owns this one. Whoever the owner is, identify what you may decide, **which approvals you need** and who resolves conflicting demands. Even with an investor, ask for each decision explicitly and **make its cost clear**.
 
-**Shared evidence**, data whose meaning and source everyone understands, lets the options be assessed on their merits. Without it, authority can outweigh a reasoned assessment. With it, whoever holds the authority still has to choose between competing interests, but does so on a common basis.
+**Shared evidence**, data whose meaning and source everyone understands, lets the options be assessed on their merits. Without it, authority can outweigh a reasoned assessment. With it, whoever holds the authority must still choose between competing interests, but on a common basis.
 
 ## The Learning Path
 
@@ -29,6 +29,6 @@ A **minority investor** holds less than half of the shares but may have negotiat
 - [[decide-who-decides]] asks who can decide and deliver: who proposes, approves, funds and delivers one piece of work.
 - [[different-bets]] asks what each party gains or risks: leaders through shares (equity), the fund manager through its share of investment profits (carry, short for carried interest), employees through jobs.
 - [[investor-under-pressure]] asks how the relationship handles pressure, judged by the investor's behavior when results fell short of the plan.
-- The appendix chapter [[data-foundations-for-alignment]] asks which facts these three chapters use: existing sources, defined once, kept accurate by a named person, with forecasts (what may happen) never read as results (what actually happened).
+- The Part IV chapter [[have-your-numbers-ready]] supplies the facts these three chapters assume: numbers from existing sources, defined once, kept accurate by a named person, with forecasts (what may happen) never read as results (what actually happened).
 
 Begin with [[decide-who-decides]]. Part III then sets up the working arrangement with the investor and the help it can bring; Part IV uses both to choose and deliver product and technology investments.

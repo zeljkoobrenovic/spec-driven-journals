@@ -1,5 +1,5 @@
 {id: glossary}
-# Glossary
+# 44. Glossary
 
 ![Glossary — logo](private-techuity/posts/glossary/assets/images/glossary/logo.jpeg)
 
@@ -326,7 +326,7 @@ The company-investment sequence begins at the chapters [Set Priorities: You Cann
 | Data room | A controlled collection of information shared for a transaction. |
 | Architecture | A system’s main parts, their responsibilities and their connections. |
 | Grounded Architecture | The author’s framework for architecture practice in large, decentralized organizations: lightweight analytics (data), collaborative networks (people) and an operating model that turns both into decisions. [Appendix: Grounded Architecture Across an Investment Portfolio](#grounded-architecture-portfolio) applies it across a portfolio. |
-| Lightweight Architectural Analytics | Building a current, curated map of systems, technologies, costs, risks and dependencies from sources a company already has (repositories, cloud bills, incident records, finance data) with small tools, rather than buying a platform; see [Appendix: Data Foundations for Alignment With Investors](#data-foundations-for-alignment). |
+| Lightweight Architectural Analytics | Building a current, curated map of systems, technologies, costs, risks and dependencies from sources a company already has (repositories, cloud bills, incident records, finance data) with small tools, rather than buying a platform; mentioned in [Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards](#have-your-numbers-ready) and applied across a portfolio in [Appendix: Grounded Architecture Across an Investment Portfolio](#grounded-architecture-portfolio). |
 | Interface | An agreed way for parts of a system, or different systems, to exchange information. |
 | Modularity / coupling | Dividing software into parts with clear responsibilities / the degree to which parts depend on one another. |
 | Microservices | An architecture of smaller services designed to be deployed separately. Whether each service can actually be released and operated on its own depends on how it was built; coordination and operating costs apply either way. |
@@ -364,7 +364,7 @@ The company-investment sequence begins at the chapters [Set Priorities: You Cann
 {id: glossary--evidence}
 ## Evidence and Lasting Outcomes
 
-For application, read the chapter [Success for Whom, and for How Long?](#success-for-whom) or use [Practical Tools for Ownership and Technology Decisions](#toolkit); the chapter [Use Diligence: Correct the Plan Before It Is Signed](#diligence-corrects-the-plan) shows the observed / reported / inferred split in use, and the chapter [Appendix: Data Foundations for Alignment With Investors](#data-foundations-for-alignment) covers defining, owning and labelling the figures a company reports.
+For application, read the chapter [Success for Whom, and for How Long?](#success-for-whom) or use [Practical Tools for Ownership and Technology Decisions](#toolkit); the chapter [Use Diligence: Correct the Plan Before It Is Signed](#diligence-corrects-the-plan) shows the observed / reported / inferred split in use, and the chapter [Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards](#have-your-numbers-ready) covers defining, owning and labelling the figures a company reports.
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -383,7 +383,7 @@ For application, read the chapter [Success for Whom, and for How Long?](#success
 | Generalizability | How far findings can reasonably apply beyond the people, businesses or period studied. |
 | Percentage / percentage point | A relative change / an arithmetic difference between percentages. From 4% to 5% is one percentage point, or a 25% increase relative to 4%. |
 | Stakeholder | A person or group affected by the company, including those who did not choose its owner. |
-| Actual / target / forecast / assumption | An observed and recorded result / what was committed to / a calculation about the future from stated inputs / an input taken as given that may not hold. The chapter [Appendix: Data Foundations for Alignment With Investors](#data-foundations-for-alignment) asks that every reported figure carry which of the four it is. |
+| Actual / target / forecast / assumption | An observed and recorded result / what was committed to / a calculation about the future from stated inputs / an input taken as given that may not hold. The chapter [Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards](#have-your-numbers-ready) asks that every reported figure carry which of the four it is. |
 | Measure definition | The written statement of exactly what a figure counts, who or what is in scope and what it excludes. Without one, the same measure gives different answers to different people. |
 | Information rights | The reporting an investor is contractually entitled to receive, normally set out in the investment agreement. Applicable law, the governing documents and a board role can add entitlements; beyond those, disclosure is a choice, not an obligation. |
 

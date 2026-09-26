@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Investor Directory</title>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #ffffff; --surface: #ffffff; --ink: #1d1c1a; --muted: #6b6860; --line: #e6e4de;
+    --accent: #1c5cab; --chip: #f2f1ed; --logo-dark: #23221f;
+    /* categorical type colours: validated reference palette, fixed order */
+    --buyout: #2a78d6; --growth: #eb6834; --venture: #1baf7a; --corporate-venture: #eda100;
+    --multi-strategy: #e87ba4; --sovereign-wealth: #008300;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+    font: 15px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 28px 16px 60px; }
+  header h1 { font: 600 28px/1.2 Georgia, "Times New Roman", serif; margin: 0 0 4px; letter-spacing: -.01em; }
+  header p { margin: 0; color: var(--muted); }
+  .controls { position: sticky; top: 0; z-index: 5; background: var(--bg); padding: 14px 0 12px;
+    border-bottom: 1px solid var(--line); margin: 18px 0 20px; display: grid; gap: 10px; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  input[type=search] { flex: 1 1 260px; min-width: 0; padding: 10px 12px; font: inherit; color: var(--ink);
+    background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+  input[type=search]:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  select { padding: 9px 10px; font: inherit; color: var(--ink); background: var(--surface);
+    border: 1px solid var(--line); border-radius: 8px; }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .seg button { font: inherit; padding: 9px 14px; border: 0; background: var(--surface); color: var(--ink); cursor: pointer; }
+  .seg button + button { border-left: 1px solid var(--line); }
+  .seg button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+  .chipbtn { font: inherit; font-size: 13px; padding: 5px 11px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+  .chipbtn[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: 0; }
+  label.toggle { font-size: 13px; color: var(--muted); display: flex; gap: 6px; align-items: center; cursor: pointer; }
+  .count { font-size: 13px; color: var(--muted); margin-left: auto; }
+
+  /* cards */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    display: flex; flex-direction: column; }
+  .logo { height: 150px; display: flex; align-items: center; justify-content: center; padding: 18px 20px;
+    background: #fff; border-bottom: 1px solid var(--line); }
+  .logo.dark { background: var(--logo-dark); }
+  .logo img { width: 100%; height: 100%; max-height: 96px; object-fit: contain; }
+  .logo img.square { width: 100px; height: 100px; }
+  .logo .initials { font: 600 44px Georgia, serif; color: var(--muted); }
+  .body { padding: 14px 16px 16px; display: grid; gap: 8px; flex: 1; align-content: start; }
+  .title { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+  .title h2 { margin: 0; font-size: 17px; font-weight: 600; }
+  .type { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; white-space: nowrap; color: var(--muted); }
+  .facts { font-size: 13px; color: var(--muted); }
+  .focus { margin: 0; font-size: 14px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .tag { font-size: 12px; padding: 2px 8px; border-radius: 999px; background: var(--chip); }
+  .label { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin-bottom: 3px; }
+  .links { display: flex; gap: 14px; margin-top: -2px; font-size: 14px; }
+  a.logo:hover { text-decoration: none; }
+  a.logo:hover img { transform: scale(1.03); }
+  .logo img { transition: transform .15s; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .book { font-size: 12px; color: var(--muted); }
+  .book b { color: var(--ink); font-weight: 600; }
+  mark { background: #fde9a8; color: inherit; border-radius: 2px; }
+  .empty { text-align: center; color: var(--muted); padding: 60px 0; grid-column: 1 / -1; }
+
+  /* bubbles */
+  #bubbles { display: none; }
+  .chart-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; align-items: baseline; margin-bottom: 8px; }
+  .chart-head h2 { margin: 0; font-size: 16px; font-weight: 600; }
+  .chart-head p { margin: 0; font-size: 13px; color: var(--muted); }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--ink); margin: 6px 0 10px; }
+  #chart { width: 100%; position: relative; }
+  #chart svg { display: block; width: 100%; height: auto; }
+  .bubble { cursor: pointer; }
+  .bubble circle.ring { fill: #fff; stroke-width: 3; }
+  .bubble:hover circle.ring, .bubble:focus circle.ring { stroke-width: 5; }
+  .bubble:focus { outline: none; }
+  .bubble text { font-size: 12px; fill: var(--ink); text-anchor: middle; pointer-events: none; }
+  .bubble text.val { fill: var(--muted); font-size: 11px; }
+  .tip { position: absolute; pointer-events: none; background: #fff; border: 1px solid var(--line); border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.12); padding: 8px 10px; font-size: 13px; max-width: 260px; opacity: 0; transition: opacity .1s; }
+  .tip b { display: block; font-size: 14px; }
+  .tip .m { color: var(--muted); }
+  .missing { font-size: 13px; color: var(--muted); margin-top: 10px; }
+  table.data { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
+  table.data th, table.data td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--line); }
+  table.data td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  details summary { cursor: pointer; font-size: 13px; color: var(--accent); margin-top: 14px; }
+  footer { margin-top: 28px; font-size: 12px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Investor Directory</h1>
+    <p>Private equity, growth, venture and corporate investors relevant to OWNED — with links to their sites and portfolios.</p>
+  </header>
+
+  <div class="controls">
+    <div class="row">
+      <input type="search" id="q" placeholder="Search name, focus, portfolio company, city…" autocomplete="off">
+      <select id="country" aria-label="Country"><option value="">All countries</option></select>
+      <select id="sort" aria-label="Sort">
+        <option value="name">Sort: name</option>
+        <option value="aum">Sort: largest AUM</option>
+        <option value="founded">Sort: oldest first</option>
+        <option value="founded-desc">Sort: newest first</option>
+        <option value="mentions">Sort: most mentioned in book</option>
+      </select>
+      <div class="seg" role="group" aria-label="View">
+        <button id="v-cards" aria-pressed="true">Cards</button>
+        <button id="v-bubbles" aria-pressed="false">Bubbles</button>
+      </div>
+    </div>
+    <div class="row" id="types"></div>
+    <div class="row">
+      <label class="toggle"><input type="checkbox" id="inbook"> Only investors mentioned in the book</label>
+      <span class="count" id="count"></span>
+    </div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <section id="bubbles">
+    <div class="chart-head">
+      <h2>Assets under management, approx. USD bn</h2>
+      <p>Bubble area ∝ AUM · ring colour = investor type · click a bubble for its portfolio</p>
+    </div>
+    <div class="legend" id="legend"></div>
+    <div id="chart"><div class="tip" id="tip"></div></div>
+    <div class="missing" id="missing"></div>
+    <details><summary>Show as table</summary><table class="data" id="table"></table></details>
+  </section>
+
+  <footer id="foot"></footer>
+</div>
+
+<script>
+const DATA = __DATA_JSON__;
+const TYPE_LABEL = { "buyout": "Buyout", "growth": "Growth", "venture": "Venture",
+  "corporate-venture": "Corporate VC", "multi-strategy": "Multi-strategy", "sovereign-wealth": "Sovereign wealth" };
+const cssVar = t => getComputedStyle(document.documentElement).getPropertyValue("--" + t).trim();
+const investors = DATA.investors;
+const state = { q: "", types: new Set(), country: "", inbook: false, sort: "name", view: "cards" };
+
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const hl = (s, q) => {
+  const e = esc(s);
+  if (!q) return e;
+  const re = new RegExp("(" + q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "ig");
+  return e.replace(re, "<mark>$1</mark>");
+};
+const fmtAum = v => v == null ? "not disclosed" : v >= 1000 ? `$${(v / 1000).toFixed(1)}tn` : `$${v}bn`;
+const haystack = i => [i.name, i.hq, i.focus, i.type, TYPE_LABEL[i.type], ...(i.aliases || []),
+  ...(i.countries || []), ...(i.stages || []), ...(i.notable_examples || []), ...(i.mentioned_in_posts || [])].join(" ").toLowerCase();
+investors.forEach(i => i._hay = haystack(i));
+
+// Country dropdown (an investor with offices in two countries counts under both)
+const countryCounts = {};
+investors.forEach(i => (i.countries || []).forEach(c => countryCounts[c] = (countryCounts[c] || 0) + 1));
+const countryEl = document.getElementById("country");
+Object.keys(countryCounts).sort((a, b) => countryCounts[b] - countryCounts[a] || a.localeCompare(b)).forEach(c => {
+  const o = document.createElement("option"); o.value = c; o.textContent = `${c} (${countryCounts[c]})`; countryEl.appendChild(o);
+});
+countryEl.addEventListener("change", e => { state.country = e.target.value; render(); });
+
+// Type filter chips (double as the chart legend's colour key)
+const typesEl = document.getElementById("types");
+const presentTypes = Object.keys(TYPE_LABEL).filter(t => investors.some(i => i.type === t));
+presentTypes.forEach(t => {
+  const b = document.createElement("button");
+  b.className = "chipbtn"; b.setAttribute("aria-pressed", "false");
+  const n = investors.filter(i => i.type === t).length;
+  b.innerHTML = `<span class="dot" style="background:var(--${t})"></span>${TYPE_LABEL[t]} <span style="opacity:.6">${n}</span>`;
+  b.onclick = () => {
+    state.types.has(t) ? state.types.delete(t) : state.types.add(t);
+    b.setAttribute("aria-pressed", state.types.has(t)); render();
+  };
+  typesEl.appendChild(b);
+});
+document.getElementById("legend").innerHTML = presentTypes
+  .map(t => `<span><span class="dot" style="background:var(--${t})"></span>${TYPE_LABEL[t]}</span>`).join("");
+
+// Mark square-ish logos (icons) so they are not stretched to the full tile width
+function logoLoaded(img) {
+  if (img.naturalWidth && img.naturalHeight && img.naturalWidth / img.naturalHeight < 1.6) img.classList.add("square");
+}
+
+function card(i, q) {
+  const logo = i.logo
+    ? `<img src="${esc(i.logo.file)}" alt="${esc(i.name)} logo" loading="lazy" onload="logoLoaded(this)">`
+    : `<span class="initials">${esc(i.name.split(/\s+/).map(w => w[0]).join("").slice(0, 3))}</span>`;
+  const facts = [i.hq, i.founded && `founded ${i.founded}`,
+    i.aum_approx && !/^n\/a/.test(i.aum_approx) && `AUM ${i.aum_approx}${i.aum_as_of ? ` (${i.aum_as_of})` : ""}`]
+    .filter(Boolean).map(f => hl(f, q)).join(" · ");
+  const links = [
+    i.links.website && `<a href="${esc(i.links.website)}" target="_blank" rel="noopener">Website ↗</a>`,
+    i.links.portfolio && `<a href="${esc(i.links.portfolio)}" target="_blank" rel="noopener">Portfolio ↗</a>`,
+  ].filter(Boolean).join("");
+  const book = (i.mentioned_in_posts || []).length
+    ? `<div class="book"><b>In the book:</b> ${i.mentioned_in_posts.map(p => hl(p, q)).join(", ")}</div>` : "";
+  return `<article class="card">
+    ${i.links.website
+      ? `<a class="logo ${i.logo && i.logo.background === "dark" ? "dark" : ""}" href="${esc(i.links.website)}" target="_blank" rel="noopener" title="${esc(i.name)} website">${logo}</a>`
+      : `<div class="logo ${i.logo && i.logo.background === "dark" ? "dark" : ""}">${logo}</div>`}
+    <div class="body">
+      <div class="title"><h2>${hl(i.name, q)}</h2>
+        <span class="type"><span class="dot" style="background:var(--${i.type})"></span>${TYPE_LABEL[i.type] || i.type}</span></div>
+      <div class="links">${links}</div>
+      <div class="facts">${facts}</div>
+      <p class="focus">${hl(i.focus, q)}</p>
+      <div class="tags">${(i.stages || []).map(s => `<span class="tag">${hl(s, q)}</span>`).join("")}</div>
+      ${(i.notable_examples || []).length ? `<div><div class="label">Examples</div>
+        <div style="font-size:13px">${i.notable_examples.map(n => hl(n, q)).join(" · ")}</div></div>` : ""}
+      ${book}
+    </div>
+  </article>`;
+}
+
+// ---- bubble chart (d3.pack, area ∝ AUM) ----
+const tip = document.getElementById("tip");
+function drawBubbles(list) {
+  const chart = document.getElementById("chart");
+  chart.querySelector("svg")?.remove();
+  const withAum = list.filter(i => i.aum_usd_bn);
+  const without = list.filter(i => !i.aum_usd_bn);
+  document.getElementById("missing").textContent = without.length
+    ? `Not shown (AUM not disclosed): ${without.map(i => i.name).join(", ")}.` : "";
+  document.getElementById("table").innerHTML = `<tr><th>Investor</th><th>Type</th><th>AUM (as reported)</th><th style="text-align:right">≈ USD bn</th></tr>` +
+    [...withAum].sort((a, b) => b.aum_usd_bn - a.aum_usd_bn).map(i =>
+      `<tr><td>${esc(i.name)}</td><td>${TYPE_LABEL[i.type]}</td><td>${esc(i.aum_approx)}${i.aum_as_of ? ` (${i.aum_as_of})` : ""}</td><td class="num">${i.aum_usd_bn.toLocaleString()}</td></tr>`).join("");
+  if (!withAum.length) return;
+  if (typeof d3 === "undefined") {
+    document.getElementById("missing").textContent = "The chart library (d3) could not load — check your connection. The table below has the same data.";
+    return;
+  }
+
+  const W = Math.max(320, chart.clientWidth), H = Math.round(Math.min(W * 0.72, 900));
+  const root = d3.pack().size([W, H]).padding(4)(
+    d3.hierarchy({ children: withAum }).sum(d => d.aum_usd_bn).sort((a, b) => b.value - a.value));
+  const svg = d3.select(chart).insert("svg", ".tip").attr("viewBox", `0 0 ${W} ${H}`)
+    .attr("role", "img").attr("aria-label", "Bubble chart of investors sized by assets under management");
+  const defs = svg.append("defs");
+
+  const g = svg.selectAll("g").data(root.leaves()).join("g")
+    .attr("class", "bubble").attr("tabindex", 0)
+    .attr("transform", d => `translate(${d.x},${d.y})`);
+
+  g.append("circle").attr("class", "ring").attr("r", d => d.r - 1.5).attr("stroke", d => cssVar(d.data.type));
+  // dark-background logos get a dark inner disc so white artwork stays visible
+  g.filter(d => d.data.logo && d.data.logo.background === "dark")
+    .append("circle").attr("r", d => Math.max(0, d.r - 5)).attr("fill", "#23221f");
+
+  g.each(function (d) {
+    const i = d.data, node = d3.select(this), r = d.r;
+    const showText = r >= 38;
+    if (i.logo) {
+      const id = "clip-" + i.id;
+      defs.append("clipPath").attr("id", id).append("circle").attr("r", Math.max(0, r - 6));
+      const w = r * (showText ? 1.25 : 1.35), h = r * (showText ? 0.8 : 1.1);
+      node.append("image").attr("href", i.logo.file).attr("clip-path", `url(#${id})`)
+        .attr("x", -w / 2).attr("y", showText ? -h * 0.75 : -h / 2).attr("width", w).attr("height", h)
+        .attr("preserveAspectRatio", "xMidYMid meet");
+    } else {
+      node.append("text").attr("dy", ".35em").style("font-size", Math.min(18, r / 2) + "px").text(i.name.split(/\s+/)[0]);
+    }
+    if (showText) {
+      node.append("text").attr("y", r * 0.42).style("font-weight", 600)
+        .style("fill", i.logo && i.logo.background === "dark" ? "#fff" : null)
+        .text(i.name.length > r / 3.6 ? i.name.split(/[ (]/)[0] : i.name);
+      node.append("text").attr("class", "val").attr("y", r * 0.42 + 15)
+        .style("fill", i.logo && i.logo.background === "dark" ? "#cfcdc6" : null).text(fmtAum(i.aum_usd_bn));
+    }
+  });
+
+  const show = (ev, d) => {
+    const i = d.data, box = chart.getBoundingClientRect();
+    tip.innerHTML = `<b>${esc(i.name)}</b><span class="m">${TYPE_LABEL[i.type]} · ${esc(i.hq)}</span><br>
+      AUM ${esc(i.aum_approx)}${i.aum_as_of ? ` (${i.aum_as_of})` : ""} ≈ <b style="display:inline">${fmtAum(i.aum_usd_bn)}</b>
+      ${(i.mentioned_in_posts || []).length ? `<br><span class="m">In the book: ${i.mentioned_in_posts.length} post(s)</span>` : ""}`;
+    const scale = box.width / W;
+    let x = d.x * scale + 14, y = (d.y - d.r) * scale;
+    if (x + 260 > box.width) x = d.x * scale - 274;
+    tip.style.left = Math.max(0, x) + "px"; tip.style.top = Math.max(0, y) + "px"; tip.style.opacity = 1;
+  };
+  const open = d => { const u = d.data.links.portfolio || d.data.links.website; if (u) window.open(u, "_blank", "noopener"); };
+  g.on("mouseenter focus", show).on("mouseleave blur", () => tip.style.opacity = 0)
+   .on("click", (ev, d) => open(d)).on("keydown", (ev, d) => { if (ev.key === "Enter") open(d); });
+}
+
+function filtered() {
+  const q = state.q.trim().toLowerCase();
+  const list = investors.filter(i =>
+    (!q || i._hay.includes(q)) &&
+    (!state.types.size || state.types.has(i.type)) &&
+    (!state.country || (i.countries || []).includes(state.country)) &&
+    (!state.inbook || (i.mentioned_in_posts || []).length));
+  const by = {
+    "name": (a, b) => a.name.localeCompare(b.name),
+    "aum": (a, b) => (b.aum_usd_bn || 0) - (a.aum_usd_bn || 0) || a.name.localeCompare(b.name),
+    "founded": (a, b) => (a.founded || 9999) - (b.founded || 9999),
+    "founded-desc": (a, b) => (b.founded || 0) - (a.founded || 0),
+    "mentions": (a, b) => (b.mentioned_in_posts || []).length - (a.mentioned_in_posts || []).length || a.name.localeCompare(b.name),
+  }[state.sort];
+  return list.sort(by);
+}
+
+function render() {
+  const list = filtered();
+  document.getElementById("count").textContent = `${list.length} of ${investors.length}`;
+  const cards = state.view === "cards";
+  document.getElementById("grid").style.display = cards ? "" : "none";
+  document.getElementById("bubbles").style.display = cards ? "none" : "block";
+  document.getElementById("sort").style.visibility = cards ? "" : "hidden";
+  if (cards) {
+    document.getElementById("grid").innerHTML = list.length
+      ? list.map(i => card(i, state.q.trim())).join("")
+      : `<div class="empty">No investors match “${esc(state.q)}”.</div>`;
+  } else {
+    drawBubbles(list);
+  }
+}
+
+function setView(v) {
+  state.view = v;
+  document.getElementById("v-cards").setAttribute("aria-pressed", v === "cards");
+  document.getElementById("v-bubbles").setAttribute("aria-pressed", v === "bubbles");
+  try { history.replaceState(null, "", v === "bubbles" ? "#bubbles" : location.pathname); } catch (e) {}
+  render();
+}
+
+document.getElementById("q").addEventListener("input", e => { state.q = e.target.value; render(); });
+document.getElementById("sort").addEventListener("change", e => { state.sort = e.target.value; render(); });
+document.getElementById("inbook").addEventListener("change", e => { state.inbook = e.target.checked; render(); });
+document.getElementById("v-cards").onclick = () => setView("cards");
+document.getElementById("v-bubbles").onclick = () => setView("bubbles");
+let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => state.view === "bubbles" && render(), 150); });
+document.getElementById("foot").textContent = `Generated ${DATA.generated}. ${DATA.notes} ${DATA.aum_usd_bn_note || ""}`;
+state.view = location.hash === "#bubbles" ? "bubbles" : "cards";
+setView(state.view);
+</script>
+</body>
+</html>

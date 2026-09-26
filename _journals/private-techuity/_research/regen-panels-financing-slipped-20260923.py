@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate legacy comic panels of 20-the-financing-slipped (asset slug 23-the-financing-slipped).
+"""Regenerate legacy comic panels of 21-the-financing-slipped (asset slug 23-the-financing-slipped).
 
 In-depth review 23 September 2026: FIN-007 (panel 1 showed supply-chain and
 customer-feedback blockers instead of an on-schedule plan and a funding date
@@ -32,7 +32,7 @@ spec.loader.exec_module(helper)
 
 MODEL = 'gemini-3-pro-image-preview'
 CAST = J / '_research/comic-cast-20260913.jpeg'
-POST = J / 'posts/20-the-financing-slipped'
+POST = J / 'posts/21-the-financing-slipped'
 COMICS = POST / 'comics.md'
 LEGACY = '23-the-financing-slipped'
 PANEL_RE = re.compile(r'<!-- comic-panel\s+(\{.*?\})\s*-->', re.S)
@@ -108,7 +108,7 @@ def main() -> int:
         previous = asset.read_bytes()
         backups = J / '_research/discarded-comic-variants'
         backups.mkdir(exist_ok=True)
-        (backups / f'20-the-financing-slipped-comic-{panel_id}-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
+        (backups / f'21-the-financing-slipped-comic-{panel_id}-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
         asset.write_bytes(data)
         print('written', asset.relative_to(ROOT), hashlib.sha256(data).hexdigest(), flush=True)
     return 0

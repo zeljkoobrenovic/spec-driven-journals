@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate three figures of 26-manage-technical-debt after the in-depth review of 24 September 2026 (round 3).
+"""Regenerate three figures of 27-manage-technical-debt after the in-depth review of 24 September 2026 (round 3).
 
 - MTD-025: Figure 1's top label "Reviewed monthly" conflicts with the quarterly register review -> "Measured monthly, reviewed quarterly" (lettering edit on the existing image).
 - MTD-013: Figure 3 made proximity decisive ("Close dates first") and showed money as the only benefit -> redraw with the qualified rule and coin/shield/hourglass per card.
@@ -42,7 +42,7 @@ FIGURES = {
     'sequencing-rule': dict(
         archive=J / '_research/article-illustration-prompts-20260913.json',
         discard=J / '_research/discarded-illustration-variants',
-        asset=POST / 'assets/images/26-manage-technical-debt/sequencing-rule.jpeg',
+        asset=POST / 'assets/images/27-manage-technical-debt/sequencing-rule.jpeg',
         mode='generate',
         prompt=STYLE + (
             'A single queue of five simple record cards laid left to right on the ivory background, with a large navy '

@@ -18,9 +18,9 @@ icon: "assets/icons/bibliography.png"
 > * **Keep evidence, proposed methods and fictional examples distinct.** The cases and studies here are evidence about what happened in particular settings; the book’s templates and worked examples are the author’s proposals.
 
 <br>
-This page lists the sources consulted for the book. Sources were consulted between September 12 and September 23, 2026; each entry carries its own consultation date. Each entry states the version and the material consulted; access to a document does not imply that every page was reviewed, and publication dates and study periods differ from the consultation dates. Where an individual date affects how a figure or a claim should be read, the entry gives it.
+This page lists the sources consulted for the book. Sources were consulted between September 12 and September 23, 2026; each entry carries its own consultation date. Each entry states the version and the material consulted; access to a document does not imply that every page was reviewed, and publication dates and study periods differ from the consultation dates. Where a date affects how a figure or a claim should be read, the entry gives it.
 
-**S** marks a public source and **P** a supplied private input; the numbers identify, they do not rank. Identifiers are never reassigned, so gaps stay (there is no S38) and a citation in a chapter keeps meaning the same document. The register currently runs to S118. Private inputs are described without publishing their contents or file details.
+**S** marks a public source and **P** a supplied private input; the numbers identify, they do not rank. Identifiers are never reassigned, so gaps stay (there is no S38) and a citation in a chapter keeps meaning the same document. The register runs to S118. Private inputs are described without publishing their contents or file details.
 
 ## Topic Index
 
@@ -37,7 +37,7 @@ Use this table to find evidence by question. A source can appear under more than
 | AI evidence | S18, S19, S20, S21, S63 | [[ai-strategy-three-questions]] |
 | Investor support and advisers | S22, P01, P02 | [[investors-adviser]], [[help-that-changes-capability]] |
 | Investor-organized learning, peer communities and shared resources | S101–S105 | [[learn-through-investors-network]] |
-| Data foundations, analytics practice and shared evidence | S106–S109 | [[data-foundations-for-alignment]] |
+| Data foundations, analytics practice and shared evidence | S106–S109 | [[have-your-numbers-ready]] |
 | Grounded Architecture applied across a portfolio | S106, S110–S115 | [[grounded-architecture-portfolio]] |
 | Technology operating partners, leadership roles and AI support | S79–S90 | [[tech-operating-partner]] |
 | Operating-model blueprints and investor–company working arrangements | S01, S91–S100 | [[operating-model-blueprints]] |
@@ -50,8 +50,6 @@ Use this table to find evidence by question. A source can appear under more than
 The historical cases and the outcome research concern private equity. Venture, expansion and corporate funding are supported by institutional guidance (S58–S61) and introductory regulator material (S54–S57), which describe funding forms and the existence of distinct venture financing documents. Those sources support the book’s financial orientation; they do not establish comparative investor performance, and they are not additional case studies. Comparisons across ownership models elsewhere in the book use explicitly fictional scenarios and the author’s reasoning about stated constraints. Transferring a question about funding, rights or capacity to another ownership model is different from transferring a causal finding.
 
 ## How to Read and Use an Entry
-
-Each entry has the same parts.
 
 - **Citation line** — author or organization, title, link, and the version or date consulted. Where the version matters (a working paper against a journal version, a revised estimate, a living web page), the entry says which one the book uses. **DOI** is a persistent identifier used for many research publications.
 - **Evidence type** — what kind of document it is. A company filing records reported information under a formal disclosure process. A company or investor account describes its own actions and may favor its own interpretation. A research study investigates a question using a stated method; its findings hold within its sample, period and design. A guidance document recommends or explains a practice; it does not show that every company follows it.
@@ -912,7 +910,7 @@ Etienne and Beverly Wenger-Trayner. [Communities of practice: a brief introducti
 
 **Evidence type:** Author’s own practitioner method, stated as practice rather than study. **Consulted scope:** The chapter page, covering the data sources it curates (source-code repositories and commit history, public-cloud billing, incident reports, business and finance data) and its stated requirements that analytics be curated, current, credible, actionable and accessible. Documents a described practice for the technology landscape; it does not establish measured outcomes, and its extension to the investor relationship is this book’s proposal. The chapter explicitly identifies the author’s involvement.
 
-**Used in:** [[data-foundations-for-alignment]], [[grounded-architecture-portfolio]].
+**Used in:** [[have-your-numbers-ready]], [[grounded-architecture-portfolio]].
 
 ### S107 — Building Lightweight Architectural Analytics
 
@@ -920,7 +918,7 @@ Etienne and Beverly Wenger-Trayner. [Communities of practice: a brief introducti
 
 **Evidence type:** Author’s own implementation account. **Consulted scope:** Implementation principles and lean techniques — structured data in version control, generation scripts, static pages, collaborative editing, maintainability by a small team. Read for the claim that the method requires curation rather than platform purchase; no deployment results or comparative tooling evidence are established.
 
-**Used in:** [[data-foundations-for-alignment]].
+**Used in:** [[have-your-numbers-ready]] (formerly the removed appendix on data foundations).
 
 ### S108 — Grounded Architecture
 
@@ -928,7 +926,7 @@ Etienne and Beverly Wenger-Trayner. [Communities of practice: a brief introducti
 
 **Evidence type:** Author’s own book, consulted for framing. **Consulted scope:** The site’s structure and the placement of Lightweight Architectural Analytics within the framework’s foundations. Recorded so readers can locate the practice in its original context; the present book restates the parts it uses.
 
-**Used in:** [[data-foundations-for-alignment]].
+**Used in:** [[have-your-numbers-ready]] (formerly the removed appendix on data foundations).
 
 ### S109 — Product Operations
 
@@ -936,7 +934,7 @@ Melissa Perri and Denise Tilles. *Product Operations: How Successful Companies B
 
 **Evidence type:** Practitioner framework from two product-operations practitioners, drawing on named company examples. **Consulted scope:** The three pillars — business data and insights, customer and market insights, process and governance — as described on the authors' book page and in a published secondary summary; the full book text was not read for this chapter. Documents a described discipline and its stated purpose; it does not establish comparative outcomes, and the mapping onto this book's three evidence areas, and its application to the investor relationship, are this book's own.
 
-**Used in:** [[data-foundations-for-alignment]].
+**Used in:** [[have-your-numbers-ready]] (formerly the removed appendix on data foundations).
 
 ### S110 — Grounded Architecture framework foundations
 
@@ -1029,13 +1027,5 @@ Both domain overviews, technology-capability input and audit, structured record 
 **Used in:** No chapter cites P02 directly. It is recorded as an intellectual input to the drafting of the support and role chapters (Part III); the book states its own reasoning in ordinary terms, and readers do not need to learn the Productscapes model.
 
 ## Remaining Research Limits
-
-The analytics sources are the author’s own account of a practice he developed for the technology landscape. They describe a method and its requirements; they do not measure its effects, and no source establishes that shared definitions improve investor relationships. Extending the practice to investor alignment is this book’s proposal. The same limit applies to the Grounded Architecture framework pages (S110–S115): they describe a practice inside one organization, and applying it across an investment portfolio is the appendix’s proposal, illustrated by a fictional example rather than tested against one. The product-operations source describes a discipline and its pillars; it does not measure their effect, and the mapping of those pillars onto this book’s three evidence areas is the author’s.
-
-The investor-learning examples document activities and available resources. They do not establish later company results, causal investment returns or investor adoption of CTO Starter Kit. The learning brief and Northline example are the author’s proposals.
-
-The operating-model sources document selected practices, practitioner advice and stated leadership preferences. They do not establish a superior blueprint, a current distribution of operating models or the outcomes of the book’s fictional example.
-
-The technology operating partner sources describe practices and assignments. They do not establish a market-wide hiring trend, a universal division of leadership responsibilities or a causal investment-return premium.
 
 The research is broad but selective. It does not establish the typical return of a current fund, a complete financing history for every case, a universal charter for an investor’s technology adviser, or the causal effect of the book’s proposed support model. Full access to the Toys R Us fiscal 2016 10-K (S34) was not obtained. The editorial chronology of this register, meaning which revision added or rechecked which entries, is kept in the working notes rather than on this page; the dates that matter for reading a source are in its entry.

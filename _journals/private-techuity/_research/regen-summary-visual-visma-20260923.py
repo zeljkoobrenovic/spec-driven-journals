@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate the TL;DR overview figure of 34-visma (archive key and asset folder `27-visma`).
+"""Regenerate the TL;DR overview figure of 35-visma (archive key and asset folder `27-visma`).
 
 In-depth review round 3, finding VISMA-011: the overview carried the specialist labels
 RECONCILIATION (on the open book) and OPERATING DESIGN, plus small thread labels that a
@@ -26,7 +26,7 @@ spec.loader.exec_module(helper)
 MODEL = 'gemini-3-pro-image-preview'
 ARCHIVE = J / '_research/summary-visual-prompts-20260913.json'
 ARCHIVE_KEY = '27-visma'
-ASSET = J / 'posts/34-visma/assets/images/27-visma/summary-at-a-glance.jpeg'
+ASSET = J / 'posts/35-visma/assets/images/27-visma/summary-at-a-glance.jpeg'
 CANDIDATE = Path('/tmp/visma-summary-candidate.jpeg')
 
 BASE = ('Create one finished summary illustration explaining the whole post in Owned, a book for product and '
@@ -83,7 +83,7 @@ def accept(note: str) -> None:
     previous = ASSET.read_bytes()
     backups = J / '_research/discarded-summary-variants'
     backups.mkdir(exist_ok=True)
-    (backups / f'34-visma-summary-at-a-glance-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
+    (backups / f'35-visma-summary-at-a-glance-{hashlib.sha256(previous).hexdigest()[:12]}.jpeg').write_bytes(previous)
     ASSET.write_bytes(data)
     digest = hashlib.sha256(data).hexdigest()
     archive = json.loads(ARCHIVE.read_text())
@@ -102,7 +102,7 @@ def accept(note: str) -> None:
                               'local decisions and shared support are organized, and how each of the year’s two '
                               'profit figures was calculated.')
             fig['visual_review'] = 'accepted 2026-09-23 after direct inspection: ' + note
-            fig['current_asset'] = 'posts/34-visma/assets/images/27-visma/summary-at-a-glance.jpeg'
+            fig['current_asset'] = 'posts/35-visma/assets/images/27-visma/summary-at-a-glance.jpeg'
             break
     else:
         raise SystemExit('archive entry not found')
