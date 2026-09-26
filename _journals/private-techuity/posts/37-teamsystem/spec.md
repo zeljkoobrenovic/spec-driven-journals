@@ -1,11 +1,13 @@
 ---
 status: accepted
-revised: 2026-09-23
+revised: 2026-09-26
 ---
 
 # Spec: TeamSystem: Each New Owner Inherits Progress and Unfinished Work
 
 ## Intent
+
+Start with the named owners and dated transactions, Hg's reported acquisitions, and the development and integration costs recorded after the 2016 sale. Ground the opening's lessons in what the company and its investors reported.
 
 Use successive ownership transactions to show that each ownership change creates a new financial starting point while product work carries on across it. Separate reporting periods, adjusted earnings and statutory results with the company’s own reconciliation, distinguish announced transaction values from cash received, and end on what the group accumulates: products, knowledge, dependencies and continuing work.
 
@@ -15,6 +17,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Make the excerpt, opening callouts, key points, introductory narrative and summary opening identify the TeamSystem events before generalizing. Keep the 2016 reporting-period correction distinct from the effects of acquisitions, and distinguish recorded development and integration costs from an inferred backlog or measured customer benefit.
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is a set of comic pages — each image one page of three stacked strips with the dialogue, labels, dated figures and reconciliation lines lettered in the artwork — generated from the `comic-page` blocks in `comics.md`, with consistent fictional characters, a caption and a transcript per page.
@@ -72,6 +75,7 @@ S45–S49: Palamon's historical account; HgCapital Trust's 2010 and 2015 announc
 
 ## Changelog
 
+- 2026-09-26: Replace general ownership-change framing in the opening and summary with the named ownership sequence, reported acquisitions and 2017 accounts, then derive the handover and measurement lessons. Preserve source qualifications and the stable permalink.
 - 2026-09-23 (comic pages): The six single-scene panels replaced by seven comic pages of three strips each, so the chain of owners with the 2010 €565 million / 11.3× terms, the revenue/profit/cash definitions, the sponsor's stated initiatives and the evidence that would test them, the Trust's £39.0 million cash plus £6.1 million retained stake and the 2021–2024 sequence, the March–December 2016 versus full-year 2017 comparison with both pro forma assumptions and the 37.7% / 8.9% contrast, the reconciliation from €113.0 million adjusted earnings to the €56.8 million loss with the non-core items named, the €72.0 million finance charge against €52.1 million paid and the €61.8 million of operating cash, and the questions for an incoming owner are drawn into the artwork rather than carried by captions. Page images live under `assets/images/37-teamsystem/`; the previous panel comic is archived under `_research/comic-pages-pilot/`. No figure, date or claim changed; permalink unchanged.
 - 2026-09-23 (round 5): Revise per the fifth in-depth review pass (TS-02, TS-08): the profit/adjusted-earnings definition, the summary's owner chronology with its enterprise-value gloss, and the July 2024 further-reading annotation split at their conceptual boundaries without new material; comic panel 5's caption, storyboard metadata and prompt archive explain "non-core" as costs the company classified as outside normal operations and excluded from this profit measure; artwork unchanged. Permalink and id unchanged.
 - 2026-09-23 (round 4): Revise per the fourth in-depth review pass (TS-17, TS-18): enterprise value distinguished from the price of all the shares (enterprise value minus company debt plus cash, subject to transaction adjustments) in the article and, more briefly, in the summary; comic panel 5's caption, storyboard metadata and prompt archive no longer imply that all development and integration costs sit outside adjusted earnings, naming capitalized development and the non-core integration costs as the excluded items; artwork unchanged. Permalink and id unchanged.

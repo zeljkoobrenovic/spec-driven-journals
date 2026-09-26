@@ -33,6 +33,8 @@ The same experience suggests what the gap costs. Inside companies it breeds **co
 
 This book is the response, written from the company leader’s side: the vocabulary to read the arrangement, working methods to test such claims, and worked decisions that show what a commitment the team can keep looks like.
 
+The next post, [[where-investment-goes-wrong]], puts names to recurring mistakes and missed opportunities, with patterns such as Spending the Press Release and The Dusty Address Book, and connects them to the parts that address them. Use it to recognize a situation in your company before choosing where to read in depth.
+
 This book is a living journal and a work in progress: a draft by [Željko Obrenović](https://obren.io), who keeps revising it as he learns more about its topics. Chapters change as better evidence, sharper examples, and reader questions arrive. Each chapter’s page carries a “View spec” link to the specification it was written against; the changelog at the end of that specification records what changed and why. Read the book as current thinking with its limits stated, not as a finished text.
 
 ## Start With the Decision in Front of You
@@ -143,6 +145,8 @@ The [[bibliography]] records consultation scope and evidence limits. The chapter
 ## Contents
 
 The site navigation lists the same chapters; this list is here for lookup.
+
+- [[where-investment-goes-wrong]] — an opening guide to the problems the eight parts address.
 
 ### Part I — UNDERSTAND: Financing and Ownership
 

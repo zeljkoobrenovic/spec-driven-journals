@@ -1,13 +1,13 @@
 ---
 status: accepted
-revised: 2026-09-24
+revised: 2026-09-26
 ---
 
-# Spec: PART VI — Lessons from the Field
+# Spec: PART VIII — Lessons from the Field
 
 ## Intent
 
-Frame historical cases as tests concentrated on private equity and related ownership transitions. Separate observed outcomes, hypotheses about mechanisms and questions for other ownership arrangements.
+Introduce the named companies and the concrete ownership, financing and operating events the four case chapters examine, then frame them as tests concentrated on private equity and related ownership transitions. Separate observed outcomes, hypotheses about mechanisms and questions for other ownership arrangements.
 
 ## Audience
 
@@ -15,14 +15,15 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Make the excerpt, section description and reading map identify what happened in the cases before asking what can be learned. Keep the closing comparison distinct from the four historical case chapters.
 - Include exactly one chapter overview at the start of the learning path, in addition to the existing header logo. Give every configured chapter its own box, use short recognizable title labels without duplicating chapter numbers, and connect the chapters to the part's overall purpose.
 - Bring the four case chapters into the closing synthesis. Show the common evidence-to-mechanism-to-decision method and preserve the distinction between independent histories and a causal sequence.
 - Generate the overview through the Gemini API, matching the book's ivory, navy, teal and ochre illustration style. Publish one JPEG with descriptive alt text and a prose caption, and preserve it in the manuscript export. Keep the linked chapter walkthrough as the full-title reading guide.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
-- Orient a beginner using ordinary language, briefly recall what the previous part established, and explain the next learning step without assuming later vocabulary. Explain every finance term at first use in plain words: name the investment firm behind a reported gain, distinguish operating earnings (accounting profit before borrowing costs and income tax) from cash the company can spend, say what bankruptcy is (a court process for a company that cannot pay its debts) and name the bankruptcy filing as such, and say what private equity, a strategic acquisition, a sale of an investment (an exit), a secondary sale and an investment manager are before relying on them. Define private equity without making borrowing or whole-company purchases universal: investment firms pool investors' money to buy ownership in companies, often with borrowing, aiming to sell later. Distinguish the company's managers from the investment manager (the firm managing investors' money). Say what shares are (units of ownership in a company) the first time the word appears. In the case map, replace shorthand with plain descriptions: leaving some costs out of a profit calculation, making acquired systems work together, financial results covering less than a full year, borrowing that must be repaid. In the TeamSystem row, keep what an owner inherits (products, unconnected acquired systems, borrowing) apart from the reporting-period lesson, and say why accounts for part of a year mislead: they distort growth comparisons. Prefer plain phrases ("sale of an investment", "existing owners selling their shares") to specialist shorthand.
-- Say why the part exists and what its chapters do together, in under 400 reader-visible words, counted after the `[[…]]` chapter links expand to their titles (title, byline and image alt text excluded). Include one sentence connecting Part V's leadership decisions to this part's historical tests.
+- Orient a beginner using ordinary language, briefly recall what the previous part established, and explain the next learning step without assuming later vocabulary. Explain every finance term at first use in plain words: name the investment firm behind a reported gain, distinguish operating earnings (accounting profit before borrowing costs and income tax) from cash the company can spend, say what bankruptcy is (a court process for a company that cannot pay its debts) and name the bankruptcy filing as such, and say what private equity, a strategic acquisition, a sale of an investment (an exit), a secondary sale and an investment manager are before relying on them. Define private equity without making borrowing or whole-company purchases universal: investment firms pool investors' money to buy ownership in companies, often with borrowing, aiming to sell later. Distinguish the company's managers from the investment manager (the firm managing investors' money). Say what shares are (units of ownership in a company) the first time the word appears. In the case map, replace shorthand with plain descriptions: leaving some costs out of a profit calculation, making acquired systems work together, financial results covering less than a full year, borrowing that must be repaid. In the TeamSystem row, name the successive owners and the product work and borrowing each inherits; leave the reporting-period comparison to the case chapter. Prefer plain phrases ("sale of an investment", "existing owners selling their shares") to specialist shorthand.
+- Say why the part exists and what its chapters do together, in under 400 reader-visible words, counted after the `[[…]]` chapter links expand to their titles (title, byline and image alt text excluded). Include one sentence connecting Part VII's leadership decisions to this part's historical tests.
 - Describe the structure as four case chapters covering five companies plus a closing comparison; never let a company count stand in for a chapter count.
 - Walk the chapters in order, one line each, showing why that order. Name each chapter by its linked title rather than a number, so the list survives renumbering. The case map gives each chapter one plain-language question and a short historical window; detailed filing dates and source qualifications stay in the case chapters, but the distinction between the ownership period examined and later follow-up events is kept.
 - State only what the case chapters demonstrate. For Toys R Us that is that positive operating earnings did not mean cash was available for product investment and that suppliers demanding earlier payment increased the pressure; the introduction must not claim that a particular project was refused funding or would otherwise have succeeded. Wherever the introduction or its overview names the Toys R Us measure, qualify it (operating earnings, or profit before borrowing costs and tax); the overview card and the alt text ask about cash generated by operations, not cash held, because the company still held cash at its year end while a year of operations generated almost none.
@@ -54,6 +55,7 @@ The journal's current config.yaml and the configured chapter introductions. Thes
 
 ## Changelog
 
+- 2026-09-26: Make the section description and case map lead with named company events before the transferable questions; align the specification heading with Part VIII. Preserve the short orientation format and stable permalink.
 - 2026-09-24 (part order): LEARN renumbered to Part VIII (folder `part-8-intro`, permalink `part-8`); opening recalls Part VII. Body otherwise unchanged.
 - 2026-09-24 (Part IV SCALE): Part renumbered from VI to VII (folder `part-8-intro`, permalink `part-8`, asset paths renamed); opening recalls Part VI. Body otherwise unchanged.
 - 2026-09-23: In-depth review round 3 (P6-001). Require shares to be explained as units of ownership at first use, and require the TeamSystem case-map question to separate what an owner inherits from the reporting-period lesson, stating that accounts for part of a year distort growth comparisons. Permalink unchanged.

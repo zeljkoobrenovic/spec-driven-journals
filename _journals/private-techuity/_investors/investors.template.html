@@ -12,7 +12,7 @@
     --accent: #1c5cab; --chip: #f2f1ed; --logo-dark: #23221f;
     /* categorical type colours: validated reference palette, fixed order */
     --buyout: #2a78d6; --growth: #eb6834; --venture: #1baf7a; --corporate-venture: #eda100;
-    --multi-strategy: #e87ba4; --sovereign-wealth: #008300;
+    --multi-strategy: #e87ba4; --sovereign-wealth: #008300; --holding: #4a3aa7; --serial-acquirer: #e34948;
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--ink);
@@ -99,12 +99,13 @@
 <div class="wrap">
   <header>
     <h1>Investor Directory</h1>
-    <p>Private equity, growth, venture and corporate investors relevant to OWNED — with links to their sites and portfolios.</p>
+    <p>Private equity, growth, venture, corporate, holding-company and state investors relevant to OWNED — with links to their sites and portfolios.</p>
   </header>
 
   <div class="controls">
     <div class="row">
       <input type="search" id="q" placeholder="Search name, focus, portfolio company, city…" autocomplete="off">
+      <select id="stage" aria-label="Stage"><option value="">All stages</option></select>
       <select id="country" aria-label="Country"><option value="">All countries</option></select>
       <select id="sort" aria-label="Sort">
         <option value="name">Sort: name</option>
@@ -144,10 +145,11 @@
 <script>
 const DATA = __DATA_JSON__;
 const TYPE_LABEL = { "buyout": "Buyout", "growth": "Growth", "venture": "Venture",
-  "corporate-venture": "Corporate VC", "multi-strategy": "Multi-strategy", "sovereign-wealth": "Sovereign wealth" };
+  "corporate-venture": "Corporate VC", "multi-strategy": "Multi-strategy", "sovereign-wealth": "Sovereign & pension",
+  "holding": "Holding company", "serial-acquirer": "Serial acquirer" };
 const cssVar = t => getComputedStyle(document.documentElement).getPropertyValue("--" + t).trim();
 const investors = DATA.investors;
-const state = { q: "", types: new Set(), country: "", inbook: false, sort: "name", view: "cards" };
+const state = { q: "", types: new Set(), stage: "", country: "", inbook: false, sort: "name", view: "cards" };
 
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const hl = (s, q) => {
@@ -160,6 +162,15 @@ const fmtAum = v => v == null ? "not disclosed" : v >= 1000 ? `$${(v / 1000).toF
 const haystack = i => [i.name, i.hq, i.focus, i.type, TYPE_LABEL[i.type], ...(i.aliases || []),
   ...(i.countries || []), ...(i.stages || []), ...(i.notable_examples || []), ...(i.mentioned_in_posts || [])].join(" ").toLowerCase();
 investors.forEach(i => i._hay = haystack(i));
+
+// Stage dropdown (grouped stages, lifecycle order from the build)
+const stageEl = document.getElementById("stage");
+(DATA.stage_order || []).forEach(g => {
+  const n = investors.filter(i => (i.stage_groups || []).includes(g)).length;
+  if (!n) return;
+  const o = document.createElement("option"); o.value = g; o.textContent = `${g} (${n})`; stageEl.appendChild(o);
+});
+stageEl.addEventListener("change", e => { state.stage = e.target.value; render(); });
 
 // Country dropdown (an investor with offices in two countries counts under both)
 const countryCounts = {};
@@ -299,6 +310,7 @@ function filtered() {
   const list = investors.filter(i =>
     (!q || i._hay.includes(q)) &&
     (!state.types.size || state.types.has(i.type)) &&
+    (!state.stage || (i.stage_groups || []).includes(state.stage)) &&
     (!state.country || (i.countries || []).includes(state.country)) &&
     (!state.inbook || (i.mentioned_in_posts || []).length));
   const by = {

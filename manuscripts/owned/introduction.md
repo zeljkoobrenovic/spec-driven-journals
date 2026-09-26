@@ -1,11 +1,9 @@
-{mainmatter}
-
 {id: introduction}
-# 1. Introduction & Reading Guide
+# Introduction & Reading Guide
 
 ![Introduction & Reading Guide — logo](private-techuity/posts/introduction/assets/images/introduction/logo.jpeg)
 
-> **IN THIS SECTION, YOU WILL:** Learn what this book is for, which route to take for the decision in front of you, and how to read its fictional examples and historical evidence.
+> **IN THIS SECTION, YOU WILL:** Learn what this book is for, which route to take for the decision in front of you, and how to read fictional examples and historical evidence.
 
 > **KEY POINTS:**
 >
@@ -17,7 +15,7 @@ Your company has new investors. The announcement promises growth and support. Wi
 
 **OWNED: Product & Engineering Leadership Under Investors** is for product and engineering leaders inside a company whose investors affect its funding, authority and expectations, including leaders who have joined an arrangement they didn’t choose. It assumes no finance training and explains the financial terms needed to question a plan, budget or ownership claim. It does assume an interest in fairly detailed questions about how software is built and released, how systems are structured, how teams are organized and what counts as evidence, because those are where the investor’s expectations land. Founders, finance colleagues and investor advisers may find it useful as a shared vocabulary.
 
-The company’s ownership setting doesn’t remove your judgment or responsibility. Sometimes you can approve a change yourself. Sometimes you must negotiate funding, challenge a target or ask the board, the directors who oversee the company on behalf of its owners, to choose between incompatible outcomes. The book helps you distinguish those situations and make the consequences clear.
+The company’s ownership setting **doesn’t remove your judgment or responsibility**. Sometimes you can approve a change yourself. Sometimes you must negotiate funding, challenge a target or ask the board, the directors who oversee the company on behalf of its owners, to choose between incompatible outcomes. The book helps you distinguish those situations and make the consequences clear.
 
 {id: introduction--why-this-book-exists-and-how-it-is-written}
 ## Why This Book Exists, and How It Is Written
@@ -27,6 +25,8 @@ The financial, legal, and general business aspects of outside investment are wel
 The same experience suggests what the gap costs. Inside companies it breeds **confusion**, and it **costs them opportunities**, because leaders who cannot read the arrangement cannot use it. It also **invites misuse**: a sentence that begins “investors want us to…” can carry an agenda nobody in the room has examined, sometimes without anyone knowing what the investors actually require or whether they were even asked.
 
 This book is the response, written from the company leader’s side: the vocabulary to read the arrangement, working methods to test such claims, and worked decisions that show what a commitment the team can keep looks like.
+
+The next post, [Where Investment Can Go Wrong](#where-investment-goes-wrong), puts names to recurring mistakes and missed opportunities, with patterns such as Spending the Press Release and The Dusty Address Book, and connects them to the parts that address them. Use it to recognize a situation in your company before choosing where to read in depth.
 
 This book is a living journal and a work in progress: a draft by [Željko Obrenović](https://obren.io), who keeps revising it as he learns more about its topics. Chapters change as better evidence, sharper examples, and reader questions arrive. Each chapter’s page carries a “View spec” link to the specification it was written against; the changelog at the end of that specification records what changed and why. Read the book as current thinking with its limits stated, not as a finished text.
 
@@ -147,6 +147,8 @@ The [Bibliography and Evidence Guide](#bibliography) records consultation scope 
 ## Contents
 
 The site navigation lists the same chapters; this list is here for lookup.
+
+- [Where Investment Can Go Wrong](#where-investment-goes-wrong) — an opening guide to the problems the eight parts address.
 
 {id: introduction--part-i-understand-financing-and-ownership}
 ### Part I — UNDERSTAND: Financing and Ownership

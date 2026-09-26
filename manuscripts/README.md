@@ -8,11 +8,12 @@ python3 -B manuscripts/_scripts/export_journal.py \
   --output manuscripts/owned \
   --author "Željko Obrenović" \
   --frontmatter-post introduction \
-  --backmatter-section "Reference Material" \
-  --max-manuscript-mb 40
+  --frontmatter-post where-investment-goes-wrong \
+  --backmatter-section "Appendix" \
+  --backmatter-section "Reference Material"
 
 python3 -B manuscripts/_scripts/validate_manuscript.py manuscripts/owned \
-  --source _journals/private-techuity --max-manuscript-mb 40
+  --source _journals/private-techuity
 ```
 
 The scripts use Python 3.10+ and the standard library, including the repository's
@@ -88,11 +89,14 @@ Use `--jpeg-quality 80` for stronger compression, or `--original-images` for an
 export containing the original artwork bytes. The manifest tracks source and
 exported image hashes and sizes separately.
 
-The commands above enforce a 40 MB manuscript budget, leaving room under a 50 MB
-delivery limit for the generated book's fonts, cover and other packaging. These
-sizes use decimal MB (1,000,000 bytes). The exporter stops before writing when
-the budget is exceeded. This checks the manuscript, not the final EPUB: generate
-a fresh Leanpub EPUB after updating the resources and check its actual file size.
+To enforce a size budget, add `--max-manuscript-mb 40` to both commands above.
+That example leaves room under a 50 MB delivery limit for the generated book's
+fonts, cover and other packaging. The 26 September 2026 Owned export is 53.48 MB
+at quality 85, so meeting that example budget requires a separate image-size
+pass. These sizes use decimal MB (1,000,000 bytes). The exporter stops before
+writing when an explicit budget is exceeded. This checks the manuscript, not
+the final EPUB: generate a fresh Leanpub EPUB after updating the resources and
+check its actual file size.
 
 Compression may differ between Pillow and `sips`. For byte-identical exports,
 use the same encoder and version. No compression dependency is needed with

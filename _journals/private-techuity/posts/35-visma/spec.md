@@ -1,11 +1,13 @@
 ---
 status: accepted
-revised: 2026-09-23
+revised: 2026-09-26
 ---
 
 # Spec: Visma: Continuity of Manager Is Not Continuity of Money
 
 ## Intent
+
+Begin with Visma's actual investor changes, the December 2023 transaction and its 2024 acquisition activity. Establish what happened before asking what a leader should infer about funding, shared support or earnings definitions.
 
 Examine changing investors behind a continuing manager, shown in a partial transaction map built only from the cited Visma and Hg announcements with unknown cells marked, and the implications for local product authority and shared capability. Make this chapter the book’s home for the recurring-acquisition-adjustment lesson: the same year reported under two earnings definitions, and the budget decision the adjustment cannot resolve. Treat the shared-services operating model as a question the case raises, not a demonstrated mechanism. Keep the historical evidence specific to the periods and measures actually documented.
 
@@ -15,6 +17,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Replace the hypothetical platform-program opening with the documented Visma history. Make the excerpt, opening callouts, key points and summary opening name events, participants and dates; derive each lesson from those facts. Keep announced terms distinct from verified completion and a share sale distinct from cash reaching Visma.
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption. Labels drawn in the overview use plain words a reader of the summary alone can follow (no unexplained specialist terms such as “reconciliation” or “operating design”), or the caption and alt text explain them.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is a set of comic pages — each image one page of three stacked strips with the dialogue, labels, reported figures and definitions lettered in the artwork — generated from the `comic-page` blocks in `comics.md`, with consistent fictional characters, a caption and a transcript per page.
@@ -60,6 +63,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-26: Put the 2023 transaction, changing investors, 2024 acquisition program and earnings comparison ahead of the general advice in the opening and summary. Preserve the evidence limits and stable permalink.
 - 2026-09-23 (comic pages): The six single-scene panels replaced by seven comic pages of three strips each, so the ownership chain (investors → fund → shares, with Hg as manager), the December 2023 secondary sale with its €19 billion valuation and stated participants, the 2006–2023 map with the Hg5 and Hg7 funds and the 2017 exits and entries plus what the documents do not state, the 33 acquisitions and the standing cost of buying, the Q4 2024 figures with the organic-growth, free-cash-flow and ARR definitions, the €892.646 → €904.311 bridge with the add-back explained and its two boundaries, and the recurring-cost budget with its named owner and the three-item recheck are drawn into the artwork rather than carried by captions. EBITDA and the add-back are explained in the comic introduction and on the pages that use them. Page images live under `assets/images/35-visma/`; the previous panel comic is archived under `_research/comic-pages-pilot/`. No figure, date or claim changed; permalink unchanged.
 - 2026-09-23: In-depth review round 4 (VISMA-006, low): summary’s 2017 history split from the December 2023 sale; KKR and Cinven introduced as investment firms before their announced sales; Hg described as leading the buying group that would hold 41%, with the buyout gloss attached to the group; regulatory-approval qualification kept; summary held at 500 prose words.
 - 2026-09-23: In-depth review round 3 (VISMA-006, -011, -013): 2023 transaction paragraph split into mechanics, participants and software focus; organic growth, free cash flow and ARR given one paragraph each; comic introduction split with EBITDA introduced before panel 5; holding period, platform work, NPS, capital spending, securities and bonds explained in place; overview visual regenerated with plain labels and its caption and alt text rewritten; EBITDA bridge wrapped in the compact-table treatment. Figures, permalink, title and historical data unchanged.

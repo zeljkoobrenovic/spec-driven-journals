@@ -24,7 +24,7 @@ JOURNAL = HERE.parent
 LOGOS = HERE / "logos"
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15"
 
-# type: buyout | growth | venture | corporate-venture | multi-strategy | sovereign-wealth
+# type: buyout | growth | venture | corporate-venture | multi-strategy | sovereign-wealth | holding | serial-acquirer
 SEED = [
     # --- Private equity / buyout (tech-focused or large tech practice) ---
     dict(id="hg", name="Hg", type="buyout", hq="London, UK", founded=2000,
@@ -312,6 +312,117 @@ SEED = [
          notable_examples=["Icertis", "Innovaccer"],
          website="https://m12.vc", portfolio="https://m12.vc/portfolio/",
          aliases=["M12"]),
+    # --- Holding companies / permanent capital (no fund life, no forced exit) ---
+    dict(id="prosus", name="Prosus (Naspers)", type="holding", hq="Amsterdam, Netherlands", founded=2019,
+         aum_approx="~$150bn net asset value (est., mostly its Tencent stake)", aum_as_of=2025,
+         stages=["growth", "venture", "buyout", "public equity"],
+         focus="Listed global consumer-internet investor and operator, majority-owned by Naspers (founded 1915); "
+               "classifieds, food delivery, payments, edtech and AI.",
+         notable_examples=["Tencent (~24% stake)", "iFood", "OLX", "Stack Overflow", "Just Eat Takeaway.com", "Swiggy"],
+         website="https://www.prosus.com", portfolio="https://www.prosus.com/portfolio",
+         aliases=["Prosus", "Naspers"]),
+    dict(id="investor-ab", name="Investor AB", type="holding", hq="Stockholm, Sweden", founded=1916,
+         aum_approx="~$85bn net asset value (est.)", aum_as_of=2024,
+         stages=["public equity", "buyout", "fund LP"],
+         focus="Wallenberg-founded listed holding company: long-term stakes in Nordic industrials, wholly owned "
+               "companies (Patricia Industries) and investments in EQT.",
+         notable_examples=["Atlas Copco", "ABB", "Ericsson", "Mölnlycke", "EQT (stake)"],
+         website="https://www.investorab.com", portfolio="https://www.investorab.com/about-investor/business-areas",
+         aliases=["Investor AB"]),
+    dict(id="kinnevik", name="Kinnevik", type="holding", hq="Stockholm, Sweden", founded=1936,
+         aum_approx="~$3bn net asset value (est.)", aum_as_of=2024,
+         stages=["venture", "growth", "public equity"],
+         focus="Listed growth investor in European and US digital healthcare, software and marketplaces.",
+         notable_examples=["Tele2", "Pleo", "Cityblock Health", "Zalando (historic)"],
+         website="https://www.kinnevik.com", portfolio="https://www.kinnevik.com/portfolio/",
+         aliases=["Kinnevik"]),
+    dict(id="exor", name="EXOR", type="holding", hq="Amsterdam, Netherlands", founded=1927,
+         aum_approx="~€38bn net asset value (est.)", aum_as_of=2024,
+         stages=["public equity", "growth", "venture"],
+         focus="Agnelli-family listed holding company with controlling stakes and a venture arm (Exor Ventures).",
+         notable_examples=["Ferrari", "Stellantis", "Philips (stake)", "The Economist", "Christian Louboutin"],
+         website="https://www.exor.com", portfolio="https://www.exor.com/pages/companies-investments/companies/approach",
+         aliases=["EXOR", "Exor"]),
+    dict(id="tencent", name="Tencent", type="corporate-venture", hq="Shenzhen, China", founded=1998,
+         aum_approx="n/a (strategic investments held on the balance sheet)", aum_as_of=None,
+         stages=["venture", "growth", "public equity"],
+         focus="Chinese internet group and one of the most active strategic investors in games, social and fintech.",
+         notable_examples=["Epic Games (stake)", "Supercell (majority)", "Sea Limited (stake)", "Spotify (stake)"],
+         website="https://www.tencent.com", portfolio=None,
+         aliases=["Tencent"]),
+    # --- Sovereign and pension investors investing directly ---
+    dict(id="temasek", name="Temasek", type="sovereign-wealth", hq="Singapore", founded=1974,
+         aum_approx="~$320bn net portfolio value", aum_as_of=2025,
+         stages=["direct PE", "growth", "venture", "public equity"],
+         focus="Singapore state investment company; long-horizon direct investor across sectors and stages.",
+         notable_examples=["DBS", "Singapore Airlines", "Singtel", "PSA International"],
+         website="https://www.temasek.com.sg", portfolio="https://www.temasek.com.sg/en/our-investments/our-portfolio",
+         aliases=["Temasek"]),
+    dict(id="cpp-investments", name="CPP Investments", type="sovereign-wealth", hq="Toronto, Canada", founded=1997,
+         aum_approx="~$500bn net assets", aum_as_of=2025,
+         stages=["fund LP", "direct PE", "credit", "infrastructure", "real estate"],
+         focus="Canada Pension Plan's investment manager; large fund LP and co-investor alongside buyout sponsors.",
+         notable_examples=["UKG (co-owner)", "Informatica (historic, with Permira)"],
+         website="https://www.cppinvestments.com", portfolio=None,
+         aliases=["CPP Investments", "CPPIB", "Canada Pension Plan"]),
+    dict(id="mubadala", name="Mubadala", type="sovereign-wealth", hq="Abu Dhabi, UAE", founded=2002,
+         aum_approx="~$330bn", aum_as_of=2024,
+         stages=["direct PE", "fund LP", "growth", "venture", "credit", "real estate"],
+         focus="Abu Dhabi state investor; active direct and co-investor in technology, semiconductors, "
+               "healthcare and private credit, with a third-party arm (Mubadala Capital).",
+         notable_examples=["GlobalFoundries", "Mubadala Capital", "Getir (historic)"],
+         website="https://www.mubadala.com", portfolio="https://www.mubadala.com/en/what-we-do/our-portfolio",
+         aliases=["Mubadala"]),
+    dict(id="adia", name="ADIA (Abu Dhabi Investment Authority)", type="sovereign-wealth", hq="Abu Dhabi, UAE", founded=1976,
+         aum_approx="undisclosed (estimated ~$1tn)", aum_as_of=None,
+         stages=["fund LP", "direct PE", "public equity", "infrastructure", "real estate"],
+         focus="One of the world's largest sovereign wealth funds; major LP in buyout funds and a co-investor "
+               "alongside sponsors.",
+         notable_examples=[],
+         website="https://www.adia.ae", portfolio=None,
+         aliases=["ADIA", "Abu Dhabi Investment Authority"]),
+    dict(id="otpp", name="Ontario Teachers' Pension Plan", type="sovereign-wealth", hq="Toronto, Canada", founded=1990,
+         aum_approx="~$190bn net assets", aum_as_of=2024,
+         stages=["direct PE", "fund LP", "growth", "infrastructure", "real estate"],
+         focus="Canadian pension plan that pioneered direct private-equity ownership by a pension fund; "
+               "Teachers' Venture Growth arm for late-stage tech.",
+         notable_examples=["Busy Bees", "Heathrow (historic stake)"],
+         website="https://www.otpp.com", portfolio="https://www.otpp.com/en-ca/investments/",
+         aliases=["Ontario Teachers", "OTPP"]),
+    # --- Late-stage growth (added with the permanent-capital set) ---
+    dict(id="dst-global", name="DST Global", type="growth", hq="Hong Kong", founded=2009,
+         aum_approx="n/a", aum_as_of=None,
+         stages=["late venture", "growth"],
+         focus="Yuri Milner's late-stage internet investor; known for large pre-IPO minority rounds with "
+               "few governance demands.",
+         notable_examples=["Facebook (historic)", "Airbnb (historic)", "Spotify (historic)", "ByteDance"],
+         website="https://www.dst-global.com", portfolio=None,
+         aliases=["DST Global"]),
+    # --- Buy-and-hold owners ---
+    dict(id="berkshire-hathaway", name="Berkshire Hathaway", type="holding", hq="Omaha, USA", founded=1839,
+         aum_approx="n/a (operating conglomerate)", aum_as_of=None,
+         stages=["buyout", "public equity"],
+         focus="Buffett-built conglomerate that buys whole companies to keep indefinitely, leaving operating "
+               "managers largely autonomous; also holds large public stakes.",
+         notable_examples=["GEICO", "BNSF Railway", "Precision Castparts", "Apple (stake)"],
+         website="https://www.berkshirehathaway.com", portfolio="https://www.berkshirehathaway.com/subs/sublinks.html",
+         aliases=["Berkshire Hathaway", "Berkshire"]),
+    # --- Serial acquirers (buy-and-hold software owners) ---
+    dict(id="constellation-software", name="Constellation Software", type="serial-acquirer", hq="Toronto, Canada", founded=1995,
+         aum_approx="n/a (operating company)", aum_as_of=None,
+         stages=["buyout"],
+         focus="Listed buy-and-hold acquirer of vertical-market software businesses; decentralised operating groups, no planned exits.",
+         notable_examples=["Volaris Group", "Harris Computer", "Topicus.com", "Lumine Group"],
+         website="https://www.csisoftware.com", portfolio=None,
+         aliases=["Constellation Software"]),
+    dict(id="roper", name="Roper Technologies", type="serial-acquirer", hq="Sarasota, USA", founded=1981,
+         aum_approx="n/a (operating company)", aum_as_of=None,
+         stages=["buyout"],
+         focus="Listed acquirer that has turned itself into a portfolio of vertical-market software businesses, "
+               "run decentrally and funded by their cash flow.",
+         notable_examples=["Deltek", "Vertafore", "Frontline Education", "Aderant"],
+         website="https://www.ropertech.com", portfolio="https://www.ropertech.com/businesses",
+         aliases=["Roper Technologies"]),
 ]
 
 
@@ -363,15 +474,17 @@ EXT = {"image/svg+xml": ".svg", "image/png": ".png", "image/jpeg": ".jpg", "imag
 
 # Homepages whose "logo" <img> is actually a portfolio company's, or unusable: use the favicon service.
 FAVICON_ONLY = {"thoma-bravo", "insight-partners", "softbank-vision-fund", "index-ventures", "kleiner-perkins", "icg"}
+# Explicit logo URLs where the page's first "logo" <img> is the wrong variant.
+LOGO_URL = {"mubadala": "https://www.mubadala.com/~/media/Images/M/mubadala/corp/logo/mubadala-logo-dark.svg"}
 # White/light logos that need a dark background to be visible.
-DARK_BG = {"silver-lake", "eqt", "permira", "apollo", "balderton", "battery-ventures", "summit-partners"}
+DARK_BG = {"prosus", "investor-ab", "silver-lake", "eqt", "permira", "apollo", "balderton", "battery-ventures", "summit-partners"}
 
 
 def save_logo(inv):
     """Try the site's own logo first (header <img>, svg icon, touch icon), then Google's favicon service."""
-    tried = []
+    tried = [LOGO_URL[inv["id"]]] if inv["id"] in LOGO_URL else []
     try:
-        if inv["id"] in FAVICON_ONLY:
+        if inv["id"] in FAVICON_ONLY or inv["id"] in LOGO_URL:
             raise LookupError
         _, base, _, body = fetch(inv["website"])
         finder = LogoFinder()
@@ -435,7 +548,7 @@ def aum_usd_bn(text):
 
 
 # Bare city names used in hq strings like "Stockholm / London".
-CITY_COUNTRY = {"London": "UK", "Stockholm": "Sweden", "Tokyo": "Japan", "Luxembourg": "Luxembourg",
+CITY_COUNTRY = {"Hong Kong": "Hong Kong", "London": "UK", "Stockholm": "Sweden", "Tokyo": "Japan", "Luxembourg": "Luxembourg",
                 "Singapore": "Singapore", "Chicago": "USA", "Fort Worth": "USA"}
 
 
@@ -450,10 +563,34 @@ def hq_countries(hq):
     return out
 
 
+# Raw stage labels -> filter groups, in investment-lifecycle order.
+STAGE_GROUPS = {
+    "Seed": ["seed"],
+    "Early stage (Series A/B)": ["series A", "series B"],
+    "Venture": ["venture", "late venture"],
+    "Growth": ["growth", "digital", "impact"],
+    "Buyout": ["buyout", "direct PE"],
+    "Credit": ["credit", "hybrid"],
+    "Infrastructure": ["infrastructure"],
+    "Real estate": ["real estate"],
+    "Secondaries & fund investing": ["secondaries", "fund LP"],
+    "Public equity": ["public equity"],
+}
+
+
+def stage_groups(stages):
+    return [g for g, raw in STAGE_GROUPS.items() if any(s in raw for s in stages or [])]
+
+
 def add_numeric(doc):
     for inv in doc["investors"]:
         inv["aum_usd_bn"] = aum_usd_bn(inv.get("aum_approx"))
         inv["countries"] = hq_countries(inv.get("hq"))
+        inv["stage_groups"] = stage_groups(inv.get("stages"))
+        unknown = set(inv.get("stages") or []) - {r for raw in STAGE_GROUPS.values() for r in raw}
+        if unknown:
+            print(f"[warn] {inv['id']}: stages not in STAGE_GROUPS: {sorted(unknown)}")
+    doc["stage_order"] = list(STAGE_GROUPS)
     doc["aum_usd_bn_note"] = f"aum_usd_bn: aum_approx converted to USD billions (EUR at {EUR_USD}); null when not disclosed."
     return doc
 
@@ -486,7 +623,9 @@ def main():
             "venture": "Venture capital firm funding early- and mid-stage companies for minority stakes.",
             "corporate-venture": "Investment arm of an operating company, often with strategic aims.",
             "multi-strategy": "Alternative asset manager running PE alongside credit, real estate, etc.",
-            "sovereign-wealth": "State-owned investor; fund LP and direct co-investor.",
+            "sovereign-wealth": "State-owned investor or public pension fund; fund LP and direct co-investor.",
+            "holding": "Listed or family holding company investing permanent capital; no fund life or forced exit.",
+            "serial-acquirer": "Operating company that buys and keeps businesses (buy-and-hold), rather than selling them on.",
         },
         "investors": investors,
     }

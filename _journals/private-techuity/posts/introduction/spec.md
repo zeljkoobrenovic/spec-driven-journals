@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-24
+revised: 2026-09-26
 ---
 
 # Spec: Owned — Purpose and Reading Guide
@@ -14,6 +14,8 @@ Introduce Owned as a guide to product and engineering leadership under investors
 Product and engineering leaders inside companies working under investors, including leaders who inherit an ownership arrangement. Assume no specialist finance background; explain necessary terms before use. Investor-side readers are secondary.
 
 ## Success criteria
+
+- Point readers to [[where-investment-goes-wrong]] immediately after the motivation for the book and include it before Part I in the contents. It is an unnumbered guide to mistakes and missed opportunities, with memorable pattern names and links to relevant parts; its patterns need not map one-to-one to the eight parts. The existing chapter-level reading routes remain here. Export both opening guides as front matter.
 
 - Add the investor-network learning chapter after operating-model blueprints, a direct reading route and the configured main chapters in the contents (35 as of 23 September 2026). Keep the seven parts (Part IV SCALE added 2026-09-24) and existing public links.
 
@@ -60,6 +62,9 @@ See the bibliography and the relevant chapters. The source registry records cons
 
 ## Changelog
 
+- **2026-09-26 (missed opportunities)** — Introduce the opening diagnostic guide as covering both company mistakes and unused opportunities around investment.
+- **2026-09-26 (naming revision)** — Describe the diagnostic guide through its recurring company patterns, without tying their number to the book's eight parts.
+- **2026-09-26** — Add the new diagnostic guide after the introduction in the opening route and contents, with both guides treated as front matter in the manuscript export.
 - 2026-09-24 (final order): eight parts, I UNDERSTAND, II ALIGN, III COLLABORATE, IV COMMIT, V SCALE, VI SUSTAIN, VII LEAD, VIII LEARN. Part list, contents (chapters 10–29 renumbered), decision-route table, format counts and the framework figure (`owned-eight-part-framework.jpeg`) updated; the earlier same-day seven-part entry is superseded.
 - 2026-09-24 (Part IV SCALE): Seven parts. New Part IV description added to the part list and the contents; former Parts IV–VI renumbered V–VII with their part-intro links; chapters renumbered 13–29 in the contents (34 main chapters unchanged); the seven-part framework figure replaces the six-part one (new asset `owned-seven-part-framework.jpeg`); counts of part introductions corrected to seven; the decision-route table points to the Part III or Part IV chapter for an area.
 - 2026-09-23 (in-depth review round 3, INTRO-002, INTRO-008, INTRO-009, INTRO-010, INTRO-011): interest glossed at the lender definition and public development banks described in the evidence section; the staff-reduction route’s further-reading cell shortened to a three-way contrast; the ownership-scope paragraph split into coverage, where the money goes and comparison cases; the cash-forecast sentence split so layoff payments and later savings are stated plainly; the book manuscript and `Book.txt` re-exported with all configured chapters so the exported introduction’s routes and contents are working links.

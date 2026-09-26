@@ -15,6 +15,7 @@
 - [Next-session handoff](next-session.md)
 - [Validation and manuscript status](validation.md)
 - [Bibliography revision history](bibliography-revision-history.md) — which revision added or rechecked which S/P identifiers; kept out of the public bibliography.
+- [Investment-pattern illustration prompts](investment-pattern-illustrations-20260926.json) — the opening guide's header logo, twelve explanatory figures and visual review record.
 - `sources.json`: machine-readable source metadata, consulted scope, and access dates.
 - `input-preservation.json`: SHA-256 snapshot of the 478 files present before drafting; includes the original prompt and supplied inputs.
 

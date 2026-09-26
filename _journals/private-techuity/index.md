@@ -8,9 +8,14 @@ This is a living journal and a work in progress: a draft built by [Željko Obren
 
 Start with [the purpose and reading guide](posts/introduction/index.md). It explains the company leader’s responsibilities, the comparative ownership lens, the fictional company and routes for different funding and ownership situations.
 
-The book contains 39 main chapters across eight parts. All 39 main chapters have an article, a summary and an illustrated comic with captions and dialogue transcripts. Summaries normally target 300–500 words; individual specs record justified exceptions. Comics use individual panels or pages of stacked strips; operating-model blueprints and technology operating partners each have five comic pages. The edition includes 47 header logos, 47 navigation icons and a dedicated Owned journal logo. Six part introductions, one appendix chapter and five guide/reference pages bring the configured total to **47 pages**, each with a companion specification. The technology operating partner chapter includes three explanatory figures covering portfolio support, hiring and AI decisions. The Grounded Architecture appendix includes four explanatory figures: the two settings compared, reusing the method while keeping the data, connector rather than controller, and the governance mix per company. The operating-model blueprints chapter includes seven explanatory figures: the connected models, a dedicated visual for each of the four blueprints, the support-choice overview and fictional pilot reviews.
+Then read [[where-investment-goes-wrong]] to recognize investment-related mistakes and missed opportunities and connect them to the eight parts.
+
+The book contains 39 main chapters across eight parts. All 39 main chapters have an article, a summary and an illustrated comic with captions and dialogue transcripts. Summaries normally target 300–500 words; individual specs record justified exceptions. Comics use individual panels or pages of stacked strips; operating-model blueprints and technology operating partners each have five comic pages. The edition includes 53 header logos, 53 navigation icons and a dedicated Owned journal logo. Two opening guides, eight part introductions, one appendix chapter and four reference pages bring the configured total to **54 pages**, each with a companion specification. The technology operating partner chapter includes three explanatory figures covering portfolio support, hiring and AI decisions. The Grounded Architecture appendix includes four explanatory figures: the two settings compared, reusing the method while keeping the data, connector rather than controller, and the governance mix per company. The operating-model blueprints chapter includes seven explanatory figures: the connected models, a dedicated visual for each of the four blueprints, the support-choice overview and fictional pilot reviews.
 
 ## Contents
+
+- [[introduction]] — purpose and reading guide.
+- [[where-investment-goes-wrong]] — company mistakes, missed opportunities and the parts that address them.
 
 ### Part I — UNDERSTAND: Financing and Ownership
 
