@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-24
+revised: 2026-09-27
 ---
 
 # Spec: Critically Evaluate AI Costs: Measure the Return per Task and per Period
@@ -21,6 +21,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: Squeezing the Balloon; All Bulk, No Muscle. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - **A unit that explains the business.** For the product feature, cost and return are expressed per useful customer task (a document sorted and accepted without correction), never per token or per model call alone; for the internal tools, per ticket resolved and per change completed, inheriting the definitions of [[scale-the-team-with-ai]]. Explain token, model call, inference and context at first use, and show why the same feature's model cost per task rises as prompts, retrieved context and retries grow, even when the price per token falls. Construction effects (the 80% rise, the 35% proposed saving) are stated as changes in model cost per document at unchanged vendor prices, so that model mix (retries to a costlier model, easy documents routed to a cheaper one) and cached context billed at a reduced rate are inside the measure; a raw token count is never equated with spending.
 - **One comparable basis.** A table puts the feature's monthly figures on one basis: price paid by the customer, model and hosting charges, evaluation and monitoring upkeep, the share of engineering time that keeps it working, and support load, for at least two dated months, so that a margin per customer and per task can be read off and compared.
 - **Separate why the cost changed.** Decompose a cost change into usage (more customers, more documents per customer), rates (vendor price per token, up or down) and construction (longer prompts, more context, retries, a larger model chosen for quality), as the cloud chapter separates usage, rates and architecture. Each cause has a different owner and a different remedy, stated.
@@ -71,6 +72,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-24: Success criteria tightened after in-depth review round 5 (customer value as an estimate at the review-effort limit, the €8,600 labelled licences plus upkeep and reconciled with the pilot chapter's six-licence €8,000, a standalone TL;DR explanation of the assistant and of every deadline's starting event). Status stays `accepted`; article, TL;DR and comic page 4 revised to match.
 - 2026-09-24: Success criteria tightened after in-depth review round 4 (named access deadline and termination trigger, timely successor under the commitment, overage invoice terms and due dates, assistant cost boundary and seventh licence, non-causal retention wording in every format, surplus versus improvement, dated periods in the final comic, caption paragraphs, figure legibility). Status stays `accepted`; article, TL;DR, comic and Figure 3 revised to match.
 - 2026-09-24: Success criteria tightened after in-depth review round 3 (running return named as before staff costs in every format, before-and-after effect of the construction saving, three-branch successor clause with conditional fallback, funded usage distinguished from the 2029 payment tail, projected and per-customer labels in Figure 2, TL;DR length and plain substitutes, comic calculation order). Status stays `accepted`; article, TL;DR, comic and Figure 2 revised to match.

@@ -1,5 +1,5 @@
 {id: success-for-whom}
-# 39. Success for Whom, and for How Long?
+# 41. Success for Whom, and for How Long?
 
 ![Success for Whom, and for How Long? — logo](private-techuity/posts/38-success-for-whom/assets/images/30-success-for-whom/logo.jpeg)
 
@@ -14,6 +14,11 @@
 > * **Hilton's investor gain and Skype's later retirement answer different questions.** Blackstone reported about $14 billion of Hilton profit in 2018; Microsoft retired Skype in May 2025, nearly fourteen years after buying it. These are results for different parties, measured over different periods; use separate evidence for each. [S24: Blackstone 2018 investor call](https://ir.blackstone.com/files/doc_events/BLACKSTONE-Second-Quarter-2018-Earnings-Investor-Call.pdf) [S29: Microsoft Skype retirement](https://support.microsoft.com/en-us/skype/22ccebb6-0cf9-4e1d-916f-aaf978e1b129)
 > * **Toys R Us's failure left costs outside its owners' accounts.** Its March 2018 US closure plan affected roughly 33,000 employees, and Hasbro recorded $60.4 million of bankruptcy-related costs that year. Employee and supplier outcomes belong beside the investor result when judging what happened. [S37: Reuters US liquidation report](https://www.business-standard.com/article/reuters/toys-r-us-to-close-doors-leaving-void-for-toy-lovers-118031500236_1.html) [S51: Hasbro 2018 annual report](https://www.annualreports.com/HostedData/AnnualReportArchive/h/NYSE_HAS_2018.pdf)
 > * **Fictional Larkspur's €220,000 saving depends on what happens to thirty customers.** Ending their old service would remove €150,000 of annual employment cost and release €70,000 of staff time, which is capacity rather than cash. Existing customer contracts and the work needed to move them change which savings are feasible and when.
+
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+>
+> * **The Exit Halo** — Assesses investor, customer, employee and company outcomes separately over their relevant periods.
+> * **Squeezing the Balloon** — Checks proposed savings against remaining customer obligations, transition work and costs borne by others.
 
 Blackstone finished selling its Hilton investment in 2018 after supporting the hotel group through a debt restructuring. Skype passed to Microsoft in 2011 and remained a product until its retirement in 2025. Visma brought in new investors while Hg stayed involved, and TeamSystem kept developing and acquiring software businesses across successive owners. Toys R Us entered bankruptcy in 2017, tried to reorganize and moved to close its US stores in 2018. These are the five histories from the preceding four case chapters; each combines an ownership event with a different operating outcome.
 

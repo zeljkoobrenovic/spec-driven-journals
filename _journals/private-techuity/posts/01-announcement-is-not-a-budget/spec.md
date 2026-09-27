@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-18
+revised: 2026-09-27
 ---
 
 # Spec: An Investment Announcement Is Not a Budget
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: Spending the Press Release; The Ghost Veto. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal's visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions: the entity map labels the direction of loan money between the lender and the holding company; the commitment figure shows the capital-call notice and the investor's payment as separate steps and shows that an approved investment reaches the operating company only when it buys new shares, otherwise the seller. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is a sequence of comic pages: each page is one image of three stacked strips that carries its dialogue, labels and amounts in the artwork, with consistent fictional characters and a short caption under each page. Every string drawn in a page comes from the page script, which traces to the article, and generated artwork is inspected against the script (spelling, cast identity, which speaker each bubble points to, counts and sizes), not assumed.
@@ -56,6 +57,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-18: Comic converted from six single-scene panels to seven comic pages of three strips each (the format piloted on [[obligations-before-budget]]). Alex's five-engineer request now runs through the whole comic: the headline and the three questions, who receives the money, the four organizations, promise versus payment versus estimate, the three payment agreements, the one-page record, and the decision. The investor-category cards are dropped. Article and summary unchanged.
 - 2026-09-17: Response to round 3 of the in-depth review (AIB-002, AIB-011, AIB-012, AIB-013): explain fund and capital at first substantive use in the article; name carry and explain investment profits in the TL;DR and comic; split the limited-partner, fee and €40m-alternative paragraphs into one-idea paragraphs and short sentences; replace the TL;DR's "local authority" sentence with which group company funds the work and who approves Larkspur's budget; name the timeline's Year column and make it a compact table that fits phone width, with a scrolling cue and keyboard focus added to tables that still scroll.
 - 2026-09-17: Response to round 2 of the in-depth review (AIB-001, AIB-002, AIB-009, AIB-010): scope the comic's existing-share caption to money paid for shares; finish the terminology pass (clawback dropped from the reading list, investment period versus fund term, interest, management equity, management fee, transaction costs, investor director and million in the short formats; customer set-up instead of onboarding in the TL;DR); restore the article's qualifications in the TL;DR (four organizations as a starting map, newer fund not automatically available, LP cash arrives by distribution from a sale or other cash received).

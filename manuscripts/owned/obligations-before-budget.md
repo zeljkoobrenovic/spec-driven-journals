@@ -1,5 +1,5 @@
 {id: obligations-before-budget}
-# 6. Understand Cash Flow: Confirm the Cash Before You Commit
+# 8. Understand Cash Flow: Confirm the Cash Before You Commit
 
 ![Understand Cash Flow: Confirm the Cash Before You Commit — logo](private-techuity/posts/05-obligations-before-budget/assets/images/05-obligations-before-budget/logo.jpeg)
 
@@ -14,6 +14,11 @@
 > * **A positive earnings figure does not establish the cash available** for a new initiative. Start from it, subtract investment, taxes, financing payments and any increase in what customers still owe, and add the cash already in the bank. Then check when that cash is available and what restrictions apply to it.
 > * In that calculation, **separate the payments the company must make from the ones it chooses**. Ordinary payroll is already inside the earnings figure. Interest and loan repayments change only under the loan’s terms or with the lender’s agreement. Planned investment and proposed payouts to owners are decisions. Bring priced options with decision dates, not one unfunded request.
 > * **Accounting does not remove the cost of work**, and a company spending more than it collects must make its decisions before its cash runs out. Recording development spending as an asset changes when the cost enters profit. The cash still leaves.
+
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+>
+> * **Spending the Press Release** — Works from earnings through obligations to the cash available before an initiative is promised.
+> * **Squeezing the Balloon** — Shows that changing how development spending appears in the accounts does not remove its cash cost.
 
 The **board**, the group of directors that oversees the company on the shareholders’ behalf, sees **operating earnings growing**: the profit from running the business, before the costs of financing and tax. At the same time, the **engineering team** is told there is **no money for an essential migration**, such as moving a core system onto newer technology. Both can be true, because earnings are not cash. To know how much of the earnings figure is yours to commit, work through the payments that come out of it, then compare the result with the cash the company actually holds, including when that cash is available and any restrictions on it. That step-by-step calculation from one figure to the other is called a **reconciliation**.
 

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-18
+revised: 2026-09-27
 ---
 
 # Spec: A Valuation Is an Estimate, Not a Fact
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: Spending the Press Release; The Nodding Room. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is a sequence of comic pages: each page is one image of three stacked strips that carries its dialogue, labels and amounts in the artwork, with consistent fictional characters and a short caption under each page. Its page on the three methods says that comparisons and cash forecasts give business value while assets minus debts is closer to the owners’ share; its captions expand EBITDA, distinguish adjusted EBITDA, exemplify assets, define pre- and post-money value and state that the funding-round shares are newly issued. Every string drawn in a page comes from the page script, which traces to the article, and generated artwork is inspected against the script (spelling, cast identity, which speaker each bubble points to, counts and sizes), not assumed.
@@ -58,6 +59,7 @@ S06–S07 for earnings and development-accounting distinctions; S52 for IPEV's D
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-18: Comic converted from six single-scene panels to eight comic pages of three strips each (the format piloted on [[obligations-before-budget]]), following the “worth €60 million” question through both stages: the two opening questions; sales, profit and cash as three events; the fictional income statement; why EBITDA is used and what it leaves out; business value versus the owners’ share; the three methods and the two multiples; the funding-round headline; and the one operating assumption to challenge. Article and summary unchanged.
 - 2026-09-17: Editorial revision per round 3 of the in-depth review (VAL-012, VAL-014, VAL-015): the article’s methods introduction and closing recap now say the methods estimate value, with the check on which value each one produces, instead of calling every result business value; comic panels 3 and 4 say that comparisons and cash forecasts give business value while assets minus debts is closer to the owners’ share; the TL;DR is split into scannable paragraphs with the three methods listed individually, “Excluding all four items” and interest glossed, within the 300–500-word range; the shared post template completes the ARIA tabs pattern (named tab list, tab/panel associations, arrow-key navigation); permalink and id unchanged.
 - 2026-09-17: Editorial revision per round 2 of the in-depth review (VAL-012, VAL-003, VAL-013): TL;DR no longer says all three approaches estimate business value and explains that an asset-based total that already subtracts debts is closer to equity value (the €20m of net debt must not be deducted twice); overview alt text now separates the three lenses from the business-to-equity bridge; “multiple” glossed at the Stage 1 checkpoint and “net assets” glossed at the methods introduction; the Gornall–Strebulaev annotation split into three sentences with its population, modeled fair values and 50%-above direction unchanged; permalink and id unchanged.

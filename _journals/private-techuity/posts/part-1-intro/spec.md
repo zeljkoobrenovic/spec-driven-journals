@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-23
+revised: 2026-09-27
 ---
 
 # Spec: PART I — Understanding Financing and Ownership
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after the opening IN THIS SECTION callout: Spending the Press Release; The Exit Halo. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions. The existing length target applies to the orientation prose; this requested navigation block is additional.
 - Include exactly one chapter overview at the start of the learning path, in addition to the existing header logo. Give every configured chapter its own box, use short recognizable title labels without duplicating chapter numbers, and connect the chapters to the part's overall purpose.
 - Group the six chapters into tracing money and control, interpreting value and returns, and confirming funding and cash; lead to the money a commitment can rely on.
 - Generate the overview through the Gemini API, matching the book's ivory, navy, teal and ochre illustration style. Lay the six chapters out as a single stacked column, tall rather than wide, with explanatory lettering that renders at roughly 14 to 16 CSS pixels at a 375-pixel phone width (about 327 pixels of content width) so every label and the closing banner read without zooming; wrap explanations onto several short lines rather than shrinking them. Label each chapter in plain language a beginner can understand without opening it, and let the first card say what customers, lenders and investors each expect rather than only naming them. Publish one JPEG with descriptive alt text and a prose caption, and preserve it in the manuscript export. Keep the linked chapter walkthrough as the full-title reading guide.
@@ -52,6 +53,7 @@ The journal's current config.yaml and the configured chapter introductions. Thes
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after the opening IN THIS SECTION callout, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-23: In-depth review round 3 (P1-006 to P1-008). Separate money customers still owe from outgoing payments in the cash-flow description; broaden the funding-choices description to costs, obligations and ownership effects; replace the agreements-only claim with actual cash, agreement terms and spending approvals. Wording only; artwork, permalink and chapter sequence unchanged.
 - 2026-09-23: In-depth review round 2 (P1-002 to P1-005). Explain lenders, investors, profit and distributions at first use; scope the buyout sentence to fund-backed buyouts; describe the returns chapter as alternative outcomes for one fund; regenerate the overview taller with larger, wrapped lettering and a first card that explains the parties; cut duplicated chapter-description wording so the expanded body falls under 400 words. Permalink and chapter sequence unchanged.
 - 2026-09-23: In-depth review round 1 (P1-001 to P1-004). Explain the opening's finance vocabulary in short plain sentences, replace specialist chapter descriptions with plain-language glosses, regenerate the chapter overview as a stacked single-column image with plain labels that stay readable on a phone, and cut the introduction to under 400 expanded words. Permalink and chapter sequence unchanged.

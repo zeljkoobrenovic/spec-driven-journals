@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-22
+revised: 2026-09-27
 ---
 
 # Spec: Glossary
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Nodding Room; Spending the Press Release. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Link the operating-model definition to its Part IV teaching home and include resources and information alongside teams, responsibilities, processes and decisions.
 
 - Define technology operating partner (including technical operating partner) and AI operating partner in the roles section and alphabetical index, with the Part IV technology operating partner chapter as their teaching home.
@@ -52,6 +53,7 @@ See the bibliography and the relevant chapters. The source registry records cons
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-23 (portfolio appendix): Add Grounded Architecture and Lightweight Architectural Analytics to the technology section and the alphabetical index.
 - 2026-09-22 (investor learning): Remove the duplicated main-chapter count from the format description after insertion of the new chapter; glossary content and public URL unchanged.
 

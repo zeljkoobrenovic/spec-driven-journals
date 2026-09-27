@@ -23,6 +23,11 @@ icon: "assets/icons/18-investors-adviser.png"
 > * Separate **influence from authority**. Proximity to the investor gives a suggestion weight. It does not give the right to decide. That right comes from four sources: an executive role, the board of directors that oversees company leadership, rights agreed with the shareholders who own the company, or an explicit assignment. An adviser holds only what those sources grant.
 > * Treat a **change of role as a new agreement**. When coaching becomes assessment, or advice becomes delivery, ask what the information is for, what the investor’s existing rights already cover, who authorized anything new and what employees will be told.
 
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+>
+> * **The Accidental Gatekeeper** — Treats a change from advice to assessment or delivery as a change that needs an explicit agreement.
+> * **The Ghost Veto** — Checks the adviser’s actual authority instead of treating proximity to the investor as permission to decide.
+
 <br>
 A technology specialist employed by the investor joins your planning meeting. They understand the product and offer useful ideas. Your engineers want to know whether the ideas are suggestions, a new assessment or instructions they should act on.
 

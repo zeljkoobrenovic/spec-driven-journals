@@ -1,5 +1,5 @@
 {id: ai-worth-its-cost}
-# 31. Critically Evaluate AI Costs: Measure the Return per Task and per Period
+# 33. Critically Evaluate AI Costs: Measure the Return per Task and per Period
 
 ![Critically Evaluate AI Costs: Measure the Return per Task and per Period — logo](private-techuity/posts/30-ai-worth-its-cost/assets/images/30-ai-worth-its-cost/logo.jpeg)
 
@@ -14,6 +14,11 @@
 > * **Measure per useful customer task, on one basis.** Cost per token, or per request sent to the model, is the vendor’s unit. Cost per document sorted and accepted, per ticket resolved, per change completed is the company’s, and only that unit can be set against a price.
 > * **Separate why the bill changed.** Usage (more customers, more documents), rates (the vendor’s price per token) and construction (how the feature is built: how much text it sends with each document, how often it retries, which model it uses) move the bill for different reasons, have different owners and take different remedies. A vendor price cut can offset part of a construction increase and make the bill look tamer than the construction is.
 > * **Return has a period and a condition, and a commitment is a minimum payment.** State the return for a dated period under the quality and review conditions that make it true, set the stop and reprice rules before the review, and size any committed spend, the fixed amount a vendor is owed even when usage falls short, at the low end of a demand range the company can pay for.
+
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+>
+> * **Squeezing the Balloon** — Counts supplier spending, review effort and operating costs per useful customer task.
+> * **All Bulk, No Muscle** — Measures accepted customer work rather than tokens, requests or the presence of an AI tool.
 
 Many companies now sell features built on **artificial intelligence (AI)** services, or buy AI tools for their own staff, and are soon asked what return that spending earns. The question is harder than it looks, because the price and the bill are counted in different units. A feature is often sold to customers for a fixed monthly fee, while the vendor that runs the model charges for the amount of text the model reads and writes. The price stays where the company set it, but the bill moves with what customers send, how the feature is built and what the vendor charges. A single return figure hides all that. A useful answer states a unit, a period and a condition.
 

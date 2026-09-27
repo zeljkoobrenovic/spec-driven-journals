@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-26
+revised: 2026-09-27
 ---
 
 # Spec: Hilton and Skype: A Successful Exit Still Needs Explaining
@@ -17,6 +17,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Exit Halo; Spending the Press Release. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Make the excerpt, opening callouts, key points, introductory narrative and summary opening specific to these two histories. Name the companies, owners, dates and decisive events before giving advice; retain source attribution and distinguish a reported result from an explanation of its causes.
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
@@ -63,6 +64,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-26: Reframe the opening and summary around the documented Hilton and Skype events before generalizing, at the author's request. Preserve the existing evidence, transaction qualifications and stable permalink.
 - 2026-09-23 (comic pages): The six single-scene panels replaced by seven comic pages of three strips each, so the two cases' ownership periods and purchase structures, Hilton's three-part 2010 restructuring and its third-party hotel owners and three connected systems, the exact Hilton sale timeline (Hilton's own 2013 share sale, the funds' June 2014 sale, the 2018 exit) with the sponsor's 3.1× and $14 billion and what separates a deal's result from an investor's, OnQ's 2003–2005 dates against the 2007 purchase, Skype's 2009 structure and the Joltid rights settlement with the dated 2010–2011 events, Skype's 2010 figures and the Microsoft sale with why $8.5bn ÷ $2.75bn is not a fund return, and the 2025 retirement with the two operating questions and the shared evidence limit are drawn into the artwork rather than carried by captions. Artwork labels are plain language (no LBO, IPO, IP or EBITDA); every shortened label is explained in the caption. Page images live under `assets/images/34-hilton-and-skype/`; the previous panel comic is archived under `_research/comic-pages-pilot/`. No figure, date or claim changed; permalink unchanged.
 - 2026-09-23: In-depth review round 3 (HSK-003 and HSK-004 residuals): gloss mortgage loan, debt securities and revenue in the article and describe OnQ's function in comic panel 2; split the Hilton retrospective, the Skype 2010–2011 developments and the eBay 2007 annotation into short sentences; no artwork regenerated; permalink and id unchanged.

@@ -1,5 +1,5 @@
 {id: scale-the-team-with-ai}
-# 25. Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount
+# 27. Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount
 
 ![Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount — logo](private-techuity/posts/24-scale-the-team-with-ai/assets/images/24-scale-the-team-with-ai/logo.jpeg)
 
@@ -14,6 +14,12 @@
 > * **A tool can only relieve a constraint it touches.** Waits for a decision are a question of authority, and no tool removes them. Building a change (writing and testing its code) and releasing it (putting the finished change into the live system) can change, and can be measured. Whether a queue that exists because only two people can do the work safely shortens is the question the pilot must answer.
 > * **Capacity is work that completes with the old quality checks.** Lines written, seats active and tokens used are activity. Measure changes and customer setups delivered per month, with the error rate beside them, checked the same way as before the tool, and count the time spent checking generated work as a cost.
 > * **“Fewer people” is a claim to test, not a plan to execute.** Separate a condition attached to money, a vote by a director (a member of the board that oversees the company) and an adviser’s comparison with other companies, answer each with the response it requires, and leave the deferred hire’s conditions unchanged until the gate is passed.
+
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+>
+> * **All Bulk, No Muscle** — Measures completed work at the existing quality standard instead of generated code or active tool seats.
+> * **Squeezing the Balloon** — Counts review and correction effort before claiming that AI has reduced the work or its cost.
+> * **The Ghost Veto** — Checks the authority behind a claim that AI requires fewer people before changing the staffing plan.
 
 AI tools arrive in companies with a **bold promise**: the same team can do much more, or a smaller team can do the same. For investors the promise is attractive, because tools are cheaper and quicker to add than people. For product and technology leaders it is a claim that can justify buying tools, hiring fewer people or letting some go, often all at once. Like any claim about capacity, it **needs testing** before it becomes a headcount decision.
 

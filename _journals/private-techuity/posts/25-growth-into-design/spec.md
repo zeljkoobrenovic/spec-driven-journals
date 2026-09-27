@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-24
+revised: 2026-09-27
 ---
 
 # Spec: Turn “We Expect Growth” Into a Design Decision
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Nodding Room; Squeezing the Balloon. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Provide alt text and a concise numbered caption. Keep the summary prose bold-emphasised and cited, and as short as it can be while still standing alone: the 300–500-word target is superseded where the standalone-comprehension criterion requires a definition, since a summary a lay reader cannot follow fails at any length. The current summary runs to about 800 words for that reason.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is a sequence of comic pages: each page is one image of three stacked strips that carries its dialogue, labels and amounts in the artwork, with consistent fictional characters and a short caption under each page. Every string drawn in a page comes from the page script, which traces to the article, and generated artwork is inspected against the script (spelling, cast identity, which speaker each bubble points to, counts and sizes), not assumed.
@@ -66,6 +67,7 @@ Inherits the IPEV valuation guidance cited in [[valuation-is-an-estimate]]. The 
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-24 (Part IV SCALE): Moved from Part III to the new Part IV (third chapter); folder renumbered to `25-growth-into-design`. Body, permalink and id unchanged.
 - 2026-09-22: Comic converted from six single-scene panels to eight comic pages of three strips each (the format piloted on [[obligations-before-budget]]): the request and the recovered requirement with the four events; what each priority asks of the design; the three options with prices and dates; why B over the cheaper-at-first A, with the crossover and the four-year horizon; the decision record inside the €300,000 limit; the three triggers, each with its own response; the fallback with its staffing, its two-week window and its timing sum; and the separate payback example. Every requirement in the criteria above is restated per page. No amount, date or trigger changed. Article and summary unchanged.
 - 2026-09-22 (round 3): Third in-depth review pass, eight findings, all fixed. The fallback's timing arithmetic shown once as its four terms, with the honest margin (first cash month 10.5–11.5 on a one-month wait, so half a month to a month and a half of slack) and a setup-dependent cutoff — 1.5 months against a five-month setup, 2.5 against a four-month — replacing the previous self-contradictory flat cutoff. Expected years of use made the reason B is cheaper, standing on its own over the four-year horizon without any third country; the third country demoted to a separate, reinforcing reason in the article, summary and panel 3 caption, and trigger 3 reworded to match. The summary's EBITDA exclusions explained rather than merely named, its "what lenders and owners are owed" replaced with lenders' first claim versus owners' residual interest, and its financial illustration split into three locatable paragraphs. Both switch triggers plus A's own two specialist-weeks and supplier schedule restored to the summary and panel 6. Residual vocabulary substituted at first meaningful use: stake, thesis, unit cost, business acquisitions, infrastructure, resilience, capacity management, hosting, service that borrowing, valuation premium. "Three different events" corrected to four; A's "no regression risk" corrected to avoiding B's particular risk rather than being risk-free. No artwork regenerated. Permalink and id unchanged.

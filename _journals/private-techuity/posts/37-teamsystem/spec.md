@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-26
+revised: 2026-09-27
 ---
 
 # Spec: TeamSystem: Each New Owner Inherits Progress and Unfinished Work
@@ -17,6 +17,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: Clean Slate Syndrome; The Exit Halo; Squeezing the Balloon. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Make the excerpt, opening callouts, key points, introductory narrative and summary opening identify the TeamSystem events before generalizing. Keep the 2016 reporting-period correction distinct from the effects of acquisitions, and distinguish recorded development and integration costs from an inferred backlog or measured customer benefit.
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
@@ -75,6 +76,7 @@ S45–S49: Palamon's historical account; HgCapital Trust's 2010 and 2015 announc
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-26: Replace general ownership-change framing in the opening and summary with the named ownership sequence, reported acquisitions and 2017 accounts, then derive the handover and measurement lessons. Preserve source qualifications and the stable permalink.
 - 2026-09-23 (comic pages): The six single-scene panels replaced by seven comic pages of three strips each, so the chain of owners with the 2010 €565 million / 11.3× terms, the revenue/profit/cash definitions, the sponsor's stated initiatives and the evidence that would test them, the Trust's £39.0 million cash plus £6.1 million retained stake and the 2021–2024 sequence, the March–December 2016 versus full-year 2017 comparison with both pro forma assumptions and the 37.7% / 8.9% contrast, the reconciliation from €113.0 million adjusted earnings to the €56.8 million loss with the non-core items named, the €72.0 million finance charge against €52.1 million paid and the €61.8 million of operating cash, and the questions for an incoming owner are drawn into the artwork rather than carried by captions. Page images live under `assets/images/37-teamsystem/`; the previous panel comic is archived under `_research/comic-pages-pilot/`. No figure, date or claim changed; permalink unchanged.
 - 2026-09-23 (round 5): Revise per the fifth in-depth review pass (TS-02, TS-08): the profit/adjusted-earnings definition, the summary's owner chronology with its enterprise-value gloss, and the July 2024 further-reading annotation split at their conceptual boundaries without new material; comic panel 5's caption, storyboard metadata and prompt archive explain "non-core" as costs the company classified as outside normal operations and excluded from this profit measure; artwork unchanged. Permalink and id unchanged.

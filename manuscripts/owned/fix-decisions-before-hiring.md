@@ -1,5 +1,5 @@
 {id: fix-decisions-before-hiring}
-# 23. Scale the Team Up: Headcount Is Not Capacity
+# 25. Scale the Team Up: Headcount Is Not Capacity
 
 ![Scale the Team Up: Headcount Is Not Capacity — logo](private-techuity/posts/22-fix-decisions-before-hiring/assets/images/22-fix-decisions-before-hiring/logo.jpeg)
 
@@ -14,6 +14,12 @@
 > * A company’s capacity includes **how people decide and coordinate**. New tools, locations or hires will not remove a queue made of unclear authority and concentrated knowledge.
 > * People changes have **transition costs and a knowledge-transfer test**. Compare the full delivery model, including recruitment, overlap, management effort and the receiving team’s demonstrated competence.
 > * The diagnosis should **produce a staffing decision**: hiring proceeds, changes shape or is deferred, with the remaining gap, its funding and the evidence that would reopen the choice named.
+
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+>
+> * **All Bulk, No Muscle** — Follows the work through decision and knowledge bottlenecks before deciding what hiring would help.
+> * **Borrowed Brains** — Requires the receiving team to demonstrate competence after knowledge transfer.
+> * **Squeezing the Balloon** — Includes overlap, management effort and transition work when comparing cheaper delivery locations.
 
 New investment naturally opens room to hire. The money that funds the plan can also pay salaries, and investors often push for it to turn into people quickly: headcount is visible, easy to report and easy to compare with the plan. The pressure is understandable, but **hiring naively can backfire**. When work waits on unclear authority and on knowledge held by a few people, new hires join the same queue. They need training from the specialists who are already the bottleneck, they add coordination, and the waits can grow rather than shrink. The friction in how the company decides and delivers must be found before the hiring plan is written.
 

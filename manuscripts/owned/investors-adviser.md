@@ -1,5 +1,5 @@
 {id: investors-adviser}
-# 14. Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?
+# 16. Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?
 
 ![Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding? — logo](private-techuity/posts/13-investors-adviser/assets/images/18-investors-adviser/logo.jpeg)
 
@@ -14,6 +14,11 @@
 > * Establish the **assignment and the reporting relationship**. The adviser reports to the investment firm, so the company must understand both the operating assignment and how findings may inform the investor’s decisions.
 > * Separate **influence from authority**. Proximity to the investor gives a suggestion weight. It does not give the right to decide. That right comes from four sources: an executive role, the board of directors that oversees company leadership, rights agreed with the shareholders who own the company, or an explicit assignment. An adviser holds only what those sources grant.
 > * Treat a **change of role as a new agreement**. When coaching becomes assessment, or advice becomes delivery, ask what the information is for, what the investor’s existing rights already cover, who authorized anything new and what employees will be told.
+
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+>
+> * **The Accidental Gatekeeper** — Treats a change from advice to assessment or delivery as a change that needs an explicit agreement.
+> * **The Ghost Veto** — Checks the adviser’s actual authority instead of treating proximity to the investor as permission to decide.
 
 A technology specialist employed by the investor joins your planning meeting. They understand the product and offer useful ideas. Your engineers want to know whether the ideas are suggestions, a new assessment or instructions they should act on.
 

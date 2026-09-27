@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-24
+revised: 2026-09-27
 ---
 
 # Spec: Manage Technical Debt: Fund the Fix by the Cost, the Risk and the Speed It Buys
@@ -21,6 +21,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: Never Fixing the Roof; Squeezing the Balloon; The Ratchet Roadmap. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - **Three-column carrying cost, on figures the company has.** Define technical debt in plain words and put each register item on one table with three columns per month: cost carried (engineering hours on workarounds and the old stack's licences and hosting, labelled cash or cost-based estimate), risk carried (incidents, unsupported or insecure components, restore evidence from [[prove-you-can-restore]], a dated vendor retirement), and speed lost (lead time on the change types customers pay for, from the trace in [[fix-decisions-before-hiring]], and releases that cannot ship). No item is described by a count of issues, a percentage of the codebase or a "debt ratio". The reader can build the same table for their own estate.
 - **Separate where the debt came from.** Sort the register by origin, deliberate dated shortcut, growth outrunning design, acquired system not yet integrated, ageing platform or retiring vendor, and state for each origin who owns it and what the remedy usually is. Say that a deliberate shortcut with a recorded date and owner is not a failure; an undated one is.
 - **Present the project the way the board reads money.** For the chosen tranche, state what revenue it protects or enables, what cost or risk it removes and, only where a real dated decision is being kept open, what decision it preserves; use the three benefit kinds as the book's own vocabulary and cite the Grounded Architecture economics page, Fowler and Hohpe as sources, with the caveat that neither internal quality nor an option's value can be measured precisely, so the tranche is judged on the carrying-cost columns it moves. Explain why the board rarely sees the failures a fix prevented, citing Repenning and Sterman, and answer it with the register's before-and-after figures rather than with a plea.
@@ -70,6 +71,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-24 (review round 5): Decision log extended with the round-5 corrections (test before signing, no termination of an unsigned commitment, switch day as the fallback start, late-decision funding route and refusal, standalone TL;DR, shorter passages, comic board text). Contract success criterion reworded to require one signed-agreement order and the late-decision and refusal routes. Status stays `accepted`; article, TL;DR and comic revised to match.
 - 2026-09-24 (review round 4): Decision log extended with the round-4 corrections (notice versus effective date, late-access dates, three fallback branches with pricing, bounded early start, shorter units, comic page 4 timeline). Contract-clock success criterion extended to cover model prerequisites, funding and early-start exceptions. Status stays `accepted`; article, TL;DR and comic revised to match.
 - 2026-09-24 (review round 3): Decision log extended with the round-3 corrections (successor clock from usable access with the contractual notice kept separate, fallback start and customer agreement, rewrite staffing, board approval of an early start, cash shorthand, figure and comic wording, structure and TL;DR length). Sequencing success criterion extended to cover short forms and contract clocks. Status stays `accepted`; article, TL;DR, comic and figures revised to match.

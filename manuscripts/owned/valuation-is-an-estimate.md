@@ -1,5 +1,5 @@
 {id: valuation-is-an-estimate}
-# 3. Understand Valuation: An Estimate, Not a Fact
+# 5. Understand Valuation: An Estimate, Not a Fact
 
 ![Understand Valuation: An Estimate, Not a Fact — logo](private-techuity/posts/02-valuation-is-an-estimate/assets/images/02-valuation-is-an-estimate/logo.jpeg)
 
@@ -14,6 +14,11 @@
 > * **Sales, profit and cash** answer different questions. A business can record a sale or a profit before receiving the customer’s money.
 > * A valuation is an **estimate for a date and a purpose**. Its assumptions can become growth, margin and cost targets, which leaders should examine before accepting them.
 > * The **value of the business and the value of its shares** differ. The gap is made up of debt and any other claims that must be paid before shareholders receive anything.
+
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+>
+> * **Spending the Press Release** — Distinguishes sales, profit and estimated value from cash available to fund work.
+> * **The Nodding Room** — Makes the growth and cost assumptions behind a valuation explicit before teams accept its targets.
 
 Product and engineering leaders rarely need to produce a **valuation**, but they need to understand one. Valuations drive ambitions, and the goals derived from them decide which work gets funded and which gets questioned.
 

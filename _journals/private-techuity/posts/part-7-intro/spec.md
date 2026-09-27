@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-24
+revised: 2026-09-27
 ---
 
 # Spec: PART V — Leading Through Funding and Ownership Changes
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after the opening IN THIS SECTION callout: Clean Slate Syndrome; Never Fixing the Roof; The Ratchet Roadmap. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions. The existing length target applies to the orientation prose; this requested navigation block is additional.
 - Include exactly one chapter overview at the start of the learning path, in addition to the existing header logo. Give every configured chapter its own box, use short recognizable title labels without duplicating chapter numbers, and connect the chapters to the part's overall purpose.
 - Keep the diligence-to-plan-to-handover evidence trail distinct from the separate delayed-financing and possible-reduction scenario. Connect both to accountable leadership through change without implying an inevitable transaction or layoff sequence.
 - Generate the overview through the Gemini API, matching the book's ivory, navy, teal and ochre illustration style. Lay it out as one stacked column (one chapter card per row, the two scenarios as labelled groups) so every card title, its plain-language explanation line and the conditional label on the layoffs link stay readable at a phone content width of about 327–342 CSS pixels without zooming. Each card carries a short explanation in ordinary words (for example "Check the business before the deal is signed"), not shorthand. Publish one JPEG with descriptive alt text and a prose caption, and preserve it in the manuscript export. Keep the linked chapter walkthrough as the full-title reading guide.
@@ -51,6 +52,7 @@ The journal's current config.yaml and the configured chapter introductions. Thes
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after the opening IN THIS SECTION callout, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-24 (contents): [[the-financing-slipped]] moved to Part IV; LEAD now has three chapters following the onboarding finding (overview regenerated with three cards, funding-delay group removed); highlight and excerpt drop the funding-delay clause; the scenario note points to the funding-delay chapter in Part IV and the layoff chapter in Part V.
 - 2026-09-24 (Part IV SCALE): Part renumbered from V to VI (folder `part-7-intro`, permalink `part-7`, asset paths renamed). The layoff chapter [[anatomy-of-a-layoff]] moved to Part IV; the learning path now has four chapters, the funding-delay line points to the layoff chapter in Part IV, the excerpt and highlight drop the reduction clause, and the overview figure was regenerated with four cards and a dashed pointer. Closing hand-off names Part VII.
 - 2026-09-23: In-depth review round 3 (P5-007, P5-003, P5-001). Expected funding distinguished from committed or received money in the funding-delay chapter line, matching that chapter’s funding stages; the board explained at its first use in the hundred-day line and the repeat removed from the funding-delay line; the opening finance explanation split into an events paragraph and a consequences paragraph with the investor actions given one per sentence.

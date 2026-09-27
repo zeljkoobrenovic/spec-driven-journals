@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-18
+revised: 2026-09-27
 ---
 
 # Spec: Customers, Lenders and Investors: What Each Expects in Return
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: Spending the Press Release; The Nodding Room. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal's visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is a sequence of comic pages: each page is one image of three stacked strips that carries its dialogue, labels and amounts in the artwork, with consistent fictional characters and a short caption under each page. Every string drawn in a page comes from the page script, which traces to the article, and generated artwork is inspected against the script (spelling, cast identity, which speaker each bubble points to, counts and sizes), not assumed.
@@ -54,6 +55,7 @@ Investor.gov introductions to stocks, public companies and private equity; SBA g
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-18: Comic converted from six single-scene panels to seven comic pages of three strips each (the format piloted on [[obligations-before-budget]]): one page per funding route with its obligation drawn as the tag on the money, then the choice, the checks before signing and a closing page; the three public/private panels are reduced to one strip on the closing page, matching the article, which places that orientation after the decision. Article and summary unchanged.
 - 2026-09-17: Implement the in-depth review (round 3): separate the customers' 30-day payment deadline from Sam's forecast date under the full loan; split the two-customer fallback into affordability, the 16 January and 23 January execution cases with their first repayment dates, and the late, declined or unconfirmed case; make the later cutoff conditional on Alex confirming the fit and require the loan and both orders signed by it in every format; define public company, licence, release and the operating-company label in the standalone formats; keep the refund, the reasons the alternatives were declined and the effort-limit condition in the comic's final panel; split the dense loan, fallback and comic paragraphs; give the header-image link an accessible name; permalink and id unchanged.
 - 2026-09-17: Implement the in-depth review (round 2): state the customers' payment schedule under the full loan and reframe its rejection as policy with the early cash balances shown; date the two-customer fallback (board approval on 15 January, loan signed and orders countersigned on 16 January, cash by 30 January, latest countersignature 23 January, replan otherwise) and let it keep the original release; fix effort versus duration in the summary and the repayment-before-launch sequence; explain terms at first use in every format (founders, fund, board, funding round, hosting, roadmap, release, minutes, engineer-weeks, prepayment, profit, asset, founder); separate baseline hosting from the additional capacity; regenerate Figure 1 with flat-tailed outward arrows; permalink and id unchanged.

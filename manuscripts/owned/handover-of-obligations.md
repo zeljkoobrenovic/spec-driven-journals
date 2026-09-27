@@ -1,5 +1,5 @@
 {id: handover-of-obligations}
-# 34. Manage the Handover: Carry Forward the Evidence and Obligations
+# 36. Manage the Handover: Carry Forward the Evidence and Obligations
 
 ![Manage the Handover: Carry Forward the Evidence and Obligations — logo](private-techuity/posts/33-handover-of-obligations/assets/images/25-handover-of-obligations/logo.jpeg)
 
@@ -14,6 +14,11 @@
 > * **Keep the evidence during the work, not for the sale.** Baselines (the starting measurements), actual costs, observed results and open work recorded at each review are what a buyer, a new investor or a continuing board can examine. A list of projects written afterwards is not.
 > * **Follow who receives cash and who keeps ownership.** New investment, a sale of existing shares, a change among the investors in the fund that owns the company, a stock-market listing and a sale of control move money and authority differently. None tells you what the investors finally made until the money received, the stakes kept and the dates are known.
 > * **A handover is accepted when each open obligation has an accountable leader on the receiving side.** Hand over the record with its open work and continuing cost, agree any follow-up role explicitly, and treat later results as evidence to learn from rather than a verdict on the previous owners.
+
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+>
+> * **Year Zero** — Requires a named receiving leader for every open obligation and its continuing cost.
+> * **The Exit Halo** — Keeps cash received, ownership retained and later company outcomes separate when judging a sale.
 
 On the morning after a company changes investors or owners, its signed customer contracts are still there. So are the recovery time it has promised customers, the half-finished move of customers onto a new system and the hire it postponed. The deal changed who owns the company, or who owns part of it. It did not change the work.
 

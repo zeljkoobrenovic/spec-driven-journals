@@ -12,6 +12,12 @@ icon: "assets/icons/part-7-intro.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to lead when a company’s money or owners change: check the business before investing, fund the first plan, and hand over the evidence and unfinished promises.
 
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+>
+> * **Clean Slate Syndrome** — Carries findings, evidence and unfinished obligations from the investment investigation into the plan and handover.
+> * **Never Fixing the Roof** — Gives inherited constraints funding, responsible people and protected time.
+> * **The Ratchet Roadmap** — Makes new priorities account for existing commitments and explicit postponements.
+
 <br>
 Larkspur is the book’s fictional software company. Setting up a new customer is called **onboarding**. In a sample of five customer setups, three depended on one specialist entering the customer’s settings by hand. Part III showed Larkspur asking its investor for help with that work. This part follows the finding through changes in funding and ownership, seen from the company’s side.
 

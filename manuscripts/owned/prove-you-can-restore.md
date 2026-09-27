@@ -1,5 +1,5 @@
 {id: prove-you-can-restore}
-# 29. Build And Test Resilience: Backups Are Not Enough
+# 31. Build And Test Resilience: Backups Are Not Enough
 
 ![Build And Test Resilience: Backups Are Not Enough — logo](private-techuity/posts/28-prove-you-can-restore/assets/images/28-prove-you-can-restore/logo.jpeg)
 
@@ -14,6 +14,11 @@
 > * Start with the **business function that must keep working** and state the recovery objective in ordinary language: how soon service must resume and how much recent work may be lost.
 > * **Evidence of a backup is not evidence of an operating service**. A restore test is judged against the objective, and a failed test is a finding to fund, not a slide to defer.
 > * After the retest, **record what remains exposed and who accepted it**. A modelled reduction in future losses supports that decision; it is not profit recorded in the accounts.
+
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+>
+> * **Never Fixing the Roof** — Turns a failed restore test into funded corrective work and a retest.
+> * **Year Zero** — Keeps recovery findings, remaining exposure and responsibility explicit when support or ownership changes.
 
 At six in the morning a dispatcher at one of Larkspur’s customers, a maintenance business, opens the scheduling service to assign the day’s jobs. It doesn’t load. Twenty engineers are in vans waiting to be told where to go, and the customers of that business were promised arrival windows the previous afternoon. Every hour the service stays down, the dispatcher is working from memory and a phone. The scenario is fictional, but it is what the rest of this chapter is about.
 

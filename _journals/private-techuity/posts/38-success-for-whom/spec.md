@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-26
+revised: 2026-09-27
 ---
 
 # Spec: Success for Whom, and for How Long?
@@ -17,6 +17,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Exit Halo; Squeezing the Balloon. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Anchor the excerpt, opening callouts, key points, introductory narrative and summary opening in the preceding cases. Identify Larkspur as fictional on its first mention, describe the thirty-customer decision before abstract advice, and retain the distinction between cash savings and released staff time.
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
@@ -71,6 +72,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-26: Ground the opening and summary in named historical outcomes and the explicitly fictional thirty-customer Larkspur decision before introducing the durable-success standard. Preserve the decision's amounts, conditions and stable permalink.
 - 2026-09-23 (comic pages): The six single-scene panels replaced by seven comic pages of three strips each, so the four-column matrix with the five cases' reported investor results and the columns that move apart, the durable-success questions and each stakeholder's overturning question, Larkspur at day 100 with the calendar and Option A's €150,000 / €70,000 split, the breach-is-not-a-saving ruling and Option A′, Option B with both month-six tests stated, its ~€62,500 one-off and the €75,000 labelled as a planned, conditional saving, the decision with its accountabilities, funded mitigation, recorded disagreement and reopening triggers, and the buyout and healthcare findings with what a leader can change are drawn into the artwork rather than carried by captions. Page images live under `assets/images/38-success-for-whom/`; the previous panel comic is archived under `_research/comic-pages-pilot/`. No figure, date or decision changed; permalink unchanged.
 - 2026-09-23: In-depth review round 3 (SFW-06, -07, -10, -15, -16, -17). The 4.6 per 10,000 hospital result is described as an adjusted excess against comparison hospitals, not an observed 18-to-23 rise; TeamSystem’s 2021/2024 chronology moved out of the matrix to the case chapter, the Toys R Us cell trimmed and the matrix currencies named; the decision table’s reopening evidence split into one row per trigger; each healthcare study in its own paragraph; the customer wait defined (contract signing to first scheduled real work) and the migration destination named in article, summary and comic; panel 6’s caption in three short paragraphs; the summary cut to under 500 prose words, names the investor/company divergence, defines funds and operating profit, includes remaining value in the investor result, names the hospital-sale comparison group and no longer says A′ “saves nothing”; Figure 2’s alt text and caption describe the cycle and its three questions. Permalink and id unchanged.

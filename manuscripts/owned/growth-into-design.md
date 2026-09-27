@@ -1,5 +1,5 @@
 {id: growth-into-design}
-# 26. Plan for Growth: Decide What (Not) to Change in Your Systems
+# 28. Plan for Growth: Decide What (Not) to Change in Your Systems
 
 ![Plan for Growth: Decide What (Not) to Change in Your Systems — logo](private-techuity/posts/25-growth-into-design/assets/images/25-growth-into-design/logo.jpeg)
 
@@ -14,6 +14,11 @@
 > * An investor’s growth assumption reaches the team as a request for flexibility. **Recover the business requirement** before comparing designs: which changes must become easier, for which customers, by when.
 > * Compare **options against that requirement**, not against which is more fashionable: the same customer need, delivery date, ongoing responsibility and cash limit. Choose one under stated assumptions and name the evidence that would reverse it.
 > * Follow **spending and benefits through time**. An attractive future saving still needs funding before it arrives, and a design that adds operating responsibility adds a cost line the next review will question.
+
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+>
+> * **The Nodding Room** — Translates a broad growth request into specific customer changes, dates and design requirements.
+> * **Squeezing the Balloon** — Shows the spending and operating responsibility added before an expected design saving arrives.
 
 Investors rarely hand a technology team a design brief. They hand over an **expectation**, such as fast growth, higher margins or entry into new markets, and it reaches the team as a vague request: make the software “more flexible.” The request leaves out its reasoning: which customers, which changes, by when and at what cost. Without that reasoning, a team can build too much or build the wrong thing, and either way it spends cash before any benefit arrives. Every company **translates financial expectations into technical work**; the difficulty here is that the assumption arrives as a demand, with the customers, dates and constraints behind it left with the investor.
 

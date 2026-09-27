@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-18
+revised: 2026-09-27
 ---
 
 # Spec: Match the Funding to the Work
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Ratchet Roadmap; Spending the Press Release. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is a sequence of comic pages: each page is one image of three stacked strips that carries its dialogue, labels and amounts in the artwork, with consistent fictional characters and a short caption under each page. Every string drawn in a page comes from the page script, which traces to the article, and generated artwork is inspected against the script (spelling, cast identity, which speaker each bubble points to, counts and sizes), not assumed.
@@ -62,6 +63,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-18: Comic converted from six single-scene panels to eight comic pages of three strips each (the format piloted on [[obligations-before-budget]]): the need behind “we need an investor”; owner, rights, money and event as four questions; the €610,000 sizing; the two offers; the repayment test; the dated review; who recommends and who decides; and revisiting the fit. The spec’s content requirements for the comic are kept and restated per page. Article and summary unchanged.
 - 2026-09-17: Revise per round 3 of the 17 September in-depth review (RWN-002, RWN-003, RWN-004, RWN-013, RWN-014): the €40,000 amber step now buys only what the plan does not already pay for (an external data-validation service and temporary data-entry help), with the contract specialist’s hours stated as inside the €150,000 for months 1–12; the repayment-risk sentence limited to what the two forecasts test; the summary’s loan restated as a four-year bank loan with 8% annual interest on the amount still owed; Figure 2’s “adjust scope” translated in caption and alt text; the closing transition and the control paragraph split into short sentences and separate paragraphs; panel 5 caption as four labelled items and panel 6 caption split into offers, repayment test and decision (artwork unchanged); the post template now right-aligns `---:` table columns and keeps their cells on one line so signed amounts do not wrap.
 - 2026-09-17: Revise per round 2 of the 17 September in-depth review (RWN-001, RWN-003, RWN-006, RWN-007, RWN-010, RWN-011, RWN-012): the cash forecast now assumes the imported 62-hour result and pays the €40,000 amber step in year one (base closing €630,000 / €640,000 / €700,000 / €780,000; downside €630,000 / €590,000 / €600,000 / €630,000), with the earmarked money itemised at the end of year one (€290,000: €70,000 allowance, €90,000 runway, €30,000 year-two maintenance, €100,000 remaining reserve) and released at month 18 as a label change; the decision runway redefined as €75,000 for six more months of the contract specialist plus €15,000 for keeping the old manual process running alongside the new step, so maintenance in months 13–18 is counted once (in the €30,000 year-two line) and the €610,000 total is unchanged; comic equity definition corrected to ownership with new versus existing shares and no guaranteed recovery, interest defined; panel 6 caption carries the four-year term, the €310,000 largest payment and the €350,000 operating cash; board, pilot, quarter, onboarding (before Figure 1), integration, EBITDA (plain meaning) explained at first use; scope, headroom, transaction and “close” simplified in the summary; summary overview and panel 1 labels given text equivalents; summary trimmed to within 300–500 prose words.

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-18
+revised: 2026-09-27
 ---
 
 # Spec: Find the Cash Behind Your Technology Budget
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: Spending the Press Release; Squeezing the Balloon. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Labels displayed at ordinary text size in the article figures and the TL;DR overview are set in dark navy lettering with at least 4.5:1 contrast against the ivory background; teal and ochre stay in shapes, arrows and accents, not in lettering. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is a sequence of comic pages: each page is one image of two or three stacked strips that carries its dialogue, labels and amounts in the artwork, with consistent fictional characters and a short caption under each page.
@@ -68,6 +69,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-18: Comic format changed from six single-scene panels (one speech bubble, no amounts in the artwork, long captions) to seven comic pages of three strips each, after the author found the panels unclear and uninformative: the dialogue, labels and amounts now sit in the artwork and the captions are short. The first page keeps the unpaid-invoices requirement (the bar is still in a customer’s hands); the three-priced-options page and the final page carry the former panel 6 requirements. Pages that change the example’s assumptions label the change once, in the artwork, by stating the new assumption (“Now suppose €60 million of floating-rate debt”), not by repeating that the page is a separate illustration. The page script lives in the `comic-page` blocks of comics.md and is generated with the explainer-comics skill’s `generate_comic_pages.py`; the pilot record and rejected variants are in `_research/comic-pages-pilot/`. Article and summary unchanged.
 - 2026-09-17: Implement the in-depth review of run `20260917-211023` round 3 (`round-03.review.md`, OBB-013/016/017/018): the mid-year check split into payments already made, remaining commitments, the scenario exclusion, the continuing shortfall and the 30 June balance arithmetic (the specialist and covenant splits were already present from the parallel run); the day-100 table wrapped in the compact-table treatment so phones show descriptions and amounts together; the summary’s gate condition restated as the cohort’s average (no more than 50 staff hours per setup); comic panel 6’s caption rewritten to open with the €800,000 forecast capacity as an explicit fictional assumption, separate from panel 5, before listing the options, with the later reviews in a second paragraph (artwork unchanged, inspected); site and manuscript rebuilt.
 - 2026-09-17: Implement the in-depth review of run `20260917-211013` round 3 (`round-03.review.md`, OBB-002/003/005/014/015/016): option 1 stated as a separate six-month specialist extension agreed at approval (1 April–30 September, €75,000), distinct from the pilot’s one-quarter option; a weak-collections result at day 100 sends Sam back to the forecast immediately with actual receipts, payments made and all remaining commitments, and check two is declared a separate mid-year illustration whose balances are not reused after the option is exercised; the specialist, mid-year and covenant passages split at their conceptual boundaries; summary counted with cross-link titles expanded and trimmed under 500; article cash-calendar figure and TL;DR overview regenerated with navy lettering for contrast; comic introduction and panel 2 caption describe the adjustment as the period’s increase in unpaid invoices with the €2 million to €3 million contrast; site and manuscript rebuilt.

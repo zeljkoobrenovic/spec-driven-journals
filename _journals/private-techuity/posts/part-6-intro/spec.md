@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-24
+revised: 2026-09-27
 ---
 
 # Spec: PART V — SUSTAIN: Keep the Technology You Run Worth Its Cost
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after the opening IN THIS SECTION callout: Never Fixing the Roof; Squeezing the Balloon. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions. The existing length target applies to the orientation prose; this requested navigation block is additional.
 - Include exactly one chapter overview at the start of the learning path, in addition to the header logo: one card per chapter stacked in one column for phone reading, plain second-line labels, no arrows implying sequence, and alt text a newcomer can follow. Generate it through the Gemini API in the book’s ivory, navy, teal and ochre style; publish one JPEG with descriptive alt text and a prose caption, and preserve it in the manuscript export.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths, consistent with the journal’s visual style.
 - Recall in one sentence the discipline of Parts III and IV; explain cloud, backup and restore in plain words at first use; say that the chapters are independent and may be read as the decision requires.
@@ -43,6 +44,7 @@ The journal's current config.yaml and the configured chapter introductions. Thes
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after the opening IN THIS SECTION callout, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-24 (order): Chapter order technical debt, resilience, cloud costs, AI costs; the introduction says the first chapter frames the estate on three columns and the others deepen one each; overview regenerated in that order.
 - 2026-09-24 (order and contents): Chapter order resilience, cloud costs, AI costs (the new [[ai-worth-its-cost]] added as the third chapter, cloud costs moved directly before it at the author's request); learning path, term order, alt text and opening line updated; overview to be regenerated with three cards in this order.
 - 2026-09-24 (part order): SUSTAIN renumbered to Part VI (folder `part-6-intro`, permalink `part-6`); opening recalls Parts IV and V; closing hands off to Part VII (LEAD). Overview regenerated with two cards after the AI chapter left.

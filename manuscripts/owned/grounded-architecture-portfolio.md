@@ -1,5 +1,5 @@
 {id: grounded-architecture-portfolio}
-# Appendix: Grounded Architecture Across an Investment Portfolio
+# 42. Appendix: Grounded Architecture Across an Investment Portfolio
 
 ![Appendix: Grounded Architecture Across an Investment Portfolio — logo](private-techuity/posts/grounded-architecture-portfolio/assets/images/grounded-architecture-portfolio/logo.jpeg)
 
@@ -10,6 +10,11 @@
 > * **A portfolio resembles a decentralized group in the problem it poses.** Many systems, many teams and nobody with the whole picture; the challenge is to understand the landscape, connect the right people and support better decisions without becoming the bottleneck everyone works around.
 > * **Reuse the foundations for understanding.** Lightweight analytics and collaborative networks build a shared, evidence-based view of technology and of the people behind it. Both are highly transferable because neither depends on authority.
 > * **Adapt the mechanisms for acting.** An investment portfolio is not one organization. Decision rights, company autonomy, time horizons and investment objectives differ from company to company, so the operating model must be designed around them rather than copied from a corporate group.
+
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+>
+> * **The Dusty Address Book** — Maps expertise across companies and creates routes for people to ask one another for help.
+> * **The Accidental Gatekeeper** — Builds shared understanding and support around each company’s authority instead of creating a central approval bottleneck.
 
 An investor holds stakes in a dozen software companies. Each has its own systems, its own cloud bills, its own engineers and its own way of describing all three. The investor wants to know where the technology risks are, where money is being spent twice, which companies could help each other and where its support would do the most good. The companies, meanwhile, want to run their own businesses without answering the same questionnaire every quarter.
 

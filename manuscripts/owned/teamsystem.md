@@ -1,5 +1,5 @@
 {id: teamsystem}
-# 38. TeamSystem: Each New Owner Inherits Progress and Unfinished Work
+# 40. TeamSystem: Each New Owner Inherits Progress and Unfinished Work
 
 ![TeamSystem: Each New Owner Inherits Progress and Unfinished Work — logo](private-techuity/posts/37-teamsystem/assets/images/29-teamsystem/logo.jpeg)
 
@@ -14,6 +14,12 @@
 > * **Development and integration work continued after the 2016 sale.** TeamSystem's 2017 accounts recorded €13.4 million of software development as an asset and €1.9 million of IT integration and transformation costs. A new owner still needed to fund continuing product work; these amounts alone do not establish its customer benefit. [S49: TeamSystem 2017 report](https://www.teamsystem.com/media/files/865_Consolidated%20Financial%20Statements%20as%20at%20and%20for%20the%20year%20ended%2031%20December%202017%20of%20TeamSystem%20Group.pdf)
 > * **The apparent 37.7% revenue rise becomes 8.9% on the report's fuller comparison.** Revenue means sales recorded before costs. The first comparison uses only March–December 2016 against all of 2017; the second reconstructs all of 2016 and includes businesses acquired that year from January. The 8.9% still includes acquisitions made in 2017. [S49: TeamSystem 2017 report](https://www.teamsystem.com/media/files/865_Consolidated%20Financial%20Statements%20as%20at%20and%20for%20the%20year%20ended%2031%20December%202017%20of%20TeamSystem%20Group.pdf)
 > * **TeamSystem reported €113.0 million of adjusted earnings and a €56.8 million loss for 2017.** Adjusted earnings leave specified costs out; the formal accounts include them. The gap includes charges for earlier purchases and borrowing, so neither headline can stand in for the cash available for the next product plan. [S49: TeamSystem 2017 report](https://www.teamsystem.com/media/files/865_Consolidated%20Financial%20Statements%20as%20at%20and%20for%20the%20year%20ended%2031%20December%202017%20of%20TeamSystem%20Group.pdf)
+
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+>
+> * **Year Zero** — Follows development and integration obligations that continue after an ownership change.
+> * **The Exit Halo** — Separates transaction values and investor accounts from what the evidence establishes about company outcomes.
+> * **Squeezing the Balloon** — Reconciles adjusted earnings with continuing development, integration and financing costs.
 
 When Palamon invested in TeamSystem in 2000, it described a founder-led Italian software business with about 28,000 clients and 200 employees. TeamSystem sold software used by accountants and smaller companies. Palamon sold to Bain Capital in 2004; Hg acquired control in 2010; Hellman & Friedman took control in March 2016, with Hg retaining a smaller holding. During its ownership, Hg reported eleven acquisitions as well as changes to product strategy, pricing and cash collection. Each buyer was taking over a business that earlier owners had changed. [S45: Palamon TeamSystem account](https://www.palamon.com/teamsystem) [S48: HgCapital Trust 2015 results, p. 14](https://www.hgcapitaltrust.com/~/media/Files/H/Hgcapital-Trust-V2/documents/investors/financial-calendar/hgcapitaltrust-dec-2015-general.pdf)
 

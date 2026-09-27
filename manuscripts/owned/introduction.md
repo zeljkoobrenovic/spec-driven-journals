@@ -1,5 +1,5 @@
 {id: introduction}
-# Introduction & Reading Guide
+# 1. Introduction & Reading Guide
 
 ![Introduction & Reading Guide — logo](private-techuity/posts/introduction/assets/images/introduction/logo.jpeg)
 

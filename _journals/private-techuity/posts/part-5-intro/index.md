@@ -12,6 +12,12 @@ icon: "assets/icons/part-5-intro.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to change the company’s size and shape deliberately: add people where the work needs them, stop work before cutting jobs, change systems for expected growth, and account for the work a purchase or a separation adds.
 
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+>
+> * **All Bulk, No Muscle** — Checks whether hires, tools and acquisitions remove the constraint on useful work.
+> * **Squeezing the Balloon** — Counts transition costs and the work left with the remaining team.
+> * **The Ratchet Roadmap** — Makes integration and other changes compete openly with existing product commitments.
+
 <br>
 Part IV turned investor expectations into work the company can afford and deliver. Investment also changes what the company is. A **funding round**, an occasion when the company raises new investment, can pay for people that revenue would not cover for years; a late round can force the same people out a year later. Growth can outgrow the software. An owner can buy another business or separate part of this one. This part covers three levels: the team (up, down and with AI), the systems and the company’s boundary.
 

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-22
+revised: 2026-09-27
 ---
 
 # Spec: Practical Tools for Ownership and Technology Decisions
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Ghost Veto; The Ratchet Roadmap; Borrowed Brains; Clean Slate Syndrome. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Keep the four-column outcome scorecard readable on mobile through a keyboard-accessible horizontal scroll region, preserving all table contents.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data.
@@ -52,6 +53,7 @@ See the bibliography and the relevant chapters. The source registry records cons
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-22 (investor learning): Specify Tool 14 before adding the accepted chapter’s learning brief. Keep existing tool numbers and the shared Larkspur chain unchanged.
 - 2026-09-22: Reconcile reading-format coverage after adding TL;DR and illustrated Comic modalities to operating-model blueprints and technology operating partners. All 33 main chapters now provide all three formats.
 

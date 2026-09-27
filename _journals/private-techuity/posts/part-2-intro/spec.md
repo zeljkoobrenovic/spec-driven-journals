@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-23
+revised: 2026-09-27
 ---
 
 # Spec: PART II — ALIGN: Clarify Who Decides and What Is at Stake
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after the opening IN THIS SECTION callout: The Nodding Room; The Ghost Veto; The Accidental Gatekeeper. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions. The existing length target applies to the orientation prose; this requested navigation block is additional.
 - Include exactly one chapter overview at the start of the learning path, in addition to the existing header logo. Give every configured chapter its own box (three today: authority, incentives and investor fit) plus the appendix chapter on shared evidence, use short recognizable title labels with a plain-language question and no chapter numbers, and connect the chapters to the part's overall purpose.
 - Connect authority, incentives and investor fit to an accountable decision; show shared evidence as the foundation the other three chapters use; show that behavior under pressure can require revisiting the decision arrangements. The alt text and caption describe the same four-chapter relationship.
 - Generate the overview through the Gemini API, matching the book's ivory, navy, teal and ochre illustration style. Lay the chapters out as one stacked column with large lettering so that every title, question and arrow label stays readable at a phone width of about 327 CSS pixels without zooming; the alt text carries every question in full. Publish one JPEG with descriptive alt text and a prose caption, and preserve it in the manuscript export. Keep the linked chapter walkthrough as the full-title reading guide, and repeat each chapter's question from the diagram in that walkthrough as ordinary text, so a phone reader never depends on the image lettering. Give the figure a visible link that opens the diagram at full size.
@@ -53,6 +54,7 @@ The journal's current config.yaml and the configured chapter introductions. Thes
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after the opening IN THIS SECTION callout, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-23: The data-foundations chapter moved to the Appendix at the author's request. Part II now configures three chapters; the learning path keeps shared evidence as the foundation and names it as the appendix chapter. The overview artwork is unchanged.
 - 2026-09-23: In-depth review round 3 (P2-006, P2-007, P2-008). Decision rights and advisory influence kept in separate sentences; incentives described with people as the ones who gain or lose; the chapter walkthrough repeats each diagram question as ordinary text and the figure carries a visible full-size link, so the word cap is restated as about 400 (at most 410). Permalink unchanged.
 - 2026-09-23: In-depth review round 2 (P2-002, P2-004, P2-006). Fund, fund manager, carried interest, forecast and result explained at first use and "delegated authority" replaced with plain wording; the 400-word cap restated as reader-visible words with the outcome promised once, in the highlight; the overview regenerated as a stacked single-column image for phone legibility, alt text and caption updated. Permalink unchanged.

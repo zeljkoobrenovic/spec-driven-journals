@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-25
+revised: 2026-09-27
 ---
 
 # Spec: PART III — Turning Investor Expectations Into Commitments
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after the opening IN THIS SECTION callout: The Ratchet Roadmap; Spending the Press Release; The Nodding Room; Never Fixing the Roof. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions. The existing length target applies to the orientation prose; this requested navigation block is additional.
 - Include exactly one chapter overview at the start of the learning path, in addition to the existing header logo. Give every configured chapter its own box, use short recognizable title labels without duplicating chapter numbers, and connect the chapters to the part's overall purpose. Each box's second line, the band labels and the alt text use ordinary words a newcomer can follow without the later chapters (rented computing, restoring service after failure, artificial intelligence spelled out and its three questions named in verbs rather than counted, buying or splitting off a business). The diagram carries a short key stating what artificial intelligence does, so it reads standalone.
 - Keep the six chapters in three moves: choose and justify work, assess what delivery requires, then apply the reasoning to cloud, resilience and AI. The three applications share a method; none is a prerequisite for the next. The hiring, layoff, system-change and acquisition chapters belong to Part IV (SCALE), and the closing line hands off to Part IV and then Part V.
 - Generate the overview through the Gemini API, matching the book's ivory, navy, teal and ochre illustration style. Publish one JPEG with descriptive alt text and a prose caption, and preserve it in the manuscript export. Keep the linked chapter walkthrough as the full-title reading guide.
@@ -51,6 +52,7 @@ The journal's current config.yaml and the configured chapter introductions. Thes
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after the opening IN THIS SECTION callout, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-25 (contents): [[have-your-numbers-ready]] added after [[adopt-outcome-thinking]] in the first move; the learning path now has seven chapters in four moves (2+3+1+1); Figure 1 regenerated (round 5), alt text and caption updated.
 - 2026-09-24 (contents): [[adopt-outcome-thinking]] added as the first chapter, in a new first move “Agree what the work is for”; the learning path now has six chapters in four moves, alt text and caption updated, closing line begins with the new chapter; overview to be regenerated with six cards; kept under 400 words.
 - 2026-09-24 (part order and contents): COMMIT is now Part IV (folder `part-4-intro`, permalink `part-4`). Chapters: set priorities, test revenue assumptions, clarify AI strategy (moved back in from the new SUSTAIN part as an investment-choice chapter), assess capability, manage funding delays (moved in from LEAD). Learning path in three moves (choose and justify, assess what delivery requires, revise when the money is late); overview regenerated three times during the day to match; opening recalls Parts II and III; closing hands off to Part V (SCALE) and Part VI (SUSTAIN).

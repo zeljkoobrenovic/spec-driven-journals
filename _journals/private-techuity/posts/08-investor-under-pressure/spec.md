@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-18
+revised: 2026-09-27
 ---
 
 # Spec: Judge an Investor by Their Behavior Under Pressure
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Nodding Room; Spending the Press Release. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is a sequence of comic pages: each page is one image of three stacked strips that carries its dialogue, labels and amounts in the artwork, with consistent fictional characters and a short caption under each page. It keeps B’s fund reserve apart from the contractual follow-on, shows both investors’ answers to declining a proposed service, and treats a second account of B replacing management as a reason to investigate and negotiate, not as a verdict. Every string drawn in a page comes from the page script, which traces to the article, and generated artwork is inspected against the script (spelling, cast identity, which speaker each bubble points to, counts and sizes), not assumed.
@@ -64,6 +65,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-18: Comic converted from six single-scene panels to eight comic pages of three strips each (the format piloted on [[obligations-before-budget]]): the two offers and the three next decisions; the difficult references; declining a service; the funding horizon; the fund reserve against the contractual follow-on, with the worked average; the three states of the money and the fifteen-month timeline; the decision, the risks accepted and what would reopen it; and the inherited-investor scenario. No scenario amounts changed. Article and summary unchanged.
 - 2026-09-18: In-depth review round 3 (IP-13, IP-06, IP-14, IP-15). Add the retest rule for the follow-on condition (one pre-agreed second group, its own average decides, result about month eight); count the TL;DR’s request window from closing and explain closing there; cut the WHY INVESTORS CARE callout to the investor’s one trade-off and move B’s reasons into the contract passage; name the comparison table’s first column. Permalink, amounts, thresholds, dates and the two-scenario boundary unchanged.
 - 2026-09-18: In-depth review round 2 (IP-01, IP-02, IP-06, IP-09, IP-11, IP-12). State the pilot condition and the board’s rule as group averages; describe the condition as an agreed level of observed improvement, not proof of cause; separate signing, closing and receipt of the first €4.5 million; say the clause avoids a fresh discretionary negotiation, not the request; put Figure 2 in time order with payment before wider use; identify the committee, the board, references and a quarter in the TL;DR. Permalink, amounts, dates and the two-scenario boundary unchanged.

@@ -16,6 +16,8 @@
 - [Validation and manuscript status](validation.md)
 - [Bibliography revision history](bibliography-revision-history.md) — which revision added or rechecked which S/P identifiers; kept out of the public bibliography.
 - [Investment-pattern illustration prompts](investment-pattern-illustrations-20260926.json) — the opening guide's header logo, twelve explanatory figures and visual review record.
+- [Investment-impact illustration prompts](investment-impact-illustrations-20260927.json) — the two companion figures showing how investment decisions can build or erode trust and cooperation.
+- [Dysfunction callout mapping](dysfunction-callouts-20260927.json) — the patterns each relevant post helps address, its short reasons and the placement rule.
 - `sources.json`: machine-readable source metadata, consulted scope, and access dates.
 - `input-preservation.json`: SHA-256 snapshot of the 478 files present before drafting; includes the original prompt and supplied inputs.
 

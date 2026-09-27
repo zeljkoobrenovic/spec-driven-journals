@@ -1,5 +1,5 @@
 {id: different-bets}
-# 8. Compare Incentives and Stakes: Equity, Carry and Jobs
+# 10. Compare Incentives and Stakes: Equity, Carry and Jobs
 
 ![Compare Incentives and Stakes: Equity, Carry and Jobs — logo](private-techuity/posts/07-different-bets/assets/images/07-different-bets/logo.jpeg)
 
@@ -14,6 +14,12 @@
 > * Shared ownership **does not create identical interests**. Executives, the fund, employees and customers can gain or lose different things, hold different rights and plan for different time frames. A single proposal to close a support location makes the four bets visible.
 > * A **share percentage is only the beginning**. What an award can pay depends on who is paid first, when the rights are earned, how many new shares are issued later and what happens if the holder leaves. The rules that divide a company’s sale money are also separate from the rules that divide a fund’s profits.
 > * Pair a target with **the measure it could damage**, and change the payout rule if it still rewards the damaging choice. Measurement alone cannot correct an incentive.
+
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+>
+> * **The Nodding Room** — Shows what executives, investors, employees and customers each gain or risk from one proposal.
+> * **Squeezing the Balloon** — Pairs a target with the harm it could reward and asks who carries the resulting burden.
+> * **The Exit Halo** — Keeps the fund’s payout, an executive’s shares and an employee’s job as distinct outcomes.
 
 “We are all shareholders now” can describe a useful common interest. It can also conceal **very different risks, rights and time frames**.
 

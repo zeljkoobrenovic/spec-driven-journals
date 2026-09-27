@@ -23,6 +23,10 @@ icon: "assets/icons/29-cheaper-cloud-bill.png"
 > * Choose a **unit that reflects useful service**, and read it against the plan as well as the prior period. Cost per completed transaction or comparable customer can reveal more than total spending alone, and unit cost can improve while the approved spending plan is still missed.
 > * **Commit only to the demand you can defend**. Test a promise to buy a fixed amount against a stated range of likely demand and against the period the company can already afford to pay for, and keep service quality as the final check on any saving.
 
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+>
+> * **Squeezing the Balloon** — Checks comparable demand, unit cost, commitments and service quality before calling a lower bill an improvement.
+
 <br>
 **Cloud services** provide computing resources, storage and related services rented from a supplier. A company’s cloud bill falls by 20%. Has its operation improved?
 

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-24
+revised: 2026-09-27
 ---
 
 # Spec: Why a Cheaper Cloud Bill Can Be Bad News
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: Squeezing the Balloon. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the summary prose concise (target 650–800 words), with bold emphasis and citations; provide alt text and a concise numbered caption. The range was widened from 300–500 to 500–650 on 2026-09-22 — making the summary readable on its own, by expanding every job title and defining commitment, credits, flexible prices, carve-out, latency and the funding premise in place, costs words the article does not have to spend twice — and again to 650–800 later the same day, when the summary also had to carry the contract’s payment timing, the stress-case definition, and the demand level and benchmark year behind the residual gap. It now runs about 856 words, above the 650–800 target: the 2026-09-22 round-3 review required the summary to carry the billed-versus-due payment distinction, the approval-scope split and one-question-per-paragraph structure, and asked explicitly that the qualifications be retained rather than the target widened again. The redundant abstract €35,000/€50,000 commitment example was cut instead, since the Larkspur figures teach the same mechanic. The standalone-readability criterion above takes precedence over the word target; trim only what is genuinely redundant.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Where a figure compares amounts the prose states, draw the comparison to scale and label the amounts, so the picture cannot imply a different ratio from the text. Labels inside artwork use the same plain language as the prose, never technical shorthand a lay reader must decode; any number drawn in a figure states what it counts; and where a figure groups the argument differently from the section it illustrates, the visible caption maps one to the other. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is a sequence of comic pages: each page is one image of three stacked strips that carries its dialogue, labels and amounts in the artwork, with consistent fictional characters and a short caption under each page; where a page compares amounts, the drawn sizes match the stated ratio. Every string drawn in a page comes from the page script, which traces to the article, and generated artwork is inspected against the script (spelling, cast identity, which speaker each bubble points to, counts and sizes), not assumed.
@@ -60,6 +61,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-24 (order): Placed directly before [[ai-worth-its-cost]], after [[prove-you-can-restore]], so the AI chapter follows the method it applies; closing hand-off rewritten accordingly. Folder renumbered to `29-cheaper-cloud-bill`; permalink and id unchanged.
 - 2026-09-24 (part order): Moved from Part III to open the new Part VI (SUSTAIN); folder renumbered to `29-cheaper-cloud-bill`. Body, permalink and id unchanged.
 - 2026-09-22: Comic converted from six single-scene panels to seven comic pages of three strips each (the format piloted on [[obligations-before-budget]]): the two questions inside Morgan’s one; the comparison basis; unit cost against the prior year and against the plan; usage, rates and architecture, with the commitment tested against lower demand; the three options across the demand range and the funding condition; the one-year contract and what a review cannot change; and opportunity, change, observed effect and the two-part answer, with the credits example. Roles are named in ordinary words in the artwork and captions. No amount, date or decision changed. Article and summary unchanged.

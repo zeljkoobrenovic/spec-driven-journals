@@ -1,5 +1,5 @@
 {id: manage-technical-debt}
-# 28. Manage Technical Debt: Fund the Fix by the Cost, the Risk and the Speed It Buys
+# 30. Manage Technical Debt: Fund the Fix by the Cost, the Risk and the Speed It Buys
 
 ![Manage Technical Debt: Fund the Fix by the Cost, the Risk and the Speed It Buys — logo](private-techuity/posts/27-manage-technical-debt/assets/images/27-manage-technical-debt/logo.jpeg)
 
@@ -14,6 +14,12 @@
 > * **Debt is a carrying cost with three columns.** What it costs to keep, in euros a month; what risk it carries; what it slows. The last two keep their own units. Never a count, a percentage or a ratio.
 > * **Present the fix by what it buys.** The revenue it protects or enables, the cost or risk it removes and, only for a real dated decision, the choice it keeps open. Show the register before and after, because the board never sees the failures a fix prevented.
 > * **Large projects are transitions, funded in tranches.** A tranche is a separately approved stage of work and spending; a gate is the agreed check that the stage delivered what it promised and worsened nothing it had to protect. A rewrite with its whole benefit at the end is right only when no useful half-way state exists.
+
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+>
+> * **Never Fixing the Roof** — Prices the recurring burden and gives improvement work funded stages and checks on the result.
+> * **Squeezing the Balloon** — Keeps ongoing cost, risk and slower delivery visible when maintenance is postponed.
+> * **The Ratchet Roadmap** — Names the people assigned to the transition and the existing work that must wait.
 
 **Technical debt** is the extra cost a company carries because its software was built, or has aged, in ways that make it slower, riskier or more expensive to change than it needs to be. It is not a loan from anyone; the word is a metaphor for a burden that keeps being paid. A concrete example: a scheduling company whose software runs each region on one large server cannot sell to customers above a certain size, and turned two of them away last year. Nothing on any bill records that loss.
 

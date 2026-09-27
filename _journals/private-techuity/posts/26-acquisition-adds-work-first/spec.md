@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-24
+revised: 2026-09-27
 ---
 
 # Spec: An Acquisition Adds Work Before It Adds Value
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: All Bulk, No Muscle; The Ratchet Roadmap. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Hand off to Part IV through its first chapter, `operating-model-blueprints`.
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
@@ -74,6 +75,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-24 (part order, later the same day): Closes Part V (SCALE); the closing paragraph now refers back to Part III (COLLABORATE) for where additional capability comes from and hands off to Part VI (SUSTAIN); comic page 8 re-lettered accordingly. Folder renumbered to `26-acquisition-adds-work-first`.
 - 2026-09-24 (Part IV SCALE): Moved from the end of Part III to the end of the new Part IV. Opening line now says the chapter closes Part IV by taking its question (what a change in size costs before it pays back) to the company’s boundary; closing hand-off names Part V; the comic’s page 8 dialogue and artwork updated from “Part IV” to “Part V”. Folder renumbered to `26-acquisition-adds-work-first`; permalink and id unchanged.
 - 2026-09-22: Comic converted from six single-scene panels to eight comic pages of three strips each (the format piloted on [[obligations-before-budget]]): one boundary and one principle; the thesis as what changes, with organic growth defined over comparable periods; the depth of integration by benefit; the capacity decision with its arithmetic and what waits; the independence bill; the dated bridge with its parallel runs and the May test; the extension’s two dates and what a slip costs; and the completion tests. Cross-selling, service levels, sign-in and going live are put in plain words in the artwork or captions. No amount, date or decision changed. Article and summary unchanged.

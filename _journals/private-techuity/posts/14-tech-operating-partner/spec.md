@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-24
+revised: 2026-09-27
 ---
 
 # Spec: The Rise of the Technology Operating Partner
@@ -15,6 +15,7 @@ Product and engineering leaders working under investors; secondarily investment 
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Dusty Address Book; The Accidental Gatekeeper; All Bulk, No Muscle. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Link the portfolio-learning responsibility to [[learn-through-investors-network]], including maintaining access and shared resources; preserve the wider operating-function argument.
 
 - Explain the pressures behind the function: technology-dependent operating plans, continuity after diligence, acquisitions and shared learning, and AI as both an opportunity and a risk to an investment thesis.
@@ -58,6 +59,7 @@ Draft link list: `_drafts/tech-operating-partner/online-source.md`. Consulted pu
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-24 (part order): COLLABORATE is now Part III, so the closing hand-off points to Part IV (COMMIT) and [[cannot-fund-everything]] instead of LEAD. Folder renumbered to `14-tech-operating-partner`; permalink and id unchanged.
 - 2026-09-23 (lay-reader review round 3, TOP-003/009/010): The TL;DR must name private equity as the main evidence base and explain it. Replace the remaining "onboarding" and "roadmap trade-offs" jargon in the article, and make the AI-leader interview sentence name distinct activities. The manuscript chapter follows the article.
 - 2026-09-23 (lay-reader review round 2, TOP-002/003/005/008): Contract unchanged. Define "pilot" at its first use; explain the mandate and replace "onboarding" in the standalone summary; explain resolution quality in the comic; state that better replies cannot repair an unreliable service rather than making it a prerequisite. The manuscript chapter was resynchronized with the article.

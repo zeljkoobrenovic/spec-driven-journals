@@ -23,6 +23,10 @@ icon: "assets/icons/03-three-different-returns.png"
 > * **Hold the company’s performance fixed** and the money the fund receives at the sale, and its multiple of the money it invested, can still more than double, because only the price a buyer pays changed.
 > * Explain the **technology contribution step by step**. Evidence about customers, costs and cash is needed before assigning part of a sale gain to engineering.
 
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+>
+> * **The Exit Halo** — Holds company performance fixed while changing sale price and timing, showing why investor gains cannot grade engineering alone.
+
 <br>
 A company can grow its earnings, yet its investor earns less than expected. Another company may become more fragile while an investor receives a profit. To understand either result, follow the **investment** as well as the **business**.
 

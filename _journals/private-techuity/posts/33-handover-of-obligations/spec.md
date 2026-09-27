@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-24
+revised: 2026-09-27
 ---
 
 # Spec: Hand Over the Obligations, Not Just the Company
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: Clean Slate Syndrome; The Exit Halo. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Structure: durable evidence kept during the work → transaction forms and who receives cash versus who keeps an interest → authority changes → unfinished obligations → the accepted handover record → permitted follow-up and learning.
 - Distinguish a secondary sale of company shares from a sale of a fund interest, and describe a continuation transaction with its price and conflict questions; cite [S02] and keep the Hilton [S24] and Visma [S30] references within their source scope, linking [[three-different-returns]], [[hilton-and-skype]] and [[visma]].
 - Include one compact Larkspur handover example using the shared D-3/ONB-1 chain (80-hour baseline; €180,000 committed, about €90,000 incurred by day 100, €90,000 remaining, €30,000 a year maintenance from the operating budget; 62 hours in an eight-customer cohort; funded data-quality step, expansion decision at the next quarterly review, deferred hiring; Priya accountable), labeled fictional, with contractual obligations, funded work, accepted risks and options awaiting evidence kept as separate kinds, and one completed acceptance naming the receiving decision-maker, date and open exception. State that the delayed-financing chapter is a separate scenario.
@@ -51,6 +52,7 @@ The supplied book brief establishes scope, including the shared Larkspur chain. 
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-24 (Part IV SCALE): Part recap renumbered (Part VI, hand-off to Part VII); the reduction is cited as the layoff chapter in Part IV rather than as a Part VI chapter. Folder renumbered to `33-handover-of-obligations`; permalink and id unchanged.
 - 2026-09-23 (comic pages): The six single-scene panels replaced by seven comic pages of three strips each, so the morning-after obligations and the five forms of ownership event, what the record should show and the three money words, the ONB-1 entry at day 100 with its observed result and open items, KNW-1, REC-1 and the whole-plan reconciliation (340 / ~210 / ~130), company shares versus a fund interest and the transaction forms, the four kinds of open obligation with REC-1's three residual risks, and the day-130 acceptance with its exception and conditional day-190 review are drawn into the artwork rather than carried by captions. Page images live under `assets/images/33-handover-of-obligations/`; the previous panel comic is archived under `_research/comic-pages-pilot/`. No figure, date or decision changed; permalink unchanged.
 - 2026-09-23 (in-depth review round 3, HND-013/014): dilution stated as conditional on existing shareholders not buying enough new shares, and new investment as possibly, not necessarily, adding an owner; the acceptance's accountability line names Ines's and the board's approvals and Priya's delivery responsibility without pronouns. No figure changed.

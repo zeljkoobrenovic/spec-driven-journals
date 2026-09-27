@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-24
+revised: 2026-09-27
 ---
 
 # Spec: You Cannot Fund Every Good Project at Once
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Ratchet Roadmap. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is a sequence of comic pages: each page is one image of three stacked strips that carries its dialogue, labels and amounts in the artwork, with consistent fictional characters and a short caption under each page. Every string drawn in a page comes from the page script, which traces to the article, and generated artwork is inspected against the script (spelling, cast identity, which speaker each bubble points to, counts and sizes), not assumed.
@@ -54,6 +55,7 @@ Existing chapters provide the financial and governance foundations. Where releva
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-24 (order): Now the second chapter of Part IV, after [[adopt-outcome-thinking]]; one sentence in the opening notes that the outcome pair the requests serve was agreed there. Folder renumbered to `17-cannot-fund-everything`; permalink and id unchanged.
 - 2026-09-18: Comic converted from six single-scene panels to eight comic pages of three strips each (the format piloted on [[obligations-before-budget]]): the four requests and the board’s limit; the two limits, with the protected training weeks kept apart; what each request rests on; the combination, its reserve and the €30,000-a-year upkeep outside the €500,000; funding in stages; the failed day-45 test and sunk cost; the board’s reserve draw with the original plan beside the revised one; and what the day-85 retest proved and did not, with the day-100 position. The comic requirements are restated per page. No amount, date, threshold or scenario fact changed. Article and summary unchanged.
 - 2026-09-18: In-depth review round 3 (R28-009, R28-011, R28-012, R28-013). Criteria adjusted: the article table’s effort cells stay short, with the trainer and learner breakdown in a note beneath the table; the comic states ONB-1’s €30,000-a-year upkeep too; the formats count the rows the same way (four priced proposals and a fifth training item) and the article heading is count-neutral; the day-0 capacity bullet and comic panel 6’s caption are split into short sentences and paragraphs. No amount, date, threshold or scenario fact changed; permalink unchanged.

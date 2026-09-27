@@ -1,5 +1,5 @@
 {id: ai-strategy-three-questions}
-# 20. Clarify AI Strategy: Three Different Investment Questions
+# 22. Clarify AI Strategy: Three Different Investment Questions
 
 ![Clarify AI Strategy: Three Different Investment Questions — logo](private-techuity/posts/19-ai-strategy-three-questions/assets/images/19-ai-strategy-three-questions/logo.jpeg)
 
@@ -14,6 +14,12 @@
 > * An AI strategy request hides **three investment questions**: a product opportunity, an internal-work improvement and a competitive substitution. Each needs its own evidence, cost and decision, and someone accountable for holding the three answers together.
 > * Measure the **complete workflow**: preparation, production, review, correction and operation. A tool in use is not a useful result, and capacity freed is not cash saved until a dated spending decision converts it.
 > * Keep **experimental results attached to their conditions**. Dated studies of coding assistants point in different directions; test the local effect before an estimate becomes a commitment.
+
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+>
+> * **The Nodding Room** — Separates product opportunity, internal improvement and competitive threat into three different decisions.
+> * **All Bulk, No Muscle** — Tests changes to the complete workflow instead of counting tool adoption as capability.
+> * **Squeezing the Balloon** — Includes preparation, review, correction and operation when judging an apparent AI saving.
 
 Few requests arrive with more pressure and less definition than a request for an “**AI strategy**.” The phrase can mean a new feature customers will pay for, a cheaper way to run the company, or a defence against a competitor that could make the product unnecessary. Each is a different investment, with its own evidence, costs and accountable people, and funding them as one decision puts money behind the wrong question. This chapter separates the three questions and gives each its own test.
 

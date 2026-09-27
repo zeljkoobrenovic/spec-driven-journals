@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-24
+revised: 2026-09-27
 ---
 
 # Spec: Find the Help That Changes What Your Team Can Do
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Dusty Address Book; Borrowed Brains. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Treat [[learn-through-investors-network]] as the preceding chapter and the main home for exploratory learning and continuing peer communities; preserve the sourcing decision and its direct handoff to the engagement charter.
 
 - Recall the wider working arrangement established in [[operating-model-blueprints]] and the exploratory learning in the preceding chapter; distinguish both from sourcing a specific assignment.
@@ -60,6 +61,7 @@ Existing chapters provide the financial and governance foundations. Where releva
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-24 (part order): Read before COMMIT now; the opening takes the onboarding capability gap as given and links forward to [[can-the-team-deliver]] and [[fix-decisions-before-hiring]]. Folder renumbered to `11-help-that-changes-capability`; permalink and id unchanged.
 - 2026-09-22 (investor learning): Treat [[learn-through-investors-network]] as the preceding chapter and the main home for exploratory learning and continuing peer communities; preserve the sourcing decision and its direct handoff to the engagement charter.
 

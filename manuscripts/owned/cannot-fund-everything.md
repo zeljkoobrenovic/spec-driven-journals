@@ -1,5 +1,5 @@
 {id: cannot-fund-everything}
-# 18. Set Priorities: You Cannot Fund Everything at Once
+# 20. Set Priorities: You Cannot Fund Everything at Once
 
 ![Set Priorities: You Cannot Fund Everything at Once — logo](private-techuity/posts/17-cannot-fund-everything/assets/images/17-cannot-fund-everything/logo.jpeg)
 
@@ -14,6 +14,10 @@
 > * Choose a **combination of work the company can actually deliver**. Several attractive projects can fit the cash limit and still exceed the team time available.
 > * Sort the requests by **what they rest on**: an agreed obligation, tested customer evidence or an assumption. A growth target starts the discussion; it does not choose the project.
 > * Make the **next review part of the decision**, and revise the whole combination, not just one project, when a test fails or new evidence arrives.
+
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+>
+> * **The Ratchet Roadmap** — Chooses a combination that fits both cash and people, then revisits the whole combination when evidence changes.
 
 After an investment, there is rarely a shortage of good ideas. The investor wants faster growth, product has features customers are asking for, technology has risks it wants to reduce, and the customer team has problems it sees every day. Each request can look worthwhile on its own. The difficulty is that they all compete for the same two limited resources: money, and the time of the people who would do the work. A plan that **checks only the budget** can look affordable and **still fail**, because the same engineers have been counted twice.
 

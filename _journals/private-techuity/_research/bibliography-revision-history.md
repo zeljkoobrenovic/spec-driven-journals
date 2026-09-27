@@ -33,3 +33,7 @@ Rechecked the talent-management section in Redgrave (S81) and the recruitment, d
 ## 21 September 2026 — Operating-model blueprints
 
 Registered S91–S100 from the two supplied operating-model notes and extended S01 after checking fees, expense allocation and service-payment conflicts. The new appendix uses historical operating-group evidence, practitioner guidance, Vista’s self-description and stated executive preferences to frame its own proposed blueprints. The full Bain report and linked PDFs were not reviewed; the report landing page and British Business Bank overview remain background. Existing identifiers and registry gaps were retained.
+
+## 27 September 2026 — Investment and organizational trust
+
+Registered S119, The Table Group's official summary of Patrick Lencioni's Five Dysfunctions of a Team, for the new section in `where-investment-goes-wrong`. Consulted the five definitions and the characteristics of effective teams; the full book was not reviewed. The guide's comparison of constructive and damaging investment consequences is an interpretation, and its funding and scaling scenarios are illustrative. Added the topic route and Used in link, and extended the bibliography's consultation window to 27 September.

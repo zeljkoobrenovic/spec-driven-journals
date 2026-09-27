@@ -22,6 +22,11 @@ icon: "assets/icons/30-success-for-whom.png"
 > * **Toys R Us's failure left costs outside its owners' accounts.** Its March 2018 US closure plan affected roughly 33,000 employees, and Hasbro recorded $60.4 million of bankruptcy-related costs that year. Employee and supplier outcomes belong beside the investor result when judging what happened. [S37: Reuters US liquidation report](https://www.business-standard.com/article/reuters/toys-r-us-to-close-doors-leaving-void-for-toy-lovers-118031500236_1.html) [S51: Hasbro 2018 annual report](https://www.annualreports.com/HostedData/AnnualReportArchive/h/NYSE_HAS_2018.pdf)
 > * **Fictional Larkspur's €220,000 saving depends on what happens to thirty customers.** Ending their old service would remove €150,000 of annual employment cost and release €70,000 of staff time, which is capacity rather than cash. Existing customer contracts and the work needed to move them change which savings are feasible and when.
 
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+>
+> * **The Exit Halo** — Assesses investor, customer, employee and company outcomes separately over their relevant periods.
+> * **Squeezing the Balloon** — Checks proposed savings against remaining customer obligations, transition work and costs borne by others.
+
 <br>
 Blackstone finished selling its Hilton investment in 2018 after supporting the hotel group through a debt restructuring. Skype passed to Microsoft in 2011 and remained a product until its retirement in 2025. Visma brought in new investors while Hg stayed involved, and TeamSystem kept developing and acquiring software businesses across successive owners. Toys R Us entered bankruptcy in 2017, tried to reorganize and moved to close its US stores in 2018. These are the five histories from the preceding four case chapters; each combines an ownership event with a different operating outcome.
 

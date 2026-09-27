@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-26
+revised: 2026-09-27
 ---
 
 # Spec: PART VIII — Lessons from the Field
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after the opening IN THIS SECTION callout: The Exit Halo; Clean Slate Syndrome. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions. The existing length target applies to the orientation prose; this requested navigation block is additional.
 - Make the excerpt, section description and reading map identify what happened in the cases before asking what can be learned. Keep the closing comparison distinct from the four historical case chapters.
 - Include exactly one chapter overview at the start of the learning path, in addition to the existing header logo. Give every configured chapter its own box, use short recognizable title labels without duplicating chapter numbers, and connect the chapters to the part's overall purpose.
 - Bring the four case chapters into the closing synthesis. Show the common evidence-to-mechanism-to-decision method and preserve the distinction between independent histories and a causal sequence.
@@ -55,6 +56,7 @@ The journal's current config.yaml and the configured chapter introductions. Thes
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after the opening IN THIS SECTION callout, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-26: Make the section description and case map lead with named company events before the transferable questions; align the specification heading with Part VIII. Preserve the short orientation format and stable permalink.
 - 2026-09-24 (part order): LEARN renumbered to Part VIII (folder `part-8-intro`, permalink `part-8`); opening recalls Part VII. Body otherwise unchanged.
 - 2026-09-24 (Part IV SCALE): Part renumbered from VI to VII (folder `part-8-intro`, permalink `part-8`, asset paths renamed); opening recalls Part VI. Body otherwise unchanged.

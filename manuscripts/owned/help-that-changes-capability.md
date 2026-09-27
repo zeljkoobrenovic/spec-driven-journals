@@ -1,5 +1,5 @@
 {id: help-that-changes-capability}
-# 12. Choose the Right Help: Compare Investor Support With Other Options
+# 14. Choose the Right Help: Compare Investor Support With Other Options
 
 ![Choose the Right Help: Compare Investor Support With Other Options — logo](private-techuity/posts/11-help-that-changes-capability/assets/images/11-help-that-changes-capability/logo.jpeg)
 
@@ -14,6 +14,11 @@
 > * Ask for the help a **specific company problem** requires. Describe the missing capability through the work that fails or takes too long, and say which kind of request you are making.
 > * **Compare the investor’s access with the alternatives.** An investor may reach relevant people faster. A peer, an independent specialist or a hire may fit better. Judge each route by availability, company effort, cost and relevant experience.
 > * **Borrow experience with its context attached**, and make any continuing dependence explicit. Finish with a written request that names the result, the source and the accountable company leader.
+
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+>
+> * **The Dusty Address Book** — Starts with a capability gap and compares useful introductions with other sources of help.
+> * **Borrowed Brains** — Makes the capability sought and any continuing dependence explicit in the request.
 
 Sooner or later, many companies find a gap they cannot close alone: work that fails or takes too long because nobody inside has done it well before. Many investors offer help with such gaps, through their own specialists, the other companies they have invested in and their wider contacts. That help can be fast and relevant. It can also be the help available rather than the help the gap needs, and accepting it still costs scarce team time. The useful question is therefore not whether to accept the investor’s help, but which source of help, inside or outside the investor’s network, will leave the company able to do the work itself.
 

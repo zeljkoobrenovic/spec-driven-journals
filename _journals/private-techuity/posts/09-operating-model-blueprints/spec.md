@@ -1,6 +1,6 @@
 ---
 status: draft
-revised: 2026-09-22
+revised: 2026-09-27
 ---
 
 # Spec: Working With Investors: Operating Model Blueprints
@@ -15,6 +15,7 @@ Product and engineering leaders inside investor-backed companies; chief executiv
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Nodding Room; The Accidental Gatekeeper; The Ratchet Roadmap. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Hand off to [[learn-through-investors-network]] before sourcing a specific capability gap; keep the existing operating-model argument and all artwork.
 
 - Distinguish the investor’s own internal operations, its relationship with portfolio companies, and the company’s internal organization. Concentrate on the latter two.
@@ -58,6 +59,7 @@ Author input: `_drafts/operating-models/INPUT-1.md` and `INPUT-2.md`, unchanged.
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-22 (investor learning): Hand off to [[learn-through-investors-network]] before sourcing a specific capability gap; keep the existing operating-model argument and all artwork.
 
 - 2026-09-22 (in-depth review, round 3): Settle the trial's ending before editing the article. The volunteer-customer trial closes at week ten with both customers returned inside the eight reserved engineer-days; the week-ten-to-week-twelve continuation branch is removed, so no week-ten obligation waits on the twelve-week decision. Carry that boundary into the summary, the Figure 7 caption and the comic. Also: explain revenue, shared services and the group's formation independently in the summary and comic; pair PE with private equity and gloss refinancing in the article; separate shared identity from identity expertise in the comic introduction; carry the wider migration's funding condition into both shorter formats, with the comic forecasting rather than asserting the later date; and split the longest explanatory blocks, moving the comic's term glosses beside the page that first needs each one. No change to the title, permalink, evidence, figure set, staffing arithmetic or funded commitments. No comic page was regenerated: the week-ten boundary and the forecast condition live in caption and transcript, and none of the five images letters a conflicting date or claim. The manuscript export-manifest drift reported in round 2 was repaired by syncing the chapter's recorded generated hash to the prior export before re-exporting; `validate_manuscript.py` now reports `[valid]`.

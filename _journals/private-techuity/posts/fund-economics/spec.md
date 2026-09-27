@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-15
+revised: 2026-09-27
 ---
 
 # Spec: Fund Economics: Fees, Distributions and Performance Reports
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors who wan
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Nodding Room; The Exit Halo. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Open with a three-bullet KEY POINTS block and a short paragraph stating that the page is optional depth for the fund-side mechanics behind Part I.
 - Preserve the €160-on-€100 waterfall arithmetic and definitions moved from the announcement chapter, with the SEC citation, and show in words and simple arithmetic what a preferred return, catch-up and clawback change. State the example's committed capital, contributed capital, hurdle and carry explicitly; show a full and a partial catch-up reaching the same final split, and name the cases (no catch-up, incomplete catch-up) that do change it. Present deal-by-deal and whole-fund waterfalls as alternatives.
 - Preserve the €100 / €60 / €90 DPI, RVPI and TVPI example, the gross-versus-net distinction and the subscription-line caution moved from the returns chapter, with the ILPA citation. Keep the cash-only reading confined to the example: DPI counts distributions, which can include securities; RVPI is remaining net value.
@@ -48,5 +49,6 @@ Material moved from [[announcement-is-not-a-budget]] and [[three-different-retur
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-14: Created as an optional fund-economics reference receiving material moved from the announcement and returns chapters.
 - 2026-09-15: First per-post review implemented: partial-catch-up correction with explicit committed/contributed/hurdle/catch-up/carry arithmetic and a comparison table; cash-only reading confined to the example; deal-by-deal presented as one arrangement; term-sheet and valuation sentences reworded; GP and LP defined before the first table. ILPA citations point to the exact clauses of the whole-of-fund PDF; body-length criterion raised to about 1,800 words because the required qualifications could not be held within 1,400.

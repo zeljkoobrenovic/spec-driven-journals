@@ -22,6 +22,11 @@ icon: "assets/icons/28-toys-r-us.png"
 > * **Nearly 40% of suppliers tightened payment terms in September 2017**, according to management's court declaration. Some wanted cash before shipping or on delivery. The same stock needed money sooner, while the proposed technology program would take years. [S50: Brandon declaration](https://profhayesuwla.com/wp-content/uploads/2017/09/toys-r-us-first-day-dec-chairman.pdf)
 > * **The March 2018 US liquidation plan put roughly 33,000 jobs at risk.** Liquidation means selling assets and winding down operations. Hasbro separately recorded $60.4 million of costs associated with the bankruptcy in 2018. These are employee and supplier consequences, separate from whatever the owners received. [S37: Reuters US liquidation report](https://www.business-standard.com/article/reuters/toys-r-us-to-close-doors-leaving-void-for-toy-lovers-118031500236_1.html) [S51: Hasbro 2018 annual report](https://www.annualreports.com/HostedData/AnnualReportArchive/h/NYSE_HAS_2018.pdf)
 
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+>
+> * **Spending the Press Release** — Tests the cash and payment dates behind a technology plan instead of treating positive earnings as funding.
+> * **The Exit Halo** — Examines the interacting pressures and separate stakeholder consequences behind a failure.
+
 <br>
 A buying group associated with KKR, Bain Capital and Vornado acquired toy and baby-products retailer Toys “R” Us in 2005. By 2017, the company was replacing its US e-commerce platform. Chief executive David Brandon told the court that the earlier technology had prevented subscription deliveries of baby products, a service then being introduced, and described a proposed $90.4 million technology program for 2018–2021. The company had identified work it wanted to do; whether it could pay for that work while meeting its other obligations was another question. [S41: Toys R Us acquisition completion](https://www.sec.gov/Archives/edgar/data/899689/000110465905033479/a05-13329_1ex99d1.htm) [S50: Brandon declaration](https://profhayesuwla.com/wp-content/uploads/2017/09/toys-r-us-first-day-dec-chairman.pdf)
 

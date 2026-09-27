@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-24
+revised: 2026-09-27
 ---
 
 # Spec: Turn an Offer of Help Into a Useful Engagement
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: Borrowed Brains; The Accidental Gatekeeper; The Ratchet Roadmap. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Hand off to `investors-adviser`, which now follows the engagement chapter.
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
@@ -51,6 +52,7 @@ Existing chapters provide the financial and governance foundations. Where releva
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-24 (part order): Read before COMMIT now; the opening notes that the dependence on one specialist is found and measured later ([[can-the-team-deliver]], [[fix-decisions-before-hiring]]). Folder renumbered to `12-useful-engagement`; permalink and id unchanged.
 - 2026-09-22 (comic pages): The six single-scene panels replaced by eight comic pages of three strips each, so the two specialists, the three money words, the charter's entries (need, people, information use, resources, funding, authority), the borrowed engineer-days and their honest accounting, the week-three evidence and scope change, what stops and stays, and the week-six handover and endings are drawn into the artwork rather than carried by captions. Captions and transcripts are rendered from the page blocks; the previous panel comic is archived under `_research/comic-pages-pilot/`. No amount, date or decision changed; permalink unchanged.
 - 2026-09-22 (in-depth review round 4, findings UE-005, UE-013, UE-014, UE-015): the failed opening (two weeks of repeated interviews) is marked as hypothetical from its first sentence in the article and summary, and the charter is introduced as the actual alternative, so the ten paid specialist days are never read as partly spent on it. "The fee is the smaller number" now names its comparison: the €15,000 fee against the €180,000 pilot budget, with securing the company's own time as the harder part. The independent-specialist row separates the provider's rate and availability, to be confirmed with the provider, from reference checks on previous work, and labels the €15,000 as a comparison allowance; the same row in [[help-that-changes-capability]] was aligned. The summary identifies Alex as the technology leader, calls the wider template work reusable settings for every customer type, and anchors day 100 to the board meeting that adopted the plan, distinct from the engagement weeks counted from the specialist's start; it stays inside the word band. No amount, date or scenario boundary changed; permalink and id unchanged.

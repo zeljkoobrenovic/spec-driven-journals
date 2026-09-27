@@ -23,6 +23,11 @@ icon: "assets/icons/26-acquisition-adds-work-first.png"
 > * Combining businesses and separating one are **different processes under one principle**: a new boundary and a continuing customer promise. Choose the depth of integration for a specific benefit; fund independence before the parent’s services end.
 > * Integration and separation **use the same specialists as the planned product work**. Decide what waits, who approves the delay and what happens to the date the plan assumed, then test that the boundary works before counting the benefit.
 
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+>
+> * **All Bulk, No Muscle** — Makes integration or separation work visible before the transaction’s promised benefits are counted.
+> * **The Ratchet Roadmap** — Names which product work waits while the same specialists handle the transaction.
+
 <br>
 Buying a business, or separating one from its owner, can **look like a single event**: a signature, an announcement, a new name in the ownership records. For the teams that run the software, it is the start of a **long piece of work**. Customers, systems, contracts and support must keep working across a new boundary, and the specialists who carry the product plan usually carry that work too, so something else must wait.
 

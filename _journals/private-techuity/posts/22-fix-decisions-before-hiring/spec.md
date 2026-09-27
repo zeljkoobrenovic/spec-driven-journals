@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-24
+revised: 2026-09-27
 ---
 
 # Spec: Headcount Is Not Capacity: Trace the Work Before You Hire
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: All Bulk, No Muscle; Borrowed Brains; Squeezing the Balloon. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Figure 1 names the five traced stages (the two approval waits, the specialists' review queue, building and release) so every pictured stage maps to a row of the trace table, marks its lower path as a forecast that keeps the specialist wait, and says in its caption which waits the delegation removes and which remain. Figure 1 attributes the saving per stage: each removed wait carries its own three-day forecast saving, and the combined six days appear only in a banner spanning the whole row, never as a callout attached to one box. Alt text describes the artwork as drawn. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is a sequence of comic pages: each page is one image of three stacked strips that carries its dialogue, labels and amounts in the artwork, with consistent fictional characters and a short caption under each page. Every string drawn in a page comes from the page script, which traces to the article, and generated artwork is inspected against the script (spelling, cast identity, which speaker each bubble points to, counts and sizes), not assumed.
@@ -65,6 +66,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-24 (title): Retitled from “Trace the Work: Headcount Is Not Capacity” to “Scale the Team Up: Headcount Is Not Capacity” at the author’s request, pairing it with the layoff chapter under Part V SCALE. Permalink, id and body unchanged.
 - 2026-09-24 (Part IV SCALE): Moved from Part III to open the new Part IV; folder renumbered to `22-fix-decisions-before-hiring`. Body, permalink and id unchanged.
 - 2026-09-22: Comic converted from six single-scene panels to eight comic pages of three strips each (the format piloted on [[obligations-before-budget]]): the plan that funded resources but not decisions, and the proposed second team; the traced sixteen days in the article’s stage order; the three constraints; the two delegations passed to people, forecast and not free; the knowledge queue that remains and the shape of the hire; the three responses compared; the full cost of a team change, leaders assessed in their system and the investor’s proposal; and the closing record naming the billing engineer funded now, the three conditions for the proposed team, and what committed means. No scenario figure, date or decision changed. Article and summary unchanged.

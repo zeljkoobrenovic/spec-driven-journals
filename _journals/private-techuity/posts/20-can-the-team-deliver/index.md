@@ -23,6 +23,11 @@ icon: "assets/icons/20-can-the-team-deliver.png"
 > * Judge the technology and the team by **their consequences for that work**, and record strengths as well as constraints. An old system is not, by itself, a bad investment; a fashionable one is not a good one.
 > * End with **a finding the next decisions can use**: the obstacle that most limits the plan, the evidence behind it, what is uncertain, and what a transition would cost, over what period, and when its first benefit could appear.
 
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+>
+> * **All Bulk, No Muscle** — Tests what the technology and team can deliver against the actual requirements of the plan.
+> * **Never Fixing the Roof** — Identifies the recurring constraint and the funded transition needed to remove it.
+
 <br>
 Investment plans often **fix a destination and a date** before anyone has looked closely at the technology: a new market next year, twice as many customers, a new product line. That does not make the plan wrong. It does mean that someone must check whether the company’s software, and the people who build and run it, can **actually carry the plan**, and what it would take if they cannot. That answer should arrive before the company commits money or makes promises to customers, not after a missed deadline.
 

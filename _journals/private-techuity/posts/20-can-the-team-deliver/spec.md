@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-19
+revised: 2026-09-27
 ---
 
 # Spec: Can the Software and the Team Deliver What Was Promised?
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: All Bulk, No Muscle; Never Fixing the Roof. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. The visual summarizes this chapter’s assessment (what the plan needs, evidence and strengths, the biggest obstacle and open questions, the finding) and stops at the finding; it does not show an option being chosen or funded. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is a sequence of comic pages: each page is one image of three stacked strips that carries its dialogue, labels and amounts in the artwork, with consistent fictional characters and a short caption under each page. Every string drawn in a page comes from the page script, which traces to the article, and generated artwork is inspected against the script (spelling, cast identity, which speaker each bubble points to, counts and sizes), not assumed.
@@ -62,6 +63,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-19: Comic converted from six single-scene panels to seven comic pages of three strips each (the format piloted on [[obligations-before-budget]]): the date set before the assessment; the plan translated into required capabilities; the constraint drawn as a shared software dependency, with the strengths kept and the two specialists; the two lead-time clocks and the untraced gap; the €1.3 million transition with the conditional month twelve and the €720,000 paid by then on stated payment assumptions; the commitment matched to the next funding decision, the uncosted smaller options and the retirement condition; and the finding. Every page belongs to the Larkspur example. No scenario number changed. Article and summary unchanged.
 - 2026-09-19: In-depth review, round 3 (PT11-003, PT11-012, PT11-013). The summary’s S13 citation takes a plain label instead of the unexplained SPACE acronym; the three-week change cycle is said to slow, not stop, learning about what customers will pay; the finding’s Transition resources cell is divided into labeled statements with the two smaller options described below the table. No scenario number, qualification or artwork changed.
 - 2026-09-19: In-depth review, round 2 (PT11-007, PT11-001, PT11-010, PT11-011). Criteria extended: the €720,000 carries its payment assumptions and the summary anchors its months to the funding start; the EBITDA explanation is limited to development spending; the request-based end-to-end clock is distinguished from one started when work begins; the comic names the shared software dependency. No scenario number changed; no artwork regenerated.

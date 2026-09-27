@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-22
+revised: 2026-09-27
 ---
 
 # Spec: Bibliography and Evidence Guide
@@ -15,6 +15,8 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Register S119 for the opening guide's connection to Lencioni: the official Table Group model summary, consulted 2026-09-27. Record the definitions and effective-team characteristics actually read, identify the investment application as the book's interpretation, and add the topic route and Used in link.
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Exit Halo. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Register S101–S105 for investor-organized learning: Prosus, Balderton, Insight Partners, Wenger-Trayner and the author’s CTO Starter Kit. Separate organizer accounts, a conceptual definition and documented project features from demonstrated company outcomes; add the topic route. Link the project’s public start page and repository and state the author’s involvement.
 - Register S91–S100 for the operating-model blueprints chapter and extend S01 for expense allocation and service-payment conflicts; distinguish historical surveys, practitioner advice, firm descriptions and proposed blueprints.
 
@@ -52,6 +54,8 @@ See the bibliography and the relevant chapters. The source registry records cons
 
 ## Changelog
 
+- **2026-09-27 (organizational impact)** — Register the official Lencioni model summary as S119 for the new opening-guide discussion; extend the consultation window and topic index while distinguishing the source's model from the book's illustrative investment consequences.
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-23 (portfolio appendix): Register the Grounded Architecture framework pages as S110–S115, extend S106’s use, add the topic row and the limits paragraph for the appendix; consultation range now runs to 23 September 2026.
 - 2026-09-22 (investor learning): Specify S101–S105 and their consultation limits before updating the register for the new Part IV chapter, including the author-requested CTO Starter Kit.
 - 2026-09-22: Reconcile reading-format coverage after adding TL;DR and illustrated Comic modalities to operating-model blueprints and technology operating partners. All 33 main chapters now provide all three formats.

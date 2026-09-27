@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-26
+revised: 2026-09-27
 ---
 
 # Spec: Toys R Us: Positive Operating Earnings, Too Little Cash
@@ -17,6 +17,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: Spending the Press Release; The Exit Halo. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Make the excerpt, opening callouts, key points, introductory narrative and summary opening describe Toys R Us's actual events. Attribute supplier claims and technology plans to management, distinguish the 2017 filing from the 2018 US liquidation plan, and put reported figures before the lessons inferred from them.
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the summary prose concise (about 300–650 words; the band was widened from 500 on 23 September 2026 so the TL;DR can carry its own plain-language definitions of the three central measures, including the full earnings-to-loss bridge with interest income, working capital as stock plus customer debts less supplier bills, subsidiaries, and the composition of the bankruptcy financing), with bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
@@ -62,6 +63,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-26: Lead the article and summary with the retailer's documented purchase, technology plans, supplier crisis and US liquidation sequence; make opening key points case-specific before drawing funding lessons. Preserve the historical scope and stable permalink.
 - 2026-09-23 (comic pages): The six single-scene panels replaced by seven comic pages of three strips each, so the three measures in ordinary words and the 2005 purchase, the fiscal 2016 online growth against falling net sales and the court declaration's subscription gap and $90.4 million programme, the earnings calculation from $460 million to the $29 million and $36 million losses beside the cash side (operating cash flow about zero, $252 million of capital expenditure, $566 million as a balance), the declaration's figures with their scopes and management's four-step supplier chain, the filing-to-liquidation bridge with the financing ceilings, the employee and supplier consequences including Hasbro's $60.4 million with the $49 million inside it, and the four practices are drawn into the artwork rather than carried by captions. Every short-format gloss of operating cash flow keeps its scope. Page images live under `assets/images/36-toys-r-us/`; the previous panel comic is archived under `_research/comic-pages-pilot/`. No figure, date or claim changed; permalink unchanged.
 - 2026-09-23: In-depth review round 6 (TRU-012): one measure or calculation step per sentence in the short formats. The TL;DR ends its earnings bridge at the $29 million group loss, then gives the $7 million belonging to outside owners of partly owned subsidiaries and the $36 million attributable loss in their own sentences (prose about 657 words, within the band). Comic panel 3 states operating earnings, net loss and operating cash flow in one sentence each, keeping the fiscal period, the interest treatment and the borrowing and long-lived-asset exclusions; caption, prompt and panel text changed together, artwork unchanged. Permalink and id unchanged.

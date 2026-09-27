@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-24
+revised: 2026-09-27
 ---
 
 # Spec: PART IV — COLLABORATE: Getting Useful Help From Your Investor
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after the opening IN THIS SECTION callout: The Dusty Address Book; Borrowed Brains; The Accidental Gatekeeper. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions. The existing length target applies to the orientation prose; this requested navigation block is additional.
 - Include exactly one chapter overview at the start of the learning path, in addition to the existing header logo. Give every configured chapter its own box, use short recognizable title labels without duplicating chapter numbers, and connect the chapters to the part's overall purpose.
 - Connect the working arrangement, choice of help and engagement terms to the adviser and technology operating partner roles; lead to useful support with explicit company accountability, cost and dependence.
 - Keep the overview in the book's ivory, navy, teal and ochre illustration style. For the six-chapter revision, publish a precise SVG diagram with descriptive alt text and a prose caption; retain the earlier five-chapter artwork as history. Lay the diagram out as a single stacked column so that every label and description stays readable inline at phone width (about 342 pixels) without zooming, and describe each chapter’s job concretely rather than by its own name; the boxes, the alt text, the excerpt and the Part IV section description in `config.yaml` must stand on their own, saying in ordinary words what is missing, who decides and what support the company will keep needing, without relying on a chapter link or glossary. Preserve the new diagram in the manuscript export and keep the linked walkthrough as the full-title reading guide.
@@ -53,6 +54,7 @@ The journal's current config.yaml and the configured chapter introductions. Thes
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after the opening IN THIS SECTION callout, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-24 (part order): COLLABORATE moved from after SUSTAIN to Part III, directly after ALIGN, so Parts I–III cover the investor relationship before the internal work (folder `part-3-intro`, permalink `part-3`, asset paths renamed). Opening now builds on Part II and no longer assumes a committed plan; closing hand-off names Part IV (COMMIT). The two engagement chapters take the onboarding capability gap as given and link forward to the chapters that find it.
 - 2026-09-24 (Part IV SCALE): Part renumbered from IV to V (folder `part-3-intro`, permalink `part-3`, asset paths renamed). Opening recalls Parts III and IV; closing hand-off names Part VI. Chapters, artwork and body otherwise unchanged.
 - 2026-09-23 (in-depth review round 3, PART4-001/004): The Part IV section description in `config.yaml` must meet the same plain-language standard as the excerpt; the reading guide keeps a definition, a two-outcome test and a role’s changes in separate sentences.

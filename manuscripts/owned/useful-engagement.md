@@ -1,5 +1,5 @@
 {id: useful-engagement}
-# 13. Set the Terms of Help: Agree the Work, Authority and Handover
+# 15. Set the Terms of Help: Agree the Work, Authority and Handover
 
 ![Set the Terms of Help: Agree the Work, Authority and Handover — logo](private-techuity/posts/12-useful-engagement/assets/images/12-useful-engagement/logo.jpeg)
 
@@ -14,6 +14,12 @@
 > * Agree **what the help should change** and write it down: the result, the accountable company leader, the investor-side sponsor, resources on both sides, who directs the work, what the findings are for, the review date and the handover test.
 > * **External help consumes internal time.** Ten specialist days, capped at €15,000, need six engineering days, two customer-team sessions and the product leader’s review; without those, the specialist’s availability does not make the engagement feasible.
 > * **Let the review change the work.** When evidence shows a different constraint, the charter says who may redirect the remaining days, which work stops and whether the budget still fits. The engagement ends with a capability, a decision or an understood continuing service.
+
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+>
+> * **Borrowed Brains** — Builds learning and a tested handover, or an understood continuing service, into the assignment.
+> * **The Accidental Gatekeeper** — Records who directs the work and who may authorize a change in its scope.
+> * **The Ratchet Roadmap** — Budgets the company’s own time and names the work that stops when the engagement changes.
 
 Larkspur, the fictional software company this book follows, sells scheduling software. Every new customer must be **onboarded**: set up on the software and made ready to use it. Today one employee does most of that work: Larkspur’s **implementation specialist**, who configures each new customer by hand. If that person is away or leaves, onboarding stalls. (Two later chapters, [Assess Capability: Can the Team Deliver?](#can-the-team-deliver) and [Scale the Team Up: Headcount Is Not Capacity](#fix-decisions-before-hiring), show how to find and measure such a dependence; this chapter takes it as given.)
 

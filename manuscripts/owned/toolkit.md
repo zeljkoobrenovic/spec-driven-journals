@@ -1,5 +1,5 @@
 {id: toolkit}
-# Practical Tools for Ownership and Technology Decisions
+# 43. Practical Tools for Ownership and Technology Decisions
 
 ![Practical Tools for Ownership and Technology Decisions — logo](private-techuity/posts/toolkit/assets/images/toolkit/logo.jpeg)
 
@@ -10,6 +10,13 @@
 > * Use the records to make a **real decision concrete**. Start with the smallest record that changes the decision in front of you, and add fields only when a later stage needs them.
 > * Record **cost, responsibility and uncertainty** alongside ambition. A template is useful when it changes a decision or preserves evidence, not merely when every field is filled.
 > * **Follow one finding through**: evidence → options → an authorized initiative → an observed result → a revised decision → a handover. The fictional Larkspur chain below shows what each stage adds.
+
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+>
+> * **The Ghost Veto** — Provides records that name who approves a decision and what authority it rests on.
+> * **The Ratchet Roadmap** — Records the money, capacity and alternatives behind an initiative before it becomes a promise.
+> * **Borrowed Brains** — Makes the result, company contribution and handover test explicit in the support agreement.
+> * **Year Zero** — Keeps one finding connected to its funded work, observed results and unfinished obligations through handover.
 
 These are **proposed working tools** for company leaders applying the book’s financial, decision and support concepts. They haven’t been validated as a universal operating standard. Start with the smallest record that improves a real decision, and drop fields that add work without changing understanding or accountability.
 

@@ -1,5 +1,5 @@
 {id: hilton-and-skype}
-# 35. Hilton and Skype: A Successful Exit Still Needs Explaining
+# 37. Hilton and Skype: A Successful Exit Still Needs Explaining
 
 ![Hilton and Skype: A Successful Exit Still Needs Explaining — logo](private-techuity/posts/34-hilton-and-skype/assets/images/26-hilton-and-skype/logo.jpeg)
 
@@ -14,6 +14,11 @@
 > * **Hilton's debt fell by $4.0 billion in 2010**, mainly through new owner money and cancellation of loans the owner held. That reduced borrowing and interest costs; it was not $4.0 billion available for technology spending. [S23: Hilton registration filing](https://www.sec.gov/Archives/edgar/data/1585689/000119312513364703/d593452ds1.htm)
 > * **Blackstone inherited Hilton's OnQ hotel-operations system.** Hilton introduced it in 2003, four years before the purchase. Later filings describe improvements without measuring their contribution to the eventual gain, so the return cannot simply be credited to an owner-created platform. [S64: Hilton 2003 annual filing](https://www.sec.gov/Archives/edgar/data/47580/000104746904007535/a2128996z10-k.htm)
 > * **Skype settled its core technology-rights dispute in 2009 and was sold to Microsoft in 2011.** Microsoft paid $8.5 billion and wanted Skype inside its own communications business. The settlement and the buyer's stated plans help explain the sequence; the price alone does not measure either one's contribution. [S27: Skype registration filing](https://www.sec.gov/Archives/edgar/data/1498209/000119312511096544/ds1a.htm) [S28: Microsoft Skype completion](https://news.microsoft.com/source/2011/10/13/microsoft-officially-welcomes-skype/)
+
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+>
+> * **The Exit Halo** — Separates financing, inherited technology, legal rights and buyer intentions from the final sale price.
+> * **Spending the Press Release** — Shows why an announced debt reduction cannot be read as cash available for technology work.
 
 Blackstone bought the Hilton hotel group in 2007, largely with borrowed money. The financial crisis followed. In 2010, the owner put in more money and gave up loans it held as part of a restructuring that reduced Hilton's debt. Hilton returned to the stock market in 2013; Blackstone's funds sold their holdings later, completing the **exit**, the sale of their ownership, in 2018. Blackstone then reported about $14 billion of profit. The successful sale came after years of financing decisions and recovery. [S23: Hilton registration filing](https://www.sec.gov/Archives/edgar/data/1585689/000119312513364703/d593452ds1.htm) [S24: Blackstone 2018 investor call](https://ir.blackstone.com/files/doc_events/BLACKSTONE-Second-Quarter-2018-Earnings-Investor-Call.pdf)
 

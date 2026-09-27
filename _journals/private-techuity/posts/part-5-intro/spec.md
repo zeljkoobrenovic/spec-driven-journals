@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-24
+revised: 2026-09-27
 ---
 
 # Spec: PART IV — SCALE: Change the Team, the Systems and the Company Deliberately
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after the opening IN THIS SECTION callout: All Bulk, No Muscle; Squeezing the Balloon; The Ratchet Roadmap. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions. The existing length target applies to the orientation prose; this requested navigation block is additional.
 - Include exactly one chapter overview at the start of the learning path, in addition to the header logo. Give each of the four configured chapters its own card, grouped in three labelled groups (team, systems, company boundary), stacked in one column for phone reading, with plain second-line labels and alt text a newcomer can follow. Generate it through the Gemini API in the book’s ivory, navy, teal and ochre style; publish one JPEG with descriptive alt text and a prose caption, and preserve it in the manuscript export.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths, consistent with the journal’s visual style.
 - Recall in one sentence what Part III established and say that this part keeps its discipline and its authority limits. Explain funding round, headcount, capacity and board in plain words at first use, and say explicitly that investment can expand the team quickly and can force an equally quick reduction, so the hiring and the layoff chapters belong together.
@@ -46,6 +47,7 @@ The journal's current config.yaml and the configured chapter introductions. Thes
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after the opening IN THIS SECTION callout, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-24 (titles): The two team chapters retitled “Scale the Team Up …” and “Scale the Team Down …”; overview cards and alt text follow.
 - 2026-09-24 (part order): SCALE renumbered to Part V (folder `part-5-intro`, permalink `part-5`); opening recalls Part IV; closing hands off to Part VI (SUSTAIN). Body and figure otherwise unchanged.
 - 2026-09-24: Created. Four chapters moved in from Part III (three) and the former Part V (the layoff chapter); later parts renumbered V–VII. Overview figure, logo and icon pending generation.

@@ -1,5 +1,5 @@
 {id: tech-operating-partner}
-# 15. Understand Technology Operating Partners: How They Work With Your Team
+# 17. Understand Technology Operating Partners: How They Work With Your Team
 
 ![Understand Technology Operating Partners: How They Work With Your Team — logo](private-techuity/posts/14-tech-operating-partner/assets/images/tech-operating-partner/logo.png)
 
@@ -14,6 +14,12 @@
 > * **Technology judgment increasingly belongs inside the investor’s plan.** When an investor’s expectations for growth, profit or buying other businesses depend on software, data and delivery, someone qualified needs to test those expectations and track what happens.
 > * **The work runs across the whole investment.** It can link the checks made before buying, the work the company funds, leadership and hiring, specialist help, learning across companies and preparation for a sale. One person rarely supplies all the expertise needed.
 > * **Judge the contribution by company results and clearer decisions.** Agree authority, availability, costs and evidence for each assignment; a senior title settles none of them.
+
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+>
+> * **The Dusty Address Book** — Shows where an operating partner can connect the company with peers, specialists and hiring experience.
+> * **The Accidental Gatekeeper** — Separates portfolio support from company leadership and agrees authority for each assignment.
+> * **All Bulk, No Muscle** — Tests hiring and AI proposals against the work and capability the company actually needs.
 
 Imagine an investment plan that assumes a software company can serve twice as many customers, absorb a business it has bought and launch a product that uses **artificial intelligence (AI)**, software that can, for example, draft text or find patterns in data. Each ambition feeds into the **financial forecast**, the investor’s estimate of future sales, costs and profit. Someone must work out what the company’s systems and people can actually support, what needs funding, and what should change when the evidence contradicts the forecast.
 

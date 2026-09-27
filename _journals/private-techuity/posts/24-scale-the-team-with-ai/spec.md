@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-24
+revised: 2026-09-27
 ---
 
 # Spec: Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount
@@ -21,6 +21,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: All Bulk, No Muscle; Squeezing the Balloon; The Ghost Veto. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - **Same trace, new question.** Reuse the hiring chapter's traced pricing change and its three constraints. For each constraint, say whether an AI tool can touch it: decision waits (no; they are authority), the specialists' knowledge queue (only if the tool lets someone other than the two specialists change the module safely, which is a knowledge-transfer question tested the way the hiring chapter tests it), building and release (yes, and measurably). The reader can repeat this sorting on their own trace.
 - **Capacity, not activity.** Define capacity as the work that completes, as in the hiring chapter, and reject activity measures (lines written, requests handled, tokens used, tool seats active) as evidence of capacity. Every claimed gain in every format is stated as work completed per period with the same quality checks that applied before the tool.
 - **Product and engineering, not developers only.** Give one engineering example (the pricing change) and one implementation or support example (customer setup work, which the book has traced since Part III), and show that the measurement method is the same while the risks differ (code defects versus wrong customer configuration).
@@ -77,6 +78,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-24: Revised after round 8 of the in-depth review (SAI-025 to SAI-027): the TL;DR's closing transfer point now says what the billing engineer is learning and what an independent error-free change does and does not show; comic captions on pages 1, 2, 3 and 5 split into single-idea paragraphs with definitions kept; open-source gloss now includes the licence rights to modify and share. Intent unchanged; status stays `accepted`; post revised in step.
 - 2026-09-24: Revised after round 7 of the in-depth review (SAI-007, SAI-008, SAI-019, SAI-024): review absorbing the building saving is no longer called a moved constraint; approximate engineer timeline with the six-month reassessment as a deadline; safety-stop consequence in the TL;DR and comic; DevEx note narrowed. Status stays `accepted`; post revised in step.
 - 2026-09-24: Revised after round 6 of the in-depth review (SAI-001, SAI-004, SAI-005, SAI-007, SAI-008, SAI-015, SAI-019, SAI-023): month-end checks through observation and extension with a held gate result on an observation-month breach; a separate extension calculation; slower delivery recorded without an asserted cause; conditional review-burden vignette; decision section reordered with a supporting note; trace, release and tokens explained; TL;DR extension rule; comic caption timing. Status stays `accepted`; post revised in step.

@@ -12,6 +12,12 @@ icon: "assets/icons/part-3-intro.png"
 
 > **IN THIS SECTION, YOU WILL:** Set up a working arrangement with your investor, then use it for learning and useful help, with agreed terms for each piece of help and a clear view of the people providing it.
 
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+>
+> * **The Dusty Address Book** — Explores the investor’s people, peer relationships and learning opportunities as possible sources of help.
+> * **Borrowed Brains** — Makes learning, handover and any continuing reliance on outside specialists deliberate choices.
+> * **The Accidental Gatekeeper** — Establishes working arrangements and authority before advice becomes a requirement.
+
 <br>
 Part II established who decides and what each party wants. Before the company commits to work, it must know how it will **work with the investor day to day**, what it can learn through the relationship, and what help it can ask for and on what terms. A plan may need experience the team lacks, a trusted specialist, access to prospective customers, or people who will challenge its assumptions. Investors can sometimes provide these through their people and relationships; peers and independent sources can also help.
 

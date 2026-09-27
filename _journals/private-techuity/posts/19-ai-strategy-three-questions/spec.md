@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-24
+revised: 2026-09-27
 ---
 
 # Spec: An AI Strategy Hides Three Investment Questions
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Nodding Room; All Bulk, No Muscle; Squeezing the Balloon. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Link unfamiliar AI demonstrations and study visits to [[learn-through-investors-network]] for contextual learning before turning an encounter into an investment decision.
 
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
@@ -73,6 +74,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-24 (part order): After briefly joining the new SUSTAIN part, placed in Part IV (COMMIT) after [[roadmap-to-revenue]] as an investment-choice chapter; the opening's reference to the cloud and recovery chapters now names them as Part VI chapters. Folder renumbered to `19-ai-strategy-three-questions`; permalink and id unchanged.
 - 2026-09-22 (investor learning): Link unfamiliar AI demonstrations and study visits to [[learn-through-investors-network]] for contextual learning before turning an encounter into an investment decision.
 

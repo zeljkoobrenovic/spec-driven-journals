@@ -1,5 +1,5 @@
 {id: raise-what-you-need}
-# 5. Understand Funding Choices: Match the Money to the Work
+# 7. Understand Funding Choices: Match the Money to the Work
 
 ![Understand Funding Choices: Match the Money to the Work — logo](private-techuity/posts/04-raise-what-you-need/assets/images/04-raise-what-you-need/logo.jpeg)
 
@@ -14,6 +14,11 @@
 > * Begin with the **problem the money must solve, and size it**: base work, transition costs, an allowance for uncertainty and the runway, the time the money buys before the next decision. Funding expansion, paying a retiring founder and separating a business from a parent are different needs.
 > * Examine the **terms behind the investor’s label**. The terms of the funding and the investor’s expectations affect the pace, the tolerated losses and the time available for the plan; the category alone does not.
 > * Product and engineering leaders who **inherit the arrangement** can still act: bring the scope with its cost, a cash requirement and an alternative to the people who can renegotiate it. Changing the financing, changing the plan or continuing without a new owner can each be the right answer.
+
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+>
+> * **The Ratchet Roadmap** — Sizes the work, transition costs and uncertainty before choosing the funding and commitments.
+> * **Spending the Press Release** — Tests funding terms and timing against the work the company actually needs to pay for.
 
 A business has customers and a useful product. Its founder might want money to expand it, or might want to retire and sell their shares, the units of ownership in the company. Those are different needs, even if both conversations begin with “we need an investor.”
 

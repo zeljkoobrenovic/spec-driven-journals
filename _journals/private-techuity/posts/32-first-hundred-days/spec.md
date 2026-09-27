@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-24
+revised: 2026-09-27
 ---
 
 # Spec: The First Hundred Days: Turn Expectations Into a Funded Plan
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: Clean Slate Syndrome; Never Fixing the Roof; The Ratchet Roadmap. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is a set of comic pages — each image one page of three stacked strips with the dialogue, labels, amounts and dates lettered in the artwork — generated from the `comic-page` blocks in `comics.md`, with a caption and a transcript per page and consistent fictional characters and preserved captions.
@@ -62,6 +63,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-24 (part order): Closing now cites [[the-financing-slipped]] as a Part IV chapter and hands off to [[handover-of-obligations]] as the next chapter. Folder renumbered to `32-first-hundred-days`; permalink and id unchanged.
 - 2026-09-23 (comic pages): The six single-scene panels replaced by eight comic pages of three strips each, so what changed at the deal, the €500,000 / 24-week envelope and the two approvals, the confirmation of D-3 with the people who deliver it, the four-line funded plan with its protected people and reserve, the pre-agreed day-90 thresholds and the three recorded deferrals, the day-20 baseline and the charter-bound support, REC-1's failed day-45 restore and its board-approved correction and day-85 retest, KNW-1 passing, ONB-1's 80 → 62 result and its arithmetic, and the day-100 decision with the committed / incurred position and the dated road to day 280 and month 13 are drawn into the artwork rather than carried by captions. The artwork carries only labels from this case. Page images live under `assets/images/32-first-hundred-days/`; captions and transcripts are rendered from the page blocks; the previous panel comic is archived under `_research/comic-pages-pilot/`. No figure, date or decision changed; permalink unchanged.
 - 2026-09-23: In-depth review round 3 (FHD-001, 005, 006, 011, 013, 014). Staffing criterion extended to the implementation specialist’s twelve consecutive weeks on ONB-1 and the contract specialist covering the ordinary queue (both already established in [[cannot-fund-everything]] and [[roadmap-to-revenue]]); effort units in the short formats; the opening now presents doubling as the original expectation; the D-3 figure is a five-implementation average; the day-190 review and the day-90/day-100 split are labelled in the timeline and comic; summary cut back inside 300–500 words and long comic captions split. No amount, date, identifier or permalink changed; no artwork regenerated.

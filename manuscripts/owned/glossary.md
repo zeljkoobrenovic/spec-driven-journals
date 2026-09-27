@@ -1,5 +1,5 @@
 {id: glossary}
-# Glossary
+# 45. Glossary
 
 ![Glossary — logo](private-techuity/posts/glossary/assets/images/glossary/logo.jpeg)
 
@@ -10,6 +10,11 @@
 > * **Find a term in the alphabetical index, then read its section.** Each section groups the terms one part of the book uses, so the neighboring rows explain the contrasts that matter.
 > * **Check what each number describes.** Sales, profit, cash and estimated value answer different questions; name the measure, the scope and the period.
 > * **Read the definition in the actual document too.** Contracts, fund agreements and company reports use more specific calculations than these teaching definitions.
+
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+>
+> * **The Nodding Room** — Gives shared terms a precise starting meaning and points readers back to the actual agreement or report.
+> * **Spending the Press Release** — Distinguishes cash, profit, valuation and funding promises so they are not treated as the same resource.
 
 {id: glossary--how-to-use-this-glossary}
 ## How to Use This Glossary

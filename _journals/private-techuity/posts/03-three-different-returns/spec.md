@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-18
+revised: 2026-09-27
 ---
 
 # Spec: Same Company, Same Performance, Three Different Returns
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Exit Halo. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is a sequence of comic pages: each page is one image of three stacked strips that carries its dialogue, labels and amounts in the artwork, with consistent fictional characters and a short caption under each page. Every string drawn in a page comes from the page script, which traces to the article, and generated artwork is inspected against the script (spelling, cast identity, which speaker each bubble points to, counts and sizes), not assumed.
@@ -59,6 +60,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-18: Comic converted from six single-scene panels to seven comic pages of three strips each (the format piloted on [[obligations-before-budget]]): the buyout at entry, the sale with lenders paid first, the three exit multiples as three strips of one page around an identical chart, timing and the downside of borrowing, the bridge and why it cannot credit engineering, dilution, and the test for an improvement. Article and summary unchanged.
 - 2026-09-17 (round 3): Editorial revision per round 3 of the 17 September in-depth review (TDR-008, TDR-009, TDR-010). Summary: the valuation equation, the MOIC/IRR measures and the downside case split into three short paragraphs and repeated framing trimmed to bring the prose back within 300–500 words with every figure, definition and assumption kept. Article: the MOIC/IRR paragraph and the headline comparison split so that proceeds and money multiple sit apart from the annual rate; the fund-reporting paragraph split from the optional fund-economics pointer, with “often called limited partners”; “platform work” explained as improvements to the shared software foundations and the onboarding example restated as making the product easier for new customers to set up; the three-column preview table wrapped in the template’s compact table wrapper so it fits a phone screen. Numbers, permalink and id unchanged.
 - 2026-09-17 (round 2): Editorial revision per round 2 of the 17 September in-depth review (TDR-003, TDR-008). Summary: enterprise value defined as the value of the operating business, with EBITDA × multiple stated as this example's pricing method; a compact assumptions sentence (no cash offsetting debt, no additional investor contributions or intermediate payments, unchanged ownership, no fees or sale taxes) placed before the three-outcome table. Article and summary: the preview setup split into short paragraphs (purchase funding; five-year performance and cash assumption; the one variable that changes), and the full EBITDA explanation split between what the excluded charges mean and why EBITDA is not available cash. Numbers, permalink and id unchanged.

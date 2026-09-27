@@ -1,5 +1,3 @@
-{backmatter}
-
 {class: part, id: book-section-10-appendix}
 # Appendix
 

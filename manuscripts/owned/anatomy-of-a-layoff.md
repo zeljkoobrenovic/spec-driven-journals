@@ -1,5 +1,5 @@
 {id: anatomy-of-a-layoff}
-# 24. Scale the Team Down: Decide What Work Stops, Not Just Who Leaves
+# 26. Scale the Team Down: Decide What Work Stops, Not Just Who Leaves
 
 ![Scale the Team Down: Decide What Work Stops, Not Just Who Leaves — logo](private-techuity/posts/23-anatomy-of-a-layoff/assets/images/24-anatomy-of-a-layoff/logo.jpeg)
 
@@ -14,6 +14,12 @@
 > * **Find the real source of the pressure.** A condition attached to a loan, a director’s vote and an adviser’s comparison with other companies are three different things. Only the first two carry authority, and only the first sets a date. Answer each with the response it requires.
 > * **Reconcile the reduction by date.** People who leave are paid through their notice period and receive a leaving payment before any saving appears. At Larkspur’s terms and dates the reduction cannot replace the late investment; it only makes the bridging loan last longer. Elsewhere the answer depends on the costs, the savings and the funding dates, so show cash month by month under each plan before anyone is told.
 > * **Choose roles by the work that stops, and plan for both sides of the door.** The people who leave need notice, a leaving payment and a record of what they knew. The people who remain need a published list of what is no longer expected of them, a plan for who answers problems out of hours, and the evidence that would restore the plan.
+
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+>
+> * **Squeezing the Balloon** — Counts notice and leaving payments, then names the work and risk the remaining team would carry.
+> * **The Ghost Veto** — Distinguishes a loan condition, a director’s decision and an adviser’s comparison before responding.
+> * **The Ratchet Roadmap** — Requires an explicit list of work that stops when the company removes roles.
 
 Outside investment **cuts both ways for a team**. It can let a company hire much faster than customer revenue alone would allow: a round of new investment can pay for roles that revenue would not cover for years, and a headcount plan can grow by a third in a quarter.
 

@@ -1,5 +1,5 @@
 {id: investor-under-pressure}
-# 9. Assess Investor Fit: Behavior Under Pressure
+# 11. Assess Investor Fit: Behavior Under Pressure
 
 ![Assess Investor Fit: Behavior Under Pressure — logo](private-techuity/posts/08-investor-under-pressure/assets/images/08-investor-under-pressure/logo.jpeg)
 
@@ -14,6 +14,11 @@
 > * Assess **behavior under pressure**. Concrete decisions, and conversations with people who worked with the investor when things went badly, reveal more than promises of patience, expertise or partnership. The evidence changes which uncertainty you choose to carry.
 > * Match support to the **company’s next decisions**. Establish the people, time, cost and authority behind an offer before a plan depends on it, and label what remains unconfirmed.
 > * **If the investor is already in place**, use the assessment to change one dependency: the funding date, the approval route or the support commitment. Reassess as the business changes.
+
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+>
+> * **The Nodding Room** — Tests promises of patience and partnership against past decisions and specific support commitments.
+> * **Spending the Press Release** — Checks the conditions and timing of further funding before a company plan relies on it.
 
 When a company raises money, investors usually promise more than money: patience while results arrive, and practical support along the way. Such promises are easy to make while a plan is on track. They are tested when the company falls short of it, and that is when the company learns whether its plan can rely on them. What a leader needs to judge beforehand is **investor fit**: how well an investor’s terms, resources and behavior match what the company needs.
 

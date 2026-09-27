@@ -1,5 +1,5 @@
 {id: three-different-returns}
-# 4. Understand Investor Returns: Same Performance, Different Outcomes
+# 6. Understand Investor Returns: Same Performance, Different Outcomes
 
 ![Understand Investor Returns: Same Performance, Different Outcomes — logo](private-techuity/posts/03-three-different-returns/assets/images/03-three-different-returns/logo.jpeg)
 
@@ -14,6 +14,10 @@
 > * Improving the business is **only part of an investment result**. Purchase price, borrowing, sale price, timing and changes in the investor’s ownership percentage also decide what the investor gets back.
 > * **Hold the company’s performance fixed** and the money the fund receives at the sale, and its multiple of the money it invested, can still more than double, because only the price a buyer pays changed.
 > * Explain the **technology contribution step by step**. Evidence about customers, costs and cash is needed before assigning part of a sale gain to engineering.
+
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+>
+> * **The Exit Halo** — Holds company performance fixed while changing sale price and timing, showing why investor gains cannot grade engineering alone.
 
 A company can grow its earnings, yet its investor earns less than expected. Another company may become more fragile while an investor receives a profit. To understand either result, follow the **investment** as well as the **business**.
 

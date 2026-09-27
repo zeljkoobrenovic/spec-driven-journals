@@ -17,10 +17,14 @@ icon: "assets/icons/bibliography.png"
 > * **Source interests and evidence strength matter.** Company announcements, investor accounts, guidance documents and original research answer different questions and need different qualifications.
 > * **Keep evidence, proposed methods and fictional examples distinct.** The cases and studies here are evidence about what happened in particular settings; the book’s templates and worked examples are the author’s proposals.
 
-<br>
-This page lists the sources consulted for the book. Sources were consulted between September 12 and September 23, 2026; each entry carries its own consultation date. Each entry states the version and the material consulted; access to a document does not imply that every page was reviewed, and publication dates and study periods differ from the consultation dates. Where a date affects how a figure or a claim should be read, the entry gives it.
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+>
+> * **The Exit Halo** — Identifies source interests, consulted evidence and limits before a success or failure story becomes a general verdict.
 
-**S** marks a public source and **P** a supplied private input; the numbers identify, they do not rank. Identifiers are never reassigned, so gaps stay (there is no S38) and a citation in a chapter keeps meaning the same document. The register runs to S118. Private inputs are described without publishing their contents or file details.
+<br>
+This page lists the sources consulted for the book. Sources were consulted between September 12 and September 27, 2026; each entry carries its own consultation date. Each entry states the version and the material consulted; access to a document does not imply that every page was reviewed, and publication dates and study periods differ from the consultation dates. Where a date affects how a figure or a claim should be read, the entry gives it.
+
+**S** marks a public source and **P** a supplied private input; the numbers identify, they do not rank. Identifiers are never reassigned, so gaps stay (there is no S38) and a citation in a chapter keeps meaning the same document. The register runs to S119. Private inputs are described without publishing their contents or file details.
 
 ## Topic Index
 
@@ -31,6 +35,7 @@ Use this table to find evidence by question. A source can appear under more than
 | Valuation, earnings measures and investor returns | S03, S04, S05, S06, S52, S53, S73, S74 | [[valuation-is-an-estimate]], [[three-different-returns]], [[fund-economics]] |
 | Cash, funding forms and financing documents | S01, S02, S07, S54, S55, S56, S57, S58, S59, S60, S61, S72 | [[customers-lenders-investors]], [[announcement-is-not-a-budget]], [[obligations-before-budget]] |
 | Governance, rights and incentives | S01, S02, S04, S61, S76 | [[decide-who-decides]], [[different-bets]], [[fix-decisions-before-hiring]] |
+| Trust, cooperation and team dysfunctions | S119 | [[where-investment-goes-wrong]] |
 | Workforce reductions and employment process | S77, S78 | [[anatomy-of-a-layoff]] |
 | Delivery, architecture and cloud cost | S13, S14, S15, S16, S53, S75 | [[can-the-team-deliver]], [[roadmap-to-revenue]], [[cheaper-cloud-bill]] |
 | Security and resilience | S17 | [[prove-you-can-restore]] |
@@ -1007,6 +1012,14 @@ Toys R Us, Inc. [Debtor-in-Possession Financing: Note to Interim Financial State
 **Evidence type:** Company regulatory disclosure. **Consulted scope:** Financing note consulted for the composition of the combined $3,125 million post-petition financing approved by the final order of October 24, 2017: a $1,850 million revolving and $450 million first-in-last-out facility for the US and Canadian trading companies, whose borrowings repaid the pre-petition ABL facility and Tranche A-1 loan in full; a $450 million term facility; and $375 million of notes issued by another group company, with staged releases. Security consisted of superpriority claims and priming liens whose ranking differed by facility and by asset. Consulted for package composition, repayment uses and security priority only; not a review of the loan agreements or court orders themselves.
 
 **Used in:** [[toys-r-us]].
+
+### S119 — Lencioni's Five Dysfunctions of a Team
+
+The Table Group. [The Five Dysfunctions of a Team](https://www.tablegroup.com/product/dysfunctions/), official summary of Patrick Lencioni's model. Undated web page; consulted 2026-09-27.
+
+**Evidence type:** Practitioner model, summarized by its originating organization. **Consulted scope:** The five dysfunction definitions and the listed characteristics of effective teams, including willingness to admit mistakes and ask for help. The full book was not reviewed. The opening guide's comparison with investment decisions and its constructive and damaging scenarios are this book's interpretation, not findings established by this source.
+
+**Used in:** [[where-investment-goes-wrong]].
 
 ## Supplied Private Inputs
 

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-23
+revised: 2026-09-27
 ---
 
 # Spec: Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives
@@ -15,6 +15,7 @@ Company product and engineering leaders, including people inheriting an investor
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Dusty Address Book; Borrowed Brains. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Place the chapter after [[operating-model-blueprints]] and before [[help-that-changes-capability]], preserving the latter’s direct handoff to [[useful-engagement]].
 - Distinguish solving a known problem, exploring unfamiliar possibilities and developing continuing peer relationships. Allow useful questions and relationships to mature without requiring every event to justify immediate financial returns.
 - Cover all six requested formats, their distinct uses and the company effort needed. Explain the investor’s contribution to access, convening, continuity and learning across companies without promising exclusive access or universal availability.
@@ -62,6 +63,7 @@ The consulted investor accounts do not establish subsequent company outcomes. Ob
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-23 (comic pages): The five SVG pages replaced by five generated comic pages of three strips each, keeping the same Northline chronology (choice of format, approval of €1,200 and six person-days, the visit with observation kept apart from the host's explanation, the return discussion and reframed question, the one-month learning review) and drawing the amounts and labels into the artwork. Captions and transcripts are rendered from the page blocks; the SVG comic and its markdown are archived under `_research/comic-pages-pilot/`. No figure or decision in the example changed; permalink unchanged.
 - 2026-09-23: Round 3 of the in-depth review (INVNET-008). The CTO Starter Kit passages in the article, summary and comic note are split into short sentences: purpose, CTO definition, public files and proposed use each stand alone, and dashboards and controls have their own sentences in the article. Links, ownership attribution and the proposed-use qualification are unchanged; spec remains accepted.
 - 2026-09-23: Round 2 of the in-depth review (INVNET-001, INVNET-007). The comic pages are relaid for phone reading: 600-unit-wide pages with stacked speakers and 24-unit dialogue replace the 960-unit side-by-side pages whose dialogue shrank to about 8 px on a phone; text is wrapped by measured width with a fallback-font allowance. The built site carries all five pages. Modalities updated accordingly; spec remains accepted.

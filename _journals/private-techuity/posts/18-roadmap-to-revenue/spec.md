@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-24
+revised: 2026-09-27
 ---
 
 # Spec: The Chain From Roadmap to Revenue Breaks Easily
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: Squeezing the Balloon; The Ratchet Roadmap. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is a sequence of comic pages: each page is one image of three stacked strips that carries its dialogue, labels and amounts in the artwork, with consistent fictional characters and a short caption under each page. Every string drawn in a page comes from the page script, which traces to the article, and generated artwork is inspected against the script (spelling, cast identity, which speaker each bubble points to, counts and sizes), not assumed.
@@ -60,6 +61,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-24 (Part IV SCALE): Closing hand-off says the organizational response ([[fix-decisions-before-hiring]]) opens Part IV rather than following directly in Part III. Body otherwise unchanged.
 - 2026-09-18: Comic converted from six single-scene panels to eight comic pages of three strips each (the format piloted on [[obligations-before-budget]]): the need and the investor’s stated expectation; the chain with every arrow drawn as a question; capacity against cash and the conversion plan; the comparison and its unresolved differences; what the pilot showed, with waiting time defined and the median drawn between the fourth and fifth of eight ordered waits; observed against projected, and committed, incurred, still to come and cash benefit kept apart; the day-100 rule and the choice; and the month-six gate with the consequence of failing it. Artwork states proposals and hypotheses as questions. Shared figures unchanged. Article and summary unchanged.
 - 2026-09-18: In-depth review round 3 (R08-008, R08-014, R08-015). The median gloss must hold for an even group: halfway between the fourth and fifth of eight ordered waits, in every format, and the comic says what waiting time measures. Criterion added: state a benefit’s mechanism conditionally when it is a hypothesis of the chapter (earlier billing advances cash only if the customer’s payment moves earlier). Shared amounts, dates and thresholds unchanged; permalink unchanged.

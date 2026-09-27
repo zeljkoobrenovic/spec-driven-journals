@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-23
+revised: 2026-09-27
 ---
 
 # Spec: Is the Investor’s Adviser Helping, Assessing or Deciding?
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Accidental Gatekeeper; The Ghost Veto. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Follow `useful-engagement` and lead into `tech-operating-partner`; do not describe this chapter as the start of Part IV.
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
@@ -67,6 +68,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-23 (comic pages): The six single-scene panels replaced by eight comic pages of three strips each, so the separate reporting lines, the four questions and the shareholder agreement's grants and limits, the three jobs and what employees hear, the four sources of authority, the coaching-to-assessment case with its five questions, the one-sentence coaching rule, the three honest routes and the two permissions, the authorization and the written note to managers, the diligence dispute and its agreed measurement, and the four planning-meeting statements are drawn into the artwork rather than carried by captions. Page images live under `assets/images/13-investors-adviser/`; captions and transcripts are rendered from the page blocks; the previous panel comic is archived under `_research/comic-pages-pilot/`. No fact, rule or decision changed; permalink unchanged.
 - 2026-09-22 (in-depth review, round 3): Comic panel 6 now establishes the written coaching agreement, attaches Alex’s consent to reuse in the assessment, restates the only-if-unresolved escalation and notes the legal-disclosure limit; the summary gives company approval and coaching consent separate paragraphs with the same limit, trimmed to 498 words. Plainer wording for return, revenue, stake and senior officers; private equity and corporate governance glossed in the research annotation; the authority key point and the measurement passage split; the Block annotation recast. Figure 2 and comic panels 3 and 4 regenerated with fewer, larger labels readable at a 312px phone width, with alt text matching the drawn labels. Permalink and id unchanged.
 - 2026-09-22 (in-depth review, round 2): Correct the onboarding example to the diligence chapter's actual evidence (five sampled implementations averaging about eighty hours, the same specialist in three of them), label Morgan's scaling concern a hypothesis with its linear-growth assumption explicit, keep Alex's 40% an estimate, and widen the resolving measurement to include the remaining setup work. Restore the “only if unresolved” escalation condition in the summary and describe Alex's consent as the protected client's rather than the sole party's, noting that a private agreement cannot displace a legally required disclosure. Separate the investor opinion formed under existing rights from a company-commissioned assessment in the summary. Define board, existing rights, coaching and delivery capacity inside the comic; replace “charter” with “written assignment”; define onboarding at first use; gloss fund and coaching sponsor; explain formal oversight in the summary. Split the rights and coaching-fallback paragraphs; summary prose trimmed 597 to 514 words. Comic panel 2 regenerated to restore Alex's established appearance while keeping the two separate reporting chains; summary figure and comic panels 3, 4 and 6 regenerated with phone-legible labels, with the meaningful labels mirrored in alt text and captions. Permalink and id unchanged.

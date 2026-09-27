@@ -23,6 +23,12 @@ icon: "assets/icons/19-ai-strategy-three-questions.png"
 > * Measure the **complete workflow**: preparation, production, review, correction and operation. A tool in use is not a useful result, and capacity freed is not cash saved until a dated spending decision converts it.
 > * Keep **experimental results attached to their conditions**. Dated studies of coding assistants point in different directions; test the local effect before an estimate becomes a commitment.
 
+> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+>
+> * **The Nodding Room** — Separates product opportunity, internal improvement and competitive threat into three different decisions.
+> * **All Bulk, No Muscle** — Tests changes to the complete workflow instead of counting tool adoption as capability.
+> * **Squeezing the Balloon** — Includes preparation, review, correction and operation when judging an apparent AI saving.
+
 <br>
 Few requests arrive with more pressure and less definition than a request for an “**AI strategy**.” The phrase can mean a new feature customers will pay for, a cheaper way to run the company, or a defence against a competitor that could make the product unnecessary. Each is a different investment, with its own evidence, costs and accountable people, and funding them as one decision puts money behind the wrong question. This chapter separates the three questions and gives each its own test.
 

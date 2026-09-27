@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-18
+revised: 2026-09-27
 ---
 
 # Spec: Management Equity, Fund Carry and Employee Jobs Are Different Bets
@@ -15,6 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Nodding Room; Squeezing the Balloon; The Exit Halo. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data. The comic modality is a sequence of comic pages: each page is one image of three stacked strips that carries its dialogue, labels and amounts in the artwork, with consistent fictional characters and a short caption under each page. Every string drawn in a page comes from the page script, which traces to the article, and generated artwork is inspected against the script (spelling, cast identity, which speaker each bubble points to, counts and sizes), not assumed.
@@ -64,6 +65,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-18: Comic converted from six single-scene panels to eight comic pages of three strips each (the format piloted on [[obligations-before-budget]]). The required order is kept; the closure and the staged decision each take two pages, so the comic now carries the mechanism of the renewal-window risk, the two decision gates with their triggers, and what staging costs (€550,000 against €350,000, full saving from month thirteen instead of month ten). No scenario amounts changed. Article and summary unchanged.
 - 2026-09-18: In-depth review round 3 (DB-008, DB-014, DB-015, DB-016). Add contract requirements for a specialist fallback that distinguishes customers already walked through from those not yet and states the remaining coverage gap, and for summary statements that keep the article’s qualifications and its valuation assumption. The section heading on the equity arrangements now counts four, matching its table. No scenario amount, date or authorization changed; permalink and id unchanged.
 - 2026-09-18: In-depth review round 2 (DB-011, DB-008, DB-003, DB-012, DB-013). Add contract requirements for the carry illustration’s stated 80/20 assumption and for the pause contingency (agreed retention extension, up to €30,000 of authorized additional retention payments, cash check on the pause case, renewed-approval conditions, specialist fallback). The planned one-off cost stays €550,000 and no other scenario amount changed; the authorized total is now up to €580,000 if stage two is paused; permalink and id unchanged.
