@@ -26,9 +26,9 @@ spec.loader.exec_module(helper)
 
 MODEL = 'gemini-3-pro-image-preview'
 CAST = J / '_research/comic-cast-20260913.jpeg'
-COMICS = J / 'posts/13-investors-adviser/comics.md'
+COMICS = J / 'posts/13-clarify-adviser-role/comics.md'
 PANEL_ID = sys.argv[1] if len(sys.argv) > 1 else '02-scene'
-ASSET = J / f'posts/13-investors-adviser/assets/images/18-investors-adviser/comic-{PANEL_ID}.jpeg'
+ASSET = J / f'posts/13-clarify-adviser-role/assets/images/18-clarify-adviser-role/comic-{PANEL_ID}.jpeg'
 PANEL_RE = re.compile(r'<!-- comic-panel\s+(\{.*?\})\s*-->', re.S)
 
 # Verbatim from generate_comics.py, so the cast stays identical across the journal.

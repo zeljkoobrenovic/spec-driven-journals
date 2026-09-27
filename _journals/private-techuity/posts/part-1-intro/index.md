@@ -33,12 +33,12 @@ This part covers fund-backed buyouts, in which an investment fund buys control o
 ![Six chapters stacked in three stages. Trace money and control: Customers, lenders, investors (customers pay for what they buy, lenders must be repaid, investors hope for a gain) leads to Funding and control (who receives money and approves spending). Interpret value and returns: Valuation (estimating what a business is worth) leads to Investor returns (gains or losses on invested money). Confirm funding for the work: Funding choices (match the money to the work) leads to Cash flow (money coming in and going out). A final banner reads Know what can fund a commitment to do the work.](assets/images/part-1-intro/chapter-overview.jpeg)
 **Figure 1:** *Six chapters in three stages, each linked below.*
 
-- [[customers-lenders-investors]] explains what each expects in return.
-- [[announcement-is-not-a-budget]] asks who receives the money and who may spend it.
-- [[valuation-is-an-estimate]] shows how sales, profit and cash feed a valuation.
-- [[three-different-returns]] follows one fictional fund through three possible sale prices.
-- [[raise-what-you-need]] weighs the costs, obligations and ownership effects of each kind of money.
-- [[obligations-before-budget]] subtracts taxes and loan payments, then allows for money customers still owe.
+- [[understand-expectations]] explains what each expects in return.
+- [[understand-funding-control]] asks who receives the money and who may spend it.
+- [[understand-valuation]] shows how sales, profit and cash feed a valuation.
+- [[understand-investor-returns]] follows one fictional fund through three possible sale prices.
+- [[understand-funding-choices]] weighs the costs, obligations and ownership effects of each kind of money.
+- [[understand-cash-flow]] subtracts taxes and loan payments, then allows for money customers still owe.
 
 Distributions are a fund’s payouts to its investors; the optional [[fund-economics]] reference covers them.
 

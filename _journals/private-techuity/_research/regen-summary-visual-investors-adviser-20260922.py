@@ -26,7 +26,7 @@ spec.loader.exec_module(helper)
 MODEL = 'gemini-3-pro-image-preview'
 ARCHIVE = J / '_research/summary-visual-prompts-20260913.json'
 LEGACY_KEY = '15-technology-principal'
-ASSET = J / 'posts/13-investors-adviser/assets/images/18-investors-adviser/summary-at-a-glance.jpeg'
+ASSET = J / 'posts/13-clarify-adviser-role/assets/images/18-clarify-adviser-role/summary-at-a-glance.jpeg'
 
 BASE = ('Create one finished summary illustration explaining the whole post in Owned, a book for product and '
         'engineering leaders working with investors. Landscape 16:9. Calm editorial concept map with concrete '

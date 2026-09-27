@@ -26,7 +26,7 @@ sys.modules[spec.name] = helper
 spec.loader.exec_module(helper)
 
 MODEL = 'gemini-3-pro-image-preview'
-POST = '30-ai-worth-its-cost'
+POST = '30-evaluate-ai-costs'
 IMG = J / 'posts' / POST / 'assets/images' / POST
 ARCHIVE_JSON = J / '_research/article-illustration-prompts-20260913.json'
 CAND = Path('/tmp/aic-figures')

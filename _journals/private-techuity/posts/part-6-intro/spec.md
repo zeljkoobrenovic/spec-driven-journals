@@ -44,8 +44,10 @@ The journal's current config.yaml and the configured chapter introductions. Thes
 
 ## Changelog
 
+- 2026-09-27: Update cross-links for the chapter title-slug renames.
+
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after the opening IN THIS SECTION callout, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-24 (order): Chapter order technical debt, resilience, cloud costs, AI costs; the introduction says the first chapter frames the estate on three columns and the others deepen one each; overview regenerated in that order.
-- 2026-09-24 (order and contents): Chapter order resilience, cloud costs, AI costs (the new [[ai-worth-its-cost]] added as the third chapter, cloud costs moved directly before it at the author's request); learning path, term order, alt text and opening line updated; overview to be regenerated with three cards in this order.
+- 2026-09-24 (order and contents): Chapter order resilience, cloud costs, AI costs (the new [[evaluate-ai-costs]] added as the third chapter, cloud costs moved directly before it at the author's request); learning path, term order, alt text and opening line updated; overview to be regenerated with three cards in this order.
 - 2026-09-24 (part order): SUSTAIN renumbered to Part VI (folder `part-6-intro`, permalink `part-6`); opening recalls Parts IV and V; closing hands off to Part VII (LEAD). Overview regenerated with two cards after the AI chapter left.
 - 2026-09-24: Created. Two chapters moved in from Part III (the AI strategy chapter stayed in Part III after a second decision); later parts renumbered VI–VIII. Overview figure, logo and icon pending generation.

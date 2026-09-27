@@ -52,12 +52,14 @@ A tutorial on implementing the analytics tooling; a survey of portfolio-monitori
 
 - **Internal**
   - [[have-your-numbers-ready]] — the measure record, the labelling rule and the internal-and-shared boundary the data pillar reuses (replaced the removed data-foundations appendix on 2026-09-25).
-  - [[learn-through-investors-network]], [[help-that-changes-capability]], [[useful-engagement]] — the portfolio equivalents of the people pillar's forums, shared expertise and written terms.
-  - [[operating-model-blueprints]], [[tech-operating-partner]], [[decide-who-decides]] — the working arrangements, connector role and decision rights the operating model adapts to.
+  - [[learn-through-investors-network]], [[choose-right-help]], [[set-terms-of-help]] — the portfolio equivalents of the people pillar's forums, shared expertise and written terms.
+  - [[plan-investor-support]], [[technology-operating-partners]], [[clarify-authority]] — the working arrangements, connector role and decision rights the operating model adapts to.
 - **External**
   - Željko Obrenović, *Grounded Architecture* — framework foundations (S110), analytics (S106), collaborative networks (S111), operating model introduction (S112), operating-model principles (S113), governance (S114), transforming organizations (S115). All consulted 2026-09-23; the analytics page was first consulted 2026-09-22 for the data-foundations chapter.
 
 ## Changelog
+
+- 2026-09-27: Update cross-links for the chapter title-slug renames.
 
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-23 (artwork): Add the author-requested hero logo, navigation icon and four inline figures; figures continue no prior numbering (1–4). Article text unchanged apart from the figure insertions and front matter.

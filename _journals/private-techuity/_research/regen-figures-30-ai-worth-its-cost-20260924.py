@@ -23,7 +23,7 @@ sys.path.insert(0, str(SCRIPTS))
 
 import generate_illustrations_nanobanana as gen  # noqa: E402
 
-POST = ROOT / "_journals/private-techuity/posts/30-ai-worth-its-cost"
+POST = ROOT / "_journals/private-techuity/posts/30-evaluate-ai-costs"
 ARCHIVE = ROOT / "_journals/private-techuity/_research/discarded-illustration-variants"
 
 STYLE = (
@@ -107,21 +107,21 @@ FIG3 = STYLE + (
 TARGETS = [
     {
         "id": "usage-construction-rates-bridge",
-        "asset": "assets/images/30-ai-worth-its-cost/usage-construction-rates-bridge.jpeg",
+        "asset": "assets/images/30-evaluate-ai-costs/usage-construction-rates-bridge.jpeg",
         "aspect_ratio": "16:9",
         "prompt": FIG1,
         "alt": "A bridge chart from April's €1,400 of model charges to August's €5,824. Usage adds €2,644, construction adds €3,236, and the vendor's rate cut removes €1,456, so the bill peaks above the August total before the price cut brings it down.",
     },
     {
         "id": "three-numbers-never-added",
-        "asset": "assets/images/30-ai-worth-its-cost/three-numbers-never-added.jpeg",
+        "asset": "assets/images/30-evaluate-ai-costs/three-numbers-never-added.jpeg",
         "aspect_ratio": "16:9",
         "prompt": FIG2,
         "alt": "Three cards separated by crossed-out plus signs. Customer value: €540 a month, planner time freed, before the fee. Revenue: €57,000, April to September 2027. Cash contribution: about €26,900, after running cost, before payroll.",
     },
     {
         "id": "commitment-floor-against-demand-range",
-        "asset": "assets/images/30-ai-worth-its-cost/commitment-floor-against-demand-range.jpeg",
+        "asset": "assets/images/30-evaluate-ai-costs/commitment-floor-against-demand-range.jpeg",
         "aspect_ratio": "16:9",
         "prompt": FIG3,
         "alt": "A vertical scale of monthly model charges in euros at list price. A shaded band marks the 2028 demand range from €3,300 low to €7,600 high with €5,200 expected. Option C's committed floor of €2,400 lies below the band; Option B's floor of €3,900 lies inside it. A €2,000 stress case sits below both.",

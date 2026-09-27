@@ -1,6 +1,6 @@
 The early period after new funding or an ownership change should establish a **funded operating plan**: named leaders, approved money and staff time, decision dates and recorded postponements. A hundred days is a planning convention, not a deadline.
 
-![Early execution confirms changed conditions, chooses feasible priorities, funds dependencies and reviews evidence.](assets/images/22-first-hundred-days/summary-at-a-glance.jpeg)
+![Early execution confirms changed conditions, chooses feasible priorities, funds dependencies and reviews evidence.](assets/images/32-first-hundred-days/summary-at-a-glance.jpeg)
 **Figure 1:** *Use the early period to establish a company-owned, adaptable plan.*
 
 **The starting point.** Fictional Larkspur sells scheduling software. Each new customer needs **onboarding**: staff set the software up for that customer. The investor’s **investment thesis**, its reason for expecting success, first assumed twice as many customers with the same onboarding staff. Its pre-deal investigation cut that to 50% more in the first year.
@@ -19,4 +19,4 @@ A second engineer also learns to release (put new versions into use) and recover
 
 Pilot effort fell from 80 to 62 hours per customer, not the illustrative 50 an earlier planning model assumed, and customers waited just as long. At 62 hours the same staff handle about 1.3 times as many customers, not 1.5.
 
-**The revised decision.** About 40% of remaining hours traced to poor customer data. At day 100 the board funded a **data-quality step**, checking each customer’s records before setup, for €40,000 and four engineer-weeks, leaving €160,000 and no engineering time. About €210,000 of the €340,000 committed had been **incurred**: work received, not necessarily paid. The expansion decision moves to about day 190, later if the next customer group is unfinished. Expansion cannot start before month 13, and hiring stays postponed. See [[the-financing-slipped]] and [[handover-of-obligations]].
+**The revised decision.** About 40% of remaining hours traced to poor customer data. At day 100 the board funded a **data-quality step**, checking each customer’s records before setup, for €40,000 and four engineer-weeks, leaving €160,000 and no engineering time. About €210,000 of the €340,000 committed had been **incurred**: work received, not necessarily paid. The expansion decision moves to about day 190, later if the next customer group is unfinished. Expansion cannot start before month 13, and hiring stays postponed. See [[manage-funding-delays]] and [[manage-handover]].

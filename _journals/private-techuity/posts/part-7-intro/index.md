@@ -30,10 +30,10 @@ These events follow no fixed order, and how much each changes the leadership wor
 ![Three chapters in one row under the heading LEAD, following a customer setup problem where some setups depend on one specialist: Use diligence (check the business before the deal is signed) leads to Plan the first hundred days (fund the work and review the finding), which leads to Manage the handover (pass on the evidence and unfinished promises). A final banner reads Account for decisions, evidence and promises through change.](assets/images/part-7-intro/chapter-overview.jpeg)
 **Figure 1:** *Three chapters follow the onboarding finding from diligence to handover.*
 
-The onboarding finding runs through all three chapters, as it did through the earlier chapters of Parts III and IV, where Larkspur asked its investor for help and ran a limited trial of a new setup step. The separate delayed-financing scenario, with its own cash, people and dates, is the chapter [[the-financing-slipped]] in Part IV; the reduction it can force is the chapter [[anatomy-of-a-layoff]] in Part V.
+The onboarding finding runs through all three chapters, as it did through the earlier chapters of Parts III and IV, where Larkspur asked its investor for help and ran a limited trial of a new setup step. The separate delayed-financing scenario, with its own cash, people and dates, is the chapter [[manage-funding-delays]] in Part IV; the reduction it can force is the chapter [[scale-the-team-down]] in Part V.
 
-- [[diligence-corrects-the-plan]] explains **due diligence**, checking a business before an investment or purchase, and turns the finding into an agreed response.
+- [[use-diligence]] explains **due diligence**, checking a business before an investment or purchase, and turns the finding into an agreed response.
 - [[first-hundred-days]] funds the response with a named person responsible, approved money and team time. The **board**, the directors who approve major decisions, adopts the plan shortly after the investment completes, and a review follows a hundred days after that adoption.
-- [[handover-of-obligations]] carries the record into a further round, a sale, a merger into a buyer’s business or continued ownership: who receives cash, who keeps a share, who can approve decisions and what unfinished work goes with the company.
+- [[manage-handover]] carries the record into a further round, a sale, a merger into a buyer’s business or continued ownership: who receives cash, who keeps a share, who can approve decisions and what unfinished work goes with the company.
 
-Begin with the chapter [[diligence-corrects-the-plan]]. Part VIII then tests these ways of thinking against historical company situations.
+Begin with the chapter [[use-diligence]]. Part VIII then tests these ways of thinking against historical company situations.

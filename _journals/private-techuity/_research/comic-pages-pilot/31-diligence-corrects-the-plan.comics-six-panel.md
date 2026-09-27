@@ -13,7 +13,7 @@ Morgan is the investor’s technology adviser. At Larkspur, Alex is the chief te
 {
   "id": "01-scene",
   "status": "generated",
-  "asset": "assets/images/21-diligence-corrects-the-plan/comic-01-scene.jpeg",
+  "asset": "assets/images/31-use-diligence/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 1 of an explainer comic. Alex and Sam ask Morgan which company capabilities the proposed investment depends on. Use one speech bubble with the exact words: \"What are we being asked to support?\" Convey: Diligence tests the product, technology and team assumptions behind the proposed investment. Company leaders help make those assumptions explicit and test them against actual work.",
   "alt": "Comic panel: Alex and Sam ask Morgan which company capabilities the proposed investment depends on.",
@@ -26,7 +26,7 @@ Morgan is the investor’s technology adviser. At Larkspur, Alex is the chief te
 }
 -->
 
-![Comic panel: Alex and Sam ask Morgan which company capabilities the proposed investment depends on.](assets/images/21-diligence-corrects-the-plan/comic-01-scene.jpeg)
+![Comic panel: Alex and Sam ask Morgan which company capabilities the proposed investment depends on.](assets/images/31-use-diligence/comic-01-scene.jpeg)
 
 **Panel 1:** Diligence tests the product, technology and team assumptions behind the proposed investment. Company leaders help make those assumptions explicit and test them against actual work.
 
@@ -36,7 +36,7 @@ Morgan is the investor’s technology adviser. At Larkspur, Alex is the chief te
 {
   "id": "02-scene",
   "status": "generated",
-  "asset": "assets/images/21-diligence-corrects-the-plan/comic-02-scene.jpeg",
+  "asset": "assets/images/31-use-diligence/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 2 of an explainer comic. Alex demonstrates a system while Sam notes an untested dependency. Use one speech bubble with the exact words: \"What has this demonstration established?\" Convey: A demonstration shows what worked under those conditions. Morgan instead samples five of the last twelve customer setups, not just the best one. The sample covers one country and the last six months, and that limit is recorded.",
   "alt": "Comic panel: Alex and Sam compare a demonstration screen with a folder of untested dependencies.",
@@ -49,7 +49,7 @@ Morgan is the investor’s technology adviser. At Larkspur, Alex is the chief te
 }
 -->
 
-![Comic panel: Alex and Sam compare a demonstration screen with a folder of untested dependencies.](assets/images/21-diligence-corrects-the-plan/comic-02-scene.jpeg)
+![Comic panel: Alex and Sam compare a demonstration screen with a folder of untested dependencies.](assets/images/31-use-diligence/comic-02-scene.jpeg)
 
 **Panel 2:** A demonstration shows what worked under those conditions. Morgan instead samples five of the last twelve customer setups, not just the best one. The sample covers one country and the last six months, and that limit is recorded.
 
@@ -59,7 +59,7 @@ Morgan is the investor’s technology adviser. At Larkspur, Alex is the chief te
 {
   "id": "03-scene",
   "status": "generated",
-  "asset": "assets/images/21-diligence-corrects-the-plan/comic-03-scene.jpeg",
+  "asset": "assets/images/31-use-diligence/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 3 of an explainer comic. Morgan labels observation, assertion, and inference separately. Use one speech bubble with the exact words: \"Which claims have supporting evidence?\" Convey: Finding D-3 separates three kinds of statement. Observed: in three of the five sampled setups, one specialist had to enter the customer’s settings by hand; across all five, setup took about 80 staff hours on average, counting every recorded hour from signed contract to the customer’s first real use of the software. Reported by Alex: roughly 40% of the effort is cleaning up poor customer data. Inferred by Morgan: the dependency on one person is built into how the work is organized. Not established: how much each explanation accounts for, because the time records do not split the hours. Both can be true.",
   "alt": "Comic panel: Morgan labels observation, assertion, and inference separately.",
@@ -72,7 +72,7 @@ Morgan is the investor’s technology adviser. At Larkspur, Alex is the chief te
 }
 -->
 
-![Comic panel: Morgan labels observation, assertion, and inference separately.](assets/images/21-diligence-corrects-the-plan/comic-03-scene.jpeg)
+![Comic panel: Morgan labels observation, assertion, and inference separately.](assets/images/31-use-diligence/comic-03-scene.jpeg)
 
 **Panel 3:** Finding D-3 separates three kinds of statement. Observed: in three of the five sampled setups, one specialist had to enter the customer’s settings by hand; across all five, setup took about 80 staff hours on average, counting every recorded hour from signed contract to the customer’s first real use of the software. Reported by Alex: roughly 40% of the effort is cleaning up poor customer data. Inferred by Morgan: the dependency on one person is built into how the work is organized. Not established: how much each explanation accounts for, because the time records do not split the hours. Both can be true.
 
@@ -82,7 +82,7 @@ Morgan is the investor’s technology adviser. At Larkspur, Alex is the chief te
 {
   "id": "04-scene",
   "status": "generated",
-  "asset": "assets/images/21-diligence-corrects-the-plan/comic-04-scene.jpeg",
+  "asset": "assets/images/31-use-diligence/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 4 of an explainer comic. Sam stands on the LEFT beside a large whiteboard, gesturing toward it without touching it; Alex and Priya sit side by side at one table on the RIGHT, both looking at the board. The whiteboard shows a box labelled \"FINDING D-3\" with three arrows to three boxes labelled \"PRICE\", \"FUNDING\" and \"PLAN\". The \"PLAN\" box is circled in green. Under it, one card lists three short lines: \"GROWTH: 2× → 1.5×\", \"PILOT: FUNDED\", \"2 HIRES: LATER\". Plain papers and mugs on the table carry no writing. Use one speech bubble with the exact words: \"Which decision should this change?\" Convey: The changed plan. The investment goes ahead. First-year growth is now assumed at 1.5× (half as many setups again), not 2× (twice as many): a forecast that still depends on evidence. A second country waits for that evidence. Two permanent specialist hires, €300,000 a year, are deferred. The build. A pilot, a limited trial of one reusable setup step, becomes a funded condition: €180,000 and 12 engineer-weeks. One engineer-week is one engineer’s week of work. Cover and upkeep. Larkspur’s own specialist must help build the step. So a contract specialist serves current customers for twelve months, for about €150,000 from the ordinary operating budget, outside the €180,000. From the accounting year after the step is delivered, keeping it running costs €30,000 a year from the same budget.",
   "alt": "Comic panel: Sam points to a whiteboard where finding D-3 branches to price, funding and plan; the plan branch is circled, with a card reading growth 2× to 1.5×, pilot funded, two hires later, while Alex and Priya watch.",
@@ -95,7 +95,7 @@ Morgan is the investor’s technology adviser. At Larkspur, Alex is the chief te
 }
 -->
 
-![Comic panel: Sam points to a whiteboard where finding D-3 branches to price, funding and plan; the plan branch is circled, with a card reading growth 2× to 1.5×, pilot funded, two hires later, while Alex and Priya watch.](assets/images/21-diligence-corrects-the-plan/comic-04-scene.jpeg)
+![Comic panel: Sam points to a whiteboard where finding D-3 branches to price, funding and plan; the plan branch is circled, with a card reading growth 2× to 1.5×, pilot funded, two hires later, while Alex and Priya watch.](assets/images/31-use-diligence/comic-04-scene.jpeg)
 
 **Panel 4:** *The changed plan.* The investment goes ahead. First-year growth is now assumed at 1.5× (half as many setups again), not 2× (twice as many): a forecast that still depends on evidence. A second country waits for that evidence. Two permanent specialist hires, €300,000 a year, are deferred.
 
@@ -109,7 +109,7 @@ Morgan is the investor’s technology adviser. At Larkspur, Alex is the chief te
 {
   "id": "05-scene",
   "status": "generated",
-  "asset": "assets/images/21-diligence-corrects-the-plan/comic-05-scene.jpeg",
+  "asset": "assets/images/31-use-diligence/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 5 of an explainer comic. Alex sits on the LEFT at one table, gesturing toward a large flip chart standing beside the table, not touching it; Priya and Morgan sit at the same table on the RIGHT, facing the flip chart. The flip chart is a record with five short lines: \"FINDING D-3\", \"TERMS: INVESTMENT COMMITTEE\", \"PLAN + MONEY: BOARD\", \"ACCOUNTABLE: PRIYA\", \"DISAGREEMENT: ALEX\". Plain papers and mugs on the table carry no writing. Use one speech bubble with the exact words: \"Let’s record what we can commit to.\" Convey: The decision record names who approves what. The investment committee approves the deal terms; Larkspur’s board adopts the plan and its money; Priya is accountable for the result. Alex’s view that customer data explains much of the effort is recorded as a disagreement that can coexist with Morgan’s. The pilot measurement will size both, and the next money follows the largest share of remaining effort that has a proposed fix with an estimated cost.",
   "alt": "Comic panel: Alex gestures to a flip-chart decision record for finding D-3: terms approved by the investment committee, plan and money by the board, Priya accountable, Alex's disagreement recorded, as Priya and Morgan read it.",
@@ -122,7 +122,7 @@ Morgan is the investor’s technology adviser. At Larkspur, Alex is the chief te
 }
 -->
 
-![Comic panel: Alex gestures to a flip-chart decision record for finding D-3: terms approved by the investment committee, plan and money by the board, Priya accountable, Alex's disagreement recorded, as Priya and Morgan read it.](assets/images/21-diligence-corrects-the-plan/comic-05-scene.jpeg)
+![Comic panel: Alex gestures to a flip-chart decision record for finding D-3: terms approved by the investment committee, plan and money by the board, Priya accountable, Alex's disagreement recorded, as Priya and Morgan read it.](assets/images/31-use-diligence/comic-05-scene.jpeg)
 
 **Panel 5:** The decision record names who approves what. The investment committee approves the deal terms; Larkspur’s board adopts the plan and its money; Priya is accountable for the result. Alex’s view that customer data explains much of the effort is recorded as a disagreement that can coexist with Morgan’s. The pilot measurement will size both, and the next money follows the largest share of remaining effort that has a proposed fix with an estimated cost.
 
@@ -132,7 +132,7 @@ Morgan is the investor’s technology adviser. At Larkspur, Alex is the chief te
 {
   "id": "06-scene",
   "status": "generated",
-  "asset": "assets/images/21-diligence-corrects-the-plan/comic-06-scene.jpeg",
+  "asset": "assets/images/31-use-diligence/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 6 of an explainer comic. Priya stands on the LEFT and Alex on the RIGHT, both beside one wide whiteboard, gesturing toward it without touching it. The whiteboard shows one horizontal timeline with four equal, clearly separated segments, each with its own label, read left to right: \"DAY 0: PLAN ADOPTED\", \"DAY 20: BASELINE\", \"DAY 90: MEASURE PILOT\", \"DAY 100: BOARD DECIDES\". After the last segment, an arrow leads to a closed gate labelled \"NEXT STEP ONLY WITH EVIDENCE\". Use one speech bubble with the exact words: \"What does this evidence let us promise?\" Convey: The sequence after closing. Priya records acceptance of D-3 within ten days. By day 20 a baseline, the starting figure later results are compared with, is built from past time records. At day 90 Priya measures the pilot group of customers, and at day 100 the board decides on that measurement. Further steps need that evidence and their own approval; nothing is released automatically.",
   "alt": "Comic panel: Priya and Alex at a whiteboard timeline reading day 0 plan adopted, day 20 baseline, day 90 measure pilot, day 100 board decides, with a gate labelled next step only with evidence.",
@@ -145,7 +145,7 @@ Morgan is the investor’s technology adviser. At Larkspur, Alex is the chief te
 }
 -->
 
-![Comic panel: Priya and Alex at a whiteboard timeline reading day 0 plan adopted, day 20 baseline, day 90 measure pilot, day 100 board decides, with a gate labelled next step only with evidence.](assets/images/21-diligence-corrects-the-plan/comic-06-scene.jpeg)
+![Comic panel: Priya and Alex at a whiteboard timeline reading day 0 plan adopted, day 20 baseline, day 90 measure pilot, day 100 board decides, with a gate labelled next step only with evidence.](assets/images/31-use-diligence/comic-06-scene.jpeg)
 
 **Panel 6:** The sequence after closing. Priya records acceptance of D-3 within ten days. By day 20 a baseline, the starting figure later results are compared with, is built from past time records. At day 90 Priya measures the pilot group of customers, and at day 100 the board decides on that measurement. Further steps need that evidence and their own approval; nothing is released automatically.
 

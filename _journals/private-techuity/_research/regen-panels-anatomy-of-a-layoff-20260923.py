@@ -27,9 +27,9 @@ spec.loader.exec_module(helper)
 
 MODEL = 'gemini-3-pro-image-preview'
 CAST = J / '_research/comic-cast-20260913.jpeg'
-POST = J / 'posts/23-anatomy-of-a-layoff'
+POST = J / 'posts/23-scale-the-team-down'
 COMICS = POST / 'comics.md'
-LEGACY = '24-anatomy-of-a-layoff'
+LEGACY = '24-scale-the-team-down'
 PANEL_RE = re.compile(r'<!-- comic-panel\s+(\{.*?\})\s*-->', re.S)
 
 # Identity sentences verbatim from generate_comics.py, minus its "no dates" rule.

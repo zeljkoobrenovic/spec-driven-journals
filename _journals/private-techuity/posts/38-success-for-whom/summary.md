@@ -1,6 +1,6 @@
 Microsoft bought **Skype** for $8.5 billion in 2011 and retired it in 2025. **Toys R Us** entered bankruptcy in 2017 and moved to close its US stores in 2018. Those histories put a question behind **durable success**: after an ownership decision, can the company keep serving customers, paying its obligations and funding necessary work?
 
-![Five circles around a company building with an open doorway: investor result, company income and costs, operating capability, people affected and, along an arrow to a calendar, after the ownership change.](assets/images/30-success-for-whom/summary-at-a-glance.jpeg)
+![Five circles around a company building with an open doorway: investor result, company income and costs, operating capability, people affected and, along an arrow to a calendar, after the ownership change.](assets/images/38-success-for-whom/summary-at-a-glance.jpeg)
 **Figure 1:** *Assess what lasts beyond the transaction.*
 
 Compare those cases with **Hilton's** reported investor gain, **Visma's** changing investors and **TeamSystem's** successive owners in four columns: investor result (money back plus value still held, versus money in), company result, people affected and what remains unknown. A valuable sale alone does not establish what customers or employees gained.

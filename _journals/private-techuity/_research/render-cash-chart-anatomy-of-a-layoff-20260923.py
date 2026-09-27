@@ -22,8 +22,8 @@ from html import escape
 from pathlib import Path
 
 J = Path(__file__).resolve().parents[1]
-POST = J / 'posts/23-anatomy-of-a-layoff'
-ASSET = POST / 'assets/images/24-anatomy-of-a-layoff/cash-by-date-under-three-plans.jpeg'
+POST = J / 'posts/23-scale-the-team-down'
+ASSET = POST / 'assets/images/24-scale-the-team-down/cash-by-date-under-three-plans.jpeg'
 ARCHIVE = J / '_research/discarded-illustration-variants'
 
 IVORY, INK, TEAL, OCHRE, MUTED, GRID = '#f6f1e6', '#24394a', '#2f7a74', '#b8791f', '#6b7c84', '#ddd5c4'

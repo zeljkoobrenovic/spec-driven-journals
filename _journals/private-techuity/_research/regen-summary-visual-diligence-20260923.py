@@ -2,7 +2,7 @@
 """Regenerate the TL;DR overview figure of 31-diligence-corrects-the-plan (legacy keys).
 
 The prompt archive keys this post as `16-diligence-and-thesis` and its assets live under
-`21-diligence-corrects-the-plan/`, so `generate_summary_visuals.py --post <slug>` cannot
+`31-use-diligence/`, so `generate_summary_visuals.py --post <slug>` cannot
 select it. This drives the illustrator helper directly for this one figure.
 
 In-depth review round 2, finding DCP-002: the funded-action checklist carried unexplained
@@ -27,7 +27,7 @@ spec.loader.exec_module(helper)
 MODEL = 'gemini-3-pro-image-preview'
 ARCHIVE = J / '_research/summary-visual-prompts-20260913.json'
 LEGACY_KEY = '16-diligence-and-thesis'
-ASSET = J / 'posts/31-diligence-corrects-the-plan/assets/images/21-diligence-corrects-the-plan/summary-at-a-glance.jpeg'
+ASSET = J / 'posts/31-use-diligence/assets/images/31-use-diligence/summary-at-a-glance.jpeg'
 CANDIDATE = Path('/tmp/diligence-summary-candidate.jpeg')
 
 BASE = ('Create one finished summary illustration explaining the whole post in Owned, a book for product and '

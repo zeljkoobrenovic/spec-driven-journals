@@ -32,7 +32,7 @@ owned/
   book-title.md             # Title, authors, journal logo and description
   reading-guide.md
   part-1.md
-  customers-lenders-investors.md
+  understand-expectations.md
   ...
   resources/                # Copied artwork, with collision-free source paths
   export-manifest.json       # Source mapping, hashes, counts and export options

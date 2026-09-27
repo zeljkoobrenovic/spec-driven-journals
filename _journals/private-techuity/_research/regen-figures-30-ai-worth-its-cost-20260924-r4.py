@@ -30,7 +30,7 @@ from pathlib import Path
 sys.dont_write_bytecode = True
 ROOT = Path(__file__).resolve().parents[3]
 J = ROOT / '_journals/private-techuity'
-POST = '30-ai-worth-its-cost'
+POST = '30-evaluate-ai-costs'
 IMG = J / 'posts' / POST / 'assets/images' / POST
 COMICS = J / 'posts' / POST / 'comics.md'
 GEN = ROOT / '.claude/skills/explainer-comics/scripts/generate_comic_pages.py'

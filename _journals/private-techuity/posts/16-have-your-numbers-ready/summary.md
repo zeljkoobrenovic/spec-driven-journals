@@ -26,4 +26,4 @@
 
 **Assign the work.** **Product operations**, as Melissa Perri and Denise Tilles describe it, keeps definitions and evidence consistent. A small company names an owner per number and one person for the board pack, the reports the directors receive before each meeting.
 
-[[cannot-fund-everything]] uses the numbers to choose what to fund.
+[[set-priorities]] uses the numbers to choose what to fund.

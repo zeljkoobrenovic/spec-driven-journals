@@ -13,7 +13,7 @@ Morgan advises the investor on technology; Alex leads technology at Larkspur, Pr
 {
   "id": "01-scene",
   "status": "generated",
-  "asset": "assets/images/11-help-that-changes-capability/comic-01-scene.jpeg",
+  "asset": "assets/images/11-choose-right-help/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
   "caption": "A capability is something the company can reliably do. Begin the search for help with the work the team cannot yet perform well.",
   "alt": "Comic panel: Alex and Morgan examine a request-to-ready workflow with a loop around manual entry.",
@@ -26,7 +26,7 @@ Morgan advises the investor on technology; Alex leads technology at Larkspur, Pr
 }
 -->
 
-![Comic panel: Alex and Morgan examine a request-to-ready workflow with a loop around manual entry.](assets/images/11-help-that-changes-capability/comic-01-scene.jpeg)
+![Comic panel: Alex and Morgan examine a request-to-ready workflow with a loop around manual entry.](assets/images/11-choose-right-help/comic-01-scene.jpeg)
 
 **Panel 1:** A capability is something the company can reliably do. Begin the search for help with the work the team cannot yet perform well.
 
@@ -36,7 +36,7 @@ Morgan advises the investor on technology; Alex leads technology at Larkspur, Pr
 {
   "id": "02-scene",
   "status": "generated",
-  "asset": "assets/images/11-help-that-changes-capability/comic-02-scene.jpeg",
+  "asset": "assets/images/11-choose-right-help/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
   "caption": "Lay out the credible sources for the same need, including those outside the investor’s network, and compare them on availability, company effort, cost and relevant experience.",
   "alt": "Comic panel: Morgan lays out cards representing a specialist, a peer leader, a recruiter and a customer introduction.",
@@ -49,7 +49,7 @@ Morgan advises the investor on technology; Alex leads technology at Larkspur, Pr
 }
 -->
 
-![Comic panel: Morgan lays out cards representing a specialist, a peer leader, a recruiter and a customer introduction.](assets/images/11-help-that-changes-capability/comic-02-scene.jpeg)
+![Comic panel: Morgan lays out cards representing a specialist, a peer leader, a recruiter and a customer introduction.](assets/images/11-choose-right-help/comic-02-scene.jpeg)
 
 **Panel 2:** Lay out the credible sources for the same need, including those outside the investor’s network, and compare them on availability, company effort, cost and relevant experience. The cards on the table are an **operating specialist** (someone the investment firm employs to help its companies improve how they run), a peer leader at another company the investor owns, a recruiter, and a customer intro — an introduction to a potential customer.
 
@@ -59,7 +59,7 @@ Morgan advises the investor on technology; Alex leads technology at Larkspur, Pr
 {
   "id": "03-scene",
   "status": "generated",
-  "asset": "assets/images/11-help-that-changes-capability/comic-03-scene.jpeg",
+  "asset": "assets/images/11-choose-right-help/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
   "caption": "A connection is a chance to learn, not proof of fit. Another company's four-step setup routine may or may not suit this company's customers.",
   "alt": "Comic panel: Alex points at another company's four-step customer-setup list — collect customer data, check the data, set up the account, customer starts work — while the Larkspur team looks on.",
@@ -72,7 +72,7 @@ Morgan advises the investor on technology; Alex leads technology at Larkspur, Pr
 }
 -->
 
-![Comic panel: Alex points at another company's four-step customer-setup list — collect customer data, check the data, set up the account, customer starts work — while the Larkspur team looks on.](assets/images/11-help-that-changes-capability/comic-03-scene.jpeg)
+![Comic panel: Alex points at another company's four-step customer-setup list — collect customer data, check the data, set up the account, customer starts work — while the Larkspur team looks on.](assets/images/11-choose-right-help/comic-03-scene.jpeg)
 
 **Panel 3:** A connection is a chance to learn, not proof of fit. Another company's four-step setup routine may or may not suit this company's customers.
 
@@ -82,7 +82,7 @@ Morgan advises the investor on technology; Alex leads technology at Larkspur, Pr
 {
   "id": "04-scene",
   "status": "generated",
-  "asset": "assets/images/11-help-that-changes-capability/comic-04-scene.jpeg",
+  "asset": "assets/images/11-choose-right-help/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
   "caption": "Temporary expertise can help start a capability while company people learn to sustain it. Test it by having the colleague do the same setup unaided.",
   "alt": "Comic panel: On the left the specialist guides Alex through setting up a customer on a laptop; on the right a Larkspur colleague completes the same setup alone at her own laptop.",
@@ -95,7 +95,7 @@ Morgan advises the investor on technology; Alex leads technology at Larkspur, Pr
 }
 -->
 
-![Comic panel: On the left the specialist guides Alex through setting up a customer on a laptop; on the right a Larkspur colleague completes the same setup alone at her own laptop.](assets/images/11-help-that-changes-capability/comic-04-scene.jpeg)
+![Comic panel: On the left the specialist guides Alex through setting up a customer on a laptop; on the right a Larkspur colleague completes the same setup alone at her own laptop.](assets/images/11-choose-right-help/comic-04-scene.jpeg)
 
 **Panel 4:** Temporary expertise can help start a capability while company people learn to sustain it. Test it by having the colleague do the same setup unaided.
 
@@ -105,7 +105,7 @@ Morgan advises the investor on technology; Alex leads technology at Larkspur, Pr
 {
   "id": "05-scene",
   "status": "generated",
-  "asset": "assets/images/11-help-that-changes-capability/comic-05-scene.jpeg",
+  "asset": "assets/images/11-choose-right-help/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
   "caption": "Establish availability, effort and cost before depending on an offer. The assignment runs six weeks end to end; inside it the specialist is paid for ten days and a Larkspur engineer gives six.",
   "alt": "Comic panel: Sam and Morgan study a six-week bar chart on which the specialist's ten paid days and the engineer's six days are marked, beside a note capping the cost at €15,000.",
@@ -118,7 +118,7 @@ Morgan advises the investor on technology; Alex leads technology at Larkspur, Pr
 }
 -->
 
-![Comic panel: Sam and Morgan study a six-week bar chart on which the specialist's ten paid days and the engineer's six days are marked, beside a note capping the cost at €15,000.](assets/images/11-help-that-changes-capability/comic-05-scene.jpeg)
+![Comic panel: Sam and Morgan study a six-week bar chart on which the specialist's ten paid days and the engineer's six days are marked, beside a note capping the cost at €15,000.](assets/images/11-choose-right-help/comic-05-scene.jpeg)
 
 **Panel 5:** Establish availability, effort and cost before depending on an offer. The assignment runs six weeks end to end; inside it the specialist is paid for ten days and a Larkspur engineer gives six. It can start on day 21. An independent specialist is held as the fallback and looked for only if this one falls through: triggered on day 21, finding and contracting one would push the start to about day 70 to 84 and the finish to about day 112 to 126 — past the day-100 board review, which would then get a revised measurement date instead of a result. Hiring waits for evidence.
 
@@ -128,7 +128,7 @@ Morgan advises the investor on technology; Alex leads technology at Larkspur, Pr
 {
   "id": "06-scene",
   "status": "generated",
-  "asset": "assets/images/11-help-that-changes-capability/comic-06-scene.jpeg",
+  "asset": "assets/images/11-choose-right-help/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
   "caption": "Keep the need and the offers apart. The need is what the company wants to be able to do; people, networks and services are only the routes on offer.",
   "alt": "Comic panel: Priya holds a card naming the company's need — set up customers without repeated manual work — above four separate offer cards labelled specialist, peer leader, shared service and network introduction, while Alex checks them against a list.",
@@ -141,7 +141,7 @@ Morgan advises the investor on technology; Alex leads technology at Larkspur, Pr
 }
 -->
 
-![Comic panel: Priya holds a card naming the company's need — set up customers without repeated manual work — above four separate offer cards labelled specialist, peer leader, shared service and network introduction, while Alex checks them against a list.](assets/images/11-help-that-changes-capability/comic-06-scene.jpeg)
+![Comic panel: Priya holds a card naming the company's need — set up customers without repeated manual work — above four separate offer cards labelled specialist, peer leader, shared service and network introduction, while Alex checks them against a list.](assets/images/11-choose-right-help/comic-06-scene.jpeg)
 
 **Panel 6:** Keep the need and the offers apart. The need is what the company wants to be able to do; people, networks and services are only the routes on offer. A **shared service** is one the investor’s group already runs for several of its businesses — security or technical support, say — and offers to this one too. Priya's request follows from it: make one setup path repeatable, with a specialist alongside our engineer for six weeks; Priya assesses customer outcomes.
 

@@ -13,7 +13,7 @@ Morgan advises the investor on technology; Alex leads engineering, Priya leads p
 {
   "id": "01-scene",
   "status": "generated",
-  "asset": "assets/images/18-roadmap-to-revenue/comic-01-scene.jpeg",
+  "asset": "assets/images/18-test-revenue-assumptions/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 1 of an explainer comic. Alex stands beside a whiteboard and presents a PROPOSED change to customer setup to two unnamed colleagues in grey. The whiteboard is headed with the exact words \"PROPOSED SETUP\" and shows three boxes joined by arrows, labelled exactly \"Sign up\", \"Shorter setup?\" and \"Start using product\", with one large question mark beside the middle box. A smaller sheet pinned next to it is headed exactly \"TODAY\" and shows a longer row of five plain unlabelled boxes; it is NOT crossed out. Nothing in the scene says or implies that setup is already faster: no words such as immediate, instant, quick, complete or done, no tablet, no progress bar, no tick marks, and no other lettering. Use one speech bubble with the exact words: \"What changes for the customer?\" Convey: Onboarding is the setup needed before a customer can use the product. The whiteboard shows a proposal, not a result: “Shorter setup?” is the question the trial has to answer. Start by asking what the change would make easier for the customer.",
   "alt": "Comic panel: Alex points to a whiteboard headed “Proposed setup”: Sign up, then “Shorter setup?” with a large question mark, then Start using product. A sheet headed “Today” shows a longer row of steps. Two colleagues ask what changes for the customer.",
@@ -26,7 +26,7 @@ Morgan advises the investor on technology; Alex leads engineering, Priya leads p
 }
 -->
 
-![Comic panel: Alex points to a whiteboard headed “Proposed setup”: Sign up, then “Shorter setup?” with a large question mark, then Start using product. A sheet headed “Today” shows a longer row of steps. Two colleagues ask what changes for the customer.](assets/images/18-roadmap-to-revenue/comic-01-scene.jpeg)
+![Comic panel: Alex points to a whiteboard headed “Proposed setup”: Sign up, then “Shorter setup?” with a large question mark, then Start using product. A sheet headed “Today” shows a longer row of steps. Two colleagues ask what changes for the customer.](assets/images/18-test-revenue-assumptions/comic-01-scene.jpeg)
 
 **Panel 1:** Onboarding is the setup needed before a customer can use the product. The whiteboard shows a proposal, not a result: “Shorter setup?” is the question the trial has to answer. Start by asking what the change would make easier for the customer.
 
@@ -36,7 +36,7 @@ Morgan advises the investor on technology; Alex leads engineering, Priya leads p
 {
   "id": "02-scene",
   "status": "generated",
-  "asset": "assets/images/18-roadmap-to-revenue/comic-02-scene.jpeg",
+  "asset": "assets/images/18-test-revenue-assumptions/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 2 of an explainer comic. A customer reaches a usable product with fewer handoffs. Use one speech bubble with the exact words: \"Do customers reach value sooner?\" Convey: Fewer setup steps may help customers begin useful work sooner. That is an expectation to test, not a result. In the first group of eight trial customers, measured at day 90, the customers’ waiting time did not change.",
   "alt": "Comic panel: A customer holds a box labelled “Product”. Alex, holding a sheet of steps that ends in the word “Value”, asks whether customers reach value sooner. Priya stands beside him; other customers wait behind.",
@@ -49,7 +49,7 @@ Morgan advises the investor on technology; Alex leads engineering, Priya leads p
 }
 -->
 
-![Comic panel: A customer holds a box labelled “Product”. Alex, holding a sheet of steps that ends in the word “Value”, asks whether customers reach value sooner. Priya stands beside him; other customers wait behind.](assets/images/18-roadmap-to-revenue/comic-02-scene.jpeg)
+![Comic panel: A customer holds a box labelled “Product”. Alex, holding a sheet of steps that ends in the word “Value”, asks whether customers reach value sooner. Priya stands beside him; other customers wait behind.](assets/images/18-test-revenue-assumptions/comic-02-scene.jpeg)
 
 **Panel 2:** Fewer setup steps may help customers begin useful work sooner. That is an expectation to test, not a result. In the first group of eight trial customers, measured at day 90, the customers’ waiting time did not change.
 
@@ -59,7 +59,7 @@ Morgan advises the investor on technology; Alex leads engineering, Priya leads p
 {
   "id": "03-scene",
   "status": "generated",
-  "asset": "assets/images/18-roadmap-to-revenue/comic-03-scene.jpeg",
+  "asset": "assets/images/18-test-revenue-assumptions/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 3 of an explainer comic. Sam sees freed hours but unchanged payroll. Use one speech bubble with the exact words: \"Capacity is not cash yet.\" Convey: Freed staff time is capacity for other work. If payroll, the money paid to employees, and other spending remain unchanged, it is not yet a cash saving.",
   "alt": "Comic panel: Sam sees freed hours but unchanged payroll.",
@@ -72,7 +72,7 @@ Morgan advises the investor on technology; Alex leads engineering, Priya leads p
 }
 -->
 
-![Comic panel: Sam sees freed hours but unchanged payroll.](assets/images/18-roadmap-to-revenue/comic-03-scene.jpeg)
+![Comic panel: Sam sees freed hours but unchanged payroll.](assets/images/18-test-revenue-assumptions/comic-03-scene.jpeg)
 
 **Panel 3:** Freed staff time is capacity for other work. If payroll, the money paid to employees, and other spending remain unchanged, it is not yet a cash saving.
 
@@ -82,7 +82,7 @@ Morgan advises the investor on technology; Alex leads engineering, Priya leads p
 {
   "id": "04-scene",
   "status": "generated",
-  "asset": "assets/images/18-roadmap-to-revenue/comic-04-scene.jpeg",
+  "asset": "assets/images/18-test-revenue-assumptions/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 4 of an explainer comic. Morgan separates product change from a pricing change. Use one speech bubble with the exact words: \"What else changed this quarter?\" Convey: To judge the effect, compare like groups and name the differences that remain: who chose the pilot customers, the same specialist serving both groups, a new price or a busier quarter.",
   "alt": "Comic panel: Morgan separates product change from a pricing change.",
@@ -95,7 +95,7 @@ Morgan advises the investor on technology; Alex leads engineering, Priya leads p
 }
 -->
 
-![Comic panel: Morgan separates product change from a pricing change.](assets/images/18-roadmap-to-revenue/comic-04-scene.jpeg)
+![Comic panel: Morgan separates product change from a pricing change.](assets/images/18-test-revenue-assumptions/comic-04-scene.jpeg)
 
 **Panel 4:** To judge the effect, compare like groups and name the differences that remain: who chose the pilot customers, the same specialist serving both groups, a new price or a busier quarter.
 
@@ -105,7 +105,7 @@ Morgan advises the investor on technology; Alex leads engineering, Priya leads p
 {
   "id": "05-scene",
   "status": "generated",
-  "asset": "assets/images/18-roadmap-to-revenue/comic-05-scene.jpeg",
+  "asset": "assets/images/18-test-revenue-assumptions/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 5 of an explainer comic. Alex adds implementation and ongoing costs to the proposal. Use one speech bubble with the exact words: \"Count the whole intervention.\" Convey: “The whole intervention” means the whole change: building it, introducing it and keeping it running. Count all of that cost before claiming a benefit. The company has agreed to spend €180,000 on the build. About €90,000 of that work had been received by day 100, which is not the same as cash paid. Upkeep adds €30,000 a year from the company’s next accounting year. Then say what the freed staff time was actually used for.",
   "alt": "Comic panel: Alex and two colleagues work through a proposal whose last lines read “Total cost of intervention: build, introduce, maintain”. Folders labelled “Estimates”, “Budget” and “Historical cases” lie on the table. The speech bubble says to count the whole intervention.",
@@ -118,7 +118,7 @@ Morgan advises the investor on technology; Alex leads engineering, Priya leads p
 }
 -->
 
-![Comic panel: Alex and two colleagues work through a proposal whose last lines read “Total cost of intervention: build, introduce, maintain”. Folders labelled “Estimates”, “Budget” and “Historical cases” lie on the table. The speech bubble says to count the whole intervention.](assets/images/18-roadmap-to-revenue/comic-05-scene.jpeg)
+![Comic panel: Alex and two colleagues work through a proposal whose last lines read “Total cost of intervention: build, introduce, maintain”. Folders labelled “Estimates”, “Budget” and “Historical cases” lie on the table. The speech bubble says to count the whole intervention.](assets/images/18-test-revenue-assumptions/comic-05-scene.jpeg)
 
 **Panel 5:** “The whole intervention” means the whole change: building it, introducing it and keeping it running. Count all of that cost before claiming a benefit. The company has agreed to spend €180,000 on the build. About €90,000 of that work had been received by day 100, which is not the same as cash paid. Upkeep adds €30,000 a year from the company’s next accounting year. Then say what the freed staff time was actually used for.
 
@@ -128,7 +128,7 @@ Morgan advises the investor on technology; Alex leads engineering, Priya leads p
 {
   "id": "06-scene",
   "status": "generated",
-  "asset": "assets/images/18-roadmap-to-revenue/comic-06-scene.jpeg",
+  "asset": "assets/images/18-test-revenue-assumptions/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 6 of an explainer comic. Priya and Sam at the day-100 board review: a simple board shows hours per setup falling from 80 to 62, beside a customer queue that is still the same length. Use one speech bubble with the exact words: \"We saved hours; we have not yet served more customers.\" Convey: In the trial comparison the average effort per setup was 18 staff hours lower, although the comparison cannot prove that the new step alone was the cause. Customers still waited for their own data to be ready, so the queue did not move. The board funds one €40,000 step to check and correct customer data, from money held back for later decisions, and keeps hiring and expansion deferred. The next group of customers has two tests. It must average 50 hours or less per setup, with all data work counted, whoever does it. And its median waiting time must be eight weeks or less, against ten before. Waiting time runs from signing the contract to first real use of the product. The median of eight waits, ordered from shortest to longest, is halfway between the fourth and the fifth. If the group misses either test, the board approves no further stage. Payments already agreed are handled separately.",
   "alt": "Comic panel: Priya and Sam at the day-100 review, hours down from 80 to 62 beside an unchanged customer queue.",
@@ -141,7 +141,7 @@ Morgan advises the investor on technology; Alex leads engineering, Priya leads p
 }
 -->
 
-![Comic panel: Priya and Sam at the day-100 review, hours down from 80 to 62 beside an unchanged customer queue.](assets/images/18-roadmap-to-revenue/comic-06-scene.jpeg)
+![Comic panel: Priya and Sam at the day-100 review, hours down from 80 to 62 beside an unchanged customer queue.](assets/images/18-test-revenue-assumptions/comic-06-scene.jpeg)
 
 **Panel 6:** In the trial comparison the average effort per setup was 18 staff hours lower, although the comparison cannot prove that the new step alone was the cause. Customers still waited for their own data to be ready, so the queue did not move. The board funds one €40,000 step to check and correct customer data, from money held back for later decisions, and keeps hiring and expansion deferred. The next group of customers has two tests. It must average 50 hours or less per setup, with all data work counted, whoever does it. And its median waiting time must be eight weeks or less, against ten before. Waiting time runs from signing the contract to first real use of the product. The median of eight waits, ordered from shortest to longest, is halfway between the fourth and the fifth. If the group misses either test, the board approves no further stage. Payments already agreed are handled separately.
 

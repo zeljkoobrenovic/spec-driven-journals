@@ -22,33 +22,33 @@ The book contains 39 main chapters across eight parts. All 39 main chapters have
 Identify your owners’ expectations and the money and decisions you can rely on.
 
 - [[part-1]] — part introduction
-- **1.** [[customers-lenders-investors]]
-- **2.** [[announcement-is-not-a-budget]]
-- **3.** [[valuation-is-an-estimate]]
-- **4.** [[three-different-returns]]
-- **5.** [[raise-what-you-need]]
-- **6.** [[obligations-before-budget]]
+- **1.** [[understand-expectations]]
+- **2.** [[understand-funding-control]]
+- **3.** [[understand-valuation]]
+- **4.** [[understand-investor-returns]]
+- **5.** [[understand-funding-choices]]
+- **6.** [[understand-cash-flow]]
 
 ### Part II — ALIGN: Investor Ownership Changes Decision Making
 
 Establish who decides, what each party wants and how to resolve competing demands.
 
 - [[part-2]] — part introduction
-- **7.** [[decide-who-decides]]
-- **8.** [[different-bets]]
-- **9.** [[investor-under-pressure]]
+- **7.** [[clarify-authority]]
+- **8.** [[compare-incentives-stakes]]
+- **9.** [[assess-investor-fit]]
 
 ### Part III — COLLABORATE: Getting Useful Help From Your Investor
 
 Learn through the investor’s network, ask for useful help and agree the cost, authority and continuing dependence.
 
 - [[part-3]] — part introduction
-- **10.** [[operating-model-blueprints]]
+- **10.** [[plan-investor-support]]
 - **11.** [[learn-through-investors-network]]
-- **12.** [[help-that-changes-capability]]
-- **13.** [[useful-engagement]]
-- **14.** [[investors-adviser]]
-- **15.** [[tech-operating-partner]]
+- **12.** [[choose-right-help]]
+- **13.** [[set-terms-of-help]]
+- **14.** [[clarify-adviser-role]]
+- **15.** [[technology-operating-partners]]
 
 ### Part IV — COMMIT: Turn Investor Expectations Into Sustainable Work
 
@@ -57,22 +57,22 @@ Turn investor expectations into feasible commitments to customers, systems and t
 - [[part-4]] — part introduction
 - **16.** [[adopt-outcome-thinking]]
 - **17.** [[have-your-numbers-ready]]
-- **18.** [[cannot-fund-everything]]
-- **19.** [[roadmap-to-revenue]]
-- **20.** [[ai-strategy-three-questions]]
-- **21.** [[can-the-team-deliver]]
-- **22.** [[the-financing-slipped]]
+- **18.** [[set-priorities]]
+- **19.** [[test-revenue-assumptions]]
+- **20.** [[clarify-ai-strategy]]
+- **21.** [[assess-capability]]
+- **22.** [[manage-funding-delays]]
 
 ### Part V — SCALE: Change the Team, the Systems and the Company Deliberately
 
 Change the company’s size and shape on purpose: add people only where the work needs them, stop work before cutting jobs, change systems for expected growth, and account for the work a purchase or a separation adds.
 
 - [[part-5]] — part introduction
-- **23.** [[fix-decisions-before-hiring]]
-- **24.** [[anatomy-of-a-layoff]]
+- **23.** [[scale-the-team-up]]
+- **24.** [[scale-the-team-down]]
 - **25.** [[scale-the-team-with-ai]]
-- **26.** [[growth-into-design]]
-- **27.** [[acquisition-adds-work-first]]
+- **26.** [[plan-for-growth]]
+- **27.** [[plan-acquisitions-separations]]
 
 ### Part VI — SUSTAIN: Keep the Technology You Run Worth Its Cost
 
@@ -80,18 +80,18 @@ Keep the technology the company already runs worth its cost: put a lower cloud b
 
 - [[part-6]] — part introduction
 - **28.** [[manage-technical-debt]]
-- **29.** [[prove-you-can-restore]]
-- **30.** [[cheaper-cloud-bill]]
-- **31.** [[ai-worth-its-cost]]
+- **29.** [[build-test-resilience]]
+- **30.** [[evaluate-cloud-costs]]
+- **31.** [[evaluate-ai-costs]]
 
 ### Part VII — LEAD: Managing Funding and Ownership Changes
 
 Lead through diligence, the early funded plan and the handover of continuing obligations.
 
 - [[part-7]] — part introduction
-- **32.** [[diligence-corrects-the-plan]]
+- **32.** [[use-diligence]]
 - **33.** [[first-hundred-days]]
-- **34.** [[handover-of-obligations]]
+- **34.** [[manage-handover]]
 
 ### Part VIII — LEARN FROM OTHERS: Lessons from the Field
 

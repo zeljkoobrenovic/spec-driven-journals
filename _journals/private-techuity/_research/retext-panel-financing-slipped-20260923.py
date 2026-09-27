@@ -24,7 +24,7 @@ pages = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(pages)
 
 MODEL = 'gemini-3-pro-image-preview'
-POST = J / 'posts/21-the-financing-slipped'
+POST = J / 'posts/21-manage-funding-delays'
 COMICS = POST / 'comics.md'
 PANEL_RE = re.compile(r'<!-- comic-panel\s+(\{.*?\})\s*-->', re.S)
 

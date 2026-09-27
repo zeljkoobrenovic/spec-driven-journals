@@ -16,7 +16,7 @@ Company product and engineering leaders, including people inheriting an investor
 ## Success criteria
 
 - Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Dusty Address Book; Borrowed Brains. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
-- Place the chapter after [[operating-model-blueprints]] and before [[help-that-changes-capability]], preserving the latter’s direct handoff to [[useful-engagement]].
+- Place the chapter after [[plan-investor-support]] and before [[choose-right-help]], preserving the latter’s direct handoff to [[set-terms-of-help]].
 - Distinguish solving a known problem, exploring unfamiliar possibilities and developing continuing peer relationships. Allow useful questions and relationships to mature without requiring every event to justify immediate financial returns.
 - Cover all six requested formats, their distinct uses and the company effort needed. Explain the investor’s contribution to access, convening, continuity and learning across companies without promising exclusive access or universal availability.
 - Attribute the Prosus trip and reported reflections to Prosus; use Balderton and Insight Partners as complementary examples of described practices. Keep claims within the consulted primary sources and register S101–S104.
@@ -59,9 +59,11 @@ The consulted investor accounts do not establish subsequent company outcomes. Ob
 - [S103: Insight Partners, Onsite Hour](https://info.insightpartners.com/onsitehour.html): recurring learning offer and participant access, as described in its FAQ.
 - [S104: Etienne and Beverly Wenger-Trayner, Communities of practice: a brief introduction](https://www.wenger-trayner.com/wp-content/uploads/2022/01/07-Brief-introduction-to-communities-of-practice.pdf): domain, community and practice; sustained interaction. Selected definition passages consulted.
 - [S105: Željko Obrenović, CTO Starter Kit](https://ctostarter.com/start/index.html) and [repository](https://github.com/zeljkoobrenovic/cto-starter-kit): author-supplied project, public start page and repository README consulted; durable resources and discovery of peers.
-- [[operating-model-blueprints]], [[help-that-changes-capability]], [[useful-engagement]], [[investors-adviser]], [[tech-operating-partner]] and [[ai-strategy-three-questions]]: boundaries and connections.
+- [[plan-investor-support]], [[choose-right-help]], [[set-terms-of-help]], [[clarify-adviser-role]], [[technology-operating-partners]] and [[clarify-ai-strategy]]: boundaries and connections.
 
 ## Changelog
+
+- 2026-09-27: Update cross-links for the chapter title-slug renames.
 
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-23 (comic pages): The five SVG pages replaced by five generated comic pages of three strips each, keeping the same Northline chronology (choice of format, approval of €1,200 and six person-days, the visit with observation kept apart from the host's explanation, the return discussion and reframed question, the one-month learning review) and drawing the amounts and labels into the artwork. Captions and transcripts are rendered from the page blocks; the SVG comic and its markdown are archived under `_research/comic-pages-pilot/`. No figure or decision in the example changed; permalink unchanged.

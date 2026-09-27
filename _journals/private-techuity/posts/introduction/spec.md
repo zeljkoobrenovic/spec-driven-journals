@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-26
+revised: 2026-09-27
 ---
 
 # Spec: Owned — Purpose and Reading Guide
@@ -15,6 +15,10 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
+- Use first person for narrative references to the author's experience, work and writing process, including figure alt text and the illustration's human-role labels.
+
+- Close the introduction with “A Note on the Writing Process and AI Assistance,” after the contents. Use the author's first-person account of the iterative writing and editing process, distinguishing his concept, structure, storyline, chapter content, learning goals, visual direction and editorial review from AI support with language, research, illustrations, alternative drafts, publishing scripts and consistency checks. Retain his description of AI as essential to the process. Link to the freely available scripts and AI skills he developed in the book's GitHub repository. State that creative direction, editorial decisions and final content remain the author's responsibility.
+
 - Point readers to [[where-investment-goes-wrong]] immediately after the motivation for the book and include it before Part I in the contents. It is an unnumbered guide to mistakes and missed opportunities, with memorable pattern names and links to relevant parts; its patterns need not map one-to-one to the eight parts. The existing chapter-level reading routes remain here. Export both opening guides as front matter.
 
 - Add the investor-network learning chapter after operating-model blueprints, a direct reading route and the configured main chapters in the contents (35 as of 23 September 2026). Keep the seven parts (Part IV SCALE added 2026-09-24) and existing public links.
@@ -24,7 +28,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 - Provide a route for readers encountering the technology operating partner function within Part V.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
-- Include two explanatory article figures with accurate short labels, alt text and numbered captions. Retain the four-question figure. In the six-part overview position, add a new framework illustration with Understand, Align, Commit, Collaborate, Lead and Learn connected around the shared purpose of commitments the company can keep. Show a reading sequence and a return from lessons to reconsidering assumptions. Explain that the parts are responsibilities to revisit as conditions change. Save the new asset separately and retain the earlier reading-journey artwork. Use the book’s ivory, navy, muted teal and ochre style, readable labels, descriptive alt text and a numbered caption.
+- Include three explanatory article figures with short labels, alt text and numbered captions. The third follows the AI-assistance note: the author sets the concept, structure, core content, learning goals and visual direction; AI supports research, draft alternatives, illustrations, language, consistency checks and publishing scripts; the author reviews, revises and decides, repeating the cycle before publishing. Keep final editorial responsibility with the author. Retain the four-question figure and the eight-part framework around commitments the company can keep as Figures 1 and 2, along with earlier artwork. Use the book’s ivory, navy, muted teal and ochre style, with readable labels and clear arrows.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional. Describe the main shared example as six stages carried by every chapter that actually uses the same onboarding finding and identifiers (diligence, the funded early plan and the choice within it, the recovery test, the support episodes, the measured outcome and the data chapter that reads it, the handover, plus the toolkit record). Describe the delayed-financing and layoff chapters as their own connected example, not as part of that chain, and avoid a fixed chapter count that omits a participating chapter.
 - Describe the reading formats as companions that carry the same decision and its material conditions at different depth, not as interchangeable substitutes. State format coverage from the current files (main-chapter count, which chapters embed comic artwork, which comics use pages versus panels) and describe 300–500 words as the summary target and acknowledge that some current drafts run longer, without implying that every overrun is a documented exception; recheck the statement before publishing.
@@ -33,7 +37,7 @@ Product and engineering leaders inside companies working under investors, includ
 - In the ownership-scope passage, answer one question per paragraph: which companies and investors the book covers; where an investor’s money goes (new shares fund the company, buying existing shares pays the sellers); and which comparison cases sit outside the main scope.
 - Keep the exported book manuscript (`manuscripts/owned`, including `Book.txt`) in step with the configured chapters, so that every reading route and contents entry in the exported introduction is a working link and the stated chapter and appendix counts match the edition being read.
 - Present the six-part overview as one short item per part, keeping the emphasis on Part III and the connection to commitments the company can keep, and leave the distinction between fictional scenarios to the fictional-company section.
-- Keep Figure 1 aligned with the prose: its “What is changing” panel shows ownership or business situations (such as leaving a larger company or fixing a struggling business), the Owners panel carries no unexplained letters, the Rights panel uses an approval cue rather than a copyright symbol, the leaving-a-larger-company scene has its arrow leading away from the larger building, and the alt text describes only what the artwork shows; the published copy under `docs/` is byte-identical to the source asset.
+- Keep the four-question figure aligned with the prose: its “What is changing” panel shows ownership or business situations (such as leaving a larger company or fixing a struggling business), the Owners panel carries no unexplained letters, the Rights panel uses an approval cue rather than a copyright symbol, the leaving-a-larger-company scene has its arrow leading away from the larger building, and the alt text describes only what the artwork shows; the published copy under `docs/` is byte-identical to the source asset.
 - Offer reading routes for “the investor wants a leadership change” and “we must reduce headcount”, and keep the contents list and chapter counts in step with the configured order (35 main chapters, including the two former appendix articles and the investor-network chapter in Part IV).
 - State the primary reader and an accurate accessibility promise (no finance training assumed; technical questions are explained but not avoided); offer decision routes before the full tour; keep the contents list as a secondary lookup aid; keep the Part IV heading identical to the configured title.
 
@@ -53,6 +57,8 @@ Research and editorial gaps remain in the separate notes; revise this reference 
 
 ## Decision log
 
+- 2026-09-27: The author requested an illustration of his AI-assisted writing process. Place one landscape figure after the disclosure, showing author direction, AI support, repeated author review and publication; keep figures numbered in reading order and retain the note's current position at the end of the introduction.
+- 2026-09-27: The author supplied an AI-assistance disclosure for the introduction and requested a link to his freely available scripts and AI skills at https://github.com/zeljkoobrenovic/spec-driven-journals. Place the note with the explanation of how the book is written and carry it into the website and manuscript.
 - 2026-09-13: The author requested Owned and substantive comparative treatment of leadership under investors; this supersedes the previous private-equity-first framing.
 - 2026-09-12: Keep reference pages in the repository's per-post structure and expose them through the journal configuration.
 
@@ -61,6 +67,12 @@ Research and editorial gaps remain in the separate notes; revise this reference 
 See the bibliography and the relevant chapters. The source registry records consultation scope and dates.
 
 ## Changelog
+
+- 2026-09-27: Rewrite narrative self-references in the first person and use “I set direction” and “I review and decide” in the AI-assisted writing illustration.
+- 2026-09-27: Add Figure 3, illustrating the author's iterative AI-assisted writing process, after the AI note at the end of the introduction; retain the existing illustrations as Figures 1 and 2.
+- 2026-09-27: Polish grammar and phrasing throughout the introduction, trim repeated reading instructions and redundant wording, and preserve the author's additions about alternative drafts and AI's essential supporting role. Retain definitions, evidence limits, reading routes and the GitHub link.
+- 2026-09-27: Add the author's note on AI assistance, describing the work he led, the assistance he used and his responsibility for the final content, with a link to his public scripts and AI skills.
+- 2026-09-27: Update cross-links for the chapter title-slug renames.
 
 - **2026-09-26 (missed opportunities)** — Introduce the opening diagnostic guide as covering both company mistakes and unused opportunities around investment.
 - **2026-09-26 (naming revision)** — Describe the diagnostic guide through its recurring company patterns, without tying their number to the book's eight parts.
@@ -91,5 +103,5 @@ See the bibliography and the relevant chapters. The source registry records cons
 - 2026-09-12: Add the author-requested ai-notes KEY POINTS opening; preserve article-specific conclusions and caveats.
 - 2026-09-12: Initial reference-page specification for the living draft.
 - 2026-09-16: Added "Why This Book Exists, and How It Is Written": the motivation (financial and legal aspects of investment are well covered; the effect on product and engineering is not, which breeds confusion, missed opportunities and misuse of "investors want us to…" claims) and the living-journal statement with the author link, matching the journal description.
-- 2026-09-16 (investor workforce impact): two reading routes added (leadership change; headcount reduction); Part V description, the shared-chain note, the contents list and the format counts updated for the new chapter [[anatomy-of-a-layoff]].
+- 2026-09-16 (investor workforce impact): two reading routes added (leadership change; headcount reduction); Part V description, the shared-chain note, the contents list and the format counts updated for the new chapter [[scale-the-team-down]].
 - 2026-09-16 (review response): Figures 1 and 2 regenerated to match the text (four questions: owners, rights, funding, what is changing; the discontinued Productscapes branch removed from the reading journey); venture-investor definition qualified against the SEC glossary; motivation reframed as the author’s observed gap with the problem separated from the book’s response; shared-example map lists allocation and measured outcomes and separates the chain from the financing-delay example; reading-format wording no longer says only the article carries figures and sources; readers pointed to each chapter’s specification changelog; modality inventory and revision date reconciled.

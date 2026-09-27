@@ -15,7 +15,7 @@ The cast, all fictional: Morgan advises the investor. Alex is the technology lea
 {
   "id": "01-scene",
   "status": "generated",
-  "asset": "assets/images/29-cheaper-cloud-bill/comic-01-scene.jpeg",
+  "asset": "assets/images/29-evaluate-cloud-costs/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 1 of an explainer comic. Sam, the finance leader, sees a larger cloud bill and frowns. Use one speech bubble with the exact words: \"Did efficiency get worse?\" Convey: Cloud services are rented computing resources. A larger bill alone does not show that the company has become less efficient; first check that both bills were measured the same way.",
   "alt": "Comic panel: Sam sees a larger cloud bill and frowns.",
@@ -28,7 +28,7 @@ The cast, all fictional: Morgan advises the investor. Alex is the technology lea
 }
 -->
 
-![Comic panel: Sam sees a larger cloud bill and frowns.](assets/images/29-cheaper-cloud-bill/comic-01-scene.jpeg)
+![Comic panel: Sam sees a larger cloud bill and frowns.](assets/images/29-evaluate-cloud-costs/comic-01-scene.jpeg)
 
 **Panel 1:** Cloud services are computing and storage rented from a supplier. Sam is Larkspur’s finance leader. A larger bill on its own does not show the company became less efficient. First check that both bills are measured the same way — covering the same months, with any payment made in advance spread across the months it covers. Comparing a month that includes a year’s advance payment against an ordinary month proves nothing.
 
@@ -38,7 +38,7 @@ The cast, all fictional: Morgan advises the investor. Alex is the technology lea
 {
   "id": "02-scene",
   "status": "generated",
-  "asset": "assets/images/29-cheaper-cloud-bill/comic-02-scene.jpeg",
+  "asset": "assets/images/29-evaluate-cloud-costs/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 2 of an explainer comic. Alex shows more successful customer transactions. Use one speech bubble with the exact words: \"We served more useful demand.\" Convey: Compare cost against the useful work delivered. More completed customer transactions can make each one cheaper even when the total bill rises. Last quarter Larkspur spent €120,000 a month for 1.5 million transactions: €0.08 each, down from €0.10 a year earlier. Whether the approved plan was met is a separate question, and the answer there is no: the plan allowed €100,000 a month, so spending ran €20,000 over it.",
   "alt": "Comic panel: Alex compares cloud usage with a monitor showing completed customer work.",
@@ -51,7 +51,7 @@ The cast, all fictional: Morgan advises the investor. Alex is the technology lea
 }
 -->
 
-![Comic panel: Alex compares cloud usage with a monitor showing completed customer work.](assets/images/29-cheaper-cloud-bill/comic-02-scene.jpeg)
+![Comic panel: Alex compares cloud usage with a monitor showing completed customer work.](assets/images/29-evaluate-cloud-costs/comic-02-scene.jpeg)
 
 **Panel 2:** Compare cost against the useful work delivered. More completed customer transactions can make each one cheaper even when the total bill rises. Last quarter Larkspur spent €120,000 a month for 1.5 million transactions: €0.08 each, down from €0.10 a year earlier. Whether the approved plan was met is a separate question, and the answer there is no: the plan allowed €100,000 a month, so spending ran €20,000 over it.
 
@@ -61,7 +61,7 @@ The cast, all fictional: Morgan advises the investor. Alex is the technology lea
 {
   "id": "03-scene",
   "status": "generated",
-  "asset": "assets/images/29-cheaper-cloud-bill/comic-03-scene.jpeg",
+  "asset": "assets/images/29-evaluate-cloud-costs/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 3 of an explainer comic. Morgan separates usage, price, and architecture levers. Use one speech bubble with the exact words: \"These are different changes.\" Convey: Using fewer resources, paying a lower price and changing the software design are different changes with different costs and risks.",
   "alt": "Comic panel: Morgan examines three separate levers labeled usage, price and architecture.",
@@ -74,7 +74,7 @@ The cast, all fictional: Morgan advises the investor. Alex is the technology lea
 }
 -->
 
-![Comic panel: Morgan examines three separate levers labeled usage, price and architecture.](assets/images/29-cheaper-cloud-bill/comic-03-scene.jpeg)
+![Comic panel: Morgan examines three separate levers labeled usage, price and architecture.](assets/images/29-evaluate-cloud-costs/comic-03-scene.jpeg)
 
 **Panel 3:** Using fewer resources, paying a lower price and changing the software design are different changes with different costs and risks.
 
@@ -84,7 +84,7 @@ The cast, all fictional: Morgan advises the investor. Alex is the technology lea
 {
   "id": "04-scene",
   "status": "generated",
-  "asset": "assets/images/29-cheaper-cloud-bill/comic-04-scene.jpeg",
+  "asset": "assets/images/29-evaluate-cloud-costs/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 4 of an explainer comic. Sam, the finance leader, receives a discount tied to a heavy commitment. Use one speech bubble with the exact words: \"What if demand falls?\" Convey: A long contract lowers the price but obliges the company to pay a fixed amount whether or not it uses the service. Larkspur signs for one year at €21,000 a month against usage that would otherwise cost €30,000 to €60,000 a month, saving €9,000 a month; if usage sank to €20,000 it would lose €1,000 a month instead.",
   "alt": "Comic panel: Sam examines a minimum-commitment contract beside unused servers under a lower-demand label.",
@@ -97,7 +97,7 @@ The cast, all fictional: Morgan advises the investor. Alex is the technology lea
 }
 -->
 
-![Comic panel: Sam examines a minimum-commitment contract beside unused servers under a lower-demand label.](assets/images/29-cheaper-cloud-bill/comic-04-scene.jpeg)
+![Comic panel: Sam examines a minimum-commitment contract beside unused servers under a lower-demand label.](assets/images/29-evaluate-cloud-costs/comic-04-scene.jpeg)
 
 **Panel 4:** A long contract lowers the price. In exchange, the company must pay a fixed amount every month whether or not it uses the service. Larkspur first works out what it expects to spend without any contract, paying only for what it uses: between €30,000 and €60,000 a month next year. It then commits for one year, paying €21,000 a month — €252,000 in total — and buying anything above that as it goes. Across the expected range that saves €9,000 a month. If usage collapsed to €20,000 a month, the €21,000 would cost €1,000 more than buying as it goes. The company can afford all twelve payments from cash it already holds and customer money it confidently expects, and the contract simply ends after those twelve months.
 
@@ -107,7 +107,7 @@ The cast, all fictional: Morgan advises the investor. Alex is the technology lea
 {
   "id": "05-scene",
   "status": "generated",
-  "asset": "assets/images/29-cheaper-cloud-bill/comic-05-scene.jpeg",
+  "asset": "assets/images/29-evaluate-cloud-costs/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 5 of an explainer comic. Alex checks errors beside lower resource consumption. Use one speech bubble with the exact words: \"Did service quality survive?\" Convey: A lower bill is an incomplete result if customers receive more errors or support teams inherit extra work.",
   "alt": "Comic panel: Alex checks errors beside lower resource consumption.",
@@ -120,7 +120,7 @@ The cast, all fictional: Morgan advises the investor. Alex is the technology lea
 }
 -->
 
-![Comic panel: Alex checks errors beside lower resource consumption.](assets/images/29-cheaper-cloud-bill/comic-05-scene.jpeg)
+![Comic panel: Alex checks errors beside lower resource consumption.](assets/images/29-evaluate-cloud-costs/comic-05-scene.jpeg)
 
 **Panel 5:** Alex, the technology leader, checks what the saving cost elsewhere. A lower bill is an incomplete result if customers hit more failures or the support team inherits extra work. Fewer computing resources, more failed requests and more calls for help can arrive together.
 
@@ -130,7 +130,7 @@ The cast, all fictional: Morgan advises the investor. Alex is the technology lea
 {
   "id": "06-scene",
   "status": "generated",
-  "asset": "assets/images/29-cheaper-cloud-bill/comic-06-scene.jpeg",
+  "asset": "assets/images/29-evaluate-cloud-costs/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 6 of an explainer comic. Sam points to the end of a temporary credit period while Alex reviews the continuing service. Use one speech bubble with the exact words: \"What happens when the credits end?\" Convey: Separate fictional credits example: a €30,000 monthly service bill falls to €5,000 for six months. The plan must still fund the cost after credits end, and check which entity signed, any minimum spend and what happens if ownership changes.",
   "alt": "Comic panel: Sam points to the end of a temporary credit period while Alex reviews the continuing service.",
@@ -143,7 +143,7 @@ The cast, all fictional: Morgan advises the investor. Alex is the technology lea
 }
 -->
 
-![Comic panel: Sam points to the end of a temporary credit period while Alex reviews the continuing service.](assets/images/29-cheaper-cloud-bill/comic-06-scene.jpeg)
+![Comic panel: Sam points to the end of a temporary credit period while Alex reviews the continuing service.](assets/images/29-evaluate-cloud-costs/comic-06-scene.jpeg)
 
 **Panel 6:** A separate fictional example. **Credits** are temporary reductions a supplier applies to the bill; they are not borrowed money, and they do not make the service cheaper to run. Here they cut a €30,000 monthly bill to €5,000 for six months. The service still uses €30,000 of computing, so the plan must fund the full €30,000 again from month seven. Also check which company legally signed and therefore owes the money, whether a minimum payment applies, and what happens if the company changes owner.
 

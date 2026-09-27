@@ -16,7 +16,7 @@ sys.path.insert(0, str(SCRIPTS))
 
 import generate_illustrations_nanobanana as gen  # noqa: E402
 
-POST = ROOT / "_journals/private-techuity/posts/26-acquisition-adds-work-first"
+POST = ROOT / "_journals/private-techuity/posts/26-plan-acquisitions-separations"
 
 STYLE = (
     "Create one finished explanatory illustration for Owned, a practical book for "
@@ -53,7 +53,7 @@ TARGETS = [
     {
         "id": "integration-depth-by-benefit",
         "status": "pending",
-        "asset": "assets/images/26-acquisition-adds-work-first/integration-depth-by-benefit.jpeg",
+        "asset": "assets/images/26-plan-acquisitions-separations/integration-depth-by-benefit.jpeg",
         "aspect_ratio": "16:9",
         "prompt": FIG1,
         "alt": "Three columns: two separate products joined by a sales agreement; two products on shared tools and data services; one combined product on one combined customer record.",

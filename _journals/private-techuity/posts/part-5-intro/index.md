@@ -32,18 +32,18 @@ Every chapter keeps the discipline of Part IV: the benefit you expect, the money
 
 **Change the team.**
 
-- [[fix-decisions-before-hiring]]: before adding people, trace one piece of work through the company. Can clearer roles and decisions add capacity without a hire, even one the investor proposes?
-- [[anatomy-of-a-layoff]]: when the pressure runs the other way, find its real source, compare alternatives by cash month by month, and decide what work stops before who leaves.
+- [[scale-the-team-up]]: before adding people, trace one piece of work through the company. Can clearer roles and decisions add capacity without a hire, even one the investor proposes?
+- [[scale-the-team-down]]: when the pressure runs the other way, find its real source, compare alternatives by cash month by month, and decide what work stops before who leaves.
 - [[scale-the-team-with-ai]]: when a tool is said to change what the team can complete, which constraint does it touch, what completed work changed, and what does “fewer people” really ask for?
 
 **Change the systems.**
 
-- [[growth-into-design]]: recover the business requirement behind a request for flexibility, then compare configuring a supplier’s product, building the rules yourself or replacing the system, against one customer need, date and cash limit.
+- [[plan-for-growth]]: recover the business requirement behind a request for flexibility, then compare configuring a supplier’s product, building the rules yourself or replacing the system, against one customer need, date and cash limit.
 
 **Change the company’s boundary.**
 
-- [[acquisition-adds-work-first]]: buying a business or separating one creates a new boundary under a continuing customer promise. What extra work does it add, and what waits?
+- [[plan-acquisitions-separations]]: buying a business or separating one creates a new boundary under a continuing customer promise. What extra work does it add, and what waits?
 
 By the end, you can say what a change in size costs before it pays back, what evidence would stop it, and which work you will protect. The part does not say how large the company should be; that follows from Part IV.
 
-Begin with [[fix-decisions-before-hiring]]. Part VI then keeps the technology you already run worth its cost.
+Begin with [[scale-the-team-up]]. Part VI then keeps the technology you already run worth its cost.

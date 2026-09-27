@@ -13,7 +13,7 @@ Morgan advises Larkspur’s investor, Sam leads finance and Priya leads product.
 {
   "id": "01-scene",
   "status": "generated",
-  "asset": "assets/images/20-can-the-team-deliver/comic-01-scene.jpeg",
+  "asset": "assets/images/20-assess-capability/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 1 of an explainer comic. Alex sees an old system beside an urgent customer need. Use one speech bubble with the exact words: \"Which constraint matters most?\" Convey: Judge the company’s systems against the work the business needs, rather than against their age.",
   "alt": "Comic panel: Alex sees an old system beside an urgent customer need.",
@@ -26,7 +26,7 @@ Morgan advises Larkspur’s investor, Sam leads finance and Priya leads product.
 }
 -->
 
-![Comic panel: Alex sees an old system beside an urgent customer need.](assets/images/20-can-the-team-deliver/comic-01-scene.jpeg)
+![Comic panel: Alex sees an old system beside an urgent customer need.](assets/images/20-assess-capability/comic-01-scene.jpeg)
 
 **Panel 1:** Judge the company’s systems against the work the business needs, rather than against their age.
 
@@ -36,7 +36,7 @@ Morgan advises Larkspur’s investor, Sam leads finance and Priya leads product.
 {
   "id": "02-scene",
   "status": "generated",
-  "asset": "assets/images/20-can-the-team-deliver/comic-02-scene.jpeg",
+  "asset": "assets/images/20-assess-capability/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 2 of an explainer comic. Morgan stands at a whiteboard that reads GROWTH ASSUMPTION, then SLOW MANUAL SETUP, then EASIER SETUP, joined by arrows. Two unnamed Larkspur colleagues in grey listen and take notes; one holds a sheet of paper headed only LARKSPUR. No other company name and no case-study label appears anywhere. Use one speech bubble with the exact words: \"Make the required change easier.\" Convey: Larkspur’s investor assumes growth. If that growth needs customers set up in a second country, investigate which system changes make that setup easier.",
   "alt": "Comic panel: Morgan, the investor’s adviser, points at a whiteboard linking a growth assumption to slow manual setup and then to easier setup, while two Larkspur colleagues take notes.",
@@ -49,7 +49,7 @@ Morgan advises Larkspur’s investor, Sam leads finance and Priya leads product.
 }
 -->
 
-![Comic panel: Morgan, the investor’s adviser, points at a whiteboard linking a growth assumption to slow manual setup and then to easier setup, while two Larkspur colleagues take notes.](assets/images/20-can-the-team-deliver/comic-02-scene.jpeg)
+![Comic panel: Morgan, the investor’s adviser, points at a whiteboard linking a growth assumption to slow manual setup and then to easier setup, while two Larkspur colleagues take notes.](assets/images/20-assess-capability/comic-02-scene.jpeg)
 
 **Panel 2:** Larkspur’s investor assumes growth. If that growth needs customers set up in a second country, investigate which system changes make that setup easier.
 
@@ -59,7 +59,7 @@ Morgan advises Larkspur’s investor, Sam leads finance and Priya leads product.
 {
   "id": "03-scene",
   "status": "generated",
-  "asset": "assets/images/20-can-the-team-deliver/comic-03-scene.jpeg",
+  "asset": "assets/images/20-assess-capability/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 3 of an explainer comic. Sam traces operating costs through duplicate services and a shared recovery system. Use one speech bubble with the exact words: \"What cost can we remove sustainably?\" Convey: Operating costs are the costs of running the business. Removing duplicated services may reduce them. Keep the spending that keeps the service reliable: upkeep, backups and the ability to recover after a failure.",
   "alt": "Comic panel: Sam, who leads finance, and colleagues lean over a table diagram in which three duplicate services feed a shared recovery system, with boxes for redundant cost, system upkeep, reliability and maintenance, and a backup protocol; one colleague holds a clipboard headed operating costs.",
@@ -72,7 +72,7 @@ Morgan advises Larkspur’s investor, Sam leads finance and Priya leads product.
 }
 -->
 
-![Comic panel: Sam, who leads finance, and colleagues lean over a table diagram in which three duplicate services feed a shared recovery system, with boxes for redundant cost, system upkeep, reliability and maintenance, and a backup protocol; one colleague holds a clipboard headed operating costs.](assets/images/20-can-the-team-deliver/comic-03-scene.jpeg)
+![Comic panel: Sam, who leads finance, and colleagues lean over a table diagram in which three duplicate services feed a shared recovery system, with boxes for redundant cost, system upkeep, reliability and maintenance, and a backup protocol; one colleague holds a clipboard headed operating costs.](assets/images/20-assess-capability/comic-03-scene.jpeg)
 
 **Panel 3:** Operating costs are the costs of running the business. Removing duplicated services may reduce them. Keep the spending that keeps the service reliable: upkeep, backups and the ability to recover after a failure.
 
@@ -82,7 +82,7 @@ Morgan advises Larkspur’s investor, Sam leads finance and Priya leads product.
 {
   "id": "04-scene",
   "status": "generated",
-  "asset": "assets/images/20-can-the-team-deliver/comic-04-scene.jpeg",
+  "asset": "assets/images/20-assess-capability/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 4 of an explainer comic. Alex stands at a board with two columns: on the left, a steady stack labelled by a small tick (a stable core and a team that knows its customers); on the right, a tangle of country-rule cards knotted into one invoicing box. The board shows an assessment of what exists, not a comparison of architectures: no modular-versus-services diagram, no option labels, no prescribed design. Use one speech bubble with the exact words: \"What do we keep, and what blocks the plan?\" Convey: An assessment records strengths as well as constraints. Larkspur keeps a stable core product and deep customer knowledge. What blocks the plan is where the country rules live: knotted into the invoicing module, the part of the billing software that prepares bills. The contract, support and product-setting tools all read those rules from the billing software, so changing the country setup requires coordinated changes across them.",
   "alt": "Comic panel: Alex points at a board with two columns: a tidy stack labelled stable core and team knows customers, beside four country-rule cards knotted together above a box labelled invoicing box, showing that the rules sit inside the invoicing software.",
@@ -95,7 +95,7 @@ Morgan advises Larkspur’s investor, Sam leads finance and Priya leads product.
 }
 -->
 
-![Comic panel: Alex points at a board with two columns: a tidy stack labelled stable core and team knows customers, beside four country-rule cards knotted together above a box labelled invoicing box, showing that the rules sit inside the invoicing software.](assets/images/20-can-the-team-deliver/comic-04-scene.jpeg)
+![Comic panel: Alex points at a board with two columns: a tidy stack labelled stable core and team knows customers, beside four country-rule cards knotted together above a box labelled invoicing box, showing that the rules sit inside the invoicing software.](assets/images/20-assess-capability/comic-04-scene.jpeg)
 
 **Panel 4:** An assessment records strengths as well as constraints. Larkspur keeps a stable core product and deep customer knowledge. What blocks the plan is where the country rules live: knotted into the invoicing module, the part of the billing software that prepares bills. The contract, support and product-setting tools all read those rules from the billing software, so changing the country setup requires coordinated changes across them.
 
@@ -105,7 +105,7 @@ Morgan advises Larkspur’s investor, Sam leads finance and Priya leads product.
 {
   "id": "05-scene",
   "status": "generated",
-  "asset": "assets/images/20-can-the-team-deliver/comic-05-scene.jpeg",
+  "asset": "assets/images/20-assess-capability/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 5 of an explainer comic. Alex sketches on a whiteboard while Sam watches with a clipboard. The whiteboard shows a box labelled OLD SYSTEM with an arrow to a box labelled MOVE ONE STEP, a curved arrow returning from MOVE ONE STEP to OLD SYSTEM labelled WAY BACK, and a small side box labelled TRANSITION COSTS. Use one speech bubble with the exact words: \"Can we learn safely first?\" Convey: A replacement needs a funded transition: extra people, both systems running together, moving customers across, a way to return to the old system, and a stated month when the first benefit could appear. Nothing is funded yet, so any such month is provisional.",
   "alt": "Comic panel: Alex sketches a whiteboard for Sam: an old system, one migration step, a curved arrow labelled way back that returns to the old system, and a box for transition costs.",
@@ -118,7 +118,7 @@ Morgan advises Larkspur’s investor, Sam leads finance and Priya leads product.
 }
 -->
 
-![Comic panel: Alex sketches a whiteboard for Sam: an old system, one migration step, a curved arrow labelled way back that returns to the old system, and a box for transition costs.](assets/images/20-can-the-team-deliver/comic-05-scene.jpeg)
+![Comic panel: Alex sketches a whiteboard for Sam: an old system, one migration step, a curved arrow labelled way back that returns to the old system, and a box for transition costs.](assets/images/20-assess-capability/comic-05-scene.jpeg)
 
 **Panel 5:** A replacement needs a funded transition: extra people, both systems running together, moving customers across, a way to return to the old system, and a stated month when the first benefit could appear. Nothing is funded yet, so any such month is provisional.
 
@@ -128,7 +128,7 @@ Morgan advises Larkspur’s investor, Sam leads finance and Priya leads product.
 {
   "id": "06-scene",
   "status": "generated",
-  "asset": "assets/images/20-can-the-team-deliver/comic-06-scene.jpeg",
+  "asset": "assets/images/20-assess-capability/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 6 of an explainer comic. Only Alex and Priya appear, with nobody in the background. Alex is speaking, and the speech bubble’s tail points to him. Alex and Priya each hold one large card, side by side. Alex’s card is headed SMALL TRIAL with two lines beneath: CLEAR LIMITS and REVIEW AFTER USE. Priya’s card is headed FUNDED EXPANSION with two lines beneath: DEMAND PROVEN and REUSABLE SETUP. Use one speech bubble with the exact words: \"What must work before the next decision?\" Convey: The finding is handed over with two separate cases. If demand is untested: a small trial with explicit limits and a review after real use. If demand is proven and funding is committed: a setup usable for many customers and further countries, fully costed. State what each stage supports and what remains to fund.",
   "alt": "Comic panel: Alex holds a card headed small trial, with clear limits and review after use; Priya holds a card headed funded expansion, with demand proven and reusable setup.",
@@ -141,7 +141,7 @@ Morgan advises Larkspur’s investor, Sam leads finance and Priya leads product.
 }
 -->
 
-![Comic panel: Alex holds a card headed small trial, with clear limits and review after use; Priya holds a card headed funded expansion, with demand proven and reusable setup.](assets/images/20-can-the-team-deliver/comic-06-scene.jpeg)
+![Comic panel: Alex holds a card headed small trial, with clear limits and review after use; Priya holds a card headed funded expansion, with demand proven and reusable setup.](assets/images/20-assess-capability/comic-06-scene.jpeg)
 
 **Panel 6:** The finding is handed over with two separate cases. If demand is untested: a small trial with explicit limits and a review after real use. If demand is proven and funding is committed: a setup usable for many customers and further countries, fully costed. State what each stage supports and what remains to fund.
 

@@ -13,7 +13,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "01-scene",
   "status": "generated",
-  "asset": "assets/images/05-obligations-before-budget/comic-01-scene.jpeg",
+  "asset": "assets/images/05-understand-cash-flow/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 1 of an explainer comic. Alex sees a positive earnings figure and reaches for a project budget. Use one speech bubble with the exact words: \"Can we fund the migration?\" Convey: EBITDA is earnings before interest, taxes, depreciation and amortization. The last two spread asset costs over the years an asset is used. It is a profit measure, not a bank balance, and it leaves out several cash obligations. The migration Alex asks about is the move of a core system onto newer technology.",
   "alt": "Comic panel: Alex sees a positive earnings figure and reaches for a project budget.",
@@ -26,7 +26,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Alex sees a positive earnings figure and reaches for a project budget.](assets/images/05-obligations-before-budget/comic-01-scene.jpeg)
+![Comic panel: Alex sees a positive earnings figure and reaches for a project budget.](assets/images/05-understand-cash-flow/comic-01-scene.jpeg)
 
 **Panel 1:** EBITDA is earnings before interest, taxes, depreciation and amortization. The last two spread asset costs over the years an asset is used. It is a profit measure, not a bank balance, and it leaves out several cash obligations. The migration Alex asks about is the move of a core system onto newer technology.
 
@@ -36,7 +36,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "02-scene",
   "status": "generated",
-  "asset": "assets/images/05-obligations-before-budget/comic-02-scene.jpeg",
+  "asset": "assets/images/05-understand-cash-flow/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 2 of an explainer comic. Sam places cash into three trays labelled INTEREST, TAX and ASSETS on a desk. A fourth tray labelled CUSTOMERS HAVE NOT PAID stands empty at the end of the desk. A customer figure in grey stands at the far edge of the scene holding an invoice in one hand and tossing coins from the other hand toward the empty tray. The coins fly along a dotted line that starts at the customer's hand and ends in one large bold arrowhead pointing down into the empty tray; the arrowhead touches the tray's rim, and there is no arrowhead anywhere near the customer. The coins are still in the air, none of them landed yet, so the money is on its way from the customer to the company but has not arrived. Use one speech bubble with the exact words: \"Some of this cash has not arrived yet.\" Convey: Subtract the payments and cash needs left outside that earnings measure. Interest, the charge for borrowing, and loan repayments are contractual; investment in assets, things the company will use for years, is a choice; payroll is already inside. The earnings figure also counts sales whose invoices customers have not yet paid, so that money is owed to the company but is not in the bank yet. The bridge subtracts only the increase in unpaid invoices over the period, not everything customers owe: €2 million owed at the start of the year and €3 million at the end is a €1 million adjustment. The remainder may be much smaller than the headline.",
   "alt": "Comic panel: Sam places cash into trays for interest, tax and assets while a customer holding an invoice tosses coins that arc toward an empty tray marked customers have not paid, the arrow pointing down into the tray and the coins still in the air.",
@@ -49,7 +49,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Sam places cash into trays for interest, tax and assets while a customer holding an invoice tosses coins that arc toward an empty tray marked customers have not paid, the arrow pointing down into the tray and the coins still in the air.](assets/images/05-obligations-before-budget/comic-02-scene.jpeg)
+![Comic panel: Sam places cash into trays for interest, tax and assets while a customer holding an invoice tosses coins that arc toward an empty tray marked customers have not paid, the arrow pointing down into the tray and the coins still in the air.](assets/images/05-understand-cash-flow/comic-02-scene.jpeg)
 
 **Panel 2:** Subtract the payments and cash needs left outside that earnings measure. Interest, the charge for borrowing, and loan repayments are contractual; investment in assets, things the company will use for years, is a choice; payroll is already inside. The earnings figure also counts sales whose invoices customers have not yet paid, so that money is owed to the company but is not in the bank yet. The bridge subtracts only the increase in unpaid invoices over the period, not everything customers owe: €2 million owed at the start of the year and €3 million at the end is a €1 million adjustment. The remainder may be much smaller than the headline.
 
@@ -59,7 +59,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "03-scene",
   "status": "generated",
-  "asset": "assets/images/05-obligations-before-budget/comic-03-scene.jpeg",
+  "asset": "assets/images/05-understand-cash-flow/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 3 of an explainer comic. A floating-rate dial rises beside a debt payment. Use one speech bubble with the exact words: \"The financing changes our options.\" Convey: A floating-rate loan has an interest rate that can change. Higher borrowing costs can arrive while customer sales weaken.",
   "alt": "Comic panel: A floating-rate dial rises beside a debt payment.",
@@ -72,7 +72,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: A floating-rate dial rises beside a debt payment.](assets/images/05-obligations-before-budget/comic-03-scene.jpeg)
+![Comic panel: A floating-rate dial rises beside a debt payment.](assets/images/05-understand-cash-flow/comic-03-scene.jpeg)
 
 **Panel 3:** A floating-rate loan has an interest rate that can change. Higher borrowing costs can arrive while customer sales weaken.
 
@@ -82,7 +82,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "04-scene",
   "status": "generated",
-  "asset": "assets/images/05-obligations-before-budget/comic-04-scene.jpeg",
+  "asset": "assets/images/05-understand-cash-flow/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 4 of an explainer comic. Sam moves a development label between accounting folders. Use one speech bubble with the exact words: \"The cash payment stays.\" Convey: Capitalization records development spending that meets the accounting rules as an asset, something expected to benefit the company for years, so its cost enters profit over several years instead of at once as an expense, a cost that reduces this year’s profit. The company still pays for the work now.",
   "alt": "Comic panel: Sam moves a development label between accounting folders.",
@@ -95,7 +95,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Sam moves a development label between accounting folders.](assets/images/05-obligations-before-budget/comic-04-scene.jpeg)
+![Comic panel: Sam moves a development label between accounting folders.](assets/images/05-understand-cash-flow/comic-04-scene.jpeg)
 
 **Panel 4:** Capitalization records development spending that meets the accounting rules as an asset, something expected to benefit the company for years, so its cost enters profit over several years instead of at once as an expense, a cost that reduces this year’s profit. The company still pays for the work now.
 
@@ -105,7 +105,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "05-scene",
   "status": "generated",
-  "asset": "assets/images/05-obligations-before-budget/comic-05-scene.jpeg",
+  "asset": "assets/images/05-understand-cash-flow/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 5 of an explainer comic. Sam and Alex begin a fresh cash timeline, with the hiring choice and funding date on separate markers. Use one speech bubble with the exact words: \"We need a decision before cash runs short.\" Convey: Separate fictional scenario: €3 million of cash lasts 12 months at €250,000 of monthly net burn, the cash spent each month beyond what is collected. Hires adding €100,000 a month raise burn to €350,000 and cut simple runway, how long the cash lasts, to about 8.6 months, before funding expected in month nine.",
   "alt": "Comic panel: Sam and Alex begin a fresh cash timeline, with the hiring choice and funding date on separate markers.",
@@ -118,7 +118,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Sam and Alex begin a fresh cash timeline, with the hiring choice and funding date on separate markers.](assets/images/05-obligations-before-budget/comic-05-scene.jpeg)
+![Comic panel: Sam and Alex begin a fresh cash timeline, with the hiring choice and funding date on separate markers.](assets/images/05-understand-cash-flow/comic-05-scene.jpeg)
 
 **Panel 5:** Separate fictional scenario: €3 million of cash lasts 12 months at €250,000 of monthly net burn, the cash spent each month beyond what is collected. Hires adding €100,000 a month raise burn to €350,000 and cut simple runway, how long the cash lasts, to about 8.6 months, before funding expected in month nine.
 
@@ -128,7 +128,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 {
   "id": "06-scene",
   "status": "generated",
-  "asset": "assets/images/05-obligations-before-budget/comic-06-scene.jpeg",
+  "asset": "assets/images/05-understand-cash-flow/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 6 of an explainer comic. Ines sits behind a desk and signs one sheet labelled PILOT. Three option sheets lie side by side along the front edge of the desk, their large printed labels KEEP GOING, PILOT and FULL PROGRAM facing the viewer and reading upright, with the FULL PROGRAM sheet pushed to the far edge. Exactly three people appear: Ines seated, and Alex and Priya standing beside the desk watching; nobody else is in the room. One single wall calendar behind them shows two circled squares, an earlier one marked BOARD and a later one marked GATE. Use one speech bubble with the exact words: \"The pilot fits. The rest needs evidence.\" Convey: Fictional assumption for this panel: after interest, tax, loan repayment, planned investment and the operating reserve the board protects, Larkspur’s forecast leaves about €800,000 across the year that the company could commit, subject to checking the dates on which cash arrives and leaves. That is forecast capacity for the year, not a bank balance today, and it is separate from panel 5’s €3 million scenario. Alex wants €1 million to automate part of the manual setup of new customers. Three priced options are on the desk. Keep going with a contract specialist: €75,000. Run a pilot, a small trial, of one reusable setup step that configures the common customer types once: €210,000, made up of €180,000 to build it and €30,000 of first-year maintenance. Or fund the full €1 million program. Ines, the chief executive, approves the pilot now, within the spending limit the board delegated to her. It leaves about €600,000 of the forecast untouched. The full program exceeds the capacity before any evidence exists.\n\nThe later reviews are separate events. The board reviews the first eight customers’ result at day 100 and releases no further money then. A later gate at about month six, if the board schedules it, decides whether a priced second stage can even be requested.",
   "alt": "Comic panel: Ines signs a sheet marked pilot beside sheets marked keep going and full program, while Alex and Priya watch and a wall calendar shows an earlier board date and a later gate date.",
@@ -141,7 +141,7 @@ Morgan is an investor’s adviser in the fund scenarios; Alex leads technology, 
 }
 -->
 
-![Comic panel: Ines signs a sheet marked pilot beside sheets marked keep going and full program, while Alex and Priya watch and a wall calendar shows an earlier board date and a later gate date.](assets/images/05-obligations-before-budget/comic-06-scene.jpeg)
+![Comic panel: Ines signs a sheet marked pilot beside sheets marked keep going and full program, while Alex and Priya watch and a wall calendar shows an earlier board date and a later gate date.](assets/images/05-understand-cash-flow/comic-06-scene.jpeg)
 
 **Panel 6:** Fictional assumption for this panel: after interest, tax, loan repayment, planned investment and the operating reserve the board protects, Larkspur’s forecast leaves about €800,000 across the year that the company could commit, subject to checking the dates on which cash arrives and leaves. That is forecast capacity for the year, not a bank balance today, and it is separate from panel 5’s €3 million scenario. Alex wants €1 million to automate part of the manual setup of new customers. Three priced options are on the desk. Keep going with a contract specialist: €75,000. Run a pilot, a small trial, of one reusable setup step that configures the common customer types once: €210,000, made up of €180,000 to build it and €30,000 of first-year maintenance. Or fund the full €1 million program. Ines, the chief executive, approves the pilot now, within the spending limit the board delegated to her. It leaves about €600,000 of the forecast untouched. The full program exceeds the capacity before any evidence exists.
 

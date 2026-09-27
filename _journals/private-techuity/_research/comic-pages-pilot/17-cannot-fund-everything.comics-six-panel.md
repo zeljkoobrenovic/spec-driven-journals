@@ -13,7 +13,7 @@ Ines is Larkspur’s chief executive officer. She proposes the plan to the board
 {
   "id": "01-scene",
   "status": "generated",
-  "asset": "assets/images/17-cannot-fund-everything/comic-01-scene.jpeg",
+  "asset": "assets/images/17-set-priorities/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
   "caption": "A company investment commits resources now for an expected future benefit. Larkspur has four requests: improve service restoration, simplify customer setup, build a customer portal (an online workspace customers use themselves), and research whether customers need that portal. Begin with the customer or business result each one should change.",
   "alt": "Comic panel: Alex and Sam stand behind four proposal cards labelled Service restoration, Simpler setup, Portal build and Portal research, beside a framed drawing labelled Customers waiting.",
@@ -26,7 +26,7 @@ Ines is Larkspur’s chief executive officer. She proposes the plan to the board
 }
 -->
 
-![Comic panel: Alex and Sam stand behind four proposal cards labelled Service restoration, Simpler setup, Portal build and Portal research, beside a framed drawing labelled Customers waiting.](assets/images/17-cannot-fund-everything/comic-01-scene.jpeg)
+![Comic panel: Alex and Sam stand behind four proposal cards labelled Service restoration, Simpler setup, Portal build and Portal research, beside a framed drawing labelled Customers waiting.](assets/images/17-set-priorities/comic-01-scene.jpeg)
 
 **Panel 1:** A company investment commits resources now for an expected future benefit. Larkspur has four requests: improve service restoration, simplify customer setup, build a customer portal (an online workspace customers use themselves), and research whether customers need that portal. Begin with the customer or business result each one should change.
 
@@ -36,7 +36,7 @@ Ines is Larkspur’s chief executive officer. She proposes the plan to the board
 {
   "id": "02-scene",
   "status": "generated",
-  "asset": "assets/images/17-cannot-fund-everything/comic-02-scene.jpeg",
+  "asset": "assets/images/17-set-priorities/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
   "caption": "Routine operating work is already budgeted. The change budget, the money for improvements, must still fund the work needed to keep a promise: after a failure, the scheduling service is back within four hours and loses no more than fifteen minutes of updates. The company still chooses how to meet it.",
   "alt": "Comic panel: Alex points to a sheet labelled Service restoration while Sam ticks a clipboard labelled Company requirement.",
@@ -49,7 +49,7 @@ Ines is Larkspur’s chief executive officer. She proposes the plan to the board
 }
 -->
 
-![Comic panel: Alex points to a sheet labelled Service restoration while Sam ticks a clipboard labelled Company requirement.](assets/images/17-cannot-fund-everything/comic-02-scene.jpeg)
+![Comic panel: Alex points to a sheet labelled Service restoration while Sam ticks a clipboard labelled Company requirement.](assets/images/17-set-priorities/comic-02-scene.jpeg)
 
 **Panel 2:** Routine operating work is already budgeted. The change budget, the money for improvements, must still fund the work needed to keep a promise: after a failure, the scheduling service is back within four hours and loses no more than fifteen minutes of updates. The company still chooses how to meet it.
 
@@ -59,7 +59,7 @@ Ines is Larkspur’s chief executive officer. She proposes the plan to the board
 {
   "id": "03-scene",
   "status": "generated",
-  "asset": "assets/images/17-cannot-fund-everything/comic-03-scene.jpeg",
+  "asset": "assets/images/17-set-priorities/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
   "caption": "Cash and team time are separate limits. One engineer-week is one person’s working time for one week. The four requests fit the €500,000 cash limit but need 30 engineer-weeks against 24 available: 6 too many. A fifth item needs no additional cash: a specialist teaches a second engineer to run and recover critical scheduling software. It takes about eight protected weeks, four from the specialist and about four from the learner, all set aside before the 24 were counted.",
   "alt": "Comic panel: Sam stands behind a stack of euro notes that fits its box, labelled Cash: fits, and two bars: 24 weeks available and a longer 30 weeks needed, with the extra part marked 6 over. A small separate green block is labelled About 8 protected weeks: training.",
@@ -72,7 +72,7 @@ Ines is Larkspur’s chief executive officer. She proposes the plan to the board
 }
 -->
 
-![Comic panel: Sam stands behind a stack of euro notes that fits its box, labelled Cash: fits, and two bars: 24 weeks available and a longer 30 weeks needed, with the extra part marked 6 over. A small separate green block is labelled About 8 protected weeks: training.](assets/images/17-cannot-fund-everything/comic-03-scene.jpeg)
+![Comic panel: Sam stands behind a stack of euro notes that fits its box, labelled Cash: fits, and two bars: 24 weeks available and a longer 30 weeks needed, with the extra part marked 6 over. A small separate green block is labelled About 8 protected weeks: training.](assets/images/17-set-priorities/comic-03-scene.jpeg)
 
 **Panel 3:** Cash and team time are separate limits. One engineer-week is one person’s working time for one week. The four requests fit the €500,000 cash limit but need 30 engineer-weeks against 24 available: 6 too many. A fifth item needs no additional cash: a specialist teaches a second engineer to run and recover critical scheduling software. It takes about eight protected weeks, four from the specialist and about four from the learner, all set aside before the 24 were counted.
 
@@ -82,7 +82,7 @@ Ines is Larkspur’s chief executive officer. She proposes the plan to the board
 {
   "id": "04-scene",
   "status": "generated",
-  "asset": "assets/images/17-cannot-fund-everything/comic-04-scene.jpeg",
+  "asset": "assets/images/17-set-priorities/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
   "caption": "Ines, the chief executive officer, proposes a plan, and the board, the directors who oversee the company, approves it. It commits €280,000 and 18 engineer-weeks to restoration, the smaller setup change and the portal research, with the training alongside. The other €220,000 and six weeks stay in reserve, uncommitted, and only the board may draw on them. The full portal is deferred: its twelve weeks still do not fit. Approving the setup change also commits the company to its upkeep: about €30,000 a year from the next financial year, paid from the ordinary operating budget, outside the €500,000 limit.",
   "alt": "Comic panel: Alex selects three cards, Restoration, Setup change and Customer research, and leaves a thick Full portal proposal beside a question mark.",
@@ -95,7 +95,7 @@ Ines is Larkspur’s chief executive officer. She proposes the plan to the board
 }
 -->
 
-![Comic panel: Alex selects three cards, Restoration, Setup change and Customer research, and leaves a thick Full portal proposal beside a question mark.](assets/images/17-cannot-fund-everything/comic-04-scene.jpeg)
+![Comic panel: Alex selects three cards, Restoration, Setup change and Customer research, and leaves a thick Full portal proposal beside a question mark.](assets/images/17-set-priorities/comic-04-scene.jpeg)
 
 **Panel 4:** Ines, the chief executive officer, proposes a plan, and the board, the directors who oversee the company, approves it. It commits €280,000 and 18 engineer-weeks to restoration, the smaller setup change and the portal research, with the training alongside. The other €220,000 and six weeks stay in reserve, uncommitted, and only the board may draw on them. The full portal is deferred: its twelve weeks still do not fit. Approving the setup change also commits the company to its upkeep: about €30,000 a year from the next financial year, paid from the ordinary operating budget, outside the €500,000 limit.
 
@@ -105,7 +105,7 @@ Ines is Larkspur’s chief executive officer. She proposes the plan to the board
 {
   "id": "05-scene",
   "status": "generated",
-  "asset": "assets/images/17-cannot-fund-everything/comic-05-scene.jpeg",
+  "asset": "assets/images/17-set-priorities/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
   "caption": "A funding stage commits resources to a defined result or learning step. Agree what evidence would justify continuing, changing or stopping.",
   "alt": "Comic panel: Morgan and Alex place a review card between a small first step and a larger possible project.",
@@ -118,7 +118,7 @@ Ines is Larkspur’s chief executive officer. She proposes the plan to the board
 }
 -->
 
-![Comic panel: Morgan and Alex place a review card between a small first step and a larger possible project.](assets/images/17-cannot-fund-everything/comic-05-scene.jpeg)
+![Comic panel: Morgan and Alex place a review card between a small first step and a larger possible project.](assets/images/17-set-priorities/comic-05-scene.jpeg)
 
 **Panel 5:** A funding stage commits resources to a defined result or learning step. Agree what evidence would justify continuing, changing or stopping.
 
@@ -128,7 +128,7 @@ Ines is Larkspur’s chief executive officer. She proposes the plan to the board
 {
   "id": "06-scene",
   "status": "generated",
-  "asset": "assets/images/17-cannot-fund-everything/comic-06-scene.jpeg",
+  "asset": "assets/images/17-set-priorities/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
   "caption": "The day-45 restoration test fails. The service takes eleven hours to come back, against the agreed four, and a night of updates is lost. Its €80,000 and four weeks are already spent. That spending cannot be recovered, so it does not decide what comes next; the unmet promise does.\n\nInes asks the board, and the board approves €20,000 and two more weeks from the reserve. They pay for a correction and a retest by day 85. The totals become €300,000 and 20 engineer-weeks committed, with €200,000 and four weeks left in reserve. The portal stays deferred.\n\nThe retest passes for one kind of failure. Larkspur rebuilds its own systems inside a cloud region that kept working. A cloud region is one geographic group of the cloud provider’s computing facilities. Losing the whole region is not tested.",
   "alt": "Comic panel: Alex, Sam and Priya stand beside two sheets on a board. Original plan lists restoration 4 weeks, setup 12 weeks, research 2 weeks, portal later. After failed test lists restoration 6 weeks, circled, with the other lines unchanged.",
@@ -141,7 +141,7 @@ Ines is Larkspur’s chief executive officer. She proposes the plan to the board
 }
 -->
 
-![Comic panel: Alex, Sam and Priya stand beside two sheets on a board. Original plan lists restoration 4 weeks, setup 12 weeks, research 2 weeks, portal later. After failed test lists restoration 6 weeks, circled, with the other lines unchanged.](assets/images/17-cannot-fund-everything/comic-06-scene.jpeg)
+![Comic panel: Alex, Sam and Priya stand beside two sheets on a board. Original plan lists restoration 4 weeks, setup 12 weeks, research 2 weeks, portal later. After failed test lists restoration 6 weeks, circled, with the other lines unchanged.](assets/images/17-set-priorities/comic-06-scene.jpeg)
 
 **Panel 6:** The day-45 restoration test fails. The service takes eleven hours to come back, against the agreed four, and a night of updates is lost. Its €80,000 and four weeks are already spent. That spending cannot be recovered, so it does not decide what comes next; the unmet promise does.
 

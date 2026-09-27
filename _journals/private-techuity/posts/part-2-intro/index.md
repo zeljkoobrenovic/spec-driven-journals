@@ -32,9 +32,9 @@ A **minority investor** holds less than half the shares but may have negotiated 
 ![Four chapters under the heading ALIGN. In one row, Clarify authority (Who can decide and deliver?) leads to Compare incentives and stakes (What does each party gain or risk?), then to Assess investor fit (How does the relationship handle pressure?). A return arrow labelled Revisit the arrangements runs from the third chapter back to the first. Beneath them, Build shared evidence (Which facts are we using?) is drawn as a foundation used by all three. A final banner reads Accountable decisions with competing demands explicit.](assets/images/part-2-intro/chapter-overview.jpeg)
 **Figure 1:** *Three chapters rest on shared evidence and lead to accountable decisions; pressure can reopen the arrangements.*
 
-- [[decide-who-decides]] asks who can decide and deliver: who proposes, approves, funds and delivers one piece of work.
-- [[different-bets]] asks what each party gains or risks: leaders through shares (equity), the fund manager through its share of investment profits (carry, short for carried interest), employees through jobs.
-- [[investor-under-pressure]] asks how the relationship handles pressure, judged by the investor's behavior when results fell short of the plan.
+- [[clarify-authority]] asks who can decide and deliver: who proposes, approves, funds and delivers one piece of work.
+- [[compare-incentives-stakes]] asks what each party gains or risks: leaders through shares (equity), the fund manager through its share of investment profits (carry, short for carried interest), employees through jobs.
+- [[assess-investor-fit]] asks how the relationship handles pressure, judged by the investor's behavior when results fell short of the plan.
 - The Part IV chapter [[have-your-numbers-ready]] supplies the facts these three chapters assume: numbers from existing sources, defined once, kept accurate by a named person, with forecasts (what may happen) never read as results (what actually happened).
 
-Begin with [[decide-who-decides]]. Part III then sets up the working arrangement with the investor and the help it can bring; Part IV uses both to choose and deliver product and technology investments.
+Begin with [[clarify-authority]]. Part III then sets up the working arrangement with the investor and the help it can bring; Part IV uses both to choose and deliver product and technology investments.

@@ -13,7 +13,7 @@ At Larkspur, Ines is the chief executive and leads the company, Alex leads techn
 {
   "id": "01-scene",
   "status": "generated",
-  "asset": "assets/images/22-fix-decisions-before-hiring/comic-01-scene.jpeg",
+  "asset": "assets/images/22-scale-the-team-up/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 1 of an explainer comic. Alex sits at a desk studying a large sheet headed with the exact words ORGANIZATION CHART. The chart has only five boxes joined by lines: the top box reads CHIEF EXECUTIVE and the four boxes below it read PRODUCT, ENGINEERING, FINANCE and SUPPORT, all in large, correctly spelled capitals. No other writing, small print or scribbles on the chart or desk. Nearby, two unnamed colleagues in grey wait beside a table stacked with folders and two boxes labelled PENDING WORK and DELAYED. Alex is the speaker: the tail of the speech bubble points down to Alex’s head, not to the colleagues. Use one speech bubble with the exact words: \"Where does the work actually stop?\" Convey: An operating model describes how teams, responsibilities and decisions are arranged. Follow actual work to see where that arrangement causes delays.",
   "alt": "Comic panel: Alex studies an organization chart with five labelled boxes while two colleagues wait beside piles of pending and delayed work.",
@@ -26,7 +26,7 @@ At Larkspur, Ines is the chief executive and leads the company, Alex leads techn
 }
 -->
 
-![Comic panel: Alex studies an organization chart with five labelled boxes while two colleagues wait beside piles of pending and delayed work.](assets/images/22-fix-decisions-before-hiring/comic-01-scene.jpeg)
+![Comic panel: Alex studies an organization chart with five labelled boxes while two colleagues wait beside piles of pending and delayed work.](assets/images/22-scale-the-team-up/comic-01-scene.jpeg)
 
 **Panel 1:** An operating model describes how teams, responsibilities and decisions are arranged. Follow actual work to see where that arrangement causes delays.
 
@@ -36,7 +36,7 @@ At Larkspur, Ines is the chief executive and leads the company, Alex leads techn
 {
   "id": "02-scene",
   "status": "generated",
-  "asset": "assets/images/22-fix-decisions-before-hiring/comic-02-scene.jpeg",
+  "asset": "assets/images/22-scale-the-team-up/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 2 of an explainer comic. Morgan follows a request to one overloaded expert. Use one speech bubble with the exact words: \"Knowledge has become a dependency.\" Convey: Capacity includes knowledge and context. If every difficult question needs one expert, adding people may not remove the delay.",
   "alt": "Comic panel: Morgan follows a request to one overloaded expert.",
@@ -49,7 +49,7 @@ At Larkspur, Ines is the chief executive and leads the company, Alex leads techn
 }
 -->
 
-![Comic panel: Morgan follows a request to one overloaded expert.](assets/images/22-fix-decisions-before-hiring/comic-02-scene.jpeg)
+![Comic panel: Morgan follows a request to one overloaded expert.](assets/images/22-scale-the-team-up/comic-02-scene.jpeg)
 
 **Panel 2:** Capacity includes knowledge and context. If every difficult question needs one expert, adding people may not remove the delay.
 
@@ -59,7 +59,7 @@ At Larkspur, Ines is the chief executive and leads the company, Alex leads techn
 {
   "id": "03-scene",
   "status": "generated",
-  "asset": "assets/images/22-fix-decisions-before-hiring/comic-03-scene.jpeg",
+  "asset": "assets/images/22-scale-the-team-up/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 3 of an explainer comic. Sam, a man with short close-cropped brown hair, round glasses and an amber cardigan, stands behind a desk on which a balance scale rests. The left pan carries a small stack of coins with a tag reading exactly APPARENT SAVING. The right pan hangs lower and carries four stacked books whose spines read exactly RECRUITMENT, TRAINING, COORDINATION and MOVING WORK. Two unnamed colleagues in grey talk in the background. No other writing anywhere. Use one speech bubble with the exact words: \"What is the full operating cost?\" Convey: A team that appears cheaper than the current supplier may bring recruitment, coordination, training and transition costs that offset the saving.",
   "alt": "Comic panel: Sam studies a balance scale on which a few coins tagged “Apparent saving” are outweighed by books labelled Recruitment, Training, Coordination and Moving work.",
@@ -72,7 +72,7 @@ At Larkspur, Ines is the chief executive and leads the company, Alex leads techn
 }
 -->
 
-![Comic panel: Sam studies a balance scale on which a few coins tagged “Apparent saving” are outweighed by books labelled Recruitment, Training, Coordination and Moving work.](assets/images/22-fix-decisions-before-hiring/comic-03-scene.jpeg)
+![Comic panel: Sam studies a balance scale on which a few coins tagged “Apparent saving” are outweighed by books labelled Recruitment, Training, Coordination and Moving work.](assets/images/22-scale-the-team-up/comic-03-scene.jpeg)
 
 **Panel 3:** A team that appears cheaper than the current supplier may bring recruitment, coordination, training and transition costs that offset the saving.
 
@@ -82,7 +82,7 @@ At Larkspur, Ines is the chief executive and leads the company, Alex leads techn
 {
   "id": "04-scene",
   "status": "generated",
-  "asset": "assets/images/22-fix-decisions-before-hiring/comic-04-scene.jpeg",
+  "asset": "assets/images/22-scale-the-team-up/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 4 of an explainer comic. Alex considers a leadership change beside unclear authority. Use one speech bubble with the exact words: \"Which conditions would also change?\" Convey: Before replacing a leader, state a testable hypothesis: what new leadership must enable, and what evidence shows the company cannot do that today. If the conditions are changed and the leader does not use them, the evidence supports added leadership with authority, or replacement. One such condition is who holds release authority — permission to put a change into the live customer system, where it reaches real invoices. The same test decides whether an investor-proposed appointment is the answer.",
   "alt": "Comic panel: Alex considers a leadership change beside unclear authority.",
@@ -95,7 +95,7 @@ At Larkspur, Ines is the chief executive and leads the company, Alex leads techn
 }
 -->
 
-![Comic panel: Alex considers a leadership change beside unclear authority.](assets/images/22-fix-decisions-before-hiring/comic-04-scene.jpeg)
+![Comic panel: Alex considers a leadership change beside unclear authority.](assets/images/22-scale-the-team-up/comic-04-scene.jpeg)
 
 **Panel 4:** Before replacing a leader, state a testable hypothesis: what new leadership must enable, and what evidence shows the company cannot do that today. If the conditions are changed and the leader does not use them, the evidence supports added leadership with authority, or replacement. One such condition is who holds release authority — permission to put a change into the live customer system, where it reaches real invoices. The same test decides whether an investor-proposed appointment is the answer.
 
@@ -105,7 +105,7 @@ At Larkspur, Ines is the chief executive and leads the company, Alex leads techn
 {
   "id": "05-scene",
   "status": "generated",
-  "asset": "assets/images/22-fix-decisions-before-hiring/comic-05-scene.jpeg",
+  "asset": "assets/images/22-scale-the-team-up/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 5 of an explainer comic. Ines, a woman with short grey hair and a navy jacket, stands at the left facing the viewer with her face fully visible, never seen from behind, gesturing toward a wall chart showing a single left-to-right line of five boxes joined by simple straight arrows, one arrow between each neighbouring pair and no other arrows or connecting lines anywhere. Reading left to right the five boxes are: first box reads exactly RULE APPROVAL and is crossed out with a large clean X mark; second box is drawn larger, highlighted in warm ochre, and reads exactly SPECIALIST REVIEW; third box reads exactly BUILD AND TEST; fourth box reads exactly INVOICE SIGN-OFF and is crossed out with a large clean X mark; fifth box reads exactly RELEASE. Directly beneath the highlighted SPECIALIST REVIEW box, and beneath no other box, two tired-looking engineers in ordinary everyday clothes of contrasting colours — one in a light blue shirt, one in a green top — never in matching uniforms or overalls and never the same colour as the highlighted box behind them, stand close together holding between them a large upright card, facing the viewer and clearly legible, reading exactly ONLY TWO PEOPLE. Above the first crossed-out box a small tag reads exactly DELEGATED. Above the fourth crossed-out box a small tag reads exactly DELEGATED. Centred above the whole row a banner reads exactly FORECAST: 6 DAYS OUT, NO NEW HIRE. Above the highlighted box a small tag reads exactly STILL WAITING: 7 DAYS. These are the only words anywhere in the image, in large, correctly spelled capitals. Do not draw a panel number, corner badge, title, caption box or any other text outside the chart, the card, the tags, the banner and the speech bubble. Use one speech bubble, its tail pointing to Ines, with the exact words: \"We gave the approvals away. The knowledge is still stuck.\" Convey: Delegating the two approvals is forecast to take about six waiting days out without a new hire. The remaining wait is a knowledge problem: only two people can change the billing software, so delegation cannot fix it.",
   "alt": "Comic panel: Ines at a chart of five steps in order — Rule approval, Specialist review, Build and test, Invoice sign-off, Release. The first and fourth steps are crossed out and tagged “Delegated”, under a banner reading “Forecast: 6 days out, no new hire”. The second step, Specialist review, is highlighted and tagged “Still waiting: 7 days”, with two engineers holding a card reading “Only two people”.",
@@ -118,7 +118,7 @@ At Larkspur, Ines is the chief executive and leads the company, Alex leads techn
 }
 -->
 
-![Comic panel: Ines at a chart of five steps in order — Rule approval, Specialist review, Build and test, Invoice sign-off, Release. The first and fourth steps are crossed out and tagged “Delegated”, under a banner reading “Forecast: 6 days out, no new hire”. The second step, Specialist review, is highlighted and tagged “Still waiting: 7 days”, with two engineers holding a card reading “Only two people”.](assets/images/22-fix-decisions-before-hiring/comic-05-scene.jpeg)
+![Comic panel: Ines at a chart of five steps in order — Rule approval, Specialist review, Build and test, Invoice sign-off, Release. The first and fourth steps are crossed out and tagged “Delegated”, under a banner reading “Forecast: 6 days out, no new hire”. The second step, Specialist review, is highlighted and tagged “Still waiting: 7 days”, with two engineers holding a card reading “Only two people”.](assets/images/22-scale-the-team-up/comic-05-scene.jpeg)
 
 **Panel 5:** Delegating the two approvals is forecast to take about six waiting days out, provided that finance check adds no queue of its own. Priya keeps a list of the pricing-rule types her team may now implement without asking her again; Ines gives invoice approval to Sam’s finance team, which already checks customer bills against the underlying records. Authority passes to people, not to paperwork. It needs no additional hire, which is not the same as costing nothing: finance and Ines still supply the time. What remains is not a decision problem but a knowledge one: only two people can change the software that prepares customer bills, so giving away authority cannot shorten that queue.
 
@@ -128,7 +128,7 @@ At Larkspur, Ines is the chief executive and leads the company, Alex leads techn
 {
   "id": "06-scene",
   "status": "generated",
-  "asset": "assets/images/22-fix-decisions-before-hiring/comic-06-scene.jpeg",
+  "asset": "assets/images/22-scale-the-team-up/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
   "prompt": "Panel 6 of an explainer comic. Alex, Sam and Priya stand behind a table, looking down at two large sheets of paper that lie side by side facing the viewer. The left sheet has the heading FUNDED NOW and one line below it: ONE BILLING ENGINEER. The right sheet has the heading SECOND TEAM WAITS FOR and three lines below it: PROVEN DEMAND, COMMITTED FUNDING, BOARD APPROVAL. Sam points at the left sheet. These are the only words on any prop, in large, correctly spelled capitals. Nobody holds a labelled paper and there are no background people. Use one speech bubble with the exact words: \"Which roles are funded now?\" Convey: The hire changes shape. One billing engineer is funded now. The proposed second team waits for three things: proven demand in the second country, committed funding from the next round (the next time Larkspur raises money from investors) and the board’s approval of the roles. Committed means investors have signed an agreement to provide the money, subject to its terms; the money itself has not yet arrived. Explain the same conditions to investors and teams.",
   "alt": "Comic panel: Alex, Sam and Priya look at two sheets. One reads “Funded now: one billing engineer”. The other reads “Second team waits for: proven demand, committed funding, board approval”.",
@@ -141,7 +141,7 @@ At Larkspur, Ines is the chief executive and leads the company, Alex leads techn
 }
 -->
 
-![Comic panel: Alex, Sam and Priya look at two sheets. One reads “Funded now: one billing engineer”. The other reads “Second team waits for: proven demand, committed funding, board approval”.](assets/images/22-fix-decisions-before-hiring/comic-06-scene.jpeg)
+![Comic panel: Alex, Sam and Priya look at two sheets. One reads “Funded now: one billing engineer”. The other reads “Second team waits for: proven demand, committed funding, board approval”.](assets/images/22-scale-the-team-up/comic-06-scene.jpeg)
 
 **Panel 6:** The hire changes shape. Because the queue that remains is a knowledge one, the funded role is one billing engineer — someone who changes the software that prepares customer bills — hired to become the third person who can do that work, learning from the two existing specialists in time protected for teaching. Until that transfer is proven, the engineer adds knowledge, not independent capacity. The proposed second team waits for three things: proven demand in the second country, committed funding from the next round (the next time Larkspur raises money from investors) and the board’s approval of the roles. Committed means investors have signed an agreement to provide the money, subject to its terms; the money itself has not yet arrived. Explain the same conditions to investors and teams.
 

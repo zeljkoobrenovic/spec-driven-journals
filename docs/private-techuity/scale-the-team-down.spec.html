@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Spec: Scale the Team Down: Decide What Work Stops, Not Just Who Leaves</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="scale-the-team-down.html">← Scale the Team Down: Decide What Work Stops, Not Just Who Leaves</a><span class="nav-right"></span></nav>
+    <header class="post" id="post-header">
+        <p class="section"><span>SPEC</span> • <span class="post-status"><span class="status-dot" style="background:green"></span>accepted</span> • <span>revised 2026-09-27</span></p>
+        <h1>Spec: Scale the Team Down: Decide What Work Stops, Not Just Who Leaves</h1>
+        <p class="byline"></p>
+        <div class="tags" id="tags"></div>
+        
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="scale-the-team-down.html">← Scale the Team Down: Decide What Work Stops, Not Just Who Leaves</a><span class="nav-right"></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {}, "tags": [], "modalities": [{"key": "spec", "label": "Spec", "meta": {}, "blocks": [{"type": "markdown", "content": "# Spec: Anatomy of a Layoff\n\n## Intent\n\nFollow a product and engineering reduction from the investor’s request to an authorized, funded operating plan and its consequences for people and delivery. Continue the separate delayed-financing scenario from [Manage Funding Delays: Revise the Cash Plan and Commitments](manage-funding-delays.html) into the deeper reduction it left open: establish the staffing and payroll baseline that chapter never stated, name where the reduction pressure actually comes from (a condition on the bridge, a director’s formal vote, an adviser’s benchmark), compare the alternatives (hiring freeze, contractor reduction, redeployment, pay measures, a reduction), and reconcile notice periods, severance, transition spending, recurring savings and cash by date. Show the resulting team, the work stopped, the customer commitments revised, the knowledge transferred and the responsibilities retained, and address both the people who leave and the people who remain.\n\n## Audience\n\nProduct and engineering leaders inside companies working under investors, including leaders who inherit an ownership arrangement. Assume no specialist finance background; explain necessary terms before use, including in the opening callouts. The TL;DR and the comic are read on their own, so each explains bridge, round and reserve itself and uses descriptive plan names rather than bare R-labels. Investor-side readers are secondary.\n\n## Success criteria\n\n- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: Squeezing the Balloon; The Ghost Veto; The Ratchet Roadmap. Give each a short reason tied to this post and link to [Where Investment Can Go Wrong](where-investment-goes-wrong.html) for the descriptions.\n- Frame the chapter, at the author’s request, with the two-sided effect of outside investment on a team: it can expand headcount significantly and quickly, and it adds obligations and financial pressures that can require cost reduction just as quickly, which is how unpopular and damaging layoffs come about; state this as the leader’s condition, not as a prevalence claim, and in conditional wording (investment *can* let a company hire faster than revenue would allow).\n- Open on 1 October in the delayed-financing scenario with the board’s costing request and the bridge commitment’s condition; state once that this scenario is deliberately separate from the shared Larkspur ledger and every figure is fictional. Introduce each person by role (Alex, chief technology officer; Priya, product leader; Sam, chief financial officer; Ines, chief executive; Morgan, the investor’s adviser) and say briefly what the onboarding pilot and the recovery work are.\n- State the missing baseline (40 employees, €324,000 monthly payroll by function, €50,000 contractors, €76,000 non-payroll, €250,000 collected revenue, €200,000 net burn) so that it reproduces the earlier chapter’s €200,000 burn, €150,000 after R1 and €500,000 at 31 December without the bridge. The payroll row is pay, employer charges and benefits, the cost that stops when employment ends; equipment and software sit in the non-payroll row and do not simply stop when a person leaves. State the cash model’s assumptions next to the cash table: €1.0m on 1 October, customer collections constant at €250,000 a month, the bridge’s terms from [Manage Funding Delays: Revise the Cash Plan and Commitments](manage-funding-delays.html) (convertible, no fee, interest added to the debt, nothing payable in cash for twelve months after the money arrives), the executive pay deferral and any round money excluded, receipts from the two second-country customers excluded throughout the table (even after go-live, so a go-live or a termination changes the sales forecast, not the cash table, apart from any settlement), the month-end formula, and reserve-crossing days approximate.\n- Distinguish three pressures with different responses: the investors’ funding condition on the bridge (a cash date, not a headcount number), the investor director’s formal vote and the fictional reserved matter over the operating plan, and the “20% of engineering” benchmark as influence.\n- Compare the alternatives in one table (freeze already in force, R1, redeployment, an executive pay deferral, reduced hours, the chosen reduction R2, the revenue-only floor R3) on recurring saving, one-off cost, first full month of saving and what each removes.\n- Reconcile R2 by date: eight roles, notices on 31 October; three leave payroll on 30 November, three on 31 December, one second-country engineer on 31 January and the other, retained on an agreed fixed term at about €8,500 a month (€17,000), on 31 March; savings of €20,000 in December, €45,000 in January, €63,500 in February and March and €72,000 a month from April (€63,000 of the eight people’s pay, plus €9,000 of the mobile app’s non-payroll spending on contracts that end on 31 January, so saved from February); one-off costs of €120,000 paid between November and March (€30,000, €45,000, €32,000, €13,000); a cash table showing €488,000 at 30 June with the bridge (condition met, reserve reached in the first week of August), €200,000 at 30 June without R2 (condition failed) and the reserve breached in January without the bridge whatever R2 does; one contingency of one further month for the retained specialist (€8,500, to 30 April) leaving €479,500 at 30 June if used. The three plans are compared in a short table, not one long paragraph. Figure 1 is a chart plotted from these month-end balances (starting from €1.0m on 1 October, showing November’s bridge receipt, the €400,000 reserve labelled, month abbreviations and a euro scale) with the bridge-without-R2 series marked as a comparison that fails the condition.\n- State the cash-timing conclusion conditionally: at Larkspur’s notice periods, severance terms and dates the reduction cannot stand in for the late bridge; elsewhere the answer depends on the costs, savings and funding dates, so the general lesson is to compare them by date. Key points, TL;DR, comic captions and illustration prompts carry the same qualification.\n- Record the decision with chosen option, alternatives rejected, funding, scarce capacity, who is authorized (the board on 15 October with the investor director’s consent; Ines for individual notices within the plan and the law), review dates and the evidence that would change it, including that a later round does not reverse the reduction. Reviews read only evidence that exists by their date, shown as a compact table: 1 December (notices, bridge, the first customer’s amendment, second-customer progress), 1 February (readiness: the seven departures executed, retention in force, December and January savings against the ramp), 1 March (February’s actual savings), 15 March (transfer test), 1 April (second customer live, March savings, the round’s stage), 1 May (April’s actual savings; contingency outcome). The 1 April and 1 May rows are conditional on the transfer test: they state the expected departure date, recurring saving and month of the specialist’s final leaving payment for the base case (31 March; €72,000 from April; payment in March), the April contingency (30 April; €63,500 in April; payment in April; €479,500 on 30 June) and extensions to 30 June (payment in June; €462,500), and compare actuals with the branch that applies. The branch figures sit in a separate three-row comparison table (specialist leaves 31 March, 30 April or 30 June: final-payment month, cash at 31 March and 30 April, April saving, first full-saving month, cash on 30 June, reserve date), so the review calendar only says what each review checks. The evidence that would change the decision is a trigger/response table, not one long bullet; the incident trigger distinguishes work nobody has contracted for, which stops at once, from contractual commitments, which move only by the customer’s agreement, negotiated by Priya, with the board deciding between costed extra capacity and the contract’s remedy, on legal advice, if a customer refuses and the team cannot deliver safely.\n- Show the team after R2 (12 engineers, Priya, one product manager, one designer; onboarding, core with the second-country rules, the recovery pair redeployed), the work stopped (the field-worker mobile app, further countries), the customer commitments (both contracts promise first-quarter go-live, with a separate right to terminate after 30 June; the first customer signs an amendment to 30 September before the notices; the second declines any change, so its 31 March promise is kept by retaining one second-country specialist to 31 March, with the engineer-month arithmetic stated from 1 November (an engineer-month defined; 13 engineer-months of capacity to 31 March, 1 reserved for writing down and reviewing the tax-rule mapping, 12 against the 11 needed, so about two weeks of calendar margin; the first customer’s 5 engineer-months in April–September leave about one engineer-month for supporting the live second customer) and the termination right recorded as the remaining risk; three mobile beta customers), the knowledge-transfer test run on the real second-country work before the specialist leaves, in two parts read separately (routine support: configuration changes and the customer’s support requests; a legally required tax-rule change), first week of March, read on 15 March; the retention agreement, signed before any notice is served and a precondition of serving them, gives Larkspur month-by-month options to keep the specialist to 30 June at €8,500 a month; the first further month to 30 April is the plan’s only contingency, retest read on 15 April; if it fails, the board decides by 22 April whether to use the May and June options (€462,500 on 30 June, reserve about 25 July; board approval with the investor director’s consent) with a final test read on 15 June, and Priya opens talks with both second-country customers on an agreed early end as the fallback, because passing both parts of the test is also the evidence that the remaining engineer can build and support the first customer’s configuration alone (the six engineer-months from April establish time, not capability); settlements for both customers together come from the €62,500 headroom (about four days earlier reserve per €10,000; neither customer’s fees were ever in the cash forecast); if the final test fails and either customer refuses an early end, the record states that customer’s commitment as unresolved: the specialist’s departure is not part of an approved plan until the board agrees new terms with the specialist long enough to cover it (to the first customer’s 30 September go-live and its later rule changes, if that customer stays), costed into the forecast, or takes legal advice on the contract; no contractor assumed, and the on-call and workload consequences for the people who remain.\n- Treat the people who leave concretely (notice, severance formula, accrued leave, options under the leaver terms in [Compare Incentives and Stakes: Equity, Carry and Jobs](compare-incentives-stakes.html), references and outplacement) and the people who remain (a published stopped list, the on-call change, what they are not expected to absorb, what would restore the plan), with one communication sequence derived from the same dated cash table.\n- Tie employment-process details to jurisdiction: cite [S77] for the directive’s definition, its establishment-size bands (more than 20 and fewer than 100; at least 100 and fewer than 300; 300 or more, over 30 days) and 90-day alternative, the assimilation of other employer-initiated terminations once there are at least five redundancies, consultation of representatives as a duty distinct from written notification of the authority and the 30-day period, and member states’ freedom to be more favourable; cite [S78] for the US statute’s employer definition (100 or more employees excluding part-time employees, or 100 or more who in aggregate work at least 4,000 hours a week exclusive of overtime), the single-site 30-day plant-closing and mass-layoff tests (33 percent and 50, or 500), the 90-day aggregation rule, 60 days’ notice and its recipients, and the reduced-notice exceptions (the capital-seeking exception covers only a shutdown of a single site, and only where the employer reasonably and in good faith believed notice would have prevented it obtaining capital or business that would have avoided or postponed the shutdown; linked to § 2102); the part-time exclusion applies to the 100-employee test and the plant-closing and mass-layoff counts, not to the alternative 4,000-hours aggregate test; present the passage in several short paragraphs; keep Larkspur’s fictional notice, severance and retention terms distinct from any statutory minimum; make no claim about which law governs Larkspur. Name the Worker Adjustment and Retraining Notification (WARN) Act in full; a plant closing needs a shutdown of a site or of facilities or operating units within it as well as fifty losses; WARN’s part-time category includes a tenure test; the directive’s thirty-day period can be shortened or extended by the authority where national law allows; say that a collective procedure means rebuilding the timetable under the applicable rules (which periods can overlap), not adding periods mechanically; works-council rules apply where they exist. Put the thresholds in a labelled reference table. In the TL;DR, keep the EU and US examples in separate sentences.\n- Add two short variations without a second full case: a profitable company pursuing a margin target (no cash date; the [Compare Incentives and Stakes: Equity, Carry and Jobs](compare-incentives-stakes.html) consolidation is the worked example) and an acquisition-related consolidation (the synergy date follows the knowledge-transfer test in [Scale the Team Up: Headcount Is Not Capacity](scale-the-team-up.html) and the completion tests in [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](plan-acquisitions-separations.html)).\n- Keep the company leader’s decisions central; distinguish investor influence, formal approval rights and funding conditions throughout; avoid duplicating the delegation, incentive and location material owned by other chapters.\n- Explain severance, burn, pay deferral, job-search support (outplacement) and works councils where they first matter, and in the TL;DR say that share options are rights to buy shares at a fixed price, which costs money to use. Provide a TL;DR of 300–500 words and a comic of nine pages of three strips each consistent with the article, two article figures with numbered captions, the TL;DR overview visual, a header logo and a navigation icon, all generated with the journal’s workflows and read back against their prompts.\n- Close with a handoff to [Manage the Handover: Carry Forward the Evidence and Obligations](manage-handover.html) that also states what R2 does not solve: it still spends €78,000 a month more than customers pay, reaches the reserve in the first week of August, and the bridge remains owed under its terms, so the board must decide financing or another outcome before that date.\n\n## Non-goals\n\nLegal or tax advice on dismissals in any jurisdiction; universal severance or notice formulas; the shared Larkspur ledger (this scenario stays separate); the incentive comparison already worked in [Compare Incentives and Stakes: Equity, Carry and Jobs](compare-incentives-stakes.html); the location comparison and knowledge-transfer test already in [Scale the Team Up: Headcount Is Not Capacity](scale-the-team-up.html); promises of investment performance or disclosure of confidential inputs.\n\n## Modalities\n\n- Full Article: index.md, the substantive argument.\n- TL;DR: summary.md, the practical implications in concise prose (300–500 words) with its overview visual; readable without the article.\n- Comic: comics.md, nine illustrated pages of three strips each, generated on 2026-09-23 with the journal’s cast reference from the `comic-page` blocks that are also the artwork scripts, with the dialogue, labels, amounts and dates lettered in the artwork; alt text, visible captions and per-strip transcripts are rendered from the blocks, and every page is inspected against its script. The introduction defines bridge, round, reserve and the R1/R2/R3 labels; captions describe each plan in words and explain options and the on-call rota.\n\n## Open questions\n\nArtwork is complete (generated 2026-09-16 once an image-generation key was available). No evidence on Larkspur’s jurisdiction is asserted; readers must check their own thresholds.\n\n## Decision log\n\n- 2026-09-16: Created in Part V after [Manage Funding Delays: Revise the Cash Plan and Commitments](manage-funding-delays.html) rather than in Part III beside the organization chapter, so that the assessment → organization → design sequence of Part III stays intact and the reduction continues the delayed-financing scenario whose figures it needs. Rejected: folding the reduction into the financing chapter (already 13 minutes; the reduction needs its own baseline and record) and reusing the shared ledger (its envelope and dates are the wrong scale for a company-wide reduction).\n- 2026-09-16: Continue the separate scenario’s figures (€1.6m on 1 July, €200,000 burn, €400,000 reserve, R1 at €50,000 a month, the €600,000 bridge) and invent only what that chapter left undefined: the staffing baseline, the bridge’s condition and the reduction itself.\n\n## Sources\n\nThe delayed-financing chapter supplies the scenario; the organization chapter supplies the knowledge-transfer test; the governance chapter supplies the approval map. External: Council Directive 98/59/EC [S77] and the US Worker Adjustment and Retraining Notification Act [S78], consulted for the thresholds, notice and consultation mechanics named in the text. Chapter-end reading (Sucher and Gupta; Trevor and Nyberg; Datta and others; Brockner) verified by title, authors and venue on 16 September 2026.\n\n## Changelog\n\n- 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.\n\n- **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.\n- 2026-09-24 (title): Retitled from “Plan Layoffs: Decide What Work Stops, Not Just Who Leaves” to “Scale the Team Down: Decide What Work Stops, Not Just Who Leaves” at the author’s request, as the counterpart of the hiring chapter. Permalink, id and body unchanged.\n- 2026-09-24 (Part IV SCALE): Moved from the former Part V (after [Manage Funding Delays: Revise the Cash Plan and Commitments](manage-funding-delays.html)) to the new Part IV, after [Scale the Team Up: Headcount Is Not Capacity](scale-the-team-up.html), at the author’s request, as the scaling-down counterpart of the hiring chapter. Because it is now read before the funding-delay chapter, the opening stands alone: the round, bridge and reserve are defined in place, the August decisions (bridge as fallback, first reduction R1, costing of a deeper reduction) are recalled in one sentence, the funding-delay chapter is cited as the later chapter that explains them, and the “earlier chapter” wording and the baseline heading were adjusted. Scenario figures, permalink and id unchanged; folder renumbered to `23-anatomy-of-a-layoff`.\n- 2026-09-23 (comic pages): The six single-scene panels replaced by nine comic pages of three strips each, so the bridge condition and the forty-person baseline, the three pressures with the €40,000 arithmetic, the alternatives on one basis, the notice and severance terms with R2's build-up of savings and one-off costs, the month-by-month cash under the plan and the four-plan comparison, the 15 October decision with its funding and review calendar, the team by work with the two second-country customers and the engineer-month check, the two-part transfer test with its dated fallback and unresolved branch, and the terms for the people who leave and the list for the people who remain are drawn into the artwork rather than carried by captions. Page images live under `assets/images/23-scale-the-team-down/`; the previous panel comic is archived under `_research/comic-pages-pilot/`. No figure, date or decision changed; permalink unchanged.\n- 2026-09-23 (in-depth review, round 3): the failed-final-test fallback extended to the first customer, whose configuration also depends on the remaining engineer passing the test (early ends sought with both customers; a refusal leaves that customer’s commitment unresolved; the “unaffected in every branch” assurance removed); the cash forecast stated to exclude both second-country customers’ receipts throughout, so a termination changes the sales forecast, not the cash table; the incident trigger separates contractual commitments from other work; the retention-branch figures moved out of the review calendar into a three-row table; interest, payroll ledger and HR glossed; Figure 2 labelled as the base case.\n- 2026-09-23 (in-depth review, round 2): transfer fallback completed — the test is read as routine support and rule change separately; month-by-month options to 30 June are agreed with the specialist before notices are served (a precondition of the reduction); the agreed early end is the customer fallback, costed against the 30 June headroom; the branch where the final test fails and the customer refuses is recorded as unresolved rather than solved. The 1 April and 1 May reviews made conditional on the test branch; decision-changing evidence turned into a trigger table; WARN capital-seeking exception and part-time exclusion qualified; severance, burn, pay deferral, outplacement and works council explained at first use; TL;DR explains share options; closing recap chronology corrected; comic panel 1 regenerated so Alex matches the cast.\n- 2026-09-23 (in-depth review, round 1): lay-reader pass and substantive fixes. Opening callouts and people introduced in plain terms; cash-model assumptions stated; payroll row redefined so only costs that stop with employment are in it, and the €9,000 app saving dated from February; three-plan comparison as a table and Figure 1 replaced by a chart plotted from the monthly balances; capacity arithmetic restated from 1 November (13 engineer-months, two weeks’ margin, replacing the unsupported sixteen and a month); seven departures at the 1 February review; transfer fallback decided by 22 April with support from 1 May named for every option; WARN and directive wording corrected (plant-closing shutdown, part-time tenure test, Article 4 reductions and extensions, timetable rebuilt rather than added); ending states R2’s remaining €78,000 monthly gap and the bridge obligation; TL;DR and comic rewritten to stand alone; Figure 2 and comic panel 2 regenerated with the real counts.\n- 2026-09-16 (author request): plain-language definitions added at first use for round, expression of interest, bridge, reserve, collected revenue, net burn, reserved matter, investor director, notice period, severance, accrued leave, fixed term, drawn, subscription agreement, go-live, options and vesting, good leaver, outplacement and on-call rota; body otherwise unchanged.\n- 2026-09-16 (artwork): six comic panels, the TL;DR visual, two article figures and the header logo generated with the journal’s generators and read back; panels 3 and 6 regenerated with corrected scene prompts (first renders archived in `_research/discarded-comic-variants/`); the navigation icon generated by the author earlier the same day kept. Status accepted.\n- 2026-09-16 (second review response): the second customer’s first-quarter promise is kept rather than reinterpreted (one specialist retained to 31 March, €17,000 now in the plan; €488,000 at 30 June as the base case, one further month as the only contingency); the transfer test moved onto the real second-country work in March with a bounded fallback and no contractor assumed; the review calendar re-dated so each review reads evidence that exists; the employment-law passage split into short paragraphs with the exact 33 percent test and the overtime exclusion. Supersedes the first response’s sequencing-to-June and December-test entries.\n- 2026-09-16 (author request): opening paragraph added on how outside investment both expands headcount quickly and brings the obligations and pressures that can force equally quick reductions; TL;DR opening aligned.\n- 2026-09-16 (review response): second customer’s contractual date met by sequencing with a funded contingency instead of an unagreed September date; knowledge-transfer fallback bounded and funded (retest 15 January, extension to 31 March of up to €17,000 by agreement, re-planning at 1 April) with the contingency case costed (€488,000 at 30 June); the cash-timing conclusion made conditional on Larkspur’s terms and dates across article, key points, TL;DR, comic and figure prompts; employment-law summary corrected and qualified against S77 and S78 (band boundaries, assimilation rule, consultation versus notification, aggregation, exceptions, national and state rules).\n- 2026-09-16: Rename the folder to `23-anatomy-of-a-layoff` and the permalink to `anatomy-of-a-layoff` at the author’s request, before any public deployment of the chapter; asset paths and every cross-reference updated; body unchanged.\n- 2026-09-16: Retitle the post from “When the Headcount Plan Shrinks” to “Anatomy of a Layoff” at the author’s request. Permalink and folder unchanged at that point (renamed later the same day, see the entry above); body unchanged.\n- 2026-09-16: Initial spec, status accepted; article, TL;DR and comic storyboard written the same day; artwork pending.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

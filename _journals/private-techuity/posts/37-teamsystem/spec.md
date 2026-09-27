@@ -37,7 +37,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Explain cash proceeds versus retained value, pro forma comparisons, adjusted EBITDA versus statutory earnings, and capitalized development using checked source figures; show the full reported adjusted-EBITDA-to-loss reconciliation, and present the ownership episodes in a table with date/status and what each source establishes, without a synthetic performance ranking.
 - Treat later HgCapital Trust events (2021, 2023, 2024) by source: announcements give announced values; the Trust's annual reports give completion status and gross realizations; none gives net investor cash, and none is the 2016 stake.
 - Distinguish the accounting finance charge from finance costs actually paid, using the 2017 report's notes 7–10, and keep both distinct from other financing cash outflows.
-- Keep the recurring-acquisition-adjustment lesson to one paragraph linking [[visma]]; link [[handover-of-obligations]] for the continuing-obligations handover.
+- Keep the recurring-acquisition-adjustment lesson to one paragraph linking [[visma]]; link [[manage-handover]] for the continuing-obligations handover.
 - Relate concrete interventions to testable customer and business mechanisms; expose stakeholder and attribution gaps.
 - Preserve qualifications in a 300–500-word TL;DR and in the comic page scripts; inspect every generated page against its script.
 - Explain revenue (sales recorded before costs), profit (what remains after the costs a measure includes) and cash (money actually received or paid) in plain words before the opening's first numerical comparison.
@@ -75,6 +75,8 @@ Independent customer and employee histories; full investor cash flows; matched p
 S45–S49: Palamon's historical account; HgCapital Trust's 2010 and 2015 announcements and March 2016 results presentation; TeamSystem Holding's 2017 consolidated financial statements and directors' report. S66–S71: HgCapital Trust's January 2021 and July 2024 announcements and its 2021, 2023 and 2024 annual reports; Silver Lake's May 2023 announcement. Exact metadata, consulted sections, and limitations are in the bibliography and private research register.
 
 ## Changelog
+
+- 2026-09-27: Update cross-links for the chapter title-slug renames.
 
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-26: Replace general ownership-change framing in the opening and summary with the named ownership sequence, reported acquisitions and 2017 accounts, then derive the handover and measurement lessons. Preserve source qualifications and the stable permalink.

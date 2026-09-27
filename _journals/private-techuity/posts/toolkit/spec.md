@@ -23,7 +23,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Open with minimum-use guidance and a navigation table grouped by decision stage (map → investigate → compare options → commit → obtain help → measure → revise or hand over) that keeps the existing tool numbers stable.
 - Include one completed end-to-end example using the shared Larkspur chain (finding D-3, option comparison, initiative ONB-1 shown pending and authorized, day-100 outcome ledger, revised decision, handover entry), labelled fictional, with every decision stating the chosen option, alternatives rejected, funding, capacity, authority and the evidence that would change it.
 - Explain which records can be combined on one evolving page and what new information each stage adds; make the support-engagement record usable for a continuing service without assuming full internal independence must result.
-- Retain Tool 13, the workforce-decision record, and its links to [[anatomy-of-a-layoff]] and [[fix-decisions-before-hiring]]. Add Tool 14, a short investor-network learning brief linked to [[learn-through-investors-network]]: questions and room for discovery, people, time and cost, information expectations, observations, interpretation and local context, follow-through and a review. Allow open questions and continuing relationships as legitimate results; require a separate company decision for funded implementation.
+- Retain Tool 13, the workforce-decision record, and its links to [[scale-the-team-down]] and [[scale-the-team-up]]. Add Tool 14, a short investor-network learning brief linked to [[learn-through-investors-network]]: questions and room for discovery, people, time and cost, information expectations, observations, interpretation and local context, follow-through and a review. Allow open questions and continuing relationships as legitimate results; require a separate company decision for funded implementation.
 - Make the company leader’s decision, authority and funding assumptions explicit. Distinguish the stated ownership arrangement from a claim about every investor.
 - Keep historical findings within their source scope and label new comparative scenarios as fictional.
 - Make the page usable by a beginner: explain how to start, define labels plainly, and link the relevant teaching chapters.
@@ -52,6 +52,8 @@ Research and editorial gaps remain in the separate notes; revise this reference 
 See the bibliography and the relevant chapters. The source registry records consultation scope and dates.
 
 ## Changelog
+
+- 2026-09-27: Update cross-links for the chapter title-slug renames.
 
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-22 (investor learning): Specify Tool 14 before adding the accepted chapter’s learning brief. Keep existing tool numbers and the shared Larkspur chain unchanged.

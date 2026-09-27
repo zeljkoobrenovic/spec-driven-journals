@@ -36,7 +36,7 @@ Disagreement and uncertainty are normal. They become dysfunctional when the comp
 | **The Ratchet Roadmap** | New promises are added; existing commitments are never reconsidered. |
 | **All Bulk, No Muscle** | More people, tools or purchases of other businesses are assumed to mean more capability. |
 | **Squeezing the Balloon** | The reported cost falls while work and risk move elsewhere. |
-| **Year Zero** | New owners bring a fresh plan and lose the unfinished work. |
+| **Clean Slate Syndrome** | New owners bring a fresh plan and lose the unfinished work. |
 | **The Exit Halo** | A profitable sale is treated as proof that everything worked. |
 
 {id: where-investment-goes-wrong--spending-the-press-release}
@@ -209,8 +209,8 @@ Compare cost, risk and useful results on the same basis. **What became cheaper f
 
 **Read further:** [SUSTAIN: Keep the Technology You Run Worth Its Cost](#part-6).
 
-{id: where-investment-goes-wrong--year-zero}
-### Year Zero
+{id: where-investment-goes-wrong--clean-slate-syndrome}
+### Clean Slate Syndrome
 
 “The deal is done. We need a fresh plan.”
 
@@ -284,7 +284,7 @@ Choose a recent decision to examine together. Identify the unchecked assumption,
 
 **Are people less willing to raise a concern, ask for help or believe the next commitment?** Identify whose trust has been affected and what action would give them a reason to reconsider.
 
-Dysfunctions can reinforce each other. Spending the Press Release adds promises to the Ratchet Roadmap before the money arrives. The Ghost Veto protects those promises from challenge. The next owner starts at Year Zero, losing the evidence that should have changed the plan while its customer promises remain.
+Dysfunctions can reinforce each other. Spending the Press Release adds promises to the Ratchet Roadmap before the money arrives. The Ghost Veto protects those promises from challenge. The next owner starts at Clean Slate Syndrome, losing the evidence that should have changed the plan while its customer promises remain.
 
 For a missed opportunity, identify the unused resource, the improvement it could support and a small next step: a peer conversation, time reserved for a funded change, or working alongside a specialist. Agree what the company will contribute and how it will judge whether the opportunity is useful.
 

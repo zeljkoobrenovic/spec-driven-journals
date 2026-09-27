@@ -40,17 +40,17 @@ Whatever you commit to, keep three things visible: **the benefit you expect, how
 
 **Choose and justify the work.**
 
-- [[cannot-fund-everything]]: which work fits the cash and team time?
-- [[roadmap-to-revenue]]: does the change bring more sales, and should the trial continue?
-- [[ai-strategy-three-questions]]: artificial intelligence (AI) is software that predicts or generates content from data. Will customers pay for it, will staff work better with it, or could a rival product replace yours?
+- [[set-priorities]]: which work fits the cash and team time?
+- [[test-revenue-assumptions]]: does the change bring more sales, and should the trial continue?
+- [[clarify-ai-strategy]]: artificial intelligence (AI) is software that predicts or generates content from data. Will customers pay for it, will staff work better with it, or could a rival product replace yours?
 
 **Assess what delivery requires.**
 
-- [[can-the-team-deliver]]: what can the software and team support, and what would a transition cost?
+- [[assess-capability]]: what can the software and team support, and what would a transition cost?
 
 **Revise when the money is late.**
 
-- [[the-financing-slipped]]: when expected money arrives late, which commitments must change, by what date, and which fallback does the board choose?
+- [[manage-funding-delays]]: when expected money arrives late, which commitments must change, by what date, and which fallback does the board choose?
 
 By the end, you should be able to explain which work deserves money and people, what you can responsibly commit to, and what evidence would change the plan. Benefit here includes customer results and capability, not only money.
 

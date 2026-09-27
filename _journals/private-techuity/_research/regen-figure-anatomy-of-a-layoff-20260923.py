@@ -25,7 +25,7 @@ sys.path.insert(0, str(SCRIPTS))
 
 import generate_illustrations_nanobanana as gen  # noqa: E402
 
-POST = ROOT / "_journals/private-techuity/posts/23-anatomy-of-a-layoff"
+POST = ROOT / "_journals/private-techuity/posts/23-scale-the-team-down"
 
 STYLE = (
     "Create one finished explanatory illustration for Owned, a practical book for "
@@ -61,7 +61,7 @@ TARGETS = [
     {
         "id": "team-by-work-before-and-after",
         "status": "pending",
-        "asset": "assets/images/24-anatomy-of-a-layoff/team-by-work-before-and-after.jpeg",
+        "asset": "assets/images/24-scale-the-team-down/team-by-work-before-and-after.jpeg",
         "aspect_ratio": "16:9",
         "prompt": FIG2,
         "alt": "Before and after: five benches (onboarding 4, recovery 2, core 5, second country 3, mobile app 2) become onboarding 4 unchanged, core 8 with two from recovery and one from the second country, and the mobile app stopped.",

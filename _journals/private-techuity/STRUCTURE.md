@@ -42,10 +42,14 @@ The primary reader leads product or engineering inside a company working under i
 
 ## Editorial Rules
 
+Use first person for the book author's experience, reasoning, proposals, projects and writing process: “I,” “me” and “my,” rather than his name or “the author.” Apply this voice to articles, summaries, captions, alt text and journal descriptions. Preserve byline metadata, formal bibliography citations and references to other authors.
+
 Define terms before use. Identify the company leader’s decision, required authority, available funding and next review. Separate investor identity, ownership rights, financing and transaction context. Label fictional comparisons and keep historical claims within their evidence. Keep existing main-chapter source paths stable; `10-learn-through-investors-network` inserts the new chapter between `18` and `19`. Use configuration order for consecutive displayed chapter numbers. Preserve the current unprefixed permalinks and existing public asset namespaces. Keep the 45 specifications and applicable reading formats consistent: 34 main chapters, each with an article, summary and illustrated comic, plus six part introductions and five guide/reference pages.
 
 ## Decision Record
 
+- **2026-09-27 (first-person voice)** — At the author's request, rewrite narrative self-references in the first person throughout the book, including source notes and the AI-assisted writing illustration. Keep claims, evidence limits, links and formal source attribution intact.
+- **2026-09-27 (chapter slugs)** — At the author's request, align the slugs of numbered chapters and their image folders with short versions of their current titles. Retain every number prefix, the `part-N-intro` folders and `part-N` permalinks, and the existing names of other pages. Update chapter permalinks and links to match; keep configuration order and artwork unchanged. Earlier naming decisions below describe their dated revisions.
 - **2026-09-26 (concrete names)** — Apply the author's latest proposed names across the twelve-pattern opening guide. Choose The Nodding Room for apparent agreement and retain The Exit Halo to keep the interpretation of success distinct from deliberate deception. The mechanisms, three missed opportunities and part links stay in place.
 - **2026-09-26 (missed opportunities)** — Extend the opening guide to twelve patterns at the author's request, adding The Unused Breathing Room and The Expertise That Leaves alongside The Unopened Address Book. Cover unused funded time, knowledge transfer and relationships as well as dysfunctional decisions.
 - **2026-09-26 (naming revision)** — Give the diagnostic guide catchier pattern names at the author's request. Use ten distinct patterns with flexible links across the eight parts, superseding the initial one-pattern-per-part organization.

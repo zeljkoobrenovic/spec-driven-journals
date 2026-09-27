@@ -15,7 +15,7 @@ The people are fictional. Alex is Larkspur’s technology leader, Priya its prod
 {
   "id": "01-scene",
   "status": "generated",
-  "asset": "assets/images/12-useful-engagement/comic-01-scene.jpeg",
+  "asset": "assets/images/12-set-terms-of-help/comic-01-scene.jpeg",
   "aspect_ratio": "16:9",
   "caption": "An engagement is an agreed piece of support. Name the decision or result it should improve before arranging the activity.",
   "alt": "Comic panel: Alex and Morgan replace a crowded meeting calendar with one card describing the customer-setup result.",
@@ -28,7 +28,7 @@ The people are fictional. Alex is Larkspur’s technology leader, Priya its prod
 }
 -->
 
-![Comic panel: Alex and Morgan replace a crowded meeting calendar with one card describing the customer-setup result.](assets/images/12-useful-engagement/comic-01-scene.jpeg)
+![Comic panel: Alex and Morgan replace a crowded meeting calendar with one card describing the customer-setup result.](assets/images/12-set-terms-of-help/comic-01-scene.jpeg)
 
 **Panel 1:** An engagement is an agreed piece of support. Name the decision or result it should improve before arranging the activity.
 
@@ -38,7 +38,7 @@ The people are fictional. Alex is Larkspur’s technology leader, Priya its prod
 {
   "id": "02-scene",
   "status": "generated",
-  "asset": "assets/images/12-useful-engagement/comic-02-scene.jpeg",
+  "asset": "assets/images/12-set-terms-of-help/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
   "caption": "A short engagement charter records the result, the accountable company leader, the investor-side sponsor, resources on both sides, who directs the work, information use, review date and handover test.",
   "alt": "Comic panel: Alex, Sam and Morgan examine one shared agreement with clearly separated responsibility fields.",
@@ -51,7 +51,7 @@ The people are fictional. Alex is Larkspur’s technology leader, Priya its prod
 }
 -->
 
-![Comic panel: Alex, Sam and Morgan examine one shared agreement with clearly separated responsibility fields.](assets/images/12-useful-engagement/comic-02-scene.jpeg)
+![Comic panel: Alex, Sam and Morgan examine one shared agreement with clearly separated responsibility fields.](assets/images/12-set-terms-of-help/comic-02-scene.jpeg)
 
 **Panel 2:** A short engagement charter records the result, the accountable company leader, the investor-side sponsor, resources on both sides, who directs the work, information use, review date and handover test.
 
@@ -61,7 +61,7 @@ The people are fictional. Alex is Larkspur’s technology leader, Priya its prod
 {
   "id": "03-scene",
   "status": "generated",
-  "asset": "assets/images/12-useful-engagement/comic-03-scene.jpeg",
+  "asset": "assets/images/12-set-terms-of-help/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
   "caption": "External expertise still needs company time. The outside specialist’s ten days, capped at €15,000 and paid out of the money already set aside for the customer-setup trial, need six days of a Larkspur engineer, two sessions with the customer team and Priya’s review — all written into the plan before the work starts.",
   "alt": "Comic panel: Sam adds six company engineer-days beside the specialist’s ten days on a calendar of exactly six weeks.",
@@ -75,7 +75,7 @@ The people are fictional. Alex is Larkspur’s technology leader, Priya its prod
 }
 -->
 
-![Comic panel: Sam adds six company engineer-days beside the specialist’s ten days on a calendar of exactly six weeks.](assets/images/12-useful-engagement/comic-03-scene.jpeg)
+![Comic panel: Sam adds six company engineer-days beside the specialist’s ten days on a calendar of exactly six weeks.](assets/images/12-set-terms-of-help/comic-03-scene.jpeg)
 
 **Panel 3:** External expertise still needs company time. The outside specialist’s ten days, capped at €15,000 and paid out of the money already set aside for the customer-setup trial, need six days of a Larkspur engineer, two sessions with the customer team and Priya’s review — all written into the plan before the work starts.
 
@@ -85,7 +85,7 @@ The people are fictional. Alex is Larkspur’s technology leader, Priya its prod
 {
   "id": "04-scene",
   "status": "generated",
-  "asset": "assets/images/12-useful-engagement/comic-04-scene.jpeg",
+  "asset": "assets/images/12-set-terms-of-help/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
   "caption": "The charter says what the specialist’s interviews and records are for: pilot evidence, not assessments of individuals. A company-sponsored assessment, with new access, would be requested separately and announced.",
   "alt": "Comic panel: Morgan and Alex label three distinct conversation cards before opening an employee-feedback folder.",
@@ -98,7 +98,7 @@ The people are fictional. Alex is Larkspur’s technology leader, Priya its prod
 }
 -->
 
-![Comic panel: Morgan and Alex label three distinct conversation cards before opening an employee-feedback folder.](assets/images/12-useful-engagement/comic-04-scene.jpeg)
+![Comic panel: Morgan and Alex label three distinct conversation cards before opening an employee-feedback folder.](assets/images/12-set-terms-of-help/comic-04-scene.jpeg)
 
 **Panel 4:** The charter says what the specialist’s interviews and records are for: pilot evidence, not assessments of individuals. A company-sponsored assessment, with new access, would be requested separately and announced.
 
@@ -108,7 +108,7 @@ The people are fictional. Alex is Larkspur’s technology leader, Priya its prod
 {
   "id": "05-scene",
   "status": "generated",
-  "asset": "assets/images/12-useful-engagement/comic-05-scene.jpeg",
+  "asset": "assets/images/12-set-terms-of-help/comic-05-scene.jpeg",
   "aspect_ratio": "16:9",
   "caption": "By engagement week three, about day 40, the first setups done for the customers in the trial confirm in live work what the day-20 starting measurement had already suggested: for customers with messy records, cleaning the data, not the setup step, decides when a setup completes. Priya and the investor-side sponsor redirect the outside specialist’s remaining five days; the €15,000 cap and the review date do not move.",
   "alt": "Comic panel: Alex places before-and-after customer-setup records beside a stack labelled as a data-quality issue confirmed in live work.",
@@ -122,7 +122,7 @@ The people are fictional. Alex is Larkspur’s technology leader, Priya its prod
 }
 -->
 
-![Comic panel: Alex places before-and-after customer-setup records beside a stack labelled as a data-quality issue confirmed in live work.](assets/images/12-useful-engagement/comic-05-scene.jpeg)
+![Comic panel: Alex places before-and-after customer-setup records beside a stack labelled as a data-quality issue confirmed in live work.](assets/images/12-set-terms-of-help/comic-05-scene.jpeg)
 
 **Panel 5:** By engagement week three, about day 40, the first setups done for the customers in the trial confirm in live work what the day-20 starting measurement had already suggested: for customers with messy records, cleaning the data, not the setup step, decides when a setup completes. Priya and the investor-side sponsor redirect the outside specialist’s remaining five days; the €15,000 cap and the review date do not move.
 
@@ -132,7 +132,7 @@ The people are fictional. Alex is Larkspur’s technology leader, Priya its prod
 {
   "id": "06-scene",
   "status": "generated",
-  "asset": "assets/images/12-useful-engagement/comic-06-scene.jpeg",
+  "asset": "assets/images/12-set-terms-of-help/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
   "caption": "Week six, about day 63: the Larkspur engineer and a customer-team member complete a new customer’s setup with the outside specialist observing only. The engagement ends on schedule within its €15,000 cap. The data-quality finding goes to the day-100 review by the board — the directors who decide whether to fund the next step — as a better decision than the one the plan had assumed.",
   "alt": "Comic panel: Priya and Alex watch a Larkspur engineer and a customer-team member complete a customer setup while the specialist stands back, hands folded.",
@@ -145,7 +145,7 @@ The people are fictional. Alex is Larkspur’s technology leader, Priya its prod
 }
 -->
 
-![Comic panel: Priya and Alex watch a Larkspur engineer and a customer-team member complete a customer setup while the specialist stands back, hands folded.](assets/images/12-useful-engagement/comic-06-scene.jpeg)
+![Comic panel: Priya and Alex watch a Larkspur engineer and a customer-team member complete a customer setup while the specialist stands back, hands folded.](assets/images/12-set-terms-of-help/comic-06-scene.jpeg)
 
 **Panel 6:** Week six, about day 63: the Larkspur engineer and a customer-team member complete a new customer’s setup with the outside specialist observing only. The engagement ends on schedule within its €15,000 cap. The data-quality finding goes to the day-100 review by the board — the directors who decide whether to fund the next step — as a better decision than the one the plan had assumed.
 

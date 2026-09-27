@@ -8,7 +8,7 @@ Alex leads technology, Sam leads finance, Priya leads product and Ines is the ch
 
 ## Page 1: Profit is not cash
 
-![Comic page in three strips: Alex asks Sam for €1 million from €10 million of earnings, shown as a tower of ten gold bars; Sam has put bars into trays for interest, tax and investment while a customer still holds the bar for unpaid invoices, money owed to the company that has not arrived; after loan repayment only half a bar, marked 0.5, is left.](images/05-obligations-before-budget/page-01-profit-is-not-cash.jpeg)
+![Comic page in three strips: Alex asks Sam for €1 million from €10 million of earnings, shown as a tower of ten gold bars; Sam has put bars into trays for interest, tax and investment while a customer still holds the bar for unpaid invoices, money owed to the company that has not arrived; after loan repayment only half a bar, marked 0.5, is left.](images/05-understand-cash-flow/page-01-profit-is-not-cash.jpeg)
 
 **Strip 1.** Alex strides into Sam's office, cheerful, holding up a one-page report. Sam sits at a desk. On the desk stands ONE single tall tower of exactly ten large, thick gold blocks stacked one on top of another, like gold bricks, each block the same size. There is only one tower.
 
@@ -32,7 +32,7 @@ Alex leads technology, Sam leads finance, Priya leads product and Ines is the ch
 
 ## Page 2: Payments the company must make, and payments it chooses
 
-![Comic page in three strips: Sam locks interest, loan repayment and tax into a cabinet marked must pay; puts planned investment and payouts to owners on an open shelf marked we choose; and tells Alex that engineers’ salaries are already inside EBITDA.](images/05-obligations-before-budget/page-02-must-pay-or-choose.jpeg)
+![Comic page in three strips: Sam locks interest, loan repayment and tax into a cabinet marked must pay; puts planned investment and payouts to owners on an open shelf marked we choose; and tells Alex that engineers’ salaries are already inside EBITDA.](images/05-understand-cash-flow/page-02-must-pay-or-choose.jpeg)
 
 **Strip 1.** Alex stands at the LEFT of the strip, gesturing toward the right as if to take something back. Sam stands at the RIGHT of the strip beside a steel cabinet with a large padlock hanging on its open door. Three large gold bars already lie on the cabinet's shelves, one bar per shelf, each with a word printed on its side, fully visible and not covered by any hand. Sam rests one hand on the cabinet door. Alex's bubble is on the left above Alex; Sam's bubble is on the right above Sam.
 
@@ -55,7 +55,7 @@ Alex leads technology, Sam leads finance, Priya leads product and Ines is the ch
 
 ## Page 3: Accounting changes the picture, not the work
 
-![Comic page in three strips: Alex celebrates higher EBITDA; two scoreboards show EBITDA of 9.0 when development is expensed and 10.0 when capitalized, with the same cash paid of 1.0 under both; Sam explains that the rules decide the treatment and the cash leaves either way.](images/05-obligations-before-budget/page-03-accounting-does-not-pay.jpeg)
+![Comic page in three strips: Alex celebrates higher EBITDA; two scoreboards show EBITDA of 9.0 when development is expensed and 10.0 when capitalized, with the same cash paid of 1.0 under both; Sam explains that the rules decide the treatment and the cash leaves either way.](images/05-understand-cash-flow/page-03-accounting-does-not-pay.jpeg)
 
 **Strip 1.** Alex waves a one-page report happily. Sam raises one eyebrow and holds up a finger.
 
@@ -78,7 +78,7 @@ Alex leads technology, Sam leads finance, Priya leads product and Ines is the ch
 
 ## Page 4: Debt changes the consequences of being wrong
 
-![Comic page in three strips: a rate dial at 6% with interest of €3.6 million; the dial at 9% with interest of €5.4 million; a block marked plus €1.8 million pins down the technology plan while Ines and Alex ask which work continues and which commitments cannot be unwound.](images/05-obligations-before-budget/page-04-debt-raises-the-stakes.jpeg)
+![Comic page in three strips: a rate dial at 6% with interest of €3.6 million; the dial at 9% with interest of €5.4 million; a block marked plus €1.8 million pins down the technology plan while Ines and Alex ask which work continues and which commitments cannot be unwound.](images/05-understand-cash-flow/page-04-debt-raises-the-stakes.jpeg)
 
 **Strip 1.** Sam stands beside a large wall dial, like a big thermostat, with a needle pointing to the left mark. Below the dial hangs a payment slip.
 
@@ -102,7 +102,7 @@ Alex leads technology, Sam leads finance, Priya leads product and Ines is the ch
 
 ## Page 5: Without debt, a company can still run out of time
 
-![Comic page in three strips: Sam unrolls a twelve-month cash runway at €250,000 of monthly burn; new hires shorten it to 8.6 months, ending before a funding flag at month 9; Sam and Alex plant a decide-here marker well before the end.](images/05-obligations-before-budget/page-05-runway.jpeg)
+![Comic page in three strips: Sam unrolls a twelve-month cash runway at €250,000 of monthly burn; new hires shorten it to 8.6 months, ending before a funding flag at month 9; Sam and Alex plant a decide-here marker well before the end.](images/05-understand-cash-flow/page-05-runway.jpeg)
 
 **Strip 1.** Sam unrolls a long floor mat printed with twelve numbered month tiles, 1 to 12, stretching across the floor from left to right. A cashbox stands at the start of the mat.
 
@@ -126,7 +126,7 @@ Alex leads technology, Sam leads finance, Priya leads product and Ines is the ch
 
 ## Page 6: Three priced options
 
-![Comic page in three strips: Sam adds 0.5 and 0.3 to a capacity of €0.8 million against Alex’s €1 million ask; three boxes priced €75k, €210k and €1M stand beside an €800k frame that the largest box cannot pass; Ines signs the €210k pilot.](images/05-obligations-before-budget/page-06-three-priced-options.jpeg)
+![Comic page in three strips: Sam adds 0.5 and 0.3 to a capacity of €0.8 million against Alex’s €1 million ask; three boxes priced €75k, €210k and €1M stand beside an €800k frame that the largest box cannot pass; Ines signs the €210k pilot.](images/05-understand-cash-flow/page-06-three-priced-options.jpeg)
 
 **Strip 1.** Sam writes a short sum on a whiteboard. Alex holds a sheet of paper against his chest and looks at the board.
 
@@ -150,7 +150,7 @@ Alex leads technology, Sam leads finance, Priya leads product and Ines is the ch
 
 ## Page 7: Evidence, decision and money are separate dates
 
-![Comic page in three strips: Priya points to a timeline of day 0, day 35, day 90 and day 100; a gauge shows what a result below 60, between 60 and 70, or above 70 hours per customer would mean; at the board table Ines says day 100 decides the next step and releases no new money.](images/05-obligations-before-budget/page-07-evidence-then-money.jpeg)
+![Comic page in three strips: Priya points to a timeline of day 0, day 35, day 90 and day 100; a gauge shows what a result below 60, between 60 and 70, or above 70 hours per customer would mean; at the board table Ines says day 100 decides the next step and releases no new money.](images/05-understand-cash-flow/page-07-evidence-then-money.jpeg)
 
 **Strip 1.** Priya stands at a long wall timeline with four large pins on it, evenly spaced left to right, and points at the third pin.
 

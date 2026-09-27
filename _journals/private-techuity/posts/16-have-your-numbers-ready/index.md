@@ -50,7 +50,7 @@ Ines, the chief executive, runs the company day to day. She answers to its **boa
 
 The instinct, when an investor asks for better reporting, is to start a project: a data warehouse (a central store that combines data from many systems for reporting), a business-intelligence tool (software for building reports and dashboards), a quarter of work connecting systems. The evidence mostly exists already, scattered across systems that were never meant to be read together: the finance system, the billing system, the customer records, the sales pipeline, the delivery-tracking tools, the code repositories (where the software’s code is kept, with the record of every change), the cloud bill and the incident records. The work is curating, defining and connecting what is there, not buying a platform.
 
-For the technology part of that picture, the author has described one lightweight way of doing this elsewhere: [Lightweight Architectural Analytics](https://grounded-architecture.io/analytics), in *Grounded Architecture*, builds a current picture of systems, costs and dependencies from repositories, cloud bills and incident records with small scripts rather than a platform. [S106: Lightweight Architectural Analytics](https://grounded-architecture.io/analytics) The same attitude serves the whole set of numbers in this chapter.
+For the technology part of that picture, I have described one lightweight way of doing this elsewhere: [Lightweight Architectural Analytics](https://grounded-architecture.io/analytics), in *Grounded Architecture*, builds a current picture of systems, costs and dependencies from repositories, cloud bills and incident records with small scripts rather than a platform. [S106: Lightweight Architectural Analytics](https://grounded-architecture.io/analytics) The same attitude serves the whole set of numbers in this chapter.
 
 ![Six existing records on a shelf feed one teal tray labelled defined once, owned by name, refreshed on a schedule, which supplies six cards: money and runway, customers and growth, product outcomes, delivery, technology health and people.](assets/images/16-have-your-numbers-ready/three-areas-one-foundation.jpeg)
 **Figure 1:** *The numbers mostly exist already. The work is defining and connecting them into one curated layer that supplies every family of measures, not buying a platform.*
@@ -63,7 +63,7 @@ A **measure** (or metric) is a defined way of counting something. A **key perfor
 
 ### Money and Runway
 
-Finance produces these. A product or engineering leader should not prepare them, but must understand what they assume, because those assumptions become your commitments. **Profit** is revenue minus expenses, counted when the work is delivered and the costs are incurred. **Cash** is money actually received or paid out. The two can differ for months, for example when a customer pays an invoice late. The chapter [[obligations-before-budget]] explains why that gap matters.
+Finance produces these. A product or engineering leader should not prepare them, but must understand what they assume, because those assumptions become your commitments. **Profit** is revenue minus expenses, counted when the work is delivered and the costs are incurred. **Cash** is money actually received or paid out. The two can differ for months, for example when a customer pays an invoice late. The chapter [[understand-cash-flow]] explains why that gap matters.
 
 <div class="table-compact">
 
@@ -145,7 +145,7 @@ DORA’s current guide has five delivery measures. Older sources quote the origi
 - **Failed deployment recovery time:** how long recovery from such a failed deployment takes. It does not cover every outage.
 - **Deployment rework rate:** the share of deployments that are unplanned repairs after an incident.
 
-Deploying puts a version into the live service; releasing makes it available to customers. A change can be deployed behind a switch that stays off, and released later by turning the switch on. The chapter [[can-the-team-deliver]] covers what delivery measures can and cannot establish.
+Deploying puts a version into the live service; releasing makes it available to customers. A change can be deployed behind a switch that stays off, and released later by turning the switch on. The chapter [[assess-capability]] covers what delivery measures can and cannot establish.
 
 ![Top: a ledger with columns promised and arrived, two rows flagged, recorded when promised. Bottom: a conveyor where five boxes wait before work starts and the rest pass through build, test, release, the only part the delivery measures see, before reaching customers.](assets/images/16-have-your-numbers-ready/delivery-and-execution.jpeg)
 **Figure 5:** *Delivery evidence has two parts: an honest record of what was promised against what arrived, and delivery measures read with the wait before work starts, which they do not cover.*
@@ -159,9 +159,9 @@ The engineering leader owns these outright, and here the absence of a number is 
 | Measure | What it tells you | Where it misleads |
 | --- | --- | --- |
 | **Reliability** against an agreed objective, and **incidents** (failures that reach customers) with their impact | Whether customers can count on the service | Uptime, the share of time a service is available, says nothing about the failure that mattered |
-| **Recovery tested** — the date and result of the last restore test | Whether the company can actually bring the service back | A backup that has never been restored is not evidence ([[prove-you-can-restore]]) |
+| **Recovery tested** — the date and result of the last restore test | Whether the company can actually bring the service back | A backup that has never been restored is not evidence ([[build-test-resilience]]) |
 | **Security findings** (known weaknesses) by severity and age | The protections in place and the obligations still open | A count without age hides the finding that has been open for a year |
-| **Technology cost** per customer and as a share of revenue | Whether the cloud bill and software licence fees grow slower than the business | A total not split by product or customer cannot be weighed against the value they bring ([[cheaper-cloud-bill]]) |
+| **Technology cost** per customer and as a share of revenue | Whether the cloud bill and software licence fees grow slower than the business | A total not split by product or customer cannot be weighed against the value they bring ([[evaluate-cloud-costs]]) |
 | **Technical debt register** | Where past shortcuts now slow specific future work | A general complaint about quality is not a register ([[manage-technical-debt]]) |
 | **Key-person concentration** | Which systems only one person can release or recover | Invisible until that person is away; at Larkspur, diligence — the checks the investor made before investing — found that only one specialist could release the scheduling engine, the part of the software that builds the schedules, and recover it after a failure; releasing means making a new version available to customers |
 
@@ -231,7 +231,7 @@ Define a measure once and change it rarely. When a definition must change, resta
 - **Direction and confidence**: which way it is moving and how much weight it carries. Five observations are a starting point, not a trend.
 - **Decision link**: what the figure is used to decide. The plan the board adopts sets the rule in advance for the average of the first group of eight pilot customers (a small trial of the changed setup). The average is measured at day 90 and goes to the board’s review at day 100. Under 60 hours supports a request for the next stage, which the board must still approve; 60 to 70 hours, including exactly 60 or 70, supports a smaller corrective step; over 70 reopens the plan ([[first-hundred-days]]).
 
-**Thresholds agreed before the measurement** settle in advance which response each result points to, so the later review is about what to do, not about what counts as good. They guide the decision rather than make it: the board still weighs the evidence. Ines authorizes spending inside the approved plan. A new stage, a draw on the reserve (money the board set aside for needs the plan did not foresee) or any other spending outside the plan needs the board’s approval ([[decide-who-decides]]). The investor and the company disagree about the threshold in advance, which is the right time to disagree, before either side has a number to defend.
+**Thresholds agreed before the measurement** settle in advance which response each result points to, so the later review is about what to do, not about what counts as good. They guide the decision rather than make it: the board still weighs the evidence. Ines authorizes spending inside the approved plan. A new stage, a draw on the reserve (money the board set aside for needs the plan did not foresee) or any other spending outside the plan needs the board’s approval ([[clarify-authority]]). The investor and the company disagree about the threshold in advance, which is the right time to disagree, before either side has a number to defend.
 
 ## Label What Kind of Number It Is
 
@@ -248,7 +248,7 @@ Priya’s setup proposal is a page of figures, and they look alike. They are not
 | **Target** | The result the plan sets out to reach, and by when — a desired outcome, not a promise | 50 hours per setup for the first pilot group, measured at day 90 |
 | **Forecast** | A calculation about the future from stated inputs | €225,000 a year of staff time released: 100 setups a year × 30 fewer hours per setup = 3,000 hours a year, valued at €75 an hour |
 | **Assumption** | An input taken as given, which may not hold | About 100 setups a year; €75 an hour, the fully loaded rate finance uses in plans (pay plus the employer’s other employment costs, per working hour); that the 50-hour target is reached and holds for later customers |
-| **Committed** | A resource the board has authorized — an input, not a result | The contract implementation specialist, €150,000 for months 1 to 12, agreed before the plan and paid from the operating budget, the spending plan for running the business. The proposal’s own €180,000 and twelve engineer-weeks (twelve weeks of one engineer’s working time) become committed only when the board funds them ([[cannot-fund-everything]]) |
+| **Committed** | A resource the board has authorized — an input, not a result | The contract implementation specialist, €150,000 for months 1 to 12, agreed before the plan and paid from the operating budget, the spending plan for running the business. The proposal’s own €180,000 and twelve engineer-weeks (twelve weeks of one engineer’s working time) become committed only when the board funds them ([[set-priorities]]) |
 
 </div>
 
@@ -256,7 +256,7 @@ The forecast is still worth reporting, but written this way it cannot be mistake
 
 **Capacity becomes cash only when a payment is actually avoided or additional customers pay in more than serving them costs**, on a date: a contract not extended, a planned hire whose salaries are never paid, or extra customers set up with the freed time whose payments exceed their costs. Deciding not to hire changes nothing in the bank that day; the benefit arrives month by month, as the salaries are not paid. Until then, finance keeps it out of any calculation of what the company can repay.
 
-The labelling rule is one line, and it is the highest-value habit in this chapter: **every figure in a document that goes to a board or an investor carries its kind.** The cost is a few minutes of preparation. The benefit is that the company never has to explain, six months later, why a result it appeared to report did not arrive. When the first pilot group reports at day 90, the same labels will separate what was measured from what was projected ([[roadmap-to-revenue]], [[first-hundred-days]]).
+The labelling rule is one line, and it is the highest-value habit in this chapter: **every figure in a document that goes to a board or an investor carries its kind.** The cost is a few minutes of preparation. The benefit is that the company never has to explain, six months later, why a result it appeared to report did not arrive. When the first pilot group reports at day 90, the same labels will separate what was measured from what was projected ([[test-revenue-assumptions]], [[first-hundred-days]]).
 
 ## One Set of Numbers, Three Uses
 
@@ -313,7 +313,7 @@ Finance owns the accounts, not the definition of setup effort. Engineering owns 
 
 </div>
 
-**Standardized definitions are the mechanism, not a by-product**: two products can be compared only because both report on the same definition, and someone must maintain it. And **product operations supplies evidence; it does not take the decisions**: the numbers exist so the people with authority, established in [[decide-who-decides]], can decide well.
+**Standardized definitions are the mechanism, not a by-product**: two products can be compared only because both report on the same definition, and someone must maintain it. And **product operations supplies evidence; it does not take the decisions**: the numbers exist so the people with authority, established in [[clarify-authority]], can decide well.
 
 A small company will not have a product operations team and does not need one to start. It needs the work assigned: a named owner per measure, as the record requires, and one person accountable for the board pack being consistent, current and honest as a whole. At Larkspur, Sam takes the board pack and the money family; Priya the product and customer numbers; Alex delivery and technology health. The function is what this becomes when doing it informally stops working.
 
@@ -331,7 +331,7 @@ Nobody assembles all this at once, and a company that tries produces a large doc
 
 ## What Ready Numbers Do Not Fix
 
-An investor and a company can look at the same well-defined figures and still want different things, because they are exposed differently ([[different-bets]]). Numbers do not settle a disagreement about risk appetite, time horizon or what the company is for.
+An investor and a company can look at the same well-defined figures and still want different things, because they are exposed differently ([[compare-incentives-stakes]]). Numbers do not settle a disagreement about risk appetite, time horizon or what the company is for.
 
 A measure can be chosen because it flatters, a threshold set where it is easy to pass, a definition quietly revised in a bad quarter, and a comprehensive pack can bury a real problem in volume. More data makes several of these easier. The defences are those above — definitions that change rarely and visibly, thresholds agreed in advance, figures traceable to sources, a deliberately small set — plus a leader willing to report the number that is not flattering.
 
@@ -347,7 +347,7 @@ A measure can be chosen because it flatters, a threshold set where it is easy to
 
 **“What is your €225,000 worth in cash?”** Nothing yet. It is a forecast of staff time, resting on three assumptions: about 100 setups a year, €75 an hour, and setups reaching 50 hours and staying there. It becomes cash only on the date a scheduled payment is actually avoided, or when additional customers pay more than serving them costs.
 
-With the numbers ready and labelled, Larkspur can choose among its requests against the cash and team time the board approves. That is where [[cannot-fund-everything]] begins.
+With the numbers ready and labelled, Larkspur can choose among its requests against the cash and team time the board approves. That is where [[set-priorities]] begins.
 
 ## Questions to Consider
 
