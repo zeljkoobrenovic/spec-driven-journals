@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-27
+revised: 2026-09-28
 ---
 
 # Spec: Management Equity, Fund Carry and Employee Jobs Are Different Bets
@@ -39,6 +39,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Keep each table cell and recorded-decision item to one question; place the payout arithmetic below the four-bets table; introduce Ines, Sam and Priya by role where they first act.
 - Present severance and a reference as commitments of this fictional plan, not as a universal legal entitlement.
 - Comic order, one page each: (1) a percentage is not a payment, with the threshold example; (2) the separate option example; (3) two separate payout systems, drawn as two unconnected boards; (4) a target changes behavior, with the two guardrails and the gross-versus-net retention example; (5) the proposed closure and the four bets with their different time frames; (6) why the nine-month closure endangers the renewals; (7) the staged decision with its two gates, its triggers and what staging costs; (8) the employees who still carry the cost, and the record that says so. Artwork carries no financial jargon that the visible caption does not explain.
+- **Summary (2026-09-28, supersedes earlier summary-specific coverage requirements above):** the TL;DR is a fluent, conversational read of 300–500 words that follows one logical line — the question, the key insight, one worked example, the decision or practice, and a transition to the next chapter. It covers the key points and examples, not every detail of the article; terms are explained in plain words only where the summary needs them. Its overview figure is detailed enough that a reader grasps the key concepts from it alone.
 
 ## Non-goals
 
@@ -65,6 +66,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.
 
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.

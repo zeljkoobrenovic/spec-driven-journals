@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-27
+revised: 2026-09-28
 ---
 
 # Spec: The Rise of the Technology Operating Partner
@@ -32,6 +32,7 @@ Product and engineering leaders working under investors; secondarily investment 
 - Add a chapter hero logo, a matching navigation icon and three explanatory figures in the book’s ivory, navy, teal and ochre visual style. Illustrate the boundary between portfolio support and company leadership, alternatives in capability building and hiring, and the fictional companies’ different AI decisions (labelling the second company's step as confirming permitted data use, not technical access). Use descriptive alt text and captions; retain generation prompts and provenance.
 - Place the article last in Part IV, immediately after `investors-adviser`, in source folder `14-tech-operating-partner`. Connect the preceding adviser chapter to the wider operating function and hand off to Part V. Retain all permalinks and align navigation and counts with 34 main chapters.
 - Add a 300–500-word TL;DR and a five-page illustrated comic. Preserve the operating function's continuity across the investment, company leadership and appointment authority, alternatives to hiring, and AI's effects on investment assumptions, company work and the operating function. Follow the article's independent fictional three-company AI comparison; retain the distinction between released capacity, cash savings and attribution. Reuse the journal cast as presenters, give each page three strips with dialogue and labels in the artwork, and include alt text, short captions and rendered transcripts. Preserve scripts and image provenance and inspect every page against its script.
+- **Summary (2026-09-28, supersedes earlier summary-specific coverage requirements above):** the TL;DR is a fluent, conversational read of 300–500 words that follows one logical line — the question, the key insight, one worked example, the decision or practice, and a transition to the next chapter. It covers the key points and examples, not every detail of the article; terms are explained in plain words only where the summary needs them. Its overview figure is detailed enough that a reader grasps the key concepts from it alone.
 
 ## Non-goals
 
@@ -59,6 +60,8 @@ Draft link list: `_drafts/14-technology-operating-partners/online-source.md`. Co
 
 ## Changelog
 
+- 2026-09-28: Closing hand-over now points to [[adopt-outcome-thinking]], which opens Part IV, instead of set-priorities.
+- 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.
 
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.

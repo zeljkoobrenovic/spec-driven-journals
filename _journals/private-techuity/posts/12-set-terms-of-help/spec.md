@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-27
+revised: 2026-09-28
 ---
 
 # Spec: Turn an Offer of Help Into a Useful Engagement
@@ -32,6 +32,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Include a useful trade-off and conditions for changing the decision.
 - Connect the preceding and following chapters in the configured reading order.
 - Provide an independently readable 300–500-word summary and eight fictional comic pages of three strips each, whose visible captions and transcripts are rendered from the page blocks; generate the page artwork from those blocks against the journal's cast reference sheet and inspect every page against its script.
+- **Summary (2026-09-28, supersedes earlier summary-specific coverage requirements above):** the TL;DR is a fluent, conversational read of 300–500 words that follows one logical line — the question, the key insight, one worked example, the decision or practice, and a transition to the next chapter. It covers the key points and examples, not every detail of the article; terms are explained in plain words only where the summary needs them. Its overview figure is detailed enough that a reader grasps the key concepts from it alone.
 
 ## Non-goals
 
@@ -52,6 +53,7 @@ Existing chapters provide the financial and governance foundations. Where releva
 
 ## Changelog
 
+- 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.
 
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.

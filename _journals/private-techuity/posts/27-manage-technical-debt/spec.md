@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-27
+revised: 2026-09-28
 ---
 
 # Spec: Manage Technical Debt: Fund the Fix by the Cost, the Risk and the Speed It Buys
@@ -29,6 +29,7 @@ Product and engineering leaders inside companies working under investors, includ
 - **A recorded decision with a gate.** End with the funded first tranche: chosen option, alternatives rejected, funding, scarce capacity, who is authorized, the gate that releases the second tranche (for each of the three columns either a named reduction or a measure that must not worsen, with what happens when it is met, missed or falls between), what waits, and the evidence that would stop or reprioritize; the register is revisited on a stated cadence, and items with a dated external deadline (vendor retirement, an unsupported version) are sequenced by the date when the time left is not much more than the work needs, weighed against what missing the date would cost; a distant date with little work can wait behind an undated item doing harm now, and no short form of the rule (figure, TL;DR, comic) may make proximity alone decisive or show money as the only benefit. Where a vendor event meets a contract (the AI model's retirement notice arriving before the commitment approved in [[evaluate-ai-costs]] is signed), the article puts signing, access, testing, switch and retirement in one order in which every obligation and every exercised right has a signed agreement behind it, names the date each clock starts from, keeps the company's own decision separate from delivery, and states the actual switch date from which each fallback starts, its owner and customer agreement, the model it needs (a passing model for automation, a tested model for review-aid mode, suspension when none has been measured) and who prices and approves its usage, including a decision that comes after the board's January meeting and a refusal of extra spending. An exception that brings work forward states the approval's period, staffing and the effort spent if it is later refused.
 - **Investor questions answered as they are asked.** Give the answers to "how much technical debt do we have", "why not just rewrite it" and "why are we funding work customers will not see", each pointing at the register, the tranche plan and the three columns.
 - **House rules.** Status highlight and key points readable without prior study; terms explained at first use in each format (technical debt, refactor, migration, rewrite, dual running, tranche, unsupported version, carrying cost); the company leader's decision, authority and funding assumptions explicit; historical findings within source scope, fictional scenarios labelled; a meaningful counterargument (some debt is worth carrying to the exit and saying so is honest) with the evidence that would change the judgment; hand-off to Part VII; TL;DR and comic consistent with the article.
+- **Summary (2026-09-28, supersedes earlier summary-specific coverage requirements above):** the TL;DR is a fluent, conversational read of 300–500 words that follows one logical line — the question, the key insight, one worked example, the decision or practice, and a transition to the next chapter. It covers the key points and examples, not every detail of the article; terms are explained in plain words only where the summary needs them. Its overview figure is detailed enough that a reader grasps the key concepts from it alone.
 
 ## Non-goals
 
@@ -71,6 +72,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Changelog
 
+- 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Update cross-links for the chapter title-slug renames.
 
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.

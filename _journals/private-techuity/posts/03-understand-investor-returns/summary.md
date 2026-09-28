@@ -1,28 +1,18 @@
-**An investment return compares what an investor receives, or still holds, with what it put in.** Operating performance is only part of that result; purchase price, borrowing, sale price and timing also decide it. Better earnings alone do not prove better products.
+**An investor's return depends on much more than how well the company does.** The purchase price, the borrowing, the sale price and the timing all move it, so a good or bad return is not a grade for product and engineering.
 
-![Investor returns depend on operations, price, debt and timing, while cash received remains separate from unsold value.](assets/images/03-understand-investor-returns/summary-at-a-glance.jpeg)
-**Figure 1:** *Explain the return’s drivers and distinguish cash from estimated value.*
+![A company bought with €60 million borrowed and €40 million of fund money grows EBITDA from €10 million to €15 million; the same company sold at 7, 10 or 12 times EBITDA pays the fund €65 million, €110 million or €140 million; a bar chart splits a gain into €50 million from earnings, €20 million from the multiple and €10 million from both, marked with a question mark, and an engineer gathers evidence along the way.](assets/images/03-understand-investor-returns/summary-at-a-glance.jpeg)
+**Figure 1:** *One operating result, three investor outcomes, and why a sale gain cannot say how much engineering created.*
 
-The fictional example is a **buyout**: a **fund**, a pool of investors’ money run by a manager, buys a controlling share of a company for €100m (millions of euros), using €60m borrowed and €40m of its own. Borrowing to buy is **leverage**.
+To see why, hold the company's performance fixed and change everything else.
 
-The company earns €10m a year of **EBITDA**, earnings before interest, taxes, depreciation and amortization: operating earnings before borrowing costs, income taxes and the accounting charges that spread the cost of equipment and similar assets over years. EBITDA is not cash in hand. Over five years EBITDA rises to €15m, and the company repays €20m of debt, a separate assumption about cash left after necessary spending.
+In a fictional buyout, a fund buys a company for €100 million: €60 million borrowed and €40 million of its own money. Borrowing to buy is called **leverage**. Over five years the company raises its annual EBITDA, its operating earnings before interest, tax and certain accounting charges, from €10 million to €15 million, and it repays €20 million of the debt.
 
-Hold all that fixed and vary only the sale price, a **multiple** of EBITDA (10× means €10 of price per €1 of annual EBITDA). The table assumes no cash offsetting the debt, no investor money in or out before the sale, unchanged ownership, and no fees or sale taxes:
+The buyer's price is a multiple of EBITDA. At 10 times, the business is worth €150 million; after the remaining €40 million of debt, the fund receives €110 million, 2.75 times its money or about 22% a year. At 7 times, it receives €65 million, 1.6 times its money. At 12 times, €140 million, 3.5 times. **Same team, same customers, same earnings, yet the fund's result more than doubles** from the lowest price to the highest. Calling the first a failed transformation, or the last proof of great engineering, is the same mistake.
 
-| Sale price | Business value | Fund receives after €40m of debt | Times its €40m | Per year |
-| --- | ---: | ---: | ---: | ---: |
-| 7× EBITDA | €105m | €65m | 1.6× | about 10% |
-| 10× EBITDA | €150m | €110m | 2.75× | about 22% |
-| 12× EBITDA | €180m | €140m | 3.5× | about 28% |
+Timing and debt move the result too. Doubling money in three years is about 26% a year; in seven, about 10%. Leverage also cuts both ways: in a separate downside case, where the business falls to €80 million with €60 million still owed, **the business loses a fifth of its value but the fund loses half its money**.
 
-**Business value**, or enterprise value, is the value of the operating business, priced here at annual EBITDA × the assumed multiple. Lenders are repaid first, so the owners’ share, the **equity value**, is business value minus **net debt**, borrowing less cash counted in the deal: at 10×, €150m − €40m = €110m.
+So what can engineering claim? Suppose earnings rise to €15 million and the multiple rises to 12. The €80 million gain in business value splits into €50 million from higher earnings, €20 million from the higher multiple and €10 million from both at once. How to assign that last €10 million is a convention, not a measurement. Even the €50 million does not separate platform work from price changes, sales hiring, cost cuts or postponed maintenance. A claim such as "our platform work created €30 million" cannot be read off a sale. **It needs evidence gathered along the way**: which customer task improved, which costs changed and what the work required.
 
-**MOIC**, the multiple on invested capital, is €110m ÷ €40m = 2.75×. **IRR**, the internal rate of return, is the equivalent annual rate given the payment dates: one payment in, one receipt five years later, about 22.4%.
+Other owners add twists. A minority investor's share shrinks when the company sells new shares to others: 200 of 1,000 shares is 20%, but 200 of 1,250 is 16%. A corporate owner may count on benefits elsewhere in its group; ask it to name the unit accountable for them and to fund the work.
 
-In a separate downside case, business value down a fifth to €80m with €60m still owed halves the fund’s money: leverage **magnifies losses too**.
-
-When earnings and the multiple both rise, from 10× on €10m to 12× on €15m, business value rises €80m: €50m from earnings, €20m from the higher multiple and €10m from both at once. Assigning that €10m is a convention, not a measurement. “Engineering created €30m” cannot be read off a sale: the calculation separates earnings from price, not engineering from the pricing, sales and cost changes that also moved earnings.
-
-An investor holding 200 of 1,000 shares owns 20%; if the company sells 250 new shares to another investor, those 200 shares are 16% of 1,250. That fall is **dilution**. A corporate owner expecting benefits elsewhere in its group must name the accountable unit and fund the work separately. A fund’s manager reports cash returned and estimates of unsold holdings; [[fund-economics]] adds fees, the manager’s profit share and those reports.
-
-**A technology contribution claim needs evidence** gathered along the way, and an improvement should still pay at a lower sale price or a longer holding period. Next, how much borrowing and which investor fit the work: [[understand-funding-choices]].
+A useful test for any improvement: does it still pay if the sale price is lower or the owner holds the company longer? Next, how much borrowing, and which investor, fit the work: [[understand-funding-choices]].

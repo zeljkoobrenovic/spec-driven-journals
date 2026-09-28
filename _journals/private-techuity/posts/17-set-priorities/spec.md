@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-27
+revised: 2026-09-28
 ---
 
 # Spec: You Cannot Fund Every Good Project at Once
@@ -35,6 +35,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Comic artwork carries the worked example: the first page shows the four Larkspur requests by name, the two-limits page shows 24 weeks available against 30 needed with 6 over and the about eight protected training weeks kept apart, and the revision page shows the original plan beside the plan after the failed test. Visible labels, captions and alt text agree.
 - Connect the preceding and following chapters in the configured reading order.
 - Provide an independently readable summary of 300–500 words, counted as rendered (prose, table headings and cells, and expanded cross-link titles; the image line and its caption excluded), and eight fictional comic pages of three strips each, with consistent visible and structured text; generate the page artwork from the recorded page scripts.
+- **Summary (2026-09-28, supersedes earlier summary-specific coverage requirements above):** the TL;DR is a fluent, conversational read of 300–500 words that follows one logical line — the question, the key insight, one worked example, the decision or practice, and a transition to the next chapter. It covers the key points and examples, not every detail of the article; terms are explained in plain words only where the summary needs them. Its overview figure is detailed enough that a reader grasps the key concepts from it alone.
 
 ## Non-goals
 
@@ -55,6 +56,7 @@ Existing chapters provide the financial and governance foundations. Where releva
 
 ## Changelog
 
+- 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.
 
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.

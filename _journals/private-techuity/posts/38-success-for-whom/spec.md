@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-27
+revised: 2026-09-28
 ---
 
 # Spec: Success for Whom, and for How Long?
@@ -46,6 +46,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Report the 2023 hospital study’s 4.6 conditions per 10,000 stays as an adjusted difference against the comparison hospitals (25.4% of the acquired hospitals’ pre-acquisition rate of about 18 per 10,000), never as the observed before-and-after change at the acquired hospitals; in every format that cites the 2025 hospital-sale letter, name the comparison group of 18 hospitals sold to other for-profit owners.
 - Figure 2’s alt text or caption names the cycle’s direction and its three questions (who benefits, who bears costs, what could change).
 - Explain revenue, operating earnings, net loss (costs exceeding income), fiscal year, cohort, median, retained stake and private equity where each short format first needs them; the TL;DR defines a fund as pooled investor money, explains operating profit before operating margin, includes remaining value in the investor result and stays at or under 500 prose words; the TL;DR overview figure labels its last station AFTER THE OWNERSHIP CHANGE and shows no currency symbol.
+- **Summary (2026-09-28, supersedes earlier summary-specific coverage requirements above):** the TL;DR is a fluent, conversational read of 300–500 words that follows one logical line — the question, the key insight, one worked example, the decision or practice, and a transition to the next chapter. It covers the key points and examples, not every detail of the article; terms are explained in plain words only where the summary needs them. Its overview figure is detailed enough that a reader grasps the key concepts from it alone.
 
 ## Non-goals
 
@@ -72,6 +73,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-26: Ground the opening and summary in named historical outcomes and the explicitly fictional thirty-customer Larkspur decision before introducing the durable-success standard. Preserve the decision's amounts, conditions and stable permalink.
 - 2026-09-23 (comic pages): The six single-scene panels replaced by seven comic pages of three strips each, so the four-column matrix with the five cases' reported investor results and the columns that move apart, the durable-success questions and each stakeholder's overturning question, Larkspur at day 100 with the calendar and Option A's €150,000 / €70,000 split, the breach-is-not-a-saving ruling and Option A′, Option B with both month-six tests stated, its ~€62,500 one-off and the €75,000 labelled as a planned, conditional saving, the decision with its accountabilities, funded mitigation, recorded disagreement and reopening triggers, and the buyout and healthcare findings with what a leader can change are drawn into the artwork rather than carried by captions. Page images live under `assets/images/38-success-for-whom/`; the previous panel comic is archived under `_research/comic-pages-pilot/`. No figure, date or decision changed; permalink unchanged.

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-27
+revised: 2026-09-28
 ---
 
 # Spec: Anatomy of a Layoff
@@ -31,6 +31,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Keep the company leader’s decisions central; distinguish investor influence, formal approval rights and funding conditions throughout; avoid duplicating the delegation, incentive and location material owned by other chapters.
 - Explain severance, burn, pay deferral, job-search support (outplacement) and works councils where they first matter, and in the TL;DR say that share options are rights to buy shares at a fixed price, which costs money to use. Provide a TL;DR of 300–500 words and a comic of nine pages of three strips each consistent with the article, two article figures with numbered captions, the TL;DR overview visual, a header logo and a navigation icon, all generated with the journal’s workflows and read back against their prompts.
 - Close with a handoff to [[manage-handover]] that also states what R2 does not solve: it still spends €78,000 a month more than customers pay, reaches the reserve in the first week of August, and the bridge remains owed under its terms, so the board must decide financing or another outcome before that date.
+- **Summary (2026-09-28, supersedes earlier summary-specific coverage requirements above):** the TL;DR is a fluent, conversational read of 300–500 words that follows one logical line — the question, the key insight, one worked example, the decision or practice, and a transition to the next chapter. It covers the key points and examples, not every detail of the article; terms are explained in plain words only where the summary needs them. Its overview figure is detailed enough that a reader grasps the key concepts from it alone.
 
 ## Non-goals
 
@@ -57,6 +58,7 @@ The delayed-financing chapter supplies the scenario; the organization chapter su
 
 ## Changelog
 
+- 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.
 
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.

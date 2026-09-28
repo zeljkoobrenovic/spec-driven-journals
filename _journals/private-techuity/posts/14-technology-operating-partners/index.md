@@ -198,7 +198,7 @@ Ask for a short explanation of the assignment: the decision or operating constra
 
 The operating function earns its place when it helps the company make a better decision, deliver a funded improvement or acquire a capability it can sustain. Review those contributions alongside customer outcomes, continuing obligations and team capacity. The number of assessments completed or technologies deployed can describe activity; the leader still needs to know what changed and whether the result is worth its cost.
 
-Part IV turns investor expectations into work the company can deliver, starting with which work fits the cash and team time: [[part-4]] and [[set-priorities]].
+Part IV turns investor expectations into work the company can deliver, starting with the outcomes the work should move: [[part-4]] and [[adopt-outcome-thinking]].
 
 ## Aside: Building Credibility Across Companies
 

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-27
+revised: 2026-09-28
 ---
 
 # Spec: Judge an Investor by Their Behavior Under Pressure
@@ -39,6 +39,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Keep the funding condition (a group average of 65 hours or less per implementation, inclusive, across the agreed group of at least eight customers; an average, not a test of every customer) apart from the board’s pilot rule in the linked chapters (below 60 hours supports requesting the next stage and bringing the expansion decision forward; exactly 60 is the middle band; both are group averages). The funding condition tests an agreed level of observed improvement. It is not proof that the automation caused the reduction, and it does not by itself justify expansion.
 - Figures distinguish a review, an approval and a payment; labels inside images are reader questions or plain terms, not descriptions of drawn props. Where a figure has a time axis, work that depends on a payment sits after that payment: pilot, review, approval, payment received, then wider use.
 - The TL;DR says on its own who decides for the investor (its investment committee) and who decides for Larkspur (its board), and explains references and a quarter. It counts the fifteen-month request window from closing, explains closing, and keeps the thirty-day payment period separate.
+- **Summary (2026-09-28, supersedes earlier summary-specific coverage requirements above):** the TL;DR is a fluent, conversational read of 300–500 words that follows one logical line — the question, the key insight, one worked example, the decision or practice, and a transition to the next chapter. It covers the key points and examples, not every detail of the article; terms are explained in plain words only where the summary needs them. Its overview figure is detailed enough that a reader grasps the key concepts from it alone.
 
 ## Non-goals
 
@@ -65,6 +66,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.
 
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-27
+revised: 2026-09-28
 ---
 
 # Spec: An Investment Announcement Is Not a Budget
@@ -29,6 +29,7 @@ Product and engineering leaders inside companies working under investors, includ
 - End with one completed funding-and-authority record for Alex's proposed hire: payer entity, cash state, approver, conditions, runway effect and decision date, each with its information source (finance, board, legal); state the chosen option, alternatives rejected, funding, scarce capacity, who is authorized and the evidence that would reopen it, in short separate paragraphs; distinguish the plan's hiring allowance (new hires) from total headcount.
 - Keep historical findings within their source scope and label the Larkspur figures as fictional.
 - Keep the TL;DR and the comic page script consistent with the full article, including the completed record and its qualifications (the four-organization map is a starting map; a newer fund is not automatically available and any investment needs its own justification and approvals; an LP receives cash when the fund makes a distribution under its agreement, from a sale or other cash received, not only on a sale); the comic's last two pages show the €0.4m transaction costs, the €7.6m net, the plan's four-hire allowance and why three fit while five need consent, in the artwork and in their captions; under corporate ownership the TL;DR says which group company funds the work and who approves Larkspur's budget, without wording that could be read as municipal permission. End with 3–4 questions.
+- **Summary (2026-09-28, supersedes earlier summary-specific coverage requirements above):** the TL;DR is a fluent, conversational read of 300–500 words that follows one logical line — the question, the key insight, one worked example, the decision or practice, and a transition to the next chapter. It covers the key points and examples, not every detail of the article; terms are explained in plain words only where the summary needs them. Its overview figure is detailed enough that a reader grasps the key concepts from it alone.
 
 ## Non-goals
 
@@ -57,6 +58,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.
 
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.

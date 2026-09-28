@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-27
+revised: 2026-09-28
 ---
 
 # Spec: TeamSystem: Each New Owner Inherits Progress and Unfinished Work
@@ -55,6 +55,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Keep sentence-level readability in the dense passages: give profit and adjusted earnings separate sentences in the opening definitions; in the summary, state the owner chronology before the HgCapital purchase and explain enterprise value in its own sentence; in the further-reading annotation on the July 2024 sale, separate the announced terms, the replacement holding and the later gross figure. Add no new material when splitting.
 - On the reconciliation page, explain the non-core classification in ordinary language for the standalone comic: the integration costs the company classified as outside normal operations and excluded from this profit measure, so the reader sees that management chose the classification and that the work still needs funding.
 - On the reconciliation and inheritance pages, do not imply that all development and integration spending sits outside adjusted earnings: say the work needs real money whether its costs are counted in the adjusted figure or left out, and name what the 2017 report actually leaves out (development recorded as an asset; the integration costs classed as non-core); the displayed caption is rendered from the page block.
+- **Summary (2026-09-28, supersedes earlier summary-specific coverage requirements above):** the TL;DR is a fluent, conversational read of 300–500 words that follows one logical line — the question, the key insight, one worked example, the decision or practice, and a transition to the next chapter. It covers the key points and examples, not every detail of the article; terms are explained in plain words only where the summary needs them. Its overview figure is detailed enough that a reader grasps the key concepts from it alone.
 
 ## Non-goals
 
@@ -76,6 +77,7 @@ S45–S49: Palamon's historical account; HgCapital Trust's 2010 and 2015 announc
 
 ## Changelog
 
+- 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Update cross-links for the chapter title-slug renames.
 
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.

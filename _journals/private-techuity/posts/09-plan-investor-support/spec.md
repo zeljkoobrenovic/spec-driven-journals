@@ -1,6 +1,6 @@
 ---
 status: draft
-revised: 2026-09-27
+revised: 2026-09-28
 ---
 
 # Spec: Working With Investors: Operating Model Blueprints
@@ -31,6 +31,7 @@ Product and engineering leaders inside investor-backed companies; chief executiv
 - Add a chapter logo, navigation icon and seven explanatory figures in the book’s ivory, navy, muted teal and ochre style. Retain the connected-model, support-choice and pilot-review figures. Add one distinct visual within each of the four blueprint sections: board oversight with company-led delivery; an adviser supporting a company decision; a booked specialist assignment with a company owner; and a dedicated company assignment with agreed reporting and handover. Depict advice and shared expertise without implying additional executive authority. Use accurate labels, descriptive alt text and numbered captions; name the fourth blueprint consistently across the prose and the figures; preserve generation prompts and provenance. Where a figure or comic page letters an executive abbreviation, the surrounding prose, caption or alt text expands it.
 - Place the article immediately after the Part IV introduction, before `learn-through-investors-network`. End with a transition to learning through the investor’s network. Retain the permalink and artwork, number its source folder `09-operating-model-blueprints`, and align the reading guide, contents and manuscript with 34 main chapters.
 - Add a TL;DR and a five-page illustrated comic. The TL;DR targets 300–500 words, but the plain-language requirement in *Audience* wins where the two conflict: after the round-3 review it stands at about 740 words, because it must explain profitability, revenue, shared services, budget, forecast, investor return and the trial's closure and forecast conditions to a reader who sees only this page. Both preserve the distinction between investor support and company organization, all four proposed blueprints, explicit authority and committed capacity, and the fictional pilot's six-week and twelve-week reviews. The comic uses the journal's familiar cast to act out this independent example, with three strips per page, accurate dialogue and labels in the artwork, descriptive alt text, short captions and rendered transcripts. Alt text describes a prospective capacity conflict as prospective, never as an obstruction that already happened. Preserve the scripts and image provenance; inspect every generated page against its script.
+- **Summary (2026-09-28, supersedes earlier summary-specific coverage requirements above):** the TL;DR is a fluent, conversational read of 300–500 words that follows one logical line — the question, the key insight, one worked example, the decision or practice, and a transition to the next chapter. It covers the key points and examples, not every detail of the article; terms are explained in plain words only where the summary needs them. Its overview figure is detailed enough that a reader grasps the key concepts from it alone.
 
 ## Non-goals
 
@@ -59,6 +60,7 @@ Author input: `_drafts/operating-models/INPUT-1.md` and `INPUT-2.md`, unchanged.
 
 ## Changelog
 
+- 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.
 
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.

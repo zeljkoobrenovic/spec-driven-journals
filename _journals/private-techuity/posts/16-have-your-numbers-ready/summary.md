@@ -1,29 +1,16 @@
-**Ready numbers do not produce agreement; they make disagreement useful.** With the same defined, dated figures, people find where their views part instead of arguing over the facts.
+**Ready numbers don’t produce agreement; they make disagreement useful.** When everyone looks at the same defined, dated figures, they can find exactly where their views part instead of arguing about what is true.
 
-![Six existing records on a shelf feed one teal tray labelled defined once, owned by name, refreshed on a schedule, which supplies six cards: money and runway, customers and growth, product outcomes, delivery, technology health and people.](assets/images/16-have-your-numbers-ready/three-areas-one-foundation.jpeg)
-**Figure 1:** *Records the company already keeps feed one layer of defined numbers, which supplies six families of measures.*
+![A measure record card for setup effort lists its definition, source, owner, refresh schedule and boundaries; four identical cards are tagged actual 80 hours, target 50 hours, forecast €225,000 a year and assumption, and an arrow from the forecast to a piggy bank reads not cash yet; three stacked dashboards for the board, leadership and team are joined by a thread that traces down.](assets/images/16-have-your-numbers-ready/summary-at-a-glance.jpeg)
+**Figure 1:** *Each number held ready on one record, labelled by its kind so a forecast is never read as cash, and traced from the board’s dashboard down to a team’s work.*
 
-**The questions arrive before the numbers exist.** At Larkspur, a fictional scheduling-software company, the investor’s adviser asks how long a customer setup takes. The records exist, but nobody has defined “setup time”.
+After an investment, requests for numbers arrive fast. In one week, Larkspur, the book’s fictional scheduling-software company, receives the investor’s quarterly reporting template, and Morgan, the investor’s technology adviser, asks Priya, who leads product, a simpler question: how long does it take to set up a new customer, and how does she know? The records exist, but none of them is ready: nobody has written down what “setup time” means.
 
-**Know the catalogue.** Know six families of measures, what each tells and where it misleads; report the dozen you need.
+The fix is not a new data platform but curating what the company already has. Six families of measures recur under investors: money and runway, customers and growth, product outcomes, delivery, technology health, and people. Know what each tells and where it misleads, but keep ready only the dozen or so your next decisions need.
 
-- **Money and runway:** revenue, yearly subscription value, the share of revenue left after serving customers, burn (a month’s cash out minus cash in) and runway (how many months the cash lasts at that burn).
-- **Customers and growth:** new contracts, what last year’s customers pay now, customers lost, and the cost of winning one.
-- **Product outcomes:** weeks to a customer’s first real use, depth of use (such as the share of technicians scheduled in it), and the cost of serving each customer.
-- **Delivery:** commitments against what arrived, and how fast and safely software changes reach customers.
-- **Technology health:** reliability, tested recovery, known security weaknesses, technology cost, and systems only one person can run.
-- **People:** hiring against plan, and losing people the company wants to keep.
+**Hold each number ready.** For every measure, write down its definition, source, a named owner, how often it is refreshed and what it leaves out. Larkspur’s setup effort counts all human hours on a setup, whoever pays them, so moving work to a supplier can’t flatter it. Then give the number its context. Today’s 80 hours is the average of five setups Morgan examined, so it is provisional. The target is 50 hours, and the board agrees in advance what the first eight pilot customers’ average will point to: under 60 hours supports asking for the next stage, 60 to 70 a smaller corrective step, over 70 reopens the plan. Agreeing thresholds before the result keeps the later review about what to do, not about what counts as good.
 
-**Hold each number ready.** Record its definition, source, named owner, refresh schedule and exclusions. For a group figure, state how records combine: Larkspur’s setup effort is total hours divided by the number of setups. Give it context: earlier and expected values, its weight and the decision it informs. Agree thresholds before the result; they point to a response. The chief executive runs the company and approves spending within the plan. A new stage, or spending outside it, needs the **board**: the directors overseeing the company for its owners, including the investor.
+**Label what kind of number it is.** Priya’s proposal is a page of figures that all look alike. About 80 hours is an actual; 50 hours is a target. €225,000 a year of released staff time is a forecast: 100 setups × 30 fewer hours × €75 an hour. It rests on three assumptions: the volume, the rate, and setups reaching 50 hours and staying there. If they reach only 65 hours, the forecast halves to €112,500. And it is not cash. Freed time becomes money only on the date a payment is actually avoided, or when extra customers pay more than serving them costs.
 
-**Label its kind.** Larkspur’s average of about 80 staff hours per setup is an **actual** (provisional, from five setups). Fifty hours is a **target**. €225,000 a year is a **forecast**: 100 setups a year × 30 fewer hours each = 3,000 hours a year, valued at €75 an hour. It rests on three **assumptions**: the volume, the rate, and setups reaching 50 hours and staying there. A resource the board has authorized is **committed**. Freed time becomes cash only on the date a scheduled payment is avoided, or when extra customers pay more than serving them costs.
+The same numbers then serve three uses. The investor gets them aggregated, within its rights to information. Goals use the early-moving measures, each paired with one that shows harm, such as month-one support requests beside setup hours. Dashboards show them at board, leadership and team level, and **every board figure should trace down to a team’s work**. Someone must own the work: at Larkspur, Sam, who leads finance, takes the board pack and the money numbers, Priya the product numbers and Alex the technology ones.
 
-**One set, three uses.**
-
-- **The investor** gets them aggregated — detailed records combined into totals or averages — with definitions, within its rights to information.
-- **Goals** use early-moving measures, each paired with a counter-measure: a second measure that shows harm caused by chasing the first.
-- **Dashboards** show them at board, leadership and team level; every board figure traces to a team’s work.
-
-**Assign the work.** **Product operations**, as Melissa Perri and Denise Tilles describe it, keeps definitions and evidence consistent. A small company names an owner per number and one person for the board pack, the reports the directors receive before each meeting.
-
-[[set-priorities]] uses the numbers to choose what to fund.
+With its numbers ready and labelled, Larkspur can choose what to fund: [[set-priorities]].

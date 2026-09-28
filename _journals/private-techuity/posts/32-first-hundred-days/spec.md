@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-27
+revised: 2026-09-28
 ---
 
 # Spec: The First Hundred Days: Turn Expectations Into a Funded Plan
@@ -37,6 +37,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Introduce Larkspur, onboarding, the people and their roles, engineer-week, baseline and cohort before the first table; state the pre-agreed decision thresholds with the pilot plan, before the results. The summary and comic explain their own finance terms (investment thesis, envelope, reserve, board, incurred) and state the recovery objective and the untested regional outage beside the retest result.
 - Every format distinguishes the original doubling assumption, the diligence revision to 50% more customers in year one, the 50-hour illustrative model assumption and the observed 62 hours; the short formats say that day numbers count from the board meeting adopting the plan and that the day-190 expansion review waits for the next cohort if it has not finished. Do not imply that every deal adds cash to the company; keep committed, incurred, due and paid distinct in every phrase; explain the software terms the short formats use (restore test, release, portal, cloud region, data-quality step, scheduling engine) in ordinary words.
 - Comic artwork carries only labels from this case (ONB-1, KNW-1, REC-1, portal research, day-20 baseline, day-45 test, pilot results); no invented priorities, outcome claims or “historical case” props.
+- **Summary (2026-09-28, supersedes earlier summary-specific coverage requirements above):** the TL;DR is a fluent, conversational read of 300–500 words that follows one logical line — the question, the key insight, one worked example, the decision or practice, and a transition to the next chapter. It covers the key points and examples, not every detail of the article; terms are explained in plain words only where the summary needs them. Its overview figure is detailed enough that a reader grasps the key concepts from it alone.
 
 ## Non-goals
 
@@ -63,6 +64,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Update cross-links for the chapter title-slug renames.
 
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.

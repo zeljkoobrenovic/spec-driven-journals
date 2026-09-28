@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-27
+revised: 2026-09-28
 ---
 
 # Spec: Diligence Is Your Chance to Correct the Plan Before It Is Signed
@@ -39,6 +39,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Round-2 plain-language rules: call shares units of ownership at first use in every format; explain "minority" as less than half; say "investment firm" rather than an unexplained "fund"; use "goods held for sale", never "stock", in the working-capital gloss; say "limited trial" at the first pilot mention and define pilot, cohort, baseline and engineer-week before the finding table; describe valuation as an estimate that informs a negotiated price, not the price itself. The TL;DR names finding D-3 with its evidence and avoids unexplained "manual configuration"; its overview artwork uses plain labels (do the work, assign people and money, check progress). The comic says "first real use" rather than "go-live" and, on its own, separates the €180,000 build commitment, the €30,000 annual upkeep, the €150,000 twelve-month contract specialist who serves current customers while Larkspur's specialist helps build the step, and the two deferred permanent hires.
 - Round-3 readability rules: the TL;DR stays within 300–500 prose words by leading with the decision (plan changes including the deferred second country, pilot cost, deferred hires and temporary cover, who decides) as separate short items and dropping the generic deal-type list; it says Alex attributes roughly 40% of the effort to correcting customer data. Comic panel 4's caption is three short passages: the changed plan, the build, cover and upkeep. The excerpt says "important finding"; Figure 1's caption explains release and support case and states the three outcomes (confirm, revise, or uncertain, which calls for more evidence); AI is explained in ordinary words before the coverage table. The day-20 activity split is a retrospective estimate everywhere it travels, including [[first-hundred-days]].
 - Comic artwork carries only this chapter's fictional D-3 content (no historical-case props or generic funding triggers): the finding's plan changes, the decision record, and the day-0/20/90/100 sequence with the board deciding at day 100. Figure 2 routes every response through one decision record (approver, accountable leader, uncertainty, review date) before action.
+- **Summary (2026-09-28, supersedes earlier summary-specific coverage requirements above):** the TL;DR is a fluent, conversational read of 300–500 words that follows one logical line — the question, the key insight, one worked example, the decision or practice, and a transition to the next chapter. It covers the key points and examples, not every detail of the article; terms are explained in plain words only where the summary needs them. Its overview figure is detailed enough that a reader grasps the key concepts from it alone.
 
 ## Non-goals
 
@@ -65,6 +66,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.
 
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.

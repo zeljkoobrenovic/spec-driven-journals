@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-27
+revised: 2026-09-28
 ---
 
 # Spec: Planning on Money That Hasn't Arrived
@@ -30,6 +30,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Keep the TL;DR (300–500 words) and the comic page scripts consistent with the article; inspect every generated page against its script and regenerate pages whose artwork cannot carry the financing story rather than re-captioning them misleadingly. The comic must show an on-schedule delivery plan and a funding date moving from September to December; compare reserve dates with C marked as B plus a conditional €600,000 receipt, not a lower burn; and carry the decision dates (10 August, 15 August, 1 September, 1 October) as lettered timelines, not decorative calendars.
 - Keep historical and research references within their source scope, with current publication status and subgroup qualifications; say that a term sheet may state an expected closing date but does not guarantee closing or cash; label fictional figures as fictional.
 - Close with the next-chapter handoff to the handover chapter, and trim Questions to Consider to three.
+- **Summary (2026-09-28, supersedes earlier summary-specific coverage requirements above):** the TL;DR is a fluent, conversational read of 300–500 words that follows one logical line — the question, the key insight, one worked example, the decision or practice, and a transition to the next chapter. It covers the key points and examples, not every detail of the article; terms are explained in plain words only where the summary needs them. Its overview figure is detailed enough that a reader grasps the key concepts from it alone.
 
 ## Non-goals
 
@@ -57,6 +58,7 @@ The supplied book brief establishes scope, including the shared Larkspur delayed
 
 ## Changelog
 
+- 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.
 
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.

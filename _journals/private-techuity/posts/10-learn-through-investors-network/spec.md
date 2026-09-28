@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-27
+revised: 2026-09-28
 ---
 
 # Spec: Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives
@@ -27,6 +27,7 @@ Company product and engineering leaders, including people inheriting an investor
 - Use the journal’s learning/why-investors-care/why-you-should-care opening, exactly three key points, restrained bold emphasis and plain language. Keep the article around 2,500–3,300 words, including the author-requested shared-resource example and the plain-language explanations required in Audience, with depth where the distinction between exploration and delivery matters.
 - Provide an independently readable 300–500-word summary and a short illustrated comic of generated pages with captions and per-strip transcripts rendered from the page blocks. Illustrate the article with three Gemini-generated figures in the journal’s ivory, navy, teal and ochre palette: investor-supported learning, the relationship between shared resources and peer conversations, and bringing observations home with their context. Keep labels brief and accurate, distinguish the fictional example from evidence, and provide descriptive alt text and captions. Reuse the learning overview in the summary. Preserve the companion comic and navigation artwork. Update the Part IV overview to six chapters.
 - Update the reading guides, chapter numbering, neighboring handoffs, relevant cross-links, bibliography and companion specs. Preserve existing public permalinks and asset namespaces. Build and inspect the rendered article and reading formats; check local links and assets.
+- **Summary (2026-09-28, supersedes earlier summary-specific coverage requirements above):** the TL;DR is a fluent, conversational read of 300–500 words that follows one logical line — the question, the key insight, one worked example, the decision or practice, and a transition to the next chapter. It covers the key points and examples, not every detail of the article; terms are explained in plain words only where the summary needs them. Its overview figure is detailed enough that a reader grasps the key concepts from it alone.
 
 ## Non-goals
 
@@ -63,6 +64,7 @@ The consulted investor accounts do not establish subsequent company outcomes. Ob
 
 ## Changelog
 
+- 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Update cross-links for the chapter title-slug renames.
 
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-27
+revised: 2026-09-28
 ---
 
 # Spec: Find the Help That Changes What Your Team Can Do
@@ -41,6 +41,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Provide an independently readable 300–500-word summary and seven fictional comic pages of three strips each, whose visible captions and transcripts are rendered from the page blocks; generate the page artwork from those blocks and inspect every page against its script. Every recurring character keeps the shared cast appearance (Alex: medium-brown skin, short dark curly hair, blue rolled-sleeve shirt) in every strip, generated against the journal's cast reference sheet.
 - Make the comic self-explaining on the pilot's own terms: ONB-1 is the wider customer-setup pilot with €180,000 set aside, a day-20 baseline, a day-90 measurement and a day-100 board review; the six-week specialist assignment capped at €15,000 is one part inside it. Define day 0 in the comic as the board meeting that adopted the plan, and describe the fallback by its trigger and its recomputed dates rather than as a fixed delay.
 - Introduce the further-reading sources by kind: the first three are venture-capital studies; the fourth is a private-equity survey, with private equity explained and its respondents not implied to be start-ups.
+- **Summary (2026-09-28, supersedes earlier summary-specific coverage requirements above):** the TL;DR is a fluent, conversational read of 300–500 words that follows one logical line — the question, the key insight, one worked example, the decision or practice, and a transition to the next chapter. It covers the key points and examples, not every detail of the article; terms are explained in plain words only where the summary needs them. Its overview figure is detailed enough that a reader grasps the key concepts from it alone.
 
 ## Non-goals
 
@@ -61,6 +62,7 @@ Existing chapters provide the financial and governance foundations. Where releva
 
 ## Changelog
 
+- 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.
 
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.

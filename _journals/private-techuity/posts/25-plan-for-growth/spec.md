@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-27
+revised: 2026-09-28
 ---
 
 # Spec: Turn “We Expect Growth” Into a Design Decision
@@ -42,6 +42,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Fill the five-answer decision record with the chosen design and stress it against slower growth, a lower sale valuation and a longer ownership period.
 - Open with the specific condition (an assumption arriving without its reasoning), not a contrast between stable and investor ownership; use “a common arrangement” / “one common way” rather than prevalence claims.
 - Make the boundary with [[assess-capability]] explicit and do not repeat its assessment; hand off to [[evaluate-cloud-costs]] by naming the operating cost line the design creates.
+- **Summary (2026-09-28, supersedes earlier summary-specific coverage requirements above):** the TL;DR is a fluent, conversational read of 300–500 words that follows one logical line — the question, the key insight, one worked example, the decision or practice, and a transition to the next chapter. It covers the key points and examples, not every detail of the article; terms are explained in plain words only where the summary needs them. Its overview figure is detailed enough that a reader grasps the key concepts from it alone.
 
 ## Non-goals
 
@@ -67,6 +68,7 @@ Inherits the IPEV valuation guidance cited in [[understand-valuation]]. The arch
 
 ## Changelog
 
+- 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.
 
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.

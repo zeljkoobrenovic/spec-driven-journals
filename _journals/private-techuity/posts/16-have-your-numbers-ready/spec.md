@@ -1,6 +1,6 @@
 ---
 status: draft
-revised: 2026-09-27
+revised: 2026-09-28
 ---
 
 # Spec: Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards
@@ -33,6 +33,7 @@ Product and engineering leaders inside companies working under investors, includ
 - [ ] **Grounded Architecture only mentioned.** One or two sentences naming Lightweight Architectural Analytics as the author's approach for the technology part, with its link; no derivation of the chapter's qualities from it.
 - [ ] **Investor questions answered as they are asked** ("what is your burn and runway?", "why is this number different from last quarter's?", "can we have access to your systems?", "what is your NRR?"), each pointing at the record.
 - [ ] **House rules.** Opening blocks (IN THIS SECTION / WHY INVESTORS CARE / WHY YOU SHOULD CARE), three KEY POINTS, Questions to Consider, To Probe Further with fetched URLs; S-citations for the book's registered sources (S106, S109); a meaningful counterargument (what numbers do not fix); hand-off to [[set-priorities]]; fictional figures consistent with the shared ledger.
+- **Summary (2026-09-28, supersedes earlier summary-specific coverage requirements above):** the TL;DR is a fluent, conversational read of 300–500 words that follows one logical line — the question, the key insight, one worked example, the decision or practice, and a transition to the next chapter. It covers the key points and examples, not every detail of the article; terms are explained in plain words only where the summary needs them. Its overview figure is detailed enough that a reader grasps the key concepts from it alone.
 
 ## Non-goals
 
@@ -72,6 +73,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Changelog
 
+- 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Update cross-links for the chapter title-slug renames.
 
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.

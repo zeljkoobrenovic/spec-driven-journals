@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-27
+revised: 2026-09-28
 ---
 
 # Spec: Hand Over the Obligations, Not Just the Company
@@ -27,6 +27,7 @@ Product and engineering leaders inside companies working under investors, includ
 - Keep **committed** (approved), **incurred** (work received) and **paid** (cash transferred) apart: the scenario gives no payment history, so the record says payment status is reconciled by finance before signing; the €40,000 data-quality step is approved funding, not payment. Obligations are sorted as binding obligations (contracts and legal or regulatory duties; a promise of work is not the same as money owed), funded work, accepted risks and options awaiting evidence; binding supplier commitments inside funded work are recorded separately.
 - Carry the neighbouring chapters' conditions exactly: REC-1's residual is that only two trained people, either of whom can run the credential procedure, can recover the service, and the retest objective is dispatch back within four hours with no more than fifteen minutes of updates lost, for loss of the application environment only; day 190 is a proposed decision review that waits if the next cohort has not finished and approves nothing automatically, stated with the day-130 acceptance date in every format including the final comic caption; KNW-1 used no additional project cash but about eight paid person-weeks of existing staff, with non-urgent engine changes postponed. The illustrative day-130 round records its new spending threshold (Ines's limit inside the approved plan falls from €500,000 to €250,000, fictional) and separates the day-100 evidence snapshot from what is added at day 130.
 - TL;DR of 300–500 words carrying the same claims and qualifications, without project codes it does not explain. Comic pages (seven pages of three strips each, with the dialogue, labels, amounts and dates lettered in the artwork and rendered from the page blocks), header logo and navigation icon are in place; the comic shows a funding round, a sale of company shares and a sale of a fund interest as three separately labelled lines stating who receives cash and who keeps a stake, and separates company shares from a fund interest before them; every generated page is inspected against its script.
+- **Summary (2026-09-28, supersedes earlier summary-specific coverage requirements above):** the TL;DR is a fluent, conversational read of 300–500 words that follows one logical line — the question, the key insight, one worked example, the decision or practice, and a transition to the next chapter. It covers the key points and examples, not every detail of the article; terms are explained in plain words only where the summary needs them. Its overview figure is detailed enough that a reader grasps the key concepts from it alone.
 
 ## Non-goals
 
@@ -52,6 +53,7 @@ The supplied book brief establishes scope, including the shared Larkspur chain. 
 
 ## Changelog
 
+- 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.
 
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
