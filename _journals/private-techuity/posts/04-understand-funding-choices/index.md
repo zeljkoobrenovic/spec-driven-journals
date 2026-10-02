@@ -12,21 +12,21 @@ icon: "assets/icons/04-understand-funding-choices.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to size the work the company must do next, compare the funding arrangements that could support it, and act on an arrangement you inherited.
 
-> **WHY INVESTORS CARE:** A **raise** means obtaining money from outside the company, and a **round** is one such financing event. Raising too little can force a rescue round, urgent money taken to avoid running out of cash, usually on worse terms. Raising too much can dilute returns, spreading the same gain over more money invested, and fund work that was never justified. Sizing trades off the ownership given up, the reserve kept and the risk of having to raise again, and investors weigh that trade-off against the plan for the same reasons the company should.
+> **WHY INVESTORS CARE:** A **raise** brings in money from outside the company; a **round** is one such event. Raise **too little** and the company may need a **rescue round**: urgent money on worse terms. Raise **too much** and the same gain is spread over more money, **diluting returns**, while the surplus funds work that was never justified. Investors weigh the ownership given up, the reserve kept and the risk of raising again against the plan, as the company should.
 
-> **WHY YOU SHOULD CARE:** Funding that does not match the work either starves a plan or buys it with rights, obligations and expectations the company cannot afford. Either way, the mismatch lands on the people who have to deliver.
+> **WHY YOU SHOULD CARE:** Funding that does not match the work either starves the plan or buys it with rights, obligations and expectations the company cannot afford. The mismatch lands on the people who must deliver.
 
 
 > **KEY POINTS:**
 >
-> * Begin with the **problem the money must solve, and size it**: base work, transition costs, an allowance for uncertainty and the runway, the time the money buys before the next decision. Funding expansion, paying a retiring founder and separating a business from a parent are different needs.
-> * Examine the **terms behind the investor’s label**. The terms of the funding and the investor’s expectations affect the pace, the tolerated losses and the time available for the plan; the category alone does not.
-> * Product and engineering leaders who **inherit the arrangement** can still act: bring the scope with its cost, a cash requirement and an alternative to the people who can renegotiate it. Changing the financing, changing the plan or continuing without a new owner can each be the right answer.
+> * Start with the **problem the money must solve, and size it**: base work, transition costs, an allowance for uncertainty, and runway (the time the money buys before the next decision). Funding expansion, paying a retiring founder and separating a business from a parent are different needs.
+> * Examine the **terms behind the investor’s label**. The terms and the investor’s expectations, not the category, set the pace, the losses tolerated and the time the plan gets.
+> * Product and engineering leaders who **inherit the arrangement** can still act: bring the costed scope, a cash requirement and an alternative to the people who can renegotiate it. Changing the financing, changing the plan or continuing without a new owner can each be the right answer.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
-> * **The Ratchet Roadmap** — Sizes the work, transition costs and uncertainty before choosing the funding and commitments.
-> * **Spending the Press Release** — Tests funding terms and timing against the work the company actually needs to pay for.
+> * **The Ratchet Roadmap** — Sizes the work, transition costs and uncertainty before choosing funding and commitments.
+> * **Spending the Press Release** — Tests funding terms and timing against the work the company must pay for.
 
 <br>
 A business has customers and a useful product. Its founder might want money to expand it, or might want to retire and sell their shares, the units of ownership in the company. Those are different needs, even if both conversations begin with “we need an investor.”

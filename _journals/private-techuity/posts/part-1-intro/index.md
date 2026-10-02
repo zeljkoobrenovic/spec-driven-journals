@@ -12,10 +12,10 @@ icon: "assets/icons/part-1-intro.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn where a company’s money comes from, who receives it and on what terms, and who may spend it and when.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
-> * **Spending the Press Release** — Traces who receives the money, when it becomes available and who may spend it.
-> * **The Exit Halo** — Separates company performance from the prices, borrowing and timing behind an investor return.
+> * **Spending the Press Release** — Traces who receives the money, when and who may spend it.
+> * **The Exit Halo** — Separates company performance from the prices, borrowing and timing behind an investor's return.
 
 <br>
 An investor has just been announced. Can the company now afford the two hires that the planned work needs? You will not know until this deal’s financing and ownership questions have been answered in detail.
