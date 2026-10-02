@@ -15,7 +15,7 @@ Product and engineering leaders inside companies working under investors who wan
 
 ## Success criteria
 
-- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Nodding Room; The Exit Halo. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
+- Add a separate **DYSFUNCTIONS THIS SECTION ADDRESSES:** block immediately after KEY POINTS: The Nodding Room; The Exit Halo. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Open with a three-bullet KEY POINTS block and a short paragraph stating that the page is optional depth for the fund-side mechanics behind Part I.
 - Preserve the €160-on-€100 waterfall arithmetic and definitions moved from the announcement chapter, with the SEC citation, and show in words and simple arithmetic what a preferred return, catch-up and clawback change. State the example's committed capital, contributed capital, hurdle and carry explicitly; show a full and a partial catch-up reaching the same final split, and name the cases (no catch-up, incomplete catch-up) that do change it. Present deal-by-deal and whole-fund waterfalls as alternatives.
 - Preserve the €100 / €60 / €90 DPI, RVPI and TVPI example, the gross-versus-net distinction and the subscription-line caution moved from the returns chapter, with the ILPA citation. Keep the cash-only reading confined to the example: DPI counts distributions, which can include securities; RVPI is remaining net value.

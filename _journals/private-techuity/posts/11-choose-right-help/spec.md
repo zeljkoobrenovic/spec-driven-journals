@@ -15,7 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
-- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Dusty Address Book; Borrowed Brains. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
+- Add a separate **DYSFUNCTIONS THIS SECTION ADDRESSES:** block immediately after KEY POINTS: The Dusty Address Book; Borrowed Brains. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Treat [[learn-through-investors-network]] as the preceding chapter and the main home for exploratory learning and continuing peer communities; preserve the sourcing decision and its direct handoff to the engagement charter.
 
 - Recall the wider working arrangement established in [[plan-investor-support]] and the exploratory learning in the preceding chapter; distinguish both from sourcing a specific assignment.

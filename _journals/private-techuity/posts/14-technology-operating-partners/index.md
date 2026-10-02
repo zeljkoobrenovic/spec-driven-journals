@@ -22,7 +22,7 @@ icon: "assets/icons/14-technology-operating-partners.png"
 > * **The work runs across the whole investment.** It can link the checks made before buying, the work the company funds, leadership and hiring, specialist help, learning across companies and preparation for a sale. One person rarely supplies all the expertise needed.
 > * **Judge the contribution by company results and clearer decisions.** Agree authority, availability, costs and evidence for each assignment; a senior title settles none of them.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **The Dusty Address Book** — Shows where an operating partner can connect the company with peers, specialists and hiring experience.
 > * **The Accidental Gatekeeper** — Separates portfolio support from company leadership and agrees authority for each assignment.

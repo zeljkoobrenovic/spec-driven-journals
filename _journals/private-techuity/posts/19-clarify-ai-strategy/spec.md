@@ -15,7 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
-- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Nodding Room; All Bulk, No Muscle; Squeezing the Balloon. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
+- Add a separate **DYSFUNCTIONS THIS SECTION ADDRESSES:** block immediately after KEY POINTS: The Nodding Room; All Bulk, No Muscle; Squeezing the Balloon. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Link unfamiliar AI demonstrations and study visits to [[learn-through-investors-network]] for contextual learning before turning an encounter into an investment decision.
 
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the 300–500-word summary prose, bold emphasis and citations; provide alt text and a concise numbered caption.

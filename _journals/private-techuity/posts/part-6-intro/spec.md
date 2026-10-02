@@ -15,7 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
-- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after the opening IN THIS SECTION callout: Never Fixing the Roof; Squeezing the Balloon. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions. The existing length target applies to the orientation prose; this requested navigation block is additional.
+- Add a separate **DYSFUNCTIONS THIS SECTION ADDRESSES:** block immediately after the opening IN THIS SECTION callout: Never Fixing the Roof; Squeezing the Balloon. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions. The existing length target applies to the orientation prose; this requested navigation block is additional.
 - Include exactly one chapter overview at the start of the learning path, in addition to the header logo: one card per chapter stacked in one column for phone reading, plain second-line labels, no arrows implying sequence, and alt text a newcomer can follow. Generate it through the Gemini API in the book’s ivory, navy, teal and ochre style; publish one JPEG with descriptive alt text and a prose caption, and preserve it in the manuscript export.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths, consistent with the journal’s visual style.
 - Recall in one sentence the discipline of Parts III and IV; explain cloud, backup and restore in plain words at first use; say that the chapters are independent and may be read as the decision requires.

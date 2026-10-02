@@ -18,7 +18,7 @@ icon: "assets/icons/09-plan-investor-support.png"
 > * **Design investor involvement and company organization separately, then connect them.** Shared investor expertise can support locally managed businesses. A company can centralize a service while its investor works mainly through the board.
 > * **A usable blueprint includes commitments from both sides.** Name who decides, who supplies people and funding, which company work is set aside to make room, and when the arrangement will be reviewed or ended.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **The Nodding Room** — Connects business priorities to explicit commitments from both the investor and the company.
 > * **The Accidental Gatekeeper** — Separates oversight, advice and delivery roles, with authority agreed for each.

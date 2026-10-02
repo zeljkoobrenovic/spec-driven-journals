@@ -12,7 +12,7 @@ icon: "assets/icons/part-7-intro.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to lead when a company’s money or owners change: check the business before investing, fund the first plan, and hand over the evidence and unfinished promises.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **Clean Slate Syndrome** — Carries findings, evidence and unfinished obligations from the investment investigation into the plan and handover.
 > * **Never Fixing the Roof** — Gives inherited constraints funding, responsible people and protected time.

@@ -23,7 +23,7 @@ icon: "assets/icons/12-set-terms-of-help.png"
 > * **External help consumes internal time.** Ten specialist days, capped at €15,000, need six engineering days, two customer-team sessions and the product leader’s review; without those, the specialist’s availability does not make the engagement feasible.
 > * **Let the review change the work.** When evidence shows a different constraint, the charter says who may redirect the remaining days, which work stops and whether the budget still fits. The engagement ends with a capability, a decision or an understood continuing service.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **Borrowed Brains** — Builds learning and a tested handover, or an understood continuing service, into the assignment.
 > * **The Accidental Gatekeeper** — Records who directs the work and who may authorize a change in its scope.

@@ -23,7 +23,7 @@ icon: "assets/icons/20-assess-capability.png"
 > * Judge the technology and the team by **their consequences for that work**, and record strengths as well as constraints. An old system is not, by itself, a bad investment; a fashionable one is not a good one.
 > * End with **a finding the next decisions can use**: the obstacle that most limits the plan, the evidence behind it, what is uncertain, and what a transition would cost, over what period, and when its first benefit could appear.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **All Bulk, No Muscle** — Tests what the technology and team can deliver against the actual requirements of the plan.
 > * **Never Fixing the Roof** — Identifies the recurring constraint and the funded transition needed to remove it.

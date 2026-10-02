@@ -16,7 +16,7 @@ Product and engineering leaders inside companies working under investors, includ
 ## Success criteria
 
 - Register S119 for the opening guide's connection to Lencioni: the official Table Group model summary, consulted 2026-09-27. Record the definitions and effective-team characteristics actually read, identify the investment application as the book's interpretation, and add the topic route and Used in link.
-- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Exit Halo. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
+- Add a separate **DYSFUNCTIONS THIS SECTION ADDRESSES:** block immediately after KEY POINTS: The Exit Halo. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Register S101–S105 for investor-organized learning: Prosus, Balderton, Insight Partners, Wenger-Trayner and the author’s CTO Starter Kit. Separate organizer accounts, a conceptual definition and documented project features from demonstrated company outcomes; add the topic route. Link the project’s public start page and repository and state the author’s involvement.
 - Register S91–S100 for the operating-model blueprints chapter and extend S01 for expense allocation and service-payment conflicts; distinguish historical surveys, practitioner advice, firm descriptions and proposed blueprints.
 

@@ -15,7 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
-- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Nodding Room; Spending the Press Release. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
+- Add a separate **DYSFUNCTIONS THIS SECTION ADDRESSES:** block immediately after KEY POINTS: The Nodding Room; Spending the Press Release. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Link the operating-model definition to its Part IV teaching home and include resources and information alongside teams, responsibilities, processes and decisions.
 
 - Define technology operating partner (including technical operating partner) and AI operating partner in the roles section and alphabetical index, with the Part IV technology operating partner chapter as their teaching home.

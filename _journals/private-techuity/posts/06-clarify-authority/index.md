@@ -23,7 +23,7 @@ icon: "assets/icons/06-clarify-authority.png"
 > * Fill in the record with **names, thresholds and dates**. “Management recommends, the board approves” tells nobody whom to call on a Tuesday, or by when.
 > * Plan the **missed-deadline branch**. If the approval does not arrive, take the remaining options back to the person authorized to decide and tell the team which funded plan it is executing.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **The Ghost Veto** — Records the named approver, authority and deadline behind a decision.
 > * **The Accidental Gatekeeper** — Separates suggestions from authorized instructions and assigns responsibility for the result.

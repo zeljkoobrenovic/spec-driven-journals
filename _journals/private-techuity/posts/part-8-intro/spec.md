@@ -15,7 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
-- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after the opening IN THIS SECTION callout: The Exit Halo; Clean Slate Syndrome. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions. The existing length target applies to the orientation prose; this requested navigation block is additional.
+- Add a separate **DYSFUNCTIONS THIS SECTION ADDRESSES:** block immediately after the opening IN THIS SECTION callout: The Exit Halo; Clean Slate Syndrome. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions. The existing length target applies to the orientation prose; this requested navigation block is additional.
 - Make the excerpt, section description and reading map identify what happened in the cases before asking what can be learned. Keep the closing comparison distinct from the four historical case chapters.
 - Include exactly one chapter overview at the start of the learning path, in addition to the existing header logo. Give every configured chapter its own box, use short recognizable title labels without duplicating chapter numbers, and connect the chapters to the part's overall purpose.
 - Bring the four case chapters into the closing synthesis. Show the common evidence-to-mechanism-to-decision method and preserve the distinction between independent histories and a causal sequence.

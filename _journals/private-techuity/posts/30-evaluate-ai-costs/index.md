@@ -23,7 +23,7 @@ icon: "assets/icons/30-evaluate-ai-costs.png"
 > * **Separate why the bill changed.** Usage (more customers, more documents), rates (the vendor’s price per token) and construction (how the feature is built: how much text it sends with each document, how often it retries, which model it uses) move the bill for different reasons, have different owners and take different remedies. A vendor price cut can offset part of a construction increase and make the bill look tamer than the construction is.
 > * **Return has a period and a condition, and a commitment is a minimum payment.** State the return for a dated period under the quality and review conditions that make it true, set the stop and reprice rules before the review, and size any committed spend, the fixed amount a vendor is owed even when usage falls short, at the low end of a demand range the company can pay for.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **Squeezing the Balloon** — Counts supplier spending, review effort and operating costs per useful customer task.
 > * **All Bulk, No Muscle** — Measures accepted customer work rather than tokens, requests or the presence of an AI tool.

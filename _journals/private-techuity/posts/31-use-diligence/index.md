@@ -23,7 +23,7 @@ icon: "assets/icons/31-use-diligence.png"
 > * Use the **access you actually have**: before signing (when the parties commit to the agreement), between signing and closing (when the money is paid and **shares**, the units of ownership in the company, actually change hands) where there is a gap, or after closing when earlier participation was impossible. Record the limit rather than pretending it away.
 > * **Complete the finding.** A **material finding**, one important enough to affect the decision, needs observed evidence separated from claims and interpretation, options with costs, an agreed response, the people authorized to approve it, an accountable company leader and the evidence that would change the decision. Carry its identifier into the early operating plan.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **Clean Slate Syndrome** — Carries each significant finding into the early operating plan under a stable identifier.
 > * **Never Fixing the Roof** — Turns a known constraint into costed options, an agreed response and an accountable company leader.

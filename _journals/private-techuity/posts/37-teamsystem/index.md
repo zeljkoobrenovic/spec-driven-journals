@@ -22,7 +22,7 @@ icon: "assets/icons/37-teamsystem.png"
 > * **The apparent 37.7% revenue rise becomes 8.9% on the report's fuller comparison.** Revenue means sales recorded before costs. The first comparison uses only March–December 2016 against all of 2017; the second reconstructs all of 2016 and includes businesses acquired that year from January. The 8.9% still includes acquisitions made in 2017. [S49: TeamSystem 2017 report](https://www.teamsystem.com/media/files/865_Consolidated%20Financial%20Statements%20as%20at%20and%20for%20the%20year%20ended%2031%20December%202017%20of%20TeamSystem%20Group.pdf)
 > * **TeamSystem reported €113.0 million of adjusted earnings and a €56.8 million loss for 2017.** Adjusted earnings leave specified costs out; the formal accounts include them. The gap includes charges for earlier purchases and borrowing, so neither headline can stand in for the cash available for the next product plan. [S49: TeamSystem 2017 report](https://www.teamsystem.com/media/files/865_Consolidated%20Financial%20Statements%20as%20at%20and%20for%20the%20year%20ended%2031%20December%202017%20of%20TeamSystem%20Group.pdf)
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **Clean Slate Syndrome** — Follows development and integration obligations that continue after an ownership change.
 > * **The Exit Halo** — Separates transaction values and investor accounts from what the evidence establishes about company outcomes.

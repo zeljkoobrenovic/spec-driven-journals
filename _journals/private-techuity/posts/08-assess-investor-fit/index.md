@@ -23,7 +23,7 @@ icon: "assets/icons/08-assess-investor-fit.png"
 > * Match support to the **company’s next decisions**. Establish the people, time, cost and authority behind an offer before a plan depends on it, and label what remains unconfirmed.
 > * **If the investor is already in place**, use the assessment to change one dependency: the funding date, the approval route or the support commitment. Reassess as the business changes.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **The Nodding Room** — Tests promises of patience and partnership against past decisions and specific support commitments.
 > * **Spending the Press Release** — Checks the conditions and timing of further funding before a company plan relies on it.

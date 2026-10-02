@@ -23,7 +23,7 @@ icon: "assets/icons/32-first-hundred-days.png"
 > * Carry the diligence findings in **by identifier**. Confirm each one with the people who will do the work. The investigation had incomplete access, and when management’s evidence differs, that evidence should change the funding or the order of work.
 > * **Review the plan, not its completion rate.** The day-100 review should confirm or revise the plan on evidence: an assumption kept or replaced, a postponement kept or lifted, money moved from the reserve with the board’s approval. Finishing every task is not the test.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **Clean Slate Syndrome** — Starts from inherited findings and checks them with the people who will do the work.
 > * **Never Fixing the Roof** — Gives each improvement approved money, protected time, a responsible person and a decision date.

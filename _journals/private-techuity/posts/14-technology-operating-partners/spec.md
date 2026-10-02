@@ -15,7 +15,7 @@ Product and engineering leaders working under investors; secondarily investment 
 
 ## Success criteria
 
-- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Dusty Address Book; The Accidental Gatekeeper; All Bulk, No Muscle. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
+- Add a separate **DYSFUNCTIONS THIS SECTION ADDRESSES:** block immediately after KEY POINTS: The Dusty Address Book; The Accidental Gatekeeper; All Bulk, No Muscle. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Link the portfolio-learning responsibility to [[learn-through-investors-network]], including maintaining access and shared resources; preserve the wider operating-function argument.
 
 - Explain the pressures behind the function: technology-dependent operating plans, continuity after diligence, acquisitions and shared learning, and AI as both an opportunity and a risk to an investment thesis.

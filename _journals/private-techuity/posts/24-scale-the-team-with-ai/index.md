@@ -23,7 +23,7 @@ icon: "assets/icons/24-scale-the-team-with-ai.png"
 > * **Capacity is work that completes with the old quality checks.** Lines written, seats active and tokens used are activity. Measure changes and customer setups delivered per month, with the error rate beside them, checked the same way as before the tool, and count the time spent checking generated work as a cost.
 > * **“Fewer people” is a claim to test, not a plan to execute.** Separate a condition attached to money, a vote by a director (a member of the board that oversees the company) and an adviser’s comparison with other companies, answer each with the response it requires, and leave the deferred hire’s conditions unchanged until the gate is passed.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **All Bulk, No Muscle** — Measures completed work at the existing quality standard instead of generated code or active tool seats.
 > * **Squeezing the Balloon** — Counts review and correction effort before claiming that AI has reduced the work or its cost.

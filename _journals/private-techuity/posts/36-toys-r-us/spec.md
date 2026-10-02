@@ -17,7 +17,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
-- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: Spending the Press Release; The Exit Halo. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
+- Add a separate **DYSFUNCTIONS THIS SECTION ADDRESSES:** block immediately after KEY POINTS: Spending the Press Release; The Exit Halo. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Make the excerpt, opening callouts, key points, introductory narrative and summary opening describe Toys R Us's actual events. Attribute supplier claims and technology plans to management, distinguish the 2017 filing from the 2018 US liquidation plan, and put reported figures before the lessons inferred from them.
 - Add one whole-post overview visual to the TL;DR after its opening paragraph, generated with the Nano Banana article illustrator. Keep the summary prose concise (about 300–650 words; the band was widened from 500 on 23 September 2026 so the TL;DR can carry its own plain-language definitions of the three central measures, including the full earnings-to-loss bridge with interest income, working capital as stock plus customer debts less supplier bills, subsidiaries, and the composition of the bankruptcy financing), with bold emphasis and citations; provide alt text and a concise numbered caption.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.

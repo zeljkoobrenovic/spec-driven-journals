@@ -15,7 +15,7 @@ Company product and engineering leaders, including people inheriting an investor
 
 ## Success criteria
 
-- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Dusty Address Book; Borrowed Brains. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
+- Add a separate **DYSFUNCTIONS THIS SECTION ADDRESSES:** block immediately after KEY POINTS: The Dusty Address Book; Borrowed Brains. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Place the chapter after [[plan-investor-support]] and before [[choose-right-help]], preserving the latter’s direct handoff to [[set-terms-of-help]].
 - Distinguish solving a known problem, exploring unfamiliar possibilities and developing continuing peer relationships. Allow useful questions and relationships to mature without requiring every event to justify immediate financial returns.
 - Cover all six requested formats, their distinct uses and the company effort needed. Explain the investor’s contribution to access, convening, continuity and learning across companies without promising exclusive access or universal availability.

@@ -12,7 +12,7 @@ icon: "assets/icons/part-6-intro.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn to keep the technology the company already runs worth its cost: its technical debt, its resilience, its cloud bill and its AI bill.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **Never Fixing the Roof** — Turns recurring technology costs and failed recovery tests into funded improvements.
 > * **Squeezing the Balloon** — Compares cost, useful service and risk together before accepting a saving.

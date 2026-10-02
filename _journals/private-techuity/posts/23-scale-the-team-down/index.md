@@ -23,7 +23,7 @@ icon: "assets/icons/23-scale-the-team-down.png"
 > * **Reconcile the reduction by date.** People who leave are paid through their notice period and receive a leaving payment before any saving appears. At Larkspur’s terms and dates the reduction cannot replace the late investment; it only makes the bridging loan last longer. Elsewhere the answer depends on the costs, the savings and the funding dates, so show cash month by month under each plan before anyone is told.
 > * **Choose roles by the work that stops, and plan for both sides of the door.** The people who leave need notice, a leaving payment and a record of what they knew. The people who remain need a published list of what is no longer expected of them, a plan for who answers problems out of hours, and the evidence that would restore the plan.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **Squeezing the Balloon** — Counts notice and leaving payments, then names the work and risk the remaining team would carry.
 > * **The Ghost Veto** — Distinguishes a loan condition, a director’s decision and an adviser’s comparison before responding.

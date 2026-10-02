@@ -23,7 +23,7 @@ icon: "assets/icons/28-build-test-resilience.png"
 > * **Evidence of a backup is not evidence of an operating service**. A restore test is judged against the objective, and a failed test is a finding to fund, not a slide to defer.
 > * After the retest, **record what remains exposed and who accepted it**. A modelled reduction in future losses supports that decision; it is not profit recorded in the accounts.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **Never Fixing the Roof** — Turns a failed restore test into funded corrective work and a retest.
 > * **Clean Slate Syndrome** — Keeps recovery findings, remaining exposure and responsibility explicit when support or ownership changes.

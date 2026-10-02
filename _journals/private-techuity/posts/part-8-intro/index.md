@@ -11,7 +11,7 @@ icon: "assets/icons/part-8-intro.png"
 ---
 > **IN THIS SECTION, YOU WILL:** Follow five companies through purchases, debt problems, investor changes and sales in four case chapters, then compare what happened to their investors, businesses and people.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **The Exit Halo** — Examines who gained, over which period and under which conditions before drawing a lesson from a case.
 > * **Clean Slate Syndrome** — Follows product work and obligations across successive ownership periods.

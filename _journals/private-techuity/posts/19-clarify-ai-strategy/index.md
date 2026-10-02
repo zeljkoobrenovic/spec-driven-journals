@@ -23,7 +23,7 @@ icon: "assets/icons/19-clarify-ai-strategy.png"
 > * Measure the **complete workflow**: preparation, production, review, correction and operation. A tool in use is not a useful result, and capacity freed is not cash saved until a dated spending decision converts it.
 > * Keep **experimental results attached to their conditions**. Dated studies of coding assistants point in different directions; test the local effect before an estimate becomes a commitment.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **The Nodding Room** — Separates product opportunity, internal improvement and competitive threat into three different decisions.
 > * **All Bulk, No Muscle** — Tests changes to the complete workflow instead of counting tool adoption as capability.

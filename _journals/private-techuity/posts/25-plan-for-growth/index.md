@@ -23,7 +23,7 @@ icon: "assets/icons/25-plan-for-growth.png"
 > * Compare **options against that requirement**, not against which is more fashionable: the same customer need, delivery date, ongoing responsibility and cash limit. Choose one under stated assumptions and name the evidence that would reverse it.
 > * Follow **spending and benefits through time**. An attractive future saving still needs funding before it arrives, and a design that adds operating responsibility adds a cost line the next review will question.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **The Nodding Room** — Translates a broad growth request into specific customer changes, dates and design requirements.
 > * **Squeezing the Balloon** — Shows the spending and operating responsibility added before an expected design saving arrives.

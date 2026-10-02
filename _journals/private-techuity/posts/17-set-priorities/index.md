@@ -23,7 +23,7 @@ icon: "assets/icons/17-set-priorities.png"
 > * Sort the requests by **what they rest on**: an agreed obligation, tested customer evidence or an assumption. A growth target starts the discussion; it does not choose the project.
 > * Make the **next review part of the decision**, and revise the whole combination, not just one project, when a test fails or new evidence arrives.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **The Ratchet Roadmap** — Chooses a combination that fits both cash and people, then revisits the whole combination when evidence changes.
 

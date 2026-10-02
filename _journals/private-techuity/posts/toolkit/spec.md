@@ -15,7 +15,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Success criteria
 
-- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Ghost Veto; The Ratchet Roadmap; Borrowed Brains; Clean Slate Syndrome. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
+- Add a separate **DYSFUNCTIONS THIS SECTION ADDRESSES:** block immediately after KEY POINTS: The Ghost Veto; The Ratchet Roadmap; Borrowed Brains; Clean Slate Syndrome. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Keep the four-column outcome scorecard readable on mobile through a keyboard-accessible horizontal scroll region, preserving all table contents.
 - Provide a distinctive article header logo and a simple navigation icon with unique asset paths. Keep both consistent with the journal’s visual style.
 - Include two explanatory article figures with accurate short labels, alt text and numbered captions. Use restrained bold emphasis for key claims; preserve the words, citations and historical data.

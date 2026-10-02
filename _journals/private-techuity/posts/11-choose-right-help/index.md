@@ -23,7 +23,7 @@ icon: "assets/icons/11-choose-right-help.png"
 > * **Compare the investor’s access with the alternatives.** An investor may reach relevant people faster. A peer, an independent specialist or a hire may fit better. Judge each route by availability, company effort, cost and relevant experience.
 > * **Borrow experience with its context attached**, and make any continuing dependence explicit. Finish with a written request that names the result, the source and the accountable company leader.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **The Dusty Address Book** — Starts with a capability gap and compares useful introductions with other sources of help.
 > * **Borrowed Brains** — Makes the capability sought and any continuing dependence explicit in the request.

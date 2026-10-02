@@ -12,7 +12,7 @@ icon: "assets/icons/part-2-intro.png"
 
 > **IN THIS SECTION, YOU WILL:** Establish who can authorize a decision, what each party stands to gain or lose, and which evidence everyone should use.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **The Nodding Room** — Makes competing interests, time frames and evidence explicit before people agree to a plan.
 > * **The Ghost Veto** — Traces approval rights to the people and agreements that actually grant them.

@@ -19,7 +19,7 @@ timetoread: 30 min read
 > * Record **cost, responsibility and uncertainty** alongside ambition. A template is useful when it changes a decision or preserves evidence, not merely when every field is filled.
 > * **Follow one finding through**: evidence → options → an authorized initiative → an observed result → a revised decision → a handover. The fictional Larkspur chain below shows what each stage adds.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **The Ghost Veto** — Provides records that name who approves a decision and what authority it rests on.
 > * **The Ratchet Roadmap** — Records the money, capacity and alternatives behind an initiative before it becomes a promise.

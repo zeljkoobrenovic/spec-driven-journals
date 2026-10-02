@@ -15,7 +15,7 @@ Investor operating teams and technology operating partners designing portfolio-l
 
 ## Success criteria
 
-- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Dusty Address Book; The Accidental Gatekeeper. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
+- Add a separate **DYSFUNCTIONS THIS SECTION ADDRESSES:** block immediately after KEY POINTS: The Dusty Address Book; The Accidental Gatekeeper. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - State the argument in one sentence and repeat it: reuse the foundations for understanding technology and people; adapt the mechanisms for making decisions and taking action.
 - Compare a decentralized group and a portfolio explicitly, separating dimensions that concern understanding (transferable) from those that concern authority, money and incentives (adaptation required).
 - Data pillar: explain Lightweight Architectural Analytics, the sources every software company already has, the two levels of reading (local management and portfolio understanding), the proposal to reuse methods and tooling rather than centralize data, the maps-versus-dashboards distinction, and the "not to replace judgment with dashboards" purpose. Warn against repeated manual reporting and ranking scorecards.

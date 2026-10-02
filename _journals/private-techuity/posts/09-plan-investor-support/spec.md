@@ -15,7 +15,7 @@ Product and engineering leaders inside investor-backed companies; chief executiv
 
 ## Success criteria
 
-- Add a separate **DYSFUNCTIONS THIS SECTION HELPS ADDRESS:** block immediately after KEY POINTS: The Nodding Room; The Accidental Gatekeeper; The Ratchet Roadmap. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
+- Add a separate **DYSFUNCTIONS THIS SECTION ADDRESSES:** block immediately after KEY POINTS: The Nodding Room; The Accidental Gatekeeper; The Ratchet Roadmap. Give each a short reason tied to this post and link to [[where-investment-goes-wrong]] for the descriptions.
 - Hand off to [[learn-through-investors-network]] before sourcing a specific capability gap; keep the existing operating-model argument and all artwork.
 
 - Distinguish the investor’s own internal operations, its relationship with portfolio companies, and the company’s internal organization. Concentrate on the latter two.

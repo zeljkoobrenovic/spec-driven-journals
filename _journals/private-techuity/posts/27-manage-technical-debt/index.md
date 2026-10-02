@@ -23,7 +23,7 @@ icon: "assets/icons/27-manage-technical-debt.png"
 > * **Present the fix by what it buys.** The revenue it protects or enables, the cost or risk it removes and, only for a real dated decision, the choice it keeps open. Show the register before and after, because the board never sees the failures a fix prevented.
 > * **Large projects are transitions, funded in tranches.** A tranche is a separately approved stage of work and spending; a gate is the agreed check that the stage delivered what it promised and worsened nothing it had to protect. A rewrite with its whole benefit at the end is right only when no useful half-way state exists.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **Never Fixing the Roof** — Prices the recurring burden and gives improvement work funded stages and checks on the result.
 > * **Squeezing the Balloon** — Keeps ongoing cost, risk and slower delivery visible when maintenance is postponed.

@@ -23,7 +23,7 @@ icon: "assets/icons/21-manage-funding-delays.png"
 > * **Work the decision by date.** Put cash, monthly spending and every planned commitment on a calendar. Find the last date a decision can still change them, and compare the alternatives by when each falls below the minimum cash the board wants to keep.
 > * **Authorize one fallback.** The board chooses the plan that runs now, names who pursues the missing money and sets in advance what must happen before deferred spending restarts. Customers and the team are told which plan is running.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **Spending the Press Release** — Puts cash arrivals and payment commitments on a calendar and authorizes a fallback before money runs short.
 > * **The Ratchet Roadmap** — Changes the work and dates when funding slips, with explicit conditions for restarting deferred commitments.

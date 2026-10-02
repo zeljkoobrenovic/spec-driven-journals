@@ -23,7 +23,7 @@ icon: "assets/icons/33-manage-handover.png"
 > * **Follow who receives cash and who keeps ownership.** New investment, a sale of existing shares, a change among the investors in the fund that owns the company, a stock-market listing and a sale of control move money and authority differently. None tells you what the investors finally made until the money received, the stakes kept and the dates are known.
 > * **A handover is accepted when each open obligation has an accountable leader on the receiving side.** Hand over the record with its open work and continuing cost, agree any follow-up role explicitly, and treat later results as evidence to learn from rather than a verdict on the previous owners.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **Clean Slate Syndrome** — Requires a named receiving leader for every open obligation and its continuing cost.
 > * **The Exit Halo** — Keeps cash received, ownership retained and later company outcomes separate when judging a sale.

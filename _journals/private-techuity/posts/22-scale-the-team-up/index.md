@@ -23,7 +23,7 @@ icon: "assets/icons/22-scale-the-team-up.png"
 > * People changes have **transition costs and a knowledge-transfer test**. Compare the full delivery model, including recruitment, overlap, management effort and the receiving team’s demonstrated competence.
 > * The diagnosis should **produce a staffing decision**: hiring proceeds, changes shape or is deferred, with the remaining gap, its funding and the evidence that would reopen the choice named.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **All Bulk, No Muscle** — Follows the work through decision and knowledge bottlenecks before deciding what hiring would help.
 > * **Borrowed Brains** — Requires the receiving team to demonstrate competence after knowledge transfer.

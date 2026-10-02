@@ -22,7 +22,7 @@ icon: "assets/icons/38-success-for-whom.png"
 > * **Toys R Us's failure left costs outside its owners' accounts.** Its March 2018 US closure plan affected roughly 33,000 employees, and Hasbro recorded $60.4 million of bankruptcy-related costs that year. Employee and supplier outcomes belong beside the investor result when judging what happened. [S37: Reuters US liquidation report](https://www.business-standard.com/article/reuters/toys-r-us-to-close-doors-leaving-void-for-toy-lovers-118031500236_1.html) [S51: Hasbro 2018 annual report](https://www.annualreports.com/HostedData/AnnualReportArchive/h/NYSE_HAS_2018.pdf)
 > * **Fictional Larkspur's €220,000 saving depends on what happens to thirty customers.** Ending their old service would remove €150,000 of annual employment cost and release €70,000 of staff time, which is capacity rather than cash. Existing customer contracts and the work needed to move them change which savings are feasible and when.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](where-investment-goes-wrong.html):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
 > * **The Exit Halo** — Assesses investor, customer, employee and company outcomes separately over their relevant periods.
 > * **Squeezing the Balloon** — Checks proposed savings against remaining customer obligations, transition work and costs borne by others.
