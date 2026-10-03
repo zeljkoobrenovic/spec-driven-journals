@@ -62,6 +62,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-10-03: Closing handoff now names [[clarify-ai-strategy]], the next chapter in reading order, through the shared assumption that setup and support costs fall as the company grows, before [[assess-capability]]. Article only.
 - 2026-10-03: Linked back to the chapters that prepared its material: the setup now cites the outcome record from [[adopt-outcome-thinking]] as the chain under test, and the €225,000 capacity estimate cites [[have-your-numbers-ready]], which labels it a forecast. Article only.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.

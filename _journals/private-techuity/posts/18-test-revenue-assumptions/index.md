@@ -218,7 +218,7 @@ Both tests must be met. Fifty hours with a median wait of nine weeks fails. So d
 
 The link from setup step to effort held as far as the comparison can show: the reduction can’t be credited to the product change alone, but the evidence supports it. The link from released effort to customers served did not hold. The measurement did its job, because it changed the next commitment instead of decorating the last one. The [[toolkit]]’s outcome and contribution ledger (Tool 6) is where the baseline, the committed and incurred cost, the observed result, the projection and the open work are recorded so the next review starts from them.
 
-The remaining hours sit with customer data and with one specialist’s knowledge, and the plan still assumes onboarding volume grows. Whether the software and the team can deliver repeatable setup at that volume is the question of the chapter [[assess-capability]]; the organizational response, the chapter [[scale-the-team-up]], opens Part V.
+The remaining hours sit with customer data and with one specialist’s knowledge, and the plan still assumes onboarding volume grows. The same assumption, that the cost of setting up and supporting each customer falls as the company grows, returns in the next chapter, [[clarify-ai-strategy]], bundled with two others into a request for an “AI strategy”. Whether the software and the team can deliver repeatable setup at that volume is the question of the chapter [[assess-capability]]; the organizational response, the chapter [[scale-the-team-up]], opens Part V.
 
 ## Questions to Consider
 
