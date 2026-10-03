@@ -29,6 +29,8 @@ icon: "assets/icons/08-assess-investor-fit.png"
 
 
 <br>
+The previous two chapters described who decides and what each party stands to gain. Both are arrangements on paper; how an investor behaves when a plan misses shows whether they hold.
+
 When a company raises money, investors usually promise more than money: patience while results arrive, and practical support along the way. Such promises are easy to make while a plan is on track. They are tested when the company falls short of it, and that is when the company learns whether its plan can rely on them. What a leader needs to judge beforehand is **investor fit**: how well an investor’s terms, resources and behavior match what the company needs.
 
 Most product and engineering leaders are not asked to sign an investor’s terms. They are asked to **deliver a plan whose feasibility depends on the investor’s behavior**. Does funding continue after a missed quarter (three months of the financial year)? Does support arrive in a usable form? Is a delay treated as a problem to solve, or as a reason to change management?
@@ -37,7 +39,7 @@ The purpose is not to find a universally good investor. It is to determine wheth
 
 ## Setting Up the Example: Two Term Sheets for Larkspur
 
-Ines, the chief executive officer (CEO) of Larkspur, the fictional software company this book follows, has two **term sheets** on her desk. A term sheet sets out the terms on which an investor proposes to put money into a company in exchange for shares (units of ownership). Both investors promise two things: patient ownership, meaning time for results to arrive, and practical support. To compare them, Ines needs examples of how those promises held up when a company missed its plan: when sales came later than forecast, or a product shipped late. She is judging investor fit.
+Ines, the chief executive officer (CEO) of Larkspur, the fictional software company this book follows, has two **term sheets** on her desk. A term sheet sets out the terms on which an investor proposes to put money into a company in exchange for shares (units of ownership). Both investors promise two things: patient ownership, meaning time for results to arrive, and practical support. To compare them, Ines needs examples of how those promises held up when a company missed its plan: when sales came later than forecast, or a product shipped late. She is judging investor fit. In this chapter's scenario, Larkspur is raising a new round while one of its founders prepares to retire; the ownership and figures are this chapter's own.
 
 Ines uses the assessment before the deal, to compare her two term sheets. Later, in a separate round where the investor is already in place, Alex, the chief technology officer (CTO), uses it to change one dependency in Larkspur’s operating plan once the evidence is in.
 
