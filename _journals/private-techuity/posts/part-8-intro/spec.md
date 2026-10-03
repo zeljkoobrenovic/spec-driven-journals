@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-27
+revised: 2026-10-03
 ---
 
 # Spec: PART VIII — Lessons from the Field
@@ -56,6 +56,7 @@ The journal's current config.yaml and the configured chapter introductions. Thes
 
 ## Changelog
 
+- 2026-10-03: Opening contrast no longer names Blackstone, Hilton and Toys R Us, so it does not repeat [[hilton-and-skype]]'s opening word for word; added the "Begin with [[hilton-and-skype]]" line other part introductions have.
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after the opening IN THIS SECTION callout, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-26: Make the section description and case map lead with named company events before the transferable questions; align the specification heading with Part VIII. Preserve the short orientation format and stable permalink.
 - 2026-09-24 (part order): LEARN renumbered to Part VIII (folder `part-8-intro`, permalink `part-8`); opening recalls Part VII. Body otherwise unchanged.
