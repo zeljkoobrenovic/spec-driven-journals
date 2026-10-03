@@ -31,7 +31,7 @@ icon: "assets/icons/04-understand-funding-choices.png"
 <br>
 A business has customers and a useful product. Its founder might want money to expand it, or might want to retire and sell their shares, the units of ownership in the company. Those are different needs, even if both conversations begin with “we need an investor.”
 
-The preceding chapters explained funding, ownership, valuation (what a business is estimated to be worth) and returns (what an investor gets back for the money put in). This chapter uses them to answer a narrower question: **how much money does the next piece of work actually need**, and which arrangement can supply it without attaching **conditions** the work cannot meet?
+The preceding chapters explained funding, ownership, valuation and returns, and the last showed that an investor's return depends on price, borrowing and timing as much as on the business. This chapter turns the question around: **how much money does the next piece of work actually need**, and which arrangement can supply it without attaching **conditions** the work cannot meet?
 
 Product and engineering leaders may not choose the investor, but they inherit the consequences of the choice. The terms of the funding, the conditions attached to the money, and the investor’s expectations affect the pace at which results are expected, how much loss the shareholders will tolerate and how long the plan has before it is judged. Those **terms come from the agreement**, not from the category on the investor’s website: two growth investors can offer different rights and different patience. A migration (moving customers or data from an old system to a new one) or a product bet that fits one set of terms can be unaffordable or unwanted under another.
 
