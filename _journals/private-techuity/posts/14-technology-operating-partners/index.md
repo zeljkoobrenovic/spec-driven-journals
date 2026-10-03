@@ -190,6 +190,14 @@ The function can still share evaluation methods and supplier knowledge across al
 
 At review, the first company examines resolution quality (whether customers’ problems were actually solved), customer waiting time, human review effort and total running cost. Hours released are a **capacity benefit**: time freed for other work, until the company shows how that time was used. They become a **cash saving** only when spending falls against an agreed comparison, such as support spending before the pilot, after counting the tool’s own setup and running costs over the same period. If support staff answer more questions on unchanged pay, the company has gained capacity, not cash. If it cuts paid overtime, that may save cash, but not if the tool’s charges and running costs exceed the overtime avoided. Even a successful pilot does not isolate the operating partner’s contribution from the company team’s work. These measurement distinctions are developed in [[test-revenue-assumptions]].
 
+## Aside: Building Credibility Across Companies
+
+*This aside is for technology executives considering portfolio work; company leaders can skip it.*
+
+David Mackey, a partner at Albany, describes a route into the role through **interim, fractional and advisory assignments**. His sequence starts with identifying the company sizes, industries and problems where a leader has relevant achievements, then delivering an assignment and developing relationships with the fund’s investment and operating teams. Further engagements create a record across different situations and people who can speak to the results. He emphasizes technical diagnosis, versatility and communication with founders, executives and investors. This is a recruiter’s account of his practice. I consulted a supplied text copy of the post. [S90: David Mackey, becoming a tech operating partner](https://www.linkedin.com/posts/davidatalbany_want-to-become-a-tech-operating-partner-at-activity-7388847857598107648-EAg4/)
+
+For the company roles compared earlier, experience in one company provides a starting point. Moving into portfolio work also requires adapting that experience to unfamiliar teams, different constraints and an assignment with a defined end. For the company receiving help, references from comparable engagements are useful evidence to examine. They do not replace agreement on the current assignment’s scope, authority and resources, and this route offers no guarantee of a permanent operating-partner appointment.
+
 ## What Company Leaders Should Expect
 
 Ask for a short explanation of the assignment: the decision or operating constraint, the people available, the cost, the authority to act and the next review. The charter in [[set-terms-of-help]] supplies the detail when an assignment starts.
@@ -199,14 +207,6 @@ Ask for a short explanation of the assignment: the decision or operating constra
 The operating function earns its place when it helps the company make a better decision, deliver a funded improvement or acquire a capability it can sustain. Review those contributions alongside customer outcomes, continuing obligations and team capacity. The number of assessments completed or technologies deployed can describe activity; the leader still needs to know what changed and whether the result is worth its cost.
 
 Part IV turns investor expectations into work the company can deliver, starting with the outcomes the work should move: [[part-4]] and [[adopt-outcome-thinking]].
-
-## Aside: Building Credibility Across Companies
-
-*This aside is for technology executives considering portfolio work; company leaders can skip it.*
-
-David Mackey, a partner at Albany, describes a route into the role through **interim, fractional and advisory assignments**. His sequence starts with identifying the company sizes, industries and problems where a leader has relevant achievements, then delivering an assignment and developing relationships with the fund’s investment and operating teams. Further engagements create a record across different situations and people who can speak to the results. He emphasizes technical diagnosis, versatility and communication with founders, executives and investors. This is a recruiter’s account of his practice. I consulted a supplied text copy of the post. [S90: David Mackey, becoming a tech operating partner](https://www.linkedin.com/posts/davidatalbany_want-to-become-a-tech-operating-partner-at-activity-7388847857598107648-EAg4/)
-
-For the company roles compared earlier, experience in one company provides a starting point. Moving into portfolio work also requires adapting that experience to unfamiliar teams, different constraints and an assignment with a defined end. For the company receiving help, references from comparable engagements are useful evidence to examine. They do not replace agreement on the current assignment’s scope, authority and resources, and this route offers no guarantee of a permanent operating-partner appointment.
 
 ## Questions to Consider
 

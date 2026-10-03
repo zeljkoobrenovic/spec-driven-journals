@@ -60,6 +60,7 @@ Draft link list: `_drafts/14-technology-operating-partners/online-source.md`. Co
 
 ## Changelog
 
+- 2026-10-03: "Aside: Building Credibility Across Companies" moved before "What Company Leaders Should Expect", so the chapter (and Part III) ends on the leaders' section and the handoff to [[part-4]]. Wording unchanged. Article only.
 - 2026-10-03: The link back to [[clarify-adviser-role]] now names Morgan and the Technology Principal, placing that role inside the operating-partner function this chapter examines. Article only.
 - 2026-09-28: Closing hand-over now points to [[adopt-outcome-thinking]], which opens Part IV, instead of set-priorities.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
