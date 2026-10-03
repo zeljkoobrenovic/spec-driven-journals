@@ -36,7 +36,7 @@ Larkspur, the fictional software company this book follows, sells scheduling sof
 
 The help Larkspur chose is an **outside specialist** from the investment firm’s own team, lent to Larkspur for a few weeks to make the setup work repeatable. So two specialists appear in this chapter. The *implementation specialist* is Larkspur’s employee, the dependence the company wants to reduce; the *outside specialist* is the help brought in to reduce it.
 
-But suppose Larkspur brought the specialist in with **nothing agreed**. Two weeks later, the outside specialist could have interviewed the same engineers three times, while the customer team still did not know what would change or who was paying for the work. The offer named a person but left the work undefined.
+But suppose Larkspur brought the specialist in with **nothing agreed**. Two weeks later, the outside specialist could have interviewed the same engineers three times, while the customer team still did not know what would change or who was paying for the work. The request named a person but left the work undefined.
 
 This chapter follows what Larkspur does instead: it **agrees the work before the specialist’s first day**. The piece of support is an **engagement**, with a purpose, participants and boundaries, and the agreement is recorded in an **engagement charter**, a short record of what was agreed.
 
