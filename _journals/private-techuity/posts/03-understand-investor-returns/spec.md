@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-28
+revised: 2026-10-03
 ---
 
 # Spec: Same Company, Same Performance, Three Different Returns
@@ -61,6 +61,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-10-03: Bridged from [[understand-valuation]]: an opening sentence ties the entry and exit prices to the previous chapter's valuation, EBITDA is described as introduced there and recapped here, and the dilution example is named as the smaller Larkspur's first outside round from that chapter (figures unchanged). Article only; summary and comic unchanged.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.
 

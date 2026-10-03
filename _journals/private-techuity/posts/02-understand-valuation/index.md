@@ -169,7 +169,7 @@ If the answers are “nothing specific,” “not yet” and “nobody,” the a
 
 ## What to Carry Forward
 
-You can now ask which value is being quoted and which assumptions need testing. The next question is what the investor expects to get back from it, and why two investors holding the same company through the same performance can report different results: the chapter [[understand-investor-returns]].
+You can now ask which value is being quoted and which assumptions need testing. The next question is what the investor gets back, and why the same company performance can return very different amounts depending on the price paid, the borrowing and the timing: the chapter [[understand-investor-returns]].
 
 ## Questions to Consider
 
