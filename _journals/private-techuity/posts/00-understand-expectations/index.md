@@ -12,7 +12,7 @@ icon: "assets/icons/00-understand-expectations.png"
 
 > **IN THIS SECTION, YOU WILL:** Learn what customers, lenders and shareholders each expect in return for their money.
 
-> **WHY INVESTORS CARE:** Lenders are investors too. Shareholders expect the rights attached to their shares, and lenders expect repayment and the protections written into their loan contracts. Each prices its money accordingly. Establish which financing arrangement supplies the money before treating it as a budget.
+> **WHY INVESTORS CARE:** Shareholders expect the rights attached to their shares, and lenders expect repayment and the protections written into their loan contracts. Each prices its money accordingly.
 
 > **WHY YOU SHOULD CARE:** Every commitment you make to a team is paid for by someone who expects something back. If you do not know what they expect, you cannot know which promises the company can keep.
 
@@ -25,13 +25,13 @@ icon: "assets/icons/00-understand-expectations.png"
 
 > **[DYSFUNCTIONS THIS SECTION ADDRESSES](where-investment-goes-wrong.html):**
 >
-> * **Spending the Press Release** — Shows which payments reach the company and what conditions come with them.
+> * **Spending the Press Release** — Shows which payments reach the company and what conditions come with them, to avoid disappointment and confusion.
 > * **The Nodding Room** — Distinguishes what customers, lenders and shareholders expect from the same company.
 
-<br>a
+<br>
 A company needs cash to pay people, buy supplies and develop its products, often before its customers pay. **Financing** means arranging that money, and the source matters because each one brings different costs, expectations and rights.
 
-Product and engineering leaders usually meet money as a **budget**: an approved amount that their team may spend on agreed work over a set period, typically a year. A budget shows how much may be spent, but not where the money came from or what the company owes in return. This chapter follows one need through three funding routes so that the terms behind a budget become as visible as the amount. It first sets up the example, then describes the four common ways cash reaches a business and what a share represents. It then compares the same need funded three ways, and ends with a brief look at public and private ownership and at investor labels.
+Product and engineering leaders usually meet money as a **budget**: an approved amount that their team may spend on agreed work over a set period, typically a year. A budget shows how much may be spent, but not where the money came from or what the company owes in return. This chapter follows one company's need for cash through three funding routes so that the terms behind a budget become as visible as the amount. It first sets up the example, then describes the four common ways cash reaches a business and what a share represents. It then compares the same need funded three ways, and ends with a brief look at public and private ownership and at investor labels.
 
 ![Customers, a lender and a shareholder feed a financing arrangement whose terms (when, approvals, owed in return) sit behind the budget amount a team sees.](assets/images/00-understand-expectations/financing-behind-the-budget.jpeg)
 **Figure 1:** *A budget shows the amount; the financing behind it sets when it may be spent, who must approve and what the company owes in return.*
@@ -42,13 +42,13 @@ Larkspur is the fictional scheduling-software company used throughout this book.
 
 Three people have to decide where the money comes from: Ines, the chief executive officer (CEO), who runs the company; Sam, the chief financial officer (CFO), who manages its money; and Alex, the chief technology officer (CTO), who leads its four engineers.
 
-Every figure in this example is fictional, and the scenario is the earliest in the book: a small Larkspur owned by its **founders**, the people who started it, with no outside investor yet. Its existing subscriptions cover its current running costs: the salaries, the **hosting** (the computing services that run the software) and customer support. About €1,500 a month is left over, and nothing for new work. Later chapters give the same company larger, separately stated figures.
+Every figure in this example is fictional, and the scenario is the earliest in the book: a small Larkspur owned by its **founders**, the people who started it, with no outside investor yet. Its existing subscriptions cover its current running costs: the salaries, the **hosting** (the computing services that run the software) and customer support. About €1,500 a month is left over, and nothing for new work.
 
 ## Four Common Ways Cash Reaches a Business
 
 **Customer payments.** Customers pay for the software, sometimes as a **prepayment** — money paid before the service has been delivered (e.g., annual subscriptions). The company must **provide** what it promised and may have **refund** obligations. After paying the costs of serving customers, it can use any remaining cash to fund further work. Larkspur could try to obtain €100,000 via a prepayment from customers wanting a new feature, which would turn the 1 March feature date into a contractual promise.
 
-**Borrowing.** A lender, such as a bank, provides a loan. **Debt** means borrowing that must be repaid. The amount borrowed is the **principal**; **interest** is the charge for using that money, usually stated as a yearly percentage of the amount still owed. The loan agreement sets repayment dates and other conditions. A loan doesn't ordinarily give the lender shares in the company, but its conditions can restrict company decisions. Lenders are investors too: they invest by lending, and they expect repayment and the protections in the contract rather than ownership. Investor.gov describes a bond the same way: an investor lends money to the organization that issued the bond and receives interest plus the original amount back on an agreed date. [S72: Investor.gov bonds page](https://www.investor.gov/introduction-investing/investing-basics/investment-products/bonds-or-fixed-income-products/bonds) When this book says "investor" without qualification, it usually means a shareholder or the **investment fund** behind one (a pool of money invested on behalf of others); lenders are named as lenders. So Larkspur could also try to borrow €100,000, but repayments would likely start before the feature earns anything.
+**Borrowing.** A lender, such as a bank, provides a loan. **Debt** means borrowing that must be repaid. The amount borrowed is the **principal**; **interest** is the charge for using that money, usually stated as a yearly percentage of the amount still owed. The loan agreement sets repayment dates and other conditions. A loan doesn't ordinarily give the lender shares in the company, but its conditions can restrict company decisions. Lenders are investors too: they **invest by lending**, and they expect repayment and the protections in the contract rather than ownership. Investor.gov describes a bond the same way: an investor lends money to the organization that issued the bond and receives interest plus the original amount back on an agreed date. [S72: Investor.gov bonds page](https://www.investor.gov/introduction-investing/investing-basics/investment-products/bonds-or-fixed-income-products/bonds) When this book says "investor" without qualification, it usually means a shareholder or the **investment fund** behind one (a pool of money invested on behalf of others); lenders are named as lenders. So Larkspur could also try to borrow €100,000, but repayments would likely start before the feature earns anything.
 
 **Money from owners.** A founder or another investor contributes money in exchange for ownership. **Equity** means an ownership interest. Unlike a loan, it generally has no fixed repayment schedule. The shareholder can gain if the investment becomes more valuable, and can lose the money invested. For Larkspur, a new shareholder would gain rights over future decisions, not only over this feature.
 
@@ -89,7 +89,7 @@ Whichever route supplies it, the money pays for the same things. Larkspur's four
 - about €35,000 for contract implementation specialists who move the three customers' data across and train their dispatchers;
 - a €10,000 reserve for overruns.
 
-Alex estimates the feature at eight **engineer-weeks**: one engineer's work for eight weeks or, as Alex plans it, two engineers working full time for four weeks. Two engineers start on Monday 19 January 2026 and finish by Friday 13 February, two weeks before 1 March; the other two keep the existing product running with the contract engineer's help. Twelve engineer-weeks would end on 27 February with no margin left, which is why twelve is the limit.
+Alex estimates the feature at eight **engineer-weeks**: one engineer's work for eight weeks or, as Alex plans it, two engineers working full time for four weeks. Two engineers start on Monday 19 January 2026 and finish by Friday 13 February, two weeks before 1 March; the other two keep the existing product running with the contract engineer's help.
 
 Under the prepayment, Ines countersigns the three orders on Friday 16 January and the customers pay within 14 days, so the cash is in the bank by 30 January. The licence and the contractors are ordered from 1 February, once the money has arrived; the engineers' own work needs no new cash, so it starts on 19 January. The order of events is the same on every route: the build finishes on 13 February, the feature goes live for the customers on 1 March, and any loan repayment falls due at the end of each month, starting the month after the money arrives. Under the loan or the share issue, the cash would arrive in one sum at about the same date and be spent the same way. What changes under the loan is when the customers pay. They would sign ordinary annual subscriptions instead of prepaying, invoiced when the feature goes live on 1 March and payable within 30 days. They could pay on any day up to Tuesday 31 March. Sam's forecast counts on their €100,000 arriving on that deadline, not before it.
 
@@ -162,7 +162,7 @@ Whichever label applies, the leadership consequence is a question to investigate
 
 ## Carry the Funding Question Into the Next Chapter
 
-Larkspur's €100,000 was small enough for three people to trace in an afternoon. The next chapter starts from a €100 million investment announcement and asks the same two questions: who actually receives the money, and which body can authorize its use? The chapter [[understand-funding-control]] follows those questions through the organizations a larger transaction involves.
+Larkspur's €100,000 was small enough for three people to trace in an afternoon. The rest of the book moves forward a few years: Larkspur now has outside shareholders, a board and many more customers, and its funding involves investment firms, funds and corporate buyers, not just three customers and a bank. The next chapter starts from a €100 million investment announcement and asks the same two questions: who actually receives the money, and which body can authorize its use? The chapter [[understand-funding-control]] follows those questions through the organizations a larger transaction involves.
 
 ## Questions to Consider
 
