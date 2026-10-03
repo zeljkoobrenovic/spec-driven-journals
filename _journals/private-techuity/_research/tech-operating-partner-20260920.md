@@ -16,7 +16,7 @@ Direct descriptions from KKR Capstone (S85) and Blackstone’s 7 May 2026 interv
 
 The supplied Korn Ferry web article’s linked full report was not reviewed. Acertitude’s hiring-growth and secondary survey numbers, Vertex’s comparative performance claims and portfolio thresholds, and Vaultinum’s stated average holding period were not adopted. Attempts to access TOGAF pages failed; those pages are not cited. The reviewed evidence supports a qualitative account of the widening function, not a market-wide hiring trend or a causal return premium.
 
-The function map, practical role comparison, proposed responsibilities, three-company AI example and evaluation questions are the author’s synthesis. The fictional example is independent of the existing Larkspur chain. Source identifiers S79–S90 were added to the public bibliography and machine-readable register; pre-existing identifiers and register gaps were retained.
+The function map, practical role comparison, proposed responsibilities, three-company AI example and evaluation questions are the author’s synthesis. The fictional example is independent of the existing Rotaline chain. Source identifiers S79–S90 were added to the public bibliography and machine-readable register; pre-existing identifiers and register gaps were retained.
 
 ## Integration
 

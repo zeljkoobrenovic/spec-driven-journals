@@ -7,7 +7,7 @@
 
 **Comic.** The retailer reported positive operating earnings (the accounting profit from running the business, before interest and tax), a net loss and almost no operating cash flow (the cash received from customers minus the cash paid out in day-to-day trading, interest included here; new borrowing and purchases of long-lived assets are counted separately) in the same year, then a supplier cash shock. The panels follow what the documents show: why a technology transition needed funding, and how earlier supplier payments left less room to fund it. They do not show that the proposed work would have restored competitiveness.
 
-Morgan is a technology adviser at an investment firm; Alex leads technology, Priya leads product and Sam leads finance at Larkspur, a fictional software company. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
+Morgan is a technology adviser at an investment firm; Alex leads technology, Priya leads product and Sam leads finance at Rotaline, a fictional software company. All are fictional. Comparative scenarios use separate assumptions. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
@@ -130,9 +130,9 @@ Morgan is a technology adviser at an investment firm; Alex leads technology, Pri
   "status": "generated",
   "asset": "assets/images/28-toys-r-us/comic-06-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 6 of an explainer comic. Priya and Sam place a separate Larkspur funding question beside the retailer’s historical records. Use one speech bubble with the exact words: \"Can our company fund the whole transition?\" Convey: The case raises a funding question for Larkspur, the fictional company, not a causal finding about every investor. Test your own operating cash flow, capital expenditure (spending on durable assets such as equipment and software) and payment terms before assuming a product improvement can sustain the transition.",
-  "alt": "Comic panel: Priya and Sam place a funding question for Larkspur, their fictional company, beside the retailer’s historical records.",
-  "caption": "The case raises a funding question for Larkspur, the fictional company, not a causal finding about every investor. Test your own operating cash flow, capital expenditure (spending on durable assets such as equipment and software) and payment terms before assuming a product improvement can sustain the transition.",
+  "prompt": "Panel 6 of an explainer comic. Priya and Sam place a separate Rotaline funding question beside the retailer’s historical records. Use one speech bubble with the exact words: \"Can our company fund the whole transition?\" Convey: The case raises a funding question for Rotaline, the fictional company, not a causal finding about every investor. Test your own operating cash flow, capital expenditure (spending on durable assets such as equipment and software) and payment terms before assuming a product improvement can sustain the transition.",
+  "alt": "Comic panel: Priya and Sam place a funding question for Rotaline, their fictional company, beside the retailer’s historical records.",
+  "caption": "The case raises a funding question for Rotaline, the fictional company, not a causal finding about every investor. Test your own operating cash flow, capital expenditure (spending on durable assets such as equipment and software) and payment terms before assuming a product improvement can sustain the transition.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -141,8 +141,8 @@ Morgan is a technology adviser at an investment firm; Alex leads technology, Pri
 }
 -->
 
-![Comic panel: Priya and Sam place a funding question for Larkspur, their fictional company, beside the retailer’s historical records.](assets/images/28-toys-r-us/comic-06-scene.jpeg)
+![Comic panel: Priya and Sam place a funding question for Rotaline, their fictional company, beside the retailer’s historical records.](assets/images/28-toys-r-us/comic-06-scene.jpeg)
 
-**Panel 6:** The case raises a funding question for Larkspur, the fictional company, not a causal finding about every investor. Test your own operating cash flow, capital expenditure (spending on durable assets such as equipment and software) and payment terms before assuming a product improvement can sustain the transition.
+**Panel 6:** The case raises a funding question for Rotaline, the fictional company, not a causal finding about every investor. Test your own operating cash flow, capital expenditure (spending on durable assets such as equipment and software) and payment terms before assuming a product improvement can sustain the transition.
 
 *Dialogue:* “Can our company fund the whole transition?”

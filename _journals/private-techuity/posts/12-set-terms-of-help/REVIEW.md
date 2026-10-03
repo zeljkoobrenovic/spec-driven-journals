@@ -18,7 +18,7 @@ The current structure works. The main remaining issues are the calendar shared w
 
 4. **Low impact — replace editorial section language with reader language.** “Apply the Boundaries Other Chapters Own” and “Each gets one paragraph here; the argument lives at its home” expose the editing plan. “Keep the assignment inside the company's plan” would introduce the three applied boundaries naturally. The opening and closing now work; shorten the recap rather than adding another outline.
 
-5. **Low impact — keep the charter's authority rules explicitly local.** The separate assessment process is an agreed Larkspur arrangement. Avoid inheriting [the adviser chapter's](../18-investors-adviser/REVIEW.md) universal claim that every investor assessment requires new company permission. Existing reporting and information rights still need to be understood.
+5. **Low impact — keep the charter's authority rules explicitly local.** The separate assessment process is an agreed Rotaline arrangement. Avoid inheriting [the adviser chapter's](../18-investors-adviser/REVIEW.md) universal claim that every investor assessment requires new company permission. Existing reporting and information rights still need to be understood.
 
 ## Verification and formats
 

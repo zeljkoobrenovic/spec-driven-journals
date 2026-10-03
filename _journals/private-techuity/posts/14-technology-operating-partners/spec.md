@@ -36,7 +36,7 @@ Product and engineering leaders working under investors; secondarily investment 
 
 ## Non-goals
 
-A comprehensive career guide, compensation survey, financial forecast, endorsement of a supplier, or claim that an operating partner replaces company management. Do not restore the discontinued Productscapes appendix or rewrite the existing Larkspur scenario.
+A comprehensive career guide, compensation survey, financial forecast, endorsement of a supplier, or claim that an operating partner replaces company management. Do not restore the discontinued Productscapes appendix or rewrite the existing Rotaline scenario.
 
 ## Modalities
 

@@ -57,7 +57,7 @@ The proposed accelerator portfolio and minimum number of priorities are not vali
 
 ### Values that must remain illustrative
 
-The input's €1.2 million over 24 months and 60% onboarding-improvement example are illustrative proposal numbers, not verified company results. Null baseline/actual fields must remain unknown. The first draft uses its own clearly fictional Larkspur examples and does not convert model instances, team labels, or capability counts into claims about existing operations.
+The input's €1.2 million over 24 months and 60% onboarding-improvement example are illustrative proposal numbers, not verified company results. Null baseline/actual fields must remain unknown. The first draft uses its own clearly fictional Rotaline examples and does not convert model instances, team labels, or capability counts into claims about existing operations.
 
 ## Preservation
 

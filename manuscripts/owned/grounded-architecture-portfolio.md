@@ -11,7 +11,7 @@
 > * **Reuse the foundations for understanding.** Lightweight analytics and collaborative networks build a shared, evidence-based view of technology and of the people behind it. Both are highly transferable because neither depends on authority.
 > * **Adapt the mechanisms for acting.** An investment portfolio is not one organization. Decision rights, company autonomy, time horizons and investment objectives differ from company to company, so the operating model must be designed around them rather than copied from a corporate group.
 
-> **[DYSFUNCTIONS THIS SECTION HELPS ADDRESS](#where-investment-goes-wrong):**
+> **[DYSFUNCTIONS THIS SECTION ADDRESSES](#where-investment-goes-wrong):**
 >
 > * **The Dusty Address Book** — Maps expertise across companies and creates routes for people to ask one another for help.
 > * **The Accidental Gatekeeper** — Builds shared understanding and support around each company’s authority instead of creating a central approval bottleneck.

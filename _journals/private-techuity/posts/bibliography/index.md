@@ -67,7 +67,7 @@ For a first reading, follow the citations attached to the chapter you are studyi
 
 ## Proposed Methods and Empirical Evidence
 
-The historical cases, filings and research studies are evidence about what happened in particular settings, within the limits each entry states. The templates, checklists, fictional calculations, the Larkspur examples and the Technology Principal example role are proposed methods: my reasoning about how to work under the conditions the evidence describes. No source on this page validates those methods. The studies were not designed to test them, the guidance documents describe practices rather than measure their effect, and the private inputs supply ideas rather than operating results. Judge a method by whether it fits your decision, not by the citations near it.
+The historical cases, filings and research studies are evidence about what happened in particular settings, within the limits each entry states. The templates, checklists, fictional calculations, the Rotaline examples and the Technology Principal example role are proposed methods: my reasoning about how to work under the conditions the evidence describes. No source on this page validates those methods. The studies were not designed to test them, the guidance documents describe practices rather than measure their effect, and the private inputs supply ideas rather than operating results. Judge a method by whether it fits your decision, not by the citations near it.
 
 ## Evidence Used Versus Further Reading
 

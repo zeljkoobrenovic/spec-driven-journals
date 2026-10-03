@@ -46,7 +46,7 @@ A tutorial on implementing the analytics tooling; a survey of portfolio-monitori
 - 2026-09-23: One chapter rather than three. The argument depends on holding the three pillars against each other; at roughly 4,300 words the article is within the range of the book's long chapters.
 - 2026-09-23: Recreate the Appendix section (removed 2026-09-21 when its two articles moved into Part IV) rather than place the article in Part IV or Reference Material. The article is a framework application, not a step in the reader's journey and not a reference record.
 - 2026-09-23: Register the framework pages as separate identifiers (S110–S115) rather than fold them into S108, so each cited claim points to the page that carries it.
-- 2026-09-23: Use a new fictional investor (Tidewater) independent of Larkspur and Northline, so the example can span nine companies without touching the existing scenario chain.
+- 2026-09-23: Use a new fictional investor (Tidewater) independent of Rotaline and Northline, so the example can span nine companies without touching the existing scenario chain.
 
 ## Sources
 

@@ -14,7 +14,7 @@ This is a synthesis and evaluative proposal, not a causal theorem established by
 
 Part I establishes the economic grammar before offering operating advice. Part II shows how the arrangement changes authority and behavior. Part III connects familiar technology work to specific mechanisms and financial constraints. Part IV makes that connection the Principal's lifecycle responsibility. Part V develops the author's distinctive product hypothesis after readers can see what it must explain. Part VI tests the argument against positive, mixed, adverse, and empirical evidence.
 
-Twenty-six question-led articles allow independent reading. The repeatable fictional company Larkspur carries worked mechanisms without pretending to be a real case. The real cases provide uneven but traceable evidence, with their causal limitations made explicit. Reference pages hold definitions and practical forms so chapters can remain analytical essays.
+Twenty-six question-led articles allow independent reading. The repeatable fictional company Rotaline carries worked mechanisms without pretending to be a real case. The real cases provide uneven but traceable evidence, with their causal limitations made explicit. Reference pages hold definitions and practical forms so chapters can remain analytical essays.
 
 The first draft is approximately short-book length in its core text. It needs deeper longitudinal cases and a stronger range of company sizes before it could become a mature commercial book. Adding words without better evidence would not address that need.
 

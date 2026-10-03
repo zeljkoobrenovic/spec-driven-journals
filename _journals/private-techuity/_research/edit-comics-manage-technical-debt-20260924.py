@@ -16,7 +16,7 @@ def strips(b): return b['strips']
 # ---- page 1
 m, b = blocks['01-two-questions-one-wrong-answer']
 strips(b)[1]['bubbles'][0]['text'] = "Debt is the extra cost we carry each month because of how it's built."
-b['caption'] = ("Every amount and date in this comic is invented for the example. Larkspur is a fictional company that sells "
+b['caption'] = ("Every amount and date in this comic is invented for the example. Rotaline is a fictional company that sells "
   "scheduling software; an investor owns a large stake in it, and the board is the group of directors that oversees the "
   "company. Technical debt is the extra cost a company carries because its software was built, or has aged, in ways that "
   "make it slower, riskier or dearer to change than it needs to be; the word is a metaphor, not a loan. Morgan advises the "
@@ -35,7 +35,7 @@ m, b = blocks['02-five-items-four-origins']
 strips(b)[0]['bubbles'][0]['text'] = "Five items: the board's shortlist. The full register behind it is longer."
 strips(b)[2]['labels'] = ["ABOUT €10,000 A MONTH", "2 INVOICE INCIDENTS A QUARTER", "FAILOVER: 45 MINUTES", "€12,000 A MONTH NOT WON"]
 strips(b)[2]['bubbles'][0]['text'] = "Carried, the five cost about €10,000 a month: €5,500 cash, €4,600 of our time."
-b['caption'] = ("Larkspur's register has five items; they are the board's shortlist, and a longer register sits behind them. The origin "
+b['caption'] = ("Rotaline's register has five items; they are the board's shortlist, and a longer register sits behind them. The origin "
   "of each decides who owns it and what the remedy usually is; a deliberate shortcut recorded with a date and an owner is not a "
   "failure of record, an undated one is. A tranche is a separately approved stage of work, so growth that outran a design is fixed "
   "in tranches. Carried, the five cost about €10,000 a month: €5,500 of cash paid to hosting providers and about €4,600 of the "
@@ -57,7 +57,7 @@ b['caption'] = ("A reduction project is presented the way the board reads any in
   "preserves. None of the three can be priced exactly, so the work is judged on the register columns it moves, measured before and "
   "after. The board rarely sees the failures a fix prevented, because a prevented failure is invisible while the effort sits on this "
   "quarter's budget; the after column is the answer. For the engine, a failover, moving its work to a replacement server, takes 45 "
-  "minutes; Larkspur promises its service is usable 99.9% of the month, which allows about 43 minutes of downtime, so one real failover "
+  "minutes; Rotaline promises its service is usable 99.9% of the month, which allows about 43 minutes of downtime, so one real failover "
   "would use the whole month's allowance. The two-second promise for confirming an appointment is a separate measure, response time, "
   "which this work does not change. Ines is the chief executive.")
 b['alt'] = ("Comic page in three strips: three cards read revenue protected or enabled, cost or risk removed, and a decision kept open; a "
@@ -115,7 +115,7 @@ b['caption'] = ("A migration moves software from one platform or vendor to anoth
   "shape in which that is right. It goes first, ahead of the scheduling engine whose carrying cost is larger, because its date is "
   "close and its work is small: six engineer-weeks, one person working one week each, and €5,000 of cash. The rule has two parts: "
   "items whose external date is closer than the work needs go first, in date order; the rest are ordered by the carrying cost each "
-  "stage of effort would remove, across all three columns. The vendor has named the successor to the retiring AI model; Larkspur "
+  "stage of effort would remove, across all three columns. The vendor has named the successor to the retiring AI model; Rotaline "
   "tests it on its release samples by 15 January 2028, about ten weeks before the retirement. If it fails, a decision is due within "
   "sixty days, and the fallback is a review mode in which a person confirms every classification the model proposes.")
 b['alt'] = ("Comic page in three strips: a timeline marks patches ended 31 March 2027, security review by March 2028, and model retires "
@@ -171,7 +171,7 @@ b['caption'] = ("Some debt is worth carrying, and saying so is honest. The invoi
   "buys failover by March for about €50,000 of staff time and €8,000 of cash, against a rewrite of about €300,000 of staff time and "
   "€40,000 of cash whose benefit arrives only at month nine.")
 b['alt'] = ("Comic page in three strips: Ines holds a card reading carried, invoicing tangles, about €3,000 a month, review every quarter, "
-  "and says some debt is worth carrying; Morgan asks how much technical debt Larkspur has and Alex answers with three cards, five items "
+  "and says some debt is worth carrying; Morgan asks how much technical debt Rotaline has and Alex answers with three cards, five items "
   "about €10,000 monthly, incidents from invoicing and engine, €12,000 a month not won; Morgan asks why not rewrite and two cards compare "
   "the rewrite, benefit at month nine, €300,000 of time plus €40,000 of cash, with tranche 1, benefit at month three, €50,000 of time "
   "plus €8,000 of cash.")
@@ -181,8 +181,8 @@ out = text
 for pid, (m, b) in sorted(blocks.items(), key=lambda kv: -kv[1][0].start()):
     out = out[:m.start(1)] + json.dumps(b, ensure_ascii=False, indent=2) + out[m.end(1):]
 # intro
-out = out.replace("Seven pages show Larkspur answering with a register of five items, each with a monthly carrying cost in three columns, and funding the first fix in tranches released by measured gates, with one dated item going first and one item deliberately carried.",
- "Seven pages show Larkspur answering with a register of five items, each with a carrying cost in three columns, what it costs to keep each month, what risk it carries and what it slows, and funding the first fix in tranches, separately approved stages of work, each released by a gate, an agreed check that the previous stage worked, with one dated item going first and one item deliberately carried.")
+out = out.replace("Seven pages show Rotaline answering with a register of five items, each with a monthly carrying cost in three columns, and funding the first fix in tranches released by measured gates, with one dated item going first and one item deliberately carried.",
+ "Seven pages show Rotaline answering with a register of five items, each with a carrying cost in three columns, what it costs to keep each month, what risk it carries and what it slows, and funding the first fix in tranches, separately approved stages of work, each released by a gate, an agreed check that the previous stage worked, with one dated item going first and one item deliberately carried.")
 P.write_text(out)
 # word-limit check
 for pid,(m,b) in blocks.items():

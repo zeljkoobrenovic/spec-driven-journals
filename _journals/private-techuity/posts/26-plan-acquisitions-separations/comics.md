@@ -24,7 +24,7 @@
 
 Two words recur. **Integration** is the work of making selected activities of two businesses operate together. A **carve-out** is the separation of a business from its **parent**, the larger business that owns it.
 
-The people are all fictional. Ines is Larkspur’s chief executive; Alex leads technology, Priya leads product and Sam leads finance; Morgan advises an investor. The two scenarios are invented, use their own figures and dates, and say where each starts.
+The people are all fictional. Ines is Rotaline’s chief executive; Alex leads technology, Priya leads product and Sam leads finance; Morgan advises an investor. The two scenarios are invented, use their own figures and dates, and say where each starts.
 
 <!-- comic-page
 {
@@ -93,7 +93,7 @@ The people are all fictional. Ines is Larkspur’s chief executive; Alex leads t
     }
   ],
   "alt": "Comic page in three strips: Morgan holds an agreement reading purchase completed while Alex says ownership is only the beginning; a diagram shows the new boundary as a line with customers on both sides; two cards give the completion tests, combining is done when the benefit is evidenced and separating is done when the business runs alone.",
-  "caption": "Every figure and date in this comic is fictional. An acquisition is the purchase of a business or a share of its ownership; integration is the work of making selected activities of two businesses operate together. A carve-out is the separation of a business from its parent, the larger business that owns it. Both draw a new boundary around a business while customers on both sides expect the product to keep working, contracts to be honored and support to answer. The buyer’s thesis is its explanation of how the purchase creates value, and to price it in is to pay for that benefit before the company has produced it. Combining is complete when the chosen integration works for customers and the benefit is evidenced; separating is complete when the business has run for a defined period with no temporary service from the parent. Morgan advises an investor; Ines is Larkspur’s chief executive and Alex leads its technology.",
+  "caption": "Every figure and date in this comic is fictional. An acquisition is the purchase of a business or a share of its ownership; integration is the work of making selected activities of two businesses operate together. A carve-out is the separation of a business from its parent, the larger business that owns it. Both draw a new boundary around a business while customers on both sides expect the product to keep working, contracts to be honored and support to answer. The buyer’s thesis is its explanation of how the purchase creates value, and to price it in is to pay for that benefit before the company has produced it. Combining is complete when the chosen integration works for customers and the benefit is evidenced; separating is complete when the business has run for a defined period with no temporary service from the parent. Morgan advises an investor; Ines is Rotaline’s chief executive and Alex leads its technology.",
   "status": "generated",
   "generation": {
     "model": "gemini-3-pro-image-preview",
@@ -105,7 +105,7 @@ The people are all fictional. Ines is Larkspur’s chief executive; Alex leads t
 
 ![Comic page in three strips: Morgan holds an agreement reading purchase completed while Alex says ownership is only the beginning; a diagram shows the new boundary as a line with customers on both sides; two cards give the completion tests, combining is done when the benefit is evidenced and separating is done when the business runs alone.](assets/images/26-plan-acquisitions-separations/comic-page-01-a-new-boundary-a-continuing-promise.jpeg)
 
-**Page 1: A new boundary, a continuing promise.** Every figure and date in this comic is fictional. An acquisition is the purchase of a business or a share of its ownership; integration is the work of making selected activities of two businesses operate together. A carve-out is the separation of a business from its parent, the larger business that owns it. Both draw a new boundary around a business while customers on both sides expect the product to keep working, contracts to be honored and support to answer. The buyer’s thesis is its explanation of how the purchase creates value, and to price it in is to pay for that benefit before the company has produced it. Combining is complete when the chosen integration works for customers and the benefit is evidenced; separating is complete when the business has run for a defined period with no temporary service from the parent. Morgan advises an investor; Ines is Larkspur’s chief executive and Alex leads its technology.
+**Page 1: A new boundary, a continuing promise.** Every figure and date in this comic is fictional. An acquisition is the purchase of a business or a share of its ownership; integration is the work of making selected activities of two businesses operate together. A carve-out is the separation of a business from its parent, the larger business that owns it. Both draw a new boundary around a business while customers on both sides expect the product to keep working, contracts to be honored and support to answer. The buyer’s thesis is its explanation of how the purchase creates value, and to price it in is to pay for that benefit before the company has produced it. Combining is complete when the chosen integration works for customers and the benefit is evidenced; separating is complete when the business has run for a defined period with no temporary service from the parent. Morgan advises an investor; Ines is Rotaline’s chief executive and Alex leads its technology.
 
 - *Strip 1.* **Morgan:** “Ownership changed at signing.” **Alex:** “Ownership is only the beginning. Nothing operates together yet.”
 - *Strip 2.* **Ines:** “Combining businesses and separating one look like opposites.” **Alex:** “Same challenge: a new boundary, and customers who expect the product to keep working.”
@@ -302,7 +302,7 @@ The people are all fictional. Ines is Larkspur’s chief executive; Alex leads t
   "strips": [
     {
       "scene": "Exactly two engineers in plain grey clothes sit at one desk under a sign that hangs high above them, with three thick folders stacked in front of them, each folder with a label on its spine. Alex, at the left, points at the folders. Priya stands at the right.",
-      "narration": "Larkspur buys a forty-person dispatch company. Closing: 1 April 2026.",
+      "narration": "Rotaline buys a forty-person dispatch company. Closing: 1 April 2026.",
       "labels": [
         "THE ONLY TWO ENGINE EXPERTS",
         "INTEGRATION: 16 WEEKS",
@@ -377,7 +377,7 @@ The people are all fictional. Ines is Larkspur’s chief executive; Alex leads t
 
 **Page 4: Decide what waits.** The same engineers may be needed for the planned product work, keeping the service running, examining the next target and integrating the last one; a plan that assigns their time to each independently creates capacity that does not exist. In the fictional scenario the two engineers who understand the scheduling engine are needed for sixteen engineer-weeks of integration, ten for the customer portal promised to named customers, and three of due diligence, the examination of a business before buying it, on a second target. Two engineers across twenty-six weeks is fifty-two engineer-weeks; six go to leave and about twenty to support, an operating reserve that an incident can exceed, leaving twenty-six against twenty-nine. The integration goes first, so the combined offering is on sale on 1 January 2027 as priced; the portal moves one quarter to 31 December 2026, and the diligence starts on 6 July instead of 18 May. Contractors were rejected because they do not know the engine. The €150,000 integration cost is in the forecast the buyer used.
 
-- *Strip 1.* *Narration:* Larkspur buys a forty-person dispatch company. Closing: 1 April 2026. **Alex:** “Three pieces of work, one pair of engineers, six months.” **Priya:** “The portal is promised to named customers for July to September.”
+- *Strip 1.* *Narration:* Rotaline buys a forty-person dispatch company. Closing: 1 April 2026. **Alex:** “Three pieces of work, one pair of engineers, six months.” **Priya:** “The portal is promised to named customers for July to September.”
 - *Strip 2.* *Narration:* Engineer-weeks, April to September. **Sam:** “Twenty-six project weeks against twenty-nine needed.” **Alex:** “Three weeks don't fit, before any incident eats the support reserve.”
 - *Strip 3.* **Ines:** “Integration first. The portal moves one quarter; diligence from 18 May to 6 July.” **Priya:** “The board approves the change. The customers are told. The priced date holds.”
 
@@ -395,16 +395,16 @@ The people are all fictional. Ines is Larkspur’s chief executive; Alex leads t
   "strips": [
     {
       "scene": "A wall diagram, hung high above everyone's heads, shows a large outline containing a small box joined by four plain lines to four small boxes arranged around it, each with a label. Sam, at the left, points up at the small central box. Alex, at the right, points up at one of the four boxes. Nothing covers the lettering.",
-      "narration": "A separate scenario: Larkspur is a division being separated from its parent.",
+      "narration": "A separate scenario: Rotaline is a division being separated from its parent.",
       "labels": [
         "THE PARENT",
-        "LARKSPUR",
+        "ROTALINE",
         "SIGN-IN AND ACCOUNTS",
         "FINANCE AND PAYROLL",
         "NETWORK AND LICENCES",
         "CUSTOMER SUPPORT"
       ],
-      "label_notes": "THE PARENT is lettered along the top of the large outline; LARKSPUR is the small central box; the other four labels are the four boxes around it.",
+      "label_notes": "THE PARENT is lettered along the top of the large outline; ROTALINE is the small central box; the other four labels are the four boxes around it.",
       "bubbles": [
         {
           "who": "Sam",
@@ -455,7 +455,7 @@ The people are all fictional. Ines is Larkspur’s chief executive; Alex leads t
       ]
     }
   ],
-  "alt": "Comic page in three strips: a diagram shows Larkspur inside the parent, connected to sign-in and accounts, finance and payroll, network and licences, and customer support; a whiteboard compares the parent’s €400,000 a year charge with €700,000 a year bought alone plus €300,000 once to set up; three cards give the stages, day 1 keep everything working, then run independently, later improve.",
+  "alt": "Comic page in three strips: a diagram shows Rotaline inside the parent, connected to sign-in and accounts, finance and payroll, network and licences, and customer support; a whiteboard compares the parent’s €400,000 a year charge with €700,000 a year bought alone plus €300,000 once to set up; three cards give the stages, day 1 keep everything working, then run independently, later improve.",
   "caption": "A division can rely on its parent for sign-in and account control, networks, finance systems, procurement, licences, support, security and employment services. Its past accounts show an allocation, an accounting split of what the parent already spends, which is not a quotation for the same services bought separately. In the scenario the parent’s IT charge is €400,000 a year; buying the services independently costs €700,000 a year plus €300,000 of one-time setup, so the forecast behind the transaction must carry €300,000 more every year and €300,000 once, and a margin calculated on the old charge overstates what the separated company keeps. A transition services agreement, or TSA, supplies temporary access to the parent’s services; it buys time and does not perform the separation. Plan three stages: Day 1 continuity, independent operation, then improvement.",
   "status": "generated",
   "generation": {
@@ -466,11 +466,11 @@ The people are all fictional. Ines is Larkspur’s chief executive; Alex leads t
 }
 -->
 
-![Comic page in three strips: a diagram shows Larkspur inside the parent, connected to sign-in and accounts, finance and payroll, network and licences, and customer support; a whiteboard compares the parent’s €400,000 a year charge with €700,000 a year bought alone plus €300,000 once to set up; three cards give the stages, day 1 keep everything working, then run independently, later improve.](assets/images/26-plan-acquisitions-separations/comic-page-05-the-independence-bill.jpeg)
+![Comic page in three strips: a diagram shows Rotaline inside the parent, connected to sign-in and accounts, finance and payroll, network and licences, and customer support; a whiteboard compares the parent’s €400,000 a year charge with €700,000 a year bought alone plus €300,000 once to set up; three cards give the stages, day 1 keep everything working, then run independently, later improve.](assets/images/26-plan-acquisitions-separations/comic-page-05-the-independence-bill.jpeg)
 
 **Page 5: The independence bill.** A division can rely on its parent for sign-in and account control, networks, finance systems, procurement, licences, support, security and employment services. Its past accounts show an allocation, an accounting split of what the parent already spends, which is not a quotation for the same services bought separately. In the scenario the parent’s IT charge is €400,000 a year; buying the services independently costs €700,000 a year plus €300,000 of one-time setup, so the forecast behind the transaction must carry €300,000 more every year and €300,000 once, and a margin calculated on the old charge overstates what the separated company keeps. A transition services agreement, or TSA, supplies temporary access to the parent’s services; it buys time and does not perform the separation. Plan three stages: Day 1 continuity, independent operation, then improvement.
 
-- *Strip 1.* *Narration:* A separate scenario: Larkspur is a division being separated from its parent. **Sam:** “A division relies on its parent for services it never had to run.” **Alex:** “Draw the line, and every one of those connections is cut at once.”
+- *Strip 1.* *Narration:* A separate scenario: Rotaline is a division being separated from its parent. **Sam:** “A division relies on its parent for services it never had to run.” **Alex:** “Draw the line, and every one of those connections is cut at once.”
 - *Strip 2.* **Sam:** “The €400,000 was an accounting split, not a quotation.” **Ines:** “So a margin calculated on it overstates what we'll have left.”
 - *Strip 3.* **Alex:** “Three stages. Optimizing everything before separation risks day one.” **Ines:** “And copying the parent's setup unquestioned locks in a cost we don't need.”
 

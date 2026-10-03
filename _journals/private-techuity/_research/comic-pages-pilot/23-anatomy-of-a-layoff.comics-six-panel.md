@@ -5,9 +5,9 @@
 }
 -->
 
-**Comic.** Fictional Larkspur is waiting for a delayed **round**, €4 million of new investment not yet signed. Its existing investors will lend it a **bridge**, a €600,000 loan to carry it until the round arrives, but only if the board adopts a plan that keeps cash above the **reserve**, the €400,000 minimum balance the board has agreed to keep, until 30 June. The panels follow the company tracing the pressure to cut staff to its source, checking cash month by month, choosing roles by the work that stops, and planning for the people who leave and the people who remain.
+**Comic.** Fictional Rotaline is waiting for a delayed **round**, €4 million of new investment not yet signed. Its existing investors will lend it a **bridge**, a €600,000 loan to carry it until the round arrives, but only if the board adopts a plan that keeps cash above the **reserve**, the €400,000 minimum balance the board has agreed to keep, until 30 June. The panels follow the company tracing the pressure to cut staff to its source, checking cash month by month, choosing roles by the work that stops, and planning for the people who leave and the people who remain.
 
-Morgan is an adviser working for the investor; Alex leads technology, Priya leads product, Sam leads finance and Ines is the chief executive. All are fictional, and every figure in the scenario is invented. This scenario continues the delayed-financing chapter and is deliberately separate from the shared Larkspur examples in other chapters. Historical cases are discussed through documents; the scenes do not reenact real events.
+Morgan is an adviser working for the investor; Alex leads technology, Priya leads product, Sam leads finance and Ines is the chief executive. All are fictional, and every figure in the scenario is invented. This scenario continues the delayed-financing chapter and is deliberately separate from the shared Rotaline examples in other chapters. Historical cases are discussed through documents; the scenes do not reenact real events.
 
 <!-- comic-panel
 {
@@ -65,9 +65,9 @@ Morgan is an adviser working for the investor; Alex leads technology, Priya lead
   "status": "generated",
   "asset": "assets/images/24-scale-the-team-down/comic-03-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 3 of an explainer comic. Sam points at a wall calendar running from November to August; a paper cash line dips in the first three months, then flattens above a dashed line labeled RESERVE, while a small stack of envelopes labeled SEVERANCE sits under November. Use one speech bubble with the exact words: \"The savings arrive after the costs.\" Convey: People who leave are paid through their notice period, one to three months, and receive severance, a leaving payment, before any saving appears. At Larkspur’s terms and dates the reduction cannot replace the late round: with the bridge, cash stays above the reserve past June; without it, cash is below the reserve by January whatever the reduction does. Compare the dates before assuming either.",
+  "prompt": "Panel 3 of an explainer comic. Sam points at a wall calendar running from November to August; a paper cash line dips in the first three months, then flattens above a dashed line labeled RESERVE, while a small stack of envelopes labeled SEVERANCE sits under November. Use one speech bubble with the exact words: \"The savings arrive after the costs.\" Convey: People who leave are paid through their notice period, one to three months, and receive severance, a leaving payment, before any saving appears. At Rotaline’s terms and dates the reduction cannot replace the late round: with the bridge, cash stays above the reserve past June; without it, cash is below the reserve by January whatever the reduction does. Compare the dates before assuming either.",
   "alt": "Comic panel: Sam points at a wall calendar with a schematic cash line that falls and then levels off above a dashed reserve line, with severance envelopes under the second month.",
-  "caption": "People who leave are paid through their notice period, one to three months, and receive severance, a leaving payment, before any saving appears. At Larkspur’s terms and dates the reduction cannot replace the late round: with the bridge, cash stays above the reserve past June; without it, cash is below the reserve by January whatever the reduction does. Compare the dates before assuming either.",
+  "caption": "People who leave are paid through their notice period, one to three months, and receive severance, a leaving payment, before any saving appears. At Rotaline’s terms and dates the reduction cannot replace the late round: with the bridge, cash stays above the reserve past June; without it, cash is below the reserve by January whatever the reduction does. Compare the dates before assuming either.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -78,7 +78,7 @@ Morgan is an adviser working for the investor; Alex leads technology, Priya lead
 
 ![Comic panel: Sam points at a wall calendar with a schematic cash line that falls and then levels off above a dashed reserve line, with severance envelopes under the second month.](assets/images/24-scale-the-team-down/comic-03-scene.jpeg)
 
-**Panel 3:** People who leave are paid through their notice period, one to three months, and receive severance, a leaving payment, before any saving appears. At Larkspur’s terms and dates the reduction cannot replace the late round: with the bridge, cash stays above the reserve past June; without it, cash is below the reserve by January whatever the reduction does. Compare the dates before assuming either.
+**Panel 3:** People who leave are paid through their notice period, one to three months, and receive severance, a leaving payment, before any saving appears. At Rotaline’s terms and dates the reduction cannot replace the late round: with the bridge, cash stays above the reserve past June; without it, cash is below the reserve by January whatever the reduction does. Compare the dates before assuming either.
 
 *Dialogue:* “The savings arrive after the costs.”
 

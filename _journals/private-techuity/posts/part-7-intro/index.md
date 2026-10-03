@@ -19,7 +19,7 @@ icon: "assets/icons/part-7-intro.png"
 > * **The Ratchet Roadmap** — Makes new priorities account for existing commitments and explicit postponements.
 
 <br>
-Parts IV to VI chose the work, changed the company’s size and kept its technology worth its cost. Larkspur is the book’s fictional software company. Setting up a new customer is called **onboarding**. In a sample of five customer setups, three depended on one specialist entering the customer’s settings by hand. Part III showed Larkspur asking its investor for help with that work. This part follows the finding through changes in funding and ownership, seen from the company’s side.
+Parts IV to VI chose the work, changed the company’s size and kept its technology worth its cost. Rotaline is the book’s fictional software company. Setting up a new customer is called **onboarding**. In a sample of five customer setups, three depended on one specialist entering the customer’s settings by hand. Part III showed Rotaline asking its investor for help with that work. This part follows the finding through changes in funding and ownership, seen from the company’s side.
 
 **Investors** put money into a company hoping for a gain, usually in return for part of its ownership, and the arrangement keeps changing. An investor may invest again in a new **funding round**, an occasion when the company raises new investment. It may sell part of its **holding**, the share of the company it owns. Or it may stay longer than planned. The company may **refinance**, replacing an old loan with a new one, or be bought by a larger company.
 
@@ -30,7 +30,7 @@ These events follow no fixed order, and how much each changes the leadership wor
 ![Three chapters in one row under the heading LEAD, following a customer setup problem where some setups depend on one specialist: Use diligence (check the business before the deal is signed) leads to Plan the first hundred days (fund the work and review the finding), which leads to Manage the handover (pass on the evidence and unfinished promises). A final banner reads Account for decisions, evidence and promises through change.](assets/images/part-7-intro/chapter-overview.jpeg)
 **Figure 1:** *Three chapters follow the onboarding finding from diligence to handover.*
 
-The onboarding finding runs through all three chapters, as it did through the earlier chapters of Parts III and IV, where Larkspur asked its investor for help and ran a limited trial of a new setup step. The separate delayed-financing scenario, with its own cash, people and dates, is the chapter [[manage-funding-delays]] in Part IV; the reduction it can force is the chapter [[scale-the-team-down]] in Part V.
+The onboarding finding runs through all three chapters, as it did through the earlier chapters of Parts III and IV, where Rotaline asked its investor for help and ran a limited trial of a new setup step. The separate delayed-financing scenario, with its own cash, people and dates, is the chapter [[manage-funding-delays]] in Part IV; the reduction it can force is the chapter [[scale-the-team-down]] in Part V.
 
 - [[use-diligence]] explains **due diligence**, checking a business before an investment or purchase, and turns the finding into an agreed response.
 - [[first-hundred-days]] funds the response with a named person responsible, approved money and team time. The **board**, the directors who approve major decisions, adopts the plan shortly after the investment completes, and a review follows a hundred days after that adoption.

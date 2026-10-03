@@ -4,7 +4,7 @@
 
 A positive earnings figure does not establish the cash available for a new initiative. Seven pages follow Alex’s €1 million request: from the earnings figure down to the cash that is left, through the payments the company must make and the ones it chooses, past two ways the numbers mislead and one way time runs out, to three priced options, one approval and the dates that follow it.
 
-Alex leads technology, Sam leads finance, Priya leads product and Ines is the chief executive of Larkspur, a fictional company. All are fictional. Pages 3, 4 and 5 step away from Larkspur’s figures; each opens by stating its own. EBITDA is earnings before interest, taxes, depreciation and amortization. The last two spread an asset’s cost over the years it is used. EBITDA is a profit measure, not a bank balance.
+Alex leads technology, Sam leads finance, Priya leads product and Ines is the chief executive of Rotaline, a fictional company. All are fictional. Pages 3, 4 and 5 step away from Rotaline’s figures; each opens by stating its own. EBITDA is earnings before interest, taxes, depreciation and amortization. The last two spread an asset’s cost over the years it is used. EBITDA is a profit measure, not a bank balance.
 
 ## Page 1: Profit is not cash
 
@@ -28,7 +28,7 @@ Alex leads technology, Sam leads finance, Priya leads product and Ines is the ch
 - **Sam:** “Yes. And we still have to check the payment dates.”
 - *In the picture:* `LOAN REPAYMENT −1.5` · `LEFT: 0.5`
 
-**Caption under the image:** Fictional Larkspur model, in € millions. EBITDA, a profit measure, is 10.0. Interest, the charge for borrowing, takes 4.0; tax takes 1.0; planned investment in assets, things the company will use for years, takes 2.0. Another 1.0 is sales already counted in the earnings that customers have not paid yet: they owed €2 million at the start of the year and €3 million at the end, so only the €1 million increase is deducted. Repaying part of the loan takes 1.5, which leaves 0.5. Payroll is already inside EBITDA.
+**Caption under the image:** Fictional Rotaline model, in € millions. EBITDA, a profit measure, is 10.0. Interest, the charge for borrowing, takes 4.0; tax takes 1.0; planned investment in assets, things the company will use for years, takes 2.0. Another 1.0 is sales already counted in the earnings that customers have not paid yet: they owed €2 million at the start of the year and €3 million at the end, so only the €1 million increase is deducted. Repaying part of the loan takes 1.5, which leaves 0.5. Payroll is already inside EBITDA.
 
 ## Page 2: Payments the company must make, and payments it chooses
 
@@ -74,7 +74,7 @@ Alex leads technology, Sam leads finance, Priya leads product and Ines is the ch
 - **Alex:** “So it isn't new money.”
 - *In the picture:* `IAS 38`
 
-**Caption under the image:** An expense is a cost that reduces this year’s profit. An asset is something expected to benefit the company for years, so its cost enters profit over several years. Recording development spending as an asset, called capitalization, changes when the cost enters profit, not the cash paid. The accounting rules (IAS 38), not management’s preference, decide the treatment. The 9.0 and 10.0 are illustrative amounts, not Larkspur’s figures.
+**Caption under the image:** An expense is a cost that reduces this year’s profit. An asset is something expected to benefit the company for years, so its cost enters profit over several years. Recording development spending as an asset, called capitalization, changes when the cost enters profit, not the cash paid. The accounting rules (IAS 38), not management’s preference, decide the treatment. The 9.0 and 10.0 are illustrative amounts, not Rotaline’s figures.
 
 ## Page 4: Debt changes the consequences of being wrong
 
@@ -98,7 +98,7 @@ Alex leads technology, Sam leads finance, Priya leads product and Ines is the ch
 - **Alex:** “And which commitments can't we unwind? I'll add both to the plan.”
 - *In the picture:* `+€1.8m` · `TECH PLAN`
 
-**Caption under the image:** A floating-rate loan has an interest rate that moves with the market. On €60 million of such debt, a move from 6% to 9% adds €1.8 million of interest a year, more than a whole technology initiative, and it can arrive while sales weaken. A plan needs a funded path for the downside, because conditions in the loan agreement can give lenders extra rights when earnings slip. These are round numbers, not Larkspur’s €4.0 million of interest.
+**Caption under the image:** A floating-rate loan has an interest rate that moves with the market. On €60 million of such debt, a move from 6% to 9% adds €1.8 million of interest a year, more than a whole technology initiative, and it can arrive while sales weaken. A plan needs a funded path for the downside, because conditions in the loan agreement can give lenders extra rights when earnings slip. These are round numbers, not Rotaline’s €4.0 million of interest.
 
 ## Page 5: Without debt, a company can still run out of time
 
@@ -146,7 +146,7 @@ Alex leads technology, Sam leads finance, Priya leads product and Ines is the ch
 - **Sam:** “And about €600,000 stays untouched.”
 - *In the picture:* `APPROVED: PILOT €210k`
 
-**Caption under the image:** Fictional assumption for this page: after interest, tax, loan repayment, planned investment and the operating reserve the board protects, Larkspur’s forecast leaves about €800,000 across the year that the company could commit. That is the 0.5 left on the first page plus 0.3 of cash above the reserve. It is forecast capacity, subject to checking the dates on which cash arrives and leaves, and it is separate from the runway page’s €3 million scenario. Alex wants €1 million to automate part of the manual setup of new customers. Keeping going with a contract specialist costs €75,000. A pilot, a small trial of one reusable setup step, costs €210,000: €180,000 to build it and €30,000 of first-year maintenance. The full program costs €1 million. Ines, the chief executive, approves the pilot within the spending limit the board delegated to her; about €600,000 stays untouched.
+**Caption under the image:** Fictional assumption for this page: after interest, tax, loan repayment, planned investment and the operating reserve the board protects, Rotaline’s forecast leaves about €800,000 across the year that the company could commit. That is the 0.5 left on the first page plus 0.3 of cash above the reserve. It is forecast capacity, subject to checking the dates on which cash arrives and leaves, and it is separate from the runway page’s €3 million scenario. Alex wants €1 million to automate part of the manual setup of new customers. Keeping going with a contract specialist costs €75,000. A pilot, a small trial of one reusable setup step, costs €210,000: €180,000 to build it and €30,000 of first-year maintenance. The full program costs €1 million. Ines, the chief executive, approves the pilot within the spending limit the board delegated to her; about €600,000 stays untouched.
 
 ## Page 7: Evidence, decision and money are separate dates
 

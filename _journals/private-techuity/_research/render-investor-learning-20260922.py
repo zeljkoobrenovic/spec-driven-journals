@@ -1,7 +1,7 @@
 """Render the investor-learning chapter's authored vector figures and comic.
 
 Standard library only. Artwork is original SVG, with no external images or fonts.
-The Northline cast is independent of the book's shared Larkspur example.
+The Northline cast is independent of the book's shared Rotaline example.
 
 Revised 23 September 2026 (in-depth review round 1, INVNET-001/002/003/005):
 the comic pages carry plain-language explanations for lay readers and page 5's
@@ -283,7 +283,7 @@ def comic_page(number, title, strips):
 
 
 def comics(check=False):
-    intro = '**Comic.** Mira, Northline’s product leader, and Tomas, its engineering leader, choose a learning visit arranged by their investor and examine what they can bring home. An investor puts money into a business expecting a financial return, and it often knows people across the businesses it has funded. Northline is fictional: it makes inventory software, which tracks the goods a business holds in stock, for small wholesalers, businesses that buy goods in quantity and sell them on to shops. The team is considering reorder suggestions from artificial intelligence (AI), software that learns from past sales and stock levels to recommend what to buy again and how much. This example is independent of the book’s Larkspur budget and calendar; every amount and time allowance below is illustrative.\n\n'
+    intro = '**Comic.** Mira, Northline’s product leader, and Tomas, its engineering leader, choose a learning visit arranged by their investor and examine what they can bring home. An investor puts money into a business expecting a financial return, and it often knows people across the businesses it has funded. Northline is fictional: it makes inventory software, which tracks the goods a business holds in stock, for small wholesalers, businesses that buy goods in quantity and sell them on to shops. The team is considering reorder suggestions from artificial intelligence (AI), software that learns from past sales and stock levels to recommend what to buy again and how much. This example is independent of the book’s Rotaline budget and calendar; every amount and time allowance below is illustrative.\n\n'
     docs = [intro]
     for number, (identifier, title, caption, strips) in enumerate(PAGES, 1):
         if check:

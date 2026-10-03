@@ -5,7 +5,7 @@
 }
 -->
 
-**Comic.** Larkspur is a fictional company that rents its computing from a cloud supplier. Its directors approved a plan: keep cloud spending flat while customer transactions grow. Last quarter the bill rose 20% instead, and Morgan, the technology adviser working for Larkspur’s investor, has asked why.
+**Comic.** Rotaline is a fictional company that rents its computing from a cloud supplier. Its directors approved a plan: keep cloud spending flat while customer transactions grow. Last quarter the bill rose 20% instead, and Morgan, the technology adviser working for Rotaline’s investor, has asked why.
 
 Two questions hide inside that one. Did each completed customer transaction get cheaper? And was the approved plan met? The six panels keep them apart.
 
@@ -19,7 +19,7 @@ The cast, all fictional: Morgan advises the investor. Alex is the technology lea
   "aspect_ratio": "16:9",
   "prompt": "Panel 1 of an explainer comic. Sam, the finance leader, sees a larger cloud bill and frowns. Use one speech bubble with the exact words: \"Did efficiency get worse?\" Convey: Cloud services are rented computing resources. A larger bill alone does not show that the company has become less efficient; first check that both bills were measured the same way.",
   "alt": "Comic panel: Sam sees a larger cloud bill and frowns.",
-  "caption": "Cloud services are computing and storage rented from a supplier. Sam is Larkspur’s finance leader. A larger bill on its own does not show the company became less efficient. First check that both bills are measured the same way — covering the same months, with any payment made in advance spread across the months it covers. Comparing a month that includes a year’s advance payment against an ordinary month proves nothing.",
+  "caption": "Cloud services are computing and storage rented from a supplier. Sam is Rotaline’s finance leader. A larger bill on its own does not show the company became less efficient. First check that both bills are measured the same way — covering the same months, with any payment made in advance spread across the months it covers. Comparing a month that includes a year’s advance payment against an ordinary month proves nothing.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -30,7 +30,7 @@ The cast, all fictional: Morgan advises the investor. Alex is the technology lea
 
 ![Comic panel: Sam sees a larger cloud bill and frowns.](assets/images/29-evaluate-cloud-costs/comic-01-scene.jpeg)
 
-**Panel 1:** Cloud services are computing and storage rented from a supplier. Sam is Larkspur’s finance leader. A larger bill on its own does not show the company became less efficient. First check that both bills are measured the same way — covering the same months, with any payment made in advance spread across the months it covers. Comparing a month that includes a year’s advance payment against an ordinary month proves nothing.
+**Panel 1:** Cloud services are computing and storage rented from a supplier. Sam is Rotaline’s finance leader. A larger bill on its own does not show the company became less efficient. First check that both bills are measured the same way — covering the same months, with any payment made in advance spread across the months it covers. Comparing a month that includes a year’s advance payment against an ordinary month proves nothing.
 
 *Dialogue:* “Did efficiency get worse?”
 
@@ -40,9 +40,9 @@ The cast, all fictional: Morgan advises the investor. Alex is the technology lea
   "status": "generated",
   "asset": "assets/images/29-evaluate-cloud-costs/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Alex shows more successful customer transactions. Use one speech bubble with the exact words: \"We served more useful demand.\" Convey: Compare cost against the useful work delivered. More completed customer transactions can make each one cheaper even when the total bill rises. Last quarter Larkspur spent €120,000 a month for 1.5 million transactions: €0.08 each, down from €0.10 a year earlier. Whether the approved plan was met is a separate question, and the answer there is no: the plan allowed €100,000 a month, so spending ran €20,000 over it.",
+  "prompt": "Panel 2 of an explainer comic. Alex shows more successful customer transactions. Use one speech bubble with the exact words: \"We served more useful demand.\" Convey: Compare cost against the useful work delivered. More completed customer transactions can make each one cheaper even when the total bill rises. Last quarter Rotaline spent €120,000 a month for 1.5 million transactions: €0.08 each, down from €0.10 a year earlier. Whether the approved plan was met is a separate question, and the answer there is no: the plan allowed €100,000 a month, so spending ran €20,000 over it.",
   "alt": "Comic panel: Alex compares cloud usage with a monitor showing completed customer work.",
-  "caption": "Compare cost against the useful work delivered. More completed customer transactions can make each one cheaper even when the total bill rises. Last quarter Larkspur spent €120,000 a month for 1.5 million transactions: €0.08 each, down from €0.10 a year earlier. Whether the approved plan was met is a separate question, and the answer there is no: the plan allowed €100,000 a month, so spending ran €20,000 over it.",
+  "caption": "Compare cost against the useful work delivered. More completed customer transactions can make each one cheaper even when the total bill rises. Last quarter Rotaline spent €120,000 a month for 1.5 million transactions: €0.08 each, down from €0.10 a year earlier. Whether the approved plan was met is a separate question, and the answer there is no: the plan allowed €100,000 a month, so spending ran €20,000 over it.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -53,7 +53,7 @@ The cast, all fictional: Morgan advises the investor. Alex is the technology lea
 
 ![Comic panel: Alex compares cloud usage with a monitor showing completed customer work.](assets/images/29-evaluate-cloud-costs/comic-02-scene.jpeg)
 
-**Panel 2:** Compare cost against the useful work delivered. More completed customer transactions can make each one cheaper even when the total bill rises. Last quarter Larkspur spent €120,000 a month for 1.5 million transactions: €0.08 each, down from €0.10 a year earlier. Whether the approved plan was met is a separate question, and the answer there is no: the plan allowed €100,000 a month, so spending ran €20,000 over it.
+**Panel 2:** Compare cost against the useful work delivered. More completed customer transactions can make each one cheaper even when the total bill rises. Last quarter Rotaline spent €120,000 a month for 1.5 million transactions: €0.08 each, down from €0.10 a year earlier. Whether the approved plan was met is a separate question, and the answer there is no: the plan allowed €100,000 a month, so spending ran €20,000 over it.
 
 *Dialogue:* “We served more useful demand.”
 
@@ -86,9 +86,9 @@ The cast, all fictional: Morgan advises the investor. Alex is the technology lea
   "status": "generated",
   "asset": "assets/images/29-evaluate-cloud-costs/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Sam, the finance leader, receives a discount tied to a heavy commitment. Use one speech bubble with the exact words: \"What if demand falls?\" Convey: A long contract lowers the price but obliges the company to pay a fixed amount whether or not it uses the service. Larkspur signs for one year at €21,000 a month against usage that would otherwise cost €30,000 to €60,000 a month, saving €9,000 a month; if usage sank to €20,000 it would lose €1,000 a month instead.",
+  "prompt": "Panel 4 of an explainer comic. Sam, the finance leader, receives a discount tied to a heavy commitment. Use one speech bubble with the exact words: \"What if demand falls?\" Convey: A long contract lowers the price but obliges the company to pay a fixed amount whether or not it uses the service. Rotaline signs for one year at €21,000 a month against usage that would otherwise cost €30,000 to €60,000 a month, saving €9,000 a month; if usage sank to €20,000 it would lose €1,000 a month instead.",
   "alt": "Comic panel: Sam examines a minimum-commitment contract beside unused servers under a lower-demand label.",
-  "caption": "A long contract lowers the price. In exchange, the company must pay a fixed amount every month whether or not it uses the service. Larkspur first works out what it expects to spend without any contract, paying only for what it uses: between €30,000 and €60,000 a month next year. It then commits for one year, paying €21,000 a month — €252,000 in total — and buying anything above that as it goes. Across the expected range that saves €9,000 a month. If usage collapsed to €20,000 a month, the €21,000 would cost €1,000 more than buying as it goes. The company can afford all twelve payments from cash it already holds and customer money it confidently expects, and the contract simply ends after those twelve months.",
+  "caption": "A long contract lowers the price. In exchange, the company must pay a fixed amount every month whether or not it uses the service. Rotaline first works out what it expects to spend without any contract, paying only for what it uses: between €30,000 and €60,000 a month next year. It then commits for one year, paying €21,000 a month — €252,000 in total — and buying anything above that as it goes. Across the expected range that saves €9,000 a month. If usage collapsed to €20,000 a month, the €21,000 would cost €1,000 more than buying as it goes. The company can afford all twelve payments from cash it already holds and customer money it confidently expects, and the contract simply ends after those twelve months.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -99,7 +99,7 @@ The cast, all fictional: Morgan advises the investor. Alex is the technology lea
 
 ![Comic panel: Sam examines a minimum-commitment contract beside unused servers under a lower-demand label.](assets/images/29-evaluate-cloud-costs/comic-04-scene.jpeg)
 
-**Panel 4:** A long contract lowers the price. In exchange, the company must pay a fixed amount every month whether or not it uses the service. Larkspur first works out what it expects to spend without any contract, paying only for what it uses: between €30,000 and €60,000 a month next year. It then commits for one year, paying €21,000 a month — €252,000 in total — and buying anything above that as it goes. Across the expected range that saves €9,000 a month. If usage collapsed to €20,000 a month, the €21,000 would cost €1,000 more than buying as it goes. The company can afford all twelve payments from cash it already holds and customer money it confidently expects, and the contract simply ends after those twelve months.
+**Panel 4:** A long contract lowers the price. In exchange, the company must pay a fixed amount every month whether or not it uses the service. Rotaline first works out what it expects to spend without any contract, paying only for what it uses: between €30,000 and €60,000 a month next year. It then commits for one year, paying €21,000 a month — €252,000 in total — and buying anything above that as it goes. Across the expected range that saves €9,000 a month. If usage collapsed to €20,000 a month, the €21,000 would cost €1,000 more than buying as it goes. The company can afford all twelve payments from cash it already holds and customer money it confidently expects, and the contract simply ends after those twelve months.
 
 *Dialogue:* “What if demand falls?”
 

@@ -40,15 +40,15 @@ These questions apply under every ownership arrangement. What reaches the busine
 
 ## Map the Arrangement Before Relying on the Money
 
-Larkspur, the small founder-owned company of the previous chapter, appears here as a larger company. It serves many more customers, runs a larger engineering team and attracts investors, funds and corporate buyers, each deal with its own terms.
+Rotaline, the small founder-owned company of the previous chapter, appears here as a larger company. It serves many more customers, runs a larger engineering team and attracts investors, funds and corporate buyers, each deal with its own terms.
 
-Consider three fictional Larkspur announcements, each describing a different investment, from the perspective of Alex, the CTO, who wants to hire more **onboarding engineers**: the people who set new customers up on the product and move their data across.
+Consider three fictional Rotaline announcements, each describing a different investment, from the perspective of Alex, the CTO, who wants to hire more **onboarding engineers**: the people who set new customers up on the product and move their data across.
 
 | Announcement | Where money goes under these assumptions | What Alex needs to establish |
 | --- | --- | --- |
 | Investors buy €8 million (€8m) of newly issued shares, amounting to less than half of the company | The company receives €8m at closing, before transaction costs | Which operating plan is approved, which approvals apply and how long the company can fund that plan |
 | A fund buys the founder’s shares for €40m | The selling founder receives the purchase money | Whether separate company funding exists, and which payments any borrowing behind the purchase requires |
-| A corporate group buys Larkspur | Selling shareholders receive the agreed share price | Which group entity funds future work and how the local budget relates to the parent’s priorities |
+| A corporate group buys Rotaline | Selling shareholders receive the agreed share price | Which group entity funds future work and how the local budget relates to the parent’s priorities |
 
 Whichever announcement applies, Alex needs to identify the **shareholder**, the organization supplying the cash, the **person authorized** to commit it and any **conditions** for payment. Alex also needs the **date** by which a promised decision must arrive for the engineering plan to remain feasible.
 
@@ -142,21 +142,21 @@ Some investment firms employ a **technology adviser** who works for the investor
 
 ## Alex's Hire: The Completed Funding-and-Authority Record
 
-Return to the first announcement: investors buy €8m of newly issued shares in Larkspur, less than half the company. The round was announced on 20 September, the day the **subscription agreement**, the contract under which the investors buy the new shares, was signed; the money arrived at **closing** on 3 October. Between those dates the €8m was a **contractual commitment**, not cash. Alex first proposed five onboarding engineers on the day of the announcement, assuming part of the €8m was an innovation budget. Here is the one-page record Sam and Alex completed on 11 October, with the source of each entry and the proposal that went to Ines, the chief executive officer (CEO). All figures are fictional, and this scenario is separate from the Larkspur cash figures used in later chapters.
+Return to the first announcement: investors buy €8m of newly issued shares in Rotaline, less than half the company. The round was announced on 20 September, the day the **subscription agreement**, the contract under which the investors buy the new shares, was signed; the money arrived at **closing** on 3 October. Between those dates the €8m was a **contractual commitment**, not cash. Alex first proposed five onboarding engineers on the day of the announcement, assuming part of the €8m was an innovation budget. Here is the one-page record Sam and Alex completed on 11 October, with the source of each entry and the proposal that went to Ines, the chief executive officer (CEO). All figures are fictional, and this scenario is separate from the Rotaline cash figures used in later chapters.
 
 | Field | Entry | Where the information came from |
 | --- | --- | --- |
 | Proposed commitment | Three onboarding engineers starting 1 November; about €300,000 a year recurring, roughly €100,000 per hire | Alex |
-| Paying entity | Larkspur, the operating company, from its own bank account | Finance: the subscription agreement names Larkspur as the company issuing the shares and receiving the money |
-| Cash state | Announced and subscription agreement signed 20 September; €8m received at closing on 3 October; €0.4m transaction costs paid; €7.6m net (after those costs) added to Larkspur's cash | Finance: bank statement and the closing statement, the transaction's record of the payments made and the costs deducted |
-| Approver | The Larkspur board approves the annual operating plan under the **shareholders' agreement**, the contract between the shareholders and the company that sets their rights; it approved the year-one plan on 10 October. Within that plan, Ines as CEO authorizes hires; no further consent is needed | Board minutes, the written record of the board's decisions; shareholders' agreement read by legal |
+| Paying entity | Rotaline, the operating company, from its own bank account | Finance: the subscription agreement names Rotaline as the company issuing the shares and receiving the money |
+| Cash state | Announced and subscription agreement signed 20 September; €8m received at closing on 3 October; €0.4m transaction costs paid; €7.6m net (after those costs) added to Rotaline's cash | Finance: bank statement and the closing statement, the transaction's record of the payments made and the costs deducted |
+| Approver | The Rotaline board approves the annual operating plan under the **shareholders' agreement**, the contract between the shareholders and the company that sets their rights; it approved the year-one plan on 10 October. Within that plan, Ines as CEO authorizes hires; no further consent is needed | Board minutes, the written record of the board's decisions; shareholders' agreement read by legal |
 | Conditions | Two **reserved matters** (decisions the shareholders' agreement says need a named party's consent) require the consent of the **investor director**, the board member the investors appointed under that agreement: spending above €250,000 outside the approved plan, and any increase in the number of new hires the plan allows, whatever it costs. The plan allows four new engineering hires in year one, so Alex's three fall within it | Legal: the shareholders' agreement and its list of reserved matters |
 | Runway effect (how long the cash lasts) | Planned net spending, meaning cash paid out less cash received from customers, including the three hires, is about €300,000 a month, and the board keeps a €400,000 minimum cash reserve. Counting only the round's proceeds, €7.6m less the €400,000 reserve leaves €7.2m, which funds 24 months of planned spending before the reserve is reached | Finance: cash plan, the dated forecast of money entering and leaving the business |
 | Decision date | Offers out by 15 October for a 1 November start | Alex |
 
 **The decision.** Ines, as CEO, authorizes the three job offers on 12 October within the approved plan. No investor consent is needed, because the hires sit inside the plan the board approved. Funding is the €7.6m net received at closing, not the €8m announced. The scarce capacity is recruiting time and the onboarding team's ability to absorb three people at once.
 
-**Why not five.** Alex first proposed five new engineers, but the plan allows only four new engineering hires on top of the engineers Larkspur employs today. Two rules apply here. The **spending rule** requires consent for any commitment above €250,000; the fifth hire, at about €100,000, stays below that, so this rule would not catch it. The **hiring rule** caps new engineering hires at four; the fifth hire breaks it, so the investor director would have had to consent before an offer went out.
+**Why not five.** Alex first proposed five new engineers, but the plan allows only four new engineering hires on top of the engineers Rotaline employs today. Two rules apply here. The **spending rule** requires consent for any commitment above €250,000; the fifth hire, at about €100,000, stays below that, so this rule would not catch it. The **hiring rule** caps new engineering hires at four; the fifth hire breaks it, so the investor director would have had to consent before an offer went out.
 
 **Why not wait.** Waiting for the "innovation budget" the announcement seemed to promise was rejected because no such budget exists in any agreement.
 
@@ -168,7 +168,7 @@ Return to the first announcement: investors buy €8m of newly issued shares in 
 
 Ordinary spending under the plan does not reopen it; the plan already expects the cash balance to go down as that money is spent. What reopens it is cash falling below the forecast.
 
-Had the second announcement been the real one, the record would look different in its first three rows. The €40m paid the founder. Larkspur's own cash did not change. Any new hire would then have to be paid by Larkspur from its available cash and the cash it expects to generate from running the business. The only alternative is a separate funding commitment, which the record would have to name with its own approver and conditions.
+Had the second announcement been the real one, the record would look different in its first three rows. The €40m paid the founder. Rotaline's own cash did not change. Any new hire would then have to be paid by Rotaline from its available cash and the cash it expects to generate from running the business. The only alternative is a separate funding commitment, which the record would have to name with its own approver and conditions.
 
 ## From Money and Authority to Value
 

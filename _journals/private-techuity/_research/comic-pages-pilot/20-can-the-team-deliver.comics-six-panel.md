@@ -5,9 +5,9 @@
 }
 -->
 
-**Comic.** Fictional Larkspur sells scheduling software and plans to serve customers in a second country. The date was proposed before anyone assessed what the plan relies on. The panels follow Alex, who leads technology, as he establishes what Larkspur’s systems and team can support, what must change in the plan, and what a transition would cost and when its first benefit could arrive.
+**Comic.** Fictional Rotaline sells scheduling software and plans to serve customers in a second country. The date was proposed before anyone assessed what the plan relies on. The panels follow Alex, who leads technology, as he establishes what Rotaline’s systems and team can support, what must change in the plan, and what a transition would cost and when its first benefit could arrive.
 
-Morgan advises Larkspur’s investor, Sam leads finance and Priya leads product. All are fictional, and every panel belongs to the Larkspur example.
+Morgan advises Rotaline’s investor, Sam leads finance and Priya leads product. All are fictional, and every panel belongs to the Rotaline example.
 
 <!-- comic-panel
 {
@@ -38,9 +38,9 @@ Morgan advises Larkspur’s investor, Sam leads finance and Priya leads product.
   "status": "generated",
   "asset": "assets/images/20-assess-capability/comic-02-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 2 of an explainer comic. Morgan stands at a whiteboard that reads GROWTH ASSUMPTION, then SLOW MANUAL SETUP, then EASIER SETUP, joined by arrows. Two unnamed Larkspur colleagues in grey listen and take notes; one holds a sheet of paper headed only LARKSPUR. No other company name and no case-study label appears anywhere. Use one speech bubble with the exact words: \"Make the required change easier.\" Convey: Larkspur’s investor assumes growth. If that growth needs customers set up in a second country, investigate which system changes make that setup easier.",
-  "alt": "Comic panel: Morgan, the investor’s adviser, points at a whiteboard linking a growth assumption to slow manual setup and then to easier setup, while two Larkspur colleagues take notes.",
-  "caption": "Larkspur’s investor assumes growth. If that growth needs customers set up in a second country, investigate which system changes make that setup easier.",
+  "prompt": "Panel 2 of an explainer comic. Morgan stands at a whiteboard that reads GROWTH ASSUMPTION, then SLOW MANUAL SETUP, then EASIER SETUP, joined by arrows. Two unnamed Rotaline colleagues in grey listen and take notes; one holds a sheet of paper headed only ROTALINE. No other company name and no case-study label appears anywhere. Use one speech bubble with the exact words: \"Make the required change easier.\" Convey: Rotaline’s investor assumes growth. If that growth needs customers set up in a second country, investigate which system changes make that setup easier.",
+  "alt": "Comic panel: Morgan, the investor’s adviser, points at a whiteboard linking a growth assumption to slow manual setup and then to easier setup, while two Rotaline colleagues take notes.",
+  "caption": "Rotaline’s investor assumes growth. If that growth needs customers set up in a second country, investigate which system changes make that setup easier.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -49,9 +49,9 @@ Morgan advises Larkspur’s investor, Sam leads finance and Priya leads product.
 }
 -->
 
-![Comic panel: Morgan, the investor’s adviser, points at a whiteboard linking a growth assumption to slow manual setup and then to easier setup, while two Larkspur colleagues take notes.](assets/images/20-assess-capability/comic-02-scene.jpeg)
+![Comic panel: Morgan, the investor’s adviser, points at a whiteboard linking a growth assumption to slow manual setup and then to easier setup, while two Rotaline colleagues take notes.](assets/images/20-assess-capability/comic-02-scene.jpeg)
 
-**Panel 2:** Larkspur’s investor assumes growth. If that growth needs customers set up in a second country, investigate which system changes make that setup easier.
+**Panel 2:** Rotaline’s investor assumes growth. If that growth needs customers set up in a second country, investigate which system changes make that setup easier.
 
 *Dialogue:* “Make the required change easier.”
 
@@ -84,9 +84,9 @@ Morgan advises Larkspur’s investor, Sam leads finance and Priya leads product.
   "status": "generated",
   "asset": "assets/images/20-assess-capability/comic-04-scene.jpeg",
   "aspect_ratio": "16:9",
-  "prompt": "Panel 4 of an explainer comic. Alex stands at a board with two columns: on the left, a steady stack labelled by a small tick (a stable core and a team that knows its customers); on the right, a tangle of country-rule cards knotted into one invoicing box. The board shows an assessment of what exists, not a comparison of architectures: no modular-versus-services diagram, no option labels, no prescribed design. Use one speech bubble with the exact words: \"What do we keep, and what blocks the plan?\" Convey: An assessment records strengths as well as constraints. Larkspur keeps a stable core product and deep customer knowledge. What blocks the plan is where the country rules live: knotted into the invoicing module, the part of the billing software that prepares bills. The contract, support and product-setting tools all read those rules from the billing software, so changing the country setup requires coordinated changes across them.",
+  "prompt": "Panel 4 of an explainer comic. Alex stands at a board with two columns: on the left, a steady stack labelled by a small tick (a stable core and a team that knows its customers); on the right, a tangle of country-rule cards knotted into one invoicing box. The board shows an assessment of what exists, not a comparison of architectures: no modular-versus-services diagram, no option labels, no prescribed design. Use one speech bubble with the exact words: \"What do we keep, and what blocks the plan?\" Convey: An assessment records strengths as well as constraints. Rotaline keeps a stable core product and deep customer knowledge. What blocks the plan is where the country rules live: knotted into the invoicing module, the part of the billing software that prepares bills. The contract, support and product-setting tools all read those rules from the billing software, so changing the country setup requires coordinated changes across them.",
   "alt": "Comic panel: Alex points at a board with two columns: a tidy stack labelled stable core and team knows customers, beside four country-rule cards knotted together above a box labelled invoicing box, showing that the rules sit inside the invoicing software.",
-  "caption": "An assessment records strengths as well as constraints. Larkspur keeps a stable core product and deep customer knowledge. What blocks the plan is where the country rules live: knotted into the invoicing module, the part of the billing software that prepares bills. The contract, support and product-setting tools all read those rules from the billing software, so changing the country setup requires coordinated changes across them.",
+  "caption": "An assessment records strengths as well as constraints. Rotaline keeps a stable core product and deep customer knowledge. What blocks the plan is where the country rules live: knotted into the invoicing module, the part of the billing software that prepares bills. The contract, support and product-setting tools all read those rules from the billing software, so changing the country setup requires coordinated changes across them.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference_id": "owned-cast-20260913",
@@ -97,7 +97,7 @@ Morgan advises Larkspur’s investor, Sam leads finance and Priya leads product.
 
 ![Comic panel: Alex points at a board with two columns: a tidy stack labelled stable core and team knows customers, beside four country-rule cards knotted together above a box labelled invoicing box, showing that the rules sit inside the invoicing software.](assets/images/20-assess-capability/comic-04-scene.jpeg)
 
-**Panel 4:** An assessment records strengths as well as constraints. Larkspur keeps a stable core product and deep customer knowledge. What blocks the plan is where the country rules live: knotted into the invoicing module, the part of the billing software that prepares bills. The contract, support and product-setting tools all read those rules from the billing software, so changing the country setup requires coordinated changes across them.
+**Panel 4:** An assessment records strengths as well as constraints. Rotaline keeps a stable core product and deep customer knowledge. What blocks the plan is where the country rules live: knotted into the invoicing module, the part of the billing software that prepares bills. The contract, support and product-setting tools all read those rules from the billing software, so changing the country setup requires coordinated changes across them.
 
 *Dialogue:* “What do we keep, and what blocks the plan?”
 

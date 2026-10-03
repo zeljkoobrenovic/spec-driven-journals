@@ -20,9 +20,9 @@
 }
 -->
 
-**Comic.** An investor’s questions arrive before the numbers exist. Seven pages follow the fictional company Larkspur from one plain question — how long does it take to set up a customer, and how do you know? — to numbers held ready: found in records the company already keeps, defined once, owned by name, given their context, labelled by kind, and used for the investor, goals and dashboards.
+**Comic.** An investor’s questions arrive before the numbers exist. Seven pages follow the fictional company Rotaline from one plain question — how long does it take to set up a customer, and how do you know? — to numbers held ready: found in records the company already keeps, defined once, owned by name, given their context, labelled by kind, and used for the investor, goals and dashboards.
 
-Ines is Larkspur’s chief executive: she runs the company day to day and approves spending inside its plan. She answers to the board, the directors who oversee the company for its owners, the investor among them; the board approves the plan and any spending outside it. Priya leads product, the team that decides what the software should do; Alex leads technology and Sam leads finance. Morgan is the technology adviser to Larkspur’s investor. All are fictional, and so is every figure.
+Ines is Rotaline’s chief executive: she runs the company day to day and approves spending inside its plan. She answers to the board, the directors who oversee the company for its owners, the investor among them; the board approves the plan and any spending outside it. Priya leads product, the team that decides what the software should do; Alex leads technology and Sam leads finance. Morgan is the technology adviser to Rotaline’s investor. All are fictional, and so is every figure.
 
 <!-- comic-page
 {
@@ -81,7 +81,7 @@ Ines is Larkspur’s chief executive: she runs the company day to day and approv
     }
   ],
   "alt": "Comic page in three strips: Morgan asks Priya how long a customer setup takes and how she knows; Sam stands at a reporting form with four empty rows; Ines and Priya decide to get the numbers ready once.",
-  "caption": "Larkspur is a fictional scheduling-software company; every figure is fictional. The investor’s team sends a reporting template, and its technology adviser asks a simple question nobody can yet answer with a definition.\n\nARR (annual recurring revenue) is the yearly value of current subscriptions. Net revenue retention compares the recurring revenue from last year’s customers now with what the same customers brought then, counting their growth, cutbacks and departures. Burn is the cash spent each month beyond what comes in; runway is how many months the cash lasts.\n\nBoard text, strip 2: a form with four rows — ARR, NET REVENUE RETENTION, BURN, RUNWAY — each with an empty box and a question mark.",
+  "caption": "Rotaline is a fictional scheduling-software company; every figure is fictional. The investor’s team sends a reporting template, and its technology adviser asks a simple question nobody can yet answer with a definition.\n\nARR (annual recurring revenue) is the yearly value of current subscriptions. Net revenue retention compares the recurring revenue from last year’s customers now with what the same customers brought then, counting their growth, cutbacks and departures. Burn is the cash spent each month beyond what comes in; runway is how many months the cash lasts.\n\nBoard text, strip 2: a form with four rows — ARR, NET REVENUE RETENTION, BURN, RUNWAY — each with an empty box and a question mark.",
   "status": "generated",
   "generation": {
     "model": "gemini-3-pro-image-preview",
@@ -93,7 +93,7 @@ Ines is Larkspur’s chief executive: she runs the company day to day and approv
 
 ![Comic page in three strips: Morgan asks Priya how long a customer setup takes and how she knows; Sam stands at a reporting form with four empty rows; Ines and Priya decide to get the numbers ready once.](assets/images/16-have-your-numbers-ready/comic-page-01-the-questions-arrive-first.jpeg)
 
-**Page 1: The questions arrive first.** Larkspur is a fictional scheduling-software company; every figure is fictional. The investor’s team sends a reporting template, and its technology adviser asks a simple question nobody can yet answer with a definition.
+**Page 1: The questions arrive first.** Rotaline is a fictional scheduling-software company; every figure is fictional. The investor’s team sends a reporting template, and its technology adviser asks a simple question nobody can yet answer with a definition.
 
 ARR (annual recurring revenue) is the yearly value of current subscriptions. Net revenue retention compares the recurring revenue from last year’s customers now with what the same customers brought then, counting their growth, cutbacks and departures. Burn is the cash spent each month beyond what comes in; runway is how many months the cash lasts.
 
@@ -179,7 +179,7 @@ Board text, strip 2: a form with four rows — ARR, NET REVENUE RETENTION, BURN,
       ]
     }
   ],
-  "alt": "Comic page in three strips: five labelled boxes of existing records; a six-drawer cabinet of measure families; three cards Priya and Alex choose for Larkspur.",
+  "alt": "Comic page in three strips: five labelled boxes of existing records; a six-drawer cabinet of measure families; three cards Priya and Alex choose for Rotaline.",
   "caption": "The evidence mostly exists already, in systems never meant to be read together. The catalogue has six families of measures; the company knows them all and reports the few its decisions need.\n\nThe cloud bill is the monthly charge for the rented computing the software runs on. Incidents are the records of service failures that reached customers. The sales pipeline is the list of deals in progress. The first real schedule is the day a new customer first schedules real work in the product. The scheduling engine is the part of the software that builds the schedules; to release it is to make a new version available to customers. The one-person dependence was found in diligence, the checks the investor made before investing.\n\nBoard text: boxes FINANCE, TIME RECORDS, CLOUD BILL, INCIDENTS, SALES PIPELINE; drawers MONEY AND RUNWAY, CUSTOMERS AND GROWTH, PRODUCT OUTCOMES, DELIVERY, TECHNOLOGY HEALTH, PEOPLE; cards WEEKS TO FIRST SCHEDULE, STAFF HOURS PER SETUP, ENGINE: ONE PERSON.",
   "status": "generated",
   "generation": {
@@ -190,7 +190,7 @@ Board text, strip 2: a form with four rows — ARR, NET REVENUE RETENTION, BURN,
 }
 -->
 
-![Comic page in three strips: five labelled boxes of existing records; a six-drawer cabinet of measure families; three cards Priya and Alex choose for Larkspur.](assets/images/16-have-your-numbers-ready/comic-page-02-the-numbers-are-already-here.jpeg)
+![Comic page in three strips: five labelled boxes of existing records; a six-drawer cabinet of measure families; three cards Priya and Alex choose for Rotaline.](assets/images/16-have-your-numbers-ready/comic-page-02-the-numbers-are-already-here.jpeg)
 
 **Page 2: The numbers are already here.** The evidence mostly exists already, in systems never meant to be read together. The catalogue has six families of measures; the company knows them all and reports the few its decisions need.
 
@@ -621,7 +621,7 @@ Board text: WORKING DETAIL; SHARED VIEW; tag WITH ITS DEFINITION. Chained cards 
     }
   ],
   "alt": "Comic page in three strips: a board naming Sam, Priya and Alex as owners of the number families; Sam answers that the €225,000 forecast is not yet cash; Priya answers Morgan’s first question with the defined measure.",
-  "caption": "The board pack is the set of reports the directors receive before each board meeting. In larger companies this work belongs to product operations, a function that keeps evidence and definitions consistent without taking the decisions; a small company names an owner for each number.\n\nWith its numbers ready and labelled, Larkspur can choose what to fund against its cash and team time.\n\nBoard text: SAM: MONEY, BOARD PACK; PRIYA: PRODUCT, CUSTOMERS; ALEX: DELIVERY, TECHNOLOGY. Card €225,000 A YEAR, tagged FORECAST. Record card STAFF HOURS PER SETUP.",
+  "caption": "The board pack is the set of reports the directors receive before each board meeting. In larger companies this work belongs to product operations, a function that keeps evidence and definitions consistent without taking the decisions; a small company names an owner for each number.\n\nWith its numbers ready and labelled, Rotaline can choose what to fund against its cash and team time.\n\nBoard text: SAM: MONEY, BOARD PACK; PRIYA: PRODUCT, CUSTOMERS; ALEX: DELIVERY, TECHNOLOGY. Card €225,000 A YEAR, tagged FORECAST. Record card STAFF HOURS PER SETUP.",
   "status": "generated",
   "generation": {
     "model": "gemini-3-pro-image-preview",
@@ -635,7 +635,7 @@ Board text: WORKING DETAIL; SHARED VIEW; tag WITH ITS DEFINITION. Chained cards 
 
 **Page 7: Numbers ready.** The board pack is the set of reports the directors receive before each board meeting. In larger companies this work belongs to product operations, a function that keeps evidence and definitions consistent without taking the decisions; a small company names an owner for each number.
 
-With its numbers ready and labelled, Larkspur can choose what to fund against its cash and team time.
+With its numbers ready and labelled, Rotaline can choose what to fund against its cash and team time.
 
 Board text: SAM: MONEY, BOARD PACK; PRIYA: PRODUCT, CUSTOMERS; ALEX: DELIVERY, TECHNOLOGY. Card €225,000 A YEAR, tagged FORECAST. Record card STAFF HOURS PER SETUP.
 

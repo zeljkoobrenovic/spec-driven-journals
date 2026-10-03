@@ -30,7 +30,7 @@ m, b = blocks['02-five-items-four-origins']
 s1 = strips(b)[1]
 s1['bubbles'][0]['text'] = "Item 4 was a dated shortcut, owned by me. Accountable, not necessarily wise."
 s1['bubbles'][1]['text'] = "An undated one is. A close date nobody inside chose goes first."
-b['caption'] = ("Larkspur's register has five items; they are the board's shortlist, and a longer register sits behind them. "
+b['caption'] = ("Rotaline's register has five items; they are the board's shortlist, and a longer register sits behind them. "
   "Item 1 is the invoicing module, the software that prepares customer bills, whose code is still tangled so that parts cannot change alone. "
   "Item 2 is the reporting stack on a version its vendor no longer fixes security holes in. Item 3 is the scheduling engine, which runs each region on one server. "
   "Item 4 is the artificial intelligence (AI) sorting feature: the prompt, the instructions sent to the AI model that sorts customers' documents, "
@@ -69,10 +69,10 @@ b['caption'] = ("A migration moves software from one platform or vendor to anoth
   "is small: six engineer-weeks, six weeks of one engineer's time or three weeks each for two, and €5,000 of cash. The rule has two parts: an item whose external date leaves little "
   "more time than the work needs, with a margin, goes first, in date order, weighed against what missing the date would cost; a distant date with little work behind it can wait behind "
   "an undated item doing harm now. The rest are ordered by the carrying cost each stage of effort would remove, across all three columns. The vendor has named the successor to the "
-  "retiring artificial intelligence (AI) model; the contract lets Larkspur test it on its release samples, and Alex does so by 29 November 2027, sixty days after the notice and four "
-  "months before the 31 March 2028 retirement. If the samples fail, Larkspur's own rule gives it sixty days, to 28 January, to choose between the successor, another vendor's model "
+  "retiring artificial intelligence (AI) model; the contract lets Rotaline test it on its release samples, and Alex does so by 29 November 2027, sixty days after the notice and four "
+  "months before the 31 March 2028 retirement. If the samples fail, Rotaline's own rule gives it sixty days, to 28 January, to choose between the successor, another vendor's model "
   "and the fallback, and the contract lets it end the commitment on the retirement date. The fallback is the review mode from the trial: the feature proposes a category and each "
-  "customer's own planner confirms it, with no new Larkspur staff; if no model is usable on the date, customers' planners sort by hand as they did before the trial.")
+  "customer's own planner confirms it, with no new Rotaline staff; if no model is usable on the date, customers' planners sort by hand as they did before the trial.")
 b['alt'] = ("Comic page in three strips: a timeline marks patches ended 31 March 2027, security review by March 2028, and model retires 31 March 2028; a card reads reporting stack "
   "migration, six engineer-weeks and €5,000 cash, November to December 2027, and Ines says it goes before item 3 because the date is close and the work is small; a whiteboard gives "
   "the sequencing rule, close dates first by date, rest by cost removed per effort, successor test by 29 November, and Ines says that if the test fails customers' planners confirm each sort.")

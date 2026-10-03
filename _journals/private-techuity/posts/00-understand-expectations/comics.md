@@ -20,9 +20,9 @@
 }
 -->
 
-**Comic.** Product and engineering leaders usually meet money as a budget: an amount they may spend. Seven pages follow Larkspur’s fictional €100,000 need through three offers, from customers, a bank and an investor, to show what the funding terms add: when the money may be spent, who must approve it, and what the company must deliver, repay or give up.
+**Comic.** Product and engineering leaders usually meet money as a budget: an amount they may spend. Seven pages follow Rotaline’s fictional €100,000 need through three offers, from customers, a bank and an investor, to show what the funding terms add: when the money may be spent, who must approve it, and what the company must deliver, repay or give up.
 
-Alex leads technology, Sam leads finance and Ines is the chief executive of Larkspur, a fictional company at its smallest in this book. All are fictional, and so is every figure.
+Alex leads technology, Sam leads finance and Ines is the chief executive of Rotaline, a fictional company at its smallest in this book. All are fictional, and so is every figure.
 
 <!-- comic-page
 {
@@ -89,7 +89,7 @@ Alex leads technology, Sam leads finance and Ines is the chief executive of Lark
     }
   ],
   "alt": "Comic page in three strips: Alex and Sam face three waiting customers and a calendar marked 1 March, needing €100,000; Sam empties a jar that leaves only €1,500 a month; Ines lifts the blank tag tied to the first of three €100,000 money bags marked customers, bank and investor.",
-  "caption": "Larkspur is fictional and so is every figure. It is a small software company owned by its founders, the people who started it. The dispatch feature assigns jobs to field workers and sends each a schedule. Customer payments, borrowing, money from owners and selling an asset, something the company owns, are four common sources of cash; Larkspur has no spare asset worth €100,000, so three remain. The habit to keep: ask how much cash arrives, and what obligation or ownership change arrives with it.",
+  "caption": "Rotaline is fictional and so is every figure. It is a small software company owned by its founders, the people who started it. The dispatch feature assigns jobs to field workers and sends each a schedule. Customer payments, borrowing, money from owners and selling an asset, something the company owns, are four common sources of cash; Rotaline has no spare asset worth €100,000, so three remain. The habit to keep: ask how much cash arrives, and what obligation or ownership change arrives with it.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
@@ -101,7 +101,7 @@ Alex leads technology, Sam leads finance and Ines is the chief executive of Lark
 
 ![Comic page in three strips: Alex and Sam face three waiting customers and a calendar marked 1 March, needing €100,000; Sam empties a jar that leaves only €1,500 a month; Ines lifts the blank tag tied to the first of three €100,000 money bags marked customers, bank and investor.](assets/images/00-understand-expectations/comic-page-01-what-comes-with-the-money.jpeg)
 
-**Page 1: What comes with the money?.** Larkspur is fictional and so is every figure. It is a small software company owned by its founders, the people who started it. The dispatch feature assigns jobs to field workers and sends each a schedule. Customer payments, borrowing, money from owners and selling an asset, something the company owns, are four common sources of cash; Larkspur has no spare asset worth €100,000, so three remain. The habit to keep: ask how much cash arrives, and what obligation or ownership change arrives with it.
+**Page 1: What comes with the money?.** Rotaline is fictional and so is every figure. It is a small software company owned by its founders, the people who started it. The dispatch feature assigns jobs to field workers and sends each a schedule. Customer payments, borrowing, money from owners and selling an asset, something the company owns, are four common sources of cash; Rotaline has no spare asset worth €100,000, so three remain. The habit to keep: ask how much cash arrives, and what obligation or ownership change arrives with it.
 
 - *Strip 1.* **Alex:** “Three customers want the dispatch feature by 1 March.” **Sam:** “Building it takes €100,000 we don't have.”
 - *Strip 2.* **Sam:** “Subscriptions pay today's costs. About €1,500 a month is left.” **Alex:** “So someone else has to fund it.”
@@ -175,7 +175,7 @@ Alex leads technology, Sam leads finance and Ines is the chief executive of Lark
     }
   ],
   "alt": "Comic page in three strips: three customers hand Sam a bag of €100,000 paid in advance; Ines reads the tag tied to it, deliver by 1 March or refund €8,300; Alex shows a plan that builds from 19 January to 13 February with two weeks spare before 1 March.",
-  "caption": "A prepayment is money a customer pays before the service is delivered. Here three customers pay Larkspur’s standard yearly price in advance, €100,000 in all, for a year of service that includes the new feature. The contract promises the feature by 1 March and one month of service back if it is late, about €8,300 across the three customers, which Larkspur would pay from its €10,000 reserve for overruns.",
+  "caption": "A prepayment is money a customer pays before the service is delivered. Here three customers pay Rotaline’s standard yearly price in advance, €100,000 in all, for a year of service that includes the new feature. The contract promises the feature by 1 March and one month of service back if it is late, about €8,300 across the three customers, which Rotaline would pay from its €10,000 reserve for overruns.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
@@ -187,7 +187,7 @@ Alex leads technology, Sam leads finance and Ines is the chief executive of Lark
 
 ![Comic page in three strips: three customers hand Sam a bag of €100,000 paid in advance; Ines reads the tag tied to it, deliver by 1 March or refund €8,300; Alex shows a plan that builds from 19 January to 13 February with two weeks spare before 1 March.](assets/images/00-understand-expectations/comic-page-02-prepayment-a-date-becomes-a-promise.jpeg)
 
-**Page 2: The customers’ money: a date becomes a promise.** A prepayment is money a customer pays before the service is delivered. Here three customers pay Larkspur’s standard yearly price in advance, €100,000 in all, for a year of service that includes the new feature. The contract promises the feature by 1 March and one month of service back if it is late, about €8,300 across the three customers, which Larkspur would pay from its €10,000 reserve for overruns.
+**Page 2: The customers’ money: a date becomes a promise.** A prepayment is money a customer pays before the service is delivered. Here three customers pay Rotaline’s standard yearly price in advance, €100,000 in all, for a year of service that includes the new feature. The contract promises the feature by 1 March and one month of service back if it is late, about €8,300 across the three customers, which Rotaline would pay from its €10,000 reserve for overruns.
 
 - *Strip 1.* **Sam:** “They pay for a year of service up front. That's a prepayment.” **Alex:** “No interest, and no new owner.”
 - *Strip 2.* **Ines:** “But the date is now a term in a contract.” **Alex:** “A slip costs €8,300, and their trust.”
@@ -263,7 +263,7 @@ Alex leads technology, Sam leads finance and Ines is the chief executive of Lark
     }
   ],
   "alt": "Comic page in three strips: a banker sets down a €100,000 bag tagged repay €3,040 a month; a tall coin column marked repayment €3,040 stands beside one half its height marked left over €1,500, short €1,540; Sam guards the €10,000 reserve jar while Ines pushes the bank’s bag away.",
-  "caption": "The loan keeps ownership intact and costs about €9,500 of interest over three years, but its €3,040 a month is twice the €1,500 that Larkspur’s existing subscriptions leave. Under this route the customers would pay ordinary subscriptions, invoiced when the feature goes live and due by 31 March, so the first repayments would come out of the €10,000 reserve kept for overruns. The repayments would continue for three years even if a customer paid late or walked away.",
+  "caption": "The loan keeps ownership intact and costs about €9,500 of interest over three years, but its €3,040 a month is twice the €1,500 that Rotaline’s existing subscriptions leave. Under this route the customers would pay ordinary subscriptions, invoiced when the feature goes live and due by 31 March, so the first repayments would come out of the €10,000 reserve kept for overruns. The repayments would continue for three years even if a customer paid late or walked away.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
@@ -275,7 +275,7 @@ Alex leads technology, Sam leads finance and Ines is the chief executive of Lark
 
 ![Comic page in three strips: a banker sets down a €100,000 bag tagged repay €3,040 a month; a tall coin column marked repayment €3,040 stands beside one half its height marked left over €1,500, short €1,540; Sam guards the €10,000 reserve jar while Ines pushes the bank’s bag away.](assets/images/00-understand-expectations/comic-page-03-loan-a-monthly-claim.jpeg)
 
-**Page 3: The bank’s money: a fixed monthly claim.** The loan keeps ownership intact and costs about €9,500 of interest over three years, but its €3,040 a month is twice the €1,500 that Larkspur’s existing subscriptions leave. Under this route the customers would pay ordinary subscriptions, invoiced when the feature goes live and due by 31 March, so the first repayments would come out of the €10,000 reserve kept for overruns. The repayments would continue for three years even if a customer paid late or walked away.
+**Page 3: The bank’s money: a fixed monthly claim.** The loan keeps ownership intact and costs about €9,500 of interest over three years, but its €3,040 a month is twice the €1,500 that Rotaline’s existing subscriptions leave. Under this route the customers would pay ordinary subscriptions, invoiced when the feature goes live and due by 31 March, so the first repayments would come out of the €10,000 reserve kept for overruns. The repayments would continue for three years even if a customer paid late or walked away.
 
 - *Strip 1.* *Narration:* A bank loan: €100,000 at 6% a year, 36 monthly payments. **Sam:** “Debt must be repaid, plus interest, the charge for borrowing.” **Alex:** “And repayments start next month.”
 - *Strip 2.* **Sam:** “Each payment is twice what we have left over.” **Alex:** “And with a loan, customers pay only after launch.”
@@ -354,7 +354,7 @@ Alex leads technology, Sam leads finance and Ines is the chief executive of Lark
     }
   ],
   "alt": "Comic page in three strips: an investor pays €100,000 and takes a thin slice of cake marked 111 shares, about 10%, beside the founders’ 1,000 shares; the investor pulls a new chair marked board seat up to the board table beside a stamp marked consent above €50,000; a whiteboard shows new shares sending cash to the company and existing shares sending cash to the seller.",
-  "caption": "A share is a unit of company ownership. Larkspur has 1,000 identical shares; 111 new ones would give the investor 111 of 1,111, about 10%. With them come a seat on the board of directors, the small group that oversees the company for its shareholders, a consent right, meaning Larkspur must ask permission, over spending above €50,000 outside the approved plan, and the expectation that the company will eventually be sold. A change of owner funds the company only when the money reaches the company.",
+  "caption": "A share is a unit of company ownership. Rotaline has 1,000 identical shares; 111 new ones would give the investor 111 of 1,111, about 10%. With them come a seat on the board of directors, the small group that oversees the company for its shareholders, a consent right, meaning Rotaline must ask permission, over spending above €50,000 outside the approved plan, and the expectation that the company will eventually be sold. A change of owner funds the company only when the money reaches the company.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
@@ -366,7 +366,7 @@ Alex leads technology, Sam leads finance and Ines is the chief executive of Lark
 
 ![Comic page in three strips: an investor pays €100,000 and takes a thin slice of cake marked 111 shares, about 10%, beside the founders’ 1,000 shares; the investor pulls a new chair marked board seat up to the board table beside a stamp marked consent above €50,000; a whiteboard shows new shares sending cash to the company and existing shares sending cash to the seller.](assets/images/00-understand-expectations/comic-page-04-shares-a-new-owner.jpeg)
 
-**Page 4: The investor’s money: a new owner.** A share is a unit of company ownership. Larkspur has 1,000 identical shares; 111 new ones would give the investor 111 of 1,111, about 10%. With them come a seat on the board of directors, the small group that oversees the company for its shareholders, a consent right, meaning Larkspur must ask permission, over spending above €50,000 outside the approved plan, and the expectation that the company will eventually be sold. A change of owner funds the company only when the money reaches the company.
+**Page 4: The investor’s money: a new owner.** A share is a unit of company ownership. Rotaline has 1,000 identical shares; 111 new ones would give the investor 111 of 1,111, about 10%. With them come a seat on the board of directors, the small group that oversees the company for its shareholders, a consent right, meaning Rotaline must ask permission, over spending above €50,000 outside the approved plan, and the expectation that the company will eventually be sold. A change of owner funds the company only when the money reaches the company.
 
 - *Strip 1.* *Narration:* New shares: an investor pays €100,000 for 111 new shares. **Sam:** “Equity is ownership. There is nothing to repay.” **Alex:** “So what comes tied to it?”
 - *Strip 2.* **Ines:** “A board seat, and a say over big unplanned spending.” **Sam:** “Those rights outlast this feature.”
@@ -431,7 +431,7 @@ Alex leads technology, Sam leads finance and Ines is the chief executive of Lark
     }
   ],
   "alt": "Comic page in three strips: three €100,000 bags show their tags, deliver by 1 March, repay €3,040 a month, and 10% and a board seat; Sam slides the loan off the table and Ines shelves the shares, leaving the customers’ bag; on 15 January Ines tells the board she can sign customer contracts alone while a loan or new shares would need the board.",
-  "caption": "The three customers pay the standard price with no discount, so the prepayment costs Larkspur the engineers’ time and one risk, the one-month refund. The loan would cost about €9,500 of interest; the shares 10% of the company and the rights that come with it. Authority follows the financing: under Larkspur’s articles, its rulebook, borrowing and issuing shares are board decisions, while ordinary customer contracts sit within the permission the board has given Ines, the chief executive. Because these contracts turn a date into a refund obligation, she takes the comparison to the board first, and its minutes, the written record of the meeting, note its support.",
+  "caption": "The three customers pay the standard price with no discount, so the prepayment costs Rotaline the engineers’ time and one risk, the one-month refund. The loan would cost about €9,500 of interest; the shares 10% of the company and the rights that come with it. Authority follows the financing: under Rotaline’s articles, its rulebook, borrowing and issuing shares are board decisions, while ordinary customer contracts sit within the permission the board has given Ines, the chief executive. Because these contracts turn a date into a refund obligation, she takes the comparison to the board first, and its minutes, the written record of the meeting, note its support.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
@@ -443,7 +443,7 @@ Alex leads technology, Sam leads finance and Ines is the chief executive of Lark
 
 ![Comic page in three strips: three €100,000 bags show their tags, deliver by 1 March, repay €3,040 a month, and 10% and a board seat; Sam slides the loan off the table and Ines shelves the shares, leaving the customers’ bag; on 15 January Ines tells the board she can sign customer contracts alone while a loan or new shares would need the board.](assets/images/00-understand-expectations/comic-page-05-the-choice.jpeg)
 
-**Page 5: The choice, and who may make it.** The three customers pay the standard price with no discount, so the prepayment costs Larkspur the engineers’ time and one risk, the one-month refund. The loan would cost about €9,500 of interest; the shares 10% of the company and the rights that come with it. Authority follows the financing: under Larkspur’s articles, its rulebook, borrowing and issuing shares are board decisions, while ordinary customer contracts sit within the permission the board has given Ines, the chief executive. Because these contracts turn a date into a refund obligation, she takes the comparison to the board first, and its minutes, the written record of the meeting, note its support.
+**Page 5: The choice, and who may make it.** The three customers pay the standard price with no discount, so the prepayment costs Rotaline the engineers’ time and one risk, the one-month refund. The loan would cost about €9,500 of interest; the shares 10% of the company and the rights that come with it. Authority follows the financing: under Rotaline’s articles, its rulebook, borrowing and issuing shares are board decisions, while ordinary customer contracts sit within the permission the board has given Ines, the chief executive. Because these contracts turn a date into a refund obligation, she takes the comparison to the board first, and its minutes, the written record of the meeting, note its support.
 
 - *Strip 1.* **Sam:** “Same €100,000. Three different promises.” **Ines:** “The prepayment: the cheapest money and the tightest promise.”
 - *Strip 2.* **Sam:** “The loan rests on money we haven't collected.” **Ines:** “And I'll keep the shares for a bigger expansion.”
@@ -521,7 +521,7 @@ Alex leads technology, Sam leads finance and Ines is the chief executive of Lark
     }
   ],
   "alt": "Comic page in three strips: on a pinboard two checks are ticked, signed orders 3 of 3 and 8 engineer-weeks with a limit of 12; a whiteboard shows that two orders of €66,667 plus a €35,000 loan at €1,065 a month would fit, if the board approves; on 16 January Ines signs the order that promises delivery by 1 March and Alex leaves to start the work.",
-  "caption": "Each customer signs an order that binds Larkspur only when Ines countersigns it, adding the company’s signature. An engineer-week is one engineer’s work for one week; twelve is the most that still fits before 1 March. Fewer than three orders, or an estimate above twelve, and she signs nothing until the plan fits. With two orders, a small loan the board approves keeps the planned feature and date, because €1,065 a month fits inside the €1,500 left over. With one order or none, no affordable loan closes the gap, so Larkspur offers a smaller first version or waits. The engineers start either way: their salaries need no new cash.",
+  "caption": "Each customer signs an order that binds Rotaline only when Ines countersigns it, adding the company’s signature. An engineer-week is one engineer’s work for one week; twelve is the most that still fits before 1 March. Fewer than three orders, or an estimate above twelve, and she signs nothing until the plan fits. With two orders, a small loan the board approves keeps the planned feature and date, because €1,065 a month fits inside the €1,500 left over. With one order or none, no affordable loan closes the gap, so Rotaline offers a smaller first version or waits. The engineers start either way: their salaries need no new cash.",
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
@@ -533,7 +533,7 @@ Alex leads technology, Sam leads finance and Ines is the chief executive of Lark
 
 ![Comic page in three strips: on a pinboard two checks are ticked, signed orders 3 of 3 and 8 engineer-weeks with a limit of 12; a whiteboard shows that two orders of €66,667 plus a €35,000 loan at €1,065 a month would fit, if the board approves; on 16 January Ines signs the order that promises delivery by 1 March and Alex leaves to start the work.](assets/images/00-understand-expectations/comic-page-06-nothing-promised-until-signed.jpeg)
 
-**Page 6: Nothing is promised until Ines signs.** Each customer signs an order that binds Larkspur only when Ines countersigns it, adding the company’s signature. An engineer-week is one engineer’s work for one week; twelve is the most that still fits before 1 March. Fewer than three orders, or an estimate above twelve, and she signs nothing until the plan fits. With two orders, a small loan the board approves keeps the planned feature and date, because €1,065 a month fits inside the €1,500 left over. With one order or none, no affordable loan closes the gap, so Larkspur offers a smaller first version or waits. The engineers start either way: their salaries need no new cash.
+**Page 6: Nothing is promised until Ines signs.** Each customer signs an order that binds Rotaline only when Ines countersigns it, adding the company’s signature. An engineer-week is one engineer’s work for one week; twelve is the most that still fits before 1 March. Fewer than three orders, or an estimate above twelve, and she signs nothing until the plan fits. With two orders, a small loan the board approves keeps the planned feature and date, because €1,065 a month fits inside the €1,500 left over. With one order or none, no affordable loan closes the gap, so Rotaline offers a smaller first version or waits. The engineers start either way: their salaries need no new cash.
 
 - *Strip 1.* *Narration:* The same day: two checks before anyone signs. **Sam:** “Three signed orders. The cash covers the work.” **Alex:** “Eight engineer-weeks. Above twelve, we'd replan the date first.”
 - *Strip 2.* *Narration:* If only two customers had signed: **Sam:** “A €35,000 loan would fit inside our €1,500 a month.” **Ines:** “Only if the board approves. Otherwise we shrink the plan.”

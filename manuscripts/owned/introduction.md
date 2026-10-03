@@ -3,7 +3,7 @@
 
 ![Introduction & Reading Guide — logo](private-techuity/posts/introduction/assets/images/introduction/logo.jpeg)
 
-> **IN THIS SECTION, YOU WILL:** Learn what this book is for, which route to take for the decision in front of you, and how to read fictional examples and historical evidence.
+> **IN THIS SECTION, YOU WILL:** Learn what this book is for, which route best fits your investment decision, and how to read its fictional examples and historical evidence.
 
 > **KEY POINTS:**
 >
@@ -106,11 +106,11 @@ The eight parts work together around one purpose: **commitments the company can 
 {id: introduction--meet-the-fictional-company}
 ## Meet the Fictional Company
 
-**Larkspur** sells scheduling software to maintenance businesses. Its customers organize appointments and assign people to work. A recurring challenge is **customer onboarding**: the setup and help needed before a customer can use the product successfully.
+**Rotaline** sells scheduling software to maintenance businesses. Its customers organize appointments and assign people to work. A recurring challenge is **customer onboarding**: the setup and help needed before a customer can use the product successfully.
 
-Ines is the **chief executive officer (CEO)**, leading the company. Alex is the **chief technology officer (CTO)**, leading technology. Sam is the **chief financial officer (CFO)**, leading finance. Priya leads product. Morgan is the investor’s technology adviser in the scenarios where an investment fund, a pool of investors’ money run by a management firm, owns part or all of Larkspur.
+Ines is the **chief executive officer (CEO)**, leading the company. Alex is the **chief technology officer (CTO)**, leading technology. Sam is the **chief financial officer (CFO)**, leading finance. Priya leads product. Morgan is the investor’s technology adviser in the scenarios where an investment fund, a pool of investors’ money run by a management firm, owns part or all of Rotaline.
 
-The chapters place Larkspur in alternative situations: learning with limited cash, expanding with growth funding, operating after a buyout, or working with a corporate owner. These are fictional decision exercises, not a single company history. Each example states its own assumptions; its figures do not combine into one set of financial records.
+The chapters place Rotaline in alternative situations: learning with limited cash, expanding with growth funding, operating after a buyout, or working with a corporate owner. These are fictional decision exercises, not a single company history. Each example states its own assumptions; its figures do not combine into one set of financial records.
 
 The main shared example is an exception. It follows one finding—that onboarding depends on one specialist’s manual work—through six stages, nine chapters and the toolkit, using the same identifiers:
 
@@ -137,7 +137,7 @@ For a shorter first pass, read the part introductions and chapter summaries. The
 
 This manuscript was drafted and revised in September 2026. Its historical cases examine specified periods at Hilton, Skype, Visma, Toys R Us and TeamSystem. The evidence concentrates on **private equity**—investment in companies whose shares are not publicly traded, usually made through funds of pooled investor money and often taking control—and related ownership transitions. It doesn’t establish how all venture, growth or corporate investors behave or perform.
 
-Guides published by regulators and public development banks—publicly backed institutions that support business or economic development—underpin the descriptions of other arrangements. The comparative Larkspur exercises are my illustrations of decisions under stated assumptions. Company filings (documents formally submitted to a regulator or public registry), investors’ own accounts of events and research answer different questions; none establishes an unobserved customer or employee outcome.
+Guides published by regulators and public development banks—publicly backed institutions that support business or economic development—underpin the descriptions of other arrangements. The comparative Rotaline exercises are my illustrations of decisions under stated assumptions. Company filings (documents formally submitted to a regulator or public registry), investors’ own accounts of events and research answer different questions; none establishes an unobserved customer or employee outcome.
 
 The [Bibliography and Evidence Guide](#bibliography) records consultation scope and evidence limits. The chapter-end “To Probe Further” lists offer optional further reading; the bibliography identifies which resources were also used as evidence. A chapter’s argument rests only on the sources cited inline.
 

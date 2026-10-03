@@ -26,7 +26,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Non-goals
 
-Summarising the chapters’ arguments. No new claims, no evidence of its own, no worked examples. No repetition of the Larkspur scenarios; the layoff chapter carries its own scenario setup.
+Summarising the chapters’ arguments. No new claims, no evidence of its own, no worked examples. No repetition of the Rotaline scenarios; the layoff chapter carries its own scenario setup.
 
 ## Modalities
 

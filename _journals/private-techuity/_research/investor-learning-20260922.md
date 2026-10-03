@@ -9,14 +9,14 @@ The new chapter is `posts/10-learn-through-investors-network/`, permalink `learn
 ## Editorial choices
 
 - Give discovery and continuing relationships their own place alongside learning for a known decision. Avoid treating every event as an immediate delivery project or requiring invented financial returns.
-- Use an independent fictional company, Northline, and new characters Mira and Tomas. Its €1,200 learning-budget limit and six person-days do not alter the Larkspur ledger. Two travel/visit days plus one preparation/follow-through day per person make six person-days. The visit changes a research question; it does not authorize a feature or establish a saving.
+- Use an independent fictional company, Northline, and new characters Mira and Tomas. Its €1,200 learning-budget limit and six person-days do not alter the Rotaline ledger. Two travel/visit days plus one preparation/follow-through day per person make six person-days. The visit changes a research question; it does not authorize a feature or establish a saving.
 - Identify CTO Starter Kit as the author’s project. Describe the documented resources and distinguish a proposed application by an investor community from observed adoption.
 - Register S101–S105 in the bibliography with their consultation limits. Investor descriptions establish activities or offers; the Wenger-Trayner source supplies a conceptual definition. The format comparison and learning brief are proposed methods.
 - Add Tool 14 and contextual links from the support, AI and technology operating partner chapters. Update the Part IV guide, six-chapter overview, contents and companion specs before their related content changes.
 
 ## Reading formats and artwork
 
-The article is approximately 2,875 words after excluding front matter and image alt text; the independent summary is 415 words by the same whitespace-based count. The comic contains five pages of three strips each, with captions and exact dialogue transcripts. Source metadata and prose distinguish it from the shared Larkspur example.
+The article is approximately 2,875 words after excluding front matter and image alt text; the independent summary is 415 words by the same whitespace-based count. The comic contains five pages of three strips each, with captions and exact dialogue transcripts. Source metadata and prose distinguish it from the shared Rotaline example.
 
 `render-investor-learning-20260922.py` authors the chapter’s SVG logo, icon, two explanatory figures, five comic pages and the Part IV overview. It uses the standard library (plus Pillow, when present under python3.11, to measure Arial line widths for the comic pages since round 2 of the in-depth review), fixed dialogue and the journal’s ivory/navy/teal/ochre palette. Every image was rendered and visually inspected. Text was checked against SVG bounds in Chromium. The previous Part IV overview remains available as a historical asset.
 

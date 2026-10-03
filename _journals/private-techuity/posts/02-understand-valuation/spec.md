@@ -61,7 +61,7 @@ S06–S07 for earnings and development-accounting distinctions; S52 for IPEV's D
 ## Changelog
 
 - 2026-10-03: Closing teaser aligned with [[understand-investor-returns]]: it now promises that the same company performance can return very different amounts depending on price, borrowing and timing (the chapter's main lesson), not two investors reporting different results.
-- 2026-10-03: Bridged from [[understand-funding-control]]: the opening picks up its three readings of a headline figure, and the €60m thread becomes a buyer's valuation of Larkspur, with the income statement flagged as this chapter's scenario. The pre-money example is a separate scenario with a smaller Larkspur (figures unchanged), consistent with the introduction's rule that Larkspur examples are alternative situations, not one company history. Article and summary updated; comic unchanged.
+- 2026-10-03: Bridged from [[understand-funding-control]]: the opening picks up its three readings of a headline figure, and the €60m thread becomes a buyer's valuation of Rotaline, with the income statement flagged as this chapter's scenario. The pre-money example is a separate scenario with a smaller Rotaline (figures unchanged), consistent with the introduction's rule that Rotaline examples are alternative situations, not one company history. Article and summary updated; comic unchanged.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.
 

@@ -68,7 +68,7 @@ Build run (`[built] private-techuity`); `docs/private-techuity/success-for-whom.
 
 ## Previous assessment (15 September 2026)
 
-The finale now concludes this collection rather than starting a separate research essay. The case matrix, supplier row and final Larkspur decision connect its evaluative standard to the preceding chapters. Research is shorter without dismissing patient harms, and deliberately funded continuing services are accepted as a legitimate capability. The closing sentence has a clear subject and purpose.
+The finale now concludes this collection rather than starting a separate research essay. The case matrix, supplier row and final Rotaline decision connect its evaluative standard to the preceding chapters. Research is shorter without dismissing patient harms, and deliberately funded continuing services are accepted as a legitimate capability. The closing sentence has a clear subject and purpose.
 
 The final decision still needed substantial local repair at that date: one alternative violated stated customer commitments, its savings mixed cash and released time, and the transition was called funded without its full cost or dated schedule. The 15 September recommendations (distinguish a genuine trade-off from an inadmissible option; establish which part of the €220,000 is a saving; fund and date the transition; temper the “best documented” claim; bring the comic into the finale; finish the terminology pass) were carried into the 23 September findings above and are closed by the dispositions table.
 

@@ -62,13 +62,13 @@ def edit_page5(b):
         return  # already applied
     # blocks['05-the-dated-item-goes-first']
     assert paras[2].startswith("The vendor's notice of 30 September 2027") and paras[3].startswith("After the retirement date")
-    paras[2] = ("The vendor's notice of 30 September 2027 retires the artificial intelligence (AI) model that sorts customers' documents on 31 March 2028, names its successor and gives Larkspur usable access to it the same day. "
-      "It arrives before Larkspur has signed its planned commitment, an agreement to make fixed monthly payments to the vendor through 2028 in return for a discount, which Ines is due to sign in November. "
+    paras[2] = ("The vendor's notice of 30 September 2027 retires the artificial intelligence (AI) model that sorts customers' documents on 31 March 2028, names its successor and gives Rotaline usable access to it the same day. "
+      "It arrives before Rotaline has signed its planned commitment, an agreement to make fixed monthly payments to the vendor through 2028 in return for a discount, which Ines is due to sign in November. "
       "So the test comes first. Alex runs the successor on the release-gate samples, the documents the feature had to sort correctly before release, by 29 October, and Ines signs only if it passes. "
-      "If it fails, nothing is signed and no fixed payment is owed, and Larkspur chooses by 29 November between another vendor's model tested on the same samples and the failed successor. "
+      "If it fails, nothing is signed and no fixed payment is owed, and Rotaline chooses by 29 November between another vendor's model tested on the same samples and the failed successor. "
       "Had access come later, every date would move with it, and the choice would still be made by 31 January 2028.")
     new4 = ("The old model stays available until 31 March, but the switch is planned for February, leaving March to put right anything that goes wrong; what customers get changes on that switch day. "
-      "A model that passed the samples keeps sorting automatically. A model that was tested and failed can carry the review mode from the trial: the feature proposes a category and each customer's own planner confirms it, with no new Larkspur staff. "
+      "A model that passed the samples keeps sorting automatically. A model that was tested and failed can carry the review mode from the trial: the feature proposes a category and each customer's own planner confirms it, with no new Rotaline staff. "
       "The mode still needs a model, and it starts only where Priya has confirmed that the planner has the time and has agreed the changed service and fee; other customers' sorting is suspended from the switch day.")
     new5 = ("If no model was tested at all, there is nothing to switch to: sorting is suspended for every customer on 31 March, with the changed service agreed beforehand, and documents go back to sorting by hand. "
       "Sam prices the chosen model's usage against the AI budget the board approved; anything beyond it needs the board.")

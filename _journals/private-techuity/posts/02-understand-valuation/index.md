@@ -30,7 +30,7 @@ icon: "assets/icons/02-understand-valuation.png"
 <br>
 Product and engineering leaders rarely need to produce a **company valuation**, but they need to understand one. Valuations drive ambitions, and the goals derived from them decide which work gets funded and which gets questioned.
 
-The previous chapter showed that a headline figure can be a purchase price, new funding or a valuation. This chapter takes the valuation. Suppose a buyer says Larkspur is **worth** €60 million. Reading that figure starts with two questions: **what is being valued**, the operating business or the shares its owners hold, and **how was the estimate made**? Answering either requires understanding the business’s numbers, so this chapter has two stages:
+The previous chapter showed that a headline figure can be a purchase price, new funding or a valuation. This chapter takes the valuation. Suppose a buyer says Rotaline is **worth** €60 million. Reading that figure starts with two questions: **what is being valued**, the operating business or the shares its owners hold, and **how was the estimate made**? Answering either requires understanding the business’s numbers, so this chapter has two stages:
 
 - **Read the business’s numbers** introduces revenue, profit and cash flow, and ends with a short checkpoint on the €60 million.
 - **Interpret a valuation** separates the value of the business from the value of its shares, works through three common ways of estimating value, explains why a funding-round price answers a different question, and ends with one operating assumption a leader can challenge.
@@ -57,7 +57,7 @@ EBITDA leaves those items out to help compare operating earnings across business
 
 ### Putting the Measures Together
 
-Consider Larkspur's simplified, fictional annual income statement in this chapter's scenario. All figures are millions of euros. Operating expenses include salaries, hosting, selling costs and development work charged against earnings in the year rather than recorded as an asset; assume no other income or charges.
+Consider Rotaline's simplified, fictional annual income statement in this chapter's scenario. All figures are millions of euros. Operating expenses include salaries, hosting, selling costs and development work charged against earnings in the year rather than recorded as an asset; assume no other income or charges.
 
 | Step | Calculation | Result |
 | --- | --- | ---: |
@@ -116,7 +116,7 @@ The methods do not all estimate the same thing. A multiple of EBITDA or a cash-f
 
 A **valuation multiple** divides a value by a financial measure: a figure from the company’s accounts that reflects its size or performance, such as annual revenue, EBITDA or profit. If an operating business is valued at €60 million and annual revenue is €20 million, EV / revenue is 3×. If annual EBITDA is €4 million, the same €60 million value corresponds to 15× EBITDA.
 
-To value a business with a multiple, the analyst works in reverse: take a multiple observed for **similar businesses** and apply it to this company’s figure. If comparable companies are valued at around 3× revenue, Larkspur’s €20 million of revenue suggests €60 million of enterprise value. If comparable companies are valued at around 12× EBITDA, Larkspur’s €4 million of EBITDA suggests only €48 million. The two answers differ by €12 million for the same business. The right response is not to pick the larger number but to ask which comparison fits Larkspur better, and why investors expect what they do from those comparable companies.
+To value a business with a multiple, the analyst works in reverse: take a multiple observed for **similar businesses** and apply it to this company’s figure. If comparable companies are valued at around 3× revenue, Rotaline’s €20 million of revenue suggests €60 million of enterprise value. If comparable companies are valued at around 12× EBITDA, Rotaline’s €4 million of EBITDA suggests only €48 million. The two answers differ by €12 million for the same business. The right response is not to pick the larger number but to ask which comparison fits Rotaline better, and why investors expect what they do from those comparable companies.
 
 A revenue multiple can be useful when current earnings are low or negative and investors are assessing what a growing business could become. But revenue doesn’t reveal the cost of delivering it. Two businesses with equal revenue can need different staffing, infrastructure, selling effort and ongoing investment.
 
@@ -149,7 +149,7 @@ Who legally owns the product: its code, brand and the licences it depends on? Ca
 
 ### A Funding-Round Valuation Sets Ownership, Not the Company’s Worth
 
-In a separate scenario, a smaller Larkspur raises its first outside money: the founders agree an **equity valuation before new funding**, or **pre-money valuation**, of €8m. An investor pays the company €2m for newly issued shares. Ignoring fees, any other instruments that could later convert into shares, and differences in share rights, the **post-money valuation**, the equity value immediately after that funding, is €10m. The new investor owns €2m / €10m = 20%.
+In a separate scenario, a smaller Rotaline raises its first outside money: the founders agree an **equity valuation before new funding**, or **pre-money valuation**, of €8m. An investor pays the company €2m for newly issued shares. Ignoring fees, any other instruments that could later convert into shares, and differences in share rights, the **post-money valuation**, the equity value immediately after that funding, is €10m. The new investor owns €2m / €10m = 20%.
 
 The company receives €2m, not the €10m headline valuation. If the same investor instead pays a founder €2m for existing shares, the company receives no new money. Nor should this equity valuation be compared directly with an enterprise value that treats borrowing differently.
 
@@ -159,7 +159,7 @@ An early business with losses can’t sensibly use a positive EBITDA multiple as
 
 ### Challenge the Assumption That Each Customer Gets Cheaper to Serve
 
-Take the €60 million one last time, now as a model rather than a headline. Suppose the buyer’s model reaches that figure by expecting revenue to double over four years while the cost of **onboarding** each new customer, setting the customer up to use the product, falls by a third, on the reasoning that the work will spread across more customers. That is an **operating assumption**, and it lands on product and engineering. In the Larkspur onboarding example that the chapter [[test-revenue-assumptions]] costs out, each **implementation**, the configuration work that makes the product usable for one new customer, takes about 80 hours, much of it one specialist’s manual configuration. Selling to more customers does not shorten those 80 hours; it only multiplies them. The cost per customer falls only if someone changes how onboarding is done, for example by automating the configuration, and that change has to be planned, funded and built.
+Take the €60 million one last time, now as a model rather than a headline. Suppose the buyer’s model reaches that figure by expecting revenue to double over four years while the cost of **onboarding** each new customer, setting the customer up to use the product, falls by a third, on the reasoning that the work will spread across more customers. That is an **operating assumption**, and it lands on product and engineering. In the Rotaline onboarding example that the chapter [[test-revenue-assumptions]] costs out, each **implementation**, the configuration work that makes the product usable for one new customer, takes about 80 hours, much of it one specialist’s manual configuration. Selling to more customers does not shorten those 80 hours; it only multiplies them. The cost per customer falls only if someone changes how onboarding is done, for example by automating the configuration, and that change has to be planned, funded and built.
 
 - **Which change produces the reduction?** A reusable setup step, a data import that customers can run themselves, or a narrower first-year target of customers whose data is already standard. Name it.
 - **When does it become usable?** If the setup step needs two quarters (six months) to build and a first group of customers to prove it works, the model cannot assume a full year of savings; phase the benefit from the expected validation date and check what that does to the early margins.

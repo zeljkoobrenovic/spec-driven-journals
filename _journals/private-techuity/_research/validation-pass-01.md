@@ -34,4 +34,4 @@ Installed in `_journals/private-techuity` and `docs/private-techuity` in the use
 
 The main text is a substantial short-book first draft, not a fully developed commercial book. The case set is not representative of every investment model or company size. Important gaps include complete investor cash flows, independent stakeholder evidence, detailed technology attribution, the Visma metric reconciliation, full Toys R Us filing/financing access, and actual tests of the Principal charter and Productscapes model. See the claim ledger and revision backlog.
 
-No actual portfolio-company baseline or realized intervention benefit was invented from the supplied models. Larkspur and all worked euro examples are fictional. No interviews, external outreach, deployment, or publication were undertaken. Original inputs and existing unrelated work are preserved.
+No actual portfolio-company baseline or realized intervention benefit was invented from the supplied models. Rotaline and all worked euro examples are fictional. No interviews, external outreach, deployment, or publication were undertaken. Original inputs and existing unrelated work are preserved.

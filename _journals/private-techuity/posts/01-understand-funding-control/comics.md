@@ -22,7 +22,7 @@
 
 **Comic.** An announcement describes a transaction, not a budget. Seven pages follow Alex’s wish to hire five engineers after a fictional investment announcement, and show what must be established before a hire can be authorized: how much cash reaches the business, when it arrives and who can approve its use. Those questions apply under every ownership arrangement; the structure of the deal decides the answers.
 
-Alex leads technology, Sam leads finance and Ines is the chief executive officer (CEO) of Larkspur, a fictional software company. Morgan is a technology adviser at an investment firm. All are fictional, and so is every figure.
+Alex leads technology, Sam leads finance and Ines is the chief executive officer (CEO) of Rotaline, a fictional software company. Morgan is a technology adviser at an investment firm. All are fictional, and so is every figure.
 
 <!-- comic-page
 {
@@ -125,9 +125,9 @@ Alex leads technology, Sam leads finance and Ines is the chief executive officer
       "narration": "Announcement one: investors buy €8 million of new shares.",
       "labels": [
         "NEW SHARES",
-        "LARKSPUR CASH: +€8m"
+        "ROTALINE CASH: +€8m"
       ],
-      "label_notes": "NEW SHARES is printed on the money bag; LARKSPUR CASH: +€8m is printed on the front of the open cashbox.",
+      "label_notes": "NEW SHARES is printed on the money bag; ROTALINE CASH: +€8m is printed on the front of the open cashbox.",
       "bubbles": [
         {
           "who": "Sam",
@@ -145,9 +145,9 @@ Alex leads technology, Sam leads finance and Ines is the chief executive officer
       "labels": [
         "EXISTING SHARES",
         "FOUNDER: +€40m",
-        "LARKSPUR CASH: +€0"
+        "ROTALINE CASH: +€0"
       ],
-      "label_notes": "EXISTING SHARES is printed on the very large money bag; FOUNDER: +€40m is printed on the founder's suitcase; LARKSPUR CASH: +€0 is printed on the front of the closed cashbox.",
+      "label_notes": "EXISTING SHARES is printed on the very large money bag; FOUNDER: +€40m is printed on the founder's suitcase; ROTALINE CASH: +€0 is printed on the front of the closed cashbox.",
       "bubbles": [
         {
           "who": "Sam",
@@ -178,8 +178,8 @@ Alex leads technology, Sam leads finance and Ines is the chief executive officer
       ]
     }
   ],
-  "alt": "Comic page in three strips: two investors put a bag marked new shares into Larkspur’s cashbox, which gains €8 million; a fund manager hands a very large bag marked existing shares to the founder, who gains €40 million while Larkspur’s closed cashbox gains nothing; Sam shows that a loan agreement or a funding commitment can still bring cash, and Alex asks to see the agreement.",
-  "caption": "A share is a unit of ownership in a company. Of the money paid for shares, payment for newly issued shares goes to the company that issues them, and payment for existing shares goes to the shareholder selling them. Parts of a deal’s amount may also repay old loans or pay transaction costs, the legal and advisory fees of arranging it. A third kind of announcement, a larger company buying Larkspur, also pays the selling shareholders; the question then is which company in the group funds future work and who approves Larkspur’s budget.",
+  "alt": "Comic page in three strips: two investors put a bag marked new shares into Rotaline’s cashbox, which gains €8 million; a fund manager hands a very large bag marked existing shares to the founder, who gains €40 million while Rotaline’s closed cashbox gains nothing; Sam shows that a loan agreement or a funding commitment can still bring cash, and Alex asks to see the agreement.",
+  "caption": "A share is a unit of ownership in a company. Of the money paid for shares, payment for newly issued shares goes to the company that issues them, and payment for existing shares goes to the shareholder selling them. Parts of a deal’s amount may also repay old loans or pay transaction costs, the legal and advisory fees of arranging it. A third kind of announcement, a larger company buying Rotaline, also pays the selling shareholders; the question then is which company in the group funds future work and who approves Rotaline’s budget.",
   "status": "generated",
   "generation": {
     "model": "gemini-3-pro-image-preview",
@@ -189,9 +189,9 @@ Alex leads technology, Sam leads finance and Ines is the chief executive officer
 }
 -->
 
-![Comic page in three strips: two investors put a bag marked new shares into Larkspur’s cashbox, which gains €8 million; a fund manager hands a very large bag marked existing shares to the founder, who gains €40 million while Larkspur’s closed cashbox gains nothing; Sam shows that a loan agreement or a funding commitment can still bring cash, and Alex asks to see the agreement.](assets/images/01-understand-funding-control/comic-page-02-who-receives-the-money.jpeg)
+![Comic page in three strips: two investors put a bag marked new shares into Rotaline’s cashbox, which gains €8 million; a fund manager hands a very large bag marked existing shares to the founder, who gains €40 million while Rotaline’s closed cashbox gains nothing; Sam shows that a loan agreement or a funding commitment can still bring cash, and Alex asks to see the agreement.](assets/images/01-understand-funding-control/comic-page-02-who-receives-the-money.jpeg)
 
-**Page 2: Who receives the money?.** A share is a unit of ownership in a company. Of the money paid for shares, payment for newly issued shares goes to the company that issues them, and payment for existing shares goes to the shareholder selling them. Parts of a deal’s amount may also repay old loans or pay transaction costs, the legal and advisory fees of arranging it. A third kind of announcement, a larger company buying Larkspur, also pays the selling shareholders; the question then is which company in the group funds future work and who approves Larkspur’s budget.
+**Page 2: Who receives the money?.** A share is a unit of ownership in a company. Of the money paid for shares, payment for newly issued shares goes to the company that issues them, and payment for existing shares goes to the shareholder selling them. Parts of a deal’s amount may also repay old loans or pay transaction costs, the legal and advisory fees of arranging it. A third kind of announcement, a larger company buying Rotaline, also pays the selling shareholders; the question then is which company in the group funds future work and who approves Rotaline’s budget.
 
 - *Strip 1.* *Narration:* Announcement one: investors buy €8 million of new shares. **Sam:** “The company issues new shares, so the company gets paid.” **Alex:** “That money could fund my team.”
 - *Strip 2.* *Narration:* Announcement two: a fund buys the founder's shares for €40 million. **Sam:** “The founder sells existing shares, so the founder gets paid.” **Alex:** “A bigger number, and nothing for us.”
@@ -215,7 +215,7 @@ Alex leads technology, Sam leads finance and Ines is the chief executive officer
         "INVESTMENT FIRM",
         "FUND",
         "HOLDING COMPANY",
-        "LARKSPUR"
+        "ROTALINE"
       ],
       "label_notes": "One label per framed sign, in this left-to-right order.",
       "bubbles": [
@@ -234,10 +234,10 @@ Alex leads technology, Sam leads finance and Ines is the chief executive officer
       "labels": [
         "HOLDING COMPANY",
         "LOAN",
-        "LARKSPUR",
+        "ROTALINE",
         "CUSTOMERS PAY HERE"
       ],
-      "label_notes": "HOLDING COMPANY is the first framed sign and LOAN is printed on the money bag hanging under it; LARKSPUR is the second framed sign and CUSTOMERS PAY HERE is printed on the cashbox under it.",
+      "label_notes": "HOLDING COMPANY is the first framed sign and LOAN is printed on the money bag hanging under it; ROTALINE is the second framed sign and CUSTOMERS PAY HERE is printed on the cashbox under it.",
       "bubbles": [
         {
           "who": "Morgan",
@@ -268,8 +268,8 @@ Alex leads technology, Sam leads finance and Ines is the chief executive officer
       ]
     }
   ],
-  "alt": "Comic page in three strips: Morgan shows Alex four signs, investment firm, fund, holding company and Larkspur, each with its own wallet; a lender hangs a loan on the holding company while customers pay into Larkspur’s cashbox; Alex points at a full jar marked new fund €2 billion and Morgan taps an empty jar marked your fund, fully invested.",
-  "caption": "Morgan is the investor’s technology adviser, a fictional role at the investment firm. An investment fund is a pool of investors’ money managed under agreed rules; the investment firm manages it; a holding company is set up to hold the investment and may borrow; Larkspur is the operating business that serves customers. This is a starting map: real deals can have more layers, several investors and other arrangements. €2 billion is two thousand million. Money from a newer fund is not automatically available: an investment from it would need its own justification and approvals. Before relying on support, ask which organization pays, and by what mechanism the money would actually arrive.",
+  "alt": "Comic page in three strips: Morgan shows Alex four signs, investment firm, fund, holding company and Rotaline, each with its own wallet; a lender hangs a loan on the holding company while customers pay into Rotaline’s cashbox; Alex points at a full jar marked new fund €2 billion and Morgan taps an empty jar marked your fund, fully invested.",
+  "caption": "Morgan is the investor’s technology adviser, a fictional role at the investment firm. An investment fund is a pool of investors’ money managed under agreed rules; the investment firm manages it; a holding company is set up to hold the investment and may borrow; Rotaline is the operating business that serves customers. This is a starting map: real deals can have more layers, several investors and other arrangements. €2 billion is two thousand million. Money from a newer fund is not automatically available: an investment from it would need its own justification and approvals. Before relying on support, ask which organization pays, and by what mechanism the money would actually arrive.",
   "status": "generated",
   "generation": {
     "model": "gemini-3-pro-image-preview",
@@ -279,9 +279,9 @@ Alex leads technology, Sam leads finance and Ines is the chief executive officer
 }
 -->
 
-![Comic page in three strips: Morgan shows Alex four signs, investment firm, fund, holding company and Larkspur, each with its own wallet; a lender hangs a loan on the holding company while customers pay into Larkspur’s cashbox; Alex points at a full jar marked new fund €2 billion and Morgan taps an empty jar marked your fund, fully invested.](assets/images/01-understand-funding-control/comic-page-03-four-organizations-four-wallets.jpeg)
+![Comic page in three strips: Morgan shows Alex four signs, investment firm, fund, holding company and Rotaline, each with its own wallet; a lender hangs a loan on the holding company while customers pay into Rotaline’s cashbox; Alex points at a full jar marked new fund €2 billion and Morgan taps an empty jar marked your fund, fully invested.](assets/images/01-understand-funding-control/comic-page-03-four-organizations-four-wallets.jpeg)
 
-**Page 3: Four organizations, four wallets.** Morgan is the investor’s technology adviser, a fictional role at the investment firm. An investment fund is a pool of investors’ money managed under agreed rules; the investment firm manages it; a holding company is set up to hold the investment and may borrow; Larkspur is the operating business that serves customers. This is a starting map: real deals can have more layers, several investors and other arrangements. €2 billion is two thousand million. Money from a newer fund is not automatically available: an investment from it would need its own justification and approvals. Before relying on support, ask which organization pays, and by what mechanism the money would actually arrive.
+**Page 3: Four organizations, four wallets.** Morgan is the investor’s technology adviser, a fictional role at the investment firm. An investment fund is a pool of investors’ money managed under agreed rules; the investment firm manages it; a holding company is set up to hold the investment and may borrow; Rotaline is the operating business that serves customers. This is a starting map: real deals can have more layers, several investors and other arrangements. €2 billion is two thousand million. Money from a newer fund is not automatically available: an investment from it would need its own justification and approvals. Before relying on support, ask which organization pays, and by what mechanism the money would actually arrive.
 
 - *Strip 1.* *Narration:* Suppose a fund buys the whole company. A starting map: **Morgan:** “Four organizations, each with its own money and its own obligations.” **Alex:** “I thought the investor was one thing.”
 - *Strip 2.* **Morgan:** “The loan sits in the holding company, which owes the repayments.” **Alex:** “Repayments that may depend on our customers' cash.”
@@ -428,7 +428,7 @@ Alex leads technology, Sam leads finance and Ines is the chief executive officer
       "bubbles": [
         {
           "who": "Ines",
-          "text": "Management equity is different: shares that we executives own in Larkspur."
+          "text": "Management equity is different: shares that we executives own in Rotaline."
         },
         {
           "who": "Morgan",
@@ -454,7 +454,7 @@ Alex leads technology, Sam leads finance and Ines is the chief executive officer
 
 - *Strip 1.* **Morgan:** “My firm is paid a management fee for managing the fund's investments.” **Alex:** “A regular payment. And the profits?”
 - *Strip 2.* **Morgan:** “Carried interest, carry for short, is the firm's share of investment profits.” **Alex:** “Which depends on a sale turning estimates into cash.”
-- *Strip 3.* **Ines:** “Management equity is different: shares that we executives own in Larkspur.” **Morgan:** “Three payments, three agreements. Ask which one is behind a request.”
+- *Strip 3.* **Ines:** “Management equity is different: shares that we executives own in Rotaline.” **Morgan:** “Three payments, three agreements. Ask which one is behind a request.”
 
 <!-- comic-page
 {
@@ -490,7 +490,7 @@ Alex leads technology, Sam leads finance and Ines is the chief executive officer
       "labels": [
         "RECEIVED 3 OCTOBER: €8.0m",
         "TRANSACTION COSTS: −€0.4m",
-        "LARKSPUR CASH: +€7.6m"
+        "ROTALINE CASH: +€7.6m"
       ],
       "label_notes": "The three labels are the three lines of the sum on the whiteboard, top to bottom.",
       "bubbles": [
@@ -500,14 +500,14 @@ Alex leads technology, Sam leads finance and Ines is the chief executive officer
         },
         {
           "who": "Alex",
-          "text": "Paid to Larkspur, so Larkspur pays the salaries."
+          "text": "Paid to Rotaline, so Rotaline pays the salaries."
         }
       ]
     },
     {
       "scene": "A single large form pinned to a board, with three filled-in lines in large handwriting and a green tick beside each. Sam, at the left, points at the last line with a pen. Alex, at the right, scratches his head.",
       "labels": [
-        "PAYS: LARKSPUR",
+        "PAYS: ROTALINE",
         "CASH: €7.6m RECEIVED",
         "APPROVES: CEO, WITHIN PLAN"
       ],
@@ -524,8 +524,8 @@ Alex leads technology, Sam leads finance and Ines is the chief executive officer
       ]
     }
   ],
-  "alt": "Comic page in three strips: Alex proposes five engineers from an imagined innovation budget and Sam starts a record; a whiteboard shows €8.0 million received on 3 October, less €0.4 million of transaction costs, leaving €7.6 million of Larkspur cash; a form records that Larkspur pays, the cash is received, and the CEO approves within the plan.",
-  "caption": "The round was announced on 20 September, when the contract for the new shares was signed; the money arrived at closing, the day the deal completes and payments are made, on 3 October. Until then the €8 million (€8m) was a contractual commitment, not cash. Transaction costs, the legal and advisory fees of arranging the deal, took €0.4m, so €7.6m was added to Larkspur’s cash. The record names who pays, what state the cash is in, who approves and under what conditions, with the source of each entry. Ines is the chief executive officer (CEO).",
+  "alt": "Comic page in three strips: Alex proposes five engineers from an imagined innovation budget and Sam starts a record; a whiteboard shows €8.0 million received on 3 October, less €0.4 million of transaction costs, leaving €7.6 million of Rotaline cash; a form records that Rotaline pays, the cash is received, and the CEO approves within the plan.",
+  "caption": "The round was announced on 20 September, when the contract for the new shares was signed; the money arrived at closing, the day the deal completes and payments are made, on 3 October. Until then the €8 million (€8m) was a contractual commitment, not cash. Transaction costs, the legal and advisory fees of arranging the deal, took €0.4m, so €7.6m was added to Rotaline’s cash. The record names who pays, what state the cash is in, who approves and under what conditions, with the source of each entry. Ines is the chief executive officer (CEO).",
   "status": "generated",
   "generation": {
     "model": "gemini-3-pro-image-preview",
@@ -535,12 +535,12 @@ Alex leads technology, Sam leads finance and Ines is the chief executive officer
 }
 -->
 
-![Comic page in three strips: Alex proposes five engineers from an imagined innovation budget and Sam starts a record; a whiteboard shows €8.0 million received on 3 October, less €0.4 million of transaction costs, leaving €7.6 million of Larkspur cash; a form records that Larkspur pays, the cash is received, and the CEO approves within the plan.](assets/images/01-understand-funding-control/comic-page-06-the-one-page-record.jpeg)
+![Comic page in three strips: Alex proposes five engineers from an imagined innovation budget and Sam starts a record; a whiteboard shows €8.0 million received on 3 October, less €0.4 million of transaction costs, leaving €7.6 million of Rotaline cash; a form records that Rotaline pays, the cash is received, and the CEO approves within the plan.](assets/images/01-understand-funding-control/comic-page-06-the-one-page-record.jpeg)
 
-**Page 6: The one-page record.** The round was announced on 20 September, when the contract for the new shares was signed; the money arrived at closing, the day the deal completes and payments are made, on 3 October. Until then the €8 million (€8m) was a contractual commitment, not cash. Transaction costs, the legal and advisory fees of arranging the deal, took €0.4m, so €7.6m was added to Larkspur’s cash. The record names who pays, what state the cash is in, who approves and under what conditions, with the source of each entry. Ines is the chief executive officer (CEO).
+**Page 6: The one-page record.** The round was announced on 20 September, when the contract for the new shares was signed; the money arrived at closing, the day the deal completes and payments are made, on 3 October. Until then the €8 million (€8m) was a contractual commitment, not cash. Transaction costs, the legal and advisory fees of arranging the deal, took €0.4m, so €7.6m was added to Rotaline’s cash. The record names who pays, what state the cash is in, who approves and under what conditions, with the source of each entry. Ines is the chief executive officer (CEO).
 
 - *Strip 1.* *Narration:* Back to the €8 million of new shares. **Alex:** “Five engineers. Part of that €8 million must be an innovation budget.” **Sam:** “No agreement says so. Let's write down what we know.”
-- *Strip 2.* **Sam:** “Lawyers and advisers took €0.4 million. €7.6 million reached us.” **Alex:** “Paid to Larkspur, so Larkspur pays the salaries.”
+- *Strip 2.* **Sam:** “Lawyers and advisers took €0.4 million. €7.6 million reached us.” **Alex:** “Paid to Rotaline, so Rotaline pays the salaries.”
 - *Strip 3.* **Sam:** “The board approved this year's plan. Inside it, Ines authorizes hires.” **Alex:** “And outside the plan?”
 
 <!-- comic-page

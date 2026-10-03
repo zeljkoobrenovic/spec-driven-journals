@@ -16,7 +16,7 @@ For the intended operating leader, the remaining problems are the feasibility of
 
 3. **Medium impact — explain the two engineers' available capacity.** Sixteen + ten + three = 29 engineer-weeks is correct. Twenty-six available weeks for two people over half a year is a scenario allocation, not their full nominal capacity. State what reserves the other time, or call the 26 explicitly the combined project capacity after operating work and leave. The comparison then demonstrates a real resource constraint without an unexplained denominator.
 
-4. **Low impact — restore the qualification in the new opening callouts.** The body correctly says a transaction plan *can* assume benefits before the work is validated. “Synergies and independence are assumed … before anyone has scheduled the work” removes that qualification. Keep the specific Larkspur case or “can” across the opening. The lengthy “Chosen / Rejected / Funding” paragraphs could also be broken into a short decision table for pacing; this is optional, not a new structural requirement.
+4. **Low impact — restore the qualification in the new opening callouts.** The body correctly says a transaction plan *can* assume benefits before the work is validated. “Synergies and independence are assumed … before anyone has scheduled the work” removes that qualification. Keep the specific Rotaline case or “can” across the opening. The lengthy “Chosen / Rejected / Funding” paragraphs could also be broken into a short decision table for pacing; this is optional, not a new structural requirement.
 
 ## Verification and formats
 

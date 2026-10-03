@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-27
+revised: 2026-10-03
 ---
 
 # Spec: Owned — Purpose and Reading Guide
@@ -68,6 +68,7 @@ See the bibliography and the relevant chapters. The source registry records cons
 
 ## Changelog
 
+- 2026-10-03: The main shared example now lists [[adopt-outcome-thinking]] in stage 2 (it agrees what the work is for before the day-0 board meeting), so the example runs through ten chapters, not nine.
 - 2026-09-27: Rewrite narrative self-references in the first person and use “I set direction” and “I review and decide” in the AI-assisted writing illustration.
 - 2026-09-27: Add Figure 3, illustrating the author's iterative AI-assisted writing process, after the AI note at the end of the introduction; retain the existing illustrations as Figures 1 and 2.
 - 2026-09-27: Polish grammar and phrasing throughout the introduction, trim repeated reading instructions and redundant wording, and preserve the author's additions about alternative drafts and AI's essential supporting role. Retain definitions, evidence limits, reading routes and the GitHub link.

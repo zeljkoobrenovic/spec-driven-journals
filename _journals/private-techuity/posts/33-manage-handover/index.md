@@ -33,7 +33,7 @@ On the morning after a company changes investors or owners, its signed customer 
 
 These changes come in several forms, explained later in the chapter: new investment, a sale of existing shares, a change inside the fund that owns them, a stock-market listing and a sale of control. A sale is one possible event, not the inevitable next stage. The same evidence must serve continued ownership, another round of investment and a change of controlling shareholder.
 
-The Larkspur figures in this chapter are fictional. They are the same Larkspur figures that run from the chapter [[use-diligence]] through the chapter [[first-hundred-days]] to this handover. The delayed-financing and reduction chapters work a deliberately separate scenario with its own cash, spending, people and dates, so their figures do not appear here.
+The Rotaline figures in this chapter are fictional. They are the same Rotaline figures that run from the chapter [[use-diligence]] through the chapter [[first-hundred-days]] to this handover. The delayed-financing and reduction chapters work a deliberately separate scenario with its own cash, spending, people and dates, so their figures do not appear here.
 
 ## Keep the Evidence During the Work
 
@@ -55,9 +55,9 @@ It should also be able to back up every claim that its technology work saved or 
 ![A record of baselines, costs, results, uncertainty and unfinished work supports successive funding and ownership decisions.](assets/images/21-manage-funding-delays/evidence-carried-through-ownership.jpeg)
 **Figure 1:** *Keep the evidence during the work so the next decision can examine what actually changed.*
 
-### The Larkspur record at day 100
+### The Rotaline record at day 100
 
-**Larkspur**, the fictional company this book follows, sells scheduling software that businesses use to assign jobs to their field staff. Every new customer needs **onboarding**, also called **implementation**: Larkspur’s staff set the software up with that customer’s settings and data until it is ready for real use.
+**Rotaline**, the fictional company this book follows, sells scheduling software that businesses use to assign jobs to their field staff. Every new customer needs **onboarding**, also called **implementation**: Rotaline’s staff set the software up with that customer’s settings and data until it is ready for real use.
 
 Before the investment, the investor’s investigation of the company (**due diligence**) recorded finding **D-3**: onboarding depended on one specialist entering settings by hand, at about 80 staff hours per customer. Priya, who leads product, is accountable for the response. **Day 0** is the board meeting just after the investment completed, where the plan was adopted; every day number counts from it.
 
@@ -145,7 +145,7 @@ For each transition, map the next holder of authority over the plan, the money a
 
 Obligations do not close at the transaction, but they are not all of one kind. A handover that lists them as one undifferentiated backlog, a single list of pending work, misleads the receiving side about what is owed. Separate four kinds, and keep them separate in the record:
 
-- **Binding obligations**: contracts and legal or regulatory duties that bind the company whoever owns it. Some are promises to do work; others are amounts to pay. Record which. At Larkspur: the onboarding promised in each signed customer contract, which is work owed to customers. If any of ONB-1’s remaining template work is already under signed supplier contracts, record those contracts and what they will make payable here too, separately from the internal approval.
+- **Binding obligations**: contracts and legal or regulatory duties that bind the company whoever owns it. Some are promises to do work; others are amounts to pay. Record which. At Rotaline: the onboarding promised in each signed customer contract, which is work owed to customers. If any of ONB-1’s remaining template work is already under signed supplier contracts, record those contracts and what they will make payable here too, separately from the internal approval.
 - **Funded work**: approved, with money set aside, but not yet built or spent. The data-quality step, €40,000 and 4 engineer-weeks from the reserve, and the part of ONB-1’s remaining €90,000 not yet contracted. The receiving side can stop it, but stopping is a decision with a recorded reason, not a saving discovered afterwards.
 - **Accepted risks**, where an authorized person has decided to carry a known danger. REC-1’s remaining risk after the day-85 retest has three parts. A failure of the whole cloud region is not covered. Rehearsals run on weekdays only. And only two trained people, either of whom can carry out the emergency procedure for the system’s access credentials, can restore the service; if both are away, nobody can. Ines, the chief executive, accepted this on the board’s behalf with a quarterly retest.
 - **Options awaiting evidence**: possible future work. The second-country expansion and the two specialist hires. Nothing is owed here; what travels is the decision date and the evidence that will decide it.

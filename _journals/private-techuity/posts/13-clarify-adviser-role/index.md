@@ -31,7 +31,7 @@ icon: "assets/icons/13-clarify-adviser-role.png"
 <br>
 A technology specialist employed by the investor joins your planning meeting. They understand the product and offer useful ideas. Your engineers want to know whether the ideas are suggestions, a new assessment or instructions they should act on.
 
-An **investor’s technology adviser** is a person the investment firm employs or engages to form its own view of a company’s technology and, often, to help improve it. In this book, that role is called the **Technology Principal**, and Morgan holds it in the fictional Larkspur scenarios. A **chief technology officer (CTO)** leads technology inside the company. At Larkspur, that is Alex. The adviser can test assumptions and help improve the company’s work, but the company’s own leader keeps the continuing operating responsibility.
+An **investor’s technology adviser** is a person the investment firm employs or engages to form its own view of a company’s technology and, often, to help improve it. In this book, that role is called the **Technology Principal**, and Morgan holds it in the fictional Rotaline scenarios. A **chief technology officer (CTO)** leads technology inside the company. At Rotaline, that is Alex. The adviser can test assumptions and help improve the company’s work, but the company’s own leader keeps the continuing operating responsibility.
 
 What sets this adviser apart from other outside experts is not privileged access or a mix of responsibilities, because a consultant appointed by the board can have both. It is the reporting line: this adviser reports to the investment firm, so the company must understand both the operating assignment and how the adviser’s findings may inform the investor’s decisions. Working that out is the job of the company’s technology leader, and it must start before any sensitive information is shared.
 
@@ -51,7 +51,7 @@ Qualifying investors — those owning at least the share of the company the cont
 
 Those rights stop at stated limits. A **trade secret** is valuable information the company keeps confidential, such as a method competitors do not have. **Legal privilege** protects certain lawyer–client communications from compelled disclosure, subject to the rules that apply.
 
-One filed example is [S76: section 3.2 (Inspection Rights) of Avalyn Pharma’s amended and restated investors’ rights agreement of April 2025](https://www.sec.gov/Archives/edgar/data/1540171/000119312526147573/ck0001540171-ex4_2.htm), which grants those rights to each major investor and its authorized representatives. It does not establish what Larkspur’s investor may do; it shows why the company’s own agreement must be read before anyone assumes the company decides what the adviser may see or ask.
+One filed example is [S76: section 3.2 (Inspection Rights) of Avalyn Pharma’s amended and restated investors’ rights agreement of April 2025](https://www.sec.gov/Archives/edgar/data/1540171/000119312526147573/ck0001540171-ex4_2.htm), which grants those rights to each major investor and its authorized representatives. It does not establish what Rotaline’s investor may do; it shows why the company’s own agreement must be read before anyone assumes the company decides what the adviser may see or ask.
 
 ## Understand Which Job the Adviser Is Doing
 
@@ -90,7 +90,7 @@ Morgan might help work out why a new version of the software broke when it went 
 
 The hardest case is a change of role that nobody announces. It is fictional here, but the shape is common.
 
-For three months Morgan has met Alex monthly to help him develop as a leader: how he runs the engineering managers, where he avoids conflict, which decisions he delays. Alex has been candid, because candor makes coaching useful. Then the investment firm’s **deal team** — the people at the firm who handle this particular investment — asks Morgan for a written view of whether Larkspur’s technology leadership can carry the plan. They are preparing the paper the directors will read before deciding whether the company should expand into a second country. Morgan knows more about Alex than any assessment interview would reveal.
+For three months Morgan has met Alex monthly to help him develop as a leader: how he runs the engineering managers, where he avoids conflict, which decisions he delays. Alex has been candid, because candor makes coaching useful. Then the investment firm’s **deal team** — the people at the firm who handle this particular investment — asks Morgan for a written view of whether Rotaline’s technology leadership can carry the plan. They are preparing the paper the directors will read before deciding whether the company should expand into a second country. Morgan knows more about Alex than any assessment interview would reveal.
 
 Nothing improper has yet happened. Morgan reports to the firm, and the firm is entitled to ask its adviser for a view.
 
@@ -98,7 +98,7 @@ Nothing improper has yet happened. Morgan reports to the firm, and the firm is e
 
 **What Morgan must explain.** That the request has been made and by whom. What will be shared with the firm and in what form: a view of leadership capability against the plan, not a transcript of coaching sessions.
 
-**What the coaching agreement already says.** Confidentiality is not a general principle here; it is whatever Alex and Morgan wrote down at the first session, and it should have been written down. In this fictional arrangement the rule is one sentence: *what Alex says in a coaching session is not reported to the investment firm, and Morgan will raise any concern that affects the company with Alex first and then, if it is unresolved, with Ines, Larkspur’s **chief executive officer** — the executive who leads the whole company.* A concern Morgan judges important enough to affect the company does not by itself make a coaching conversation reportable — the agreed rule decides, and a promise of confidentiality beyond it is not Morgan’s to make. A professional coaching code can guide how such a rule is written, but it binds only an adviser who has adopted it.
+**What the coaching agreement already says.** Confidentiality is not a general principle here; it is whatever Alex and Morgan wrote down at the first session, and it should have been written down. In this fictional arrangement the rule is one sentence: *what Alex says in a coaching session is not reported to the investment firm, and Morgan will raise any concern that affects the company with Alex first and then, if it is unresolved, with Ines, Rotaline’s **chief executive officer** — the executive who leads the whole company.* A concern Morgan judges important enough to affect the company does not by itself make a coaching conversation reportable — the agreed rule decides, and a promise of confidentiality beyond it is not Morgan’s to make. A professional coaching code can guide how such a rule is written, but it binds only an adviser who has adopted it.
 
 **Why that rule matters now.** It means the coaching sessions are not available as material for the assessment. Morgan may report what Morgan can establish another way — from the diligence record, from work Morgan has seen Alex do, from interviews the company agrees to — but the three months of candid conversation are out of bounds unless Alex releases them.
 
@@ -108,7 +108,7 @@ If Morgan wants to use what coaching revealed, there are three honest routes and
 
 **Who can authorize the changed assignment.** The firm is entitled to ask its adviser for an opinion. The investment agreements may already give it, and the people it authorizes, rights to information and to discussion with senior company executives for monitoring its investment. Morgan can form a view from those sources without anyone’s new permission.
 
-What the firm cannot do on its own is turn that view into an assessment commissioned by the company: new access to staff and records for the purpose, or interviews with Alex’s managers. In Larkspur’s agreed arrangement those need Ines to agree the scope, the evidence Morgan may use and the form of the report. Where the assessment informs a decision the directors will take, the board agrees it instead.
+What the firm cannot do on its own is turn that view into an assessment commissioned by the company: new access to staff and records for the purpose, or interviews with Alex’s managers. In Rotaline’s agreed arrangement those need Ines to agree the scope, the evidence Morgan may use and the form of the report. Where the assessment informs a decision the directors will take, the board agrees it instead.
 
 Ines or the board can authorize the *work*. Only Alex can release the *coaching material*, because the agreement protects what he said and he is the one it protects. Morgan therefore checks what the existing information rights already cover, then puts the new purpose and any additional access to Ines — and puts the question of the coaching sessions to Alex, separately.
 

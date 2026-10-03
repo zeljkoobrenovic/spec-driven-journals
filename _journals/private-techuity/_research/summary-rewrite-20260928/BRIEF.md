@@ -15,7 +15,7 @@ Reference example (done): `posts/05-understand-cash-flow/summary.md`, its prompt
 - 300–500 words of prose (count excludes the figure line and caption; aim ~380–470). No heading, no front matter
   unless the file already has some (keep it then).
 - Shape: one bold opening sentence or two stating the chapter's core idea → the figure + caption → a flowing
-  narrative: the problem/question, the key insight, ONE worked example (usually fictional Larkspur, with the
+  narrative: the problem/question, the key insight, ONE worked example (usually fictional Rotaline, with the
   article's own numbers), the decision or practice that follows, a caveat or trade-off if it matters, and a final
   sentence that hands over to the next chapter with a `[[permalink]]` cross-link (keep the next-chapter link the
   current summary uses).
@@ -25,7 +25,7 @@ Reference example (done): `posts/05-understand-cash-flow/summary.md`, its prompt
 - Explain a term in plain words only if the summary actually uses it; drop terms the summary doesn't need.
   No parenthetical definition chains.
 - Every number, name, role and claim must come from index.md. Do not invent figures, dates or recurring costs;
-  keep the Larkspur shared scenario exactly as the article states it. Keep any fictional scenario labelled fictional.
+  keep the Rotaline shared scenario exactly as the article states it. Keep any fictional scenario labelled fictional.
   For case-study chapters (real companies) keep sourced facts precise and within the article's source scope.
 - Keep existing `[[…]]` links only where useful; they must be real permalinks (check front matter of targets).
 

@@ -4,7 +4,7 @@ Reassessed 15 September 2026 from the complete current article, summary and comi
 
 ## Current assessment
 
-The revised assessment now has a job: determine whether Larkspur can invoice in another country within twelve months. It records a working core as a strength, identifies a shared billing constraint, costs a transition and hands a specific finding to the following chapters. This is much more useful to a technology leader than a maturity checklist. The placement before the organization and design chapters also improves the argument.
+The revised assessment now has a job: determine whether Rotaline can invoice in another country within twelve months. It records a working core as a strength, identifies a shared billing constraint, costs a transition and hands a specific finding to the following chapters. This is much more useful to a technology leader than a maturity checklist. The placement before the organization and design chapters also improves the argument.
 
 The principal remaining issue is an inference about waiting time. The metrics are now defined correctly, but their difference does not establish the cause claimed. Preserve the finding table, strengths and distinction between transition spending and later benefits.
 
@@ -16,7 +16,7 @@ The principal remaining issue is an inference about waiting time. The metrics ar
 
 3. **Medium impact — finish the comic's assessment scene in the artwork.** Panel 4 now describes a plan-specific assessment rather than prescribing modular services. That is an effective correction in the text. The embedded regeneration marker means the current image is not evidence that the visual message has changed. Confirm that the regenerated scene preserves the stable core and identifies the constraint, rather than silently reinstating an architectural prescription.
 
-4. **Low impact — reduce repeated explanation after the finding.** The transition table and final assessment already establish that a working system can still fail a new plan. A shorter conclusion could name the handoff directly: “The next question is why a small country change waits on these people; only then should Larkspur choose a replacement or a new boundary.” This is a pacing preference, not a request for another outline or more assessment frameworks.
+4. **Low impact — reduce repeated explanation after the finding.** The transition table and final assessment already establish that a working system can still fail a new plan. A shorter conclusion could name the handoff directly: “The next question is why a small country change waits on these people; only then should Rotaline choose a replacement or a new boundary.” This is a pacing preference, not a request for another outline or more assessment frameworks.
 
 ## Verification and formats
 

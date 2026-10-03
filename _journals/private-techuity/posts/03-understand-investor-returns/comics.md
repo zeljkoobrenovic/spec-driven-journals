@@ -22,7 +22,7 @@
 
 **Comic.** Leaders inside a company judge progress by customers and earnings; an investor judges the same company by the return on its holding. Seven pages follow one fictional buyout from purchase to sale, hold the company’s performance fixed, and show the investor’s result changing with the sale price, the borrowing and the timing, and what engineering can and cannot claim credit for.
 
-Alex leads technology and Priya leads product at Larkspur, a fictional software company; Sam leads its finances. Morgan is a technology adviser at an investment firm. All are fictional, and so is every figure. Fees, taxes on the sale and payments to owners before the sale are left out.
+Alex leads technology and Priya leads product at Rotaline, a fictional software company; Sam leads its finances. Morgan is a technology adviser at an investment firm. All are fictional, and so is every figure. Fees, taxes on the sale and payments to owners before the sale are left out.
 
 <!-- comic-page
 {
@@ -475,7 +475,7 @@ Alex leads technology and Priya leads product at Larkspur, a fictional software 
   "strips": [
     {
       "scene": "A round pie chart on an easel with one slice, exactly one fifth of the circle, coloured green and the rest pale. Sam, at the left, points at the green slice. Priya stands at the right.",
-      "narration": "A separate example: Larkspur, with no borrowing.",
+      "narration": "A separate example: Rotaline, with no borrowing.",
       "labels": [
         "200 OF 1,000 SHARES",
         "20%"
@@ -484,7 +484,7 @@ Alex leads technology and Priya leads product at Larkspur, a fictional software 
       "bubbles": [
         {
           "who": "Sam",
-          "text": "An investor pays €2 million for 200 new shares: 20% of Larkspur."
+          "text": "An investor pays €2 million for 200 new shares: 20% of Rotaline."
         },
         {
           "who": "Priya",
@@ -531,7 +531,7 @@ Alex leads technology and Priya leads product at Larkspur, a fictional software 
     }
   ],
   "alt": "Comic page in three strips: a pie chart shows an investor holding 200 of 1,000 shares, 20%; after 250 new shares are sold to someone else the same 200 shares are 16% of 1,250; a whiteboard shows 16% of a €20 million sale is €3.2 million, 1.6 times the €2 million invested.",
-  "caption": "A minority investment buys less than half of a company’s shares. When the company later creates and sells new shares, a share issue, an investor who buys none keeps the same number of shares but a lower percentage: that reduction is dilution. The company receives the new money; the first investor receives nothing. The calculation assumes every share carries the same rights; with preferences, rights that decide which shares are paid first or on different terms, a simple percentage may be wrong. A lower percentage does not by itself show whether the holding gained or lost value. Sam leads finance at Larkspur.",
+  "caption": "A minority investment buys less than half of a company’s shares. When the company later creates and sells new shares, a share issue, an investor who buys none keeps the same number of shares but a lower percentage: that reduction is dilution. The company receives the new money; the first investor receives nothing. The calculation assumes every share carries the same rights; with preferences, rights that decide which shares are paid first or on different terms, a simple percentage may be wrong. A lower percentage does not by itself show whether the holding gained or lost value. Sam leads finance at Rotaline.",
   "status": "generated",
   "generation": {
     "model": "gemini-3-pro-image-preview",
@@ -543,9 +543,9 @@ Alex leads technology and Priya leads product at Larkspur, a fictional software 
 
 ![Comic page in three strips: a pie chart shows an investor holding 200 of 1,000 shares, 20%; after 250 new shares are sold to someone else the same 200 shares are 16% of 1,250; a whiteboard shows 16% of a €20 million sale is €3.2 million, 1.6 times the €2 million invested.](assets/images/03-understand-investor-returns/comic-page-06-a-smaller-slice.jpeg)
 
-**Page 6: New funding can shrink a slice.** A minority investment buys less than half of a company’s shares. When the company later creates and sells new shares, a share issue, an investor who buys none keeps the same number of shares but a lower percentage: that reduction is dilution. The company receives the new money; the first investor receives nothing. The calculation assumes every share carries the same rights; with preferences, rights that decide which shares are paid first or on different terms, a simple percentage may be wrong. A lower percentage does not by itself show whether the holding gained or lost value. Sam leads finance at Larkspur.
+**Page 6: New funding can shrink a slice.** A minority investment buys less than half of a company’s shares. When the company later creates and sells new shares, a share issue, an investor who buys none keeps the same number of shares but a lower percentage: that reduction is dilution. The company receives the new money; the first investor receives nothing. The calculation assumes every share carries the same rights; with preferences, rights that decide which shares are paid first or on different terms, a simple percentage may be wrong. A lower percentage does not by itself show whether the holding gained or lost value. Sam leads finance at Rotaline.
 
-- *Strip 1.* *Narration:* A separate example: Larkspur, with no borrowing. **Sam:** “An investor pays €2 million for 200 new shares: 20% of Larkspur.” **Priya:** “A share is one unit of ownership.”
+- *Strip 1.* *Narration:* A separate example: Rotaline, with no borrowing. **Sam:** “An investor pays €2 million for 200 new shares: 20% of Rotaline.” **Priya:** “A share is one unit of ownership.”
 - *Strip 2.* **Sam:** “Later we sell 250 new shares to someone else. The cash comes to us.” **Priya:** “The first investor keeps 200 shares, but now holds 16%.”
 - *Strip 3.* **Sam:** “If the company sells for €20 million, that investor receives €3.2 million.” **Priya:** “A smaller percentage, and still 1.6 times the money.”
 

@@ -138,7 +138,7 @@ The shortcut behind all this, enterprise value = EBITDA × multiple, is a negoti
 
 ### A Minority Investor’s Return Can Change With Further Funding
 
-The buyout used borrowing. A **minority investment**, one that buys less than half of a company’s shares, shows a different mechanism without borrowing. Return to the smaller Larkspur's first outside round from the previous chapter: it has 800 identical shares; a **share** is one unit of ownership, and here every share carries the same rights. A new investor pays €2m for 200 new shares, giving it 20% of the resulting 1,000 shares. This corresponds to an equity value of €8m before the new investment, the **pre-money valuation**, and €10m after it, the **post-money valuation**, as explained in the previous chapter.
+The buyout used borrowing. A **minority investment**, one that buys less than half of a company’s shares, shows a different mechanism without borrowing. Return to the smaller Rotaline's first outside round from the previous chapter: it has 800 identical shares; a **share** is one unit of ownership, and here every share carries the same rights. A new investor pays €2m for 200 new shares, giving it 20% of the resulting 1,000 shares. This corresponds to an equity value of €8m before the new investment, the **pre-money valuation**, and €10m after it, the **post-money valuation**, as explained in the previous chapter.
 
 Later, the company creates and sells 250 new shares to another investor, a **share issue**. The first investor buys none. It still owns 200 shares, but the total is now 1,250, so its holding falls to 16%. This reduction in ownership percentage is **dilution**. The company receives additional capital in that round; the first investor hasn’t received a payment.
 
@@ -151,7 +151,7 @@ An increase in company value therefore doesn’t translate mechanically into the
 
 ### A Corporate Owner May Expect Benefits Elsewhere
 
-In a fictional strategic acquisition, the buyer wants Larkspur’s scheduling product to help retain customers of its maintenance equipment. The buyer may value that effect even if Larkspur’s separate profit changes little. Alex, Larkspur’s technology leader, and Priya, its product leader, still need to establish the chain from action to benefit: which customers will use the combined offering, what must be connected between the two products, and who funds support and development.
+In a fictional strategic acquisition, the buyer wants Rotaline’s scheduling product to help retain customers of its maintenance equipment. The buyer may value that effect even if Rotaline’s separate profit changes little. Alex, Rotaline’s technology leader, and Priya, its product leader, still need to establish the chain from action to benefit: which customers will use the combined offering, what must be connected between the two products, and who funds support and development.
 
 A group-wide benefit isn’t automatically a local product budget. Ask the corporate owner to name the business unit accountable for the expected benefit and to fund the work and continuing obligations. Keep direct shareholder returns, expected group benefits and the company’s own operating results visible separately. The proposed mechanism must be tested; a strategic rationale doesn’t prove it works. A corporate parent’s internal investment review can also use different measures from a fund, and it need not involve any payment to outside investors or a planned sale.
 

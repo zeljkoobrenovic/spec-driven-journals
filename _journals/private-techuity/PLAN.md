@@ -31,7 +31,7 @@ The financial treatment will add a minority investment and dilution calculation,
 
 ## Evidence policy
 
-New institutional guidance supports descriptions of venture, expansion and corporate funding. The NVCA model-document overview establishes that funding terms and rights are documented separately; it is not a review of individual agreements or a jurisdiction-independent rule. Fictional Larkspur scenarios illustrate reasoning, not observed investor performance. Historical case and research claims retain their original scope and dates.
+New institutional guidance supports descriptions of venture, expansion and corporate funding. The NVCA model-document overview establishes that funding terms and rights are documented separately; it is not a review of individual agreements or a jurisdiction-independent rule. Fictional Rotaline scenarios illustrate reasoning, not observed investor performance. Historical case and research claims retain their original scope and dates.
 
 ## Acceptance criteria
 

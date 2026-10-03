@@ -20,9 +20,9 @@
 }
 -->
 
-**Comic.** Product and engineering leaders may not choose the investor, but they inherit its terms, the conditions attached to the money. Eight pages size one piece of work at Larkspur, compare two arrangements that could fund it, test the one chosen, and show who can recommend and who can renegotiate.
+**Comic.** Product and engineering leaders may not choose the investor, but they inherit its terms, the conditions attached to the money. Eight pages size one piece of work at Rotaline, compare two arrangements that could fund it, test the one chosen, and show who can recommend and who can renegotiate.
 
-Ines is Larkspur’s chief executive, Sam runs its finances, Alex leads engineering and Priya leads product. Larkspur is a fictional software company; all four are fictional, and so is every figure.
+Ines is Rotaline’s chief executive, Sam runs its finances, Alex leads engineering and Priya leads product. Rotaline is a fictional software company; all four are fictional, and so is every figure.
 
 <!-- comic-page
 {
@@ -82,7 +82,7 @@ Ines is Larkspur’s chief executive, Sam runs its finances, Alex leads engineer
     }
   ],
   "alt": "Comic page in three strips: Ines says the company needs an investor and Sam asks what problem the money must solve; a whiteboard contrasts expanding, where new shares pay the company, with a founder retiring, where existing shares pay the seller; Alex notes that product and engineering do not choose the investor and Sam says they inherit its terms.",
-  "caption": "Every figure in this comic is fictional. Equity is ownership of a company, held as shares. When the company issues new shares to an investor, the money goes to the company; when an investor buys existing shares, the money goes to their seller, which is how a retiring founder can be paid while the company receives nothing new. An equity investor may later receive payouts from the company or sell their own shares, but nothing guarantees they get their money back. Funding expansion, paying a retiring founder and separating a business from a parent are different needs. Ines is Larkspur’s chief executive, Sam runs its finances and Alex leads engineering.",
+  "caption": "Every figure in this comic is fictional. Equity is ownership of a company, held as shares. When the company issues new shares to an investor, the money goes to the company; when an investor buys existing shares, the money goes to their seller, which is how a retiring founder can be paid while the company receives nothing new. An equity investor may later receive payouts from the company or sell their own shares, but nothing guarantees they get their money back. Funding expansion, paying a retiring founder and separating a business from a parent are different needs. Ines is Rotaline’s chief executive, Sam runs its finances and Alex leads engineering.",
   "status": "generated",
   "generation": {
     "model": "gemini-3-pro-image-preview",
@@ -94,7 +94,7 @@ Ines is Larkspur’s chief executive, Sam runs its finances, Alex leads engineer
 
 ![Comic page in three strips: Ines says the company needs an investor and Sam asks what problem the money must solve; a whiteboard contrasts expanding, where new shares pay the company, with a founder retiring, where existing shares pay the seller; Alex notes that product and engineering do not choose the investor and Sam says they inherit its terms.](assets/images/04-understand-funding-choices/comic-page-01-an-investor-for-what.jpeg)
 
-**Page 1: “We need an investor”: for what?.** Every figure in this comic is fictional. Equity is ownership of a company, held as shares. When the company issues new shares to an investor, the money goes to the company; when an investor buys existing shares, the money goes to their seller, which is how a retiring founder can be paid while the company receives nothing new. An equity investor may later receive payouts from the company or sell their own shares, but nothing guarantees they get their money back. Funding expansion, paying a retiring founder and separating a business from a parent are different needs. Ines is Larkspur’s chief executive, Sam runs its finances and Alex leads engineering.
+**Page 1: “We need an investor”: for what?.** Every figure in this comic is fictional. Equity is ownership of a company, held as shares. When the company issues new shares to an investor, the money goes to the company; when an investor buys existing shares, the money goes to their seller, which is how a retiring founder can be paid while the company receives nothing new. An equity investor may later receive payouts from the company or sell their own shares, but nothing guarantees they get their money back. Funding expansion, paying a retiring founder and separating a business from a parent are different needs. Ines is Rotaline’s chief executive, Sam runs its finances and Alex leads engineering.
 
 - *Strip 1.* **Ines:** “We need an investor.” **Sam:** “To do what? First name the problem the money must solve.”
 - *Strip 2.* **Sam:** “Equity is ownership. New shares fund the company; existing shares pay their seller.” **Ines:** “Two different needs behind the same sentence.”
@@ -202,7 +202,7 @@ Ines is Larkspur’s chief executive, Sam runs its finances, Alex leads engineer
   "strips": [
     {
       "scene": "A queue of exactly five customers in plain grey clothes waits in a line at the left. At a desk in the middle, one implementation specialist in plain grey clothes types at a keyboard beside a tall stack of plain folders; a sign stands on the desk. Priya and Alex stand at the right, in this left-to-right order: first Priya, then Alex.",
-      "narration": "Larkspur, a fictional software company.",
+      "narration": "Rotaline, a fictional software company.",
       "labels": [
         "SETUP BY HAND: 80 HOURS"
       ],
@@ -273,7 +273,7 @@ Ines is Larkspur’s chief executive, Sam runs its finances, Alex leads engineer
 
 **Page 3: Size the work before you name the investor.** Size the need before naming the investor, and not from the build alone. The €610,000 is the €180,000 build (twelve engineer-weeks, one engineer’s work for one week, here three engineers for four weeks); €30,000 for the first year of maintenance; €90,000 for the transition, running the manual and the new process side by side for two quarters (three-month periods); €150,000 for a contract implementation specialist who keeps setting customers up for twelve months; a €70,000 allowance, 25% of build and transition, in case effort falls to 62 hours per customer rather than 50; and €90,000 of runway, the time bought before the next decision if the evidence arrives late.
 
-- *Strip 1.* *Narration:* Larkspur, a fictional software company. **Priya:** “Customers are buying. Each setup is done by hand, so the queue grows.” **Alex:** “A reusable setup step would cost €180,000 to build.”
+- *Strip 1.* *Narration:* Rotaline, a fictional software company. **Priya:** “Customers are buying. Each setup is done by hand, so the queue grows.” **Alex:** “A reusable setup step would cost €180,000 to build.”
 - *Strip 2.* **Sam:** “€180,000 funds the software, and nothing that makes it work.” **Alex:** “So add the transition, and someone to keep customers moving.”
 - *Strip 3.* **Sam:** “Then an allowance for being wrong, and runway to the next decision.” **Priya:** “€610,000. About €160,000 of it is cushion, not base work.”
 

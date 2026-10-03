@@ -35,11 +35,11 @@ paras[2] = paras[2].replace(
   "So Alex runs the samples by 29 October, and on a failure Sam gives the notice by 29 November, whatever replacement is chosen. The notice does not stop the payments at once: the commitment ends on the 31 March 2028 retirement date, and every payment up to then stays owed.")
 paras[2] = paras[2].replace(" The old model runs until the 31 March 2028 retirement, so nothing changes for customers before then.",
   " The old model runs until the retirement date, so nothing changes for customers before then.")
-paras[2] = paras[2].replace("Larkspur's own decision between the successor, another vendor's model and the fallback falls on the same date.",
-  "Larkspur's own decision between another vendor's model and the fallback falls on the same date.")
+paras[2] = paras[2].replace("Rotaline's own decision between the successor, another vendor's model and the fallback falls on the same date.",
+  "Rotaline's own decision between another vendor's model and the fallback falls on the same date.")
 assert "every payment up to then stays owed" in paras[2]
 paras[3] = ("After the retirement date, what the feature runs on depends on what was tested. A model that passed the samples keeps sorting automatically. "
-  "A model that was tested and failed can carry the review mode from the trial: the feature proposes a category and each customer's own planner confirms it, with no new Larkspur staff. "
+  "A model that was tested and failed can carry the review mode from the trial: the feature proposes a category and each customer's own planner confirms it, with no new Rotaline staff. "
   "The mode still needs a model; it starts customer by customer, and only where Priya has confirmed that the planner has the time and has agreed the changed service and fee. "
   "If no model was tested at all, or a customer's planner has no time, that customer's sorting is suspended and documents go back to sorting by hand, agreed with the customer that day. "
   "Sam prices the chosen model's usage, which is at list price once the commitment ends, against the AI budget the board approved.")

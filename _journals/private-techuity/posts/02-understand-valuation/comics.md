@@ -22,7 +22,7 @@
 
 **Comic.** Product and engineering leaders rarely need to produce a valuation, but must read one. Eight pages follow one question, what “worth €60 million” means, in two stages: first read the business’s numbers, then interpret the valuation, down to the one operating assumption a leader can challenge.
 
-Alex leads technology, Priya leads product and Sam leads finance at Larkspur, a fictional software company. Morgan is a technology adviser at an investment firm. All are fictional, and so is every figure; examples that change the assumptions say so where they start.
+Alex leads technology, Priya leads product and Sam leads finance at Rotaline, a fictional software company. Morgan is a technology adviser at an investment firm. All are fictional, and so is every figure; examples that change the assumptions say so where they start.
 
 <!-- comic-page
 {
@@ -90,7 +90,7 @@ Alex leads technology, Priya leads product and Sam leads finance at Larkspur, a 
     }
   ],
   "alt": "Comic page in three strips: Alex points at a model company tagged worth €60 million and asks whether the growth targets are facts, and Sam says a valuation is an estimate for a date and a purpose; two cards ask what is being valued and how it was estimated; Sam hands Alex a folder marked stage 1, read the numbers.",
-  "caption": "Every figure in this comic is fictional. Product and engineering leaders rarely produce a valuation, but must read one: its assumptions can become targets for how fast sales should grow, what margin (profit as a percentage of sales) the business should earn and which costs should fall. A valuation estimates what a business, or the shares in it, is worth at a date and for a purpose. Alex leads technology, Priya leads product and Sam leads finance at Larkspur, a fictional software company.",
+  "caption": "Every figure in this comic is fictional. Product and engineering leaders rarely produce a valuation, but must read one: its assumptions can become targets for how fast sales should grow, what margin (profit as a percentage of sales) the business should earn and which costs should fall. A valuation estimates what a business, or the shares in it, is worth at a date and for a purpose. Alex leads technology, Priya leads product and Sam leads finance at Rotaline, a fictional software company.",
   "status": "generated",
   "generation": {
     "model": "gemini-3-pro-image-preview",
@@ -102,7 +102,7 @@ Alex leads technology, Priya leads product and Sam leads finance at Larkspur, a 
 
 ![Comic page in three strips: Alex points at a model company tagged worth €60 million and asks whether the growth targets are facts, and Sam says a valuation is an estimate for a date and a purpose; two cards ask what is being valued and how it was estimated; Sam hands Alex a folder marked stage 1, read the numbers.](assets/images/02-understand-valuation/comic-page-01-worth-sixty-million.jpeg)
 
-**Page 1: “Worth €60 million”: of what, and how?.** Every figure in this comic is fictional. Product and engineering leaders rarely produce a valuation, but must read one: its assumptions can become targets for how fast sales should grow, what margin (profit as a percentage of sales) the business should earn and which costs should fall. A valuation estimates what a business, or the shares in it, is worth at a date and for a purpose. Alex leads technology, Priya leads product and Sam leads finance at Larkspur, a fictional software company.
+**Page 1: “Worth €60 million”: of what, and how?.** Every figure in this comic is fictional. Product and engineering leaders rarely produce a valuation, but must read one: its assumptions can become targets for how fast sales should grow, what margin (profit as a percentage of sales) the business should earn and which costs should fall. A valuation estimates what a business, or the shares in it, is worth at a date and for a purpose. Alex leads technology, Priya leads product and Sam leads finance at Rotaline, a fictional software company.
 
 - *Strip 1.* **Alex:** “They say we're worth €60 million. So these growth targets are facts?” **Sam:** “A valuation is an estimate, for a date and a purpose.”
 - *Strip 2.* **Sam:** “Two questions before you accept any target.” **Priya:** “The business, or the owners' shares? And by which method?”
@@ -558,7 +558,7 @@ Alex leads technology, Priya leads product and Sam leads finance at Larkspur, a 
   "strips": [
     {
       "scene": "A whiteboard with three lines of large, neat handwriting, each line fully visible, and a line drawn above the last one, as in a sum. Sam, at the left of the whiteboard, gestures toward it with an open hand. Alex, at the right of the whiteboard, reads along. Everyone stands to the side of the board, clear of it; no head, hand, marker or speech bubble covers any of its lettering.",
-      "narration": "A separate fictional funding round at Larkspur.",
+      "narration": "A separate fictional funding round at Rotaline.",
       "labels": [
         "PRE-MONEY: €8m",
         "NEW SHARES: €2m",
@@ -597,9 +597,9 @@ Alex leads technology, Priya leads product and Sam leads finance at Larkspur, a 
       "scene": "Alex, at the left, holds up one printed announcement sheet whose only lettering is a large headline above plain ruled lines. Sam, at the right, rests his hand on an open metal cashbox that stands on a table, holds a few plain gold coins and has a label on its front.",
       "labels": [
         "VALUED AT €10 MILLION",
-        "LARKSPUR CASH: +€2m"
+        "ROTALINE CASH: +€2m"
       ],
-      "label_notes": "VALUED AT €10 MILLION is the headline on the sheet Alex holds; LARKSPUR CASH: +€2m is the label on the front of the cashbox.",
+      "label_notes": "VALUED AT €10 MILLION is the headline on the sheet Alex holds; ROTALINE CASH: +€2m is the label on the front of the cashbox.",
       "bubbles": [
         {
           "who": "Alex",
@@ -612,7 +612,7 @@ Alex leads technology, Priya leads product and Sam leads finance at Larkspur, a 
       ]
     }
   ],
-  "alt": "Comic page in three strips: a whiteboard adds pre-money value of €8 million and €2 million of new shares to a post-money value of €10 million; a pie chart shows the new investor owning 20%; Alex holds a headline saying valued at €10 million while Sam’s cashbox shows Larkspur’s cash rose by €2 million.",
+  "alt": "Comic page in three strips: a whiteboard adds pre-money value of €8 million and €2 million of new shares to a post-money value of €10 million; a pie chart shows the new investor owning 20%; Alex holds a headline saying valued at €10 million while Sam’s cashbox shows Rotaline’s cash rose by €2 million.",
   "caption": "The pre-money valuation is the value of the shares immediately before new funding; the post-money valuation is their value immediately after. Here the investor pays the company for newly issued shares, so the company’s cash rises by €2 million, not by the €10 million headline; fees, instruments that could later convert into shares and differences in share rights are ignored. A financing round sets a negotiated price for particular shares under particular terms. It does not establish what every shareholder could receive in a sale, and it should not be compared directly with an enterprise value that treats borrowing differently.",
   "status": "generated",
   "generation": {
@@ -623,11 +623,11 @@ Alex leads technology, Priya leads product and Sam leads finance at Larkspur, a 
 }
 -->
 
-![Comic page in three strips: a whiteboard adds pre-money value of €8 million and €2 million of new shares to a post-money value of €10 million; a pie chart shows the new investor owning 20%; Alex holds a headline saying valued at €10 million while Sam’s cashbox shows Larkspur’s cash rose by €2 million.](assets/images/02-understand-valuation/comic-page-07-funding-round-headline.jpeg)
+![Comic page in three strips: a whiteboard adds pre-money value of €8 million and €2 million of new shares to a post-money value of €10 million; a pie chart shows the new investor owning 20%; Alex holds a headline saying valued at €10 million while Sam’s cashbox shows Rotaline’s cash rose by €2 million.](assets/images/02-understand-valuation/comic-page-07-funding-round-headline.jpeg)
 
 **Page 7: A funding-round headline.** The pre-money valuation is the value of the shares immediately before new funding; the post-money valuation is their value immediately after. Here the investor pays the company for newly issued shares, so the company’s cash rises by €2 million, not by the €10 million headline; fees, instruments that could later convert into shares and differences in share rights are ignored. A financing round sets a negotiated price for particular shares under particular terms. It does not establish what every shareholder could receive in a sale, and it should not be compared directly with an enterprise value that treats borrowing differently.
 
-- *Strip 1.* *Narration:* A separate fictional funding round at Larkspur. **Sam:** “Shares valued at €8 million before. An investor pays €2 million for new shares.” **Alex:** “So €10 million after: the post-money valuation.”
+- *Strip 1.* *Narration:* A separate fictional funding round at Rotaline. **Sam:** “Shares valued at €8 million before. An investor pays €2 million for new shares.” **Alex:** “So €10 million after: the post-money valuation.”
 - *Strip 2.* **Sam:** “Two out of ten: the new investor owns 20%.” **Alex:** “Assuming every share carries the same rights.”
 - *Strip 3.* **Alex:** “The headline says €10 million.” **Sam:** “The company received €2 million. Buy a founder's shares instead, and it receives nothing.”
 
@@ -700,7 +700,7 @@ Alex leads technology, Priya leads product and Sam leads finance at Larkspur, a 
     }
   ],
   "alt": "Comic page in three strips: a whiteboard says the model assumes revenue doubles in four years and onboarding cost falls by one third; a specialist works behind a stack of folders beside a sign saying 80 hours per customer; three cards ask which change, usable when and who funds it, and Morgan says that without answers the assumption is a hope.",
-  "caption": "A separate fictional assumption. Onboarding means setting a new customer up to use the product; at Larkspur each implementation takes about 80 hours, much of it one specialist’s manual configuration. Name the change that produces the saving, such as a reusable setup step or a data import customers can run themselves; phase the benefit from the date it is proven to work; and put the cost of building it in an approved plan. A valuation is a bundle of assumptions to be tested, not a fact to be met. The next question is what the investor expects to get back, and why the same company can give different investors different results.",
+  "caption": "A separate fictional assumption. Onboarding means setting a new customer up to use the product; at Rotaline each implementation takes about 80 hours, much of it one specialist’s manual configuration. Name the change that produces the saving, such as a reusable setup step or a data import customers can run themselves; phase the benefit from the date it is proven to work; and put the cost of building it in an approved plan. A valuation is a bundle of assumptions to be tested, not a fact to be met. The next question is what the investor expects to get back, and why the same company can give different investors different results.",
   "status": "generated",
   "generation": {
     "model": "gemini-3-pro-image-preview",
@@ -712,7 +712,7 @@ Alex leads technology, Priya leads product and Sam leads finance at Larkspur, a 
 
 ![Comic page in three strips: a whiteboard says the model assumes revenue doubles in four years and onboarding cost falls by one third; a specialist works behind a stack of folders beside a sign saying 80 hours per customer; three cards ask which change, usable when and who funds it, and Morgan says that without answers the assumption is a hope.](assets/images/02-understand-valuation/comic-page-08-one-assumption-to-challenge.jpeg)
 
-**Page 8: One assumption to challenge.** A separate fictional assumption. Onboarding means setting a new customer up to use the product; at Larkspur each implementation takes about 80 hours, much of it one specialist’s manual configuration. Name the change that produces the saving, such as a reusable setup step or a data import customers can run themselves; phase the benefit from the date it is proven to work; and put the cost of building it in an approved plan. A valuation is a bundle of assumptions to be tested, not a fact to be met. The next question is what the investor expects to get back, and why the same company can give different investors different results.
+**Page 8: One assumption to challenge.** A separate fictional assumption. Onboarding means setting a new customer up to use the product; at Rotaline each implementation takes about 80 hours, much of it one specialist’s manual configuration. Name the change that produces the saving, such as a reusable setup step or a data import customers can run themselves; phase the benefit from the date it is proven to work; and put the cost of building it in an approved plan. A valuation is a bundle of assumptions to be tested, not a fact to be met. The next question is what the investor expects to get back, and why the same company can give different investors different results.
 
 - *Strip 1.* *Narration:* Suppose the model behind the €60 million assumes: **Morgan:** “The reasoning: setup work spreads across more customers.” **Priya:** “That assumption lands on product and engineering.”
 - *Strip 2.* **Alex:** “Each setup takes about 80 hours, much of it by hand.” **Priya:** “More sales won't shrink that. Only a specific change will.”

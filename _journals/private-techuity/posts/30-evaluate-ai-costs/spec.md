@@ -13,7 +13,7 @@ The chapter is the third chapter of Part VI, after cloud costs and resilience. I
 
 ## Context
 
-Larkspur, the book's fictional scheduling-software company, is in 2027. The document-sorting feature that three customers trialled at €300 a month each (running cost about €60 a month per customer at trial volume) passed its release gate on 11 December 2026 and is in general release to paying customers. The support assistant from the same chapter is rolled out to six agents (licences about €3,600 a year, evaluation upkeep about €4,400 a year). The coding and setup pilots of [[scale-the-team-with-ai]] have ended and their gate results are stated as assumptions, not re-argued. The people are the same (Alex technology, Priya product, Ines the company, Sam finance, Morgan the investor's adviser). Every new figure is fictional; the shared Larkspur ledger is not touched.
+Rotaline, the book's fictional scheduling-software company, is in 2027. The document-sorting feature that three customers trialled at €300 a month each (running cost about €60 a month per customer at trial volume) passed its release gate on 11 December 2026 and is in general release to paying customers. The support assistant from the same chapter is rolled out to six agents (licences about €3,600 a year, evaluation upkeep about €4,400 a year). The coding and setup pilots of [[scale-the-team-with-ai]] have ended and their gate results are stated as assumptions, not re-argued. The people are the same (Alex technology, Priya product, Ines the company, Sam finance, Morgan the investor's adviser). Every new figure is fictional; the shared Rotaline ledger is not touched.
 
 ## Audience
 
