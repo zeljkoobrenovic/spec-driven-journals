@@ -24,7 +24,7 @@ icon: "assets/icons/bibliography.png"
 <br>
 This page lists the sources consulted for the book. Sources were consulted between September 12 and September 27, 2026; each entry carries its own consultation date. Each entry states the version and the material consulted; access to a document does not imply that every page was reviewed, and publication dates and study periods differ from the consultation dates. Where a date affects how a figure or a claim should be read, the entry gives it.
 
-**S** marks a public source and **P** a supplied private input; the numbers identify, they do not rank. Identifiers are never reassigned, so gaps stay (there is no S38) and a citation in a chapter keeps meaning the same document. The register runs to S119. Private inputs are described without publishing their contents or file details.
+**S** marks a public source and **P** a supplied private input; the numbers identify, they do not rank. Identifiers are never reassigned, so gaps stay (there is no S38) and a citation in a chapter keeps meaning the same document. The register runs to S120. Private inputs are described without publishing their contents or file details.
 
 ## Topic Index
 
@@ -37,7 +37,7 @@ Use this table to find evidence by question. A source can appear under more than
 | Governance, rights and incentives | S01, S02, S04, S61, S76 | [[clarify-authority]], [[compare-incentives-stakes]], [[scale-the-team-up]] |
 | Trust, cooperation and team dysfunctions | S119 | [[where-investment-goes-wrong]] |
 | Workforce reductions and employment process | S77, S78 | [[scale-the-team-down]] |
-| Delivery, architecture and cloud cost | S13, S14, S15, S16, S53, S75 | [[assess-capability]], [[test-revenue-assumptions]], [[evaluate-cloud-costs]] |
+| Delivery, architecture and cloud cost | S13, S14, S15, S16, S53, S75, S120 | [[assess-capability]], [[test-revenue-assumptions]], [[evaluate-cloud-costs]] |
 | Security and resilience | S17 | [[build-test-resilience]] |
 | AI evidence | S18, S19, S20, S21, S63 | [[clarify-ai-strategy]] |
 | Investor support and advisers | S22, P01, P02 | [[clarify-adviser-role]], [[choose-right-help]] |
@@ -219,7 +219,7 @@ Chloe Autio, Reva Schwartz, Jesse Dunietz, Shomik Jain, Martin Stanley, Elham Ta
 
 **Evidence type:** Government framework. **Consulted scope:** Risk categories and management orientation consulted. Applies as a question structure; no claim of certification or quantified loss reduction. DOI: 10.6028/NIST.AI.600-1.
 
-**Used in:** [[clarify-ai-strategy]].
+**Used in:** [[clarify-ai-strategy]], [[scale-the-team-with-ai]], [[evaluate-ai-costs]].
 
 ### S19 — Peng et al., Copilot experiment
 
@@ -227,7 +227,7 @@ Sida Peng, Eirini Kalliamvakou, Peter Cihon, and Mert Demirer. [The Impact of AI
 
 **Evidence type:** Original controlled experiment. **Consulted scope:** Original abstract and task description consulted. A recheck on September 13, 2026 covered the [study design and results](https://arxiv.org/html/2302.06590v1): the experiment ran in 2022, and the 55.8% figure is a reduction in average completion time among those who completed the task. The bounded task, tool generation and industry affiliations limit interpretation.
 
-**Used in:** [[clarify-ai-strategy]].
+**Used in:** [[clarify-ai-strategy]], [[scale-the-team-with-ai]].
 
 ### S20 — METR early-2025 experiment
 
@@ -235,7 +235,7 @@ METR. [Measuring the Impact of Early-2025 AI on Experienced Open-Source Develope
 
 **Evidence type:** Original randomized experiment report. **Consulted scope:** Study report, setting, headline result, and limits consulted. Experienced developers on familiar repositories; not every developer, task, or later model.
 
-**Used in:** [[clarify-ai-strategy]].
+**Used in:** [[clarify-ai-strategy]], [[scale-the-team-with-ai]].
 
 ### S21 — METR 2026 update
 
@@ -243,7 +243,7 @@ Joel Becker, Nate Rush, Tom Cunningham, David Rein, and Khalid Mahamud; METR. [W
 
 **Evidence type:** Original research update. **Consulted scope:** Full update consulted. Selection and participation changes undermine a simple interpretation of later speed estimates; the chapter does not present those estimates as a settled current effect.
 
-**Used in:** [[clarify-ai-strategy]].
+**Used in:** [[clarify-ai-strategy]], [[scale-the-team-with-ai]].
 
 ### S22 — KKR Capstone description
 
@@ -267,7 +267,7 @@ The Blackstone Group L.P. [Second Quarter 2018 Earnings Investor Call](https://i
 
 **Evidence type:** Interested investor account. **Consulted scope:** Hilton realization discussion consulted for sponsor-reported 3.1× multiple and $14 billion profit. Not an independently reconstructed net LP cash-flow series.
 
-**Used in:** [[hilton-and-skype]], [[manage-handover]].
+**Used in:** [[hilton-and-skype]], [[manage-handover]], [[success-for-whom]].
 
 ### S25 — PEI Hilton retrospective
 
@@ -307,7 +307,7 @@ Microsoft Support. [Skype Is Retiring in May 2025: What You Need to Know](https:
 
 **Evidence type:** Product owner statement. **Consulted scope:** Retirement scope/date consulted, alongside Microsoft's February 28, 2025 announcement. Later product retirement is not attributed to the earlier private equity interventions.
 
-**Used in:** [[hilton-and-skype]].
+**Used in:** [[hilton-and-skype]], [[success-for-whom]].
 
 ### S30 — Visma 2023 transaction
 
@@ -371,7 +371,7 @@ Tracy Rucinski; Reuters. [Toys R Us to Close Doors, Leaving Void for Toy Lovers]
 
 **Evidence type:** Credible contemporaneous journalism. **Consulted scope:** Report consulted for US shutdown plans and approximately 33,000 full- and part-time jobs exposed. Scope and timing are the reported plans; international operations and later brand ownership require separate treatment.
 
-**Used in:** [[toys-r-us]].
+**Used in:** [[toys-r-us]], [[success-for-whom]].
 
 ### S39 — Bruch et al., hospital measures
 
@@ -475,7 +475,7 @@ Hasbro, Inc. [2018 Annual Report, including Form 10-K for the year ended Decembe
 
 **Evidence type:** Supplier annual report and financial statements, public report mirror. **Consulted scope:** Full report obtained and text extracted; selected management discussion, segment results, operating expenses and receivables note consulted. Printed pp. 38 and 67 support USD 60.4 million related costs and approximately USD 49 million bad-debt expense respectively; the latter is included, not additive. Separate supplier-side evidence, but Hasbro is an interested participant. Its overall revenue/profit change has other causes; these costs do not measure all supplier or social losses.
 
-**Used in:** [[toys-r-us]].
+**Used in:** [[toys-r-us]], [[success-for-whom]].
 
 ### S52 — IPEV valuation guidelines
 
@@ -923,7 +923,7 @@ Etienne and Beverly Wenger-Trayner. [Communities of practice: a brief introducti
 
 **Evidence type:** My own implementation account. **Consulted scope:** Implementation principles and lean techniques — structured data in version control, generation scripts, static pages, collaborative editing, maintainability by a small team. Read for the claim that the method requires curation rather than platform purchase; no deployment results or comparative tooling evidence are established.
 
-**Used in:** [[have-your-numbers-ready]] (formerly the removed appendix on data foundations).
+**Used in:** No chapter cites S107 directly; it is retained so the identifier keeps its meaning.
 
 ### S108 — Grounded Architecture
 
@@ -931,7 +931,7 @@ Etienne and Beverly Wenger-Trayner. [Communities of practice: a brief introducti
 
 **Evidence type:** My own book, consulted for framing. **Consulted scope:** The site’s structure and the placement of Lightweight Architectural Analytics within the framework’s foundations. Recorded so readers can locate the practice in its original context; the present book restates the parts it uses.
 
-**Used in:** [[have-your-numbers-ready]] (formerly the removed appendix on data foundations).
+**Used in:** No chapter cites S108 directly; it is retained so the identifier keeps its meaning.
 
 ### S109 — Product Operations
 
@@ -1020,6 +1020,14 @@ The Table Group. [The Five Dysfunctions of a Team](https://www.tablegroup.com/pr
 **Evidence type:** Practitioner model, summarized by its originating organization. **Consulted scope:** The five dysfunction definitions and the listed characteristics of effective teams, including willingness to admit mistakes and ask for help. The full book was not reviewed. The opening guide's comparison with investment decisions and its constructive and damaging scenarios are this book's interpretation, not findings established by this source.
 
 **Used in:** [[where-investment-goes-wrong]].
+
+### S120 — Microsoft distributed data management guidance
+
+Microsoft. [Challenges and solutions for distributed data management](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/architect-microservice-container-applications/distributed-data-management), an excerpt from the eBook *.NET Microservices Architecture for Containerized .NET Applications*. Page dated September 20, 2018, updated October 12, 2023; consulted 2026-10-03.
+
+**Evidence type:** Vendor architecture guidance. **Consulted scope:** The challenges of querying data owned by several services (one screen drawing on several separately owned stores, aggregated through an API gateway or a read-only query table) and of keeping services consistent without shared transactions (eventual consistency). Read for the trade-off it describes, not as evidence about any particular separation.
+
+**Used in:** [[plan-acquisitions-separations]].
 
 ## Supplied Private Inputs
 

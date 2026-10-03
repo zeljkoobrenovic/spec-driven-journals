@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-27
+revised: 2026-10-03
 ---
 
 # Spec: Bibliography and Evidence Guide
@@ -54,6 +54,7 @@ See the bibliography and the relevant chapters. The source registry records cons
 
 ## Changelog
 
+- 2026-10-03: Registered S120 (Microsoft distributed data management guidance), previously mis-cited as S28 in [[plan-acquisitions-separations]]; updated stale Used-in lines for S18–S21, S24, S29, S37, S51, S107 and S108.
 - **2026-09-27 (organizational impact)** — Register the official Lencioni model summary as S119 for the new opening-guide discussion; extend the consultation window and topic index while distinguishing the source's model from the book's illustrative investment consequences.
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-23 (portfolio appendix): Register the Grounded Architecture framework pages as S110–S115, extend S106’s use, add the topic row and the limits paragraph for the appendix; consultation range now runs to 23 September 2026.
