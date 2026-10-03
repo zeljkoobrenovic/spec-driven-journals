@@ -64,6 +64,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-10-03: Closing handoff to [[understand-cash-flow]] trimmed to the question it answers; EBITDA and working capital are no longer re-defined here (taught in [[understand-valuation]], defined again in the next chapter). Article only.
 - 2026-10-03: Bridged from [[understand-investor-returns]]: the recap paragraph now carries that chapter's conclusion (a return depends on price, borrowing and timing as much as on the business) instead of re-defining valuation and returns. Article only.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.
