@@ -1,6 +1,6 @@
 ---
 status: draft
-revised: 2026-09-28
+revised: 2026-10-03
 ---
 
 # Spec: Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards
@@ -73,6 +73,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Changelog
 
+- 2026-10-03: Points to Tool 7, the small outcome scorecard, in "Pick a Small Set". Article only.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Update cross-links for the chapter title-slug renames.
 

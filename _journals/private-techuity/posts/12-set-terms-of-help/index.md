@@ -91,7 +91,7 @@ The fields are the same for any engagement; the entries are Rotaline’s. **Priy
 
 The **investor-side sponsor** is the person in the investment firm backing the engagement, who can secure the agreed support or resolve a resource problem. The **accountable company leader** stays responsible for the operating result unless the company makes a different formal assignment. Keeping the two labels apart lets a reader adapt the charter to a company sponsor or a corporate parent without guessing which is meant.
 
-The specialist’s access is listed, the interviews have a stated purpose and an engineer in the room, and the customer team knows on day one what will change and who is paying. The [[toolkit]] provides a reusable version; its value comes from resolving these questions, not from completing every field.
+The specialist’s access is listed, the interviews have a stated purpose and an engineer in the room, and the customer team knows on day one what will change and who is paying. [Tool 4](toolkit.html#tool-4) in the [[toolkit]] provides a reusable version; its value comes from resolving these questions, not from completing every field.
 
 ![An engagement agreement connects the expected result with people, cost, decision rights, information use and review.](assets/images/12-set-terms-of-help/support-engagement-agreement.jpeg)
 **Figure 1:** *Make the practical conditions of the help concrete before the engagement consumes time.*

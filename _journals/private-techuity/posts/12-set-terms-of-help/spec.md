@@ -53,6 +53,7 @@ Existing chapters provide the financial and governance foundations. Where releva
 
 ## Changelog
 
+- 2026-10-03: The toolkit pointer now names and links Tool 4. Article only.
 - 2026-10-03: Closing handoff to [[clarify-adviser-role]] now names Morgan, the standing adviser who introduced the specialist, so the next chapter's subject is not mistaken for the six-week specialist. Article only.
 - 2026-10-03: Bridged from [[choose-right-help]]: a new opening picks up its request and the four points it left open; the specialist is presented as the help Rotaline chose rather than a fresh offer, and the later link to the request is shortened. Article only.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.

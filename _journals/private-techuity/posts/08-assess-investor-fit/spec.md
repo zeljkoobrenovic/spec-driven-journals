@@ -66,6 +66,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-10-03: Points to Tool 8, the investor-fit interview, in the references section. Article only.
 - 2026-10-03: Closing handoff now points to Part III ([[part-3]]) for using the operator days before Part IV ([[set-priorities]]) for spending the money, in reading order. Article only.
 - 2026-10-03: Bridged from [[compare-incentives-stakes]]: an opening sentence picks up its "arrangements on paper" ending, and the setup states this chapter's own scenario (a new round while a founder prepares to retire), surfacing the fact the decision depends on. Article only.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.

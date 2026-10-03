@@ -67,7 +67,7 @@ A firm can advertise a broad *support platform*: its network of in-house experts
 
 A **reference** is a conversation with someone who has worked with the investor. Investors check companies this way before they invest; here the company checks the investor.
 
-References drawn only from enthusiastic current CEOs give a restricted view. Where access is available and appropriate, seek former executives, leaders of companies that missed their plans, and leaders who declined or ended help the investor proposed. Explain the questions in advance and respect confidentiality.
+References drawn only from enthusiastic current CEOs give a restricted view. Where access is available and appropriate, seek former executives, leaders of companies that missed their plans, and leaders who declined or ended help the investor proposed. Explain the questions in advance and respect confidentiality. [Tool 8](toolkit.html#tool-8) collects these questions as an interview guide.
 
 | Question | Evidence it seeks | An answer needing a follow-up |
 | --- | --- | --- |

@@ -48,7 +48,7 @@ The tools keep their original numbers because chapters and earlier readers cite 
 | **Obtain help** | Should we work with this investor at all? | Investor-fit interview — [Tool 8](#tool-8) | [[assess-investor-fit]] |
 | **Learn and explore** | What can we learn through the investor’s network, and what should we revisit afterward? | Learning brief — [Tool 14](#tool-14) | [[learn-through-investors-network]] |
 | **Define the evidence** | We keep arguing about what a number means; how do we define, own and label it before it reaches the board? | Measure record — [Tool 15](#tool-15) | [[have-your-numbers-ready]] |
-| **Measure** | Did the work help, and is the benefit capacity or cash? | Outcome and contribution ledger — [Tool 6](#tool-6); small scorecard — [Tool 7](#tool-7) | [[test-revenue-assumptions]], [[evaluate-cloud-costs]] |
+| **Measure** | Did the work help, and is the benefit capacity or cash? | Outcome and contribution ledger — [Tool 6](#tool-6); small scorecard — [Tool 7](#tool-7) | [[test-revenue-assumptions]], [[evaluate-cloud-costs]], [[have-your-numbers-ready]] |
 | **Revise or hand over** | We are combining or separating businesses; what must continue? | Integration or separation plan — [Tool 9](#tool-9) | [[plan-acquisitions-separations]] |
 | **Revise or hand over** | Funding or ownership is changing; what evidence and obligations must travel with the work? | Funding or ownership handover — [Tool 10](#tool-10) | [[manage-handover]], [[manage-funding-delays]] |
 | **Revise or hand over** | The headcount plan must shrink, or an investor proposes an appointment; who decides, what stops, and what are the people owed? | Workforce decision — [Tool 13](#tool-13) | [[scale-the-team-down]], [[scale-the-team-up]] |
@@ -279,7 +279,7 @@ Record the original baseline and its definition; the intervention and actual cos
 
 ## <a id="tool-7"></a>7. Use a Small Outcome Scorecard
 
-Choose measures around the thesis, each with a named accountable leader and a definition. The rows below are examples of questions, not a mandatory portfolio dashboard.
+Choose measures around the thesis, each with a named accountable leader and a definition. See the chapter [[have-your-numbers-ready]], which chooses the small set. The rows below are examples of questions, not a mandatory portfolio dashboard.
 
 <div style="overflow-x: auto;" role="region" aria-label="Outcome scorecard" tabindex="0">
 

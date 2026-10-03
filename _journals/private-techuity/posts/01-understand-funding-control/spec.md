@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-28
+revised: 2026-10-03
 ---
 
 # Spec: An Investment Announcement Is Not a Budget
@@ -58,6 +58,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-10-03: Points to its toolkit record, Tool 1, at the completed funding-and-authority record. Article only.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.
 

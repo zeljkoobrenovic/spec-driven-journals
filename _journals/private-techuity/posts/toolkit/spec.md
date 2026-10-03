@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-27
+revised: 2026-10-03
 ---
 
 # Spec: Practical Tools for Ownership and Technology Decisions
@@ -53,6 +53,7 @@ See the bibliography and the relevant chapters. The source registry records cons
 
 ## Changelog
 
+- 2026-10-03: Tool 7 now names its teaching chapter, [[have-your-numbers-ready]], in the stage table and in its own section.
 - 2026-09-27: Update cross-links for the chapter title-slug renames.
 
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
