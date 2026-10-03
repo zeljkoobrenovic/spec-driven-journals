@@ -53,6 +53,7 @@ See the bibliography and the relevant chapters. The source registry records cons
 
 ## Changelog
 
+- 2026-10-03: Worked example now lists all ten chapters that share its figures, matching the introduction, and credits the €1 million onboarding program to [[understand-cash-flow]] rather than to [[test-revenue-assumptions]].
 - 2026-10-03: Tool 7 now names its teaching chapter, [[have-your-numbers-ready]], in the stage table and in its own section.
 - 2026-09-27: Update cross-links for the chapter title-slug renames.
 
