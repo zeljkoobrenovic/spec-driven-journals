@@ -153,7 +153,7 @@ The Rotaline decision is small, and nothing in it guarantees that Rotaline succe
 
 As a product or technology leader, you cannot control the availability and price of investment and borrowing, remove every conflict or guarantee that everyone benefits. You can explain what the company can deliver and what it needs, expose unfunded dependencies, propose feasible alternatives, keep a record of outcomes, bring decisions to the people authorized to make them, and develop the people who will sustain the work.
 
-The book began with how a company gets money. The closing question is whether its ownership arrangement helps it serve customers, fund necessary work and meet its obligations over time. That is answered with evidence about investor returns, company cash and capability, and the people affected, never with one alone. The [[toolkit]] provides the records for that work, and the [[glossary]] the terms.
+The book began with how a company gets money. The closing question is whether its ownership arrangement helps it serve customers, fund necessary work and meet its obligations over time. That is answered with evidence about investor returns, company cash and capability, and the people affected, never with one alone. The [[toolkit]] provides the records for that work, and the [[glossary]] the terms; the appendix, [[grounded-architecture-portfolio]], extends the approach to an investor overseeing many companies.
 
 The next team should inherit a company that can serve its customers, fund its obligations and explain what still needs to change.
 

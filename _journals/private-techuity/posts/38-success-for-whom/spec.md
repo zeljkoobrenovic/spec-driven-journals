@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-28
+revised: 2026-10-03
 ---
 
 # Spec: Success for Whom, and for How Long?
@@ -73,6 +73,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-10-03: The pointer to the reference material now also names the appendix, [[grounded-architecture-portfolio]], which comes first in reading order; the closing line is unchanged. Article only.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-26: Ground the opening and summary in named historical outcomes and the explicitly fictional thirty-customer Rotaline decision before introducing the durable-success standard. Preserve the decision's amounts, conditions and stable permalink.
