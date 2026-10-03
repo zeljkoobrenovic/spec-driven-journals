@@ -28,6 +28,7 @@ icon: "assets/icons/07-compare-incentives-stakes.png"
 > * **The Nodding Room** — Shows what executives, investors, employees and customers each gain or risk from one proposal.
 > * **Squeezing the Balloon** — Pairs a target with the harm it could reward and asks who bears the burden.
 > * **The Exit Halo** — Keeps the fund’s payout, an executive’s shares and an employee’s job distinct.
+
 <br>
 “We are all shareholders now” can describe a useful common interest. It can also conceal **very different risks, rights and time frames**.
 

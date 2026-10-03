@@ -61,6 +61,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-10-03: Closing handoff to [[compare-incentives-stakes]] trimmed; management equity and carry are no longer defined here, since the next chapter defines them at once. Article only.
 - 2026-10-03: Larkspur's introduction now states that the onboarding decision shares its figures and calendar with [[understand-cash-flow]] while the ownership (a new part-owner) is this chapter's own, resolving the clash with that chapter's leveraged-buyout Larkspur. Article only.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.

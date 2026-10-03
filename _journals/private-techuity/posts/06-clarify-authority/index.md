@@ -211,7 +211,7 @@ Direct access to engineers can help during **due diligence**, the investigation 
 
 A leader should be able to say: “We can deliver the cost target, but not the current roadmap with it. Here are the choices.” An investor’s adviser should be able to say: “The evidence no longer supports the original **investment thesis**,” the reasoning for why the investment was expected to succeed. A board should be able to decide against a recommendation while recording what it is accepting.
 
-Authority explains who can decide. It does not explain why the approver wants what they want. The next chapter reads the incentives behind the decision, what the executives’ shares (their **management equity**, the part of the company they own), the fund manager’s **carried interest** or **fund carry** (its contractual share of the fund’s investment profits) and the employees’ jobs each stand to gain or lose: [[compare-incentives-stakes]].
+Authority explains who can decide. It does not explain why the approver wants what they want. The next chapter, [[compare-incentives-stakes]], reads the incentives behind a decision: what the executives, the fund manager and the employees each stand to gain or lose.
 
 ## Questions to Consider
 
