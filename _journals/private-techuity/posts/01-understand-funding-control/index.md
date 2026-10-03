@@ -40,7 +40,7 @@ These questions apply under every ownership arrangement. What reaches the busine
 
 ## Map the Arrangement Before Relying on the Money
 
-Larkspur, the small founder-owned company of the previous chapter, has since grown. It serves many more customers, runs a larger engineering team and attracts investors, funds and corporate buyers, each deal with its own terms.
+Larkspur, the small founder-owned company of the previous chapter, appears here as a larger company. It serves many more customers, runs a larger engineering team and attracts investors, funds and corporate buyers, each deal with its own terms.
 
 Consider three fictional Larkspur announcements, each describing a different investment, from the perspective of Alex, the CTO, who wants to hire more **onboarding engineers**: the people who set new customers up on the product and move their data across.
 

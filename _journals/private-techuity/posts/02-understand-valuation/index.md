@@ -30,7 +30,7 @@ icon: "assets/icons/02-understand-valuation.png"
 <br>
 Product and engineering leaders rarely need to produce a **valuation**, but they need to understand one. Valuations drive ambitions, and the goals derived from them decide which work gets funded and which gets questioned.
 
-Suppose someone tells you a company is **worth** €60 million. Reading such valuation starts with two questions. **What is being valued**: the operating business, or the shares its owners hold? And **how was the estimate made**? Neither can be answered without understanding the business’s numbers, so this chapter has two stages:
+The previous chapter showed that a headline figure can be a purchase price, new funding or a valuation. This chapter takes the valuation. Suppose a buyer tells you Larkspur is **worth** €60 million. Reading that figure starts with two questions. **What is being valued**: the operating business, or the shares its owners hold? And **how was the estimate made**? Neither can be answered without understanding the business’s numbers, so this chapter has two stages:
 
 - **Read the business’s numbers** introduces revenue, profit and cash flow, and ends with a short checkpoint on the €60 million.
 - **Interpret a valuation** separates the value of the business from the value of its shares, works through three common ways of estimating value, explains why a funding-round price answers a different question, and ends with one operating assumption a leader can challenge.
@@ -57,7 +57,7 @@ EBITDA leaves those items out to help compare operating earnings across business
 
 ### Putting the Measures Together
 
-Consider this simplified, fictional annual income statement. All figures are millions of euros. Operating expenses include salaries, hosting, selling costs and development work charged against earnings in the year rather than recorded as an asset; assume no other income or charges.
+Consider Larkspur's simplified, fictional annual income statement in this chapter's scenario. All figures are millions of euros. Operating expenses include salaries, hosting, selling costs and development work charged against earnings in the year rather than recorded as an asset; assume no other income or charges.
 
 | Step | Calculation | Result |
 | --- | --- | ---: |
@@ -149,7 +149,7 @@ Who controls the product rights? Can the service operate without the larger comp
 
 ### A Funding-Round Valuation Answers a Different Question
 
-In a separate fictional example, Larkspur agrees an **equity valuation before new funding**, or **pre-money valuation**, of €8m. An investor pays the company €2m for newly issued shares. Ignoring fees, any other instruments that could later convert into shares, and differences in share rights, the **post-money valuation**, the equity value immediately after that funding, is €10m. The new investor owns €2m / €10m = 20%.
+In a separate scenario, a smaller Larkspur raises its first outside money: the founders agree an **equity valuation before new funding**, or **pre-money valuation**, of €8m. An investor pays the company €2m for newly issued shares. Ignoring fees, any other instruments that could later convert into shares, and differences in share rights, the **post-money valuation**, the equity value immediately after that funding, is €10m. The new investor owns €2m / €10m = 20%.
 
 The company receives €2m, not the €10m headline valuation. If the same investor instead pays a founder €2m for existing shares, the company receives no new money. Nor should this equity valuation be compared directly with an enterprise value that treats borrowing differently.
 
@@ -159,7 +159,7 @@ An early business with losses can’t sensibly use a positive EBITDA multiple as
 
 ### One Assumption to Challenge: Cost to Serve Falls as Sales Grow
 
-Take the €60 million one last time, now as a model rather than a headline. Suppose, in a separate fictional assumption, the buyer’s model reaches that figure by expecting revenue to double over four years while the cost of **onboarding** each new customer, setting the customer up to use the product, falls by a third, on the reasoning that the work will spread across more customers. That is an operating assumption, and it lands on product and engineering. In the Larkspur onboarding example that the chapter [[test-revenue-assumptions]] costs out, each **implementation**, the configuration work that makes the product usable for one new customer, takes about 80 hours, much of it one specialist’s manual configuration. Nothing in “more sales” makes those hours fall. Only a specific change does.
+Take the €60 million one last time, now as a model rather than a headline. Suppose the buyer’s model reaches that figure by expecting revenue to double over four years while the cost of **onboarding** each new customer, setting the customer up to use the product, falls by a third, on the reasoning that the work will spread across more customers. That is an operating assumption, and it lands on product and engineering. In the Larkspur onboarding example that the chapter [[test-revenue-assumptions]] costs out, each **implementation**, the configuration work that makes the product usable for one new customer, takes about 80 hours, much of it one specialist’s manual configuration. Nothing in “more sales” makes those hours fall. Only a specific change does.
 
 - **Which change produces the reduction?** A reusable setup step, a data import that customers can run themselves, or a narrower first-year target of customers whose data is already standard. Name it.
 - **When does it become usable?** If the setup step needs two quarters (six months) to build and a first group of customers to prove it works, the model cannot assume a full year of savings; phase the benefit from the expected validation date and check what that does to the early margins.

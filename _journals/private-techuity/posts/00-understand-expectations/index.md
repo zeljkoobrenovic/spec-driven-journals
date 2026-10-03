@@ -162,7 +162,7 @@ Whichever label applies, the leadership consequence is a question to investigate
 
 ## Carry the Funding Question Into the Next Chapter
 
-Larkspur's €100,000 was small enough for three people to trace in an afternoon. The rest of the book moves forward a few years: Larkspur now has outside shareholders, a board and many more customers, and its funding involves investment firms, funds and corporate buyers, not just three customers and a bank. The next chapter starts from a €100 million investment announcement and asks the same two questions: who actually receives the money, and which body can authorize its use? The chapter [[understand-funding-control]] follows those questions through the organizations a larger transaction involves.
+Larkspur's €100,000 was small enough for three people to trace in an afternoon. From the next chapter on, Larkspur appears in larger situations: with outside shareholders, a board and many more customers, funded by investment firms, funds and corporate buyers rather than three customers and a bank. The next chapter starts from a €100 million investment announcement and asks the same two questions: who actually receives the money, and which body can authorize its use? The chapter [[understand-funding-control]] follows those questions through the organizations a larger transaction involves.
 
 ## Questions to Consider
 
