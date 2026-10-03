@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-28
+revised: 2026-10-03
 ---
 
 # Spec: The Rise of the Technology Operating Partner
@@ -60,6 +60,7 @@ Draft link list: `_drafts/14-technology-operating-partners/online-source.md`. Co
 
 ## Changelog
 
+- 2026-10-03: The link back to [[clarify-adviser-role]] now names Morgan and the Technology Principal, placing that role inside the operating-partner function this chapter examines. Article only.
 - 2026-09-28: Closing hand-over now points to [[adopt-outcome-thinking]], which opens Part IV, instead of set-priorities.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.

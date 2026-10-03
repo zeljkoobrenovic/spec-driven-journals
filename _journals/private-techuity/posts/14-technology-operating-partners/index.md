@@ -36,7 +36,7 @@ That role is the **technology operating partner**, sometimes called a **technica
 
 Two planning documents shape that work. An **investment thesis** is the investor’s explanation of why an investment should succeed. A **value creation plan** turns that explanation into specific intended improvements. Product and engineering leaders meet the operating partner wherever those improvements depend on their company’s technology and its ability to deliver.
 
-The preceding chapter, [[clarify-adviser-role]], explains how to work with an individual adviser. This chapter examines the function that supplies such advisers: why it matters, how it can be organized and what a good contribution looks like. The practical agreements for any piece of help are covered in [[choose-right-help]] and [[set-terms-of-help]].
+The preceding chapter, [[clarify-adviser-role]], explains how to work with an individual adviser such as Morgan, the role this book calls the Technology Principal. This chapter examines the function that supplies such advisers: why it matters, how it can be organized and what a good contribution looks like. The practical agreements for any piece of help are covered in [[choose-right-help]] and [[set-terms-of-help]].
 
 ## Setting Up the Example: One AI Tool, Three Companies
 

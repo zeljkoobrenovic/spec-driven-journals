@@ -143,7 +143,7 @@ The company shouldn’t need one confident story for the investor and another ac
 
 Alex says this to the engineers before the meeting, not after. Morgan confirms it in the room. From then on, an idea from Morgan is weighed on its merits, which makes the ideas useful.
 
-The adviser is one person within a wider group at the investment firm whose job is practical help rather than investment decisions. The next chapter examines how that group supports companies, how it works with product and technology leaders, and what hiring and **artificial intelligence** — software that generates content, recognises patterns or makes predictions — add to its responsibilities: [[technology-operating-partners]].
+The adviser is one person within a wider group at the investment firm whose job is practical help rather than investment decisions. The next chapter examines how that group supports companies, how it works with product and technology leaders, and what hiring and artificial intelligence (AI) add to its responsibilities: [[technology-operating-partners]].
 
 ## Questions to Consider
 
