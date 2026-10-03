@@ -264,7 +264,7 @@ Ines is Rotaline’s chief executive, Sam runs its finances, Alex leads engineer
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
-    "sha256": "ed92dab08340e4e33638a2f5b0b31bbf037e4144aba2e6742753ca1b617b975e"
+    "sha256": "dc17a6b0381ac2e6753b4f6cf63bc082aad233f0afd8b17134c9ae83911135be"
   }
 }
 -->

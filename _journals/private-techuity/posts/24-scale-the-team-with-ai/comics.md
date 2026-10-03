@@ -100,7 +100,7 @@ At Rotaline, Ines is the chief executive and leads the company, Alex leads techn
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
-    "sha256": "03e49ed2cce2fdfb68587184d1c74b68815a7792bd9d194fd83b87e4f7f8758c"
+    "sha256": "2b3368087ca46e498faf616ea31f7afa48af8ddfa91b21370a23f5f4aefdc3da"
   }
 }
 -->

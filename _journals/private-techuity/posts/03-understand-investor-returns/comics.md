@@ -536,7 +536,7 @@ Alex leads technology and Priya leads product at Rotaline, a fictional software 
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
-    "sha256": "0a3b4f990dd4ec870de5982bc933f52e506583897e8a7672020cb11fa68969ce"
+    "sha256": "18b72ef2f93fc3f5b0f7281c19246d9da1353cab3c1780ef24ffe17cfa3e0912"
   }
 }
 -->

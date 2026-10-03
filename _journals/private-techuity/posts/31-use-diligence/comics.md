@@ -367,7 +367,7 @@ Morgan is the investor’s technology adviser. At Rotaline, Alex is the chief te
   "caption": "The record lists options with costs. One: hire two implementation specialists, about €300,000 a year, recurring. Two: fund one reusable setup step as a pilot — a limited trial before a wider commitment — for €180,000 to build, €30,000 a year to maintain and 12 engineer-weeks, an engineer-week being one engineer working for one week. Three: narrow the first-year target to customers whose data already fits Rotaline’s standard format. The agreed response: the investment proceeds; the first-year onboarding-volume assumption is revised from 2× to 1.5×, a forecast conditional on the pilot’s evidence rather than a result that funding the pilot establishes; second-country expansion moves out of year one and becomes conditional on that evidence; and the pilot becomes a funded condition of the early operating plan. Hiring is deferred, because it would commit a recurring cost before anyone knows how much of the effort is a data problem and how much a product problem. Approvers are named: the investment committee, the group inside the investment firm authorized to approve its investments, approves the transaction terms only; the Rotaline board adopts the operating plan and its funding at the meeting that follows closing. Priya is the accountable leader, because the fix is a change to the product, and Alex’s disagreement is recorded rather than smoothed over.",
   "status": "generated",
   "generation": {
-    "sha256": "327ded76926a8684b85467959481448fd90b6a1533ff7cb8c529e1c94b9135bf"
+    "sha256": "1d1ed30584af61ee5e60ab1d30dff2a35036361c8497c51423f47ff0c8b1fb7e"
   }
 }
 -->

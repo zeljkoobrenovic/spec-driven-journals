@@ -183,7 +183,7 @@ Morgan is a technology adviser employed by the investment firm; Alex leads techn
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
-    "sha256": "bc6d6ddc9d6d5a4c6ebe82095e20e844bff393dc3541d3fa1404072a43f58edd"
+    "sha256": "1bfeb4e84f7e2bf267b17cd6dc54efa762d21edf0418e0a68f9c29eb61168368"
   }
 }
 -->

@@ -83,7 +83,7 @@ Morgan advises an investor on technology; Alex leads technology; Priya leads pro
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
-    "sha256": "7dd5c6606ff79384f5bbe4d0f3b778423a047e8f7483087af0700f99d07e778d"
+    "sha256": "0dc6817247b4f830468d9a755d96941d87306afe998e74f3851d6edd6f089a99"
   }
 }
 -->

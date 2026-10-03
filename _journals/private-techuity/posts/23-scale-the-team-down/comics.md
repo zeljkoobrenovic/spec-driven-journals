@@ -375,7 +375,7 @@ Morgan is an adviser working for the investor; Alex leads technology, Priya lead
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
-    "sha256": "96dd98adf8d1eeb20887a7bf5d52e15f7b926f69b6faee7977ace09da7fb3bfa"
+    "sha256": "598c639774c4a976a03e5f16b85fcbbe11589ceeff6d5d1297653a0b932afadd"
   },
   "status": "generated"
 }
@@ -838,7 +838,7 @@ Morgan is an adviser working for the investor; Alex leads technology, Priya lead
   "caption": "A reduction chosen by work still ends in eight individual conversations, and what the company owes each person is part of the plan. At Rotaline’s fictional terms: notice paid in full whether worked or not, severance on the stated formula, accrued leave paid out, a written reference and job-search support at the company’s cost. Each person holds share options, and the board treats the eight as good leavers, so vested options can be exercised for twelve months after leaving rather than lapsing after ninety days. None of this compensates for a job lost in midwinter; it is what the company can do, it is written down, and it is the same for all eight. On 31 October each is told individually in the morning, by the leader they work for, before anyone else hears. The employment process belongs to a jurisdiction: the EU directive on collective redundancies requires consultation and notification with a thirty-day wait above its thresholds, and the US WARN Act sixty days’ notice from employers of 100 or more; eight dismissals in an establishment of forty sit below both, but national law may set lower thresholds, works-council rules may apply, and the book does not say which law governs Rotaline. The cash table’s calendar assumes individual notice with no collective procedure, and legal advisers confirm that before the date is fixed. Thirty-two people remain, and the failure to avoid is the silent one: the work of eight distributed over the rest by omission. So the stopped list is published, not implied; the on-call rota now draws on eight engineers instead of ten, one week in eight, and every review reads the incident count first; the pay deferral is announced as a deferral; and the team is told what would restore the plan. A company cannot promise stability it does not have, but it can say which plan is running, why, and what the next review will decide — from the same dated cash table that sits behind the board paper and the investor update. R2 buys time; it does not end the problem, and the board must decide how Rotaline is financed after July, well before August.",
   "status": "generated",
   "generation": {
-    "sha256": "32d31cf1178bd77b096918bba5b5086afb77d6ce9892c4bd4929fbcf28e25bd4"
+    "sha256": "37e892bb98397d188f978999b78c95d45bd7a9ac903212288182d930e244067a"
   }
 }
 -->

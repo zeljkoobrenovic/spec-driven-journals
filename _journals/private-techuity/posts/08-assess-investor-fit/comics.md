@@ -96,7 +96,7 @@ Ines is the chief executive of Rotaline, a fictional software company; Sam runs 
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
-    "sha256": "19fb2aa4ea09e1e42b75128e0a27c2d691d5f30dfade4f0c1c8767f1a1de90dd"
+    "sha256": "e611d8419348e44bb356c40d3d5751f0c50e85ad81de87da95850ea7f77f46d5"
   }
 }
 -->

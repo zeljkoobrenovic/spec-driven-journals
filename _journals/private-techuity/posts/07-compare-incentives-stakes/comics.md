@@ -361,7 +361,7 @@ Morgan advises the investor; Alex leads technology, Priya leads product, Sam lea
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
-    "sha256": "d3380a0f4106ea7ddb7a32f13949b15e6fb27bfe693d227a9451d19c1b3eecbb"
+    "sha256": "b08c9411d9414f44ab34fbd9d4cbc100b0ee9d4aef4d4f9a1365bfed5bd990e4"
   }
 }
 -->
@@ -449,7 +449,7 @@ Morgan advises the investor; Alex leads technology, Priya leads product, Sam lea
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
-    "sha256": "316c2f8a9abc82627442e7351c0670637640a49902ab0526f72adbc3342f2e00"
+    "sha256": "767ce74cd6103f5e3d1924390eeb9740b6815d60be4f2a4059988dfb60370688"
   }
 }
 -->

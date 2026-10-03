@@ -618,7 +618,7 @@ Alex leads technology, Priya leads product and Sam leads finance at Rotaline, a 
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
-    "sha256": "c53a9ea0c2193b4b58c5a1221b86c4096e8ded36dae8547ce0da2d076765bb89"
+    "sha256": "5352eca22b5f2dc93802adb32363e7885374802fd78727d948de764cf71f14c4"
   }
 }
 -->

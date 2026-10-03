@@ -184,7 +184,7 @@ Alex leads technology, Sam leads finance and Ines is the chief executive officer
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
-    "sha256": "d2985fa71e92d69c823db040e9adc0d7ada442de71ae79e561c76e6cf2148e3e"
+    "sha256": "24eb5f90a6d4815e5f2caeb4d158f4182ee07ac03d9544031feffb69f3706b7e"
   }
 }
 -->
@@ -274,7 +274,7 @@ Alex leads technology, Sam leads finance and Ines is the chief executive officer
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
-    "sha256": "610773827fec58d451ae4253333a81a2ce36bc0e1647230759fb09e23b1e8429"
+    "sha256": "35e87fa1b6ad0171fbd15e4d36f48625e27306ede8aa4338afc1c28164567e89"
   }
 }
 -->
@@ -443,7 +443,7 @@ Alex leads technology, Sam leads finance and Ines is the chief executive officer
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
-    "sha256": "3cae1c8121ff98ddd9cc559be8557388b77816c3b4b3188045a555b4ab9eaef3"
+    "sha256": "1ab63720d428d6cce3f4a8bd3c8c4c2aa2e3760b6a0cc58c2e9d3a175d2f9f09"
   }
 }
 -->
@@ -530,7 +530,7 @@ Alex leads technology, Sam leads finance and Ines is the chief executive officer
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
-    "sha256": "ca6dc827a723832291f5c77163cc8c7dd3cb35d001e6fa41375f287b41cc67ea"
+    "sha256": "5e4a6335485b5575c830cd0f618406d3c711114599a7fbc2fc347020751f8183"
   }
 }
 -->

@@ -66,6 +66,35 @@ PROMPT = (
     "as it is. Keep every other pixel of the image as it is: the same drawings, people, faces, colors, strips, "
     "borders, speech bubbles, boards, cards, numbers, labels and all other text. Add nothing else."
 )
+# Second round: the general prompt let the model rewrite or add other lettering on these
+# pages (a name box overwritten, a bubble duplicated, words added). Each has the name once,
+# so each gets the exact string to change and the nearby lettering that must not change.
+_KEEP = (" Keep every other pixel of the image as it is: the same drawings, people, faces, colors, strips, "
+         "borders, boxes, boards, cards, numbers and all other text, word for word. Do not add, remove, "
+         "repeat or reword any other text anywhere on the page.")
+PAGE_PROMPTS = {
+    "comic-page-01-a-specialist-joins-the-meeting": (
+        "Edit the attached comic page. In the middle strip there are four boxes. Change ONLY the upper right box, "
+        "which reads \"REPORTS TO: LARKSPUR'S BOARD\": it must read \"REPORTS TO: ROTALINE'S BOARD\", same lettering. "
+        "The lower right box, directly below it, reads \"ALEX\" and must still read exactly \"ALEX\". "
+        "The upper left box stays \"REPORTS TO: THE INVESTMENT FIRM\" and the lower left box stays \"MORGAN\"." + _KEEP),
+    "comic-page-03-thirty-customers-on-the-old-path": (
+        "Edit the attached comic page. Change ONLY the underlined heading on the whiteboard in the top strip, "
+        "\"LARKSPUR AT DAY 100\": it must read \"ROTALINE AT DAY 100\", same lettering. The two speech bubbles in the "
+        "top strip stay exactly as they are and are different from each other: the left one reads \"Thirty existing "
+        "customers still depend on one specialist's hands.\" and the right one reads \"Migration means moving each of "
+        "them onto the newer setup step.\"" + _KEEP),
+    "comic-page-03-size-the-work-first": (
+        "Edit the attached comic page. Change ONLY the caption box in the top left corner, \"Larkspur, a fictional "
+        "software company.\": it must read \"Rotaline, a fictional software company.\", same lettering. The bottom "
+        "line on the lower whiteboard reads \"CASH NEED: €610k\" and must stay exactly that, with no word added "
+        "before it." + _KEEP),
+    "comic-page-04-decide-what-waits": (
+        "Edit the attached comic page. Change ONLY the caption box in the top left corner, \"Larkspur buys a "
+        "forty-person dispatch company. Closing: 1 April 2026.\": it must read \"Rotaline buys a forty-person dispatch "
+        "company. Closing: 1 April 2026.\", same lettering. The speech bubble on the right of the top strip reads "
+        "exactly \"The portal is promised to named customers for July to September.\" and nothing more." + _KEEP),
+}
 DONE = Path(__file__).with_suffix(".done")
 
 
@@ -91,7 +120,8 @@ def main() -> int:
         comics = post_dir / "comics.md"
         old = image_path.read_bytes()
         print(f"editing: {rel}", flush=True)
-        data, mime = pages.call_image(api_key, args.model, PROMPT, aspect_ratio_of(comics, image_path), old)
+        prompt = PAGE_PROMPTS.get(image_path.stem, PROMPT)
+        data, mime = pages.call_image(api_key, args.model, prompt, aspect_ratio_of(comics, image_path), old)
         data, _, _ = panels.normalize_image_bytes_for_target(data, mime, image_path)
         pages.archive(image_path, comics, None)
         image_path.write_bytes(data)

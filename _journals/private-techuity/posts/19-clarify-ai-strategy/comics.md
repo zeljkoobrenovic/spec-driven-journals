@@ -456,7 +456,7 @@ Ines is the chief executive; Priya leads product and holds the three questions t
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
-    "sha256": "a6579e63b58bcdc19a6a2d6dfe741fd06fa562479ae9df164fb231b49bcfc568"
+    "sha256": "2b829368d5044be8b6019d68b95705a03eeed29667e79dabd3ce06fadec88073"
   }
 }
 -->

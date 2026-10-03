@@ -98,7 +98,7 @@ Morgan is the investment firm’s technology adviser. Inside Rotaline, Alex lead
   "caption": "Everyone in this comic is fictional. An investor is someone who has put money into the company expecting a financial gain from it. An investor’s technology adviser is a person the investment firm employs or engages to form its own view of a company’s technology and, often, to help improve it; Morgan holds that role for the firm that has invested in Rotaline. A chief technology officer (CTO) leads technology inside the company; at Rotaline that is Alex. When Morgan joins a planning meeting with useful ideas, the engineers want to know whether they are hearing suggestions, a new assessment or instructions they should act on. What distinguishes this adviser from other outside experts is not privileged access or multiple responsibilities — a consultant appointed by the board can have both. It is that Morgan reports to the investment firm, while Alex reports to Rotaline’s own leadership and board. So the company must understand both the operating assignment and how findings may inform the investor’s decisions, and working that out is the company technology leader’s job, before sensitive information is shared.",
   "status": "generated",
   "generation": {
-    "sha256": "16edf17d4431873c29becd99b4d55072d3f1ac9f55f5db1f2b1f7655d2448897"
+    "sha256": "7d5746020cff65dd9effa77c17267e8d70450fda844cde063cd378c4f8fad0b2"
   }
 }
 -->

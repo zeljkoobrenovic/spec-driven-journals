@@ -368,7 +368,7 @@ The people are all fictional. Ines is Rotaline’s chief executive; Alex leads t
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
-    "sha256": "583aff942f64c3bf0055e86cd5127d7a4415debc7f6a2ec1937d657ce34e9672"
+    "sha256": "3bf7053fce0f74fd9c1772b8f2931dd54db2c4794d9d4a2aede007c4c247a6de"
   }
 }
 -->
@@ -461,7 +461,7 @@ The people are all fictional. Ines is Rotaline’s chief executive; Alex leads t
   "generation": {
     "model": "gemini-3-pro-image-preview",
     "reference": "_research/comic-cast-20260913.jpeg",
-    "sha256": "36fa6981acb0a10748c403e76f5ccdfb7795138216104a0d67be7909e6258679"
+    "sha256": "7a84425fbd9c8e45bef856c0616e294df53c5ec6277cc4c30588aab7c52ab360"
   }
 }
 -->
