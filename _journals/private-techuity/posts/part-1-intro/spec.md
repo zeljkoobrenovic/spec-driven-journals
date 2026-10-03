@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-27
+revised: 2026-10-03
 ---
 
 # Spec: PART I — Understanding Financing and Ownership
@@ -53,6 +53,7 @@ The journal's current config.yaml and the configured chapter introductions. Thes
 
 ## Changelog
 
+- 2026-10-03: Added the "Begin with" line other part introductions have, pointing to [[understand-expectations]] and explaining that it starts before any investor arrives.
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after the opening IN THIS SECTION callout, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-23: In-depth review round 3 (P1-006 to P1-008). Separate money customers still owe from outgoing payments in the cash-flow description; broaden the funding-choices description to costs, obligations and ownership effects; replace the agreements-only claim with actual cash, agreement terms and spending approvals. Wording only; artwork, permalink and chapter sequence unchanged.
 - 2026-09-23: In-depth review round 2 (P1-002 to P1-005). Explain lenders, investors, profit and distributions at first use; scope the buyout sentence to fund-backed buyouts; describe the returns chapter as alternative outcomes for one fund; regenerate the overview taller with larger, wrapped lettering and a first card that explains the parties; cut duplicated chapter-description wording so the expanded body falls under 400 words. Permalink and chapter sequence unchanged.

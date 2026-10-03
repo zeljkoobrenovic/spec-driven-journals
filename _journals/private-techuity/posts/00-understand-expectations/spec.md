@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-28
+revised: 2026-10-03
 ---
 
 # Spec: Customers, Lenders and Investors: What Each Expects in Return
@@ -56,6 +56,7 @@ Investor.gov introductions to stocks, public companies and private equity; SBA g
 
 ## Changelog
 
+- 2026-10-03: "Earliest" scenario changed to "smallest" in the article and comic intro text, matching the introduction's rule that Larkspur examples are alternative situations, not one company history.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.
 

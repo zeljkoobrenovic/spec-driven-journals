@@ -42,4 +42,4 @@ This part covers fund-backed buyouts, in which an investment fund buys control o
 
 Distributions are a fund’s payouts to its investors; the optional [[fund-economics]] reference covers them.
 
-By the end, you should be able to ask **what would fund a proposed change** and when announced money will arrive. Part II asks who can authorize it.
+By the end, you should be able to ask **what would fund a proposed change** and when announced money will arrive. Begin with [[understand-expectations]], which starts before any investor arrives: a small Larkspur that needs €100,000. Part II then asks who can authorize the spending.

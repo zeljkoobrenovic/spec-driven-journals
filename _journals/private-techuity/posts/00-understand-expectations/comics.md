@@ -22,7 +22,7 @@
 
 **Comic.** Product and engineering leaders usually meet money as a budget: an amount they may spend. Seven pages follow Larkspur’s fictional €100,000 need through three offers, from customers, a bank and an investor, to show what the funding terms add: when the money may be spent, who must approve it, and what the company must deliver, repay or give up.
 
-Alex leads technology, Sam leads finance and Ines is the chief executive of Larkspur, a fictional company at its smallest and earliest stage in this book. All are fictional, and so is every figure.
+Alex leads technology, Sam leads finance and Ines is the chief executive of Larkspur, a fictional company at its smallest in this book. All are fictional, and so is every figure.
 
 <!-- comic-page
 {

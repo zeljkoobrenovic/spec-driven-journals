@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-27
+revised: 2026-10-03
 ---
 
 # Spec: Where Investment Can Go Wrong
@@ -69,6 +69,7 @@ None for the initial scope. Revisit the examples as the author receives reader f
 
 ## Changelog
 
+- 2026-10-03: Closing now hands off to [[part-1]], the next page in reading order.
 - **2026-09-27 (detailed versions retained)** — Restore the detailed illustration contract before applying the negative labels to the original detailed artwork. Update the article links, alt text and captions to match; retain earlier images and generation history.
 - **2026-09-27 (negative headings)** — Specify the six opposite labels before editing Figure 14. Synchronize its alt text and prompt record, retain the earlier artwork, and preserve the constructive illustration.
 - **2026-09-27 (reinforcing loops)** — Revise the illustration contract before adding directional arrows to both six-panel figures. Preserve the six qualities and expectations-and-promises distinction, update captions and alt text for the loops, and retain previous image versions.

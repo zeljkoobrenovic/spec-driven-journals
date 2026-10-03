@@ -42,7 +42,7 @@ Larkspur is the fictional scheduling-software company used throughout this book.
 
 Three people have to decide where the money comes from: Ines, the chief executive officer (CEO), who runs the company; Sam, the chief financial officer (CFO), who manages its money; and Alex, the chief technology officer (CTO), who leads its four engineers.
 
-Every figure in this example is fictional, and the scenario is the earliest in the book: a small Larkspur owned by its **founders**, the people who started it, with no outside investor yet. Its existing subscriptions cover its current running costs: the salaries, the **hosting** (the computing services that run the software) and customer support. About €1,500 a month is left over, and nothing for new work.
+Every figure in this example is fictional, and the scenario is the smallest in the book: a small Larkspur owned by its **founders**, the people who started it, with no outside investor yet. Its existing subscriptions cover its current running costs: the salaries, the **hosting** (the computing services that run the software) and customer support. About €1,500 a month is left over, and nothing for new work.
 
 ## Four Common Ways Cash Reaches a Business
 

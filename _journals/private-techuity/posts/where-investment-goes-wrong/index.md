@@ -266,4 +266,4 @@ Dysfunctions can reinforce each other. Spending the Press Release adds promises 
 
 For a missed opportunity, identify the unused resource, the improvement it could support and a small next step: a peer conversation, time reserved for a funded change, or working alongside a specialist. Agree what the company will contribute and how it will judge whether the opportunity is useful.
 
-Use the linked parts to decide what must change first. The purpose is to improve a specific company decision; a label alone changes nothing.
+Use the linked parts to decide what must change first. The purpose is to improve a specific company decision; a label alone changes nothing. For a first reading, start with the money itself: [[part-1]].
