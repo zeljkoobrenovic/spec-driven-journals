@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-28
+revised: 2026-10-03
 ---
 
 # Spec: Turn “We Expect Growth” Into a Design Decision
@@ -68,6 +68,7 @@ Inherits the IPEV valuation guidance cited in [[understand-valuation]]. The arch
 
 ## Changelog
 
+- 2026-10-03: Closing now hands off to [[plan-acquisitions-separations]], the last chapter of Part V, after the Part VI pointer. Article only.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.
 

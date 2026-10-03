@@ -19,7 +19,7 @@ icon: "assets/icons/part-7-intro.png"
 > * **The Ratchet Roadmap** — Makes new priorities account for existing commitments and explicit postponements.
 
 <br>
-Larkspur is the book’s fictional software company. Setting up a new customer is called **onboarding**. In a sample of five customer setups, three depended on one specialist entering the customer’s settings by hand. Part III showed Larkspur asking its investor for help with that work. This part follows the finding through changes in funding and ownership, seen from the company’s side.
+Parts IV to VI chose the work, changed the company’s size and kept its technology worth its cost. Larkspur is the book’s fictional software company. Setting up a new customer is called **onboarding**. In a sample of five customer setups, three depended on one specialist entering the customer’s settings by hand. Part III showed Larkspur asking its investor for help with that work. This part follows the finding through changes in funding and ownership, seen from the company’s side.
 
 **Investors** put money into a company hoping for a gain, usually in return for part of its ownership, and the arrangement keeps changing. An investor may invest again in a new **funding round**, an occasion when the company raises new investment. It may sell part of its **holding**, the share of the company it owns. Or it may stay longer than planned. The company may **refinance**, replacing an old loan with a new one, or be bought by a larger company.
 

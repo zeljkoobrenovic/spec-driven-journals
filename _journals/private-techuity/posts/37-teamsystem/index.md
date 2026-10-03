@@ -209,7 +209,7 @@ That method can also help through another round of new investment or entry into 
 ![The company carries products, customers, integration work and obligations through successive changes of owner.](assets/images/37-teamsystem/company-history-across-successive-owners.jpeg)
 **Figure 2:** *Each investor starts with a new investment question, while company responsibilities continue.*
 
-The final chapter brings the cases together and asks the question the ownership episodes leave open: when owners, prices and reporting bases keep changing, what would a lasting improvement mean for each group affected, and who received the gains and carried the costs? Continue with the chapter [[success-for-whom]]. TeamSystem shows what a group accumulates across its owners: useful products and knowledge, but also obligations, dependencies and continuing work.
+TeamSystem shows what a group accumulates across its owners: useful products and knowledge, but also obligations, dependencies and continuing work. The final chapter brings the cases together and asks the question the ownership episodes leave open: when owners, prices and reporting bases keep changing, what would a lasting improvement mean for each group affected, and who received the gains and carried the costs? Continue with the chapter [[success-for-whom]].
 
 ## Questions to Consider
 
