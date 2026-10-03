@@ -33,6 +33,8 @@ In April 2026, Prosus, a global technology investor, took 20 founders of technol
 
 On a trip like this, the organizer provides **access to unfamiliar people and practices**; the participants work out what those encounters might mean for them.
 
+The previous chapter, [[plan-investor-support]], set up the working arrangement with the investor. This chapter asks what that relationship can teach.
+
 The leadership question is broader than whether to accept a particular invitation: **how can an investor help you learn something your existing routines would leave undiscovered?**
 
 ## Give Discovery a Place Alongside Problem Solving
@@ -145,7 +147,7 @@ Keep the review light enough that people can be honest. Learning may confirm the
 
 Use a few lines before and after the experience: **what we want to understand; who should participate; the time and cost; what we observed; what might transfer; whom we will stay in touch with; and what we will revisit next**. Leave room for surprises. [Tool 14 in the practical toolkit](toolkit.html#tool-14) provides a reusable version.
 
-The previous chapter, [[plan-investor-support]], established the working arrangement with the investor. Learning through that relationship may reveal a need for more specific help. Continue with [[choose-right-help]] to compare sources for that need, then [[set-terms-of-help]] to agree any assignment. [[technology-operating-partners]] explains how a wider investor-side team can sustain these connections; [[clarify-ai-strategy]] helps separate the investment decisions that an AI encounter may prompt.
+Learning through the relationship may reveal a need for more specific help. Continue with [[choose-right-help]] to compare sources for that need, then [[set-terms-of-help]] to agree any assignment. [[technology-operating-partners]] explains how a wider investor-side team can sustain these connections; [[clarify-ai-strategy]] helps separate the investment decisions that an AI encounter may prompt.
 
 ## Questions to Consider
 

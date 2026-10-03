@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-28
+revised: 2026-10-03
 ---
 
 # Spec: Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives
@@ -64,6 +64,7 @@ The consulted investor accounts do not establish subsequent company outcomes. Ob
 
 ## Changelog
 
+- 2026-10-03: The link back to [[plan-investor-support]] moved from the closing to the opening, before the leadership question; the closing keeps only the forward pointers. Article only.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Update cross-links for the chapter title-slug renames.
 
