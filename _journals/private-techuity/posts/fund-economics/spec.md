@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-09-27
+revised: 2026-10-03
 ---
 
 # Spec: Fund Economics: Fees, Distributions and Performance Reports
@@ -49,6 +49,7 @@ Material moved from [[understand-funding-control]] and [[understand-investor-ret
 
 ## Changelog
 
+- 2026-10-03: "The announcement chapter" replaced with a link to [[understand-funding-control]], where the capital-call timeline is.
 - 2026-09-27: Update cross-links for the chapter title-slug renames.
 
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
