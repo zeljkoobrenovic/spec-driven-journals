@@ -168,7 +168,7 @@ Three outcomes are legitimate. A **capability** the company can now run itself. 
 ![Support can leave an internal capability, a better-supported decision or an explicit continuing service.](assets/images/12-set-terms-of-help/three-useful-support-endings.jpeg)
 **Figure 2:** *Agree what remains useful after the initial assignment and who will sustain it.*
 
-The charter makes the work, resources and handover explicit. The relationship with the person providing help needs the same care, especially when that person also reports to the investor. The next chapter examines the adviser’s assignment, influence and reporting relationship, and what changes when coaching becomes assessment: [[clarify-adviser-role]].
+The charter makes the work, resources and handover explicit for a six-week assignment. Morgan, the firm’s technology adviser who introduced the specialist, works with Larkspur continuously, in a role no single charter covers, and also reports to the investor. The next chapter examines the adviser’s assignment, influence and reporting relationship, and what changes when coaching becomes assessment: [[clarify-adviser-role]].
 
 ## Questions to Consider
 
