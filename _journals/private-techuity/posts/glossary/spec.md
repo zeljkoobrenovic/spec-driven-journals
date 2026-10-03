@@ -53,6 +53,7 @@ See the bibliography and the relevant chapters. The source registry records cons
 
 ## Changelog
 
+- 2026-10-03: "Durable value" renamed "Durable success" to match [[success-for-whom]]; "Cash conversion" now links to [[have-your-numbers-ready]], where the term is defined, with [[toys-r-us]] as the illustration; added a "Day 0" entry matching the shared scenario record.
 - 2026-10-03: The Technology operating partner and Technology Principal entries now refer to each other: the Technology Principal is one individual adviser within the operating-partner function, matching [[clarify-adviser-role]] and [[technology-operating-partners]].
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-23 (portfolio appendix): Add Grounded Architecture and Lightweight Architectural Analytics to the technology section and the alphabetical index.
