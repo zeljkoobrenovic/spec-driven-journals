@@ -255,9 +255,9 @@ The historical Toys R Us case in the chapter [[toys-r-us]] shows the same gap in
 
 What to do when expected funding does not arrive on time, and on which date each commitment stops being reversible, is the subject of the chapter [[manage-funding-delays]]. Choosing help that changes what the team can do, and naming the continuing dependence it leaves behind, is the subject of the chapter [[choose-right-help]].
 
-## Which Plan Can the Company Actually Carry?
+## From Cash to Authority
 
-Each option above named who decides; Part II asks where that authority comes from, what an approval record looks like and what to do when the people who must agree don’t. Begin with [[part-2]], then the chapter [[clarify-authority]].
+The plan the company can carry is the one whose cash, payment dates and approvals all hold: here, the staged pilot, not the full request. Each option above named who decides; Part II asks where that authority comes from, what an approval record looks like and what to do when the people who must agree don’t. Begin with [[part-2]], then the chapter [[clarify-authority]].
 
 ## Questions to Consider
 

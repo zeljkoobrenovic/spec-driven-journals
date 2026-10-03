@@ -70,6 +70,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-10-03: Closing section renamed "From Cash to Authority" and given a one-sentence answer (the staged pilot is the plan the company can carry) before the handoff to Part II. Article only.
 - 2026-10-03: Bridged from [[understand-funding-choices]]: Larkspur is introduced "in a different situation" a few years after a buyout, removing the implied timeline from the previous chapter (whose Larkspur had no buyout); EBITDA's definition now points back to [[understand-valuation]]. Article only.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.
