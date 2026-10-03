@@ -221,7 +221,7 @@ When a problem emerges, start with a concrete decision rather than a general com
 
 This chapter has connected changed authority, incentives and the working relationship. Each assumes something this part does not supply itself: that both sides are reasoning about the same facts. A partnership review, an evidence-based challenge and an honest disagreement all need defined, sourced figures that neither side has to take on trust. The Part IV chapter [[have-your-numbers-ready]] shows how to hold them ready.
 
-Suppose the agreement with Investor B is signed, the deal has closed and the first €4.5 million has arrived in Larkspur’s account. Larkspur then has that money, ten operator days a quarter, and a right to €1.5 million that is not yet money. Which of Larkspur’s own initiatives the money actually received, and that capacity, can fund at once is the question Part IV takes up: [[part-4]] and [[set-priorities]].
+Suppose the agreement with Investor B is signed, the deal has closed and the first €4.5 million has arrived in Larkspur’s account. Larkspur then has that money, ten operator days a quarter, and a right to €1.5 million that is not yet money. How to turn those operator days into help the company can use is the subject of Part III: [[part-3]]. Which of Larkspur’s own initiatives the money actually received can fund at once is the question Part IV takes up: [[set-priorities]].
 
 ## Questions to Consider
 
