@@ -40,7 +40,7 @@ Larkspur is the fictional company this book follows; it sells scheduling softwar
 - Alex, the technology leader, wants to improve **recovery from system failures**.
 - The customer team wants **simpler setup** for new accounts.
 
-Each request has a plausible benefit, and the chapter [[adopt-outcome-thinking]] has already agreed which customer and business outcomes the work is for. But the requests cannot all use the same people at the same time. The next section shows the limits the board has approved and what each request would need.
+Each request has a plausible benefit, the chapter [[adopt-outcome-thinking]] has agreed which customer and business outcomes the work is for, and [[have-your-numbers-ready]] has defined the numbers that will test it. But the requests cannot all use the same people at the same time. The next section shows the limits the board has approved and what each request would need.
 
 ## Competing Requests, Two Limits
 

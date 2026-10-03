@@ -13,7 +13,7 @@ Then Ines, the chief executive, gets her executives and the investor’s directo
 
 The outcomes join at one shared measure: the share of customers with a first real schedule within eight weeks. That a fast start makes customers renew is a hypothesis, tested at their first anniversaries. Responsibility attaches to measures: product answers for setup hours and first-schedule weeks, customer success and the people who set prices for renewal, sales and customer success for expansion.
 
-**Every measure also gets an honest clock.** Setup hours show within weeks, first-schedule weeks within a quarter, renewals only after a year. The investor, expecting to own the company for about four years, cannot wait a year to learn. So the first eight customers report hours and weeks at day 90, ninety days after the board adopted the plan. If neither moves, the leadership reopens the outcome pair itself, not just the plan.
+**Every measure also gets an honest clock.** Setup hours show within weeks, first-schedule weeks within a quarter, renewals only after a year. The investor, expecting to own the company for about four years, cannot wait a year to learn. So the first eight customers report hours and weeks at day 90, ninety days after the board adopts the plan. If neither moves, the leadership reopens the outcome pair itself, not just the plan.
 
 Finally, balance becomes a budget. Larkspur splits the plan into new capabilities, improvements and running the product, and fixes the split before ranking anything. An item enters only if it moves a measure, protects an outcome or obligation, or tests an assumption. A loud customer’s request then competes for its slice, not for the whole plan.
 
