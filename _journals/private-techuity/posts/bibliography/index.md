@@ -787,7 +787,7 @@ David Mackey, Partner at Albany. [Want to become a tech operating partner at a P
 
 **Evidence type:** Recruiter practitioner commentary on LinkedIn; supplied text copy. **Consulted scope:** Full supplied post text consulted on 2026-09-20: interim, fractional and advisory assignments as a route to portfolio experience; technical diagnosis, versatility, communication and results. Original page, linked graphic, comments and publication date were not independently verified. A recruiter’s practice account, not measured hiring outcomes or a guaranteed route to appointment.
 
-**Used in:** [[technology-operating-partners]].
+**Used in:** consulted for [[technology-operating-partners]]; the passage that drew on it was removed on 2026-10-08, so the chapter no longer cites it.
 
 ### S91 — McKinsey on operating-group arrangements
 
