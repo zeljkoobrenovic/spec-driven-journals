@@ -1,6 +1,6 @@
 ---
 name: paragraph-polisher
-description: Interactively polish a markdown file one text block (paragraph, title, list) at a time — each block goes to _temp/paragraph.md, the user edits or writes feedback there and chooses Continue, and only that block is rewritten. Use when asked to polish, proofread, or improve paragraphs or titles of an .md file block by block, or to run the "paragraph polisher".
+description: Interactively polish a markdown file one text block (paragraph, title, list) at a time — each block goes to _temp/paragraph.md, the user edits or writes feedback there and chooses Continue, and only that block is rewritten. Use when asked to polish, proofread, or improve paragraphs or titles of an .md file block by block, or to run the "paragraph polisher". Also has a table mode: a local HTML page with one row per block (current text, auto "vague" suggestion, comments).
 hooks:
   PostToolUse:
     - matcher: "AskUserQuestion"
@@ -49,3 +49,13 @@ Each command that lands on a block writes `_temp/paragraph.md` as the block, an 
 5. On **Stop** or `DONE:`, report in one line how many blocks were updated. Text typed in Other is feedback for the current block: treat it as **Update**, using that text as the feedback (`back`/`stop` typed there still mean Back/Stop).
 
 Keep turns minimal: on an advance or Back just the next question, on Update/Vague one `show`, one `apply`, one question, no commentary.
+
+## Table mode (HTML page)
+
+When the user asks for the table, page, or interactive/HTML version, skip the loop and start the local page instead:
+
+```bash
+python3 .claude/skills/paragraph-polisher/scripts/table.py <file.md> [--port 8777] [--model sonnet]
+```
+
+Run it in the background (it opens the browser) and give the user the URL. One row per block: **Current text** (edit in place, then "Apply my edits" or Cmd/Ctrl+Enter writes it verbatim; Cmd/Ctrl+B toggles **bold** on the selection; Undo), **Suggestion** from applying "This is a bit vague" (Suggest / Accept / Delete / Edit, shown as a word diff; "Suggest all missing" fills every non-figure row in parallel), and **My comments** (autosaved; "Update text from comment" rewrites the current text). Rewrites run through `claude -p` with no tools, so no API key is needed; every change is written straight into the .md file, and a stale row returns a conflict instead of overwriting. Suggestions, comments and undo text persist in `_temp/paragraph-table.json`. Stop the server when the user is done.
