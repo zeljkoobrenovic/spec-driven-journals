@@ -1,7 +1,7 @@
 {id: test-revenue-assumptions}
-# 21. Test Revenue Assumptions: The Key Number Behind the Investment Thesis
+# 21. Test Revenue Assumptions: The Investor Judges the End of the Chain
 
-![Test Revenue Assumptions: The Key Number Behind the Investment Thesis — logo](private-techuity/posts/18-test-revenue-assumptions/assets/images/18-test-revenue-assumptions/logo.jpeg)
+![Test Revenue Assumptions: The Investor Judges the End of the Chain — logo](private-techuity/posts/18-test-revenue-assumptions/assets/images/18-test-revenue-assumptions/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to trace a product change from customer need through customer behavior to a business result, and let the measured result revise the next commitment.
 

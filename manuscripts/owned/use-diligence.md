@@ -111,7 +111,7 @@ A material finding needs a stable identifier, here **D-3**, so it can be followe
 | Evidence to resolve it | Priya’s day-90 measurement of the pilot cohort: average effort per implementation and the estimated share of the remaining hours that traces to customer data and to product limitation. The measurement sizes both explanations; it does not declare one person right. |
 | Handoff | Priya records acceptance within ten days of closing. By day 20, a baseline for all twelve implementations of the previous two quarters is built from the time records, by the method below. Priya measures the pilot cohort at day 90, and the board decides on that measurement at day 100. |
 
-**What the 80 hours measure.** Morgan took each implementation’s hours from its time records. The 80 hours are the average of all five sampled implementations, the three with manual work and the two without. They count every recorded hour of staff time from the signed customer contract to go-live: configuration, data cleaning, sessions with the customer and rework together. Eighty hours is the sample’s figure, not yet a baseline for all twelve. It matches the planning model in the chapter [Test Revenue Assumptions: The Key Number Behind the Investment Thesis](#test-revenue-assumptions).
+**What the 80 hours measure.** Morgan took each implementation’s hours from its time records. The 80 hours are the average of all five sampled implementations, the three with manual work and the two without. They count every recorded hour of staff time from the signed customer contract to go-live: configuration, data cleaning, sessions with the customer and rework together. Eighty hours is the sample’s figure, not yet a baseline for all twelve. It matches the planning model in the chapter [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions).
 
 **Why the split is still unknown, and how the baseline will estimate it.** The time records give each implementation’s total hours but do not say what the hours were spent on. Measuring more implementations from the same records cannot add that. The day-20 baseline therefore does two different things:
 
@@ -129,7 +129,7 @@ If the notes cannot support a reliable estimate, the historical split stays unkn
 
 None of this required the deal to fail; it required the plan to match what was observed.
 
-**An illustrative capacity check.** The chapter [Test Revenue Assumptions: The Key Number Behind the Investment Thesis](#test-revenue-assumptions) uses a round teaching model, not Rotaline’s measured workload: 100 implementations a year at 80 hours each, or 8,000 hours. Treat those 8,000 hours as the assumed capacity of today’s implementation team, not a measured staffing figure. On that model:
+**An illustrative capacity check.** The chapter [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions) uses a round teaching model, not Rotaline’s measured workload: 100 implementations a year at 80 hours each, or 8,000 hours. Treat those 8,000 hours as the assumed capacity of today’s implementation team, not a measured staffing figure. On that model:
 
 - 150 implementations (1.5×) at the pilot’s 50-hour target would use 7,500 hours, within the assumed capacity.
 - 150 implementations at today’s 80 hours would need 12,000 hours.
@@ -147,7 +147,7 @@ Funding the pilot does not establish any of these results; only the cohort measu
 - **Building the step:** €180,000, **committed**, meaning authorized to be spent, not yet paid. It sits inside the **envelope**, the overall spending limit the board authorizes for the first hundred days.
 - **Upkeep:** €30,000 a year from the **operating budget**, the money for the company’s ordinary running costs, starting in the **financial year**, the company’s twelve-month accounting period, after the step ships.
 - **Scarce capacity:** 12 engineer-weeks, and the time of Rotaline’s own implementation specialist, whose knowledge the step needs. Neither can be spent twice.
-- **Temporary cover:** while the specialist works on the pilot, a **contract implementation specialist**, an outside person engaged for a fixed term, works through the customer queue for months 1 to 12. That costs about €150,000, agreed before day 0 and paid from the operating budget, as the chapter [Test Revenue Assumptions: The Key Number Behind the Investment Thesis](#test-revenue-assumptions) records. It is not part of the pilot’s €180,000 or the envelope. It is temporary cover, not one of the two permanent hires, which stay deferred.
+- **Temporary cover:** while the specialist works on the pilot, a **contract implementation specialist**, an outside person engaged for a fixed term, works through the customer queue for months 1 to 12. That costs about €150,000, agreed before day 0 and paid from the operating budget, as the chapter [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions) records. It is not part of the pilot’s €180,000 or the envelope. It is temporary cover, not one of the two permanent hires, which stay deferred.
 
 **Who decides and who answers for it.** The investment committee approves the transaction terms. The board approves the plan and its funding. Priya is accountable for the result. Alex’s disagreement stays on the record.
 

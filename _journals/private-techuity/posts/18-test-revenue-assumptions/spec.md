@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-09
 ---
 
-# Spec: Test Revenue Assumptions: The Key Number Behind the Investment Thesis
+# Spec: Test Revenue Assumptions: The Investor Judges the End of the Chain
 
 ## Intent
 
@@ -62,6 +62,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-10-09 (retitle, second pass): The subtitle became "The Investor Judges the End of the Chain": "The Key Number" could be read as referring to the assumptions, and "paid" misdescribed how an investor earns its return. Permalink unchanged.
 - 2026-10-09 (retitle): At the author's request the title became "Test Revenue Assumptions: The Key Number Behind the Investment Thesis", so the subtitle says why revenue outranks other measures in an investor relationship: the thesis is a prediction about it. Permalink unchanged.
 - 2026-10-09: The business-case definition now states that the expected result must be a measure from the outcome record of [[adopt-outcome-thinking]], closing the loop between the two chapters. Article only.
 - 2026-10-03: Tool 6 reference now links directly to the tool. Article only.

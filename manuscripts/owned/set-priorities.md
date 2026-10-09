@@ -159,7 +159,7 @@ Review the starting assumptions, actual spending, team burden and observed outco
 
 The [Practical Tools for Ownership and Technology Decisions](#toolkit)’s record for comparing investment choices and capacity, [Tool 12](#toolkit--tool-12), holds exactly the fields used above: the required commitments, the money and team time available, the options, the combination proposed, the first stages and the review decision. Fill it in before the board conversation, and update it after each review rather than starting a new one; the same shared decision record runs from the diligence findings to the record handed to the company’s next owner.
 
-The setup change was chosen on customer evidence. Whether its benefit is real is a separate question, and the next chapter follows that one change from the work proposed to the measured customer and business result: [Test Revenue Assumptions: The Key Number Behind the Investment Thesis](#test-revenue-assumptions).
+The setup change was chosen on customer evidence. Whether its benefit is real is a separate question, and the next chapter follows that one change from the work proposed to the measured customer and business result: [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions).
 
 {id: set-priorities--questions-to-consider}
 ## Questions to Consider

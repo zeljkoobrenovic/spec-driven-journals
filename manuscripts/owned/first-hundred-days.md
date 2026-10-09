@@ -39,7 +39,7 @@ Five people and the board carry the example:
 - **Morgan** is the investor’s technology adviser, who ran the technical part of the investigation.
 - The **board** is the group of directors who oversee the company and approve its major decisions and spending.
 
-Every figure is fictional. The same Rotaline figures run through the chapters [Set Priorities: Say No With Evidence](#set-priorities), [Build And Test Resilience: Backups Are Not Enough](#build-test-resilience), [Test Revenue Assumptions: The Key Number Behind the Investment Thesis](#test-revenue-assumptions) and [Manage the Handover: Carry Forward the Evidence and Obligations](#manage-handover). The first step is to establish what the investment actually changed at Rotaline.
+Every figure is fictional. The same Rotaline figures run through the chapters [Set Priorities: Say No With Evidence](#set-priorities), [Build And Test Resilience: Backups Are Not Enough](#build-test-resilience), [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions) and [Manage the Handover: Carry Forward the Evidence and Obligations](#manage-handover). The first step is to establish what the investment actually changed at Rotaline.
 
 {id: first-hundred-days--what-actually-changed}
 ## What Actually Changed
@@ -105,7 +105,7 @@ The research item concerns a **customer portal**, a website where customers coul
 
 **Capacity.** The plan allocates 18 of the 24 engineer-weeks and keeps 6 in reserve. Two other demands on people sit outside the 24, and each is counted on its own.
 
-ONB-1 needs the implementation specialist for twelve consecutive weeks. That is implementation time, not engineering time, so it is neither part of ONB-1’s twelve engineer-weeks nor added to them. While the specialist works on the pilot, the ordinary setup queue goes to a **contract implementation specialist**, an outside person Rotaline engaged before day 0 to work through the queue for twelve months. That contract costs €150,000, paid from the operating budget, not from the envelope. The chapter [Test Revenue Assumptions: The Key Number Behind the Investment Thesis](#test-revenue-assumptions) explains it.
+ONB-1 needs the implementation specialist for twelve consecutive weeks. That is implementation time, not engineering time, so it is neither part of ONB-1’s twelve engineer-weeks nor added to them. While the specialist works on the pilot, the ordinary setup queue goes to a **contract implementation specialist**, an outside person Rotaline engaged before day 0 to work through the queue for twelve months. That contract costs €150,000, paid from the operating budget, not from the envelope. The chapter [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions) explains it.
 
 KNW-1 uses two existing people. The scheduling specialist gives four weeks to teaching. The second engineer, who already works on the engine, spends about the same four weeks alongside the specialist during the first 60 days, on real releases and a recovery rehearsal. That is about eight person-weeks, set aside from the operating team’s ordinary time before the 24 were counted, so no week is counted twice.
 
@@ -125,7 +125,7 @@ Both KNW-1 participants’ salaries are already in the operating budget, which i
 | 60 to 70 hours | Fund the next learning step; keep expansion and hiring postponed |
 | Over 70 hours, or no reduction | Reopen hiring, a narrower target or the question of how the work is financed |
 
-These are decision thresholds, not the target. The plan’s illustrative model, explained in the chapter [Test Revenue Assumptions: The Key Number Behind the Investment Thesis](#test-revenue-assumptions), assumed the pilot would bring effort down to 50 hours.
+These are decision thresholds, not the target. The plan’s illustrative model, explained in the chapter [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions), assumed the pilot would bring effort down to 50 hours.
 
 **Unselected work remains visible.** A short priority list is not permission to postpone an important risk without a decision. Rotaline **deferred**, or postponed with a recorded decision, three items: the full customer-portal build (€220,000 and 12 engineer-weeks; only the €20,000 of research is funded); second-country expansion (moved out of year one during diligence and conditional on ONB-1 evidence); and hiring two implementation specialists (about €300,000 a year, every year, pending pilot evidence). Distinguish active priorities, accepted risks, monitored conditions and later opportunities. Each postponed important risk still needs someone authorized to say it is accepted or monitored.
 
@@ -183,7 +183,7 @@ At day 100 the board asked what was learned and what the company can now do, not
 **ONB-1, the pilot.**
 
 - *Outcome:* Priya measured the cohort of eight customers at day 90 against the day-20 baseline. Effort fell from 80 to 62 hours per implementation, short of the 50 hours the illustrative model assumed. About 40% of the remaining hours traced to customer data quality, so Alex’s explanation was partly supported and Morgan’s was not wrong either. Customer waiting time was unchanged, which only the separate measurement showed. Errors and customers’ requests for help did not rise.
-- *Implication:* 62 hours falls in the 60–70 band of the rule. The observed reduction is 8 × 18 = 144 hours; any annual figure built on it is a projection, and the chapter [Test Revenue Assumptions: The Key Number Behind the Investment Thesis](#test-revenue-assumptions) shows how far it can be carried. With the same staff hours, 62 hours per implementation covers about 1.3 times as many customers (80 ÷ 62). The revised thesis needs 1.5 times, which would take about 53 hours.
+- *Implication:* 62 hours falls in the 60–70 band of the rule. The observed reduction is 8 × 18 = 144 hours; any annual figure built on it is a projection, and the chapter [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions) shows how far it can be carried. With the same staff hours, 62 hours per implementation covers about 1.3 times as many customers (80 ÷ 62). The revised thesis needs 1.5 times, which would take about 53 hours.
 - *Money and time:* by day 100 ONB-1 had incurred about €90,000 of its €180,000 and used about ten of its twelve engineer-weeks.
 
 **Portal research.** Complete by day 100 inside its €20,000 and two engineer-weeks, all incurred. Its findings went to the review, and the build stays postponed.

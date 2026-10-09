@@ -155,7 +155,7 @@ A **group-wide benefit** isn’t automatically a **local product budget**. Ask t
 {id: understand-investor-returns--what-product-and-technology-can-and-cannot-claim-credit-for}
 ## What Product and Technology Can and Cannot Claim Credit For
 
-Start with the **observable change**, not the sale price. Which customer task improved? What costs changed? What investment was required? A **chief financial officer**, or **CFO**, leads the financial work and can help connect those observations to company **earnings and cash**. The investment team can then examine their possible valuation implications. The chapter [Test Revenue Assumptions: The Key Number Behind the Investment Thesis](#test-revenue-assumptions) develops that chain in Part IV.
+Start with the **observable change**, not the sale price. Which customer task improved? What costs changed? What investment was required? A **chief financial officer**, or **CFO**, leads the financial work and can help connect those observations to company **earnings and cash**. The investment team can then examine their possible valuation implications. The chapter [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions) develops that chain in Part IV.
 
 Where the owner is a fund, its manager reports to the fund’s investors, often called limited partners. The report shows both the **cash** it has returned to them and its **estimate of the value** of holdings it hasn’t yet sold. The estimate can still move, and **pressure on a company** often comes from the gap between the two. A corporate owner or an individual shareholder has no such report, though each has its own reasons to watch the same gap.
 
