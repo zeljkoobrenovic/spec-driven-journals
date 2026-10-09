@@ -36,7 +36,7 @@ Use this table to find evidence by question. A source can appear under more than
 | AI evidence | S18, S19, S20, S21, S63 | [Clarify AI Strategy: Three Different Investment Questions](#clarify-ai-strategy) |
 | Investor support and advisers | S22, P01, P02 | [Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?](#clarify-adviser-role), [Choose the Right Help: Compare Investor Support With Other Options](#choose-right-help) |
 | Investor-organized learning, peer communities and shared resources | S101–S105 | [Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives](#learn-through-investors-network) |
-| Data foundations, analytics practice and shared evidence | S106–S109 | [Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards](#have-your-numbers-ready) |
+| Data foundations, analytics practice and shared evidence | S106–S109 | [Have Your Numbers Ready: One Set for Investors, Goals and Teams](#have-your-numbers-ready) |
 | Grounded Architecture applied across a portfolio | S106, S110–S115 | [Appendix: Grounded Architecture Across an Investment Portfolio](#grounded-architecture-portfolio) |
 | Technology operating partners, leadership roles and AI support | S79–S90 | [Work With Technology Operating Partners: Get Their Experience Without Giving Up Your Decisions](#technology-operating-partners) |
 | Operating-model blueprints and investor–company working arrangements | S01, S91–S100 | [Plan Investor Support: Match the Help to Company Priorities](#plan-investor-support) |
@@ -1018,7 +1018,7 @@ Etienne and Beverly Wenger-Trayner. [Communities of practice: a brief introducti
 
 **Evidence type:** My own practitioner method, stated as practice rather than study. **Consulted scope:** The chapter page, covering the data sources it curates (source-code repositories and commit history, public-cloud billing, incident reports, business and finance data) and its stated requirements that analytics be curated, current, credible, actionable and accessible. Documents a described practice for the technology landscape; it does not establish measured outcomes, and its extension to the investor relationship is this book’s proposal. I identify my involvement in the chapter.
 
-**Used in:** [Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards](#have-your-numbers-ready), [Appendix: Grounded Architecture Across an Investment Portfolio](#grounded-architecture-portfolio).
+**Used in:** [Have Your Numbers Ready: One Set for Investors, Goals and Teams](#have-your-numbers-ready), [Appendix: Grounded Architecture Across an Investment Portfolio](#grounded-architecture-portfolio).
 
 {id: bibliography--s107-building-lightweight-architectural-analytics}
 ### S107 — Building Lightweight Architectural Analytics
@@ -1045,7 +1045,7 @@ Melissa Perri and Denise Tilles. *Product Operations: How Successful Companies B
 
 **Evidence type:** Practitioner framework from two product-operations practitioners, drawing on named company examples. **Consulted scope:** The three pillars — business data and insights, customer and market insights, process and governance — as described on the authors' book page and in a published secondary summary; the full book text was not read for this chapter. Documents a described discipline and its stated purpose; it does not establish comparative outcomes, and the mapping onto this book's three evidence areas, and its application to the investor relationship, are this book's own.
 
-**Used in:** [Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards](#have-your-numbers-ready) (formerly the removed appendix on data foundations).
+**Used in:** [Have Your Numbers Ready: One Set for Investors, Goals and Teams](#have-your-numbers-ready) (formerly the removed appendix on data foundations).
 
 {id: bibliography--s110-grounded-architecture-framework-foundations}
 ### S110 — Grounded Architecture framework foundations

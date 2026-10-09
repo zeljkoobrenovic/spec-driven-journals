@@ -30,7 +30,7 @@ Whatever you commit to, keep three things visible: **the benefit you expect, how
 **Agree what the work is for.**
 
 - [Adopt Outcome Thinking: Bridge Product Work to Investor's Numbers](#adopt-outcome-thinking): which customer and business results does the work move, which investor metric does it feed, and on what timeline?
-- [Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards](#have-your-numbers-ready): which numbers should you hold ready for the investor, goals and dashboards, and how do you define, own and label them?
+- [Have Your Numbers Ready: One Set for Investors, Goals and Teams](#have-your-numbers-ready): which numbers should you hold ready for the investor, goals and dashboards, and how do you define, own and label them?
 
 **Choose and justify the work.**
 

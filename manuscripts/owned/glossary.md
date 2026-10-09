@@ -198,7 +198,7 @@ The chapter [Understand Valuation: An Estimate, Not a Fact](#understand-valuatio
 | Capital expenditure / capex | Spending on assets, such as equipment or qualifying development. |
 | Capitalization | Recording qualifying spending as an asset, with expenses recognized over time. The cash payment still occurs. |
 | Free cash flow (FCF) | A measure of cash after specified spending. Definitions differ; check which taxes, investment and financing payments it includes. |
-| Cash conversion | A comparison of a stated cash measure with an earnings measure over the same period, for example operating cash flow divided by EBITDA. It needs explicit definitions; a business can report positive operating earnings and still run short of cash ([Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards](#have-your-numbers-ready), [Understand Cash Flow: Confirm the Cash Before You Commit](#understand-cash-flow); illustrated in [Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us)). |
+| Cash conversion | A comparison of a stated cash measure with an earnings measure over the same period, for example operating cash flow divided by EBITDA. It needs explicit definitions; a business can report positive operating earnings and still run short of cash ([Have Your Numbers Ready: One Set for Investors, Goals and Teams](#have-your-numbers-ready), [Understand Cash Flow: Confirm the Cash Before You Commit](#understand-cash-flow); illustrated in [Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us)). |
 | Liquidity | The ability to meet payments when they fall due. A valuable or profitable company can still lack immediate cash. |
 | Debt service | Payments required to meet financing obligations, including interest and any principal due under the chosen definition. |
 | Covenant | A condition in a financing agreement. Consequences of a breach depend on the agreement and available remedies. |
@@ -332,7 +332,7 @@ The company-investment sequence begins at the chapters [Set Priorities: You Cann
 | Data room | A controlled collection of information shared for a transaction. |
 | Architecture | A system’s main parts, their responsibilities and their connections. |
 | Grounded Architecture | My framework for architecture practice in large, decentralized organizations: lightweight analytics (data), collaborative networks (people) and an operating model that turns both into decisions. [Appendix: Grounded Architecture Across an Investment Portfolio](#grounded-architecture-portfolio) applies it across a portfolio. |
-| Lightweight Architectural Analytics | Building a current, curated map of systems, technologies, costs, risks and dependencies from sources a company already has (repositories, cloud bills, incident records, finance data) with small tools, rather than buying a platform; mentioned in [Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards](#have-your-numbers-ready) and applied across a portfolio in [Appendix: Grounded Architecture Across an Investment Portfolio](#grounded-architecture-portfolio). |
+| Lightweight Architectural Analytics | Building a current, curated map of systems, technologies, costs, risks and dependencies from sources a company already has (repositories, cloud bills, incident records, finance data) with small tools, rather than buying a platform; mentioned in [Have Your Numbers Ready: One Set for Investors, Goals and Teams](#have-your-numbers-ready) and applied across a portfolio in [Appendix: Grounded Architecture Across an Investment Portfolio](#grounded-architecture-portfolio). |
 | Interface | An agreed way for parts of a system, or different systems, to exchange information. |
 | Modularity / coupling | Dividing software into parts with clear responsibilities / the degree to which parts depend on one another. |
 | Microservices | An architecture of smaller services designed to be deployed separately. Whether each service can actually be released and operated on its own depends on how it was built; coordination and operating costs apply either way. |
@@ -370,7 +370,7 @@ The company-investment sequence begins at the chapters [Set Priorities: You Cann
 {id: glossary--evidence}
 ## Evidence and Lasting Outcomes
 
-For application, read the chapter [Success for Whom, and for How Long?](#success-for-whom) or use [Practical Tools for Ownership and Technology Decisions](#toolkit); the chapter [Use Diligence: Correct the Plan Before It Is Signed](#use-diligence) shows the observed / reported / inferred split in use, and the chapter [Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards](#have-your-numbers-ready) covers defining, owning and labelling the figures a company reports.
+For application, read the chapter [Success for Whom, and for How Long?](#success-for-whom) or use [Practical Tools for Ownership and Technology Decisions](#toolkit); the chapter [Use Diligence: Correct the Plan Before It Is Signed](#use-diligence) shows the observed / reported / inferred split in use, and the chapter [Have Your Numbers Ready: One Set for Investors, Goals and Teams](#have-your-numbers-ready) covers defining, owning and labelling the figures a company reports.
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -389,7 +389,7 @@ For application, read the chapter [Success for Whom, and for How Long?](#success
 | Generalizability | How far findings can reasonably apply beyond the people, businesses or period studied. |
 | Percentage / percentage point | A relative change / an arithmetic difference between percentages. From 4% to 5% is one percentage point, or a 25% increase relative to 4%. |
 | Stakeholder | A person or group affected by the company, including those who did not choose its owner. |
-| Actual / target / forecast / assumption | An observed and recorded result / what was committed to / a calculation about the future from stated inputs / an input taken as given that may not hold. The chapter [Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards](#have-your-numbers-ready) asks that every reported figure carry which of the four it is. |
+| Actual / target / forecast / assumption | An observed and recorded result / what was committed to / a calculation about the future from stated inputs / an input taken as given that may not hold. The chapter [Have Your Numbers Ready: One Set for Investors, Goals and Teams](#have-your-numbers-ready) asks that every reported figure carry which of the four it is. |
 | Measure definition | The written statement of exactly what a figure counts, who or what is in scope and what it excludes. Without one, the same measure gives different answers to different people. |
 | Information rights | The reporting an investor is contractually entitled to receive, normally set out in the investment agreement. Applicable law, the governing documents and a board role can add entitlements; beyond those, disclosure is a choice, not an obligation. |
 

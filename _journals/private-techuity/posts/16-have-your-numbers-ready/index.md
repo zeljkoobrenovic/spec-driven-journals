@@ -1,5 +1,5 @@
 ---
-title: "Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards"
+title: "Have Your Numbers Ready: One Set for Investors, Goals and Teams"
 date: 2026-09-25
 author: Željko Obrenović
 excerpt: "Know which numbers an investor relationship runs on, hold a small set of them ready — defined once, owned by name, refreshed on a schedule and labelled so a forecast is never read as a result — and use the same numbers for the investor conversation, for goals and for dashboards."

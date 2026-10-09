@@ -1,7 +1,7 @@
 {id: have-your-numbers-ready}
-# 19. Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards
+# 19. Have Your Numbers Ready: One Set for Investors, Goals and Teams
 
-![Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards — logo](private-techuity/posts/16-have-your-numbers-ready/assets/images/16-have-your-numbers-ready/logo.jpeg)
+![Have Your Numbers Ready: One Set for Investors, Goals and Teams — logo](private-techuity/posts/16-have-your-numbers-ready/assets/images/16-have-your-numbers-ready/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn which measures matter when investors own part of your company, which of them you own and which you must merely understand, how to hold a small set of them ready before anyone asks, and how the same numbers serve the investor conversation, your goals and your dashboards.
 
