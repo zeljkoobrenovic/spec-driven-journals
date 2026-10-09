@@ -1,5 +1,5 @@
 ---
-title: "Clarify AI Strategy: Three Different Investment Questions"
+title: "Clarify AI Strategy: Separate the Bet, the Saving and the Threat"
 date: 2026-09-12
 author: Željko Obrenović
 excerpt: "Separate the three questions inside an AI strategy request: a product customers will pay for, internal work that changes spending, and a substitute for the product customers already buy. Give each its evidence, cost and decision."

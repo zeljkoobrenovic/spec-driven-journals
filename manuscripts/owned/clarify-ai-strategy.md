@@ -1,7 +1,7 @@
 {id: clarify-ai-strategy}
-# 22. Clarify AI Strategy: Three Different Investment Questions
+# 22. Clarify AI Strategy: Separate the Bet, the Saving and the Threat
 
-![Clarify AI Strategy: Three Different Investment Questions — logo](private-techuity/posts/19-clarify-ai-strategy/assets/images/19-clarify-ai-strategy/logo.jpeg)
+![Clarify AI Strategy: Separate the Bet, the Saving and the Threat — logo](private-techuity/posts/19-clarify-ai-strategy/assets/images/19-clarify-ai-strategy/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to separate the three investment questions inside an AI strategy request and give each its evidence, cost, quality threshold and decision.
 

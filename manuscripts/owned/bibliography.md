@@ -33,7 +33,7 @@ Use this table to find evidence by question. A source can appear under more than
 | Workforce reductions and employment process | S77, S78 | [Scale the Team Down: Decide What Work Stops, Not Just Who Leaves](#scale-the-team-down) |
 | Delivery, architecture and cloud cost | S13, S14, S15, S16, S53, S75, S120 | [Assess Capability: Can the Team Deliver?](#assess-capability), [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions), [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#evaluate-cloud-costs) |
 | Security and resilience | S17 | [Build And Test Resilience: Backups Are Not Enough](#build-test-resilience) |
-| AI evidence | S18, S19, S20, S21, S63 | [Clarify AI Strategy: Three Different Investment Questions](#clarify-ai-strategy) |
+| AI evidence | S18, S19, S20, S21, S63 | [Clarify AI Strategy: Separate the Bet, the Saving and the Threat](#clarify-ai-strategy) |
 | Investor support and advisers | S22, P01, P02 | [Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?](#clarify-adviser-role), [Choose the Right Help: Compare Investor Support With Other Options](#choose-right-help) |
 | Investor-organized learning, peer communities and shared resources | S101–S105 | [Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives](#learn-through-investors-network) |
 | Data foundations, analytics practice and shared evidence | S106–S109 | [Have Your Numbers Ready: One Set for Investors, Goals and Teams](#have-your-numbers-ready) |
@@ -235,7 +235,7 @@ Chloe Autio, Reva Schwartz, Jesse Dunietz, Shomik Jain, Martin Stanley, Elham Ta
 
 **Evidence type:** Government framework. **Consulted scope:** Risk categories and management orientation consulted. Applies as a question structure; no claim of certification or quantified loss reduction. DOI: 10.6028/NIST.AI.600-1.
 
-**Used in:** [Clarify AI Strategy: Three Different Investment Questions](#clarify-ai-strategy), [Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount](#scale-the-team-with-ai), [Critically Evaluate AI Costs: Measure the Return per Task and per Period](#evaluate-ai-costs).
+**Used in:** [Clarify AI Strategy: Separate the Bet, the Saving and the Threat](#clarify-ai-strategy), [Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount](#scale-the-team-with-ai), [Critically Evaluate AI Costs: Measure the Return per Task and per Period](#evaluate-ai-costs).
 
 {id: bibliography--s19-peng-et-al-copilot-experiment}
 ### S19 — Peng et al., Copilot experiment
@@ -244,7 +244,7 @@ Sida Peng, Eirini Kalliamvakou, Peter Cihon, and Mert Demirer. [The Impact of AI
 
 **Evidence type:** Original controlled experiment. **Consulted scope:** Original abstract and task description consulted. A recheck on September 13, 2026 covered the [study design and results](https://arxiv.org/html/2302.06590v1): the experiment ran in 2022, and the 55.8% figure is a reduction in average completion time among those who completed the task. The bounded task, tool generation and industry affiliations limit interpretation.
 
-**Used in:** [Clarify AI Strategy: Three Different Investment Questions](#clarify-ai-strategy), [Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount](#scale-the-team-with-ai).
+**Used in:** [Clarify AI Strategy: Separate the Bet, the Saving and the Threat](#clarify-ai-strategy), [Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount](#scale-the-team-with-ai).
 
 {id: bibliography--s20-metr-early-2025-experiment}
 ### S20 — METR early-2025 experiment
@@ -253,7 +253,7 @@ METR. [Measuring the Impact of Early-2025 AI on Experienced Open-Source Develope
 
 **Evidence type:** Original randomized experiment report. **Consulted scope:** Study report, setting, headline result, and limits consulted. Experienced developers on familiar repositories; not every developer, task, or later model.
 
-**Used in:** [Clarify AI Strategy: Three Different Investment Questions](#clarify-ai-strategy), [Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount](#scale-the-team-with-ai).
+**Used in:** [Clarify AI Strategy: Separate the Bet, the Saving and the Threat](#clarify-ai-strategy), [Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount](#scale-the-team-with-ai).
 
 {id: bibliography--s21-metr-2026-update}
 ### S21 — METR 2026 update
@@ -262,7 +262,7 @@ Joel Becker, Nate Rush, Tom Cunningham, David Rein, and Khalid Mahamud; METR. [W
 
 **Evidence type:** Original research update. **Consulted scope:** Full update consulted. Selection and participation changes undermine a simple interpretation of later speed estimates; the chapter does not present those estimates as a settled current effect.
 
-**Used in:** [Clarify AI Strategy: Three Different Investment Questions](#clarify-ai-strategy), [Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount](#scale-the-team-with-ai).
+**Used in:** [Clarify AI Strategy: Separate the Bet, the Saving and the Threat](#clarify-ai-strategy), [Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount](#scale-the-team-with-ai).
 
 {id: bibliography--s22-kkr-capstone-description}
 ### S22 — KKR Capstone description

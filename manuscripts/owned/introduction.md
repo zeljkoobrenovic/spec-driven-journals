@@ -184,7 +184,7 @@ The [Bibliography and Evidence Guide](#bibliography) records consultation scope 
 - **17.** [Have Your Numbers Ready: One Set for Investors, Goals and Teams](#have-your-numbers-ready)
 - **18.** [Set Priorities: Say No With Evidence, Not Opinion](#set-priorities)
 - **19.** [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions)
-- **20.** [Clarify AI Strategy: Three Different Investment Questions](#clarify-ai-strategy)
+- **20.** [Clarify AI Strategy: Separate the Bet, the Saving and the Threat](#clarify-ai-strategy)
 - **21.** [Assess Capability: Can the Team Deliver?](#assess-capability)
 - **22.** [Manage Funding Delays: Revise the Cash Plan and Commitments](#manage-funding-delays)
 
