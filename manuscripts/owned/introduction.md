@@ -222,7 +222,7 @@ The [Bibliography and Evidence Guide](#bibliography) records consultation scope 
 - **35.** [Hilton and Skype: What the Exit Price Does Not Show](#hilton-and-skype)
 - **36.** [Visma: The Manager Stayed, the Owners Changed](#visma)
 - **37.** [Toys R Us: Positive Earnings, No Cash to Invest](#toys-r-us)
-- **38.** [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem)
+- **38.** [TeamSystem: Four Owners, One Continuing Business](#teamsystem)
 - **39.** [Success for Whom, and for How Long?](#success-for-whom)
 
 {id: introduction--appendix}

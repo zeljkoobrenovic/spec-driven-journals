@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-10-03
+revised: 2026-10-09
 ---
 
-# Spec: TeamSystem: Each New Owner Inherits Progress and Unfinished Work
+# Spec: TeamSystem: Four Owners, One Continuing Business
 
 ## Intent
 
@@ -77,6 +77,7 @@ S45–S49: Palamon's historical account; HgCapital Trust's 2010 and 2015 announc
 
 ## Changelog
 
+- 2026-10-09 (retitle): At the author's request the title became "TeamSystem: Four Owners, One Continuing Business", replacing "TeamSystem: Each New Owner Inherits Progress and Unfinished Work". The subtitle contrasts the four owners of the operating-history window (Palamon, Bain Capital, Hg, Hellman & Friedman) with the one business whose products, customers and obligations continued through every sale; it also removes the overlap with the retitled handover chapter. Body unchanged. Permalink unchanged.
 - 2026-10-03: Closing paragraph reordered so it ends on the handoff to [[success-for-whom]]. Article only.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Update cross-links for the chapter title-slug renames.

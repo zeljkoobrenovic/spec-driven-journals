@@ -1,7 +1,7 @@
 {id: teamsystem}
-# 40. TeamSystem: Each New Owner Inherits Progress and Unfinished Work
+# 40. TeamSystem: Four Owners, One Continuing Business
 
-![TeamSystem: Each New Owner Inherits Progress and Unfinished Work — logo](private-techuity/posts/37-teamsystem/assets/images/37-teamsystem/logo.jpeg)
+![TeamSystem: Four Owners, One Continuing Business — logo](private-techuity/posts/37-teamsystem/assets/images/37-teamsystem/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Follow TeamSystem from Palamon's 2000 investment through Bain Capital, Hg and Hellman & Friedman, then read its 2017 accounts to see what the ownership changes meant for reported growth, costs and continuing product work.
 

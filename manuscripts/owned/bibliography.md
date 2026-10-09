@@ -43,7 +43,7 @@ Use this table to find evidence by question. A source can appear under more than
 | Case: Hilton and Skype | S23, S24, S25, S26, S27, S28, S29, S64, S65, S116, S117 | [Hilton and Skype: What the Exit Price Does Not Show](#hilton-and-skype) |
 | Case: Visma | S30, S31, S32, S33, S43, S44, S62 | [Visma: The Manager Stayed, the Owners Changed](#visma) |
 | Case: Toys R Us | S34, S35, S36, S37, S40, S41, S50, S51, S118 | [Toys R Us: Positive Earnings, No Cash to Invest](#toys-r-us) |
-| Case: TeamSystem | S45, S46, S47, S48, S49, S66, S67, S68, S69, S70, S71 | [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem) |
+| Case: TeamSystem | S45, S46, S47, S48, S49, S66, S67, S68, S69, S70, S71 | [TeamSystem: Four Owners, One Continuing Business](#teamsystem) |
 | Wider research on ownership outcomes | S08, S09, S10, S11, S12, S39, S42 | [Success for Whom, and for How Long?](#success-for-whom) |
 
 The historical cases and the outcome research concern private equity. Venture, expansion and corporate funding are supported by institutional guidance (S58–S61) and introductory regulator material (S54–S57), which describe funding forms and the existence of distinct venture financing documents. Those sources support the book’s financial orientation; they do not establish comparative investor performance, and they are not additional case studies. Comparisons across ownership models elsewhere in the book use explicitly fictional scenarios and my reasoning about stated constraints. Transferring a question about funding, rights or capacity to another ownership model is different from transferring a causal finding.
@@ -469,7 +469,7 @@ Palamon Capital Partners. [TeamSystem](https://www.palamon.com/teamsystem). Unda
 
 **Evidence type:** Interested investor retrospective. **Consulted scope:** Case page read. Regional-company context, management and investment claims, exit scale and reported 4.1x investment multiple consulted. Header says December 2000 exit while narrative says December 2004; the latter is supported by Bain’s account in S47. Undefined “profitability” figure is not relabeled EBITDA. No independently reconstructed investor return or employee outcome.
 
-**Used in:** [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem).
+**Used in:** [TeamSystem: Four Owners, One Continuing Business](#teamsystem).
 
 {id: bibliography--s46-teamsystem-acquisition-announcement}
 ### S46 — TeamSystem acquisition announcement
@@ -478,7 +478,7 @@ HgCapital / HgCapital Trust plc. [HgCapital acquires TeamSystem, the leading pro
 
 **Evidence type:** Investor transaction announcement. **Consulted scope:** Announcement read for agreed majority acquisition, stated EUR 565 million enterprise value and 11.3x FY2010 EBITDA, thesis and expected September completion. Wording mixes agreement and acquisition language; manuscript treats the terms as announced rather than audited closing amounts. Present webpage contains some apparent company-name substitutions; no altered quotations reproduced.
 
-**Used in:** [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem).
+**Used in:** [TeamSystem: Four Owners, One Continuing Business](#teamsystem).
 
 {id: bibliography--s47-teamsystem-sale-announcement}
 ### S47 — TeamSystem sale announcement
@@ -487,7 +487,7 @@ HgCapital / HgCapital Trust plc; statements from transaction participants. [HgCa
 
 **Evidence type:** Investor transaction announcement. **Consulted scope:** Agreement to sell to Hellman & Friedman, retained minority investment and participant accounts consulted. Bain’s statement places its initial acquisition in 2004. The announcement anticipated 2016 completion; subsequent S48 supplies completion evidence. Interested parties’ descriptions are not independent causal evaluation.
 
-**Used in:** [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem).
+**Used in:** [TeamSystem: Four Owners, One Continuing Business](#teamsystem).
 
 {id: bibliography--s48-hgcapital-trust-2015-results}
 ### S48 — HgCapital Trust 2015 results
@@ -496,7 +496,7 @@ HgCapital Trust plc / HgCapital. [2015 Full Year Results Presentation](https://w
 
 **Evidence type:** Listed investment trust / manager results presentation. **Consulted scope:** Selected portfolio context, TeamSystem case on p. 14 and subsequent-event summary on p. 17 read. Presentation reports 2016 completion, GBP 39 million Trust cash proceeds, GBP 6.1 million retained value and a 1.8x return. Product, pricing, collection, M&A and refinancing claims are the manager’s. No full investor cash-flow reconstruction or inference of net LP return; presentation itself refers readers to the full annual report.
 
-**Used in:** [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem).
+**Used in:** [TeamSystem: Four Owners, One Continuing Business](#teamsystem).
 
 {id: bibliography--s49-teamsystem-2017-consolidated-report}
 ### S49 — TeamSystem 2017 consolidated report
@@ -505,7 +505,7 @@ TeamSystem Holding S.p.A. and subsidiaries. [Consolidated Financial Statements a
 
 **Evidence type:** Company consolidated financial statements and directors’ report. **Consulted scope:** Full 87-page PDF obtained and text extracted; selected directors’ report, 2016 comparability explanation, statements, earnings reconciliation, development spending, acquisitions and financing notes read. Cited page numbers use PDF display pages: 9–15, 23, 26, 45 and 48–49. The consolidated statement of cash flows (p. 26) and Notes 7, 8 and 10 (pp. 48–49) were read for the distinction between the accounting charge and the cash paid: Note 8 reports finance costs of €79.674 million and Note 7 finance income of €7.618 million, while Note 10 states that €52.1 million of finance costs was paid during 2017, including €49.8 million of interest on the notes (€13.5 million on the €150 million senior notes and €36.3 million on the €570 million senior secured notes) and €1.9 million mainly of other interest and bank charges. Interest paid is not shown on the face of the cash-flow statement; its financing line nets those payments against new borrowing, which is why Note 10 is required. Scanned auditor-opinion page 84 visually inspected: Deloitte opines on the consolidated statements under EU-adopted IFRS, not on causal sponsor contribution or every management claim. Statutory 2016 operations cover March–December; pro forma income comparisons also adjust acquisition scope. Capitalized-development comparative is ten months and must not be described as matched annual growth.
 
-**Used in:** [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem).
+**Used in:** [TeamSystem: Four Owners, One Continuing Business](#teamsystem).
 
 {id: bibliography--s50-brandon-first-day-declaration}
 ### S50 — Brandon first-day declaration
@@ -658,7 +658,7 @@ HgCapital Trust plc. [Hg invests in TeamSystem](https://www.hgcapitaltrust.com/n
 
 **Evidence type:** Investor transaction announcement. **Consulted scope:** Statements that Hg's Genesis 6 fund would sell its minority holding to a vehicle controlled by Hellman & Friedman Capital Partners IX, that the Trust would invest about GBP 14.3 million through the Hg Genesis 8 fund, that the transaction valued the Trust's existing investment at GBP 21.3 million, and that Hg would remain a minority investor. No completion date or conditions stated; completion is taken from S67. Announced values, not cash received.
 
-**Used in:** [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem).
+**Used in:** [TeamSystem: Four Owners, One Continuing Business](#teamsystem).
 
 {id: bibliography--s67-hgcapital-trust-2021-annual-report}
 ### S67 — HgCapital Trust 2021 annual report
@@ -667,7 +667,7 @@ HgCapital Trust plc. [Annual Report & Accounts 2021](https://www.hgcapitaltrust.
 
 **Evidence type:** Listed investment trust annual report. **Consulted scope:** PDF pp. 45, 48, 50, 51 and 54: February 2021 completion of the GBP 14.3 million investment through Hg Genesis 8 and of the Genesis 6 sale with GBP 21.4 million returned to the Trust; realisations table (GBP 21.373 million, secondary sale); investments table (GBP 14.250 million); TeamSystem carried at GBP 18.316 million against cost of GBP 14.250 million at 31 December 2021. Gross fund-level figures, not net distributions to the Trust's shareholders.
 
-**Used in:** [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem).
+**Used in:** [TeamSystem: Four Owners, One Continuing Business](#teamsystem).
 
 {id: bibliography--s68-silver-lake-teamsystem-announcement}
 ### S68 — Silver Lake TeamSystem announcement
@@ -676,7 +676,7 @@ Silver Lake. [Silver Lake to Make €600M Strategic Investment in TeamSystem](ht
 
 **Evidence type:** Buyer's transaction announcement. **Consulted scope:** Definitive agreement to acquire a EUR 600 million minority stake from Hellman & Friedman, which would remain the majority shareholder; closing expected around the end of 2023, subject to customary conditions and regulatory approvals. Hg is not mentioned. Completion not verified; an interested party's description of its own transaction.
 
-**Used in:** [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem).
+**Used in:** [TeamSystem: Four Owners, One Continuing Business](#teamsystem).
 
 {id: bibliography--s69-hgcapital-trust-2023-annual-report}
 ### S69 — HgCapital Trust 2023 annual report
@@ -685,7 +685,7 @@ HgCapital Trust plc. [Annual Report & Accounts 2023](https://www.hgcapitaltrust.
 
 **Evidence type:** Listed investment trust annual report. **Consulted scope:** PDF pp. 45–46: the August 2023 announced partial sale of the Trust's TeamSystem investment, listed under realisations after the year end with an estimated GBP 8 million to be returned, Hg remaining a minority investor and the holding valued at about GBP 33.3 million; portfolio table carrying TeamSystem (Hg Genesis 8, 2021 investment) at GBP 31.897 million against cost of GBP 10.586 million at 31 December 2023. Estimated and gross figures; completion of the partial sale not stated.
 
-**Used in:** [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem).
+**Used in:** [TeamSystem: Four Owners, One Continuing Business](#teamsystem).
 
 {id: bibliography--s70-hgcapital-trust-july-2024-teamsystem-announcement}
 ### S70 — HgCapital Trust July 2024 TeamSystem announcement
@@ -694,7 +694,7 @@ HgCapital Trust plc. [Sale of remaining investment in TeamSystem](https://www.hg
 
 **Evidence type:** Investor transaction announcement. **Consulted scope:** Agreed sale of the Trust's remaining investment to funds advised by Hellman & Friedman, valuing it at about GBP 24.3 million against a GBP 22.1 million carrying value at 31 March 2024 (a GBP 2.2 million uplift); completion subject to applicable closing conditions. Agreed value, not cash received.
 
-**Used in:** [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem).
+**Used in:** [TeamSystem: Four Owners, One Continuing Business](#teamsystem).
 
 {id: bibliography--s71-hgcapital-trust-2024-annual-report}
 ### S71 — HgCapital Trust 2024 annual report
@@ -703,7 +703,7 @@ HgCapital Trust plc. [Annual Report & Accounts 2024](https://www.hgcapitaltrust.
 
 **Evidence type:** Listed investment trust annual report. **Consulted scope:** PDF pp. 9 and 46–47: TeamSystem listed among full realisations made during 2024 with GBP 34.189 million of gross proceeds (secondary sale) and "GBP 34.2m returned to HgT"; the narrative repeats the July 2024 agreed-sale wording; the table footnote states that the figures are gross realisations before performance-fee and facility deductions and timing differences between company realisations and fund distributions, and that a full exit can coexist with a stake retained through another Hg fund. The report does not reconcile the gross figure with the announced GBP 24.3 million or say whether it includes the 2023 partial-sale proceeds; not a net distribution to the Trust's shareholders.
 
-**Used in:** [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem).
+**Used in:** [TeamSystem: Four Owners, One Continuing Business](#teamsystem).
 
 {id: bibliography--s72-investor-gov-bonds-page}
 ### S72 — Investor.gov bonds page

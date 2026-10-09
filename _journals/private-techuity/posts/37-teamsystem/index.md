@@ -1,5 +1,5 @@
 ---
-title: "TeamSystem: Each New Owner Inherits Progress and Unfinished Work"
+title: "TeamSystem: Four Owners, One Continuing Business"
 date: 2026-09-12
 author: Željko Obrenović
 excerpt: "TeamSystem passed from Palamon to Bain Capital, Hg and Hellman & Friedman while acquiring other software businesses. Its 2017 accounts show continuing development and integration work, positive adjusted earnings and a reported loss."

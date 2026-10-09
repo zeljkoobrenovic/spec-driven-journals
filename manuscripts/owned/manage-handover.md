@@ -101,7 +101,7 @@ That is €340,000 of the €500,000 envelope committed, leaving €160,000 in r
 
 A company can flatter its **earnings**, its profit for a short period, by delaying investment. It can call **recurring** work, work that comes back every year, exceptional or one-off. It can make its **roadmap**, the plan of upcoming product changes, look orderly by leaving out difficult customer commitments. Each choice increases what the next owner inherits without knowing it.
 
-Test whether the sale account describes a business the next owner can maintain. What spending is required to sustain current performance? What would a new owner discover after the date the figures were drawn up? Which results depend on temporary incentives, unpaid work or people who may leave? The chapter [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem) shows how much depends on the reporting period chosen and on what each owner inherited from the last.
+Test whether the sale account describes a business the next owner can maintain. What spending is required to sustain current performance? What would a new owner discover after the date the figures were drawn up? Which results depend on temporary incentives, unpaid work or people who may leave? The chapter [TeamSystem: Four Owners, One Continuing Business](#teamsystem) shows how much depends on the reporting period chosen and on what each owner inherited from the last.
 
 This does not mean all work must be complete before a transaction. Buyers can accept and price unfinished transitions. The requirement is that important obligations and assumptions are shown accurately through the proper **disclosure** process, the formal way a seller tells a buyer or investor what it knows.
 

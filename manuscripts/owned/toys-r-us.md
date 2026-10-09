@@ -177,7 +177,7 @@ Four practices follow from the mechanism, not from a claim that they would have 
 - **Define the full customer outcome.** Digital sales growth isn't the same as a competitive, profitable business whose stores and online services work together. Measure what the online channel earns after its costs, such as shipping, and what it depends on in stores, warehouses and systems, rather than treating a new sales channel as a sufficient answer.
 - **Distinguish a necessary intervention from a sufficient rescue.** A platform improvement may be worth doing while still unable to make the whole business pay. Leaders should say where that boundary lies, and keep the consequences of failure for employees and suppliers visible in the decision record.
 
-The next case turns from a company that ran out of cash to one that kept changing owners. When a software group is sold from one investor to the next, what does each new owner inherit, and how do reporting periods and adjusted measures change the apparent result? Continue with the chapter [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem).
+The next case turns from a company that ran out of cash to one that kept changing owners. When a software group is sold from one investor to the next, what does each new owner inherit, and how do reporting periods and adjusted measures change the apparent result? Continue with the chapter [TeamSystem: Four Owners, One Continuing Business](#teamsystem).
 
 {id: toys-r-us--questions-to-consider}
 ## Questions to Consider

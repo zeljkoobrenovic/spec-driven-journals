@@ -125,7 +125,7 @@ None of this is an assertion about Visma’s internal planning; it is the decisi
 
 An integration team can be charged to a central acquisition program while local **product margins**, each product’s revenue minus the costs charged to it, exclude its cost. That may help local accountability, but a decision to expand the program still needs the total cost. Conversely, assigning all central costs to a newly acquired product immediately can make a useful transition look unviable before its benefits arrive. These are possible reporting designs, not assertions about Visma’s internal allocations. The company’s product and technology leaders should agree with the chief financial officer (CFO) on a short description attached to each important measure: the **business included**, the **period** and whether comparative acquisitions are treated consistently, the **calculation** with its inclusions and exclusions, the **decision** the measure supports and the obligations it leaves outside, and the **evidence** needed to reproduce it.
 
-The chapter [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem) adds a different angle on the same measurement problem: a later owner inheriting accumulated acquisition work and a partial reporting period.
+The chapter [TeamSystem: Four Owners, One Continuing Business](#teamsystem) adds a different angle on the same measurement problem: a later owner inheriting accumulated acquisition work and a partial reporting period.
 
 ![Repeated acquisitions draw on reusable checks before buying, integration choices and shared support while requiring explicit local decision rights.](private-techuity/posts/35-visma/assets/images/35-visma/repeat-acquisitions-as-capability.jpeg)
 
