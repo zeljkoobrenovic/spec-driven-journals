@@ -44,7 +44,7 @@ Use this table to find evidence by question. A source can appear under more than
 | Case: Visma | S30, S31, S32, S33, S43, S44, S62 | [Visma: The Manager Stayed, the Owners Changed](#visma) |
 | Case: Toys R Us | S34, S35, S36, S37, S40, S41, S50, S51, S118 | [Toys R Us: Positive Earnings, No Cash to Invest](#toys-r-us) |
 | Case: TeamSystem | S45, S46, S47, S48, S49, S66, S67, S68, S69, S70, S71 | [TeamSystem: Four Owners, One Continuing Business](#teamsystem) |
-| Wider research on ownership outcomes | S08, S09, S10, S11, S12, S39, S42 | [Success for Whom, and for How Long?](#success-for-whom) |
+| Wider research on ownership outcomes | S08, S09, S10, S11, S12, S39, S42 | [Success for Whom: Follow Outcomes Beyond the First Exit](#success-for-whom) |
 
 The historical cases and the outcome research concern private equity. Venture, expansion and corporate funding are supported by institutional guidance (S58–S61) and introductory regulator material (S54–S57), which describe funding forms and the existence of distinct venture financing documents. Those sources support the book’s financial orientation; they do not establish comparative investor performance, and they are not additional case studies. Comparisons across ownership models elsewhere in the book use explicitly fictional scenarios and my reasoning about stated constraints. Transferring a question about funding, rights or capacity to another ownership model is different from transferring a causal finding.
 
@@ -145,7 +145,7 @@ Steven J. Davis, John Haltiwanger, Kyle Handley, Ben Lipsius, Josh Lerner, and J
 
 **Evidence type:** Original empirical research. **Consulted scope:** Revised PDF abstract, introduction, design, and selected results consulted. US buyouts over 1980–2013; transaction types differ. Use the April 2024 estimates, not the earlier digest's figures. DOI: 10.3386/w26371.
 
-**Used in:** [Success for Whom, and for How Long?](#success-for-whom).
+**Used in:** [Success for Whom: Follow Outcomes Beyond the First Exit](#success-for-whom).
 
 {id: bibliography--s09-davis-et-al-jobs-study}
 ### S09 — Davis et al., jobs study
@@ -154,7 +154,7 @@ Steven J. Davis, John C. Haltiwanger, Kyle Handley, Ron S. Jarmin, Josh Lerner, 
 
 **Evidence type:** Original empirical research. **Consulted scope:** Abstract and indexed study description consulted for the distinction between establishment and firm outcomes; full tables were not reanalyzed. Journal version published in 2014. DOI: 10.3386/w19458.
 
-**Used in:** [Success for Whom, and for How Long?](#success-for-whom).
+**Used in:** [Success for Whom: Follow Outcomes Beyond the First Exit](#success-for-whom).
 
 {id: bibliography--s10-bernstein-et-al-crisis-study}
 ### S10 — Bernstein et al., crisis study
@@ -163,7 +163,7 @@ Shai Bernstein, Josh Lerner, and Filippo Mezzanotti. [Private Equity and Financi
 
 **Evidence type:** Original empirical research. **Consulted scope:** PDF abstract, introduction, sample and selected mechanism discussion consulted. UK financial-crisis setting and matched observational design limit generalization. Journal version appeared in 2019. DOI: 10.3386/w23626.
 
-**Used in:** [Understand Cash Flow: Confirm the Cash Before You Commit](#understand-cash-flow), [Success for Whom, and for How Long?](#success-for-whom).
+**Used in:** [Understand Cash Flow: Confirm the Cash Before You Commit](#understand-cash-flow), [Success for Whom: Follow Outcomes Beyond the First Exit](#success-for-whom).
 
 {id: bibliography--s11-gupta-et-al-nursing-homes}
 ### S11 — Gupta et al., nursing homes
@@ -172,7 +172,7 @@ Atul Gupta, Sabrina T. Howell, Constantine Yannelis, and Abhinav Gupta. [Owner I
 
 **Evidence type:** Original empirical research. **Consulted scope:** Revised PDF abstract, introduction, identification discussion, and selected results consulted. Short-stay Medicare patient population and identification assumptions are material. Not a claim about every care setting. DOI: 10.3386/w28474.
 
-**Used in:** [Success for Whom, and for How Long?](#success-for-whom).
+**Used in:** [Success for Whom: Follow Outcomes Beyond the First Exit](#success-for-whom).
 
 {id: bibliography--s12-kannan-et-al-adverse-events}
 ### S12 — Kannan et al., adverse events
@@ -181,7 +181,7 @@ Sneha Kannan, Joseph Dov Bruch, and Zirui Song. [Changes in Hospital Adverse Eve
 
 **Evidence type:** Peer-reviewed original research. **Consulted scope:** Methods, results, and relevant table consulted. Difference-in-differences comparison of acquired and control hospitals; associations, patient composition, and study period matter. DOI: 10.1001/jama.2023.23147.
 
-**Used in:** [Success for Whom, and for How Long?](#success-for-whom).
+**Used in:** [Success for Whom: Follow Outcomes Beyond the First Exit](#success-for-whom).
 
 {id: bibliography--s13-space-framework}
 ### S13 — SPACE framework
@@ -289,7 +289,7 @@ The Blackstone Group L.P. [Second Quarter 2018 Earnings Investor Call](https://i
 
 **Evidence type:** Interested investor account. **Consulted scope:** Hilton realization discussion consulted for sponsor-reported 3.1× multiple and $14 billion profit. Not an independently reconstructed net LP cash-flow series.
 
-**Used in:** [Hilton and Skype: What the Exit Price Does Not Show](#hilton-and-skype), [Manage the Handover: What the Next Owner Inherits](#manage-handover), [Success for Whom, and for How Long?](#success-for-whom).
+**Used in:** [Hilton and Skype: What the Exit Price Does Not Show](#hilton-and-skype), [Manage the Handover: What the Next Owner Inherits](#manage-handover), [Success for Whom: Follow Outcomes Beyond the First Exit](#success-for-whom).
 
 {id: bibliography--s25-pei-hilton-retrospective}
 ### S25 — PEI Hilton retrospective
@@ -334,7 +334,7 @@ Microsoft Support. [Skype Is Retiring in May 2025: What You Need to Know](https:
 
 **Evidence type:** Product owner statement. **Consulted scope:** Retirement scope/date consulted, alongside Microsoft's February 28, 2025 announcement. Later product retirement is not attributed to the earlier private equity interventions.
 
-**Used in:** [Hilton and Skype: What the Exit Price Does Not Show](#hilton-and-skype), [Success for Whom, and for How Long?](#success-for-whom).
+**Used in:** [Hilton and Skype: What the Exit Price Does Not Show](#hilton-and-skype), [Success for Whom: Follow Outcomes Beyond the First Exit](#success-for-whom).
 
 {id: bibliography--s30-visma-2023-transaction}
 ### S30 — Visma 2023 transaction
@@ -406,7 +406,7 @@ Tracy Rucinski; Reuters. [Toys R Us to Close Doors, Leaving Void for Toy Lovers]
 
 **Evidence type:** Credible contemporaneous journalism. **Consulted scope:** Report consulted for US shutdown plans and approximately 33,000 full- and part-time jobs exposed. Scope and timing are the reported plans; international operations and later brand ownership require separate treatment.
 
-**Used in:** [Toys R Us: Positive Earnings, No Cash to Invest](#toys-r-us), [Success for Whom, and for How Long?](#success-for-whom).
+**Used in:** [Toys R Us: Positive Earnings, No Cash to Invest](#toys-r-us), [Success for Whom: Follow Outcomes Beyond the First Exit](#success-for-whom).
 
 {id: bibliography--s39-bruch-et-al-hospital-measures}
 ### S39 — Bruch et al., hospital measures
@@ -415,7 +415,7 @@ Joseph D. Bruch, Suhas Gondi, and Zirui Song. [Changes in Hospital Income, Use, 
 
 **Evidence type:** Peer-reviewed original research. **Consulted scope:** Methods, selected results and quality measures consulted. Different outcomes and samples from S12; improvements on some measures do not settle overall welfare. DOI: 10.1001/jamainternmed.2020.3552.
 
-**Used in:** [Success for Whom, and for How Long?](#success-for-whom).
+**Used in:** [Success for Whom: Follow Outcomes Beyond the First Exit](#success-for-whom).
 
 {id: bibliography--s40-toys-r-us-acquisition-agreement-announcement}
 ### S40 — Toys R Us acquisition agreement announcement
@@ -442,7 +442,7 @@ Sneha Kannan and Zirui Song. [Financial Health After Private Equity Hospitals Ar
 
 **Evidence type:** Peer-reviewed original research. **Consulted scope:** Study population, methods, results, and limitations consulted. Small observational comparison of 18 hospitals resold to PE and 18 to other for-profit owners. Financial trajectories are not direct patient-outcome measures. DOI: 10.1001/jamahealthforum.2025.3217.
 
-**Used in:** [Success for Whom, and for How Long?](#success-for-whom).
+**Used in:** [Success for Whom: Follow Outcomes Beyond the First Exit](#success-for-whom).
 
 {id: bibliography--s43-visma-2024-annual-report}
 ### S43 — Visma 2024 annual report
@@ -523,7 +523,7 @@ Hasbro, Inc. [2018 Annual Report, including Form 10-K for the year ended Decembe
 
 **Evidence type:** Supplier annual report and financial statements, public report mirror. **Consulted scope:** Full report obtained and text extracted; selected management discussion, segment results, operating expenses and receivables note consulted. Printed pp. 38 and 67 support USD 60.4 million related costs and approximately USD 49 million bad-debt expense respectively; the latter is included, not additive. Separate supplier-side evidence, but Hasbro is an interested participant. Its overall revenue/profit change has other causes; these costs do not measure all supplier or social losses.
 
-**Used in:** [Toys R Us: Positive Earnings, No Cash to Invest](#toys-r-us), [Success for Whom, and for How Long?](#success-for-whom).
+**Used in:** [Toys R Us: Positive Earnings, No Cash to Invest](#toys-r-us), [Success for Whom: Follow Outcomes Beyond the First Exit](#success-for-whom).
 
 {id: bibliography--s52-ipev-valuation-guidelines}
 ### S52 — IPEV valuation guidelines

@@ -1,7 +1,7 @@
 {id: success-for-whom}
-# 41. Success for Whom, and for How Long?
+# 41. Success for Whom: Follow Outcomes Beyond the First Exit
 
-![Success for Whom, and for How Long? — logo](private-techuity/posts/38-success-for-whom/assets/images/38-success-for-whom/logo.jpeg)
+![Success for Whom: Follow Outcomes Beyond the First Exit — logo](private-techuity/posts/38-success-for-whom/assets/images/38-success-for-whom/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Compare what happened to Hilton, Skype, Visma, Toys R Us and TeamSystem, then work through fictional software company Rotaline's decision about thirty customers who still depend on an older service.
 

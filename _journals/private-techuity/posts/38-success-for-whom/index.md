@@ -1,5 +1,5 @@
 ---
-title: "Success for Whom, and for How Long?"
+title: "Success for Whom: Follow Outcomes Beyond the First Exit"
 date: 2026-09-12
 author: Željko Obrenović
 excerpt: "Hilton produced a large reported investor profit; Skype was sold and later retired; Toys R Us's US business closed. Compare those outcomes with Visma and TeamSystem, then apply the lessons to a fictional decision affecting thirty customers."

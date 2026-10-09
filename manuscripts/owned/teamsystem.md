@@ -211,7 +211,7 @@ That method can also help through another round of new investment or entry into 
 
 **Figure 2:** *Each investor starts with a new investment question, while company responsibilities continue.*
 
-TeamSystem shows what a group accumulates across its owners: useful products and knowledge, but also obligations, dependencies and continuing work. The final chapter brings the cases together and asks the question the ownership episodes leave open: when owners, prices and reporting bases keep changing, what would a lasting improvement mean for each group affected, and who received the gains and carried the costs? Continue with the chapter [Success for Whom, and for How Long?](#success-for-whom).
+TeamSystem shows what a group accumulates across its owners: useful products and knowledge, but also obligations, dependencies and continuing work. The final chapter brings the cases together and asks the question the ownership episodes leave open: when owners, prices and reporting bases keep changing, what would a lasting improvement mean for each group affected, and who received the gains and carried the costs? Continue with the chapter [Success for Whom: Follow Outcomes Beyond the First Exit](#success-for-whom).
 
 {id: teamsystem--questions-to-consider}
 ## Questions to Consider

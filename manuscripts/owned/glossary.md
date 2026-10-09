@@ -370,7 +370,7 @@ The company-investment sequence begins at the chapters [Set Priorities: Say No W
 {id: glossary--evidence}
 ## Evidence and Lasting Outcomes
 
-For application, read the chapter [Success for Whom, and for How Long?](#success-for-whom) or use [Practical Tools for Ownership and Technology Decisions](#toolkit); the chapter [Use Diligence: Your Last Chance to Shape the Plan](#use-diligence) shows the observed / reported / inferred split in use, and the chapter [Have Your Numbers Ready: One Set for Investors, Goals and Teams](#have-your-numbers-ready) covers defining, owning and labelling the figures a company reports.
+For application, read the chapter [Success for Whom: Follow Outcomes Beyond the First Exit](#success-for-whom) or use [Practical Tools for Ownership and Technology Decisions](#toolkit); the chapter [Use Diligence: Your Last Chance to Shape the Plan](#use-diligence) shows the observed / reported / inferred split in use, and the chapter [Have Your Numbers Ready: One Set for Investors, Goals and Teams](#have-your-numbers-ready) covers defining, owning and labelling the figures a company reports.
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -400,6 +400,6 @@ These are my constructs, labelled as such so they are not mistaken for accountin
 
 | Term | Plain-language meaning |
 | --- | --- |
-| Durable success | My proposed evaluative standard: useful outcomes the company can sustain through continued investment, capability and attention to consequences for people, judged by who received the gains, who carried the costs and what the company can continue to do ([Success for Whom, and for How Long?](#success-for-whom)). It is not an accounting measure or a guarantee. |
+| Durable success | My proposed evaluative standard: useful outcomes the company can sustain through continued investment, capability and attention to consequences for people, judged by who received the gains, who carried the costs and what the company can continue to do ([Success for Whom: Follow Outcomes Beyond the First Exit](#success-for-whom)). It is not an accounting measure or a guarantee. |
 | Ownership cycle | My map of possible funding and ownership changes, including further rounds, refinancing, sales and continued ownership. Each can require investigation, planning and review; they need not occur in a fixed sequence. |
 | Engagement charter | The short agreement this book proposes for a support assignment: purpose, accountable company leader, investor-side sponsor, resources, information access and ending ([Set the Terms of Help: Agree the Work, Authority and Handover](#set-terms-of-help)). |
