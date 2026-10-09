@@ -1,5 +1,5 @@
 ---
-title: Practical Tools for Ownership and Technology Decisions
+title: "Toolkit: Records That Make a Decision Concrete"
 date: 2026-09-12
 author: Željko Obrenović
 permalink: toolkit

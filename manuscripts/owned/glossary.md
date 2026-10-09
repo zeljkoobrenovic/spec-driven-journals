@@ -370,7 +370,7 @@ The company-investment sequence begins at the chapters [Set Priorities: Say No W
 {id: glossary--evidence}
 ## Evidence and Lasting Outcomes
 
-For application, read the chapter [Success for Whom: Follow Outcomes Beyond the First Exit](#success-for-whom) or use [Practical Tools for Ownership and Technology Decisions](#toolkit); the chapter [Use Diligence: Your Last Chance to Shape the Plan](#use-diligence) shows the observed / reported / inferred split in use, and the chapter [Have Your Numbers Ready: One Set for Investors, Goals and Teams](#have-your-numbers-ready) covers defining, owning and labelling the figures a company reports.
+For application, read the chapter [Success for Whom: Follow Outcomes Beyond the First Exit](#success-for-whom) or use [Toolkit: Records That Make a Decision Concrete](#toolkit); the chapter [Use Diligence: Your Last Chance to Shape the Plan](#use-diligence) shows the observed / reported / inferred split in use, and the chapter [Have Your Numbers Ready: One Set for Investors, Goals and Teams](#have-your-numbers-ready) covers defining, owning and labelling the figures a company reports.
 
 | Term | Plain-language meaning |
 | --- | --- |

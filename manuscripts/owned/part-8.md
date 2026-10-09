@@ -31,4 +31,4 @@ Read each case as **what happened**, what might explain it and what a leader cou
 | [TeamSystem: Four Owners, One Continuing Business](#teamsystem) | 2000–2017; follow-up to 2024 | The software group passed through four owners. What product work and borrowing did each inherit? |
 | [Success for Whom: Follow Outcomes Beyond the First Exit](#success-for-whom) | Comparison and fictional application | Compare investor gains, product continuity and losses to employees and suppliers. Who benefited, and for how long? |
 
-Begin with [Hilton and Skype: What the Exit Price Does Not Show](#hilton-and-skype), read the cases in order, then apply the lessons with [Practical Tools for Ownership and Technology Decisions](#toolkit).
+Begin with [Hilton and Skype: What the Exit Price Does Not Show](#hilton-and-skype), read the cases in order, then apply the lessons with [Toolkit: Records That Make a Decision Concrete](#toolkit).

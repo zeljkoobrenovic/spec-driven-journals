@@ -45,7 +45,7 @@ It is the same plan that the chapter [Plan the First Hundred Days: Where Expecta
 
 Routine operating work is already budgeted. The envelope is a change budget: it pays for improvements. One of them is not optional, because it serves a requirement the company has already agreed. That **recovery requirement** has two parts. After a failure, dispatch must be working again within four hours; dispatch is the part of the product customers use to assign each day’s jobs. And no more than fifteen minutes of schedule updates may be lost.
 
-The cash estimates concern additional spending, such as specialist help and new services. Existing employees’ pay is already in the ordinary operating budget; their available time is shown separately. The amounts are one-time costs; the one continuing cost this plan creates appears in the decision record below. The identifiers in the table (REC-1, ONB-1, KNW-1) are those the diligence findings and the [Practical Tools for Ownership and Technology Decisions](#toolkit) use for the same work.
+The cash estimates concern additional spending, such as specialist help and new services. Existing employees’ pay is already in the ordinary operating budget; their available time is shown separately. The amounts are one-time costs; the one continuing cost this plan creates appears in the decision record below. The identifiers in the table (REC-1, ONB-1, KNW-1) are those the diligence findings and the [Toolkit: Records That Make a Decision Concrete](#toolkit) use for the same work.
 
 The table has five rows: four proposals that need additional cash, and one training item that needs none.
 
@@ -157,7 +157,7 @@ Review the starting assumptions, actual spending, team burden and observed outco
 {id: set-priorities--keep-the-record}
 ## Keep the Record
 
-The [Practical Tools for Ownership and Technology Decisions](#toolkit)’s record for comparing investment choices and capacity, [Tool 12](#toolkit--tool-12), holds exactly the fields used above: the required commitments, the money and team time available, the options, the combination proposed, the first stages and the review decision. Fill it in before the board conversation, and update it after each review rather than starting a new one; the same shared decision record runs from the diligence findings to the record handed to the company’s next owner.
+The [Toolkit: Records That Make a Decision Concrete](#toolkit)’s record for comparing investment choices and capacity, [Tool 12](#toolkit--tool-12), holds exactly the fields used above: the required commitments, the money and team time available, the options, the combination proposed, the first stages and the review decision. Fill it in before the board conversation, and update it after each review rather than starting a new one; the same shared decision record runs from the diligence findings to the record handed to the company’s next owner.
 
 The setup change was chosen on customer evidence. Whether its benefit is real is a separate question, and the next chapter follows that one change from the work proposed to the measured customer and business result: [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions).
 

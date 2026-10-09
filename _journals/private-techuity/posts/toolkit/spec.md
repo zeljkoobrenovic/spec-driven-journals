@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-10-03
+revised: 2026-10-09
 ---
 
-# Spec: Practical Tools for Ownership and Technology Decisions
+# Spec: Toolkit: Records That Make a Decision Concrete
 
 ## Intent
 
@@ -53,6 +53,7 @@ See the bibliography and the relevant chapters. The source registry records cons
 
 ## Changelog
 
+- 2026-10-09 (retitle): At the author's request the title became "Toolkit: Records That Make a Decision Concrete", replacing "Practical Tools for Ownership and Technology Decisions". The subtitle takes the page's first key point: the records exist to make a real decision concrete. Body unchanged. Permalink unchanged.
 - 2026-10-03: Worked example now lists all ten chapters that share its figures, matching the introduction, and credits the €1 million onboarding program to [[understand-cash-flow]] rather than to [[test-revenue-assumptions]].
 - 2026-10-03: Tool 7 now names its teaching chapter, [[have-your-numbers-ready]], in the stage table and in its own section.
 - 2026-09-27: Update cross-links for the chapter title-slug renames.

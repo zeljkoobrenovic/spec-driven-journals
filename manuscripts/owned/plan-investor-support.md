@@ -208,7 +208,7 @@ At that review, management can decide whether the program assignment should end,
 {id: plan-investor-support--write-down-the-arrangement-in-a-short-blueprint}
 ## Write Down the Arrangement in a Short Blueprint
 
-Capture the arrangement in a **short written record** that both the company and the investor read and can question: if the investor thinks the company has under-resourced the work, or the company thinks a promised specialist never appeared, the record is where that shows. The six fields below are the book’s proposal for what the record should contain. Fill them in alongside the engagement and initiative records in [Practical Tools for Ownership and Technology Decisions](#toolkit), which track each piece of investor help and each piece of company work:
+Capture the arrangement in a **short written record** that both the company and the investor read and can question: if the investor thinks the company has under-resourced the work, or the company thinks a promised specialist never appeared, the record is where that shows. The six fields below are the book’s proposal for what the record should contain. Fill them in alongside the engagement and initiative records in [Toolkit: Records That Make a Decision Concrete](#toolkit), which track each piece of investor help and each piece of company work:
 
 1. **Purpose and boundary.** The business priority, assumption to test or outcome to improve; the chosen combination of investor involvement and company design; the companies, functions and decisions covered.
 2. **Work and ownership.** The accountable company executive, people doing the work, dependencies and continuing service owner.

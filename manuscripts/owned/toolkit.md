@@ -1,7 +1,7 @@
 {id: toolkit}
-# 43. Practical Tools for Ownership and Technology Decisions
+# 43. Toolkit: Records That Make a Decision Concrete
 
-![Practical Tools for Ownership and Technology Decisions — logo](private-techuity/posts/toolkit/assets/images/toolkit/logo.jpeg)
+![Toolkit: Records That Make a Decision Concrete — logo](private-techuity/posts/toolkit/assets/images/toolkit/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn which record fits the decision in front of you, and follow one finding through evidence, options, an authorized initiative, an observed result and a handover.
 
