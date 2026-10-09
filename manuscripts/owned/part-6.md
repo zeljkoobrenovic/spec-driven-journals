@@ -25,7 +25,7 @@ Each chapter follows one method: put the spending on a comparable basis, separat
 
 - [Manage Technical Debt: Present the Fix by What It Buys](#manage-technical-debt): what does the debt in your systems cost, risk and slow each month, and how do you fund the fix in tranches?
 - [Build and Test Resilience: Backups Are Not Enough](#build-test-resilience): can the company restore data and service after a failure within the promised time, and what does the corrective work cost?
-- [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#evaluate-cloud-costs): is a cheaper bill also cheaper per useful customer task, and how much should the company commit under a stated demand range?
+- [Evaluate Cloud Costs: What a Lower Bill Can Hide](#evaluate-cloud-costs): is a cheaper bill also cheaper per useful customer task, and how much should the company commit under a stated demand range?
 - [Critically Evaluate AI Costs: Measure the Return per Task and per Period](#evaluate-ai-costs): what does the AI you run cost per useful customer task, why did the bill change, what is its return for a stated period, and how much should you commit?
 
 By the end, you can turn a resilience gap, a cloud saving, an AI bill or a debt item into a decision with its evidence, its cost and the exposure that remains, rather than accept a lower bill, a backup schedule or a return figure as proof.

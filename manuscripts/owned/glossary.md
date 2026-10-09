@@ -350,7 +350,7 @@ The company-investment sequence begins at the chapters [Set Priorities: Say No W
 | Cloud | Computing resources rented from a supplier rather than owned. |
 | Managed service | A service operated by a supplier on the customer’s behalf, such as a managed database. |
 | FinOps | Collaborative management of the financial value of technology spending, especially cloud. |
-| Unit economics | Cost or value per defined unit of useful work, such as cost per processed transaction. A lower total bill can hide a worse unit cost ([Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#evaluate-cloud-costs)). |
+| Unit economics | Cost or value per defined unit of useful work, such as cost per processed transaction. A lower total bill can hide a worse unit cost ([Evaluate Cloud Costs: What a Lower Bill Can Hide](#evaluate-cloud-costs)). |
 | Rightsizing | Matching computing capacity to demand and service requirements. |
 | Latency | The delay before a response or result. |
 | Security | Protection of systems and data against threats. |

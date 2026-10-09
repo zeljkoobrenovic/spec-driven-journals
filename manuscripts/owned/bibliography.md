@@ -31,7 +31,7 @@ Use this table to find evidence by question. A source can appear under more than
 | Governance, rights and incentives | S01, S02, S04, S61, S76 | [Clarify Authority: Decide Who Decides Before You Disagree](#clarify-authority), [Compare Incentives and Stakes: Equity, Carry and Jobs](#compare-incentives-stakes), [Scale the Team Up: Headcount Is Not Capacity](#scale-the-team-up) |
 | Trust, cooperation and team dysfunctions | S119 | [Where Investment Can Go Wrong](#where-investment-goes-wrong) |
 | Workforce reductions and employment process | S77, S78 | [Scale the Team Down: A Cut Is a Number, Not a Plan](#scale-the-team-down) |
-| Delivery, architecture and cloud cost | S13, S14, S15, S16, S53, S75, S120 | [Assess Capability: Can Systems and Team Deliver the Plan?](#assess-capability), [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions), [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#evaluate-cloud-costs) |
+| Delivery, architecture and cloud cost | S13, S14, S15, S16, S53, S75, S120 | [Assess Capability: Can Systems and Team Deliver the Plan?](#assess-capability), [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions), [Evaluate Cloud Costs: What a Lower Bill Can Hide](#evaluate-cloud-costs) |
 | Security and resilience | S17 | [Build and Test Resilience: Backups Are Not Enough](#build-test-resilience) |
 | AI evidence | S18, S19, S20, S21, S63 | [Clarify AI Strategy: Separate the Bet, the Saving and the Threat](#clarify-ai-strategy) |
 | Investor support and advisers | S22, P01, P02 | [Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?](#clarify-adviser-role), [Choose the Right Help: Compare Investor Support With Other Options](#choose-right-help) |
@@ -217,7 +217,7 @@ FinOps Foundation. [Unit Economics](https://www.finops.org/framework/capabilitie
 
 **Evidence type:** Practitioner framework. **Consulted scope:** Capability guidance consulted for connecting cost with business units and value. All manuscript euro examples are fictional calculations.
 
-**Used in:** [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#evaluate-cloud-costs), [Glossary](#glossary).
+**Used in:** [Evaluate Cloud Costs: What a Lower Bill Can Hide](#evaluate-cloud-costs), [Glossary](#glossary).
 
 {id: bibliography--s17-nist-csf-2-0}
 ### S17 — NIST CSF 2.0

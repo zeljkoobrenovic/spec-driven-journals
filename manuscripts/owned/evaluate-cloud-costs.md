@@ -1,7 +1,7 @@
 {id: evaluate-cloud-costs}
-# 32. Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better
+# 32. Evaluate Cloud Costs: What a Lower Bill Can Hide
 
-![Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better — logo](private-techuity/posts/29-evaluate-cloud-costs/assets/images/29-evaluate-cloud-costs/logo.jpeg)
+![Evaluate Cloud Costs: What a Lower Bill Can Hide — logo](private-techuity/posts/29-evaluate-cloud-costs/assets/images/29-evaluate-cloud-costs/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to put cloud bills on one comparable basis, separate why they changed, and decide how much to commit before calling a lower bill an improvement.
 

@@ -1,5 +1,5 @@
 ---
-title: "Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better"
+title: "Evaluate Cloud Costs: What a Lower Bill Can Hide"
 date: 2026-09-12
 author: Željko Obrenović
 excerpt: "Put cloud bills on one comparable basis, separate why they changed, and decide how much to commit under a stated demand range before calling a lower bill an improvement."

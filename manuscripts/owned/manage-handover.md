@@ -40,7 +40,7 @@ The company should be able to explain:
 
 It should also be able to back up every claim that its technology work saved or earned money.
 
-- For a **cloud** initiative, work on the computing services the company rents from a provider instead of running its own servers: the starting cost, the changes made, the adjustment for how much usage grew or shrank, the costs after any offsetting savings, and the effect on the service (see the chapter [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#evaluate-cloud-costs)).
+- For a **cloud** initiative, work on the computing services the company rents from a provider instead of running its own servers: the starting cost, the changes made, the adjustment for how much usage grew or shrank, the costs after any offsetting savings, and the effect on the service (see the chapter [Evaluate Cloud Costs: What a Lower Bill Can Hide](#evaluate-cloud-costs)).
 - For a move to a new platform: the groups of customers moved, the customers lost, the cost of running the old and new systems at the same time, and the unfinished obligations.
 - For artificial intelligence (AI) work: which version of the tests assessed the system, and what each task actually costs and saves (see the chapter [Clarify AI Strategy: Separate the Bet, the Saving and the Threat](#clarify-ai-strategy)).
 
