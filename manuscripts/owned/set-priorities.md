@@ -32,7 +32,7 @@ Rotaline is the fictional company this book follows; it sells scheduling softwar
 - Alex, the technology leader, wants to improve **recovery from system failures**.
 - The customer team wants **simpler setup** for new accounts.
 
-Each request has a plausible benefit, the chapter [Adopt Outcome Thinking: Balance Customer and Business KPIs](#adopt-outcome-thinking) has agreed which customer and business outcomes the work is for, and [Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards](#have-your-numbers-ready) has defined the numbers that will test it. But the requests cannot all use the same people at the same time. The next section shows the limits the board has approved and what each request would need.
+Each request has a plausible benefit, the chapter [Adopt Outcome Thinking: Bridge Product Work to Investor's Numbers](#adopt-outcome-thinking) has agreed which customer and business outcomes the work is for, and [Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards](#have-your-numbers-ready) has defined the numbers that will test it. But the requests cannot all use the same people at the same time. The next section shows the limits the board has approved and what each request would need.
 
 {id: set-priorities--competing-requests-two-limits}
 ## Competing Requests, Two Limits

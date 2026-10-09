@@ -33,7 +33,7 @@ Product and technology teams are often asked to **justify their work in the inve
 
 Take a simple proposal: making customer setup faster. It sounds useful, but what exactly is the benefit? Customers might start using the product sooner. Staff might serve more customers. The company might collect payment earlier. Each possibility needs a different piece of evidence.
 
-A **product roadmap** sets out intended product changes and their priorities. A roadmap item describes work; its **business case** explains the useful result expected from that work, what it will cost and how uncertain that result is.
+A **product roadmap** sets out intended product changes and their priorities. A roadmap item describes work; its **business case** explains the useful result expected from that work, what it will cost and how uncertain that result is. The useful result is not invented per item: it is a measure already named in the outcome record of [[adopt-outcome-thinking]], and an item that cannot name one has no business case.
 
 A product leader must normally show that a change is useful. An investor, someone who has put money into the company in return for a share of it, may expect more: evidence that the change supports a particular financial target. Four terms describe those targets:
 

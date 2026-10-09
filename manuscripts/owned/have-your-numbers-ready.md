@@ -28,7 +28,7 @@ This chapter’s argument is not that better numbers produce agreement. It is th
 {id: have-your-numbers-ready--setting-up-the-example-two-requests-in-one-week}
 ## Setting Up the Example: Two Requests in One Week
 
-Rotaline, the fictional scheduling-software company this book follows, has just agreed its outcome record in the chapter [Adopt Outcome Thinking: Balance Customer and Business KPIs](#adopt-outcome-thinking): the one-page record of the change customers should see, the business result it should produce and the measures that connect the two. In the same week, Rotaline receives two requests.
+Rotaline, the fictional scheduling-software company this book follows, has just agreed its outcome record in the chapter [Adopt Outcome Thinking: Bridge Product Work to Investor's Numbers](#adopt-outcome-thinking): the one-page record of the change customers should see, the business result it should produce and the measures that connect the two. In the same week, Rotaline receives two requests.
 
 Rotaline’s investor is a fund: a pool of money gathered from many investors and used to buy parts of companies. The fund’s portfolio team, the people who follow the companies it has invested in, sends its standard quarterly reporting template: two pages of financial and operating measures, several of which Rotaline has never calculated. Meanwhile, Morgan, the investor’s technology adviser, asks Priya a simpler question: how long does it take to set up a new customer, and how does she know?
 
@@ -54,7 +54,7 @@ For the technology part of that picture, I have described one lightweight way of
 
 The measures below recur when a company works with investors. They are grouped in six families. The point of the catalogue is not that you report them all. It is that you know what each tells, who normally produces it and where it misleads, so when one is asked for you are not meeting it for the first time.
 
-A **measure** (or metric) is a defined way of counting something. A **key performance indicator (KPI)** is a measure chosen to track a result that matters. A **leading indicator** moves early and gives warning; a **lagging indicator** confirms later that the result happened. The chapter [Adopt Outcome Thinking: Balance Customer and Business KPIs](#adopt-outcome-thinking) uses the same vocabulary.
+A **measure** (or metric) is a defined way of counting something. A **key performance indicator (KPI)** is a measure chosen to track a result that matters. A **leading indicator** moves early and gives warning; a **lagging indicator** confirms later that the result happened. The chapter [Adopt Outcome Thinking: Bridge Product Work to Investor's Numbers](#adopt-outcome-thinking) uses the same vocabulary.
 
 {id: have-your-numbers-ready--money-and-runway}
 ### Money and Runway
@@ -97,7 +97,7 @@ Sales, customer success (the team that helps existing customers get value from t
 {id: have-your-numbers-ready--product-and-customer-outcomes}
 ### Product and Customer Outcomes
 
-These are the product leader’s own, and the ones most often missing from the board pack, the set of reports the directors receive before each board meeting. The outcome record from [Adopt Outcome Thinking: Balance Customer and Business KPIs](#adopt-outcome-thinking) chooses which of them matter for this company.
+These are the product leader’s own, and the ones most often missing from the board pack, the set of reports the directors receive before each board meeting. The outcome record from [Adopt Outcome Thinking: Bridge Product Work to Investor's Numbers](#adopt-outcome-thinking) chooses which of them matter for this company.
 
 | Measure | What it tells you | Where it misleads |
 | --- | --- | --- |
@@ -176,7 +176,7 @@ Individual performance and pay stay internal; what an investor needs from this f
 Nobody should report all that. Fifteen measures nobody disputes are worth more than ninety nobody trusts.
 
 - **Start from decisions, not from the template.** Ask what the next consequential decision needs. At Rotaline, the next decisions are whether to fund the setup work and, later, whether it worked; the numbers that matter are setup effort, the wait to first schedule and the cost of the work. The investor’s template still gets filled in, but the company’s own set starts from its decisions.
-- **Let the outcome record choose the product numbers.** The customer outcome, the business outcome and the measures between them ([Adopt Outcome Thinking: Balance Customer and Business KPIs](#adopt-outcome-thinking)) are the product and customer numbers worth having ready. The rest of the catalogue is context.
+- **Let the outcome record choose the product numbers.** The customer outcome, the business outcome and the measures between them ([Adopt Outcome Thinking: Bridge Product Work to Investor's Numbers](#adopt-outcome-thinking)) are the product and customer numbers worth having ready. The rest of the catalogue is context.
 - **Add a measure only when a decision needs it.** A measure that has never changed a decision should be retired.
 
 A reasonable shape for the investor conversation is a dozen or so numbers: a few from money and runway, a few from customers and growth, the outcome record’s pair and its leading measures, and a few from delivery and technology health, each chosen because someone decides something with it. [Tool 7](#toolkit--tool-7) gives a small scorecard in that shape.
@@ -259,7 +259,7 @@ Not everything should go to an investor, and not everything an investor asks for
 
 Goals take the same numbers and put a date and a level on them.
 
-- **Set goals on leading measures, report the lagging ones.** A team can move staff hours per setup this quarter; it cannot move renewals until the anniversaries. The outcome record sets which is which ([Adopt Outcome Thinking: Balance Customer and Business KPIs](#adopt-outcome-thinking)).
+- **Set goals on leading measures, report the lagging ones.** A team can move staff hours per setup this quarter; it cannot move renewals until the anniversaries. The outcome record sets which is which ([Adopt Outcome Thinking: Bridge Product Work to Investor's Numbers](#adopt-outcome-thinking)).
 - **Pair a target with a counter-measure.** A measure that becomes a target changes behaviour, and not always the way intended. Setup hours can fall because customers are rushed into using a half-configured account; pairing the hours with month-one support requests shows it when it happens.
 - **Keep the goal’s measure and the reported measure identical.** A team goal on a private definition of “setup time” produces a number the board cannot compare with anything.
 

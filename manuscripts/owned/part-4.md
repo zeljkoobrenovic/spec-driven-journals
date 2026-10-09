@@ -29,7 +29,7 @@ Whatever you commit to, keep three things visible: **the benefit you expect, how
 
 **Agree what the work is for.**
 
-- [Adopt Outcome Thinking: Balance Customer and Business KPIs](#adopt-outcome-thinking): which customer and business results does the work move, which investor metric does it feed, and on what timeline?
+- [Adopt Outcome Thinking: Bridge Product Work to Investor's Numbers](#adopt-outcome-thinking): which customer and business results does the work move, which investor metric does it feed, and on what timeline?
 - [Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards](#have-your-numbers-ready): which numbers should you hold ready for the investor, goals and dashboards, and how do you define, own and label them?
 
 **Choose and justify the work.**
@@ -48,4 +48,4 @@ Whatever you commit to, keep three things visible: **the benefit you expect, how
 
 By the end, you should be able to explain which work deserves money and people, what you can responsibly commit to, and what evidence would change the plan. Benefit here includes customer results and capability, not only money.
 
-Begin with [Adopt Outcome Thinking: Balance Customer and Business KPIs](#adopt-outcome-thinking). Part V then changes the team, the systems and the company’s boundary, and Part VI keeps the technology you already run worth its cost.
+Begin with [Adopt Outcome Thinking: Bridge Product Work to Investor's Numbers](#adopt-outcome-thinking). Part V then changes the team, the systems and the company’s boundary, and Part VI keeps the technology you already run worth its cost.

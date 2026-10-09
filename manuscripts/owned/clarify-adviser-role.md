@@ -142,7 +142,7 @@ The company shouldn’t tell investors one confident story and engineers another
 
 Alex tells the engineers **before the meeting**, not after, and Morgan confirms it in the room: Morgan's ideas are suggestions, not instructions. From then on, the engineers can weigh each idea on its merits, accepting it if it helps and declining it if it doesn't, without worrying that refusing the investor's adviser will count against them. That is what makes the ideas useful.
 
-The adviser is one of several people at the investment firm whose job is to **help companies in practical ways**, not to make investment decisions. The next chapter covers how that group supports companies, how it works with product and technology leaders, and what hiring and artificial intelligence (AI) add to its work: [Work With Technology Operating Partners: Build a Partnership That Serves Your Plan](#technology-operating-partners).
+The adviser is one of several people at the investment firm whose job is to **help companies in practical ways**, not to make investment decisions. The next chapter covers how that group supports companies, how it works with product and technology leaders, and what hiring and artificial intelligence (AI) add to its work: [Work With Technology Operating Partners](#technology-operating-partners).
 
 {id: clarify-adviser-role--questions-to-consider}
 ## Questions to Consider

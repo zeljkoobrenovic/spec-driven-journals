@@ -1,5 +1,5 @@
 ---
-title: "Adopt Outcome Thinking: Balance Customer and Business KPIs"
+title: "Adopt Outcome Thinking: Bridge Product Work to Investor's Numbers"
 date: 2026-09-24
 author: Željko Obrenović
 excerpt: "Delivering a setup feature does not by itself get a new customer working sooner. Before choosing work, Rotaline writes an outcome record: the change it wants for customers, in their words; the business result that change should feed; who is responsible for each measure; and the dates on which each is reviewed. Every later commitment is set against it."

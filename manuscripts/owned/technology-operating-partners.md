@@ -1,7 +1,7 @@
 {id: technology-operating-partners}
-# 17. Work With Technology Operating Partners: Build a Partnership That Serves Your Plan
+# 17. Work With Technology Operating Partners
 
-![Work With Technology Operating Partners: Build a Partnership That Serves Your Plan — logo](private-techuity/posts/14-technology-operating-partners/assets/images/14-technology-operating-partners/logo.png)
+![Work With Technology Operating Partners — logo](private-techuity/posts/14-technology-operating-partners/assets/images/14-technology-operating-partners/logo.png)
 
 > **IN THIS SECTION, YOU WILL:** Learn what a technology operating partner is, why investment firms rely on them, how the role differs from your own, and how to build a working partnership with the partner on your plan, your hiring and your use of AI.
 
@@ -200,7 +200,7 @@ Three further agreements protect the relationship. **Keep advice and assessment 
 
 The partnership earns its place when it helps you make a better decision, delivers an improvement your company has funded, or builds a capability your company can sustain on its own. Counts of assessments or technologies deployed show only activity; what you need to know is what changed, and whether it justified its cost.
 
-Part IV turns investor expectations into work the company can deliver, starting with the outcomes the work should move: [COMMIT: Turn Expectations Into Work You Can Deliver](#part-4) and [Adopt Outcome Thinking: Balance Customer and Business KPIs](#adopt-outcome-thinking).
+Part IV turns investor expectations into work the company can deliver, starting with the outcomes the work should move: [COMMIT: Turn Expectations Into Work You Can Deliver](#part-4) and [Adopt Outcome Thinking: Bridge Product Work to Investor's Numbers](#adopt-outcome-thinking).
 
 {id: technology-operating-partners--questions-to-consider}
 ## Questions to Consider

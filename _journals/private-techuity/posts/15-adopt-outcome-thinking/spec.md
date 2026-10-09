@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-10-03
+revised: 2026-10-09
 ---
 
-# Spec: Adopt Outcome Thinking: Balance Customer and Business KPIs
+# Spec: Adopt Outcome Thinking: Bridge Product Work to Investor's Numbers
 
 ## Intent
 
@@ -70,6 +70,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Changelog
 
+- 2026-10-09 (retitle): At the author's request the title became "Adopt Outcome Thinking: Bridge Product Work to Investor's Numbers" so the chapter's distinctive content, the investor bridge, is visible in the title; permalink and id unchanged.
 - 2026-10-03: Timeline aligned with [[set-priorities]]: the chapter is now set in the days before day 0 (the board "will meet to adopt" the plan), so the outcome record precedes the day-0 choice of the combination; the day-20 baseline is described as a later confirmation, and day-0 definitions use "adopts". Article, summary and comic caption/transcript updated; no artwork changed.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Use first person for the author's Productscape project and experience with the removal test, following the requested voice across the book.

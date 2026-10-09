@@ -1,7 +1,7 @@
 {id: adopt-outcome-thinking}
-# 18. Adopt Outcome Thinking: Balance Customer and Business KPIs
+# 18. Adopt Outcome Thinking: Bridge Product Work to Investor's Numbers
 
-![Adopt Outcome Thinking: Balance Customer and Business KPIs — logo](private-techuity/posts/15-adopt-outcome-thinking/assets/images/15-adopt-outcome-thinking/logo.jpeg)
+![Adopt Outcome Thinking: Bridge Product Work to Investor's Numbers — logo](private-techuity/posts/15-adopt-outcome-thinking/assets/images/15-adopt-outcome-thinking/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to write an outcome record. It names one change the company wants for its customers, in their own words; one business result leadership agrees that change should drive; the measures linking the two; who owns each measure; and when each is reviewed. You'll then use it to answer the investor's questions and to turn down a request with a record instead of a fight.
 
