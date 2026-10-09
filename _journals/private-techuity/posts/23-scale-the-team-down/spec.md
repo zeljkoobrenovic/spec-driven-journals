@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-10-03
+revised: 2026-10-09
 ---
 
-# Spec: Anatomy of a Layoff
+# Spec: Scale the Team Down: A Cut Is a Number, Not a Plan
 
 ## Intent
 
@@ -58,6 +58,7 @@ The delayed-financing chapter supplies the scenario; the organization chapter su
 
 ## Changelog
 
+- 2026-10-09 (retitle): At the author's request the title became "Scale the Team Down: A Cut Is a Number, Not a Plan", lifting the chapter's opening line so the subtitle covers the pressure, the cash by date and the work that stops. Permalink unchanged.
 - 2026-10-03: Points to Tool 13 at the recorded decision. Article only.
 - 2026-10-03: Closing now hands off to [[scale-the-team-with-ai]], the next chapter in reading order, which returns to the [[scale-the-team-up]] plan. Article only.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.

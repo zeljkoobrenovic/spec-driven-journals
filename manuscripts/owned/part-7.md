@@ -24,7 +24,7 @@ These events follow no fixed order, and how much each changes the leadership wor
 
 **Figure 1:** *Three chapters follow the onboarding finding from diligence to handover.*
 
-The onboarding finding runs through all three chapters, as it did through the earlier chapters of Parts III and IV, where Rotaline asked its investor for help and ran a limited trial of a new setup step. The separate delayed-financing scenario, with its own cash, people and dates, is the chapter [Manage Funding Delays: Expected Money Is Not Cash](#manage-funding-delays) in Part IV; the reduction it can force is the chapter [Scale the Team Down: Decide What Work Stops, Not Just Who Leaves](#scale-the-team-down) in Part V.
+The onboarding finding runs through all three chapters, as it did through the earlier chapters of Parts III and IV, where Rotaline asked its investor for help and ran a limited trial of a new setup step. The separate delayed-financing scenario, with its own cash, people and dates, is the chapter [Manage Funding Delays: Expected Money Is Not Cash](#manage-funding-delays) in Part IV; the reduction it can force is the chapter [Scale the Team Down: A Cut Is a Number, Not a Plan](#scale-the-team-down) in Part V.
 
 - [Use Diligence: Correct the Plan Before It Is Signed](#use-diligence) explains **due diligence**, checking a business before an investment or purchase, and turns the finding into an agreed response.
 - [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days) funds the response with a named person responsible, approved money and team time. The **board**, the directors who approve major decisions, adopts the plan shortly after the investment completes, and a review follows a hundred days after that adoption.

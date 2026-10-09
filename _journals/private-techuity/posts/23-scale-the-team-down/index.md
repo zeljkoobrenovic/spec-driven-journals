@@ -1,5 +1,5 @@
 ---
-title: "Scale the Team Down: Decide What Work Stops, Not Just Who Leaves"
+title: "Scale the Team Down: A Cut Is a Number, Not a Plan"
 date: 2026-09-16
 author: Željko Obrenović
 excerpt: "Follow a product and engineering reduction from the investor’s request to an authorized, funded plan: the staffing baseline, the real source of the pressure, the alternatives, the cash by date, the work stopped, and what happens to the people who leave and the people who stay."

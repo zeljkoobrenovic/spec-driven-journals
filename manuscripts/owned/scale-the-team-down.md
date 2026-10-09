@@ -1,7 +1,7 @@
 {id: scale-the-team-down}
-# 26. Scale the Team Down: Decide What Work Stops, Not Just Who Leaves
+# 26. Scale the Team Down: A Cut Is a Number, Not a Plan
 
-![Scale the Team Down: Decide What Work Stops, Not Just Who Leaves — logo](private-techuity/posts/23-scale-the-team-down/assets/images/23-scale-the-team-down/logo.jpeg)
+![Scale the Team Down: A Cut Is a Number, Not a Plan — logo](private-techuity/posts/23-scale-the-team-down/assets/images/23-scale-the-team-down/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to turn a request to cut staff into an operating plan: find where the pressure actually comes from, compare the alternatives by how much cash each leaves month by month, choose roles by the work that stops, and plan for the people who leave and the people who remain.
 

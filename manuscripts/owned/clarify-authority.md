@@ -129,7 +129,7 @@ These requests reach a company leader in three forms that sound alike and are no
 - A **funding condition** attaches money to a plan. Two examples: a **bridge**, short-term financing that covers a gap until longer-term funding arrives, released only once a cost plan is adopted; or a new **funding round**, a sale of new shares to investors, whose **term sheet**, the document setting out the proposed terms before the binding contracts are signed, wants a particular executive in place. The response is to translate the condition into a date and a number, and decide whether to meet it.
 - **Influence** is everything else: an adviser’s **benchmark**, a comparison with similar companies, a director’s view of a leader, an introduction. The response is to record it as an option and assess it on the same evidence as any other.
 
-The chapter [Scale the Team Up: Headcount Is Not Capacity](#scale-the-team-up) works an investor-proposed appointment through that distinction, and [Scale the Team Down: Decide What Work Stops, Not Just Who Leaves](#scale-the-team-down) a staffing reduction, where all three arrive at the same board meeting.
+The chapter [Scale the Team Up: Headcount Is Not Capacity](#scale-the-team-up) works an investor-proposed appointment through that distinction, and [Scale the Team Down: A Cut Is a Number, Not a Plan](#scale-the-team-down) a staffing reduction, where all three arrive at the same board meeting.
 
 {id: clarify-authority--make-a-conditional-commitment-explicit-and-plan-the-missed-deadline}
 ## Make a Conditional Commitment Explicit, and Plan the Missed Deadline

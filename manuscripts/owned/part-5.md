@@ -27,7 +27,7 @@ Every chapter keeps the discipline of Part IV: the benefit you expect, the money
 **Change the team.**
 
 - [Scale the Team Up: Headcount Is Not Capacity](#scale-the-team-up): before adding people, trace one piece of work through the company. Can clearer roles and decisions add capacity without a hire, even one the investor proposes?
-- [Scale the Team Down: Decide What Work Stops, Not Just Who Leaves](#scale-the-team-down): when the pressure runs the other way, find its real source, compare alternatives by cash month by month, and decide what work stops before who leaves.
+- [Scale the Team Down: A Cut Is a Number, Not a Plan](#scale-the-team-down): when the pressure runs the other way, find its real source, compare alternatives by cash month by month, and decide what work stops before who leaves.
 - [Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount](#scale-the-team-with-ai): when a tool is said to change what the team can complete, which constraint does it touch, what completed work changed, and what does “fewer people” really ask for?
 
 **Change the systems.**
