@@ -91,7 +91,7 @@ Institutional Limited Partners Association (ILPA). [ILPA Principles 3.0: Fosteri
 
 **Evidence type:** LP industry guidance. **Consulted scope:** Selected sections on alignment, economics, governance, transparency, and continuation transactions. An LP perspective and voluntary principles, not law or proof of universal practice.
 
-**Used in:** [Understand Funding and Control: An Investment Announcement Is Not a Budget](#understand-funding-control), [Compare Incentives and Stakes: Equity, Carry and Jobs](#compare-incentives-stakes), [Assess Investor Fit: Behavior Under Pressure](#assess-investor-fit), [Manage the Handover: Carry Forward the Evidence and Obligations](#manage-handover), [Glossary](#glossary).
+**Used in:** [Understand Funding and Control: An Investment Announcement Is Not a Budget](#understand-funding-control), [Compare Incentives and Stakes: Equity, Carry and Jobs](#compare-incentives-stakes), [Assess Investor Fit: Behavior Under Pressure](#assess-investor-fit), [Manage the Handover: What the Next Owner Inherits](#manage-handover), [Glossary](#glossary).
 
 {id: bibliography--s03-kaplan-and-stromberg}
 ### S03 — Kaplan and Strömberg
@@ -289,7 +289,7 @@ The Blackstone Group L.P. [Second Quarter 2018 Earnings Investor Call](https://i
 
 **Evidence type:** Interested investor account. **Consulted scope:** Hilton realization discussion consulted for sponsor-reported 3.1× multiple and $14 billion profit. Not an independently reconstructed net LP cash-flow series.
 
-**Used in:** [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype), [Manage the Handover: Carry Forward the Evidence and Obligations](#manage-handover), [Success for Whom, and for How Long?](#success-for-whom).
+**Used in:** [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype), [Manage the Handover: What the Next Owner Inherits](#manage-handover), [Success for Whom, and for How Long?](#success-for-whom).
 
 {id: bibliography--s25-pei-hilton-retrospective}
 ### S25 — PEI Hilton retrospective
@@ -343,7 +343,7 @@ Visma. [Visma Attracts New Investors for Further International Expansion in a Tr
 
 **Evidence type:** Company transaction announcement. **Consulted scope:** Transaction valuation, investors, and ownership narrative consulted. Valuation is not proof of cash realized by a particular fund.
 
-**Used in:** [Visma: Continuity of Manager Is Not Continuity of Money](#visma), [Manage the Handover: Carry Forward the Evidence and Obligations](#manage-handover).
+**Used in:** [Visma: Continuity of Manager Is Not Continuity of Money](#visma), [Manage the Handover: What the Next Owner Inherits](#manage-handover).
 
 {id: bibliography--s31-visma-q4-2024-report}
 ### S31 — Visma Q4 2024 report

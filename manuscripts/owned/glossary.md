@@ -303,7 +303,7 @@ See the chapters [Set Priorities: Say No With Evidence, Not Opinion](#set-priori
 | Engagement | An agreed piece of support with a purpose, participants and boundaries. |
 | Capability left with the company | What the company can do on its own after support ends. It does not require internalizing every specialty; see the next row. |
 | Continuing specialist service | A specialist service the company deliberately keeps buying because owning that skill would cost more than it is worth. A legitimate outcome of an engagement when the decision is explicit and funded, not a failure of independence. |
-| Handover | Transfer of the knowledge, information, evidence and obligations needed to continue work, including at a change of ownership ([Manage the Handover: Carry Forward the Evidence and Obligations](#manage-handover)). |
+| Handover | Transfer of the knowledge, information, evidence and obligations needed to continue work, including at a change of ownership ([Manage the Handover: What the Next Owner Inherits](#manage-handover)). |
 | Headcount plan | The roles a plan funds, by period, and the roles that are conditional on money or evidence not yet received. Hires outside it, and reductions to it, need whoever approves the plan ([Clarify Authority: Decide Who Decides Before You Disagree](#clarify-authority)). |
 | Hiring freeze | A decision to fill no new or vacant roles for a period. It saves only what would otherwise have been spent; a freeze already in force adds nothing to a later reduction. |
 | Redeployment | Moving people from work that ends or stops to work that continues, so a gap is filled without a hire and a role is kept without a dismissal. |

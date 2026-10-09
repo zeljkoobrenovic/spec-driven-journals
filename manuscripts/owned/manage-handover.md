@@ -1,7 +1,7 @@
 {id: manage-handover}
-# 36. Manage the Handover: Carry Forward the Evidence and Obligations
+# 36. Manage the Handover: What the Next Owner Inherits
 
-![Manage the Handover: Carry Forward the Evidence and Obligations — logo](private-techuity/posts/33-manage-handover/assets/images/33-manage-handover/logo.jpeg)
+![Manage the Handover: What the Next Owner Inherits — logo](private-techuity/posts/33-manage-handover/assets/images/33-manage-handover/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to keep the evidence while the work happens, to trace who receives money and who keeps ownership in each kind of deal, and to hand over the unfinished work with the company.
 

@@ -1,5 +1,5 @@
 ---
-title: "Manage the Handover: Carry Forward the Evidence and Obligations"
+title: "Manage the Handover: What the Next Owner Inherits"
 date: 2026-09-14
 author: Željko Obrenović
 excerpt: "When a company takes new investment, changes owners or is sold, carry the evidence and the unfinished work across, so the next decision-maker inherits what was believed, spent, observed and left undone."

@@ -110,7 +110,7 @@ Sam and Morgan record that Option B pays about €62,500 to keep the specialist 
 | Changed if the migration finishes early | The half-time role and the saving start earlier |
 | Recorded disagreement | Cost and timing (Sam, Morgan) against contractual feasibility and team load (Priya); reviewed at month nine with the migration count and the contract check |
 
-The decision, the migration count, the continuing service and the released time also go into the company’s handover record, so whoever owns Rotaline next inherits the obligation and not only the saving: the chapter [Manage the Handover: Carry Forward the Evidence and Obligations](#manage-handover).
+The decision, the migration count, the continuing service and the released time also go into the company’s handover record, so whoever owns Rotaline next inherits the obligation and not only the saving: the chapter [Manage the Handover: What the Next Owner Inherits](#manage-handover).
 
 {id: success-for-whom--when-the-standard-does-not-settle-the-question}
 ### When the Standard Does Not Settle the Question
@@ -139,7 +139,7 @@ For a software company the relevance is a mechanism, not an analogy between serv
 
 Kannan and Song’s 2025 research letter compares 18 hospitals sold to a second private equity owner with 18 sold to other for-profit owners and finds lower **operating margins**, operating profit as a share of revenue, after the second private equity sale, associated with higher expenses rather than simple cost cutting. The small sample, and the fact that the researchers observed sales rather than assigning them, limit generalization, and financial measures do not establish patient outcomes. [S42: Kannan and Song, after sale](https://jamanetwork.com/journals/jama-health-forum/fullarticle/2837043) Its value is that it makes the next ownership period an object of study, while warning that a lower margin is not self-evident deterioration: additional spending can have different purposes.
 
-Skype’s valuable sale and later retirement can both be true without one explaining the other. TeamSystem’s obligations spanned successive owners, each starting from a new price while the migration and integration work continued. The lesson is to **keep the observation window explicit**, and to carry the record of commitments, costs and outcomes across each handover rather than restarting it: the chapter [Manage the Handover: Carry Forward the Evidence and Obligations](#manage-handover).
+Skype’s valuable sale and later retirement can both be true without one explaining the other. TeamSystem’s obligations spanned successive owners, each starting from a new price while the migration and integration work continued. The lesson is to **keep the observation window explicit**, and to carry the record of commitments, costs and outcomes across each handover rather than restarting it: the chapter [Manage the Handover: What the Next Owner Inherits](#manage-handover).
 
 The same measures apply under continued ownership and to other events. A **funding round**, one episode of raising investment, that issues new shares, new units of ownership sold to investors, supplies resources under agreed terms; it does not prove the product is useful or that the next round will happen. A corporate integration milestone can be completed while customers still face migration problems. Treat the investor’s next milestone as one constraint and one result within a longer operating responsibility.
 

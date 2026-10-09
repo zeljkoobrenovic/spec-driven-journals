@@ -53,7 +53,7 @@ The [Glossary](#glossary) covers the rest.
 | Explore the investor’s network: its events, and the leaders of the other companies it has invested in | [Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives](#learn-through-investors-network) | the [Practical Tools for Ownership and Technology Decisions](#toolkit) learning brief, then [Choose the Right Help: Compare Investor Support With Other Options](#choose-right-help) when a specific need emerges |
 | The investor wants better reporting, or we keep arguing about what a number means | [Have Your Numbers Ready: One Set for Investors, Goals and Teams](#have-your-numbers-ready) | the [Practical Tools for Ownership and Technology Decisions](#toolkit) measure record, then [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions) for the benefit arithmetic |
 | The investor wants to oversee technology across all the companies it has invested in (its portfolio) | [Appendix: Grounded Architecture Across an Investment Portfolio](#grounded-architecture-portfolio) | [Plan Investor Support: Match the Help to Company Priorities](#plan-investor-support), [Have Your Numbers Ready: One Set for Investors, Goals and Teams](#have-your-numbers-ready) |
-| The company is about to be bought, or to take new investment | [Use Diligence: Your Last Chance to Shape the Plan](#use-diligence) | [Plan the First Hundred Days: Where Expectations Become Commitments](#first-hundred-days), [Manage the Handover: Carry Forward the Evidence and Obligations](#manage-handover) |
+| The company is about to be bought, or to take new investment | [Use Diligence: Your Last Chance to Shape the Plan](#use-diligence) | [Plan the First Hundred Days: Where Expectations Become Commitments](#first-hundred-days), [Manage the Handover: What the Next Owner Inherits](#manage-handover) |
 | Owners want more growth or profit than the team can support | [Understand Funding Choices: Match the Money to the Work](#understand-funding-choices) | [Set Priorities: Say No With Evidence, Not Opinion](#set-priorities), [Scale the Team Up: Headcount Is Not Capacity](#scale-the-team-up) |
 | Investor requests compete with customer needs | [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions) | [Clarify Authority: Decide Who Decides Before You Disagree](#clarify-authority), [Assess Investor Fit: Behavior Under Pressure](#assess-investor-fit), [Success for Whom, and for How Long?](#success-for-whom) |
 | A business that has invested in us wants to connect its systems to ours, or wants access to our data | [Plan Acquisitions and Separations: Account for the Work, Not Just the Value](#plan-acquisitions-separations) | [Build and Test Resilience: Backups Are Not Enough](#build-test-resilience), [Set the Terms of Help: Agree the Work, Authority and Handover](#set-terms-of-help) |
@@ -119,7 +119,7 @@ The main shared example is an exception. It follows one finding—that onboardin
 3. the recovery test funded beside the pilot, [Build and Test Resilience: Backups Are Not Enough](#build-test-resilience), which checks that a failed system and its data can be restored;
 4. the investor’s support for the pilot, [Choose the Right Help: Compare Investor Support With Other Options](#choose-right-help) and [Set the Terms of Help: Agree the Work, Authority and Handover](#set-terms-of-help);
 5. the pilot’s measured outcome and the decision it supports, [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions), and how those numbers are defined, owned and labelled, [Have Your Numbers Ready: One Set for Investors, Goals and Teams](#have-your-numbers-ready);
-6. the handover of what was paid, owed and left undone, [Manage the Handover: Carry Forward the Evidence and Obligations](#manage-handover).
+6. the handover of what was paid, owed and left undone, [Manage the Handover: What the Next Owner Inherits](#manage-handover).
 
 The [Practical Tools for Ownership and Technology Decisions](#toolkit) shows the record those chapters write, stage by stage.
 
@@ -213,7 +213,7 @@ The [Bibliography and Evidence Guide](#bibliography) records consultation scope 
 - [LEAD: Manage Funding and Ownership Changes](#part-7) — part introduction
 - **32.** [Use Diligence: Your Last Chance to Shape the Plan](#use-diligence)
 - **33.** [Plan the First Hundred Days: Where Expectations Become Commitments](#first-hundred-days)
-- **34.** [Manage the Handover: Carry Forward the Evidence and Obligations](#manage-handover)
+- **34.** [Manage the Handover: What the Next Owner Inherits](#manage-handover)
 
 {id: introduction--part-viii-learn-lessons-from-the-field}
 ### Part VIII — LEARN: Lessons From the Field

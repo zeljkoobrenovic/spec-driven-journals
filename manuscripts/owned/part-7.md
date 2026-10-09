@@ -28,6 +28,6 @@ The onboarding finding runs through all three chapters, as it did through the ea
 
 - [Use Diligence: Your Last Chance to Shape the Plan](#use-diligence) explains **due diligence**, checking a business before an investment or purchase, and turns the finding into an agreed response.
 - [Plan the First Hundred Days: Where Expectations Become Commitments](#first-hundred-days) funds the response with a named person responsible, approved money and team time. The **board**, the directors who approve major decisions, adopts the plan shortly after the investment completes, and a review follows a hundred days after that adoption.
-- [Manage the Handover: Carry Forward the Evidence and Obligations](#manage-handover) carries the record into a further round, a sale, a merger into a buyer’s business or continued ownership: who receives cash, who keeps a share, who can approve decisions and what unfinished work goes with the company.
+- [Manage the Handover: What the Next Owner Inherits](#manage-handover) carries the record into a further round, a sale, a merger into a buyer’s business or continued ownership: who receives cash, who keeps a share, who can approve decisions and what unfinished work goes with the company.
 
 Begin with the chapter [Use Diligence: Your Last Chance to Shape the Plan](#use-diligence). Part VIII then tests these ways of thinking against historical company situations.

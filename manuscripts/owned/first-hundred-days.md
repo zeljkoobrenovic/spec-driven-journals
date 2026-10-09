@@ -39,7 +39,7 @@ Five people and the board carry the example:
 - **Morgan** is the investor’s technology adviser, who ran the technical part of the investigation.
 - The **board** is the group of directors who oversee the company and approve its major decisions and spending.
 
-Every figure is fictional. The same Rotaline figures run through the chapters [Set Priorities: Say No With Evidence, Not Opinion](#set-priorities), [Build and Test Resilience: Backups Are Not Enough](#build-test-resilience), [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions) and [Manage the Handover: Carry Forward the Evidence and Obligations](#manage-handover). The first step is to establish what the investment actually changed at Rotaline.
+Every figure is fictional. The same Rotaline figures run through the chapters [Set Priorities: Say No With Evidence, Not Opinion](#set-priorities), [Build and Test Resilience: Backups Are Not Enough](#build-test-resilience), [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions) and [Manage the Handover: What the Next Owner Inherits](#manage-handover). The first step is to establish what the investment actually changed at Rotaline.
 
 {id: first-hundred-days--what-actually-changed}
 ## What Actually Changed
@@ -242,7 +242,7 @@ The handover record carries D-3 and ONB-1 forward with the baseline, the committ
 
 Completing every planned task is not success if the tasks addressed the wrong constraint. Revising a major assumption is a valuable outcome even when it reduces the original growth forecast, and the review should reward that judgment rather than the preservation of the deal story. The early period should leave a plan whose accountable leaders understand the work, whose funding and capacity are credible, and whose assumptions can be reviewed.
 
-The plan above assumes the money it was built on arrives when expected. The chapter [Manage Funding Delays: Expected Money Is Not Cash](#manage-funding-delays), in Part IV, takes the same kind of dated plan and asks what changes when financing slips. The continuing obligations this plan creates, including D-3 with its baseline and open work, are handed to the next owner in the next chapter, [Manage the Handover: Carry Forward the Evidence and Obligations](#manage-handover).
+The plan above assumes the money it was built on arrives when expected. The chapter [Manage Funding Delays: Expected Money Is Not Cash](#manage-funding-delays), in Part IV, takes the same kind of dated plan and asks what changes when financing slips. The continuing obligations this plan creates, including D-3 with its baseline and open work, are handed to the next owner in the next chapter, [Manage the Handover: What the Next Owner Inherits](#manage-handover).
 
 {id: first-hundred-days--questions-to-consider}
 ## Questions to Consider

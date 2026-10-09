@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-10-03
+revised: 2026-10-09
 ---
 
-# Spec: Hand Over the Obligations, Not Just the Company
+# Spec: Manage the Handover: What the Next Owner Inherits
 
 ## Intent
 
@@ -53,6 +53,7 @@ The supplied book brief establishes scope, including the shared Rotaline chain. 
 
 ## Changelog
 
+- 2026-10-09 (retitle): At the author's request the title became "Manage the Handover: What the Next Owner Inherits", replacing "Manage the Handover: Carry Forward the Evidence and Obligations". The subtitle now frames the chapter from the receiving side: what the next owner inherits is the open obligations and the evidence kept during the work. Body unchanged. Permalink unchanged.
 - 2026-10-03: Tool 10 reference now links directly to the tool. Article only.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.
