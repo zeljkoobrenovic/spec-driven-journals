@@ -250,7 +250,7 @@ Read the chapter [Understand Investor Returns: Same Performance, Different Outco
 {id: glossary--transactions}
 ## Transactions and Incentives
 
-For examples, use the chapters [Understand Funding Choices: Match the Money to the Work](#understand-funding-choices), [Compare Incentives and Stakes: Equity, Carry and Jobs](#compare-incentives-stakes) and [Plan Acquisitions and Separations: Account for the Work, Not Just the Value](#plan-acquisitions-separations); the chapter [Use Diligence: Correct the Plan Before It Is Signed](#use-diligence) shows a thesis being revised.
+For examples, use the chapters [Understand Funding Choices: Match the Money to the Work](#understand-funding-choices), [Compare Incentives and Stakes: Equity, Carry and Jobs](#compare-incentives-stakes) and [Plan Acquisitions and Separations: Account for the Work, Not Just the Value](#plan-acquisitions-separations); the chapter [Use Diligence: Your Last Chance to Shape the Plan](#use-diligence) shows a thesis being revised.
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -370,7 +370,7 @@ The company-investment sequence begins at the chapters [Set Priorities: Say No W
 {id: glossary--evidence}
 ## Evidence and Lasting Outcomes
 
-For application, read the chapter [Success for Whom, and for How Long?](#success-for-whom) or use [Practical Tools for Ownership and Technology Decisions](#toolkit); the chapter [Use Diligence: Correct the Plan Before It Is Signed](#use-diligence) shows the observed / reported / inferred split in use, and the chapter [Have Your Numbers Ready: One Set for Investors, Goals and Teams](#have-your-numbers-ready) covers defining, owning and labelling the figures a company reports.
+For application, read the chapter [Success for Whom, and for How Long?](#success-for-whom) or use [Practical Tools for Ownership and Technology Decisions](#toolkit); the chapter [Use Diligence: Your Last Chance to Shape the Plan](#use-diligence) shows the observed / reported / inferred split in use, and the chapter [Have Your Numbers Ready: One Set for Investors, Goals and Teams](#have-your-numbers-ready) covers defining, owning and labelling the figures a company reports.
 
 | Term | Plain-language meaning |
 | --- | --- |

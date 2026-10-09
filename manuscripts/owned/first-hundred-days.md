@@ -28,7 +28,7 @@ A deal can change the company’s money, its owners’ rights, the expectations 
 {id: first-hundred-days--setting-up-the-example-rotaline-after-its-growth-investment}
 ## Setting Up the Example: Rotaline After Its Growth Investment
 
-**Rotaline**, the fictional company this book follows, sells scheduling software: businesses use it to decide which of their field staff does which job, and when. Every new customer needs **onboarding**, also called **implementation**: Rotaline’s staff set the software up with that customer’s settings and data until it is ready for real use. The chapter [Use Diligence: Correct the Plan Before It Is Signed](#use-diligence) followed the investigation before a **growth investment** in Rotaline, an investment meant to pay for the company’s expansion. That investigation produced three important findings.
+**Rotaline**, the fictional company this book follows, sells scheduling software: businesses use it to decide which of their field staff does which job, and when. Every new customer needs **onboarding**, also called **implementation**: Rotaline’s staff set the software up with that customer’s settings and data until it is ready for real use. The chapter [Use Diligence: Your Last Chance to Shape the Plan](#use-diligence) followed the investigation before a **growth investment** in Rotaline, an investment meant to pay for the company’s expansion. That investigation produced three important findings.
 
 Five people and the board carry the example:
 

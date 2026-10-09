@@ -1,5 +1,5 @@
 ---
-title: "Use Diligence: Correct the Plan Before It Is Signed"
+title: "Use Diligence: Your Last Chance to Shape the Plan"
 date: 2026-09-12
 author: Željko Obrenović
 excerpt: "Help the investigation test the assumptions behind the proposed investment, turn one important finding into a recorded decision and carry it into the plan the company will be held to."

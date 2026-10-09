@@ -1,7 +1,7 @@
 {id: use-diligence}
-# 34. Use Diligence: Correct the Plan Before It Is Signed
+# 34. Use Diligence: Your Last Chance to Shape the Plan
 
-![Use Diligence: Correct the Plan Before It Is Signed — logo](private-techuity/posts/31-use-diligence/assets/images/31-use-diligence/logo.jpeg)
+![Use Diligence: Your Last Chance to Shape the Plan — logo](private-techuity/posts/31-use-diligence/assets/images/31-use-diligence/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to help **due diligence**, the investigation an investor makes into a company before investing, test the assumptions behind a proposed investment. You will use the access you actually have and turn one important finding into a recorded decision.
 

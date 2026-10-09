@@ -33,7 +33,7 @@ The tools keep their original numbers because chapters and earlier readers cite 
 | Stage | Your immediate question | Record | Teaching chapter |
 | --- | --- | --- | --- |
 | **Map** | Who receives the investment money, and who can approve the work? | Ownership, funding and decision map — [Tool 1](#toolkit--tool-1) | [Understand Funding and Control: An Investment Announcement Is Not a Budget](#understand-funding-control), [Clarify Authority: Decide Who Decides Before You Disagree](#clarify-authority) |
-| **Investigate** | What should we check before an investment, and how do we record what we found? | One-page technology thesis — [Tool 2](#toolkit--tool-2); material finding — [Tool 3](#toolkit--tool-3) | [Use Diligence: Correct the Plan Before It Is Signed](#use-diligence) |
+| **Investigate** | What should we check before an investment, and how do we record what we found? | One-page technology thesis — [Tool 2](#toolkit--tool-2); material finding — [Tool 3](#toolkit--tool-3) | [Use Diligence: Your Last Chance to Shape the Plan](#use-diligence) |
 | **Compare options** | Which combination of improvements can we fund and staff at once? | Investment choices and capacity — [Tool 12](#toolkit--tool-12) | [Set Priorities: Say No With Evidence, Not Opinion](#set-priorities) |
 | **Compare options** | A financial target is driving a design proposal; which design alternative? | Valuation-to-architecture record — [Tool 11](#toolkit--tool-11) | [Plan for Growth: Flexibility Needs a Customer and a Date](#plan-for-growth) |
 | **Commit** | Can we fund and deliver this one improvement, and who is accountable? | Funded initiative record — [Tool 5](#toolkit--tool-5) | [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days) |
@@ -55,7 +55,7 @@ Restrict distribution according to the engagement and company permissions. A fil
 {id: toolkit--followed-through}
 ## One Finding, Followed Through
 
-Everything in this section is **fictional**. Rotaline, its people and every figure are teaching examples shared with the chapters [Use Diligence: Correct the Plan Before It Is Signed](#use-diligence), [Adopt Outcome Thinking: Bridge Product Work to Investor's Numbers](#adopt-outcome-thinking), [Have Your Numbers Ready: One Set for Investors, Goals and Teams](#have-your-numbers-ready), [Set Priorities: Say No With Evidence, Not Opinion](#set-priorities), [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days), [Build and Test Resilience: Backups Are Not Enough](#build-test-resilience), [Choose the Right Help: Compare Investor Support With Other Options](#choose-right-help), [Set the Terms of Help: Agree the Work, Authority and Handover](#set-terms-of-help), [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions) and [Manage the Handover: Carry Forward the Evidence and Obligations](#manage-handover); the figures below are the same ledger those chapters use, so a number here should match the number there. The scenario states its own assumptions and does not reconcile with the annual cash bridge in the chapter [Understand Cash Flow: Confirm the Cash Before You Commit](#understand-cash-flow), and the chapter [Manage Funding Delays: Expected Money Is Not Cash](#manage-funding-delays) is a separate illustration with its own cash and dates. The chain uses the existing tools only. Read it once to see what each stage adds; then use only the stage you need.
+Everything in this section is **fictional**. Rotaline, its people and every figure are teaching examples shared with the chapters [Use Diligence: Your Last Chance to Shape the Plan](#use-diligence), [Adopt Outcome Thinking: Bridge Product Work to Investor's Numbers](#adopt-outcome-thinking), [Have Your Numbers Ready: One Set for Investors, Goals and Teams](#have-your-numbers-ready), [Set Priorities: Say No With Evidence, Not Opinion](#set-priorities), [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days), [Build and Test Resilience: Backups Are Not Enough](#build-test-resilience), [Choose the Right Help: Compare Investor Support With Other Options](#choose-right-help), [Set the Terms of Help: Agree the Work, Authority and Handover](#set-terms-of-help), [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions) and [Manage the Handover: Carry Forward the Evidence and Obligations](#manage-handover); the figures below are the same ledger those chapters use, so a number here should match the number there. The scenario states its own assumptions and does not reconcile with the annual cash bridge in the chapter [Understand Cash Flow: Confirm the Cash Before You Commit](#understand-cash-flow), and the chapter [Manage Funding Delays: Expected Money Is Not Cash](#manage-funding-delays) is a separate illustration with its own cash and dates. The chain uses the existing tools only. Read it once to see what each stage adds; then use only the stage you need.
 
 The scenario: a growth investment whose investment thesis is that Rotaline can double onboarding volume without proportional growth in implementation staff. Morgan, the investor’s technology adviser, records the finding below during diligence. On the one-page thesis (Tool 2), the “main constraint” line points at this finding rather than repeating it.
 
@@ -189,7 +189,7 @@ For fictional Rotaline, “hire two engineers after €2m arrives and the board 
 {id: toolkit--tool-2}
 ## 2. Write a One-Page Technology Thesis
 
-Use when investigating a proposed investment, then revise with the company leaders responsible for the plan after the transaction completes. See the chapter [Use Diligence: Correct the Plan Before It Is Signed](#use-diligence). The thesis summarizes and links the findings (Tool 3); it does not repeat them.
+Use when investigating a proposed investment, then revise with the company leaders responsible for the plan after the transaction completes. See the chapter [Use Diligence: Your Last Chance to Shape the Plan](#use-diligence). The thesis summarizes and links the findings (Tool 3); it does not repeat them.
 
 **Company and date:** [fill in]. **Ownership and rights:** [shareholders, control and approvals]. **Funding or transaction:** [new shares, sale, refinancing, separation or continued ownership]. **Decision and accountable company leader:** [fill in].
 
@@ -210,7 +210,7 @@ A thesis is useful if a decision-maker can explain **what would make it fail**. 
 {id: toolkit--tool-3}
 ## 3. Record a Material Diligence Finding
 
-The seven dimensions are a coverage aid: product, architecture, engineering, data and AI, security and resilience, organization, and economics. Don’t average their scores into false precision. See the chapter [Use Diligence: Correct the Plan Before It Is Signed](#use-diligence). The [D-3 record in Stage 1](#toolkit--stage-1) is a completed example.
+The seven dimensions are a coverage aid: product, architecture, engineering, data and AI, security and resilience, organization, and economics. Don’t average their scores into false precision. See the chapter [Use Diligence: Your Last Chance to Shape the Plan](#use-diligence). The [D-3 record in Stage 1](#toolkit--stage-1) is a completed example.
 
 | Field | Record |
 | --- | --- |
@@ -332,7 +332,7 @@ Sequence changes around customer continuity and scarce expertise. Show dual-runn
 {id: toolkit--tool-10}
 ## 10. Prepare a Funding or Ownership Handover
 
-Use for another round, a sale, corporate integration or a material change in authority. See the chapter [Manage the Handover: Carry Forward the Evidence and Obligations](#manage-handover) for what must travel with the work, and [Manage Funding Delays: Expected Money Is Not Cash](#manage-funding-delays) for the delayed-event plan; the chapter [Use Diligence: Correct the Plan Before It Is Signed](#use-diligence) shows what the next investor will look for. A new fundraise and an investor selling existing shares need different cash explanations. The [D-3/ONB-1 entry in Stage 6](#toolkit--stage-6) is a completed row.
+Use for another round, a sale, corporate integration or a material change in authority. See the chapter [Manage the Handover: Carry Forward the Evidence and Obligations](#manage-handover) for what must travel with the work, and [Manage Funding Delays: Expected Money Is Not Cash](#manage-funding-delays) for the delayed-event plan; the chapter [Use Diligence: Your Last Chance to Shape the Plan](#use-diligence) shows what the next investor will look for. A new fundraise and an investor selling existing shares need different cash explanations. The [D-3/ONB-1 entry in Stage 6](#toolkit--stage-6) is a completed row.
 
 | Field | Record |
 | --- | --- |
