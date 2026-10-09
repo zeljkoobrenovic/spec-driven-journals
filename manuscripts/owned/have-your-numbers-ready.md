@@ -131,7 +131,7 @@ DORA’s current guide has five delivery measures. Older sources quote the origi
 - **Failed deployment recovery time:** how long recovery from such a failed deployment takes. It does not cover every outage.
 - **Deployment rework rate:** the share of deployments that are unplanned repairs after an incident.
 
-Deploying puts a version into the live service; releasing makes it available to customers. A change can be deployed behind a switch that stays off, and released later by turning the switch on. The chapter [Assess Capability: Can the Team Deliver?](#assess-capability) covers what delivery measures can and cannot establish.
+Deploying puts a version into the live service; releasing makes it available to customers. A change can be deployed behind a switch that stays off, and released later by turning the switch on. The chapter [Assess Capability: Can Systems and Team Deliver the Plan?](#assess-capability) covers what delivery measures can and cannot establish.
 
 ![Top: a ledger with columns promised and arrived, two rows flagged, recorded when promised. Bottom: a conveyor where five boxes wait before work starts and the rest pass through build, test, release, the only part the delivery measures see, before reaching customers.](private-techuity/posts/16-have-your-numbers-ready/assets/images/16-have-your-numbers-ready/delivery-and-execution.jpeg)
 

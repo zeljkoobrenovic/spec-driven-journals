@@ -28,7 +28,7 @@ The plan funded new resources, but not the management time and decision changes 
 {id: scale-the-team-up--setting-up-the-example-a-three-week-pricing-change}
 ## Setting Up the Example: A Three-Week Pricing Change
 
-Rotaline is the fictional company this book follows; it sells scheduling software. This example starts from the finding in the chapter [Assess Capability: Can the Team Deliver?](#assess-capability), which read two clocks for a change to Rotaline’s pricing rules, the rules that decide what customers are charged. The first clock runs from the customer’s request until the change is in **production**, the live system customers use. It shows about three weeks.
+Rotaline is the fictional company this book follows; it sells scheduling software. This example starts from the finding in the chapter [Assess Capability: Can Systems and Team Deliver the Plan?](#assess-capability), which read two clocks for a change to Rotaline’s pricing rules, the rules that decide what customers are charged. The first clock runs from the customer’s request until the change is in **production**, the live system customers use. It shows about three weeks.
 
 The second clock starts at the **commit**, the moment an engineer records a version of a code change in the team’s shared version history. A commit is a record, not a finish line: recorded code need not be complete or ready for customers. The clock stops when the change is **released**, that is, put into use in production. Recording and releasing are separate events, and the second clock measures the time between them. It shows under two days.
 

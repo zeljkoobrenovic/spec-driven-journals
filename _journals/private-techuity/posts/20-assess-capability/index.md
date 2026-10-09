@@ -1,5 +1,5 @@
 ---
-title: "Assess Capability: Can the Team Deliver?"
+title: "Assess Capability: Can Systems and Team Deliver the Plan?"
 date: 2026-09-12
 author: Željko Obrenović
 excerpt: "Assess whether the technology and the team can deliver the plan: the required capability, the evidence, the strengths worth keeping, the obstacle that most limits the plan, and what a transition would cost, over what period, and when its first benefit could arrive."

@@ -31,7 +31,7 @@ Use this table to find evidence by question. A source can appear under more than
 | Governance, rights and incentives | S01, S02, S04, S61, S76 | [Clarify Authority: Decide Who Decides Before You Disagree](#clarify-authority), [Compare Incentives and Stakes: Equity, Carry and Jobs](#compare-incentives-stakes), [Scale the Team Up: Headcount Is Not Capacity](#scale-the-team-up) |
 | Trust, cooperation and team dysfunctions | S119 | [Where Investment Can Go Wrong](#where-investment-goes-wrong) |
 | Workforce reductions and employment process | S77, S78 | [Scale the Team Down: Decide What Work Stops, Not Just Who Leaves](#scale-the-team-down) |
-| Delivery, architecture and cloud cost | S13, S14, S15, S16, S53, S75, S120 | [Assess Capability: Can the Team Deliver?](#assess-capability), [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions), [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#evaluate-cloud-costs) |
+| Delivery, architecture and cloud cost | S13, S14, S15, S16, S53, S75, S120 | [Assess Capability: Can Systems and Team Deliver the Plan?](#assess-capability), [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions), [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#evaluate-cloud-costs) |
 | Security and resilience | S17 | [Build And Test Resilience: Backups Are Not Enough](#build-test-resilience) |
 | AI evidence | S18, S19, S20, S21, S63 | [Clarify AI Strategy: Separate the Bet, the Saving and the Threat](#clarify-ai-strategy) |
 | Investor support and advisers | S22, P01, P02 | [Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?](#clarify-adviser-role), [Choose the Right Help: Compare Investor Support With Other Options](#choose-right-help) |
@@ -190,7 +190,7 @@ Nicole Forsgren, Margaret-Anne Storey, Chandra Maddila, Tom Zimmermann, Brian Ho
 
 **Evidence type:** Original research framework. **Consulted scope:** Author-hosted publication page and abstract consulted; ACM page was inaccessible. Supports a multidimensional productivity frame, not a formula assigning economic value to each dimension.
 
-**Used in:** [Assess Capability: Can the Team Deliver?](#assess-capability), [Glossary](#glossary).
+**Used in:** [Assess Capability: Can Systems and Team Deliver the Plan?](#assess-capability), [Glossary](#glossary).
 
 {id: bibliography--s14-dora-metrics-guide}
 ### S14 — DORA metrics guide
@@ -199,7 +199,7 @@ DORA. [DORA's Software Delivery Performance Metrics](https://dora.dev/guides/dor
 
 **Evidence type:** Original practitioner research guidance. **Consulted scope:** Current guide consulted. Metric definitions have evolved; this draft notes five current delivery-performance metrics rather than treating the historical four as timeless.
 
-**Used in:** [Assess Capability: Can the Team Deliver?](#assess-capability), [Glossary](#glossary).
+**Used in:** [Assess Capability: Can Systems and Team Deliver the Plan?](#assess-capability), [Glossary](#glossary).
 
 {id: bibliography--s15-dora-2024-report}
 ### S15 — DORA 2024 report

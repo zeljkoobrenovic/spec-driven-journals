@@ -1,7 +1,7 @@
 {id: assess-capability}
-# 23. Assess Capability: Can the Team Deliver?
+# 23. Assess Capability: Can Systems and Team Deliver the Plan?
 
-![Assess Capability: Can the Team Deliver? — logo](private-techuity/posts/20-assess-capability/assets/images/20-assess-capability/logo.jpeg)
+![Assess Capability: Can Systems and Team Deliver the Plan? — logo](private-techuity/posts/20-assess-capability/assets/images/20-assess-capability/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to assess whether the software and the team can deliver the plan, and produce a finding that names the obstacle that most limits the plan (its **binding constraint**), the evidence, and what a transition would cost in money and time.
 

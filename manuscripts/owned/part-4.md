@@ -40,7 +40,7 @@ Whatever you commit to, keep three things visible: **the benefit you expect, how
 
 **Assess what delivery requires.**
 
-- [Assess Capability: Can the Team Deliver?](#assess-capability): what can the software and team support, and what would a transition cost?
+- [Assess Capability: Can Systems and Team Deliver the Plan?](#assess-capability): what can the software and team support, and what would a transition cost?
 
 **Revise when the money is late.**
 

@@ -46,7 +46,7 @@ The [Glossary](#glossary) covers the rest.
 | Your immediate need | Start with | Then |
 | --- | --- | --- |
 | A promised investment must become a budget | [Understand Funding and Control: An Investment Announcement Is Not a Budget](#understand-funding-control) | [Understand Cash Flow: Confirm the Cash Before You Commit](#understand-cash-flow), [Clarify Authority: Decide Who Decides Before You Disagree](#clarify-authority), [Set Priorities: Say No With Evidence, Not Opinion](#set-priorities), [Manage Funding Delays: Revise the Cash Plan and Commitments](#manage-funding-delays) |
-| A change to how the business works needs a credible case | [Set Priorities: Say No With Evidence, Not Opinion](#set-priorities) | [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions), [Assess Capability: Can the Team Deliver?](#assess-capability), the Part IV, V or VI chapter for your area, and the [Practical Tools for Ownership and Technology Decisions](#toolkit) records of an initiative and its outcome |
+| A change to how the business works needs a credible case | [Set Priorities: Say No With Evidence, Not Opinion](#set-priorities) | [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions), [Assess Capability: Can Systems and Team Deliver the Plan?](#assess-capability), the Part IV, V or VI chapter for your area, and the [Practical Tools for Ownership and Technology Decisions](#toolkit) records of an initiative and its outcome |
 | The investor has its own technology adviser (a “technology operating partner”) or a specialist in artificial intelligence (AI): software that generates text or makes predictions from patterns in data | [Work With Technology Operating Partners: Get Their Experience, Keep Your Autonomy](#technology-operating-partners) | [Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?](#clarify-adviser-role), [Set the Terms of Help: Agree the Work, Authority and Handover](#set-terms-of-help) |
 | Agree or reset how we work with the investor | [Plan Investor Support: Match the Help to Company Priorities](#plan-investor-support) | [Clarify Authority: Decide Who Decides Before You Disagree](#clarify-authority), [Set the Terms of Help: Agree the Work, Authority and Handover](#set-terms-of-help) |
 | Investor help is on offer | [Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?](#clarify-adviser-role) | [Choose the Right Help: Compare Investor Support With Other Options](#choose-right-help), [Set the Terms of Help: Agree the Work, Authority and Handover](#set-terms-of-help) |
@@ -185,7 +185,7 @@ The [Bibliography and Evidence Guide](#bibliography) records consultation scope 
 - **18.** [Set Priorities: Say No With Evidence, Not Opinion](#set-priorities)
 - **19.** [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions)
 - **20.** [Clarify AI Strategy: Separate the Bet, the Saving and the Threat](#clarify-ai-strategy)
-- **21.** [Assess Capability: Can the Team Deliver?](#assess-capability)
+- **21.** [Assess Capability: Can Systems and Team Deliver the Plan?](#assess-capability)
 - **22.** [Manage Funding Delays: Revise the Cash Plan and Commitments](#manage-funding-delays)
 
 {id: introduction--part-v-scale-change-the-team-the-systems-and-the-company-deliberately}
