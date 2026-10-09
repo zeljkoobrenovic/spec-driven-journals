@@ -1,5 +1,5 @@
 ---
-title: Bibliography and Evidence Guide
+title: Bibliography
 date: 2026-09-12
 permalink: bibliography
 excerpt: "Find the sources by topic or by chapter, understand what kind of evidence each provides and see the limits of what was consulted."

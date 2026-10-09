@@ -1,7 +1,7 @@
 {id: bibliography}
-# 46. Bibliography and Evidence Guide
+# 46. Bibliography
 
-![Bibliography and Evidence Guide — logo](private-techuity/posts/bibliography/assets/images/bibliography/logo.jpeg)
+![Bibliography — logo](private-techuity/posts/bibliography/assets/images/bibliography/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn where the book’s evidence comes from, what kind of evidence each source provides, which chapters use it and the limits of what was consulted.
 

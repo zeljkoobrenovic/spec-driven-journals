@@ -139,7 +139,7 @@ This manuscript was drafted and revised in September 2026. Its historical cases 
 
 Guides published by regulators and public development banks—publicly backed institutions that support business or economic development—underpin the descriptions of other arrangements. The comparative Rotaline exercises are my illustrations of decisions under stated assumptions. Company filings (documents formally submitted to a regulator or public registry), investors’ own accounts of events and research answer different questions; none establishes an unobserved customer or employee outcome.
 
-The [Bibliography and Evidence Guide](#bibliography) records consultation scope and evidence limits. The chapter-end “To Probe Further” lists offer optional further reading; the bibliography identifies which resources were also used as evidence. A chapter’s argument rests only on the sources cited inline.
+The [Bibliography](#bibliography) records consultation scope and evidence limits. The chapter-end “To Probe Further” lists offer optional further reading; the bibliography identifies which resources were also used as evidence. A chapter’s argument rests only on the sources cited inline.
 
 {id: introduction--contents}
 ## Contents
@@ -236,7 +236,7 @@ The [Bibliography and Evidence Guide](#bibliography) records consultation scope 
 - [Toolkit: Records That Make a Decision Concrete](#toolkit) — practical decision and support records, with one finding followed all the way through.
 - [Fund Economics: Why the Fund's Clock Shapes Your Requests](#fund-economics) — optional depth on how an investment fund’s money flows: the fees its manager charges, distributions (money the fund pays out to its own investors, which is not funding for the company) and reports on investment performance.
 - [Glossary](#glossary) — plain-language definitions and an alphabetical index.
-- [Bibliography and Evidence Guide](#bibliography) — sources, consultation dates and evidence limits.
+- [Bibliography](#bibliography) — sources, consultation dates and evidence limits.
 
 {id: introduction--a-note-on-the-writing-process-and-ai-assistance}
 ## A Note on the Writing Process and AI Assistance

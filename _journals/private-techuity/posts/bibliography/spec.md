@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-10-03
+revised: 2026-10-09
 ---
 
-# Spec: Bibliography and Evidence Guide
+# Spec: Bibliography
 
 ## Intent
 
@@ -54,6 +54,7 @@ See the bibliography and the relevant chapters. The source registry records cons
 
 ## Changelog
 
+- 2026-10-09 (retitle): At the author's request the title became "Bibliography", replacing "Bibliography and Evidence Guide", a plain label matching the glossary; the page's excerpt and opening still describe the evidence-guide role. Body unchanged. Permalink unchanged.
 - 2026-10-03: Registered S120 (Microsoft distributed data management guidance), previously mis-cited as S28 in [[plan-acquisitions-separations]]; updated stale Used-in lines for S18–S21, S24, S29, S37, S51, S107 and S108.
 - **2026-09-27 (organizational impact)** — Register the official Lencioni model summary as S119 for the new opening-guide discussion; extend the consultation window and topic index while distinguishing the source's model from the book's illustrative investment consequences.
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.

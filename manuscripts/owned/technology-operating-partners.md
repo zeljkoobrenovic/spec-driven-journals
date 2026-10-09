@@ -218,4 +218,4 @@ Part IV turns investor expectations into work the company can deliver, starting 
 - **[KKR Capstone](https://www.kkr.com/approach/capstone)** — an investment firm’s description of its operating function (S85).
 - **[Blackstone: AI at Scale](https://www.blackstone.com/insights/article/ai-at-scale-a-conversation-with-blackstones-cto-and-global-head-of-the-operating-team/)** — a dated account of specialist AI support (S86).
 
-The [Bibliography and Evidence Guide](#bibliography) records all twelve consulted sources, their interests and the limits of the evidence, including David Mackey's account of the career route into the role (S90), which this chapter no longer discusses.
+The [Bibliography](#bibliography) records all twelve consulted sources, their interests and the limits of the evidence, including David Mackey's account of the career route into the role (S90), which this chapter no longer discusses.

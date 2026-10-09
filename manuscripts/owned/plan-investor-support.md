@@ -250,4 +250,4 @@ The next chapter explores how the relationship can widen what company leaders kn
 - **[Spencer Stuart: Partners in Value Creation](https://www.spencerstuart.com/research-and-insight/partners-in-value-creation-unlocking-the-vital-bond-between-investors-and-ceos)** — expectations, support and reporting in the investor–CEO relationship (S96).
 - **[McKinsey: Five practices reshaping PE value creation](https://www.mckinsey.com/capabilities/transformation/our-insights/unlocking-full-potential-five-practices-reshaping-pe-value-creation)** — a June 2026 discussion of adaptation and dedicated execution capacity in private equity (S99).
 
-The [Bibliography and Evidence Guide](#bibliography) records the sources consulted and their limits. The blueprints, review rhythm and fictional example are the book’s proposals.
+The [Bibliography](#bibliography) records the sources consulted and their limits. The blueprints, review rhythm and fictional example are the book’s proposals.

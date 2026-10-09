@@ -168,4 +168,4 @@ Grounded Architecture is my framework, and its pages are my account of a method 
 - **[Putting Everything Together: Transforming Organizations](https://grounded-architecture.io/transforming)** — from my book *Grounded Architecture*.  
   *How the three elements combine, and the transparency claim that this appendix reads as a potential benefit for portfolio companies (S115).*
 
-The [Bibliography and Evidence Guide](#bibliography) records the consulted pages, their dates and the limits of what my account as a practitioner can establish.
+The [Bibliography](#bibliography) records the consulted pages, their dates and the limits of what my account as a practitioner can establish.

@@ -164,4 +164,4 @@ Often, learning through the investor's network shows that you **need more specif
 {id: learn-through-investors-network--to-probe-further}
 ## To Probe Further
 
-The Prosus, Balderton and Insight Partners sources above describe their own learning activities. Wenger-Trayner provides the conceptual account of communities of practice. CTO Starter Kit is my resource project. [Bibliography and Evidence Guide](#bibliography) records the consulted scope of S101–S105. The learning brief, format comparison and Northline example are proposed ways to reason about participation, not validated programmes or measured outcomes.
+The Prosus, Balderton and Insight Partners sources above describe their own learning activities. Wenger-Trayner provides the conceptual account of communities of practice. CTO Starter Kit is my resource project. [Bibliography](#bibliography) records the consulted scope of S101–S105. The learning brief, format comparison and Northline example are proposed ways to reason about participation, not validated programmes or measured outcomes.
