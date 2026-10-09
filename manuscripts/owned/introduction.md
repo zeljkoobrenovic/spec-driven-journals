@@ -234,7 +234,7 @@ The [Bibliography and Evidence Guide](#bibliography) records consultation scope 
 ### Reference Material
 
 - [Toolkit: Records That Make a Decision Concrete](#toolkit) — practical decision and support records, with one finding followed all the way through.
-- [Fund Economics: Fees, Distributions and Performance Reports](#fund-economics) — optional depth on how an investment fund’s money flows: the fees its manager charges, distributions (money the fund pays out to its own investors, which is not funding for the company) and reports on investment performance.
+- [Fund Economics: Why the Fund's Clock Shapes Your Requests](#fund-economics) — optional depth on how an investment fund’s money flows: the fees its manager charges, distributions (money the fund pays out to its own investors, which is not funding for the company) and reports on investment performance.
 - [Glossary](#glossary) — plain-language definitions and an alphabetical index.
 - [Bibliography and Evidence Guide](#bibliography) — sources, consultation dates and evidence limits.
 

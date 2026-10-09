@@ -1,5 +1,5 @@
 ---
-title: "Fund Economics: Fees, Distributions and Performance Reports"
+title: "Fund Economics: Why the Fund's Clock Shapes Your Requests"
 date: 2026-09-14
 author: Željko Obrenović
 excerpt: "Optional reference on management fees, carried interest, the distribution waterfall and the ratios in a fund performance report, and what each means for a company leader."

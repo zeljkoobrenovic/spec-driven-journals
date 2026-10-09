@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-10-03
+revised: 2026-10-09
 ---
 
-# Spec: Fund Economics: Fees, Distributions and Performance Reports
+# Spec: Fund Economics: Why the Fund's Clock Shapes Your Requests
 
 ## Intent
 
@@ -49,6 +49,7 @@ Material moved from [[understand-funding-control]] and [[understand-investor-ret
 
 ## Changelog
 
+- 2026-10-09 (retitle): At the author's request the title became "Fund Economics: Why the Fund's Clock Shapes Your Requests", replacing "Fund Economics: Fees, Distributions and Performance Reports". The subtitle states the page's point for a company leader: where a fund is in its life, and how its manager is paid, shapes the timing and kind of requests the company receives. Body unchanged. Permalink unchanged.
 - 2026-10-03: "The announcement chapter" replaced with a link to [[understand-funding-control]], where the capital-call timeline is.
 - 2026-09-27: Update cross-links for the chapter title-slug renames.
 

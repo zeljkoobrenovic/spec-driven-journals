@@ -112,7 +112,7 @@ Carve-outs, turnarounds, acquisitions and refinancing describe changes or condit
 {id: glossary--organizations}
 ## The Investment Organizations and Their Payments
 
-For the money-flow example, read the chapter [Understand Funding and Control: An Investment Announcement Is Not a Budget](#understand-funding-control). Fund terms depend on the agreement. The waterfall, preferred-return, catch-up, clawback and subscription-line rows are explained with a worked report in [Fund Economics: Fees, Distributions and Performance Reports](#fund-economics), which is optional depth for company leaders. [S01: SEC private equity guide](https://www.investor.gov/introduction-investing/investing-basics/investment-products/private-investment-funds/private-equity) [S02: ILPA principles](https://ilpa.org/wp-content/uploads/2019/06/ILPA-Principles-3.0_2019.pdf)
+For the money-flow example, read the chapter [Understand Funding and Control: An Investment Announcement Is Not a Budget](#understand-funding-control). Fund terms depend on the agreement. The waterfall, preferred-return, catch-up, clawback and subscription-line rows are explained with a worked report in [Fund Economics: Why the Fund's Clock Shapes Your Requests](#fund-economics), which is optional depth for company leaders. [S01: SEC private equity guide](https://www.investor.gov/introduction-investing/investing-basics/investment-products/private-investment-funds/private-equity) [S02: ILPA principles](https://ilpa.org/wp-content/uploads/2019/06/ILPA-Principles-3.0_2019.pdf)
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -220,7 +220,7 @@ The chapter [Understand Valuation: An Estimate, Not a Fact](#understand-valuatio
 {id: glossary--returns}
 ## Value and Investment Returns
 
-Read the chapter [Understand Investor Returns: Same Performance, Different Outcomes](#understand-investor-returns) for the worked investment and [Understand Valuation: An Estimate, Not a Fact](#understand-valuation) for valuation techniques. The fund performance ratios (DPI, RVPI, TVPI) and gross versus net returns are worked through in [Fund Economics: Fees, Distributions and Performance Reports](#fund-economics). [S03: Buyout overview](https://www.nber.org/system/files/working_papers/w14207/w14207.pdf) [S05: ILPA performance guidance](https://ilpa.org/industry-guidance/templates-standards-model-documents/ilpa-templates-hub/ilpa-performance-template/) [S52: IPEV valuation guidelines](https://www.privateequityvaluation.com/Portals/0/Documents/Guidelines/2025%20IPEV%20Valuation%20Guidelines.pdf)
+Read the chapter [Understand Investor Returns: Same Performance, Different Outcomes](#understand-investor-returns) for the worked investment and [Understand Valuation: An Estimate, Not a Fact](#understand-valuation) for valuation techniques. The fund performance ratios (DPI, RVPI, TVPI) and gross versus net returns are worked through in [Fund Economics: Why the Fund's Clock Shapes Your Requests](#fund-economics). [S03: Buyout overview](https://www.nber.org/system/files/working_papers/w14207/w14207.pdf) [S05: ILPA performance guidance](https://ilpa.org/industry-guidance/templates-standards-model-documents/ilpa-templates-hub/ilpa-performance-template/) [S52: IPEV valuation guidelines](https://www.privateequityvaluation.com/Portals/0/Documents/Guidelines/2025%20IPEV%20Valuation%20Guidelines.pdf)
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -245,7 +245,7 @@ Read the chapter [Understand Investor Returns: Same Performance, Different Outco
 | RVPI | Residual value to paid-in capital: the fund’s remaining net asset value at its current estimate, divided by fund investors’ contributions. An estimate, not money received. |
 | TVPI | Total value to paid-in capital: distributions plus remaining estimated value, divided by contributions. With consistent definitions, TVPI = DPI + RVPI. |
 | Gross return / net return | Return before / after specified fees and deductions. Name the investor whose return is measured and the deductions included. |
-| Retained investment value | The estimated value of the interest an investor still holds after a partial sale, or after reinvesting in a transaction. It remains a valuation until that interest is sold; a total that adds it to cash received mixes an estimate with money ([TeamSystem: Four Owners, One Continuing Business](#teamsystem), [Fund Economics: Fees, Distributions and Performance Reports](#fund-economics)). |
+| Retained investment value | The estimated value of the interest an investor still holds after a partial sale, or after reinvesting in a transaction. It remains a valuation until that interest is sold; a total that adds it to cash received mixes an estimate with money ([TeamSystem: Four Owners, One Continuing Business](#teamsystem), [Fund Economics: Why the Fund's Clock Shapes Your Requests](#fund-economics)). |
 
 {id: glossary--transactions}
 ## Transactions and Incentives

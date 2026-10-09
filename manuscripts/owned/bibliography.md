@@ -26,7 +26,7 @@ Use this table to find evidence by question. A source can appear under more than
 
 | Topic | Identifiers | Start with |
 | --- | --- | --- |
-| Valuation, earnings measures and investor returns | S03, S04, S05, S06, S52, S53, S73, S74 | [Understand Valuation: An Estimate, Not a Fact](#understand-valuation), [Understand Investor Returns: Same Performance, Different Outcomes](#understand-investor-returns), [Fund Economics: Fees, Distributions and Performance Reports](#fund-economics) |
+| Valuation, earnings measures and investor returns | S03, S04, S05, S06, S52, S53, S73, S74 | [Understand Valuation: An Estimate, Not a Fact](#understand-valuation), [Understand Investor Returns: Same Performance, Different Outcomes](#understand-investor-returns), [Fund Economics: Why the Fund's Clock Shapes Your Requests](#fund-economics) |
 | Cash, funding forms and financing documents | S01, S02, S07, S54, S55, S56, S57, S58, S59, S60, S61, S72 | [Understand Expectations: Customers, Lenders and Investors](#understand-expectations), [Understand Funding and Control: An Investment Announcement Is Not a Budget](#understand-funding-control), [Understand Cash Flow: Confirm the Cash Before You Commit](#understand-cash-flow) |
 | Governance, rights and incentives | S01, S02, S04, S61, S76 | [Clarify Authority: Decide Who Decides Before You Disagree](#clarify-authority), [Compare Incentives and Stakes: Equity, Carry and Jobs](#compare-incentives-stakes), [Scale the Team Up: Headcount Is Not Capacity](#scale-the-team-up) |
 | Trust, cooperation and team dysfunctions | S119 | [Where Investment Can Go Wrong](#where-investment-goes-wrong) |
@@ -82,7 +82,7 @@ U.S. Securities and Exchange Commission, Investor.gov. [Private Equity Funds](ht
 
 **Evidence type:** Regulator education. **Consulted scope:** Guide consulted for fund structure, investment forms, illiquidity, and investor considerations. An introduction, not a particular fund agreement. Rechecked September 13, 2026 for the distinction between controlling and minority investment strategies. Fees, expense allocation and portfolio-company service-payment conflicts rechecked September 21, 2026 for the operating-model chapter; the guide does not determine a particular company’s charging arrangement.
 
-**Used in:** [Understand Expectations: Customers, Lenders and Investors](#understand-expectations), [Understand Funding and Control: An Investment Announcement Is Not a Budget](#understand-funding-control), [Fund Economics: Fees, Distributions and Performance Reports](#fund-economics), [Glossary](#glossary), [Plan Investor Support: Match the Help to Company Priorities](#plan-investor-support).
+**Used in:** [Understand Expectations: Customers, Lenders and Investors](#understand-expectations), [Understand Funding and Control: An Investment Announcement Is Not a Budget](#understand-funding-control), [Fund Economics: Why the Fund's Clock Shapes Your Requests](#fund-economics), [Glossary](#glossary), [Plan Investor Support: Match the Help to Company Priorities](#plan-investor-support).
 
 {id: bibliography--s02-ilpa-principles}
 ### S02 — ILPA principles
@@ -118,7 +118,7 @@ Institutional Limited Partners Association (ILPA). [ILPA Performance Template](h
 
 **Evidence type:** Industry methodology. **Consulted scope:** Template landing page and January 22, 2025 launch announcement consulted for scope and methodology. The manuscript's simplified calculations are its own examples, not claims of completed template compliance.
 
-**Used in:** [Fund Economics: Fees, Distributions and Performance Reports](#fund-economics), [Glossary](#glossary).
+**Used in:** [Fund Economics: Why the Fund's Clock Shapes Your Requests](#fund-economics), [Glossary](#glossary).
 
 {id: bibliography--s06-sec-non-gaap-guidance}
 ### S06 — SEC non-GAAP guidance
@@ -721,7 +721,7 @@ Institutional Limited Partners Association (ILPA). [ILPA Model Limited Partnersh
 
 **Evidence type:** LP industry model document. **Consulted scope:** The distribution waterfall at sections 14.3.3 and 14.3.4, read for a partial general-partner catch-up that keeps the same end condition, and section 14.4.1 on distributions in kind and the treatment of remaining value. A voluntary model drafted under Delaware law from the LP side; it is not the agreement any particular fund signed and not evidence of prevailing market terms.
 
-**Used in:** [Fund Economics: Fees, Distributions and Performance Reports](#fund-economics).
+**Used in:** [Fund Economics: Why the Fund's Clock Shapes Your Requests](#fund-economics).
 
 {id: bibliography--s74-ilpa-deal-by-deal-model-lpa}
 ### S74 — ILPA deal-by-deal model LPA
@@ -730,7 +730,7 @@ Institutional Limited Partners Association (ILPA). [ILPA Model Limited Partnersh
 
 **Evidence type:** LP industry model document. **Consulted scope:** The resource page was consulted to establish that ILPA publishes model agreements for both a whole-of-fund and a deal-by-deal distribution waterfall, which is the point the chapter rests on. The deal-by-deal document itself was not read clause by clause. Publishing two models does not make either the rule for any fund.
 
-**Used in:** [Fund Economics: Fees, Distributions and Performance Reports](#fund-economics).
+**Used in:** [Fund Economics: Why the Fund's Clock Shapes Your Requests](#fund-economics).
 
 {id: bibliography--s75-fastly-fourth-quarter-2020-shareholder-letter}
 ### S75 — Fastly fourth-quarter 2020 shareholder letter
