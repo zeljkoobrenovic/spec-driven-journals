@@ -44,7 +44,7 @@ Whatever you commit to, keep three things visible: **the benefit you expect, how
 
 **Revise when the money is late.**
 
-- [Manage Funding Delays: Revise the Cash Plan and Commitments](#manage-funding-delays): when expected money arrives late, which commitments must change, by what date, and which fallback does the board choose?
+- [Manage Funding Delays: Expected Money Is Not Cash](#manage-funding-delays): when expected money arrives late, which commitments must change, by what date, and which fallback does the board choose?
 
 By the end, you should be able to explain which work deserves money and people, what you can responsibly commit to, and what evidence would change the plan. Benefit here includes customer results and capability, not only money.
 

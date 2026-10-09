@@ -45,7 +45,7 @@ The [Glossary](#glossary) covers the rest.
 
 | Your immediate need | Start with | Then |
 | --- | --- | --- |
-| A promised investment must become a budget | [Understand Funding and Control: An Investment Announcement Is Not a Budget](#understand-funding-control) | [Understand Cash Flow: Confirm the Cash Before You Commit](#understand-cash-flow), [Clarify Authority: Decide Who Decides Before You Disagree](#clarify-authority), [Set Priorities: Say No With Evidence, Not Opinion](#set-priorities), [Manage Funding Delays: Revise the Cash Plan and Commitments](#manage-funding-delays) |
+| A promised investment must become a budget | [Understand Funding and Control: An Investment Announcement Is Not a Budget](#understand-funding-control) | [Understand Cash Flow: Confirm the Cash Before You Commit](#understand-cash-flow), [Clarify Authority: Decide Who Decides Before You Disagree](#clarify-authority), [Set Priorities: Say No With Evidence, Not Opinion](#set-priorities), [Manage Funding Delays: Expected Money Is Not Cash](#manage-funding-delays) |
 | A change to how the business works needs a credible case | [Set Priorities: Say No With Evidence, Not Opinion](#set-priorities) | [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions), [Assess Capability: Can Systems and Team Deliver the Plan?](#assess-capability), the Part IV, V or VI chapter for your area, and the [Practical Tools for Ownership and Technology Decisions](#toolkit) records of an initiative and its outcome |
 | The investor has its own technology adviser (a “technology operating partner”) or a specialist in artificial intelligence (AI): software that generates text or makes predictions from patterns in data | [Work With Technology Operating Partners: Get Their Experience, Keep Your Autonomy](#technology-operating-partners) | [Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?](#clarify-adviser-role), [Set the Terms of Help: Agree the Work, Authority and Handover](#set-terms-of-help) |
 | Agree or reset how we work with the investor | [Plan Investor Support: Match the Help to Company Priorities](#plan-investor-support) | [Clarify Authority: Decide Who Decides Before You Disagree](#clarify-authority), [Set the Terms of Help: Agree the Work, Authority and Handover](#set-terms-of-help) |
@@ -58,7 +58,7 @@ The [Glossary](#glossary) covers the rest.
 | Investor requests compete with customer needs | [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions) | [Clarify Authority: Decide Who Decides Before You Disagree](#clarify-authority), [Assess Investor Fit: Behavior Under Pressure](#assess-investor-fit), [Success for Whom, and for How Long?](#success-for-whom) |
 | A business that has invested in us wants to connect its systems to ours, or wants access to our data | [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#plan-acquisitions-separations) | [Build And Test Resilience: Backups Are Not Enough](#build-test-resilience), [Set the Terms of Help: Agree the Work, Authority and Handover](#set-terms-of-help) |
 | The investor wants a leadership change | [Clarify Authority: Decide Who Decides Before You Disagree](#clarify-authority) | [Scale the Team Up: Headcount Is Not Capacity](#scale-the-team-up), [Choose the Right Help: Compare Investor Support With Other Options](#choose-right-help), [Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?](#clarify-adviser-role) |
-| We must reduce the number of employees | [Manage Funding Delays: Revise the Cash Plan and Commitments](#manage-funding-delays) | [Scale the Team Down: Decide What Work Stops, Not Just Who Leaves](#scale-the-team-down), then [Compare Incentives and Stakes: Equity, Carry and Jobs](#compare-incentives-stakes) on how three different rewards shape what people push for: the managers’ ownership shares, the fund manager’s carry and employees’ jobs; then the [Practical Tools for Ownership and Technology Decisions](#toolkit) workforce-decision record |
+| We must reduce the number of employees | [Manage Funding Delays: Expected Money Is Not Cash](#manage-funding-delays) | [Scale the Team Down: Decide What Work Stops, Not Just Who Leaves](#scale-the-team-down), then [Compare Incentives and Stakes: Equity, Carry and Jobs](#compare-incentives-stakes) on how three different rewards shape what people push for: the managers’ ownership shares, the fund manager’s carry and employees’ jobs; then the [Practical Tools for Ownership and Technology Decisions](#toolkit) workforce-decision record |
 
 {id: introduction--owners-rights-funding-and-change}
 ## Owners, Rights, Funding, and Change
@@ -123,7 +123,7 @@ The main shared example is an exception. It follows one finding—that onboardin
 
 The [Practical Tools for Ownership and Technology Decisions](#toolkit) shows the record those chapters write, stage by stage.
 
-The delayed-financing chapter ([Manage Funding Delays: Revise the Cash Plan and Commitments](#manage-funding-delays)) and the staff-reduction chapter that continues it ([Scale the Team Down: Decide What Work Stops, Not Just Who Leaves](#scale-the-team-down)) form a separate, connected example. They show how a dated **cash forecast**—a month-by-month estimate of money coming in, going out and the balance left—changes commitments when expected money arrives late. They also show when a staff reduction requires payments and when its savings begin. This example has its own cash figures, spending rate, people and dates; its figures do not add to the main example’s. “€m” means millions of euros.
+The delayed-financing chapter ([Manage Funding Delays: Expected Money Is Not Cash](#manage-funding-delays)) and the staff-reduction chapter that continues it ([Scale the Team Down: Decide What Work Stops, Not Just Who Leaves](#scale-the-team-down)) form a separate, connected example. They show how a dated **cash forecast**—a month-by-month estimate of money coming in, going out and the balance left—changes commitments when expected money arrives late. They also show when a staff reduction requires payments and when its savings begin. This example has its own cash figures, spending rate, people and dates; its figures do not add to the main example’s. “€m” means millions of euros.
 
 {id: introduction--choose-a-reading-format}
 ## Choose a Reading Format
@@ -186,7 +186,7 @@ The [Bibliography and Evidence Guide](#bibliography) records consultation scope 
 - **19.** [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions)
 - **20.** [Clarify AI Strategy: Separate the Bet, the Saving and the Threat](#clarify-ai-strategy)
 - **21.** [Assess Capability: Can Systems and Team Deliver the Plan?](#assess-capability)
-- **22.** [Manage Funding Delays: Revise the Cash Plan and Commitments](#manage-funding-delays)
+- **22.** [Manage Funding Delays: Expected Money Is Not Cash](#manage-funding-delays)
 
 {id: introduction--part-v-scale-change-the-team-the-systems-and-the-company-deliberately}
 ### Part V — SCALE: Change the Team, the Systems and the Company Deliberately

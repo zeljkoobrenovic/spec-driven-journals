@@ -1,7 +1,7 @@
 {id: manage-funding-delays}
-# 24. Manage Funding Delays: Revise the Cash Plan and Commitments
+# 24. Manage Funding Delays: Expected Money Is Not Cash
 
-![Manage Funding Delays: Revise the Cash Plan and Commitments — logo](private-techuity/posts/21-manage-funding-delays/assets/images/21-manage-funding-delays/logo.jpeg)
+![Manage Funding Delays: Expected Money Is Not Cash — logo](private-techuity/posts/21-manage-funding-delays/assets/images/21-manage-funding-delays/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Follow one fictional company, Rotaline, whose new investment was expected in September and now looks likely in December. Learn to name how far the money has got, put cash and commitments on a calendar, and choose one fallback in time.
 

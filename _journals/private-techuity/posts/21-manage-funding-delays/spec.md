@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-10-03
+revised: 2026-10-09
 ---
 
-# Spec: Planning on Money That Hasn't Arrived
+# Spec: Manage Funding Delays: Expected Money Is Not Cash
 
 ## Intent
 
@@ -58,6 +58,7 @@ The supplied book brief establishes scope, including the shared Rotaline delayed
 
 ## Changelog
 
+- 2026-10-09 (retitle): At the author's request the title became "Manage Funding Delays: Expected Money Is Not Cash", leading with the mistake the chapter exists to stop instead of the paperwork. Permalink unchanged.
 - 2026-10-03: Closing now hands off to Part V ([[part-5]], [[scale-the-team-up]]), the next part in reading order. Article only.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.

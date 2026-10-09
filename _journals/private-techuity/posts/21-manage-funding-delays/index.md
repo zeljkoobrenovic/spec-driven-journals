@@ -1,5 +1,5 @@
 ---
-title: "Manage Funding Delays: Revise the Cash Plan and Commitments"
+title: "Manage Funding Delays: Expected Money Is Not Cash"
 date: 2026-09-12
 author: Željko Obrenović
 excerpt: "When expected money arrives late, whether new investment, a new loan or a budget from a parent company, revise the dated cash plan and the commitments that depend on it before the last date a decision can still change them."

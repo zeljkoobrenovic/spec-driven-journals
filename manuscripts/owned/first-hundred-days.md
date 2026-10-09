@@ -242,7 +242,7 @@ The handover record carries D-3 and ONB-1 forward with the baseline, the committ
 
 Completing every planned task is not success if the tasks addressed the wrong constraint. Revising a major assumption is a valuable outcome even when it reduces the original growth forecast, and the review should reward that judgment rather than the preservation of the deal story. The early period should leave a plan whose accountable leaders understand the work, whose funding and capacity are credible, and whose assumptions can be reviewed.
 
-The plan above assumes the money it was built on arrives when expected. The chapter [Manage Funding Delays: Revise the Cash Plan and Commitments](#manage-funding-delays), in Part IV, takes the same kind of dated plan and asks what changes when financing slips. The continuing obligations this plan creates, including D-3 with its baseline and open work, are handed to the next owner in the next chapter, [Manage the Handover: Carry Forward the Evidence and Obligations](#manage-handover).
+The plan above assumes the money it was built on arrives when expected. The chapter [Manage Funding Delays: Expected Money Is Not Cash](#manage-funding-delays), in Part IV, takes the same kind of dated plan and asks what changes when financing slips. The continuing obligations this plan creates, including D-3 with its baseline and open work, are handed to the next owner in the next chapter, [Manage the Handover: Carry Forward the Evidence and Obligations](#manage-handover).
 
 {id: first-hundred-days--questions-to-consider}
 ## Questions to Consider
