@@ -1,5 +1,5 @@
 ---
-title: "Visma: Continuity of Manager Is Not Continuity of Money"
+title: "Visma: The Manager Stayed, the Owners Changed"
 date: 2026-09-12
 author: Željko Obrenović
 excerpt: "Visma's December 2023 share sale valued the software group at €19 billion and brought in about 20 new investors, while Hg stayed involved. Its 33 acquisitions in 2024 raise a second question: which costs are included in reported profit?"

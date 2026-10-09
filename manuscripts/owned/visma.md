@@ -1,7 +1,7 @@
 {id: visma}
-# 38. Visma: Continuity of Manager Is Not Continuity of Money
+# 38. Visma: The Manager Stayed, the Owners Changed
 
-![Visma: Continuity of Manager Is Not Continuity of Money — logo](private-techuity/posts/35-visma/assets/images/35-visma/logo.jpeg)
+![Visma: The Manager Stayed, the Owners Changed — logo](private-techuity/posts/35-visma/assets/images/35-visma/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Follow the investors entering and leaving Visma from 2006 to 2023, then examine its 33 acquisitions in 2024 and the €11.665 million adjustment that changes its reported profit for that year.
 

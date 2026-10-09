@@ -142,7 +142,7 @@ The consulted material dates the technology events: OnQ before the Hilton buyout
 
 **Hilton asks whether the company has financing and time for the operating plan. Skype asks whether it controls the rights the product depends on and what a buyer values. Neither answer can be read from the exit price alone.**
 
-Both cases end with a completed sale. The next case asks what a leader should recheck when the sale is a secondary one, meaning one investor sells its stake to another investor, and the familiar investment manager stays while the money behind it changes: [Visma: Continuity of Manager Is Not Continuity of Money](#visma).
+Both cases end with a completed sale. The next case asks what a leader should recheck when the sale is a secondary one, meaning one investor sells its stake to another investor, and the familiar investment manager stays while the money behind it changes: [Visma: The Manager Stayed, the Owners Changed](#visma).
 
 {id: hilton-and-skype--questions-to-consider}
 ## Questions to Consider

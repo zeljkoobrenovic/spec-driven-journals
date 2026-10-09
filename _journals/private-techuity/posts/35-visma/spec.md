@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-09-28
+revised: 2026-10-09
 ---
 
-# Spec: Visma: Continuity of Manager Is Not Continuity of Money
+# Spec: Visma: The Manager Stayed, the Owners Changed
 
 ## Intent
 
@@ -65,6 +65,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-10-09 (retitle): At the author's request the title became "Visma: The Manager Stayed, the Owners Changed", replacing "Visma: Continuity of Manager Is Not Continuity of Money". The subtitle now states the case's fact plainly: Hg stayed as investment manager while the investors behind it changed. Body unchanged. Permalink unchanged.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-26: Put the 2023 transaction, changing investors, 2024 acquisition program and earnings comparison ahead of the general advice in the opening and summary. Preserve the evidence limits and stable permalink.

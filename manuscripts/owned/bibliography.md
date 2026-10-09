@@ -41,7 +41,7 @@ Use this table to find evidence by question. A source can appear under more than
 | Technology operating partners, leadership roles and AI support | S79–S90 | [Work With Technology Operating Partners: Get Their Experience, Keep Your Autonomy](#technology-operating-partners) |
 | Operating-model blueprints and investor–company working arrangements | S01, S91–S100 | [Plan Investor Support: Match the Help to Company Priorities](#plan-investor-support) |
 | Case: Hilton and Skype | S23, S24, S25, S26, S27, S28, S29, S64, S65, S116, S117 | [Hilton and Skype: What the Exit Price Does Not Show](#hilton-and-skype) |
-| Case: Visma | S30, S31, S32, S33, S43, S44, S62 | [Visma: Continuity of Manager Is Not Continuity of Money](#visma) |
+| Case: Visma | S30, S31, S32, S33, S43, S44, S62 | [Visma: The Manager Stayed, the Owners Changed](#visma) |
 | Case: Toys R Us | S34, S35, S36, S37, S40, S41, S50, S51, S118 | [Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us) |
 | Case: TeamSystem | S45, S46, S47, S48, S49, S66, S67, S68, S69, S70, S71 | [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem) |
 | Wider research on ownership outcomes | S08, S09, S10, S11, S12, S39, S42 | [Success for Whom, and for How Long?](#success-for-whom) |
@@ -343,7 +343,7 @@ Visma. [Visma Attracts New Investors for Further International Expansion in a Tr
 
 **Evidence type:** Company transaction announcement. **Consulted scope:** Transaction valuation, investors, and ownership narrative consulted. Valuation is not proof of cash realized by a particular fund.
 
-**Used in:** [Visma: Continuity of Manager Is Not Continuity of Money](#visma), [Manage the Handover: What the Next Owner Inherits](#manage-handover).
+**Used in:** [Visma: The Manager Stayed, the Owners Changed](#visma), [Manage the Handover: What the Next Owner Inherits](#manage-handover).
 
 {id: bibliography--s31-visma-q4-2024-report}
 ### S31 — Visma Q4 2024 report
@@ -352,7 +352,7 @@ Visma. [Quarterly Report 2024 Q4](https://cdn.prod.website-files.com/69787181d87
 
 **Evidence type:** Company financial report. **Consulted scope:** Selected highlights, key figures, financial review, M&A and technology narrative, and definitions on p. 23 consulted. Full-year revenue/EBITDA and before-tax free-cash-flow definitions use this contemporaneous report consistently.
 
-**Used in:** [Visma: Continuity of Manager Is Not Continuity of Money](#visma), [Glossary](#glossary).
+**Used in:** [Visma: The Manager Stayed, the Owners Changed](#visma), [Glossary](#glossary).
 
 {id: bibliography--s32-visma-annual-report-announcement}
 ### S32 — Visma annual-report announcement
@@ -361,7 +361,7 @@ Visma. [Visma Releases Annual and Sustainability Reports for 2024](https://www.v
 
 **Evidence type:** Interested company account. **Consulted scope:** Announcement consulted for acquisition, R&D, and operating-model claims. Not a claim to have read both complete annual and sustainability reports or independently verified their impact.
 
-**Used in:** [Visma: Continuity of Manager Is Not Continuity of Money](#visma).
+**Used in:** [Visma: The Manager Stayed, the Owners Changed](#visma).
 
 {id: bibliography--s33-visma-current-financials-page}
 ### S33 — Visma current financials page
@@ -370,7 +370,7 @@ Visma. [Financial Results](https://www.visma.com/investors/financials). Living p
 
 **Evidence type:** Company financial presentation. **Consulted scope:** Financials landing page inspected September 12, 2026. Its rounded EUR 904 million adjusted EBITDA for 2024 is reconciled using S43–S44: EUR 892.646 million EBITDA plus EUR 11.665 million M&A expenses equals EUR 904.311 million adjusted EBITDA. The page is a current presentation of historical figures, not a new operating result.
 
-**Used in:** [Visma: Continuity of Manager Is Not Continuity of Money](#visma).
+**Used in:** [Visma: The Manager Stayed, the Owners Changed](#visma).
 
 {id: bibliography--s34-toys-r-us-annual-filing-excerpts}
 ### S34 — Toys R Us annual filing excerpts
@@ -451,7 +451,7 @@ Visma. [Annual Report 2024](https://cdn.prod.website-files.com/69787181d8720ea08
 
 **Evidence type:** Company annual report. **Consulted scope:** Complete PDF obtained and text extracted; selected key figures and Note 2, pp. 50 and 52, read for 2024 EBITDA of EUR 892.646 million and its reconciliation. Not every note reviewed. The operating outcome is historical, not a current valuation.
 
-**Used in:** [Visma: Continuity of Manager Is Not Continuity of Money](#visma).
+**Used in:** [Visma: The Manager Stayed, the Owners Changed](#visma).
 
 {id: bibliography--s44-visma-2025-annual-report}
 ### S44 — Visma 2025 annual report
@@ -460,7 +460,7 @@ Visma. [Annual Report 2025](https://cdn.prod.website-files.com/69787181d8720ea08
 
 **Evidence type:** Company annual report. **Consulted scope:** Complete PDF obtained and text extracted. Selected key figures, signature date, and alternative-performance-measure reconciliation on p. 96 consulted. The 2024 comparative adds EUR 11.665 million of M&A expenses, producing adjusted EBITDA of EUR 904.311 million. Also inspected definitions and the separate go-forward perimeter presentation; no claim to have reviewed all 2025 operations.
 
-**Used in:** [Visma: Continuity of Manager Is Not Continuity of Money](#visma).
+**Used in:** [Visma: The Manager Stayed, the Owners Changed](#visma).
 
 {id: bibliography--s45-palamon-teamsystem-case}
 ### S45 — Palamon TeamSystem case
@@ -622,7 +622,7 @@ Hg. [Hg leads $5.3bn buyout of Visma](https://hgcapital.com/insights/hg-leads-us
 
 **Evidence type:** Investment manager's transaction announcement. **Consulted scope:** The announcement was read in full for the funds named for the 2006 and 2014 investments, the 2017 buyout value, KKR's realization of its stake and the stated post-transaction ownership shares. The announcement states that completion is subject to regulatory approval. An interested account of announced terms, not an audited record; it does not state who sold in each round or how much money reached the operating company.
 
-**Used in:** [Visma: Continuity of Manager Is Not Continuity of Money](#visma).
+**Used in:** [Visma: The Manager Stayed, the Owners Changed](#visma).
 
 {id: bibliography--s63-oecd-ai-system-definition-memorandum}
 ### S63 — OECD AI-system definition memorandum
