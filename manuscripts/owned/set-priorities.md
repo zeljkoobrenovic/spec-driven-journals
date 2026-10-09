@@ -130,7 +130,7 @@ Restoration had been approved at €80,000 and four engineer-weeks. By the day-4
 
 The test failed both parts of the requirement. The service came back after eleven hours against the agreed four, for two reasons. The account that could read the backups belonged to an engineer who had left, so nobody held a working **credential**, the information that proves someone may access a system. And the backup could only be loaded by the version of the database software it was made with, which could no longer be installed. (The database stores and organizes the application’s data.)
 
-When the service did come back, its data was from the previous night. The fifteen-minute backups existed, but nobody had written down the step that applies them, so a night of schedule updates was lost against an allowed fifteen minutes. The chapter [Build And Test Resilience: Backups Are Not Enough](#build-test-resilience) walks through the failure.
+When the service did come back, its data was from the previous night. The fifteen-minute backups existed, but nobody had written down the step that applies them, so a night of schedule updates was lost against an allowed fifteen minutes. The chapter [Build and Test Resilience: Backups Are Not Enough](#build-test-resilience) walks through the failure.
 
 The €80,000 and four weeks are **sunk cost**: resources already spent that can’t be recovered. They belong in the record, but they are not a reason to spend more. The next commitment depends on remaining costs and expected benefits, and here the obligation has not gone away.
 

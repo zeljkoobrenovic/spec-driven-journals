@@ -145,7 +145,7 @@ The engineering leader owns these outright, and here the absence of a number is 
 | Measure | What it tells you | Where it misleads |
 | --- | --- | --- |
 | **Reliability** against an agreed objective, and **incidents** (failures that reach customers) with their impact | Whether customers can count on the service | Uptime, the share of time a service is available, says nothing about the failure that mattered |
-| **Recovery tested** — the date and result of the last restore test | Whether the company can actually bring the service back | A backup that has never been restored is not evidence ([Build And Test Resilience: Backups Are Not Enough](#build-test-resilience)) |
+| **Recovery tested** — the date and result of the last restore test | Whether the company can actually bring the service back | A backup that has never been restored is not evidence ([Build and Test Resilience: Backups Are Not Enough](#build-test-resilience)) |
 | **Security findings** (known weaknesses) by severity and age | The protections in place and the obligations still open | A count without age hides the finding that has been open for a year |
 | **Technology cost** per customer and as a share of revenue | Whether the cloud bill and software licence fees grow slower than the business | A total not split by product or customer cannot be weighed against the value they bring ([Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#evaluate-cloud-costs)) |
 | **Technical debt register** | Where past shortcuts now slow specific future work | A general complaint about quality is not a register ([Manage Technical Debt: Present the Fix by What It Buys](#manage-technical-debt)) |

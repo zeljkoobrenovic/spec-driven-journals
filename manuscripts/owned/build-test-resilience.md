@@ -1,7 +1,7 @@
 {id: build-test-resilience}
-# 31. Build And Test Resilience: Backups Are Not Enough
+# 31. Build and Test Resilience: Backups Are Not Enough
 
-![Build And Test Resilience: Backups Are Not Enough — logo](private-techuity/posts/28-build-test-resilience/assets/images/28-build-test-resilience/logo.jpeg)
+![Build and Test Resilience: Backups Are Not Enough — logo](private-techuity/posts/28-build-test-resilience/assets/images/28-build-test-resilience/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to state a recovery objective in ordinary language, judge a restore test against it, fund the corrective work, retest and record the exposure that remains.
 

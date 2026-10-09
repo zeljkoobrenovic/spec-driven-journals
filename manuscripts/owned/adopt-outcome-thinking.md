@@ -158,7 +158,7 @@ The outcome record decides what enters each slice. An item enters by one of thre
 - **It protects an outcome or meets an obligation** the company has. The recovery objective is the example: a company that cannot restore its scheduling service will not keep the customers it has.
 - **It tests an assumption** the record depends on, such as an experiment that could disprove the link from a fast start to renewal.
 
-Obligations and safeguards enter the operation slice by the second route, each with its own record. The recovery objective’s record is the chapter [Build And Test Resilience: Backups Are Not Enough](#build-test-resilience), owned by Alex. An item that does none of the three does not enter at all. The allocation itself is revisited when an obligation or the evidence changes.
+Obligations and safeguards enter the operation slice by the second route, each with its own record. The recovery objective’s record is the chapter [Build and Test Resilience: Backups Are Not Enough](#build-test-resilience), owned by Alex. An item that does none of the three does not enter at all. The allocation itself is revisited when an obligation or the evidence changes.
 
 {id: adopt-outcome-thinking--what-outcome-thinking-costs}
 ## What Outcome Thinking Costs

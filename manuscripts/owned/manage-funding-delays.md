@@ -67,7 +67,7 @@ The second step sorts spending commitments by whether they can still be changed,
 
 | Group | Items | Status |
 | --- | --- | --- |
-| Protected obligations | Customer contracts; the agreed recovery requirement (dispatch resumes within four hours, see [Build And Test Resilience: Backups Are Not Enough](#build-test-resilience)) | Not optional; every alternative must pay for them |
+| Protected obligations | Customer contracts; the agreed recovery requirement (dispatch resumes within four hours, see [Build and Test Resilience: Backups Are Not Enough](#build-test-resilience)) | Not optional; every alternative must pay for them |
 | Committed and continuing | The onboarding pilot and the recovery work | Already inside the €200,000 monthly burn |
 | Planned, not yet committed | Two hires starting 1 September (€30,000 a month for the two together); the portal contract, €120,000 | Can still be changed until 16 August |
 

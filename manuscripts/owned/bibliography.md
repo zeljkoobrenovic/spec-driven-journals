@@ -32,7 +32,7 @@ Use this table to find evidence by question. A source can appear under more than
 | Trust, cooperation and team dysfunctions | S119 | [Where Investment Can Go Wrong](#where-investment-goes-wrong) |
 | Workforce reductions and employment process | S77, S78 | [Scale the Team Down: A Cut Is a Number, Not a Plan](#scale-the-team-down) |
 | Delivery, architecture and cloud cost | S13, S14, S15, S16, S53, S75, S120 | [Assess Capability: Can Systems and Team Deliver the Plan?](#assess-capability), [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions), [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#evaluate-cloud-costs) |
-| Security and resilience | S17 | [Build And Test Resilience: Backups Are Not Enough](#build-test-resilience) |
+| Security and resilience | S17 | [Build and Test Resilience: Backups Are Not Enough](#build-test-resilience) |
 | AI evidence | S18, S19, S20, S21, S63 | [Clarify AI Strategy: Separate the Bet, the Saving and the Threat](#clarify-ai-strategy) |
 | Investor support and advisers | S22, P01, P02 | [Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?](#clarify-adviser-role), [Choose the Right Help: Compare Investor Support With Other Options](#choose-right-help) |
 | Investor-organized learning, peer communities and shared resources | S101–S105 | [Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives](#learn-through-investors-network) |
@@ -226,7 +226,7 @@ National Institute of Standards and Technology (NIST). [The NIST Cybersecurity F
 
 **Evidence type:** Government framework. **Consulted scope:** Framework overview, functions, governance, and implementation orientation consulted. A structure for risk management, not evidence that adopting it eliminates incidents. DOI: 10.6028/NIST.CSWP.29.
 
-**Used in:** [Build And Test Resilience: Backups Are Not Enough](#build-test-resilience), [Glossary](#glossary).
+**Used in:** [Build and Test Resilience: Backups Are Not Enough](#build-test-resilience), [Glossary](#glossary).
 
 {id: bibliography--s18-nist-generative-ai-profile}
 ### S18 — NIST generative AI profile
