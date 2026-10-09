@@ -202,7 +202,7 @@ The [Bibliography and Evidence Guide](#bibliography) records consultation scope 
 ### Part VI — SUSTAIN: Keep the Technology You Run Worth Its Cost
 
 - [SUSTAIN: Keep the Technology You Run Worth Its Cost](#part-6) — part introduction
-- **28.** [Manage Technical Debt: Fund the Fix by the Cost, the Risk and the Speed It Buys](#manage-technical-debt)
+- **28.** [Manage Technical Debt: Present the Fix by What It Buys](#manage-technical-debt)
 - **29.** [Build And Test Resilience: Backups Are Not Enough](#build-test-resilience)
 - **30.** [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#evaluate-cloud-costs)
 - **31.** [Critically Evaluate AI Costs: Measure the Return per Task and per Period](#evaluate-ai-costs)

@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-09-28
+revised: 2026-10-09
 ---
 
-# Spec: Manage Technical Debt: Fund the Fix by the Cost, the Risk and the Speed It Buys
+# Spec: Manage Technical Debt: Present the Fix by What It Buys
 
 ## Intent
 
@@ -72,6 +72,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Changelog
 
+- 2026-10-09 (retitle): At the author's request the title became "Manage Technical Debt: Present the Fix by What It Buys", lifting the chapter's own section heading. Permalink unchanged.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Update cross-links for the chapter title-slug renames.
 

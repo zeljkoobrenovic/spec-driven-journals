@@ -1,5 +1,5 @@
 ---
-title: "Manage Technical Debt: Fund the Fix by the Cost, the Risk and the Speed It Buys"
+title: "Manage Technical Debt: Present the Fix by What It Buys"
 date: 2026-09-24
 author: Željko Obrenović
 excerpt: "Technical debt is the extra cost, risk and delay a company carries because its software was built, or has aged, in ways that make it harder to change than it needs to be. Put each item on figures the company already has, present the fix by what it protects, removes and keeps open, and fund large projects in stages that each have to earn the next."

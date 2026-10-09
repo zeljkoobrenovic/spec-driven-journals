@@ -1,7 +1,7 @@
 {id: manage-technical-debt}
-# 30. Manage Technical Debt: Fund the Fix by the Cost, the Risk and the Speed It Buys
+# 30. Manage Technical Debt: Present the Fix by What It Buys
 
-![Manage Technical Debt: Fund the Fix by the Cost, the Risk and the Speed It Buys — logo](private-techuity/posts/27-manage-technical-debt/assets/images/27-manage-technical-debt/logo.jpeg)
+![Manage Technical Debt: Present the Fix by What It Buys — logo](private-techuity/posts/27-manage-technical-debt/assets/images/27-manage-technical-debt/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to answer “how much technical debt do we have?” with figures the board can act on. Technical debt is the extra cost, risk and delay a company carries because its software is harder to change than it needs to be. You will put each item on three columns (what it costs to keep, what risk it carries, what it slows), present the fix by what it buys, and fund a large project in stages that each must earn the next.
 
