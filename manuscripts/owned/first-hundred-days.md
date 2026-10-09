@@ -1,7 +1,7 @@
 {id: first-hundred-days}
-# 35. Plan the First Hundred Days: Turn Expectations Into Funded Work
+# 35. Plan the First Hundred Days: Where Expectations Become Commitments
 
-![Plan the First Hundred Days: Turn Expectations Into Funded Work — logo](private-techuity/posts/32-first-hundred-days/assets/images/32-first-hundred-days/logo.jpeg)
+![Plan the First Hundred Days: Where Expectations Become Commitments — logo](private-techuity/posts/32-first-hundred-days/assets/images/32-first-hundred-days/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to turn one finding from **due diligence**, the investigation an investor makes before investing, into a plan with an accountable person, approved money, protected engineering time and decision dates, and let the day-100 review change that plan.
 

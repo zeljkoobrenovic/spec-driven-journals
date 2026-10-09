@@ -31,7 +31,7 @@ The plan for the second half of the year was built on that date. It included two
 
 The work itself is on schedule. The **onboarding pilot**, a trial of a faster way to get new customers set up, continues. So does the **recovery work**, which makes sure the **dispatch service**, the software that sends field staff to their jobs, can be restored quickly after a failure. The funding has slipped, not the work, and the company must change its funding assumption before that assumption turns into a delivery promise it cannot keep.
 
-Every figure here is invented, and this example stands on its own: its cash, spending, hires and dates differ from the Rotaline figures in the chapters [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days) and [Manage the Handover: Carry Forward the Evidence and Obligations](#manage-handover).
+Every figure here is invented, and this example stands on its own: its cash, spending, hires and dates differ from the Rotaline figures in the chapters [Plan the First Hundred Days: Where Expectations Become Commitments](#first-hundred-days) and [Manage the Handover: Carry Forward the Evidence and Obligations](#manage-handover).
 
 {id: manage-funding-delays--the-funding-slipped-not-the-work}
 ## The Funding Slipped, Not the Work

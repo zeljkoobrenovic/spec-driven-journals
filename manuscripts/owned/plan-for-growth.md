@@ -100,7 +100,7 @@ Alex, who leads Rotaline’s technology, and Priya, who leads its product, compa
 
 **The clock and the basis.** The months count from the board’s decision to fund the expansion. Costs are compared on one basis: additional cash in the first year, then the recurring cost in each year after it.
 
-> **A note on which scenario this is.** This is a separate, later scenario from the hundred-day plan in the chapter [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days). That plan’s €500,000 envelope deferred the expansion beyond its first year, and the €300,000 appearing in it was the annual cost of two deferred hires — a different figure that happens to match. The €300,000 here is a fresh envelope for the expansion, approved once the board has taken it up. The two scenarios are not to be added together.
+> **A note on which scenario this is.** This is a separate, later scenario from the hundred-day plan in the chapter [Plan the First Hundred Days: Where Expectations Become Commitments](#first-hundred-days). That plan’s €500,000 envelope deferred the expansion beyond its first year, and the €300,000 appearing in it was the annual cost of two deferred hires — a different figure that happens to match. The €300,000 here is a fresh envelope for the expansion, approved once the board has taken it up. The two scenarios are not to be added together.
 
 | | A. Configure a supplier | B. Own the boundary | C. Replace the core |
 | --- | --- | --- | --- |

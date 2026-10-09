@@ -156,7 +156,7 @@ For each major change, choose a few measures that could reveal damage. This chap
 {id: test-revenue-assumptions--what-the-pilot-showed-and-what-changed}
 ## What the Pilot Showed, and What Changed
 
-The same pilot is the funded first-hundred-days commitment ONB-1 in the chapter [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days). Priya measured the first cohort at day 90; the board decided at its day-100 review. All figures are fictional.
+The same pilot is the funded first-hundred-days commitment ONB-1 in the chapter [Plan the First Hundred Days: Where Expectations Become Commitments](#first-hundred-days). Priya measured the first cohort at day 90; the board decided at its day-100 review. All figures are fictional.
 
 **Observed.** The cohort was eight customers. Average effort per implementation fell from 80 hours to 62, not to the 50 the proposal assumed. About 40% of the remaining hours traced to poor customer data rather than to the product, which partly supports Alex’s explanation of where the effort goes. The guardrail indicators did not move: error rates and requests for help were not up.
 

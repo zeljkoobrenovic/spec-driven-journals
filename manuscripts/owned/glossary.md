@@ -294,7 +294,7 @@ See the chapters [Set Priorities: Say No With Evidence, Not Opinion](#set-priori
 | Company investment | A commitment of company resources now for an expected future benefit, such as a useful product change or a stronger team capability. |
 | Team capacity | The time and capability people have available to do work. It can constrain a plan even when cash is available. |
 | Engineer-week | A planning unit representing one engineer’s working time for a week. It does not imply that people or skills are interchangeable. |
-| Day 0 | The board meeting, held within days after closing, that adopts the operating plan. Project days (day 20, day 90, day 100) count from it, not from closing ([Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days), [Adopt Outcome Thinking: Bridge Product Work to Investor's Numbers](#adopt-outcome-thinking)). |
+| Day 0 | The board meeting, held within days after closing, that adopts the operating plan. Project days (day 20, day 90, day 100) count from it, not from closing ([Plan the First Hundred Days: Where Expectations Become Commitments](#first-hundred-days), [Adopt Outcome Thinking: Bridge Product Work to Investor's Numbers](#adopt-outcome-thinking)). |
 | Opportunity cost | The benefit of the best alternative a choice gives up. |
 | Sunk cost | Resources already spent that cannot be recovered. The next decision still needs an assessment of remaining costs and benefits. |
 | Funding stage | A commitment of resources to a defined piece of work before deciding whether to commit more. |

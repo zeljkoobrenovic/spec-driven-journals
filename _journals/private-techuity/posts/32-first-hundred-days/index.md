@@ -1,5 +1,5 @@
 ---
-title: "Plan the First Hundred Days: Turn Expectations Into Funded Work"
+title: "Plan the First Hundred Days: Where Expectations Become Commitments"
 date: 2026-09-12
 author: Željko Obrenović
 excerpt: "Turn one finding from the investor’s pre-deal investigation into a plan with a named leader, approved money, protected engineering time, decision dates and recorded postponements, then let the day-100 review change the plan."

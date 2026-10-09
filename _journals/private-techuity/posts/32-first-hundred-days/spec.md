@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-10-03
+revised: 2026-10-09
 ---
 
-# Spec: The First Hundred Days: Turn Expectations Into a Funded Plan
+# Spec: Plan the First Hundred Days: Where Expectations Become Commitments
 
 ## Intent
 
@@ -64,6 +64,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-10-09 (retitle): At the author's request the title became "Plan the First Hundred Days: Where Expectations Become Commitments", naming the stake of the early months and avoiding the overlap with the Part IV subtitle. Permalink unchanged.
 - 2026-10-03: Points to Tool 5 and the toolkit's worked example after the funded plan. Article only.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Update cross-links for the chapter title-slug renames.

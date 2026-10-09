@@ -151,7 +151,7 @@ Funding the pilot does not establish any of these results; only the cohort measu
 
 **Who decides and who answers for it.** The investment committee approves the transaction terms. The board approves the plan and its funding. Priya is accountable for the result. Alex’s disagreement stays on the record.
 
-**The review rule.** The evidence that would change the decision is Priya’s day-90 cohort measurement: average effort per implementation and the split of the remaining hours. The rule is not “whichever explanation wins”, and it is not “only if most hours trace to customer data”. The next money goes to the largest share of the remaining effort that has a priced step behind it: a data-quality step if customer data is that share, further product work if product limitation is. The board decides at day 100, against thresholds the operating plan in the chapter [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days) fixes:
+**The review rule.** The evidence that would change the decision is Priya’s day-90 cohort measurement: average effort per implementation and the split of the remaining hours. The rule is not “whichever explanation wins”, and it is not “only if most hours trace to customer data”. The next money goes to the largest share of the remaining effort that has a priced step behind it: a data-quality step if customer data is that share, further product work if product limitation is. The board decides at day 100, against thresholds the operating plan in the chapter [Plan the First Hundred Days: Where Expectations Become Commitments](#first-hundred-days) fixes:
 
 | Day-90 average per implementation | What the board may do at day 100 |
 | --- | --- |
@@ -199,7 +199,7 @@ Conciseness works only when readers can inspect the basis. Keep links to finding
 
 At closing, ask for the material findings to be reviewed with the company leaders who will be accountable for the business plan. Ask each accountable leader to record agreement, disagreement or a need for more evidence. Receiving a report does not mean someone has accepted responsibility or funding for its recommendations. When new evidence changes the interpretation, keep the original reasoning and explain the revision, so company leaders and the investor can later judge whether the investigation asked the right questions.
 
-For Rotaline, the next question is what D-3 costs once it is inside a board-authorized budget, with two other findings competing for the same engineer-weeks. Priya records acceptance within ten days of closing. The finding then becomes a funded priority with its own budget, protected capacity, a baseline by day 20 and a day-90 cohort measurement that the board decides on at day 100: the chapter [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days).
+For Rotaline, the next question is what D-3 costs once it is inside a board-authorized budget, with two other findings competing for the same engineer-weeks. Priya records acceptance within ten days of closing. The finding then becomes a funded priority with its own budget, protected capacity, a baseline by day 20 and a day-90 cohort measurement that the board decides on at day 100: the chapter [Plan the First Hundred Days: Where Expectations Become Commitments](#first-hundred-days).
 
 {id: use-diligence--questions-to-consider}
 ## Questions to Consider
