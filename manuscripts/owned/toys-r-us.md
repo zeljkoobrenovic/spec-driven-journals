@@ -1,7 +1,7 @@
 {id: toys-r-us}
-# 39. Toys R Us: Positive Operating Earnings, Too Little Cash
+# 39. Toys R Us: Positive Earnings, No Cash to Invest
 
-![Toys R Us: Positive Operating Earnings, Too Little Cash — logo](private-techuity/posts/36-toys-r-us/assets/images/36-toys-r-us/logo.jpeg)
+![Toys R Us: Positive Earnings, No Cash to Invest — logo](private-techuity/posts/36-toys-r-us/assets/images/36-toys-r-us/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Follow Toys R Us from its 2005 purchase by KKR, Bain Capital and Vornado through its technology plans, September 2017 supplier payment crisis and March 2018 plan to close the US stores.
 

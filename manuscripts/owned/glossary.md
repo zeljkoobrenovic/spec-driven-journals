@@ -179,7 +179,7 @@ The chapter [Understand Valuation: An Estimate, Not a Fact](#understand-valuatio
 | --- | --- |
 | Revenue | Sales recognized during a period. Customer payment may occur earlier or later. |
 | Earnings / profit | Income less the costs included in a stated measure. Always name the measure, the scope and the period; an unqualified “profitable” can reverse the careful body of a report. |
-| Operating profit / operating earnings | Earnings from the business’s operations before interest, income taxes and items outside operations. The same period can show positive operating earnings and a net loss once interest and other charges are deducted ([Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us)). |
+| Operating profit / operating earnings | Earnings from the business’s operations before interest, income taxes and items outside operations. The same period can show positive operating earnings and a net loss once interest and other charges are deducted ([Toys R Us: Positive Earnings, No Cash to Invest](#toys-r-us)). |
 | Net profit / net loss | The final positive or negative result after the income statement’s income and charges. |
 | Consolidated / attributable | Figures for the whole group under one parent / the part of a result belonging to a specified set of shareholders after other claims. State which one a figure is. |
 | Income statement | A financial statement showing income and expenses over a period. |
@@ -198,7 +198,7 @@ The chapter [Understand Valuation: An Estimate, Not a Fact](#understand-valuatio
 | Capital expenditure / capex | Spending on assets, such as equipment or qualifying development. |
 | Capitalization | Recording qualifying spending as an asset, with expenses recognized over time. The cash payment still occurs. |
 | Free cash flow (FCF) | A measure of cash after specified spending. Definitions differ; check which taxes, investment and financing payments it includes. |
-| Cash conversion | A comparison of a stated cash measure with an earnings measure over the same period, for example operating cash flow divided by EBITDA. It needs explicit definitions; a business can report positive operating earnings and still run short of cash ([Have Your Numbers Ready: One Set for Investors, Goals and Teams](#have-your-numbers-ready), [Understand Cash Flow: Confirm the Cash Before You Commit](#understand-cash-flow); illustrated in [Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us)). |
+| Cash conversion | A comparison of a stated cash measure with an earnings measure over the same period, for example operating cash flow divided by EBITDA. It needs explicit definitions; a business can report positive operating earnings and still run short of cash ([Have Your Numbers Ready: One Set for Investors, Goals and Teams](#have-your-numbers-ready), [Understand Cash Flow: Confirm the Cash Before You Commit](#understand-cash-flow); illustrated in [Toys R Us: Positive Earnings, No Cash to Invest](#toys-r-us)). |
 | Liquidity | The ability to meet payments when they fall due. A valuable or profitable company can still lack immediate cash. |
 | Debt service | Payments required to meet financing obligations, including interest and any principal due under the chosen definition. |
 | Covenant | A condition in a financing agreement. Consequences of a breach depend on the agreement and available remedies. |

@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-09-28
+revised: 2026-10-09
 ---
 
-# Spec: Toys R Us: Positive Operating Earnings, Too Little Cash
+# Spec: Toys R Us: Positive Earnings, No Cash to Invest
 
 ## Intent
 
@@ -64,6 +64,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-10-09 (retitle): At the author's request the title became "Toys R Us: Positive Earnings, No Cash to Invest", replacing "Toys R Us: Positive Operating Earnings, Too Little Cash". The subtitle is shorter and says what the missing cash was needed for: the proposed technology investment. Body unchanged. Permalink unchanged.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-26: Lead the article and summary with the retailer's documented purchase, technology plans, supplier crisis and US liquidation sequence; make opening key points case-specific before drawing funding lessons. Preserve the historical scope and stable permalink.

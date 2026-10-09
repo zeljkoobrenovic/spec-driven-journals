@@ -1,5 +1,5 @@
 ---
-title: "Toys R Us: Positive Operating Earnings, Too Little Cash"
+title: "Toys R Us: Positive Earnings, No Cash to Invest"
 date: 2026-09-12
 author: Željko Obrenović
 excerpt: "Toys R Us reported $460 million of operating earnings for fiscal 2016 but generated almost no operating cash. Suppliers demanded earlier payment in September 2017; bankruptcy followed, then a plan to close the US stores in 2018."

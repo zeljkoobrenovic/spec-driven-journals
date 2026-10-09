@@ -42,7 +42,7 @@ Use this table to find evidence by question. A source can appear under more than
 | Operating-model blueprints and investor–company working arrangements | S01, S91–S100 | [Plan Investor Support: Match the Help to Company Priorities](#plan-investor-support) |
 | Case: Hilton and Skype | S23, S24, S25, S26, S27, S28, S29, S64, S65, S116, S117 | [Hilton and Skype: What the Exit Price Does Not Show](#hilton-and-skype) |
 | Case: Visma | S30, S31, S32, S33, S43, S44, S62 | [Visma: The Manager Stayed, the Owners Changed](#visma) |
-| Case: Toys R Us | S34, S35, S36, S37, S40, S41, S50, S51, S118 | [Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us) |
+| Case: Toys R Us | S34, S35, S36, S37, S40, S41, S50, S51, S118 | [Toys R Us: Positive Earnings, No Cash to Invest](#toys-r-us) |
 | Case: TeamSystem | S45, S46, S47, S48, S49, S66, S67, S68, S69, S70, S71 | [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem) |
 | Wider research on ownership outcomes | S08, S09, S10, S11, S12, S39, S42 | [Success for Whom, and for How Long?](#success-for-whom) |
 
@@ -379,7 +379,7 @@ Toys R Us, Inc. [Form 10-K for Fiscal Year Ended January 28, 2017](https://www.s
 
 **Evidence type:** Company regulatory filing; partial access. **Consulted scope:** Only indexed excerpts concerning the e-commerce platform and risk were consulted. Full-page browser and download attempts failed with access errors. Do not treat this as a full 10-K review; financial table claims use S35 instead. A second attempt at complete access through the SEC and mirrors, also on September 12, 2026, did not obtain the full document; the access limit remains. S50 supplies separately consulted primary court evidence, not a substitute claim that this full 10-K was read.
 
-**Used in:** [Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us).
+**Used in:** [Toys R Us: Positive Earnings, No Cash to Invest](#toys-r-us).
 
 {id: bibliography--s35-toys-r-us-fiscal-2016-results}
 ### S35 — Toys R Us fiscal 2016 results
@@ -388,7 +388,7 @@ Toys R Us, Inc. [Toys R Us, Inc. Reports Results for the Full Year and Fourth Qu
 
 **Evidence type:** Company financial disclosure. **Consulted scope:** Release and financial tables consulted, including operating earnings, interest, cash flow, capex, sales, and e-commerce discussion. Fiscal year ended January 28, 2017; table units are USD millions.
 
-**Used in:** [Understand Cash Flow: Confirm the Cash Before You Commit](#understand-cash-flow), [Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us).
+**Used in:** [Understand Cash Flow: Confirm the Cash Before You Commit](#understand-cash-flow), [Toys R Us: Positive Earnings, No Cash to Invest](#toys-r-us).
 
 {id: bibliography--s36-toys-r-us-bankruptcy-note}
 ### S36 — Toys R Us bankruptcy note
@@ -397,7 +397,7 @@ Toys R Us, Inc. [Bankruptcy Filing: Note to Interim Financial Statements](https:
 
 **Evidence type:** Company regulatory disclosure. **Consulted scope:** Note consulted for the September 18, 2017 filings, the court-authorized financing facility of up to $3,125 million for the bankruptcy period (interim order September 19 and final order October 24, 2017), the authorized but not required payments of pre-filing claims, continued operation as debtor in possession, and entity/jurisdiction scope including the Canadian parallel process. This is the company's financial-statement account, not a review of the complete court docket.
 
-**Used in:** [Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us).
+**Used in:** [Toys R Us: Positive Earnings, No Cash to Invest](#toys-r-us).
 
 {id: bibliography--s37-reuters-us-liquidation-report}
 ### S37 — Reuters US liquidation report
@@ -406,7 +406,7 @@ Tracy Rucinski; Reuters. [Toys R Us to Close Doors, Leaving Void for Toy Lovers]
 
 **Evidence type:** Credible contemporaneous journalism. **Consulted scope:** Report consulted for US shutdown plans and approximately 33,000 full- and part-time jobs exposed. Scope and timing are the reported plans; international operations and later brand ownership require separate treatment.
 
-**Used in:** [Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us), [Success for Whom, and for How Long?](#success-for-whom).
+**Used in:** [Toys R Us: Positive Earnings, No Cash to Invest](#toys-r-us), [Success for Whom, and for How Long?](#success-for-whom).
 
 {id: bibliography--s39-bruch-et-al-hospital-measures}
 ### S39 — Bruch et al., hospital measures
@@ -424,7 +424,7 @@ Toys R Us, Inc. [Agreement to Be Acquired by KKR, Bain Capital and Vornado for $
 
 **Evidence type:** Company transaction announcement. **Consulted scope:** Announcement consulted for agreed consideration and context. The title is shortened here; a headline transaction amount is not a reconstructed financing schedule.
 
-**Used in:** [Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us).
+**Used in:** [Toys R Us: Positive Earnings, No Cash to Invest](#toys-r-us).
 
 {id: bibliography--s41-toys-r-us-acquisition-completion}
 ### S41 — Toys R Us acquisition completion
@@ -433,7 +433,7 @@ Bain Capital, Kohlberg Kravis Roberts & Co., and Vornado Realty Trust. [Bain Cap
 
 **Evidence type:** Buyer announcement filed with SEC. **Consulted scope:** Completion date and purchaser group consulted. Not evidence of the complete later debt or distribution history.
 
-**Used in:** [Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us).
+**Used in:** [Toys R Us: Positive Earnings, No Cash to Invest](#toys-r-us).
 
 {id: bibliography--s42-kannan-and-song-after-sale}
 ### S42 — Kannan and Song, after sale
@@ -514,7 +514,7 @@ David A. Brandon, Chairman and Chief Executive Officer of Toys “R” Us, Inc. 
 
 **Evidence type:** Primary court-filed debtor declaration, public document mirror. **Consulted scope:** Complete 47-page stamped filing obtained and text extracted. Selected paragraphs 10–12, 19–32, 53–55, 60, 74 and 91–95 consulted for debt, maturities, supplier terms, technology constraints and proposed investment. Sworn management account supporting an application, not a court finding of causation. Funding table is a September 2017 snapshot, not a reconstructed 2005 sources-and-uses statement. Future project spending is a plan, not a realized result.
 
-**Used in:** [Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us).
+**Used in:** [Toys R Us: Positive Earnings, No Cash to Invest](#toys-r-us).
 
 {id: bibliography--s51-hasbro-2018-annual-report}
 ### S51 — Hasbro 2018 annual report
@@ -523,7 +523,7 @@ Hasbro, Inc. [2018 Annual Report, including Form 10-K for the year ended Decembe
 
 **Evidence type:** Supplier annual report and financial statements, public report mirror. **Consulted scope:** Full report obtained and text extracted; selected management discussion, segment results, operating expenses and receivables note consulted. Printed pp. 38 and 67 support USD 60.4 million related costs and approximately USD 49 million bad-debt expense respectively; the latter is included, not additive. Separate supplier-side evidence, but Hasbro is an interested participant. Its overall revenue/profit change has other causes; these costs do not measure all supplier or social losses.
 
-**Used in:** [Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us), [Success for Whom, and for How Long?](#success-for-whom).
+**Used in:** [Toys R Us: Positive Earnings, No Cash to Invest](#toys-r-us), [Success for Whom, and for How Long?](#success-for-whom).
 
 {id: bibliography--s52-ipev-valuation-guidelines}
 ### S52 — IPEV valuation guidelines
@@ -1126,7 +1126,7 @@ Toys R Us, Inc. [Debtor-in-Possession Financing: Note to Interim Financial State
 
 **Evidence type:** Company regulatory disclosure. **Consulted scope:** Financing note consulted for the composition of the combined $3,125 million post-petition financing approved by the final order of October 24, 2017: a $1,850 million revolving and $450 million first-in-last-out facility for the US and Canadian trading companies, whose borrowings repaid the pre-petition ABL facility and Tranche A-1 loan in full; a $450 million term facility; and $375 million of notes issued by another group company, with staged releases. Security consisted of superpriority claims and priming liens whose ranking differed by facility and by asset. Consulted for package composition, repayment uses and security priority only; not a review of the loan agreements or court orders themselves.
 
-**Used in:** [Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us).
+**Used in:** [Toys R Us: Positive Earnings, No Cash to Invest](#toys-r-us).
 
 {id: bibliography--s119-lencioni-s-five-dysfunctions-of-a-team}
 ### S119 — Lencioni's Five Dysfunctions of a Team
