@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-09-28
+revised: 2026-10-09
 ---
 
-# Spec: Hilton and Skype: A Successful Exit Still Needs Explaining
+# Spec: Hilton and Skype: What the Exit Price Does Not Show
 
 ## Intent
 
@@ -65,6 +65,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-10-09 (retitle): At the author's request the title became "Hilton and Skype: What the Exit Price Does Not Show", replacing "Hilton and Skype: A Successful Exit Still Needs Explaining". The subtitle now states the chapter's claim directly: the exit price does not show the financing, the time or the technology rights the result depended on. Body unchanged. Permalink unchanged.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - **2026-09-27 (dysfunction callout)** — Add the requested pattern-to-purpose block after KEY POINTS, using the established pattern names and post-specific reasons. Preserve the existing prose, figures and reading formats.
 - 2026-09-26: Reframe the opening and summary around the documented Hilton and Skype events before generalizing, at the author's request. Preserve the existing evidence, transaction qualifications and stable permalink.

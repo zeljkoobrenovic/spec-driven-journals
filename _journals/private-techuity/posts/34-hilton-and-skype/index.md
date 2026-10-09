@@ -1,5 +1,5 @@
 ---
-title: "Hilton and Skype: A Successful Exit Still Needs Explaining"
+title: "Hilton and Skype: What the Exit Price Does Not Show"
 date: 2026-09-12
 author: Željko Obrenović
 excerpt: "Blackstone bought Hilton in 2007, supported a debt restructuring and completed its sale in 2018. Skype secured rights to its core technology in 2009 and was sold to Microsoft for $8.5 billion in 2011. What explains those results?"

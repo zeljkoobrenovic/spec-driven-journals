@@ -40,7 +40,7 @@ Use this table to find evidence by question. A source can appear under more than
 | Grounded Architecture applied across a portfolio | S106, S110–S115 | [Appendix: Grounded Architecture Across an Investment Portfolio](#grounded-architecture-portfolio) |
 | Technology operating partners, leadership roles and AI support | S79–S90 | [Work With Technology Operating Partners: Get Their Experience, Keep Your Autonomy](#technology-operating-partners) |
 | Operating-model blueprints and investor–company working arrangements | S01, S91–S100 | [Plan Investor Support: Match the Help to Company Priorities](#plan-investor-support) |
-| Case: Hilton and Skype | S23, S24, S25, S26, S27, S28, S29, S64, S65, S116, S117 | [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype) |
+| Case: Hilton and Skype | S23, S24, S25, S26, S27, S28, S29, S64, S65, S116, S117 | [Hilton and Skype: What the Exit Price Does Not Show](#hilton-and-skype) |
 | Case: Visma | S30, S31, S32, S33, S43, S44, S62 | [Visma: Continuity of Manager Is Not Continuity of Money](#visma) |
 | Case: Toys R Us | S34, S35, S36, S37, S40, S41, S50, S51, S118 | [Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us) |
 | Case: TeamSystem | S45, S46, S47, S48, S49, S66, S67, S68, S69, S70, S71 | [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem) |
@@ -280,7 +280,7 @@ Hilton Worldwide Holdings Inc. [Form S-1 Registration Statement](https://www.sec
 
 **Evidence type:** Company regulatory filing. **Consulted scope:** Prospectus business/commercial-services discussion, debt restructuring, and selected operating comparisons consulted. Financial disclosures and management narratives have different evidentiary roles; not a full independent audit of the filing.
 
-**Used in:** [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype).
+**Used in:** [Hilton and Skype: What the Exit Price Does Not Show](#hilton-and-skype).
 
 {id: bibliography--s24-blackstone-2018-investor-call}
 ### S24 — Blackstone 2018 investor call
@@ -289,7 +289,7 @@ The Blackstone Group L.P. [Second Quarter 2018 Earnings Investor Call](https://i
 
 **Evidence type:** Interested investor account. **Consulted scope:** Hilton realization discussion consulted for sponsor-reported 3.1× multiple and $14 billion profit. Not an independently reconstructed net LP cash-flow series.
 
-**Used in:** [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype), [Manage the Handover: What the Next Owner Inherits](#manage-handover), [Success for Whom, and for How Long?](#success-for-whom).
+**Used in:** [Hilton and Skype: What the Exit Price Does Not Show](#hilton-and-skype), [Manage the Handover: What the Next Owner Inherits](#manage-handover), [Success for Whom, and for How Long?](#success-for-whom).
 
 {id: bibliography--s25-pei-hilton-retrospective}
 ### S25 — PEI Hilton retrospective
@@ -298,7 +298,7 @@ Private Equity International. [North American Exit of the Year: Blackstone for H
 
 **Evidence type:** Industry journalism / award retrospective. **Consulted scope:** Retrospective consulted for the initial transaction and ownership narrative. Sponsor-hosted award coverage has selection and promotional context; triangulated with the Hilton filing where possible.
 
-**Used in:** [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype).
+**Used in:** [Hilton and Skype: What the Exit Price Does Not Show](#hilton-and-skype).
 
 {id: bibliography--s26-ebay-skype-sale-announcement}
 ### S26 — eBay Skype sale announcement
@@ -307,7 +307,7 @@ eBay Inc. [eBay Inc. Completes Sale of Skype](https://investors.ebayinc.com/inve
 
 **Evidence type:** Company transaction announcement. **Consulted scope:** Completion, valuation, retained stake, and consideration description consulted. Does not supply the buyer consortium's complete equity cash flows.
 
-**Used in:** [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype).
+**Used in:** [Hilton and Skype: What the Exit Price Does Not Show](#hilton-and-skype).
 
 {id: bibliography--s27-skype-registration-filing}
 ### S27 — Skype registration filing
@@ -316,7 +316,7 @@ Skype S.à r.l., to be converted into Skype S.A. [Amendment No. 3 to Form S-1 Re
 
 **Evidence type:** Company regulatory filing. **Consulted scope:** Prospectus summary pp. 1–4, recent developments, intellectual-property settlement, selected financial data and financing discussion consulted. Pro forma periods, adjusted EBITDA, and management claims require care.
 
-**Used in:** [Plan Acquisitions and Separations: Account for the Work, Not Just the Value](#plan-acquisitions-separations), [Use Diligence: Your Last Chance to Shape the Plan](#use-diligence), [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype).
+**Used in:** [Plan Acquisitions and Separations: Account for the Work, Not Just the Value](#plan-acquisitions-separations), [Use Diligence: Your Last Chance to Shape the Plan](#use-diligence), [Hilton and Skype: What the Exit Price Does Not Show](#hilton-and-skype).
 
 {id: bibliography--s28-microsoft-skype-completion}
 ### S28 — Microsoft Skype completion
@@ -325,7 +325,7 @@ Microsoft. [Microsoft Officially Welcomes Skype](https://news.microsoft.com/sour
 
 **Evidence type:** Buyer announcement. **Consulted scope:** Completion announcement and May 10, 2011 acquisition announcement consulted. The former states completion and recounts the announced $8.5 billion transaction; neither establishes fund-level net returns.
 
-**Used in:** [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype).
+**Used in:** [Hilton and Skype: What the Exit Price Does Not Show](#hilton-and-skype).
 
 {id: bibliography--s29-microsoft-skype-retirement}
 ### S29 — Microsoft Skype retirement
@@ -334,7 +334,7 @@ Microsoft Support. [Skype Is Retiring in May 2025: What You Need to Know](https:
 
 **Evidence type:** Product owner statement. **Consulted scope:** Retirement scope/date consulted, alongside Microsoft's February 28, 2025 announcement. Later product retirement is not attributed to the earlier private equity interventions.
 
-**Used in:** [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype), [Success for Whom, and for How Long?](#success-for-whom).
+**Used in:** [Hilton and Skype: What the Exit Price Does Not Show](#hilton-and-skype), [Success for Whom, and for How Long?](#success-for-whom).
 
 {id: bibliography--s30-visma-2023-transaction}
 ### S30 — Visma 2023 transaction
@@ -640,7 +640,7 @@ Hilton Hotels Corporation. [Form 10-K for the fiscal year ended December 31, 200
 
 **Evidence type:** Company regulatory filing. **Consulted scope:** The business description's statements that the proprietary OnQ system was introduced in 2003 and had been installed at substantially all hotels in the system. Consulted to date the platform before the 2007 buyout; not read for its financial statements.
 
-**Used in:** [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype).
+**Used in:** [Hilton and Skype: What the Exit Price Does Not Show](#hilton-and-skype).
 
 {id: bibliography--s65-hilton-2005-annual-filing}
 ### S65 — Hilton 2005 annual filing
@@ -649,7 +649,7 @@ Hilton Hotels Corporation. [Form 10-K for the fiscal year ended December 31, 200
 
 **Evidence type:** Company regulatory filing. **Consulted scope:** The statement that OnQ had been installed at virtually all hotels in the system as of December 31, 2005, and the intention to install it in hotels acquired in the Hilton International transaction. Consulted to establish the inherited platform's reach before the 2007 buyout; not read for its financial statements.
 
-**Used in:** [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype).
+**Used in:** [Hilton and Skype: What the Exit Price Does Not Show](#hilton-and-skype).
 
 {id: bibliography--s66-hgcapital-trust-january-2021-teamsystem-announcement}
 ### S66 — HgCapital Trust January 2021 TeamSystem announcement
@@ -1108,7 +1108,7 @@ Hilton Worldwide Holdings Inc. [Amendment No. 1 to Form S-1 Registration Stateme
 
 **Evidence type:** Company regulatory filing. **Consulted scope:** Prospectus cover and use-of-proceeds statements consulted for who sold shares in the 2013 initial public offering: Hilton and one selling stockholder, with the statement that no Blackstone-sponsored fund was selling shares or receiving cash in lieu of selling. Not a record of Blackstone's later sales.
 
-**Used in:** [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype).
+**Used in:** [Hilton and Skype: What the Exit Price Does Not Show](#hilton-and-skype).
 
 {id: bibliography--s117-hilton-june-2014-secondary-offering}
 ### S117 — Hilton June 2014 secondary offering
@@ -1117,7 +1117,7 @@ Hilton Worldwide Holdings Inc. [Hilton Worldwide Completes $2.3 Billion Secondar
 
 **Evidence type:** Company announcement. **Consulted scope:** Consulted for the sale by Blackstone-affiliated selling stockholders of 103,500,000 shares at $22.50, gross proceeds over $2.3 billion, with Hilton offering no shares and receiving no proceeds. One dated sale; it does not by itself establish the full sequence of Blackstone's disposals.
 
-**Used in:** [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype).
+**Used in:** [Hilton and Skype: What the Exit Price Does Not Show](#hilton-and-skype).
 
 {id: bibliography--s118-toys-r-us-bankruptcy-financing-note}
 ### S118 — Toys R Us bankruptcy financing note

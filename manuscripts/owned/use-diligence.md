@@ -84,7 +84,7 @@ A **sample** cannot establish everything. Record the full group the examples cam
 
 “High confidence” is not an adjective for the assessor’s experience. It should mean the conclusion has strong supporting evidence within a stated scope and that serious alternative explanations were examined.
 
-Skype’s **registration filing**, the document a company files with the US securities regulator before offering shares to the public, describes the settlement of a lawsuit and the acquisition of rights to core technology. [S27: Skype registration filing](https://www.sec.gov/Archives/edgar/data/1498209/000119312511096544/ds1a.htm) As the case in the chapter [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype) explains, a product can depend on a legal and technical boundary that a review of code quality would miss. Diligence should ask whether the company can use and develop what the thesis assumes it owns.
+Skype’s **registration filing**, the document a company files with the US securities regulator before offering shares to the public, describes the settlement of a lawsuit and the acquisition of rights to core technology. [S27: Skype registration filing](https://www.sec.gov/Archives/edgar/data/1498209/000119312511096544/ds1a.htm) As the case in the chapter [Hilton and Skype: What the Exit Price Does Not Show](#hilton-and-skype) explains, a product can depend on a legal and technical boundary that a review of code quality would miss. Diligence should ask whether the company can use and develop what the thesis assumes it owns.
 
 {id: use-diligence--finding-d-3-onboarding-depends-on-one-specialists-manual-configuration}
 ## Finding D-3: Onboarding Depends on One Specialist’s Manual Configuration

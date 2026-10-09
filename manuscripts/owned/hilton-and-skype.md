@@ -1,7 +1,7 @@
 {id: hilton-and-skype}
-# 37. Hilton and Skype: A Successful Exit Still Needs Explaining
+# 37. Hilton and Skype: What the Exit Price Does Not Show
 
-![Hilton and Skype: A Successful Exit Still Needs Explaining — logo](private-techuity/posts/34-hilton-and-skype/assets/images/34-hilton-and-skype/logo.jpeg)
+![Hilton and Skype: What the Exit Price Does Not Show — logo](private-techuity/posts/34-hilton-and-skype/assets/images/34-hilton-and-skype/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Follow Hilton from Blackstone's 2007 purchase through a downturn, debt restructuring and the final 2018 sale; then follow Skype from its 2009 technology-rights settlement to Microsoft's 2011 purchase.
 

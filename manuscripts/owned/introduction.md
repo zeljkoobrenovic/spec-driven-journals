@@ -219,7 +219,7 @@ The [Bibliography and Evidence Guide](#bibliography) records consultation scope 
 ### Part VIII — LEARN: Lessons From the Field
 
 - [LEARN: Lessons From the Field](#part-8) — part introduction
-- **35.** [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype)
+- **35.** [Hilton and Skype: What the Exit Price Does Not Show](#hilton-and-skype)
 - **36.** [Visma: Continuity of Manager Is Not Continuity of Money](#visma)
 - **37.** [Toys R Us: Positive Operating Earnings, Too Little Cash](#toys-r-us)
 - **38.** [TeamSystem: Each New Owner Inherits Progress and Unfinished Work](#teamsystem)
