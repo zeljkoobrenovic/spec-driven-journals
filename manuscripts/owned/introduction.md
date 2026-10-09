@@ -95,7 +95,7 @@ An investment’s practical impact depends on its actual terms, **established ca
 - **Part VII** follows the events around a funding or ownership change: the investigation before an investment, the first hundred days, and the handover to the next owners.
 - **Part VIII** examines historical cases and closes with the book’s standard for success.
 
-Each part introduction explains its chapters and their order. Chapters build on earlier terms: [Understand Valuation: An Estimate, Not a Fact](#understand-valuation) explains how a company’s worth is estimated, and [Plan for Growth: Decide What (Not) to Change in Your Systems](#plan-for-growth) later applies those concepts to a design choice once the product and engineering foundations are in place.
+Each part introduction explains its chapters and their order. Chapters build on earlier terms: [Understand Valuation: An Estimate, Not a Fact](#understand-valuation) explains how a company’s worth is estimated, and [Plan for Growth: Flexibility Needs a Customer and a Date](#plan-for-growth) later applies those concepts to a design choice once the product and engineering foundations are in place.
 
 The eight parts work together around one purpose: **commitments the company can keep**. Funding and obligations (the payments and duties the company must fulfil) set the conditions; authority and incentives shape decisions; the working arrangement with the investor adds capability; those decisions become feasible work, deliberate changes of size and a technology estate kept worth its cost. Funding and ownership events require renewed commitments, and evidence from other companies helps you question the assumptions throughout.
 
@@ -195,7 +195,7 @@ The [Bibliography and Evidence Guide](#bibliography) records consultation scope 
 - **23.** [Scale the Team Up: Headcount Is Not Capacity](#scale-the-team-up)
 - **24.** [Scale the Team Down: A Cut Is a Number, Not a Plan](#scale-the-team-down)
 - **25.** [Scale the Team With AI: Seats Are Not Capacity](#scale-the-team-with-ai)
-- **26.** [Plan for Growth: Decide What (Not) to Change in Your Systems](#plan-for-growth)
+- **26.** [Plan for Growth: Flexibility Needs a Customer and a Date](#plan-for-growth)
 - **27.** [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#plan-acquisitions-separations)
 
 {id: introduction--part-vi-sustain-keep-the-technology-you-run-worth-its-cost}

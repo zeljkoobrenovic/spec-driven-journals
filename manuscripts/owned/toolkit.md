@@ -35,7 +35,7 @@ The tools keep their original numbers because chapters and earlier readers cite 
 | **Map** | Who receives the investment money, and who can approve the work? | Ownership, funding and decision map — [Tool 1](#toolkit--tool-1) | [Understand Funding and Control: An Investment Announcement Is Not a Budget](#understand-funding-control), [Clarify Authority: Decide Who Decides Before You Disagree](#clarify-authority) |
 | **Investigate** | What should we check before an investment, and how do we record what we found? | One-page technology thesis — [Tool 2](#toolkit--tool-2); material finding — [Tool 3](#toolkit--tool-3) | [Use Diligence: Correct the Plan Before It Is Signed](#use-diligence) |
 | **Compare options** | Which combination of improvements can we fund and staff at once? | Investment choices and capacity — [Tool 12](#toolkit--tool-12) | [Set Priorities: Say No With Evidence, Not Opinion](#set-priorities) |
-| **Compare options** | A financial target is driving a design proposal; which design alternative? | Valuation-to-architecture record — [Tool 11](#toolkit--tool-11) | [Plan for Growth: Decide What (Not) to Change in Your Systems](#plan-for-growth) |
+| **Compare options** | A financial target is driving a design proposal; which design alternative? | Valuation-to-architecture record — [Tool 11](#toolkit--tool-11) | [Plan for Growth: Flexibility Needs a Customer and a Date](#plan-for-growth) |
 | **Commit** | Can we fund and deliver this one improvement, and who is accountable? | Funded initiative record — [Tool 5](#toolkit--tool-5) | [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days) |
 | **Obtain help** | What exactly will the adviser or specialist help us do, at what cost, for how long? | Support engagement — [Tool 4](#toolkit--tool-4) | [Set the Terms of Help: Agree the Work, Authority and Handover](#set-terms-of-help), [Choose the Right Help: Compare Investor Support With Other Options](#choose-right-help) |
 | **Obtain help** | Should we work with this investor at all? | Investor-fit interview — [Tool 8](#toolkit--tool-8) | [Assess Investor Fit: Behavior Under Pressure](#assess-investor-fit) |
@@ -350,7 +350,7 @@ Use for another round, a sale, corporate integration or a material change in aut
 {id: toolkit--tool-11}
 ## 11. Connect Valuation to Architecture
 
-Use this companion to the initiative record when a financial target is driving a technology proposal. Its main application is choosing between design alternatives under stated constraints — see the chapter [Plan for Growth: Decide What (Not) to Change in Your Systems](#plan-for-growth). The chapter [Understand Valuation: An Estimate, Not a Fact](#understand-valuation) supplies the financial vocabulary.
+Use this companion to the initiative record when a financial target is driving a technology proposal. Its main application is choosing between design alternatives under stated constraints — see the chapter [Plan for Growth: Flexibility Needs a Customer and a Date](#plan-for-growth). The chapter [Understand Valuation: An Estimate, Not a Fact](#understand-valuation) supplies the financial vocabulary.
 
 | Record | Questions to answer together |
 | --- | --- |

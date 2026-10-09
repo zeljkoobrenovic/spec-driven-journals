@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-10-03
+revised: 2026-10-09
 ---
 
-# Spec: Turn “We Expect Growth” Into a Design Decision
+# Spec: Plan for Growth: Flexibility Needs a Customer and a Date
 
 ## Intent
 
@@ -68,6 +68,7 @@ Inherits the IPEV valuation guidance cited in [[understand-valuation]]. The arch
 
 ## Changelog
 
+- 2026-10-09 (retitle): At the author's request the title became "Plan for Growth: Flexibility Needs a Customer and a Date", naming what a request for flexibility lacks before it can be a requirement. Permalink unchanged.
 - 2026-10-03: Points to Tool 11 at the decision record. Article only.
 - 2026-10-03: Closing now hands off to [[plan-acquisitions-separations]], the last chapter of Part V, after the Part VI pointer. Article only.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.

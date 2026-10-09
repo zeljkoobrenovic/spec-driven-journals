@@ -1,5 +1,5 @@
 ---
-title: "Plan for Growth: Decide What (Not) to Change in Your Systems"
+title: "Plan for Growth: Flexibility Needs a Customer and a Date"
 date: 2026-09-12
 author: Željko Obrenović
 excerpt: "Recover the business requirement behind a request for flexibility, then compare three ways to meet it — configure a supplier's product, build and keep the country rules yourself, or replace the system underneath — against the same customer need, date and cash limit, and choose one."

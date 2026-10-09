@@ -32,7 +32,7 @@ Every chapter keeps the discipline of Part IV: the benefit you expect, the money
 
 **Change the systems.**
 
-- [Plan for Growth: Decide What (Not) to Change in Your Systems](#plan-for-growth): recover the business requirement behind a request for flexibility, then compare configuring a supplier’s product, building the rules yourself or replacing the system, against one customer need, date and cash limit.
+- [Plan for Growth: Flexibility Needs a Customer and a Date](#plan-for-growth): recover the business requirement behind a request for flexibility, then compare configuring a supplier’s product, building the rules yourself or replacing the system, against one customer need, date and cash limit.
 
 **Change the company’s boundary.**
 

@@ -172,7 +172,7 @@ Take the €60 million one last time, now as a model rather than a headline. Sup
 - **When does it become usable?** If the setup step needs two quarters (six months) to build and a first group of customers to prove it works, the model cannot assume a full year of savings; phase the benefit from the expected validation date and check what that does to the early margins.
 - **Who funds the transition?** Building the change consumes cash and weeks of engineers’ time before it saves a single hour. That spending must sit in an approved plan, not be assumed by the valuation.
 
-If the answers are “nothing specific,” “not yet” and “nobody,” the assumption is a **hope**, and the target derived from it needs revising. The chapter [Plan for Growth: Decide What (Not) to Change in Your Systems](#plan-for-growth) works through choosing the system change that makes such an assumption true, and the chapter [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions) shows how to measure whether it did.
+If the answers are “nothing specific,” “not yet” and “nobody,” the assumption is a **hope**, and the target derived from it needs revising. The chapter [Plan for Growth: Flexibility Needs a Customer and a Date](#plan-for-growth) works through choosing the system change that makes such an assumption true, and the chapter [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions) shows how to measure whether it did.
 
 {id: understand-valuation--what-to-carry-forward}
 ## What to Carry Forward

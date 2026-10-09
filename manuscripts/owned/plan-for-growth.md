@@ -1,7 +1,7 @@
 {id: plan-for-growth}
-# 28. Plan for Growth: Decide What (Not) to Change in Your Systems
+# 28. Plan for Growth: Flexibility Needs a Customer and a Date
 
-![Plan for Growth: Decide What (Not) to Change in Your Systems — logo](private-techuity/posts/25-plan-for-growth/assets/images/25-plan-for-growth/logo.jpeg)
+![Plan for Growth: Flexibility Needs a Customer and a Date — logo](private-techuity/posts/25-plan-for-growth/assets/images/25-plan-for-growth/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to recover the business requirement behind a request for flexibility, compare implementation options against it and choose one with its funded transition.
 
