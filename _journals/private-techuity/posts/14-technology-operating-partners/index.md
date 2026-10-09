@@ -1,5 +1,5 @@
 ---
-title: "Work With Technology Operating Partners"
+title: "Work With Technology Operating Partners: Get Their Experience Without Giving Up Your Decisions"
 date: 2026-09-20
 author: Željko Obrenović
 excerpt: "What a technology operating partner is, what the investor expects from the role, and how product and technology leaders can build a working partnership with one on the plan, on hiring and on artificial intelligence (AI)."

@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-10-08
+revised: 2026-10-09
 ---
 
-# Spec: The Rise of the Technology Operating Partner
+# Spec: Work With Technology Operating Partners: Get Their Experience Without Giving Up Your Decisions
 
 ## Intent
 
@@ -62,6 +62,7 @@ Draft link list: `_drafts/14-technology-operating-partners/online-source.md`. Co
 
 ## Changelog
 
+- 2026-10-09 (retitle): At the author's request the title became "Work With Technology Operating Partners: Get Their Experience Without Giving Up Your Decisions" so the chapter's central tension, using the partner's experience while keeping your own decisions, is visible in the title; permalink unchanged.
 - 2026-10-08 (aside dropped): Removed "Aside: Building Credibility Across Companies". It addressed prospective operating partners, not the chapter's reader, and was the only passage outside the single perspective. S90 stays in the bibliography as a consulted source; the chapter's closing line says so. Article only.
 - 2026-10-08 (perspective): The article mixed three addressees: instructions to the partner, to the investment firm and to the company leader. Added the One perspective and Partnership criteria so that "you" is always the company's product or technology leader and the partner's contributions are described as things to expect and agree, and retitled the chapter around building the partnership. Article rewritten to match and trimmed from about 6,800 to about 5,400 body words, back inside the length range, keeping every source, cross-link, figure and both tables; reading time 16 min. Summary and comic unchanged.
 - 2026-10-03: "Aside: Building Credibility Across Companies" moved before "What Company Leaders Should Expect", so the chapter (and Part III) ends on the leaders' section and the handoff to [[part-4]]. Wording unchanged. Article only.

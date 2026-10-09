@@ -38,7 +38,7 @@ Use this table to find evidence by question. A source can appear under more than
 | Investor-organized learning, peer communities and shared resources | S101–S105 | [Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives](#learn-through-investors-network) |
 | Data foundations, analytics practice and shared evidence | S106–S109 | [Have Your Numbers Ready: Metrics for Investors, Goals and Dashboards](#have-your-numbers-ready) |
 | Grounded Architecture applied across a portfolio | S106, S110–S115 | [Appendix: Grounded Architecture Across an Investment Portfolio](#grounded-architecture-portfolio) |
-| Technology operating partners, leadership roles and AI support | S79–S90 | [Work With Technology Operating Partners](#technology-operating-partners) |
+| Technology operating partners, leadership roles and AI support | S79–S90 | [Work With Technology Operating Partners: Get Their Experience Without Giving Up Your Decisions](#technology-operating-partners) |
 | Operating-model blueprints and investor–company working arrangements | S01, S91–S100 | [Plan Investor Support: Match the Help to Company Priorities](#plan-investor-support) |
 | Case: Hilton and Skype | S23, S24, S25, S26, S27, S28, S29, S64, S65, S116, S117 | [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype) |
 | Case: Visma | S30, S31, S32, S33, S43, S44, S62 | [Visma: Continuity of Manager Is Not Continuity of Money](#visma) |
@@ -775,7 +775,7 @@ Korn Ferry. [Tech Titans in Private Equity](https://www.kornferry.com/institute/
 
 **Evidence type:** Executive-search practitioner commentary. **Consulted scope:** Web article on role scope, team models and cost allocation. The linked full report was not reviewed. Commercial perspective; no market-wide hiring series or causal return estimate established.
 
-**Used in:** [Work With Technology Operating Partners](#technology-operating-partners).
+**Used in:** [Work With Technology Operating Partners: Get Their Experience Without Giving Up Your Decisions](#technology-operating-partners).
 
 {id: bibliography--s80-ee-solutions-operating-partner-model}
 ### S80 — EE Solutions operating-partner model
@@ -784,7 +784,7 @@ EE Solutions Editorial Team. [What a Technology Operating Partner Does for Priva
 
 **Evidence type:** Technology-services provider commentary. **Consulted scope:** Definition, lifecycle, diligence continuity, post-close work, AI and shared portfolio capabilities. Describes a commercial service model; client examples and claimed benefits were not independently verified.
 
-**Used in:** [Work With Technology Operating Partners](#technology-operating-partners).
+**Used in:** [Work With Technology Operating Partners: Get Their Experience Without Giving Up Your Decisions](#technology-operating-partners).
 
 {id: bibliography--s81-redgrave-on-the-technology-operating-partner}
 ### S81 — Redgrave on the technology operating partner
@@ -793,7 +793,7 @@ Rind Bajwa, Redgrave. [Why Technology Operating Partners Are Becoming Essential 
 
 **Evidence type:** Executive-search practitioner commentary. **Consulted scope:** Role scope, company support, recruitment guidance, staff development, organizational design and matching leadership backgrounds to assignments. Talent-management section rechecked 2026-09-20. Commercial perspective; broad CIO/CTO characterizations are not universal job definitions. No market-wide growth rate inferred.
 
-**Used in:** [Work With Technology Operating Partners](#technology-operating-partners).
+**Used in:** [Work With Technology Operating Partners: Get Their Experience Without Giving Up Your Decisions](#technology-operating-partners).
 
 {id: bibliography--s82-vertex-cio-outsourced-operating-support}
 ### S82 — Vertex CIO outsourced operating support
@@ -802,7 +802,7 @@ Vertex CIO Advisory. [Technology Operating Partner for Private Equity](https://v
 
 **Evidence type:** Advisory-provider service description. **Consulted scope:** Lifecycle coverage, outsourced arrangements and distinction from a company fractional executive. Comparative performance claims, portfolio-size thresholds and suggested intervention timing were not adopted as evidence.
 
-**Used in:** [Work With Technology Operating Partners](#technology-operating-partners).
+**Used in:** [Work With Technology Operating Partners: Get Their Experience Without Giving Up Your Decisions](#technology-operating-partners).
 
 {id: bibliography--s83-acertitude-on-ai-and-technology-operating-partners}
 ### S83 — Acertitude on AI and technology operating partners
@@ -811,7 +811,7 @@ Jessica Tvelia, Acertitude. [Tech OPs vs. AI Solutions: The New Dilemma for PE O
 
 **Evidence type:** Executive-search practitioner commentary. **Consulted scope:** AI specialization and separate or blended roles. Commercial perspective. Hiring-growth figures and secondary survey statistics were not independently verified and are not used in the chapter.
 
-**Used in:** [Work With Technology Operating Partners](#technology-operating-partners).
+**Used in:** [Work With Technology Operating Partners: Get Their Experience Without Giving Up Your Decisions](#technology-operating-partners).
 
 {id: bibliography--s84-vaultinum-on-continuing-technology-review}
 ### S84 — Vaultinum on continuing technology review
@@ -820,7 +820,7 @@ Marine Yborra, Vaultinum. [Operating Partner: how to drive value creation during
 
 **Evidence type:** Technology-diligence provider commentary. **Consulted scope:** Revisiting acquisition assumptions during ownership, technology monitoring and exit preparation. The promoted service is not independently validated here. The asserted average holding period is not used.
 
-**Used in:** [Work With Technology Operating Partners](#technology-operating-partners).
+**Used in:** [Work With Technology Operating Partners: Get Their Experience Without Giving Up Your Decisions](#technology-operating-partners).
 
 {id: bibliography--s85-kkr-capstone-operating-function}
 ### S85 — KKR Capstone operating function
@@ -829,7 +829,7 @@ KKR. [Capstone](https://www.kkr.com/approach/capstone). Living organizational pa
 
 **Evidence type:** Investment firm description of its own practice. **Consulted scope:** Investment assessment, operating plans, implementation, cross-company programs and the digital/technology remit; recruitment, development and retention in the wider operating function. Talent remit rechecked 2026-09-20. Supports existence and stated scope of a function; no independent outcome or causal performance assessment.
 
-**Used in:** [Work With Technology Operating Partners](#technology-operating-partners).
+**Used in:** [Work With Technology Operating Partners: Get Their Experience Without Giving Up Your Decisions](#technology-operating-partners).
 
 {id: bibliography--s86-blackstone-on-ai-and-operating-support}
 ### S86 — Blackstone on AI and operating support
@@ -838,7 +838,7 @@ Blackstone; interview with John Stecher and Rodney Zemmel. [AI at Scale: A Conve
 
 **Evidence type:** Investment firm interview about its own practice. **Consulted scope:** Questions 2–4 on software diligence, investment workflows and the dedicated AI team. Firm-reported practice; productivity and financial-result claims and wider forecasts were not independently verified or adopted.
 
-**Used in:** [Work With Technology Operating Partners](#technology-operating-partners).
+**Used in:** [Work With Technology Operating Partners: Get Their Experience Without Giving Up Your Decisions](#technology-operating-partners).
 
 {id: bibliography--s87-gitlab-chief-product-officer-role}
 ### S87 — GitLab Chief Product Officer role
@@ -847,7 +847,7 @@ GitLab. [Chief Product Officer](https://handbook.gitlab.com/job-description-libr
 
 **Evidence type:** Company-published role description. **Consulted scope:** Role purpose and responsibilities: product direction, prioritization and collaboration with engineering. An example from one company, not a universal CPO charter or evidence about current staffing.
 
-**Used in:** [Work With Technology Operating Partners](#technology-operating-partners).
+**Used in:** [Work With Technology Operating Partners: Get Their Experience Without Giving Up Your Decisions](#technology-operating-partners).
 
 {id: bibliography--s88-ibm-on-varying-cio-and-cto-remits}
 ### S88 — IBM on varying CIO and CTO remits
@@ -856,7 +856,7 @@ IBM Institute for Business Value. [2021 CIO Study: The CIO Revolution](https://w
 
 **Evidence type:** Vendor-sponsored leadership study. **Consulted scope:** CIO–CTO collaboration discussion and “The 3 CIO Mandates” section on organizational variation. Historical framing only; survey percentages, causal claims and a current role-distribution estimate are not used.
 
-**Used in:** [Work With Technology Operating Partners](#technology-operating-partners).
+**Used in:** [Work With Technology Operating Partners: Get Their Experience Without Giving Up Your Decisions](#technology-operating-partners).
 
 {id: bibliography--s89-govs-005-technology-accountability-and-architecture}
 ### S89 — GovS 005 technology accountability and architecture
@@ -865,7 +865,7 @@ UK Government Digital Service. [Government Functional Standard — GovS 005: Dig
 
 **Evidence type:** UK government functional standard. **Consulted scope:** Scope and sections 4.5.5–4.5.6, particularly the technology accountable officer and supporting Chief Architect. Illustrates one public-sector allocation of responsibilities; its requirements are not applied to private companies.
 
-**Used in:** [Work With Technology Operating Partners](#technology-operating-partners).
+**Used in:** [Work With Technology Operating Partners: Get Their Experience Without Giving Up Your Decisions](#technology-operating-partners).
 
 {id: bibliography--s90-mackey-on-building-an-operating-partner-track-record}
 ### S90 — Mackey on building an operating-partner track record
@@ -874,7 +874,7 @@ David Mackey, Partner at Albany. [Want to become a tech operating partner at a P
 
 **Evidence type:** Recruiter practitioner commentary on LinkedIn; supplied text copy. **Consulted scope:** Full supplied post text consulted on 2026-09-20: interim, fractional and advisory assignments as a route to portfolio experience; technical diagnosis, versatility, communication and results. Original page, linked graphic, comments and publication date were not independently verified. A recruiter’s practice account, not measured hiring outcomes or a guaranteed route to appointment.
 
-**Used in:** consulted for [Work With Technology Operating Partners](#technology-operating-partners); the passage that drew on it was removed on 2026-10-08, so the chapter no longer cites it.
+**Used in:** consulted for [Work With Technology Operating Partners: Get Their Experience Without Giving Up Your Decisions](#technology-operating-partners); the passage that drew on it was removed on 2026-10-08, so the chapter no longer cites it.
 
 {id: bibliography--s91-mckinsey-on-operating-group-arrangements}
 ### S91 — McKinsey on operating-group arrangements
