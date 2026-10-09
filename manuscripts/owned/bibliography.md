@@ -235,7 +235,7 @@ Chloe Autio, Reva Schwartz, Jesse Dunietz, Shomik Jain, Martin Stanley, Elham Ta
 
 **Evidence type:** Government framework. **Consulted scope:** Risk categories and management orientation consulted. Applies as a question structure; no claim of certification or quantified loss reduction. DOI: 10.6028/NIST.AI.600-1.
 
-**Used in:** [Clarify AI Strategy: Separate the Bet, the Saving and the Threat](#clarify-ai-strategy), [Scale the Team With AI: Seats Are Not Capacity](#scale-the-team-with-ai), [Critically Evaluate AI Costs: Measure the Return per Task and per Period](#evaluate-ai-costs).
+**Used in:** [Clarify AI Strategy: Separate the Bet, the Saving and the Threat](#clarify-ai-strategy), [Scale the Team With AI: Seats Are Not Capacity](#scale-the-team-with-ai), [Evaluate AI Costs: The Price Is Fixed, the Bill Is Not](#evaluate-ai-costs).
 
 {id: bibliography--s19-peng-et-al-copilot-experiment}
 ### S19 — Peng et al., Copilot experiment

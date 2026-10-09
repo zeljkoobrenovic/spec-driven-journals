@@ -205,7 +205,7 @@ The [Bibliography and Evidence Guide](#bibliography) records consultation scope 
 - **28.** [Manage Technical Debt: Present the Fix by What It Buys](#manage-technical-debt)
 - **29.** [Build and Test Resilience: Backups Are Not Enough](#build-test-resilience)
 - **30.** [Evaluate Cloud Costs: What a Lower Bill Can Hide](#evaluate-cloud-costs)
-- **31.** [Critically Evaluate AI Costs: Measure the Return per Task and per Period](#evaluate-ai-costs)
+- **31.** [Evaluate AI Costs: The Price Is Fixed, the Bill Is Not](#evaluate-ai-costs)
 
 {id: introduction--part-vii-lead-manage-funding-and-ownership-changes}
 ### Part VII — LEAD: Manage Funding and Ownership Changes

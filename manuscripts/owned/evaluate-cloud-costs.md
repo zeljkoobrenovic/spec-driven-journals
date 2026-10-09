@@ -185,7 +185,7 @@ Take the €50,000 case — roughly where last quarter ran — and compare it wi
 
 The board approved a 2027 demand forecast and the cash to meet it, which let Ines sign; it has not yet set a 2027 spending target. So €100,000 is the 2026 expectation being carried forward for want of a 2027 one. Alex owes the board two things at the autumn planning round: an account of what drives that €11,000, and a 2027 target to be measured against — either further changes that bring spending back to €100,000, or a case for a higher one. That is a contract choice set beside an honest comparison with the plan, not a savings announcement.
 
-The commitment was tested against demand the company can observe, and the chapter [Build and Test Resilience: Backups Are Not Enough](#build-test-resilience) judged spending whose benefit is harder to observe, protection against a failure. The next chapter applies this chapter’s method, a unit of useful work, one comparable basis, the reasons a bill changed and a commitment sized to a demand range, to the newest metered bill a company runs: [Critically Evaluate AI Costs: Measure the Return per Task and per Period](#evaluate-ai-costs).
+The commitment was tested against demand the company can observe, and the chapter [Build and Test Resilience: Backups Are Not Enough](#build-test-resilience) judged spending whose benefit is harder to observe, protection against a failure. The next chapter applies this chapter’s method, a unit of useful work, one comparable basis, the reasons a bill changed and a commitment sized to a demand range, to the newest metered bill a company runs: [Evaluate AI Costs: The Price Is Fixed, the Bill Is Not](#evaluate-ai-costs).
 
 {id: evaluate-cloud-costs--questions-to-consider}
 ## Questions to Consider

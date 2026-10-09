@@ -1,7 +1,7 @@
 {id: evaluate-ai-costs}
-# 33. Critically Evaluate AI Costs: Measure the Return per Task and per Period
+# 33. Evaluate AI Costs: The Price Is Fixed, the Bill Is Not
 
-![Critically Evaluate AI Costs: Measure the Return per Task and per Period — logo](private-techuity/posts/30-evaluate-ai-costs/assets/images/30-evaluate-ai-costs/logo.jpeg)
+![Evaluate AI Costs: The Price Is Fixed, the Bill Is Not — logo](private-techuity/posts/30-evaluate-ai-costs/assets/images/30-evaluate-ai-costs/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to compute the return on an AI feature or tool for a stated period from figures you actually have, to explain why an AI bill grows faster than revenue, and to decide how much to commit to a vendor under a stated demand range, so “what is our AI ROI” gets an answer with a unit, a period and a condition attached. **ROI**, return on investment, is the money an investment leaves after its costs, for each euro of those costs, over a stated period; the chapter explains it with an example before using it.
 

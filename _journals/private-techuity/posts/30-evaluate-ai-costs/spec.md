@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-09-28
+revised: 2026-10-09
 ---
 
-# Spec: Critically Evaluate AI Costs: Measure the Return per Task and per Period
+# Spec: Evaluate AI Costs: The Price Is Fixed, the Bill Is Not
 
 ## Intent
 
@@ -73,6 +73,7 @@ Product and engineering leaders inside companies working under investors, includ
 
 ## Changelog
 
+- 2026-10-09 (retitle): At the author's request the title became "Evaluate AI Costs: The Price Is Fixed, the Bill Is Not", naming the price-versus-bill gap the chapter manages; "Critically" dropped to match the cloud-costs chapter. Permalink unchanged.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.
 - 2026-09-27: Align the chapter slug in its folder, permalink and image paths with its current title, retaining all number prefixes.
 

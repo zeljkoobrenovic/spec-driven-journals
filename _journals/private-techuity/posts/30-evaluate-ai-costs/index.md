@@ -1,5 +1,5 @@
 ---
-title: "Critically Evaluate AI Costs: Measure the Return per Task and per Period"
+title: "Evaluate AI Costs: The Price Is Fixed, the Bill Is Not"
 date: 2026-09-24
 author: Željko Obrenović
 excerpt: "Read the running cost and the return of the AI you already run the way you read a cloud bill: per useful customer task, on one comparable basis, with usage, rates and construction separated, then decide how much to commit under a stated demand range and record the exposure that remains."
