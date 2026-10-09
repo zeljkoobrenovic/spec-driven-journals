@@ -1,5 +1,5 @@
 ---
-title: "Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount"
+title: "Scale the Team With AI: Seats Are Not Capacity"
 date: 2026-09-24
 author: Željko Obrenović
 excerpt: "Treat a claim that AI changes what the team can complete exactly like a headcount claim: trace the work through its stages and waits, find which constraint the tool touches, measure completed work with the old quality checks, count the cost before payback, and record a decision with a dated gate."

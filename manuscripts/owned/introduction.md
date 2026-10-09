@@ -194,7 +194,7 @@ The [Bibliography and Evidence Guide](#bibliography) records consultation scope 
 - [SCALE: Change the Team, the Systems and the Company Deliberately](#part-5) — part introduction
 - **23.** [Scale the Team Up: Headcount Is Not Capacity](#scale-the-team-up)
 - **24.** [Scale the Team Down: A Cut Is a Number, Not a Plan](#scale-the-team-down)
-- **25.** [Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount](#scale-the-team-with-ai)
+- **25.** [Scale the Team With AI: Seats Are Not Capacity](#scale-the-team-with-ai)
 - **26.** [Plan for Growth: Decide What (Not) to Change in Your Systems](#plan-for-growth)
 - **27.** [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#plan-acquisitions-separations)
 

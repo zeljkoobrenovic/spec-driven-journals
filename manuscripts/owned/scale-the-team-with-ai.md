@@ -1,7 +1,7 @@
 {id: scale-the-team-with-ai}
-# 27. Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount
+# 27. Scale the Team With AI: Seats Are Not Capacity
 
-![Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount — logo](private-techuity/posts/24-scale-the-team-with-ai/assets/images/24-scale-the-team-with-ai/logo.jpeg)
+![Scale the Team With AI: Seats Are Not Capacity — logo](private-techuity/posts/24-scale-the-team-with-ai/assets/images/24-scale-the-team-with-ai/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to answer the claim that artificial intelligence (AI) changes what your existing team can complete, whether it arrives as a reason to buy tools, to hire fewer people or to cut. The method is the one the hiring chapter used for a headcount claim: **trace** the work, recording each stage it passes through and each wait between stages, measure the work that completes, count the cost, and decide at a dated **gate**, a fixed day on which the result is judged by rules written in advance.
 

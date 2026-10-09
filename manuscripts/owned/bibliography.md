@@ -235,7 +235,7 @@ Chloe Autio, Reva Schwartz, Jesse Dunietz, Shomik Jain, Martin Stanley, Elham Ta
 
 **Evidence type:** Government framework. **Consulted scope:** Risk categories and management orientation consulted. Applies as a question structure; no claim of certification or quantified loss reduction. DOI: 10.6028/NIST.AI.600-1.
 
-**Used in:** [Clarify AI Strategy: Separate the Bet, the Saving and the Threat](#clarify-ai-strategy), [Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount](#scale-the-team-with-ai), [Critically Evaluate AI Costs: Measure the Return per Task and per Period](#evaluate-ai-costs).
+**Used in:** [Clarify AI Strategy: Separate the Bet, the Saving and the Threat](#clarify-ai-strategy), [Scale the Team With AI: Seats Are Not Capacity](#scale-the-team-with-ai), [Critically Evaluate AI Costs: Measure the Return per Task and per Period](#evaluate-ai-costs).
 
 {id: bibliography--s19-peng-et-al-copilot-experiment}
 ### S19 — Peng et al., Copilot experiment
@@ -244,7 +244,7 @@ Sida Peng, Eirini Kalliamvakou, Peter Cihon, and Mert Demirer. [The Impact of AI
 
 **Evidence type:** Original controlled experiment. **Consulted scope:** Original abstract and task description consulted. A recheck on September 13, 2026 covered the [study design and results](https://arxiv.org/html/2302.06590v1): the experiment ran in 2022, and the 55.8% figure is a reduction in average completion time among those who completed the task. The bounded task, tool generation and industry affiliations limit interpretation.
 
-**Used in:** [Clarify AI Strategy: Separate the Bet, the Saving and the Threat](#clarify-ai-strategy), [Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount](#scale-the-team-with-ai).
+**Used in:** [Clarify AI Strategy: Separate the Bet, the Saving and the Threat](#clarify-ai-strategy), [Scale the Team With AI: Seats Are Not Capacity](#scale-the-team-with-ai).
 
 {id: bibliography--s20-metr-early-2025-experiment}
 ### S20 — METR early-2025 experiment
@@ -253,7 +253,7 @@ METR. [Measuring the Impact of Early-2025 AI on Experienced Open-Source Develope
 
 **Evidence type:** Original randomized experiment report. **Consulted scope:** Study report, setting, headline result, and limits consulted. Experienced developers on familiar repositories; not every developer, task, or later model.
 
-**Used in:** [Clarify AI Strategy: Separate the Bet, the Saving and the Threat](#clarify-ai-strategy), [Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount](#scale-the-team-with-ai).
+**Used in:** [Clarify AI Strategy: Separate the Bet, the Saving and the Threat](#clarify-ai-strategy), [Scale the Team With AI: Seats Are Not Capacity](#scale-the-team-with-ai).
 
 {id: bibliography--s21-metr-2026-update}
 ### S21 — METR 2026 update
@@ -262,7 +262,7 @@ Joel Becker, Nate Rush, Tom Cunningham, David Rein, and Khalid Mahamud; METR. [W
 
 **Evidence type:** Original research update. **Consulted scope:** Full update consulted. Selection and participation changes undermine a simple interpretation of later speed estimates; the chapter does not present those estimates as a settled current effect.
 
-**Used in:** [Clarify AI Strategy: Separate the Bet, the Saving and the Threat](#clarify-ai-strategy), [Scale the Team With AI: Capacity Claims Need the Same Evidence as Headcount](#scale-the-team-with-ai).
+**Used in:** [Clarify AI Strategy: Separate the Bet, the Saving and the Threat](#clarify-ai-strategy), [Scale the Team With AI: Seats Are Not Capacity](#scale-the-team-with-ai).
 
 {id: bibliography--s22-kkr-capstone-description}
 ### S22 — KKR Capstone description
