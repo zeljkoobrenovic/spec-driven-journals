@@ -1,5 +1,5 @@
 ---
-title: Test Revenue Assumptions: Do Customers Respond as Expected?
+title: "Test Revenue Assumptions: The Key Number Behind the Investment Thesis"
 date: 2026-09-12
 author: Željko Obrenović
 excerpt: "Trace a product change through customer behavior to business results, test each step, and let the measured result revise the commitment."

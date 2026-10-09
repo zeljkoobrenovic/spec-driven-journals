@@ -31,7 +31,7 @@ Use this table to find evidence by question. A source can appear under more than
 | Governance, rights and incentives | S01, S02, S04, S61, S76 | [Clarify Authority: Decide Who Decides Before You Disagree](#clarify-authority), [Compare Incentives and Stakes: Equity, Carry and Jobs](#compare-incentives-stakes), [Scale the Team Up: Headcount Is Not Capacity](#scale-the-team-up) |
 | Trust, cooperation and team dysfunctions | S119 | [Where Investment Can Go Wrong](#where-investment-goes-wrong) |
 | Workforce reductions and employment process | S77, S78 | [Scale the Team Down: Decide What Work Stops, Not Just Who Leaves](#scale-the-team-down) |
-| Delivery, architecture and cloud cost | S13, S14, S15, S16, S53, S75, S120 | [Assess Capability: Can the Team Deliver?](#assess-capability), [Test Revenue Assumptions: Do Customers Respond as Expected?](#test-revenue-assumptions), [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#evaluate-cloud-costs) |
+| Delivery, architecture and cloud cost | S13, S14, S15, S16, S53, S75, S120 | [Assess Capability: Can the Team Deliver?](#assess-capability), [Test Revenue Assumptions: The Key Number Behind the Investment Thesis](#test-revenue-assumptions), [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#evaluate-cloud-costs) |
 | Security and resilience | S17 | [Build And Test Resilience: Backups Are Not Enough](#build-test-resilience) |
 | AI evidence | S18, S19, S20, S21, S63 | [Clarify AI Strategy: Three Different Investment Questions](#clarify-ai-strategy) |
 | Investor support and advisers | S22, P01, P02 | [Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?](#clarify-adviser-role), [Choose the Right Help: Compare Investor Support With Other Options](#choose-right-help) |
@@ -208,7 +208,7 @@ DORA / Google Cloud. [2024 Accelerate State of DevOps Report](https://dora.dev/r
 
 **Evidence type:** Original industry survey. **Consulted scope:** Report landing page, findings summary, and errata consulted; no independent reanalysis of the full survey. Associations support questions about operating conditions, not automatic causal or financial claims.
 
-**Used in:** [Test Revenue Assumptions: Do Customers Respond as Expected?](#test-revenue-assumptions), [Scale the Team Up: Headcount Is Not Capacity](#scale-the-team-up).
+**Used in:** [Test Revenue Assumptions: The Key Number Behind the Investment Thesis](#test-revenue-assumptions), [Scale the Team Up: Headcount Is Not Capacity](#scale-the-team-up).
 
 {id: bibliography--s16-finops-unit-economics}
 ### S16 — FinOps unit economics

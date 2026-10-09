@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-09
 ---
 
-# Spec: The Chain From Roadmap to Revenue Breaks Easily
+# Spec: Test Revenue Assumptions: The Key Number Behind the Investment Thesis
 
 ## Intent
 
@@ -62,6 +62,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-10-09 (retitle): At the author's request the title became "Test Revenue Assumptions: The Key Number Behind the Investment Thesis", so the subtitle says why revenue outranks other measures in an investor relationship: the thesis is a prediction about it. Permalink unchanged.
 - 2026-10-09: The business-case definition now states that the expected result must be a measure from the outcome record of [[adopt-outcome-thinking]], closing the loop between the two chapters. Article only.
 - 2026-10-03: Tool 6 reference now links directly to the tool. Article only.
 - 2026-10-03: Closing handoff now names [[clarify-ai-strategy]], the next chapter in reading order, through the shared assumption that setup and support costs fall as the company grows, before [[assess-capability]]. Article only.
