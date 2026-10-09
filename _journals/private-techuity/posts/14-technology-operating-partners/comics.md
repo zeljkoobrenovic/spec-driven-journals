@@ -335,7 +335,7 @@
         },
         {
           "who": "Alex",
-          "text": "Design a limited pilot with an agreed budget and review date."
+          "text": "In its seat, I'd run a limited pilot with a budget and review date."
         }
       ]
     },
@@ -353,7 +353,7 @@
         },
         {
           "who": "Alex",
-          "text": "Resolve which records it can use before committing to implementation."
+          "text": "There I'd confirm which records we may use before committing to implementation."
         }
       ]
     },
@@ -371,34 +371,33 @@
         },
         {
           "who": "Alex",
-          "text": "Prioritize service reliability and defer the support-tool rollout."
+          "text": "There I'd fix service reliability first and defer the support-tool rollout."
         }
       ]
     }
   ],
   "alt": "Three-strip comic: reliable records support a limited AI pilot with an agreed budget and review; incomplete permissions require resolving permitted data use first; an unstable service requires reliability work while the AI rollout is deferred.",
-  "caption": "In the fictional comparison, shared expertise supports three different sequences. A pilot is a small, time-limited trial before wider use. The second company’s question is permission, not technical access: being able to open customer records does not mean it may use them to draft replies. Each company uses its existing approval route and records the work it postpones; no common rollout or successful pilot outcome is assumed.",
+  "caption": "In the fictional comparison, Morgan describes each company and Alex answers as the leader in its seat, so shared expertise supports three different sequences. A pilot is a small, time-limited trial before wider use. The second company’s question is permission, not technical access: being able to open customer records does not mean it may use them to draft replies. Each company uses its existing approval route and records the work it postpones; no common rollout or successful pilot outcome is assumed.",
   "source_sections": [
-    "What Useful Intervention Looks Like"
+    "Setting Up the Example: One AI Tool, Three Companies",
+    "What a Useful Partnership Looks Like"
   ],
   "status": "generated",
   "generation": {
-    "tool": "OpenAI imagegen (built-in)",
-    "generation_calls": 1,
-    "visually_verified": true,
-    "sha256": "c25595c68630589a5abd12c4433f142500dfe74cf4790591ef3ddce8f393cbf6",
-    "provenance": "_research/modalities-artwork-20260922.json"
+    "model": "gemini-3-pro-image-preview",
+    "reference": "_research/comic-cast-20260913.jpeg",
+    "sha256": "74bbe1056a355e07644236c559c80bb592e0873ee8eb77211fb288e086dd4ef6"
   }
 }
 -->
 
 ![Three-strip comic: reliable records support a limited AI pilot with an agreed budget and review; incomplete permissions require resolving permitted data use first; an unstable service requires reliability work while the AI rollout is deferred.](assets/images/14-technology-operating-partners/comic-page-04-shared-method-different-decisions.jpeg)
 
-**Page 4: Shared method, different decisions.** In the fictional comparison, shared expertise supports three different sequences. A pilot is a small, time-limited trial before wider use. The second company’s question is permission, not technical access: being able to open customer records does not mean it may use them to draft replies. Each company uses its existing approval route and records the work it postpones; no common rollout or successful pilot outcome is assumed.
+**Page 4: Shared method, different decisions.** In the fictional comparison, Morgan describes each company and Alex answers as the leader in its seat, so shared expertise supports three different sequences. A pilot is a small, time-limited trial before wider use. The second company’s question is permission, not technical access: being able to open customer records does not mean it may use them to draft replies. Each company uses its existing approval route and records the work it postpones; no common rollout or successful pilot outcome is assumed.
 
-- *Strip 1.* **Morgan:** “This company has reliable support records.” **Alex:** “Design a limited pilot with an agreed budget and review date.”
-- *Strip 2.* **Morgan:** “This company has incomplete customer permissions.” **Alex:** “Resolve which records it can use before committing to implementation.”
-- *Strip 3.* **Morgan:** “This company receives complaints because its core service is unstable.” **Alex:** “Prioritize service reliability and defer the support-tool rollout.”
+- *Strip 1.* **Morgan:** “This company has reliable support records.” **Alex:** “In its seat, I'd run a limited pilot with a budget and review date.”
+- *Strip 2.* **Morgan:** “This company has incomplete customer permissions.” **Alex:** “There I'd confirm which records we may use before committing to implementation.”
+- *Strip 3.* **Morgan:** “This company receives complaints because its core service is unstable.” **Alex:** “There I'd fix service reliability first and defer the support-tool rollout.”
 
 <!-- comic-page
 {
