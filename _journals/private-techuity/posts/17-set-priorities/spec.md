@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-09
 ---
 
-# Spec: Set Priorities: Say No With Evidence
+# Spec: Set Priorities: Say No With Evidence, Not Opinion
 
 ## Intent
 
@@ -56,6 +56,7 @@ Existing chapters provide the financial and governance foundations. Where releva
 
 ## Changelog
 
+- 2026-10-09 (retitle, second pass): The subtitle became "Say No With Evidence, Not Opinion" to say what kind of evidence the no rests on; "Not Assumptions" was rejected because the chapter funds assumptions as tests rather than refusing them. Permalink unchanged.
 - 2026-10-09 (retitle): At the author's request the title became "Set Priorities: Say No With Evidence", naming the mechanism the chapter teaches; one sentence added to Select the Combination so the body states that the combination is how the company says no. Permalink unchanged.
 - 2026-10-03: Tool 12 reference now links directly to the tool. Article only.
 - 2026-10-03: Setup now links back to [[have-your-numbers-ready]] as well as [[adopt-outcome-thinking]]; with chapters 15–16 placed before day 0, both precede the board's day-0 choice. Article only.

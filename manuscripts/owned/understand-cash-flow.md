@@ -185,7 +185,7 @@ The outcome depends on how far customer payments fall behind plan. If collection
 
 **Why the covenant is rechecked.** The loan agreement includes a **leverage covenant**: at each year end, net debt divided by EBITDA must stay below an **agreed limit**. If customer payments come in weak, Sam must recheck that test, because a shortfall can push the ratio up in two ways. First, less cash in the bank always raises **net debt**, which is the borrowing minus the cash the loan agreement lets the company count against it. Second, EBITDA may also fall, depending on why the cash is short. Customers paying recorded invoices late reduce cash but not recorded earnings. Lost sales, or invoices that will never be paid, reduce both, so the ratio worsens from both sides.
 
-Pricing three options turns “we can’t afford €1 million” into a decision someone can take. The chapter [Set Priorities: Say No With Evidence](#set-priorities) extends the method to several projects competing for the same cash and the same engineer-weeks.
+Pricing three options turns “we can’t afford €1 million” into a decision someone can take. The chapter [Set Priorities: Say No With Evidence, Not Opinion](#set-priorities) extends the method to several projects competing for the same cash and the same engineer-weeks.
 
 {id: understand-cash-flow--a-company-without-debt-can-still-run-out-of-time}
 ## A Company Without Debt Can Still Run Out of Time

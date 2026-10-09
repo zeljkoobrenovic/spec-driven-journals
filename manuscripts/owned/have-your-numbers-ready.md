@@ -230,7 +230,7 @@ Priya’s setup proposal is a page of figures, and they look alike. They are not
 | **Target** | The result the plan sets out to reach, and by when — a desired outcome, not a promise | 50 hours per setup for the first pilot group, measured at day 90 |
 | **Forecast** | A calculation about the future from stated inputs | €225,000 a year of staff time released: 100 setups a year × 30 fewer hours per setup = 3,000 hours a year, valued at €75 an hour |
 | **Assumption** | An input taken as given, which may not hold | About 100 setups a year; €75 an hour, the fully loaded rate finance uses in plans (pay plus the employer’s other employment costs, per working hour); that the 50-hour target is reached and holds for later customers |
-| **Committed** | A resource the board has authorized — an input, not a result | The contract implementation specialist, €150,000 for months 1 to 12, agreed before the plan and paid from the operating budget, the spending plan for running the business. The proposal’s own €180,000 and twelve engineer-weeks (twelve weeks of one engineer’s working time) become committed only when the board funds them ([Set Priorities: Say No With Evidence](#set-priorities)) |
+| **Committed** | A resource the board has authorized — an input, not a result | The contract implementation specialist, €150,000 for months 1 to 12, agreed before the plan and paid from the operating budget, the spending plan for running the business. The proposal’s own €180,000 and twelve engineer-weeks (twelve weeks of one engineer’s working time) become committed only when the board funds them ([Set Priorities: Say No With Evidence, Not Opinion](#set-priorities)) |
 
 The forecast is still worth reporting, but written this way it cannot be mistaken for money the company has. It is 3,000 hours of projected capacity a year, at an assumed volume, valued at an assumed rate, on an assumed result. Each assumption carries weight: if volume and rate hold but setups reach only 65 hours, the saving is 15 hours per setup, 1,500 hours a year, and the forecast halves to €112,500.
 
@@ -328,7 +328,7 @@ A measure can be chosen because it flatters, a threshold set where it is easy to
 
 **“What is your €225,000 worth in cash?”** Nothing yet. It is a forecast of staff time, resting on three assumptions: about 100 setups a year, €75 an hour, and setups reaching 50 hours and staying there. It becomes cash only on the date a scheduled payment is actually avoided, or when additional customers pay more than serving them costs.
 
-With the numbers ready and labelled, Rotaline can choose among its requests against the cash and team time the board approves. That is where [Set Priorities: Say No With Evidence](#set-priorities) begins.
+With the numbers ready and labelled, Rotaline can choose among its requests against the cash and team time the board approves. That is where [Set Priorities: Say No With Evidence, Not Opinion](#set-priorities) begins.
 
 {id: have-your-numbers-ready--questions-to-consider}
 ## Questions to Consider

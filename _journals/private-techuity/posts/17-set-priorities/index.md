@@ -1,5 +1,5 @@
 ---
-title: "Set Priorities: Say No With Evidence"
+title: "Set Priorities: Say No With Evidence, Not Opinion"
 date: "2026-09-13"
 author: "Owned working manuscript"
 excerpt: "Compare competing uses of money and team capacity, fund a workable combination, and revise it when the evidence changes."

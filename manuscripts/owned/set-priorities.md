@@ -1,7 +1,7 @@
 {id: set-priorities}
-# 20. Set Priorities: Say No With Evidence
+# 20. Set Priorities: Say No With Evidence, Not Opinion
 
-![Set Priorities: Say No With Evidence — logo](private-techuity/posts/17-set-priorities/assets/images/17-set-priorities/logo.jpeg)
+![Set Priorities: Say No With Evidence, Not Opinion — logo](private-techuity/posts/17-set-priorities/assets/images/17-set-priorities/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to choose a combination of work that fits both the cash and the team time available, and revise the whole combination when a test fails.
 
