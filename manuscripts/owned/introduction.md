@@ -56,7 +56,7 @@ The [Glossary](#glossary) covers the rest.
 | The company is about to be bought, or to take new investment | [Use Diligence: Correct the Plan Before It Is Signed](#use-diligence) | [Plan the First Hundred Days: Turn Expectations Into Funded Work](#first-hundred-days), [Manage the Handover: Carry Forward the Evidence and Obligations](#manage-handover) |
 | Owners want more growth or profit than the team can support | [Understand Funding Choices: Match the Money to the Work](#understand-funding-choices) | [Set Priorities: Say No With Evidence, Not Opinion](#set-priorities), [Scale the Team Up: Headcount Is Not Capacity](#scale-the-team-up) |
 | Investor requests compete with customer needs | [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions) | [Clarify Authority: Decide Who Decides Before You Disagree](#clarify-authority), [Assess Investor Fit: Behavior Under Pressure](#assess-investor-fit), [Success for Whom, and for How Long?](#success-for-whom) |
-| A business that has invested in us wants to connect its systems to ours, or wants access to our data | [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#plan-acquisitions-separations) | [Build And Test Resilience: Backups Are Not Enough](#build-test-resilience), [Set the Terms of Help: Agree the Work, Authority and Handover](#set-terms-of-help) |
+| A business that has invested in us wants to connect its systems to ours, or wants access to our data | [Plan Acquisitions and Separations: Account for the Work, Not Just the Value](#plan-acquisitions-separations) | [Build And Test Resilience: Backups Are Not Enough](#build-test-resilience), [Set the Terms of Help: Agree the Work, Authority and Handover](#set-terms-of-help) |
 | The investor wants a leadership change | [Clarify Authority: Decide Who Decides Before You Disagree](#clarify-authority) | [Scale the Team Up: Headcount Is Not Capacity](#scale-the-team-up), [Choose the Right Help: Compare Investor Support With Other Options](#choose-right-help), [Clarify the Adviser’s Role: Are They Helping, Assessing or Deciding?](#clarify-adviser-role) |
 | We must reduce the number of employees | [Manage Funding Delays: Expected Money Is Not Cash](#manage-funding-delays) | [Scale the Team Down: A Cut Is a Number, Not a Plan](#scale-the-team-down), then [Compare Incentives and Stakes: Equity, Carry and Jobs](#compare-incentives-stakes) on how three different rewards shape what people push for: the managers’ ownership shares, the fund manager’s carry and employees’ jobs; then the [Practical Tools for Ownership and Technology Decisions](#toolkit) workforce-decision record |
 
@@ -196,7 +196,7 @@ The [Bibliography and Evidence Guide](#bibliography) records consultation scope 
 - **24.** [Scale the Team Down: A Cut Is a Number, Not a Plan](#scale-the-team-down)
 - **25.** [Scale the Team With AI: Seats Are Not Capacity](#scale-the-team-with-ai)
 - **26.** [Plan for Growth: Flexibility Needs a Customer and a Date](#plan-for-growth)
-- **27.** [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#plan-acquisitions-separations)
+- **27.** [Plan Acquisitions and Separations: Account for the Work, Not Just the Value](#plan-acquisitions-separations)
 
 {id: introduction--part-vi-sustain-keep-the-technology-you-run-worth-its-cost}
 ### Part VI — SUSTAIN: Keep the Technology You Run Worth Its Cost

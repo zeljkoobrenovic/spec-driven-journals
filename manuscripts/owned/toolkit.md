@@ -42,7 +42,7 @@ The tools keep their original numbers because chapters and earlier readers cite 
 | **Learn and explore** | What can we learn through the investor’s network, and what should we revisit afterward? | Learning brief — [Tool 14](#toolkit--tool-14) | [Learn Through Your Investor’s Network: Knowledge, Peers and New Perspectives](#learn-through-investors-network) |
 | **Define the evidence** | We keep arguing about what a number means; how do we define, own and label it before it reaches the board? | Measure record — [Tool 15](#toolkit--tool-15) | [Have Your Numbers Ready: One Set for Investors, Goals and Teams](#have-your-numbers-ready) |
 | **Measure** | Did the work help, and is the benefit capacity or cash? | Outcome and contribution ledger — [Tool 6](#toolkit--tool-6); small scorecard — [Tool 7](#toolkit--tool-7) | [Test Revenue Assumptions: The Investor Judges the End of the Chain](#test-revenue-assumptions), [Critically Evaluate Cloud Costs: A Lower Bill Is Not Always Better](#evaluate-cloud-costs), [Have Your Numbers Ready: One Set for Investors, Goals and Teams](#have-your-numbers-ready) |
-| **Revise or hand over** | We are combining or separating businesses; what must continue? | Integration or separation plan — [Tool 9](#toolkit--tool-9) | [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#plan-acquisitions-separations) |
+| **Revise or hand over** | We are combining or separating businesses; what must continue? | Integration or separation plan — [Tool 9](#toolkit--tool-9) | [Plan Acquisitions and Separations: Account for the Work, Not Just the Value](#plan-acquisitions-separations) |
 | **Revise or hand over** | Funding or ownership is changing; what evidence and obligations must travel with the work? | Funding or ownership handover — [Tool 10](#toolkit--tool-10) | [Manage the Handover: Carry Forward the Evidence and Obligations](#manage-handover), [Manage Funding Delays: Expected Money Is Not Cash](#manage-funding-delays) |
 | **Revise or hand over** | The headcount plan must shrink, or an investor proposes an appointment; who decides, what stops, and what are the people owed? | Workforce decision — [Tool 13](#toolkit--tool-13) | [Scale the Team Down: A Cut Is a Number, Not a Plan](#scale-the-team-down), [Scale the Team Up: Headcount Is Not Capacity](#scale-the-team-up) |
 
@@ -321,7 +321,7 @@ Compare the answers across participants and permitted references. An absent docu
 {id: toolkit--tool-9}
 ## 9. Plan Acquisition Integration or Separation
 
-Use alongside the transaction timetable, with appropriate legal and financial specialists. See the chapter [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#plan-acquisitions-separations).
+Use alongside the transaction timetable, with appropriate legal and financial specialists. See the chapter [Plan Acquisitions and Separations: Account for the Work, Not Just the Value](#plan-acquisitions-separations).
 
 Identify the value mechanism that requires each integration: reporting, commercial collaboration, shared capability, or product convergence. Record the customer impact, permitted data flows, license and intellectual-property rights, identity and access boundaries, product commitments, supplier dependencies, and the people who hold critical knowledge.
 

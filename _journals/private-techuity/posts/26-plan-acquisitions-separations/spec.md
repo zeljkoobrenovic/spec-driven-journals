@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-10-03
+revised: 2026-10-09
 ---
 
-# Spec: An Acquisition Adds Work Before It Adds Value
+# Spec: Plan Acquisitions and Separations: Account for the Work, Not Just the Value
 
 ## Intent
 
@@ -76,6 +76,7 @@ The supplied book brief establishes scope. Public citations appear in the articl
 
 ## Changelog
 
+- 2026-10-09 (retitle): At the author's request the title was polished to "Plan Acquisitions and Separations: Account for the Work, Not Just the Value"; same contrast, fewer qualifiers. Permalink unchanged.
 - 2026-10-03: Microsoft distributed-data citation corrected from S28 (the Skype press release) to the new S120. Article only.
 - 2026-10-03: Points to Tool 9 after the completion tests. Article only.
 - 2026-09-28: Summary rewritten as a fluent, conversational read of the key points and one worked example, with needless words removed and a more detailed overview figure; added the Summary criterion, which supersedes earlier summary-specific coverage requirements.

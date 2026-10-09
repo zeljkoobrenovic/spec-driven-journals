@@ -250,7 +250,7 @@ Read the chapter [Understand Investor Returns: Same Performance, Different Outco
 {id: glossary--transactions}
 ## Transactions and Incentives
 
-For examples, use the chapters [Understand Funding Choices: Match the Money to the Work](#understand-funding-choices), [Compare Incentives and Stakes: Equity, Carry and Jobs](#compare-incentives-stakes) and [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#plan-acquisitions-separations); the chapter [Use Diligence: Correct the Plan Before It Is Signed](#use-diligence) shows a thesis being revised.
+For examples, use the chapters [Understand Funding Choices: Match the Money to the Work](#understand-funding-choices), [Compare Incentives and Stakes: Equity, Carry and Jobs](#compare-incentives-stakes) and [Plan Acquisitions and Separations: Account for the Work, Not Just the Value](#plan-acquisitions-separations); the chapter [Use Diligence: Correct the Plan Before It Is Signed](#use-diligence) shows a thesis being revised.
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -265,7 +265,7 @@ For examples, use the chapters [Understand Funding Choices: Match the Money to t
 | Turnaround | Work to restore the viability of a business in difficulty. |
 | Restructuring | Changes to operations or financing. Debt restructuring can change payment dates, rates or amounts owed. |
 | Platform company / add-on | A business used as a base for acquisitions / a business subsequently acquired and attached to it. |
-| Buy-and-build | A strategy of developing a group through repeated acquisitions. Each acquisition adds integration work before it adds benefit ([Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#plan-acquisitions-separations)). |
+| Buy-and-build | A strategy of developing a group through repeated acquisitions. Each acquisition adds integration work before it adds benefit ([Plan Acquisitions and Separations: Account for the Work, Not Just the Value](#plan-acquisitions-separations)). |
 | Synergy | A benefit expected from combining activities. It needs evidence and must include the cost of achieving it. |
 | Secondary transaction | A sale of an existing investment interest. Specify whether company shares, fund interests or another interest changes hands. |
 | Continuation vehicle | A new investment vehicle used to continue holding assets associated with an existing manager or fund arrangement. |

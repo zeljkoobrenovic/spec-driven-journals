@@ -36,7 +36,7 @@ Every chapter keeps the discipline of Part IV: the benefit you expect, the money
 
 **Change the company’s boundary.**
 
-- [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#plan-acquisitions-separations): buying a business or separating one creates a new boundary under a continuing customer promise. What extra work does it add, and what waits?
+- [Plan Acquisitions and Separations: Account for the Work, Not Just the Value](#plan-acquisitions-separations): buying a business or separating one creates a new boundary under a continuing customer promise. What extra work does it add, and what waits?
 
 By the end, you can say what a change in size costs before it pays back, what evidence would stop it, and which work you will protect. The part does not say how large the company should be; that follows from Part IV.
 

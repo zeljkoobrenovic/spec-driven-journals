@@ -146,7 +146,7 @@ An asset-based approach examines the value of assets and relevant **liabilities*
 
 For a software company, adding up historical development expenditure isn’t a sufficient valuation. Code written at great cost may have little use; a relatively inexpensive product may support valuable customer relationships. The cost of building an asset and what someone would pay for it answer different questions.
 
-Who legally owns the product: its code, brand and the licences it depends on? Can the service operate without its parent, the larger company that owns it? Which shared systems, people and contracts would need replacing? These questions become especially concrete in a carve-out, where a business is separated from a larger organization. The chapter [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#plan-acquisitions-separations) examines that work.
+Who legally owns the product: its code, brand and the licences it depends on? Can the service operate without its parent, the larger company that owns it? Which shared systems, people and contracts would need replacing? These questions become especially concrete in a carve-out, where a business is separated from a larger organization. The chapter [Plan Acquisitions and Separations: Account for the Work, Not Just the Value](#plan-acquisitions-separations) examines that work.
 
 ![Comparable businesses, expected future cash and assets less liabilities offer different lenses on an estimated value.](private-techuity/posts/02-understand-valuation/assets/images/02-understand-valuation/valuation-lenses-and-assumptions.jpeg)
 

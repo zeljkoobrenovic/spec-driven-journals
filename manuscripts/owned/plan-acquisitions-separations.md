@@ -1,7 +1,7 @@
 {id: plan-acquisitions-separations}
-# 29. Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value
+# 29. Plan Acquisitions and Separations: Account for the Work, Not Just the Value
 
-![Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value — logo](private-techuity/posts/26-plan-acquisitions-separations/assets/images/26-plan-acquisitions-separations/logo.jpeg)
+![Plan Acquisitions and Separations: Account for the Work, Not Just the Value — logo](private-techuity/posts/26-plan-acquisitions-separations/assets/images/26-plan-acquisitions-separations/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn how combining businesses and separating one differ, how to fund the transition and decide what waits, and how to test that a new boundary works.
 

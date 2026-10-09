@@ -1,5 +1,5 @@
 ---
-title: "Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value"
+title: "Plan Acquisitions and Separations: Account for the Work, Not Just the Value"
 date: 2026-09-12
 author: Željko Obrenović
 excerpt: "Combining businesses and separating one are different processes under one principle: a new boundary, a continuing customer promise. Decide the depth, fund the transition, choose what waits, and test that the boundary works."

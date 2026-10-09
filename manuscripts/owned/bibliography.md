@@ -316,7 +316,7 @@ Skype S.à r.l., to be converted into Skype S.A. [Amendment No. 3 to Form S-1 Re
 
 **Evidence type:** Company regulatory filing. **Consulted scope:** Prospectus summary pp. 1–4, recent developments, intellectual-property settlement, selected financial data and financing discussion consulted. Pro forma periods, adjusted EBITDA, and management claims require care.
 
-**Used in:** [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#plan-acquisitions-separations), [Use Diligence: Correct the Plan Before It Is Signed](#use-diligence), [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype).
+**Used in:** [Plan Acquisitions and Separations: Account for the Work, Not Just the Value](#plan-acquisitions-separations), [Use Diligence: Correct the Plan Before It Is Signed](#use-diligence), [Hilton and Skype: A Successful Exit Still Needs Explaining](#hilton-and-skype).
 
 {id: bibliography--s28-microsoft-skype-completion}
 ### S28 — Microsoft Skype completion
@@ -1144,7 +1144,7 @@ Microsoft. [Challenges and solutions for distributed data management](https://le
 
 **Evidence type:** Vendor architecture guidance. **Consulted scope:** The challenges of querying data owned by several services (one screen drawing on several separately owned stores, aggregated through an API gateway or a read-only query table) and of keeping services consistent without shared transactions (eventual consistency). Read for the trade-off it describes, not as evidence about any particular separation.
 
-**Used in:** [Plan Acquisitions and Separations: Account for Extra Work, Not Just Expected Value](#plan-acquisitions-separations).
+**Used in:** [Plan Acquisitions and Separations: Account for the Work, Not Just the Value](#plan-acquisitions-separations).
 
 {id: bibliography--supplied-private-inputs}
 ## Supplied Private Inputs
