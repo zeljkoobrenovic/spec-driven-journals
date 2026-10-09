@@ -1,7 +1,7 @@
 {id: technology-operating-partners}
-# 17. Work With Technology Operating Partners: Get Their Experience Without Giving Up Your Decisions
+# 17. Work With Technology Operating Partners: Get Their Experience, Keep Your Autonomy
 
-![Work With Technology Operating Partners: Get Their Experience Without Giving Up Your Decisions — logo](private-techuity/posts/14-technology-operating-partners/assets/images/14-technology-operating-partners/logo.png)
+![Work With Technology Operating Partners: Get Their Experience, Keep Your Autonomy — logo](private-techuity/posts/14-technology-operating-partners/assets/images/14-technology-operating-partners/logo.png)
 
 > **IN THIS SECTION, YOU WILL:** Learn what a technology operating partner is, why investment firms rely on them, how the role differs from your own, and how to build a working partnership with the partner on your plan, your hiring and your use of AI.
 
