@@ -1,7 +1,7 @@
 {id: set-priorities}
-# 20. Set Priorities: You Cannot Fund Everything at Once
+# 20. Set Priorities: Say No With Evidence
 
-![Set Priorities: You Cannot Fund Everything at Once — logo](private-techuity/posts/17-set-priorities/assets/images/17-set-priorities/logo.jpeg)
+![Set Priorities: Say No With Evidence — logo](private-techuity/posts/17-set-priorities/assets/images/17-set-priorities/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn to choose a combination of work that fits both the cash and the team time available, and revise the whole combination when a test fails.
 
@@ -104,7 +104,7 @@ Suppose the recovery requirement is agreed, the setup problem is supported by cu
 
 The remaining €220,000 and six weeks provide room for uncertainty and for a later decision. They aren’t automatically savings or permission to start another project, and drawing on them is the board’s decision, not Ines’s.
 
-An estimated score can help organize this conversation, but it shouldn’t hide that an agreed obligation, a speculative product opportunity and a learning step answer different questions. **Explain the trade-off in words** as well as numbers.
+An estimated score can help organize this conversation, but it shouldn’t hide that an agreed obligation, a speculative product opportunity and a learning step answer different questions. **Explain the trade-off in words** as well as numbers. This is also how the company says no: the portal is refused with the evidence it lacks and the weeks it would need, not with an argument about whose request matters more.
 
 ![A group of projects must fit both the cash budget and the available team and specialist time.](private-techuity/posts/17-set-priorities/assets/images/17-set-priorities/money-and-capacity-two-limits.jpeg)
 

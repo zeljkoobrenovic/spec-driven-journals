@@ -34,7 +34,7 @@ Whatever you commit to, keep three things visible: **the benefit you expect, how
 
 **Choose and justify the work.**
 
-- [Set Priorities: You Cannot Fund Everything at Once](#set-priorities): which work fits the cash and team time?
+- [Set Priorities: Say No With Evidence](#set-priorities): which work fits the cash and team time?
 - [Test Revenue Assumptions: Do Customers Respond as Expected?](#test-revenue-assumptions): does the change bring more sales, and should the trial continue?
 - [Clarify AI Strategy: Three Different Investment Questions](#clarify-ai-strategy): artificial intelligence (AI) is software that predicts or generates content from data. Will customers pay for it, will staff work better with it, or could a rival product replace yours?
 

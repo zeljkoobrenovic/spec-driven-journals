@@ -1,5 +1,5 @@
 ---
-title: "Set Priorities: You Cannot Fund Everything at Once"
+title: "Set Priorities: Say No With Evidence"
 date: "2026-09-13"
 author: "Owned working manuscript"
 excerpt: "Compare competing uses of money and team capacity, fund a workable combination, and revise it when the evidence changes."
@@ -108,7 +108,7 @@ Suppose the recovery requirement is agreed, the setup problem is supported by cu
 
 The remaining €220,000 and six weeks provide room for uncertainty and for a later decision. They aren’t automatically savings or permission to start another project, and drawing on them is the board’s decision, not Ines’s.
 
-An estimated score can help organize this conversation, but it shouldn’t hide that an agreed obligation, a speculative product opportunity and a learning step answer different questions. **Explain the trade-off in words** as well as numbers.
+An estimated score can help organize this conversation, but it shouldn’t hide that an agreed obligation, a speculative product opportunity and a learning step answer different questions. **Explain the trade-off in words** as well as numbers. This is also how the company says no: the portal is refused with the evidence it lacks and the weeks it would need, not with an argument about whose request matters more.
 
 ![A group of projects must fit both the cash budget and the available team and specialist time.](assets/images/17-set-priorities/money-and-capacity-two-limits.jpeg)
 **Figure 1:** *A project can be affordable and still be impossible to schedule.*

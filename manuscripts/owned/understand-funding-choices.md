@@ -59,7 +59,7 @@ The first mistake would be to size the raise **from the offer on the table**. Th
 
 | Component of the need | Cash | Basis |
 | --- | ---: | --- |
-| Base work: build the reusable setup step | €180,000 | 12 engineer-weeks, as in [Set Priorities: You Cannot Fund Everything at Once](#set-priorities); one engineer-week is one engineer’s work for one week, here three engineers for four weeks |
+| Base work: build the reusable setup step | €180,000 | 12 engineer-weeks, as in [Set Priorities: Say No With Evidence](#set-priorities); one engineer-week is one engineer’s work for one week, here three engineers for four weeks |
 | First year of maintenance: keeping the step working after it ships | €30,000 | €30,000 a year, paid in the financial year after the step ships (months 13–24); later years sit inside the operating forecast |
 | Transition: run the manual and new process in parallel for two quarters (a quarter is a three-month period), migrate existing configurations, train the implementation team | €90,000 | Estimated from the current implementations, which take 80 staff hours each |
 | Interim capacity: one contract implementation specialist for twelve months (months 1–12), setting customers up while the step is built and proved | €150,000 | Without it the queue grows during the build. The contract also covers any hours the specialist spends on the amber data-quality step, so they are not billed again there |

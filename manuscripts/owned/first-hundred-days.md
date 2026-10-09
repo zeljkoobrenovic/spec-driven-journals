@@ -39,7 +39,7 @@ Five people and the board carry the example:
 - **Morgan** is the investor’s technology adviser, who ran the technical part of the investigation.
 - The **board** is the group of directors who oversee the company and approve its major decisions and spending.
 
-Every figure is fictional. The same Rotaline figures run through the chapters [Set Priorities: You Cannot Fund Everything at Once](#set-priorities), [Build And Test Resilience: Backups Are Not Enough](#build-test-resilience), [Test Revenue Assumptions: Do Customers Respond as Expected?](#test-revenue-assumptions) and [Manage the Handover: Carry Forward the Evidence and Obligations](#manage-handover). The first step is to establish what the investment actually changed at Rotaline.
+Every figure is fictional. The same Rotaline figures run through the chapters [Set Priorities: Say No With Evidence](#set-priorities), [Build And Test Resilience: Backups Are Not Enough](#build-test-resilience), [Test Revenue Assumptions: Do Customers Respond as Expected?](#test-revenue-assumptions) and [Manage the Handover: Carry Forward the Evidence and Obligations](#manage-handover). The first step is to establish what the investment actually changed at Rotaline.
 
 {id: first-hundred-days--what-actually-changed}
 ## What Actually Changed

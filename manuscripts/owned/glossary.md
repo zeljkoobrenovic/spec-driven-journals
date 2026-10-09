@@ -287,7 +287,7 @@ For examples, use the chapters [Understand Funding Choices: Match the Money to t
 {id: glossary--choosing}
 ## Choosing and Supporting Company Work
 
-See the chapters [Set Priorities: You Cannot Fund Everything at Once](#set-priorities), [Choose the Right Help: Compare Investor Support With Other Options](#choose-right-help) and [Set the Terms of Help: Agree the Work, Authority and Handover](#set-terms-of-help). These terms describe the proposed working methods used in the main narrative.
+See the chapters [Set Priorities: Say No With Evidence](#set-priorities), [Choose the Right Help: Compare Investor Support With Other Options](#choose-right-help) and [Set the Terms of Help: Agree the Work, Authority and Handover](#set-terms-of-help). These terms describe the proposed working methods used in the main narrative.
 
 | Term | Plain-language meaning |
 | --- | --- |
@@ -320,7 +320,7 @@ See the chapters [Set Priorities: You Cannot Fund Everything at Once](#set-prior
 {id: glossary--technology}
 ## Technology and Company Work
 
-The company-investment sequence begins at the chapters [Set Priorities: You Cannot Fund Everything at Once](#set-priorities) and [Test Revenue Assumptions: Do Customers Respond as Expected?](#test-revenue-assumptions); delivery measures are discussed in the chapter [Assess Capability: Can the Team Deliver?](#assess-capability), recovery in [Build And Test Resilience: Backups Are Not Enough](#build-test-resilience) and AI in [Clarify AI Strategy: Three Different Investment Questions](#clarify-ai-strategy). Sources for the frameworks named below: [S13: SPACE](https://www.microsoft.com/en-us/research/publication/the-space-of-developer-productivity-theres-more-to-it-than-you-think/) [S14: DORA metrics](https://dora.dev/guides/dora-metrics/) [S16: FinOps unit economics](https://www.finops.org/framework/capabilities/unit-economics/) [S17: NIST framework](https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf) and, for the AI definition, [S63: OECD AI-system definition memorandum](https://www.oecd.org/content/dam/oecd/en/publications/reports/2024/03/explanatory-memorandum-on-the-updated-oecd-definition-of-an-ai-system_3c815e51/623da898-en.pdf).
+The company-investment sequence begins at the chapters [Set Priorities: Say No With Evidence](#set-priorities) and [Test Revenue Assumptions: Do Customers Respond as Expected?](#test-revenue-assumptions); delivery measures are discussed in the chapter [Assess Capability: Can the Team Deliver?](#assess-capability), recovery in [Build And Test Resilience: Backups Are Not Enough](#build-test-resilience) and AI in [Clarify AI Strategy: Three Different Investment Questions](#clarify-ai-strategy). Sources for the frameworks named below: [S13: SPACE](https://www.microsoft.com/en-us/research/publication/the-space-of-developer-productivity-theres-more-to-it-than-you-think/) [S14: DORA metrics](https://dora.dev/guides/dora-metrics/) [S16: FinOps unit economics](https://www.finops.org/framework/capabilities/unit-economics/) [S17: NIST framework](https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf) and, for the AI definition, [S63: OECD AI-system definition memorandum](https://www.oecd.org/content/dam/oecd/en/publications/reports/2024/03/explanatory-memorandum-on-the-updated-oecd-definition-of-an-ai-system_3c815e51/623da898-en.pdf).
 
 | Term | Plain-language meaning |
 | --- | --- |
