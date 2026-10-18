@@ -126,6 +126,9 @@ Two behaviors catch finance teams out:
 
 The ending-balance section matters most at month-end. A Stripe balance at 31 March is not zero. It holds funds not yet available, funds available but not yet paid out, and any reserve. **That balance is an asset of the entity**, in substance cash held at a payment provider, and it must appear in the ledger as a clearing or receivable account. That account is reconciled to Stripe's ending balance every month. If the ledger books only the payout, the balance disappears. That is the mechanism behind The Shadow Ledger in Tablekin's case: the Stripe balance was a set of books, and nobody reconciled it.
 
+![Before and after: a single net payout line that loses fees and the remaining balance, versus itemized balance transactions held in a clearing account that matches the provider balance.](assets/images/22-stripe/net-payout-versus-balance-transactions.jpeg)
+**Figure 2:** *Booking only the net payout hides fees, refunds and the balance still held at the provider; posting each balance transaction to a clearing account keeps that balance on the books and testable against the provider's ending balance.*
+
 ## Connect: Charge Types, Account Models and Who Carries What
 
 Connect is how a platform such as Tablekin takes payments for businesses on its platform (venues) and routes money between the payer, the business, the platform and Stripe. Two decisions shape the finance integration: the **account model** for connected accounts, and the **charge type** for each payment.
@@ -199,7 +202,7 @@ flowchart LR
     V2 -->|"application fee 0.54"| T2["Tablekin balance"]
     V2 -->|"net 173.94 stays"| V3["Venue payout"]
 ---end mermaid---
-**Figure 2:** *The same economics routed two ways: under destination charges the gross amount, the fee and the dispute risk pass through Tablekin's balance; under direct charges only the application fee does.*
+**Figure 3:** *The same economics routed two ways: under destination charges the gross amount, the fee and the dispute risk pass through Tablekin's balance; under direct charges only the application fee does.*
 
 ## Billing: Subscriptions, Invoices and Usage
 
@@ -256,6 +259,9 @@ Both are well-built products. The question is not whether they work. It is **whe
 The revenue row is the one readers will argue with. Stripe RevRec is a **subledger for Stripe-originated revenue**, and Tablekin's revenue is mostly but not entirely Stripe-billed: enterprise venue groups sign negotiated contracts with implementation fees, invoiced in Workday. Adopting RevRec would add a second revenue engine, with its own chart of accounts, rules and audit trail, for one brand in a group that already runs revenue accounting in SAP, Oracle and Workday. Policy owners would keep two rule sets aligned, the auditor would test two engines, and the 2029 ledger convergence would have one more thing to migrate. **The alternative is cheaper**: each invoice line already carries its service period, and Workday Accounting Center can apply the same straight-line rule on ingestion, where the policy owner already governs revenue logic. A stand-alone SaaS company with all revenue on Stripe and no ERP revenue module should probably reach the opposite verdict, because its alternative is spreadsheets.
 
 Stripe Tax gets a **dated exception** rather than a rejection. It calculates at invoice finalization without a round trip to a second engine on the billing path, and Keystone's shared tax service is not due until 2029. Until then Tablekin keeps Stripe Tax on two conditions: group tax owns the product-taxability mapping, and the tax liability posts to Workday from the invoice's tax lines, not inferred from cash. Without the expiry date the exception would be Tool Overlap Creep with paperwork.
+
+![A boundary between the provider-run commercial edge (billing, metering, payouts, tax calculation with an expiry tag) and the enterprise-run books (ledger, reconciliation, policy, analytics).](assets/images/22-stripe/commercial-edge-versus-books.jpeg)
+**Figure 4:** *Stripe runs the commercial edge for Tablekin, with Stripe Tax on a dated exception; the ledger of record, reconciliation, revenue policy and analytics stay with the enterprise, and Stripe Revenue Recognition is deliberately not adopted.*
 
 ## Getting Data Out: Webhooks, Sigma and Data Pipeline
 
@@ -332,7 +338,7 @@ sequenceDiagram
     BK->>FD: 6 Apr bank line matched by trace_id
     FD->>WD: Payout journal clears the Stripe clearing account
 ---end mermaid---
-**Figure 3:** *The Tablekin invoice crosses three time boundaries: usage is earned in March, invoiced and paid on 1 April, and paid out on 5–6 April. Each boundary is a separate journal, not one net line.*
+**Figure 5:** *The Tablekin invoice crosses three time boundaries: usage is earned in March, invoiced and paid on 1 April, and paid out on 5–6 April. Each boundary is a separate journal, not one net line.*
 
 **Step 1 — Usage accrual, 31 March 2027.** The meter holds 3,120 covers for Juniper & Ash. The posting service reads the meter totals for every venue at the period cut-off and accrues usage revenue that has been earned but not yet invoiced.
 
@@ -428,7 +434,7 @@ flowchart LR
     WDY --> OS["OneStream consolidation"]
     ORA --> OS
 ---end mermaid---
-**Figure 4:** *Webhooks serve operations; the finance path runs from Data Pipeline through one normalized layer, shared with Adyen, to the brand ledgers and BlackLine, and reaches consolidation only through the ledgers.*
+**Figure 6:** *Webhooks serve operations; the finance path runs from Data Pipeline through one normalized layer, shared with Adyen, to the brand ledgers and BlackLine, and reaches consolidation only through the ledgers.*
 
 ## Failure Modes
 

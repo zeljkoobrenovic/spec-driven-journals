@@ -72,3 +72,4 @@ Chief and enterprise architects, finance-systems architects and finance-transfor
 
 - **2026-10-18** — Initial spec and article written in an AI-mediated session.
 - **2026-10-18** — Editorial review pass: closing hand-off corrected to the accounting-hub migration (SFP to group engine posting into S/4HANA) and given a heading; American spelling. *(AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

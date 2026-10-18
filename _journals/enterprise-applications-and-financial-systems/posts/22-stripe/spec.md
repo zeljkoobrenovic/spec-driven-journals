@@ -68,3 +68,4 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(author, AI-mediated session)*
 - **2026-10-18** — Consistency pass: aligned the Wayfare rail ticket with the scenario ledger (agent, €6.72 net margin at ticket issue). *(AI-mediated session)*
 - **2026-10-18** — Editorial review pass: hedged the current Stripe API version (as of October 2026), expanded ASC 606 / IFRS 15 on first use; Wayfare ticket-issue recognition verified. *(AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

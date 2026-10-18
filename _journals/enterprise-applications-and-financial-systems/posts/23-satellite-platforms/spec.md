@@ -69,3 +69,4 @@ Chief and enterprise architects, finance-systems and integration architects, and
 
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(Željko Obrenović, AI-mediated session)*
 - **2026-10-18** — Editorial review pass: FIS URL port removed, 2016 SAP Help Ariba link dated and caveated, hand-off now names [[part-3]], first-use expansions (EBICS, business-to-business). *(AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

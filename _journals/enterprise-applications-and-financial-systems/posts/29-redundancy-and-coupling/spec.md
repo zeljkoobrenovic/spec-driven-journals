@@ -68,3 +68,4 @@ Chief and enterprise architects, integration architects and finance-systems lead
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(Željko Obrenović, AI-mediated session)*
 - **2026-10-18** — Editorial review pass: integration-technology register row now records the June 2027 design-authority decision instead of "decision due Q4 2027"; added closing hand-off heading; American spelling. *(AI-mediated session)*
 - **2026-10-18** — Consistency pass: calendar alignment (payout cohorts April–May 2029; fiscal-year-start exception stated). *(AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

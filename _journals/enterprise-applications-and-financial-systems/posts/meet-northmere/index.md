@@ -42,6 +42,9 @@ Northmere is a multinational digital commerce group, headquartered in Amsterdam,
 
 The gap between GTV and revenue is the first thing an architect should notice. Most of the $64 billion is **other people's money**: payments that Northmere collects and passes on to properties, rail operators or restaurants, or that customers pay to those partners directly. Northmere's revenue is mainly the commissions and fees it earns along the way. The finance estate must track the whole flow, not just the revenue, because the money in transit is a liability, a regulatory obligation and a reconciliation problem.
 
+![A wide river of payments flows through a group's building to hotels, rail operators and restaurants, while only a small side stream fills a revenue bucket.](assets/images/meet-northmere/other-peoples-money.jpeg)
+**Figure 1:** *Most of the $64 billion Northmere handles is other people's money in transit; its $8.2 billion of revenue is the smaller stream it keeps, but the estate must track the whole flow.*
+
 ## Brands and Business Models
 
 Northmere runs five businesses. Four earn revenue directly; one is the payments platform the others rely on.
@@ -106,7 +109,7 @@ flowchart LR
     BL["BlackLine"] -.->|"reconciles"| S4
     FDB["Snowflake FinDB"] -.->|"operational finance data"| SFP
 ---end mermaid---
-**Figure 1:** *Northmere's 2027 baseline: three ledgers meet only at consolidation in OneStream, and most of the volume flows through a custom platform before it reaches the group core.*
+**Figure 2:** *Northmere's 2027 baseline: three ledgers meet only at consolidation in OneStream, and most of the volume flows through a custom platform before it reaches the group core.*
 
 | Area | System | What to know |
 | --- | --- | --- |
@@ -142,6 +145,9 @@ The numbers below are 2026 figures, rounded. They explain why Northmere cannot s
 | Finance-relevant applications in LeanIX (2027) | **214** |
 
 The drop from 1.1 billion events to tens of thousands of daily ledger lines is the **volume gradient** that [[finance-landscape]] uses to explain why finance estates have layers. Every step down that gradient is a summarization, and every summarization is a place where traceability can be lost.
+
+![A three-stage funnel narrowing from a cloud of operational events to subledger lines to a few general-ledger lines, with threads at each narrowing showing where traceability can be lost.](assets/images/meet-northmere/volume-gradient-funnel.jpeg)
+**Figure 3:** *The volume gradient: every step from 1.1 billion events to 38,000 ledger lines a day is a summarization, and every summarization is a place where traceability is either kept or lost.*
 
 ## The People
 
@@ -190,7 +196,7 @@ flowchart LR
     Y1 --> Y3["Year 3, 2029: one finance core"]
     Y3 --> Y5["Year 5, 2031: continuous, real-time finance"]
 ---end mermaid---
-**Figure 2:** *Keystone moves through three plateaus; each must leave the estate stable and closable on its own, not only as a step toward the next.*
+**Figure 4:** *Keystone moves through three plateaus; each must leave the estate stable and closable on its own, not only as a step toward the next.*
 
 | Horizon | Theme | Commitments |
 | --- | --- | --- |

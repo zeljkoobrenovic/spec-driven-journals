@@ -47,6 +47,9 @@ At the same time, something that should have reached a forum never did. Wayfare'
 
 Dana's conclusion: **the board was triaging by system, and it should triage by consequence.** The payment method was easy to reverse and local to one brand; it needed advice, not a ruling. The Fusion change was cheap to make but expensive to unwind, because every reconciliation moved into Fusion was one more to migrate later; it needed the capability owner. The rest of this chapter is the system she put in place over the following quarter.
 
+![Before and after: a single long queue at the board door versus a routing junction that sends most decisions to teams and advice and only a few to the board.](assets/images/34-architecture-governance/triage-by-system-vs-consequence.jpeg)
+**Figure 1:** *Triaging by system sent 27 of 34 requests to a fortnightly board while a SaaS configuration change that deepened an overlap reached no forum at all; triaging by consequence sends each decision down a path set by how hard it is to undo and how far it reaches.*
+
 ## What Governance Is For, and What It Is Not
 
 Governance has two jobs: **better decisions and faster decisions**. "Better" means the options, costs and control and accounting consequences were on the table, the right people decided, and the reasoning outlives its authors. "Faster" matters because a decision that takes two months is usually taken anyway, by default, by whoever needed it first.
@@ -72,6 +75,9 @@ The table explains the shape of the rest of the chapter. Architecture governance
 - **Data migration.** Once records live in a system, leaving it is a migration with reconciliation, parallel runs and archives for audit access.
 - **Contracts.** A three-year subscription is reversible at renewal, after a notice period.
 - **Control evidence.** A new key control must operate long enough to be tested. Changing it mid-year restarts the clock and complicates the auditor's testing.
+
+![A door fitted with four locks labelled period, migration, contract and evidence.](assets/images/34-architecture-governance/four-locks-one-way-door.jpeg)
+**Figure 2:** *Finance fits four locks to a door that product engineering would call two-way: period boundaries, data migration, contract terms and control evidence each make a decision harder to undo, and so push it toward advice or the board.*
 
 **Reach** is how many teams, brands, ledgers or legal entities a decision affects, and whether it touches a shared asset: the canonical events, the group chart of accounts, a system of record for critical data, the posting interface to the general ledger.
 
@@ -121,7 +127,7 @@ flowchart LR
     REG -->|"standard adopted or changed"| STD["Standards catalog and conformance checks"]
     REG -->|"disposition and review date"| PF["Application portfolio"]
 ---end mermaid---
-**Figure 1:** *Every path writes to one register, and the register is what the other gates read. The board is one of four routes, and the route is chosen by consequence within two days, not by which system is touched.*
+**Figure 3:** *Every path writes to one register, and the register is what the other gates read. The board is one of four routes, and the route is chosen by consequence within two days, not by which system is touched.*
 
 ## The Architecture Decision Record
 
@@ -237,7 +243,7 @@ stateDiagram-v2
     Rejected --> [*]
     Retired --> [*]
 ---end mermaid---
-**Figure 2:** *The lifecycle of a standard. Each transition is a recorded decision. A standard reaches Mandatory only when the check that proves conformance is already running, and it leaves through Deprecated so that no system is left non-conformant overnight.*
+**Figure 4:** *The lifecycle of a standard. Each transition is a recorded decision. A standard reaches Mandatory only when the check that proves conformance is already running, and it leaves through Deprecated so that no system is left non-conformant overnight.*
 
 The first five were declared mandatory together on 1 April 2027 for new builds and changed interfaces, with dated transition plans for existing systems; enforcement of STD-FIN-01 and STD-FIN-02 waited for the schema registry on 1 July 2027 ([[principles-standards-reference]] owns the catalog itself). The register held 14 active waivers at the end of Q3 2027 and 11 at year-end.
 
@@ -282,7 +288,7 @@ stateDiagram-v2
     Declined --> [*]
     Closed --> [*]
 ---end mermaid---
-**Figure 3:** *The lifecycle of a waiver. There is no state in which a waiver simply continues: every path ends in conformance, a changed standard, or a funded exit decided above the board.*
+**Figure 5:** *The lifecycle of a waiver. There is no state in which a waiver simply continues: every path ends in conformance, a changed standard, or a funded exit decided above the board.*
 
 A sample of the register at the end of 2027 shows the range.
 

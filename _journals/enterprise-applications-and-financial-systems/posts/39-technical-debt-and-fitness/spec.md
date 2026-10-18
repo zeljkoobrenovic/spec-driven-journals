@@ -71,3 +71,5 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - **2026-10-18** — Editorial review pass: mandatory standards referenced as STD-FIN-01..06; American spelling (catalog, program, theater). *(AI-mediated session)*
 - **2026-10-18** — Editorial review pass (follow-up): SFP subledger cut-over date aligned to 2 August 2027 (consistency item 24). *(AI-mediated session)*
 - **2026-10-18** — Consistency pass: SFP subledger cut-over date set to 1 November 2027; calendar rule wording clarified where relevant. *(AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-18** — Closing hand-off now points to the new chapter [[finops]] (read after this one), then [[resilience-and-security]]. *(AI-mediated session)*

@@ -63,3 +63,4 @@ Chief Architects, payments and finance-systems architects, and engineering leade
 ## Changelog
 
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(Željko Obrenović, AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

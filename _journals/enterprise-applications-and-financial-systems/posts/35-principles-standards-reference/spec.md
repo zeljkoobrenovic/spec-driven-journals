@@ -71,3 +71,4 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(author, AI-mediated session)*
 - **2026-10-18** — Consistency pass: aligned Lisbon settlement/payout dates and chargeback references with the scenario ledger. *(AI-mediated session)*
 - **2026-10-18** — Editorial review pass: STD-FIN-01/-02 enforcement from 1 July 2027 (schema registry) stated; link to governance; American spelling (catalog, program). *(AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

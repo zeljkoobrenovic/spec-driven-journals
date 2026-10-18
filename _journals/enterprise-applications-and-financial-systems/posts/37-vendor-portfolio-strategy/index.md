@@ -115,6 +115,9 @@ The budget has four lines, each expressed in units the design authority can chec
 
 A team that wants to adopt a new proprietary capability (an ERP vendor's embedded agents, a PSP's payout platform, a close vendor's AI matching) states which line it consumes. If the line has room, the team records it and proceeds. If the line is exhausted, the design authority decides whether to raise the budget, pay down another dependency first, or decline. **The budget does not forbid dependency; it makes each increase visible and owned.** I have seen enterprises try to ban proprietary features altogether. They end up paying for a platform and using it as a database, which is the most expensive way to own software.
 
+![A control panel with four budget bars for one vendor, a team spending a new feature from a bar with room, and a full bar escalated to a decision table.](assets/images/37-vendor-portfolio-strategy/dependency-budget-gauges.jpeg)
+**Figure 2:** *The dependency budget does not forbid dependency: each new proprietary feature is spent from one of four lines (concentration, exit time, exit cost or proprietary surface), and a line that has run out goes to the design authority.*
+
 ### Exit plans and exit maturity
 
 An **exit plan** is the documented, costed and tested way to stop depending on a vendor's service while keeping the business running and the books intact. It differs from a migration plan: it has to work when things are going badly, including when the vendor fails, service quality deteriorates or the contract is terminated in a hurry.
@@ -133,7 +136,7 @@ stateDiagram-v2
     Tested --> Tested: annual re-test
 ---end mermaid---
 
-**Figure 2:** *Exit maturity. A plan drops back from Tested to Estimated whenever scope or contract changes enough to invalidate the last test; tier and regulation decide the required stage.*
+**Figure 3:** *Exit maturity. A plan drops back from Tested to Estimated whenever scope or contract changes enough to invalidate the last test; tier and regulation decide the required stage.*
 
 ## What Makes an Exit Plan Real
 
@@ -183,6 +186,9 @@ Contracts are where dependency becomes enforceable. The levers below are the one
 
 Two warnings. **A lever is worth only what the enterprise is prepared to use.** A change-of-control termination right is worthless if no alternative has been estimated. And **the renewal date is a reason to decide on time, not a reason to switch.** Using every renewal as a threat damages relationships that the enterprise needs, and it is Vendor Gravity in reverse: the contract calendar decides the architecture instead of the vendor's roadmap.
 
+![A timeline working backwards from the renewal date through the notice period and migration lead time to an earlier decision point.](assets/images/37-vendor-portfolio-strategy/renewal-decision-date.jpeg)
+**Figure 4:** *The real decision date is the renewal date minus the notice period minus the migration lead time; contract levers give negotiating power only when the enterprise has prepared before it, on its own calendar.*
+
 ## Abstraction at the Right Seams
 
 An **anti-corruption layer** is a boundary component that translates a vendor's model into the enterprise's own, so that the rest of the estate depends on the enterprise's concepts rather than the vendor's ([[loosely-coupled-domains]] owns the pattern; [Evans, DDD Reference](https://www.domainlanguage.com/ddd/reference/)). Abstraction reduces dependency at a seam. It also costs engineering, hides vendor features and adds a component that can fail. The question is where it pays.
@@ -207,7 +213,7 @@ flowchart LR
     S4 --> EG
 ---end mermaid---
 
-**Figure 3:** *Where Northmere abstracts. Seams with plausible vendor change and many consumers (payments, tax, e-invoicing, events) get an enterprise-owned boundary; the general ledger is used directly, and bank connectivity relies on a standard format rather than a custom layer.*
+**Figure 5:** *Where Northmere abstracts. Seams with plausible vendor change and many consumers (payments, tax, e-invoicing, events) get an enterprise-owned boundary; the general ledger is used directly, and bank connectivity relies on a standard format rather than a custom layer.*
 
 Where Northmere puts anti-corruption layers:
 
@@ -239,6 +245,9 @@ Northmere Pay's 2027 numbers (illustrative): Adyen about 68% of transactions, St
 | **Annual traffic-move exercise** | Proof that routing, reconciliation and disputes work on both providers (DORA-grade test) | About 4 weeks of team effort per year, plus a temporary rise in unmatched lines during the exercise |
 
 The hedge has a known limit. **Stored credentials do not move.** Returning Stayloft travelers' saved cards are Adyen tokens, and Northmere Pay stores no card numbers ([[payments-fundamentals]]). If Adyen became unavailable, new-card traffic could move within days, but recurring and one-click payments with stored cards would need customers to re-enter details or a credential migration. Dana's team estimates (illustrative) that a full exit from Adyen takes about **two weeks for new-card traffic and nine to twelve months for stored credentials** without a contractual export.
+
+![New-card payments switching easily to a secondary provider while stored-card tokens stay chained to the primary provider.](assets/images/37-vendor-portfolio-strategy/stored-credentials-anchor.jpeg)
+**Figure 6:** *A warm secondary provider moves new-card traffic within days, but stored credentials stay with the primary acquirer: without a contractual export, moving them takes an estimated nine to twelve months.*
 
 Dana considered a third-party orchestrator with its own vault, which would make tokens portable. She recommended against it in 2027. An orchestrator vault is itself a strategic dependency holding the credentials. Depending on the design, it can also bring card data into Northmere's scope under the Payment Card Industry Data Security Standard (PCI DSS), and the stored-card problem can be shrunk more cheaply: by a credential-export clause in the Adyen renewal, network tokens where the providers support them, and a reduced token population as cards expire and are re-entered. The decision record states the condition for revisiting: a third acquirer, or a failed export test.
 
@@ -327,7 +336,7 @@ The strategies are not exclusive; Northmere uses the first four in different pla
 
 ## Integration with the Rest of the Estate
 
-Vendor strategy draws on most of the book's other practices. The **application portfolio** holds costs, contract dates and decision-due dates ([[application-portfolio]]). The **capability map** shows where vendors overlap and where a bundle would create a new overlap ([[capability-mapping]], [[redundancy-and-coupling]]). The **canonical event model and adapters** are the physical seams that make exit plans credible ([[loosely-coupled-domains]]). **Architecture governance** records tiers, budgets and posture decisions as decision records, and gives the design authority the right to decline a new dependency ([[architecture-governance]]). The **target state** gives the independent reference against which vendor roadmaps are judged ([[target-and-transition-states]]). **Resilience and security** owns the DORA program, the register of information and recovery testing ([[resilience-and-security]]). Finally, **technical debt** registers proprietary surface above budget as debt, with a carrying cost ([[technical-debt-and-fitness]]).
+Vendor strategy draws on most of the book's other practices. The **application portfolio** holds costs, contract dates and decision-due dates ([[application-portfolio]]). The **capability map** shows where vendors overlap and where a bundle would create a new overlap ([[capability-mapping]], [[redundancy-and-coupling]]). The **canonical event model and adapters** are the physical seams that make exit plans credible ([[loosely-coupled-domains]]). **Architecture governance** records tiers, budgets and posture decisions as decision records, and gives the design authority the right to decline a new dependency ([[architecture-governance]]). The **target state** gives the independent reference against which vendor roadmaps are judged ([[target-and-transition-states]]). **Resilience and security** owns the DORA program, the register of information and recovery testing ([[resilience-and-security]]). Finally, **technical debt** registers proprietary surface above budget as debt, with a carrying cost ([[technical-debt-and-fitness]]). Cloud commitments, minimum-spend clauses and marketplace purchases are vendor dependencies too, and their amortization, burn-down and accounting are designed in [[finops]].
 
 ## Failure Modes
 

@@ -87,6 +87,9 @@ Dana's team listed the reconciliations that touch the merchant subledger, using 
 
 The legal entity that contracts with the property is the natural boundary. Period states, subledger-to-GL tie-out and access control are already partitioned by entity in the 2027 journal design ([[designing-financial-ledgers]]). It is also the unit in which the close calendar, the controller's sign-off and the auditor's testing work.
 
+![A layered block cut horizontally with reconciliations crossing the cut, beside a block cut vertically into three slices that keep all layers intact.](assets/images/33-incremental-modernization/slice-along-reconciliations.jpeg)
+**Figure 1:** *Slice along reconciliation boundaries: a cohort of contracting entities keeps every reconciliation whole on one side of the line, while a module slice splits one booking's accounting across two books.*
+
 One reconciliation did not line up at first. Northmere Pay routes Stayloft payments through three Adyen merchant accounts: `NMPay_Stayloft_EEA`, `NMPay_Stayloft_UK` and `NMPay_Stayloft_INTL` ([[adyen]]). An analysis in March 2028 found that about 2.6% of Stayloft B.V.'s bookings settled through the international account, because routing followed the traveler's region and not the contracting entity (illustrative). That would have split the international account's clearing match across two books for months. Ingrid's team changed the routing rule in September 2028 so that each merchant account settles for exactly one cohort. **The cheapest migration work is often a change to a neighbor's configuration that makes your seam clean.**
 
 That gave three cohorts. The figures are illustrative.
@@ -115,6 +118,9 @@ Dana recommended option C, and Leila and Mei agreed, with two conditions that ma
 
 A cut-over at the start of a month falls inside the month-end blackout by definition, since 1 May is working day 1 of the April close. The rule was clarified rather than broken: **the blackout freezes deployments, not effective dates.** Everything is deployed before working day −2, and the switch is an approved, effective-dated configuration change that takes effect at 00:00 on day one.
 
+![A year wheel with blackout and peak bands, leaving two green-flagged windows at the start of May and November.](assets/images/33-incremental-modernization/two-windows-calendar.jpeg)
+**Figure 2:** *The calendar decides the shape: close blackouts, year-end, the summer peak and other first-quarter work leave two good windows in 2029, 1 May and 1 November.*
+
 ## The Target and the Transitional Architecture
 
 Three architectures matter: the shadow stage, the transitional state with cohorts on both sides, and the end state. The first two are shown here and the third under decommissioning.
@@ -130,7 +136,7 @@ flowchart LR
     CMP -->|"variances classified"| BL["BlackLine: temporary shadow reconciliation"]
     SFPS -->|"partner balances"| PAY["Group payout service"]
 ---end mermaid---
-**Figure 1:** *Stage 0. The engine consumes the same events as SFP but posts nothing; its would-be summaries are compared with SFP's real ones per entity and day. This is the Dark Launching pattern applied to a ledger: production inputs, no production effect.*
+**Figure 3:** *Stage 0. The engine consumes the same events as SFP but posts nothing; its would-be summaries are compared with SFP's real ones per entity and day. This is the Dark Launching pattern applied to a ledger: production inputs, no production effect.*
 
 Five transitional components were built for the cut-over stages. [[modernization-patterns]] requires each to have an owner and an expiry condition from the day it is designed, so they were entered in Keystone's scaffolding register before any code was written.
 
@@ -161,7 +167,7 @@ flowchart LR
     SFPS -->|"payables by booking"| PAY
     TFL["Traveler funds ledger in SFP"] -->|"per-booking match"| ENG
 ---end mermaid---
-**Figure 2:** *The transitional state during 2029. The cohort register gives every entity exactly one book of record. Moved cohorts are recomputed by SFP as a reverse shadow so the new book can be proven and, until the point of no return, handed back. Partners and the payout service read through paths that hide which book is authoritative.*
+**Figure 4:** *The transitional state during 2029. The cohort register gives every entity exactly one book of record. Moved cohorts are recomputed by SFP as a reverse shadow so the new book can be proven and, until the point of no return, handed back. Partners and the payout service read through paths that hide which book is authoritative.*
 
 Two rules governed these components. **The cohort register is financially significant configuration.** Under the segregation-of-duties standard (STD-FIN-05, [[principles-standards-reference]]), every change is approved by someone other than its author, versioned and logged to the evidence store, and a register change that moves authority needs Leila's approval. **The payout service never decides which book is authoritative.** It asks one endpoint for a booking's payable, and the endpoint consults the register. That kept the payout service's change during 2029 to one interface, which mattered because the same team was absorbing Wayfare's suppliers in the same months.
 
@@ -187,7 +193,7 @@ stateDiagram-v2
     MIG --> RET : G3, archive proven and no reads for one close
     RET --> [*]
 ---end mermaid---
-**Figure 3:** *The lifecycle of one cohort. Rollback paths exist until the first close on the new book is signed; after that, problems are fixed forward. Retirement needs its own gate, because a system that is no longer authoritative may still be needed for history.*
+**Figure 5:** *The lifecycle of one cohort. Rollback paths exist until the first close on the new book is signed; after that, problems are fixed forward. Retirement needs its own gate, because a system that is no longer authoritative may still be needed for history.*
 
 The gates, with what must tie out, the tolerance, how long and who signs:
 
@@ -346,7 +352,7 @@ gantt
     Archive and retrieval drills :s3a, 2030-03-01, 2030-06-30
     SFP subledger components deleted :milestone, s3b, 2030-10-31, 0d
 ---end mermaid---
-**Figure 4:** *The migration on one page. The cut-overs are two days; most of the timeline is proving before them and dual running and decommissioning after them. Every bar ends at a gate, not at a planned date.*
+**Figure 6:** *The migration on one page. The cut-overs are two days; most of the timeline is proving before them and dual running and decommissioning after them. Every bar ends at a gate, not at a planned date.*
 
 **What SFP is after 2030.** Three components remain: commission rating, the traveler funds ledger and the group payout service. One reconciliation is new and permanent: the traveler funds ledger against the engine's partner payables per booking, part of Northmere Payments B.V.'s safeguarding evidence ([[custom-finance-platforms]]).
 

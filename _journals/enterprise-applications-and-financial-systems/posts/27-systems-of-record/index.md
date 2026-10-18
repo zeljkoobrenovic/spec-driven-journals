@@ -85,6 +85,9 @@ The coarsest useful unit of authority is not the system and not the object; it i
 
 **KYC** is the identity verification a payment institution performs on the people it pays; **DAC7** is the EU directive requiring platforms to report seller income ([[global-scale]] covers both). The rule that makes this workable is **one attribute group, one authority, at any moment**. The partner record as a whole has no single system of record; forcing one on it either pushes self-service onboarding through a steward's queue or lets a brand platform edit bank details.
 
+![A partner record split into six attribute strips, each tied by one line to the single system that is authoritative for it.](assets/images/27-systems-of-record/one-attribute-group-one-authority.jpeg)
+**Figure 1:** *The Stayloft partner record has no single system of record: each attribute group has exactly one authoritative system at any moment, which is what makes self-service onboarding and controlled bank details possible together.*
+
 Attribute authority also explains one of the registry-match numbers in [[finance-data-architecture]]: about 4% of partners have a VAT number that differs between SFP and the tax determination calls. That is an authority problem, not a matching problem. SFP holds the number the host typed, Northmere Pay the number it verified, and the invoice process reads whichever copy is nearer.
 
 ## Authority Over a Lifecycle: The Hand-Off
@@ -113,7 +116,7 @@ flowchart LR
     SFP -.->|"proof: daily subledger-to-GL tie-out"| P1
     S4 -.->|"proof: TB load tie-out and BlackLine certification"| P1
 ---end mermaid---
-**Figure 1:** *Authority over the Lisbon booking moves through six hand-offs. Each solid arrow transfers authority for a specific fact; each dotted arrow is the reconciliation that proves the transfer. A hand-off without a dotted arrow is where a Shadow Ledger can grow.*
+**Figure 2:** *Authority over the Lisbon booking moves through six hand-offs. Each solid arrow transfers authority for a specific fact; each dotted arrow is the reconciliation that proves the transfer. A hand-off without a dotted arrow is where a Shadow Ledger can grow.*
 
 Walking the stages makes the abstraction concrete.
 
@@ -238,7 +241,7 @@ flowchart TB
     PREV --> CONTRACT --> DET
     DET -->|"breaks and new create paths"| OWN["Data owner and design authority"]
 ---end mermaid---
-**Figure 2:** *Authority is enforced in three layers: preventive write-path restrictions, contracts at each boundary, and detective controls that find what slipped through. The detective layer feeds the data owner and the design authority, which update the matrix or close the path.*
+**Figure 3:** *Authority is enforced in three layers: preventive write-path restrictions, contracts at each boundary, and detective controls that find what slipped through. The detective layer feeds the data owner and the design authority, which update the matrix or close the path.*
 
 ### Write-path restrictions
 
@@ -280,6 +283,9 @@ The matrix fixes the order of the response:
 
 The first step fixes the Shadow Ledger without waiting for the master data program, because it changes only *where the netting reads from*. The Many Masters take two years; the shadow balance took one quarter, once the matrix showed the netting was reading a copy.
 
+![Before: a payout engine nets against a stale snapshot and collects one commission twice. After: it reads the authoritative open items live and collects once.](assets/images/27-systems-of-record/netting-from-stale-copy-versus-live-read.jpeg)
+**Figure 4:** *The netting became a Shadow Ledger because it paid out on a balance computed from last night's copy; reading FI-CA's open items at payout time removed the double collections in one quarter.*
+
 ## Migrations: Temporary Dual Authority With an End Date
 
 Authority is hardest to keep clean when it is moving. Keystone moves several authorities between 2027 and 2029: merchant commission invoicing from SFP to FI-CA (2028), partner bank details from SFP to Northmere Pay (2028), the merchant subledger from SFP to the group finance core (2029), and, depending on the 2027 Q4 decision, brand ledgers from Oracle Fusion and Workday Financials into the group core. Every one of these creates a period when two systems are capable of being the authority.
@@ -294,7 +300,7 @@ flowchart LR
     D --> E["SFP invoicing retired; history kept per retention"]
     C -.->|"rollback per cohort, before first issued invoice"| B
 ---end mermaid---
-**Figure 3:** *Moving the authority for merchant commission invoices from SFP to FI-CA. Dual capability exists for most of the migration, but at every moment each partner's invoices have exactly one issuing system; the transitional row in the matrix carries the end date.*
+**Figure 5:** *Moving the authority for merchant commission invoices from SFP to FI-CA. Dual capability exists for most of the migration, but at every moment each partner's invoices have exactly one issuing system; the transitional row in the matrix carries the end date.*
 
 Four design rules make this work.
 

@@ -66,3 +66,4 @@ Chief and enterprise architects, finance-systems and integration architects who 
 
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(Željko Obrenović, AI-mediated session)*
 - **2026-10-18** — Editorial review pass: layer-5 row records Tablekin's Adaptive Planning overlap; blank lines before figure captions. *(AI-mediated session)*
+- **2026-10-18** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

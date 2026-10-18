@@ -72,3 +72,4 @@ Chief Architects, solution and finance-systems architects, and engineering leads
 - **2026-10-18** — Added a one-sentence cross-reference to the new Part V case study [[case-uber-payments]]. *(AI-mediated session)*
 - **2026-10-18** — Editorial review pass: SFP subledger cut-over moved to Mon 2 Aug 2027 (shadow through June and July closes) per the second-month-of-quarter rule; Lisbon `PaymentSettled` debits Cash in transit until the 16 Mar bank credit; forward note on the Dec 2027 hub decision; Uber cross-reference reworded to match ch. 44; OLTP expanded. *(AI-mediated session)*
 - **2026-10-18** — Editor correction superseding the item-24 date: SFP subledger cut-over is Mon 1 Nov 2027 (shadow through the August, September and October 2027 closes), clear of the July–August peak; results table now covers the Nov–Dec 2027 closes. *(AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

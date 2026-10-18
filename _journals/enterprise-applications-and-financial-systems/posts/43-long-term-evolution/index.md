@@ -128,6 +128,9 @@ Finance organizations already have risk registers and scenario plans. Stressor a
 
 A carve-out of Wayfare may be unlikely. It is still worth simulating, because what it demands (entity-scoped data, separable services, exportable evidence) is mostly what an acquisition, a regulatory audit and a vendor exit also demand. **Probability decides how much to spend on a mitigation. Recurrence decides which properties to build into the architecture.**
 
+![A building struck by icons for regulation, acquisition, provider outage, vendor change and AI agents, held up by four reinforced teal columns labeled Residues.](assets/images/43-long-term-evolution/residues-survive-stressors.jpeg)
+**Figure 2:** *Probability decides how much to spend on a mitigation; recurrence decides what to build. A property needed against many stressors is a residue that will probably help with the next one too.*
+
 Two other long-horizon tools sit beside it. A **Wardley map** places components on a value chain against their evolution from genesis to commodity ([Learn Wardley Mapping](https://learnwardleymapping.com/)); it shows what will commoditize within the decade, such as Northmere's custom payout orchestration, and when the retirement test of [[custom-finance-platforms]] should be run again. **Evolutionary architecture** ([Ford, Parsons, Kua and Sadalage, 2nd ed., 2022](https://thoughtworks.com/insights/books/building-evolutionaryarchitectures-second-edition)) supplies the feedback loop. Stressor analysis tells you what to build; fitness functions ([[technical-debt-and-fitness]]) tell you whether it is still built.
 
 ---begin mermaid---
@@ -146,7 +149,7 @@ flowchart TB
     FRESH --> N
 ---end mermaid---
 
-**Figure 2:** *The stressor-analysis loop. The output that matters is the incidence matrix: design changes that recur across many stressors become residues, are built into the roadmap, and are tested against a new set of stressors the following year.*
+**Figure 3:** *The stressor-analysis loop. The output that matters is the incidence matrix: design changes that recur across many stressors become residues, are built into the roadmap, and are tested against a new set of stressors the following year.*
 
 ### Running it in a finance estate
 
@@ -194,6 +197,9 @@ The estimate was blunt. Separating Wayfare from the 2031 target state as designe
 1. **Separability as a convergence condition.** Every shared service Wayfare joins must be able to export one brand's data by entity, with history, and to meter its usage by entity. This was added as an acceptance criterion to the convergence plan the design authority had approved the week before, on 8 December 2027: the accounting-hub route recorded in [[multiple-erps]], with Wayfare's entities moving onto S/4HANA from FY2029.
 2. **History follows the entity.** Before Fusion is retired, Wayfare's Fusion history is extracted to the archive store in the open format and with the reconciliation pack already designed for the EBS archive ([[modernization-patterns]]).
 3. **Brand-scoped evidence.** The evidence store indexes every control record by legal entity, so a buyer's auditor can be given Wayfare's evidence without anyone else's.
+
+![Before and after: a brand tangled into shared platforms takes about 20 months to separate, beyond a 12-month line; with export, metering and indexed evidence it separates in about 11 months.](assets/images/43-long-term-evolution/carve-out-separation.jpeg)
+**Figure 4:** *The Wayfare carve-out simulation: about 20 months to separate from the target as designed, against a 12-month TSA; separability, entity-scoped history and brand-scoped evidence cut it to about 11.*
 
 None of these changes is specific to a sale. Entity-scoped export is what a regulator's request, a single-jurisdiction tax audit and a vendor exit also need. That is the recurrence the method looks for. The simulation also raised a question it could not answer: if a sale is plausible, should Wayfare converge at all? The post-acquisition rule in [[build-versus-buy]] allows an acquired system to be "kept wrapped if a sale is plausible", and the 8 December decision lists a plausible Wayfare sale among its reversal conditions. The design authority priced both answers and left the choice to Tomás and the board.
 
@@ -260,6 +266,9 @@ The direction of travel is from **reviewing** to **providing**: making the confo
 | **Measures** | Decision lead time, waiver count | Fitness functions read continuously ([[technical-debt-and-fitness]]); share of change that needed no review |
 | **Where architects spend time** | Reviews and the board | Embedded in the hardest problems; stressor reviews; the platforms' product management |
 
+![Left: teams queue at an architect's review desk. Right: teams travel a paved platform road through automated check gates while an architect builds the road.](assets/images/43-long-term-evolution/reviewing-to-providing.jpeg)
+**Figure 5:** *Over a decade the architecture function moves from reviewing to providing: golden paths, pipeline checks and decision services replace the review queue, while documented approval of ICFR-relevant changes remains.*
+
 A **decision service** is a recurring architectural question turned into something a team can query without asking an architect:
 
 - *"Who is authoritative for this attribute at this lifecycle stage?"* The systems-of-record matrix became a registry with an API, which integration contracts reference and pipeline checks query ([[systems-of-record]]).
@@ -293,7 +302,7 @@ flowchart LR
     SR -->|"new stressors with signals"| V
 ---end mermaid---
 
-**Figure 3:** *The annual rhythm. Each review feeds the next. The stressor review closes the loop by ranking residues before the strategy refresh re-baselines the roadmap.*
+**Figure 6:** *The annual rhythm. Each review feeds the next. The stressor review closes the loop by ranking residues before the strategy refresh re-baselines the roadmap.*
 
 Two rules keep the rhythm honest. **Every review must be able to change something.** A portfolio review that cannot stop a renewal and a stressor review that cannot move money are rituals. **Detection signals interrupt the calendar.** When a stressor's signal fires (a regulation published, a vendor transaction announced, a step change in unmatched settlement lines), its owner convenes an extraordinary review within two weeks rather than waiting for December.
 

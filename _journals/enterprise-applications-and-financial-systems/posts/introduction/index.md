@@ -57,6 +57,9 @@ The idea extends beyond accounting records. The book argues for five reconciliat
 | **Vendors' roadmaps with the enterprise's strategy** | Does each platform have a defined place and boundary, or is a vendor's packaging deciding the architecture? |
 | **Finance with Engineering** | Are decision rights, controls and the pace of change agreed between those who own the numbers and those who build the systems? |
 
+![Five rows of paired objects joined by a key-shaped connector and a check mark: systems, ledgers and money, brands and group, vendor roadmaps and strategy, finance and engineering.](assets/images/introduction/five-reconciliations.jpeg)
+**Figure 1:** *The book's five reconciliations: in each pair, two independent records or agendas must be joined on something shared and shown to agree.*
+
 I introduce the five here so you can see them forming as you read. The individual chapters do not stop to name them; the last chapter of Part IV, [[long-term-evolution]], draws them together, adds the reconciliation that runs across all of them over a decade, and maps each one to the chapters that teach it.
 
 ## Why This Book Exists
@@ -66,6 +69,9 @@ There is no shortage of material on finance platforms. Every major vendor publis
 Vendor documentation explains one platform from the inside. It rarely tells you where that platform should stop, what it should not own, how it should be proven against the systems beside it, or what it will cost to leave. Enterprise architecture practice explains how to govern an estate in general. It rarely engages with the specifics that make finance different: double-entry invariants, period locks, revenue recognition, payment settlement that arrives days late and netted, safeguarding obligations, internal control over financial reporting and an external auditor who will test the result.
 
 The gap has a cost, and it falls on the people the book is written for. A finance estate assembled platform by platform, each chosen and implemented well, can still be incoherent as a whole. **The failures appear at the boundaries**, and the boundaries belong to no project, no vendor and often no team. The Chief Architect is one of very few people with a mandate to look at all of them, with a position between the CFO's questions and the engine room where their causes sit. This book is written from that position.
+
+![Five finance platforms each marked as working, with coins and records leaking from the bridges between them while an architect surveys all the seams from above.](assets/images/introduction/failures-at-the-boundaries.jpeg)
+**Figure 2:** *Each platform can work as specified while the estate fails at the seams between them; the boundaries belong to no project, which is why the Chief Architect's whole-estate view matters.*
 
 The next page, [[where-finance-architecture-goes-wrong]], names fourteen recurring failure patterns, from The Shadow Ledger and Suspense Gravity to Vendor Gravity and Automation Without Accountability, and links each to the chapters that address it. Every chapter in Parts I to IV opens with a callout naming the patterns it works on.
 
@@ -113,7 +119,7 @@ flowchart LR
     III -.->|"templates"| R
     IV -.->|"templates"| R
 ---end mermaid---
-**Figure 1:** *The four parts move from concepts to platforms, from platforms to the estate as one system, and from the estate to leading it over time; the case studies test the patterns against public evidence, and the reference pages serve every part.*
+**Figure 3:** *The four parts move from concepts to platforms, from platforms to the estate as one system, and from the estate to leading it over time; the case studies test the patterns against public evidence, and the reference pages serve every part.*
 
 The parts build on each other deliberately. **Part I** supplies the shared models, so that a later discussion about SAP or Adyen starts from definitions rather than vendor vocabulary; experienced enterprise architects should not skip its accounting and process chapters, because that is where most architecture mistakes in finance begin. **Part II** takes the platforms one at a time and asks the same questions of each. **Part III** stops looking at platforms and follows money and data across them, which is where the most expensive defects sit. **Part IV** turns to the strategic work: decisions, roadmaps, vendors, debt, resilience, organization, AI and the decade ahead. **Part V** steps outside the fiction: it examines a real, publicly documented payments platform, separates what is documented from my interpretation, and compares its choices with the patterns in the book.
 

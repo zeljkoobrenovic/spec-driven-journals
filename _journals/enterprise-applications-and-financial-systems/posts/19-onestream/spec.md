@@ -69,3 +69,4 @@ Chief and enterprise architects, finance-systems and integration architects, and
 
 - **2026-10-18** — Initial spec and article written in an AI-mediated session. Status `accepted`.
 - **2026-10-18** — Editorial review pass: functional-currency count aligned with the ledger (19); OneStream docs URLs verified (no change needed). *(AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

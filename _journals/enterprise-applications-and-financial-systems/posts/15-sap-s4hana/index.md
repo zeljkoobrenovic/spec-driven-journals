@@ -108,6 +108,9 @@ flowchart LR
 
 Three changes matter to an architect. **Internal reconciliations disappear by construction**: in ECC the general ledger, cost accounting, asset subledger and material ledger kept separate records that month-end had to prove equal; in S/4HANA they are views of the same lines. **Dimensions become columns, not accounts**: an analysis that once needed an account variant can use a dimension. Northmere's S/4HANA chart has about 3,900 accounts, many of them country or product variants of one account, an ECC habit carried into a greenfield system; [[finance-data-architecture]] describes the redesign, and the Universal Journal is what makes moving "Portugal" from the account number into a dimension cheap. **Extraction gets simpler**: OneStream's trial balance, BlackLine's balances and FinDB's extracts all start from one structure.
 
+![Left: four separate ledger books linked by reconciliation arrows and a tired clerk. Right: one journal viewed through four windows, with an outside parcel passing a checkpoint first.](assets/images/15-sap-s4hana/four-records-one-journal.jpeg)
+**Figure 2:** *The Universal Journal removes internal reconciliations by construction, because ledger, cost, asset and material views read the same lines; feeds from outside SAP still need their own control totals before they reach it.*
+
 "Single source of truth" is accurate inside SAP and misleading outside it. **The journal does not reconcile what SAP did not post**: SFP's daily summaries are held faithfully, but the link to the 3 million lines behind them lives in SFP's batch identifiers and control totals ([[custom-finance-platforms]]); an incomplete feed makes the journal wrong in a perfectly consistent way. **It does not remove subledgers**: open items for millions of partners, revenue schedules and per-booking liabilities still need one; the only question is whose. **It does not make dimensions free**: a dimension that a feed does not send cannot appear, however wide the journal is.
 
 ### Ledgers and parallel accounting
@@ -188,7 +191,7 @@ flowchart LR
     FICA -->|"open items"| BLK["BlackLine: subledger-to-GL proof"]
     GL -->|"balances"| BLK
 ---end mermaid---
-**Figure 2:** *FI-CA keeps partner accounts as open items and posts only totals to the ledger, each traceable through its reconciliation key. Commission rating stays in SFP; invoicing, receivables and collection run in SAP.*
+**Figure 3:** *FI-CA keeps partner accounts as open items and posts only totals to the ledger, each traceable through its reconciliation key. Commission rating stays in SFP; invoicing, receivables and collection run in SAP.*
 
 Take the agency-model sibling of the Lisbon booking: the traveler pays the property, and Stayloft invoices its **€90.00** commission at month-end. On 30 April 2027 Convergent Invoicing bills the property for this stay and 34 others, **€3,150.00** in total (VAT omitted for simplicity). Across all agency partners the run produces about 610,000 invoices (an illustrative figure).
 
@@ -253,7 +256,7 @@ flowchart TB
         FIB -->|"totals records"| UJB
     end
 ---end mermaid---
-**Figure 3:** *Central Finance centralizes accounting documents that brand ledgers have already produced; an accounting hub centralizes the posting logic itself and feeds S/4HANA from events. Both end in the same journal; they differ in where accounting decisions are made.*
+**Figure 4:** *Central Finance centralizes accounting documents that brand ledgers have already produced; an accounting hub centralizes the posting logic itself and feeds S/4HANA from events. Both end in the same journal; they differ in where accounting decisions are made.*
 
 | SAP-level consideration | A. Central Finance | B. Accounting hub into S/4HANA |
 | --- | --- | --- |
@@ -313,6 +316,9 @@ Northmere's integration rules, set by Lucía Romero's integration team with Sven
 | **D** | Modifications, direct writes to SAP tables, implicit enhancements, objects SAP marks as having no API | High; needs remediation | Implicit enhancements in billing and posting logic; modified standard programs |
 
 Two corrections to common readings. **Clean core does not mean no custom code**: Levels A and B are custom code SAP expects. And **in Private Edition clean core is a governance discipline**: Public Edition enforces it technically, Private Edition and on-premise permit everything down to D. SAP names the ABAP Test Cockpit as the key tool for code-level governance.
+
+![A sealed machine with modules cleanly plugged into released sockets on one side and modules bolted through drilled holes on the other, while a crane lowers an upgrade.](assets/images/15-sap-s4hana/clean-core-sealed-engine.jpeg)
+**Figure 5:** *Clean core is a sealed engine with extension ports: extensions on released interfaces survive each upgrade, while Level D modifications drilled into the core turn every upgrade into a remediation project.*
 
 ### Northmere's custom-code remediation plan
 

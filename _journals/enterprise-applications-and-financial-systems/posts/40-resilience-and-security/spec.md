@@ -71,3 +71,4 @@ Chief Architects, finance-systems and payments architects, SRE and platform lead
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(Željko Obrenović, AI-mediated session)*
 - **2026-10-18** — Consistency pass: aligned Lisbon settlement/payout dates and chargeback references with the scenario ledger. *(AI-mediated session)*
 - **2026-10-18** — Editorial review pass: Q4 2027 control-totals rule framed as a clause of STD-FIN-03 rather than a seventh standard; American spelling. *(AI-mediated session)*
+- **2026-10-18** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

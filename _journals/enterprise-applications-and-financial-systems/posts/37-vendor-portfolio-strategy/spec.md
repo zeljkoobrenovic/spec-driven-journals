@@ -66,3 +66,5 @@ Chief and enterprise architects, finance-systems leaders, payments-platform lead
 
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(Željko Obrenović, AI-mediated session)*
 - **2026-10-18** — Editorial review pass: 'leverage' replaced by 'negotiating power'; Dec 2027 convergence outcome noted; American spelling. *(AI-mediated session)*
+- **2026-10-18** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-18** — Added a cross-reference to [[finops]] for cloud commitments, minimum spend and marketplace purchases as vendor dependencies. *(AI-mediated session)*

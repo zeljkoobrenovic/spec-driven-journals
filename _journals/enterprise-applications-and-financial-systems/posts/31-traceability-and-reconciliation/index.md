@@ -231,6 +231,9 @@ The retention column follows one rule: **no level may expire before any level ab
 
 **Drill-down stops where a level summarized without keeping its key.** OneStream can show that the €90 is inside a Stayloft B.V. balance and drill back to S/4HANA ([[onestream]]); only SFP can show which booking is inside each summary line. And because partner and booking are not in the summary key, **revenue by partner comes from SFP or FinDB, never from the GL**, which is why R9 matters ([[finance-data-flows]]).
 
+![A pyramid of layers from many events at the base to one disclosed value at the top, with a key thread running through every layer and a cut thread beside it.](assets/images/31-traceability-and-reconciliation/levels-kept-keys.jpeg)
+**Figure 3:** *Each level summarizes the one below but keeps the key that reaches it; drill-down stops wherever a level summarized without keeping its key.*
+
 ## Immutable Evidence and Re-Performance
 
 Evidence from a reconciliation run is useful only if it is **complete, unaltered and re-performable**. Northmere's evidence record for every catalog run holds input fingerprints (control totals and SHA-256 hashes of each input), the rule and tolerance version in force, matched and unmatched items on each side, each exception's owner, cause code and resolution, sign-offs or the auto-certification rule that applied, and pointers to the raw files rather than copies.
@@ -256,6 +259,9 @@ The architecture therefore needs a **consistency model** stating what is guarant
 | **After lock** | — | Corrections post only in an open period, with the original period referenced; reopening needs CAO approval | Reversal, never update |
 
 The gate is the point. **Eventual consistency is acceptable only if the system enforces a moment when it must be resolved.** Without the gate, "eventually" drifts into next month and becomes Suspense Gravity. With it, the controller can still close with known exceptions, but as a recorded decision with an owner and a threshold.
+
+![A meandering stream of items converging on a lock gate, then resting in neat rows in a padlocked ledger.](assets/images/31-traceability-and-reconciliation/eventual-then-gated.jpeg)
+**Figure 4:** *During the period the estate is legitimately inconsistent; the close gate is the moment when every boundary must be reconciled, or its exceptions explained and owned, before the period locks.*
 
 The gate has a cost: in Northmere's first gated close (October 2027), two entities waited half a day for an unfinished R6 intercompany match. Leila accepted it. In my experience, a close that may proceed on unreconciled data will do so every month under deadline pressure.
 
@@ -309,7 +315,7 @@ sequenceDiagram
     O-->>T: Mapped group accounts and locked version
     T-->>A: Chain with evidence records for R1 R2 R3 R5 R6 R7
 ---end mermaid---
-**Figure 3:** *The bottom-up trace as a product. The trace service holds no data of its own. It walks the stored keys and attaches the evidence record of each reconciliation the item passed through. That second half is what turns a lookup into audit evidence.*
+**Figure 5:** *The bottom-up trace as a product. The trace service holds no data of its own. It walks the stored keys and attaches the evidence record of each reconciliation the item passed through. That second half is what turns a lookup into audit evidence.*
 
 The bottom-up trace also closes the gap the dry run exposed. The €90 is recognized in Stayloft B.V. on 21 April, but the cash sits in Northmere Payments B.V.'s safeguarding account until the 22 April sweep. The sweep used to post as one daily amount per entity pair with no list of bookings. The fix was a contract change, not a tool: the sweep now carries a sweep id, SFP records it on each booking's traveler-funds release line, and R6 matches the intercompany settlement on references held by both entities.
 

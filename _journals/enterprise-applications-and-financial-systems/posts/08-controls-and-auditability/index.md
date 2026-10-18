@@ -295,6 +295,9 @@ Two practical issues follow. Reports rarely cover the customer's fiscal year exa
 
 The principle is one sentence: **a SaaS platform transfers the operation of controls, not the accountability for them.** Northmere's configuration, roles, integrations and reports on every one of these platforms remain fully in scope.
 
+![A sealed cloud platform box with an assurance seal, surrounded by a customer-held ring of access, change, monitoring and reconciliation controls.](assets/images/08-controls-and-auditability/saas-controls-handed-back.jpeg)
+**Figure 5:** *A SOC 1 report covers the controls the vendor operates; the complementary user entity controls around the platform, such as access, configuration changes, interface monitoring and reconciliation, remain the customer's to run.*
+
 | Platform | Role in Northmere ICFR | Assurance evidence (as checked October 2026) | Typical CUECs Northmere must operate | Northmere owner |
 | --- | --- | --- | --- | --- |
 | **BlackLine** | Account reconciliations, Transaction Matching of PSP settlement, Task Management, Journal Entry | Obtain the current SOC 1 Type II (or ISAE 3402) report and bridge letter under NDA; confirm that the modules Northmere uses are in scope. I could not confirm the report's scope from public sources | User provisioning and review; approval of matching rules and auto-certification criteria; completeness of data loaded from ledgers and banks (IPE); review of failed loads | Leila Haddad's close team; Mei Tanaka for the CUEC map |
@@ -336,6 +339,9 @@ The patterns below are the ones I would require for any finance-relevant system 
 | **Tamper-evident, self-service evidence store** | Evidence, tagged with its control ID, is written to a store the people being controlled cannot alter and control owners can query directly | Central evidence store owned by Internal Controls and Security, not by SFP |
 
 These patterns are cheap at design time and expensive afterwards: a rule store with approval is a few weeks of work in a new platform, but retrofitting one into SFP, with the migration and reconciliation of every active rule, takes Jonas's team most of a quarter. That difference is the economic case against **Audit Afterthought**.
+
+![Left: a person compiling a binder with gaps. Right: pipeline stations dropping sealed receipts into a locked vault that an auditor reads.](assets/images/08-controls-and-auditability/evidence-as-by-product.jpeg)
+**Figure 6:** *The cheapest control evidence is a by-product of normal operation: each step of the pipeline writes its own record into a store the controlled team cannot alter, instead of someone assembling proof at quarter-end.*
 
 ## Continuous Control Monitoring
 

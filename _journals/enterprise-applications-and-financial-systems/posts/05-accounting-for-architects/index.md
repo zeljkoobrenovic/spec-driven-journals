@@ -223,6 +223,9 @@ The merchant model fills the balance sheet with money that is not Northmere's in
 
 Because Northmere Payments B.V. is a licensed e-money institution, travelers' funds are also subject to **safeguarding**: the [E-Money Directive (2009/110/EC), Article 7](https://eur-lex.europa.eu/eli/dir/2009/110/oj), requires e-money institutions to safeguard funds received, typically by holding them in segregated accounts protected from other creditors. Safeguarding turns a balance-sheet distinction into a regulatory control: Northmere must show, daily, that the cash in its safeguarding accounts covers what it owes travelers and properties. That is only possible if the chart of accounts separates safeguarded cash from Northmere's own operating cash, and the subledger can say at any moment how much is held, for which bookings, in which entity and currency. [[payments-fundamentals]] covers the regulation; [[global-scale]] covers licensed entities.
 
+![A shielded vault of coins that splits at the stay into a large share for the property and a small share of revenue.](assets/images/05-accounting-for-architects/three-kinds-of-money.jpeg)
+**Figure 2:** *Of the €600 a traveler pays, €510 is owed to the property and only €90 ever becomes Stayloft's revenue; until the stay, all of it is safeguarded funds held, not deferred revenue.*
+
 ## The Lisbon Booking, Entry by Entry
 
 The canonical worked example of this book is a merchant-model booking. A traveler from Germany books a three-night stay in a Lisbon apartment on Stayloft: **€600.00** including VAT, paid by card through Adyen on **12 March 2027**, for a stay on **18–21 April 2027**. The commission rate is **15%**, so Stayloft's commission is **€90.00** and the property is owed **€510.00**. Adyen books the capture into its settlement batch on Sunday **14 March** and the batch payout reaches Northmere's bank on Tuesday **16 March** (illustrative), after deducting a **€1.74** processing fee (illustrative). The payout is instructed on **22 April** and settles on **26 April**.
@@ -301,7 +304,7 @@ flowchart LR
     S -->|"own funds 90 swept, 22 Apr"| O["Bank - operating"]
 ---end mermaid---
 
-**Figure 2:** *One merchant booking moves through five balance-sheet accounts before it settles. Only €90 ever becomes revenue; every other account it touches must return to zero, which is what reconciliation checks.*
+**Figure 3:** *One merchant booking moves through five balance-sheet accounts before it settles. Only €90 ever becomes revenue; every other account it touches must return to zero, which is what reconciliation checks.*
 
 ### What the design must therefore do
 
@@ -404,6 +407,9 @@ Under ASC 606, platform access is a stand-ready obligation satisfied **over time
 
 The coincidence in this example is instructive. March revenue for this venue is $249 + $780 = **$1,029**, and the 1 April invoice is also **$1,029**, but the two numbers are made of different things. A design that used the invoice as the revenue record would get March right only by luck, and would be wrong in every month in which usage changes. The billing system's invoice lines and the ledger's revenue schedule are two records that must reconcile, which is the point of the misconception "billing equals revenue".
 
+![Two equal-height bars totaling $1,029: the invoice mixes an April block and a March block, the revenue column holds two March blocks.](assets/images/05-accounting-for-architects/same-total-different-contents.jpeg)
+**Figure 4:** *The 1 April invoice and March revenue are both $1,029 but made of different things: the invoice carries April's $249 subscription and March's $780 usage, while March revenue is March's subscription plus March's usage.*
+
 Three further points. Sales tax charged on the invoice is owed to the taxing authorities and posts to a sales-tax payable, not to revenue; US GAAP allows an entity to exclude such taxes from the transaction price, and Tablekin does. Whether recognition is daily or monthly is a policy choice with system consequences (a daily schedule is more precise for mid-month upgrades and cancellations and much more voluminous). And where the revenue schedule lives (in a billing tool's revenue module, in Workday or in a custom service) is a system-of-record decision that [[systems-of-record]] addresses; what matters here is that exactly one system owns it.
 
 ## Currency: Revaluation Is Not Translation
@@ -440,6 +446,9 @@ The design requirements are specific. Every line in a foreign currency must stor
 ### Translation, briefly
 
 When OneStream consolidates Stayloft B.V. into the US-dollar group, the Lisbon booking's €90 of April commission is translated at April's average rate (1.0820, illustrative): **$97.38**. Stayloft B.V.'s euro balance sheet is translated at the 30 April closing rate, and because income, balance sheet and equity use different rates, a difference appears that is posted to CTA. Translation does not change any euro amount in Stayloft B.V.'s own books, and it does not go through profit or loss. [[global-scale]] owns the multi-currency model, rate types and hyperinflationary cases.
+
+![Left: one payable re-weighed at a new rate with the difference to P&L. Right: a whole statement stack passed through a currency lens with the difference to OCI.](assets/images/05-accounting-for-architects/revaluation-versus-translation.jpeg)
+**Figure 5:** *Revaluation remeasures an entity's foreign-currency monetary items and runs through profit or loss; translation converts a whole entity's statements into the presentation currency and parks the difference in other comprehensive income.*
 
 ## Intercompany: The Booking Across Two Legal Entities
 
@@ -490,7 +499,7 @@ flowchart LR
     S --> C["Control totals and clearing accounts reconciled"]
 ---end mermaid---
 
-**Figure 3:** *Each invariant becomes a check on the posting path: idempotency for completeness, a balance check before acceptance, a period check that redirects rather than rejects late events, append-only storage with source references, and reconciliation of what was summarized.*
+**Figure 6:** *Each invariant becomes a check on the posting path: idempotency for completeness, a balance check before acceptance, a period check that redirects rather than rejects late events, append-only storage with source references, and reconciliation of what was summarized.*
 
 Two notes on the invariants. "Immutable" is a control concept, not a technology mandate: an append-only table with reversal entries and controlled access satisfies auditors; nothing requires a blockchain. And the invariants apply to every system that keeps books in the sense used above, including brand platforms, not only to the ERP. A brand subledger that updates rows in place is not exempt because its summaries post correctly to S/4HANA.
 

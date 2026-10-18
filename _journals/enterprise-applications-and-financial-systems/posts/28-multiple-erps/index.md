@@ -77,6 +77,9 @@ So I split the goal in two:
 
 The left column is what [[finance-data-architecture]] and [[global-scale]] call golden sources. The right column is where the convergence decision lives. The rule I use is that **the left column is mandatory from day one for every ledger, and the right column is decided case by case with a dated review.** An enterprise that achieves the left column with three ERPs is better governed than one that has a single ERP without it. None of this makes convergence wrong; it makes the burden of proof specific: *this* ledger converges because of *these* criteria, not because one is a nice number.
 
+![Three ledger buildings of different sizes standing on one shared foundation of five rule blocks.](assets/images/28-multiple-erps/one-core-many-ledgers.jpeg)
+**Figure 1:** *One finance core is a set of shared rules, not a single product: chart semantics, entities, rates, calendar and evidence must each be one thing, while the number of ledgers built on them is a separate decision.*
+
 ## Five Coexistence Patterns
 
 Five patterns cover nearly every multi-ERP estate. They differ in one thing above all: **where accounting decisions are made**, and therefore what the group core receives.
@@ -101,7 +104,7 @@ flowchart LR
         S5["Independent ERPs"] -->|"trial balances, mapped"| C5["Consolidation platform"]
     end
 ---end mermaid---
-**Figure 1:** *The five coexistence patterns, ordered roughly by how much they centralize. What crosses each arrow differs: transactions, a contracted trial balance, finished accounting documents, business events, or mapped trial balances. That difference decides where the group can drill down and who owns the posting logic.*
+**Figure 2:** *The five coexistence patterns, ordered roughly by how much they centralize. What crosses each arrow differs: transactions, a contracted trial balance, finished accounting documents, business events, or mapped trial balances. That difference decides where the group can drill down and who owns the posting logic.*
 
 ### 1. Single global instance
 
@@ -134,7 +137,7 @@ flowchart LR
     T2 -->|"canonical financial events"| BUS["Event backbone"]
     CON -->|"lock only after reconciliations certified"| CAL["Close calendar and evidence store"]
 ---end mermaid---
-**Figure 2:** *A tier-2 ERP is governable only if every arrow is a contract with an owner and a proof. Identities, chart and rates flow in from golden sources. Intercompany flows across through an interface rather than being matched late at consolidation. Trial balances and events flow out under control totals.*
+**Figure 3:** *A tier-2 ERP is governable only if every arrow is a contract with an owner and a proof. Identities, chart and rates flow in from golden sources. Intercompany flows across through an interface rather than being matched late at consolidation. Trial balances and events flow out under control totals.*
 
 ### 3. Hub-and-spoke with central-finance replication
 
@@ -218,6 +221,9 @@ Measured against doing nothing, the arithmetic is unflattering: $24 million ÷ (
 
 But doing nothing is not an option, because **Wayfare's event-accounting gap exists under every option**. Its 150 million events a year reach Fusion as about 2,600 summarized lines a day, which is Summarized Into Silence ([[oracle-fusion]]). The realistic alternative to convergence is Option C: keep Fusion and put Wayfare's rail events onto Oracle Accounting Hub. Hana's team priced that at about $7 million one-off, plus about $0.5 million a year of added license and operation. Against that alternative the calculation becomes ($24M − $7M) ÷ ($5.4M + $0.5M − $2.1M + $0.6M) = $17M ÷ $4.4M ≈ **3.9 years**. That is inside a normal subscription term, and it is before counting the close days and control-scope reductions, which Dana states separately as benefits rather than converting them into dollars nobody can audit.
 
+![Two payback timelines: about 6.2 years against doing nothing, about 3.9 years against the realistic alternative.](assets/images/28-multiple-erps/payback-against-realistic-alternative.jpeg)
+**Figure 4:** *Measured against doing nothing, Wayfare's convergence pays back in about 6.2 years; measured against the realistic alternative, which needs about $7 million of investment anyway, it pays back in about 3.9 years.*
+
 The general lesson: **if a convergence case needs run-cost savings alone to pay back, check that it prices the realistic alternative**, count the control line (about 40% of the difference between Tablekin's options in [[build-versus-buy]]), and state close days and drill-down as benefits rather than speculative dollars an audit committee will test.
 
 ## In Practice: Northmere's 2027 Q4 Decision
@@ -290,7 +296,7 @@ flowchart LR
     TK -->|"trial balances, mapped by rule"| OS
     ENG -->|"tie-out breaks"| BL["BlackLine"]
 ---end mermaid---
-**Figure 3:** *Northmere's 2030 estate after the decision. Wayfare's ledger has gone, and its 12 entities join the 55 SAP company codes. One engine holds the posting rules for every event-shaped flow. Tablekin is the only second ledger, connected by contract rather than by a mapping spreadsheet. OneStream consolidates two trial-balance sources instead of three.*
+**Figure 5:** *Northmere's 2030 estate after the decision. Wayfare's ledger has gone, and its 12 entities join the 55 SAP company codes. One engine holds the posting rules for every event-shaped flow. Tablekin is the only second ledger, connected by contract rather than by a mapping spreadsheet. OneStream consolidates two trial-balance sources instead of three.*
 
 The decision changes the 2028 plan in specific ways. The route-A branch of the roadmap is deleted. The engine's volume proof becomes a gate with a date. MuleSoft's containment gets an end date tied to Fusion's retirement. Fusion moves from Tolerate to Migrate in the portfolio, while Workday Financials stays in Tolerate until Q1 2028 ([[application-portfolio]]). Wayfare's no-regret moves, retiring the USD reporting currency and moving intercompany reconciliation into BlackLine, continue unchanged.
 
@@ -312,7 +318,7 @@ stateDiagram-v2
     Review --> Converge
     KeepWrapped --> Review
 ---end mermaid---
-**Figure 4:** *An acquired ledger moves through wrapping to one of three governed states. There is no path in which it remains merely tolerated, and every state other than convergence has a dated review.*
+**Figure 6:** *An acquired ledger moves through wrapping to one of three governed states. There is no path in which it remains merely tolerated, and every state other than convergence has a dated review.*
 
 **Day 1: trial balance into consolidation.** On the closing date the acquired entities are added to the legal entity register with identity, ownership, functional currency and statutory basis. Their opening trial balance is loaded into OneStream through a provisional mapping, approved by group reporting, with an expiry date. The acquired ledger keeps running untouched. Nobody migrates anything in the first quarter. Purchase-accounting adjustments are booked at group level until the ledger can carry them.
 

@@ -125,6 +125,9 @@ Three structural facts are visible in the diagram before any detail.
 
 **Granularity collapses three times.** The booking is a row in SFP. In S/4HANA it is part of a summary line, one of about 38,000 lines a day built from about 3 million subledger lines. In OneStream it is part of a Stayloft B.V. balance. In the 10-Q it is part of a caption. Each collapse is an aggregation that must be reversible: the summary through its summary ID, the balance through drill-back to S/4HANA, the caption through Workiva's link to a locked consolidation version.
 
+![One highlighted booking merged into a summary, a balance and a statement caption, with a thread of keys running through every layer back to the booking.](assets/images/24-transaction-to-report/granularity-collapse-with-keys.jpeg)
+**Figure 2:** *The Lisbon booking is merged with other transactions three times, into an S/4HANA summary line, an entity balance and a 10-Q caption; each collapse stays reversible only if the key of the layer below is stored with it.*
+
 **Two legal entities and two currencies.** Northmere Payments B.V., the licensed e-money institution, holds the traveler's money; Stayloft B.V. earns the commission. Both are euro-functional and the group reports in US dollars, so the trace must show intercompany entries in the ledgers and translation in consolidation.
 
 ## The Lisbon Booking, Hop by Hop
@@ -284,7 +287,7 @@ The table is the walkthrough document Mei Tanaka now gives the auditor at the st
 | 10 | OneStream, Workiva | Translated revenue; roll-forward; Q2 10-Q | Consolidation version; disclosure category | Disaggregation sums to revenue; roll-forward foots | Tie-out of note to consolidated TB | Filed by 9 Aug 2027 | Note does not foot; comment letter |
 | 11 | FinDB | Events, payments, consolidated results | `correlation_id`, ledger keys, mapping set | Financial figures tie to the ledger | Ledger-to-warehouse tie-out | Daily and after close | "Three revenue numbers" |
 
-Figure 2 shows the same chain against the calendar, which is where period errors are found.
+Figure 3 shows the same chain against the calendar, which is where period errors are found.
 
 ---begin mermaid---
 flowchart LR
@@ -317,7 +320,7 @@ flowchart LR
     B3 --> C1
     C3 --> D2
 ---end mermaid---
-**Figure 2:** *The booking spans two periods, two closes and three filings. The cash arrives in March, the revenue in April, and the Q1 10-Q is filed while the April close is running, so the chain needs period-correct dates at every hop and no system may reassign a period it did not own.*
+**Figure 3:** *The booking spans two periods, two closes and three filings. The cash arrives in March, the revenue in April, and the Q1 10-Q is filed while the April close is running, so the chain needs period-correct dates at every hop and no system may reassign a period it did not own.*
 
 ## Timing: Where Clocks Disagree
 
@@ -386,7 +389,7 @@ flowchart LR
     OS --> WK["Workiva filings"]
     OS --> FDB
 ---end mermaid---
-**Figure 3:** *Three business models, three chains, one consolidation. Only Stayloft's chain joins the group in the general ledger; Tablekin and Wayfare join in OneStream, so for two of the three chains the mapping rule is the first group-level control their transactions meet.*
+**Figure 4:** *Three business models, three chains, one consolidation. Only Stayloft's chain joins the group in the general ledger; Tablekin and Wayfare join in OneStream, so for two of the three chains the mapping rule is the first group-level control their transactions meet.*
 
 ## Trade-Offs: Where a Brand's Chain Joins the Group
 
@@ -444,6 +447,9 @@ Measured against that list, Northmere's 2027 chains had a break at almost every 
 | Disclosure schedules (funds-held roll-forward, disaggregation) built from extracts in spreadsheets | 8, 10 | Values with weak lineage in the filing | [[finance-data-flows]], [[satellite-platforms]] |
 | FinDB revenue not tied to the ledger | 11 | "Three revenue numbers" in executive reviews | [[finance-data-flows]] |
 | Three integration technologies and no canonical events for Tablekin and Wayfare | 1–3 | Each brand's chain different in shape and controls | [[loosely-coupled-domains]], [[multiple-erps]] |
+
+![A chain of solid system links from a purchase to a published report, where the links are sound but several joints between them are cracked and unattended.](assets/images/24-transaction-to-report/chain-breaks-at-the-handoffs.jpeg)
+**Figure 5:** *Northmere's 2027 chains broke at almost every boundary, yet none of the breaks was a platform defect: each was a hand-off without an owner or a control.*
 
 ## Failure Modes
 

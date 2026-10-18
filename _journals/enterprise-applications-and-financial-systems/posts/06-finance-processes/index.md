@@ -83,6 +83,9 @@ A **hand-off** is any point where a financial item changes system, owner, identi
 
 These five properties are the unit of design in this chapter. [[integration-architecture]] covers the mechanics behind them (idempotency, control totals, the transactional outbox), and [[traceability-and-reconciliation]] turns them into a reconciliation catalog. Here the job is to find them.
 
+![Two runners passing a document baton across a lane boundary, the baton tagged with five properties.](assets/images/06-finance-processes/handoff-five-properties.jpeg)
+**Figure 1:** *A hand-off is designed when its cut-off, ownership transfer, identifier, completeness proof and failure path are all agreed; platforms work well internally, and items are lost between them.*
+
 ## The Process Map of a Finance Estate
 
 Every process eventually feeds Record-to-Report. That is the structural fact that makes the close the place where every upstream weakness surfaces.
@@ -105,7 +108,7 @@ flowchart LR
     R2R -->|"consolidated statements"| PUB["Filing and disclosure"]
 ---end mermaid---
 
-**Figure 1:** *Every finance process converges on Record-to-Report, and treasury and tax are shared services that the operational processes call; a weak hand-off anywhere on the left shows up as a late or wrong number on the right.*
+**Figure 2:** *Every finance process converges on Record-to-Report, and treasury and tax are shared services that the operational processes call; a weak hand-off anywhere on the left shows up as a late or wrong number on the right.*
 
 Two points follow. Treasury and tax behave as **shared services** called from inside other processes, so their hand-offs are numerous and repetitive and are the first candidates for standard interfaces. And Plan-to-Perform consumes R2R's output and feeds treasury's forecast, so a late close degrades the cash forecast, a cost the controller rarely sees.
 
@@ -170,7 +173,7 @@ flowchart LR
     F -->|"cleared payable"| D
 ---end mermaid---
 
-**Figure 2:** *Procure-to-Pay at Northmere crosses four systems and a bank; the five arrows between subgraphs are the hand-offs that need identifiers, control totals and an exception owner.*
+**Figure 3:** *Procure-to-Pay at Northmere crosses four systems and a bank; the five arrows between subgraphs are the hand-offs that need identifiers, control totals and an exception owner.*
 
 ### Tracing the Kestrel invoice
 
@@ -191,6 +194,9 @@ Kestrel Media GmbH is onboarded in Coupa in January 2027: VAT ID validated, bank
 | May close | Bank and GR/IR accounts reconciled | S/4 → BlackLine | GR/IR aging, where receipts and invoices that never met accumulate, is the P2P health check. |
 
 Three things in that table are architecture, not operations. The **cut-off**: a March service receipted in April can only be accrued from PO data, so the PO must carry a service period. The **identifier chain**: PO id, invoice id, S/4 document, payment reference and statement reference must each carry the previous one, or the bank line cannot be traced to the PO. The **ownership transfer at the payment file**: once Kyriba has it, an error is Treasury's, and the status must flow back so AP does not pay twice. The reverse charge nets to zero but must still appear in the VAT return, so the tax hand-off is mandatory even when no cash tax is paid; [[accounting-for-architects]] covers the accruals and reversals.
+
+![Five chain links from purchase order to bank statement, each carrying the previous document's key, with a trace arrow back to the order.](assets/images/06-finance-processes/identifier-chain.jpeg)
+**Figure 4:** *Each document on the Kestrel invoice's path must carry the previous one's identifier; if any link drops its key, the bank line can no longer be traced back to the purchase order.*
 
 | Aspect | At Northmere |
 | --- | --- |
@@ -253,7 +259,7 @@ flowchart TB
     G1 --> G2
 ---end mermaid---
 
-**Figure 3:** *Book-to-Settle as swimlanes: the booking, the money and the accounting run in different systems on different clocks, and BlackLine's three-way match is where they are proven to agree.*
+**Figure 5:** *Book-to-Settle as swimlanes: the booking, the money and the accounting run in different systems on different clocks, and BlackLine's three-way match is where they are proven to agree.*
 
 **Tracing the Lisbon booking.** On 12 March the booking platform emits `BookingConfirmed` with the booking id as correlation id; Northmere Pay captures €600 through Adyen and emits `PaymentCaptured` with the same correlation id plus Adyen's payment reference; SFP records a €600 liability. On 14 March Adyen books the capture into settlement batch 1047, and on 16 March the batch payout credits Northmere Payments B.V., the group's licensed e-money institution, with €598.26 for this booking (€600 less the €1.74 fee), one line among thousands. Adyen documents [settlement reconciliation](https://docs.adyen.com/reporting/settlement-reconciliation) at transaction level ("each payment, refund, and chargeback included in a single payout batch and the costs for each transaction") and at batch level, matched to the bank statement. Northmere needs both: one ties the €598.26 to the booking, the other ties the batch to the bank.
 

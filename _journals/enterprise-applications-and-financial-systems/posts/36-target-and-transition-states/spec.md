@@ -72,3 +72,4 @@ Chief and enterprise architects, finance-systems leaders and finance-transformat
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(author, AI-mediated session)*
 - **2026-10-18** — Editorial review pass: Plateau 1 standards named STD-FIN-01..06; product funding of platforms from 2028 aligned with ch. 41; cross-references to ch. 38's benefit and budget breakdowns; American spelling. *(AI-mediated session)*
 - **2026-10-18** — Editorial review pass (follow-up): Tablekin ledger decision dated to the June 2027 recommendation (ch. 16). *(AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

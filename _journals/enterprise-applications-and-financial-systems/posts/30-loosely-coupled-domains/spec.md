@@ -66,3 +66,4 @@ Chief, enterprise and integration architects, finance-systems architects and pla
 - **2026-10-18** — Initial spec and article written in an AI-mediated session.
 - **2026-10-18** — Consistency pass: aligned Lisbon settlement/payout dates and chargeback references with the scenario ledger. *(AI-mediated session)*
 - **2026-10-18** — Editorial review pass: added STD-FIN-01/02 IDs and dates (mandatory 1 Apr 2027, enforced 1 Jul 2027 with the registry); American spelling. *(AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

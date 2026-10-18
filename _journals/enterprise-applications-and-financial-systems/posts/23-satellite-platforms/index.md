@@ -127,6 +127,9 @@ The signs that a satellite has become a tangle are concrete, and I look for them
 
 Each of these maps to a failure pattern from [[where-finance-architecture-goes-wrong]]: The Many Masters, Point-to-Point Spaghetti, Tool Overlap Creep and The Shadow Ledger. The remainder of the chapter applies the pattern to each family.
 
+![Left: specialist platforms in neat orbits, each tied to the ledger core by one owned interface with a reconciliation check. Right: the same platforms knotted together with duplicate data copies and no checks.](assets/images/23-satellite-platforms/satellite-versus-tangle.jpeg)
+**Figure 2:** *A satellite owns one capability and attaches to the core through one owned interface with a reconciliation; when satellites call each other, keep their own masters and go unreconciled, the estate becomes a tangle.*
+
 ## Indirect Tax Determination
 
 ### Why specialists exist
@@ -200,9 +203,9 @@ sequenceDiagram
     end
     VX-->>GL: monthly committed tax journal for reconciliation
 ---end mermaid---
-**Figure 2:** *The tax call sequence. Estimates may fall back to a flagged cached rate; commits wait for the engine and are idempotent on the document identifier; the engine's committed journal is reconciled to the ledger's tax accounts before any return is filed.*
+**Figure 3:** *The tax call sequence. Estimates may fall back to a flagged cached rate; commits wait for the engine and are idempotent on the document identifier; the engine's committed journal is reconciled to the ledger's tax accounts before any return is filed.*
 
-The **tax service adapter** in Figure 2 is a thin internal component every Northmere caller uses instead of calling the engine directly. It owns the fallback policy, retries and idempotency, the mapping from Northmere's product codes to the engine's tax codes, and a log of every request and response. It is the narrow interface; without it, the audit question "which invoices carried a provisional rate?" has no single answer.
+The **tax service adapter** in Figure 3 is a thin internal component every Northmere caller uses instead of calling the engine directly. It owns the fallback policy, retries and idempotency, the mapping from Northmere's product codes to the engine's tax codes, and a log of every request and response. It is the narrow interface; without it, the audit question "which invoices carried a provisional rate?" has no single answer.
 
 **Latency** shapes deployment: a per-line cloud call adds a round trip to every price shown at checkout, which is why containerized and batch options exist. Northmere uses both: real-time calls for brand checkout and quoting, and batch calls for the monthly FI-CA commission invoicing run across roughly **850,000 partner contract accounts**.
 
@@ -279,7 +282,7 @@ sequenceDiagram
     end
     GW->>GW: archive legal original and status history
 ---end mermaid---
-**Figure 3:** *Clearance in the order-to-cash path. The receivable is posted as issued only after acceptance; rejections return to the invoicing system as documents that do not yet exist; the gateway keeps the legal original, which is the cleared version, not the ERP's copy.*
+**Figure 4:** *Clearance in the order-to-cash path. The receivable is posted as issued only after acceptance; rejections return to the invoicing system as documents that do not yet exist; the gateway keeps the legal original, which is the cleared version, not the ERP's copy.*
 
 Five design decisions follow, and each needs an owner:
 
@@ -301,6 +304,9 @@ The response is an **e-invoicing gateway**: one internal service with one contra
 | **Build a Peppol access point** | Operate your own accredited service provider | Control | Accreditation, operations and every non-Peppol regime remain | Rarely, for an enterprise whose business is document exchange |
 
 Most estates drift into a fifth option: each country solved separately by whichever team felt the deadline first, which is Tool Overlap Creep with a legal deadline. The gateway is primarily the decision to have one interface, so the next mandate is a provider configuration rather than a project in every ERP.
+
+![Before: four separate e-invoicing integrations with three providers built country by country. After: one internal gateway with status and an archive, shared by all issuing systems and inbound payables.](assets/images/23-satellite-platforms/einvoicing-mandates-to-one-gateway.jpeg)
+**Figure 5:** *Four integrations, three providers and no shared view become one e-invoicing gateway with one contract, so the next mandate is a provider configuration rather than a project in every ERP.*
 
 ## Treasury and Bank Connectivity
 
@@ -347,7 +353,7 @@ flowchart LR
     S4BS --> BL["BlackLine bank reconciliation"]
     PF -->|"cash position"| TRE["Treasury team"]
 ---end mermaid---
-**Figure 4:** *Northmere's payment factory. S/4HANA decides what to pay; Kyriba screens, approves, formats, signs and routes; status and statements flow back so that the ledger, the bank and the cash position agree, and BlackLine proves it.*
+**Figure 6:** *Northmere's payment factory. S/4HANA decides what to pay; Kyriba screens, approves, formats, signs and routes; status and statements flow back so that the ledger, the bank and the cash position agree, and BlackLine proves it.*
 
 ### Controls on the payment path
 

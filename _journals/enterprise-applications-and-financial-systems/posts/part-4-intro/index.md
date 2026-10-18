@@ -2,7 +2,7 @@
 title: "LEAD: Strategic Architecture and Transformation"
 date: 2026-10-18
 author: Željko Obrenović
-excerpt: "The Chief Architect's strategic work: governance, principles and reference architectures, target and transition states, vendor strategy, transformation, technical debt, resilience and security, organization, AI and the long view."
+excerpt: "The Chief Architect's strategic work: governance, principles and reference architectures, target and transition states, vendor strategy, transformation, technical debt, technology spend, resilience and security, organization, AI and the long view."
 permalink: part-4
 timetoread: 4 min read
 icon: "assets/icons/part-4-intro.png"
@@ -39,7 +39,7 @@ flowchart TB
         B1["Target and transition states"] --> B2["Vendor strategy"] --> B3["Leading the transformation"]
     end
     subgraph S3["Stage 3: Keep the estate healthy"]
-        C1["Technical debt and fitness"] --> C2["Resilience, security, recovery"]
+        C1["Technical debt and fitness"] --> CF["Technology spend as financial data"] --> C2["Resilience, security, recovery"]
     end
     subgraph S4["Stage 4: Organize and look ahead"]
         D1["Organizing ownership"] --> D2["AI in finance operations"] --> D3["Evolving over a decade"]
@@ -47,7 +47,7 @@ flowchart TB
     S1 --> S2 --> S3 --> S4
     S4 --> R["Lead a finance estate that stays coherent through change"]
 ---end mermaid---
-**Figure 1:** *Ten chapters in four stages: how decisions are made and enforced, how the journey is planned and delivered, how the estate is kept measurable and recoverable, and how ownership, AI and long-term change are kept inside the architecture.*
+**Figure 1:** *Eleven chapters in four stages: how decisions are made and enforced, how the journey is planned and delivered, how the estate is kept measurable and recoverable, and how ownership, AI and long-term change are kept inside the architecture.*
 
 **Decide well.**
 
@@ -63,6 +63,7 @@ flowchart TB
 **Keep the estate healthy.**
 
 - [[technical-debt-and-fitness]] — debt priced in money, risk and close days, fitness functions with owners and thresholds, and tranches gated by what they actually removed.
+- [[finops]] — cloud, SaaS and AI spend as financial data: FOCUS billing data under contract, allocation as master data, accruals and recharges from one snapshot, and unit cost tied to the ledger.
 - [[resilience-and-security]] — criticality that follows money and the close calendar, correctness with no error budget, and incidents corrected by entries rather than by restore.
 
 **Organize and look ahead.**
@@ -71,4 +72,4 @@ flowchart TB
 - [[ai-in-finance]] — AI in the exception layer, agents that propose while controlled processes dispose, and every agent treated as an application plus a control.
 - [[long-term-evolution]] — design for stressors rather than forecasts and invest in the residues that survive many of them, keep data, events and evidence in the enterprise's own form, move the architecture function from reviewing to providing, and draw the book's argument together.
 
-By the end of this part you should be able to set up governance that speeds decisions rather than slowing them, defend a roadmap of stable plateaus against a big-bang plan, price your vendor dependencies and technical debt, and show how the estate stays correct and auditable while it changes. Begin with [[architecture-governance]]. The templates behind these chapters (decision record, vendor scorecard, cut-over checklist, debt register, agent control card) are collected in [[toolkit]].
+By the end of this part you should be able to set up governance that speeds decisions rather than slowing them, defend a roadmap of stable plateaus against a big-bang plan, price your vendor dependencies and technical debt, bring technology spend into the books as trustworthy data, and show how the estate stays correct and auditable while it changes. Begin with [[architecture-governance]]. The templates behind these chapters (decision record, vendor scorecard, cut-over checklist, debt register, agent control card) are collected in [[toolkit]].

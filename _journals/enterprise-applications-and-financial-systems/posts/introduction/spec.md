@@ -66,3 +66,4 @@ Article only for now.
 ## Changelog
 
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(author, AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

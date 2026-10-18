@@ -66,3 +66,4 @@ Chief and enterprise architects, finance-systems leads, procurement and finance-
 
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(author, AI-mediated session)*
 - **2026-10-18** — Editorial review pass: SFP cost of owning aligned with the ledger ($18.5M incl. $4.1M finance operations), TCO range sentence corrected, CUEC expanded. *(AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

@@ -122,6 +122,9 @@ A ride paid by card, in this model, is one order with three entries. The amounts
 
 **Table 2:** *One order, three entries (illustrative amounts). Collection, disbursement and the platform's share are one transaction, not three separate payments that might drift apart. Uber's own published example, in a 2020 post, is a $20 trip split into an $18 trip fare and a $2 service fee, with entries that net to zero ([Singla and Wu, 2020](https://www.uber.com/blog/money-scale-strong-data/)).*
 
+![An order card linked to a rider account at minus 20.00, a driver account at plus 15.00 and a platform account at plus 5.00, with a balanced scale showing zero.](assets/images/44-case-uber-payments/zero-sum-order.jpeg)
+**Figure 2:** *My illustration of the order model, not Uber's data: one order's entries across rider, driver and platform accounts must sum to zero, so an order that does not net to zero is a defect found mechanically.*
+
 ### Where it matches this book's ledger design
 
 Set beside the invariants in [[designing-financial-ledgers]], the match is close:
@@ -181,7 +184,7 @@ flowchart LR
     V -->|"mismatch"| AL["Alert and repair by new order"]
 ---end mermaid---
 
-**Figure 2:** *Processing as described in the talks and the 2018 dead-letter post, redrawn: retries in tiers, dead letters for messages that cannot be processed, and a validator that compares what should have happened with what did. The repair is a new order, never an edit.*
+**Figure 3:** *Processing as described in the talks and the 2018 dead-letter post, redrawn: retries in tiers, dead letters for messages that cannot be processed, and a validator that compares what should have happened with what did. The repair is a new order, never an edit.*
 
 Two of these mechanisms deserve a finance architect's attention.
 
@@ -227,7 +230,7 @@ sequenceDiagram
     Note over P,B: Only a definite failure from A may route to B
 ---end mermaid---
 
-**Figure 3:** *The multi-PSP retry trap, redrawn from my 2019 analysis of Sorenson's talk. The wrong path treats an unknown outcome as a failure and moves to a second provider with a new key; the right path stores every request before sending it, so a retry returns to the original provider with the original key.*
+**Figure 4:** *The multi-PSP retry trap, redrawn from my 2019 analysis of Sorenson's talk. The wrong path treats an unknown outcome as a failure and moves to a second provider with a new key; the right path stores every request before sending it, so a retry returns to the original provider with the original key.*
 
 The fix the talk describes is a **request store**: before the platform calls a provider, it records which provider received which request under which identifier. A retry consults the store and goes back to the original provider with the original identifier, where idempotency makes it safe. Only a definite failure from the first provider allows the payment to move to another.
 
@@ -268,6 +271,9 @@ The 2024 migration post says the platform launched in 2017 on DynamoDB, kept "on
 
 Two lessons transfer. **A ledger migration is validated like a reconciliation**: shadow reads, full offline comparison, an explicit completeness threshold and the old store kept as a fallback, the discipline [[modernization-patterns]] recommends for finance data. And **immutability survived three storage platforms**: the model, not the database, carried the guarantee.
 
+![A sealed append-only ledger book carried unchanged across three generic storage foundations, with a validation checklist at the final move.](assets/images/44-case-uber-payments/model-outlives-storage.jpeg)
+**Figure 5:** *My interpretation of Uber's 2024 posts: immutability survived three storage platforms because the model, not the database, carried the guarantee, and the migration was validated like a reconciliation.*
+
 The March 2026 post on hot accounts shows the same model meeting a classic ledger problem: business accounts, such as fleet operators and Uber for Business customers, that receive tens of thousands of transactions a day were limited to "3-4 update operations per second". The fix batches updates in 250-millisecond windows and writes them atomically with optimistic locking, while keeping "an immutable audit trail for SOX compliance" ([Gautam and Kale, 2026](https://www.uber.com/us/en/blog/high-throughput-processing/)). [[designing-financial-ledgers]] discusses the same hot-account problem for partner balances.
 
 ### Accounting is a separate platform
@@ -290,7 +296,7 @@ flowchart LR
     AGG -.->|"not described: system, mapping, tie-out"| GL["General ledger"]
 ---end mermaid---
 
-**Figure 4:** *Money movement and accounting as Uber's 2020–2026 posts describe them. Component names are Uber's; solid arrows are relationships stated within a post. The dashed arrows are mine: the feed from the payments platform to the accounting platform, which no post draws, and the hand-off to the general ledger, which the posts mention but do not describe.*
+**Figure 6:** *Money movement and accounting as Uber's 2020–2026 posts describe them. Component names are Uber's; solid arrows are relationships stated within a post. The dashed arrows are mine: the feed from the payments platform to the accounting platform, which no post draws, and the hand-off to the general ledger, which the posts mention but do not describe.*
 
 My interpretation is that this is the same separation [[designing-financial-ledgers]] recommends: **post facts, derive accounting**. Gulfstream records who owes whom what, in zero-sum money orders; the Finance Computation Platform interprets those facts as journal entries under rules owned by finance; the audit framework keeps the evidence of which rules and parameters produced a given entry. Northmere's SFP redesign, with its event store, versioned rule store and posting keys, is the same shape at a smaller scale.
 
@@ -361,7 +367,7 @@ flowchart LR
     GL -.-> CLOSE["Period close, consolidation and audit"]
 ---end mermaid---
 
-**Figure 5:** *Where the public evidence stops. Solid arrows are documented in Uber's posts; dashed arrows are the links every enterprise must still design between a payments ledger, an accounting platform and the book of record, and which the public material does not show for Uber.*
+**Figure 7:** *Where the public evidence stops. Solid arrows are documented in Uber's posts; dashed arrows are the links every enterprise must still design between a payments ledger, an accounting platform and the book of record, and which the public material does not show for Uber.*
 
 What a finance architect would need to know, and cannot learn from the public record:
 

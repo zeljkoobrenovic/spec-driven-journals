@@ -62,6 +62,9 @@ The close clock is the one that does not bend. A closed period is locked, and an
 
 The coupling taxonomy (temporal, data, semantic, deployment, vendor) belongs to [[redundancy-and-coupling]]. The design consequence for this chapter is that **semantic coupling is the expensive one in finance**. Temporal coupling is solved with queues and deployment coupling with contracts; semantic coupling, two systems reading the same field differently, is solved only by a governed language. The `cancelled` flag was a semantic coupling.
 
+![Three clocks running at different speeds, each connected loosely to a shared stream of event cards rather than geared to each other.](assets/images/30-loosely-coupled-domains/three-clocks.jpeg)
+**Figure 1:** *Finance runs on three clocks that cannot be synchronized, product releases, vendor releases and the close, so the integration must let each turn without dragging the others.*
+
 ## Concepts: Published Language, Facts and Translations
 
 [[capability-mapping]] decomposed Northmere's finance domain into bounded contexts and defined the relationship patterns from Eric Evans's domain-driven design ([DDD Reference, 2015](https://www.domainlanguage.com/ddd/reference/)). Three carry this chapter: the canonical events are Northmere's **published language**; every vendor boundary gets an **anti-corruption layer (ACL)**, a translation layer that keeps the vendor's model out of models Northmere owns; and the hub's intake is an **open host service** that any producer can use without negotiating a bespoke interface.
@@ -271,7 +274,7 @@ stateDiagram-v2
     Readable --> [*]
 ---end mermaid---
 
-**Figure 1:** *The lifecycle of a breaking change to a canonical event. The producer publishes both versions until every consumer has migrated and one quarter close has been tied out on both; v1 stops being produced only at a month start outside year-end, and its schema remains readable for the retention period because replay must read history in the version it was written.*
+**Figure 2:** *The lifecycle of a breaking change to a canonical event. The producer publishes both versions until every consumer has migrated and one quarter close has been tied out on both; v1 stops being produced only at a month start outside year-end, and its schema remains readable for the retention period because replay must read history in the version it was written.*
 
 Three calendar rules make this a finance discipline rather than an engineering one:
 
@@ -332,7 +335,7 @@ flowchart LR
     DL -.->|"counts by source and day"| BLK
 ---end mermaid---
 
-**Figure 2:** *Northmere's target topology. Producers publish canonical events through the adapter kit or a vendor ACL onto Kafka; the hub validates, enriches with reference keys, counts and routes; consumers receive the delivery shape they need; every vendor ledger is reached through its own anti-corruption layer. Business rules live at the edges, never in the hub.*
+**Figure 3:** *Northmere's target topology. Producers publish canonical events through the adapter kit or a vendor ACL onto Kafka; the hub validates, enriches with reference keys, counts and routes; consumers receive the delivery shape they need; every vendor ledger is reached through its own anti-corruption layer. Business rules live at the edges, never in the hub.*
 
 ### The brand adapter kit
 
@@ -363,6 +366,9 @@ James Lewis and Martin Fowler's 2014 microservices article argued for **smart en
 | Replay on request | Correct or rewrite events |
 
 In my experience the test is simple: **if a change to accounting policy, a brand's product or a vendor's release requires a change to the hub, logic has leaked into the pipe.** Counting and validating are not logic in that sense; they are the evidence that the pipe did its job, and finance cannot do without them. An ESB fails by knowing too much about the messages; a finance hub fails by knowing too little about whether they arrived.
+
+![A pipeline with checkpoint, counter, quarantine tank and replay loop, connecting producer workshops to consumers where the accounting rules live.](assets/images/30-loosely-coupled-domains/counting-pipe-smart-edges.jpeg)
+**Figure 4:** *The hub validates, counts, quarantines and replays, but never decides accounts or timing: if an accounting-policy change needs a hub change, logic has leaked into the pipe.*
 
 ### Rationalizing three integration technologies
 

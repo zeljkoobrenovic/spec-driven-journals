@@ -65,3 +65,4 @@ Chief and enterprise architects, finance-systems leads and transformation leader
 
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(Željko Obrenović, AI-mediated session)*
 - **2026-10-18** — Editorial review pass: added STD-FIN-01..06 IDs and effective/enforcement dates as a forward note; expanded GL and PSP on first use. *(AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

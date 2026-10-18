@@ -74,6 +74,9 @@ Two conventions keep the figures honest. **Cash** means money paid to a third pa
 
 The risk and speed columns are not converted into money. A significant deficiency, €2.1 million of suspense older than 90 days or a close day on the critical path are understood by a CFO in their own units. Converting them into a single dollar figure would hide the judgment the CFO is being asked to make.
 
+![A finance executive reading three separate instruments labelled cost, risk and speed, with no combined total.](assets/images/39-technical-debt-and-fitness/carrying-cost-three-gauges.jpeg)
+**Figure 1:** *Debt is reported as a carrying cost in three columns read side by side and never added: cost carried with cash and capacity kept apart, risk carried in its own units, and speed lost in close days and months.*
+
 ## Seven Debt Types Specific to Finance
 
 Beyond ordinary code-level debt, seven types set the CFO's agenda. Each charges interest differently, and each ends in a failure pattern from [[where-finance-architecture-goes-wrong]].
@@ -89,6 +92,9 @@ Beyond ordinary code-level debt, seven types set the CFO's agenda. Each charges 
 | **Documentation and knowledge debt** | Hand-offs with no written contract; logic that only two people understand; custom objects with no design record | Slow diagnosis; key-person risk; every change starts with discovery | The Shadow Ledger, eventually |
 
 Three of the seven are not code at all. **Control debt** and **Spreadsheet Glue** are invisible to a static-analysis tool and to an IT budget, because Finance's time and the auditor's fees pay for them. **Data debt** looks like an operations problem until a mapping error moves $41 million of Tablekin usage revenue into the wrong line, as in Northmere's Q1 2027 close ([[finance-data-architecture]]).
+
+![An iceberg with code and version debt above the waterline and larger control, spreadsheet and data debt below it.](assets/images/39-technical-debt-and-fitness/debt-below-the-waterline.jpeg)
+**Figure 2:** *Three of the seven finance debt types are not code: control debt, Spreadsheet Glue and data debt sit below the line that static analysis and IT budgets can see, paid for in Finance's time and the auditor's fees.*
 
 **Control debt is often the interest paid on another debt.** Northmere's 27 key controls that depend on a spreadsheet exist because the data the control needs is not where the control runs. Automating such a control without fixing the data beneath it builds an automated control on Spreadsheet Glue, so the register records which item each control-debt line depends on.
 
@@ -163,7 +169,7 @@ flowchart LR
     DR --> TG
     TG -->|"release or hold funding"| KS["Keystone steering committee"]
 ---end mermaid---
-**Figure 1:** *Fitness functions are computed from feeds the estate already produces, land in one FinDB model and are read in one quarterly review. The review updates the debt register and reads the gates that decide whether the next tranche of funding is released.*
+**Figure 3:** *Fitness functions are computed from feeds the estate already produces, land in one FinDB model and are read in one quarterly review. The review updates the debt register and reads the gates that decide whether the next tranche of funding is released.*
 
 ### Three measurement mechanisms
 
@@ -229,7 +235,7 @@ flowchart TB
     I --> J
     D --> J
 ---end mermaid---
-**Figure 2:** *The OWNED sequencing rule adapted to a finance estate: dated items first when waiting would miss the date, then the rest by what each tranche removes for its effort, with the close critical path and key controls as the tie-break.*
+**Figure 4:** *The OWNED sequencing rule adapted to a finance estate: dated items first when waiting would miss the date, then the rest by what each tranche removes for its effort, with the close critical path and key controls as the tie-break.*
 
 ### Finance's dates
 
@@ -279,7 +285,7 @@ stateDiagram-v2
     CarriedOnPurpose --> Measured: quarterly re-measurement
     Retired --> [*]
 ---end mermaid---
-**Figure 3:** *A register item's life. An item is funded only after it has been measured and given a fitness function, and every tranche ends at a gate read from the fitness scorecard. Carrying an item is a recorded decision that is re-measured each quarter.*
+**Figure 5:** *A register item's life. An item is funded only after it has been measured and given a fitness function, and every tranche ends at a gate read from the fitness scorecard. Carrying an item is a recorded decision that is re-measured each quarter.*
 
 Dana's 2028 request has two tranches and a third that is described but not requested.
 
@@ -365,7 +371,7 @@ The register-plus-fitness approach costs real effort: someone must build the fee
 
 ## Handing Off
 
-A measured, healthy estate still has to survive the day something fails. Fitness functions describe the estate most of the time; they do not show what happens when a ledger database is corrupted at WD2, a PSP stops sending settlement files during the year-end close, or a privileged account posts journals it should not. [[resilience-and-security]] takes up those questions: criticality tiers, recovery objectives for ledgers, business observability of money in flight, and incident response when the error is in the books.
+The register prices debt partly in hosting and subscription cash, and the Keystone savings it promises are claimed against the same bills. Neither figure is better than the data behind it. Today, cloud cost reaches the books by a quarterly spreadsheet, and nobody can say what technology costs per Stayloft booking. [[finops]] treats technology spend as financial data: billing data under a contract, allocation as master data, accruals and amortization from a cut-off snapshot, a tie-out to the ledger, and unit cost as a governed metric. After it, [[resilience-and-security]] asks how a measured estate survives the day something fails.
 
 ## Sources and Evidence
 

@@ -17,7 +17,7 @@ Chief Architects, finance-systems and integration architects, and finance-transf
 
 - [ ] An alphabetical index lists every term (and common abbreviations and aliases) with a link to the section that defines it; the links work in the rendered page.
 - [ ] Terms are grouped into seven sections: Accounting and Finance; Enterprise Architecture; Integration and Data; Platforms and Vendors; Payments; Controls, Resilience and Regulation; Strategy and Governance. Each section is a `| Term | Definition | Chapter |` table.
-- [ ] Between 180 and 260 rows, harvested from the chapters' bolded definitions and the PLAN "Owns" lists; every owned term in PLAN appears.
+- [ ] Between 180 and 280 rows, harvested from the chapters' bolded definitions and the PLAN "Owns" lists; every owned term in PLAN appears.
 - [ ] Every definition is one or two plain sentences and agrees with the chapter it links to; vendor-specific terms name the vendor, and date-sensitive names and regulatory status are marked as of 2026.
 - [ ] The contrasts that cause real errors sit in one row or in adjacent rows: clearing account / suspense account / dead letter; system of record / system of reference / golden copy / derived store; principal / agent / merchant of record; account reconciliation / transaction matching; reconciling item / break; translation / revaluation; event date / posting date.
 - [ ] Every Chapter cell is a valid `[[permalink]]` and the build renders it as a titled link; no literal `[[…]]` remains.
@@ -50,6 +50,7 @@ Article only. A glossary has no argument to summarize or dramatize.
 - 2026-10-18 — Section anchors are explicit `<a id>` tags in the `##` headings, because the post renderer does not generate heading ids; the index links to sections, not rows, following the OWNED glossary.
 - 2026-10-18 — Grouped by subject rather than by part, using the seven groups requested; the section intros name the owning chapters so a reader can jump to the full treatment.
 - 2026-10-18 — Capped at 260 rows: related terms that are only meaningful as a pair are merged into one row with a slash (for example Dispute / chargeback, Reverse shadow / point of no return), and minor terms are kept as index aliases pointing at the row that defines them.
+- 2026-10-18 — Cap raised from 260 to 280 rows to take the FinOps chapter's owned terms; the merge-related-terms rule still applies.
 - 2026-10-18 — The alphabetical index is generated from the tables, so it cannot drift from them when rows are added or removed.
 
 ## Sources
@@ -61,3 +62,4 @@ External: none directly. Definitions follow the vendor, standard and regulator s
 ## Changelog
 
 - 2026-10-18 — Initial spec and page (260 terms, seven sections, generated alphabetical index), AI-mediated session.
+- 2026-10-18 — Added 14 terms owned by [[finops]] (FOCUS, BilledCost / EffectiveCost, ChargeCategory / ChargeClass, cut-off snapshot, commitment discount, cost of revenue / R&D / G&A, intercompany recharge, FinOps, TBM, cloud cost allocation, sub-account register, tag policy / unallocated spend, showback / chargeback, unit cost) to Accounting and Finance, Integration and Data, and Strategy and Governance, with 22 index entries; 274 terms. Row cap raised to 280. AI-mediated session.

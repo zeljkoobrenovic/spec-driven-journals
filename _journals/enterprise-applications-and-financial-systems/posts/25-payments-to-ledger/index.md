@@ -52,6 +52,9 @@ After the February 2027 close, Leila Haddad, the Chief Accounting Officer, asked
 
 The first row changed the conversation. **About 40% of the "unreconciled" balance was not a problem at all.** It was money in flight: local-method payments from the last weekend of February, settling in the first days of March exactly as the provider contracts said it would. Card payments in flight were already explained by Adyen's and Stripe's batch reports; these were not, because the local providers' files arrived days later and the accounts held no item list of their own. Nothing in the accounts said which item was expected to clear when, so the preparer could not tell €5.8 million of normal timing from €8.4 million of genuine breaks, and the whole €14.2 million was reported as one unexplained balance.
 
+![A murky tank of unexplained balance sorted into dated money in flight and four bins of genuine breaks, each pointing upstream to its cause.](assets/images/25-payments-to-ledger/suspense-sorted-into-flight-and-breaks.jpeg)
+**Figure 1:** *Decomposing February's €14.2 million showed €5.8 million of dated money in flight that was never a problem, and €8.4 million of genuine breaks, each pointing upstream to a cause.*
+
 The other four rows were genuine breaks, and each pointed upstream: to a reference that did not survive a retry, a provider file that reported a day's total, refunds that bypassed the provider, fee rules that did not exist. None pointed at the accountants who had been clearing items by hand for three years.
 
 A month earlier, the architecture review board had heard Ingrid Solberg, who runs Northmere Pay, propose a new "payments ledger" service, and Jonas Berg's Stayloft Finance Platform (SFP) team, Sven Aalto's SAP team and Owen Mbeki's finance data team each say they already did that job ([[finance-landscape]]). The decomposition gave Dana the brief for the answer: **one place where each payment is expected, one set of accounts in which it waits, one match that proves it has arrived, and one owner for each break.**
@@ -82,7 +85,7 @@ Two **side legs** explain why amounts differ. The **fee leg** splits gross minus
 
 ### Components and flow
 
-Figure 1 shows the reference architecture Northmere's design authority approved in March 2027 (it is the worked example in [[principles-standards-reference]]).
+Figure 2 shows the reference architecture Northmere's design authority approved in March 2027 (it is the worked example in [[principles-standards-reference]]).
 
 ---begin mermaid---
 flowchart LR
@@ -120,7 +123,7 @@ flowchart LR
     BUS --> FDB
 ---end mermaid---
 
-**Figure 1:** *Northmere's payments-to-ledger reference architecture. Provider formats stop at the adapters; everything downstream speaks canonical events. The subledger holds expected receivables item by item, the ledger holds clearing balances by stage, and the matching engine proves the three legs against an independent bank feed. Breaks go back to the team that can remove their cause.*
+**Figure 2:** *Northmere's payments-to-ledger reference architecture. Provider formats stop at the adapters; everything downstream speaks canonical events. The subledger holds expected receivables item by item, the ledger holds clearing balances by stage, and the matching engine proves the three legs against an independent bank feed. Breaks go back to the team that can remove their cause.*
 
 The responsibilities are deliberately narrow:
 
@@ -237,7 +240,7 @@ stateDiagram-v2
     WrittenOff --> [*]
 ---end mermaid---
 
-**Figure 2:** *An expected receivable moves through stage accounts until the bank leg closes it. "Awaiting data" is a status, not an exception: the item is overdue only because a file is late. An item becomes a break only after its grace period, and it leaves the break state by identification or by an approved write-off, never by netting.*
+**Figure 3:** *An expected receivable moves through stage accounts until the bank leg closes it. "Awaiting data" is a status, not an exception: the item is overdue only because a file is late. An item becomes a break only after its grace period, and it leaves the break state by identification or by an approved write-off, never by netting.*
 
 ### Aging rules
 
@@ -302,7 +305,7 @@ flowchart LR
     PO -->|"Leg 3: payout ID in remittance, amount exact"| BK
 ---end mermaid---
 
-**Figure 3:** *The three legs and two side legs for one e-wallet payment. Leg 1 matches in the currency the traveler paid, so FX cannot cause a false break. The fee is checked against the contract in that same currency; the conversion difference is measured against a tolerance and posted by rule.*
+**Figure 4:** *The three legs and two side legs for one e-wallet payment. Leg 1 matches in the currency the traveler paid, so FX cannot cause a false break. The fee is checked against the contract in that same currency; the conversion difference is measured against a tolerance and posted by rule.*
 
 The match runs in order:
 
@@ -425,6 +428,9 @@ In April 2027, Dana's team analyzed the roughly 40,000 APM lines unmatched at WD
 
 About a third of the problem (the refunds and the cut-offs) could be fixed in matching rules and adapters within weeks. About two-thirds (the references and the aggregates) needed provider code changes and contract amendments. **No row could be fixed by working items faster.**
 
+![Left: workers bail a suspense tub that four taps keep filling. Right: the four taps (references, aggregates, refunds, cut-off) are closed upstream and the level falls.](assets/images/25-payments-to-ledger/drain-suspense-at-the-source.jpeg)
+**Figure 5:** *Every root cause sat upstream (references, provider aggregates, netted refunds and cut-off windows), so suspense fell when those taps were closed, not when the exception team worked items faster.*
+
 ### The program timeline
 
 ---begin mermaid---
@@ -440,7 +446,7 @@ flowchart LR
     Q4 --> Y2
 ---end mermaid---
 
-**Figure 4:** *Northmere's payments-to-ledger program in Keystone Year 1. Design came first, then the fixes Northmere controlled itself, then the provider changes that took contract negotiation. Every step was measured by the same six metrics.*
+**Figure 6:** *Northmere's payments-to-ledger program in Keystone Year 1. Design came first, then the fixes Northmere controlled itself, then the provider changes that took contract negotiation. Every step was measured by the same six metrics.*
 
 The steps that carried the program:
 

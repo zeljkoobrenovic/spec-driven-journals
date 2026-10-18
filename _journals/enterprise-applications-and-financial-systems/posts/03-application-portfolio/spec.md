@@ -70,3 +70,5 @@ Chief and enterprise architects, finance-systems leaders and finance-transformat
 
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(Željko Obrenović, AI-mediated session)*
 - **2026-10-18** — Editorial review pass: canonical-event ownership link corrected to [[loosely-coupled-domains]]; wave 3 row notes the December 2027 accounting-hub decision. *(AI-mediated session)*
+- **2026-10-18** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-18** — Added a cross-reference to [[finops]] for hosting cost per application from tagged, ledger-tied cloud billing data. *(AI-mediated session)*

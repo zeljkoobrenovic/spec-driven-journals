@@ -63,6 +63,9 @@ For a finance architect, the single platform has three consequences that matter 
 
 **Concentration.** The same design puts authorization, fraud decisions, acquiring and the settlement funds with one counterparty. If Adyen degrades, Northmere loses the whole acceptance path for that volume, not just a gateway; funds held before payout are an exposure to one credit institution. I return to this under dependency risk.
 
+![A payment reference breaking across three separate vendors, versus one unbroken reference through a single platform resting on one pillar.](assets/images/21-adyen/one-platform-one-identity.jpeg)
+**Figure 1:** *With gateway, risk and acquiring on one platform, the reference issued at authorization reappears in the settlement and accounting reports; the same design concentrates authorization, fraud decisions and settlement funds with one counterparty.*
+
 ### Externally settled payments: a gateway for someone else's acquiring
 
 Adyen can also act as gateway for transactions another acquirer settles; the reports then carry record types such as `SettledExternally` and `ChargebackExternally` and an **EpaPaid** journal type, with Adyen's reference exchange rate rather than the acquirer's ([Adyen: Payment accounting report](https://docs.adyen.com/reporting/invoice-reconciliation/payment-accounting-report); [Settlement details report](https://docs.adyen.com/reporting/settlement-reconciliation/transaction-level/settlement-details-report)). In a multi-acquirer estate, not every Adyen line nets into an Adyen payout.
@@ -118,7 +121,7 @@ flowchart TB
     MA3 -.->|"settlement details report"| L1
 ---end mermaid---
 
-**Figure 1:** *Northmere's illustrative Adyen structure: merchant accounts follow the contracting entity, the regulatory perimeter and the payout currency; brand is an account group and business model is a field. Every merchant account and currency gets its own clearing account, so each batch has exactly one place to land.*
+**Figure 2:** *Northmere's illustrative Adyen structure: merchant accounts follow the contracting entity, the regulatory perimeter and the payout currency; brand is an account group and business model is a field. Every merchant account and currency gets its own clearing account, so each batch has exactly one place to land.*
 
 EEA travelers pay into **NMPay_Stayloft_EEA**, with euro payouts to Northmere Payments B.V. UK travelers pay into **NMPay_Stayloft_UK**, contracted by Northmere Payments UK Ltd, because post-Brexit UK and EEA funds sit in different safeguarding perimeters and cannot share a batch. **NMPay_Stayloft_INTL** pays out in both euro and US dollars, so dollar sales are not converted to euro and back when partners are paid in dollars.
 
@@ -176,7 +179,7 @@ sequenceDiagram
     K->>S: "Reclassify to Adyen batch receivable, record fees"
 ---end mermaid---
 
-**Figure 2:** *The Lisbon payment through Adyen: the API response gives identity, webhooks give operational state, and the settlement report gives money. Each step produces a Keystone canonical event; the settlement events are derived from the report, not from webhooks.*
+**Figure 3:** *The Lisbon payment through Adyen: the API response gives identity, webhooks give operational state, and the settlement report gives money. Each step produces a Keystone canonical event; the settlement events are derived from the report, not from webhooks.*
 
 ### Refunds, cancellations and chargebacks
 
@@ -222,7 +225,7 @@ flowchart LR
     D --> F["FinDB on Snowflake"]
 ---end mermaid---
 
-**Figure 3:** *Two Adyen feeds, two jobs. Webhooks carry operational state through an idempotent consumer; reports carry money and fees. Both become canonical events, and BlackLine matches the three legs: subledger, report and bank.*
+**Figure 4:** *Two Adyen feeds, two jobs. Webhooks carry operational state through an idempotent consumer; reports carry money and fees. Both become canonical events, and BlackLine matches the three legs: subledger, report and bank.*
 
 ## Reports for Finance: Two Vocabularies
 
@@ -245,6 +248,9 @@ The most common misunderstanding of Adyen's data is to treat its two vocabularie
 - **Record types**, in the payment accounting report, describe **lifecycle statuses**: Received, Authorised, AuthorisedPending, SentForSettle, Settled, SentForRefund, Refunded, Refused, Cancelled, Expired, CaptureFailed, Chargeback, SecondChargeback, ChargebackReversed, the *Externally* variants and others ([Payment accounting report](https://docs.adyen.com/reporting/invoice-reconciliation/payment-accounting-report)).
 
 Some names appear in both lists, which is the source of the confusion. **Received, Authorised and SentForSettle are record types only**; no money moves at those statuses. And the **Fee** journal is not a per-payment commission: it carries Adyen's transaction fees "for Received and SentForRefund transactions booked in the batch period". The interchange, scheme fees and markup of a payment sit on its **Settled** line, in the Commission columns. The payment accounting report carries Received, Authorised and Captured amounts, the same commission split, a Processing Fee column and the Payable Batch, "the sequence number of the payout batch".
+
+![A status lane of milestones above a money lane where coins move only at some points into a batch and on to a bank.](assets/images/21-adyen/status-lane-and-money-lane.jpeg)
+**Figure 5:** *Record types describe a payment's lifecycle status, while journal types describe money moving in a payable batch; no money moves at the early statuses, so post money from the settlement report and use the statuses to explain fees and timing.*
 
 ### From journal types to accounting events and postings
 

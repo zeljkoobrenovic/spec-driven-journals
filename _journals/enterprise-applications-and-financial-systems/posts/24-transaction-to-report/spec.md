@@ -67,3 +67,4 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(author, AI-mediated session)*
 - **2026-10-18** — Consistency pass: aligned Lisbon settlement/payout dates and chargeback references with the scenario ledger. *(AI-mediated session)*
 - **2026-10-18** — Editorial review pass: joined a stray paragraph break, American spelling in Figure 1 and throughout; verified Lisbon dates, both €420 chargebacks and Wayfare agent treatment. *(AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

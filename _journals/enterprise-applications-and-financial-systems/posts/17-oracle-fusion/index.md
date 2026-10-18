@@ -64,6 +64,9 @@ In Fusion, a ledger is not just a set of books; it is a configuration object tha
 
 The first three are close to irreversible. Partner guidance consistently reports that [the chart of accounts, calendar and currency cannot be changed once the ledger is saved](https://doyensys.com/blogs/understanding-ledger-in-oracle-erp-fusion/). I treat this as the single most important design-time fact about Fusion: a ledger designed in a hurry during an implementation becomes a constraint every later architect inherits. When Wayfare designed its chart in 2021, it did not design it for a group that would report under US GAAP from a different chart; that mismatch is now the root of its spreadsheet mapping.
 
+![A ledger block built from four pieces, with chart of accounts, calendar and currency padlocked.](assets/images/17-oracle-fusion/ledger-four-locked-choices.jpeg)
+**Figure 1:** *A Fusion ledger combines a chart of accounts, a calendar, a currency and an accounting method; the first three cannot be changed once the ledger is saved, so a ledger designed in a hurry becomes a constraint every later architect inherits.*
+
 ### Primary, secondary and reporting-currency views
 
 Every accounting setup has [one primary ledger and, optionally, one or more secondary ledgers and reporting currencies](https://docs.oracle.com/en/cloud/saas/financials/26c/faigl/ledgers-and-subledgers.html). The **primary ledger** is the main record of the legal entities assigned to it. A **secondary ledger** is a linked ledger that [can differ from its primary "in chart of accounts, accounting calendar, currency, accounting method, or ledger processing options"](https://docs.oracle.com/en/cloud/saas/financials/26c/faigl/ledgers-legal-entities-balancing-segments-and-business-units.html). Typical uses are a second accounting basis (local GAAP beside IFRS or US GAAP), a statutory chart of accounts that a country prescribes, or a different fiscal calendar. A **reporting currency** is an additional currency view of a primary or secondary ledger.
@@ -162,7 +165,7 @@ flowchart LR
     CUBE -->|"trial balance"| OS["OneStream group consolidation"]
     REPO --> FDI["Subledger analytics, FDI or FinDB"]
 ---end mermaid---
-**Figure 1:** *In Fusion every journal, whether from an Oracle subledger or from an external source through Accounting Hub, is produced by the same Subledger Accounting engine and keeps its detail in the subledger repository; General Ledger and the balances cube see only what the chart of accounts can express.*
+**Figure 2:** *In Fusion every journal, whether from an Oracle subledger or from an external source through Accounting Hub, is produced by the same Subledger Accounting engine and keeps its detail in the subledger repository; General Ledger and the balances cube see only what the chart of accounts can express.*
 
 ## Revenue Management: Contracts, Not Tickets
 
@@ -259,7 +262,7 @@ sequenceDiagram
     AH->>GL: Transfer and post
     GL->>OS: Monthly trial balance after close
 ---end mermaid---
-**Figure 2:** *The ticket's events travel as files, are accounted by rules rather than by the booking platform, and reach General Ledger summarized; the detail stays one drill-down away in the subledger repository instead of being discarded before Fusion sees it.*
+**Figure 3:** *The ticket's events travel as files, are accounted by rules rather than by the booking platform, and reach General Ledger summarized; the detail stays one drill-down away in the subledger repository instead of being discarded before Fusion sees it.*
 
 ### What changes for the controller
 
@@ -314,7 +317,7 @@ flowchart LR
     EXT -->|"incremental extracts"| FDB
     MS -->|"payment files"| KY
 ---end mermaid---
-**Figure 3:** *Each Fusion surface has one job: REST for low-volume transactions, FBDI for bulk inbound, business events for notifications, and Data Extraction or BICC for bulk outbound. Using a reporting tool as an extraction API, or a REST API as a bulk loader, is the most common integration defect in Fusion estates.*
+**Figure 4:** *Each Fusion surface has one job: REST for low-volume transactions, FBDI for bulk inbound, business events for notifications, and Data Extraction or BICC for bulk outbound. Using a reporting tool as an extraction API, or a REST API as a bulk loader, is the most common integration defect in Fusion estates.*
 
 ## Quarterly Updates: Regression Testing as an Architecture Concern
 
@@ -332,6 +335,9 @@ Wayfare is in cohort B, which makes its 2027 calendar concrete:
 | 27D | 3 December 2027 | 17 December 2027 | Year-end close and audit fieldwork |
 
 A SaaS ERP **turns the upgrade from a project into an operating rhythm**: on premises the enterprise chooses when to take change; in Fusion the vendor chooses, and the enterprise pays in a fixed two-week window four times a year. The architecture must provide:
+
+![A year wheel with four two-week update windows, each just before a quarter close, filled with regression testing.](assets/images/17-oracle-fusion/quarterly-update-rhythm.jpeg)
+**Figure 5:** *Fusion updates four times a year and the updates cannot be skipped, so each two-week window between the test and production updates becomes a fixed regression cycle for integrations, controls and configuration, often close to a quarter-end close.*
 
 - **An integration contract-test suite** that runs in the two-week window against every surface the tenant uses: REST payloads, FBDI and Accounting Hub templates, extraction views and business-event payloads. Oracle versions FBDI templates by release and tells customers to download current ones, so a template change is a contract change.
 - **Control regression**, not only functional regression. An automatically enabled feature that changes approval routing, a default, or a role's privileges is a change to internal control over financial reporting, and the SOX evidence must show it was assessed. [[controls-and-auditability]] owns the general control design; Fusion makes it quarterly.

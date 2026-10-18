@@ -78,6 +78,9 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 
 **An illustration.** At Northmere in 2026, on working day 3 of each close, about **1.9%** of payment-provider settlement lines for Stayloft's alternative payment methods (wallets, local bank transfers) are unmatched. Unreconciled balances in clearing and suspense accounts average **€14 million** at month-end, of which about **€2.1 million** is older than 90 days. Each new local payment method added a small, unmatched stream; together they made the largest open item on Leila Haddad's close agenda.
 
+![A clearing-account tank filling with sediment layers from several small payment-method pipes, with an older compacted layer at the bottom and only a trickle draining out as matched.](assets/images/where-finance-architecture-goes-wrong/suspense-gravity-sediment.jpeg)
+**Figure 1:** *Suspense Gravity as sediment: small unmatched streams settle faster than they are cleared, and the oldest layer, €2.1 million over 90 days of Northmere's €14 million average balance, is the hardest to explain.*
+
 **The remedy direction.** Treat suspense as a measured output of the architecture, not an accounting chore: matching rules designed before a payment method launches, settlement files treated as contracts with completeness checks, aging limits with owners, and the suspense balance reported as an engineering metric.
 
 **Where this book helps:** [[payments-to-ledger]] designs clearing accounts and three-way matching; [[blackline]] covers high-volume transaction matching; [[integration-architecture]] covers completeness controls and error handling; [[traceability-and-reconciliation]] provides the reconciliation catalog.
@@ -294,7 +297,7 @@ flowchart LR
     AA["Audit Afterthought"] -->|"no control design for bots"| AW["Automation Without Accountability"]
     SU -->|"pressure to clear items fast"| AW
 ---end mermaid---
-**Figure 1:** *The patterns form chains; most downstream symptoms, such as growing suspense balances, trace back to an upstream choice about authority, standards or vendors.*
+**Figure 2:** *The patterns form chains; most downstream symptoms, such as growing suspense balances, trace back to an upstream choice about authority, standards or vendors.*
 
 Four chains appear most often.
 
@@ -307,6 +310,9 @@ Four chains appear most often.
 **The control chain: Audit Afterthought → Automation Without Accountability.** An organization that designs controls late will also automate without control design, and pressure from Suspense Gravity ("clear those items faster") accelerates it. The audit finding, when it comes, covers both.
 
 Two patterns sit at the roots of most chains. **The Brand Exception** is a governance failure: nobody has the decision right, or the will, to say no with an expiry date. **Vendor Gravity** is a strategy failure: the enterprise lacks a target state of its own. That is why this book spends Part IV on governance, target states and vendor strategy, not only on technology.
+
+![Two panels: on the left, people mop a flooded basin while an upstream valve stays open; on the right, someone closes the valve at the top and the basin drains.](assets/images/where-finance-architecture-goes-wrong/break-the-chain-upstream.jpeg)
+**Figure 3:** *Fixing a downstream symptom while the upstream pattern keeps flowing brings the symptom back; the cheaper fix is usually at the origin, a decision right, a standard or an expiry date.*
 
 ### A diagnostic table
 

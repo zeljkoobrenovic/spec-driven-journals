@@ -72,3 +72,4 @@ Chief and enterprise architects, finance-systems architects and transformation l
 - **2026-10-18** — Editorial review pass: SAP News short links replaced with canonical article URLs and titles (transition-option update dated 13 Oct 2026 verified); custom-code triage reconciled with the sap-s4hana April 2027 ATC baseline (690 retired out of ~1,240 not executed). *(AI-mediated session)*
 - **2026-10-18** — Consistency pass: SFP subledger cut-over date set to 1 November 2027; calendar rule wording clarified where relevant. *(AI-mediated session)*
 - **2026-10-18** — Consistency pass: calendar alignment (payout cohorts April–May 2029; fiscal-year-start exception stated). *(AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

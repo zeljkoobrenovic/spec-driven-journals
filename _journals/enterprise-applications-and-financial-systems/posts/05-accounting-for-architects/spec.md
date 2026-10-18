@@ -75,3 +75,4 @@ Article only for now.
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(Željko Obrenović, AI-mediated session)*
 - **2026-10-18** — Consistency pass: aligned Lisbon settlement and payout dates (and batch id) with the scenario ledger. *(AI-mediated session)*
 - **2026-10-18** — Editorial review pass: Lisbon bank-credit entries moved to 16 Mar (batch 1047 booked 14 Mar); €420 outcome tied to the canonical lost chargeback; Wayfare rail stated as merchant of record but agent; event count corrected; American spelling. *(AI-mediated session)*
+- **2026-10-18** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

@@ -69,3 +69,4 @@ Chief and enterprise architects, finance-systems architects and engineering dire
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(author, AI-mediated session)*
 - **2026-10-18** — Consistency pass: aligned Lisbon settlement and payout dates (and batch id) with the scenario ledger. *(AI-mediated session)*
 - **2026-10-18** — Editorial review pass: forward note that the FI-CA merchant-subledger recommendation was superseded by the Dec 2027 accounting-hub decision; bank-details authority worded as target state (SFP until 30 Jun 2028); payout date in the partner-app example 26 Apr; KYC expanded. *(AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

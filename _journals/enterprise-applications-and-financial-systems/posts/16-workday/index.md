@@ -116,6 +116,9 @@ In a **segment-based chart of accounts**, the Oracle and classic-ERP style, a jo
 | Mapping to a group chart | Segment-to-segment rules | Combination rules: account plus worktag values to group account plus group dimensions |
 | Main failure mode | Combination explosion and "miscellaneous" segment values | Too many required worktags at entry, or worktags that duplicate the legacy string |
 
+![Comparison of a rigid segmented account string with a ledger account carrying separate worktags.](assets/images/16-workday/worktags-vs-account-string.jpeg)
+**Figure 1:** *A segment-based chart packs meaning into fixed positions in one account string; Workday keeps the ledger account for accounting classification and carries the analytical meaning as typed worktags on the line.*
+
 ### A worked example: worktag design for Tablekin
 
 Take the Tablekin invoice that recurs in this book. An Austin venue on the Pro plan pays **$249 a month** plus **$0.25 per seated cover**; in March 2027 it seated 3,120 covers, so usage is **$780**. Stripe Billing bills the subscription in advance and usage in arrears, so the **$1,029** invoice dated 1 April 2027 (before sales tax) carries April's subscription and March's usage. Tablekin's FDM, about 640 ledger accounts plus worktags and designed in 2020 for a single US business, is not bad:
@@ -159,7 +162,7 @@ flowchart LR
     E --> F["OneStream mapping rule: account plus Group Market to group account and market"]
     F --> G["Group consolidation in US dollars"]
 ---end mermaid---
-**Figure 1:** *In Workday the ledger account is derived from categories and worktags, so the mapping to a group chart can be a rule on account plus worktag rather than a spreadsheet of account strings, provided the FDM was designed with the group dimensions in mind.*
+**Figure 2:** *In Workday the ledger account is derived from categories and worktags, so the mapping to a group chart can be a rule on account plus worktag rather than a spreadsheet of account strings, provided the FDM was designed with the group dimensions in mind.*
 
 ## Multibook, Multi-Currency and Intercompany
 
@@ -189,6 +192,9 @@ Workday's configurable security framework, as Workday's [security course materia
 For finance, the important group types are **role-based groups**, whose membership follows organization role assignments such as cost-center manager, and **user-based groups** of named people, typically administrators; intersection and segment-based groups narrow access further, for example to certain companies.
 
 The consequence I find most underestimated: **in a combined HCM and Financials tenant, organization design in HCM is financial access design**. Making someone a cost-center manager in HCM grants approval authority over that cost center's spend on the same effective date. HCM role assignment therefore falls within internal control over financial reporting (ICFR), and segregation of duties (SoD) must be analyzed at domain and business-process level, not only in the finance team's role catalog; [[controls-and-auditability]] owns both concepts. Integrations run as **integration system users** (ISUs) secured through the same domain model; an ISU with broad access is privileged access and belongs in the same review as a human administrator.
+
+![An organization chart change that hands a person approval rights over invoices on an effective date.](assets/images/16-workday/org-design-is-access-design.jpeg)
+**Figure 3:** *In a combined HCM and Financials tenant, making someone a cost-center manager grants approval authority over that cost center's spend on the same effective date, so organization design is financial access design.*
 
 At Northmere the split tenants make Mei's question hard. A Tablekin cost-center manager is assigned in the group HCM tenant and copied nightly to Tablekin's tenant, where a role-based group grants approval rights. The tested control, "only the cost-center manager approves supplier invoices above $10,000," depends on the copy being complete and timely: a manager who leaves on Friday keeps approval rights until the next successful feed. The 2027 control matrix records this gap, mitigated by a weekly comparison of active approvers across the two tenants.
 
@@ -248,7 +254,7 @@ flowchart LR
     V -->|"rejected rows"| E["Error queue: resolve and reprocess"]
     L -.->|"drill-back"| P
 ---end mermaid---
-**Figure 2:** *With Accounting Center the mapping and the accounting rules move inside the tenant, under audit, and detail stays in a Prism table that the ledger can drill back to; the extraction from Stripe, the control totals and the rating of usage still happen outside Workday.*
+**Figure 4:** *With Accounting Center the mapping and the accounting rules move inside the tenant, under audit, and detail stays in a Prism table that the ledger can drill back to; the extraction from Stripe, the control totals and the rating of usage still happen outside Workday.*
 
 The design moves the mapping and the accounting rules into the tenant, as audited configuration instead of spreadsheet and MuleSoft logic. It deliberately leaves three things outside: usage rating stays in Stripe Billing; the extraction carries a batch identifier and control totals per company and currency, so BlackLine can prove the Prism table received what Stripe reported (the completeness control [[integration-architecture]] describes); and payout-to-bank matching stays in BlackLine Transaction Matching.
 
@@ -332,7 +338,7 @@ flowchart LR
     HCM -->|"worker master"| PAY
     HCM -->|"report extracts"| FDB["FinDB on Snowflake"]
 ---end mermaid---
-**Figure 3:** *Finance owns legal entities and cost centers and sends them into HCM; HCM owns workers, managers and approver roles and sends them everywhere else. Tablekin's separate Financials tenant is one more consumer, which is the point: the shared-object benefit of Workday is lost when HCM and Financials sit in different tenants.*
+**Figure 5:** *Finance owns legal entities and cost centers and sends them into HCM; HCM owns workers, managers and approver roles and sends them everywhere else. Tablekin's separate Financials tenant is one more consumer, which is the point: the shared-object benefit of Workday is lost when HCM and Financials sit in different tenants.*
 
 The ownership matrix behind the diagram, in short:
 

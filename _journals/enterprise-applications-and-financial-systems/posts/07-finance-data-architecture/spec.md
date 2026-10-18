@@ -70,3 +70,4 @@ Chief and enterprise architects, finance-systems and data architects, and financ
 
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(Željko Obrenović, AI-mediated session)*
 - **2026-10-18** — Editorial review pass: partner bank-details authority in Northmere Pay reframed as the target state (authored in SFP in 2027, moves by 30 June 2028); noted no MDG in 2027; spelling fix. *(AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

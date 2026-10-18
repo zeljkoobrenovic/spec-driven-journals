@@ -77,6 +77,9 @@ Point 3 is where Northmere's own structure becomes instructive.
 
 The Stayloft and Wayfare merchant rows are the ones that confuse people. Northmere is merchant of record for the *payment*: its name is on the statement, it receives the chargebacks, and its licensed entity holds the money. Yet Stayloft is an *agent* for the *stay*, so its revenue on the €600 booking is the €90 commission, not the €600. **Payments vocabulary and accounting vocabulary describe the same transaction but answer different questions**, and the architecture has to keep both answers.
 
+![One booking examined through three lenses for money, risk and statement name, beside a ledger that recognizes only a small slice as revenue.](assets/images/20-payments-fundamentals/three-separate-questions.jpeg)
+**Figure 1:** *Holding the money, bearing the risk and being merchant of record are separate questions; Northmere is merchant of record for the €600 Lisbon payment, yet Stayloft acts as agent for the stay, so its revenue is the €90 commission.*
+
 ---begin mermaid---
 flowchart LR
     T["Traveler and card"] -->|"pays"| I["Issuer"]
@@ -89,7 +92,7 @@ flowchart LR
     A -.->|"settlement report"| R["Northmere Pay reconciliation"]
     I -.->|"chargeback via scheme"| A
 ---end mermaid---
-**Figure 1:** *Money and data take different paths. Funds move issuer to scheme to acquirer to merchant, net at every hop, while the settlement report that explains the net travels separately. Chargebacks travel backwards along the money path.*
+**Figure 2:** *Money and data take different paths. Funds move issuer to scheme to acquirer to merchant, net at every hop, while the settlement report that explains the net travels separately. Chargebacks travel backwards along the money path.*
 
 ## The Lifecycle: Six Steps and the Ones That Come Later
 
@@ -124,7 +127,7 @@ stateDiagram-v2
     Expired --> [*]
     Cancelled --> [*]
 ---end mermaid---
-**Figure 2:** *A card payment's states. Only the first transitions are visible at checkout. Expiry and void move no money, refunds can fail, and a reversed chargeback can be disputed again. The ledger must handle every state, including those that occur after the original period has closed.*
+**Figure 3:** *A card payment's states. Only the first transitions are visible at checkout. Expiry and void move no money, refunds can fail, and a reversed chargeback can be disputed again. The ledger must handle every state, including those that occur after the original period has closed.*
 
 ### The Lisbon Booking, Step by Step
 
@@ -175,7 +178,7 @@ sequenceDiagram
     SFP->>BK: Payout instruction 510 EUR, 22 April
     BK-->>SFP: Payout settled, 26 April
 ---end mermaid---
-**Figure 3:** *The Lisbon booking. The traveler sees one step; Northmere sees an authorization, an asynchronous capture, a net batch payout explained by a separate report, and a partner payout five weeks later. Every arrow that carries the booking reference makes reconciliation possible; every arrow that drops it makes reconciliation manual.*
+**Figure 4:** *The Lisbon booking. The traveler sees one step; Northmere sees an authorization, an asynchronous capture, a net batch payout explained by a separate report, and a partner payout five weeks later. Every arrow that carries the booking reference makes reconciliation possible; every arrow that drops it makes reconciliation manual.*
 
 ## Pricing: Interchange, Scheme Fees and the Markup
 
@@ -260,7 +263,7 @@ stateDiagram-v2
     Accepted --> [*]
     Lost --> [*]
 ---end mermaid---
-**Figure 4:** *A card dispute, generalized from documented provider flows. Funds leave at "Debited", long before the outcome is known, and a win can be reopened. Each state needs its own accounting, and each transition can land in a different period from the sale.*
+**Figure 5:** *A card dispute, generalized from documented provider flows. Funds leave at "Debited", long before the outcome is known, and a win can be reopened. Each state needs its own accounting, and each transition can land in a different period from the sale.*
 
 ### The €420 Chargeback
 
@@ -381,7 +384,7 @@ flowchart TB
     SFP --> S4
     RC --> S4
 ---end mermaid---
-**Figure 5:** *Webhooks give operational state early; settlement reports give financial truth later. Both converge on normalization, which feeds the subledger and the reconciliation engine. Bank statements arrive independently, through treasury, to close the third leg of the match.*
+**Figure 6:** *Webhooks give operational state early; settlement reports give financial truth later. Both converge on normalization, which feeds the subledger and the reconciliation engine. Bank statements arrive independently, through treasury, to close the third leg of the match.*
 
 | Component | Responsibility | Finance-architecture concern |
 | --- | --- | --- |
@@ -433,6 +436,9 @@ Everything above leads to one conclusion: a provider's payout and the bookings i
 11. **Multiple providers** multiply all of the above, each with its own vocabulary, file format, lifecycle, sign convention and cut-off.
 
 **None of the eleven is an error.** Each is the payments system working as designed, which is why the response is architectural, not operational: a booking reference mandatory on every provider call; a **clearing account per provider and currency** that returns to zero once the order, provider and bank legs are matched; reversals recorded as new events, never as updates; fees accrued and trued up; exception queues with owners and aging. Stripe's engineering team describes the same principle for its internal Ledger: clearing accounts should be zero at steady state, and a non-zero balance signals missing, late or incorrect data ([Stripe engineering, 2024](https://stripe.dev/blog/ledger-stripe-system-for-tracking-and-validating-money-movement)). That system is internal to Stripe, not a product, but the idea transfers directly.
+
+![One shared clearing tank hiding offsetting errors, versus four separate tanks where three are at zero and one break is flagged.](assets/images/20-payments-fundamentals/clearing-account-per-provider.jpeg)
+**Figure 7:** *A clearing account per provider and currency returns to zero once the order, provider and bank legs are matched, so a break shows; one shared account lets a €200,000 shortfall at one provider hide behind a €190,000 surplus at another.*
 
 ## Failure Modes
 

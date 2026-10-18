@@ -68,3 +68,4 @@ Chief and enterprise architects, integration and finance-systems architects, and
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(Željko Obrenović, AI-mediated session)*
 - **2026-10-18** — Consistency pass: aligned Lisbon settlement and payout dates (and batch id) with the scenario ledger. *(AI-mediated session)*
 - **2026-10-18** — Editorial review pass: "closed means reconciled" now extends STD-FIN-03 rather than a 2026 standard; American spelling. *(AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

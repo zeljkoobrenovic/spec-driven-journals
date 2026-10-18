@@ -6,7 +6,7 @@ How a Chief Architect designs, integrates, governs and evolves the finance techn
 
 ## Layout
 
-- `config.yaml` — reading order: Preface (3 pages), four parts each with an unnumbered part introduction (43 numbered chapters), Part V LEARN with its introduction and one public case study (chapter 44, Uber's payments platform, added 2026-10-18 at the author's request), and Reference Material (toolkit, glossary, bibliography): **55 configured pages**, each with a companion `spec.md`. Folders are numbered `01`–`44` in reading order; public permalinks are unprefixed and stable.
+- `config.yaml` — reading order: Preface (3 pages), four parts each with an unnumbered part introduction (44 chapters, including the FinOps chapter `45-finops` added 2026-10-18 and read after ch. 39), Part V LEARN with its introduction and one public case study (chapter 44, Uber's payments platform, added 2026-10-18 at the author's request), and Reference Material (toolkit, glossary, bibliography): **56 configured pages**, each with a companion `spec.md`. Folders are numbered `01`–`45`; `45-finops` sits between 39 and 40 in reading order (config order rules); public permalinks are unprefixed and stable.
 - `PLAN.md` — book positioning, structure and one contract per chapter (question, scope, Northmere thread, terms each chapter owns, research briefs).
 - `posts/<folder>/index.md` + `spec.md` — each page and the spec it was written against (spec-driven authoring, see the repository `CLAUDE.md`).
 - `_research/` — private working material, not published:

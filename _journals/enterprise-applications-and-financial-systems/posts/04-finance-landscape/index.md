@@ -41,6 +41,9 @@ Northmere, the fictional multi-brand commerce group this book follows (see [[mee
 
 Within ten minutes, three other teams said they already did this, or should. Jonas Berg said the Stayloft Finance Platform (SFP) already held the merchant subledger the settlements clear against. Sven Aalto said SAP FI-CA, the contract-accounting subledger introduced in 2025, was built for exactly this kind of open-item clearing. Owen Mbeki pointed out that FinDB, the Snowflake finance data platform, already held every settlement line and ran half of Finance's matching analysis. Leila Haddad, the Chief Accounting Officer, asked the question nobody could answer: **which of these is the book, and which are copies?**
 
+![Four teams at one table each pushing the same payment records toward a single ledger book under a question mark.](assets/images/04-finance-landscape/four-teams-one-job.jpeg)
+**Figure 1:** *Four teams claimed the same payment records; until the board shared one picture of the layers, nobody could say which system was the book and which were copies.*
+
 Dana Whitlock, the Chief Architect, took no position that day. The four teams were not disagreeing about payments; they were disagreeing about **what kind of system each of them was**, and each drew the estate around itself. Until the board shared one picture of the layers, agreed before any proposal arrived, every placement decision would be argued from scratch.
 
 By March the board had adopted the model in this chapter. Every decision record now states which layer a proposal belongs to, what data it would master, and which existing system already claims that layer. The payments proposal came back as a layer-2 question: which layer-2 component should own payment records and PSP clearing, and how would it prove completeness to the ledger? Whether the general ledger or the warehouse should do the job was no longer on the table. The answer belongs to [[payments-to-ledger]]; this chapter builds the frame that made the question answerable.
@@ -93,13 +96,16 @@ flowchart LR
     B -.->|"event and correlation ids"| A
 ---end mermaid---
 
-**Figure 1:** *The volume gradient. Each step up summarizes by one or more orders of magnitude; each dotted arrow is the path an auditor or controller needs back down. A boundary that drops the key on the dotted path is where Summarized Into Silence begins.*
+**Figure 2:** *The volume gradient. Each step up summarizes by one or more orders of magnitude; each dotted arrow is the path an auditor or controller needs back down. A boundary that drops the key on the dotted path is where Summarized Into Silence begins.*
 
 Three consequences follow, and the rest of the chapter depends on them.
 
 **Detail must live at the lowest layer that has to answer questions about it.** The general ledger's job is balances by entity, account and period, audited as the book of record. "Which bookings make up this partner payable?" and "which settlement lines are unmatched?" are subledger questions, asked at subledger grain. The rule I use: **every layer keeps what it must prove, and points down for the rest.**
 
 **Every upward step needs a key down and a control across.** A summarized ledger line is acceptable only if it carries a **summarization key** (the date, entity, account combination and batch that let the subledger list every line behind it) and only if somebody proves each period that the subledger total equals the ledger's control account. That proof, **subledger-to-GL reconciliation**, is defined in [[accounting-for-architects]].
+
+![A tapering stack of five tiers from many events to a few statement lines, joined by downward key threads and balance-scale checks at each boundary.](assets/images/04-finance-landscape/keys-down-controls-across.jpeg)
+**Figure 3:** *Every layer keeps what it must prove and points down for the rest: each summary carries a key back to the detail below and a reconciliation across the boundary.*
 
 **Latency and change cadence fall as you go up**, from milliseconds and weekly rule changes at the bottom to quarterly statements at the top. A layer boundary is also a cadence boundary, which is why a fast-changing brand platform must meet a slow-changing ledger through a stable contract ([[integration-architecture]]), never a shared database.
 
@@ -139,7 +145,7 @@ flowchart TB
     CP -.- L3
 ---end mermaid---
 
-**Figure 2:** *The finance reference model. Six layers form the stack from business event to published number; satellite services attach at several layers; the data platform reads from all of them and is the book for none. The integration plane carries every arrow; the control plane governs every box.*
+**Figure 4:** *The finance reference model. Six layers form the stack from business event to published number; satellite services attach at several layers; the data platform reads from all of them and is the book for none. The integration plane carries every arrow; the control plane governs every box.*
 
 | Layer | Purpose | Masters | Grain and volume | Latency | Typical owner |
 | --- | --- | --- | --- | --- | --- |
@@ -247,7 +253,7 @@ Each satellite is owned by the function it serves (Kofi Asante for tax and treas
 
 The integration plane moves financial data between layers **completely, exactly once in effect, in order where order matters, and with evidence**: the event backbone, APIs, managed file transfer for bank and PSP files, the integration platform for vendor connectors, and the delivery records and **control totals** (counts and amounts per source per period) that prove a flow was complete. Typical technology: Kafka-class event platforms, vendor integration suites (SAP Integration Suite, Oracle Integration, Workday's integration tools, MuleSoft) and managed file transfer. [[integration-architecture]] owns the styles and their finance-specific requirements.
 
-It is a plane because it masters no financial data and touches every arrow in Figure 2. Drawn as a layer, it invites mapping logic, account derivations and silent corrections that belong in layer 2 or the control plane. Ownership is usually split between platform engineering (the runtime; Ravi Menon's team runs Kafka at Northmere) and integration architecture (the contracts; Lucía Romero leads the canonical financial events).
+It is a plane because it masters no financial data and touches every arrow in Figure 4. Drawn as a layer, it invites mapping logic, account derivations and silent corrections that belong in layer 2 or the control plane. Ownership is usually split between platform engineering (the runtime; Ravi Menon's team runs Kafka at Northmere) and integration architecture (the contracts; Lucía Romero leads the canonical financial events).
 
 ### The control plane
 
@@ -334,7 +340,7 @@ flowchart TB
     SFP -.-> FDB
 ---end mermaid---
 
-**Figure 3:** *Northmere's 2027 baseline on the reference model. Stayloft's flow uses every layer; Wayfare's booking platform posts summaries straight into its ledger; the three ledgers meet only at consolidation. Layers 4 to 6 are drawn together for readability, since OneStream spans consolidation, planning and reporting.*
+**Figure 5:** *Northmere's 2027 baseline on the reference model. Stayloft's flow uses every layer; Wayfare's booking platform posts summaries straight into its ledger; the three ledgers meet only at consolidation. Layers 4 to 6 are drawn together for readability, since OneStream spans consolidation, planning and reporting.*
 
 **Overlap** means several systems claim one responsibility in a layer; **gap**, a responsibility no system holds, or only a spreadsheet; **leak**, a responsibility in the wrong layer.
 
@@ -397,6 +403,9 @@ The model describes a multi-entity commercial group. In banks and insurers, core
 ## Failure Modes
 
 Most failures in a finance estate are layer failures.
+
+![Three panels: a block in the wrong tier, an arrow skipping the middle tier, and two identical machines on one tier.](assets/images/04-finance-landscape/three-layer-failures.jpeg)
+**Figure 6:** *Three families of layer failure: a responsibility in the wrong layer, an operational system posting straight to the ledger, and two systems doing one layer's job.*
 
 ### Layer leakage: responsibility in the wrong layer
 

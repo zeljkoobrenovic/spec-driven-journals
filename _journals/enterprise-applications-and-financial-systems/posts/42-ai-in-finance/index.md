@@ -63,6 +63,9 @@ For a finance architect, "AI" is five rungs of a ladder, and the properties an a
 
 Two observations follow. First, **each rung up buys reach into the exception layer at the price of determinism**, and that price is worth paying only where the lower rung has run out. A one-to-one match between a PSP settlement line and a captured payment should be a rule, forever; a model that matches it "correctly 99.7% of the time" has replaced a certainty with a probability. The rule I use: *push every case as far down the ladder as it will go, and point AI at the residue.*
 
+![A five-rung ladder labeled Rules, RPA, ML, GenAI and Agents; most transactions flow through rules at the bottom while a few exception documents move up the ladder.](assets/images/42-ai-in-finance/automation-ladder.jpeg)
+**Figure 1:** *Each rung up the automation ladder buys reach into the exception layer at the price of determinism: push every case as far down as it will go, and point AI at the residue.*
+
 Second, **the word "agent" covers two different designs**. Anthropic's widely cited engineering note, [Building Effective Agents](https://www.anthropic.com/research/building-effective-agents) (Erik Schluntz and Barry Zhang, December 2024), distinguishes **workflows**, where models and tools run along predefined code paths, from **agents**, where the model directs its own process and tool use. Nearly every finance process I would automate in 2027 should be a workflow with model steps inside it — classify, retrieve, propose, with programmatic checks between steps. I keep the word "agent" because vendors and finance teams use it, but the architecture constrains it toward the workflow end.
 
 Gartner has a name for the opposite habit. In June 2025 it predicted that [over 40% of agentic AI projects will be canceled by the end of 2027](https://www.gartner.com/en/newsroom/press-releases/2025-06-25-gartner-predicts-over-40-percent-of-agentic-ai-projects-will-be-canceled-by-end-of-2027.) because of cost, unclear value or inadequate risk controls, and warned of **"agent washing"**: relabeling chatbots and RPA as agents. It estimated that only about 130 of the thousands of vendors claiming agentic capability were real. "Which rung is this, really?" is the fastest question in a vendor demonstration.
@@ -85,6 +88,9 @@ I rank use cases on two axes. **Value** is the effort and delay removed from the
 | **Master-data change** | Updates supplier bank details or credit limits | Low | Very high: payment fraud | Never autonomous |
 
 The high-value, contained-risk rows are preparer work in the exception layer: triage, drafting, coding. The dangerous rows post, pay or change master data without a human decision. Northmere chose its three pilots from the first group on purpose, which matches Gartner's August 2026 advice to finance leaders: [start with a low-risk, contained workflow where mistakes can be detected and reversed](https://www.gartner.com/en/newsroom/new/pr-q-a-new-vis-template/2026-08-20-gartner-says-cfos-mus-pilot-governance-first-before-scaling-ai-agents), treat the first agent as a governance pilot, and keep restatements and regulatory reporting out of pilots.
+
+![Value versus control-risk map with a green pilot zone holding triage, drafting and coding icons and a locked red zone holding posting, payment and master-data icons.](assets/images/42-ai-in-finance/value-risk-map.jpeg)
+**Figure 2:** *Rank use cases by value and control risk: the pilots belong in preparer work such as triage, drafting and coding, while anything that posts, pays or changes master data stays out of agent authority.*
 
 ## Vendor-Embedded Agents and Enterprise-Built Agents
 
@@ -150,7 +156,7 @@ flowchart LR
     IAM["Service identity per agent, least privilege"] --> GW
 ---end mermaid---
 
-**Figure 1:** *The agent never holds the pen. It reads through a policy-checked tool gateway, writes only proposals, and every disposition happens in the system of record's own approval control; the evidence log captures each step so a run can be reconstructed.*
+**Figure 3:** *The agent never holds the pen. It reads through a policy-checked tool gateway, writes only proposals, and every disposition happens in the system of record's own approval control; the evidence log captures each step so a run can be reconstructed.*
 
 ### The components and their responsibilities
 
@@ -188,7 +194,7 @@ stateDiagram-v2
     Reconciled --> [*]
 ---end mermaid---
 
-**Figure 2:** *The agent controls only the first state of a proposal's lifecycle; amended and rejected proposals are kept, because they are the agent's measured error rate and the evaluation set for the next model or prompt change.*
+**Figure 4:** *The agent controls only the first state of a proposal's lifecycle; amended and rejected proposals are kept, because they are the agent's measured error rate and the evaluation set for the next model or prompt change.*
 
 ### When can a proposal be approved in bulk?
 
@@ -216,6 +222,9 @@ The worked example the reviewers used most: an Indonesian e-wallet settlement li
 | Proposals that would have misstated a balance if accepted, caught by review | 11, the largest €2,300 |
 
 The most useful output was not the time saved but the category distribution: **58%** of exceptions were "missing or truncated booking reference", concentrated in two APM providers. That is a data contract problem, not an AI problem, and it went back to Lucía's team and Ingrid Solberg's PSP relationship owners as a fix to the providers' file specifications ([[loosely-coupled-domains]] covers the contracts). This is the trap I warn every finance team about: **an agent that makes exceptions cheap to work can make them permanent.** If triage is efficient enough, nobody fixes the cause, and the suspense account becomes a well-managed backlog instead of an empty one. Suspense Gravity is not cured by a faster shovel. Northmere put the category distribution into the program's monthly metrics so root-cause fixes were measured alongside triage.
+
+![A robot quickly shovels exception slips out of a basin fed by a leaking pipe, while two people repair the leak upstream.](assets/images/42-ai-in-finance/faster-shovel.jpeg)
+**Figure 5:** *An agent that makes exceptions cheap to work can make them permanent: 58% of APM exceptions came from missing or truncated booking references, a data-contract fix that no faster shovel replaces.*
 
 ### Pilot 2: variance commentary drafting
 
@@ -257,7 +266,7 @@ Auditors usually test a rule-based automated control once and rely on ITGCs to s
 
 Three sources are worth citing to an audit committee, with their status stated precisely.
 
-- **COSO, *Achieving Effective Internal Control Over Generative AI* (February 2026).** It applies the 2013 Internal Control–Integrated Framework to generative AI and defines eight capability types — ingestion, transformation, posting, orchestration, judgment, monitoring, regulatory intelligence and human-AI interaction — each with minimum control expectations and illustrative metrics for audit evidence ([Journal of Accountancy](https://www.journalofaccountancy.com/news/2026/feb/coso-creates-audit-ready-guidance-for-governing-generative-ai/); [Deloitte Heads Up](https://dart.deloitte.com/USDART/home/publications/deloitte/heads-up/2026/coso-internal-controls-generative-ai)). It is the most usable reference; the control card maps each agent to its capability types. In those terms, Figure 1 allows ingestion, transformation and judgment in the agent and keeps posting in the system of record.
+- **COSO, *Achieving Effective Internal Control Over Generative AI* (February 2026).** It applies the 2013 Internal Control–Integrated Framework to generative AI and defines eight capability types — ingestion, transformation, posting, orchestration, judgment, monitoring, regulatory intelligence and human-AI interaction — each with minimum control expectations and illustrative metrics for audit evidence ([Journal of Accountancy](https://www.journalofaccountancy.com/news/2026/feb/coso-creates-audit-ready-guidance-for-governing-generative-ai/); [Deloitte Heads Up](https://dart.deloitte.com/USDART/home/publications/deloitte/heads-up/2026/coso-internal-controls-generative-ai)). It is the most usable reference; the control card maps each agent to its capability types. In those terms, Figure 3 allows ingestion, transformation and judgment in the agent and keeps posting in the system of record.
 - **PCAOB staff Spotlight (July 2024).** A [staff publication](https://pcaobus.org/documents/generative-ai-spotlight.pdf) on outreach about generative AI in audits and financial reporting — explicitly not a rule, policy or statement of the Board. It found audit firms' use mainly administrative and research, firms stressing supervision, and companies' use of generative AI in financial reporting secondary to operational and customer-facing uses. No AI-specific auditing standard has been issued; existing standards apply.
 - **The IIA's Artificial Intelligence Auditing Framework** ([updated version dated 13 September 2024 on the IIA site](https://www.theiia.org/en/content/tools/professional/2023/the-iias-updated-ai-auditing-framework/)), aligned to the Three Lines Model and the Global Internal Audit Standards. It gives internal audit a structure for auditing AI governance and management.
 

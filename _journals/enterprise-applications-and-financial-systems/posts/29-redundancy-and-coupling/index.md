@@ -197,6 +197,9 @@ Even a published interface leaks. Hyrum's Law, as its author states it, is that 
 
 Semantic coupling is the type I watch hardest in finance, because it produces no errors. Two systems exchange a field called `booking_date` or a measure called `revenue`; both validate; both are correct by their own definition. The difference appears only when someone compares totals, usually at a close or in front of an auditor. The July 2027 booking-date change is the archetype: no schema changed, no contract test could fail, and €3.1 million of gross bookings moved across a month boundary in a flash report.
 
+![Two systems both labeled with the term booking date, each correct, while coins slide across the June-July boundary.](assets/images/29-redundancy-and-coupling/same-word-two-meanings.jpeg)
+**Figure 3:** *Semantic coupling produces no errors: when 'booking date' moved from request to confirmation, about €3.1 million of gross bookings crossed the June–July boundary in a flash report without any interface breaking.*
+
 Domain-driven design gives the vocabulary. A **bounded context** is the boundary within which a model and its language are consistent ([DDD Reference](https://www.domainlanguage.com/ddd/reference/)); [[capability-mapping]] drew Northmere's. Semantic coupling is what happens when a term crosses a context boundary without translation. "Account" means a customer account in Sales, a bank account in Treasury and a GL account in Accounting. "Revenue" means gross bookings to a commercial team, cash collected to a payments team and recognized revenue to the controller. "Supplier" means an indirect-spend vendor in Coupa and a ground-transport partner in Wayfare's payout engine, which is why the two have different bank-detail authorities. The remedy has two parts: **one owned definition per financial term that crosses a boundary**, published with the interface in the **published language** of the canonical events; and **explicit translation at the boundary**, so that a context that uses the term differently converts it rather than reusing the name. The governed metrics in [[finance-data-flows]] apply the same rule to reporting.
 
 ### Release and vendor coupling: someone else's calendar
@@ -230,7 +233,7 @@ flowchart LR
     HK -->|"organizational HIGH"| FUS
 ---end mermaid---
 
-**Figure 3:** *Coupling heat on Northmere's busiest finance boundaries, Q3 2027. The hottest edges cluster around Wayfare: a shared database replica, an undefined handover of cancellations to the ledger, quarterly vendor releases and one team on every path.*
+**Figure 4:** *Coupling heat on Northmere's busiest finance boundaries, Q3 2027. The hottest edges cluster around Wayfare: a shared database replica, an undefined handover of cancellations to the ledger, quarterly vendor releases and one team on every path.*
 
 The diagram changed the order of Keystone work. The Wayfare payout engine sits on three hot edges, which made it the first convergence candidate on coupling grounds as well as redundancy grounds.
 
@@ -314,7 +317,7 @@ flowchart TB
     P6 --> P7["7 Old engine read-only, archive with read path, decommission"]
 ---end mermaid---
 
-**Figure 4:** *The payout-engine collapse as gated stages. Fixing the shadow balance and removing the shared database come before any supplier moves; the parallel run loops back to configuration until every difference is explained.*
+**Figure 5:** *The payout-engine collapse as gated stages. Fixing the shadow balance and removing the shared database come before any supplier moves; the parallel run loops back to configuration until every difference is explained.*
 
 | Stage | When | Exit gate | Control evidence |
 | --- | --- | --- | --- |
@@ -353,6 +356,9 @@ The payout decision shows the chapter's central trade-off. Every duplicate remov
 | **Shared platform without contracts** | Duplicates removed by giving everyone access to one system's internals | Fast consolidation | Worst coupling: schema, semantic and organizational at once; nobody can change the platform | Never by design; it is what an unmanaged consolidation produces |
 
 I recommend the second posture for any group with more than one business model, and I would choose the first deliberately, not by default, for a business that is likely to be sold within three years. The fourth row is the one to watch for: it is what a consolidation program produces when it removes duplicates faster than it publishes interfaces.
+
+![A seesaw balancing duplicate modules against one shared module with many consumer cables, resting on a published-interface fulcrum.](assets/images/29-redundancy-and-coupling/redundancy-coupling-seesaw.jpeg)
+**Figure 6:** *Redundancy and coupling trade against each other: every duplicate removed makes the survivor a dependency of more consumers, so consolidation is safe only behind a published interface.*
 
 ## Governance Hooks That Keep the Register Honest
 

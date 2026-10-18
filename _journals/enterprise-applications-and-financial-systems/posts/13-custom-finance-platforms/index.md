@@ -33,6 +33,9 @@ Every large digital enterprise I have worked with runs finance software it wrote
 
 The trouble is that these platforms grow. A commission engine acquires an invoicing module because the ERP's invoicing was slow to configure. The payout service keeps partner balances because it needed them to net refunds. A few years later the brand has a **custom finance platform** that keeps its own books, posts its own journals and runs its own controls, and nobody decided that it should.
 
+![A small commission workshop grows over four stages, adding invoicing, balances and journals, until it stands as a second ledger beside the official ERP building.](assets/images/13-custom-finance-platforms/platform-that-grows-into-a-ledger.jpeg)
+**Figure 1:** *Custom finance platforms grow by accretion: a commission engine acquires invoicing, then partner balances, then its own journals, until the brand has a second book of record that nobody decided to build.*
+
 This chapter is about the decision nobody made: which finance capabilities to build, **where the boundary with the ERP must sit**, what owning really costs, and an **explicit retirement test** for deciding what to keep, converge or switch off. The internals of a custom ledger (posting rules, invariants, idempotency, bi-temporality) belong to the next chapter, [[designing-financial-ledgers]]. This chapter decides what such a ledger should own; that one explains how to build it.
 
 ## Setting the Scene: The SFP Question at Northmere
@@ -155,7 +158,7 @@ flowchart LR
     MS -->|"open items, matches"| BL["BlackLine"]
     SFP -->|"detail lines"| FDB["FinDB on Snowflake"]
 ---end mermaid---
-**Figure 1:** *SFP's boundary as it should be: the platform owns per-transaction facts and computes amounts; S/4HANA owns accounts, periods and balances and receives only summaries it can drill back from; payment execution, tax and safeguarding are shared services the platform calls rather than reimplements.*
+**Figure 2:** *SFP's boundary as it should be: the platform owns per-transaction facts and computes amounts; S/4HANA owns accounts, periods and balances and receives only summaries it can drill back from; payment execution, tax and safeguarding are shared services the platform calls rather than reimplements.*
 
 The diagram shows SFP as it should be. In 2027 SFP still determines its own GL accounts from a mapping table that Stayloft finance maintains inside SFP, bypassing group chart-of-accounts governance. Moving account determination out is the first boundary fix in Dana's plan: cheap, and it removes the largest silent risk.
 
@@ -174,7 +177,7 @@ Two further obligations follow from data ownership in finance:
 
 ## Integration Into the Core: Summarized Postings With Drill-Back
 
-The standard integration pattern between a high-volume custom platform and an ERP is the one in Figure 1: **detail in the subledger, summaries in the GL, with keys that connect them**. The pattern is old (it is how ERP subledgers have always posted to their own general ledgers) and vendors package it: Oracle describes its [Accounting Hub](https://docs.oracle.com/en/cloud/saas/financials/26c/faiac/how-oracle-accounting-hub-cloud-works.html) as an accounting rules engine that creates detailed journals from external source systems and transfers them to the GL with drill-down to transaction details, and Workday's [Accounting Center](https://workday.com/en-us/products/financial-management/accounting-center.html) turns high volumes of external business events into accounting entries and lets users drill from summarized reports to source level.
+The standard integration pattern between a high-volume custom platform and an ERP is the one in Figure 2: **detail in the subledger, summaries in the GL, with keys that connect them**. The pattern is old (it is how ERP subledgers have always posted to their own general ledgers) and vendors package it: Oracle describes its [Accounting Hub](https://docs.oracle.com/en/cloud/saas/financials/26c/faiac/how-oracle-accounting-hub-cloud-works.html) as an accounting rules engine that creates detailed journals from external source systems and transfers them to the GL with drill-down to transaction details, and Workday's [Accounting Center](https://workday.com/en-us/products/financial-management/accounting-center.html) turns high volumes of external business events into accounting entries and lets users drill from summarized reports to source level.
 
 ### The Lisbon booking through SFP
 
@@ -219,7 +222,7 @@ flowchart TB
     G -->|"control account balances"| R
     R -->|"breaks with owner"| X["Exception queue"]
 ---end mermaid---
-**Figure 2:** *Summarization is safe only when it is reversible and provably complete: the batch index makes every GL line traceable to its detail, and the daily subledger-to-GL reconciliation proves that nothing was lost, duplicated or posted outside the platform.*
+**Figure 3:** *Summarization is safe only when it is reversible and provably complete: the batch index makes every GL line traceable to its detail, and the daily subledger-to-GL reconciliation proves that nothing was lost, duplicated or posted outside the platform.*
 
 The two alternatives are worse defaults. **Per-transaction posting** into the GL moves the volume problem into the ERP and is right only at low volume or when the receiver is a high-volume subledger such as FI-CA. **Balance-only feeds**, one month-end balance per account, remove traceability and are the direct route to Summarized Into Silence. [[traceability-and-reconciliation]] treats the reconciliation design in depth.
 
@@ -285,7 +288,7 @@ flowchart TB
     Q4 -->|"yes"| C["Converge or retire on a dated plan"]
     Q4 -->|"no"| A["Build the archive and read path first"]
 ---end mermaid---
-**Figure 3:** *The retirement test applied per component: differentiation decides whether convergence is even considered, and a proven alternative, a full cost comparison and a preserved audit trail decide whether it happens now.*
+**Figure 4:** *The retirement test applied per component: differentiation decides whether convergence is even considered, and a proven alternative, a full cost comparison and a preserved audit trail decide whether it happens now.*
 
 The test reads like the portfolio dispositions in [[application-portfolio]] (tolerate, invest, migrate, eliminate), applied at a finer grain. That grain is the point. Platform-level decisions about SFP keep failing because the platform contains both the most differentiating logic Stayloft has (its commission rules) and the most commodity logic (invoice rendering). Asking the questions per component separates them.
 
@@ -310,6 +313,9 @@ Over March and April 2027 Dana's architects, Jonas's engineering leads, Leila's 
 Three judgments in the table deserve a sentence each. Keeping the **payout engine** after an audit finding looks perverse until you separate the finding from the capability: the finding was about change and access controls, which are fixable in months, while the capability (netting, holds and scheduling across 31 settlement currencies) is the hardest part of Stayloft's finance to replicate. Keeping the **traveler funds ledger** custom while converging the merchant subledger creates a new reconciliation between them; Dana accepts it because the safeguarding requirement belongs to the licensed entity, and Ingrid wants it in a component whose release cycle her team can influence. And **retiring the summarization interface** is not retiring summarization: the group accounting engine will still summarize, but under the group's governance rather than SFP's.
 
 The table also answers the original question in Tomás's terms. Of SFP's nine components, three stay custom, four converge, and two are retired. Dana's team estimates that the converged scope would free about a third of Jonas's engineers for product-coupled work by 2029 and cut the finance-operations line roughly in half, the latter subject to the convergence proof.
+
+![Nine blocks taken out of one platform outline: three kept in a teal workshop, four moving to a blue group platform, two in a grey retirement bin.](assets/images/13-custom-finance-platforms/nine-components-nine-answers.jpeg)
+**Figure 5:** *SFP is nine components, not one, and they get nine answers: three stay custom, four converge onto group platforms and two are retired, because the retirement test is asked per component rather than per platform.*
 
 ## Trade-Offs: Where the Merchant Subledger Could Live
 

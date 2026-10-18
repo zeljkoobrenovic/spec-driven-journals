@@ -68,3 +68,4 @@ Chief and enterprise architects, finance-systems architects and finance-transfor
 
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(Željko Obrenović, AI-mediated session)*
 - **2026-10-18** — Editorial review pass: entity split corrected to 55 SAP company codes / 3 Fusion primary ledgers / 4 Workday companies (67 codes after convergence); SFP subledger go-live 1 Nov 2027; Tablekin recommendation dated June 2027; American spelling. *(AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

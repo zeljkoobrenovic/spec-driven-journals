@@ -41,6 +41,9 @@ Northmere, the fictional multi-brand digital commerce group this book follows, c
 
 Dana Whitlock, Northmere's Chief Architect for enterprise applications and financial systems, reread the draft principles her team had circulated in December 2026. Principle 4 said: "Financial data is accurate, complete and consistent across systems." Every system involved would have claimed to comply. Workday was accurate; the mapping spreadsheet was internally consistent; OneStream consolidated what it was given. The defect lived at a **boundary**, and the principle said nothing about boundaries, nothing about who was authoritative for the mapping, and nothing about what should happen to an account with no mapping.
 
+![Three systems each with a green check, while a new account drops through the gap between them into an overflowing Other revenue bin.](assets/images/35-principles-standards-reference/defect-at-the-boundary.jpeg)
+**Figure 1:** *Every system involved could claim it was accurate, complete and consistent; the $41 million in "Other revenue" lived at the boundary between them, which the untestable principle never mentioned.*
+
 Jonas Berg, who runs the roughly 60 engineers on the Stayloft Finance Platform (SFP), put it bluntly at the next design authority: "Tell me which of these principles can fail my build. Those are the ones I'll read." Dana took that as the specification for the rewrite. By the end of May 2027 the December deck had become eleven principles, each with a conformance test; the five mandatory standards she had proposed in November 2026 were in force; three reference architectures were published; and two golden paths were under construction. The mapping defect is now blocked twice: by the governed, effective-dated mapping rules adopted in May 2027 (an unmapped account stops the load), and by a principle that requires every boundary to prove its completeness.
 
 ## Concepts: Six Kinds of Architectural Guidance
@@ -83,7 +86,7 @@ flowchart TB
     GOV -->|"revise, deprecate, add"| ST
 ---end mermaid---
 
-**Figure 1:** *Guidance as a chain. Each link narrows interpretation and adds support; conformance results flow back to governance, which revises principles and standards. A link without a test breaks the chain.*
+**Figure 2:** *Guidance as a chain. Each link narrows interpretation and adds support; conformance results flow back to governance, which revises principles and standards. A link without a test breaks the chain.*
 
 ## Writing a Principle That Can Fail
 
@@ -262,7 +265,7 @@ flowchart LR
     TM -->|"match status"| CL
 ---end mermaid---
 
-**Figure 2:** *Payments-to-ledger reference architecture. Webhooks carry state early, settlement reports carry money later; both converge on one enterprise-owned normalization layer. The accounting engine posts from canonical events, and matching proves that clearing accounts empty out against the bank.*
+**Figure 3:** *Payments-to-ledger reference architecture. Webhooks carry state early, settlement reports carry money later; both converge on one enterprise-owned normalization layer. The accounting engine posts from canonical events, and matching proves that clearing accounts empty out against the bank.*
 
 | Component | Responsibility | Never does |
 | --- | --- | --- |
@@ -314,7 +317,7 @@ sequenceDiagram
     TO->>REC: Differences with owner and age
 ---end mermaid---
 
-**Figure 3:** *Subledger-to-GL reference architecture. The summary carries a drill-back key and control totals; the GL accepts or rejects whole batches and returns its document number; a daily tie-out compares movements on both sides and sends any difference to reconciliation with an owner.*
+**Figure 4:** *Subledger-to-GL reference architecture. The summary carries a drill-back key and control totals; the GL accepts or rejects whole batches and returns its document number; a daily tie-out compares movements on both sides and sends any difference to reconciliation with an owner.*
 
 **Components.** *Intake* validates and quarantines. The *accounting engine* applies the approved rule version and refuses unbalanced entries. The *summarizer* groups lines by an approved **summary key** (for SFP: legal entity, ledger, accounting date, GL account, profit center, currency, business model, tax code) and writes a `summary_id` on every contributing line. The *GL inbound interface* validates batch totals and posts all or nothing. The *tie-out* compares movements daily, and *reconciliation* in the close platform receives breaks as reconciling items.
 
@@ -352,7 +355,7 @@ flowchart TB
     CCM -->|"exceptions as close tasks"| CAL
 ---end mermaid---
 
-**Figure 4:** *Close orchestration reference architecture. Ledgers emit cut-off signals with control totals; the calendar releases tasks on signals, not dates; consolidation locks an entity only when its key reconciliations are certified; every gate writes evidence that monitors can query.*
+**Figure 5:** *Close orchestration reference architecture. Ledgers emit cut-off signals with control totals; the calendar releases tasks on signals, not dates; consolidation locks an entity only when its key reconciliations are certified; every gate writes evidence that monitors can query.*
 
 | Component | Responsibility | Northmere implementation (2027) |
 | --- | --- | --- |
@@ -387,6 +390,9 @@ Reference architectures describe; golden paths deliver. A team handed a forty-pa
 The first two feeds on the adapter kit, in the second half of 2027, were Northmere Pay's normalized settlement events (`PaymentSettled`, `PSPFeeCharged`), which already existed as files for BlackLine, and Northmere Ads' `AdClickBilled`. Neither was the hardest feed; both had owners willing to report what the kit got wrong.
 
 Golden paths change the economics of compliance. Leaving the path is allowed, as Spotify's framing intends, but a team that leaves it must demonstrate conformance with its own evidence, which is more work than adopting the kit. That is the point. A golden path harder to use than building from scratch is a mandate in a library's clothing, and teams route around it.
+
+![A paved golden path with adapter kit and posting template stations next to a rough side route where a team hauls its own evidence.](assets/images/35-principles-standards-reference/golden-path-economics.jpeg)
+**Figure 6:** *Golden paths change the economics of compliance: the adapter kit and the posting pipeline template make the conformant design the cheapest to build, and a team that leaves the path must demonstrate conformance with its own evidence.*
 
 ## In Practice: The First Months of the Catalog
 

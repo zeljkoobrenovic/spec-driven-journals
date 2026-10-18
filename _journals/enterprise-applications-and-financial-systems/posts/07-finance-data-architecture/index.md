@@ -92,6 +92,9 @@ The rule I use is simple. **Centralize where the record is rare, shared and cont
 
 Registry and consolidation are useful but transitional. A registry tells you how bad the duplication is; it does not stop the next duplicate. A consolidated golden record in the data platform makes reports agree; it does not make the payout file agree with the tax engine. I fund them as measurement and as a migration step, and I do not let a program declare victory on either.
 
+![Four panels: an index pointing to sources, a one-way golden copy, two-way sync with a hub, and a single hub broadcasting to locked consumers.](assets/images/07-finance-data-architecture/mdm-styles.jpeg)
+**Figure 1:** *The four MDM styles differ in where records are authored and whether the hub writes back: centralize what is rare, shared and control-relevant; coexist where records are born in operational processes.*
+
 In SAP-centric estates, the centralized style is commonly implemented with SAP Master Data Governance (MDG), SAP's governance application for change requests on master data such as financial objects and business partners ([[sap-s4hana]] covers its fit; Northmere does not run MDG in 2027); the coexistence and consolidation styles are commonly built with a specialist MDM platform or a custom partner hub. Which product implements the style is a secondary decision. **The style is the architecture; the tool is a sourcing choice**, and [[build-versus-buy]] covers how to make it.
 
 ## The Architecture of Financial Master Data
@@ -117,7 +120,7 @@ flowchart LR
     FMD --> FDB["FinDB: conformed dimensions"]
     PH --> FDB
 ---end mermaid---
-**Figure 1:** *Financial master data has few authoring points and many subscribers. Centralized domains are authored in one governed hub; the partner master coexists with the brand platforms that create partners, with bank attributes authored only in the payments platform in the target state.*
+**Figure 2:** *Financial master data has few authoring points and many subscribers. Centralized domains are authored in one governed hub; the partner master coexists with the brand platforms that create partners, with bank attributes authored only in the payments platform in the target state.*
 
 Five design decisions sit behind the picture.
 
@@ -153,6 +156,9 @@ The Keystone design team, led by Leila's group reporting function with Dana's da
 | **Cost center** | ~4,800, hierarchy to brand and function | Finance core for structure; Workday HCM for owners | Operating expense; optional elsewhere | — |
 
 Under this design, the €90.00 commission on the Lisbon booking (the €600.00 merchant-model stay that recurs through this book) posts to account 410100 with entity Stayloft B.V. (the contracting entity), brand STL, business model MER, market PT and product ACC-APT. In the current SAP chart it posts to one of eleven country-specific commission accounts, and the business model is inferred from which account was used. The new string can answer "merchant commission in Portugal for apartments" without anyone knowing an account number.
+
+![Left: a crowded wall of near-duplicate account drawers. Right: one account card with seven dimension tags.](assets/images/07-finance-data-architecture/accounts-into-dimensions.jpeg)
+**Figure 3:** *Group CoA v2 collapses the SAP chart's 3,900 accounts into a group chart of about 1,150 natural accounts by moving country, brand and product variants into seven dimensions on every posting.*
 
 Three deliberate exceptions keep the design honest.
 
@@ -239,7 +245,7 @@ flowchart TB
     L --> M["Consumers apply and acknowledge"]
     M --> N["Evidence pack archived: request, approvals, tests, acknowledgments"]
 ---end mermaid---
-**Figure 2:** *A chart of accounts change is a controlled change with an evidence trail: classified by impact, analyzed for downstream effects, approved by the owner, activated from a period start, and complete only when every consumer has acknowledged it.*
+**Figure 4:** *A chart of accounts change is a controlled change with an evidence trail: classified by impact, analyzed for downstream effects, approved by the owner, activated from a period start, and complete only when every consumer has acknowledged it.*
 
 The link to SOX is direct. Under the US Sarbanes-Oxley Act, management must maintain effective internal control over financial reporting, and the external auditor tests it. A change to an account's reporting-line mapping changes which financial statement caption a balance lands in, which is exactly what the April usage revenue incident did. Mapping and chart changes are therefore in scope of the same change-management discipline auditors expect for financial applications: authorized, tested, approved before production, with evidence that the control operated for every change in the period, not just a policy. [[controls-and-auditability]] covers IT general controls, information produced by the entity and evidence by design; the design point here is that **the master data workflow produces that evidence as a by-product**. Nobody assembles it before the audit.
 
@@ -273,7 +279,7 @@ flowchart LR
     PH -->|"golden partner view"| FDB["FinDB"]
     NPAY --> ADY["Adyen balance platform"]
 ---end mermaid---
-**Figure 3:** *The partner master as coexistence: partners are born in the brand platform, matched and governed in a hub that assigns the group partner ID, and distributed to FI-CA and Vertex; in the target state, bank attributes are authored only in the payments platform and flow to the hub, never the other way.*
+**Figure 5:** *The partner master as coexistence: partners are born in the brand platform, matched and governed in a hub that assigns the group partner ID, and distributed to FI-CA and Vertex; in the target state, bank attributes are authored only in the payments platform and flow to the hub, never the other way.*
 
 The attribute-level authority is what makes this more than a synchronization project:
 
@@ -338,7 +344,7 @@ flowchart RL
     J --> SB["Stripe Billing invoices and usage records"]
     MV --> CR["Change request and approvals"]
 ---end mermaid---
-**Figure 4:** *Finance lineage has a data strand and a rule strand. A reported line is reproducible only when both the source records and the versions of the mapping and rate sets that shaped it are recorded.*
+**Figure 6:** *Finance lineage has a data strand and a rule strand. A reported line is reproducible only when both the source records and the versions of the mapping and rate sets that shaped it are recorded.*
 
 A **data contract** is an agreed, versioned specification between a data producer and its consumers: schema, semantics, quality rules, service levels and owners. The [Open Data Contract Standard](https://bitol-io.github.io/open-data-contract-standard/latest/) defines a YAML format with sections for fundamentals, schema, data quality, service levels, roles and team. For finance, a contract has three jobs that a schema alone does not do: it states **completeness** obligations (control totals), **semantics** that accountants rely on (which amounts are gross, which currency, which date governs the period), and the **master data references** that must be valid.
 
@@ -440,7 +446,7 @@ What to watch: the number of systems where each master data object can be create
 8. Which master data and mapping changes are in SOX scope, and is the evidence produced by the workflow or assembled before the audit?
 9. How long must each master record be retained, given the records that reference it, and how is personal data in it erased or restricted?
 
-Master data decides where amounts land; controls decide whether anyone can trust that they landed correctly. The change workflow, the role design that removes local create paths and the evidence pack at the end of Figure 2 are all control design. [[controls-and-auditability]] takes that up directly: how SOX, IT general controls, segregation of duties and audit evidence shape the architecture of every finance platform.
+Master data decides where amounts land; controls decide whether anyone can trust that they landed correctly. The change workflow, the role design that removes local create paths and the evidence pack at the end of Figure 4 are all control design. [[controls-and-auditability]] takes that up directly: how SOX, IT general controls, segregation of duties and audit evidence shape the architecture of every finance platform.
 
 ## Sources and Evidence
 

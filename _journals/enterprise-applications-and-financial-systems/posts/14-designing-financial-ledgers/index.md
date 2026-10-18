@@ -65,6 +65,9 @@ The separation matters for three reasons. The producer team does not need to kno
 
 Fowler's "Event Sourcing" essay makes the connection directly: accounting entries are a log of everything that changed an account, so **an account is itself an example of event sourcing** ([Fowler, 2005](https://martinfowler.com/eaaDev/EventSourcing.html)). The subledger described here is event-sourced twice: the event store holds the business facts, and the journal holds the accounting facts derived from them.
 
+![A locked cabinet of fact cards projects through an approved rule lens onto balanced journal pages, with a spare lens waiting to be swapped in.](assets/images/14-designing-financial-ledgers/post-facts-derive-accounting.jpeg)
+**Figure 1:** *Post facts, derive accounting: events are immutable business facts, an approved and versioned posting rule interprets them, and a changed accounting policy swaps the rule and re-derives the entries instead of repairing data.*
+
 ### Posting rule and accounting engine
 
 A **posting rule** maps an event type, under stated conditions, to the lines of an entry: which accounts, which side, which amount expression, which dimensions. Fowler's *Analysis Patterns* accounting supplement names the pattern **Posting Rule**, alongside **Accounting Entry**, **Account**, **Accounting Transaction** and the **Secondary Posting Rule** for entries that are triggered by other entries ([Fowler, Accounting Patterns](https://martinfowler.com/apsupp/accounting.pdf)). The **accounting engine** is the component that selects the applicable rule version for an event, evaluates it and writes the entry.
@@ -86,6 +89,9 @@ An **invariant** is a property that must hold after every write. For a subledger
 Fowler's accounting patterns describe three ways to adjust posted entries: **Replacement Adjustment** (delete and re-post), **Reversal Adjustment** (post an exact negative of the wrong entry, then the right one) and **Difference Adjustment** (post only the delta) ([Fowler, Patterns for Accounting, 2006 draft](https://martinfowler.com/eaaDev/AccountingNarrative.html)). For a book of record, replacement is unacceptable: it destroys the evidence of what was reported. Reversal is what accountants do and what auditors expect; difference adjustments are acceptable for revaluations and true-ups where the original entry was right at the time.
 
 Published designs agree: Square's Books service ([2019](https://developer.squareup.com/blog/books-an-immutable-double-entry-accounting-database-service/)), Stripe's internal Ledger, in which transactions "cannot be deleted or modified" ([2024](https://stripe.dev/blog/ledger-stripe-system-for-tracking-and-validating-money-movement)), and TigerBeetle's append-only transfers ([docs](https://docs.tigerbeetle.com/concepts/debit-credit/)) all correct by adding. Immutability is a control concept, not a technology mandate; an append-only table in a relational database satisfies it.
+
+![Left: a ledger row erased so the auditor finds nothing. Right: original row, its exact reversal and the corrected row all visible to the auditor.](assets/images/14-designing-financial-ledgers/correct-by-adding.jpeg)
+**Figure 2:** *Correct by adding, never by overwriting: a reversal and a new entry keep both the original and the correction visible, while an update in place destroys the evidence of what was reported.*
 
 ## Architecture: The Financial Event Pipeline
 
@@ -112,7 +118,7 @@ flowchart LR
     TO -->|"differences"| BLK["BlackLine reconciliation"]
 ---end mermaid---
 
-**Figure 1:** *The redesigned SFP subledger pipeline. Producers publish business facts; only the accounting engine writes entries, only under an approved rule version and an open period; the summarizer and the tie-out turn the general-ledger posting into a reconcilable boundary rather than a one-way export.*
+**Figure 3:** *The redesigned SFP subledger pipeline. Producers publish business facts; only the accounting engine writes entries, only under an approved rule version and an open period; the summarizer and the tie-out turn the general-ledger posting into a reconcilable boundary rather than a one-way export.*
 
 | Component | Responsibility | Writes | Never does |
 | --- | --- | --- | --- |
@@ -268,7 +274,7 @@ sequenceDiagram
     AE->>KB: EntryPosted for downstream consumers
 ---end mermaid---
 
-**Figure 2:** *One event becomes one entry. Rule selection uses the event's business time, the period check uses the accounting date, and the posting key turns a duplicate delivery into a no-op that returns the original result.*
+**Figure 4:** *One event becomes one entry. Rule selection uses the event's business time, the period check uses the accounting date, and the posting key turns a duplicate delivery into a no-op that returns the original result.*
 
 In pseudo-code, the heart of the engine is short, and that is a feature:
 
@@ -390,7 +396,7 @@ stateDiagram-v2
     Locked --> [*]
 ---end mermaid---
 
-**Figure 3:** *SFP period states. Standard event postings land only in Open periods; SoftClosed accepts only approved adjustment entries; Closed and Locked accept nothing. Reopening is an exception with its own approval and evidence, not an operational convenience.*
+**Figure 5:** *SFP period states. Standard event postings land only in Open periods; SoftClosed accepts only approved adjustment entries; Closed and Locked accept nothing. Reopening is an exception with its own approval and evidence, not an operational convenience.*
 
 The interesting case is an event whose `occurred_at` falls in a closed period. Interchange-plus-plus fees are often finalized after the sale (see [[payments-fundamentals]]), so PSP fee adjustments regularly arrive late. Suppose an Adyen fee adjustment of €0.12 on the Lisbon payment, which occurred on 14 March, reaches SFP on 20 April. March's SFP period closed in the first week of April. The engine's rule:
 

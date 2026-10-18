@@ -61,6 +61,9 @@ Most estates start from an implicit equation: one brand, one country, one compan
 
 At Northmere the matrix is real. Stayloft trades through nine operating entities, but its contracts with European hosts are signed by **Stayloft B.V.**, its US marketplace by **Stayloft Inc.**, and merchant-booking funds are held by Northmere Payments B.V., which serves no brand of its own. Tablekin has four entities but bills venues in 11 countries. "Revenue by country" means three different things depending on whether the entity, the customer or the property is meant.
 
+![Five tangled strands on the left contrasted with five separate labeled strands for entity, brand, market, model and currency passing through one event card on the right.](assets/images/10-global-scale/five-dimensions-not-one.jpeg)
+**Figure 1:** *Brand, legal entity, market, business model and currency are five dimensions, not one: every financial event carries all five explicitly, so each can change without breaking the others.*
+
 **The rule I use: every financial event carries all five dimensions explicitly, and no brand platform derives one from another in code.** The derivation rules (which entity contracts for which brand in which market under which model) belong in governed configuration, managed by the onboarding kit in [[brands-entities-markets]]. Northmere's canonical event envelope ([[loosely-coupled-domains]]) already has separate `brand`, `legal_entity`, `business_model` and `tax_jurisdiction` fields, with the currency inside every `amount`. This chapter is about making sure the values are right.
 
 ## The Legal Entity Model
@@ -96,7 +99,7 @@ flowchart LR
     FU -->|"System code confirmed"| LE
     WD -->|"System code confirmed"| LE
 ---end mermaid---
-**Figure 1:** *The legal entity register decides how every system represents an entity, and each system confirms its code back, so the register holds the full cross-system mapping that interfaces, consolidation and tax reporting rely on.*
+**Figure 2:** *The legal entity register decides how every system represents an entity, and each system confirms its code back, so the register holds the full cross-system mapping that interfaces, consolidation and tax reporting rely on.*
 
 Creating an entity in an ERP is configuration under change management; the hub publishes a change request to the platform team, and the confirmation closes the loop. What matters is not automation but **authority**: no system creates an entity the register does not know, and the cross-system mapping is maintained in one place.
 
@@ -230,7 +233,7 @@ flowchart LR
     NC -->|"EUR 353,159.85"| IE
     SG["Safeguarded client funds - never netted"] -.->|"Held by, outside the pool"| PAY
 ---end mermaid---
-**Figure 2:** *Three intercompany invoices in two currencies settle as four net movements with one currency conversion; the licensed entity takes part only with its own funds, never with safeguarded client money.*
+**Figure 3:** *Three intercompany invoices in two currencies settle as four net movements with one currency conversion; the licensed entity takes part only with its own funds, never with safeguarded client money.*
 
 The example works only because one originator created both halves from governed data, both sides used one rate, every line carried a counterparty, the translation rule was decided in advance, and the netting center knew which of Northmere Payments B.V.'s balances it could touch. **Remove any one and the $5,504.59 becomes one of forty-one breaks on Leila's working-day-4 list.**
 
@@ -248,6 +251,9 @@ A multi-currency estate needs an explicit model of which currency an amount is i
 Northmere's 71 entities use **19 functional currencies**. Three families of rates must be kept apart. **Commercial rates** convert customer prices: when an American traveler pays in dollars for the €600.00 Lisbon apartment from the book's recurring example, Stayloft quotes **$654.00**, a rate of 1.0900 against a market rate of 1.0850 (at which €600.00 is $651.00); the **$3.00** margin is a commercial decision owned by the brand and Northmere Pay. **Provider rates** are applied by payment providers and banks when they convert at settlement; they are reconciled from settlement reports, not assumed (see [[payments-to-ledger]]). **Accounting rates** are what the ledgers use: **daily spot** for initial recognition, **period closing** for revaluation and balance-sheet translation, **period average** for income translation, and **budget** and **forecast** rates for planning.
 
 **Ownership follows the families.** Treasury owns market-rate sourcing: provider, fixing time, publication schedule and feed controls. The group controller owns **rate policy**: which rate type applies to which process, how averages are calculated, how rates are estimated for currencies that cannot be exchanged (IAS 21's *Lack of Exchangeability* amendments apply from 2025), and how hyperinflationary economies are handled. Brands own commercial rates within a group margin policy. Finance systems own **distribution**. At Northmere in early 2027, S/4HANA, Oracle Fusion, Workday, OneStream and the Stayloft Finance Platform each take rates from a different source, which is the structural cause of Leila's breaks. Keystone's 2027 standard is a **single group rate service**, fed by treasury from one market-data source, publishing each rate type with an identifier, effective date and version to every ledger, subledger and the consolidation engine. Every converted amount stores the rate identifier it used, so a difference can be traced to its cause rather than argued about.
+
+![Before and after: five systems each fed by their own rate tap with mismatched invoice halves, versus one rate service feeding all systems so the halves join.](assets/images/10-global-scale/one-rate-service.jpeg)
+**Figure 4:** *When each ledger takes rates from its own source, the two halves of an intercompany trade are converted differently and break at close; one treasury-sourced rate service, with a rate identifier on every converted amount, lets them meet.*
 
 Two month-end processes are routinely conflated. **Revaluation** restates foreign-currency **monetary items** (cash, receivables, payables, loans) at the closing rate in each entity's books, with the difference in profit or loss; it runs **in each ledger**. **Translation** converts each entity's functional-currency statements into the group currency (assets and liabilities at closing, income and expense at transaction-date or average rates, equity at historical rates), with the balancing difference in other comprehensive income as the **cumulative translation adjustment** (CTA); it runs **once, in consolidation**. The order matters.
 
@@ -267,7 +273,7 @@ sequenceDiagram
     ERP->>CON: Entity trial balances in functional currency
     CON->>CON: Translate, compute CTA, eliminate, route differences by rule
 ---end mermaid---
-**Figure 3:** *The month-end currency calendar: one rate publication feeds every ledger and the consolidation engine, revaluation runs per entity before matching, and translation runs once, centrally, after it.*
+**Figure 5:** *The month-end currency calendar: one rate publication feeds every ledger and the consolidation engine, revaluation runs per entity before matching, and translation runs once, centrally, after it.*
 
 One consequence is easy to miss: **a subledger that holds foreign-currency open items must revalue them, or hand them to a ledger that will.** The Stayloft Finance Platform holds partner payables in 31 settlement currencies inside euro entities. If it posts only daily euro summaries to S/4HANA, those payables are never revalued unless the platform does it or posts open items in transaction currency. Revaluation responsibility must be assigned per open-item population, explicitly ([[designing-financial-ledgers]] covers how a custom ledger carries currency).
 
@@ -310,6 +316,9 @@ Indirect tax is where the five dimensions meet most visibly: the treatment depen
 
 None of these answers determines another. ViDA's **deemed-supplier** status does not make Stayloft a principal for revenue; holding the cash does not make it the supplier of the room. A billing engine that switches to gross revenue when it starts charging VAT on the full price will misstate the accounts the day the tax rule changes.
 
+![One booking card examined by four separate magnifying glasses, each leading to its own output: revenue, VAT, reporting and safeguarding.](assets/images/10-global-scale/four-separate-determinations.jpeg)
+**Figure 6:** *One booking, four independent determinations: revenue presentation, VAT, seller reporting and safeguarding are carried as separate attributes, so a change in one rulebook never silently changes another.*
+
 **ViDA.** The EU's VAT in the Digital Age package entered into force on 14 April 2025 ([European Commission](https://taxation-customs.ec.europa.eu/taxation/vat/vat-digital-age-vida_en)). From **1 July 2028**, platforms facilitating **short-term accommodation rental** and **passenger transport by road** become deemed suppliers where the provider does not charge VAT, with member states allowed to delay until **1 January 2030**; the platform is relieved where the provider gives a valid VAT number and declares it will account for the VAT. Single VAT registration measures start the same day, and intra-EU B2B e-invoicing with digital reporting follows on **1 July 2030**. For Stayloft (and possibly Wayfare's road transfers), the host's VAT status and declaration become **tax-determining master data with an effective date**, and the rule must be configured by country and date, because member states may start at different times.
 
 **DAC7 and digital services taxes.** DAC7 (Council Directive (EU) 2021/514) requires platform operators to report seller information, including hosts renting property, annually by 31 January for activity from 2023; similar OECD-model rules apply in the UK. DAC7 and ViDA describe the same hosts and transactions, so **both must come from one seller master and one transaction ledger**, reconciled to the books before filing. **Digital services taxes** are unilateral levies on revenue from services such as online intermediation or advertising, attributed to users in the taxing country; scope and rates differ and move with trade policy (Canada [rescinded its DST](https://www.canada.ca/en/department-finance/news/2025/06/canada-rescinds-digital-services-tax-to-advance-broader-trade-negotiations-with-the-united-states.html) in June 2025). Stayloft and Northmere Ads are both potentially in scope, and the data they need, **in-scope revenue by user location**, cannot be reconstructed from entity or currency.
@@ -337,7 +346,7 @@ flowchart LR
     IC["Intercompany originator - flows by pair"] --> DS
     DS --> CALC["GloBE calculation and information return"]
 ---end mermaid---
-**Figure 4:** *Pillar Two turns entity and jurisdiction data into a tax return; the calculation is only as good as the entity register, the pre-elimination entity results, and the payroll, asset and intercompany data behind them.*
+**Figure 7:** *Pillar Two turns entity and jurisdiction data into a tax return; the calculation is only as good as the entity register, the pre-elimination entity results, and the payroll, asset and intercompany data behind them.*
 
 Every input depends on something argued earlier: the entity register for keys and jurisdictions, clean intercompany for pre-elimination results, Workday HCM's employing entity agreeing with the register, and reconciliation to consolidation rather than private extracts. Kofi's request therefore lands not as a new tax system but as **jurisdiction and entity dimensions on every finance dataset**, and an entity-tagged tax data mart in the finance data platform that both the provision and the GloBE calculation read (see [[finance-data-flows]]).
 
@@ -346,7 +355,7 @@ Every input depends on something argued earlier: the entity register for keys an
 **Northmere Payments B.V.** is an e-money institution supervised by De Nederlandsche Bank; **Northmere Payments UK Ltd** is authorized by the FCA. Together they hold Stayloft travelers' money between payment and payout. **Safeguarding** protects those funds from the institution's creditors. Under PSD2 Article 10, applied to e-money institutions through the E-Money Directive, funds still held at the end of the business day after receipt are segregated in a separate account at a credit institution or in secure low-risk assets, or covered by insurance or a comparable guarantee ([PSD2](https://eur-lex.europa.eu/eli/dir/2015/2366/oj)). The FCA's new UK safeguarding regime, widely reported to apply from 7 May 2026, requires daily reconciliations, monthly returns and, above a threshold, an annual audit. PSD3 and the Payment Services Regulation, politically agreed in November 2025 and not yet in force as of October 2026, are expected to tighten safeguarding ([[payments-fundamentals]]). Five architectural constraints follow:
 
 1. **Client money and own money are separate in the chart of accounts and the bank.** The commission that becomes revenue is released from client funds through a defined event, under the safeguarding policy agreed with the regulator, before it can move.
-2. **Safeguarded funds stay out of group cash management**: no cash pool, no netting, no intra-group lending. Figure 2's dotted line is enforced by account in the netting configuration, not by a note in a procedure.
+2. **Safeguarded funds stay out of group cash management**: no cash pool, no netting, no intra-group lending. Figure 3's dotted line is enforced by account in the netting configuration, not by a note in a procedure.
 3. **Reconciliation becomes a regulatory control**: owed versus held, daily, with SOX-grade completeness and evidence.
 4. **Intercompany pricing is scrutinized twice**: by tax authorities for transfer pricing, and by the supervisor for whether the entity is adequately funded by its group.
 5. **Resilience obligations attach to its systems.** As a financial entity, Northmere Payments B.V. is subject to DORA, so the ICT services supporting its critical functions fall under DORA's contract, register and testing requirements.

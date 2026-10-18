@@ -145,7 +145,7 @@ A portfolio manager in Dana's team owns the fact base and the TCO model, with a 
 
 Two design choices deserve explanation.
 
-First, the **fact base is fed, not filled**. A repository that depends on application owners updating records goes stale within two quarters. Northmere connects the repository to sources that change by themselves: SSO logs for active users, accounts-payable spend for vendor cost, the cloud bill for hosting, the interface catalog for integration counts. Owners confirm and annotate; they do not type in what a system already knows.
+First, the **fact base is fed, not filled**. A repository that depends on application owners updating records goes stale within two quarters. Northmere connects the repository to sources that change by themselves: SSO logs for active users, accounts-payable spend for vendor cost, the cloud bill for hosting, the interface catalog for integration counts. Owners confirm and annotate; they do not type in what a system already knows. The cloud bill becomes a trustworthy hosting figure per application only once it is tagged, allocated and tied to the ledger, which [[finops]] designs.
 
 Second, the **decision record is per wave, not per application**. Retiring the Wayfare payout engine and moving 14 interfaces, a supplier master and two key controls is one decision with one set of consequences. It goes through the architecture decision record and review process described in [[architecture-governance]]. The application records link to it.
 
@@ -300,6 +300,9 @@ The **audit and control** line is the one I insist on. A SOX-relevant applicatio
 
 When Dana's team completed the six-component costing for the 214 applications, the total came to about **$172 million a year**. The license and hosting lines, the figures the IT budget had always shown, accounted for about $118 million of it. The remaining **$54 million, about 31%**, was run effort, change, integration upkeep and control cost that had never been attributed to an application.
 
+![An iceberg whose small visible tip is license and hosting cost, with run team, change, integration and audit-and-control cost hidden below the waterline.](assets/images/03-application-portfolio/tco-iceberg.jpeg)
+**Figure 4:** *The IT budget showed about $118 million of license and hosting; the full six-component cost of Northmere's 214 finance applications was about $172 million, with $54 million never attributed to any application.*
+
 ### A worked TCO comparison
 
 Three retirement candidates show how the model changes decisions. All figures are annual, in thousands of US dollars, for 2027, and carry the confidence labels the benefits register uses.
@@ -368,6 +371,9 @@ Dana's team computes a **decision-due date** for each retirement:
 
 For the OneStream module the arithmetic is short: renewal 31 December 2027, notice 90 days, migration lead time 6 weeks for 22 accounts, one close cycle as buffer. The decision was due in mid-July 2027, and it went through the review board on 8 July. For a payout engine the migration lead time is twelve months or more, so the decision is due well over a year before any contract date.
 
+![A timeline working back from a renewal date through notice period, migration lead time and a buffer to an earlier decision-due flag.](assets/images/03-application-portfolio/decision-due-date.jpeg)
+**Figure 5:** *The decision-due date is the renewal date minus the notice period, the migration lead time and one close cycle; for the OneStream module that put the decision in July for a 31 December renewal.*
+
 Two cautions. First, contract dates are an input, not the architecture. A renewal date is a reason to decide on time; it is not a reason to retire a system that should stay, and the urge to "use the renewal" is a form of **Vendor Gravity** in reverse. Second, the vendors themselves change. OneStream was taken private by Hg, a transaction [completed on 1 April 2026](https://www.onestream.com/news/onestream-announces-completion-of-acquisition-by-hg-for-usd6-4-billion/). Changes of ownership can change pricing and roadmap priorities at the next renewal, so Northmere reviews strategic-vendor ownership changes as portfolio events.
 
 ## Rationalization Waves
@@ -412,6 +418,9 @@ An application is **decommissioned** at Northmere when every item on the followi
 | **Fact base** | Lifecycle set to Decommissioned with the evidence pack linked | EA repository record |
 
 The **controls** row is where finance decommissioning differs most from the general IT kind. A key control that ran inside a retired application does not disappear. Either the risk it addressed is gone, or the control must now run somewhere else, designed and tested before the old one stops. Retiring an application mid-year without that work is how a migration silently breaks a key control, which is the outcome the SOX lead fears most. The control side is covered in [[controls-and-auditability]].
+
+![Left: a system tagged end of life but still connected to users, interfaces and a renewing contract. Right: the system unplugged, its records in an archive with a read path, controls moved and contract terminated.](assets/images/03-application-portfolio/retired-versus-decommissioned.jpeg)
+**Figure 6:** *A lifecycle label is not a retirement: a system counts as decommissioned only when access, interfaces and the contract are gone, its records sit in an archive with a read path, and its controls run somewhere else.*
 
 ### Retention and the read path
 

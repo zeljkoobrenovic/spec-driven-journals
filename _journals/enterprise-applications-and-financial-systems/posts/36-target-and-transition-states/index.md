@@ -110,6 +110,9 @@ A plateau is not a project or a program phase. Projects staff work packages; a p
 
 The fourth test is the one programs skip, and it protects the enterprise against its own funding decisions. Boards change priorities and CFOs leave. A roadmap whose intermediate states have value on their own can be paused without waste; one whose value all arrives at the end is a bet that nothing changes for five years.
 
+![A platform on a mountain path resting on four legs labelled operable, auditable, closable and valuable.](assets/images/36-target-and-transition-states/four-legs-of-a-plateau.jpeg)
+**Figure 2:** *A plateau is a place the enterprise could stop without loss only if it stands on all four legs: operable, auditable, closable at period end and valuable on its own.*
+
 Two finance-specific rules follow.
 
 **Plateau boundaries sit on period boundaries.** The safest moment to change who holds a balance is the start of a fiscal year, when opening balances are re-established and the prior year is audited on the old estate. Northmere's fiscal year is the calendar year, so each plateau is defined as the estate on which a given year-end close runs. Work inside a plateau may land monthly, but **no change that moves the book of record for a population of transactions lands in a fiscal year's last quarter** unless the controller agrees in writing.
@@ -174,7 +177,7 @@ flowchart LR
     P2 --> T["Target 2031: continuous, real-time finance"]
     P1 -.->|"informs"| D
 ---end mermaid---
-**Figure 2:** *Keystone's route passes through two plateaus, each defined as the estate on which a fiscal year-end closes; the 2027 Q4 decision forks the internal shape of Plateau 2 but not its exit tests, which is what lets the plateau be planned before the decision is taken.*
+**Figure 3:** *Keystone's route passes through two plateaus, each defined as the estate on which a fiscal year-end closes; the 2027 Q4 decision forks the internal shape of Plateau 2 but not its exit tests, which is what lets the plateau be planned before the decision is taken.*
 
 ### The baseline, early 2027
 
@@ -206,6 +209,9 @@ Each plateau lists its temporary scaffolding, with the control that covers it an
 | Route A replication or route B adapters for brand ledgers | Plateau 2 | Brand accounting reaches the core before brand ERPs retire | Replication or event completeness controls with control totals | Wave 3, 2029–2030 |
 
 A scaffold without a removal date is not scaffolding; it is a new permanent component nobody designed. **Every row in this register is also a reconciliation**, and the close calendar must carry it until it is gone.
+
+![A building with scaffolding sections tagged with removal dates and reconciliations, and one untagged section bricked permanently into the wall.](assets/images/36-target-and-transition-states/scaffolding-with-removal-dates.jpeg)
+**Figure 4:** *Scaffolding is temporary only if it carries a removal date and a control; every piece is also a reconciliation the close calendar must carry until it is gone, and an untagged one becomes a permanent component nobody designed.*
 
 ### The two routes inside Plateau 2
 
@@ -243,7 +249,7 @@ flowchart TB
     FICA --> MIG
     PART["2028: partner hub coexistence"] --> MIG
 ---end mermaid---
-**Figure 3:** *Keystone's critical path runs from the 2027 Q4 decision through the volume proof, posting rules and the 1 January 2029 chart go-live to the merchant subledger migration; because the chart can only go live at a year start, a three-month slip in the decision becomes a twelve-month slip in Plateau 2.*
+**Figure 5:** *Keystone's critical path runs from the 2027 Q4 decision through the volume proof, posting rules and the 1 January 2029 chart go-live to the merchant subledger migration; because the chart can only go live at a year start, a three-month slip in the decision becomes a twelve-month slip in Plateau 2.*
 
 The arithmetic is unforgiving. CoA v2 can go live only at a fiscal year start, because a mid-year chart change splits a year's balances across two structures. Working back from 1 January 2029: dry-run closes in Q4 2028, rules and adapters in Q2 and Q3, the volume proof in H1 2028, the decision by the end of 2027. **There is no slack.** If the decision slips to March 2028, the next chance for the chart is January 2030.
 
@@ -298,7 +304,7 @@ gantt
     Real time cash and liability views exploratory :d2, 2030-01, 2031-12
     Three day close :milestone, m4, 2030-12, 0d
 ---end mermaid---
-**Figure 4:** *The roadmap is organized by plateau, not by project; milestones sit on period boundaries, and items beyond the 2027 Q4 decision carry their confidence label in the name so that an exploratory bar cannot be read as a commitment.*
+**Figure 6:** *The roadmap is organized by plateau, not by project; milestones sit on period boundaries, and items beyond the 2027 Q4 decision carry their confidence label in the name so that an exploratory bar cannot be read as a commitment.*
 
 ## Funding Alignment: Fund Plateaus, Not Projects
 

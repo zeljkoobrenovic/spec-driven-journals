@@ -63,6 +63,9 @@ Two terms need precision. **Buy and extend** is only buying if the extensions si
 
 The architectural reading of composability is the part the vendor decks leave out: **composition moves cost from licenses to seams**. Every boundary between two composed finance components is an interface to operate, a reconciliation to perform and a control to evidence. A composed estate with five components and clean contracts between them can be better than a suite; a composed estate with five components and spreadsheets between them is Point-to-Point Spaghetti with better logos.
 
+![Two chains of five software blocks: one joined by engineered connectors carrying interface, reconciliation and control icons, the other by tape and loose spreadsheets.](assets/images/11-build-versus-buy/composition-moves-cost-to-seams.jpeg)
+**Figure 1:** *Composition moves cost from licenses to seams: every boundary between composed finance components is an interface to operate, a reconciliation to perform and a control to evidence, so clean contracts decide whether a composed estate beats a suite.*
+
 **Outsource as a service** differs from buying SaaS in who runs the process: the provider's people, not the enterprise's. The enterprise still owns the outcome and the controls over the provider, so the provider's assurance report and the controls it expects the customer to run matter as much as for any software (see [[controls-and-auditability]] for SOC 1 reports and complementary user entity controls, or CUECs).
 
 ## The Three Tests
@@ -106,7 +109,7 @@ flowchart TB
     T -->|"yes"| DR["Decision record with review date"]
     T -->|"no"| S
 ---end mermaid---
-**Figure 1:** *The sourcing decision tree. Differentiation decides whether building is even on the table; volume decides whether a package can carry the load; the controls burden decides who proves the result; and every path ends in a cost and exit check that can send the capability back to the start.*
+**Figure 2:** *The sourcing decision tree. Differentiation decides whether building is even on the table; volume decides whether a package can carry the load; the controls burden decides who proves the result; and every path ends in a cost and exit check that can send the capability back to the start.*
 
 The tree is deliberately asymmetric. A commodity capability that a package cannot carry goes to **compose**, not to build: the package keeps the book of record and a specialist or custom edge carries the volume, which is exactly the pattern of a high-volume subledger summarizing into a general ledger (see [[finance-landscape]] for the volume gradient). And a differentiating capability whose controls the enterprise cannot carry does not go to build with a promise to fix the controls later; that promise is how Audit Afterthought starts.
 
@@ -154,6 +157,9 @@ Four conclusions come out of the table, and none of them is "C wins on cost".
 **Option B's cost lands at the worst time.** Sixty-one percent of it falls in 2028 and 2029, when Keystone is already converging SFP's merchant subledger and launching Brazil, and the same few controllers and SAP architects are needed for all three.
 
 **The control line moves the comparison.** It accounts for $1.3 million of the $3.2 million difference between A and C, about 40%. This is the line that disappears from most business cases, and in finance it is rarely small.
+
+![An iceberg with a small license tip above water and large bands for build, change, control and exit costs below the waterline.](assets/images/11-build-versus-buy/cost-iceberg.jpeg)
+**Figure 3:** *The license is the visible tip: over seven to ten years the build, change, control and exit costs decide more sourcing cases than price does, and the control line is the one most business cases leave out.*
 
 ## Applying the Tests to Tablekin
 
@@ -233,7 +239,7 @@ flowchart LR
     COM --> SCORE["Weighted score with sensitivity"]
     SCORE --> DR["Decision record at the design authority"]
 ---end mermaid---
-**Figure 2:** *The selection process as a series of gates. Knock-outs, the proof of concept and the exit test can each exclude a vendor regardless of its score; the weighted score ranks only the vendors that survive them.*
+**Figure 4:** *The selection process as a series of gates. Knock-outs, the proof of concept and the exit test can each exclude a vendor regardless of its score; the weighted score ranks only the vendors that survive them.*
 
 ### 1. Requirements by capability, with knock-outs
 
@@ -329,7 +335,7 @@ flowchart TB
     Q4 -->|"yes"| KW["Keep wrapped, no convergence investment"]
     Q4 -->|"no"| CV
 ---end mermaid---
-**Figure 3:** *Post-acquisition decision rules. Every acquired finance system is wrapped first; it is kept only if its business model differs from the group's, the platform fits that model, and keeping it creates a reusable tier rather than a one-off exception.*
+**Figure 5:** *Post-acquisition decision rules. Every acquired finance system is wrapped first; it is kept only if its business model differs from the group's, the platform fits that model, and keeping it creates a reusable tier rather than a one-off exception.*
 
 The rules behind the figure, which Northmere adopted in its decision-record template in 2027:
 

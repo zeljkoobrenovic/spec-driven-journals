@@ -203,6 +203,9 @@ The point of a parallel run is the **variance classification**, not the comparis
 3. **Data.** Master or reference data differs, such as a partner's VAT number or tax code. The fix is in master data, not code.
 4. **Defect.** One of the systems is wrong. It is fixed and re-run.
 
+![Old and new systems fed the same documents; differences from a comparison scale are sorted on a conveyor into four bins labeled timing, policy, data and defect.](assets/images/12-modernization-patterns/parallel-run-variance-sorter.jpeg)
+**Figure 3:** *The point of a parallel run is the variance classification: every difference between old and new is sorted as timing, policy, data or defect and explained before the new system becomes the book of record.*
+
 Variants trade cost against assurance:
 
 | Variant | What runs | Compared at | Cost | Use when |
@@ -264,6 +267,9 @@ Blackout windows narrow the choice further. Northmere's 2028 calendar, published
 
 That leaves two good slots a year: early May and early November. **A short list of good dates is the most useful constraint a modernization roadmap can have**, because it forces the sequencing conversation early; it is why Keystone's merchant-invoicing move is planned for the May 2028 cycle. The rollback plan is part of the date choice. Until the first invoices go out, rollback means re-pointing the interceptor; after that, it means correcting invoices partners have already received.
 
+![Twelve month tiles in a row, ten blocked by hatching and padlocks, with only May and November open as doors for a cut-over.](assets/images/12-modernization-patterns/two-good-cut-over-slots.jpeg)
+**Figure 4:** *After year-end, quarter-end months, the summer peak and month-end blackouts are blocked, Northmere's 2028 calendar leaves two good cut-over slots a year, early May and early November, which forces the sequencing conversation early.*
+
 ## Decommissioning: Finishing the Job
 
 A modernization is finished when the old system is gone, its controls are closed or moved, its contracts are terminated, and its records can be retrieved without it. [[application-portfolio]] lists the evidence a decommissioning needs; this section covers the archive design and the order of the steps, using the Wayfare EBS plan Hana brings to the design authority.
@@ -299,7 +305,7 @@ stateDiagram-v2
     OFF --> ARC : record set to archive only
     ARC --> [*] : last records past retention and not on hold
 ---end mermaid---
-**Figure 3:** *The decommissioning sequence for the Wayfare EBS archive. The archive must prove itself against the live system before access is removed, and a failed retrieval drill sends the plan back to extraction. Records leave the archive only when their retention period ends and no hold applies.*
+**Figure 5:** *The decommissioning sequence for the Wayfare EBS archive. The archive must prove itself against the live system before access is removed, and a failed retrieval drill sends the plan back to extraction. Records leave the archive only when their retention period ends and no hold applies.*
 
 The 2028 dates follow the calendar rules: extraction and reconciliation in the first quarter; dual access from April; in June, internal audit and the external auditor each retrieve a sample of 25 documents from different entities and years without EBS; accounts removed in August; shutdown at the end of October, outside the year-end window and two months before the colocation ends, which leaves room for one failed drill. RateKeeper, Wayfare's home-built tax-rate service on the same hosting, moves to Vertex first ([[application-portfolio]]). Oracle support and database licenses end at the next renewal date, with termination confirmed in writing.
 

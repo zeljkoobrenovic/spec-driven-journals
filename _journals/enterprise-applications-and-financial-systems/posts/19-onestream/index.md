@@ -41,6 +41,9 @@ Northmere, the fictional multi-brand group this book follows, reports in US doll
 
 The cause is found the same afternoon. Tablekin, the restaurant-software brand that runs Workday Financial Management, had opened a new ledger account for usage revenue during the quarter. The account reached OneStream in the trial balance, but the mapping workbook for Tablekin, one of fourteen workbooks that three people in group reporting maintain, had no row for it. A catch-all rule sent any unrecognized revenue account to "Other revenue". The load passed every check, because the catch-all counted as a mapping. Nothing failed; a reviewer had to notice a number that looked wrong. The [[where-finance-architecture-goes-wrong]] and [[finance-data-architecture]] chapters tell this story from the point of view of failure patterns and master data. This chapter tells it from the consolidation platform's.
 
+![A new account card slipping into an Other bin through a catch-all funnel, versus being stopped at a barrier until mapped.](assets/images/19-onestream/silent-default-versus-hard-stop.jpeg)
+**Figure 1:** *A catch-all rule let Tablekin's new usage-revenue account pass every check and put $41 million into group Other revenue; a load that fails on any account nobody mapped deliberately would have stopped it at the gate.*
+
 Dana Whitlock, the Chief Architect, attends the root-cause review. She asks three questions. Who owns the Tablekin mapping? Which change to a source chart of accounts should have triggered a mapping change, and who should have been told? Why did OneStream accept a load that contained an account nobody had mapped deliberately? The answers are "group reporting, informally", "nobody tells us; we find out at close" and "because the catch-all mapped it". Those answers are the subject of this chapter. Its architectural decision, near the end, is to move Northmere's chart-of-accounts mapping out of spreadsheets into governed mapping with named owners.
 
 Northmere's consolidation estate in 2027 looks like this. OneStream replaced Oracle Hyperion Financial Management (HFM) and a separate planning tool in 2022. It loads trial balances from three ledgers: SAP S/4HANA, which holds the group chart of accounts for Stayloft, Northmere Pay, Northmere Ads and the corporate entities; Oracle Fusion Cloud ERP for Wayfare, with its own chart of accounts; and Workday Financial Management for Tablekin, with a third. It consolidates in US dollars, runs budgeting and forecasting, and its outputs feed Workiva, where the 10-K and 10-Q are drafted. A OneStream reconciliation solution bought in 2022 sits mostly unused next to BlackLine.
@@ -90,7 +93,7 @@ flowchart LR
     H --> I["Consolidated result per scenario and GAAP"]
     I --> J["Reports and disclosure hand-off"]
 ---end mermaid---
-**Figure 1:** *Consolidation is a pipeline of dependent steps. Collection, validation, mapping and certification decide whether the data is fit to consolidate; translation, ownership, elimination and adjustment then produce group numbers that no single ledger contains.*
+**Figure 2:** *Consolidation is a pipeline of dependent steps. Collection, validation, mapping and certification decide whether the data is fit to consolidate; translation, ownership, elimination and adjustment then produce group numbers that no single ledger contains.*
 
 **Data collection.** The basic input is the **trial balance**: every account's balance, or its movement for the period, by entity, account, currency and any dimensions group reporting needs. Supplementary data comes from other sources, often entered on forms: intercompany partner detail, movement analysis for the cash-flow statement and roll-forwards, and disclosure items such as lease maturities or headcount. A **flow** dimension holds movements (opening balance, additions, disposals, FX, closing), so that balance-sheet roll-forwards and the cash-flow statement can be derived and not rebuilt in spreadsheets.
 
@@ -186,6 +189,9 @@ The vendor's [design guide](https://documentation.onestream.com/docs/Content/Des
 
 This is OneStream's answer to an old dilemma in EPM design. A single rigid global model is simple and comparable but cannot hold local detail, so the detail moves to spreadsheets. Many separate applications hold local detail but fragment the group view. An extensible model keeps one governed core and lets brands extend below it, but only below it. The cost is design complexity. **Most of the performance problems I have seen in EPM platforms came from the model design, not from the platform's capacity.** They came from a user-defined dimension carrying a high-cardinality list such as customers or properties, from data units that grew with every acquisition, and from business rules that calculated every intersection instead of the populated ones.
 
+![Three cube models: a rigid cube surrounded by spreadsheets, scattered separate cubes, and a core cube with extensions beneath it.](assets/images/19-onestream/rigid-fragmented-extensible.jpeg)
+**Figure 3:** *A single rigid model pushes local detail into spreadsheets and many separate applications fragment the group view; an extensible model keeps one governed core and lets brands add detail below it, but only below it.*
+
 Northmere's 2022 design is reasonable and shows the trade-offs:
 
 | Dimension | Northmere use | Design note |
@@ -218,7 +224,7 @@ stateDiagram-v2
     Unlocked --> Imported: reload
     Consolidated --> [*]
 ---end mermaid---
-**Figure 2:** *A workflow gate is a state machine. The control value comes from the transitions that are not allowed: no consolidation without lock, no lock without certification, no certification while an account is unmapped, and no unlock without an approved reason.*
+**Figure 4:** *A workflow gate is a state machine. The control value comes from the transitions that are not allowed: no consolidation without lock, no lock without certification, no certification while an account is unmapped, and no unlock without an approved reason.*
 
 Four gates matter most at Northmere:
 
@@ -259,7 +265,7 @@ flowchart LR
     OS -.->|"drill-back"| S4
     OS -.->|"drill-back"| FU
 ---end mermaid---
-**Figure 3:** *OneStream at Northmere receives balances, rates, statuses and drivers, and sends locked results onward. Detail stays in the ledgers and is reached by drill-back. The mapping is published to FinDB so that the warehouse and the consolidation use the same translation of accounts.*
+**Figure 5:** *OneStream at Northmere receives balances, rates, statuses and drivers, and sends locked results onward. Detail stays in the ledgers and is reached by drill-back. The mapping is published to FinDB so that the warehouse and the consolidation use the same translation of accounts.*
 
 ## Planning and Forecasting: People and Drivers
 
@@ -352,7 +358,7 @@ sequenceDiagram
     OS->>OS: Validate every code is mapped, no catch-all hit
     OS->>FDB: Publish approved mapping set
 ---end mermaid---
-**Figure 4:** *Under the Keystone decision, a new source account cannot go live without an approved mapping, and the same approved mapping reaches FinDB. Ownership sits with the team that changes the source; group reporting approves.*
+**Figure 6:** *Under the Keystone decision, a new source account cannot go live without an approved mapping, and the same approved mapping reaches FinDB. Ownership sits with the team that changes the source; group reporting approves.*
 
 ## Failure Modes
 

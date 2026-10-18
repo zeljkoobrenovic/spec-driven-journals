@@ -173,6 +173,9 @@ For a group like Northmere I recommend **federated, with a thin mandatory core a
 
 There is one finance-specific caveat, and I would not soften it. **The advice process does not remove documented change approval for systems in ICFR scope.** A brand team may decide its own design through advice. A change to a system that feeds the financial statements still needs authorization and evidence that satisfies the auditor, and that is what Northmere's SFP finding was about. The credible model runs advice for design and keeps a thin, explicit control gate for in-scope changes, owned jointly with internal controls. Where this recommendation does not hold: during the remediation of a significant deficiency, I would run the affected platform under a temporarily centralized model, with every change reviewed, and say in writing when that will end.
 
+![A small solid core of mandatory standards surrounded by a wide advisory ring where teams decide, with an orange control gate on the edge through which in-scope changes pass.](assets/images/01-chief-architect-role/thin-core-advisory-periphery.jpeg)
+**Figure 2:** *Federated with a thin mandatory core: the Chief Architect decides a short list of standards, teams decide the rest through advice, and every change to an in-scope system still passes the control gate.*
+
 ## Decision Rights: Mandatory Standards and Advice
 
 **Decision rights** state who may take which decision, who must be consulted before it is taken, who can block a specific aspect of it, and who is only informed. An architecture function without them has two possible fates. It can approve everything to stay popular, or it can claim everything and become the queue. Both are common.
@@ -219,7 +222,7 @@ flowchart TB
     S -->|"Yes"| G["Change control gate with evidence, owned with internal controls"]
     S -->|"No"| GO["Proceed"]
 ---end mermaid---
-**Figure 2:** *Decisions route by materiality, and most never reach a forum. Every path converges on the same control gate for systems in ICFR scope: advice can replace approval for design, never for change evidence.*
+**Figure 3:** *Decisions route by materiality, and most never reach a forum. Every path converges on the same control gate for systems in ICFR scope: advice can replace approval for design, never for change evidence.*
 
 The mechanics behind this diagram are owned by [[architecture-governance]]: what a decision record contains, how the review board and the advice forum differ, how waivers are tracked, and how conformance is checked. This chapter's point is narrower. **Decision rights come first, and forums second.** A review board set up before the rights are agreed becomes a debating society, or a court with no jurisdiction.
 
@@ -260,7 +263,7 @@ flowchart TB
     E3 --> O
     O --> P2["Penthouse: a decision Tomás can fund, and a date he can check"]
 ---end mermaid---
-**Figure 3:** *The elevator ride behind the CFO's first question. The question arrives in the penthouse in days; the causes are found in the engine room as missing keys and missing coverage; the answer goes back up as options priced in days, money and control risk.*
+**Figure 4:** *The elevator ride behind the CFO's first question. The question arrives in the penthouse in days; the causes are found in the engine room as missing keys and missing coverage; the answer goes back up as options priced in days, money and control risk.*
 
 ### The close walk
 
@@ -274,6 +277,9 @@ Dana did not start with the systems. She asked Leila to let her sit in on the Se
 | 8–9 | Review, top-side adjustments, sign-offs | Adjustments driven by the residual differences of days 3–7 |
 
 The walk changed the conversation. Nine days was not one problem. It was three, each with a different owner and a different cure. **Days 3 to 5 were a traceability problem**: SFP summarized before posting and kept no key from summary to settlement line, so every break had to be investigated by reconstructing the detail. This is **Summarized Into Silence**, and [[traceability-and-reconciliation]] treats its cure. **Days 6 to 7 were a coherence problem**: three ledgers and spreadsheet mappings, which is **Spreadsheet Glue** on top of an unmade decision about ledger convergence. **Days 8 to 9 were mostly consequences** of the first two, and would shrink as they did.
+
+![A nine-day calendar strip where days 3 to 5 are a traceability problem, days 6 to 7 a coherence problem, and days 8 to 9 the consequences of both.](assets/images/01-chief-architect-role/nine-days-three-problems.jpeg)
+**Figure 5:** *The close walk split nine days into three problems with different owners: days 3 to 5 lost to traceability, days 6 to 7 to coherence across three ledgers, and days 8 to 9 to the consequences of both.*
 
 Dana did not answer "nine days" with "we need a new ERP", the answer vendors and integrators are commercially inclined to give. Nor did she claim architecture alone would fix the close: the calendar is Leila's, and some of the time is policy and people. Her answer was a contribution, in days, with its assumptions shown.
 

@@ -43,6 +43,9 @@ That night the flow times out after posting about 60% of the entries. The monito
 
 The error surfaces on working day 3, when the BlackLine reconciliation of the traveler-funds control account shows S/4HANA about €38 million higher than SFP. Commission revenue for 31 January is overstated by about €2.9 million (illustrative figures). The fix is a manual reversal journal, approved by the Stayloft entity controller, and a day of the close is lost confirming that nothing else was doubled.
 
+![A ledger container part-filled by an interrupted run, then overfilled past its full line after a restart from the top.](assets/images/09-integration-architecture/january-posted-twice.jpeg)
+**Figure 1:** *A flow timed out after posting about 60% of 31 January's entries; restarting from the top of the file posted everything again, and nothing told the ledger it had seen those entries before.*
+
 Dana Whitlock, the Chief Architect, asks Lucía Romero, the lead enterprise architect for integration, how many of the estate's interfaces could do the same thing, and how many could prove they had not. Lucía's inventory, built for Program Keystone (Northmere's finance transformation), counts about **1,100 interfaces** in the finance estate. About **240** are flat-file transfers and about **70** have a spreadsheet and a person in the loop. They run on three integration technologies: **SAP Integration Suite** for SAP-centric flows, **Kafka** as the event backbone owned by Ravi Menon's Platform Engineering, and **MuleSoft** carrying the legacy Wayfare and Tablekin flows.
 
 Her answer to the second question is the uncomfortable one. Of the 1,100, about **310** carry a record count or control total that the receiver checks; the rest assume that a transfer that reported success was complete. Fewer than 100 can be safely re-run (illustrative counts from the 2027 inventory).
@@ -109,7 +112,7 @@ flowchart LR
     K -->|"replication"| DB["FinDB on Snowflake"]
     S4 -->|"extracts"| DB
 ---end mermaid---
-**Figure 1:** *One finance estate uses all five styles. The architecture question for each arrow is not which technology carries it but what unit of completeness it must prove: one transaction, one batch or one period.*
+**Figure 2:** *One finance estate uses all five styles. The architecture question for each arrow is not which technology carries it but what unit of completeness it must prove: one transaction, one batch or one period.*
 
 ## Ten Requirements for an Interface That Carries Money
 
@@ -134,6 +137,9 @@ An operational integration is judged on latency and availability. A finance inte
 **9. Error handling: dead letters versus suspense accounts.** This distinction is the most important one in the chapter, and the next section takes it in full.
 
 **10. Observability of money in flight.** Operational observability asks whether the pipes are healthy. Finance asks **how much money is between systems right now, and for how long**. At any moment some value has left one system and not yet been accepted by the next: events consumed but not yet summarized, batches sent but not yet posted, documents parked in a dead-letter queue. I recommend that each finance interface publishes, per source and day, the counts and amounts received, rejected, delivered, replayed and pending. That record is the **delivery ledger**, and it makes "money in flight" a metric with an owner and an aging profile, not a guess on working day 3. Tracing standards such as [OpenTelemetry](https://opentelemetry.io/docs/what-is-opentelemetry/) correlate the hops; the delivery ledger counts the money.
+
+![Systems joined by transparent pipes carrying coins and documents, each pipe with a value gauge and stopwatch, and a side tank of stuck items.](assets/images/09-integration-architecture/money-in-flight.jpeg)
+**Figure 3:** *Finance observability asks how much money sits between systems right now and for how long, including the value parked in dead-letter stores.*
 
 ### Dead letters and suspense accounts are different things
 
@@ -167,7 +173,7 @@ flowchart TB
     M -->|"no"| SU["Suspense or clearing account, per accounting policy"]
     SU -->|"accountant matches, reclassifies or writes off"| CL
 ---end mermaid---
-**Figure 2:** *Two error paths with two owners. Technical failures stop before the books and are replayed after a fix; business exceptions are posted to accounts defined by policy and cleared by accounting decisions. The dangerous arrow is the one this diagram leaves out: from dead letter straight to suspense.*
+**Figure 4:** *Two error paths with two owners. Technical failures stop before the books and are replayed after a fix; business exceptions are posted to accounts defined by policy and cleared by accounting decisions. The dangerous arrow is the one this diagram leaves out: from dead letter straight to suspense.*
 
 ## Exactly-Once Is an Effect, Not a Delivery Guarantee
 
@@ -180,6 +186,9 @@ What finance can have is an **exactly-once effect**: each business fact changes 
 1. **At-least-once delivery**, so nothing is lost: durable publication, retries with exponential back-off and jitter.
 2. **Idempotent processing**, so repeats change nothing: the consumer recognizes a fact it has already applied and returns the earlier result.
 3. **Reconciliation**, so any residual error is caught: control totals per batch and a subledger-to-GL comparison per day.
+
+![An equation: a van delivering a parcel, plus a clerk setting a duplicate parcel aside, plus a tally check, equals a ledger with one check mark.](assets/images/09-integration-architecture/exactly-once-effect.jpeg)
+**Figure 5:** *Exactly-once is an effect, not a delivery guarantee: at-least-once delivery, an idempotent receiver and reconciliation together make each business fact change the books once.*
 
 Hohpe's short essay ["Your Coffee Shop Doesn't Use Two-Phase Commit"](https://www.enterpriseintegrationpatterns.com/docs/IEEE_Software_Design_2PC.pdf) makes the same point from the other direction. Loosely coupled systems handle errors by write-off, retry or compensating action. Retry needs idempotent receivers, and the write-off strategy depends on "reconciliation reports" run periodically. In finance, all three of those are architecture.
 
@@ -219,7 +228,7 @@ sequenceDiagram
     SL-->>SFP: Already processed
     SFP->>K: Acknowledge without effect
 ---end mermaid---
-**Figure 3:** *The outbox closes the gap between changing state and announcing it; the idempotent consumer closes the gap the relay reopens. Neither guarantees exactly-once delivery. Together they give an exactly-once effect on the subledger, which reconciliation then confirms.*
+**Figure 6:** *The outbox closes the gap between changing state and announcing it; the idempotent consumer closes the gap the relay reopens. Neither guarantees exactly-once delivery. Together they give an exactly-once effect on the subledger, which reconciliation then confirms.*
 
 Two details make or break this in finance. The processed-event record and the accounting effect must commit **atomically**. A consumer that posts and then records the key, in two steps, recreates the dual write it was meant to remove. And when the effect lands in a system the consumer does not control, such as an ERP or a PSP, atomicity is impossible. Then the key must travel with the request and be stored on the target document, and a reconciliation must look for duplicates by that key.
 
@@ -367,7 +376,7 @@ sequenceDiagram
     IS->>DLG: Compare posted totals with manifest
     DLG-->>SFP: Batch complete, or incomplete with dead letters listed
 ---end mermaid---
-**Figure 4:** *The redesigned daily posting. The manifest declares what should arrive, the registry makes every resend harmless, and the delivery ledger compares what arrived with what was declared before anyone calls the batch complete.*
+**Figure 7:** *The redesigned daily posting. The manifest declares what should arrive, the registry makes every resend harmless, and the delivery ledger compares what arrived with what was declared before anyone calls the batch complete.*
 
 ### The January night, replayed under the new design
 

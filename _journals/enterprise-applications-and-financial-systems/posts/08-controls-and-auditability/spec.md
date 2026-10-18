@@ -68,3 +68,4 @@ Chief and enterprise architects, finance-systems and platform engineering leader
 
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(Željko Obrenović, AI-mediated session)*
 - **2026-10-18** — Editorial review pass: five mandatory control requirements tied to STD-FIN-05 (SoD by design, mandatory 1 Apr 2027) and STD-FIN-06 agent control card (Q3 2027); acronyms PSP, ICT expanded. *(AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

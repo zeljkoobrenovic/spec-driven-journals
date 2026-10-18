@@ -73,3 +73,4 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - **2026-10-18** — Consistency pass: aligned Lisbon settlement and payout dates (and batch id) with the scenario ledger. *(AI-mediated session)*
 - **2026-10-18** — Added a one-sentence cross-reference to the new Part V case study [[case-uber-payments]]. *(AI-mediated session)*
 - **2026-10-18** — Editorial review pass: split the €0.33 markup into €0.23 line-level and €0.10 batch-level fee (canonical €1.74 breakdown), corrected the settlement-report label in Figure 3, expanded NPCI, American spelling of license. *(AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

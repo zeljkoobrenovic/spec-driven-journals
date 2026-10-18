@@ -98,6 +98,9 @@ Three rules turn this table into a business case that survives contact with the 
 
 **Risk reduction keeps its own units.** A suspense balance, an audit deficiency and a manual control are tracked as what they are, in euros outstanding, findings and controls. Converting them into an expected-loss figure invites argument about probabilities, and it tends to happen precisely when the cash benefits are falling short.
 
+![Three zones: lead-indicator gauges without money, a finance owner's falling budget line feeding a vault, and risk measures kept in their own units.](assets/images/38-finance-transformation/lead-indicators-vs-banked-benefits.jpeg)
+**Figure 1:** *Close days and match rates are lead indicators, not money; a benefit is banked only when a Finance owner's budget line falls in the plan of record, and risk reduction is tracked in its own units rather than converted into dollars.*
+
 ### Northmere's benefits register
 
 Dana and the program director rebuilt Keystone's business case in March 2027 from five category totals into **31 benefit lines**, each with an owner, a baseline, a measuring source and the budget line it changes. The summary below rolls them up (figures illustrative). The first two lines together are the roughly $31M from retired systems and infrastructure in the plateau plan of [[target-and-transition-states]]; the other two match its $38M of reduced manual effort and $26M of lower PSP and bank costs.
@@ -150,7 +153,7 @@ flowchart LR
     FICA --> CONV
     CONV --> CC["2030 to 2031: continuous close"]
 ---end mermaid---
-**Figure 1:** *Keystone's sequence follows dependencies first and dated constraints second. Regulatory and contract dates (ViDA, the colocation end) pull specific items forward; ledger convergence comes last because almost everything else is its prerequisite.*
+**Figure 2:** *Keystone's sequence follows dependencies first and dated constraints second. Regulatory and contract dates (ViDA, the colocation end) pull specific items forward; ledger convergence comes last because almost everything else is its prerequisite.*
 
 Three sequencing decisions in Keystone illustrate the criteria. **Payments-to-ledger completeness went first** because the €14M average suspense balance was the most visible risk, the work depended only on decisions already taken, and BlackLine Transaction Matching was already in place to extend. **The OneStream reconciliation module was retired in wave 0** because the OneStream master subscription renews on 31 December 2027 with notice due on 30 September 2027; missing that date would have carried the module's roughly $448k a year into 2028. **Tax determination and e-invoicing were scheduled for 2028**, ahead of ledger convergence, because the ViDA date does not wait for the group core.
 
@@ -189,7 +192,7 @@ flowchart TB
     WS3 -->|"design questions"| DA
     WS4 -->|"design questions"| DA
 ---end mermaid---
-**Figure 2:** *Keystone separates three authorities under one steering committee: the PMO owns plan and cost, the design authority owns the template and its variations, and a Finance-led benefits review owns the money. Workstreams bring design questions to the design authority, not to the integrator.*
+**Figure 3:** *Keystone separates three authorities under one steering committee: the PMO owns plan and cost, the design authority owns the template and its variations, and a Finance-led benefits review owns the money. Workstreams bring design questions to the design authority, not to the integrator.*
 
 Membership is deliberately small. The voting members are the two co-chairs, Dana and Leila. The standing members who must be heard are Lucía Romero (integration), Sven Aalto (SAP platform), Owen Mbeki (finance data), Kofi Asante or a delegate (tax and treasury), Ingrid Solberg or a delegate (payments), Mei Tanaka (control impact, with a sign-off right on it) and the three brand finance-systems leads, Jonas Berg, Hana Kowalski and Arjun Rao. The integrator's lead architect attends without a vote. A design authority on which the integrator votes is marking its own work.
 
@@ -248,7 +251,7 @@ flowchart TB
     PREF -->|"Yes"| VAR["Dated variation from the brand budget"]
     PREF -->|"No"| NO["Refused: adopt the standard and change the process"]
 ---end mermaid---
-**Figure 3:** *The design authority's rule for gaps. Regulation and controls earn central localizations; differentiation earns a service outside the core; preference earns, at most, a cheap dated variation. Custom code inside the ERP core is not one of the outcomes.*
+**Figure 4:** *The design authority's rule for gaps. Regulation and controls earn central localizations; differentiation earns a service outside the core; preference earns, at most, a cheap dated variation. Custom code inside the ERP core is not one of the outcomes.*
 
 Saying no well has a few habits. **Say it early**, in the workshop week, not after the integrator has estimated the build. **Say it with the cost**, in regression hours per release and upgrade months, because a controller who hears that a custom report adds two days of testing every quarter makes a different choice. **Say it with a path**, naming what changes in the process and who will help. And **say it consistently**, because the second brand will ask for whatever the first one was given.
 
@@ -269,6 +272,9 @@ Large finance programs are almost always delivered with integrators: they bring 
 | Control design sign-off and evidence | Specialist skills used briefly, such as performance engineering | Organizational change delivery |
 
 The three items in the left column that programs most often give away are **architecture, data and testing**, and each has the same consequence: the integrator marks its own homework. An integrator that owns the testing strategy will test what it built, to its definition of done. An integrator that owns the template will propose the template it knows. An integrator that owns data migration will report load success, which is not the same as reconciled balances. None of this implies bad faith; it is the incentive the contract creates.
+
+![Integrator crew building a platform while an enterprise team at a checkpoint keeps three keys labelled architecture, data and testing.](assets/images/38-finance-transformation/keep-the-proof-in-house.jpeg)
+**Figure 5:** *Outsource delivery, never the proof: the integrator configures and builds, while the enterprise keeps architecture, data and testing, because a builder that owns them ends up marking its own homework.*
 
 ### Commercial models and their incentives
 
@@ -347,6 +353,9 @@ Two practices help the architecture directly. **Finance super-users in the desig
 **Go/no-go is a structured decision with named inputs.** At Keystone, each cut-over has four readiness statements, each signed by its owner: technical readiness (Dana: reconciliations passed, performance met, rollback rehearsed), business readiness (Leila: people trained, procedures updated, close calendar adjusted), control readiness (Mei: key controls tested, evidence path working) and build readiness (the integrator: defects within agreed thresholds). The program director makes the recommendation and Tomás decides. A no-go from any of the first three cannot be overridden by the plan date; it can only be overridden by Tomás, in writing, with the risk named.
 
 **The calendar is a constraint, not a preference.** Keystone's cut-over windows follow the rule in [[modernization-patterns]]: they exclude the month-end close days (working day −2 to 9), the last month of each quarter, the year-end window from 1 December to the 10-K filing at the end of February, and Stayloft's July–August peak (illustrative). That leaves two good slots a year, early May and early November, which is why the merchant subledger cohorts in [[incremental-modernization]] cut over on 1 May and 1 November 2029. A cut-over that slips past its window waits for the next one. This rule costs schedule; that is its purpose.
+
+![A cut-over gate with four green readiness lights and a calendar where only May and November are open windows.](assets/images/38-finance-transformation/go-no-go-gate.jpeg)
+**Figure 6:** *Go-live is gated by four signed readiness statements (technical, business, control and build) and by the close calendar, which leaves Keystone two good cut-over windows a year, early May and early November; the plan date alone opens nothing.*
 
 **Rollback is designed before go-live.** For each cut-over, the design authority records the point of no return, the rollback steps before it, and what happens after it (correct forward, never restore over posted financial data).
 

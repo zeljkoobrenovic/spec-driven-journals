@@ -67,6 +67,9 @@ Four more terms recur:
 
 The rule I use is P7 in [[principles-standards-reference]]: **configuration before code, code before forks**. Express a difference as configuration of a shared capability first. If that cannot carry it, write code behind a published extension point. Fork only by recorded decision, with a retirement date.
 
+![Concentric rings of configuration dials, extension sockets and edge adapters around a sealed core, with a separate time-boxed copy outside.](assets/images/32-brands-entities-markets/configuration-before-forks.jpeg)
+**Figure 1:** *Configuration before code, code before forks: the shared core stays unchanged, extensions plug into published extension points, adapters sit at the edges, and a fork is a recorded, time-boxed exception.*
+
 ## The Nine Configuration Layers
 
 "Configure Stayloft for Brazil" is a sentence. The architecture needs a list. At Northmere, onboarding touches nine layers. Each layer is a governed data structure with an authority (the system of record, in the sense of [[systems-of-record]]), an owner, a change class from the Finance Data Council's scheme in [[finance-data-architecture]], and a typical lead time.
@@ -103,7 +106,7 @@ flowchart TB
     SIM --> GATE["Go-live gate - ledger-ready, simulation signed off, controls scoped"]
     L9 --> GATE
 ---end mermaid---
-**Figure 1:** *The nine configuration layers form a dependency graph rooted in the entity register. Nothing downstream can be configured for an entity the register does not know, and nothing goes live until the posting simulation, the settlement matching profile and the controls scoping have converged on the same gate.*
+**Figure 2:** *The nine configuration layers form a dependency graph rooted in the entity register. Nothing downstream can be configured for an entity the register does not know, and nothing goes live until the posting simulation, the settlement matching profile and the controls scoping have converged on the same gate.*
 
 The figure shows which configuration depends on which, and so what to start first. Three properties make these layers *configuration* rather than a list of tasks.
 
@@ -230,7 +233,7 @@ flowchart LR
     SIMU --> GO
     GO --> FCM["First closed month - July 2028, closed in August"]
 ---end mermaid---
-**Figure 2:** *The Brazil critical path runs through incorporation, banking and providers. The software configuration fits in a few weeks inside that path, which is why the kit starts the slow items on the day of the decision.*
+**Figure 3:** *The Brazil critical path runs through incorporation, banking and providers. The software configuration fits in a few weeks inside that path, which is why the kit starts the slow items on the day of the decision.*
 
 Three design choices in the Brazil plan are worth drawing out.
 
@@ -253,6 +256,9 @@ The Brazil plan contains about **190 configuration items** across the nine layer
 
 There are no changes to the accounting rule engine, the subledger, consolidation, the close platform or the payout service. That is the result Keystone is aiming for.
 
+![A grid of about 190 configuration tiles, four code blocks at the edge, and five shared platforms marked unchanged.](assets/images/32-brands-entities-markets/brazil-as-configuration.jpeg)
+**Figure 4:** *Brazil as configuration: about 190 configuration items across the nine layers and four code items at the edges, with no change to the accounting engine, subledger, consolidation, close platform or payout service.*
+
 ## Onboarding an Acquired Brand: The First Hundred Days
 
 An acquisition differs from a market launch in one respect that changes everything. **The business already trades.** On the day the deal closes, the acquired company has entities, books, a payment provider, bank accounts, tax filings and staff, all of it working. The group's job is not to build its finance stack. It is to bring the acquired company into group reporting immediately, into group controls and data quickly, and into the group's platforms only when that is worth doing.
@@ -271,7 +277,7 @@ flowchart LR
     D100 -.->|"canonical events via adapter kit"| HUB["Integration hub and FinDB"]
     D100 -.->|"reconciliations certified"| BL["BlackLine"]
 ---end mermaid---
-**Figure 3:** *The acquired-brand timeline separates three questions that are often merged: when the group can report the brand (day 1), when the group can rely on its data and controls (day 100), and whether the brand's systems should be replaced (a later decision on evidence).*
+**Figure 5:** *The acquired-brand timeline separates three questions that are often merged: when the group can report the brand (day 1), when the group can rely on its data and controls (day 100), and whether the brand's systems should be replaced (a later decision on evidence).*
 
 ### Day 1: consolidation only
 

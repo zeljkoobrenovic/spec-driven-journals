@@ -87,6 +87,9 @@ These are the mistakes I see most often in finance capability maps, with the Nor
 
 The rule I use when a name is disputed: **if the name would still be true after replacing every system and reorganizing every team, it is a capability name.** "Indirect Tax Determination" passes. "Vertex Tax" fails. "Group Tax Team Services" fails.
 
+![A fixed capability tile stays in place while generic systems and teams beneath it are swapped by a crane on a conveyor belt.](assets/images/02-capability-mapping/capability-name-survives.jpeg)
+**Figure 1:** *A capability name passes the rename test when it would stay true after every system is replaced and every team is reorganized; that stability is what makes the map a planning frame.*
+
 ## Architecture: A Three-Level Finance Capability Map
 
 The map below is the one Dana's team took into the Finance workshops as a strawman, and the one that came out of them as version 1 in March 2027. It has **ten level-1 groups and 45 level-2 capabilities**, with level 3 shown only where Keystone needed it for a decision. It is written for a multi-brand, multi-entity commerce group with marketplace and subscription models. A manufacturer would add Inventory Valuation and Product Costing; a bank would replace most of Money Movement. The structure travels; the content should be challenged.
@@ -117,7 +120,7 @@ flowchart TB
     O4["Overlap 4: tax determination in two engines"] -.-> TAX
 ---end mermaid---
 
-**Figure 1:** *Northmere's ten level-1 capability groups and the main flows of financial facts between them; the four overlaps Keystone must resolve sit on Money Movement, Revenue and Billing, Close and Report, and Tax.*
+**Figure 2:** *Northmere's ten level-1 capability groups and the main flows of financial facts between them; the four overlaps Keystone must resolve sit on Money Movement, Revenue and Billing, Close and Report, and Tax.*
 
 The arrows are not integrations. They show which group's outputs another group depends on, which is what a reader needs to understand why a weak capability in Money Movement shows up as a late close.
 
@@ -294,7 +297,7 @@ flowchart LR
     GL -->|"Conformist: OneStream dimension model"| CON["Consolidation"]
 ---end mermaid---
 
-**Figure 2:** *Northmere's target context map: canonical events as the published language from the brand platforms, anticorruption layers at the PSP and ERP boundaries, and customer-supplier relationships where finance contexts depend on each other's facts.*
+**Figure 3:** *Northmere's target context map: canonical events as the published language from the brand platforms, anticorruption layers at the PSP and ERP boundaries, and customer-supplier relationships where finance contexts depend on each other's facts.*
 
 Three relationships on this map deserve a sentence of justification each, because teams will argue about them.
 
@@ -319,6 +322,9 @@ The Lisbon booking makes the boundaries concrete. A traveler from Germany books 
 | General Ledger | One contribution to a daily summarized journal line among ~38,000 | (summarized) | Journal entry, GL account, period |
 
 Five contexts and one booking: the same €600 is a capture, a liability, an open item and part of a summary, and €90 of it is revenue. That is not duplication. It is **five legitimate models of one economic event**, each owned by a team that understands it. The design problem is not to merge them into one model; it is to keep the relationships explicit and the totals reconcilable at every boundary, which is the subject of [[traceability-and-reconciliation]].
+
+![One €600 booking card at the center, seen through five windows as a capture, a liability, an open item, €90 of revenue and part of a ledger summary.](assets/images/02-capability-mapping/one-booking-many-models.jpeg)
+**Figure 4:** *One Lisbon booking, five legitimate models: the same €600 is a capture, a liability, an open item and part of a summary, and €90 of it is revenue; the design task is to keep the boundaries reconcilable, not to merge the models.*
 
 ## How Capability Maps and Bounded Contexts Complement Each Other
 
@@ -364,7 +370,7 @@ flowchart LR
     A7 --> T2
 ---end mermaid---
 
-**Figure 3:** *Three overlapping capabilities traced to applications and owning teams: one application has no owner, and one team owns the minority implementation of all three overlaps.*
+**Figure 5:** *Three overlapping capabilities traced to applications and owning teams: one application has no owner, and one team owns the minority implementation of all three overlaps.*
 
 | Capability | Applications | Application owners | Capability owner (v1 proposal) | Gap revealed |
 | --- | --- | --- | --- | --- |

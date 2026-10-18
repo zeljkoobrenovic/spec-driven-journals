@@ -70,3 +70,4 @@ Chief and enterprise architects, finance-systems architects and finance-transfor
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(Željko Obrenović, AI-mediated session)*
 - **2026-10-18** — Consistency pass: aligned Lisbon settlement and payout dates (and batch id) with the scenario ledger. *(AI-mediated session)*
 - **2026-10-18** — Editorial review pass: American spelling (modeling), mapping workbooks count aligned to the ledger (14). *(AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

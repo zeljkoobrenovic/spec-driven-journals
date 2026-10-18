@@ -58,6 +58,9 @@ At 02:00 an hourly completeness check, switched on for period-end, compares what
 | **Recovery** | Failover, restart, capacity | Containment, then correcting entries proven by reconciliation |
 | **Who decides it is over** | The on-call engineer | The controller, on evidence |
 
+![Two machines: one stopped with a red light, one running green while emitting duplicated ledger sheets that a finance reviewer spots with a magnifying glass.](assets/images/40-resilience-and-security/up-but-wrong.jpeg)
+**Figure 1:** *A system that is down is noticed in minutes; a system that is up but wrong looks healthy while it posts duplicates, which is why correctness needs its own detection.*
+
 The Google *Site Reliability Engineering* book defines the **error budget** as the gap between 100% and the service level objective: releases continue while budget remains and pause when it is spent ([Google SRE, "Embracing Risk"](https://sre.google/sre-book/embracing-risk/)). That model fits availability and timeliness. It does not fit posted money. **No finance team accepts that 0.1% of settlement lines may be posted twice.** Correctness is an invariant, and a breach is an incident however small.
 
 ### The financial incident
@@ -97,6 +100,9 @@ The important rule is the last column of the next table. **Criticality is a func
 | Workiva | 2 | 1 | Filing weeks for 10-Q and 10-K |
 | Vertex | 2 | 1 | Commission invoicing runs and e-invoicing clearance windows |
 | Kyriba | 0 | 0 | Always; payment cut-offs make every working day critical |
+
+![Calendar strip with a close window from WD-2 to WD9 during which a consolidation system's tier steps up from Tier 2 to Tier 1.](assets/images/40-resilience-and-security/criticality-follows-calendar.jpeg)
+**Figure 2:** *Criticality is a function of the calendar: the consolidation platform is tier 2 on the fifteenth of the month and tier 1 from WD−2 to WD9, when the close depends on it.*
 
 A tier sets four things at once: the recovery objectives, the redundancy pattern, the change rules (freeze windows apply to tiers 0 and 1, and to elevated systems during their elevated days), and the observability required. A system without a tier gets the defaults of tier 1 until someone argues it down, which turns an inventory gap into a visible cost.
 
@@ -186,7 +192,7 @@ flowchart LR
     CALC -->|"daily evidence"| BL["BlackLine and evidence store"]
 ---end mermaid---
 
-**Figure 1:** *Money signals come from control totals and ledger balances, not from sampled telemetry. OpenTelemetry carries them alongside traces, but every alert is routed by financial flow to the owner who can act, and the same numbers become daily control evidence.*
+**Figure 3:** *Money signals come from control totals and ledger balances, not from sampled telemetry. OpenTelemetry carries them alongside traces, but every alert is routed by financial flow to the owner who can act, and the same numbers become daily control evidence.*
 
 ### Control totals as telemetry
 
@@ -236,6 +242,9 @@ The alternatives, in order of preference for a logical error:
 | **Re-derivation from the event log** | Rebuild a ledger or projection by replaying stored events through the current rules into a new store, then compare | Yes, if the old store is kept | Requires a controlled switch-over | Corrupted projections and balances; rebuilding after a physical loss; testing |
 | **Point-in-time restore** | Return the database to an earlier state | No | Breaks consistency with every system that read it | Physical corruption or destruction where no event log can rebuild the data; then followed by replay and reconciliation |
 
+![Split image: on the left a restore rewinds a ledger and erases both good and bad pages; on the right reversal entries are added beside the wrong entries and the books reconcile.](assets/images/40-resilience-and-security/restore-versus-reversal.jpeg)
+**Figure 4:** *A restore rewinds the books and erases good postings and evidence alike; a reversal adds one correcting entry per wrong entry, keeps the trail, and is proven by reconciliation.*
+
 [[designing-financial-ledgers]] defines the reversal job: the population selected by query and recorded with its control totals before anything is posted, one reversal entry per affected entry with a `reverses_entry_id`, re-posting from stored events, and a proof presented to the controller. It also warns, following Martin Fowler, that replay must not re-send instructions to external systems; in SFP only the payout engine moves money, so re-deriving the journal cannot trigger a payout.
 
 ### Restore testing with reconciliation as the pass criterion
@@ -275,7 +284,7 @@ sequenceDiagram
     C-->>S: Gap of 186240 lines, incident raised
 ---end mermaid---
 
-**Figure 2:** *Two defects that were harmless alone combined under peak load: event IDs minted per download, and a duplicate key that included the recording date. Adyen's retries worked as documented; the control total check, not the infrastructure, caught the result.*
+**Figure 5:** *Two defects that were harmless alone combined under peak load: event IDs minted per download, and a duplicate key that included the recording date. Adyen's retries worked as documented; the control total check, not the infrastructure, caught the result.*
 
 | Time | What happened | Who |
 | --- | --- | --- |
@@ -372,7 +381,7 @@ flowchart TB
     N --> L["Post-incident review"]
 ---end mermaid---
 
-**Figure 3:** *The financial incident path. Restore appears only on the branch where no event log can rebuild the data, and every path ends in a reconciliation that proves the result before evidence and notification.*
+**Figure 6:** *The financial incident path. Restore appears only on the branch where no event log can rebuild the data, and every path ends in a reconciliation that proves the result before evidence and notification.*
 
 ## Security Architecture for Finance, Concisely
 

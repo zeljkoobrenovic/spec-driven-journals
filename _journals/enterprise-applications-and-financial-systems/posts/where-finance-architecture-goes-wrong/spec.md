@@ -66,3 +66,4 @@ Article only for now. Pattern illustrations (one per pattern, as in OWNED) are a
 
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(author, AI-mediated session)*
 - **2026-10-18** — Editorial review pass: added canonical outcomes (Wayfare €1.3M gap, $41M mapping error, Dec 2027 accounting-hub decision) to illustrations; added [[case-uber-payments]] and [[sap-s4hana]] to "Where this book helps"; removed a buzzword. *(AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

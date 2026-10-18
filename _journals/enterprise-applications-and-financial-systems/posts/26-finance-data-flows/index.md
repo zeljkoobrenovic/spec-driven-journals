@@ -69,6 +69,9 @@ The first step is vocabulary. Finance numbers come in three kinds that differ in
 
 The three kinds differ for four legitimate reasons: **timing** (booking date versus the date the performance obligation is satisfied, within a period cut-off), **presentation** (a €600 booking is €600 of GTV and €90 of revenue for an agent), **scope** (dashboards cover the transactional businesses; the ledger also holds other revenue, incentives and close adjustments) and **currency** (booking-day spot rates versus transaction-date rates in functional currency, translated at average rates).
 
+![Three islands labeled operational, accounting and management, joined by one bridge whose segments are timing, presentation, scope and currency.](assets/images/26-finance-data-flows/three-kinds-of-numbers-one-bridge.jpeg)
+**Figure 1:** *Operational, accounting and management numbers differ for four legitimate reasons; trust comes from defining each one once and publishing the bridge between them, not from forcing them to agree.*
+
 The disclosure rules recognize the difference too. The SEC's 2020 [guidance on key performance indicators in MD&A](https://www.sec.gov/files/rules/interp/2020/33-10751.pdf) (Release 33-10751) expects a disclosed metric to come with a clear definition and how it is calculated, a statement of why it is useful and how management uses it, and disclosure of any change in calculation method; it also reminds companies that disclosure controls apply to metrics derived from their own information. Operating measures such as GTV are not non-GAAP financial measures, but adjusted measures derived from GAAP numbers are, and [Regulation G](https://www.law.cornell.edu/cfr/text/17/244.100) requires each one to be accompanied by the most directly comparable GAAP measure and a quantitative reconciliation. A listed company is already expected to define, control and bridge its metrics; **the architecture's job is to make that routine instead of a quarterly scramble.**
 
 ### The Q1 2027 bridge
@@ -176,7 +179,7 @@ flowchart LR
     SEM --> AI
     GO --> AUD
 ---end mermaid---
-**Figure 1:** *FinDB's target architecture. Every source lands immutably in bronze; silver conforms journals, lines and events to the group dimensions; gold datasets are certified only for periods whose tie-out to the ledger has passed; and consumers with certified uses read through the governed metrics layer, never from raw tables.*
+**Figure 2:** *FinDB's target architecture. Every source lands immutably in bronze; silver conforms journals, lines and events to the group dimensions; gold datasets are certified only for periods whose tie-out to the ledger has passed; and consumers with certified uses read through the governed metrics layer, never from raw tables.*
 
 **Sources.** Every system that holds finance-relevant data feeds FinDB, but each is read through its supported, upgrade-safe surface. S/4HANA is read through released analytical views, not database tables, so an upgrade does not break the pipeline ([[sap-s4hana]]). Wayfare's Oracle Fusion data arrives through BI Cloud Connector bulk extracts ([[oracle-fusion]]). Workday data arrives through report extracts until Data Cloud sharing is available for finance data ([[workday]]). OneStream publishes its locked results and, since the May 2027 mapping decision, its approved mapping set after every change ([[onestream]]). Adyen settlement reports and Stripe Data Pipeline shares land as delivered ([[adyen]], [[stripe]]). Kyriba publishes the period's FX rate set, the same one the ERPs and OneStream use.
 
@@ -293,7 +296,7 @@ sequenceDiagram
     end
     M->>M: Certify dataset for period only when all inputs tied
 ---end mermaid---
-**Figure 2:** *The daily ledger-to-warehouse tie-out. FinDB never corrects a difference by adjusting its own copy; the break goes to the owner of the source, and certification follows only from agreement.*
+**Figure 3:** *The daily ledger-to-warehouse tie-out. FinDB never corrects a difference by adjusting its own copy; the break goes to the owner of the source, and certification follows only from agreement.*
 
 **The rule that protects the design is in the figure's caption.** When FinDB disagrees with the ledger, the fix happens at the source or in the pipeline, never by "adjusting" the warehouse to match. A warehouse adjusted to match is a second ledger with manual journals.
 
@@ -323,7 +326,7 @@ stateDiagram-v2
     Closed --> Restated: recorded prior period adjustment
     Restated --> Closed: comparatives republished
 ---end mermaid---
-**Figure 3:** *A number's status moves in one direction with the close. Consumers read the status with the value; a closed number changes only through a recorded restatement, never through a pipeline rerun.*
+**Figure 4:** *A number's status moves in one direction with the close. Consumers read the status with the value; a closed number changes only through a recorded restatement, never through a pipeline rerun.*
 
 The schedule comes from the close: from mid-2027 OneStream loads preliminary trial balances daily from working day −2, runs the flash consolidation on working day 3, the final on working day 7 and locks on working day 9 ([[onestream]]). FinDB's labels follow that calendar exactly, so the status a dashboard shows is the status the controller would give.
 
@@ -347,7 +350,7 @@ flowchart RL
     SUM --> LINES["SFP subledger lines"]
     LINES --> EVT["StayCompleted for SL-BK-9921347"]
 ---end mermaid---
-**Figure 4:** *End-to-end lineage for one reported number. The Lisbon booking's €90 commission reaches the Q2 2027 board pack through the stay-completion event, the subledger line, its summary key, the daily journal, the trial balance and the locked consolidation; the metric version and the tie-out record make the path auditable.*
+**Figure 5:** *End-to-end lineage for one reported number. The Lisbon booking's €90 commission reaches the Q2 2027 board pack through the stay-completion event, the subledger line, its summary key, the daily journal, the trial balance and the locked consolidation; the metric version and the tie-out record make the path auditable.*
 
 Three mechanisms produce this lineage, and none is optional:
 
@@ -370,6 +373,9 @@ Northmere runs three zones in FinDB:
 | **Sandbox** | Personal and team workspaces | Anyone with access | Access policies; automatic expiry | Exploration; never published outside the team |
 
 The rule between zones is the one that matters: **a number leaves the sandbox or curated zone for a certified use only by becoming a governed metric.** A useful analyst metric is not banned; it is promoted. It gets an owner, a definition, a test and a tie-out or an anchor, and then it appears in the board pack. The governance cost is a few days per metric; the alternative is the metric sprawl the June 2027 inventory found: 1,870 dashboards, 63 distinct measures with "revenue" in their name, and 11 definitions of "bookings". By the end of 2027 the certified catalog held 48 metrics, and the board pack used nothing else.
+
+![Three terraces — sandbox, curated, certified — with a metric climbing to the small certified zone through a gate requiring an owner, definition, test and tie-out.](assets/images/26-finance-data-flows/promote-to-certified-zone.jpeg)
+**Figure 6:** *A number reaches the board pack, planning or an AI agent only by being promoted into the small certified zone as a governed metric with an owner, a definition, a test and a tie-out.*
 
 Certification also has a control consequence. A certified dataset used in a key control (a revenue analytical review, a reserve estimate, an auditor's sample) is IPE, and the pipelines behind it are in scope for change management and access controls. Mei Tanaka's controls team added FinDB's certified zone, and only that zone, to the SOX system inventory in Q3 2027. Keeping the certified zone small keeps the SOX scope small.
 
@@ -422,6 +428,7 @@ The trade-off I would argue hardest about is ownership. A pure data-mesh reading
 - **Close and consolidation** ([[blackline]], [[onestream]]): BlackLine certifies balances, OneStream locks results and publishes mappings, and FinDB's statuses follow their calendar.
 - **Disclosure** ([[satellite-platforms]]): Workiva links to OneStream, not to FinDB. Operational KPIs disclosed in MD&A, such as GTV, are the exception: they come from certified FinDB metrics under disclosure controls.
 - **Master data** ([[finance-data-architecture]]): FinDB subscribes to the hubs' conformed dimensions and never builds its own entity, brand or market hierarchy.
+- **Technology spend** ([[finops]]): FinDB hosts cloud billing data as a contracted data product and publishes unit cost per booking as a governed metric, while the allocation and accrual journals are decided in a posting service, consistent with the rule that FinDB is the book for nothing.
 
 ## Failure Modes
 

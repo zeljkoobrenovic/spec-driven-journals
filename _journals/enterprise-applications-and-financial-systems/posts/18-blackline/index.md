@@ -109,6 +109,9 @@ The last rule is the most useful and the most dangerous, because it is only as g
 
 Northmere's 2028 target is to auto-certify about **2,400 of the 6,800 reconciliations**, almost all in the low tier, which frees roughly 25 preparer-days a month. It removes **less close time than people expect**, because low-risk accounts are rarely on the critical path. The close is as long as its longest chain of dependencies, not its largest pile of work.
 
+![A large pile of low-risk reconciliations being automated beside a thin chain of dependent tasks that sets the finish line.](assets/images/18-blackline/longest-chain-not-largest-pile.jpeg)
+**Figure 1:** *Auto-certifying about 2,400 of 6,800 reconciliations frees preparer time but removes less close time than people expect, because the close is as long as its longest chain of dependencies, not its largest pile of work.*
+
 ## Architecture: Where the Platform Sits
 
 [[finance-landscape]] places a **close and controls layer** between the transactional ledgers, which are the systems of record for postings, and consolidation and enterprise performance management (EPM), which is the system of record for group numbers. A close platform is the system of record for three things only: **reconciliation evidence, close-task status and the approval history of manual journals**. It is not a ledger. It holds copies of balances and transactions so that it can compare them, and those copies are never the authority.
@@ -153,9 +156,9 @@ flowchart LR
     TASK -->|"entity certified signal"| OS
     AR -->|"certified packages"| EVID
 ---end mermaid---
-**Figure 1:** *Northmere's close platform receives copies of balances and transactions from six kinds of source, writes back only approved manual journals, and hands consolidation a status signal rather than data. It is the system of record for evidence and status, never for balances.*
+**Figure 2:** *Northmere's close platform receives copies of balances and transactions from six kinds of source, writes back only approved manual journals, and hands consolidation a status signal rather than data. It is the system of record for evidence and status, never for balances.*
 
-Three boundaries in Figure 1 carry most of the architecture:
+Three boundaries in Figure 2 carry most of the architecture:
 
 - **Inbound copies are not authority.** If a balance in BlackLine disagrees with S/4HANA, S/4HANA is right and the feed is broken. Every feed needs a control total that proves the copy is complete.
 - **Write-back is narrow.** Only approved manual journals flow back to a ledger. Matching results do not post directly; the next sections explain why.
@@ -204,7 +207,7 @@ flowchart LR
     ADL -->|"Leg 2 - batch number"| BATCH
     BATCH -->|"Leg 3 - payout reference, amount exact, date within 3 days"| BANKC
 ---end mermaid---
-**Figure 2:** *The three-way match for one Lisbon booking. The fee is split by rule rather than left as an exception, and the batch, not the booking, is what reaches the bank. Each leg uses a different key.*
+**Figure 3:** *The three-way match for one Lisbon booking. The fee is split by rule rather than left as an exception, and the batch, not the booking, is what reaches the bank. Each leg uses a different key.*
 
 1. **Leg 1, expected receipt to settled line (one-to-one).** SFP's expected receipt for booking `SL-BK-9921347` (€600.00) matches Adyen's settled line on `merchantReference` (`NPY-270312-004418`, which normalization links to the booking id), with the gross amount exact. The line's net of €598.36 differs by €1.64: interchange €1.20, scheme fees €0.21 and €0.23 of Adyen's markup. The fee rule splits that €1.64 into a fee item, and the match is complete with no human involved. The remaining €0.10 of the booking's €1.74 fee, the rest of the €0.33 markup, is Adyen's processing fee charged at batch level on the Fee line.
 2. **Leg 2, settled lines to batch (many-to-one).** All seven lines of batch 1047 roll up to the batch total (a production batch holds hundreds of thousands). The control is arithmetic: the line amounts and fees must sum to the MerchantPayout amount. If they do not, the report is incomplete and the whole batch is held.
@@ -334,7 +337,7 @@ sequenceDiagram
     SFP->>BL: Daily balances for the clearing account
     BL->>BL: Clearing reconciliation supported by matching result
 ---end mermaid---
-**Figure 3:** *Ingestion for one settlement day. Every file carries control totals checked before matching runs, exceptions caused by missing keys go back to the team that owns the keys, and the account reconciliation is supported by the matching result rather than prepared separately.*
+**Figure 4:** *Ingestion for one settlement day. Every file carries control totals checked before matching runs, exceptions caused by missing keys go back to the team that owns the keys, and the account reconciliation is supported by the matching result rather than prepared separately.*
 
 ### Retention and Residency
 
@@ -348,7 +351,7 @@ Three architectural facts follow, covered in depth in [[controls-and-auditabilit
 
 - **The vendor's SOC 1 Type 2 report is necessary, not sufficient.** BlackLine states that it holds SOC 1 Type 2, SOC 2 Type 2 and SOC 3 reports and several ISO/IEC certifications, including ISO/IEC 42001 for AI management. A SOC 1 Type 2 report covers a service organization's controls relevant to its customers' financial reporting, over a period. It lists **complementary user entity controls (CUECs)** the customer must operate, such as access review, configuration change control and feed completeness, and each must map to a named, tested Northmere control. A **bridge letter** covers the gap to Northmere's 31 December year-end. Which BlackLine modules, data centers and AI features the current report covers is not public and is to be confirmed against the report itself each year.
 - **The rules are in scope.** Matching rules, tolerances, auto-certification rules and risk ratings decide whether a key control operated, so the auditor tests them and the IT general controls around them.
-- **The feeds are in scope.** The control totals in Figure 3 are audit evidence, not just operational hygiene.
+- **The feeds are in scope.** The control totals in Figure 4 are audit evidence, not just operational hygiene.
 
 ## The SAP Relationship
 
@@ -432,7 +435,7 @@ flowchart LR
     BOTH --> FIVE
     UP --> FIVE
 ---end mermaid---
-**Figure 4:** *Where Northmere's four days come from. BlackLine configuration alone removes about one day. Two days need BlackLine and upstream data together, and one day needs no close-platform change at all.*
+**Figure 5:** *Where Northmere's four days come from. BlackLine configuration alone removes about one day. Two days need BlackLine and upstream data together, and one day needs no close-platform change at all.*
 
 Three lessons generalize. **The tool-only day is real but small**: measures A and B were done in 2027 and took the close to about 8 days, cheaply, and produced the data that justified the rest. **The shared days decide the program**: measure C is the payments-to-ledger program by another name, funded in Keystone Year 1, owned by Ingrid's and Jonas's teams and measured in BlackLine. A close team that buys more matching capacity without it gets more exceptions, faster. **The last day is not in the close team's hands**: measures E and F belong to data and engineering teams that do not run the close, and without governance to assign them they do not happen.
 

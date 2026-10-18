@@ -57,6 +57,9 @@ Dana answered the way she had answered the CFO's question about the nine-day clo
 
 Eleven teams, **17 handoffs** including two rework loops, about 65 working days elapsed and about 18 days of hands-on work. Roughly **four-fifths of the elapsed time was waiting**. The finance data platform was missing from the list altogether: nobody told Owen Mbeki's team, and the new method's settlement lines were absent from FinDB, the group's finance data platform, until an analyst noticed in late August.
 
+![Timeline of a new payment method passing eleven team desks, with short green work blocks separated by long grey waiting stretches; bars compare about 18 days of work with about 65 days elapsed.](assets/images/41-organizing-for-architecture/handoff-trace-waiting.jpeg)
+**Figure 1:** *The e-wallet's handoff trace: about 18 days of hands-on work spread across about 65 working days, because no team owned the outcome and roughly four-fifths of the time was waiting.*
+
 Nobody had behaved badly; the e-wallet was simply never the most important item in any of eleven reasonable queues. The work was slow because **no team owned the outcome "a new payment method is ledger-ready"**. Northmere already had the standard ("ledger-ready before launch", a Keystone rule that no new payment method goes live until its settlement data matches automatically; [[payments-fundamentals]]). It did not have an organization that could meet the standard quickly.
 
 Dana took the trace to the Keystone design authority in October with a proposition that surprised some of its members: the next architecture decision Northmere needed was not about systems. It was about teams.
@@ -102,7 +105,7 @@ flowchart LR
     WDF -->|"trial balance"| OS
     S4 -->|"trial balance"| OS
 ---end mermaid---
-**Figure 1:** *Conway's law in Northmere's finance estate. Each team built or kept a ledger-shaped system inside its own boundary, and the only place the boundaries met was the team that had to produce group numbers. The integration points of the estate are the communication paths of the organization.*
+**Figure 2:** *Conway's law in Northmere's finance estate. Each team built or kept a ledger-shaped system inside its own boundary, and the only place the boundaries met was the team that had to produce group numbers. The integration points of the estate are the communication paths of the organization.*
 
 Three lessons follow, and the third is specific to finance.
 
@@ -111,6 +114,9 @@ Three lessons follow, and the third is specific to finance.
 **Second, the inverse maneuver is slow, and Fowler's warning applies with force.** A team topology can be redesigned in a quarter. SFP's merchant subledger moves to the group core in 2029, and three ledgers converge on that timetable or later ([[multiple-erps]]). The right sequence is to change the teams first, so that the people who will own the target state are the ones who build the transition, and to accept that the systems will lag the org chart by years.
 
 **Third, finance needs some boundaries that Conway would call friction.** Segregation of duties, the control principle that no single person can initiate, approve and record the same transaction, is a deliberately designed communication barrier. The FY2026 significant deficiency on SFP's payout engine was, in Conway's terms, an organization with too little separation: the engineers who changed payout rules could deploy them and held standing write access to production ([[controls-and-auditability]]). The design principle I use is **remove the boundaries that only add waiting; keep, and make cheap to cross, the boundaries that controls require**. Finance owns the rules; Engineering owns the platform; Internal Controls decides what evidence a change needs. Those three boundaries are part of the target design, and the topology below is built around them.
+
+![Left: a long waiting queue in front of a closed window crossed out in favor of self-service. Right: a glass wall with a quick approval gate where one person approves another's rule.](assets/images/41-organizing-for-architecture/control-boundary-versus-queue.jpeg)
+**Figure 3:** *Remove the boundaries that only add waiting; keep, and make cheap to cross, the boundaries that controls require, such as the separation between who writes a rule and who approves it.*
 
 ## Concepts: Team Types, Interaction Modes and Owners
 
@@ -198,7 +204,7 @@ flowchart TB
     ARC -.->|"Facilitating"| SA
     CEN -.->|"Facilitating"| PL
 ---end mermaid---
-**Figure 2:** *Northmere's target finance-technology topology for 2028, simplified to the principal interactions. Most edges are X-as-a-Service through a published interface; collaboration is reserved for named, time-boxed transitions; architecture and controls engineering facilitate rather than approve.*
+**Figure 4:** *Northmere's target finance-technology topology for 2028, simplified to the principal interactions. Most edges are X-as-a-Service through a published interface; collaboration is reserved for named, time-boxed transitions; architecture and controls engineering facilitate rather than approve.*
 
 ### Interaction modes, with end dates
 
@@ -231,7 +237,7 @@ flowchart LR
         A5 --> A6["Live in about 3 weeks"]
     end
 ---end mermaid---
-**Figure 3:** *The same change before and after the topology. Before, seven queues in sequence; after, one team runs a bundled service and Finance reviews only what departs from an approved pattern. The control boundary stays: accounting policy still owns the pattern and any exception.*
+**Figure 5:** *The same change before and after the topology. Before, seven queues in sequence; after, one team runs a bundled service and Finance reviews only what departs from an approved pattern. The control boundary stays: accounting policy still owns the pattern and any exception.*
 
 The target is **at most six handoffs and about three weeks** for a payment method that fits an approved pattern, by the end of 2028. A method that does not fit, such as one that settles net of refunds in a new way, still goes to accounting policy, and should.
 
@@ -256,6 +262,9 @@ Every finance platform at Northmere now has a named pair: a **process or capabil
 | Finance metrics | Leila for meaning; Owen Mbeki for implementation | Finance Data Platform product owner | Conflicting metric versions |
 
 The pairing works only if the split of authority is written down. The rule [[custom-finance-platforms]] proposed holds across all of them: **Finance owns the rules; Engineering owns the platform.** Finance decides what a payout netting rule or a posting rule says and approves its change; Engineering decides how it is implemented, tested and deployed, and owns the evidence that the approved rule is the one running. The rule store with maker-checker approval, built for the SFP remediation, is that split turned into software ([[designing-financial-ledgers]]).
+
+![A finance owner inserts approved rule cards into a platform maintained by an engineer, both watching one shared measure gauge.](assets/images/41-organizing-for-architecture/finance-rules-engineering-platform.jpeg)
+**Figure 6:** *Finance owns the rules and Engineering owns the platform: each finance platform pairs a Finance owner who approves rule changes with a product owner who runs the service, and both answer to one shared measure.*
 
 Of the six level-2 capabilities with no named Finance owner in March 2027, five had one by October 2027. The sixth, Financial Event Management, still had an architect as interim owner. I prefer that to be visible in the table rather than resolved by naming someone who will not act on it. Completeness of financial events is a business outcome; it needs a Finance owner, and the gap is a standing item at the design authority until it has one.
 

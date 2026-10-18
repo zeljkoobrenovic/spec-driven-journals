@@ -68,3 +68,4 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(Željko Obrenović, AI-mediated session)*
 - **2026-10-18** — Consistency pass: marked the batch 1047 chargeback as an earlier €420 dispute, distinct from the June 2027 chargeback in the scenario ledger. *(AI-mediated session)*
 - **2026-10-18** — Editorial review pass: aligned the €1.74 fee table with the canonical split (scheme €0.21, line markup €0.23, €0.10 batch fee as the rest of the €0.33 markup) and the batch 1047 expense postings; added the €598.26 canonical net; hedged the 2017 license date; dated the first exit test November 2027. *(AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

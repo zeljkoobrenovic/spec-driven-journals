@@ -70,3 +70,4 @@ Chief and enterprise architects, finance-systems leads and internal-controls lea
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(Željko Obrenović, AI-mediated session)*
 - **2026-10-18** — Editorial review pass: standard IDs renamed STD-FIN-01..06 with canonical in-force and enforcement dates; per-standard waiver counts reconciled with ch. 35 (14 at Q3, 11 at year-end); bank-details advice aligned with the SFP→Northmere Pay authority move; American spelling. *(AI-mediated session)*
 - **2026-10-18** — Consistency pass: aligned Lisbon batch credit wording / Stripe Tax waiver renewal with neighboring chapters. *(AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

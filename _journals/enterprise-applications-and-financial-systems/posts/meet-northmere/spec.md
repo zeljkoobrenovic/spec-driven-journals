@@ -64,3 +64,4 @@ Article only for now.
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(author, AI-mediated session)*
 - **2026-10-18** — Consistency pass: aligned Lisbon settlement and payout dates (and batch id) with the scenario ledger. *(AI-mediated session)*
 - **2026-10-18** — Editorial review pass: Wayfare rail ticket stated as merchant of record but agent (€6.72 net, at ticket issue); €420 chargeback dated per ledger; forward pointer to the Dec 2027 convergence decision; American spelling. *(AI-mediated session)*
+- **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*

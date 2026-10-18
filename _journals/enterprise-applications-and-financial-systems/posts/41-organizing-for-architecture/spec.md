@@ -71,3 +71,4 @@ Chief and enterprise architects, CTOs and brand engineering leaders, finance-sys
 - **2026-10-18** — Editorial review pass: payout ownership clarified (Head of Partner Settlement owns rules; Ingrid owns the payout process and executing platform), RACI payments column annotated; six STD-FIN standards. *(AI-mediated session)*
 - **2026-10-18** — Editorial review pass (follow-up): SFP subledger cut-over referred to as August 2027 (consistency item 24). *(AI-mediated session)*
 - **2026-10-18** — Consistency pass: SFP subledger cut-over date set to 1 November 2027; calendar rule wording clarified where relevant. *(AI-mediated session)*
+- **2026-10-18** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
