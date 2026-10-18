@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Principles, Standards and Reference Architectures</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">RECONCILED: Enterprise Architecture for Financial Systems</a><span class="nav-right"><a class="nav-prev" href="architecture-governance.html" title="Architecture Governance That Speeds Decisions">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="target-and-transition-states.html" title="Target State, Transition States and the Roadmap">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part IV — LEAD: Strategic Architecture and Transformation</p>
+        <h1>Principles, Standards and Reference Architectures</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-18  ·  30 min read · <a class="spec-link" href="principles-standards-reference.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/35-principles-standards-reference/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/35-principles-standards-reference/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">RECONCILED: Enterprise Architecture for Financial Systems</a><span class="nav-right"><a class="nav-prev" href="architecture-governance.html" title="Architecture Governance That Speeds Decisions">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="target-and-transition-states.html" title="Target State, Transition States and the Roadmap">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Principles, Standards and Reference Architectures", "date": "2026-10-18", "author": "Željko Obrenović", "excerpt": "How do you turn architectural intent into principles, standards and reference architectures that teams actually use? Write few principles, each with a test that can fail; promote only the ones that protect the whole estate into mandatory standards with automated conformance; and deliver them as reference architectures and golden paths that make the conformant way the easiest way to build.", "permalink": "principles-standards-reference", "timetoread": "30 min read", "icon": "assets/icons/35-principles-standards-reference.png", "logo": "assets/images/35-principles-standards-reference/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Learn to write architecture principles that can be tested, separate principles from standards, guidelines, patterns and reference architectures, work through eleven finance-architecture principles and three reference architectures (payments-to-ledger, subledger-to-GL with drill-back, close orchestration and evidence), and see how golden paths turn them into something a brand team can use.\n\n> **WHY FINANCE CARES:** Every principle in this chapter is a promise about the numbers: that each entity's books have one home, that every boundary is reconciled, that a figure in the trial balance can be traced to the transactions behind it. A controller cannot inspect architecture, but can check at quarter-end whether those promises held.\n\n> **WHY ARCHITECTS SHOULD CARE:** A principle that no build can fail is decoration, and a standard without a reference implementation is a tax on the teams that must comply. In a federated estate, the architecture function's influence comes mostly from how easy it makes the right thing to do.\n\n> **KEY POINTS:**\n>\n> * **A principle is only real if something can fail it.** Write each one with a statement, a rationale, implications, a conformance test and counter-examples. If you cannot name a design that violates it, it is a platitude. If you cannot name a check that detects the violation, it is an aspiration.\n> * **Few principles, fewer standards, one easy way to comply.** Eleven principles guide judgment. Only the handful that protect the whole estate (how money events are published, posted and reconciled, how the ERP is extended, how duties are separated) become mandatory standards, each with an owner, a version, conformance checks and expiring waivers.\n> * **Reference architectures and golden paths are the delivery vehicle.** A reference architecture names the components, responsibilities, interfaces, variation points and conformance checks of a recurring solution. A golden path (the adapter kit, the posting pipeline template) makes the conformant design the cheapest one to build, which is what changes behavior in brands that do not report to the Chief Architect.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-finance-architecture-goes-wrong.html):**\n>\n> * **The Brand Exception** — Principles that cannot be tested are negotiable, and every brand negotiates its own version of them.\n> * **Point-to-Point Spaghetti** — Without a reference architecture and a reusable kit, each team integrates money flows its own way, with its own formats and its own error handling.\n> * **Customization Concrete** — \"Clean core\" stays a slogan until it is a standard with a code-inspection check and a sanctioned place to put the extension instead.\n\n<br>\nMost enterprises have architecture principles. They sit on a wiki page, eight to fifteen of them, with names like \"Data is an asset\", \"Reuse before buy before build\" and \"Security by design\". Most of them change nothing. They are not wrong; they are **untestable**. No team has had a design rejected for failing \"data is an asset\", because nobody can say what failing it would look like.\n\nFinance is where untestable principles cost the most. The defects they fail to prevent are not slow pages; they are a balance nobody can trace, a clearing account that grows every month, or a mapping row that sends $41 million of revenue to the wrong line. They surface at period end, under audit, when fixing them costs the most.\n\nThis chapter treats principles, standards and reference architectures as one chain: **intent becomes principles, the load-bearing principles become standards, standards are made concrete in reference architectures, and reference architectures are delivered as golden paths**. Each link carries a test. The chain is how a Chief Architect with narrow decision rights ([The Chief Architect's Job: Coherence Across a Finance Estate](chief-architect-role.html)) shapes an estate whose engineers mostly report elsewhere.\n\n## Setting the Scene: A Principle That Did Not Stop $41 Million\n\nNorthmere, the fictional multi-brand digital commerce group this book follows, closed its first quarter of 2027 in April. On working day 7, a group reporting analyst noticed that \"Other revenue\" was $41 million higher than forecast. The cause, described in [Finance Data Architecture: Master Data, Systems of Record and Governance](finance-data-architecture.html), was ordinary. Tablekin's finance systems team had added a ledger account for usage revenue in Workday. No mapping row existed for it in the spreadsheets that fed OneStream, and a catch-all rule put the whole balance in \"Other revenue\". Nobody had done anything forbidden, because nothing was forbidden.\n\nDana Whitlock, Northmere's Chief Architect for enterprise applications and financial systems, reread the draft principles her team had circulated in December 2026. Principle 4 said: \"Financial data is accurate, complete and consistent across systems.\" Every system involved would have claimed to comply. Workday was accurate; the mapping spreadsheet was internally consistent; OneStream consolidated what it was given. The defect lived at a **boundary**, and the principle said nothing about boundaries, nothing about who was authoritative for the mapping, and nothing about what should happen to an account with no mapping.\n\nJonas Berg, who runs the roughly 60 engineers on the Stayloft Finance Platform (SFP), put it bluntly at the next design authority: \"Tell me which of these principles can fail my build. Those are the ones I'll read.\" Dana took that as the specification for the rewrite. By the end of May 2027 the December deck had become eleven principles, each with a conformance test; the five mandatory standards she had proposed in November 2026 were in force; three reference architectures were published; and two golden paths were under construction. The mapping defect is now blocked twice: by the governed, effective-dated mapping rules adopted in May 2027 (an unmapped account stops the load), and by a principle that requires every boundary to prove its completeness.\n\n## Concepts: Six Kinds of Architectural Guidance\n\nArchitecture functions produce several kinds of guidance and often blur them. The distinctions matter because each has a different binding force, owner and test.\n\n**Architecture principle.** A durable statement of how the enterprise intends to build and change its systems, used to guide decisions where no standard applies. The TOGAF Standard's widely reproduced template gives a principle four parts: a **name**, a one-sentence **statement**, a **rationale** in business terms and the **implications** for the organization ([The TOGAF Standard](https://www.opengroup.org/togaf)). I add two parts that decide whether a principle gets used: a **conformance test** (how a reviewer or a pipeline would detect a violation) and **counter-examples** (plausible designs that fail it).\n\n**Standard.** A specific, mandatory requirement with a scope, an owner, a version, an effective date, conformance checks and a waiver process. A standard is how a principle becomes enforceable. How standards are approved and waived belongs to [Architecture Governance That Speeds Decisions](architecture-governance.html).\n\n**Guideline.** Recommended practice a team may depart from without a waiver, provided it can explain why. Guidelines carry most of an architecture function's experience and should far outnumber standards.\n\n**Pattern.** A named, reusable solution to a recurring design problem: the transactional outbox, the idempotent receiver ([Hohpe and Woolf](https://www.enterpriseintegrationpatterns.com/)), the reversal adjustment ([Fowler](https://martinfowler.com/eaaDev/AccountingNarrative.html)), control totals per batch. Patterns are vocabulary; they do not say where they apply in this enterprise.\n\n**Reference architecture.** A solution template for a recurring problem *in this enterprise*: components, responsibilities, interfaces, the points where implementations may legitimately differ (**variation points**), and the checks that prove an implementation conforms. It composes patterns and implements standards.\n\n**Golden path.** A supported, opinionated, ready-to-use way of building one kind of thing. Spotify's engineering team, which popularized the term, calls it \"the opinionated and supported path\" to build something; engineers may leave it but \"will not have the same support\" ([Niemen, 2020](https://engineering.atspotify.com/2020/08/how-we-use-golden-paths-to-solve-fragmentation-in-our-software-ecosystem)). A golden path is a reference architecture turned into templates, libraries, test harnesses and pipelines.\n\n| | Principle | Standard | Guideline | Pattern | Reference architecture | Golden path |\n| --- | --- | --- | --- | --- | --- | --- |\n| **Binding force** | Guides judgment; cited in decisions | Comply or hold a dated waiver | Explain departures | None by itself | Conform at checkpoints; vary at variation points | Optional; leaving it means proving conformance yourself |\n| **Form** | One sentence plus anatomy | Numbered \"must\" clauses and checks | Prose, examples | Problem, forces, solution | Diagram, component table, interfaces, checks | Code, schemas, templates, CI checks |\n| **Typical count** | 8–12 | 5–10 enterprise-wide | Dozens | Dozens | 3–8 for a finance estate | One per reference architecture |\n| **Owner at Northmere** | Chief Architect; Leila Haddad co-owns accounting-facing ones | Chief Architect decides; named standard owner | Domain architects | Architecture community | Named lead architect | A platform team funded as a product |\n| **How it is tested** | Design review against its test | Automated checks, or attestation with sampling | Peer review | — | Conformance checklist at design and go-live | By construction: the kit runs the checks |\n| **Changes** | Rarely; recorded | Versioned; major versions need a transition period | Freely | Rarely | With the standards it implements | Released like software |\n\n"}, {"type": "mermaid", "content": "flowchart TB\n    INT[\"Intent: Keystone goals, CFO questions, audit findings\"] --> PR[\"Principles: eleven, each with a conformance test\"]\n    PR -->|\"load-bearing ones promoted\"| ST[\"Mandatory standards\"]\n    PR -->|\"the rest guide judgment\"| GL[\"Guidelines and patterns library\"]\n    ST --> RA[\"Reference architectures\"]\n    GL --> RA\n    RA --> GP[\"Golden paths: adapter kit, posting pipeline template\"]\n    GP --> BUILD[\"Brand and platform builds\"]\n    BUILD --> CC[\"Conformance checks in CI and production\"]\n    CC -->|\"results and waivers\"| GOV[\"Design authority and waiver register\"]\n    GOV -->|\"revise, deprecate, add\"| PR\n    GOV -->|\"revise, deprecate, add\"| ST"}, {"type": "markdown", "content": "\n**Figure 1:** *Guidance as a chain. Each link narrows interpretation and adds support; conformance results flow back to governance, which revises principles and standards. A link without a test breaks the chain.*\n\n## Writing a Principle That Can Fail\n\nEach part of the anatomy has a job, and a weak part is easy to spot.\n\n| Part | Weak version | Strong version |\n| --- | --- | --- |\n| **Statement** | \"Data quality is important\" | \"Every boundary that moves financial data proves its completeness and accuracy\" |\n| **Rationale** | \"Best practice\" | \"A difference found at a boundary on the day costs a day of investigation; found at close it costs a month and can reach the published statements\" |\n| **Implications** | Omitted | \"Every interface carries control totals; reconciliation is funded with the interface, not after go-live\" |\n| **Conformance test** | Omitted | \"An interface specification that names no control totals and no consuming reconciliation fails design review\" |\n| **Counter-examples** | Omitted | \"A nightly file transfer monitored for arrival but not for record counts and totals\" |\n\nThree drafting rules follow. **Name no products in the statement**: \"clean core\" is a principle; \"use SAP BTP\" is a decision that may change. **Use verbs a design can fail**: \"proves\", \"derives\", \"owns\", \"carries\", not \"supports\", \"considers\" or \"enables\". **Write the rationale for the CFO**: if the reason cannot be stated in terms of the close, the audit, cost or risk to the numbers, the principle is probably engineering taste rather than finance architecture.\n\nPrinciples should not come from a workshop with a blank flipchart. Andrew Harmel-Law lists **team-sourced architectural principles** among the four supporting elements of the advice process, alongside decision records, an advisory forum and a technology radar ([Harmel-Law, 2021](https://martinfowler.com/articles/scaling-architecture-conversationally.html)). Northmere's came from three places: the 11 cross-team decisions Dana's team reconstructed in her first 90 days (three of them reopened), the FY2026 significant deficiency on the SFP payout engine, and the failure patterns that recurred in the capability-overlap and portfolio work ([Map Capabilities Before Systems](capability-mapping.html), [Manage the Application Portfolio as an Investment](application-portfolio.html)). Each principle generalizes a decision Northmere wished it had made earlier.\n\n## Eleven Principles for a Finance Estate\n\nThese are the principles Northmere adopted in May 2027. I would propose them, adapted, to any multi-entity enterprise with custom platforms around vendor ERPs. Change the wording if you must; keep the conformance tests.\n\n### P1. One book of record per legal entity and ledger\n\n**Statement:** For each legal entity and accounting basis, exactly one system is the book of record for the general ledger; every other system holding that entity's balances is a subledger that reconciles to it.\n\n- **Rationale.** Statutory accounts, tax returns and consolidated statements are signed per entity. If two systems can claim to hold an entity's books, \"which number is right?\" has no answer, only a negotiation.\n- **Implications.** An acquired brand's ERP stays the book of record for its own entities only until a dated decision says otherwise. A custom platform that holds balances (SFP's merchant subledger, the traveler funds ledger) is declared a subledger with named control accounts.\n- **Conformance test.** The entity register names one book-of-record system per entity and basis for all 71 legal entities; every other system holding balances appears in the reconciliation catalog ([Designing for Traceability, Reconciliation and Audit Across Boundaries](traceability-and-reconciliation.html)).\n- **Counter-example.** A brand platform producing \"P&L by property\" from its own balances that nobody ties to the GL (**The Shadow Ledger**).\n\n### P2. Post facts, derive accounts\n\n**Statement:** Operational systems publish financial facts as events; only the accounting engine derives accounts, amounts and periods from them, under versioned, approved posting rules.\n\n- **Rationale.** When brand systems choose GL accounts, accounting policy is scattered across repositories and changed through engineering releases, and nobody can show an auditor which rule produced an entry. Fowler's **Posting Rule** pattern states the alternative: the rule, not the event source, decides the entries ([Fowler, Accounting Patterns](https://martinfowler.com/apsupp/accounting.pdf)).\n- **Implications.** Brand platforms stop holding GL mapping tables. Posting rules live in a rule store with maker-checker approval by accounting ([Designing Custom Ledgers and Financial Event Processing](designing-financial-ledgers.html)). Corrections are new entries (reversal and re-post), never edits.\n- **Conformance test.** No registered event schema contains a GL account, cost center or posting key; every journal line carries the `rule_id` and `rule_version` that produced it.\n- **Counter-example.** SFP in 2027, which still chose its own GL accounts from an internal table maintained by Stayloft finance.\n\n### P3. Reconcile at every boundary\n\n**Statement:** Every boundary that moves financial data or money proves, on the cadence of the flow, that what left one side arrived complete and accurate on the other; every difference has an owner and an age.\n\n- **Rationale.** Retries, at-least-once delivery and late settlement files make some divergence inevitable. Hohpe notes that even the \"write-off\" style of error handling works only because \"periodically, they'd run reconciliation reports\" ([Hohpe, 2005](https://www.enterpriseintegrationpatterns.com/docs/IEEE_Software_Design_2PC.pdf)). Reconciliation is what turns eventual consistency into a closed-period guarantee.\n- **Implications.** Control totals (counts, amounts per currency, a hash) travel with every batch and every daily event stream.\n- **Conformance test.** Each of the roughly 1,100 cataloged interfaces names its control totals, the reconciliation that consumes them and the owner of breaks. For event streams, published = posted + no-entry + quarantined + in flight, computed daily.\n- **Counter-example.** The April 2027 mapping load, which accepted an unmapped account instead of stopping. A suspense account used as a destination rather than a queue (**Suspense Gravity**).\n\n### P4. Detail where it is created, summaries where they are consumed, drill-back always\n\n**Statement:** Transaction detail stays in the system that creates or accounts for it; downstream ledgers receive summaries; every summary carries a key back to its detail for as long as the detail is retained.\n\n- **Rationale.** Posting three million SFP lines a day into the GL buys nothing; summarizing without a link makes balances untraceable and audits slow.\n- **Implications.** Summary keys and drill-back keys are designed explicitly and approved by the controller, because they decide what the GL can report.\n- **Conformance test.** A reviewer picks any subledger-fed GL line and reaches the originating events through stored keys alone, with no log search and no spreadsheet; run on a sample quarterly.\n- **Counter-example.** A batch map kept in a log store with 13-month retention (**Summarized Into Silence**).\n\n### P5. Authority is explicit and singular per attribute\n\n**Statement:** For every shared data attribute and lifecycle stage, exactly one system is authoritative; every other system holding it is a subscriber that cannot change it.\n\n- **Rationale.** **The Many Masters** cause the costliest data defects in finance: bank details changed in two places, 12,400 Stayloft partners linked to two FI-CA business partners. Authority per attribute, not per object, lets a booking be authoritative in the brand platform, the receivable in the subledger and the balance in the GL ([Systems of Record and Authoritative Data Boundaries](systems-of-record.html)).\n- **Implications.** Subscribers get no write path for mastered attributes. Mappings are attributes too: OneStream mapping rules have an author (the source ledger's team) and an approver (group reporting).\n- **Conformance test.** Every attribute in the system-of-record matrix names one authority, and access reviews find no user or service with write access to it elsewhere.\n- **Counter-example.** Supplier bank details editable in both Coupa and the ERP.\n\n### P6. Clean core: extend beside the ERP, not inside it\n\n**Statement:** Vendor platforms are extended through released interfaces, side-by-side services and configuration; no modifications to vendor objects and no direct writes to vendor tables.\n\n- **Rationale.** Northmere carries about 2,300 custom objects in S/4HANA and needs about seven months per upgrade (**Customization Concrete**). SAP classifies extensions by **clean core levels A to D**: Level A uses released APIs, and Level D (modifications, direct table writes, implicit enhancements) is not recommended; SAP names the ABAP Test Cockpit (ATC) as the key code-governance tool ([SAP News, 2025](https://news.sap.com/2025/08/extend-sap-s4hana-cloud-right-way-clean-clear/)). The principle applies equally to Fusion, Workday and SaaS close tools.\n- **Implications.** There must be a sanctioned place for the extension: a side-by-side platform or a Northmere service behind an anti-corruption layer. Without one, the principle is a ban, and bans get waived.\n- **Conformance test.** ATC clean-core checks run in the transport pipeline; new Level D objects fail; Level C needs a recorded decision. For SaaS, custom objects are inventoried before each vendor release.\n- **Counter-example.** A user exit that changes posting logic inside the ERP for one brand.\n\n### P7. Configuration before code, code before forks\n\n**Statement:** Differences between brands, entities, markets and business models are expressed first as configuration of a shared capability, then as code behind a published extension point, and only as a fork by recorded decision with a retirement date.\n\n- **Rationale.** Three billing approaches and two payout engines are the residue of forks that were each locally reasonable (**The Brand Exception**).\n- **Implications.** Shared capabilities need configuration models rich enough to carry real differences ([Onboarding Brands, Entities and Markets as Configuration](brands-entities-markets.html)); configuration that changes money is itself versioned and approved.\n- **Conformance test.** Every design introducing brand- or market-specific code names the configuration option it rejected and why; every fork in the portfolio has a decision record and a retirement date.\n- **Counter-example.** A copy of the posting pipeline \"temporarily\" maintained for one brand.\n\n### P8. Controls are designed, not retrofitted\n\n**Statement:** Every finance-relevant system is designed with its controls, segregation of duties and evidence as requirements, and produces its evidence automatically as a by-product of operation.\n\n- **Rationale.** The FY2026 significant deficiency on SFP's payout engine (14 engineers with standing production access; 9 of 23 rule changes without documented approval) cost a remediation program that a design-time rule store and pipeline would have avoided ([Controls, Auditability and Security by Design](controls-and-auditability.html)). Retrofits happen under audit pressure (**Audit Afterthought**).\n- **Implications.** Every decision record for a finance-relevant system carries a control impact assessment signed by Internal Controls; evidence goes to the central evidence store, tagged by control.\n- **Conformance test.** Role designs pass a segregation-of-duties conflict check before go-live; evidence for each key control can be produced by query, without assembly.\n- **Counter-example.** A pipeline that lets the author of a change approve it.\n\n### P9. Money is integers with a currency\n\n**Statement:** Every monetary amount is stored and transmitted as an integer in minor units (or fixed-point decimal) with its ISO 4217 currency code; rounding, allocation and conversion follow declared rules, and every conversion records rate, source and timestamp.\n\n- **Rationale.** Binary floating point cannot represent most decimal amounts exactly. Minor units differ by currency ([ISO 4217](https://www.iso.org/iso-4217-currency-codes.html)): two decimals for the euro and dollar, none for the yen, three for the Kuwaiti dinar. Northmere collects in 46 currencies. Fowler's **Money** pattern is the standard treatment ([PoEAA](https://martinfowler.com/eaaCatalog/money.html)).\n- **Implications.** The canonical envelope carries the Lisbon booking as `60000` with `EUR`. Allocation computes one amount and derives the other as the remainder: the €510.00 payout is €600.00 minus the €90.00 commission. Rates come from the one per-period snapshot Kyriba publishes.\n- **Conformance test.** Schema linting rejects floating-point money fields and money fields without a currency; property tests assert every generated entry nets to zero per currency.\n- **Counter-example.** A hard-coded exponent of 2 for every currency.\n\n### P10. Every automated actor has an owner and an evidence trail\n\n**Statement:** Every bot, script, scheduled job, integration identity and AI agent that reads, proposes, posts, approves or changes financial data has a named owner, scoped permissions and a log an auditor can rely on.\n\n- **Rationale.** Automation moves work to identities nobody reviews (**Automation Without Accountability**).\n- **Implications.** Technical identities are in the access review. AI agents follow \"the agent may propose; a controlled process disposes\", with an agent control card as conformance artifact ([AI, Automation and Agentic Finance Operations](ai-in-finance.html)).\n- **Conformance test.** No technical identity with financial write rights lacks a named owner; every agent in a financially relevant process has an approved control card.\n- **Counter-example.** A robotic process automation (RPA) bot posting accruals under a former employee's credentials.\n\n### P11. Prefer reversible decisions; make irreversible ones slowly\n\n**Statement:** Where options exist, choose designs that can be reversed at known cost; decisions that cannot (book-of-record changes, vendor commitments, chart-of-accounts structure, data deletion) go through the design authority with options, an exit path and a review date.\n\n- **Rationale.** Finance decisions are often reversible only at a period boundary, after an audit, or never. Treating every decision as heavy makes architecture a bottleneck; treating every decision as light makes it reckless. The principle sorts them.\n- **Implications.** Integration contracts stay independent of tools (normalized settlement records, control totals, status signals), so replacing a vendor is a migration, not a rebuild ([Vendor Strategy and Avoiding Excessive Dependency](vendor-portfolio-strategy.html)).\n- **Conformance test.** Decisions classified as hard to reverse have a record with at least two options, an exit path and a review date.\n- **Counter-example.** A year-end ledger switch with no parallel run (**Big-Bang Bravado**).\n\nNorthmere deliberately left out \"API first\", \"cloud first\" and \"reuse before buy before build\". They are reasonable defaults, but they do not protect the numbers, so they live among the guidelines.\n\n## From Principles to Mandatory Standards\n\nA principle is promoted to a mandatory standard when three conditions hold. **The harm of non-compliance falls on others**: the group's books, its auditors or other teams. **Compliance can be checked**, ideally automatically. **A reference implementation exists or is funded**, so the standard does not impose an unfunded cost on teams outside the Chief Architect's line.\n\nDana's five proposed standards came into force in Q1 2027, effective for new builds and changed interfaces from 1 April 2027, with dated transition plans for existing systems. STD-FIN-01 and STD-FIN-02 were declared on that date but enforced from 1 July 2027, when the schema registry went live ([Canonical Events and Adapters for Loosely Coupled Financial Domains](loosely-coupled-domains.html)). The agent control card became the sixth in Q3 2027. How each standard is approved, waived and checked is described in [Architecture Governance That Speeds Decisions](architecture-governance.html).\n\n| Standard | Principles | Core requirement | Conformance check | Reference implementation |\n| --- | --- | --- | --- | --- |\n| **STD-FIN-01 Canonical financial events** | P2, P4, P9 | Facts crossing a domain boundary are registered canonical events with the Keystone envelope (`event_id`, `event_version`, `occurred_at`, `legal_entity`, `correlation_id`, `amount` in minor units plus currency, among others) | Schema-registry compatibility; consumer-driven contract tests; envelope linting | Adapter kit |\n| **STD-FIN-02 Idempotent posting** | P2, P3 | Every posting interface accepts a stable idempotency key; a repeated event creates no new entries | CI replay test; production duplicate-rejection counters | Posting pipeline template |\n| **STD-FIN-03 Subledger-to-GL reconciliation** | P1, P3, P4 | Every subledger reconciles daily to its GL control accounts by entity, account and currency, with drill-back keys and control totals | Daily tie-out published as evidence; difference zero or explained by batches in flight | Posting pipeline template |\n| **STD-FIN-04 Clean-core ERP extension** | P6, P7 | No new modifications or direct table writes in vendor ERPs | ATC clean-core checks in the transport pipeline; custom-object inventory for SaaS ERPs | Side-by-side extension guide (Sven Aalto's SAP team) |\n| **STD-FIN-05 Segregation of duties by design** | P8, P10 | Roles, pipelines and rule stores enforce maker-checker and no standing production access | Role-conflict check before go-live; pipeline policy check; break-glass reviewed within one working day | SFP remediation design |\n| **STD-FIN-06 Agent control card** (Q3 2027) | P10, P8 | No AI agent in a financially relevant process without an approved control card; agents may not post, approve, pay or change master data | Card approved by control owner, system owner and Internal Controls | Pilot 1 card ([AI, Automation and Agentic Finance Operations](ai-in-finance.html)) |\n\nEach standard is a short document with numbered \"must\" clauses. STD-FIN-02 fits on a page:\n\n```text\nSTD-FIN-02 Idempotent posting                      v1.1, effective 2027-04-01\nOwner: Lucía Romero (integration)    Accounting liaison: Leila Haddad's policy team\nScope: every interface that creates journal entries in a Northmere ledger or subledger\n2.1  The producer MUST supply an idempotency key that is stable across retries\n     (canonical events: event_id; files: batch_id plus line number).\n2.2  The receiver MUST keep keys for at least the open period plus 13 months\n     and MUST return the original result for a repeated key.\n2.3  A repeated key with a different payload MUST go to quarantine, not be posted\n     or silently discarded.\n2.4  Corrections MUST be new events (reversal and re-post), never re-sends of the\n     original key with changed content.\nChecks: CI replay test (2.1-2.3); production metric \"duplicates rejected\" per source;\n        quarterly sample of corrections (2.4).\nWaivers: dated expiry; compensating control required for systems in ICFR scope.\n```\n\nThe format does what the December principles could not: a team knows what to build, a pipeline knows what to check, an auditor knows what evidence to ask for. Clause 2.3 earns its place from a common payments failure: a provider re-sends a corrected settlement line under the original reference, and a receiver that checks only the key silently drops the correction. Standards should earn their clauses from incidents.\n\nNote what was *not* promoted. P9 is enforced through STD-FIN-01's envelope rather than standing alone. P11 is a governance rule, not a design rule. P7 is judged in review, because no pipeline can tell whether configuration was \"sufficient\". The list stays short because, as [The Chief Architect's Job: Coherence Across a Finance Estate](chief-architect-role.html) argues, a long mandatory list is either unenforced or a centralized operating model in disguise.\n\n## Reference Architecture 1: Payments-to-Ledger\n\nEvery brand that takes payments faces the same question: how do provider events and settlement reports become accounting entries and reconciled cash? [Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP](payments-to-ledger.html) owns the clearing account design, the three-way match and the €14 million suspense remediation; this section gives the reusable shape and its checks.\n\n"}, {"type": "mermaid", "content": "flowchart LR\n    BK[\"Brand booking or order with reference\"] -->|\"merchant reference\"| WH[\"Webhook intake, idempotent\"]\n    WH -->|\"operational state\"| NM[\"Normalization to canonical events, raw kept beside\"]\n    RI[\"Settlement report ingestion with completeness check\"] -->|\"settlement truth\"| NM\n    NM -->|\"PaymentSettled, PSPFeeCharged, RefundIssued, ChargebackReceived\"| AE[\"Accounting engine and rule store\"]\n    AE --> CL[\"Subledger journal and clearing accounts per PSP and currency\"]\n    NM -->|\"normalized lines and control totals\"| TM[\"Three-way matching: order, PSP, bank\"]\n    CL -->|\"expected receipts\"| TM\n    BS[\"Bank statements via treasury\"] --> TM\n    TM --> EQ[\"Exception queue with owner and age\"]\n    TM -->|\"match status\"| CL"}, {"type": "markdown", "content": "\n**Figure 2:** *Payments-to-ledger reference architecture. Webhooks carry state early, settlement reports carry money later; both converge on one enterprise-owned normalization layer. The accounting engine posts from canonical events, and matching proves that clearing accounts empty out against the bank.*\n\n| Component | Responsibility | Never does |\n| --- | --- | --- |\n| Webhook intake | Receive provider notifications at least once; deduplicate | Post money to the ledger |\n| Settlement report ingestion | Collect every report; detect missing or late files; compute provider-side control totals | Drop a file silently |\n| Normalization | Map provider records to canonical events (STD-FIN-01); keep the raw record immutably beside the normalized one | Let provider vocabulary reach GL accounts |\n| Accounting engine | Derive entries from canonical events under approved rules (P2) | Choose accounts per provider in code |\n| Clearing accounts | Hold amounts in transit per PSP and currency until matched | Become a permanent home for differences |\n| Three-way matching | Match order to PSP settlement to bank credit within tolerances | Post the accounting entry itself |\n| Exception queue | Hold each unmatched item with owner, reason code and age | Auto-clear without a tested rule |\n\n**Interfaces.** The canonical events are owned by [Canonical Events and Adapters for Loosely Coupled Financial Domains](loosely-coupled-domains.html). Normalized settlement lines are a contract keyed by booking reference, carrying the provider's own reference and batch. Bank statements arrive through treasury as camt.053 or MT940.\n\n**Worked trace.** The Lisbon booking (€600.00, captured through Adyen on 12 March 2027) is booked into Adyen settlement batch 1047 on 14 March (the batch's bank credit to Northmere Payments B.V. follows on 16 March): normalization emits `PSPFeeCharged` for 174 and `PaymentSettled` for 59826 euro cents, both with the booking reference as `correlation_id`. Under the rule set in [Designing Custom Ledgers and Financial Event Processing](designing-financial-ledgers.html), \"PSP clearing – Adyen\" was debited €600.00 at capture and is now credited €1.74 (to Payment processing fees) and €598.26 (to Bank – safeguarding). Matching ties the normalized line to SFP's expected receipt and, through batch 1047, to the 16 March batch credit on the bank statement. The clearing account is back to zero for this booking, the only state a clearing account should converge to.\n\n**Variation points.**\n\n| Variation point | Allowed options | Decided by |\n| --- | --- | --- |\n| Routing layer | In-house routing or a third-party orchestrator, if the ledger depends only on canonical events | Payments domain, with architecture review |\n| Matching granularity | Per transaction (cards); per provider daily aggregate plus a line-level report (some local payment methods) | Payments domain and the controller |\n| Fee recognition | Per transaction from settlement lines, or per batch where providers report only batch fees | Accounting policy |\n| Target subledger | SFP; the Stripe-to-Workday feed for Tablekin; Fusion for Wayfare until convergence | Recorded per brand |\n| Matching tool | BlackLine Transaction Matching today; replaceable because the normalized contract is Northmere's | Close platform owner |\n\n**Conformance checks.** (1) Per provider and day, lines reported equal lines normalized plus lines quarantined. (2) Every clearing account is aged by expected zero date, and items older than 30 days are reported to the controller. (3) No GL account or posting rule contains a provider-specific transaction type. (4) A new payment method goes live only after its settlement report is mapped, its matching rule has been tested on a month of sample data, and booking references are present on its lines. Northmere lacked the fourth check while most of the €14 million accumulated: in April 2027, 48% of unmatched local-payment-method lines had no booking reference.\n\n## Reference Architecture 2: Subledger-to-GL With Drill-Back\n\nThe second reference architecture applies wherever a high-volume subledger, custom or vendor, feeds a general ledger. [Designing Custom Ledgers and Financial Event Processing](designing-financial-ledgers.html) builds SFP's version component by component; this section abstracts it into a contract that any subledger must meet, whether SFP, SAP FI-CA, a vendor accounting engine or the Northmere Ads billing service.\n\n"}, {"type": "mermaid", "content": "sequenceDiagram\n    participant SRC as Producers\n    participant SL as Subledger\n    participant SUM as Summarizer\n    participant GL as GeneralLedger\n    participant TO as TieOut\n    participant REC as Reconciliation\n    SRC->>SL: Canonical events with control totals\n    SL->>SL: Validate, dedupe, apply rule version, write lines\n    SL->>SUM: Lines for the accounting date\n    SUM->>SUM: Group by summary key, write summary_id on each line\n    SUM->>GL: Summary document with summary_id and batch totals\n    GL->>GL: Validate totals, post or reject the whole batch\n    GL-->>SUM: Acknowledgment with GL document number\n    TO->>SL: Movement by entity, account, currency, day\n    TO->>GL: Movement for the same keys from this source\n    TO->>REC: Differences with owner and age"}, {"type": "markdown", "content": "\n**Figure 3:** *Subledger-to-GL reference architecture. The summary carries a drill-back key and control totals; the GL accepts or rejects whole batches and returns its document number; a daily tie-out compares movements on both sides and sends any difference to reconciliation with an owner.*\n\n**Components.** *Intake* validates and quarantines. The *accounting engine* applies the approved rule version and refuses unbalanced entries. The *summarizer* groups lines by an approved **summary key** (for SFP: legal entity, ledger, accounting date, GL account, profit center, currency, business model, tax code) and writes a `summary_id` on every contributing line. The *GL inbound interface* validates batch totals and posts all or nothing. The *tie-out* compares movements daily, and *reconciliation* in the close platform receives breaks as reconciling items.\n\n**Interfaces.** Three are contractual: the **summary document** (header reference holding the `summary_id`; line count, debit and credit totals per currency; a hash of contained `summary_id`s), the **acknowledgment** (GL document number, stored against the summary), and the **tie-out extract**, which uses the same keys on both sides so differences are computed rather than investigated.\n\n**Worked numbers.** SFP turns about 3 million subledger lines a day into about 38,000 S/4HANA lines, roughly 79 to 1. A controller drilling from the S/4HANA commission revenue line for 21 April 2027 reaches the summary, then its lines, then the `StayCompleted` event for the Lisbon booking (€90.00 commission), then the booking: four joins on stored keys.\n\n| Variation point | Options | Constraint |\n| --- | --- | --- |\n| Subledger technology | Custom (SFP), SAP FI-CA, Oracle Accounting Hub, Workday Accounting Center | Vendors implement the same idea: FI-CA consolidates documents into totals records under a reconciliation key before transfer ([SAP Learning](https://learning.sap.com/courses/implementing-sap-financial-contract-accounting/describing-general-ledger-integration)); Workday Accounting Center posts summarized journals with drill-down to source ([Workday](https://www.workday.com/en-us/products/financial-management/accounting-center.html)) |\n| Summary key | Any approved set of dimensions | Approved by the controller and Owen Mbeki's finance data team, because it decides which reports the GL can certify |\n| Posting cadence | Daily by default; intraday where the close needs it | Never monthly only: that makes a daily tie-out impossible |\n| Target GL | S/4HANA for SAP-run entities; Fusion and Workday until convergence | The contract stays when the target changes, which makes the 2029 convergence a re-pointing, not a rebuild |\n\n**Conformance checks.** (1) The daily tie-out difference is zero or explained by batches sent and not yet acknowledged. (2) Every subledger line older than a day carries a `summary_id`. (3) No batch is partially posted; an unacknowledged batch older than four hours raises an alert. (4) The P4 drill-back sample passes quarterly. (5) Drill-back keys are retained as long as the detail. In mid-2027 SFP met checks 1 to 3; Tablekin's and Wayfare's daily summarized feeds met only check 3, and the gaps went into their transition plans.\n\n## Reference Architecture 3: Close Orchestration and Evidence\n\nThe third reference architecture governs the period end. Its components are mostly signals and gates rather than data pipelines, which makes it the least obvious to engineers and the most valuable to the controller, because the critical path of the close runs through it. [BlackLine: Close Automation, Reconciliation and Continuous Accounting](blackline.html) covers the close platform, [OneStream: Consolidation, Planning and Performance Management](onestream.html) consolidation, and [The End-to-End Finance Processes](finance-processes.html) record-to-report as a process.\n\n"}, {"type": "mermaid", "content": "flowchart TB\n    SLC[\"Subledger and ledger cut-off signals with control totals\"] -->|\"cut-off complete\"| CAL[\"Close calendar: tasks, owners, dependencies\"]\n    PER[\"Period state per ledger\"] -->|\"soft-close status\"| CAL\n    CAL -->|\"release dependent tasks\"| MAT[\"Matching and reconciliation\"]\n    MAT --> CERT[\"Certification status per entity\"]\n    PRE[\"Preliminary trial balance loads\"] --> FIN[\"Final consolidation\"]\n    CERT -->|\"key reconciliations certified\"| LOCK[\"Entity lock gate\"]\n    LOCK --> FIN\n    SLC --> EVS[\"Central evidence store, tagged by control\"]\n    MAT --> EVS\n    CERT --> EVS\n    LOCK --> EVS\n    EVS --> CCM[\"Continuous control monitors\"]\n    CCM -->|\"exceptions as close tasks\"| CAL"}, {"type": "markdown", "content": "\n**Figure 4:** *Close orchestration reference architecture. Ledgers emit cut-off signals with control totals; the calendar releases tasks on signals, not dates; consolidation locks an entity only when its key reconciliations are certified; every gate writes evidence that monitors can query.*\n\n| Component | Responsibility | Northmere implementation (2027) |\n| --- | --- | --- |\n| Close calendar | Tasks, owners, predecessors; release tasks when inputs are ready | BlackLine Task Management |\n| Cut-off signal | Each ledger and subledger announces that the period's final feed is complete, with control totals | SFP final daily summary; target 06:00 on WD1 |\n| Period state | Open, soft-closed, closed; the ledgers' period locks remain authoritative | S/4HANA, Fusion, Workday |\n| Reconciliation and certification | Prove balances; publish certification status per entity (status, not data) | BlackLine, about 6,800 accounts |\n| Consolidation gate | Accept preliminary loads early; lock an entity only after its key reconciliations are certified | OneStream: preliminary loads from WD−2, flash WD3, final WD7, lock WD9 |\n| Evidence store | Evidence from every gate, tagged by control, immutable to the people controlled | Central store owned by Internal Controls and Security |\n| Control monitors | Test the full population; raise exceptions as close tasks | Mei Tanaka's control and evidence register |\n\nThe decisive design choice is that the close runs on **signals rather than dates**. A task that depends on SFP's final summary starts when SFP emits its cut-off signal with matching control totals, not at 09:00 on WD2. That turns the close calendar from a schedule into an orchestration, which is how hidden waiting time disappears.\n\n**Variation points.** The calendar tool (SAP Advanced Financial Closing becomes an option if convergence shrinks the non-SAP close); the number of ledgers emitting signals (three ERPs today, one group core by 2029); the gate rule per entity tier (all key reconciliations for significant entities, a smaller approved set for dormant ones).\n\n**Conformance checks.** (1) No entity is locked without the certification signal for its key reconciliations. (2) Every source feeding the close emits a cut-off signal with control totals, and the calendar consumes it. (3) Every key close control writes evidence tagged with its control identifier. (4) Manual journals above threshold are approved by someone other than the preparer, verified by monitor. (5) Task dependencies are machine-readable, so the critical path is computed rather than reconstructed. Check 5 is what let Northmere decompose its nine-day close into the tool-only, shared and upstream measures behind the plan to reach five days by the end of 2028.\n\n## Golden Paths: Making the Conformant Way the Easy Way\n\nReference architectures describe; golden paths deliver. A team handed a forty-page specification builds something close to it, late; a team handed a library and a test harness builds exactly it, early. Two golden paths carry most of Northmere's standards.\n\n**The adapter kit**, owned by Lucía Romero's integration architects and funded centrally by Keystone, is the path for publishing financial facts:\n\n- an envelope library that generates `event_id`, stamps `recorded_at`, enforces minor units plus currency and refuses floating-point amounts (STD-FIN-01, P9);\n- schema templates for each canonical event type, registered with compatibility rules;\n- a mapping template from brand-internal events to canonical ones;\n- a control-total emitter publishing daily counts and totals per event type, the producer side of the completeness equation (P3);\n- a conformance harness for the brand's CI: envelope linting, consumer contract tests, and a replay test that re-sends a day of events and asserts no new entries downstream (STD-FIN-02).\n\n**The posting pipeline template**, owned by a ledger platform team formed from SFP engineers in 2027, is the path for any subledger-to-GL integration: intake and quarantine services, the rule store with its maker-checker workflow, the accounting engine invariants, a summarizer configured by summary key, the GL acknowledgment handler, the tie-out job with its evidence writer, and money-in-flight dashboards. A team using it meets STD-FIN-02, STD-FIN-03 and the evidence parts of STD-FIN-05 by construction. What remains is its posting rules and summary key, which are accounting decisions.\n\nThe first two feeds on the adapter kit, in the second half of 2027, were Northmere Pay's normalized settlement events (`PaymentSettled`, `PSPFeeCharged`), which already existed as files for BlackLine, and Northmere Ads' `AdClickBilled`. Neither was the hardest feed; both had owners willing to report what the kit got wrong.\n\nGolden paths change the economics of compliance. Leaving the path is allowed, as Spotify's framing intends, but a team that leaves it must demonstrate conformance with its own evidence, which is more work than adopting the kit. That is the point. A golden path harder to use than building from scratch is a mandate in a library's clothing, and teams route around it.\n\n## In Practice: The First Months of the Catalog\n\nThe catalog went live in May 2027 as one page in Northmere's developer portal, linked from every relevant LeanIX application record. Three things happened that are typical.\n\n**Principles with tests were used within weeks; the others were quoted.** P2, P3 and P5 appeared in design reviews because reviewers could apply them on the spot. P11 was cited by both sides of the Central Finance versus accounting-hub debate, which showed it working: it framed the decision as hard to reverse and therefore due a slow, recorded process with an exit path.\n\n**Standards produced waivers, and the waivers were informative.** By the end of Q3 2027 the register held 14 active waivers, all dated. Six were against STD-FIN-03 for Tablekin and Wayfare feeds without a daily tie-out or drill-back keys; they became items in those brands' transition plans. Four were against STD-FIN-04 for S/4HANA objects that needed a released API SAP did not yet provide; those carried compensating controls and a review at each SAP release. A register of that shape shows that standards bite and that their owners are honest about what cannot yet be met.\n\n**Reference architectures were found because they were linked from the work.** One that lives in an architecture repository is read by architects; one linked from the interface intake form, the portfolio record and the CI failure message is read by engineers. The most effective single change was making every conformance failure in CI print the clause number and a link to the section that explains it.\n\n## Trade-offs: How Much to Mandate\n\nThe trade-off is coherence against autonomy, and the right point differs by capability.\n\n| Approach | Coherence | Team autonomy | Cost to the center | Right for | Fails when |\n| --- | --- | --- | --- | --- | --- |\n| **Advisory principles only** | Low to medium | High | Low | Capabilities where divergence harms only the team itself | Applied to money flows: every brand reconciles differently (**The Brand Exception**) |\n| **Standards with attestation** | Medium | Medium | Medium: reviewers, evidence assembly | Rules no pipeline can check (organizational segregation of duties, contract terms) | Attestations become box-ticking between audits |\n| **Standards with automated checks and a golden path** | High on the standardized points | Medium to high outside the variation points | High up front, falling with adoption | Load-bearing recurring designs: event publication, posting, tie-out, ERP extension | The golden path is not maintained; teams fork it and checks erode |\n| **One mandatory shared platform** | Very high | Low | Highest: the center runs it | Commodity capabilities with no legitimate variation: the tax service adapter in front of Vertex, the payment factory, the e-invoicing gateway | Legitimate variation exists; the platform becomes a queue and brands build around it |\n\nI recommend the third row for the load-bearing standards and the fourth for genuinely commodity capabilities, which is where Northmere's May 2027 decisions on tax and e-invoicing ([Around the Core: Tax, Treasury, Procurement and Reporting Platforms](satellite-platforms.html)) already sit. Advisory principles suffice for most of the rest of the estate. The common error is one level everywhere: everything mandated (the function becomes a bottleneck and is bypassed) or nothing mandated (coherence depends on goodwill that does not survive the first deadline).\n\n## Keeping Guidance Alive\n\nGuidance decays predictably: it goes stale as platforms change, accumulates exceptions nobody revisits, and becomes unfindable as the organization grows. Five practices counter that.\n\n**Ownership by name.** Every principle, standard, reference architecture and golden path has one named owner, published beside it. Golden paths have a platform team, a backlog and a budget line.\n\n**Versioning with meaning.** A minor version of a standard clarifies or adds checks for existing obligations; a major version adds an obligation and therefore needs a recorded decision and a transition period. Golden-path releases state which standard versions they satisfy.\n\n**Deprecation with dates.** A superseded standard, pattern or kit version has a sunset date, after which conformance checks treat it as a failure. Without dates, the catalog describes an estate that no longer exists.\n\n**Adoption metrics that resist gaming.** Northmere tracks four: the share of new or changed financial-event feeds that pass the conformance harness (not \"use the kit\", which a thin wrapper can fake); active waivers, their age and the share closed by expiry; median time from a team's first commit to its first conformant feed; and production incidents at boundaries covered by a standard. The last is the outcome; the first three lead it. These are fitness functions in the sense of Ford, Parsons, Kua and Sadalage, objective checks of an architectural characteristic run continuously ([Building Evolutionary Architectures](https://thoughtworks.com/insights/books/building-evolutionaryarchitectures-second-edition)); [Technical Debt, Architectural Fitness and Modernization Priorities](technical-debt-and-fitness.html) develops the estate-level set.\n\n**A yearly review that can delete.** The design authority reviews each principle and standard against the year's incidents, waivers and decisions, and must be able to retire guidance, not only add it. A catalog that only grows stops being read.\n\n## Integration With the Rest of the Estate\n\nThis chapter supplies the content that the governance machinery in [Architecture Governance That Speeds Decisions](architecture-governance.html) approves and waives. The reference architectures summarize designs owned by [Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP](payments-to-ledger.html), [Canonical Events and Adapters for Loosely Coupled Financial Domains](loosely-coupled-domains.html), [Designing Custom Ledgers and Financial Event Processing](designing-financial-ledgers.html), [Designing for Traceability, Reconciliation and Audit Across Boundaries](traceability-and-reconciliation.html) and [Systems of Record and Authoritative Data Boundaries](systems-of-record.html); clean core depends on the extension options in [SAP S/4HANA: The Enterprise Finance Core](sap-s4hana.html) and [Oracle Fusion Cloud ERP: Ledgers, Accounting Hub and Coexistence](oracle-fusion.html).\n\n## Failure Modes\n\n**Principles as platitudes.** Statements no design can fail, like the December 2026 draft. Symptom: no design review in a year cites a principle as the reason for a change. Remedy: add a conformance test and counter-examples, and delete any principle for which neither can be written.\n\n**Standards without tests.** Enforcement depends on a reviewer's attention on the day. Symptom: conformance reported at 95% while incidents keep occurring at the boundaries the standard covers. Remedy: every clause names its check; uncheckable clauses move to guidelines or to attestation with sampling.\n\n**Reference architectures nobody can find.** Symptom: teams rebuild the same integration with a different design, then ask whether a pattern exists. Remedy: link them from intake forms, portfolio records and CI failure messages.\n\n**The rotting golden path.** Built once with project money and not maintained; a dependency change makes teams fork it. Symptom: several stale copies of the kit across brand repositories. Remedy: fund golden paths as products and measure time to first conformant feed.\n\n**Standards creep.** Every incident produces a new mandatory standard. Symptom: the list doubles in a year and waivers multiply. Remedy: the promotion criteria; each new standard is a recorded decision with consultation and a reference implementation.\n\n**The vendor's reference architecture.** A vendor's reference architecture adopted unchanged, with the vendor's products in every box and no enterprise-owned contract anywhere. This is **Vendor Gravity**; name the enterprise-owned contracts first and fit products to them.\n\n## The Chief Architect's View\n\n**What to decide.** A short, tested, owned principle set; the promotion criteria; the mandatory list; which reference architectures to publish first; which golden paths to fund. Northmere's order was the standards first, because they are the only lever that does not depend on persuasion; then payments-to-ledger and subledger-to-GL, because the suspense balance and the drill-back gap were the CFO's visible problems; then the close.\n\n**Who decides.** The Chief Architect decides mandatory standards after consulting the controller, Internal Controls and the payments and brand engineering leads. The controller signs off whatever encodes accounting judgment: summary keys, posting-rule ownership, the drill-back test. Internal Controls signs off control impact. Brand teams decide everything at the variation points.\n\n**What to fund.** The golden paths. A standard without a funded reference implementation shifts its cost onto teams outside the Chief Architect's line, who will spend that money on their own roadmaps. Keystone's central funding of the adapter kit is what made STD-FIN-01 enforceable.\n\n**What to watch.** Waiver age and on-time closure, the share of feeds passing conformance, time to first conformant feed, incidents at standardized boundaries, and citations: if principles stop appearing in decision records, they have stopped working.\n\n**The long view.** Principles should outlive platforms. Northmere's eleven name no vendor, which is why they will still apply after the 2029 convergence. The reference architectures name products only in their variation points, so that when a product changes, only a variation point changes.\n\n## Questions to Ask\n\n1. For each of our principles, can you name a design that violates it and a check that detects the violation?\n2. Which principles were cited in a recorded decision in the last year, and which were not?\n3. Does each mandatory standard have an owner, a version, checks and a reference implementation a team can copy?\n4. Does every subledger tie out daily to its GL, with a drill-back path a controller can follow unaided?\n5. Where do operational systems still choose GL accounts?\n6. Which reference architectures exist for our recurring finance designs, and how would an engineer find them from the work they are already doing?\n7. Who owns and funds each golden path, and how long does a new team take to produce its first conformant feed?\n8. How many waivers are active, how old are they, and how many closed on time last quarter?\n9. When did we last retire a principle or a standard?\n\n## From Principles to a Roadmap\n\nPrinciples and standards say how the estate should be built; reference architectures show what good looks like for its recurring parts. None of them says where the estate as a whole is going, or in what order Northmere moves from three ledgers, three integration technologies and a nine-day close to one finance core and a continuous close. That is the job of the target state and the transition states between, each of which can now be described partly by the standards it brings into conformance and the waivers it closes. [Target State, Transition States and the Roadmap](target-and-transition-states.html) takes up that question.\n\n## Sources and Evidence\n\n*Vendor documentation*\n\n- [Extend SAP S/4HANA Cloud the right way: clean and clear](https://news.sap.com/2025/08/extend-sap-s4hana-cloud-right-way-clean-clear/) — SAP News, 2025; clean core levels A to D and the ABAP Test Cockpit as the governance tool (P6, STD-FIN-04).\n- [Describing General Ledger Integration (FI-CA)](https://learning.sap.com/courses/implementing-sap-financial-contract-accounting/describing-general-ledger-integration) — SAP Learning; FI-CA totals records under a reconciliation key (reference architecture 2).\n- [Workday Accounting Center](https://www.workday.com/en-us/products/financial-management/accounting-center.html) — Workday; summarized journals with drill-down to source (reference architecture 2).\n\n*Standards and regulation*\n\n- [The TOGAF Standard, 10th Edition](https://www.opengroup.org/togaf) — The Open Group, 2022; the four-part principle template (name, statement, rationale, implications), widely reproduced; the standard's text sits behind registration.\n- [ISO 4217 Currency codes](https://www.iso.org/iso-4217-currency-codes.html) — International Organization for Standardization; currency codes and minor units (P9).\n\n*Practitioner and research sources*\n\n- [How we use Golden Paths to solve fragmentation in our software ecosystem](https://engineering.atspotify.com/2020/08/how-we-use-golden-paths-to-solve-fragmentation-in-our-software-ecosystem) — Gary Niemen, Spotify Engineering, 2020; the golden path as opinionated, supported and optional.\n- [Scaling the Practice of Architecture, Conversationally](https://martinfowler.com/articles/scaling-architecture-conversationally.html) — Andrew Harmel-Law, 2021; team-sourced principles within the advice process.\n- [Accounting Patterns (Analysis Patterns supplement)](https://martinfowler.com/apsupp/accounting.pdf) — Martin Fowler; the Posting Rule pattern behind P2.\n- [Patterns for Accounting](https://martinfowler.com/eaaDev/AccountingNarrative.html) — Martin Fowler, 2006 (draft); reversal adjustment.\n- [Money](https://martinfowler.com/eaaCatalog/money.html) — Martin Fowler, *Patterns of Enterprise Application Architecture*, 2003; currency-aware money types (P9).\n- [Your Coffee Shop Doesn't Use Two-Phase Commit](https://www.enterpriseintegrationpatterns.com/docs/IEEE_Software_Design_2PC.pdf) — Gregor Hohpe, *IEEE Software*, 2005; reconciliation as the backstop of loosely coupled error handling (P3).\n- [Enterprise Integration Patterns](https://www.enterpriseintegrationpatterns.com/) — Gregor Hohpe and Bobby Woolf, 2003; idempotent receiver and related patterns (STD-FIN-02).\n- [Building Evolutionary Architectures, 2nd edition](https://thoughtworks.com/insights/books/building-evolutionaryarchitectures-second-edition) — Ford, Parsons, Kua and Sadalage, O'Reilly, 2022; fitness functions as automated governance.\n\nNorthmere Group, its people, systems, standards and figures are fictional; the architectural recommendations are the author's judgment.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Many Entities, Currencies, Jurisdictions and Brands</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">RECONCILED: Enterprise Architecture for Financial Systems</a><span class="nav-right"><a class="nav-prev" href="integration-architecture.html" title="Integration Architecture for Finance">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="build-versus-buy.html" title="Build, Buy or Compose: Vendor Selection and Portfolio Rationalization">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part I — FOUNDATIONS: The Enterprise and Its Finance Domain</p>
+        <h1>Many Entities, Currencies, Jurisdictions and Brands</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-18  ·  33 min read · <a class="spec-link" href="global-scale.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/10-global-scale/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/10-global-scale/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">RECONCILED: Enterprise Architecture for Financial Systems</a><span class="nav-right"><a class="nav-prev" href="integration-architecture.html" title="Integration Architecture for Finance">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="build-versus-buy.html" title="Build, Buy or Compose: Vendor Selection and Portfolio Rationalization">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Many Entities, Currencies, Jurisdictions and Brands", "date": "2026-10-18", "author": "Željko Obrenović", "excerpt": "What does operating across dozens of legal entities, currencies, tax jurisdictions and brands demand of a finance architecture? It demands that entity, brand, market, business model and currency be modeled as separate, governed dimensions, with intercompany, exchange rates and jurisdictional rules treated as designed data flows rather than close-week clean-up.", "permalink": "global-scale", "timetoread": "33 min read", "icon": "assets/icons/10-global-scale.png", "logo": "assets/images/10-global-scale/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Learn how a multinational finance estate represents legal entities, intercompany trade, currencies, accounting standards and local tax and regulatory rules, and how to keep brand, entity, market and business model apart so that each can change without breaking the others.\n\n> **WHY FINANCE CARES:** The controller signs statutory accounts per legal entity, tax files per jurisdiction, and the group reports one consolidated number in one currency. When entity, currency and jurisdiction data are wrong at the source, each of those outputs becomes a reconciliation project at period end.\n\n> **WHY ARCHITECTS SHOULD CARE:** Entity structures, functional currencies and ledger designs are among the hardest ERP decisions to reverse. Intercompany, exchange rates and tax attributes cross every system boundary, so each needs one owner, one source and one contract, or it becomes the estate's most expensive integration problem.\n\n> **KEY POINTS:**\n>\n> * **Brand, legal entity, market, business model and currency are five dimensions, not one.** The legal entity is the unit of law, tax and statutory books, not the unit of the business. Model each dimension independently, master legal entities in one register, and derive every system's entity representation from it.\n> * **Intercompany is a product to design, not a by-product to clean up.** Every intercompany flow needs an agreement, a pricing rule, a counterparty on both sides, one exchange rate, a settlement route and an elimination rule. Most elimination differences found at close were designed in months earlier.\n> * **Currency and jurisdiction are governed data with owners and calendars.** One rate service with named rate types, one month-end currency calendar, and tax and regulatory attributes carried on every event, separate from the accounting treatment, turn mandates such as ViDA, DAC7 and Pillar Two into data work instead of re-platforming.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-finance-architecture-goes-wrong.html):**\n>\n> * **The Many Masters** — legal entities, their currencies and their tax registrations are created separately in each ERP, the consolidation tool, the tax engine and the treasury system, with no agreed register.\n> * **Spreadsheet Glue** — transfer-pricing calculations, exchange-rate tables and intercompany mappings live in spreadsheets the close cannot run without.\n> * **The Brand Exception** — each brand or new market gets its own entity conventions, rate sources and tax logic, and each becomes a permanent fork.\n\n<br>\nIn a single-country company, brand, legal entity, market and currency are the same thing, so nothing forces anyone to tell them apart. A group that trades through dozens of entities in dozens of countries cannot. Its brands do not map one-to-one to entities, it earns in currencies other than the one that books the revenue, and it pays tax under rules that change every year. **Every one of those mismatches is represented somewhere in the systems, and where it is represented decides whether the close is a computation or an investigation.**\n\nThis chapter covers that representation: the **legal entity model** and how SAP S/4HANA, Oracle Fusion Cloud ERP and Workday encode it; **intercompany** trade, transfer pricing and netting; the **multi-currency model**; **multi-GAAP** and statutory reporting; local requirements such as SAF-T, e-invoicing and fiscal numbering; indirect tax at platform scale; the data Pillar Two demands; and the constraints a licensed payments entity places on everything else. The argument throughout: **treat each of these as a governed dimension or a designed flow**, not as a property each system configures for itself.\n\n## Setting the Scene: Seventy-One Entities and Three Requests\n\nNorthmere, the fictional group this book follows, is a New York–listed digital commerce group headquartered in Amsterdam. It reports in US dollars under US GAAP, trades through **71 legal entities in 38 countries**, takes customer payments in **46 currencies**, settles with partners in **31 currencies**, and files local GAAP or IFRS statutory accounts for each entity. [Meet Northmere: The Running Example](meet-northmere.html) introduces its brands and its licensed e-money institution, **Northmere Payments B.V.**\n\nIn the first week of April 2027, three requests reach Dana Whitlock, the Chief Architect. Kofi Asante, Group Head of Tax and Treasury, needs a **Pillar Two dataset** per entity and jurisdiction, reconciled to consolidation; last year his team built it from 38 spreadsheet extracts. Leila Haddad, the Chief Accounting Officer, reports that at working day 4 of the March close, intercompany balances in **41 of about 140 active entity pairs** disagreed by a gross **$3.8 million**, mostly because the two sides had been converted at different rates, in different systems, on different days. And the Keystone design authority has put the **2028 Brazil launch** on its agenda. The commercial plan says \"configure Stayloft for Brazil\". Nobody has written down which entity will contract with Brazilian hosts, which ledger it will live in, or who sets its exchange rates.\n\nThe three requests share a root. Northmere has no single register of legal entities, no single source of exchange rates, and no consistent way of carrying entity, jurisdiction and currency from the brand platform to the tax return.\n\n## Five Dimensions That Must Not Collapse Into One\n\nMost estates start from an implicit equation: one brand, one country, one company, one currency. It fails gradually. A brand enters a second country through the first country's company; a second brand borrows the first brand's company; a payments entity holds money for all brands; an acquisition brings an entity serving three markets. Each step is reasonable; together they leave systems keyed on a dimension that no longer means what the key assumes. The fix is to define five dimensions separately, each with an owner and a code list:\n\n- **Legal entity** — a company with its own legal personality, statutory accounts, tax registrations and contracts. The unit of law and of the books.\n- **Brand** — a commercial identity customers and partners recognize. The unit of product and, often, management reporting.\n- **Market** — where the customer or the supplied service is located. The unit of tax jurisdiction, consumer law and local payment methods.\n- **Business model** — agency, merchant, subscription, usage, advertising, payments facilitation. The unit that decides posting rules (see [Accounting for Architects: Ledgers, Journals and Revenue](accounting-for-architects.html)).\n- **Currency** — the denomination of an amount. One transaction can carry four currencies, as shown below.\n\n| If you treat… | …as the same as… | What breaks |\n| --- | --- | --- |\n| Brand | Legal entity | A second brand in an existing entity has no home for its P&L; a brand carve-out cannot find its own assets and contracts. |\n| Market | Legal entity | Cross-border sales are taxed by the entity's country instead of the customer's; DAC7 and digital services tax reports, which are by user or property location, cannot be produced. |\n| Market | Currency | A traveler in Germany paying in dollars breaks the assumption; nobody can say which rate applied to which amount. |\n| Business model | Brand | A brand that runs agency and merchant bookings, as Stayloft does, gets one set of posting rules for two accounting patterns. |\n| Legal entity | Ledger | One ledger per entity multiplies configuration and close effort; a shared ledger without an entity balancing segment cannot produce a balance sheet per entity. |\n\nAt Northmere the matrix is real. Stayloft trades through nine operating entities, but its contracts with European hosts are signed by **Stayloft B.V.**, its US marketplace by **Stayloft Inc.**, and merchant-booking funds are held by Northmere Payments B.V., which serves no brand of its own. Tablekin has four entities but bills venues in 11 countries. \"Revenue by country\" means three different things depending on whether the entity, the customer or the property is meant.\n\n**The rule I use: every financial event carries all five dimensions explicitly, and no brand platform derives one from another in code.** The derivation rules (which entity contracts for which brand in which market under which model) belong in governed configuration, managed by the onboarding kit in [Onboarding Brands, Entities and Markets as Configuration](brands-entities-markets.html). Northmere's canonical event envelope ([Canonical Events and Adapters for Loosely Coupled Financial Domains](loosely-coupled-domains.html)) already has separate `brand`, `legal_entity`, `business_model` and `tax_jurisdiction` fields, with the currency inside every `amount`. This chapter is about making sure the values are right.\n\n## The Legal Entity Model\n\nA **legal entity model** is the group's authoritative description of its companies: which exist, what each does, who owns it, where it is resident, which currency and accounting standards apply, which ledgers it books in, and how it is registered for tax and regulation. It is master data in the sense of [Finance Data Architecture: Master Data, Systems of Record and Governance](finance-data-architecture.html), and the most cross-cutting master data a finance estate has.\n\n| Attribute group | Examples | Owner |\n| --- | --- | --- |\n| Identity and ownership | Legal name, registration number, lifecycle status, shareholdings and their effective dates, ultimate parent | Legal |\n| Accounting | Functional currency and its evidence, statutory GAAP, fiscal calendar, consolidation method | Group controller |\n| Tax and regulatory | Tax residence, VAT and state registrations, Pillar Two classification, licenses and safeguarding duties | Tax; compliance |\n| Banking | Bank accounts, cash-pool and netting participation | Treasury |\n| System representation | SAP company code, Oracle legal entity and balancing segment value, Workday company, OneStream entity member, tax-engine company | Finance systems |\n\nTwo attributes deserve emphasis. **Functional currency**, the currency of the entity's primary economic environment, is determined by economic facts under [IAS 21](https://www.ifrs.org/issued-standards/list-of-standards/ias-21-the-effects-of-changes-in-foreign-exchange-rates/) and its US GAAP counterpart ASC 830; it is not a configuration choice. **System representation** is the attribute most estates never record. Without it, every interface that crosses an ERP boundary carries its own mapping table, the classic home of Spreadsheet Glue.\n\nNorthmere's 71 entities fall into five types, and the type decides most of the design: 6 **holding and financing** entities; 24 **brand operating** entities that contract with customers and partners; 36 **local service** entities (marketing support, customer service, engineering hubs, finance shared services) paid cost plus a markup and never selling to third parties; 3 **intellectual property owners**; and 2 **licensed payments** entities. The distinction between service and operating entity matters. São Paulo is already a Northmere hub, through an engineering service entity. \"Using the Brazilian company we already have\" for the 2028 launch would turn a cost-plus service provider into a company contracting with hosts and travelers, changing its tax profile, transfer-pricing position and regulatory obligations at a stroke. Recording the type makes that a visible decision rather than a configuration shortcut.\n\nIn early 2027 Northmere creates entities in SAP S/4HANA, Oracle Fusion, Workday, OneStream, Vertex, Kyriba and Workday HCM, each from a different document. That is **The Many Masters** in its purest form, and the reason Kofi needed 38 extracts. Keystone's response is a **legal entity register** as golden source, owned by Legal for identity and ownership and stewarded by Leila's team for accounting attributes. The register does not replace ERP configuration; it decides it.\n\n"}, {"type": "mermaid", "content": "flowchart LR\n    LE[\"Legal entity register - golden source\"] -->|\"Entity created or changed\"| HUB[\"Integration hub\"]\n    HUB --> S4[\"SAP S/4HANA - company codes\"]\n    HUB --> FU[\"Oracle Fusion - legal entities and balancing segment values\"]\n    HUB --> WD[\"Workday Financials - companies\"]\n    HUB --> HCM[\"Workday HCM - employing entities\"]\n    HUB --> OS[\"OneStream - entity dimension and ownership\"]\n    HUB --> VX[\"Vertex - registrations by jurisdiction\"]\n    HUB --> KY[\"Kyriba - bank accounts, pool and netting membership\"]\n    HUB --> BP[\"Brand platforms and Northmere Pay - contracting entity rules\"]\n    S4 -->|\"System code confirmed\"| LE\n    FU -->|\"System code confirmed\"| LE\n    WD -->|\"System code confirmed\"| LE"}, {"type": "markdown", "content": "**Figure 1:** *The legal entity register decides how every system represents an entity, and each system confirms its code back, so the register holds the full cross-system mapping that interfaces, consolidation and tax reporting rely on.*\n\nCreating an entity in an ERP is configuration under change management; the hub publishes a change request to the platform team, and the confirmation closes the loop. What matters is not automation but **authority**: no system creates an entity the register does not know, and the cross-system mapping is maintained in one place.\n\n## How Each ERP Represents a Legal Entity\n\nThe three ERPs encode the legal entity differently. The detail belongs to [SAP S/4HANA: The Enterprise Finance Core](sap-s4hana.html), [Oracle Fusion Cloud ERP: Ledgers, Accounting Hub and Coexistence](oracle-fusion.html) and [Workday: Financials, People and the Organizational Backbone](workday.html); the comparison below is what an architect needs when designing across them.\n\n| Concern | SAP S/4HANA | Oracle Fusion Cloud ERP | Workday Financial Management |\n| --- | --- | --- | --- |\n| Entity object | **Company code**, \"an independent legal accounting entity… with independent accounts\" | **Legal entity**, assigned to a ledger, with **primary balancing segment** values assigned to it | **Company**, the primary balancing worktag |\n| Ledgers | All company codes in the **leading ledger (0L)**; further standard ledgers and delta-only **extension ledgers** | A **primary ledger** combines chart of accounts, calendar, currency and accounting method; many legal entities can share one | One structure; **book codes** separate book-specific entries |\n| Currencies | Document, company code, global, plus up to eight freely defined currencies per ledger | Entered and ledger currency; **reporting currencies** at balance, journal or subledger level | Transaction and company currency; translation for consolidation |\n| Multi-GAAP | Parallel ledgers; extension ledgers for adjustments | **Secondary ledgers** at a chosen data conversion level | Multibook |\n| Intercompany | Cross-company-code postings with automatic clearing lines; intercompany billing and reconciliation | Intercompany balancing rules and module (detail to verify per release) | **Intercompany profiles** define which companies may transact; eliminations when both are in the reporting hierarchy |\n| Irreversibility | Currency, fiscal-year variant and chart assignments constrain controlling-area design | Chart, calendar and currency are fixed once a ledger is saved | Company hierarchy and worktag design underpin every report |\n\nSources: SAP Learning on [organizational units](https://learning.sap.com/courses/customizing-core-settings-in-financial-accounting-in-sap-s4hana/managing-organizational-units-in-financial-accounting-fi), [ledgers](https://learning.sap.com/courses/customizing-core-settings-in-financial-accounting-in-sap-s4hana/checking-the-basic-settings-in-general-ledger-g-l-accounting) and [currency types](https://learning.sap.com/courses/customizing-core-settings-in-financial-accounting-in-sap-s4hana/managing-currency-types-1); Oracle's [ledgers, legal entities and balancing segments](https://docs.oracle.com/en/cloud/saas/financials/26c/faigl/ledgers-legal-entities-balancing-segments-and-business-units.html) (26C); Workday's [Financial Management datasheet](https://www.workday.com/content/dam/web/en-us/documents/datasheets/datasheet-workday-financial-management.pdf) and [consolidations and multicurrency guide](https://community-content.workday.com/en-us/public/products/financial-management/consolidations-and-multicurrency-guide.html). Oracle's intercompany functions and SAP's intercompany app names were not verified for this edition and are described at capability level only.\n\nThree consequences follow. **First, \"one ledger per entity\" is a modeling choice, not a law.** Oracle recommends limiting primary ledgers and distinguishing entities by balancing segment; SAP puts every company code in the same leading ledger; Workday's company is a worktag. Entities that share currency, calendar and chart can share a ledger. **Second, the balancing unit is the legal entity.** Whatever the product, the system must produce a balanced trial balance per entity, because statutory accounts and tax returns are built from it. **Third, each ERP is internally consistent and externally blind.** Northmere's 55 SAP company codes, 12 Oracle legal entities (in three primary ledgers, one per functional currency) and 4 Workday companies meet only in OneStream. That federated design is legitimate for now, and the convergence question belongs to [Multiple ERPs, One Finance Core: Coexistence and Convergence](multiple-erps.html); but it means no ERP can see a cross-ERP intercompany flow, so those flows must be designed to meet cleanly at consolidation.\n\n## Intercompany by Design\n\n**Intercompany** transactions are trades between entities of the same group: royalties, service fees, cost recharges, loans and interest, dividends. Each side records its half; consolidation **eliminates** the matched balances, income and expense so that the group presents only third-party dealings. [Accounting for Architects: Ledgers, Journals and Revenue](accounting-for-architects.html) covers the accounting; this section covers the architecture.\n\nNorthmere's flows follow from how it is legally organized and taxed:\n\n| Flow | From → to | Basis |\n| --- | --- | --- |\n| **Brand IP royalty** | Stayloft's 8 other operating entities → Stayloft B.V., which owns the Stayloft trademarks | Percentage of the payer's net revenue, monthly |\n| **Payment service fees** | Brand operating entities → Northmere Payments B.V. and Northmere Payments UK Ltd | Payment-provider costs passed through, plus a service margin |\n| **Shared services recharges** | Operating entities → service entities (finance shared services in Dublin, engineering in São Paulo and Singapore) | Cost plus markup; allocation keys from Workday HCM headcount |\n\nTreasury flows (cash pool, intra-group loans, dividends) run in Kyriba on top of these.\n\n**Transfer pricing** decides the prices. Tax authorities require intercompany prices to follow the **arm's length principle**, the price unrelated parties would agree in comparable circumstances, as set out in the OECD Transfer Pricing Guidelines and national law. Setting the rates is a tax and legal judgment; the rates here are illustrative. Where the pricing rules run, what data they read, and how their results reach both ledgers at the same amount, period and rate, is the architecture decision. Every flow needs six things:\n\n1. **An agreement**, referenced on every transaction it generates.\n2. **A pricing rule** that runs in one place on governed inputs. At Northmere today, royalty bases are pulled from three ERPs into a spreadsheet, multiplied and keyed back: Spreadsheet Glue on a line that moves tens of millions of dollars a month.\n3. **A counterparty dimension on both sides**, set at posting time, or matching becomes a manual exercise.\n4. **One transaction currency and one rate**, from the same source on the same date for both sides. Most of Leila's $3.8 million came from violating this.\n5. **A settlement route**: invoiced and paid, netted, or booked to an in-house bank account.\n6. **An elimination rule**, defined when the flow is designed, not met for the first time at quarter-end.\n\n**Invoice-based** intercompany runs through receivables and payables with a legal invoice, which is required wherever the charge is a taxable supply, as most cross-border services between EU entities are for VAT. **Journal-based** intercompany posts paired journals with due-to and due-from lines, common for allocations. Within one ERP both are well supported. Across ERPs, the estate needs an **intercompany originator**: one component that creates both halves from one calculation with a shared transaction identifier. It can be a close platform (BlackLine markets an Intercompany Create product), an ERP acting as hub, or a small integration service; which one is a question for [Build, Buy or Compose: Vendor Selection and Portfolio Rationalization](build-versus-buy.html). The requirement is that **exactly one component creates both sides**.\n\n**Matching** pairs the halves by counterparty and transaction identifier and routes differences to a dispute workflow; Northmere matches today in OneStream, in Oracle Fusion for Wayfare and by email, and Keystone's 2027 target is one matcher fed continuously during the month. **Netting** settles many intercompany positions with one net payment per entity per cycle: a netting center collects positions in their transaction currencies, converts them at one cycle rate, and instructs one payment to or from each participant. It cuts payment volume, bank fees and FX conversions, but some countries restrict netting or require central-bank reporting of it, and licensed entities may be excluded. Northmere runs netting monthly in Kyriba; BlackLine also offers intercompany netting, an entry for the overlap register in [Preventing Redundant Capabilities and Unnecessary Coupling](redundancy-and-coupling.html).\n\n**Elimination** happens in the consolidation layer, OneStream at Northmere, using the counterparty dimension to pair the sides ([OneStream: Consolidation, Planning and Performance Management](onestream.html) covers the mechanics). It works cleanly only if both halves arrive with the same counterparty codes and, after translation, the same amounts. **Any difference that survives elimination must go to a defined account under a documented rule**, never to a plug someone clears by hand. The worked example shows where such differences come from.\n\n## Worked Example: A Royalty Crosses Two Currencies\n\nThe figures are fictional and rounded to two decimals at each step; rates are US dollars per euro.\n\n**The facts.** Stayloft Inc. (US dollar functional currency) licenses the Stayloft brand and platform from Stayloft B.V. (euro functional currency) for a royalty of **6% of net revenue**, invoiced monthly in US dollars. March 2027 net revenue is **$25,000,000**, so the royalty is **$1,500,000**, invoiced on 31 March. Both entities book in their own S/4HANA company codes. Rates from the group rate service: 31 March closing **1.0900**; March average **1.0860**; 15 April netting cycle **1.0760**.\n\n### Step 1: each side books its half (31 March)\n\n| Entity | Account | Debit | Credit | Note |\n| --- | --- | --- | --- | --- |\n| Stayloft Inc. (USD) | Royalty expense – intercompany, counterparty Stayloft B.V. | 1,500,000.00 | | Created by the intercompany originator |\n| Stayloft Inc. (USD) | Intercompany payable – Stayloft B.V. | | 1,500,000.00 | No FX in this entity |\n| Stayloft B.V. (EUR) | Intercompany receivable – Stayloft Inc. | 1,376,146.79 | | USD 1,500,000.00 ÷ 1.0900; USD amount and rate ID stored on the line |\n| Stayloft B.V. (EUR) | Royalty income – intercompany, counterparty Stayloft Inc. | | 1,376,146.79 | Same agreement and transaction ID |\n\nThe FX exposure sits in exactly one entity, Stayloft B.V., which holds a dollar receivable. The invoice currency decides which entity carries the risk, and that choice belongs in the license agreement, not in whichever system issued the invoice.\n\n### Step 2: consolidation in US dollars (March close)\n\nOneStream translates Stayloft B.V. into dollars: balance sheet at the closing rate, income at the average rate.\n\n| Item | EUR | Rate | USD |\n| --- | --- | --- | --- |\n| B.V. intercompany receivable | 1,376,146.79 | 1.0900 closing | 1,500,000.00 |\n| B.V. royalty income | 1,376,146.79 | 1.0860 average | 1,494,495.41 |\n| Inc. payable and expense | — | — | 1,500,000.00 each |\n\n| Entity | Account | Debit | Credit | Note |\n| --- | --- | --- | --- | --- |\n| Consolidation | Intercompany payable (Inc.) | 1,500,000.00 | | |\n| Consolidation | Intercompany receivable (B.V., translated) | | 1,500,000.00 | Balance sheet eliminates exactly |\n| Consolidation | Royalty income – intercompany (B.V., translated) | 1,494,495.41 | | |\n| Consolidation | Intercompany elimination difference – translation | 5,504.59 | | Routed by rule to a designated account |\n| Consolidation | Royalty expense – intercompany (Inc.) | | 1,500,000.00 | |\n\nNeither entity made a mistake: **the $5,504.59 is produced by the translation policy**, because a transaction dated on the last day of the month is translated at a monthly average. There are two clean designs. Translate large discrete intercompany flows at their transaction-date rate, which IAS 21 permits (an average is only a practical approximation of transaction-date rates), so they eliminate exactly; or keep average-rate translation and route the difference by rule to a reviewed translation account. Discovering it at working day 4 and clearing it to suspense is not a design. Leila's team chose the first option for royalties and service fees from Q2 2027 and the second for high-volume recharges.\n\n### Step 3: settlement through netting (15 April)\n\nThe April cycle includes three March invoices, converted to the euro netting base at 1.0760:\n\n| Invoice | Payer → receiver | Amount | EUR at 1.0760 |\n| --- | --- | --- | --- |\n| Royalty | Stayloft Inc. → Stayloft B.V. | USD 1,500,000.00 | 1,394,052.04 |\n| Finance shared services | Stayloft Inc. → Northmere Services Ireland Ltd | USD 380,000.00 | 353,159.85 |\n| Payment service fees | Stayloft B.V. → Northmere Payments B.V. | EUR 2,350,000.00 | 2,350,000.00 |\n\n| Participant | Net position (EUR) | Settlement |\n| --- | --- | --- |\n| Stayloft Inc. | −1,747,211.89 | Pays USD 1,880,000.00, the only currency conversion |\n| Stayloft B.V. | −955,947.96 | Pays EUR 955,947.96 |\n| Northmere Payments B.V. | +2,350,000.00 | Receives into its own-funds operating account |\n| Northmere Services Ireland Ltd | +353,159.85 | Receives EUR 353,159.85 |\n\nGross invoices of EUR 4,097,211.89 settle with EUR 2,703,159.85 of net movements and one conversion instead of two. Settlement realizes the exchange difference in the entity that carried it:\n\n| Entity | Account | Debit | Credit | Note |\n| --- | --- | --- | --- | --- |\n| Stayloft B.V. (EUR) | Netting center clearing | 1,394,052.04 | | USD 1,500,000.00 ÷ 1.0760 |\n| Stayloft B.V. (EUR) | Intercompany receivable – Stayloft Inc. | | 1,376,146.79 | Clears the original amount |\n| Stayloft B.V. (EUR) | Realized FX gain | | 17,905.25 | The dollar strengthened after invoicing |\n| Stayloft Inc. (USD) | Intercompany payable – Stayloft B.V. | 1,500,000.00 | | |\n| Stayloft Inc. (USD) | Netting center clearing | | 1,500,000.00 | |\n\n"}, {"type": "mermaid", "content": "flowchart LR\n    subgraph INV[\"Invoiced in March - transaction currencies\"]\n        INC[\"Stayloft Inc. - USD functional\"]\n        BV[\"Stayloft B.V. - EUR functional, owns brand IP\"]\n        IE[\"Northmere Services Ireland - EUR functional\"]\n        PAY[\"Northmere Payments B.V. - EUR functional, own funds only\"]\n        INC -->|\"Royalty USD 1,500,000\"| BV\n        INC -->|\"Shared services USD 380,000\"| IE\n        BV -->|\"Payment service fees EUR 2,350,000\"| PAY\n    end\n    subgraph NET[\"Settled 15 April - Kyriba netting at 1.0760\"]\n        NC[\"Netting center - EUR base\"]\n    end\n    INC -->|\"Net USD 1,880,000, one conversion\"| NC\n    BV -->|\"Net EUR 955,947.96\"| NC\n    NC -->|\"EUR 2,350,000 to own-funds account\"| PAY\n    NC -->|\"EUR 353,159.85\"| IE\n    SG[\"Safeguarded client funds - never netted\"] -.->|\"Held by, outside the pool\"| PAY"}, {"type": "markdown", "content": "**Figure 2:** *Three intercompany invoices in two currencies settle as four net movements with one currency conversion; the licensed entity takes part only with its own funds, never with safeguarded client money.*\n\nThe example works only because one originator created both halves from governed data, both sides used one rate, every line carried a counterparty, the translation rule was decided in advance, and the netting center knew which of Northmere Payments B.V.'s balances it could touch. **Remove any one and the $5,504.59 becomes one of forty-one breaks on Leila's working-day-4 list.**\n\n## The Multi-Currency Model\n\nA multi-currency estate needs an explicit model of which currency an amount is in, which rate converted it, who decided that rate, and when. Most estates have the first; few have the rest.\n\n| Role | Definition | Northmere example |\n| --- | --- | --- |\n| **Transaction currency** | The currency a transaction is denominated in | A traveler's payment in Swedish kronor |\n| **Settlement currency** | The currency a payment provider or bank settles in | Adyen settles to Northmere Payments B.V. in euros |\n| **Functional currency** | The currency of the entity's primary economic environment (IAS 21, ASC 830) | Euro for most EU entities; dollar for Stayloft Inc. |\n| **Group currency** | The presentation currency of the consolidated statements | US dollar |\n\nNorthmere's 71 entities use **19 functional currencies**. Three families of rates must be kept apart. **Commercial rates** convert customer prices: when an American traveler pays in dollars for the €600.00 Lisbon apartment from the book's recurring example, Stayloft quotes **$654.00**, a rate of 1.0900 against a market rate of 1.0850 (at which €600.00 is $651.00); the **$3.00** margin is a commercial decision owned by the brand and Northmere Pay. **Provider rates** are applied by payment providers and banks when they convert at settlement; they are reconciled from settlement reports, not assumed (see [Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP](payments-to-ledger.html)). **Accounting rates** are what the ledgers use: **daily spot** for initial recognition, **period closing** for revaluation and balance-sheet translation, **period average** for income translation, and **budget** and **forecast** rates for planning.\n\n**Ownership follows the families.** Treasury owns market-rate sourcing: provider, fixing time, publication schedule and feed controls. The group controller owns **rate policy**: which rate type applies to which process, how averages are calculated, how rates are estimated for currencies that cannot be exchanged (IAS 21's *Lack of Exchangeability* amendments apply from 2025), and how hyperinflationary economies are handled. Brands own commercial rates within a group margin policy. Finance systems own **distribution**. At Northmere in early 2027, S/4HANA, Oracle Fusion, Workday, OneStream and the Stayloft Finance Platform each take rates from a different source, which is the structural cause of Leila's breaks. Keystone's 2027 standard is a **single group rate service**, fed by treasury from one market-data source, publishing each rate type with an identifier, effective date and version to every ledger, subledger and the consolidation engine. Every converted amount stores the rate identifier it used, so a difference can be traced to its cause rather than argued about.\n\nTwo month-end processes are routinely conflated. **Revaluation** restates foreign-currency **monetary items** (cash, receivables, payables, loans) at the closing rate in each entity's books, with the difference in profit or loss; it runs **in each ledger**. **Translation** converts each entity's functional-currency statements into the group currency (assets and liabilities at closing, income and expense at transaction-date or average rates, equity at historical rates), with the balancing difference in other comprehensive income as the **cumulative translation adjustment** (CTA); it runs **once, in consolidation**. The order matters.\n\n"}, {"type": "mermaid", "content": "sequenceDiagram\n    participant TR as Treasury\n    participant RS as RateService\n    participant ERP as LedgersAndSubledgers\n    participant ICM as IntercompanyMatching\n    participant CON as OneStream\n    TR->>RS: Closing fixing captured on last calendar day\n    RS->>ERP: Closing and average rates by 08.00 CET on working day 1\n    RS->>CON: Same rate versions\n    ERP->>ERP: Revalue foreign-currency monetary items per entity\n    ERP->>ICM: Intercompany balances by counterparty pair\n    ICM->>ICM: Match at shared rate, resolve disputes by working day 2\n    ERP->>CON: Entity trial balances in functional currency\n    CON->>CON: Translate, compute CTA, eliminate, route differences by rule"}, {"type": "markdown", "content": "**Figure 3:** *The month-end currency calendar: one rate publication feeds every ledger and the consolidation engine, revaluation runs per entity before matching, and translation runs once, centrally, after it.*\n\nOne consequence is easy to miss: **a subledger that holds foreign-currency open items must revalue them, or hand them to a ledger that will.** The Stayloft Finance Platform holds partner payables in 31 settlement currencies inside euro entities. If it posts only daily euro summaries to S/4HANA, those payables are never revalued unless the platform does it or posts open items in transaction currency. Revaluation responsibility must be assigned per open-item population, explicitly ([Designing Custom Ledgers and Financial Event Processing](designing-financial-ledgers.html) covers how a custom ledger carries currency).\n\n**Rounding** causes a steady trickle of breaks unless three things are written down. Precision per currency: ISO 4217 minor units differ (two decimals for the euro, none for the yen, three for the Kuwaiti dinar), and money is never stored as binary floating point. Where conversion rounds: converting each line and summing differs from summing and converting once, and the subledger and the ledger receiving its summaries must use the same rule or their reconciliation never ties to the cent. Where residue goes: a designated rounding account with a tolerance, or rounding becomes suspense.\n\n## Many GAAPs, One Set of Events\n\nNorthmere reports to the SEC under US GAAP and files statutory accounts under local GAAP or IFRS. **Multi-GAAP** is accounting for the same events under more than one standard at once. The differences touch a minority of transactions but can be material: lease accounting (ASC 842 keeps a lessee distinction between finance and operating leases that IFRS 16 does not), some capitalization policies, and presentation, which diverges further as IFRS 18 replaces IAS 1 for annual periods from 1 January 2027.\n\n| Pattern | How it works | Strength | Cost |\n| --- | --- | --- | --- |\n| **Parallel ledgers** | Every event posts to a ledger per standard (SAP parallel ledgers, Oracle journal- or subledger-level secondary ledgers, Workday book codes) | Full trail per standard | Volume and configuration multiply; Oracle warns journal- and subledger-level secondary ledgers are much more expensive than balance-level ones |\n| **Adjustment layer** | The leading ledger follows one standard; differences post to a delta layer (SAP extension ledgers, Oracle adjustments-only secondary ledgers) | Low volume; explicit list of differences | Works only where differences are few and well understood |\n| **Consolidation-level adjustment** | Entities book local GAAP; group adjustments are made in the consolidation tool | Simple for entities | Group-GAAP numbers exist only at consolidation, with weak drill-back: effectively a shadow ledger |\n\nThe hardest decision to reverse is **which standard the leading or primary ledger follows**. Northmere's S/4HANA has used US GAAP as its leading ledger since 2021, because the group close is the binding deadline, with local GAAP or IFRS in a parallel ledger for statutory accounts ([SAP S/4HANA: The Enterprise Finance Core](sap-s4hana.html)). Wayfare's Fusion ledgers are the reverse, inherited from before the acquisition: IFRS primary ledgers, with US GAAP differences in Adjustments Only secondary ledgers added in 2025 ([Oracle Fusion Cloud ERP: Ledgers, Accounting Hub and Coexistence](oracle-fusion.html)). That inconsistency is tolerable while the ERPs are federated and is a question for [Multiple ERPs, One Finance Core: Coexistence and Convergence](multiple-erps.html). **The rule I recommend: systematic GAAP differences are posting rules, not people.** A lease or a capitalization policy belongs in the accounting engine as a per-ledger rule, which is what Oracle's per-ledger accounting methods and SAP's ledger-specific postings exist for; manual GAAP adjustments are listed, owned exceptions.\n\n## Local Requirements That Reach Into the Ledger\n\nStatutory and tax rules increasingly demand **data in a prescribed form, on demand or in near real time**. Each is a country variation on a few patterns.\n\n**Standard audit files.** **SAF-T** (Standard Audit File for Tax), an OECD-originated XML format, is mandated in national variants in several countries (commonly cited: Portugal, Norway, Poland, Romania, Lithuania; check per country). France requires a standard ledger export, the FEC (*fichier des écritures comptables*), on tax audit. These are extracts from the ledger and subledgers mapped to standard account lists, and they fail on missing master data and local mappings kept in spreadsheets.\n\n**E-invoicing and continuous transaction controls.** Invoices are moving from documents audited later (**post-audit**) to structured data a government or accredited platform must accept before the invoice is valid (**clearance**). Italy and Poland run clearance systems; Belgium mandated domestic B2B e-invoicing over Peppol from 1 January 2026; France's receiving obligation and its issuing obligation for large and mid-sized companies began on 1 September 2026; Germany phases in issuing in 2027 and 2028. These dates, reported by law firms and tax-technology vendors, keep moving; [Around the Core: Tax, Treasury, Procurement and Reporting Platforms](satellite-platforms.html) covers the architecture. For this chapter the point is that **invoice issuance joins the critical path of order-to-cash and procure-to-pay in each affected entity**, with rejections, outages and clearance latency to handle. Stayloft's commission invoices to Belgian and Polish hosts are already in scope.\n\n**Fiscal numbering.** EU VAT rules require \"a sequential number, based on one or more series, which uniquely identifies the invoice\" ([VAT Directive, Article 226](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02006L0112-20250414)), and several countries add rules on series and gaps. A sequence is a per-entity, per-series property; a brand platform issuing invoices for several entities from one global counter creates findings in every country that checks.\n\n**Retention and residency.** Retention varies by country, record type and sector, usually counted from fiscal year-end; Germany, for example, cut voucher retention to eight years from 2025 while keeping ten for books. GDPR restricts transfers of personal data outside the EU rather than mandating EU storage, but some tax laws require books to be kept in, or accessible from, the country, and supervisors add requirements for licensed entities. The pattern: append-only ledgers with reversal-based correction ([Controls, Auditability and Security by Design](controls-and-auditability.html)), minimal personal data in ledgers, and a per-entity record of where its books may legally live.\n\n## Indirect Tax at Platform Scale\n\nIndirect tax is where the five dimensions meet most visibly: the treatment depends on the supplying entity, the market, the business model and the counterparty's status. A marketplace adds a twist: it is party to supplies it does not itself make. The central idea is that **accounting, tax and regulatory treatments of the same transaction are separate determinations** and must be carried as separate attributes. Take the Lisbon booking: a German traveler pays Stayloft €600.00 for a Lisbon apartment under the merchant model, with a 15% commission.\n\n| Question | Rulebook | Answer (simplified) | Where it lives |\n| --- | --- | --- | --- |\n| How is revenue presented? | ASC 606 / IFRS 15, principal versus agent | Agent: €90.00 commission, net | Accounting engine posting rules |\n| What VAT applies? | EU VAT; from July 2028, ViDA platform rules | Today VAT on the commission (place-of-supply rules for accommodation-related intermediation are a recurring dispute, so the rule belongs in the tax engine). From July 2028, if the host is not VAT-registered, possibly VAT on the full price as deemed supplier | Tax engine, with the determination stored |\n| What is reported about the host? | DAC7 | Host identity and tax number, consideration credited and fees withheld, by quarter | Seller master and transaction ledger |\n| Are the funds regulated? | E-money safeguarding | €600.00 is client money at Northmere Payments B.V. until paid out or earned | Payments ledger and safeguarding reconciliation |\n\nNone of these answers determines another. ViDA's **deemed-supplier** status does not make Stayloft a principal for revenue; holding the cash does not make it the supplier of the room. A billing engine that switches to gross revenue when it starts charging VAT on the full price will misstate the accounts the day the tax rule changes.\n\n**ViDA.** The EU's VAT in the Digital Age package entered into force on 14 April 2025 ([European Commission](https://taxation-customs.ec.europa.eu/taxation/vat/vat-digital-age-vida_en)). From **1 July 2028**, platforms facilitating **short-term accommodation rental** and **passenger transport by road** become deemed suppliers where the provider does not charge VAT, with member states allowed to delay until **1 January 2030**; the platform is relieved where the provider gives a valid VAT number and declares it will account for the VAT. Single VAT registration measures start the same day, and intra-EU B2B e-invoicing with digital reporting follows on **1 July 2030**. For Stayloft (and possibly Wayfare's road transfers), the host's VAT status and declaration become **tax-determining master data with an effective date**, and the rule must be configured by country and date, because member states may start at different times.\n\n**DAC7 and digital services taxes.** DAC7 (Council Directive (EU) 2021/514) requires platform operators to report seller information, including hosts renting property, annually by 31 January for activity from 2023; similar OECD-model rules apply in the UK. DAC7 and ViDA describe the same hosts and transactions, so **both must come from one seller master and one transaction ledger**, reconciled to the books before filing. **Digital services taxes** are unilateral levies on revenue from services such as online intermediation or advertising, attributed to users in the taxing country; scope and rates differ and move with trade policy (Canada [rescinded its DST](https://www.canada.ca/en/department-finance/news/2025/06/canada-rescinds-digital-services-tax-to-advance-broader-trade-negotiations-with-the-united-states.html) in June 2025). Stayloft and Northmere Ads are both potentially in scope, and the data they need, **in-scope revenue by user location**, cannot be reconstructed from entity or currency.\n\n**US sales tax.** Since *South Dakota v. Wayfair* (2018), states may impose collection duties on economic presence, and states with a sales tax have adopted **marketplace facilitator** laws that make marketplaces collect and remit for third-party sellers. Thresholds and scope differ by state, and lodging and occupancy taxes often follow separate rules, frequently at city or county level. For Stayloft Inc. this means determination at the property's address across thousands of jurisdictions and remittance on behalf of hosts, distinct from revenue recognition.\n\nThe response to all of it is Keystone's year-3 target: **tax determination and e-invoicing as shared services**. One engine called at every taxable document event by every brand and ERP; tax master data mastered once; every determination stored with its inputs, rule version and result, because tax disputes routinely outlast the systems that created the data; and tax accounts reconciled to the engine before any return is filed. Northmere's split between Vertex and Oracle's tax engine for some Wayfare markets is Tool Overlap Creep that [Around the Core: Tax, Treasury, Procurement and Reporting Platforms](satellite-platforms.html) resolves.\n\n## Pillar Two: The Group's Data Model Becomes a Tax Return\n\nThe OECD's **Pillar Two** (GloBE) rules apply to groups with consolidated revenue of at least €750 million in two of the four preceding years. They compute an **effective tax rate per jurisdiction** and collect top-up tax to 15%, through a qualified domestic minimum top-up tax in the source country, an income inclusion rule at the parent, or an undertaxed profits rule as backstop. Northmere, at $8.2 billion of revenue, is in scope. The first GloBE Information Returns for 2024 fell due on **30 June 2026** in many jurisdictions (Ireland's Revenue [confirms the date](https://www.revenue.ie/en/companies-and-charities/pillar-two/dates/index.aspx)). A January 2026 \"side-by-side\" package, as widely reported, relieves US-parented groups from the parent-level rules from 2026 while leaving domestic top-up taxes in place; it is unlikely to help Northmere, whose ultimate parent, Northmere Group N.V., is Dutch (illustrative), and the data obligations remain either way. All of this is time-sensitive as of October 2026.\n\nFor the architect, what matters is the **data shape**: per constituent entity, grouped into 38 jurisdictions, accounting income **as used for consolidation, before intercompany eliminations**; current and deferred taxes; **payroll** and **tangible assets** for the substance-based exclusion; intercompany data; and lineage for every adjustment, retained for years.\n\n"}, {"type": "mermaid", "content": "flowchart LR\n    S4[\"SAP S/4HANA - 55 company codes\"] --> OS[\"OneStream - entity results before eliminations\"]\n    FU[\"Oracle Fusion - 12 legal entities\"] --> OS\n    WD[\"Workday Financials - 4 companies\"] --> OS\n    LE[\"Legal entity register - ownership and jurisdiction\"] --> DS[\"Pillar Two dataset - versioned, with lineage\"]\n    OS --> DS\n    HCM[\"Workday HCM - payroll by employing entity\"] --> DS\n    FA[\"Fixed asset registers - tangible assets by entity\"] --> DS\n    TP[\"Tax provision - current and deferred tax by entity\"] --> DS\n    IC[\"Intercompany originator - flows by pair\"] --> DS\n    DS --> CALC[\"GloBE calculation and information return\"]"}, {"type": "markdown", "content": "**Figure 4:** *Pillar Two turns entity and jurisdiction data into a tax return; the calculation is only as good as the entity register, the pre-elimination entity results, and the payroll, asset and intercompany data behind them.*\n\nEvery input depends on something argued earlier: the entity register for keys and jurisdictions, clean intercompany for pre-elimination results, Workday HCM's employing entity agreeing with the register, and reconciliation to consolidation rather than private extracts. Kofi's request therefore lands not as a new tax system but as **jurisdiction and entity dimensions on every finance dataset**, and an entity-tagged tax data mart in the finance data platform that both the provision and the GloBE calculation read (see [Finance Data Across the Estate: From Operations to Analytics](finance-data-flows.html)).\n\n## Licensed Entities: Where the Group Cannot Simply Move Money\n\n**Northmere Payments B.V.** is an e-money institution supervised by De Nederlandsche Bank; **Northmere Payments UK Ltd** is authorized by the FCA. Together they hold Stayloft travelers' money between payment and payout. **Safeguarding** protects those funds from the institution's creditors. Under PSD2 Article 10, applied to e-money institutions through the E-Money Directive, funds still held at the end of the business day after receipt are segregated in a separate account at a credit institution or in secure low-risk assets, or covered by insurance or a comparable guarantee ([PSD2](https://eur-lex.europa.eu/eli/dir/2015/2366/oj)). The FCA's new UK safeguarding regime, widely reported to apply from 7 May 2026, requires daily reconciliations, monthly returns and, above a threshold, an annual audit. PSD3 and the Payment Services Regulation, politically agreed in November 2025 and not yet in force as of October 2026, are expected to tighten safeguarding ([Payments for Finance Architects: The Lifecycle of Money Movement](payments-fundamentals.html)). Five architectural constraints follow:\n\n1. **Client money and own money are separate in the chart of accounts and the bank.** The commission that becomes revenue is released from client funds through a defined event, under the safeguarding policy agreed with the regulator, before it can move.\n2. **Safeguarded funds stay out of group cash management**: no cash pool, no netting, no intra-group lending. Figure 2's dotted line is enforced by account in the netting configuration, not by a note in a procedure.\n3. **Reconciliation becomes a regulatory control**: owed versus held, daily, with SOX-grade completeness and evidence.\n4. **Intercompany pricing is scrutinized twice**: by tax authorities for transfer pricing, and by the supervisor for whether the entity is adequately funded by its group.\n5. **Resilience obligations attach to its systems.** As a financial entity, Northmere Payments B.V. is subject to DORA, so the ICT services supporting its critical functions fall under DORA's contract, register and testing requirements.\n\nThe modeling rule: **regulatory status is an entity attribute, and every flow touching a licensed entity carries it.** Netting exclusions, reconciliation scope and resilience scope derive from the register, so a third licensed entity, which Brazil may require, extends them by configuration.\n\n## Opening Brazil: A Preview of the Launch Checklist\n\nThe 2028 Brazil launch tests everything above. Treated as \"configure Stayloft for Brazil\", it produces exactly the forks this chapter warns against. Treated as a change to the entity, currency, tax and regulatory model, it becomes a checklist that [Onboarding Brands, Entities and Markets as Configuration](brands-entities-markets.html) turns into a reusable market-launch kit:\n\n| Dimension | Decision required | Owner |\n| --- | --- | --- |\n| Legal entity | A new operating entity, not the São Paulo engineering service entity; recorded in the register before any system is configured | Legal, group controller |\n| Ledger and GAAP | S/4HANA company code in the group core, mapped to the group chart from day one; local statutory GAAP in a parallel or extension ledger | Group controller, SAP platform lead |\n| Currency | Brazilian real as evidenced functional currency; added to the rate service; real-denominated pricing rules | Controller, treasury, Stayloft |\n| Indirect tax | Brazilian consumption taxes and electronic fiscal documents in the shared tax engine, including the transition rules of Brazil's ongoing indirect-tax reform, verified against current law at design time | Group tax |\n| Payments | Pix and other local methods via a local provider; Adyen's [documentation](https://docs.adyen.com/account/getting-paid) states its pass-through payout model is the only one available in Brazil, which changes settlement timing and reconciliation | Northmere Pay |\n| Regulatory | Whether holding Brazilian travelers' funds needs local authorization, or whether the merchant model launches later; local FX and cross-border payment rules | Compliance, Northmere Pay |\n| Intercompany | Royalty to Stayloft B.V., payment and shared-service fees; whether local rules allow netting | Group tax, treasury |\n| Pillar Two and data | Brazil as a 39th jurisdiction; where books may legally be kept; local data-protection law | Tax, finance systems |\n\nNone of this is a Brazil-specific build. Each item is a register entry, a code-list value or a shared-service rule. **If launching a market requires code changes in a brand platform, the dimensions were not separated well enough.**\n\n## Trade-Offs\n\nEntity granularity in the ledger was settled above: share a ledger where currency, calendar and chart are shared, and never let a brand ledger stand in for entity books. Rate sourcing has only one answer that scales, the treasury-sourced, versioned group rate service. The open trade-off is where intercompany originates and settles.\n\n| Intercompany origination and settlement | Strengths | Weaknesses | Best fit |\n| --- | --- | --- | --- |\n| Inside each ERP | Native and well controlled | Blind to flows between ERPs | Single-ERP groups |\n| Close platform as originator and matcher | Cross-ERP; dispute workflow; strong evidence | Another critical-path system; overlaps ERP and treasury | Federated estates, as Northmere is until convergence |\n| Treasury in-house bank and netting | Fewest payments and conversions; cash visibility | Tight reconciliation with every ERP; country and licensed-entity limits | Many entity pairs and currencies |\n| Consolidation-only matching | Cheap to start | Breaks found at period end; no prevention | Small groups, or a temporary state |\n\nFor Northmere I would combine a continuously fed intercompany originator and matcher with Kyriba netting, keeping consolidation matching as the final check. Whether the originator is BlackLine, SAP's own capability or a small service is a portfolio decision for [Build, Buy or Compose: Vendor Selection and Portfolio Rationalization](build-versus-buy.html).\n\n## Integration With the Rest of the Estate\n\nThese models belong to no single platform, so they need explicit owners. The entity register, rate service and tax master data are master-data domains under [Finance Data Architecture: Master Data, Systems of Record and Governance](finance-data-architecture.html), with authority recorded in [Systems of Record and Authoritative Data Boundaries](systems-of-record.html); the event envelope that carries the five dimensions belongs to [Canonical Events and Adapters for Loosely Coupled Financial Domains](loosely-coupled-domains.html); translation and elimination run in [OneStream: Consolidation, Planning and Performance Management](onestream.html), intercompany and FX account reconciliation in [BlackLine: Close Automation, Reconciliation and Continuous Accounting](blackline.html), tax, e-invoicing and netting in [Around the Core: Tax, Treasury, Procurement and Reporting Platforms](satellite-platforms.html); and intercompany, rate and safeguarding reconciliations join the catalog in [Designing for Traceability, Reconciliation and Audit Across Boundaries](traceability-and-reconciliation.html), to the evidence standards of [Controls, Auditability and Security by Design](controls-and-auditability.html).\n\n## Failure Modes\n\n- **The entity created three times.** The ERP, the consolidation tool and the tax engine each set up a new entity from a different document; two disagree on functional currency. The first sign is an unexplained translation difference at quarter-end.\n- **Intercompany keyed from a spreadsheet.** Two teams key their halves into two ERPs on different days; matching fails, and the auditor asks for a calculation that lives on a laptop.\n- **The missing counterparty.** Intercompany lines post without a counterparty because an interface never carried one; elimination depends on a person's memory.\n- **The subledger that never revalues.** Foreign-currency payables live in a subledger that posts functional-currency summaries; month-end revaluation misses them until a currency moves sharply.\n- **Tax logic in brand code.** Each mandate, from ViDA to a national e-invoicing phase, becomes a development project per brand, on dates the tax authority sets and the brand roadmap ignores.\n- **The licensed entity in the cash pool.** Pooling or netting includes the payments entity's accounts without separating client funds; the first sign may be a supervisor's question.\n\n## The Chief Architect's View\n\nFunctional currencies, ledger structures and entity representations outlive several generations of applications; tax and regulatory rules change every year. The architecture must get the slow-changing structures right and make the fast-changing rules configurable.\n\n| Decision | Decides | Architect's role |\n| --- | --- | --- |\n| Legal entity register, attributes and workflow | Group controller and Legal | Define the register and its publication contract; standard: no entity outside the register |\n| Entity representation and ledger granularity | Group controller, platform owners | Set the modeling standard; review each new entity |\n| Rate service and rate policy | Treasury (sourcing), controller (policy) | Make the single rate service mandatory; require rate IDs on converted amounts |\n| Intercompany originator, matcher, settlement | Controller and treasury | Name one capability owner; stop overlapping tools acquiring it |\n| Multi-GAAP pattern and leading ledger | Chief Accounting Officer | Ensure GAAP differences are posting rules |\n| Tax determination and e-invoicing as shared services | Head of tax | Make them mandatory for new brands and markets; plan migration |\n| Licensed-entity constraints | Licensed-entity management, compliance | Enforce regulatory status as an entity attribute in netting, pooling and reconciliation scope |\n\n**What to watch:** systems creating entities outside the register; the share of intercompany created by the originator rather than keyed; intercompany differences at the matching cut-off, by cause; the number of rate sources in use; manual GAAP adjustments per period; and the lead time to make a new market or tax rule live as configuration. That last one is the measure I would show the CFO: the cost of global scale, in weeks.\n\n**What to resist:** \"just use the entity we already have\", which changes an entity's tax and regulatory profile without a decision; and the brand that wants its own tax logic, rate source or entity conventions because the shared service is not ready. The answer to both is a time-boxed, recorded exception with a retirement date, which is how **The Brand Exception** is kept from becoming permanent.\n\n## Questions to Ask\n\n1. Where is our legal entity register, who owns it, and how many systems create entities without it?\n2. For each entity, can we name its functional currency, statutory GAAP, representation in each system and tax registrations from one place?\n3. Which component creates both halves of a cross-ERP intercompany transaction, with a shared identifier?\n4. How many exchange-rate sources do our ledgers, subledgers and consolidation use, and does every converted amount record its rate?\n5. Which foreign-currency open-item populations are revalued at month-end, by which system, and which are not?\n6. Are GAAP differences produced by posting rules or by manual adjustments, and how many manual ones did we post last quarter?\n7. Does one engine determine tax for every brand and ERP, storing each determination with its inputs and rule version?\n8. Can we produce DAC7, digital services tax and Pillar Two data from entity- and jurisdiction-tagged datasets reconciled to the books?\n9. Where is the exclusion of safeguarded funds from pooling and netting enforced?\n10. What would it take, in weeks and in code changes, to launch our next market?\n\nEach of these questions ends in the same decision: which capabilities the group builds, which it buys and which it composes, from the intercompany originator to the rate service to the tax engine. That decision, with its tests for differentiation, volume and regulation, is the subject of [Build, Buy or Compose: Vendor Selection and Portfolio Rationalization](build-versus-buy.html).\n\n## Sources and Evidence\n\n### Vendor documentation\n\n- [Managing Organizational Units in Financial Accounting](https://learning.sap.com/courses/customizing-core-settings-in-financial-accounting-in-sap-s4hana/managing-organizational-units-in-financial-accounting-fi), SAP Learning — company code as an independent legal accounting entity; controlling-area constraints.\n- [Checking the Basic Settings in General Ledger Accounting](https://learning.sap.com/courses/customizing-core-settings-in-financial-accounting-in-sap-s4hana/checking-the-basic-settings-in-general-ledger-g-l-accounting), SAP Learning — leading ledger 0L, standard and extension ledgers, ledger groups.\n- [Managing Currency Types](https://learning.sap.com/courses/customizing-core-settings-in-financial-accounting-in-sap-s4hana/managing-currency-types-1), SAP Learning — company code, global and freely defined currencies in the Universal Journal.\n- [Ledgers, Legal Entities, Balancing Segments, and Business Units](https://docs.oracle.com/en/cloud/saas/financials/26c/faigl/ledgers-legal-entities-balancing-segments-and-business-units.html), Oracle, 26C — primary and secondary ledgers, entity and balancing-segment assignment, guidance to limit primary ledgers.\n- [Primary Ledgers, Secondary Ledgers, and Reporting Currencies](https://docs.oracle.com/en/cloud/saas/procurement/23d/oapro/primary-ledgers-secondary-ledgers-and-reporting-currencies.html), Oracle — data conversion levels and their relative cost.\n- [Workday Financial Management datasheet](https://www.workday.com/content/dam/web/en-us/documents/datasheets/datasheet-workday-financial-management.pdf), Workday, 2024 — multibook; accounting generated with intercompany and translation.\n- [Consolidations and Multicurrency Guide](https://community-content.workday.com/en-us/public/products/financial-management/consolidations-and-multicurrency-guide.html), Workday — intercompany profiles, hierarchies, eliminations, translation and revaluation rules.\n- [Getting paid](https://docs.adyen.com/account/getting-paid), Adyen — pass-through payout as the only model in Brazil.\n- [BlackLine acquires FourQ](https://www.blackline.com/about/press-releases/2022/blackline-acquires-fourq-redefining-intercompany-financial-management/), BlackLine, 2022 — origin of BlackLine's intercompany products.\n\n### Standards and regulation\n\n- [IAS 21 The Effects of Changes in Foreign Exchange Rates](https://www.ifrs.org/issued-standards/list-of-standards/ias-21-the-effects-of-changes-in-foreign-exchange-rates/), IFRS Foundation — functional and presentation currency; Lack of Exchangeability amendments.\n- [VAT Directive 2006/112/EC, consolidated text](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02006L0112-20250414), EUR-Lex — Article 226 sequential invoice numbering.\n- [VAT in the Digital Age](https://taxation-customs.ec.europa.eu/taxation/vat/vat-digital-age-vida_en), European Commission — ViDA dates, including the platform deemed-supplier rule from 1 July 2028 with optional delay to 2030.\n- [Directive (EU) 2015/2366 (PSD2)](https://eur-lex.europa.eu/eli/dir/2015/2366/oj), EUR-Lex — Article 10 safeguarding.\n- [Pillar Two key dates](https://www.revenue.ie/en/companies-and-charities/pillar-two/dates/index.aspx), Irish Revenue — 30 June 2026 first filing date; side-by-side package dates.\n- [Canada rescinds digital services tax](https://www.canada.ca/en/department-finance/news/2025/06/canada-rescinds-digital-services-tax-to-advance-broader-trade-negotiations-with-the-united-states.html), Department of Finance Canada, 2025 — DST rescission.\n- [South Dakota v. Wayfair, Inc.](https://www.supremecourt.gov/opinions/17pdf/17-494_j4el.pdf), US Supreme Court, 2018 — economic nexus.\n- [Digital Operational Resilience Act](https://www.eiopa.europa.eu/digital-operational-resilience-act-dora_en), EIOPA — DORA scope and application from January 2025.\n- [About Peppol](https://peppol.org/about/), OpenPeppol — the four-corner model behind Belgian and other mandates.\n\n### Practitioner and research sources\n\n- [OECD releases guidance on side-by-side system](https://bdo.com/insights/tax/oecd-releases-guidance-on-side-by-side-system), BDO, 2026 — side-by-side content and safe harbors (secondary).\n- [Pillar Two filings due 30 June 2026](https://globaltaxnews.ey.com/news/2026-0244), EY Global Tax News, 2026 — first GloBE return deadlines (secondary).\n- [VAT in the Digital Age](https://www.pwc.lu/en/newsletter/2025/vat-in-the-digital-age-vida.html), PwC Luxembourg, 2025 — deemed-supplier mechanics and relief (secondary).\n- [Deadline for first DAC7 reporting](https://news.pwc.be/deadline-for-first-dac7-reporting-now-imminent), PwC Belgium — DAC7 scope and 31 January deadline (secondary).\n- [Electronic invoicing: what does the reform entail?](https://cms.law/en/fra/news-information/electronic-invoicing-what-does-the-reform-entail), CMS France — French phases from September 2026 (secondary).\n- [Belgium's 2026 e-invoicing regulations](https://www.vertexinc.com/resources/resource-library/belgiums-2026-e-invoicing-regulations-explained-scope-deadlines-and-penalties), Vertex — Belgian Peppol mandate (vendor source).\n- [Germany e-invoicing](https://www.avalara.com/us/en/blog/germany-e-invoicing.html), Avalara — German phases 2025–2028 (vendor source).\n- [Marketplace facilitator sales tax laws](https://www.avalara.com/us/en/blog/how-marketplace-facilitator-sales-tax-laws-in-different-states-affect-marketplace-sellers.html), Avalara — state variation (vendor source).\n- [CASS 15 safeguarding](https://www.swgroup.com/insights-events/insights/cass-15-safeguarding-for-payments-and-e-money-firms/), SW Group, 2026 — UK regime from 7 May 2026 (secondary).\n- [Impact of PSD3: are you ready?](https://www.cliffordchance.com/content/dam/cliffordchance/briefings/2026/04/impact-of-psd3-are-you-ready.pdf), Clifford Chance, 2026 — PSD3/PSR status and safeguarding (secondary).\n- [Viertes Bürokratieentlastungsgesetz](https://www.haufe.de/steuern/gesetzgebung-politik/viertes-buerokratieentlastungsgesetz_168_613390.html), Haufe — German voucher retention from 2025 (secondary).\n- [Money](https://martinfowler.com/eaaCatalog/money.html), Martin Fowler, *Patterns of Enterprise Application Architecture*, 2003 — currency-aware money and rounding.\n\nNorthmere Group, its entities, figures and decisions are fictional; transfer-pricing and exchange rates in the examples are illustrative, not tax or accounting advice. Architectural recommendations are the author's judgment.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>
