@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: Modernization Patterns for Legacy Finance Systems
+# Spec: Changing the Engine in Flight: Modernization Patterns for Finance
 
 ## Intent
 
@@ -73,3 +73,4 @@ Chief and enterprise architects, finance-systems architects and transformation l
 - **2026-10-18** — Consistency pass: SFP subledger cut-over date set to 1 November 2027; calendar rule wording clarified where relevant. *(AI-mediated session)*
 - **2026-10-18** — Consistency pass: calendar alignment (payout cohorts April–May 2029; fiscal-year-start exception stated). *(AI-mediated session)*
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "Modernization Patterns for Legacy Finance Systems" to "Changing the Engine in Flight: Modernization Patterns for Finance" at the author's request. *(AI-mediated session)*

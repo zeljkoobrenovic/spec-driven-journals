@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: Toolkit: Templates for the Finance Architect
+# Spec: Working Papers: Templates for the Finance Architect
 
 ## Intent
 
@@ -68,3 +68,4 @@ Chief and enterprise architects, finance-systems, integration and data architect
 
 - **2026-10-18** — Initial spec and page: 14 templates with Northmere examples. Status `accepted`. *(Željko Obrenović, AI-mediated session)*
 - **2026-10-18** — Consistency pass: SFP subledger cut-over date set to 1 November 2027; calendar rule wording clarified where relevant. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "Toolkit: Templates for the Finance Architect" to "Working Papers: Templates for the Finance Architect" at the author's request. *(AI-mediated session)*

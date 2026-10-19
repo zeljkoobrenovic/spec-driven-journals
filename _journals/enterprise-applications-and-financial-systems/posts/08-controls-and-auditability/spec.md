@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: Controls, Auditability and Security by Design
+# Spec: Controls by Design, Not by Audit Season
 
 ## Intent
 
@@ -69,3 +69,4 @@ Chief and enterprise architects, finance-systems and platform engineering leader
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(Željko Obrenović, AI-mediated session)*
 - **2026-10-18** — Editorial review pass: five mandatory control requirements tied to STD-FIN-05 (SoD by design, mandatory 1 Apr 2027) and STD-FIN-06 agent control card (Q3 2027); acronyms PSP, ICT expanded. *(AI-mediated session)*
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "Controls, Auditability and Security by Design" to "Controls by Design, Not by Audit Season" at the author's request. *(AI-mediated session)*

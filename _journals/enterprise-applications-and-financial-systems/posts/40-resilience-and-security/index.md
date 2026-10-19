@@ -1,5 +1,5 @@
 ---
-title: "Resilience, Observability, Security and Recovery for Finance Systems"
+title: "Recover Before the Close: Resilience and Security for Finance"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "How do you make finance systems resilient and secure, including at period end? Tier systems by what their failure does to money movement and the close, watch the money in flight as closely as the servers, and treat a wrong financial record as a financial incident that is corrected by entries and proven by reconciliation, not repaired by a database restore."

@@ -1,5 +1,5 @@
 ---
-title: "Multiple ERPs, One Finance Core: Coexistence and Convergence"
+title: "Converge or Coexist: Living with More Than One ERP"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "When an enterprise runs several ERPs, should it converge them, federate them or tier them? Make one set of rules non-negotiable (chart semantics, entities, rates, calendar, evidence), let the number of ledgers follow volume, control and business-model fit, and record every kept ERP as a governed tier with an exit test, never as a tolerated exception."

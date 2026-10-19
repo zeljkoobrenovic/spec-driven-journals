@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: Resilience, Observability, Security and Recovery for Finance Systems
+# Spec: Recover Before the Close: Resilience and Security for Finance
 
 ## Intent
 
@@ -72,3 +72,4 @@ Chief Architects, finance-systems and payments architects, SRE and platform lead
 - **2026-10-18** — Consistency pass: aligned Lisbon settlement/payout dates and chargeback references with the scenario ledger. *(AI-mediated session)*
 - **2026-10-18** — Editorial review pass: Q4 2027 control-totals rule framed as a clause of STD-FIN-03 rather than a seventh standard; American spelling. *(AI-mediated session)*
 - **2026-10-18** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "Resilience, Observability, Security and Recovery for Finance Systems" to "Recover Before the Close: Resilience and Security for Finance" at the author's request. *(AI-mediated session)*

@@ -1,5 +1,5 @@
 ---
-title: "Why Enterprises Build Their Own Finance Platforms"
+title: "When the ERP Isn't Enough: Custom Finance Platforms"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "When is building proprietary finance capability justified, and where does it stop and the ERP begin? Build where the product, the volume or a license makes the capability genuinely yours; let the ERP own the book of record; integrate through summarized, traceable postings; and test every custom component regularly for retirement."

@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: Multiple ERPs, One Finance Core: Coexistence and Convergence
+# Spec: Converge or Coexist: Living with More Than One ERP
 
 ## Intent
 
@@ -69,3 +69,4 @@ Chief and enterprise architects, finance-systems architects and finance-transfor
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(Željko Obrenović, AI-mediated session)*
 - **2026-10-18** — Editorial review pass: entity split corrected to 55 SAP company codes / 3 Fusion primary ledgers / 4 Workday companies (67 codes after convergence); SFP subledger go-live 1 Nov 2027; Tablekin recommendation dated June 2027; American spelling. *(AI-mediated session)*
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "Multiple ERPs, One Finance Core: Coexistence and Convergence" to "Converge or Coexist: Living with More Than One ERP" at the author's request. *(AI-mediated session)*

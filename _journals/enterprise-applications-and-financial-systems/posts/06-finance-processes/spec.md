@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: The End-to-End Finance Processes
+# Spec: Order to Cash, Procure to Pay, Record to Report
 
 ## Intent
 
@@ -76,3 +76,4 @@ Article only for now.
 - **2026-10-18** — Editorial review pass: Wayfare rail ticket stated as merchant of record but agent (€6.72 margin at ticket issue, €77.28 operator payable); ICFR expanded; American spelling fixes. *(AI-mediated session)*
 - **2026-10-18** — Consistency pass: aligned Lisbon batch credit wording / Stripe Tax waiver renewal with neighboring chapters. *(AI-mediated session)*
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "The End-to-End Finance Processes" to "Order to Cash, Procure to Pay, Record to Report" at the author's request. *(AI-mediated session)*

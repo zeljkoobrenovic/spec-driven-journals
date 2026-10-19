@@ -1,5 +1,5 @@
 ---
-title: "Preventing Redundant Capabilities and Unnecessary Coupling"
+title: "Duplicates and Dependencies: The Hidden Costs of a Grown Estate"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "How do you stop a finance estate from accumulating duplicate capabilities and brittle dependencies? Keep an overlap register that forces a dated decision on every duplicate, name the six kinds of coupling finance systems suffer from, and enforce a short list of design rules at the gates where systems are bought, built and changed."

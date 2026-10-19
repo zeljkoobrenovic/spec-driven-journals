@@ -1,5 +1,5 @@
 ---
-title: "Build, Buy or Compose: Vendor Selection and Portfolio Rationalization"
+title: "Build, Buy or Compose: Choosing What to Own"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "When should a finance capability be built, bought, extended, composed or run as a service, and how do you choose a vendor without letting the vendor choose for you? Decide per capability with three tests (differentiation, volume and variability, controls burden) and a seven-to-ten-year cost that includes control and exit, then select on your hardest scenarios, with exit terms negotiated before signature."

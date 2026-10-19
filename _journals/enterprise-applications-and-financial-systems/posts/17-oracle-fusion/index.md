@@ -1,5 +1,5 @@
 ---
-title: "Oracle Fusion Cloud ERP: Ledgers, Accounting Hub and Coexistence"
+title: "Oracle Fusion: An Accounting Hub for High-Volume Events"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "How does Oracle Fusion structure finance, and how do you run it beside other major platforms? Fusion builds everything on the ledger, a fixed combination of chart of accounts, calendar, currency and accounting method, and on one rules engine that turns transactions into journals. Coexisting with it well means designing those structures deliberately, treating every quarterly update as a regression event, and choosing explicitly which Oracle capabilities the enterprise will use and which it will leave switched off."

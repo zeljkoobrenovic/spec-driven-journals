@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: From Customer Transaction to Financial Statement
+# Spec: The Life of a Booking: From €600 Payment to $97.38 of Revenue
 
 ## Intent
 
@@ -68,3 +68,4 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - **2026-10-18** — Consistency pass: aligned Lisbon settlement/payout dates and chargeback references with the scenario ledger. *(AI-mediated session)*
 - **2026-10-18** — Editorial review pass: joined a stray paragraph break, American spelling in Figure 1 and throughout; verified Lisbon dates, both €420 chargebacks and Wayfare agent treatment. *(AI-mediated session)*
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "From Customer Transaction to Financial Statement" to "The Life of a Booking: From €600 Payment to $97.38 of Revenue" at the author's request. *(AI-mediated session)*

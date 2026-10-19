@@ -1,5 +1,5 @@
 ---
-title: "Many Entities, Currencies, Jurisdictions and Brands"
+title: "Global by Design: Entities, Currencies, Jurisdictions and Brands"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "What does operating across dozens of legal entities, currencies, tax jurisdictions and brands demand of a finance architecture? It demands that entity, brand, market, business model and currency be modeled as separate, governed dimensions, with intercompany, exchange rates and jurisdictional rules treated as designed data flows rather than close-week clean-up."

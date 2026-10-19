@@ -1,5 +1,5 @@
 ---
-title: "Payments for Finance Architects: The Lifecycle of Money Movement"
+title: "Payments for Finance Architects: Eleven Reasons the Numbers Disagree"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "What must a finance architect understand about payments before connecting them to the ledger? That a payment is a chain of separate events spread over days and months, run by parties who each hold different money and bear different risks, and that every price model, payment method, provider and regulation adds another reason why the records will not reconcile on their own."

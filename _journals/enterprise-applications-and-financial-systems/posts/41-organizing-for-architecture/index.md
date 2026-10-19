@@ -1,5 +1,5 @@
 ---
-title: "Organizing Architecture Ownership Across Finance, Engineering, Security and Data"
+title: "Who Owns What: Organizing Architecture Across Finance and Technology"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "Which organizational design makes a finance architecture work? Treat the organization as part of the architecture: stream-aligned brand finance teams that consume a small number of finance platforms as services, specialist teams for the ERP and tax engine, enabling teams for architecture and controls, and Finance process owners paired with Technology product owners, with handoffs, cognitive load and ownership gaps measured like any other property of the estate."

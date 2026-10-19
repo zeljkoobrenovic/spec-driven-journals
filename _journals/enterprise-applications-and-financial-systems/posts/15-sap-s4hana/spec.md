@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: SAP S/4HANA: The Enterprise Finance Core
+# Spec: SAP S/4HANA: One Journal, Clean Core
 
 ## Intent
 
@@ -69,3 +69,4 @@ Chief and enterprise architects, finance-systems and SAP solution architects, in
 - **2026-10-18** — Initial spec and article written in an AI-mediated session from the SAP research brief, with additional verification of FI-CA ledger integration, document splitting and release 2022 maintenance.
 - **2026-10-18** — Editorial review pass: forward notes on the superseded FI-CA merchant-subledger recommendation and the Dec 2027 accounting-hub decision, canonical SAP News URLs for three short links, American spelling, timetoread. *(AI-mediated session)*
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "SAP S/4HANA: The Enterprise Finance Core" to "SAP S/4HANA: One Journal, Clean Core" at the author's request. *(AI-mediated session)*

@@ -1,5 +1,5 @@
 ---
-title: "Designing Custom Ledgers and Financial Event Processing"
+title: "Never Update, Only Append: Designing Custom Ledgers"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "How do you build a custom subledger and financial event pipeline that auditors and accountants can trust? Separate the facts (financial events) from their accounting (entries produced by versioned, approved posting rules), enforce the ledger's invariants in the write path rather than in a report, and make every summary in the general ledger traceable back to the event that caused it."

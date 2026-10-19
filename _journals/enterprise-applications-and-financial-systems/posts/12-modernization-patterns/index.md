@@ -1,5 +1,5 @@
 ---
-title: "Modernization Patterns for Legacy Finance Systems"
+title: "Changing the Engine in Flight: Modernization Patterns for Finance"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "What patterns exist for replacing or evolving legacy finance systems without breaking the books? Pick the pattern by what must change, displace the legacy system in small steps that each end in a reconciliation, cut over at a quiet period boundary, and treat the archive and the switch-off as part of the design."

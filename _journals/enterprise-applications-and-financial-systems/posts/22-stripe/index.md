@@ -1,5 +1,5 @@
 ---
-title: "Stripe: Programmable Payments, Billing and Connected Accounts"
+title: "Stripe: Every Movement Is a Balance Transaction"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "How does Stripe's object model shape finance integration, and where should Stripe's finance products stop and the enterprise's begin? Treat the balance transaction as the unit of reconciliation, choose the Connect charge type as an accounting decision, and let Stripe bill, tax and pay out at the edge while the ledger of record, the reconciliation and the group's policies stay in the enterprise."

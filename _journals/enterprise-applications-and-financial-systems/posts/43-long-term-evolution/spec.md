@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: Evolving the Finance Estate Over a Decade
+# Spec: Built to Be Replaced: Evolving the Finance Estate Over a Decade
 
 ## Intent
 
@@ -68,3 +68,4 @@ Chief and enterprise architects, finance-transformation leaders and CFO-level sp
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(author, AI-mediated session)*
 - **2026-10-18** — Editorial review pass: separability criterion tied to the 8 Dec 2027 accounting-hub decision; 2031 figures reconciled with ch. 36/38 (apps vs 158, savings ramp, Wayfare on S/4HANA from FY2029); six standards; bridge paragraph to Part V and the Uber case before the toolkit hand-off. *(AI-mediated session)*
 - **2026-10-18** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "Evolving the Finance Estate Over a Decade" to "Built to Be Replaced: Evolving the Finance Estate Over a Decade" at the author's request. *(AI-mediated session)*

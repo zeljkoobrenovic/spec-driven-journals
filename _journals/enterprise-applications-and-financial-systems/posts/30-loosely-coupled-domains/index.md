@@ -1,5 +1,5 @@
 ---
-title: "Canonical Events and Adapters for Loosely Coupled Financial Domains"
+title: "Canonical Events: A Common Language for Money"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "What integration architecture lets brand platforms, payment providers and ERPs change on their own schedules while the books still reconcile? A narrow canonical model of financial facts, published through a governed adapter kit and an integration hub that validates, counts and replays but never does the accounting, with anti-corruption layers at every vendor boundary and versioning tied to the close calendar."

@@ -1,5 +1,5 @@
 ---
-title: "Meet Northmere: The Running Example"
+title: "Meet Northmere: Five Brands, One Set of Books"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "Every chapter in this book tests its argument against the same fictional enterprise: Northmere Group, a US-listed, multi-brand digital commerce group with three ERPs, a licensed e-money institution and a nine-day close. This page introduces its brands, entities, systems, people, problems and the five-year program that sets out to fix them."

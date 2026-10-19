@@ -1,5 +1,5 @@
 ---
-title: "Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP"
+title: "Payments-to-Ledger: Draining the Suspense Swamp"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "How do payment providers, brand platforms and the ERP interact so that every payment is accounted for? Treat every captured payment as an expected receivable that must reach zero in a defined clearing account, prove each step with a three-way match whose keys are fixed at the source, and drain suspense by removing the causes of breaks rather than by working them faster."

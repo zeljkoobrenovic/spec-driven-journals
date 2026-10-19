@@ -1,5 +1,5 @@
 ---
-title: "AI, Automation and Agentic Finance Operations"
+title: "Automate the Work, Not the Accountability"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "Where do AI and agents create value in finance operations, and what architecture keeps them controlled? Value sits in the exception layer that rules and robots never reached, and control comes from one design rule: the agent may propose, a controlled process disposes."

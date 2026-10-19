@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: Principles, Standards and Reference Architectures
+# Spec: Principles That Decide Things
 
 ## Intent
 
@@ -72,3 +72,4 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - **2026-10-18** — Consistency pass: aligned Lisbon settlement/payout dates and chargeback references with the scenario ledger. *(AI-mediated session)*
 - **2026-10-18** — Editorial review pass: STD-FIN-01/-02 enforcement from 1 July 2027 (schema registry) stated; link to governance; American spelling (catalog, program). *(AI-mediated session)*
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "Principles, Standards and Reference Architectures" to "Principles That Decide Things" at the author's request. *(AI-mediated session)*

@@ -1,5 +1,5 @@
 ---
-title: "Map Capabilities Before Systems"
+title: "Map What Finance Does Before What Runs It"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "How do you describe what finance must be able to do without describing which system does it? Build a three-level capability map in Finance's own words, heat-map it for importance, maturity, duplication and cost, then decompose it into bounded contexts so every capability has one owner, one model and a defined relationship with its neighbors."

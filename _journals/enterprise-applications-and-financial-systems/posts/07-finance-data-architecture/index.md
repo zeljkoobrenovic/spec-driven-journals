@@ -1,5 +1,5 @@
 ---
-title: "Finance Data Architecture: Master Data, Systems of Record and Governance"
+title: "Finance Data Architecture: Who Owns the Truth"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "Which financial data must be mastered where, and who is allowed to change it? Decide authority per master data domain and per attribute, pick the management style that fits each domain, and govern the chart of accounts and its mappings as controlled configuration, not as spreadsheets."

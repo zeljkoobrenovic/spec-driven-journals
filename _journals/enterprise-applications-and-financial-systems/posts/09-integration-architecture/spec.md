@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: Integration Architecture for Finance
+# Spec: Files, Events and APIs: How Finance Systems Talk
 
 ## Intent
 
@@ -71,3 +71,4 @@ Chief, enterprise and integration architects, and finance-systems and platform e
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(Željko Obrenović, AI-mediated session)*
 - **2026-10-18** — Editorial review pass: canonical-event approval date and STD-FIN-02 reference added, MuleSoft retirement aligned with convergence, acronyms expanded, unverified SAP naming claim softened. *(AI-mediated session)*
 - **2026-10-18** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "Integration Architecture for Finance" to "Files, Events and APIs: How Finance Systems Talk" at the author's request. *(AI-mediated session)*

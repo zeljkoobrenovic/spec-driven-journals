@@ -1,5 +1,5 @@
 ---
-title: "Modernizing Without Stopping the Close: An Incremental Migration"
+title: "Modernizing Without Stopping the Close"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "How do you move a live finance ecosystem to a new architecture without disrupting the close or the money it pays out? Slice the migration along reconciliation boundaries, let the accounting calendar set the cut-over dates, make every stage pass a reconciliation gate with a rehearsed rollback, and count the work done only when the old components are decommissioned and their history can be retrieved without them."

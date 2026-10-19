@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: Modernizing Without Stopping the Close: An Incremental Migration
+# Spec: Modernizing Without Stopping the Close
 
 ## Intent
 
@@ -67,3 +67,4 @@ Chief and enterprise architects, finance-systems architects, program leads, cont
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(author, AI-mediated session)*
 - **2026-10-18** — Editorial review pass: FI-CA merchant-invoicing 2028 cohort timing aligned; STD-05 → STD-FIN-05; verified 2029 concurrency with ch. 28/29 and the Dec 2027 accounting-hub decision; American spelling. *(AI-mediated session)*
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "Modernizing Without Stopping the Close: An Incremental Migration" to "Modernizing Without Stopping the Close" at the author's request. *(AI-mediated session)*

@@ -1,5 +1,5 @@
 ---
-title: "Introduction & Reading Guide"
+title: "Introduction: Architecture Where Every Number Must Reconcile"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "An architecture book for Chief Architects and finance-systems leaders on designing, integrating, governing and evolving a multinational enterprise's finance estate (ERP, payments, close, consolidation and the custom platforms between them) so that it can always be reconciled."

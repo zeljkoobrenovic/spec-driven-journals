@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: Anatomy of a Financial Systems Landscape
+# Spec: Anatomy of a Finance Estate: Layers, Planes and Boundaries
 
 ## Intent
 
@@ -67,3 +67,4 @@ Chief and enterprise architects, finance-systems and integration architects who 
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(Željko Obrenović, AI-mediated session)*
 - **2026-10-18** — Editorial review pass: layer-5 row records Tablekin's Adaptive Planning overlap; blank lines before figure captions. *(AI-mediated session)*
 - **2026-10-18** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "Anatomy of a Financial Systems Landscape" to "Anatomy of a Finance Estate: Layers, Planes and Boundaries" at the author's request. *(AI-mediated session)*

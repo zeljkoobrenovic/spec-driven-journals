@@ -1,5 +1,5 @@
 ---
-title: "SAP S/4HANA: The Enterprise Finance Core"
+title: "SAP S/4HANA: One Journal, Clean Core"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "What role should SAP S/4HANA play in an enterprise finance architecture, and how do you implement and integrate it well? Treat it as the book of record whose long-lived asset is its finance data model, keep high-volume detail and differentiation outside its core through FI-CA, released interfaces and side-by-side extensions, and govern edition, clean core and release cadence as architecture decisions rather than project details."

@@ -1,5 +1,5 @@
 ---
-title: "Designing for Traceability, Reconciliation and Audit Across Boundaries"
+title: "Reconciled by Design: Traceability and Audit Across Boundaries"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "How do you design a finance estate so that any reported number can be traced to its transactions, and every boundary between systems can be proven complete and accurate? You treat identifiers, control totals and reconciliations as designed interfaces with owners and evidence, accept eventual consistency during the period, and make 'closed means reconciled' a hard gate at period end."

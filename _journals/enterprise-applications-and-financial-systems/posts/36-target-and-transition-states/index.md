@@ -1,5 +1,5 @@
 ---
-title: "Target State, Transition States and the Roadmap"
+title: "The Middle Matters: Transition States and the Roadmap"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "How do you describe where a finance estate is going and the stable steps that get there? Treat the target state as a hypothesis with its open decisions marked, plan the route as plateaus that can each be operated, audited, closed at period end and justified on their own, and fund, measure and re-baseline those plateaus rather than projects."

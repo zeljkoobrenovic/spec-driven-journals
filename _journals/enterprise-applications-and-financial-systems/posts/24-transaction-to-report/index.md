@@ -1,5 +1,5 @@
 ---
-title: "From Customer Transaction to Financial Statement"
+title: "The Life of a Booking: From €600 Payment to $97.38 of Revenue"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "How does one customer transaction become a number in the published financial statements, and what must hold true at every hop? It passes through about ten systems and three clocks, and it arrives intact only if every hop carries the same keys, preserves a stated invariant and proves it with a control that someone owns."

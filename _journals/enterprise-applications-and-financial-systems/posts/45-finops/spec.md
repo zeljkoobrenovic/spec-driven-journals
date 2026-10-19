@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: Technology Spend as Financial Data: FinOps Meets the Ledger
+# Spec: FinOps Meets the Ledger: Technology Spend as Financial Data
 
 ## Intent
 
@@ -73,3 +73,4 @@ Chief and enterprise architects, finance-systems and data architects, FinOps pra
 
 - **2026-10-18** — Initial spec and article (new Part IV chapter 39a, folder 45). Status `accepted`. *(author, AI-mediated session)*
 - **2026-10-18** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "Technology Spend as Financial Data: FinOps Meets the Ledger" to "FinOps Meets the Ledger: Technology Spend as Financial Data" at the author's request. *(AI-mediated session)*

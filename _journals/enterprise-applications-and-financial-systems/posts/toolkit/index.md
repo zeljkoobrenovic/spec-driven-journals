@@ -1,5 +1,5 @@
 ---
-title: "Toolkit: Templates for the Finance Architect"
+title: "Working Papers: Templates for the Finance Architect"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "Which records does a Chief Architect actually need to keep a finance estate coherent, provable and changeable? Fourteen copyable templates, from the capability map to the agent control card, each taken from the chapter that teaches it and filled in once with Northmere's numbers."

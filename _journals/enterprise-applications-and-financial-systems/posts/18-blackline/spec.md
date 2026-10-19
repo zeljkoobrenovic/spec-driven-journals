@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: BlackLine: Close Automation, Reconciliation and Continuous Accounting
+# Spec: BlackLine: Matching, Certifying and Closing
 
 ## Intent
 
@@ -71,3 +71,4 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - **2026-10-18** — Consistency pass: aligned Lisbon settlement and payout dates (and batch id) with the scenario ledger. *(AI-mediated session)*
 - **2026-10-18** — Editorial review pass: €1.74 split made explicit (€1.64 = €1.20 + €0.21 + €0.23; €0.10 batch fee), batch 1047 merchant account named, earlier €420 chargeback distinguished, SOC 1 scope hedged, American spelling. *(AI-mediated session)*
 - **2026-10-18** — Added 1 inline illustration (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "BlackLine: Close Automation, Reconciliation and Continuous Accounting" to "BlackLine: Matching, Certifying and Closing" at the author's request. *(AI-mediated session)*

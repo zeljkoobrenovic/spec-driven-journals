@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: Many Entities, Currencies, Jurisdictions and Brands
+# Spec: Global by Design: Entities, Currencies, Jurisdictions and Brands
 
 ## Intent
 
@@ -70,3 +70,4 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(Željko Obrenović, AI-mediated session)*
 - **2026-10-18** — Editorial review pass: entity split aligned to 55 SAP company codes / 12 Fusion entities in 3 primary ledgers / 4 Workday companies; royalty example re-computed on the canonical March rates (1.0900 closing, 1.0860 average); multi-GAAP ledger facts aligned with sap-s4hana and oracle-fusion; Pillar Two parent wording aligned with the Dutch ultimate parent. *(AI-mediated session)*
 - **2026-10-18** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "Many Entities, Currencies, Jurisdictions and Brands" to "Global by Design: Entities, Currencies, Jurisdictions and Brands" at the author's request. *(AI-mediated session)*

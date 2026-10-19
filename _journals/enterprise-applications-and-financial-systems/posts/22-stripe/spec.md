@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: Stripe: Programmable Payments, Billing and Connected Accounts
+# Spec: Stripe: Every Movement Is a Balance Transaction
 
 ## Intent
 
@@ -69,3 +69,4 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - **2026-10-18** — Consistency pass: aligned the Wayfare rail ticket with the scenario ledger (agent, €6.72 net margin at ticket issue). *(AI-mediated session)*
 - **2026-10-18** — Editorial review pass: hedged the current Stripe API version (as of October 2026), expanded ASC 606 / IFRS 15 on first use; Wayfare ticket-issue recognition verified. *(AI-mediated session)*
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "Stripe: Programmable Payments, Billing and Connected Accounts" to "Stripe: Every Movement Is a Balance Transaction" at the author's request. *(AI-mediated session)*

@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: Leading an ERP Modernization and Finance Transformation
+# Spec: The Technology Is the Easy Part: Leading a Finance Transformation
 
 ## Intent
 
@@ -66,3 +66,4 @@ Chief and enterprise architects, finance-systems architects, program directors a
 - 2026-10-18 — Initial spec and article written in an AI-mediated session.
 - **2026-10-18** — Editorial review pass: benefits register realigned to ch. 36 ($22M+$9M retired systems = $31M, $38M effort, $26M PSP/bank); budget tied to plateau tranches; cut-over calendar aligned with ch. 12 blackout rule; partner bank-details authority as target state; 8 Dec 2027 convergence decision recorded; S/4HANA cadence corrected. *(AI-mediated session)*
 - **2026-10-18** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "Leading an ERP Modernization and Finance Transformation" to "The Technology Is the Easy Part: Leading a Finance Transformation" at the author's request. *(AI-mediated session)*

@@ -1,5 +1,5 @@
 ---
-title: "The End-to-End Finance Processes"
+title: "Order to Cash, Procure to Pay, Record to Report"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "Which end-to-end processes does a finance estate serve, and where do they cross systems? Every process, from Record-to-Report to partner payouts, is a chain of hand-offs between systems and owners, and the architecture of a finance estate lives in those hand-offs: their cut-offs, identifiers, ownership changes and reconciliations."

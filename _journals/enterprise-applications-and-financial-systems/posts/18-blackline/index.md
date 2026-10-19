@@ -1,5 +1,5 @@
 ---
-title: "BlackLine: Close Automation, Reconciliation and Continuous Accounting"
+title: "BlackLine: Matching, Certifying and Closing"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "Where does a close-automation platform belong in a finance architecture, and what does continuous accounting actually require? A platform like BlackLine organizes, matches and evidences the close, but it cannot repair data that arrives late, unreferenced or summarized, so the days it removes depend on the event-level data flowing into it."

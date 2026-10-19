@@ -1,5 +1,5 @@
 ---
-title: "Evolving the Finance Estate Over a Decade"
+title: "Built to Be Replaced: Evolving the Finance Estate Over a Decade"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "How does a Chief Architect keep a finance estate coherent over ten years of vendor changes, acquisitions, regulations and new technologies? By designing for the stressors rather than the forecast: list what could happen, simulate it against the architecture, invest in the residues that survive many stressors at once, keep data, events and evidence in the enterprise's own form, and run an annual rhythm that keeps the estate reconciled with its strategy."

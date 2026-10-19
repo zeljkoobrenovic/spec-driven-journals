@@ -1,5 +1,5 @@
 ---
-title: "Technical Debt, Architectural Fitness and Modernization Priorities"
+title: "Technical Debt on the Balance Sheet"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "How do you measure the health of a finance estate and decide what to modernize first? Price each debt item as a carrying cost in three columns (cost, risk, speed), measure the estate's architectural properties with owned fitness functions fed by data it already produces, then fund the work in tranches whose gates are fitness-function readings."

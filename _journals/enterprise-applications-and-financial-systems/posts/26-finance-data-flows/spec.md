@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: Finance Data Across the Estate: From Operations to Analytics
+# Spec: One Number, Many Views: Finance Data from Operations to Analytics
 
 ## Intent
 
@@ -70,3 +70,4 @@ Chief and enterprise architects, data and finance-systems architects, heads of f
 - **2026-10-18** — Editorial review pass: partner bank-details authority reworded to SFP in 2027 with Northmere Pay as sole author from mid-2028; American spelling. *(AI-mediated session)*
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-18** — Added a cross-reference to [[finops]] (cloud billing data product and unit cost as a governed metric). *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "Finance Data Across the Estate: From Operations to Analytics" to "One Number, Many Views: Finance Data from Operations to Analytics" at the author's request. *(AI-mediated session)*

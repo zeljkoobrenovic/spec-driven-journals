@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: Designing for Traceability, Reconciliation and Audit Across Boundaries
+# Spec: Reconciled by Design: Traceability and Audit Across Boundaries
 
 ## Intent
 
@@ -69,3 +69,4 @@ Chief and enterprise architects, integration and finance-systems architects, and
 - **2026-10-18** — Consistency pass: aligned Lisbon settlement and payout dates (and batch id) with the scenario ledger. *(AI-mediated session)*
 - **2026-10-18** — Editorial review pass: "closed means reconciled" now extends STD-FIN-03 rather than a 2026 standard; American spelling. *(AI-mediated session)*
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "Designing for Traceability, Reconciliation and Audit Across Boundaries" to "Reconciled by Design: Traceability and Audit Across Boundaries" at the author's request. *(AI-mediated session)*

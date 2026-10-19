@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: Technical Debt, Architectural Fitness and Modernization Priorities
+# Spec: Technical Debt on the Balance Sheet
 
 ## Intent
 
@@ -73,3 +73,4 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - **2026-10-18** — Consistency pass: SFP subledger cut-over date set to 1 November 2027; calendar rule wording clarified where relevant. *(AI-mediated session)*
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-18** — Closing hand-off now points to the new chapter [[finops]] (read after this one), then [[resilience-and-security]]. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "Technical Debt, Architectural Fitness and Modernization Priorities" to "Technical Debt on the Balance Sheet" at the author's request. *(AI-mediated session)*

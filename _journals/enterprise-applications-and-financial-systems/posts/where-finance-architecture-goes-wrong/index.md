@@ -1,5 +1,5 @@
 ---
-title: "Where Finance Architecture Goes Wrong"
+title: "Unreconciled: Fourteen Ways Finance Architecture Goes Wrong"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "Finance estates rarely fail through one bad decision; they fail through recurring patterns that each look reasonable at the time. This guide names fourteen of them, from The Shadow Ledger to Nobody's Bot, explains how each happens and what it costs, and points to the chapters that address it."

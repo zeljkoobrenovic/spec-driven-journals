@@ -1,5 +1,5 @@
 ---
-title: "Technology Spend as Financial Data: FinOps Meets the Ledger"
+title: "FinOps Meets the Ledger: Technology Spend as Financial Data"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "How does cloud, SaaS and AI spend become trustworthy financial data? Treat the provider's billing feed as subledger data under a contract (FOCUS), map it to the chart of accounts through governed allocation rules, accrue, amortize and recharge it from one cut-off snapshot, tie it out to invoice and ledger, and only then divide it by a business volume to get a unit cost anyone can defend."

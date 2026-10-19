@@ -1,5 +1,5 @@
 ---
-title: "Adyen: Single-Platform Acquiring and Platform Payments"
+title: "Adyen: One Platform from Checkout to Settlement"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "What is architecturally distinctive about Adyen, and how should an enterprise connect it to its ledger? Adyen puts gateway, risk and acquiring on one platform, so one reference follows a payment from authorization to the payout batch. That makes report-driven reconciliation unusually clean, provided the enterprise designs its account structure, references, webhook consumers and posting rules on purpose and treats the concentration it creates as a managed risk."

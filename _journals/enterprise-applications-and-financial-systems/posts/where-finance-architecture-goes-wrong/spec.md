@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: Where Finance Architecture Goes Wrong
+# Spec: Unreconciled: Fourteen Ways Finance Architecture Goes Wrong
 
 ## Intent
 
@@ -77,3 +77,4 @@ Article only for now. Pattern illustrations (one per pattern, as in OWNED) are a
 - **2026-10-19** — Renamed the pattern The Brand Exception to **The Permanent Exception** at the author's request (book-wide; style guide updated; redundant "becomes permanent" phrasings reworded in ch. 10, 11, 16, 29). *(AI-mediated session)*
 - **2026-10-19** — Renamed the pattern Audit Afterthought to **Audit Archaeology** at the author's request (book-wide; style guide updated; one sentence added to the section explaining the name). *(AI-mediated session)*
 - **2026-10-19** — Renamed the pattern The One-ERP Dream to **The Swiss-Army ERP** at the author's request (book-wide; style guide updated; ch. 28 definition reworded; one sentence added to the section explaining the name). *(AI-mediated session)*
+- **2026-10-19** — Title renamed to "Unreconciled: Fourteen Ways Finance Architecture Goes Wrong" at the author's request. *(AI-mediated session)*

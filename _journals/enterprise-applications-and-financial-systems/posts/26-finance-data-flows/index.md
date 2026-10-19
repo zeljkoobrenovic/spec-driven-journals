@@ -1,5 +1,5 @@
 ---
-title: "Finance Data Across the Estate: From Operations to Analytics"
+title: "One Number, Many Views: Finance Data from Operations to Analytics"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "How should finance data move from operational systems through the ledgers, close and consolidation into analytics without creating competing truths? Let operational, accounting and management numbers differ by design, but give each one a governed definition, a status label and a bridge to the books, and make the finance data platform prove every day that it agrees with the ledger it never replaces."

@@ -1,5 +1,5 @@
 ---
-title: "Onboarding Brands, Entities and Markets as Configuration"
+title: "The Next Brand Should Be Boring: Onboarding as Configuration"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "How does a finance architecture support many brands, legal entities, business models and markets without forking? It turns each new brand, entity or market into governed configuration across a small number of layers, reusable business-model templates and a checklist-backed launch kit, and allows forks only by recorded, time-boxed decision."

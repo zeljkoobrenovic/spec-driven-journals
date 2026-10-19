@@ -1,5 +1,5 @@
 ---
-title: "Principles, Standards and Reference Architectures"
+title: "Principles That Decide Things"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "How do you turn architectural intent into principles, standards and reference architectures that teams actually use? Write few principles, each with a test that can fail; promote only the ones that protect the whole estate into mandatory standards with automated conformance; and deliver them as reference architectures and golden paths that make the conformant way the easiest way to build."

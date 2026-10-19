@@ -1,5 +1,5 @@
 ---
-title: "Systems of Record and Authoritative Data Boundaries"
+title: "Systems of Record: Ending the Doppelgänger Record"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "Who is authoritative for which financial data, and how is that decided and enforced? Assign authority per data element and per lifecycle stage, define the hand-off points where it moves from one system to the next and the reconciliation that proves each transfer, and enforce the assignments through write paths, contracts and detective controls rather than a document."

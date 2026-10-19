@@ -1,5 +1,5 @@
 ---
-title: "Vendor Strategy and Avoiding Excessive Dependency"
+title: "Own Your Roadmap: Vendor Strategy Without Lock-In Panic"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "How do you get the benefits of strategic vendors without giving up the enterprise's options? Tier vendors by what depends on them, set a dependency budget for each, keep exit plans that have actually been tested, put abstraction only at the seams where a change of vendor is plausible, and use contract dates and switching rights to negotiate rather than to react."

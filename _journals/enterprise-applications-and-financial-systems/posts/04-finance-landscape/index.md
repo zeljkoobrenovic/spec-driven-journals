@@ -1,5 +1,5 @@
 ---
-title: "Anatomy of a Financial Systems Landscape"
+title: "Anatomy of a Finance Estate: Layers, Planes and Boundaries"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "What are the layers of an enterprise finance estate, and why does each one exist? Eight layers and two cross-cutting planes, separated by what each masters, how much data it carries and who owns it; the volume gradient from billions of events to hundreds of reported lines decides where detail must live."

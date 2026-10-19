@@ -1,5 +1,5 @@
 ---
-title: "The Chief Architect's Job: Coherence Across a Finance Estate"
+title: "The Chief Architect's Job: Making Many Systems Tell One Story"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "What does enterprise architecture do for a finance estate, and what is the Chief Architect accountable for? It is a decision service, not a document set: it makes expensive-to-reverse decisions faster and better, keeps brands, ledgers and vendors coherent, and keeps the enterprise's options open, under explicit decision rights that are narrow where they are mandatory and advisory everywhere else."

@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: Oracle Fusion Cloud ERP: Ledgers, Accounting Hub and Coexistence
+# Spec: Oracle Fusion: An Accounting Hub for High-Volume Events
 
 ## Intent
 
@@ -65,3 +65,4 @@ Chief Architects, finance-systems and integration architects, and finance-transf
 - 2026-10-18 — Initial spec and article written in an AI-mediated session.
 - **2026-10-18** — Editorial review pass: forward note on the Dec 2027 convergence decision (Wayfare to S/4HANA, Oracle Accounting Hub not adopted), American spelling, timetoread. *(AI-mediated session)*
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "Oracle Fusion Cloud ERP: Ledgers, Accounting Hub and Coexistence" to "Oracle Fusion: An Accounting Hub for High-Volume Events" at the author's request. *(AI-mediated session)*

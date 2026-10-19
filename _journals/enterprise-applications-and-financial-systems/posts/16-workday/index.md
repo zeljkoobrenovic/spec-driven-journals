@@ -1,5 +1,5 @@
 ---
-title: "Workday: Financials, People and the Organizational Backbone"
+title: "Workday: The Org Chart Behind the Ledger"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "Where does Workday belong in an enterprise estate: as the people system, as a finance core, or both? As HCM it is often the right master for workers, organizations and approvers across every other platform; as Financials it fits people- and subscription-centric businesses whose worktag design is done well, and it should be tiered deliberately, not tolerated as an exception."

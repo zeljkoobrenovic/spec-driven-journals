@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP
+# Spec: Payments-to-Ledger: Draining the Suspense Swamp
 
 ## Intent
 
@@ -71,3 +71,4 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - **2026-10-18** — Added a one-sentence cross-reference to the new Part V case study [[case-uber-payments]]. *(AI-mediated session)*
 - **2026-10-18** — Editorial review pass: smoothed the [[case-uber-payments]] cross-reference and added the Uber source; fixed a double comma; American spelling. *(AI-mediated session)*
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP" to "Payments-to-Ledger: Draining the Suspense Swamp" at the author's request. *(AI-mediated session)*

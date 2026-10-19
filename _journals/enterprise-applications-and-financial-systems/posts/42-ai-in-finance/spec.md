@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: AI, Automation and Agentic Finance Operations
+# Spec: Automate the Work, Not the Accountability
 
 ## Intent
 
@@ -71,3 +71,4 @@ Chief and enterprise architects, finance-systems and integration architects, con
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(Željko Obrenović, AI-mediated session)*
 - **2026-10-18** — Editorial review pass: Gartner staging-host URL replaced with the gartner.com newsroom URL (secondary report cited), quote reworded to verified wording; agent control card named STD-FIN-06. *(AI-mediated session)*
 - **2026-10-18** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "AI, Automation and Agentic Finance Operations" to "Automate the Work, Not the Accountability" at the author's request. *(AI-mediated session)*

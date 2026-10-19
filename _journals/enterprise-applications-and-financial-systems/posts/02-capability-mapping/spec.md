@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: Map Capabilities Before Systems
+# Spec: Map What Finance Does Before What Runs It
 
 ## Intent
 
@@ -71,3 +71,4 @@ Chief and enterprise architects, finance-systems architects and finance-transfor
 - **2026-10-18** — Consistency pass: aligned Lisbon settlement and payout dates (and batch id) with the scenario ledger. *(AI-mediated session)*
 - **2026-10-18** — Editorial review pass: American spelling (modeling), mapping workbooks count aligned to the ledger (14). *(AI-mediated session)*
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "Map Capabilities Before Systems" to "Map What Finance Does Before What Runs It" at the author's request. *(AI-mediated session)*

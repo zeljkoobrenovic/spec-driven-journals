@@ -1,5 +1,5 @@
 ---
-title: "OneStream: Consolidation, Planning and Performance Management"
+title: "OneStream: Consolidating Actuals, Planning the Future"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "What does an EPM platform such as OneStream do that an ERP does not, and how do you integrate it into an estate with several ledgers? It turns trial balances from different ERPs into one set of group numbers, plans and reports through mapping, translation, elimination and controlled workflow, and its most important architectural asset is the mapping layer, which must be governed like master data."

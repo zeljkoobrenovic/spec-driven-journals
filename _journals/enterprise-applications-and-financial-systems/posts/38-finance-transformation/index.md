@@ -1,5 +1,5 @@
 ---
-title: "Leading an ERP Modernization and Finance Transformation"
+title: "The Technology Is the Easy Part: Leading a Finance Transformation"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "What does a Chief Architect do in a multi-year finance transformation to make it succeed? Own the things that outlive the program: benefits that Finance can measure and must bank, a global template guarded by a design authority with budgeted variations, and the data, testing and cut-over evidence that proves each step reconciles, while the program manager owns plan, cost and delivery and the integrator builds."

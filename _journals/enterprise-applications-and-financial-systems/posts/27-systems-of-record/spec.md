@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: Systems of Record and Authoritative Data Boundaries
+# Spec: Systems of Record: Ending the Doppelgänger Record
 
 ## Intent
 
@@ -66,3 +66,4 @@ Chief and enterprise architects, finance-systems, data and integration architect
 - **2026-10-18** — Consistency pass: aligned Lisbon settlement and payout dates (and batch id) with the scenario ledger. *(AI-mediated session)*
 - **2026-10-18** — Editorial review pass: FI-CA merchant-invoicing timing aligned (April 2028 parallel run, first cohort May 2028, rest through 2028); added closing hand-off heading; American spelling. *(AI-mediated session)*
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "Systems of Record and Authoritative Data Boundaries" to "Systems of Record: Ending the Doppelgänger Record" at the author's request. *(AI-mediated session)*

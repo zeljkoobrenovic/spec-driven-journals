@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: The Chief Architect's Job: Coherence Across a Finance Estate
+# Spec: The Chief Architect's Job: Making Many Systems Tell One Story
 
 ## Intent
 
@@ -66,3 +66,4 @@ Chief and enterprise architects, finance-systems leads and transformation leader
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(Željko Obrenović, AI-mediated session)*
 - **2026-10-18** — Editorial review pass: added STD-FIN-01..06 IDs and effective/enforcement dates as a forward note; expanded GL and PSP on first use. *(AI-mediated session)*
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "The Chief Architect's Job: Coherence Across a Finance Estate" to "The Chief Architect's Job: Making Many Systems Tell One Story" at the author's request. *(AI-mediated session)*

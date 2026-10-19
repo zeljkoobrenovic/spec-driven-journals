@@ -1,5 +1,5 @@
 ---
-title: "Integration Architecture for Finance"
+title: "Files, Events and APIs: How Finance Systems Talk"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "How should financial data move between systems? Pick the integration style by the finance use case, then make every money-carrying interface prove that it is complete, that each record takes effect exactly once, and that it lands in the right period. Middleware delivers messages; idempotency, control totals and reconciliation deliver correctness."

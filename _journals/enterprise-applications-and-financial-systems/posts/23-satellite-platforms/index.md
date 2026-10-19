@@ -1,5 +1,5 @@
 ---
-title: "Around the Core: Tax, Treasury, Procurement and Reporting Platforms"
+title: "Around the Core: Where Specialist Platforms Earn Their Place"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "How do specialized tax, treasury, procurement, disclosure and data platforms attach to the finance core without turning into a tangle? Treat each as a satellite: one capability, one accountable owner, a narrow contracted interface to the core, and a reconciliation that proves the two agree. When a satellite loses any of these, it stops being a satellite and starts being a second ledger."

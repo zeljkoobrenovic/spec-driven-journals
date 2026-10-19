@@ -1,5 +1,5 @@
 ---
-title: "Controls, Auditability and Security by Design"
+title: "Controls by Design, Not by Audit Season"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "How do controls and audit requirements shape finance architecture? Controls are architectural requirements with the same standing as latency or availability: a system an auditor cannot rely on is a system the CFO cannot sign for, and the cheapest evidence is the evidence the system produces as a side effect of doing its job."

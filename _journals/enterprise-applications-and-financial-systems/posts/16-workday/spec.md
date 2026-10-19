@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: Workday: Financials, People and the Organizational Backbone
+# Spec: Workday: The Org Chart Behind the Ledger
 
 ## Intent
 
@@ -71,3 +71,4 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(Željko Obrenović, AI-mediated session)*
 - **2026-10-18** — Editorial review pass: Agent System of Record press-release link moved from the q4cdn PDF to Workday newsroom with verbatim quote, American spelling (license, program), timetoread. *(AI-mediated session)*
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "Workday: Financials, People and the Organizational Backbone" to "Workday: The Org Chart Behind the Ledger" at the author's request. *(AI-mediated session)*

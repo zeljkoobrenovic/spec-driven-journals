@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: Build, Buy or Compose: Vendor Selection and Portfolio Rationalization
+# Spec: Build, Buy or Compose: Choosing What to Own
 
 ## Intent
 
@@ -67,3 +67,4 @@ Chief and enterprise architects, finance-systems leads, procurement and finance-
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(author, AI-mediated session)*
 - **2026-10-18** — Editorial review pass: SFP cost of owning aligned with the ledger ($18.5M incl. $4.1M finance operations), TCO range sentence corrected, CUEC expanded. *(AI-mediated session)*
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Title renamed from "Build, Buy or Compose: Vendor Selection and Portfolio Rationalization" to "Build, Buy or Compose: Choosing What to Own" at the author's request. *(AI-mediated session)*
