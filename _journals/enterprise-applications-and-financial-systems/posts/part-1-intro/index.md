@@ -1,5 +1,5 @@
 ---
-title: "FOUNDATIONS: The Enterprise and Its Finance Domain"
+title: "FOUNDATIONS: How Money Moves Through an Enterprise"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "The concepts an architect needs before touching a finance platform: enterprise architecture practice, capabilities, the portfolio, the anatomy of the landscape, accounting, processes, data, controls, integration, global scale, sourcing and modernization patterns."

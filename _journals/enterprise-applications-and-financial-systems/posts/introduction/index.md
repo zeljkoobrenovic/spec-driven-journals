@@ -105,16 +105,16 @@ The book opens with three preface pages, continues with four parts that form a l
 | **[[part-2]]** | What is each core finance platform for, how does it work, where should it stop and what does depending on it cost? | 13–23: custom platforms and ledgers, SAP S/4HANA, Workday, Oracle Fusion, BlackLine, OneStream, payments fundamentals, Adyen, Stripe and the satellite platforms |
 | **[[part-3]]** | How do money and data cross platform boundaries, and how is every crossing proven? | 24–33: transaction to report, payments to ledger, data flows, systems of record, multiple ERPs, redundancy and coupling, canonical events, traceability, onboarding and incremental modernization |
 | **[[part-4]]** | How does a Chief Architect lead the estate through years of change? | 34–43: governance, principles and reference architectures, target and transition states, vendor strategy, transformation, technical debt, resilience and security, organization, AI and the long view |
-| **Part V — LEARN** | What do publicly documented platforms teach about these patterns, and where does the public evidence stop? | [[part-5]]; 44: [[case-uber-payments]] |
+| **[[part-5]]** | What do publicly documented platforms teach about these patterns, and where does the public evidence stop? | 44: [[case-uber-payments]] |
 | **Reference** | Where are the templates, definitions and sources? | [[toolkit]], [[glossary]], [[bibliography]] |
 
 ---begin mermaid---
 flowchart LR
     P["Preface: purpose, failure patterns, Northmere"] --> I["Part I: Foundations"]
     I --> II["Part II: Platforms"]
-    II --> III["Part III: Integrated"]
-    III --> IV["Part IV: Lead"]
-    IV --> V["Part V: Public case studies"]
+    II --> III["Part III: Integration"]
+    III --> IV["Part IV: Leadership"]
+    IV --> V["Part V: Practice"]
     I -.->|"concepts"| R["Toolkit, glossary, bibliography"]
     III -.->|"templates"| R
     IV -.->|"templates"| R

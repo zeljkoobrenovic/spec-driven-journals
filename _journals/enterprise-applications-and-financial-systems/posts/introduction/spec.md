@@ -67,3 +67,4 @@ Article only for now.
 
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(author, AI-mediated session)*
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-19** — Reading-order table and Figure 3 updated for the renamed parts (INTEGRATION, LEADERSHIP, PRACTICE). *(AI-mediated session)*

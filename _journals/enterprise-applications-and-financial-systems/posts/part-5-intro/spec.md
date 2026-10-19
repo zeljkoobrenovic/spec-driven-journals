@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: PART V — LEARN: Lessons From Public Case Studies
+# Spec: PART V — PRACTICE: How Others Built It
 
 ## Intent
 
@@ -48,3 +48,4 @@ The journal's `config.yaml`, `PLAN.md` (Part V contract), the style guide and ch
 ## Changelog
 
 - 2026-10-18: Initial spec and article, AI-mediated session.
+- **2026-10-19** — Part title renamed to "PRACTICE: How Others Built It" at the author's request. *(AI-mediated session)*

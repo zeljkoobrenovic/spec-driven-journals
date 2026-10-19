@@ -1,5 +1,5 @@
 ---
-title: "LEARN: Lessons From Public Case Studies"
+title: "PRACTICE: How Others Built It"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "Test the book's patterns against publicly documented finance and payments platforms: what each organization built, why, what it teaches and where the public evidence stops."

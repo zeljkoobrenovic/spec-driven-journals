@@ -1,5 +1,5 @@
 ---
-title: "INTEGRATED: The Finance Estate as One System"
+title: "INTEGRATION: The Finance Estate as One System"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "Follow money and data across platform boundaries: from customer transaction to financial statement, payments to ledger, systems of record, coexistence, coupling, traceability, onboarding and incremental modernization."

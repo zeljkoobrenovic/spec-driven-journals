@@ -1,5 +1,5 @@
 ---
-title: "LEAD: Strategic Architecture and Transformation"
+title: "LEADERSHIP: The Chief Architect's Agenda"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "The Chief Architect's strategic work: governance, principles and reference architectures, target and transition states, vendor strategy, transformation, technical debt, technology spend, resilience and security, organization, AI and the long view."

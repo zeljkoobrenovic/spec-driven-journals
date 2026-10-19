@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: PART II — PLATFORMS: The Core Enterprise Finance Platforms
+# Spec: PART II — PLATFORMS: What Each Is For, and What It Costs to Depend On
 
 ## Intent
 
@@ -49,3 +49,4 @@ The journal's `config.yaml`, `PLAN.md`, `_research/scenario-ledger.md` and the K
 
 - 2026-10-18: Initial spec and article, AI-mediated session.
 - **2026-10-18** — Editorial review pass: no changes needed (format, links and hand-off checked). *(AI-mediated session)*
+- **2026-10-19** — Part title renamed to "PLATFORMS: What Each Is For, and What It Costs to Depend On" at the author's request. *(AI-mediated session)*

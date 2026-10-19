@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: PART I — FOUNDATIONS: The Enterprise and Its Finance Domain
+# Spec: PART I — FOUNDATIONS: How Money Moves Through an Enterprise
 
 ## Intent
 
@@ -49,3 +49,4 @@ The journal's `config.yaml`, `PLAN.md`, `_research/scenario-ledger.md` and the K
 
 - 2026-10-18: Initial spec and article, AI-mediated session.
 - **2026-10-18** — Editorial review pass: aligned the CFO-question framing with ch. 1 (three questions). *(AI-mediated session)*
+- **2026-10-19** — Part title renamed to "FOUNDATIONS: How Money Moves Through an Enterprise" at the author's request. *(AI-mediated session)*

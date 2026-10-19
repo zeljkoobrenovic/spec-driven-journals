@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: PART IV — LEAD: Strategic Architecture and Transformation
+# Spec: PART IV — LEADERSHIP: The Chief Architect's Agenda
 
 ## Intent
 
@@ -50,3 +50,4 @@ The journal's `config.yaml`, `PLAN.md`, `_research/scenario-ledger.md` and the K
 - 2026-10-18: Initial spec and article, AI-mediated session.
 - **2026-10-18** — Editorial review pass: ch. 43 learning-path bullet aligned with that chapter's three KEY POINTS. *(AI-mediated session)*
 - **2026-10-18** — Added [[finops]] (new chapter read after technical-debt-and-fitness) to the learning path, the stage 3 diagram node and the closing paragraph; "ten" chapters became "eleven". *(AI-mediated session)*
+- **2026-10-19** — Part title renamed to "LEADERSHIP: The Chief Architect's Agenda" at the author's request. *(AI-mediated session)*

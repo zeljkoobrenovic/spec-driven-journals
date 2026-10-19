@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-18
 ---
 
-# Spec: PART III — INTEGRATED: The Finance Estate as One System
+# Spec: PART III — INTEGRATION: The Finance Estate as One System
 
 ## Intent
 
@@ -49,3 +49,4 @@ The journal's `config.yaml`, `_research/scenario-ledger.md` and the KEY POINTS o
 
 - 2026-10-18: Initial spec and article, AI-mediated session.
 - **2026-10-18** — Editorial review pass: checked claims against ch. 24, 31 and the ledger (walkthrough dry run, €14m suspense); American spelling. *(AI-mediated session)*
+- **2026-10-19** — Part label renamed INTEGRATED → INTEGRATION (noun, consistent with FOUNDATIONS and PLATFORMS) at the author's request. *(AI-mediated session)*

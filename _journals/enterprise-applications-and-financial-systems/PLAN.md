@@ -29,8 +29,8 @@ The book generalizes a Productscape domain model of a large multi-brand travel g
 | Preface | Introduction & Reading Guide; Where Finance Architecture Goes Wrong; Meet Northmere | Purpose, routes through the book, the named failure patterns, the running example |
 | Part I — FOUNDATIONS | 12 chapters | The concepts an architect needs before touching a finance platform: EA practice, capabilities, portfolio, landscape anatomy, accounting, processes, data, controls, integration, global scale, sourcing, modernization patterns |
 | Part II — PLATFORMS | 11 chapters | Deep, architecture-focused treatment of custom platforms and ledgers, SAP S/4HANA, Workday, Oracle Fusion, BlackLine, OneStream, payments fundamentals, Adyen, Stripe and the satellite platforms |
-| Part III — INTEGRATED | 10 chapters | The estate as one system: end-to-end flows, payments-to-ledger, data, systems of record, ERP coexistence, redundancy, loose coupling, traceability, multi-brand onboarding, incremental modernization |
-| Part IV — LEAD | 10 chapters | The Chief Architect's strategic responsibilities: governance, principles and reference architectures, target and transition states, vendor strategy, transformation, technical debt, resilience and security, organization, AI and agentic operations, long-term evolution |
+| Part III — INTEGRATION | 10 chapters | The estate as one system: end-to-end flows, payments-to-ledger, data, systems of record, ERP coexistence, redundancy, loose coupling, traceability, multi-brand onboarding, incremental modernization |
+| Part IV — LEADERSHIP | 10 chapters | The Chief Architect's strategic responsibilities: governance, principles and reference architectures, target and transition states, vendor strategy, transformation, technical debt, resilience and security, organization, AI and agentic operations, long-term evolution |
 | Reference | Toolkit; Glossary; Bibliography | Templates, definitions, sources |
 
 ## Chapter Contracts
@@ -45,7 +45,7 @@ Each contract gives: **folder → permalink**, title, the core question the chap
 
 **meet-northmere → `meet-northmere`** — *Meet Northmere: The Running Example.* The fictional group, its brands, business models, entities, systems landscape (context diagram), cast, the 2027 situation and the transformation programme (Keystone). Labelled fictional throughout.
 
-### Part I — FOUNDATIONS: The Enterprise and Its Finance Domain (`part-1`)
+### Part I — FOUNDATIONS: How Money Moves Through an Enterprise (`part-1`)
 
 1. **01-chief-architect-role → `chief-architect-role`** — *The Chief Architect's Job: Coherence Across a Finance Estate.* Q: What does enterprise architecture do for a finance estate, and what is the Chief Architect accountable for? Cover EA principles and purpose (decision quality, coherence, optionality), architecture as a function vs a document, operating models (centralized, federated, advisory), decision rights (mandatory standards vs advice), the matrix with brand engineering, what "good" looks like (decision velocity, reuse, fewer duplicate systems), artifacts that matter vs shelfware, the Architect Elevator. Northmere: Dana's first 90 days; the inherited landscape; three questions from the CFO. Owns: enterprise architecture, operating model, decision rights. Briefs: ea-integration-ledger.
 
@@ -71,7 +71,7 @@ Each contract gives: **folder → permalink**, title, the core question the chap
 
 12. **12-modernization-patterns → `modernization-patterns`** — *Modernization Patterns for Legacy Finance Systems.* Q: What patterns exist for replacing or evolving legacy finance systems safely? Rehost/replatform/refactor/replace/retire; ERP-specific: greenfield, brownfield, selective transition; hub patterns: Central Finance / accounting hubs as strangler for ledgers; strangler fig, branch by abstraction, parallel run, event interception, legacy mimic, transitional architecture; data migration (open items, balances, history), cut-over at period boundaries; decommissioning and archive. Northmere: the legacy Wayfare EBS archive and the Stayloft billing engine. Owns: modernization pattern catalogue, parallel run, cut-over. Briefs: ea-integration-ledger, sap, oracle.
 
-### Part II — PLATFORMS: The Core Enterprise Finance Platforms (`part-2`)
+### Part II — PLATFORMS: What Each Is For, and What It Costs to Depend On (`part-2`)
 
 13. **13-custom-finance-platforms → `custom-finance-platforms`** — *Why Enterprises Build Their Own Finance Platforms.* Q: When is building proprietary finance capability justified, and where are the boundaries with ERP? Brand/business-specific finance apps (commission billing, partner settlement & payouts, traveler funds, revenue allocation, marketplace fees), reasons to build (volume, latency, product coupling, business-model novelty, regulatory licences), domain boundaries with ERP (what never belongs in the ERP and what always does), ownership of financial data, integration patterns into the core (summarized postings with drill-back), scalability, the cost of owning (controls, audit, people), modernization challenges, when custom should be retired. Northmere: Stayloft Finance Platform history and its 2027 decision. Owns: custom finance platform, boundary rules. Briefs: digest, ea-integration-ledger, payments.
 
@@ -95,7 +95,7 @@ Each contract gives: **folder → permalink**, title, the core question the chap
 
 23. **23-satellite-platforms → `satellite-platforms`** — *Around the Core: Tax, Treasury, Procurement and Reporting Platforms.* Q: How do specialized satellite platforms attach to the finance core without becoming tangles? Indirect tax engines & e-invoicing/CTC, direct tax & Pillar Two, treasury (TMS, bank connectivity, ISO 20022, in-house bank, payment factory), source-to-pay & expenses, billing/subscription platforms, disclosure management (Workiva), finance data platforms; integration patterns and ownership for each. Northmere: Vertex, Kyriba, Coupa, Workiva, Snowflake. Owns: satellite pattern, payment factory, CTC/e-invoicing architecture. Briefs: satellites-ai.
 
-### Part III — INTEGRATED: The Finance Estate as One System (`part-3`)
+### Part III — INTEGRATION: The Finance Estate as One System (`part-3`)
 
 24. **24-transaction-to-report → `transaction-to-report`** — *From Customer Transaction to Financial Statement.* Q: How does one customer transaction become a number in the published financial statements, and what must hold true at every hop? End-to-end trace of a Stayloft merchant booking (and a Tablekin subscription) through operational event → financial event → subledger → payments → settlement → GL → reconciliation → consolidation → disclosure → analytics; invariants per hop; timing (event date, posting date, period); sequence diagram. Owns: end-to-end financial event chain. Briefs: all.
 
@@ -117,7 +117,7 @@ Each contract gives: **folder → permalink**, title, the core question the chap
 
 33. **33-incremental-modernization → `incremental-modernization`** — *Modernizing Without Stopping the Close: An Incremental Migration.* Q: How do you move a live finance ecosystem to a new architecture without disrupting critical operations? Worked migration of Stayloft's merchant subledger onto the group accounting hub posting into S/4HANA (the ch. 28 decision of 8 Dec 2027; Central Finance rejected) via canonical events: stages, parallel runs, reconciliations as gates, cut-over calendars (avoid quarter-end), rollback, hypercare, decommissioning, audit involvement, people. Owns: migration stage-gate design. Briefs: sap, ea.
 
-### Part IV — LEAD: Strategic Architecture and Transformation (`part-4`)
+### Part IV — LEADERSHIP: The Chief Architect's Agenda (`part-4`)
 
 34. **34-architecture-governance → `architecture-governance`** — *Architecture Governance That Speeds Decisions.* Q: How do you govern architecture across a federated finance estate without becoming a bottleneck? Decision rights, ADRs, review board vs advice forum, mandatory standards & waivers, conformance checks, portfolio gates, metrics (decision lead time, waiver count, reuse), governance as service. Northmere: the decision record and review board in year one. Owns: architecture decision record, review board, waiver. Briefs: ea.
 
@@ -141,13 +141,13 @@ Each contract gives: **folder → permalink**, title, the core question the chap
 
 43. **43-long-term-evolution → `long-term-evolution`** — *Evolving the Finance Estate Over a Decade.* Q: How does a Chief Architect keep the estate coherent over ten years of vendors, acquisitions, regulations and technologies? Residuality/stressor thinking (regulation, M&A, vendor change, AI), optionality, avoiding vendor dependency, keeping data and events portable, the architecture function's own evolution, closing synthesis of the book's argument (RECONCILED). Owns: stressor analysis. Briefs: digest residuality, ea.
 
-### Part V — LEARN: Lessons From Public Case Studies (`part-5`)
+### Part V — PRACTICE: How Others Built It (`part-5`)
 
 Added 2026-10-18 at the author's request. Real, publicly documented cases, clearly separated from the fictional Northmere: each states what is documented (with sources and dates), what is the author's interpretation, and where the public evidence stops. Never infer undocumented internals.
 
 44. **44-case-uber-payments → `case-uber-payments`** — *Uber's Payments Platform: A Ledger at the Center of Money Movement.* Q: What does a publicly documented, large-scale payments platform teach about the patterns in this book? Based on the author's 2019 underhood post (`_journals/underhood/posts/2019/2019-11-20-uber-payments.md`), updated with Uber's later public engineering writing (verified). Cover: the hourglass platform between lines of business, PSPs and banks; order/account/entry and the zero-sum rule; stream processing with at-least-once delivery, idempotency and dead letters; multi-PSP retry and request storage; side-effect validation; batch bank integration; later developments (e.g., ledger storage evolution) only as documented; then a comparison with Northmere's choices (ch. 13, 14, 20, 25, 30, 31, 40) and the limits of the evidence (payments platform vs book of record; what is not public). Owns: hourglass payments platform (as a case).
 
-### Reference Material
+### Reference
 
 - **toolkit → `toolkit`** — templates: capability map, SoR matrix, ADR, vendor scorecard, canonical event spec, reconciliation design card, cut-over checklist, debt register, agent control card.
 - **glossary → `glossary`** — definitions grouped by part with an alphabetical index.

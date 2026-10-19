@@ -1,5 +1,5 @@
 ---
-title: "PLATFORMS: The Core Enterprise Finance Platforms"
+title: "PLATFORMS: What Each Is For, and What It Costs to Depend On"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "Custom ledgers, SAP S/4HANA, Workday, Oracle Fusion, BlackLine, OneStream, Adyen, Stripe and the satellite platforms: what each is for, how it works, how it integrates and what it costs you to depend on it."
