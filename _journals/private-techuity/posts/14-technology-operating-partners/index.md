@@ -66,7 +66,7 @@ KKR Capstone is KKR's **in-house operating team**. It says it helps assess inves
 
 In a May 2026 interview, Blackstone's chief technology officer and the global head of its operating team describe a dedicated team that helps portfolio companies adopt AI, sorting companies by how central AI is to their business. The leaders stress that **executives are accountable** for AI results, that projects must show a **measurable economic return**, and that the work must reach **actual implementation**. Again, the AI capability works inside a wider operating team. [S86: Blackstone, AI at Scale](https://www.blackstone.com/insights/article/ai-at-scale-a-conversation-with-blackstones-cto-and-global-head-of-the-operating-team/)
 
-Both descriptions come from the firms themselves and show what the function can look like, not measured results. A smaller firm may offer you one coordinator who can call on specialists. Find out early which arrangement your investor runs, because it decides whom you will be dealing with and how much of their time you can expect.
+Both descriptions come from the firms themselves and show what the function can look like, not measured results. A smaller firm may offer one coordinator who can call on specialists. It is worth learning early which arrangement your investor runs, because that decides whom you will deal with and how much of their time you can expect.
 
 ## What the Partner Does: From Acquisition to Exit
 
