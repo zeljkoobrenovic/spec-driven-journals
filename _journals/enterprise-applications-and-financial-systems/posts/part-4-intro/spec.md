@@ -15,7 +15,7 @@ Chief Architects, enterprise and finance-systems architects, and finance-transfo
 
 ## Success criteria
 
-- [ ] Opens with the IN THIS PART and FAILURE PATTERNS callouts, using exact pattern names (Vendor Gravity, Big-Bang Bravado, Automation Without Accountability, Audit Afterthought) linked to [[where-finance-architecture-goes-wrong]].
+- [ ] Opens with the IN THIS PART and FAILURE PATTERNS callouts, using exact pattern names (The Borrowed Roadmap, Big-Bang Bravado, Nobody's Bot, Audit Archaeology) linked to [[where-finance-architecture-goes-wrong]].
 - [ ] One-paragraph Northmere opening (labeled fictional) whose facts match the scenario ledger: Keystone approved December 2026, about $310 million over five years, $95 million run-rate savings by 2030, one finance core by 2029, three-day close by 2031, Dana co-chairing the design authority with Leila, final rights on mandatory standards without line authority over brand engineering.
 - [ ] Defines design authority and transition state in plain language.
 - [ ] A mermaid learning-path diagram groups chapters 34–43 into four stages (decide well; plan the journey; keep the estate healthy; organize and look ahead), with a figure caption.
@@ -38,7 +38,7 @@ None.
 ## Decision log
 
 - 2026-10-18: Modeled on the OWNED part introductions and the RECONCILED Part I and II introductions.
-- 2026-10-18: Failure patterns chosen by how directly the part's chapters remedy them: Vendor Gravity (37, 36), Big-Bang Bravado (36, 38), Automation Without Accountability (40, 42), Audit Afterthought (34, 36, 40, 42). Customization Concrete and Tool Overlap Creep, also addressed, are left to the chapters to keep four.
+- 2026-10-18: Failure patterns chosen by how directly the part's chapters remedy them: The Borrowed Roadmap (37, 36), Big-Bang Bravado (36, 38), Nobody's Bot (40, 42), Audit Archaeology (34, 36, 40, 42). Customization Concrete and Capability Creep, also addressed, are left to the chapters to keep four.
 - 2026-10-18: Chapter 43 (long-term-evolution) was not written at drafting time; its line is drawn from its PLAN.md contract and should be checked against its KEY POINTS once it exists.
 
 ## Sources

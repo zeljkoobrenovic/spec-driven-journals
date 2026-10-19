@@ -22,7 +22,7 @@ Chief and enterprise architects, finance-systems, data and integration architect
 - [x] States explicit conflict-resolution rules and shows them applied (the SFP netting case).
 - [x] Covers enforcement in three layers (write paths, contracts, detective controls) with a diagram.
 - [x] Covers migrations with temporary dual authority, split by key, shadow runs, end dates and authority for history, with a diagram.
-- [x] Uses The Many Masters and The Shadow Ledger with the 850,000-partner example and ledger numbers; includes trade-off table, Chief Architect's view, questions, sources; hands off to [[multiple-erps]].
+- [x] Uses The Doppelgänger Record and The Shadow Ledger with the 850,000-partner example and ledger numbers; includes trade-off table, Chief Architect's view, questions, sources; hands off to [[multiple-erps]].
 
 ## Non-goals
 

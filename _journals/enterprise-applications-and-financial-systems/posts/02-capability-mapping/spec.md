@@ -48,7 +48,7 @@ Chief and enterprise architects, finance-systems architects and finance-transfor
 
 ## Decision log
 
-- **2026-10-18** — Ten level-1 groups following Finance's domains of accountability rather than ERP modules; Controls and Finance Data promoted to level 1; payment acceptance drawn outside the map. Rejected: a vendor-module skeleton (Vendor Gravity) and R2R/O2C/P2P as level-1 boxes.
+- **2026-10-18** — Ten level-1 groups following Finance's domains of accountability rather than ERP modules; Controls and Finance Data promoted to level 1; payment acceptance drawn outside the map. Rejected: a vendor-module skeleton (The Borrowed Roadmap) and R2R/O2C/P2P as level-1 boxes.
 - **2026-10-18** — Highlighted only the four ledger overlaps as undecided duplication; brand-ledger GL duplication and the split subledger shown on the heat map but framed as decided transition states owned by other chapters.
 - **2026-10-18** — Heat-map importance scale uses Differentiating / Critical / Commodity, borrowing Evans's core vs generic subdomain distinction and adding "Critical" for finance's non-differentiating but material capabilities.
 - **2026-10-18** — Reconciliation and close not modeled as their own bounded contexts; BlackLine treated as a generic subdomain, to avoid teams building a second ledger.

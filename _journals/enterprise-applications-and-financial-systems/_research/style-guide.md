@@ -103,19 +103,19 @@ Use these exact names:
 | Pattern | Warning sign |
 | --- | --- |
 | **The Shadow Ledger** | A brand or product system keeps its own books that nobody reconciles to the general ledger. |
-| **Suspense Gravity** | Unmatched items accumulate in clearing and suspense accounts faster than anyone clears them. |
-| **The Many Masters** | The same entity — a legal entity, a partner, an account — is created and changed in several systems with no agreed authority. |
-| **Summarized Into Silence** | Detail is aggregated before it reaches the ledger, and nobody can trace a balance back to its transactions. |
+| **The Suspense Swamp** | Unmatched items accumulate in clearing and suspense accounts faster than anyone clears them. |
+| **The Doppelgänger Record** | The same entity — a legal entity, a partner, an account — is created and changed in several systems with no agreed authority. |
+| **Lost in Aggregation** | Detail is aggregated before it reaches the ledger, and nobody can trace a balance back to its transactions. |
 | **Spreadsheet Glue** | Mappings, controls and hand-offs that the close depends on live in spreadsheets on someone's laptop. |
 | **Customization Concrete** | Custom code inside a vendor platform makes every upgrade a project and every release a risk. |
-| **The One-ERP Dream** | One platform is expected to do everything, including what it was never designed to do at the required volume. |
+| **The Swiss-Army ERP** | One platform is expected to do everything, including what it was never designed to do at the required volume. |
 | **Point-to-Point Spaghetti** | Every system talks directly to every other, in its own format, with its own error handling. |
-| **Tool Overlap Creep** | Several platforms quietly acquire the same capability, and nobody decides which one owns it. |
-| **The Brand Exception** | Every brand, market or acquisition claims to be special, and each exception becomes a permanent fork. |
+| **Capability Creep** | Several platforms quietly acquire the same capability, and nobody decides which one owns it. |
+| **The Permanent Exception** | Every brand, market or acquisition claims to be special, and each exception becomes a fork that never ends. |
 | **Big-Bang Bravado** | Everything switches over at once, usually at year-end, with no way back. |
-| **Vendor Gravity** | The vendor's roadmap, packaging and sales cycle set the enterprise's architecture. |
-| **Audit Afterthought** | Controls and evidence are retrofitted after the system is built, usually after an audit finding. |
-| **Automation Without Accountability** | Bots, scripts or AI agents post, approve or change financial data without an owner, a control or an evidence trail. |
+| **The Borrowed Roadmap** | The vendor's roadmap, packaging and sales cycle set the enterprise's architecture. |
+| **Audit Archaeology** | Controls and evidence are retrofitted after the system is built, usually after an audit finding. |
+| **Nobody's Bot** | Bots, scripts or AI agents post, approve or change financial data without an owner, a control or an evidence trail. |
 
 ## Northmere usage
 

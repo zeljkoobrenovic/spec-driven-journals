@@ -21,12 +21,12 @@ Chief and enterprise architects, finance-systems and data architects, FinOps pra
 - [x] A FOCUS-to-ledger data-flow diagram and an allocation-hierarchy diagram, plus a month-end sequence diagram.
 - [x] Northmere worked example with ledger-consistent figures: accrual and true-up, Savings Plan purchase and amortization, prepaid roll-forward, tie-out breaks, intercompany recharge by entity, unit cost per Stayloft booking, wave 0 hosting savings test, AI token cost per exception.
 - [x] RACI for the cloud economics team, brand engineering, FP&A, controller, procurement, tax and finance data; trade-off table for showback, chargeback and intercompany recharge.
-- [x] Failure modes include tag sprawl (The Many Masters), Spreadsheet Glue allocation and cost in the wrong P&L line; Chief Architect's view; 10 questions; sources.
-- [x] Links to OWNED's [[evaluate-cloud-costs]] and [[evaluate-ai-costs]] for decision tactics without repeating them.
+- [x] Failure modes include tag sprawl (The Doppelgänger Record), Spreadsheet Glue allocation and cost in the wrong P&L line; Chief Architect's view; 10 questions; sources.
+- [x] Links to OWNED's [Evaluate Cloud Costs: What a Lower Bill Can Hide](https://ownedbyinvestors.com/evaluate-cloud-costs) and [Evaluate AI Costs: The Price Is Fixed, the Bill Is Not](https://ownedbyinvestors.com/evaluate-ai-costs) for decision tactics without repeating them.
 
 ## Non-goals
 
-- Cloud and AI purchasing tactics, unit choice for investors and commitment sizing — OWNED's [[evaluate-cloud-costs]] and [[evaluate-ai-costs]].
+- Cloud and AI purchasing tactics, unit choice for investors and commitment sizing — OWNED's [Evaluate Cloud Costs: What a Lower Bill Can Hide](https://ownedbyinvestors.com/evaluate-cloud-costs) and [Evaluate AI Costs: The Price Is Fixed, the Bill Is Not](https://ownedbyinvestors.com/evaluate-ai-costs).
 - Application TCO method and rationalization waves — [[application-portfolio]].
 - Chart of accounts design and master-data management styles — [[finance-data-architecture]].
 - Intercompany mechanics, netting and transfer pricing in general — [[global-scale]].
@@ -62,7 +62,7 @@ Chief and enterprise architects, finance-systems and data architects, FinOps pra
   - [[finance-data-flows]] — FinDB charter, governed metric parts, tie-out.
   - [[global-scale]] — intercompany originator, netting, transfer pricing.
   - [[technical-debt-and-fitness]], [[vendor-portfolio-strategy]], [[ai-in-finance]], [[designing-financial-ledgers]].
-  - OWNED, [[evaluate-cloud-costs]] and [[evaluate-ai-costs]].
+  - OWNED, [Evaluate Cloud Costs: What a Lower Bill Can Hide](https://ownedbyinvestors.com/evaluate-cloud-costs) and [Evaluate AI Costs: The Price Is Fixed, the Bill Is Not](https://ownedbyinvestors.com/evaluate-ai-costs).
 - **External**
   - FinOps Foundation: Framework (2026), Invoicing & Chargeback, Allocation, Personas, Maturity, State of FinOps 2026, State of Tokenomics.
   - FOCUS specification 1.4 and column definitions (EffectiveCost, ChargeCategory).

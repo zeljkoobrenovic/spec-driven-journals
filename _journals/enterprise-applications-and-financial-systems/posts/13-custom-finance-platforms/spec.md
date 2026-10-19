@@ -54,7 +54,7 @@ Chief and enterprise architects, finance-systems architects and engineering dire
 ## Sources
 
 - **Internal**
-  - [[where-finance-architecture-goes-wrong]] — Shadow Ledger, Audit Afterthought, Tool Overlap Creep; the 13-month drill-back retention illustration.
+  - [[where-finance-architecture-goes-wrong]] — Shadow Ledger, Audit Archaeology, Capability Creep; the 13-month drill-back retention illustration.
   - [[designing-financial-ledgers]] — next chapter; receives the ledger internals.
   - `_research/productscape-digest.md` §1.1, §1.2, §1.7, §4, §7; `brief-ea-integration-ledger.md` §3; `brief-payments.md`; `brief-oracle.md`; `brief-workday.md`; `brief-accounting-controls-regulation.md`.
 - **External**

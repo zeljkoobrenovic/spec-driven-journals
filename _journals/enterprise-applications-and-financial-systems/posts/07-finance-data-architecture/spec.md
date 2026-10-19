@@ -55,7 +55,7 @@ Chief and enterprise architects, finance-systems and data architects, and financ
 ## Sources
 
 - **Internal**
-  - [[where-finance-architecture-goes-wrong]] — The Many Masters and Spreadsheet Glue patterns and the Tablekin mapping incident.
+  - [[where-finance-architecture-goes-wrong]] — The Doppelgänger Record and Spreadsheet Glue patterns and the Tablekin mapping incident.
   - [[systems-of-record]], [[controls-and-auditability]], [[global-scale]], [[onestream]] — neighboring ownership boundaries.
   - `_research/brief-ea-integration-ledger.md` §2 (MDM styles, data mesh, contracts, lineage); `brief-accounting-controls-regulation.md` §1.3, §3, §5 (CoA design, controls, retention, GDPR); `productscape-digest.md` §1.1 and §3 (financial master data brick, data assets, retention); Oracle, Workday and BlackLine/OneStream briefs.
 - **External**

@@ -15,7 +15,7 @@ Chief Architects, finance-systems and integration architects, and finance-transf
 
 ## Success criteria
 
-- [ ] Front matter, then IN THIS SECTION, YOU WILL; KEY POINTS with exactly three bullets (sources listed because consulted; evidence types differ; facts, recommendations and the fictional Northmere kept distinct); one FAILURE PATTERN (Vendor Gravity: vendor documentation describes capability, not fit); `<br>`; an intro covering consultation dates (October 2026), partly limited web access, identifiers and evidence types.
+- [ ] Front matter, then IN THIS SECTION, YOU WILL; KEY POINTS with exactly three bullets (sources listed because consulted; evidence types differ; facts, recommendations and the fictional Northmere kept distinct); one FAILURE PATTERN (The Borrowed Roadmap: vendor documentation describes capability, not fit); `<br>`; an intro covering consultation dates (October 2026), partly limited web access, identifiers and evidence types.
 - [ ] Every entry was harvested from a chapter's `## Sources and Evidence` section; no source is added that no chapter cites. Pointer lines ("sources in [[…]]") and the book's internal research briefs are not listed as entries.
 - [ ] Entries are deduplicated by normalized URL (scheme, `www.`, trailing slash, fragment, `.htm`, `/eng`, locale prefix and percent-encoding ignored) and carry stable identifiers R001, R002, … in topic order; sources added after the first edition take R389 onward and sit under their topic without renumbering.
 - [ ] Each entry has identifier, linked title, author or publisher, year or version where the chapter gave one, one clause on what it supports, an evidence type from the fixed list (Vendor documentation, Standard or regulation, Regulator or official, Practitioner, Book, Research, News) and a Cited in line of `[[permalink]]` links.
@@ -44,12 +44,12 @@ Article only. A reference page is not adapted into other modalities.
 - 2026-10-18: Listed each source once, under the topic it serves best, with a Cited in line across topics, instead of repeating entries per topic.
 - 2026-10-18: Used compact one-paragraph entries rather than OWNED's heading-per-entry layout because the register holds close to 400 sources.
 - 2026-10-18: Kept the chapters' own clause on what each source supports, lightly normalized, so the register never claims more than the citing chapter did.
-- 2026-10-18: Gave the FinOps chapter's 29 new sources their own topic section (FinOps and technology spend, R414–R442) after Modernization, governance and strategy, including its cloud-accounting and transfer-pricing sources, because no other chapter cites them. Its references to the OWNED chapters [[evaluate-cloud-costs]] and [[evaluate-ai-costs]] are internal links, not entries.
+- 2026-10-18: Gave the FinOps chapter's 29 new sources their own topic section (FinOps and technology spend, R414–R442) after Modernization, governance and strategy, including its cloud-accounting and transfer-pricing sources, because no other chapter cites them. Its references to the OWNED chapters [Evaluate Cloud Costs: What a Lower Bill Can Hide](https://ownedbyinvestors.com/evaluate-cloud-costs) and [Evaluate AI Costs: The Price Is Fixed, the Bill Is Not](https://ownedbyinvestors.com/evaluate-ai-costs) are internal links, not entries.
 
 ## Sources
 
 - Every chapter's `## Sources and Evidence` section; the research briefs in `_research/brief-*.md` for context.
-- [[where-finance-architecture-goes-wrong]] for the Vendor Gravity pattern.
+- [[where-finance-architecture-goes-wrong]] for The Borrowed Roadmap pattern.
 
 ## Changelog
 

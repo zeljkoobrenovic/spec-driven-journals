@@ -38,7 +38,7 @@ None.
 ## Decision log
 
 - 2026-10-18: Format matches the Part I, II and IV introductions.
-- 2026-10-18: Four failure patterns chosen by strength across the chapters: Suspense Gravity (24, 25, 31), Summarized Into Silence (24, 25, 26, 31), The Many Masters (27, 32), The Brand Exception (28, 29, 30, 32). Point-to-Point Spaghetti appears only in chapter 30 and was left out.
+- 2026-10-18: Four failure patterns chosen by strength across the chapters: The Suspense Swamp (24, 25, 31), Lost in Aggregation (24, 25, 26, 31), The Doppelgänger Record (27, 32), The Permanent Exception (28, 29, 30, 32). Point-to-Point Spaghetti appears only in chapter 30 and was left out.
 - 2026-10-18: Four stages: follow the money (24–26); decide authority and boundaries (27–29); design the seams (30–31); grow and change (32–33).
 
 ## Sources

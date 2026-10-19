@@ -19,7 +19,7 @@ Chief and enterprise architects, finance-transformation leaders and CFO-level sp
 - [ ] Residuality theory is attributed to Barry O'Reilly with verifiable sources, and its vocabulary (naive architecture, stressor, residue, attractor) is defined. It is contrasted with risk registers and scenario planning and positioned beside Wardley mapping and evolutionary architecture.
 - [ ] Northmere stressor table with ten stressors × impact × residue × response × owner, including a Wayfare carve-out (S4) and a PSP outage/exit (S9), each simulated in depth with numbers.
 - [ ] An incidence matrix shows which residues recur across stressors and how that ranking changed funding.
-- [ ] Optionality is defined. Canonical events, owned identifiers and exportable evidence are presented as the antidote to Vendor Gravity, with the explicit limit that the GL is not wrapped.
+- [ ] Optionality is defined. Canonical events, owned identifiers and exportable evidence are presented as the antidote to The Borrowed Roadmap, with the explicit limit that the GL is not wrapped.
 - [ ] The architecture function's evolution (reviewing → providing; documents → decision services) is shown with examples drawn from earlier chapters, plus the ICFR limit.
 - [ ] The annual rhythm (strategy, fitness, portfolio, vendor, stressor reviews) is shown with timing, inputs, outputs and owners.
 - [ ] The 2031 retrospective states what worked, what did not and what was deliberately left unfinished. The synthesis maps five reconciliations to the chapters that teach them, followed by ten things to remember and a hand-off to [[toolkit]].

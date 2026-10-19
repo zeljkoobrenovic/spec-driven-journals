@@ -23,7 +23,7 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - [ ] Month-end cut-off has one written rule, and in-flight money is shown as a dated reconciling item with a reconciliation that is not zero but fully explained.
 - [ ] Refunds and chargebacks months later post to the current period linked to the original (the €420 chargeback), with four architectural requirements.
 - [ ] Ownership RACI, six metrics with definitions, a root-cause tree that reconciles the BlackLine and Adyen chapters' analyses, a 2027 timeline diagram and measured Q4 2027 results consistent with [[ai-in-finance]] and [[blackline]].
-- [ ] Trade-off table, failure modes (Suspense Gravity, Summarized Into Silence, matching on amount only), Chief Architect's view, questions, and a hand-off to [[finance-data-flows]].
+- [ ] Trade-off table, failure modes (The Suspense Swamp, Lost in Aggregation, matching on amount only), Chief Architect's view, questions, and a hand-off to [[finance-data-flows]].
 
 ## Non-goals
 

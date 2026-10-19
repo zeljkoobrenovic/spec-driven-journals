@@ -73,7 +73,7 @@ The gap has a cost, and it falls on the people the book is written for. A financ
 ![Five finance platforms each marked as working, with coins and records leaking from the bridges between them while an architect surveys all the seams from above.](assets/images/introduction/failures-at-the-boundaries.jpeg)
 **Figure 2:** *Each platform can work as specified while the estate fails at the seams between them; the boundaries belong to no project, which is why the Chief Architect's whole-estate view matters.*
 
-The next page, [[where-finance-architecture-goes-wrong]], names fourteen recurring failure patterns, from The Shadow Ledger and Suspense Gravity to Vendor Gravity and Automation Without Accountability, and links each to the chapters that address it. Every chapter in Parts I to IV opens with a callout naming the patterns it works on.
+The next page, [[where-finance-architecture-goes-wrong]], names fourteen recurring failure patterns, from The Shadow Ledger and The Suspense Swamp to The Borrowed Roadmap and Nobody's Bot, and links each to the chapters that address it. Every chapter in Parts I to IV opens with a callout naming the patterns it works on.
 
 ## How This Book Is Written
 

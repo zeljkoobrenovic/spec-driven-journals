@@ -15,7 +15,7 @@ Chief and enterprise architects, finance-systems and SAP solution architects, in
 
 ## Success criteria
 
-- [ ] Opens with the standard callouts, exactly three KEY POINTS and three failure patterns (Customization Concrete, The One-ERP Dream, Vendor Gravity).
+- [ ] Opens with the standard callouts, exactly three KEY POINTS and three failure patterns (Customization Concrete, The Swiss-Army ERP, The Borrowed Roadmap).
 - [ ] Gives the 2025 renames once (Public Edition → SAP Cloud ERP, Private Edition → SAP Cloud ERP Private), treats RISE as a commercial bundle, and includes an edition trade-off table.
 - [ ] Explains the Universal Journal with what it changes and what it does not, ledgers, currencies, organizational structures and document splitting (cautiously), with a Northmere ledger design and the Lisbon commission as a summary line.
 - [ ] Shows FI-CA's totals-record and reconciliation-key posting with a worked agency invoice journal, and a FI-CA-versus-custom-subledger table linking [[designing-financial-ledgers]].

@@ -26,7 +26,7 @@ for s in srcs:
     s['extra']=keep
 for s in srcs:
     if s['title']=="Hyrum's Law": s['meta']='Hyrum Wright'; s['sups']=['every observable behavior of an interface will be depended on']
-    if 'OWNED' in s['title']: s['sups']=[s['sups'][0].rstrip('. ')+'; see [[manage-technical-debt]]']
+    if 'OWNED' in s['title']: s['sups']=[s['sups'][0].rstrip('. ')+'; see [Manage Technical Debt: Present the Fix by What It Buys](https://ownedbyinvestors.com/manage-technical-debt)']
 for s in srcs:
     s['chapters'].sort(key=lambda p:corder.get(p,999))
     s['sub']=paysub(s) if s['topic']==8 else 0

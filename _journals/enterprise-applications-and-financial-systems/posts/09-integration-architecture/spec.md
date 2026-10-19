@@ -17,7 +17,7 @@ Chief, enterprise and integration architects, and finance-systems and platform e
 
 - [x] Defines the five integration styles and gives a decision table for at least eight finance use cases, with Northmere's 1,100 interfaces classified by style.
 - [x] States the ten finance requirements, each with a design rule; ordering limits cite Kafka's per-partition guarantee and Stripe's and Adyen's documented behavior.
-- [x] Distinguishes dead letters from suspense accounts in a table and a diagram, and links the confusion to Suspense Gravity.
+- [x] Distinguishes dead letters from suspense accounts in a table and a diagram, and links the confusion to The Suspense Swamp.
 - [x] Explains why exactly-once is an effect (Kafka EOS scope, Debezium at-least-once), with idempotency keys derived from business identity and a transactional outbox plus idempotent consumer sequence diagram.
 - [x] Compares iPaaS, ESB, event backbone and code by ownership, fit and finance risk, and records Northmere's lane decision for its three integration technologies.
 - [x] Gives a vendor-surface table for SAP, Oracle, Workday, Adyen and Stripe using only documented facts and limits.

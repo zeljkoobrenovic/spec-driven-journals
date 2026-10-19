@@ -20,7 +20,7 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - [ ] A summary table of all fourteen patterns and their warning signs precedes the pattern sections.
 - [ ] Each pattern has an italic quote, what it looks like, why it happens, what it costs (control, cost, speed, audit risk), a Northmere vignette labeled fictional, a one- or two-sentence remedy direction, and "Where this book helps:" with 2–4 valid cross-links.
 - [ ] Northmere figures match the scenario ledger (€14m suspense, 1.9%, €2.1m >90 days, 1,100 interfaces, ~240 flat files, ~70 EUCs, 2,300 custom objects, seven-month upgrades, 71 entities, 38,000 GL lines from 3 million subledger lines, the FY2026 significant deficiency).
-- [ ] A closing section shows the reinforcing chains with a mermaid diagram (Many Masters → Spreadsheet Glue → Suspense Gravity among them) and a diagnostic table of first indicators per pattern.
+- [ ] A closing section shows the reinforcing chains with a mermaid diagram (Doppelgänger Record → Spreadsheet Glue → The Suspense Swamp among them) and a diagnostic table of first indicators per pattern.
 - [ ] Any regulatory definition is sourced (PCAOB AS 2201 for deficiency severity).
 - [ ] Roughly 5,000–6,500 words of prose.
 
@@ -49,7 +49,7 @@ Article only for now. Pattern illustrations (one per pattern, as in OWNED) are a
 - **2026-10-18** — Modeled on OWNED's `where-investment-goes-wrong`, but with a fixed seven-part anatomy per pattern because the RECONCILED audience wants mechanism and cost explicitly, not only a warning question.
 - **2026-10-18** — Kept the style guide's order rather than regrouping sections by family; families are named in one paragraph so headings and callout links stay stable.
 - **2026-10-18** — Added a diagnostic table of first indicators so the patterns can be used in reviews with evidence; rejected numeric thresholds as unsupportable across enterprises.
-- **2026-10-18** — Identified The Brand Exception and Vendor Gravity as root patterns, to motivate Part IV's governance and strategy focus.
+- **2026-10-18** — Identified The Permanent Exception and The Borrowed Roadmap as root patterns, to motivate Part IV's governance and strategy focus.
 
 ## Sources
 
@@ -67,3 +67,13 @@ Article only for now. Pattern illustrations (one per pattern, as in OWNED) are a
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(author, AI-mediated session)*
 - **2026-10-18** — Editorial review pass: added canonical outcomes (Wayfare €1.3M gap, $41M mapping error, Dec 2027 accounting-hub decision) to illustrations; added [[case-uber-payments]] and [[sap-s4hana]] to "Where this book helps"; removed a buzzword. *(AI-mediated session)*
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-18** — Renamed the pattern Vendor Gravity to **The Borrowed Roadmap** at the author's request (book-wide, 61 mentions; style guide updated). *(AI-mediated session)*
+- **2026-10-18** — Renamed the pattern Automation Without Accountability to **Nobody's Bot** at the author's request (book-wide; style guide updated). *(AI-mediated session)*
+- **2026-10-18** — Renamed the pattern Tool Overlap Creep to **Capability Creep** at the author's request (book-wide; style guide updated). *(AI-mediated session)*
+- **2026-10-19** — Renamed the pattern Suspense Gravity to **The Suspense Swamp** at the author's request (book-wide; style guide updated). *(AI-mediated session)*
+- **2026-10-19** — Renamed the pattern The Many Masters to **The Doppelgänger Record** at the author's request (book-wide; style guide updated; plural verb agreements fixed). *(AI-mediated session)*
+- **2026-10-19** — Renamed the pattern The Many Masters to **The Doppelgänger Record** at the author's request (book-wide; style guide updated; plural verb agreements fixed). *(AI-mediated session)*
+- **2026-10-19** — Renamed the pattern Summarized Into Silence to **Lost in Aggregation** at the author's request (book-wide; style guide updated). *(AI-mediated session)*
+- **2026-10-19** — Renamed the pattern The Brand Exception to **The Permanent Exception** at the author's request (book-wide; style guide updated; redundant "becomes permanent" phrasings reworded in ch. 10, 11, 16, 29). *(AI-mediated session)*
+- **2026-10-19** — Renamed the pattern Audit Afterthought to **Audit Archaeology** at the author's request (book-wide; style guide updated; one sentence added to the section explaining the name). *(AI-mediated session)*
+- **2026-10-19** — Renamed the pattern The One-ERP Dream to **The Swiss-Army ERP** at the author's request (book-wide; style guide updated; ch. 28 definition reworded; one sentence added to the section explaining the name). *(AI-mediated session)*

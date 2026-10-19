@@ -56,7 +56,7 @@ Chief and enterprise architects, finance-systems and integration architects, and
 ## Sources
 
 - **Internal**
-  - [[where-finance-architecture-goes-wrong]] — failure patterns (Tool Overlap Creep, The Many Masters, Point-to-Point Spaghetti).
+  - [[where-finance-architecture-goes-wrong]] — failure patterns (Capability Creep, The Doppelgänger Record, Point-to-Point Spaghetti).
   - [[application-portfolio]] — RateKeeper and rationalization waves.
   - `_research/brief-satellites-ai.md` Part A; `_research/brief-accounting-controls-regulation.md` §3–4; `_research/productscape-digest.md` §1.3, §5.4–5.6, §7.
 - **External**

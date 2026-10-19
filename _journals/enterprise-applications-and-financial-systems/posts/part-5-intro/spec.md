@@ -15,7 +15,7 @@ Chief Architects, finance-systems and integration architects, and finance-transf
 
 ## Success criteria
 
-- [ ] Opens with the IN THIS PART and FAILURE PATTERNS callouts; patterns use exact names, are linked to [[where-finance-architecture-goes-wrong]] and are ordered by strength of connection to chapter 44: The Shadow Ledger, The Brand Exception, Point-to-Point Spaghetti.
+- [ ] Opens with the IN THIS PART and FAILURE PATTERNS callouts; patterns use exact names, are linked to [[where-finance-architecture-goes-wrong]] and are ordered by strength of connection to chapter 44: The Shadow Ledger, The Permanent Exception, Point-to-Point Spaghetti.
 - [ ] Explains why real cases after a fictional one: evidence versus illustration, and what a public engineering blog can and cannot prove (survivorship, selective disclosure, dates).
 - [ ] States the documented / interpretation / not public discipline, with a small mermaid evidence-boundary diagram and caption.
 - [ ] One paragraph on [[case-uber-payments]] drawn from its KEY POINTS.
@@ -38,7 +38,7 @@ None.
 ## Decision log
 
 - 2026-10-18: Format modeled on the RECONCILED Part IV introduction; tone on the OWNED Part VIII (LEARN) introduction.
-- 2026-10-18: Failure patterns taken from chapter 44, ranked: The Shadow Ledger (the evidence boundary at the book of record is the part's central lesson), The Brand Exception (Uber's starting point), Point-to-Point Spaghetti (the hourglass waist).
+- 2026-10-18: Failure patterns taken from chapter 44, ranked: The Shadow Ledger (the evidence boundary at the book of record is the part's central lesson), The Permanent Exception (Uber's starting point), Point-to-Point Spaghetti (the hourglass waist).
 - 2026-10-18: With a single case, the learning path is a short list rather than a staged diagram; the one diagram shows the evidence boundary instead.
 
 ## Sources
