@@ -1,7 +1,7 @@
 {id: finance-landscape}
-# 7. Anatomy of a Financial Systems Landscape
+# 7. Anatomy of a Finance Estate: Layers, Planes and Boundaries
 
-![Anatomy of a Financial Systems Landscape — logo](enterprise-applications-and-financial-systems/posts/04-finance-landscape/assets/images/04-finance-landscape/logo.jpeg)
+![Anatomy of a Finance Estate: Layers, Planes and Boundaries — logo](enterprise-applications-and-financial-systems/posts/04-finance-landscape/assets/images/04-finance-landscape/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn the book's reference model of a finance estate: eight layers and two cross-cutting planes. For each one you will see why it exists separately, what data it masters, what volume and latency it carries, which vendors typically fill it and who usually owns it. Then you will map Northmere's landscape onto the model and find its overlaps and gaps.
 
@@ -23,14 +23,14 @@
 
 Ask five people in a finance organization to draw "the finance systems" and you get five pictures. The controller draws the close. The payments lead draws money moving between providers, banks and partners. The data lead draws pipelines into a warehouse. The enterprise resource planning (ERP) lead draws the ERP's modules, with everything else as an interface. A brand's engineering director draws the product with "finance" as one box at the edge. Each picture is accurate from where its author stands; none can settle a disagreement between the others.
 
-A **reference model** is a shared, vendor-neutral decomposition of a domain into parts whose purpose and boundaries are agreed in advance. This chapter defines the reference model the rest of the book uses: **eight layers and two cross-cutting planes**. When [Why Enterprises Build Their Own Finance Platforms](#custom-finance-platforms) says a brand platform sits in the financial event and subledger layer, or [BlackLine: Close Automation, Reconciliation and Continuous Accounting](#blackline) places close automation in the close, reconciliation and consolidation layer, they mean exactly the layers defined here.
+A **reference model** is a shared, vendor-neutral decomposition of a domain into parts whose purpose and boundaries are agreed in advance. This chapter defines the reference model the rest of the book uses: **eight layers and two cross-cutting planes**. When [When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms) says a brand platform sits in the financial event and subledger layer, or [BlackLine: Matching, Certifying and Closing](#blackline) places close automation in the close, reconciliation and consolidation layer, they mean exactly the layers defined here.
 
 The model rests on one physical fact about finance data: **it gets smaller as it moves up**. Billions of operational events become millions of subledger lines, thousands of ledger summaries and a few hundred reported lines. Every layer boundary is a summarization, and every summarization is where traceability is preserved or lost. That **volume gradient** explains why there are layers, where detail must live, and what goes wrong when a layer is skipped, duplicated or used for the wrong job.
 
 {id: finance-landscape--setting-the-scene-at-northmere-four-teams-one-job}
 ## Setting the Scene at Northmere: Four Teams, One Job
 
-Northmere, the fictional multi-brand commerce group this book follows (see [Meet Northmere: The Running Example](#meet-northmere)), launched its architecture review board in the first quarter of 2027 under Program Keystone. One of the first agenda items, in February, came from Northmere Pay. Ingrid Solberg's team proposed a "payments ledger" service: ingest Adyen and Stripe settlement reports, normalize them, keep a balance per payment service provider (PSP) and currency, and post the results to SAP S/4HANA. The target was the payments-to-ledger gap. About 1.9% of settlement lines for Stayloft's alternative payment methods (APMs: local wallets, bank transfers and other non-card methods) were still unmatched on working day 3 of each close, and month-end balances in PSP clearing and suspense accounts averaged €14 million in 2026.
+Northmere, the fictional multi-brand commerce group this book follows (see [Meet Northmere: Five Brands, One Set of Books](#meet-northmere)), launched its architecture review board in the first quarter of 2027 under Program Keystone. One of the first agenda items, in February, came from Northmere Pay. Ingrid Solberg's team proposed a "payments ledger" service: ingest Adyen and Stripe settlement reports, normalize them, keep a balance per payment service provider (PSP) and currency, and post the results to SAP S/4HANA. The target was the payments-to-ledger gap. About 1.9% of settlement lines for Stayloft's alternative payment methods (APMs: local wallets, bank transfers and other non-card methods) were still unmatched on working day 3 of each close, and month-end balances in PSP clearing and suspense accounts averaged €14 million in 2026.
 
 Within ten minutes, three other teams said they already did this, or should. Jonas Berg said the Stayloft Finance Platform (SFP) already held the merchant subledger the settlements clear against. Sven Aalto said SAP FI-CA, the contract-accounting subledger introduced in 2025, was built for exactly this kind of open-item clearing. Owen Mbeki pointed out that FinDB, the Snowflake finance data platform, already held every settlement line and ran half of Finance's matching analysis. Leila Haddad, the Chief Accounting Officer, asked the question nobody could answer: **which of these is the book, and which are copies?**
 
@@ -40,7 +40,7 @@ Within ten minutes, three other teams said they already did this, or should. Jon
 
 Dana Whitlock, the Chief Architect, took no position that day. The four teams were not disagreeing about payments; they were disagreeing about **what kind of system each of them was**, and each drew the estate around itself. Until the board shared one picture of the layers, agreed before any proposal arrived, every placement decision would be argued from scratch.
 
-By March the board had adopted the model in this chapter. Every decision record now states which layer a proposal belongs to, what data it would master, and which existing system already claims that layer. The payments proposal came back as a layer-2 question: which layer-2 component should own payment records and PSP clearing, and how would it prove completeness to the ledger? Whether the general ledger or the warehouse should do the job was no longer on the table. The answer belongs to [Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP](#payments-to-ledger); this chapter builds the frame that made the question answerable.
+By March the board had adopted the model in this chapter. Every decision record now states which layer a proposal belongs to, what data it would master, and which existing system already claims that layer. The payments proposal came back as a layer-2 question: which layer-2 component should own payment records and PSP clearing, and how would it prove completeness to the ledger? Whether the general ledger or the warehouse should do the job was no longer on the table. The answer belongs to [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger); this chapter builds the frame that made the question answerable.
 
 {id: finance-landscape--what-a-reference-model-is-and-what-it-is-not}
 ## What a Reference Model Is, and What It Is Not
@@ -49,8 +49,8 @@ Four artifacts are often confused. Each answers a different question.
 
 | Artifact | Question it answers | Unit | Owner in this book |
 | --- | --- | --- | --- |
-| **Capability map** | What must finance be able to do? | Business capability, independent of systems | [Map Capabilities Before Systems](#capability-mapping) |
-| **Process model** | In what order does work happen, and who hands off to whom? | Process step and hand-off | [The End-to-End Finance Processes](#finance-processes) |
+| **Capability map** | What must finance be able to do? | Business capability, independent of systems | [Map What Finance Does Before What Runs It](#capability-mapping) |
+| **Process model** | In what order does work happen, and who hands off to whom? | Process step and hand-off | [Order to Cash, Procure to Pay, Record to Report](#finance-processes) |
 | **Reference model** | What classes of system does a finance estate need, and how do they relate? | Layer or plane | This chapter |
 | **Application landscape** | Which systems does this enterprise actually run? | Application and interface | [Manage the Application Portfolio as an Investment](#application-portfolio) |
 
@@ -104,7 +104,7 @@ Three consequences follow, and the rest of the chapter depends on them.
 
 **Figure 3:** *Every layer keeps what it must prove and points down for the rest: each summary carries a key back to the detail below and a reconciliation across the boundary.*
 
-**Latency and change cadence fall as you go up**, from milliseconds and weekly rule changes at the bottom to quarterly statements at the top. A layer boundary is also a cadence boundary, which is why a fast-changing brand platform must meet a slow-changing ledger through a stable contract ([Integration Architecture for Finance](#integration-architecture)), never a shared database.
+**Latency and change cadence fall as you go up**, from milliseconds and weekly rule changes at the bottom to quarterly statements at the top. A layer boundary is also a cadence boundary, which is why a fast-changing brand platform must meet a slow-changing ledger through a stable contract ([Files, Events and APIs: How Finance Systems Talk](#integration-architecture)), never a shared database.
 
 | Where detail lives | Strength | Cost | When it is right |
 | --- | --- | --- | --- |
@@ -163,7 +163,7 @@ flowchart TB
 
 Booking engines, checkouts, subscription products, ad servers, partner portals and the payments platform's routing. They create the events finance cares about but are not finance systems: they are measured on conversion and availability, and their logic changes with the product. A booking engine can say a booking exists; it should not decide that €90 of it is revenue on 22 April. In digital businesses this layer is mostly built. PSPs such as Adyen and Stripe are external operational systems here, authorizing and capturing for the checkout; their settlement output feeds layer 2.
 
-The one obligation finance should impose is to **emit complete, well-formed financial events**, the canonical events of [Canonical Events and Adapters for Loosely Coupled Financial Domains](#loosely-coupled-domains) such as `BookingConfirmed`, `PaymentCaptured` and `StayCompleted`. In return, layer 1 is spared from knowing accounting.
+The one obligation finance should impose is to **emit complete, well-formed financial events**, the canonical events of [Canonical Events: A Common Language for Money](#loosely-coupled-domains) such as `BookingConfirmed`, `PaymentCaptured` and `StayCompleted`. In return, layer 1 is spared from knowing accounting.
 
 {id: finance-landscape--layer-2-financial-event-and-subledger-layer}
 ### Layer 2: Financial event and subledger layer
@@ -181,7 +181,7 @@ This is the layer this chapter owns, and the one most enterprise diagrams leave 
 - refund and dispute accounting;
 - summarization to the ledger.
 
-**Why it is separate.** Volume: a marketplace cannot post a billion events a year into its ledger, and its chart of accounts would have to carry booking, partner and payment-method attributes it was never designed for. Logic: commission rules, payout timing and refund policies are commercial decisions that change with the product; in the ERP, every pricing change becomes an ERP change ([Why Enterprises Build Their Own Finance Platforms](#custom-finance-platforms) sets the boundary rules). Layer 2 lets the product move while the book of record stays still.
+**Why it is separate.** Volume: a marketplace cannot post a billion events a year into its ledger, and its chart of accounts would have to carry booking, partner and payment-method attributes it was never designed for. Logic: commission rules, payout timing and refund policies are commercial decisions that change with the product; in the ERP, every pricing change becomes an ERP change ([When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms) sets the boundary rules). Layer 2 lets the product move while the book of record stays still.
 
 **Typical vendors.** The most mixed sourcing in the estate:
 
@@ -189,11 +189,11 @@ This is the layer this chapter owns, and the one most enterprise diagrams leave 
 - **Billing and revenue specialists.** Zuora positions its billing product as an [accounts receivable subledger](https://www.zuora.com/products/); [Stripe Revenue Recognition](https://docs.stripe.com/revenue-recognition/methodology) is "built … on top of a double-entry accounting ledger" for Stripe-originated revenue.
 - **Custom builds.** In marketplaces, most of the layer: commission engines, payout engines, customer-funds ledgers, payment normalization.
 
-These are not interchangeable. An accounting hub applies rules and keeps detail for drill-back; it is not by itself an operational subledger with partner balances, clearing and payout lifecycles, which FI-CA comes closer to. [Designing Custom Ledgers and Financial Event Processing](#designing-financial-ledgers) compares them.
+These are not interchangeable. An accounting hub applies rules and keeps detail for drill-back; it is not by itself an operational subledger with partner balances, clearing and payout lifecycles, which FI-CA comes closer to. [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers) compares them.
 
 **Data, volume, latency.** Millions of open items a day, processed per event or in intraday batches and summarized daily, on the providers' rhythm: Adyen's [settlement details report](https://docs.adyen.com/reporting/settlement-reconciliation/transaction-level/settlement-details-report) lists every credit and debit in a payable batch with fees; Stripe records each movement of funds as a [balance transaction](https://docs.stripe.com/api/balance_transactions/object) with gross, fee, net and the date funds become available.
 
-**Owner.** Usually split, and that is the layer's central governance problem. Engineering teams build the components; the controller owns the accounting they produce. Every component that computes an amount that reaches the ledger is in ICFR scope, whoever wrote it. Northmere's FY2026 significant deficiency on the SFP payout engine, where payout rules were changed with developer production access and no documented approval, is that lesson learned the hard way ([Controls, Auditability and Security by Design](#controls-and-auditability)).
+**Owner.** Usually split, and that is the layer's central governance problem. Engineering teams build the components; the controller owns the accounting they produce. Every component that computes an amount that reaches the ledger is in ICFR scope, whoever wrote it. Northmere's FY2026 significant deficiency on the SFP payout engine, where payout rules were changed with developer production access and no documented approval, is that lesson learned the hard way ([Controls by Design, Not by Audit Season](#controls-and-auditability)).
 
 {id: finance-landscape--layer-3-accounting-core-gl-and-erp}
 ### Layer 3: Accounting core (GL and ERP)
@@ -202,7 +202,7 @@ These are not interchangeable. An accounting hub applies rules and keeps detail 
 
 **Why it is separate.** Its structures (charts of accounts, ledgers, entities) outlive any product, and every published number must reconcile to it. A layer that changes with the product cannot also be the layer the auditor relies on.
 
-**Typical vendors.** SAP S/4HANA, whose [Universal Journal](https://blog.sap-press.com/what-is-saps-universal-journal) holds general ledger, controlling, asset and material-ledger line items in one table; Oracle Fusion Cloud ERP, where a ledger combines a chart of accounts, calendar, currency and accounting method and balances sit in [Essbase-based cubes](https://docs.oracle.com/en/cloud/saas/financials/26c/faigl/overview-of-oracle-general-ledger-balances-cubes.html); Workday Financial Management, whose [datasheet](https://www.workday.com/content/dam/web/en-us/documents/datasheets/datasheet-workday-financial-management.pdf) describes a ledger that keeps operational attributes alongside accounting and generates accounting as transactions are approved; NetSuite and mid-market ERPs in smaller entities. Three philosophies for holding accounting and its context; none is the reference model. [SAP S/4HANA: The Enterprise Finance Core](#sap-s4hana), [Oracle Fusion Cloud ERP: Ledgers, Accounting Hub and Coexistence](#oracle-fusion) and [Workday: Financials, People and the Organizational Backbone](#workday) cover each.
+**Typical vendors.** SAP S/4HANA, whose [Universal Journal](https://blog.sap-press.com/what-is-saps-universal-journal) holds general ledger, controlling, asset and material-ledger line items in one table; Oracle Fusion Cloud ERP, where a ledger combines a chart of accounts, calendar, currency and accounting method and balances sit in [Essbase-based cubes](https://docs.oracle.com/en/cloud/saas/financials/26c/faigl/overview-of-oracle-general-ledger-balances-cubes.html); Workday Financial Management, whose [datasheet](https://www.workday.com/content/dam/web/en-us/documents/datasheets/datasheet-workday-financial-management.pdf) describes a ledger that keeps operational attributes alongside accounting and generates accounting as transactions are approved; NetSuite and mid-market ERPs in smaller entities. Three philosophies for holding accounting and its context; none is the reference model. [SAP S/4HANA: One Journal, Clean Core](#sap-s4hana), [Oracle Fusion: An Accounting Hub for High-Volume Events](#oracle-fusion) and [Workday: The Org Chart Behind the Ledger](#workday) cover each.
 
 **Owner.** The controller as process owner (Leila at Northmere); an ERP platform team to run it (Sven Aalto for S/4HANA, Hana Kowalski for Wayfare's Fusion, Arjun Rao for Tablekin's Workday Financials).
 
@@ -213,11 +213,11 @@ Layer 3 is not the ERP *product*. SAP's suite around S/4HANA also offers FI-CA (
 
 **Purpose.** Prove the books and combine them. **Account reconciliation** substantiates and certifies each balance-sheet account. **Transaction matching** pairs high-volume records across sources: PSP settlement to bank, settlement to subledger, intercompany to intercompany. **Close orchestration** runs the task calendar across entities. **Consolidation** loads each entity's trial balance, maps local accounts to the group chart, translates currencies, eliminates intercompany balances and produces group numbers.
 
-**Why it is separate.** Its unit of work is the account per entity per period, and its users are record-to-report teams and group controllers. With more than one ledger it must sit above all of them ([OneStream: Consolidation, Planning and Performance Management](#onestream)), and reconciliation evidence must be independent enough of the systems it checks to be credible.
+**Why it is separate.** Its unit of work is the account per entity per period, and its users are record-to-report teams and group controllers. With more than one ledger it must sit above all of them ([OneStream: Consolidating Actuals, Planning the Future](#onestream)), and reconciliation evidence must be independent enough of the systems it checks to be credible.
 
 **Typical vendors.** BlackLine, whose [FY2025 10-K](https://www.sec.gov/Archives/edgar/data/1666134/000162828026011915/bl-20251231.htm) groups its products into close and consolidation, intercompany, and invoice-to-cash suites; Oracle's Account Reconciliation, with [Transaction Matching](https://docs.oracle.com/en/cloud/saas/account-reconcile-cloud/raarc/transaction_matching_concepts.html) and Oracle's [Financial Consolidation and Close](https://docs.oracle.com/en/cloud/saas/financial-consolidation-cloud/index.html); SAP's Advanced Financial Closing and S/4HANA Finance for group reporting; and corporate performance management (CPM) platforms such as OneStream, which its [FY2025 10-K](https://www.sec.gov/Archives/edgar/data/1889956/000119312526076771/ck0001889956-20251231.htm) describes as one platform for close and consolidation, planning and reporting, and which Hg took private in [April 2026](https://www.onestream.com/news/onestream-announces-completion-of-acquisition-by-hg-for-usd6-4-billion/); and CCH Tagetik. Vendors cross the line both ways: BlackLine sells consolidation, OneStream sells reconciliations and matching.
 
-**Data, volume, latency.** Thousands of accounts per period, plus very high-volume payment matching, which in practice is layer-2-scale work done for layer-4 purposes. The cycle is monthly and quarterly; the aspiration is continuous, which [BlackLine: Close Automation, Reconciliation and Continuous Accounting](#blackline) treats as an architecture rather than a tool. At Northmere, BlackLine reconciles about 6,800 accounts a month under Leila's record-to-report organization.
+**Data, volume, latency.** Thousands of accounts per period, plus very high-volume payment matching, which in practice is layer-2-scale work done for layer-4 purposes. The cycle is monthly and quarterly; the aspiration is continuous, which [BlackLine: Matching, Certifying and Closing](#blackline) treats as an architecture rather than a tool. At Northmere, BlackLine reconciles about 6,800 accounts a month under Leila's record-to-report organization.
 
 {id: finance-landscape--layer-5-planning-and-performance}
 ### Layer 5: Planning and performance
@@ -234,7 +234,7 @@ The numbers the enterprise publishes or files: SEC filings (10-K, 10-Q) in inlin
 
 **Purpose.** Specialized domains that attach to the stack at several points: indirect tax determination and e-invoicing; direct tax provision and Pillar Two; treasury (cash positioning, bank connectivity, hedging, the payment factory); procurement and payables capture; employee expenses; and human capital management (HCM) as the source of workers, organizations and approvers.
 
-**Why they sit beside the stack.** Each owns a narrow domain whose rules change fast or depend on external networks, and each attaches at more than one layer. A tax engine is called by layer-2 billing and layer-3 payables and feeds layer-6 returns; a treasury system takes payout instructions from layer 2, posts cash and hedge entries to layer 3 and supplies bank balances to layer-6 safeguarding returns. A vertical layer would hide those attachment points, which is where the integration and reconciliation design lives ([Around the Core: Tax, Treasury, Procurement and Reporting Platforms](#satellite-platforms) owns the patterns).
+**Why they sit beside the stack.** Each owns a narrow domain whose rules change fast or depend on external networks, and each attaches at more than one layer. A tax engine is called by layer-2 billing and layer-3 payables and feeds layer-6 returns; a treasury system takes payout instructions from layer 2, posts cash and hedge entries to layer 3 and supplies bank balances to layer-6 safeguarding returns. A vertical layer would hide those attachment points, which is where the integration and reconciliation design lives ([Around the Core: Where Specialist Platforms Earn Their Place](#satellite-platforms) owns the patterns).
 
 | Satellite | Example vendors |
 | --- | --- |
@@ -251,14 +251,14 @@ Each satellite is owned by the function it serves (Kofi Asante for tax and treas
 
 **Purpose.** Analytical access across every layer: transaction-grain subledger and payment detail, ledger balances, close status, tax aggregates and operational drivers, for analysis, audit sampling, planning drivers and governed metrics.
 
-**Why it is separate.** It reads every layer at every grain, serves analysts and increasingly AI agents, and is the only place a billion events and the ledger can be joined cheaply. Its defining rule is that **it is the book for nothing**: it masters analytical datasets and metric definitions, not financial facts, and every financial number it publishes must **tie out** to the ledger it came from ([Finance Data Across the Estate: From Operations to Analytics](#finance-data-flows) owns that design).
+**Why it is separate.** It reads every layer at every grain, serves analysts and increasingly AI agents, and is the only place a billion events and the ledger can be joined cheaply. Its defining rule is that **it is the book for nothing**: it masters analytical datasets and metric definitions, not financial facts, and every financial number it publishes must **tie out** to the ledger it came from ([One Number, Many Views: Finance Data from Operations to Analytics](#finance-data-flows) owns that design).
 
 **Typical vendors.** Snowflake, Databricks and BigQuery; and the ERP vendors' finance data offerings: [SAP Business Data Cloud](https://learning.sap.com/courses/introducing-sap-business-data-cloud/exploring-the-architecture-of-sap-business-data-cloud), [Oracle Fusion Data Intelligence](https://blogs.oracle.com/proactivesupportepm/attention-oracle-fusion-analytics-warehouse-is-now-oracle-fusion-data-intelligence) (formerly Fusion Analytics Warehouse) and Workday Prism Analytics, whose capabilities are being packaged into [Workday Data Cloud](https://www.workday.com/en-us/topics/it/guide-prism-to-data-cloud.html) with finance data targeted for 2027 as of October 2026. Owner: a finance data team (Owen Mbeki at Northmere), with metric owners in Finance.
 
 {id: finance-landscape--the-integration-plane}
 ### The integration plane
 
-The integration plane moves financial data between layers **completely, exactly once in effect, in order where order matters, and with evidence**: the event backbone, APIs, managed file transfer for bank and PSP files, the integration platform for vendor connectors, and the delivery records and **control totals** (counts and amounts per source per period) that prove a flow was complete. Typical technology: Kafka-class event platforms, vendor integration suites (SAP Integration Suite, Oracle Integration, Workday's integration tools, MuleSoft) and managed file transfer. [Integration Architecture for Finance](#integration-architecture) owns the styles and their finance-specific requirements.
+The integration plane moves financial data between layers **completely, exactly once in effect, in order where order matters, and with evidence**: the event backbone, APIs, managed file transfer for bank and PSP files, the integration platform for vendor connectors, and the delivery records and **control totals** (counts and amounts per source per period) that prove a flow was complete. Typical technology: Kafka-class event platforms, vendor integration suites (SAP Integration Suite, Oracle Integration, Workday's integration tools, MuleSoft) and managed file transfer. [Files, Events and APIs: How Finance Systems Talk](#integration-architecture) owns the styles and their finance-specific requirements.
 
 It is a plane because it masters no financial data and touches every arrow in Figure 4. Drawn as a layer, it invites mapping logic, account derivations and silent corrections that belong in layer 2 or the control plane. Ownership is usually split between platform engineering (the runtime; Ravi Menon's team runs Kafka at Northmere) and integration architecture (the contracts; Lucía Romero leads the canonical financial events).
 
@@ -272,7 +272,7 @@ The control plane governs what every layer depends on:
 - **the control register, monitoring and audit evidence**;
 - **retention and archive.**
 
-No layer can own it alone. A chart-of-accounts change must reach posting rules, ledger, consolidation mappings, plan dimensions and metrics on the same effective date; an SoD rule must hold across the payout engine and the ERP that pays the payout. Without the plane, each layer keeps its own copy: **The Doppelgänger Record** for master data, **Spreadsheet Glue** for mappings. Typical tools: SAP Master Data Governance or Oracle Enterprise Data Management, SAP GRC and identity platforms, controls repositories, write-once archives. The controller owns financial structures, internal controls (Mei Tanaka) owns the control register, security (Marco Bellini) owns privileged access. [Finance Data Architecture: Master Data, Systems of Record and Governance](#finance-data-architecture) and [Controls, Auditability and Security by Design](#controls-and-auditability) go deeper.
+No layer can own it alone. A chart-of-accounts change must reach posting rules, ledger, consolidation mappings, plan dimensions and metrics on the same effective date; an SoD rule must hold across the payout engine and the ERP that pays the payout. Without the plane, each layer keeps its own copy: **The Doppelgänger Record** for master data, **Spreadsheet Glue** for mappings. Typical tools: SAP Master Data Governance or Oracle Enterprise Data Management, SAP GRC and identity platforms, controls repositories, write-once archives. The controller owns financial structures, internal controls (Mei Tanaka) owns the control register, security (Marco Bellini) owns privileged access. [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture) and [Controls by Design, Not by Audit Season](#controls-and-auditability) go deeper.
 
 {id: finance-landscape--where-vendors-sit}
 ## Where Vendors Sit
@@ -294,7 +294,7 @@ Vendors sell suites, so a product rarely fits one layer. "Primary" is the layer 
 | Coupa, SAP Ariba | 7 (procurement) | Payables capture feeding layer 3 |
 | Snowflake, Databricks | 8 | Vendors build layer-2 and layer-4 features on them |
 
-**Buying a suite does not decide which layer a responsibility lives in; it only adds candidates.** Every long "extends into" cell is a future overlap, decided either in a decision record or by whichever team switches the module on first. [Preventing Redundant Capabilities and Unnecessary Coupling](#redundancy-and-coupling) owns the overlap register; [Vendor Strategy and Avoiding Excessive Dependency](#vendor-portfolio-strategy) owns the dependency questions.
+**Buying a suite does not decide which layer a responsibility lives in; it only adds candidates.** Every long "extends into" cell is a future overlap, decided either in a decision record or by whichever team switches the module on first. [Duplicates and Dependencies: The Hidden Costs of a Grown Estate](#redundancy-and-coupling) owns the overlap register; [Own Your Roadmap: Vendor Strategy Without Lock-In Panic](#vendor-portfolio-strategy) owns the dependency questions.
 
 {id: finance-landscape--in-practice-northmere-mapped-onto-the-model}
 ## In Practice: Northmere Mapped onto the Model
@@ -371,19 +371,19 @@ Three findings changed how Northmere talked about its estate.
 
 **Wayfare skips a layer.** Wayfare's booking platform handles about 150 million financial events a year, summarizes them itself and posts about 2,600 lines a day into Fusion GL through file-based data import (FBDI), with no subledger in between. The treatment of the €84.00 Paris–Lyon rail ticket (a €6.72 margin and a €77.28 payable to the operator) is decided in booking-platform code and reaches the ledger already summarized; listing the tickets behind a ledger line takes an engineering ticket. The design authority had treated the Central Finance-versus-accounting-hub decision, due in the fourth quarter of 2027, as a ledger question. On the model, part of it is a **layer-2 question for Wayfare**: something must apply posting rules and keep detail between the booking platform and whichever ledger wins.
 
-**The group exists only from layer 4 up.** Wayfare and Tablekin join as trial balances in OneStream, mapped through spreadsheets; layers 2 and 3 are federated by brand. That is a legitimate transitional state ([Multiple ERPs, One Finance Core: Coexistence and Convergence](#multiple-erps) compares the options), and it explains why drill-back from a group number into a Wayfare transaction crosses two brand systems and a spreadsheet.
+**The group exists only from layer 4 up.** Wayfare and Tablekin join as trial balances in OneStream, mapped through spreadsheets; layers 2 and 3 are federated by brand. That is a legitimate transitional state ([Converge or Coexist: Living with More Than One ERP](#multiple-erps) compares the options), and it explains why drill-back from a group number into a Wayfare transaction crosses two brand systems and a spreadsheet.
 
-**The payments proposal was a duplicate.** Northmere Pay's payments ledger would have been a third system holding payment open items, beside SFP and FI-CA, with FinDB as a fourth, informal copy. The board's decision is told in [Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP](#payments-to-ledger); its framing came from this map: **one layer-2 owner for payment records and PSP clearing, one layer-4 tool to certify the clearing accounts, and FinDB as a consumer of both.**
+**The payments proposal was a duplicate.** Northmere Pay's payments ledger would have been a third system holding payment open items, beside SFP and FI-CA, with FinDB as a fourth, informal copy. The board's decision is told in [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger); its framing came from this map: **one layer-2 owner for payment records and PSP clearing, one layer-4 tool to certify the clearing accounts, and FinDB as a consumer of both.**
 
 {id: finance-landscape--alternative-decompositions}
 ## Alternative Decompositions
 
 The layered model is one useful cut of the estate. Others answer different questions well.
 
-- **Process-centric** views ([The End-to-End Finance Processes](#finance-processes)) show hand-offs and control points, but processes cross layers: order-to-cash at Northmere touches layers 1, 2, 3, 4 and 7, and a process view alone does not show that three processes share one subledger, or that two have each built their own.
+- **Process-centric** views ([Order to Cash, Procure to Pay, Record to Report](#finance-processes)) show hand-offs and control points, but processes cross layers: order-to-cash at Northmere touches layers 1, 2, 3, 4 and 7, and a process view alone does not show that three processes share one subledger, or that two have each built their own.
 - **Vendor-suite-centric** views follow the dominant ERP's modules and erase what the vendor does not sell: payouts, customer funds and safeguarding become "interfaces". As a skeleton, that is a mild form of **The Borrowed Roadmap**.
-- **Capability-centric** and **domain-centric** views ([Map Capabilities Before Systems](#capability-mapping)) are stable across reorganizations and right for investment, team boundaries and contracts, but they draw capabilities and contexts as peers and hide the physics: at Northmere, Subledger Accounting carries about eighty times the line volume of General Ledger Management and must summarize into it.
-- **Postmodern or composable ERP**, Gartner's prediction from 2013 or 2014 (sources disagree) that the monolithic ERP would break into loosely coupled applications ([TechTarget summary](https://techtarget.com/searcherp/podcast/Evolution-of-postmodern-ERP-to-composable-ERP-explained)), is a sourcing philosophy, not a decomposition. In my judgment it needs a layered model more than a suite does, because **every seam between composed components is a reconciliation point**; without a model of which piece masters what, a composable estate becomes **Point-to-Point Spaghetti** with better marketing ([Build, Buy or Compose: Vendor Selection and Portfolio Rationalization](#build-versus-buy)).
+- **Capability-centric** and **domain-centric** views ([Map What Finance Does Before What Runs It](#capability-mapping)) are stable across reorganizations and right for investment, team boundaries and contracts, but they draw capabilities and contexts as peers and hide the physics: at Northmere, Subledger Accounting carries about eighty times the line volume of General Ledger Management and must summarize into it.
+- **Postmodern or composable ERP**, Gartner's prediction from 2013 or 2014 (sources disagree) that the monolithic ERP would break into loosely coupled applications ([TechTarget summary](https://techtarget.com/searcherp/podcast/Evolution-of-postmodern-ERP-to-composable-ERP-explained)), is a sourcing philosophy, not a decomposition. In my judgment it needs a layered model more than a suite does, because **every seam between composed components is a reconciliation point**; without a model of which piece masters what, a composable estate becomes **Point-to-Point Spaghetti** with better marketing ([Build, Buy or Compose: Choosing What to Own](#build-versus-buy)).
 
 | Decomposition | Best for | Blind spot | Use it when |
 | --- | --- | --- | --- |
@@ -411,7 +411,7 @@ The model describes a multi-entity commercial group. In banks and insurers, core
 {id: finance-landscape--integration-with-the-rest-of-the-estate}
 ## Integration With the Rest of the Estate
 
-[Systems of Record and Authoritative Data Boundaries](#systems-of-record) decides authority per data object, which often moves between layers: the booking in layer 1, the receivable in layer 2, the balance in layer 3. [Integration Architecture for Finance](#integration-architecture) designs the integration plane; [Controls, Auditability and Security by Design](#controls-and-auditability) and [Designing for Traceability, Reconciliation and Audit Across Boundaries](#traceability-and-reconciliation) design the control plane and the reconciliation at each boundary. [Designing Custom Ledgers and Financial Event Processing](#designing-financial-ledgers) goes deep into layer 2, Part II places each vendor on the model, and [From Customer Transaction to Financial Statement](#transaction-to-report) follows one booking through every layer from event to filing.
+[Systems of Record: Ending the Doppelgänger Record](#systems-of-record) decides authority per data object, which often moves between layers: the booking in layer 1, the receivable in layer 2, the balance in layer 3. [Files, Events and APIs: How Finance Systems Talk](#integration-architecture) designs the integration plane; [Controls by Design, Not by Audit Season](#controls-and-auditability) and [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation) design the control plane and the reconciliation at each boundary. [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers) goes deep into layer 2, Part II places each vendor on the model, and [The Life of a Booking: From €600 Payment to $97.38 of Revenue](#transaction-to-report) follows one booking through every layer from event to filing.
 
 {id: finance-landscape--failure-modes}
 ## Failure Modes
@@ -429,7 +429,7 @@ Most failures in a finance estate are layer failures.
 - **Operational dimensions in the chart of accounts.** Channel or payment method become account segments; the chart multiplies and the ledger carries layer-2 detail.
 - **Ledger detail in the warehouse.** The data platform holds the only transaction-level view and starts driving matching, accruals and revenue splits, posted as manual journals: an uncontrolled subledger, **The Shadow Ledger**. FinDB is one step away.
 - **Accounting in operational systems.** A brand platform computes its own "net revenue", and its numbers drift from the ledger.
-- **Top-side adjustments that never reach the ledgers**, so group numbers and entity books drift apart ([OneStream: Consolidation, Planning and Performance Management](#onestream)).
+- **Top-side adjustments that never reach the ledgers**, so group numbers and entity books drift apart ([OneStream: Consolidating Actuals, Planning the Future](#onestream)).
 
 {id: finance-landscape--skipped-layers-operational-systems-posting-to-the-ledger}
 ### Skipped layers: operational systems posting to the ledger
@@ -463,9 +463,9 @@ For a Chief Architect the reference model is a **governance instrument** first a
 4. **One owner per responsibility within a layer.** A second system that wants to master the same open items, accounts or reconciliations needs a decision record.
 5. **Layer 8 is the book for nothing.** Nothing posts to a ledger from the data platform without a controlled layer-2 step.
 
-**Decide who decides.** Placement is the Chief Architect's call under the mandatory standards; accounting treatment within a layer is the controller's; control design is shared with internal controls; overlaps that cross budgets go to the design authority, under the decision rights agreed in November 2026 ([The Chief Architect's Job: Coherence Across a Finance Estate](#chief-architect-role)).
+**Decide who decides.** Placement is the Chief Architect's call under the mandatory standards; accounting treatment within a layer is the controller's; control design is shared with internal controls; overlaps that cross budgets go to the design authority, under the decision rights agreed in November 2026 ([The Chief Architect's Job: Making Many Systems Tell One Story](#chief-architect-role)).
 
-**Watch four measures**, which [Technical Debt, Architectural Fitness and Modernization Priorities](#technical-debt-and-fitness) turns into fitness functions: operational systems posting directly to a ledger without a waiver; the share of high-volume ledger lines with a working drill-back key; responsibilities with more than one system of record in a layer; and whether the ledger-to-warehouse tie-out passes. Northmere's 2027 baseline: one skipped layer (Wayfare), drill-back keys on SFP lines but not on ad-billing or Wayfare lines, at least five duplicate responsibilities, no tie-out.
+**Watch four measures**, which [Technical Debt on the Balance Sheet](#technical-debt-and-fitness) turns into fitness functions: operational systems posting directly to a ledger without a waiver; the share of high-volume ledger lines with a working drill-back key; responsibilities with more than one system of record in a layer; and whether the ledger-to-warehouse tie-out passes. Northmere's 2027 baseline: one skipped layer (Wayfare), drill-back keys on SFP lines but not on ad-billing or Wayfare lines, at least five duplicate responsibilities, no tie-out.
 
 **Change the model rarely.** Layer names should outlive vendors, reorganizations and Keystone itself; what changes, through decisions, is where systems sit. I review the model yearly and change it only when a responsibility appears that no layer explains.
 
@@ -517,7 +517,7 @@ The reference model explains the shape of a finance estate: why there are layers
 ### Standards and regulation
 
 - ASC 606 and IFRS 15, revenue from contracts with customers — the basis of layer-2 revenue scheduling; sources in [Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects).
-- Sarbanes-Oxley Act section 404 and ICFR — the control profile of each layer; sources in [Controls, Auditability and Security by Design](#controls-and-auditability).
+- Sarbanes-Oxley Act section 404 and ICFR — the control profile of each layer; sources in [Controls by Design, Not by Audit Season](#controls-and-auditability).
 
 {id: finance-landscape--practitioner-and-research-sources}
 ### Practitioner and research sources

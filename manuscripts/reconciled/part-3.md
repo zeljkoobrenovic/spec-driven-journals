@@ -1,7 +1,7 @@
 {class: part, id: part-3}
-# INTEGRATED: The Finance Estate as One System
+# INTEGRATION: The Finance Estate as One System
 
-![INTEGRATED: The Finance Estate as One System — logo](enterprise-applications-and-financial-systems/posts/part-3-intro/assets/images/part-3-intro/logo.jpeg)
+![INTEGRATION: The Finance Estate as One System — logo](enterprise-applications-and-financial-systems/posts/part-3-intro/assets/images/part-3-intro/logo.jpeg)
 
 > **IN THIS PART, YOU WILL:** Learn to treat the finance estate as one system rather than a set of platforms: how a transaction and its money travel from the customer to the published statements, who is authoritative for each fact at each stage, how several ledgers coexist under one set of rules, how coupling is kept deliberate, how every hop is proven, and how the estate grows and changes without stopping the close.
 
@@ -45,24 +45,24 @@ flowchart TB
 
 **Follow the money.**
 
-- [From Customer Transaction to Financial Statement](#transaction-to-report) — eleven hops from a booking to the statements, three clocks per hop, and invariants that hold whatever the business model or ERP.
-- [Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP](#payments-to-ledger) — every capture as an expected receivable with a zero date, the three-way match as three keyed joins, and suspense drained at its causes.
-- [Finance Data Across the Estate: From Operations to Analytics](#finance-data-flows) — operational, accounting and management numbers joined by a published bridge, and a data platform that ties out daily but is the book for nothing.
+- [The Life of a Booking: From €600 Payment to $97.38 of Revenue](#transaction-to-report) — eleven hops from a booking to the statements, three clocks per hop, and invariants that hold whatever the business model or ERP.
+- [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger) — every capture as an expected receivable with a zero date, the three-way match as three keyed joins, and suspense drained at its causes.
+- [One Number, Many Views: Finance Data from Operations to Analytics](#finance-data-flows) — operational, accounting and management numbers joined by a published bridge, and a data platform that ties out daily but is the book for nothing.
 
 **Decide authority and boundaries.**
 
-- [Systems of Record and Authoritative Data Boundaries](#systems-of-record) — authority per data element and lifecycle stage, hand-offs proven by reconciliation, and write paths removed rather than matrices published.
-- [Multiple ERPs, One Finance Core: Coexistence and Convergence](#multiple-erps) — one finance core as shared rules rather than one product, and the convergence pattern as a decision about where accounting logic lives.
-- [Preventing Redundant Capabilities and Unnecessary Coupling](#redundancy-and-coupling) — duplication as a dated decision, six faces of coupling with semantic coupling the worst, and consolidation only behind a published interface.
+- [Systems of Record: Ending the Doppelgänger Record](#systems-of-record) — authority per data element and lifecycle stage, hand-offs proven by reconciliation, and write paths removed rather than matrices published.
+- [Converge or Coexist: Living with More Than One ERP](#multiple-erps) — one finance core as shared rules rather than one product, and the convergence pattern as a decision about where accounting logic lives.
+- [Duplicates and Dependencies: The Hidden Costs of a Grown Estate](#redundancy-and-coupling) — duplication as a dated decision, six faces of coupling with semantic coupling the worst, and consolidation only behind a published interface.
 
 **Design the seams.**
 
-- [Canonical Events and Adapters for Loosely Coupled Financial Domains](#loosely-coupled-domains) — publish facts not accounting, keep the canonical model narrow and governed, and put translation at the edges with a hub that only counts and routes.
-- [Designing for Traceability, Reconciliation and Audit Across Boundaries](#traceability-and-reconciliation) — traceability as an identifier contract, every reconciliation a cataloged control, and "closed means reconciled".
+- [Canonical Events: A Common Language for Money](#loosely-coupled-domains) — publish facts not accounting, keep the canonical model narrow and governed, and put translation at the edges with a hub that only counts and routes.
+- [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation) — traceability as an identifier contract, every reconciliation a cataloged control, and "closed means reconciled".
 
 **Grow and change.**
 
-- [Onboarding Brands, Entities and Markets as Configuration](#brands-entities-markets) — onboarding as governed configuration in known layers, business-model templates and launch kits, and acquisitions in stages with expiring forks.
-- [Modernizing Without Stopping the Close: An Incremental Migration](#incremental-modernization) — migration slices along reconciliation boundaries, gates that are reconciliations with owners, and a first stage designed to fail cheaply.
+- [The Next Brand Should Be Boring: Onboarding as Configuration](#brands-entities-markets) — onboarding as governed configuration in known layers, business-model templates and launch kits, and acquisitions in stages with expiring forks.
+- [Modernizing Without Stopping the Close](#incremental-modernization) — migration slices along reconciliation boundaries, gates that are reconciliations with owners, and a first stage designed to fail cheaply.
 
-By the end of this part you should be able to trace any reported number to its transactions and back, name the authoritative system for each fact in your estate, and judge an integration or migration design by whether every crossing it creates can be proven at close. Begin with [From Customer Transaction to Financial Statement](#transaction-to-report). [LEAD: Strategic Architecture and Transformation](#part-4) then turns to leading the estate through years of change.
+By the end of this part you should be able to trace any reported number to its transactions and back, name the authoritative system for each fact in your estate, and judge an integration or migration design by whether every crossing it creates can be proven at close. Begin with [The Life of a Booking: From €600 Payment to $97.38 of Revenue](#transaction-to-report). [LEADERSHIP: The Chief Architect's Agenda](#part-4) then turns to leading the estate through years of change.

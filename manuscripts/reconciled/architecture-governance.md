@@ -25,7 +25,7 @@
 
 In a finance estate, governance carries a burden that product architecture does not. Decisions about posting, reconciliation, payout rules and access reach the financial statements, so some of them must leave evidence that an auditor can test. That pressure pushes organizations toward a review board that sees everything. The opposite pressure, from teams that deploy forty times a week, pushes toward no review at all. Both fail: the first becomes **a queue that teams learn to route around**, and the second lets the decisions that bind for a decade be taken as configuration changes on a Friday afternoon.
 
-[The Chief Architect's Job: Coherence Across a Finance Estate](#chief-architect-role) set out Northmere's decision rights: five proposed mandatory standards owned by the Chief Architect (a sixth, for AI agents, followed in Q3 2027), advice everywhere else, expiring waivers, and a control gate that advice never replaces for systems in internal control over financial reporting (ICFR) scope. This chapter builds the machinery that turns those rights into decisions.
+[The Chief Architect's Job: Making Many Systems Tell One Story](#chief-architect-role) set out Northmere's decision rights: five proposed mandatory standards owned by the Chief Architect (a sixth, for AI agents, followed in Q3 2027), advice everywhere else, expiring waivers, and a control gate that advice never replaces for systems in internal control over financial reporting (ICFR) scope. This chapter builds the machinery that turns those rights into decisions.
 
 {id: architecture-governance--setting-the-scene-the-first-queue}
 ## Setting the Scene: The First Queue
@@ -36,7 +36,7 @@ Seven weeks later, at the start of March, she reviewed what had happened. Thirty
 
 The most telling case was small. Stayloft wanted to switch on a new local payment method for Polish travelers through Adyen. The only architecture question was whether its settlement lines would carry a booking reference that BlackLine's Transaction Matching could use. Lucía Romero's integration architects could have answered in two days. It waited three weeks for the board.
 
-At the same time, something that should have reached a forum never did. Wayfare's Oracle Fusion Cloud ERP receives quarterly updates. In February, Hana Kowalski's team switched on additional intercompany reconciliation functionality in Fusion. It was a configuration change inside a SaaS platform, it touched no code, and it went through Wayfare's own change process correctly. It also deepened one of the four overlapping capabilities that the capability map would flag at the end of March: account reconciliation, already performed in BlackLine, in a rarely used OneStream module and in Fusion ([Map Capabilities Before Systems](#capability-mapping)).
+At the same time, something that should have reached a forum never did. Wayfare's Oracle Fusion Cloud ERP receives quarterly updates. In February, Hana Kowalski's team switched on additional intercompany reconciliation functionality in Fusion. It was a configuration change inside a SaaS platform, it touched no code, and it went through Wayfare's own change process correctly. It also deepened one of the four overlapping capabilities that the capability map would flag at the end of March: account reconciliation, already performed in BlackLine, in a rarely used OneStream module and in Fusion ([Map What Finance Does Before What Runs It](#capability-mapping)).
 
 Dana's conclusion: **the board was triaging by system, and it should triage by consequence.** The payment method was easy to reverse and local to one brand; it needed advice, not a ruling. The Fusion change was cheap to make but expensive to unwind, because every reconciliation moved into Fusion was one more to migrate later; it needed the capability owner. The rest of this chapter is the system she put in place over the following quarter.
 
@@ -83,15 +83,15 @@ The table explains the shape of the rest of the chapter. Architecture governance
 | **Reversible** (undo within a sprint, no migration, no period boundary) | Team decides. Recording is optional | Team decides after seeking advice. Record required |
 | **Hard to reverse** (migration, contract, period boundary, control redesign) | Team decides after seeking advice. Record required, with a review date | Board, or design authority if finance-structural or investment-level |
 
-On top of the grid, five **triggers** send a decision to the board whatever its quadrant, because the decision rights in [The Chief Architect's Job: Coherence Across a Finance Estate](#chief-architect-role) reserve them:
+On top of the grid, five **triggers** send a decision to the board whatever its quadrant, because the decision rights in [The Chief Architect's Job: Making Many Systems Tell One Story](#chief-architect-role) reserve them:
 
 1. It needs a **waiver** from a mandatory standard, or proposes a change to one.
-2. It changes the **system of record** for a critical data object, such as the general ledger, partner bank details or the entity register ([Systems of Record and Authoritative Data Boundaries](#systems-of-record)).
+2. It changes the **system of record** for a critical data object, such as the general ledger, partner bank details or the entity register ([Systems of Record: Ending the Doppelgänger Record](#systems-of-record)).
 3. It adds, extends or switches on a **platform or feature for a capability that another platform already owns**: the Fusion case.
-4. It changes **who or what can post journals, approve payments or change financial master data**, including bots and AI agents ([AI, Automation and Agentic Finance Operations](#ai-in-finance)).
+4. It changes **who or what can post journals, approve payments or change financial master data**, including bots and AI agents ([Automate the Work, Not the Accountability](#ai-in-finance)).
 5. It changes **posting logic, account determination or reconciliation design** in a system in ICFR scope, so that a control impact assessment must be completed with Internal Controls before it is decided.
 
-The fifth trigger does not send every change to an in-scope system to the board. A bug fix in SFP's payout calculation is a change, governed by the SFP pipeline ([Controls, Auditability and Security by Design](#controls-and-auditability)). It becomes an architecture decision when it changes **how** the system determines or posts an amount.
+The fifth trigger does not send every change to an in-scope system to the board. A bug fix in SFP's payout calculation is a change, governed by the SFP pipeline ([Controls by Design, Not by Audit Season](#controls-and-auditability)). It becomes an architecture decision when it changes **how** the system determines or posts an amount.
 
 {id: architecture-governance--northmere-s-four-paths}
 ### Northmere's four paths
@@ -140,7 +140,7 @@ Those formats were designed for software teams. A finance estate needs a few mor
 | **ID, title, status and path** | `ADR-0007`; a title that states the decision, not the topic; proposed, accepted, superseded or rejected; T1, T2 or T3 | Change records and purchase requests cite the ID; the path shows who had the right to decide |
 | **Options considered** | At least two real options plus "do nothing", each with cost, risk and reversibility | A record with one option is a justification, not a decision |
 | **Decision and consequences** | "We will…", with scope and effective date; what gets better, what gets worse, who carries new work | A posting change takes effect at a period boundary; the negative consequences are the most valuable part of the record a year later |
-| **Control impact assessment** | Key controls added, changed or retired; evidence each produces; whether the risk and control matrix changes before go-live | Required for any finance-relevant system ([Controls, Auditability and Security by Design](#controls-and-auditability)). Completed with Internal Controls *before* the decision, not after |
+| **Control impact assessment** | Key controls added, changed or retired; evidence each produces; whether the risk and control matrix changes before go-live | Required for any finance-relevant system ([Controls by Design, Not by Audit Season](#controls-and-auditability)). Completed with Internal Controls *before* the decision, not after |
 | **Accounting impact** | Whether accounting policy, posting meaning or the chart of accounts is affected, and Leila's team's view | Architects decide *how* to post; the controller decides *what* the posting means |
 | **Standards and waivers** | Standards this decision applies, creates or needs a waiver from | Links the decision to the catalog, so a waiver is never granted in a side conversation |
 | **Advice received** | Who was asked, what they said, whether it was followed, and why not | Disagreement on record protects the decider and the dissenter |
@@ -153,7 +153,7 @@ Two rules keep the register honest. **An accepted record is never edited**: refi
 {id: architecture-governance--a-worked-record-adr-0007}
 ### A worked record: ADR-0007
 
-The register opened with a handful of entries back-filled from December 2026. ADR-0004 recorded Dana's first decision under the new rights: every change to an SFP payout rule needs documented approval by Finance. It set the requirement but not the design. ADR-0007 chose the design. It is reproduced here, slightly shortened, because it shows every field doing work. The design itself is explained in [Controls, Auditability and Security by Design](#controls-and-auditability); what matters here is how the record carries it.
+The register opened with a handful of entries back-filled from December 2026. ADR-0004 recorded Dana's first decision under the new rights: every change to an SFP payout rule needs documented approval by Finance. It set the requirement but not the design. ADR-0007 chose the design. It is reproduced here, slightly shortened, because it shows every field doing work. The design itself is explained in [Controls by Design, Not by Audit Season](#controls-and-auditability); what matters here is how the record carries it.
 
 > **ADR-0007 — Partner payout rules are versioned configuration approved through the change pipeline**
 >
@@ -183,7 +183,7 @@ The register opened with a handful of entries back-filled from December 2026. AD
 >
 > **Standards.** Creates clause 4 of STD-FIN-05 (segregation of duties by design): *financially significant configuration is approved, versioned data, never code or files changed by engineers.* Wayfare's payout engine is out of conformance from the clause's effective date; see waiver W-2027-004.
 >
-> **Advice received.** Jonas: incident response at night needs production access; *followed*, through time-boxed, recorded break-glass access. Hana: Wayfare cannot build a rule store before 2028; *followed*, with a waiver and a compensating control. Ingrid: bank details must not become payout-rule content, because their authority moves from SFP to Northmere Pay by mid-2028 ([Systems of Record and Authoritative Data Boundaries](#systems-of-record)); *followed*, bank details stay outside the rule store.
+> **Advice received.** Jonas: incident response at night needs production access; *followed*, through time-boxed, recorded break-glass access. Hana: Wayfare cannot build a rule store before 2028; *followed*, with a waiver and a compensating control. Ingrid: bank details must not become payout-rule content, because their authority moves from SFP to Northmere Pay by mid-2028 ([Systems of Record: Ending the Doppelgänger Record](#systems-of-record)); *followed*, bank details stay outside the rule store.
 >
 > **Confirmation.** Pipeline refuses deployments that change rule schemas without a code-owner approval; weekly monitor reconciles the deployment log to production versions; monthly monitor confirms every active rule version has an approver distinct from its author.
 >
@@ -223,14 +223,14 @@ From April 2027 Northmere runs three forums with one secretariat, one register a
 
 - **Architecture Advisory Forum** (weekly, one hour, open to anyone, facilitated by Lucía Romero). Teams bring T1 decisions and early T2 and T3 questions. Nothing is decided; advice is recorded in the requester's draft record. Brand attendance is reported, because a brand that ignores the forum has opted out of the advice process.
 - **Architecture Review Board** (weekly from April, 90 minutes; fortnightly before). Dana chairs and decides T2 items. Members are the lead architects for integration, data, ERP and payments, a delegate of Mei Tanaka for any item with trigger 5, and a delegate of Marco Bellini, the CISO, for access and security items. Papers are the draft decision record, circulated three working days before. An item can be deferred once, with the missing information named; a second deferral goes to the design authority.
-- **Keystone design authority** (monthly, plus extra sessions when a decision is due). Dana and Leila co-chair. It decides T3 items (capability ownership, ledger and chart-of-accounts structure, Keystone target-state choices) and makes investment-level recommendations to Tomás and Ravi. Its program role belongs to [Leading an ERP Modernization and Finance Transformation](#finance-transformation); for governance, it is the top of the same routing.
+- **Keystone design authority** (monthly, plus extra sessions when a decision is due). Dana and Leila co-chair. It decides T3 items (capability ownership, ledger and chart-of-accounts structure, Keystone target-state choices) and makes investment-level recommendations to Tomás and Ravi. Its program role belongs to [The Technology Is the Easy Part: Leading a Finance Transformation](#finance-transformation); for governance, it is the top of the same routing.
 
 The combination works because of two rules. **The board decides only what the forum cannot**: if a T2 request turns out to need no waiver, no standard change and no ownership ruling, triage was wrong, and the item drops back to T1 the same day. And **every forum writes the same record**, so a decision taken in a hallway, a steering meeting or an email thread is not a decision until it is in the register. That rule did more for the reopen rate than any other, because most of the 2026 reopenings were arguments about what had been decided, not whether it was right.
 
 {id: architecture-governance--standards-from-proposal-to-retirement}
 ## Standards: From Proposal to Retirement
 
-A **mandatory standard** is a rule that every system in its scope must meet unless it holds a waiver. Writing good standards, and the principles and reference architectures they come from, is the subject of [Principles, Standards and Reference Architectures](#principles-standards-reference). This chapter owns their governance: how a standard comes into force, how it is checked, and how it leaves.
+A **mandatory standard** is a rule that every system in its scope must meet unless it holds a waiver. Writing good standards, and the principles and reference architectures they come from, is the subject of [Principles That Decide Things](#principles-standards-reference). This chapter owns their governance: how a standard comes into force, how it is checked, and how it leaves.
 
 The rule Dana adopted is short: **no owner, no reference implementation, no conformance check, no mandate.** A standard without a reference implementation asks every team to build its own interpretation. A standard without a conformance check is enforced by reviewers' memories. Either way, it is a recommendation with ambitions.
 
@@ -250,7 +250,7 @@ stateDiagram-v2
 
 **Figure 4:** *The lifecycle of a standard. Each transition is a recorded decision. A standard reaches Mandatory only when the check that proves conformance is already running, and it leaves through Deprecated so that no system is left non-conformant overnight.*
 
-The first five were declared mandatory together on 1 April 2027 for new builds and changed interfaces, with dated transition plans for existing systems; enforcement of STD-FIN-01 and STD-FIN-02 waited for the schema registry on 1 July 2027 ([Principles, Standards and Reference Architectures](#principles-standards-reference) owns the catalog itself). The register held 14 active waivers at the end of Q3 2027 and 11 at year-end.
+The first five were declared mandatory together on 1 April 2027 for new builds and changed interfaces, with dated transition plans for existing systems; enforcement of STD-FIN-01 and STD-FIN-02 waited for the schema registry on 1 July 2027 ([Principles That Decide Things](#principles-standards-reference) owns the catalog itself). The register held 14 active waivers at the end of Q3 2027 and 11 at year-end.
 
 Two details matter at Northmere. A standard that affects posting must run in **Trial** for at least one close cycle. And a **Mandatory** standard applies to new systems and changed parts of existing ones from its effective date; existing systems get a **transition period**, typically one to four quarters, after which non-conformance needs a waiver.
 
@@ -259,14 +259,14 @@ Two details matter at Northmere. A standard that affects posting must run in **T
 
 | Standard | Owner | In force | Conformance check | Active waivers, Dec 2027 |
 | --- | --- | --- | --- | --- |
-| **STD-FIN-01** Canonical financial events for new and changed financial feeds ([Canonical Events and Adapters for Loosely Coupled Financial Domains](#loosely-coupled-domains)) | Lucía Romero | 1 April 2027; enforced from 1 July 2027, when the schema registry and adapter kit v1 went live | Schema registry rejects unregistered event types; adapter-kit contract tests in each producer's pipeline | 1 |
+| **STD-FIN-01** Canonical financial events for new and changed financial feeds ([Canonical Events: A Common Language for Money](#loosely-coupled-domains)) | Lucía Romero | 1 April 2027; enforced from 1 July 2027, when the schema registry and adapter kit v1 went live | Schema registry rejects unregistered event types; adapter-kit contract tests in each producer's pipeline | 1 |
 | **STD-FIN-02** Idempotent posting: every posting carries a unique key and a replay produces no duplicate | Lucía Romero | 1 April 2027; enforced from 1 July 2027 | Contract harness replays duplicate and out-of-order events in CI; sampled for vendor-platform postings | 2 |
 | **STD-FIN-03** Subledger-to-GL reconciliation: every subledger that summarizes into a ledger has a registered, certified reconciliation | Leila's close team, with Dana | 1 April 2027 (Q1 close) | Monthly check of the interface inventory against BlackLine's reconciliation list; certification status per close | 4 |
-| **STD-FIN-04** Clean-core ERP extension ([SAP S/4HANA: The Enterprise Finance Core](#sap-s4hana)) | Sven Aalto | 1 April 2027; ATC gate enforcing from June 2027 | ABAP Test Cockpit in the transport pipeline blocks new Level D objects; quarterly fitness function | 2 |
+| **STD-FIN-04** Clean-core ERP extension ([SAP S/4HANA: One Journal, Clean Core](#sap-s4hana)) | Sven Aalto | 1 April 2027; ATC gate enforcing from June 2027 | ABAP Test Cockpit in the transport pipeline blocks new Level D objects; quarterly fitness function | 2 |
 | **STD-FIN-05** Segregation of duties by design, in five clauses: corporate identity with registered SoD roles; no standing human write access to production financial data; deployment only through an enforcing pipeline; financially significant configuration as approved, versioned data; evidence to the central evidence store | Dana, with Mei and Marco | 1 April 2027; SFP controls operating from 1 July 2027, other in-scope systems on dated transition plans | Identity-provider role registration report; pipeline configuration scan; quarterly sample of SaaS configuration changes | 2 |
-| **STD-FIN-06** AI agents in financially relevant processes: "the agent may propose; a controlled process disposes", with an approved agent control card ([AI, Automation and Agentic Finance Operations](#ai-in-finance)) | Dana, with Mei | Q3 2027, by ADR-0038 | Agent registry check: no agent identity holds posting, approval, payment or master-data rights without a control card | 0 |
+| **STD-FIN-06** AI agents in financially relevant processes: "the agent may propose; a controlled process disposes", with an approved agent control card ([Automate the Work, Not the Accountability](#ai-in-finance)) | Dana, with Mei | Q3 2027, by ADR-0038 | Agent registry check: no agent identity holds posting, approval, payment or master-data rights without a control card | 0 |
 
-Three further candidates sat in the Proposed or Trial state at year-end: a **ledger-ready launch criterion**, under which no payment method, provider or market goes live until its settlement can be matched automatically at an agreed rate ([Payments for Finance Architects: The Lifecycle of Money Movement](#payments-fundamentals)); a **single rate service** for foreign-exchange conversion; and **released interfaces only** for new integrations with S/4HANA. Each waits for a reference implementation and a conformance check.
+Three further candidates sat in the Proposed or Trial state at year-end: a **ledger-ready launch criterion**, under which no payment method, provider or market goes live until its settlement can be matched automatically at an agreed rate ([Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals)); a **single rate service** for foreign-exchange conversion; and **released interfaces only** for new integrations with S/4HANA. Each waits for a reference implementation and a conformance check.
 
 STD-FIN-06 went from proposal to mandatory in one quarter, because its reference implementation (the control card and the agent gateway) was built during three pilots and few agents existed. The first retirement is scheduled: STD-FIN-03 contains an interim clause allowing SFP to post daily summaries provided each carries a reconciliation key to settlement lines. It is marked for deprecation when the SFP merchant subledger moves into the group finance core in 2029, and its check will be removed then.
 
@@ -304,8 +304,8 @@ A sample of the register at the end of 2027 shows the range.
 | --- | --- | --- | --- | --- | --- |
 | **W-2027-004** | STD-FIN-05 clause 4; Wayfare payout engine | Rule store cannot be built before 2028; engine retires in 2029 | Monthly Finance review of the engine's rule-change log and a recomputed payout sample; maker-checker on rule files enforced in Wayfare's repository | 31 Mar 2028 | Granted; exit is adoption of the SFP rule store in Q1 2028 |
 | **W-2027-006** | STD-FIN-04; SFP posting module in S/4HANA (a Level D custom RFC) | Replacement by SAP's released journal-entry API is planned for 2028 | Changes to the module only through the SOX change process with Sven's approval | 30 Jun 2028 | Granted |
-| **W-2027-009** | STD-FIN-02; Tablekin's MuleSoft and EIB feed that posts one summarized Stripe journal per company per day into Workday | Feed is replaced by the Accounting Center design in 2028 ([Workday: Financials, People and the Organizational Backbone](#workday)); an idempotency retrofit is not worth the cost | Daily count and amount control totals; Stripe clearing account reconciled in BlackLine | 31 Dec 2027 | Renewed once, to 30 Jun 2028, with the replacement date confirmed |
-| **W-2027-011** | Tax determination standard set by ADR-0024; Tablekin's use of Stripe Tax | Shared tax service not yet live | Quarterly reconciliation of Stripe Tax output to filed returns | 31 Mar 2028 (renewable at each review until the shared tax service is live, targeted 2029) | Granted; the dated exception recorded in [Stripe: Programmable Payments, Billing and Connected Accounts](#stripe) |
+| **W-2027-009** | STD-FIN-02; Tablekin's MuleSoft and EIB feed that posts one summarized Stripe journal per company per day into Workday | Feed is replaced by the Accounting Center design in 2028 ([Workday: The Org Chart Behind the Ledger](#workday)); an idempotency retrofit is not worth the cost | Daily count and amount control totals; Stripe clearing account reconciled in BlackLine | 31 Dec 2027 | Renewed once, to 30 Jun 2028, with the replacement date confirmed |
+| **W-2027-011** | Tax determination standard set by ADR-0024; Tablekin's use of Stripe Tax | Shared tax service not yet live | Quarterly reconciliation of Stripe Tax output to filed returns | 31 Mar 2028 (renewable at each review until the shared tax service is live, targeted 2029) | Granted; the dated exception recorded in [Stripe: Every Movement Is a Balance Transaction](#stripe) |
 
 In 2027 the board granted 17 waivers and declined 5. At year-end 11 were active and the oldest was 10 months old. Six fell due during 2027: five were closed by their expiry date and one was renewed, which is 83% closed on time against Dana's target of more than 80%.
 
@@ -314,7 +314,7 @@ Two practices matter more than the fields. **The waiver register is published ne
 {id: architecture-governance--conformance-automated-where-possible-sampled-where-not}
 ## Conformance: Automated Where Possible, Sampled Where Not
 
-A standard is only as real as the check that proves conformance. The most useful idea here comes from evolutionary architecture: a **fitness function** is an objective, preferably automated, test of an architectural characteristic, run as part of delivery or in production ([Ford, Parsons, Kua and Sadalage, *Building Evolutionary Architectures*, 2nd edition](https://www.thoughtworks.com/insights/books/building-evolutionaryarchitectures-second-edition)). [Technical Debt, Architectural Fitness and Modernization Priorities](#technical-debt-and-fitness) owns fitness functions as a way to measure the health of the estate. Governance uses the same mechanism for a narrower purpose: to prove that each mandatory standard holds, continuously, without a reviewer.
+A standard is only as real as the check that proves conformance. The most useful idea here comes from evolutionary architecture: a **fitness function** is an objective, preferably automated, test of an architectural characteristic, run as part of delivery or in production ([Ford, Parsons, Kua and Sadalage, *Building Evolutionary Architectures*, 2nd edition](https://www.thoughtworks.com/insights/books/building-evolutionaryarchitectures-second-edition)). [Technical Debt on the Balance Sheet](#technical-debt-and-fitness) owns fitness functions as a way to measure the health of the estate. Governance uses the same mechanism for a narrower purpose: to prove that each mandatory standard holds, continuously, without a reviewer.
 
 Conformance happens at four moments, and each standard should be checked at the earliest moment that works.
 
@@ -348,7 +348,7 @@ The procurement gate exists because of **Capability Creep**. Northmere's 2022 On
 {id: architecture-governance--governing-what-you-do-not-build-saas-configuration-and-vendor-releases}
 ## Governing What You Do Not Build: SaaS Configuration and Vendor Releases
 
-Most of Northmere's finance estate is bought. In bought systems the decisions that matter are often configuration, and the vendor ships changes on its own calendar. Wayfare's Fusion receives quarterly updates, each of which costs Hana's team about 14 working days of regression testing ([Oracle Fusion Cloud ERP: Ledgers, Accounting Hub and Coexistence](#oracle-fusion)). Payment providers retire and replace API versions. Every SaaS release can switch on, or make available, capabilities the enterprise already has elsewhere.
+Most of Northmere's finance estate is bought. In bought systems the decisions that matter are often configuration, and the vendor ships changes on its own calendar. Wayfare's Fusion receives quarterly updates, each of which costs Hana's team about 14 working days of regression testing ([Oracle Fusion: An Accounting Hub for High-Volume Events](#oracle-fusion)). Payment providers retire and replace API versions. Every SaaS release can switch on, or make available, capabilities the enterprise already has elsewhere.
 
 The February Fusion change was properly controlled as a change. What it lacked was **architecture visibility**, because switching on a feature did not look like a decision. Northmere's answer has three parts.
 
@@ -361,16 +361,16 @@ The February Fusion change was properly controlled as a change. What it lacked w
 | **Capability boundary** | A feature that overlaps a capability owned by another platform: reconciliation in an ERP, tax determination in a PSP, billing in a planning tool | Capability owner via the board (trigger 3) | T2 record |
 | **Control-impacting** | Changes to approval workflows, posting behavior, access roles or audit logging | Platform owner with Internal Controls; board if a standard is affected | Control impact assessment; T2 if a standard is affected |
 
-**Second, financially significant configuration is governed by STD-FIN-05 clause 4**, whatever platform holds it. Account determination in S/4HANA, posting rules in Workday's Accounting Center, journal approval workflows in BlackLine and mapping rules in OneStream ([OneStream: Consolidation, Planning and Performance Management](#onestream)) are changed through each platform's own change process, approved by someone other than the author, and evidenced. The ADR governs the pattern; the platform's change process governs each instance.
+**Second, financially significant configuration is governed by STD-FIN-05 clause 4**, whatever platform holds it. Account determination in S/4HANA, posting rules in Workday's Accounting Center, journal approval workflows in BlackLine and mapping rules in OneStream ([OneStream: Consolidating Actuals, Planning the Future](#onestream)) are changed through each platform's own change process, approved by someone other than the author, and evidenced. The ADR governs the pattern; the platform's change process governs each instance.
 
-**Third, a vendor's new direction is a decision, not a default.** A deprecation, rename or repackaging gets a T1 or T2 record with a decision-due date, so the enterprise's roadmap does not become its vendors' ([Vendor Strategy and Avoiding Excessive Dependency](#vendor-portfolio-strategy)).
+**Third, a vendor's new direction is a decision, not a default.** A deprecation, rename or repackaging gets a T1 or T2 record with a decision-due date, so the enterprise's roadmap does not become its vendors' ([Own Your Roadmap: Vendor Strategy Without Lock-In Panic](#vendor-portfolio-strategy)).
 
 Under these rules the Fusion change would have been classed as a capability boundary and gone to Leila, the proposed owner of account reconciliation, before any reconciliation moved into Fusion.
 
 {id: architecture-governance--measuring-governance}
 ## Measuring Governance
 
-[The Chief Architect's Job: Coherence Across a Finance Estate](#chief-architect-role) set the architecture function's scorecard. Governance needs a few measures of its own, read together, because each one alone is easy to game.
+[The Chief Architect's Job: Making Many Systems Tell One Story](#chief-architect-role) set the architecture function's scorecard. Governance needs a few measures of its own, read together, because each one alone is easy to game.
 
 | Measure | Definition | Q4 2026 baseline | 2027 result | Caution |
 | --- | --- | --- | --- | --- |
@@ -389,7 +389,7 @@ The measure I watch most closely is the **path mix**. When the board's share ris
 {id: architecture-governance--governance-anti-patterns}
 ## Governance Anti-Patterns
 
-[The Chief Architect's Job: Coherence Across a Finance Estate](#chief-architect-role) described how architecture functions fail. Governance systems fail in their own ways, and each has a measurable symptom.
+[The Chief Architect's Job: Making Many Systems Tell One Story](#chief-architect-role) described how architecture functions fail. Governance systems fail in their own ways, and each has a measurable symptom.
 
 | Anti-pattern | What it looks like | Symptom you can measure | Cure |
 | --- | --- | --- | --- |
@@ -403,7 +403,7 @@ The measure I watch most closely is the **path mix**. When the board's share ris
 {id: architecture-governance--integration-with-the-rest-of-the-estate}
 ## Integration with the Rest of the Estate
 
-Governance borrows its fact base from earlier parts. The capability map and overlap register ([Map Capabilities Before Systems](#capability-mapping), [Preventing Redundant Capabilities and Unnecessary Coupling](#redundancy-and-coupling)) tell triage when a decision crosses a capability boundary; the portfolio holds dispositions, renewal dates and ADR links ([Manage the Application Portfolio as an Investment](#application-portfolio)); the systems-of-record matrix defines trigger 2 ([Systems of Record and Authoritative Data Boundaries](#systems-of-record)); the change gate rests on the ITGC model in [Controls, Auditability and Security by Design](#controls-and-auditability). Fitness functions become conformance evidence ([Technical Debt, Architectural Fitness and Modernization Priorities](#technical-debt-and-fitness)). Where the architects sit is a question for [Organizing Architecture Ownership Across Finance, Engineering, Security and Data](#organizing-for-architecture), and the record, waiver and release-note templates belong in the [Toolkit: Templates for the Finance Architect](#toolkit).
+Governance borrows its fact base from earlier parts. The capability map and overlap register ([Map What Finance Does Before What Runs It](#capability-mapping), [Duplicates and Dependencies: The Hidden Costs of a Grown Estate](#redundancy-and-coupling)) tell triage when a decision crosses a capability boundary; the portfolio holds dispositions, renewal dates and ADR links ([Manage the Application Portfolio as an Investment](#application-portfolio)); the systems-of-record matrix defines trigger 2 ([Systems of Record: Ending the Doppelgänger Record](#systems-of-record)); the change gate rests on the ITGC model in [Controls by Design, Not by Audit Season](#controls-and-auditability). Fitness functions become conformance evidence ([Technical Debt on the Balance Sheet](#technical-debt-and-fitness)). Where the architects sit is a question for [Who Owns What: Organizing Architecture Across Finance and Technology](#organizing-for-architecture), and the record, waiver and release-note templates belong in the [Working Papers: Templates for the Finance Architect](#toolkit).
 
 {id: architecture-governance--the-chief-architect-s-view}
 ## The Chief Architect's View
@@ -433,14 +433,14 @@ Governance borrows its fact base from earlier parts. The capability map and over
 {id: architecture-governance--from-governance-to-the-rules-it-governs}
 ## From Governance to the Rules It Governs
 
-Governance is a routing and recording system. It decides who decides, records what was decided, and checks that the estate conforms. What it does not do is supply the content of the rules. A board that enforces poorly written standards just makes poor rules stick. The next chapter, [Principles, Standards and Reference Architectures](#principles-standards-reference), turns to that content: how to write architecture principles that settle arguments, standards that teams can meet on the first attempt, and reference architectures for payments-to-ledger, subledger-to-ledger and the close that give every mandatory standard in this chapter something concrete to copy.
+Governance is a routing and recording system. It decides who decides, records what was decided, and checks that the estate conforms. What it does not do is supply the content of the rules. A board that enforces poorly written standards just makes poor rules stick. The next chapter, [Principles That Decide Things](#principles-standards-reference), turns to that content: how to write architecture principles that settle arguments, standards that teams can meet on the first attempt, and reference architectures for payments-to-ledger, subledger-to-ledger and the close that give every mandatory standard in this chapter something concrete to copy.
 
 {id: architecture-governance--sources-and-evidence}
 ## Sources and Evidence
 
 **Vendor documentation**
 
-- [SAP: Extend SAP S/4HANA Cloud the right way](https://news.sap.com/2025/08/extend-sap-s4hana-cloud-right-way-clean-clear/), SAP News Center, 2025. Clean-core extension levels behind the STD-FIN-04 conformance check, as used in [SAP S/4HANA: The Enterprise Finance Core](#sap-s4hana).
+- [SAP: Extend SAP S/4HANA Cloud the right way](https://news.sap.com/2025/08/extend-sap-s4hana-cloud-right-way-clean-clear/), SAP News Center, 2025. Clean-core extension levels behind the STD-FIN-04 conformance check, as used in [SAP S/4HANA: One Journal, Clean Core](#sap-s4hana).
 
 **Standards and regulation**
 

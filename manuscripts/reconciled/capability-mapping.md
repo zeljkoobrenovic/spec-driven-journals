@@ -1,7 +1,7 @@
 {id: capability-mapping}
-# 5. Map Capabilities Before Systems
+# 5. Map What Finance Does Before What Runs It
 
-![Map Capabilities Before Systems — logo](enterprise-applications-and-financial-systems/posts/02-capability-mapping/assets/images/02-capability-mapping/logo.jpeg)
+![Map What Finance Does Before What Runs It — logo](enterprise-applications-and-financial-systems/posts/02-capability-mapping/assets/images/02-capability-mapping/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Build a three-level finance capability map you can reuse, heat-map it to find overlap and weakness, decompose finance into bounded contexts with explicit relationships, and trace capabilities to applications and teams to find the gaps in ownership.
 
@@ -30,7 +30,7 @@ The second half of this chapter adds a different decomposition with a different 
 {id: capability-mapping--setting-the-scene-at-northmere-the-question-the-portfolio-could-not-answer}
 ## Setting the Scene at Northmere: The Question the Portfolio Could Not Answer
 
-Northmere, the fictional group this book follows (see [Meet Northmere: The Running Example](#meet-northmere)), approved Program Keystone in December 2026. In January 2027, at the first Keystone steering meeting, Tomás Ferreira, the Group CFO, asked Dana Whitlock, the Chief Architect for Enterprise Applications and Financial Systems, a question she could only half answer that afternoon: "How many of the things we do in finance do we do more than once, and which of those did anyone decide?"
+Northmere, the fictional group this book follows (see [Meet Northmere: Five Brands, One Set of Books](#meet-northmere)), approved Program Keystone in December 2026. In January 2027, at the first Keystone steering meeting, Tomás Ferreira, the Group CFO, asked Dana Whitlock, the Chief Architect for Enterprise Applications and Financial Systems, a question she could only half answer that afternoon: "How many of the things we do in finance do we do more than once, and which of those did anyone decide?"
 
 Dana had a duplicate-capability list from her first month, built from interviews: two payout engines, three billing approaches, three reconciliation tools, two tax engines. She could not tell Tomás whether the list was complete, because the fact base could not confirm it.
 
@@ -42,7 +42,7 @@ SAP LeanIX, the EA repository, listed **214 finance-relevant applications**. Eac
 
 Filtering by tag gave nonsense. "Reconciliation" returned BlackLine but not the reconciliation module bought with OneStream in 2022, which was tagged "Consolidation". It did not return the intercompany reconciliation that Wayfare ran in Oracle Fusion, which was tagged "Wayfare Finance". Tax determination returned Vertex and missed Oracle's tax engine, which Wayfare used for some markets and which was tagged as part of "Oracle Fusion ERP".
 
-Dana's commitment in the Keystone plan was a **capability map and a system-of-record matrix, version 1, by the end of Q1 2027**. This chapter follows the capability map. The system-of-record matrix is the subject of [Systems of Record and Authoritative Data Boundaries](#systems-of-record).
+Dana's commitment in the Keystone plan was a **capability map and a system-of-record matrix, version 1, by the end of Q1 2027**. This chapter follows the capability map. The system-of-record matrix is the subject of [Systems of Record: Ending the Doppelgänger Record](#systems-of-record).
 
 {id: capability-mapping--concepts-capability-process-value-stream-application-organization-unit}
 ## Concepts: Capability, Process, Value Stream, Application, Organization Unit
@@ -61,7 +61,7 @@ The BIZBOK Guide defines a **value stream** as an end-to-end collection of activ
 
 Two clarifications save weeks of argument.
 
-**Record-to-Report, Procure-to-Pay and Order-to-Cash are not capabilities.** They are end-to-end process families (value streams, in BIZBOK language) that cut across capabilities. Finance teams use them as organizational labels, and many vendors present them as top-level menu items. I keep them, but on a different view: the process view in [The End-to-End Finance Processes](#finance-processes). When R2R appears as a box on a capability map, the map has silently mixed two decompositions, and every application ends up "supporting R2R".
+**Record-to-Report, Procure-to-Pay and Order-to-Cash are not capabilities.** They are end-to-end process families (value streams, in BIZBOK language) that cut across capabilities. Finance teams use them as organizational labels, and many vendors present them as top-level menu items. I keep them, but on a different view: the process view in [Order to Cash, Procure to Pay, Record to Report](#finance-processes). When R2R appears as a box on a capability map, the map has silently mixed two decompositions, and every application ends up "supporting R2R".
 
 **A capability has no location in the organization chart.** Partner Payout Management is performed by Stayloft Finance Engineering's software, Wayfare's software, Northmere Pay's payment factory and a payout operations team in Dublin. The capability is one. The organizations performing it are four. This is the point of the exercise: once you can see one capability performed four ways, you can ask whether that is a choice.
 
@@ -199,7 +199,7 @@ The table shows the twelve level-2 capabilities that mattered most to Keystone's
 
 | Capability | Importance | Maturity | Duplication | Annual run cost | Reading |
 | --- | --- | --- | --- | --- | --- |
-| 1.1 General Ledger Management | Critical | 3 | 3 (S/4HANA, Fusion, Workday) | ~$14.0m | Brand-ledger duplication; the convergence question, owned by [Multiple ERPs, One Finance Core: Coexistence and Convergence](#multiple-erps) |
+| 1.1 General Ledger Management | Critical | 3 | 3 (S/4HANA, Fusion, Workday) | ~$14.0m | Brand-ledger duplication; the convergence question, owned by [Converge or Coexist: Living with More Than One ERP](#multiple-erps) |
 | 1.2 Subledger Accounting | Differentiating | 2 | 2 (SFP merchant subledger, FI-CA agency) | ~$11.5m | Split by business model, not by choice; heavy summarization, weak drill-back |
 | 1.3 Financial Structure Management | Critical | 1 | 3 charts, mapped in spreadsheets | ~$1.2m | Lowest maturity on the map; precondition for convergence |
 | 2.2 Payment Settlement Reconciliation | Critical | 2 | 1 (BlackLine Transaction Matching) plus manual APM work | ~$4.8m | €14m average month-end suspense; 1.9% of APM settlement lines unmatched at working day 3 |
@@ -280,7 +280,7 @@ A **context map** shows the bounded contexts and the relationships between them.
 - **Conformist.** The downstream adopts the upstream model as-is, because changing it is not possible or not worth it. Every SaaS platform makes its customers conformists to some degree: Tablekin's Billing context conforms to Stripe Billing's object model; Consolidation conforms to OneStream's dimensional model.
 - **Anticorruption layer (ACL).** A translation layer that keeps an upstream model from leaking into the downstream model. In finance the most important ACLs sit at the **ERP boundary** and at the **PSP boundary**.
 - **Open-host service.** A context offers a defined protocol that any consumer may use. The Tax context offers tax determination as a service to every context that issues invoices or charges.
-- **Published language.** A documented, shared language for exchange between contexts. Keystone's canonical financial events (`BookingConfirmed`, `PaymentSettled`, `PartnerPayoutInstructed` and the rest) are Northmere's published language; [Canonical Events and Adapters for Loosely Coupled Financial Domains](#loosely-coupled-domains) owns their design.
+- **Published language.** A documented, shared language for exchange between contexts. Keystone's canonical financial events (`BookingConfirmed`, `PaymentSettled`, `PartnerPayoutInstructed` and the rest) are Northmere's published language; [Canonical Events: A Common Language for Money](#loosely-coupled-domains) owns their design.
 
 ```mermaid
 flowchart LR
@@ -309,7 +309,7 @@ Three relationships on this map deserve a sentence of justification each, becaus
 
 **Conformist where conforming is cheaper than translating.** Not every vendor boundary deserves an ACL. Consolidation conforming to OneStream's dimensional model is a reasonable choice, because nobody else consumes that model and the translation would be pure cost. The test I use: **build an ACL where the vendor's model would otherwise spread into contexts you own; conform where the vendor's model stays inside the vendor's context.** Payments needs an ACL because Adyen's and Stripe's report models are different from each other and both would otherwise leak into reconciliation, revenue and payouts.
 
-**Published language, not shared database.** The brand platforms do not write into the Subledger's tables, and the Subledger does not read the booking database. They exchange canonical events through the integration hub. The temptation to share one "financial transaction" table between Payments, Subledger and Revenue (the *Shared Kernel* pattern, at its worst) is strongest in a custom platform like SFP, where all three started as modules of one codebase. [Preventing Redundant Capabilities and Unnecessary Coupling](#redundancy-and-coupling) explains why that coupling is the most expensive kind to undo.
+**Published language, not shared database.** The brand platforms do not write into the Subledger's tables, and the Subledger does not read the booking database. They exchange canonical events through the integration hub. The temptation to share one "financial transaction" table between Payments, Subledger and Revenue (the *Shared Kernel* pattern, at its worst) is strongest in a custom platform like SFP, where all three started as modules of one codebase. [Duplicates and Dependencies: The Hidden Costs of a Grown Estate](#redundancy-and-coupling) explains why that coupling is the most expensive kind to undo.
 
 {id: capability-mapping--one-booking-across-the-contexts}
 ### One booking across the contexts
@@ -326,7 +326,7 @@ The Lisbon booking makes the boundaries concrete. A traveler from Germany books 
 | Tax | A determination on the commission (simplified here; VAT on commission depends on the property's status and location) | on €90.00 | Taxable event, jurisdiction |
 | General Ledger | One contribution to a daily summarized journal line among ~38,000 | (summarized) | Journal entry, GL account, period |
 
-Five contexts and one booking: the same €600 is a capture, a liability, an open item and part of a summary, and €90 of it is revenue. That is not duplication. It is **five legitimate models of one economic event**, each owned by a team that understands it. The design problem is not to merge them into one model; it is to keep the relationships explicit and the totals reconcilable at every boundary, which is the subject of [Designing for Traceability, Reconciliation and Audit Across Boundaries](#traceability-and-reconciliation).
+Five contexts and one booking: the same €600 is a capture, a liability, an open item and part of a summary, and €90 of it is revenue. That is not duplication. It is **five legitimate models of one economic event**, each owned by a team that understands it. The design problem is not to merge them into one model; it is to keep the relationships explicit and the totals reconcilable at every boundary, which is the subject of [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation).
 
 ![One €600 booking card at the center, seen through five windows as a capture, a liability, an open item, €90 of revenue and part of a ledger summary.](enterprise-applications-and-financial-systems/posts/02-capability-mapping/assets/images/02-capability-mapping/one-booking-many-models.jpeg)
 
@@ -351,9 +351,9 @@ They meet in a **many-to-many mapping**, and the shape of the mapping is diagnos
 - **One capability, several contexts** is normal for broad capabilities. Payment Settlement Reconciliation's matching rules live in Payments, its certifications in the close. It needs a **capability owner** who holds the outcome across both.
 - **One context, several capabilities** is normal and healthy when the capabilities share a language. Billing and Invoicing implements Charge Calculation, Invoicing and Receivables.
 - **One capability, several implementations in the same context** is the overlap signal. Partner Payout Management in two engines that both belong to Partner Settlement is two implementations of one model, and it should be one.
-- **A capability with no context** is usually a manual activity or a spreadsheet. At Northmere, the local-to-group account mapping in Financial Structure Management had no context at all; it lived in spreadsheets loaded into OneStream (Spreadsheet Glue, in the vocabulary of [Where Finance Architecture Goes Wrong](#where-finance-architecture-goes-wrong)).
+- **A capability with no context** is usually a manual activity or a spreadsheet. At Northmere, the local-to-group account mapping in Financial Structure Management had no context at all; it lived in spreadsheets loaded into OneStream (Spreadsheet Glue, in the vocabulary of [Unreconciled: Fourteen Ways Finance Architecture Goes Wrong](#where-finance-architecture-goes-wrong)).
 
-Conway's law, in Fowler's summary, says organizations design systems that mirror their communication structure, and the inverse Conway maneuver deliberately shapes teams to get the architecture you want ([Conway's Law, Fowler, 2022](https://martinfowler.com/bliki/ConwaysLaw.html)). Fowler also warns that reorganizing alone does not quickly fix a rigid legacy system. Bounded contexts are the unit where this matters: **a context owned by two teams decays into two models; two contexts owned by one overloaded team decay into one.** [Organizing Architecture Ownership Across Finance, Engineering, Security and Data](#organizing-for-architecture) takes the team design further using Team Topologies.
+Conway's law, in Fowler's summary, says organizations design systems that mirror their communication structure, and the inverse Conway maneuver deliberately shapes teams to get the architecture you want ([Conway's Law, Fowler, 2022](https://martinfowler.com/bliki/ConwaysLaw.html)). Fowler also warns that reorganizing alone does not quickly fix a rigid legacy system. Bounded contexts are the unit where this matters: **a context owned by two teams decays into two models; two contexts owned by one overloaded team decay into one.** [Who Owns What: Organizing Architecture Across Finance and Technology](#organizing-for-architecture) takes the team design further using Team Topologies.
 
 {id: capability-mapping--capabilities-to-applications-to-teams-finding-the-ownership-gaps}
 ## Capabilities to Applications to Teams: Finding the Ownership Gaps
@@ -396,7 +396,7 @@ Four kinds of gap recur in every estate I have mapped this way, and Northmere ha
 3. **Owner without reach.** The capability owner exists but part of the implementation sits in another organization's system, maintained by people who do not report to them. Tax content in a brand ERP is the classic case.
 4. **Concentration.** One team owns the minority implementation of several overlapping capabilities. Hana Kowalski's Wayfare finance systems team owns the second payout engine, the second tax engine and the third reconciliation tool. That is not a criticism of the team; it is what an acquired company's estate looks like. It does mean that **Wayfare convergence is one conversation, not three**, and that the people who know Wayfare's edge cases are a scarce resource for every Keystone workstream.
 
-The application-owner and capability-owner distinction matters for controls too. The external auditor tests controls on applications; Finance answers for outcomes on capabilities. The SFP significant deficiency was an application-level control failure (access and change management on the payout engine), but its remediation needed a capability-level decision: whether bank-detail and payout-rule changes should follow one control design across both engines. [Controls, Auditability and Security by Design](#controls-and-auditability) develops the control side.
+The application-owner and capability-owner distinction matters for controls too. The external auditor tests controls on applications; Finance answers for outcomes on capabilities. The SFP significant deficiency was an application-level control failure (access and change management on the payout engine), but its remediation needed a capability-level decision: whether bank-detail and payout-rule changes should follow one control design across both engines. [Controls by Design, Not by Audit Season](#controls-and-auditability) develops the control side.
 
 {id: capability-mapping--trade-offs-how-much-map-and-which-kind}
 ## Trade-offs: How Much Map, and Which Kind
@@ -455,7 +455,7 @@ Northmere took seven weeks from strawman to steering readout, at the end of Marc
 {id: capability-mapping--integration-with-the-rest-of-the-estate}
 ## Integration with the Rest of the Estate
 
-The map is useful only if later decisions consume it. [Manage the Application Portfolio as an Investment](#application-portfolio) uses the capability-to-application trace to score functional fit and assign TIME dispositions (tolerate, invest, migrate, eliminate). [Anatomy of a Financial Systems Landscape](#finance-landscape) lays the capabilities onto a layered reference model, where the volume gradient from billions of events to thousands of GL lines explains why Subledger Accounting and General Ledger Management are separate. [The End-to-End Finance Processes](#finance-processes) links R2R, O2C and P2P stages to the capabilities that enable them. [Systems of Record and Authoritative Data Boundaries](#systems-of-record) assigns data authority, with the bounded contexts as natural authority boundaries. [Preventing Redundant Capabilities and Unnecessary Coupling](#redundancy-and-coupling) owns the **overlap register** that grows from the four overlaps found here, and [Canonical Events and Adapters for Loosely Coupled Financial Domains](#loosely-coupled-domains) owns the published language and anticorruption layers named on the context map. [Build, Buy or Compose: Vendor Selection and Portfolio Rationalization](#build-versus-buy) uses the importance scores, and [Architecture Governance That Speeds Decisions](#architecture-governance) makes "which capability does this serve?" a required question in every decision record.
+The map is useful only if later decisions consume it. [Manage the Application Portfolio as an Investment](#application-portfolio) uses the capability-to-application trace to score functional fit and assign TIME dispositions (tolerate, invest, migrate, eliminate). [Anatomy of a Finance Estate: Layers, Planes and Boundaries](#finance-landscape) lays the capabilities onto a layered reference model, where the volume gradient from billions of events to thousands of GL lines explains why Subledger Accounting and General Ledger Management are separate. [Order to Cash, Procure to Pay, Record to Report](#finance-processes) links R2R, O2C and P2P stages to the capabilities that enable them. [Systems of Record: Ending the Doppelgänger Record](#systems-of-record) assigns data authority, with the bounded contexts as natural authority boundaries. [Duplicates and Dependencies: The Hidden Costs of a Grown Estate](#redundancy-and-coupling) owns the **overlap register** that grows from the four overlaps found here, and [Canonical Events: A Common Language for Money](#loosely-coupled-domains) owns the published language and anticorruption layers named on the context map. [Build, Buy or Compose: Choosing What to Own](#build-versus-buy) uses the importance scores, and [Architecture Governance That Speeds Decisions](#architecture-governance) makes "which capability does this serve?" a required question in every decision record.
 
 {id: capability-mapping--failure-modes}
 ## Failure Modes
@@ -481,7 +481,7 @@ The capability map is one of the few architecture artifacts a CFO will read and 
 2. **The naming rules.** Nouns, no systems, no departments, no brands. Publish them and enforce them in the EA repository.
 3. **Capability owners for every level-2 capability.** Owners come from Finance; architects propose, Finance decides. Where no owner exists, record that as a gap with a deadline, not a blank cell.
 4. **What to do about each overlap.** Not to remove all duplication, but to decide each one: accept with a reason, converge with a date, or retire with a plan.
-5. **Where bounded contexts sit and which relationships are mandatory.** ACLs at vendor boundaries that would otherwise spread, published language between brand platforms and finance, no shared databases across contexts. These become standards in [Principles, Standards and Reference Architectures](#principles-standards-reference).
+5. **Where bounded contexts sit and which relationships are mandatory.** ACLs at vendor boundaries that would otherwise spread, published language between brand platforms and finance, no shared databases across contexts. These become standards in [Principles That Decide Things](#principles-standards-reference).
 
 **Who decides.** At Northmere, Dana holds final decision rights on mandatory enterprise-application standards; Leila owns the capability definitions in her domain and signs off map changes; the Keystone design authority, chaired by Dana with Leila, decides overlaps. That split is deliberate: architects own the structure and the standards, Finance owns the meaning and the outcomes.
 
@@ -489,7 +489,7 @@ The capability map is one of the few architecture artifacts a CFO will read and 
 
 - **Overlap count over time.** The four highlighted overlaps should fall to zero decided-but-unresolved items by the end of Keystone year 3, with any remaining duplication recorded as an accepted choice.
 - **Capabilities without owners.** Northmere started with six; the target for the end of 2027 is none.
-- **Spreadsheet-implemented capabilities.** Of the ~70 spreadsheets-in-the-loop in the interface inventory, the ones that implement a capability (rather than a report) are architecture debt, tracked in [Technical Debt, Architectural Fitness and Modernization Priorities](#technical-debt-and-fitness).
+- **Spreadsheet-implemented capabilities.** Of the ~70 spreadsheets-in-the-loop in the interface inventory, the ones that implement a capability (rather than a report) are architecture debt, tracked in [Technical Debt on the Balance Sheet](#technical-debt-and-fitness).
 - **Map stability.** If level 2 changes more than a few names a year, the map is tracking systems or organizations, not capabilities.
 
 **The long-term consideration.** Northmere will acquire more brands. The capability map is the template for every acquisition: map the acquired company's applications onto the existing capabilities in the first month, and the overlaps appear immediately, before anyone has argued for keeping their tools. That is the cheapest moment to decide them.
@@ -529,6 +529,6 @@ The capability map tells Northmere what it must be able to do and where it does 
 - [Domain-Driven Design Reference](https://www.domainlanguage.com/ddd/reference/) — Eric Evans, 2015; supports the definitions of bounded context and ubiquitous language, the list of context-mapping patterns, and Core Domain and Generic Subdomains.
 - [Bounded Context](https://martinfowler.com/bliki/BoundedContext.html) — Martin Fowler, 2014; supports the explanation of one term carrying several meanings across contexts.
 - [Conway's Law](https://martinfowler.com/bliki/ConwaysLaw.html) — Martin Fowler, 2022; supports the link between team structure and context boundaries and the inverse Conway maneuver.
-- [Team Topologies, 2nd edition](https://itrevolution.com/book/team-topologies/) — Matthew Skelton and Manuel Pais, IT Revolution, 2025; background for team ownership of contexts, developed in [Organizing Architecture Ownership Across Finance, Engineering, Security and Data](#organizing-for-architecture).
+- [Team Topologies, 2nd edition](https://itrevolution.com/book/team-topologies/) — Matthew Skelton and Manuel Pais, IT Revolution, 2025; background for team ownership of contexts, developed in [Who Owns What: Organizing Architecture Across Finance and Technology](#organizing-for-architecture).
 
 Northmere is fictional; its systems, figures and people are invented for teaching. The capability map, heat-map scales and architectural recommendations are the author's judgment.

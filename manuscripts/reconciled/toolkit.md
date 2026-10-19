@@ -1,7 +1,7 @@
 {id: toolkit}
-# 49. Toolkit: Templates for the Finance Architect
+# 49. Working Papers: Templates for the Finance Architect
 
-![Toolkit: Templates for the Finance Architect — logo](enterprise-applications-and-financial-systems/posts/toolkit/assets/images/toolkit/logo.jpeg)
+![Working Papers: Templates for the Finance Architect — logo](enterprise-applications-and-financial-systems/posts/toolkit/assets/images/toolkit/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Find the template that fits the decision or design in front of you, copy it, and see it filled in once for Northmere, with the common mistakes to avoid and the chapter that explains the reasoning behind every field.
 
@@ -30,22 +30,22 @@ Three conventions run through all fourteen tools.
 
 | Tool | Use it when | Chapter |
 | --- | --- | --- |
-| [Tool 1](#toolkit--tool-1): Capability map row and heat map | You need to show Finance where it pays twice for the same ability, or who owns a capability | [Map Capabilities Before Systems](#capability-mapping) |
+| [Tool 1](#toolkit--tool-1): Capability map row and heat map | You need to show Finance where it pays twice for the same ability, or who owns a capability | [Map What Finance Does Before What Runs It](#capability-mapping) |
 | [Tool 2](#toolkit--tool-2): Application fact sheet with TIME and TCO card | You must decide whether to invest in, tolerate, migrate or eliminate an application, and when the saving can start | [Manage the Application Portfolio as an Investment](#application-portfolio) |
-| [Tool 3](#toolkit--tool-3): System-of-record matrix row | Two systems disagree about a value, or a migration is about to move authority | [Systems of Record and Authoritative Data Boundaries](#systems-of-record) |
+| [Tool 3](#toolkit--tool-3): System-of-record matrix row | Two systems disagree about a value, or a migration is about to move authority | [Systems of Record: Ending the Doppelgänger Record](#systems-of-record) |
 | [Tool 4](#toolkit--tool-4): Architecture decision record and waiver entry | A decision crosses a team, touches a significant account or needs an exception to a standard | [Architecture Governance That Speeds Decisions](#architecture-governance) |
-| [Tool 5](#toolkit--tool-5): Vendor selection scorecard and exit-plan card | You are choosing a finance platform, or renewing one the business depends on | [Build, Buy or Compose: Vendor Selection and Portfolio Rationalization](#build-versus-buy), [Vendor Strategy and Avoiding Excessive Dependency](#vendor-portfolio-strategy) |
-| [Tool 6](#toolkit--tool-6): Canonical financial event specification | A domain needs to publish a financial fact that other domains and the ledger will consume | [Canonical Events and Adapters for Loosely Coupled Financial Domains](#loosely-coupled-domains) |
-| [Tool 7](#toolkit--tool-7): Interface contract with control totals and idempotency | An interface will change a balance, feed a reconciliation or carry money | [Integration Architecture for Finance](#integration-architecture) |
-| [Tool 8](#toolkit--tool-8): Posting rule specification | An event must produce accounting entries, or an accounting policy changes | [Designing Custom Ledgers and Financial Event Processing](#designing-financial-ledgers) |
-| [Tool 9](#toolkit--tool-9): Reconciliation design card | A boundary needs proof that both sides agree, or a clearing account will not stay at zero | [Designing for Traceability, Reconciliation and Audit Across Boundaries](#traceability-and-reconciliation), [BlackLine: Close Automation, Reconciliation and Continuous Accounting](#blackline) |
-| [Tool 10](#toolkit--tool-10): Cut-over runbook and parallel-run exit criteria | A book of record, subledger or invoicing engine is about to change hands | [Modernization Patterns for Legacy Finance Systems](#modernization-patterns), [Modernizing Without Stopping the Close: An Incremental Migration](#incremental-modernization) |
-| [Tool 11](#toolkit--tool-11): Market and brand launch kit | A new market, entity or acquired brand must reach its first closed month | [Onboarding Brands, Entities and Markets as Configuration](#brands-entities-markets) |
-| [Tool 12](#toolkit--tool-12): Debt register entry and fitness function card | You must price technical debt for the CFO, or prove that money spent on it worked | [Technical Debt, Architectural Fitness and Modernization Priorities](#technical-debt-and-fitness) |
-| [Tool 13](#toolkit--tool-13): Financial incident playbook card | Records or money movements are wrong, missing, late or unauthorized | [Resilience, Observability, Security and Recovery for Finance Systems](#resilience-and-security) |
-| [Tool 14](#toolkit--tool-14): Agent control card | An AI agent, vendor-embedded or built in-house, is to take part in a financially relevant process | [AI, Automation and Agentic Finance Operations](#ai-in-finance) |
+| [Tool 5](#toolkit--tool-5): Vendor selection scorecard and exit-plan card | You are choosing a finance platform, or renewing one the business depends on | [Build, Buy or Compose: Choosing What to Own](#build-versus-buy), [Own Your Roadmap: Vendor Strategy Without Lock-In Panic](#vendor-portfolio-strategy) |
+| [Tool 6](#toolkit--tool-6): Canonical financial event specification | A domain needs to publish a financial fact that other domains and the ledger will consume | [Canonical Events: A Common Language for Money](#loosely-coupled-domains) |
+| [Tool 7](#toolkit--tool-7): Interface contract with control totals and idempotency | An interface will change a balance, feed a reconciliation or carry money | [Files, Events and APIs: How Finance Systems Talk](#integration-architecture) |
+| [Tool 8](#toolkit--tool-8): Posting rule specification | An event must produce accounting entries, or an accounting policy changes | [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers) |
+| [Tool 9](#toolkit--tool-9): Reconciliation design card | A boundary needs proof that both sides agree, or a clearing account will not stay at zero | [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation), [BlackLine: Matching, Certifying and Closing](#blackline) |
+| [Tool 10](#toolkit--tool-10): Cut-over runbook and parallel-run exit criteria | A book of record, subledger or invoicing engine is about to change hands | [Changing the Engine in Flight: Modernization Patterns for Finance](#modernization-patterns), [Modernizing Without Stopping the Close](#incremental-modernization) |
+| [Tool 11](#toolkit--tool-11): Market and brand launch kit | A new market, entity or acquired brand must reach its first closed month | [The Next Brand Should Be Boring: Onboarding as Configuration](#brands-entities-markets) |
+| [Tool 12](#toolkit--tool-12): Debt register entry and fitness function card | You must price technical debt for the CFO, or prove that money spent on it worked | [Technical Debt on the Balance Sheet](#technical-debt-and-fitness) |
+| [Tool 13](#toolkit--tool-13): Financial incident playbook card | Records or money movements are wrong, missing, late or unauthorized | [Recover Before the Close: Resilience and Security for Finance](#resilience-and-security) |
+| [Tool 14](#toolkit--tool-14): Agent control card | An AI agent, vendor-embedded or built in-house, is to take part in a financially relevant process | [Automate the Work, Not the Accountability](#ai-in-finance) |
 
-The guidance on writing principles that can fail ([Principles, Standards and Reference Architectures](#principles-standards-reference)) and the overlap register ([Preventing Redundant Capabilities and Unnecessary Coupling](#redundancy-and-coupling)) are not repeated here; Tools 4 and 1 link to them where they are needed.
+The guidance on writing principles that can fail ([Principles That Decide Things](#principles-standards-reference)) and the overlap register ([Duplicates and Dependencies: The Hidden Costs of a Grown Estate](#redundancy-and-coupling)) are not repeated here; Tools 4 and 1 link to them where they are needed.
 
 {id: toolkit--how-the-records-connect}
 ## How the Records Connect
@@ -116,7 +116,7 @@ flowchart LR
 - Scoring maturity from confidence instead of metrics; two scorers with no anchors produce two maps.
 - Reading the duplication count as a verdict or the cost column as a saving. Subledger Accounting appears twice at Northmere by design, with a dated plan; only undecided duplication goes to the steering committee.
 
-Learn more: [Map Capabilities Before Systems](#capability-mapping)
+Learn more: [Map What Finance Does Before What Runs It](#capability-mapping)
 
 {id: toolkit--tool-2}
 ## Tool 2: Application Fact Sheet with TIME and TCO Card
@@ -168,7 +168,7 @@ Decommission evidence:  usage, data, read path, access, interfaces,
 | TIME | **Migrate** to BlackLine; rationalization wave 0 |
 | TCO ($k/yr) | License 310, hosting 0, run 66, change 17, integration 30, audit and control 25 = **448**; 69% visible as license plus hosting |
 | Exit and saving | Exit 90 (move 22 accounts, re-evidence 2 controls); added BlackLine licenses 40; **net saving 408**; payback about 3 months; confidence High |
-| Outcome | Notice met; the two-year OneStream renewal dropped the module ([Vendor Strategy and Avoiding Excessive Dependency](#vendor-portfolio-strategy)) |
+| Outcome | Notice met; the two-year OneStream renewal dropped the module ([Own Your Roadmap: Vendor Strategy Without Lock-In Panic](#vendor-portfolio-strategy)) |
 
 **Common mistakes.**
 
@@ -213,7 +213,7 @@ Add the conflict rule the row relies on if it is not one of the seven standing r
 - Letting a sync job copy a field "from whichever was updated last", which is an authority decision made by a developer with no owner.
 - Leaving a transitional row without an end date. A transitional row past its end date should go to the design authority automatically, as a waiver does.
 
-Learn more: [Systems of Record and Authoritative Data Boundaries](#systems-of-record)
+Learn more: [Systems of Record: Ending the Doppelgänger Record](#systems-of-record)
 
 {id: toolkit--tool-4}
 ## Tool 4: Architecture Decision Record and Waiver Entry
@@ -320,7 +320,7 @@ Last test / next trigger: <date> / <renewal or event>
 - Setting weights after the demonstrations, when they drift toward the favorite.
 - Writing an exit plan as a list of alternatives and the sentence "data will be exported". Until an export has been loaded and reconciled somewhere you control, the plan is at best Estimated.
 
-Learn more: [Build, Buy or Compose: Vendor Selection and Portfolio Rationalization](#build-versus-buy), [Vendor Strategy and Avoiding Excessive Dependency](#vendor-portfolio-strategy)
+Learn more: [Build, Buy or Compose: Choosing What to Own](#build-versus-buy), [Own Your Roadmap: Vendor Strategy Without Lock-In Panic](#vendor-portfolio-strategy)
 
 {id: toolkit--tool-6}
 ## Tool 6: Canonical Financial Event Specification
@@ -355,7 +355,7 @@ Learn more: [Build, Buy or Compose: Vendor Selection and Portfolio Rationalizati
 | Business owner | Ingrid Solberg (Northmere Pay); model owner Lucía Romero; reviewer Leila Haddad's accounting policy team |
 | Producers | Northmere Pay's PSP adapters (Adyen, Stripe), derived from settlement reports |
 | Natural key | `psp` + `psp_reference` + `psp_journal_type` |
-| `event_id` | Derived from provider batch, journal type and line reference, never from the download (rule added after the October 2027 incident in [Resilience, Observability, Security and Recovery for Finance Systems](#resilience-and-security)) |
+| `event_id` | Derived from provider batch, journal type and line reference, never from the download (rule added after the October 2027 incident in [Recover Before the Close: Resilience and Security for Finance](#resilience-and-security)) |
 | Payload | `payment_id`, `psp_reference`, `merchant_account`, `batch_number`, `settlement_date`, `gross`, `fees_total`, `net`, `fee_event_ids`, `fx`, `source_document` (report, line, file hash) |
 | Split rule | `gross` − `fees_total` = `net`. Lisbon booking: 60000 − 174 = 59826 EUR minor units; the ACL attributes Adyen's €0.10 batch fee so the canonical fee is €1.74 |
 | Consumers | SFP subledger, BlackLine matching, FinDB |
@@ -367,7 +367,7 @@ Learn more: [Build, Buy or Compose: Vendor Selection and Portfolio Rationalizati
 - Changing a field's meaning within a major version, as Northmere's `cancelled` flag did during the April 2027 close, when SFP released €1.3M of traveler funds for 2,180 partial cancellations. A new meaning needs a new field or a new version.
 - Referencing data instead of carrying it ("look up the booking for the commission"); a replay in 2033 cannot call a service retired in 2029.
 
-Learn more: [Canonical Events and Adapters for Loosely Coupled Financial Domains](#loosely-coupled-domains)
+Learn more: [Canonical Events: A Common Language for Money](#loosely-coupled-domains)
 
 {id: toolkit--tool-7}
 ## Tool 7: Interface Contract with Control Totals and Idempotency
@@ -430,7 +430,7 @@ retirement: <planned replacement and date>
 - Generating the idempotency key per attempt. The retry gets a new key and posts again, which is the January 2027 double posting into S/4HANA in another form.
 - Trusting a control total computed by the job that wrote the file, which proves only that the job can add; or keeping keys for 24 hours on an interface that may be replayed at month-end.
 
-Learn more: [Integration Architecture for Finance](#integration-architecture)
+Learn more: [Files, Events and APIs: How Finance Systems Talk](#integration-architecture)
 
 {id: toolkit--tool-8}
 ## Tool 8: Posting Rule Specification
@@ -496,7 +496,7 @@ The companion rule `SFP-MERCH-BOOKING-CONFIRMED` maps `BookingConfirmed` to "no 
 - Computing every amount independently, so rounding leaves the entry out of balance; derive one line as the remainder.
 - Letting brand systems choose GL accounts. SFP's internal mapping table was the first boundary fix in 2027 for exactly this reason.
 
-Learn more: [Designing Custom Ledgers and Financial Event Processing](#designing-financial-ledgers)
+Learn more: [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers)
 
 {id: toolkit--tool-9}
 ## Tool 9: Reconciliation Design Card
@@ -542,7 +542,7 @@ Learn more: [Designing Custom Ledgers and Financial Event Processing](#designing
 - Reporting net suspense and clearing breaks without a cause code. €7 million of debits and €7 million of credits net to zero, and a break cleared without a cause is cleared again next month.
 - Widening tolerances to raise the match rate; only an upstream fix lowers recurrence.
 
-Learn more: [Designing for Traceability, Reconciliation and Audit Across Boundaries](#traceability-and-reconciliation), [BlackLine: Close Automation, Reconciliation and Continuous Accounting](#blackline)
+Learn more: [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation), [BlackLine: Matching, Certifying and Closing](#blackline)
 
 {id: toolkit--tool-10}
 ## Tool 10: Cut-Over Runbook and Parallel-Run Exit Criteria
@@ -602,7 +602,7 @@ T+8   Period locked in consolidation with opening balances in the new system
 - Measuring variance net, or comparing amounts without counts, so offsetting errors pass the gate.
 - Declaring rollback possible without naming the last moment it is. After the first payout run or the first issued invoice, rollback means correcting money or documents partners have already received.
 
-Learn more: [Modernization Patterns for Legacy Finance Systems](#modernization-patterns), [Modernizing Without Stopping the Close: An Incremental Migration](#incremental-modernization)
+Learn more: [Changing the Engine in Flight: Modernization Patterns for Finance](#modernization-patterns), [Modernizing Without Stopping the Close](#incremental-modernization)
 
 {id: toolkit--tool-11}
 ## Tool 11: Market and Brand Launch Kit
@@ -635,7 +635,7 @@ Close the kit with four counts: configuration items (and the share validated aut
 - Turning uncertainty into a fork. If the architecture can express an open question as a parameter, the plan does not have to wait for the answer.
 - Going live before settlement data matches automatically. Keystone's "ledger-ready before launch" standard exists because suspense from new providers is the commonest launch debt.
 
-Learn more: [Onboarding Brands, Entities and Markets as Configuration](#brands-entities-markets)
+Learn more: [The Next Brand Should Be Boring: Onboarding as Configuration](#brands-entities-markets)
 
 {id: toolkit--tool-12}
 ## Tool 12: Debt Register Entry and Fitness Function Card
@@ -677,7 +677,7 @@ Debt items read:   <register #>      Tranche gate: <reading required at which cl
 - Giving a fitness function to an owner who cannot move it; the metric becomes a report.
 - Writing thresholds without dates. "Improve the match rate" cannot be failed, so it governs nothing.
 
-Learn more: [Technical Debt, Architectural Fitness and Modernization Priorities](#technical-debt-and-fitness)
+Learn more: [Technical Debt on the Balance Sheet](#technical-debt-and-fitness)
 
 {id: toolkit--tool-13}
 ## Tool 13: Financial Incident Playbook Card
@@ -709,7 +709,7 @@ Restore from backup appears only where data is physically lost and no event log 
 - Pausing payouts reflexively. At Northmere that would have delayed about 300,000 partner payouts on a Friday for no protective benefit.
 - Closing the incident when the service recovers rather than when the reconciliation proves the books, and leaving notification to be reconstructed later.
 
-Learn more: [Resilience, Observability, Security and Recovery for Finance Systems](#resilience-and-security)
+Learn more: [Recover Before the Close: Resilience and Security for Finance](#resilience-and-security)
 
 {id: toolkit--tool-14}
 ## Tool 14: Agent Control Card
@@ -753,7 +753,7 @@ Learn more: [Resilience, Observability, Security and Recovery for Finance System
 - Omitting the completeness check, so nobody can show the agent looked at every item in the population it was meant to work.
 - Changing prompts, models or thresholds outside change management, which turns a tested control into an untested one overnight. And the trap beyond the card: an agent that makes exceptions cheap to work can make them permanent, so measure root-cause fixes alongside triage.
 
-Learn more: [AI, Automation and Agentic Finance Operations](#ai-in-finance)
+Learn more: [Automate the Work, Not the Accountability](#ai-in-finance)
 
 {id: toolkit--using-the-toolkit-over-time}
 ## Using the Toolkit Over Time
@@ -764,7 +764,7 @@ The templates earn their keep only when they are revisited. Three habits keep th
 - **Let incidents and audit findings add fields.** Clause 2.3 of Northmere's idempotent-posting standard, the deterministic `event_id` rule and the control impact field all came from something that went wrong. When a post-incident review finds a gap, the fix usually includes a new field or check in one of these templates.
 - **Keep the set small.** Every field should change a decision or preserve evidence. When a field is filled in by habit and read by nobody, remove it; when a review keeps asking a question no field answers, add it.
 
-[Evolving the Finance Estate Over a Decade](#long-term-evolution) explains how a recurring review of the estate's stressors keeps the whole toolkit in use; [Glossary](#glossary) defines the terms the templates use, and [Bibliography](#bibliography) lists the sources behind them.
+[Built to Be Replaced: Evolving the Finance Estate Over a Decade](#long-term-evolution) explains how a recurring review of the estate's stressors keeps the whole toolkit in use; [Glossary](#glossary) defines the terms the templates use, and [Bibliography](#bibliography) lists the sources behind them.
 
 {id: toolkit--sources-and-evidence}
 ## Sources and Evidence

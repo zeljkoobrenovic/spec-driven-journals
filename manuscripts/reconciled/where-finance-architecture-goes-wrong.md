@@ -1,7 +1,7 @@
 {id: where-finance-architecture-goes-wrong}
-# 2. Where Finance Architecture Goes Wrong
+# 2. Unreconciled: Fourteen Ways Finance Architecture Goes Wrong
 
-![Where Finance Architecture Goes Wrong — logo](enterprise-applications-and-financial-systems/posts/where-finance-architecture-goes-wrong/assets/images/where-finance-architecture-goes-wrong/logo.jpeg)
+![Unreconciled: Fourteen Ways Finance Architecture Goes Wrong — logo](enterprise-applications-and-financial-systems/posts/where-finance-architecture-goes-wrong/assets/images/where-finance-architecture-goes-wrong/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn fourteen named failure patterns that recur in enterprise finance estates, recognize their warning signs, understand the incentives that produce them and what they cost in control, money, speed and audit risk, and find the chapters whose designs prevent or repair each one.
 
@@ -15,7 +15,7 @@ A finance estate is the set of systems, data, integrations and controls through 
 
 Such an estate rarely fails dramatically. What fails is **coherence**: the estate slowly loses the ability to show that its records agree with each other and with the money. Unmatched items accumulate. Mappings drift. Every upgrade becomes a project. The close takes nine days because people spend six of them reconciling things the architecture should have kept consistent.
 
-This guide names the **fourteen failure patterns** I see most often. The names are shorthand for observable behavior, so a steering committee or design review can say "this is The Suspense Swamp" and move straight to the mechanism and the remedy. Each pattern is described the same way: a typical quote, what it looks like, why it happens, what it costs, a short illustration, the direction of the remedy, and the chapters that address it. The illustrations use **Northmere, the fictional group this book follows** (see [Meet Northmere: The Running Example](#meet-northmere)); they are composites, not accounts of any real company.
+This guide names the **fourteen failure patterns** I see most often. The names are shorthand for observable behavior, so a steering committee or design review can say "this is The Suspense Swamp" and move straight to the mechanism and the remedy. Each pattern is described the same way: a typical quote, what it looks like, why it happens, what it costs, a short illustration, the direction of the remedy, and the chapters that address it. The illustrations use **Northmere, the fictional group this book follows** (see [Meet Northmere: Five Brands, One Set of Books](#meet-northmere)); they are composites, not accounts of any real company.
 
 None of these patterns implies incompetence. **Most are the residue of reasonable decisions** taken under deadline, by teams accountable for one part of the estate. That is exactly why they need a name and an owner.
 
@@ -58,7 +58,7 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 
 **The remedy direction.** Recognize any system that holds balances as a subledger, give it ledger discipline (entries, not mutable balances), and reconcile it to the general ledger at a defined frequency with an owner. Then decide whether it should be a subledger at all.
 
-**Where this book helps:** [Why Enterprises Build Their Own Finance Platforms](#custom-finance-platforms) sets the boundary rules for what brand platforms may own; [Designing Custom Ledgers and Financial Event Processing](#designing-financial-ledgers) shows how to build a subledger that behaves like one; [Systems of Record and Authoritative Data Boundaries](#systems-of-record) decides who is authoritative for each balance; [Designing for Traceability, Reconciliation and Audit Across Boundaries](#traceability-and-reconciliation) designs the subledger-to-GL reconciliation; [Uber's Payments Platform: A Ledger at the Center of Money Movement](#case-uber-payments) shows a real payments ledger and where it must hand off to the book of record.
+**Where this book helps:** [When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms) sets the boundary rules for what brand platforms may own; [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers) shows how to build a subledger that behaves like one; [Systems of Record: Ending the Doppelgänger Record](#systems-of-record) decides who is authoritative for each balance; [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation) designs the subledger-to-GL reconciliation; [Uber's Payments Platform: A Ledger at the Center of Money Movement](#case-uber-payments) shows a real payments ledger and where it must hand off to the book of record.
 
 {id: where-finance-architecture-goes-wrong--the-suspense-swamp}
 ### The Suspense Swamp
@@ -79,7 +79,7 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 
 **The remedy direction.** Treat suspense as a measured output of the architecture, not an accounting chore: matching rules designed before a payment method launches, settlement files treated as contracts with completeness checks, aging limits with owners, and the suspense balance reported as an engineering metric.
 
-**Where this book helps:** [Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP](#payments-to-ledger) designs clearing accounts and three-way matching; [BlackLine: Close Automation, Reconciliation and Continuous Accounting](#blackline) covers high-volume transaction matching; [Integration Architecture for Finance](#integration-architecture) covers completeness controls and error handling; [Designing for Traceability, Reconciliation and Audit Across Boundaries](#traceability-and-reconciliation) provides the reconciliation catalog.
+**Where this book helps:** [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger) designs clearing accounts and three-way matching; [BlackLine: Matching, Certifying and Closing](#blackline) covers high-volume transaction matching; [Files, Events and APIs: How Finance Systems Talk](#integration-architecture) covers completeness controls and error handling; [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation) provides the reconciliation catalog.
 
 {id: where-finance-architecture-goes-wrong--the-doppelganger-record}
 ### The Doppelgänger Record
@@ -96,7 +96,7 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 
 **The remedy direction.** Decide, per master data domain, which system is the authority, which systems subscribe, and who is the steward; then enforce it through integration (subscribers cannot create, only consume) rather than through policy alone.
 
-**Where this book helps:** [Finance Data Architecture: Master Data, Systems of Record and Governance](#finance-data-architecture) covers master data domains, management styles and stewardship; [Systems of Record and Authoritative Data Boundaries](#systems-of-record) builds the authority matrix; [Many Entities, Currencies, Jurisdictions and Brands](#global-scale) covers the legal-entity model; [Onboarding Brands, Entities and Markets as Configuration](#brands-entities-markets) turns entity onboarding into configuration.
+**Where this book helps:** [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture) covers master data domains, management styles and stewardship; [Systems of Record: Ending the Doppelgänger Record](#systems-of-record) builds the authority matrix; [Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale) covers the legal-entity model; [The Next Brand Should Be Boring: Onboarding as Configuration](#brands-entities-markets) turns entity onboarding into configuration.
 
 {id: where-finance-architecture-goes-wrong--lost-in-aggregation}
 ### Lost in Aggregation
@@ -113,7 +113,7 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 
 **The remedy direction.** Design summarization and drill-back together: a stable summarization key, a persisted link from every summary line to its constituent detail, retention aligned to audit and statutory requirements, and a tested drill-back path.
 
-**Where this book helps:** [Designing Custom Ledgers and Financial Event Processing](#designing-financial-ledgers) covers summarization and drill-back; [Anatomy of a Financial Systems Landscape](#finance-landscape) explains the volume gradient that forces summarization; [From Customer Transaction to Financial Statement](#transaction-to-report) traces one transaction through every hop; [Designing for Traceability, Reconciliation and Audit Across Boundaries](#traceability-and-reconciliation) designs the identifiers and evidence.
+**Where this book helps:** [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers) covers summarization and drill-back; [Anatomy of a Finance Estate: Layers, Planes and Boundaries](#finance-landscape) explains the volume gradient that forces summarization; [The Life of a Booking: From €600 Payment to $97.38 of Revenue](#transaction-to-report) traces one transaction through every hop; [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation) designs the identifiers and evidence.
 
 {id: where-finance-architecture-goes-wrong--spreadsheet-glue}
 ### Spreadsheet Glue
@@ -130,7 +130,7 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 
 **The remedy direction.** Inventory EUCs, rate them by reporting risk, control the ones that must stay, and replace the key ones with governed configuration in the system that owns the mapping or hand-off.
 
-**Where this book helps:** [Controls, Auditability and Security by Design](#controls-and-auditability) covers EUC and report controls; [Finance Data Architecture: Master Data, Systems of Record and Governance](#finance-data-architecture) covers governed mappings and the group chart of accounts; [OneStream: Consolidation, Planning and Performance Management](#onestream) covers consolidation mapping; [Technical Debt, Architectural Fitness and Modernization Priorities](#technical-debt-and-fitness) puts EUCs on the debt register.
+**Where this book helps:** [Controls by Design, Not by Audit Season](#controls-and-auditability) covers EUC and report controls; [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture) covers governed mappings and the group chart of accounts; [OneStream: Consolidating Actuals, Planning the Future](#onestream) covers consolidation mapping; [Technical Debt on the Balance Sheet](#technical-debt-and-fitness) puts EUCs on the debt register.
 
 {id: where-finance-architecture-goes-wrong--customization-concrete}
 ### Customization Concrete
@@ -147,7 +147,7 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 
 **The remedy direction.** Make "standard first, extend outside the core" a mandatory standard with a waiver process, measure the custom object count and upgrade lead time as fitness indicators, and retire unused objects deliberately.
 
-**Where this book helps:** [SAP S/4HANA: The Enterprise Finance Core](#sap-s4hana) explains clean core and extensibility; [Principles, Standards and Reference Architectures](#principles-standards-reference) turns it into a principle and standard; [Technical Debt, Architectural Fitness and Modernization Priorities](#technical-debt-and-fitness) measures it; [Modernization Patterns for Legacy Finance Systems](#modernization-patterns) covers the paths out.
+**Where this book helps:** [SAP S/4HANA: One Journal, Clean Core](#sap-s4hana) explains clean core and extensibility; [Principles That Decide Things](#principles-standards-reference) turns it into a principle and standard; [Technical Debt on the Balance Sheet](#technical-debt-and-fitness) measures it; [Changing the Engine in Flight: Modernization Patterns for Finance](#modernization-patterns) covers the paths out.
 
 {id: where-finance-architecture-goes-wrong--the-swiss-army-erp}
 ### The Swiss-Army ERP
@@ -160,11 +160,11 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 
 **What it costs.** **Control**: operational-volume detail degrades the ledger and makes the book of record harder to read. **Cost**: customization to make the ERP do product work, feeding Customization Concrete. **Speed**: business-model innovation waits for the ERP's release cycle. **Audit risk**: indirect; overruns tend to defer control design.
 
-**An illustration.** In early 2027 a Keystone workshop at Northmere proposes moving Stayloft's merchant-model subledger, about 3 million lines a day, directly into the S/4HANA general ledger "so that there is one book". Dana Whitlock, the Chief Architect, asks the workshop to separate two goals: one book of record per entity (which Keystone needs), and one system processing every transaction (which it does not). The convergence decision is reframed as Central Finance versus an accounting-hub pattern, with high-volume detail staying in a subledger designed for it. In December 2027 the design authority chooses the accounting-hub pattern ([Multiple ERPs, One Finance Core: Coexistence and Convergence](#multiple-erps)).
+**An illustration.** In early 2027 a Keystone workshop at Northmere proposes moving Stayloft's merchant-model subledger, about 3 million lines a day, directly into the S/4HANA general ledger "so that there is one book". Dana Whitlock, the Chief Architect, asks the workshop to separate two goals: one book of record per entity (which Keystone needs), and one system processing every transaction (which it does not). The convergence decision is reframed as Central Finance versus an accounting-hub pattern, with high-volume detail staying in a subledger designed for it. In December 2027 the design authority chooses the accounting-hub pattern ([Converge or Coexist: Living with More Than One ERP](#multiple-erps)).
 
 **The remedy direction.** Use the ERP as the accounting core it is designed to be, and place high-volume, product-coupled processing in layers designed for volume (subledgers, billing and settlement services), integrated through summarized postings with drill-back.
 
-**Where this book helps:** [Anatomy of a Financial Systems Landscape](#finance-landscape) lays out the layers and the volume gradient; [Why Enterprises Build Their Own Finance Platforms](#custom-finance-platforms) sets the ERP boundary; [Multiple ERPs, One Finance Core: Coexistence and Convergence](#multiple-erps) compares convergence patterns; [SAP S/4HANA: The Enterprise Finance Core](#sap-s4hana) shows what the ERP core is designed to hold; [Build, Buy or Compose: Vendor Selection and Portfolio Rationalization](#build-versus-buy) gives the decision criteria.
+**Where this book helps:** [Anatomy of a Finance Estate: Layers, Planes and Boundaries](#finance-landscape) lays out the layers and the volume gradient; [When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms) sets the ERP boundary; [Converge or Coexist: Living with More Than One ERP](#multiple-erps) compares convergence patterns; [SAP S/4HANA: One Journal, Clean Core](#sap-s4hana) shows what the ERP core is designed to hold; [Build, Buy or Compose: Choosing What to Own](#build-versus-buy) gives the decision criteria.
 
 {id: where-finance-architecture-goes-wrong--point-to-point-spaghetti}
 ### Point-to-Point Spaghetti
@@ -181,7 +181,7 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 
 **The remedy direction.** Introduce canonical financial events and a small number of governed integration styles, with completeness and control totals as standard, and migrate interfaces when systems change rather than in a big rewrite.
 
-**Where this book helps:** [Integration Architecture for Finance](#integration-architecture) covers styles, idempotency and control totals; [Canonical Events and Adapters for Loosely Coupled Financial Domains](#loosely-coupled-domains) defines canonical events and adapters; [Preventing Redundant Capabilities and Unnecessary Coupling](#redundancy-and-coupling) classifies coupling; [Architecture Governance That Speeds Decisions](#architecture-governance) keeps new interfaces conformant; [Uber's Payments Platform: A Ledger at the Center of Money Movement](#case-uber-payments) shows a public example of one narrow waist between many businesses and many providers.
+**Where this book helps:** [Files, Events and APIs: How Finance Systems Talk](#integration-architecture) covers styles, idempotency and control totals; [Canonical Events: A Common Language for Money](#loosely-coupled-domains) defines canonical events and adapters; [Duplicates and Dependencies: The Hidden Costs of a Grown Estate](#redundancy-and-coupling) classifies coupling; [Architecture Governance That Speeds Decisions](#architecture-governance) keeps new interfaces conformant; [Uber's Payments Platform: A Ledger at the Center of Money Movement](#case-uber-payments) shows a public example of one narrow waist between many businesses and many providers.
 
 {id: where-finance-architecture-goes-wrong--capability-creep}
 ### Capability Creep
@@ -198,7 +198,7 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 
 **The remedy direction.** Map capabilities, not systems; assign one owning platform per capability per scope; record the rare legitimate duplications as explicit decisions with a review date; and use renewal dates to retire the rest.
 
-**Where this book helps:** [Map Capabilities Before Systems](#capability-mapping) builds the capability map; [Manage the Application Portfolio as an Investment](#application-portfolio) uses it to rationalize; [Preventing Redundant Capabilities and Unnecessary Coupling](#redundancy-and-coupling) runs the overlap register; [Vendor Strategy and Avoiding Excessive Dependency](#vendor-portfolio-strategy) uses contract timing as a lever.
+**Where this book helps:** [Map What Finance Does Before What Runs It](#capability-mapping) builds the capability map; [Manage the Application Portfolio as an Investment](#application-portfolio) uses it to rationalize; [Duplicates and Dependencies: The Hidden Costs of a Grown Estate](#redundancy-and-coupling) runs the overlap register; [Own Your Roadmap: Vendor Strategy Without Lock-In Panic](#vendor-portfolio-strategy) uses contract timing as a lever.
 
 {id: where-finance-architecture-goes-wrong--the-permanent-exception}
 ### The Permanent Exception
@@ -215,7 +215,7 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 
 **The remedy direction.** Grant exceptions through a recorded decision with a reason, an owner and an expiry date; design shared capabilities with configuration points for the variations that are real; and fund the central capability well enough that the exception is not the faster path.
 
-**Where this book helps:** [Onboarding Brands, Entities and Markets as Configuration](#brands-entities-markets) turns brand and market variation into configuration; [Architecture Governance That Speeds Decisions](#architecture-governance) covers waivers with expiry; [Many Entities, Currencies, Jurisdictions and Brands](#global-scale) explains which variation is legally required; [Why Enterprises Build Their Own Finance Platforms](#custom-finance-platforms) judges when a fork is legitimate; [Uber's Payments Platform: A Ledger at the Center of Money Movement](#case-uber-payments) shows a real platform that turned each new line of business into configuration.
+**Where this book helps:** [The Next Brand Should Be Boring: Onboarding as Configuration](#brands-entities-markets) turns brand and market variation into configuration; [Architecture Governance That Speeds Decisions](#architecture-governance) covers waivers with expiry; [Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale) explains which variation is legally required; [When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms) judges when a fork is legitimate; [Uber's Payments Platform: A Ledger at the Center of Money Movement](#case-uber-payments) shows a real platform that turned each new line of business into configuration.
 
 {id: where-finance-architecture-goes-wrong--big-bang-bravado}
 ### Big-Bang Bravado
@@ -232,7 +232,7 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 
 **The remedy direction.** Plan migrations as a sequence of reversible steps, cut over at period boundaries away from quarter- and year-end, run old and new in parallel with reconciliations as gates, and keep a tested rollback for each step.
 
-**Where this book helps:** [Modernization Patterns for Legacy Finance Systems](#modernization-patterns) catalogs strangler, parallel run and cut-over patterns; [Modernizing Without Stopping the Close: An Incremental Migration](#incremental-modernization) works through a migration step by step; [Target State, Transition States and the Roadmap](#target-and-transition-states) defines stable intermediate states; [Leading an ERP Modernization and Finance Transformation](#finance-transformation) covers program design.
+**Where this book helps:** [Changing the Engine in Flight: Modernization Patterns for Finance](#modernization-patterns) catalogs strangler, parallel run and cut-over patterns; [Modernizing Without Stopping the Close](#incremental-modernization) works through a migration step by step; [The Middle Matters: Transition States and the Roadmap](#target-and-transition-states) defines stable intermediate states; [The Technology Is the Easy Part: Leading a Finance Transformation](#finance-transformation) covers program design.
 
 {id: where-finance-architecture-goes-wrong--the-borrowed-roadmap}
 ### The Borrowed Roadmap
@@ -245,11 +245,11 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 
 **What it costs.** **Control**: indirect; vendor-default control designs may not fit the enterprise's risks. **Cost**: lost negotiating power, and unused bundles that feed Capability Creep. **Speed**: the enterprise moves at the vendor's pace. **Audit risk**: low directly; the real risk is a concentration nobody chose.
 
-**An illustration.** In 2027 Northmere must decide how to converge its brand ledgers: SAP Central Finance or an accounting-hub pattern. The SAP account team presents Central Finance alongside an expanded RISE with SAP renewal, with a discount that expires at quarter-end. Dana separates the two: the architecture decision is scheduled for Q4 2027 on its own criteria (volume, drill-back, coexistence with Fusion and Workday), and the commercial negotiation follows it rather than leading it. The decision, taken on 8 December 2027, adopts the accounting-hub pattern and rejects Central Finance; the RISE renewal is negotiated afterward ([Vendor Strategy and Avoiding Excessive Dependency](#vendor-portfolio-strategy)).
+**An illustration.** In 2027 Northmere must decide how to converge its brand ledgers: SAP Central Finance or an accounting-hub pattern. The SAP account team presents Central Finance alongside an expanded RISE with SAP renewal, with a discount that expires at quarter-end. Dana separates the two: the architecture decision is scheduled for Q4 2027 on its own criteria (volume, drill-back, coexistence with Fusion and Workday), and the commercial negotiation follows it rather than leading it. The decision, taken on 8 December 2027, adopts the accounting-hub pattern and rejects Central Finance; the RISE renewal is negotiated afterward ([Own Your Roadmap: Vendor Strategy Without Lock-In Panic](#vendor-portfolio-strategy)).
 
 **The remedy direction.** Hold an enterprise-owned target state, tier vendors by strategic importance, maintain exit plans for critical ones, and sequence decisions so that architecture precedes commercial commitment.
 
-**Where this book helps:** [Vendor Strategy and Avoiding Excessive Dependency](#vendor-portfolio-strategy) covers tiering, exit plans and contract levers; [Build, Buy or Compose: Vendor Selection and Portfolio Rationalization](#build-versus-buy) covers the selection process; [Target State, Transition States and the Roadmap](#target-and-transition-states) provides the independent target; [Evolving the Finance Estate Over a Decade](#long-term-evolution) treats vendor change as a stressor to design for.
+**Where this book helps:** [Own Your Roadmap: Vendor Strategy Without Lock-In Panic](#vendor-portfolio-strategy) covers tiering, exit plans and contract levers; [Build, Buy or Compose: Choosing What to Own](#build-versus-buy) covers the selection process; [The Middle Matters: Transition States and the Roadmap](#target-and-transition-states) provides the independent target; [Built to Be Replaced: Evolving the Finance Estate Over a Decade](#long-term-evolution) treats vendor change as a stressor to design for.
 
 {id: where-finance-architecture-goes-wrong--audit-archaeology}
 ### Audit Archaeology
@@ -266,7 +266,7 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 
 **The remedy direction.** Treat control requirements as architecture requirements: involve controls specialists at design, build evidence capture into pipelines and platforms ("evidence by design"), and review the control impact of every change to a finance-relevant system.
 
-**Where this book helps:** [Controls, Auditability and Security by Design](#controls-and-auditability) covers ICFR, IT general controls and evidence by design; [Designing for Traceability, Reconciliation and Audit Across Boundaries](#traceability-and-reconciliation) designs the auditor's walkthrough; [Resilience, Observability, Security and Recovery for Finance Systems](#resilience-and-security) covers access and incident handling; [Designing Custom Ledgers and Financial Event Processing](#designing-financial-ledgers) builds immutability and audit trails into custom ledgers.
+**Where this book helps:** [Controls by Design, Not by Audit Season](#controls-and-auditability) covers ICFR, IT general controls and evidence by design; [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation) designs the auditor's walkthrough; [Recover Before the Close: Resilience and Security for Finance](#resilience-and-security) covers access and incident handling; [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers) builds immutability and audit trails into custom ledgers.
 
 {id: where-finance-architecture-goes-wrong--nobody-s-bot}
 ### Nobody's Bot
@@ -283,7 +283,7 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 
 **The remedy direction.** Register every automated actor that touches financial data, give each an owner and a distinct identity, put its logic under change control, log its decisions, and define where a human approves.
 
-**Where this book helps:** [AI, Automation and Agentic Finance Operations](#ai-in-finance) covers agentic workflow controls; [Controls, Auditability and Security by Design](#controls-and-auditability) covers automated controls and access; [Organizing Architecture Ownership Across Finance, Engineering, Security and Data](#organizing-for-architecture) assigns ownership; [Architecture Governance That Speeds Decisions](#architecture-governance) brings automation into review.
+**Where this book helps:** [Automate the Work, Not the Accountability](#ai-in-finance) covers agentic workflow controls; [Controls by Design, Not by Audit Season](#controls-and-auditability) covers automated controls and access; [Who Owns What: Organizing Architecture Across Finance and Technology](#organizing-for-architecture) assigns ownership; [Architecture Governance That Speeds Decisions](#architecture-governance) brings automation into review.
 
 {id: where-finance-architecture-goes-wrong--how-the-patterns-reinforce-each-other}
 ## How the Patterns Reinforce Each Other
@@ -358,7 +358,7 @@ Three habits keep the names useful rather than accusatory: **name the mechanism,
 
 Some duplication, customization and exception is legitimate. A second payment provider is a resilience choice, not Capability Creep; a market-specific tax process required by law is not The Permanent Exception. The test is whether the variation was **decided, owned and reviewed**, or simply accumulated.
 
-The rest of the book works through the remedies. Before that, meet the group whose estate shows every one of these patterns in 2027, and the program that sets out to fix them: [Meet Northmere: The Running Example](#meet-northmere).
+The rest of the book works through the remedies. Before that, meet the group whose estate shows every one of these patterns in 2027, and the program that sets out to fix them: [Meet Northmere: Five Brands, One Set of Books](#meet-northmere).
 
 {id: where-finance-architecture-goes-wrong--sources-and-evidence}
 ## Sources and Evidence

@@ -1,7 +1,7 @@
 {id: principles-standards-reference}
-# 38. Principles, Standards and Reference Architectures
+# 38. Principles That Decide Things
 
-![Principles, Standards and Reference Architectures — logo](enterprise-applications-and-financial-systems/posts/35-principles-standards-reference/assets/images/35-principles-standards-reference/logo.jpeg)
+![Principles That Decide Things — logo](enterprise-applications-and-financial-systems/posts/35-principles-standards-reference/assets/images/35-principles-standards-reference/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn to write architecture principles that can be tested, separate principles from standards, guidelines, patterns and reference architectures, work through eleven finance-architecture principles and three reference architectures (payments-to-ledger, subledger-to-GL with drill-back, close orchestration and evidence), and see how golden paths turn them into something a brand team can use.
 
@@ -25,12 +25,12 @@ Most enterprises have architecture principles. They sit on a wiki page, eight to
 
 Finance is where untestable principles cost the most. The defects they fail to prevent are not slow pages; they are a balance nobody can trace, a clearing account that grows every month, or a mapping row that sends $41 million of revenue to the wrong line. They surface at period end, under audit, when fixing them costs the most.
 
-This chapter treats principles, standards and reference architectures as one chain: **intent becomes principles, the load-bearing principles become standards, standards are made concrete in reference architectures, and reference architectures are delivered as golden paths**. Each link carries a test. The chain is how a Chief Architect with narrow decision rights ([The Chief Architect's Job: Coherence Across a Finance Estate](#chief-architect-role)) shapes an estate whose engineers mostly report elsewhere.
+This chapter treats principles, standards and reference architectures as one chain: **intent becomes principles, the load-bearing principles become standards, standards are made concrete in reference architectures, and reference architectures are delivered as golden paths**. Each link carries a test. The chain is how a Chief Architect with narrow decision rights ([The Chief Architect's Job: Making Many Systems Tell One Story](#chief-architect-role)) shapes an estate whose engineers mostly report elsewhere.
 
 {id: principles-standards-reference--setting-the-scene-a-principle-that-did-not-stop-41-million}
 ## Setting the Scene: A Principle That Did Not Stop $41 Million
 
-Northmere, the fictional multi-brand digital commerce group this book follows, closed its first quarter of 2027 in April. On working day 7, a group reporting analyst noticed that "Other revenue" was $41 million higher than forecast. The cause, described in [Finance Data Architecture: Master Data, Systems of Record and Governance](#finance-data-architecture), was ordinary. Tablekin's finance systems team had added a ledger account for usage revenue in Workday. No mapping row existed for it in the spreadsheets that fed OneStream, and a catch-all rule put the whole balance in "Other revenue". Nobody had done anything forbidden, because nothing was forbidden.
+Northmere, the fictional multi-brand digital commerce group this book follows, closed its first quarter of 2027 in April. On working day 7, a group reporting analyst noticed that "Other revenue" was $41 million higher than forecast. The cause, described in [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture), was ordinary. Tablekin's finance systems team had added a ledger account for usage revenue in Workday. No mapping row existed for it in the spreadsheets that fed OneStream, and a catch-all rule put the whole balance in "Other revenue". Nobody had done anything forbidden, because nothing was forbidden.
 
 Dana Whitlock, Northmere's Chief Architect for enterprise applications and financial systems, reread the draft principles her team had circulated in December 2026. Principle 4 said: "Financial data is accurate, complete and consistent across systems." Every system involved would have claimed to comply. Workday was accurate; the mapping spreadsheet was internally consistent; OneStream consolidated what it was given. The defect lived at a **boundary**, and the principle said nothing about boundaries, nothing about who was authoritative for the mapping, and nothing about what should happen to an account with no mapping.
 
@@ -98,7 +98,7 @@ Each part of the anatomy has a job, and a weak part is easy to spot.
 
 Three drafting rules follow. **Name no products in the statement**: "clean core" is a principle; "use SAP BTP" is a decision that may change. **Use verbs a design can fail**: "proves", "derives", "owns", "carries", not "supports", "considers" or "enables". **Write the rationale for the CFO**: if the reason cannot be stated in terms of the close, the audit, cost or risk to the numbers, the principle is probably engineering taste rather than finance architecture.
 
-Principles should not come from a workshop with a blank flipchart. Andrew Harmel-Law lists **team-sourced architectural principles** among the four supporting elements of the advice process, alongside decision records, an advisory forum and a technology radar ([Harmel-Law, 2021](https://martinfowler.com/articles/scaling-architecture-conversationally.html)). Northmere's came from three places: the 11 cross-team decisions Dana's team reconstructed in her first 90 days (three of them reopened), the FY2026 significant deficiency on the SFP payout engine, and the failure patterns that recurred in the capability-overlap and portfolio work ([Map Capabilities Before Systems](#capability-mapping), [Manage the Application Portfolio as an Investment](#application-portfolio)). Each principle generalizes a decision Northmere wished it had made earlier.
+Principles should not come from a workshop with a blank flipchart. Andrew Harmel-Law lists **team-sourced architectural principles** among the four supporting elements of the advice process, alongside decision records, an advisory forum and a technology radar ([Harmel-Law, 2021](https://martinfowler.com/articles/scaling-architecture-conversationally.html)). Northmere's came from three places: the 11 cross-team decisions Dana's team reconstructed in her first 90 days (three of them reopened), the FY2026 significant deficiency on the SFP payout engine, and the failure patterns that recurred in the capability-overlap and portfolio work ([Map What Finance Does Before What Runs It](#capability-mapping), [Manage the Application Portfolio as an Investment](#application-portfolio)). Each principle generalizes a decision Northmere wished it had made earlier.
 
 {id: principles-standards-reference--eleven-principles-for-a-finance-estate}
 ## Eleven Principles for a Finance Estate
@@ -112,7 +112,7 @@ These are the principles Northmere adopted in May 2027. I would propose them, ad
 
 - **Rationale.** Statutory accounts, tax returns and consolidated statements are signed per entity. If two systems can claim to hold an entity's books, "which number is right?" has no answer, only a negotiation.
 - **Implications.** An acquired brand's ERP stays the book of record for its own entities only until a dated decision says otherwise. A custom platform that holds balances (SFP's merchant subledger, the traveler funds ledger) is declared a subledger with named control accounts.
-- **Conformance test.** The entity register names one book-of-record system per entity and basis for all 71 legal entities; every other system holding balances appears in the reconciliation catalog ([Designing for Traceability, Reconciliation and Audit Across Boundaries](#traceability-and-reconciliation)).
+- **Conformance test.** The entity register names one book-of-record system per entity and basis for all 71 legal entities; every other system holding balances appears in the reconciliation catalog ([Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation)).
 - **Counter-example.** A brand platform producing "P&L by property" from its own balances that nobody ties to the GL (**The Shadow Ledger**).
 
 {id: principles-standards-reference--p2-post-facts-derive-accounts}
@@ -121,7 +121,7 @@ These are the principles Northmere adopted in May 2027. I would propose them, ad
 **Statement:** Operational systems publish financial facts as events; only the accounting engine derives accounts, amounts and periods from them, under versioned, approved posting rules.
 
 - **Rationale.** When brand systems choose GL accounts, accounting policy is scattered across repositories and changed through engineering releases, and nobody can show an auditor which rule produced an entry. Fowler's **Posting Rule** pattern states the alternative: the rule, not the event source, decides the entries ([Fowler, Accounting Patterns](https://martinfowler.com/apsupp/accounting.pdf)).
-- **Implications.** Brand platforms stop holding GL mapping tables. Posting rules live in a rule store with maker-checker approval by accounting ([Designing Custom Ledgers and Financial Event Processing](#designing-financial-ledgers)). Corrections are new entries (reversal and re-post), never edits.
+- **Implications.** Brand platforms stop holding GL mapping tables. Posting rules live in a rule store with maker-checker approval by accounting ([Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers)). Corrections are new entries (reversal and re-post), never edits.
 - **Conformance test.** No registered event schema contains a GL account, cost center or posting key; every journal line carries the `rule_id` and `rule_version` that produced it.
 - **Counter-example.** SFP in 2027, which still chose its own GL accounts from an internal table maintained by Stayloft finance.
 
@@ -150,7 +150,7 @@ These are the principles Northmere adopted in May 2027. I would propose them, ad
 
 **Statement:** For every shared data attribute and lifecycle stage, exactly one system is authoritative; every other system holding it is a subscriber that cannot change it.
 
-- **Rationale.** **The Doppelgänger Record** causes the costliest data defects in finance: bank details changed in two places, 12,400 Stayloft partners linked to two FI-CA business partners. Authority per attribute, not per object, lets a booking be authoritative in the brand platform, the receivable in the subledger and the balance in the GL ([Systems of Record and Authoritative Data Boundaries](#systems-of-record)).
+- **Rationale.** **The Doppelgänger Record** causes the costliest data defects in finance: bank details changed in two places, 12,400 Stayloft partners linked to two FI-CA business partners. Authority per attribute, not per object, lets a booking be authoritative in the brand platform, the receivable in the subledger and the balance in the GL ([Systems of Record: Ending the Doppelgänger Record](#systems-of-record)).
 - **Implications.** Subscribers get no write path for mastered attributes. Mappings are attributes too: OneStream mapping rules have an author (the source ledger's team) and an approver (group reporting).
 - **Conformance test.** Every attribute in the system-of-record matrix names one authority, and access reviews find no user or service with write access to it elsewhere.
 - **Counter-example.** Supplier bank details editable in both Coupa and the ERP.
@@ -171,7 +171,7 @@ These are the principles Northmere adopted in May 2027. I would propose them, ad
 **Statement:** Differences between brands, entities, markets and business models are expressed first as configuration of a shared capability, then as code behind a published extension point, and only as a fork by recorded decision with a retirement date.
 
 - **Rationale.** Three billing approaches and two payout engines are the residue of forks that were each locally reasonable (**The Permanent Exception**).
-- **Implications.** Shared capabilities need configuration models rich enough to carry real differences ([Onboarding Brands, Entities and Markets as Configuration](#brands-entities-markets)); configuration that changes money is itself versioned and approved.
+- **Implications.** Shared capabilities need configuration models rich enough to carry real differences ([The Next Brand Should Be Boring: Onboarding as Configuration](#brands-entities-markets)); configuration that changes money is itself versioned and approved.
 - **Conformance test.** Every design introducing brand- or market-specific code names the configuration option it rejected and why; every fork in the portfolio has a decision record and a retirement date.
 - **Counter-example.** A copy of the posting pipeline "temporarily" maintained for one brand.
 
@@ -180,7 +180,7 @@ These are the principles Northmere adopted in May 2027. I would propose them, ad
 
 **Statement:** Every finance-relevant system is designed with its controls, segregation of duties and evidence as requirements, and produces its evidence automatically as a by-product of operation.
 
-- **Rationale.** The FY2026 significant deficiency on SFP's payout engine (14 engineers with standing production access; 9 of 23 rule changes without documented approval) cost a remediation program that a design-time rule store and pipeline would have avoided ([Controls, Auditability and Security by Design](#controls-and-auditability)). Retrofits happen under audit pressure (**Audit Archaeology**).
+- **Rationale.** The FY2026 significant deficiency on SFP's payout engine (14 engineers with standing production access; 9 of 23 rule changes without documented approval) cost a remediation program that a design-time rule store and pipeline would have avoided ([Controls by Design, Not by Audit Season](#controls-and-auditability)). Retrofits happen under audit pressure (**Audit Archaeology**).
 - **Implications.** Every decision record for a finance-relevant system carries a control impact assessment signed by Internal Controls; evidence goes to the central evidence store, tagged by control.
 - **Conformance test.** Role designs pass a segregation-of-duties conflict check before go-live; evidence for each key control can be produced by query, without assembly.
 - **Counter-example.** A pipeline that lets the author of a change approve it.
@@ -201,7 +201,7 @@ These are the principles Northmere adopted in May 2027. I would propose them, ad
 **Statement:** Every bot, script, scheduled job, integration identity and AI agent that reads, proposes, posts, approves or changes financial data has a named owner, scoped permissions and a log an auditor can rely on.
 
 - **Rationale.** Automation moves work to identities nobody reviews (**Nobody's Bot**).
-- **Implications.** Technical identities are in the access review. AI agents follow "the agent may propose; a controlled process disposes", with an agent control card as conformance artifact ([AI, Automation and Agentic Finance Operations](#ai-in-finance)).
+- **Implications.** Technical identities are in the access review. AI agents follow "the agent may propose; a controlled process disposes", with an agent control card as conformance artifact ([Automate the Work, Not the Accountability](#ai-in-finance)).
 - **Conformance test.** No technical identity with financial write rights lacks a named owner; every agent in a financially relevant process has an approved control card.
 - **Counter-example.** A robotic process automation (RPA) bot posting accruals under a former employee's credentials.
 
@@ -211,7 +211,7 @@ These are the principles Northmere adopted in May 2027. I would propose them, ad
 **Statement:** Where options exist, choose designs that can be reversed at known cost; decisions that cannot (book-of-record changes, vendor commitments, chart-of-accounts structure, data deletion) go through the design authority with options, an exit path and a review date.
 
 - **Rationale.** Finance decisions are often reversible only at a period boundary, after an audit, or never. Treating every decision as heavy makes architecture a bottleneck; treating every decision as light makes it reckless. The principle sorts them.
-- **Implications.** Integration contracts stay independent of tools (normalized settlement records, control totals, status signals), so replacing a vendor is a migration, not a rebuild ([Vendor Strategy and Avoiding Excessive Dependency](#vendor-portfolio-strategy)).
+- **Implications.** Integration contracts stay independent of tools (normalized settlement records, control totals, status signals), so replacing a vendor is a migration, not a rebuild ([Own Your Roadmap: Vendor Strategy Without Lock-In Panic](#vendor-portfolio-strategy)).
 - **Conformance test.** Decisions classified as hard to reverse have a record with at least two options, an exit path and a review date.
 - **Counter-example.** A year-end ledger switch with no parallel run (**Big-Bang Bravado**).
 
@@ -222,7 +222,7 @@ Northmere deliberately left out "API first", "cloud first" and "reuse before buy
 
 A principle is promoted to a mandatory standard when three conditions hold. **The harm of non-compliance falls on others**: the group's books, its auditors or other teams. **Compliance can be checked**, ideally automatically. **A reference implementation exists or is funded**, so the standard does not impose an unfunded cost on teams outside the Chief Architect's line.
 
-Dana's five proposed standards came into force in Q1 2027, effective for new builds and changed interfaces from 1 April 2027, with dated transition plans for existing systems. STD-FIN-01 and STD-FIN-02 were declared on that date but enforced from 1 July 2027, when the schema registry went live ([Canonical Events and Adapters for Loosely Coupled Financial Domains](#loosely-coupled-domains)). The agent control card became the sixth in Q3 2027. How each standard is approved, waived and checked is described in [Architecture Governance That Speeds Decisions](#architecture-governance).
+Dana's five proposed standards came into force in Q1 2027, effective for new builds and changed interfaces from 1 April 2027, with dated transition plans for existing systems. STD-FIN-01 and STD-FIN-02 were declared on that date but enforced from 1 July 2027, when the schema registry went live ([Canonical Events: A Common Language for Money](#loosely-coupled-domains)). The agent control card became the sixth in Q3 2027. How each standard is approved, waived and checked is described in [Architecture Governance That Speeds Decisions](#architecture-governance).
 
 | Standard | Principles | Core requirement | Conformance check | Reference implementation |
 | --- | --- | --- | --- | --- |
@@ -231,7 +231,7 @@ Dana's five proposed standards came into force in Q1 2027, effective for new bui
 | **STD-FIN-03 Subledger-to-GL reconciliation** | P1, P3, P4 | Every subledger reconciles daily to its GL control accounts by entity, account and currency, with drill-back keys and control totals | Daily tie-out published as evidence; difference zero or explained by batches in flight | Posting pipeline template |
 | **STD-FIN-04 Clean-core ERP extension** | P6, P7 | No new modifications or direct table writes in vendor ERPs | ATC clean-core checks in the transport pipeline; custom-object inventory for SaaS ERPs | Side-by-side extension guide (Sven Aalto's SAP team) |
 | **STD-FIN-05 Segregation of duties by design** | P8, P10 | Roles, pipelines and rule stores enforce maker-checker and no standing production access | Role-conflict check before go-live; pipeline policy check; break-glass reviewed within one working day | SFP remediation design |
-| **STD-FIN-06 Agent control card** (Q3 2027) | P10, P8 | No AI agent in a financially relevant process without an approved control card; agents may not post, approve, pay or change master data | Card approved by control owner, system owner and Internal Controls | Pilot 1 card ([AI, Automation and Agentic Finance Operations](#ai-in-finance)) |
+| **STD-FIN-06 Agent control card** (Q3 2027) | P10, P8 | No AI agent in a financially relevant process without an approved control card; agents may not post, approve, pay or change master data | Card approved by control owner, system owner and Internal Controls | Pilot 1 card ([Automate the Work, Not the Accountability](#ai-in-finance)) |
 
 Each standard is a short document with numbered "must" clauses. STD-FIN-02 fits on a page:
 
@@ -254,12 +254,12 @@ Waivers: dated expiry; compensating control required for systems in ICFR scope.
 
 The format does what the December principles could not: a team knows what to build, a pipeline knows what to check, an auditor knows what evidence to ask for. Clause 2.3 earns its place from a common payments failure: a provider re-sends a corrected settlement line under the original reference, and a receiver that checks only the key silently drops the correction. Standards should earn their clauses from incidents.
 
-Note what was *not* promoted. P9 is enforced through STD-FIN-01's envelope rather than standing alone. P11 is a governance rule, not a design rule. P7 is judged in review, because no pipeline can tell whether configuration was "sufficient". The list stays short because, as [The Chief Architect's Job: Coherence Across a Finance Estate](#chief-architect-role) argues, a long mandatory list is either unenforced or a centralized operating model in disguise.
+Note what was *not* promoted. P9 is enforced through STD-FIN-01's envelope rather than standing alone. P11 is a governance rule, not a design rule. P7 is judged in review, because no pipeline can tell whether configuration was "sufficient". The list stays short because, as [The Chief Architect's Job: Making Many Systems Tell One Story](#chief-architect-role) argues, a long mandatory list is either unenforced or a centralized operating model in disguise.
 
 {id: principles-standards-reference--reference-architecture-1-payments-to-ledger}
 ## Reference Architecture 1: Payments-to-Ledger
 
-Every brand that takes payments faces the same question: how do provider events and settlement reports become accounting entries and reconciled cash? [Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP](#payments-to-ledger) owns the clearing account design, the three-way match and the €14 million suspense remediation; this section gives the reusable shape and its checks.
+Every brand that takes payments faces the same question: how do provider events and settlement reports become accounting entries and reconciled cash? [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger) owns the clearing account design, the three-way match and the €14 million suspense remediation; this section gives the reusable shape and its checks.
 
 ```mermaid
 flowchart LR
@@ -287,9 +287,9 @@ flowchart LR
 | Three-way matching | Match order to PSP settlement to bank credit within tolerances | Post the accounting entry itself |
 | Exception queue | Hold each unmatched item with owner, reason code and age | Auto-clear without a tested rule |
 
-**Interfaces.** The canonical events are owned by [Canonical Events and Adapters for Loosely Coupled Financial Domains](#loosely-coupled-domains). Normalized settlement lines are a contract keyed by booking reference, carrying the provider's own reference and batch. Bank statements arrive through treasury as camt.053 or MT940.
+**Interfaces.** The canonical events are owned by [Canonical Events: A Common Language for Money](#loosely-coupled-domains). Normalized settlement lines are a contract keyed by booking reference, carrying the provider's own reference and batch. Bank statements arrive through treasury as camt.053 or MT940.
 
-**Worked trace.** The Lisbon booking (€600.00, captured through Adyen on 12 March 2027) is booked into Adyen settlement batch 1047 on 14 March (the batch's bank credit to Northmere Payments B.V. follows on 16 March): normalization emits `PSPFeeCharged` for 174 and `PaymentSettled` for 59826 euro cents, both with the booking reference as `correlation_id`. Under the rule set in [Designing Custom Ledgers and Financial Event Processing](#designing-financial-ledgers), "PSP clearing – Adyen" was debited €600.00 at capture and is now credited €1.74 (to Payment processing fees) and €598.26 (to Bank – safeguarding). Matching ties the normalized line to SFP's expected receipt and, through batch 1047, to the 16 March batch credit on the bank statement. The clearing account is back to zero for this booking, the only state a clearing account should converge to.
+**Worked trace.** The Lisbon booking (€600.00, captured through Adyen on 12 March 2027) is booked into Adyen settlement batch 1047 on 14 March (the batch's bank credit to Northmere Payments B.V. follows on 16 March): normalization emits `PSPFeeCharged` for 174 and `PaymentSettled` for 59826 euro cents, both with the booking reference as `correlation_id`. Under the rule set in [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers), "PSP clearing – Adyen" was debited €600.00 at capture and is now credited €1.74 (to Payment processing fees) and €598.26 (to Bank – safeguarding). Matching ties the normalized line to SFP's expected receipt and, through batch 1047, to the 16 March batch credit on the bank statement. The clearing account is back to zero for this booking, the only state a clearing account should converge to.
 
 **Variation points.**
 
@@ -306,7 +306,7 @@ flowchart LR
 {id: principles-standards-reference--reference-architecture-2-subledger-to-gl-with-drill-back}
 ## Reference Architecture 2: Subledger-to-GL With Drill-Back
 
-The second reference architecture applies wherever a high-volume subledger, custom or vendor, feeds a general ledger. [Designing Custom Ledgers and Financial Event Processing](#designing-financial-ledgers) builds SFP's version component by component; this section abstracts it into a contract that any subledger must meet, whether SFP, SAP FI-CA, a vendor accounting engine or the Northmere Ads billing service.
+The second reference architecture applies wherever a high-volume subledger, custom or vendor, feeds a general ledger. [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers) builds SFP's version component by component; this section abstracts it into a contract that any subledger must meet, whether SFP, SAP FI-CA, a vendor accounting engine or the Northmere Ads billing service.
 
 ```mermaid
 sequenceDiagram
@@ -348,7 +348,7 @@ sequenceDiagram
 {id: principles-standards-reference--reference-architecture-3-close-orchestration-and-evidence}
 ## Reference Architecture 3: Close Orchestration and Evidence
 
-The third reference architecture governs the period end. Its components are mostly signals and gates rather than data pipelines, which makes it the least obvious to engineers and the most valuable to the controller, because the critical path of the close runs through it. [BlackLine: Close Automation, Reconciliation and Continuous Accounting](#blackline) covers the close platform, [OneStream: Consolidation, Planning and Performance Management](#onestream) consolidation, and [The End-to-End Finance Processes](#finance-processes) record-to-report as a process.
+The third reference architecture governs the period end. Its components are mostly signals and gates rather than data pipelines, which makes it the least obvious to engineers and the most valuable to the controller, because the critical path of the close runs through it. [BlackLine: Matching, Certifying and Closing](#blackline) covers the close platform, [OneStream: Consolidating Actuals, Planning the Future](#onestream) consolidation, and [Order to Cash, Procure to Pay, Record to Report](#finance-processes) record-to-report as a process.
 
 ```mermaid
 flowchart TB
@@ -431,7 +431,7 @@ The trade-off is coherence against autonomy, and the right point differs by capa
 | **Standards with automated checks and a golden path** | High on the standardized points | Medium to high outside the variation points | High up front, falling with adoption | Load-bearing recurring designs: event publication, posting, tie-out, ERP extension | The golden path is not maintained; teams fork it and checks erode |
 | **One mandatory shared platform** | Very high | Low | Highest: the center runs it | Commodity capabilities with no legitimate variation: the tax service adapter in front of Vertex, the payment factory, the e-invoicing gateway | Legitimate variation exists; the platform becomes a queue and brands build around it |
 
-I recommend the third row for the load-bearing standards and the fourth for genuinely commodity capabilities, which is where Northmere's May 2027 decisions on tax and e-invoicing ([Around the Core: Tax, Treasury, Procurement and Reporting Platforms](#satellite-platforms)) already sit. Advisory principles suffice for most of the rest of the estate. The common error is one level everywhere: everything mandated (the function becomes a bottleneck and is bypassed) or nothing mandated (coherence depends on goodwill that does not survive the first deadline).
+I recommend the third row for the load-bearing standards and the fourth for genuinely commodity capabilities, which is where Northmere's May 2027 decisions on tax and e-invoicing ([Around the Core: Where Specialist Platforms Earn Their Place](#satellite-platforms)) already sit. Advisory principles suffice for most of the rest of the estate. The common error is one level everywhere: everything mandated (the function becomes a bottleneck and is bypassed) or nothing mandated (coherence depends on goodwill that does not survive the first deadline).
 
 {id: principles-standards-reference--keeping-guidance-alive}
 ## Keeping Guidance Alive
@@ -444,14 +444,14 @@ Guidance decays predictably: it goes stale as platforms change, accumulates exce
 
 **Deprecation with dates.** A superseded standard, pattern or kit version has a sunset date, after which conformance checks treat it as a failure. Without dates, the catalog describes an estate that no longer exists.
 
-**Adoption metrics that resist gaming.** Northmere tracks four: the share of new or changed financial-event feeds that pass the conformance harness (not "use the kit", which a thin wrapper can fake); active waivers, their age and the share closed by expiry; median time from a team's first commit to its first conformant feed; and production incidents at boundaries covered by a standard. The last is the outcome; the first three lead it. These are fitness functions in the sense of Ford, Parsons, Kua and Sadalage, objective checks of an architectural characteristic run continuously ([Building Evolutionary Architectures](https://thoughtworks.com/insights/books/building-evolutionaryarchitectures-second-edition)); [Technical Debt, Architectural Fitness and Modernization Priorities](#technical-debt-and-fitness) develops the estate-level set.
+**Adoption metrics that resist gaming.** Northmere tracks four: the share of new or changed financial-event feeds that pass the conformance harness (not "use the kit", which a thin wrapper can fake); active waivers, their age and the share closed by expiry; median time from a team's first commit to its first conformant feed; and production incidents at boundaries covered by a standard. The last is the outcome; the first three lead it. These are fitness functions in the sense of Ford, Parsons, Kua and Sadalage, objective checks of an architectural characteristic run continuously ([Building Evolutionary Architectures](https://thoughtworks.com/insights/books/building-evolutionaryarchitectures-second-edition)); [Technical Debt on the Balance Sheet](#technical-debt-and-fitness) develops the estate-level set.
 
 **A yearly review that can delete.** The design authority reviews each principle and standard against the year's incidents, waivers and decisions, and must be able to retire guidance, not only add it. A catalog that only grows stops being read.
 
 {id: principles-standards-reference--integration-with-the-rest-of-the-estate}
 ## Integration With the Rest of the Estate
 
-This chapter supplies the content that the governance machinery in [Architecture Governance That Speeds Decisions](#architecture-governance) approves and waives. The reference architectures summarize designs owned by [Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP](#payments-to-ledger), [Canonical Events and Adapters for Loosely Coupled Financial Domains](#loosely-coupled-domains), [Designing Custom Ledgers and Financial Event Processing](#designing-financial-ledgers), [Designing for Traceability, Reconciliation and Audit Across Boundaries](#traceability-and-reconciliation) and [Systems of Record and Authoritative Data Boundaries](#systems-of-record); clean core depends on the extension options in [SAP S/4HANA: The Enterprise Finance Core](#sap-s4hana) and [Oracle Fusion Cloud ERP: Ledgers, Accounting Hub and Coexistence](#oracle-fusion).
+This chapter supplies the content that the governance machinery in [Architecture Governance That Speeds Decisions](#architecture-governance) approves and waives. The reference architectures summarize designs owned by [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger), [Canonical Events: A Common Language for Money](#loosely-coupled-domains), [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers), [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation) and [Systems of Record: Ending the Doppelgänger Record](#systems-of-record); clean core depends on the extension options in [SAP S/4HANA: One Journal, Clean Core](#sap-s4hana) and [Oracle Fusion: An Accounting Hub for High-Volume Events](#oracle-fusion).
 
 {id: principles-standards-reference--failure-modes}
 ## Failure Modes
@@ -497,7 +497,7 @@ This chapter supplies the content that the governance machinery in [Architecture
 {id: principles-standards-reference--from-principles-to-a-roadmap}
 ## From Principles to a Roadmap
 
-Principles and standards say how the estate should be built; reference architectures show what good looks like for its recurring parts. None of them says where the estate as a whole is going, or in what order Northmere moves from three ledgers, three integration technologies and a nine-day close to one finance core and a continuous close. That is the job of the target state and the transition states between, each of which can now be described partly by the standards it brings into conformance and the waivers it closes. [Target State, Transition States and the Roadmap](#target-and-transition-states) takes up that question.
+Principles and standards say how the estate should be built; reference architectures show what good looks like for its recurring parts. None of them says where the estate as a whole is going, or in what order Northmere moves from three ledgers, three integration technologies and a nine-day close to one finance core and a continuous close. That is the job of the target state and the transition states between, each of which can now be described partly by the standards it brings into conformance and the waivers it closes. [The Middle Matters: Transition States and the Roadmap](#target-and-transition-states) takes up that question.
 
 {id: principles-standards-reference--sources-and-evidence}
 ## Sources and Evidence

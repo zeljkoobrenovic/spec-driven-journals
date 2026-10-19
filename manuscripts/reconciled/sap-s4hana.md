@@ -1,7 +1,7 @@
 {id: sap-s4hana}
-# 18. SAP S/4HANA: The Enterprise Finance Core
+# 18. SAP S/4HANA: One Journal, Clean Core
 
-![SAP S/4HANA: The Enterprise Finance Core — logo](enterprise-applications-and-financial-systems/posts/15-sap-s4hana/assets/images/15-sap-s4hana/logo.jpeg)
+![SAP S/4HANA: One Journal, Clean Core — logo](enterprise-applications-and-financial-systems/posts/15-sap-s4hana/assets/images/15-sap-s4hana/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn what SAP S/4HANA does inside an enterprise finance architecture: editions and RISE, the Universal Journal, ledgers, currencies, organizational structures and document splitting, FI-CA and BRIM for high volume, Central Finance, Group Reporting, MDG, integration surfaces, clean core, migration approaches, release cadence, operations under RISE and Joule. You will follow Northmere's SAP core through an upgrade deadline, a custom-code remediation plan and the 2027 Q4 convergence decision.
 
@@ -25,7 +25,7 @@
 
 This chapter explains S/4HANA's finance structures precisely enough to make design decisions with them, and separates what SAP documents from what practitioners commonly describe. Where SAP's mechanics are documented only in training material, SAP consultants' posts or SAP Notes behind a login, I say so and stay at the level of detail an architect needs.
 
-Three questions run through it: **what belongs inside the SAP core and what outside**, **which SAP components to use for volume and for convergence**, and **how to keep the core upgradable**. The general logic of running several ERPs belongs to [Multiple ERPs, One Finance Core: Coexistence and Convergence](#multiple-erps), custom ledgers to [Designing Custom Ledgers and Financial Event Processing](#designing-financial-ledgers), and the accounting itself to [Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects).
+Three questions run through it: **what belongs inside the SAP core and what outside**, **which SAP components to use for volume and for convergence**, and **how to keep the core upgradable**. The general logic of running several ERPs belongs to [Converge or Coexist: Living with More Than One ERP](#multiple-erps), custom ledgers to [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers), and the accounting itself to [Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects).
 
 {id: sap-s4hana--setting-the-scene-at-northmere-the-core-nobody-wants-to-touch}
 ## Setting the Scene at Northmere: The Core Nobody Wants to Touch
@@ -50,8 +50,8 @@ It is a constraint when the business runs elsewhere. At Northmere almost no reve
 | Inside the S/4HANA core | Beside the core, on SAP platforms | Outside SAP |
 | --- | --- | --- |
 | General and parallel ledgers, period control | Side-by-side extensions on SAP's Business Technology Platform | Brand transaction processing and per-booking detail, until a deliberate migration |
-| Payables, receivables, assets, controlling, valuation | Integration Suite flows and event brokering | Payment processing and PSP settlement normalization ([Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP](#payments-to-ledger)) |
-| Receivables-shaped high volume (FI-CA) | Master data governance or close orchestration, if SAP's products win | Reconciliation evidence ([BlackLine: Close Automation, Reconciliation and Continuous Accounting](#blackline)); consolidation across three ERPs ([OneStream: Consolidation, Planning and Performance Management](#onestream)); analytics ([Finance Data Across the Estate: From Operations to Analytics](#finance-data-flows)) |
+| Payables, receivables, assets, controlling, valuation | Integration Suite flows and event brokering | Payment processing and PSP settlement normalization ([Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger)) |
+| Receivables-shaped high volume (FI-CA) | Master data governance or close orchestration, if SAP's products win | Reconciliation evidence ([BlackLine: Matching, Certifying and Closing](#blackline)); consolidation across three ERPs ([OneStream: Consolidating Actuals, Planning the Future](#onestream)); analytics ([One Number, Many Views: Finance Data from Operations to Analytics](#finance-data-flows)) |
 
 The middle column is where SAP's commercial strategy concentrates. Every item in it has a non-SAP alternative and deserves a decision rather than a default.
 
@@ -105,13 +105,13 @@ flowchart LR
 {id: sap-s4hana--what-changes-and-what-does-not}
 ### What changes, and what does not
 
-Three changes matter to an architect. **Internal reconciliations disappear by construction**: in ECC the general ledger, cost accounting, asset subledger and material ledger kept separate records that month-end had to prove equal; in S/4HANA they are views of the same lines. **Dimensions become columns, not accounts**: an analysis that once needed an account variant can use a dimension. Northmere's S/4HANA chart has about 3,900 accounts, many of them country or product variants of one account, an ECC habit carried into a greenfield system; [Finance Data Architecture: Master Data, Systems of Record and Governance](#finance-data-architecture) describes the redesign, and the Universal Journal is what makes moving "Portugal" from the account number into a dimension cheap. **Extraction gets simpler**: OneStream's trial balance, BlackLine's balances and FinDB's extracts all start from one structure.
+Three changes matter to an architect. **Internal reconciliations disappear by construction**: in ECC the general ledger, cost accounting, asset subledger and material ledger kept separate records that month-end had to prove equal; in S/4HANA they are views of the same lines. **Dimensions become columns, not accounts**: an analysis that once needed an account variant can use a dimension. Northmere's S/4HANA chart has about 3,900 accounts, many of them country or product variants of one account, an ECC habit carried into a greenfield system; [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture) describes the redesign, and the Universal Journal is what makes moving "Portugal" from the account number into a dimension cheap. **Extraction gets simpler**: OneStream's trial balance, BlackLine's balances and FinDB's extracts all start from one structure.
 
 ![Left: four separate ledger books linked by reconciliation arrows and a tired clerk. Right: one journal viewed through four windows, with an outside parcel passing a checkpoint first.](enterprise-applications-and-financial-systems/posts/15-sap-s4hana/assets/images/15-sap-s4hana/four-records-one-journal.jpeg)
 
 **Figure 2:** *The Universal Journal removes internal reconciliations by construction, because ledger, cost, asset and material views read the same lines; feeds from outside SAP still need their own control totals before they reach it.*
 
-"Single source of truth" is accurate inside SAP and misleading outside it. **The journal does not reconcile what SAP did not post**: SFP's daily summaries are held faithfully, but the link to the 3 million lines behind them lives in SFP's batch identifiers and control totals ([Why Enterprises Build Their Own Finance Platforms](#custom-finance-platforms)); an incomplete feed makes the journal wrong in a perfectly consistent way. **It does not remove subledgers**: open items for millions of partners, revenue schedules and per-booking liabilities still need one; the only question is whose. **It does not make dimensions free**: a dimension that a feed does not send cannot appear, however wide the journal is.
+"Single source of truth" is accurate inside SAP and misleading outside it. **The journal does not reconcile what SAP did not post**: SFP's daily summaries are held faithfully, but the link to the 3 million lines behind them lives in SFP's batch identifiers and control totals ([When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms)); an incomplete feed makes the journal wrong in a perfectly consistent way. **It does not remove subledgers**: open items for millions of partners, revenue schedules and per-booking liabilities still need one; the only question is whose. **It does not make dimensions free**: a dimension that a feed does not send cannot appear, however wide the journal is.
 
 {id: sap-s4hana--ledgers-and-parallel-accounting}
 ### Ledgers and parallel accounting
@@ -131,7 +131,7 @@ E1 is a small example of a common duplication: two homes for top-side adjustment
 
 The journal carries the **transaction currency**, the **company-code currency** and further currencies per ledger. SAP's [training on currency types](https://learning.sap.com/courses/customizing-core-settings-in-financial-accounting-in-sap-s4hana/managing-currency-types-1) shows local and global currency plus eight freely definable ones since release 1610, with standard types 00 (document), 10 (company code), 20 (controlling area) and 30 (group). "Ten currencies" describes the columns; consistent ledger-specific handling of all of them across assets, controlling and the material ledger came with UPA.
 
-Northmere carries document currency, company-code currency (euro for most European entities) and group currency 30 in **US dollars**. Two design points follow. **Group currency in the ledger is not consolidation translation**: each line is converted at the day's rate, useful for management analysis, but US GAAP translation happens in OneStream from the trial balance. And **period-end revaluation of foreign-currency open items runs in S/4HANA**, with rates distributed from treasury through the master-data path in [Finance Data Architecture: Master Data, Systems of Record and Governance](#finance-data-architecture). Two systems hold dollar figures for the same entity; reports must say which they use.
+Northmere carries document currency, company-code currency (euro for most European entities) and group currency 30 in **US dollars**. Two design points follow. **Group currency in the ledger is not consolidation translation**: each line is converted at the day's rate, useful for management analysis, but US GAAP translation happens in OneStream from the trial balance. And **period-end revaluation of foreign-currency open items runs in S/4HANA**, with rates distributed from treasury through the master-data path in [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture). Two systems hold dollar figures for the same entity; reports must say which they use.
 
 {id: sap-s4hana--organizational-structures}
 ### Organizational structures
@@ -179,7 +179,7 @@ Everything beneath that row, the booking, the payment and the payout, lives in S
 
 **FI-CA (Contract Accounts Receivable and Payable)** is SAP's subledger for business-partner receivables and payables at mass volume. SAP's [training on BRIM](https://learning.sap.com/courses/implementing-sap-financial-contract-accounting/describing-sap-billing-and-revenue-innovation-management-sap-brim-) calls it "still the first choice subledger in SAP S/4HANA for industries with high volume and high performance requirements", naming utilities, insurance and telecommunications. Its unit is the **contract account**, which groups a business partner's open items under one set of payment, dunning and correspondence rules, with mass processes for invoicing, payment runs, incoming payment lots, dunning and write-offs.
 
-The architecturally important property is **how it posts to the general ledger**. According to SAP's [training on general-ledger integration](https://learning.sap.com/courses/implementing-sap-financial-contract-accounting/describing-general-ledger-integration), FI-CA writes **totals records** grouped under **reconciliation keys** rather than posting each document; mass processes open and close their keys automatically, documents within a key are summarized by posting date and account, and a transfer job posts the closed totals as ledger documents. SAP states that "a general ledger document can be explained by the items in the subledger at any given point in time" and provides reports that reconcile the ledger to the totals. This is the pattern [Designing Custom Ledgers and Financial Event Processing](#designing-financial-ledgers) prescribes for custom ledgers, summarization with a key that proves completeness, delivered as standard.
+The architecturally important property is **how it posts to the general ledger**. According to SAP's [training on general-ledger integration](https://learning.sap.com/courses/implementing-sap-financial-contract-accounting/describing-general-ledger-integration), FI-CA writes **totals records** grouped under **reconciliation keys** rather than posting each document; mass processes open and close their keys automatically, documents within a key are summarized by posting date and account, and a transfer job posts the closed totals as ledger documents. SAP states that "a general ledger document can be explained by the items in the subledger at any given point in time" and provides reports that reconcile the ledger to the totals. This is the pattern [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers) prescribes for custom ledgers, summarization with a key that proves completeness, delivered as standard.
 
 **SAP Billing and Revenue Innovation Management (BRIM)** is the product family built on FI-CA. In SAP's description, SAP Convergent Charging rates usage, **SAP Convergent Invoicing** turns billable items into invoices, and FI-CA holds the receivables; the public-cloud counterparts are SAP Subscription Billing and [SAP S/4HANA Cloud for contract accounting and invoicing](https://learning.sap.com/courses/sap-s-4hana-cloud-for-contract-accounting-invoicing/explaining-the-general-ledger-integration). Component names in this family have shifted; check current product pages before quoting them in a contract.
 
@@ -218,7 +218,7 @@ The ledger sees two lines for 610,000 invoices, and an auditor can walk from eit
 {id: sap-s4hana--when-to-use-fi-ca-and-when-to-build}
 ### When to use FI-CA and when to build
 
-[Why Enterprises Build Their Own Finance Platforms](#custom-finance-platforms) records the May 2027 recommendation to move Stayloft's merchant subledger into FI-CA by 2029, conditional on a 2027 volume test; the December 2027 convergence decision in [Multiple ERPs, One Finance Core: Coexistence and Convergence](#multiple-erps) later superseded it, sending the subledger to a group accounting engine with FI-CA keeping merchant invoicing ([Modernizing Without Stopping the Close: An Incremental Migration](#incremental-modernization)). [Designing Custom Ledgers and Financial Event Processing](#designing-financial-ledgers) covers the custom alternatives. The SAP-specific criteria:
+[When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms) records the May 2027 recommendation to move Stayloft's merchant subledger into FI-CA by 2029, conditional on a 2027 volume test; the December 2027 convergence decision in [Converge or Coexist: Living with More Than One ERP](#multiple-erps) later superseded it, sending the subledger to a group accounting engine with FI-CA keeping merchant invoicing ([Modernizing Without Stopping the Close](#incremental-modernization)). [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers) covers the custom alternatives. The SAP-specific criteria:
 
 | Criterion | FI-CA / BRIM | Custom subledger with summarized posting |
 | --- | --- | --- |
@@ -247,7 +247,7 @@ Central Finance is good at **harmonizing the general ledger over a heterogeneous
 {id: sap-s4hana--the-2027-q4-decision-at-sap-level-central-finance-or-an-accounting-hub}
 ## The 2027 Q4 Decision at SAP Level: Central Finance or an Accounting Hub
 
-[Multiple ERPs, One Finance Core: Coexistence and Convergence](#multiple-erps) owns the general criteria for converging, tiering and federating ERPs. What the design authority needs from the SAP side is what each option would do inside S/4HANA.
+[Converge or Coexist: Living with More Than One ERP](#multiple-erps) owns the general criteria for converging, tiering and federating ERPs. What the design authority needs from the SAP side is what each option would do inside S/4HANA.
 
 **Option A, Central Finance.** A Central Finance capability, in the existing system or a separate central instance, receives postings from Oracle Fusion (Wayfare) and Workday Financials (Tablekin) through the non-SAP inbound interface, mapped to the group chart and profit centers. SFP and ad billing keep posting summaries directly.
 
@@ -287,19 +287,19 @@ Sven's assessment, which Dana adopts in her June 2027 paper, is that **Central F
 {id: sap-s4hana--group-reporting-and-onestream}
 ## Group Reporting and OneStream
 
-SAP's embedded consolidation, **SAP S/4HANA Finance for group reporting**, stores consolidation entries in a companion journal fed from actual and plan data; non-S/4HANA entities submit data by upload or API ([SAPinsider](https://sapinsider.org/wp-content/uploads/2023/03/Birch_What-You-Need-to-Know-about-Group-Reporting-in-S4-HANA_Vegas2023.pdf)). Its strengths are shared master data and native drill-down for entities already in S/4HANA. SAP markets it as "real-time"; eliminations, translation and validations still run as tasks in a consolidation monitor, so I read the phrase as "no extraction step". In a three-ERP estate Northmere's choice of OneStream is right ([OneStream: Consolidation, Planning and Performance Management](#onestream)). After 2029, if brand ledgers converge, the case for embedded consolidation strengthens, and the comparison belongs in the next OneStream renewal rather than in a default.
+SAP's embedded consolidation, **SAP S/4HANA Finance for group reporting**, stores consolidation entries in a companion journal fed from actual and plan data; non-S/4HANA entities submit data by upload or API ([SAPinsider](https://sapinsider.org/wp-content/uploads/2023/03/Birch_What-You-Need-to-Know-about-Group-Reporting-in-S4-HANA_Vegas2023.pdf)). Its strengths are shared master data and native drill-down for entities already in S/4HANA. SAP markets it as "real-time"; eliminations, translation and validations still run as tasks in a consolidation monitor, so I read the phrase as "no extraction step". In a three-ERP estate Northmere's choice of OneStream is right ([OneStream: Consolidating Actuals, Planning the Future](#onestream)). After 2029, if brand ledgers converge, the case for embedded consolidation strengthens, and the comparison belongs in the next OneStream renewal rather than in a default.
 
 {id: sap-s4hana--master-data-business-partner-and-mdg}
 ## Master Data: Business Partner and MDG
 
-In S/4HANA the **Business Partner** is the single maintenance object for customers and suppliers; the separate ECC masters are synchronized through Customer/Vendor Integration. For FI-CA, the business partner and its contract accounts anchor every open item, so partner identity is a ledger concern. Northmere's partner hub, described in [Finance Data Architecture: Master Data, Systems of Record and Governance](#finance-data-architecture), assigns the group partner ID and creates the business partner and contract account in S/4HANA.
+In S/4HANA the **Business Partner** is the single maintenance object for customers and suppliers; the separate ECC masters are synchronized through Customer/Vendor Integration. For FI-CA, the business partner and its contract accounts anchor every open item, so partner identity is a ledger concern. Northmere's partner hub, described in [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture), assigns the group partner ID and creates the business partner and contract account in S/4HANA.
 
 **SAP Master Data Governance (MDG)** adds change requests, workflow, validation, key mapping and consolidation for financial master data, business partners and other domains. In May 2026 SAP announced that MDG is [now a core component of SAP Business Data Cloud](https://news.sap.com/2026/05/sap-bdc-accelerate-autonomous-enterprise/), beside the MDM product it acquired with Reltio, so SAP's positioning is still settling. Northmere does not run MDG in 2027. It is one candidate for the SAP-owned domains of Keystone's master-data hub: it validates natively against S/4HANA configuration and doubles as the Central Finance mapping store, but it governs SAP's model best and everyone else's by integration. I recommend deciding the hub's authority model first and the product second; MDG's value roughly doubles if Option A wins.
 
 {id: sap-s4hana--integration-surfaces}
 ## Integration Surfaces
 
-[Integration Architecture for Finance](#integration-architecture) covers finance integration styles in general. S/4HANA's surfaces, and their standing under SAP's [2025 clean-core guidance](https://news.sap.com/2025/08/extend-sap-s4hana-cloud-right-way-clean-clear/):
+[Files, Events and APIs: How Finance Systems Talk](#integration-architecture) covers finance integration styles in general. S/4HANA's surfaces, and their standing under SAP's [2025 clean-core guidance](https://news.sap.com/2025/08/extend-sap-s4hana-cloud-right-way-clean-clear/):
 
 | Surface | What it is | Clean-core standing | Use it for |
 | --- | --- | --- | --- |
@@ -315,7 +315,7 @@ Northmere's integration rules, set by Lucía Romero's integration team with Sven
 1. **New interfaces use released APIs or released events**; a new IDoc or RFC needs a waiver naming the missing released API.
 2. **SFP's daily posting moves to SAP's released journal-entry API.** Today it calls a custom RFC module from 2021 that validates and posts the summaries: a custom object in the posting path.
 3. **SAP events go into Kafka, not a second broker.** Platform Engineering owns Kafka as the group backbone; Integration Suite bridges SAP business events into it. Two brokers for financial events would split ordering, replay and retention guarantees across two operating models.
-4. **Integration Suite is the SAP edge, not the group hub.** Canonical events, the adapter kit and the hub are defined in [Canonical Events and Adapters for Loosely Coupled Financial Domains](#loosely-coupled-domains), not built as SAP content.
+4. **Integration Suite is the SAP edge, not the group hub.** Canonical events, the adapter kit and the hub are defined in [Canonical Events: A Common Language for Money](#loosely-coupled-domains), not built as SAP content.
 5. **Analytics read released views.** FinDB extracts through released analytical views, never tables, so an upgrade does not break the warehouse.
 
 {id: sap-s4hana--clean-core-and-extensibility}
@@ -362,7 +362,7 @@ In April 2027 Sven's team ran the ABAP Test Cockpit's clean-core checks and thir
 {id: sap-s4hana--the-fitness-function}
 ### The fitness function
 
-A plan without a measurement decays, so Keystone tracks clean core as an **architecture fitness function**, a measurable property reviewed quarterly ([Technical Debt, Architectural Fitness and Modernization Priorities](#technical-debt-and-fitness)):
+A plan without a measurement decays, so Keystone tracks clean core as an **architecture fitness function**, a measurable property reviewed quarterly ([Technical Debt on the Balance Sheet](#technical-debt-and-fitness)):
 
 | Indicator | April 2027 | End 2027 | End 2028 | End 2029 |
 | --- | --- | --- | --- | --- |
@@ -378,7 +378,7 @@ A plan without a measurement decays, so Keystone tracks clean core as an **archi
 {id: sap-s4hana--migration-approaches}
 ## Migration Approaches
 
-SAP's methodology, **SAP Activate**, runs Discover, Prepare, Explore, Realize, Deploy and Run, with **fit-to-standard** workshops that start from SAP's best-practice processes and record only genuine gaps. The routes to S/4HANA, in standard practitioner terms, are a **new implementation** (greenfield: re-implement processes, migrate open items and balances), a **system conversion** (brownfield: convert ECC in place, including the mandatory business-partner conversion and the conversion of finance data into the Universal Journal), a **selective data transition** (load chosen company codes and history into a new or shell system with SAP or partner tooling, restructuring on the way; "bluefield" is a partner marketing term for variants of it), and **Central Finance first** (a phasing strategy, not a migration). [Modernization Patterns for Legacy Finance Systems](#modernization-patterns) places them in the wider catalog.
+SAP's methodology, **SAP Activate**, runs Discover, Prepare, Explore, Realize, Deploy and Run, with **fit-to-standard** workshops that start from SAP's best-practice processes and record only genuine gaps. The routes to S/4HANA, in standard practitioner terms, are a **new implementation** (greenfield: re-implement processes, migrate open items and balances), a **system conversion** (brownfield: convert ECC in place, including the mandatory business-partner conversion and the conversion of finance data into the Universal Journal), a **selective data transition** (load chosen company codes and history into a new or shell system with SAP or partner tooling, restructuring on the way; "bluefield" is a partner marketing term for variants of it), and **Central Finance first** (a phasing strategy, not a migration). [Changing the Engine in Flight: Modernization Patterns for Finance](#modernization-patterns) places them in the wider catalog.
 
 | Criterion | New implementation | System conversion | Selective data transition | Central Finance first |
 | --- | --- | --- | --- | --- |
@@ -414,12 +414,12 @@ The architectural reading: **the seven-year rule forces an upgrade every few yea
 {id: sap-s4hana--operating-s-4hana-under-rise-shared-responsibility}
 ## Operating S/4HANA Under RISE: Shared Responsibility
 
-"SAP runs it" is true only of the bottom of the stack. Under RISE, SAP operates infrastructure, operating system, database, technical availability, backups and the technical execution of upgrades; everything that makes the system correct for Finance remains the customer's. The exact boundary is in the customer's RISE contract and SAP's service descriptions; [Controls, Auditability and Security by Design](#controls-and-auditability) explains how Northmere's auditor relies on SAP's SOC 1 report for SAP's side.
+"SAP runs it" is true only of the bottom of the stack. Under RISE, SAP operates infrastructure, operating system, database, technical availability, backups and the technical execution of upgrades; everything that makes the system correct for Finance remains the customer's. The exact boundary is in the customer's RISE contract and SAP's service descriptions; [Controls by Design, Not by Audit Season](#controls-and-auditability) explains how Northmere's auditor relies on SAP's SOC 1 report for SAP's side.
 
 | Area | SAP under RISE | Northmere |
 | --- | --- | --- |
 | Infrastructure, operating system, database | Operates | Chooses region; reviews SOC 1 coverage |
-| Availability, backup, disaster recovery | Operates to contracted service levels | Defines recovery needs for the close; tests business recovery ([Resilience, Observability, Security and Recovery for Finance Systems](#resilience-and-security)) |
+| Availability, backup, disaster recovery | Operates to contracted service levels | Defines recovery needs for the close; tests business recovery ([Recover Before the Close: Resilience and Security for Finance](#resilience-and-security)) |
 | Upgrades and patches | Executes technically, on request | Plans, regression-tests, remediates custom code, signs off |
 | Configuration, custom code, transports | — | Owns, under SOX change management |
 | Roles, segregation of duties, access reviews | Provides tooling | Owns, including FI-CA and integration users |
@@ -433,7 +433,7 @@ Sven's team of 26 is sized for the right-hand column. RISE shrinks the infrastru
 
 **Joule** is SAP's AI layer; in SAP's [May 2026 framing](https://news.sap.com/2026/05/the-next-era-of-business-ai/), "Joule Assistants collaborate with users, while Joule Agents execute business workflows end to end." At Sapphire 2026 SAP announced [more than 200 agents and over 50 assistants "available in the coming months"](https://news.sap.com/2026/05/sap-sapphire-keynote-business-ai-platform-power-autonomous-enterprise/), a **Business AI Platform** unifying the Business Technology Platform, Business Data Cloud and SAP's AI foundation, and an **AI Agent Hub** for governing SAP and non-SAP agents, planned for general availability in Q3 2026. Separate the finance items by status, as of October 2026: a **Cash Management Agent** for bank-statement analysis and exceptions was reported generally available in [SAP's Q1 2026 release](https://enterprisedna.co/resources/news/sap-q1-2026-business-ai-joule-studio-operations-agents); an **Autonomous Close Assistant** that SAP says ["can compress the financial close process from weeks to days"](https://news.sap.com/2026/05/sap-sapphire-sap-unveils-autonomous-enterprise/) was announced without a date; and SAP's [collaboration with Anthropic](https://news.sap.com/2026/05/sap-anthropic-to-bring-claude-sap-business-ai-platform/) to use Claude across Joule is an announced plan. (This book was written with AI assistance from Anthropic models; that item gets no more weight here than any other partner announcement.)
 
-Two conditions shape what an architect does with this. **Access is commercial as well as technical**: SAP says on-premise and ECC customers are not excluded, but ties some scenarios to cloud ERP commitments, and RISE customers get a contractual commitment to activate three Joule assistants in the first year. Answer the capability question and the contract question separately. And **agents that touch the books are actors in the control design**: an agent proposing clearings for an FI-CA payment lot needs a role, a segregation-of-duties position, an approver and an evidence trail, or it is **Nobody's Bot** ([AI, Automation and Agentic Finance Operations](#ai-in-finance)). Northmere's 2027 position: no agent posts or clears in S/4HANA or FI-CA without a human approver, every agent runs under a named technical role in the quarterly access review, and the first pilot suggests cash application on FI-CA payment lots, measured against the existing clearing rate. Most of these agents depend on clean master data, released APIs and a recent release: one more reason to keep the core upgradable, and a poor reason to sign early.
+Two conditions shape what an architect does with this. **Access is commercial as well as technical**: SAP says on-premise and ECC customers are not excluded, but ties some scenarios to cloud ERP commitments, and RISE customers get a contractual commitment to activate three Joule assistants in the first year. Answer the capability question and the contract question separately. And **agents that touch the books are actors in the control design**: an agent proposing clearings for an FI-CA payment lot needs a role, a segregation-of-duties position, an approver and an evidence trail, or it is **Nobody's Bot** ([Automate the Work, Not the Accountability](#ai-in-finance)). Northmere's 2027 position: no agent posts or clears in S/4HANA or FI-CA without a human approver, every agent runs under a named technical role in the quarterly access review, and the first pilot suggests cash application on FI-CA payment lots, measured against the existing clearing rate. Most of these agents depend on clean master data, released APIs and a recent release: one more reason to keep the core upgradable, and a poor reason to sign early.
 
 {id: sap-s4hana--strengths-and-limitations}
 ## Strengths and Limitations
@@ -449,7 +449,7 @@ Two conditions shape what an architect does with this. **Access is commercial as
 {id: sap-s4hana--integration-with-the-rest-of-the-estate}
 ## Integration With the Rest of the Estate
 
-S/4HANA receives summarized, control-totaled feeds from brand platforms ([Why Enterprises Build Their Own Finance Platforms](#custom-finance-platforms)), with the merchant subledger's migration worked through in [Modernizing Without Stopping the Close: An Incremental Migration](#incremental-modernization); payments reach it through Northmere Pay's clearing accounts, never directly from PSPs ([Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP](#payments-to-ledger)). It is the group master for legal entities that Workday HCM consumes, and receives cost-center owners and approvers from it ([Workday: Financials, People and the Organizational Backbone](#workday)); it faces Oracle Fusion in the convergence decision ([Oracle Fusion Cloud ERP: Ledgers, Accounting Hub and Coexistence](#oracle-fusion)). BlackLine reconciles its balances and proves the FI-CA and SFP subledgers to it; OneStream consolidates its trial balance; Vertex, Kyriba, Coupa and Concur attach as satellites ([Around the Core: Tax, Treasury, Procurement and Reporting Platforms](#satellite-platforms)); FinDB's tie-out starts from its trial balance.
+S/4HANA receives summarized, control-totaled feeds from brand platforms ([When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms)), with the merchant subledger's migration worked through in [Modernizing Without Stopping the Close](#incremental-modernization); payments reach it through Northmere Pay's clearing accounts, never directly from PSPs ([Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger)). It is the group master for legal entities that Workday HCM consumes, and receives cost-center owners and approvers from it ([Workday: The Org Chart Behind the Ledger](#workday)); it faces Oracle Fusion in the convergence decision ([Oracle Fusion: An Accounting Hub for High-Volume Events](#oracle-fusion)). BlackLine reconciles its balances and proves the FI-CA and SFP subledgers to it; OneStream consolidates its trial balance; Vertex, Kyriba, Coupa and Concur attach as satellites ([Around the Core: Where Specialist Platforms Earn Their Place](#satellite-platforms)); FinDB's tie-out starts from its trial balance.
 
 {id: sap-s4hana--failure-modes}
 ## Failure Modes
@@ -468,13 +468,13 @@ S/4HANA receives summarized, control-totaled feeds from brand platforms ([Why En
 
 Dana's position, presented to the Keystone design authority in June 2027, has four parts.
 
-**S/4HANA is the group's book of record, not its whole finance platform.** It holds ledgers, the group chart, controlling, assets, payables, receivables and, increasingly, receivables-shaped volume in FI-CA. It does not hold brand transaction processing, payments normalization, reconciliation evidence, multi-ERP consolidation or analytics, and each move into SAP needs a recorded decision, not a sales conversation ([Principles, Standards and Reference Architectures](#principles-standards-reference)).
+**S/4HANA is the group's book of record, not its whole finance platform.** It holds ledgers, the group chart, controlling, assets, payables, receivables and, increasingly, receivables-shaped volume in FI-CA. It does not hold brand transaction processing, payments normalization, reconciliation evidence, multi-ERP consolidation or analytics, and each move into SAP needs a recorded decision, not a sales conversation ([Principles That Decide Things](#principles-standards-reference)).
 
 **The finance data model is the asset to protect.** Chart, ledgers, currencies, company codes, profit centers and segments will outlive release 2025, the convergence pattern and probably the RISE contract. Leila owns their meaning, Sven their configuration, and changes go through the design authority. The redesign from 3,900 accounts toward a dimensional group chart is the first test of that ownership.
 
 **Clean core is funded, not hoped for.** The remediation plan sits in Keystone's Year 1 budget, the fitness function is reviewed quarterly, and the pipeline gate is a mandatory standard with expiring waivers. The case rests on one number the CFO understands: an upgrade that takes three months instead of seven returns four months of change calendar every cycle.
 
-**The convergence decision is about where accounting logic lives.** Central Finance centralizes documents; an accounting hub centralizes rules. Dana leans toward the hub, with FI-CA as its receivables-shaped part, and has written down the two conditions that would reverse her. (The design authority chose the accounting hub on 8 December 2027 and rejected Central Finance; [Multiple ERPs, One Finance Core: Coexistence and Convergence](#multiple-erps) records the decision.)
+**The convergence decision is about where accounting logic lives.** Central Finance centralizes documents; an accounting hub centralizes rules. Dana leans toward the hub, with FI-CA as its receivables-shaped part, and has written down the two conditions that would reverse her. (The design authority chose the accounting hub on 8 December 2027 and rejected Central Finance; [Converge or Coexist: Living with More Than One ERP](#multiple-erps) records the decision.)
 
 **Who decides.** The design authority, chaired by Dana with Leila, decides patterns and mandatory standards; Leila owns accounting policy wherever it is encoded; Sven owns the platform, upgrade plan and fitness function; Mei signs off any change in who or what can post journals, agents included; Lucía owns the integration rules; Tomás approves investment-level choices; Ravi Menon owns the Kafka backbone SAP publishes into ([Architecture Governance That Speeds Decisions](#architecture-governance)).
 
@@ -497,7 +497,7 @@ Dana's position, presented to the Keystone design authority in June 2027, has fo
 {id: sap-s4hana--hand-off}
 ## Hand-Off
 
-S/4HANA is Northmere's book of record, but it is not where Northmere's people, approvers and cost-center owners are defined, and it is not the ledger of every brand. The next chapter, [Workday: Financials, People and the Organizational Backbone](#workday), turns to the platform that holds the organizational backbone for the whole group and the books of one acquired brand, and asks where Workday belongs beside an SAP core.
+S/4HANA is Northmere's book of record, but it is not where Northmere's people, approvers and cost-center owners are defined, and it is not the ledger of every brand. The next chapter, [Workday: The Org Chart Behind the Ledger](#workday), turns to the platform that holds the organizational backbone for the whole group and the books of one acquired brand, and asks where Workday belongs beside an SAP core.
 
 {id: sap-s4hana--sources-and-evidence}
 ## Sources and Evidence
@@ -527,7 +527,7 @@ S/4HANA is Northmere's book of record, but it is not where Northmere's people, a
 
 *Standards and regulation*
 
-- None specific to this chapter; the accounting standards behind ledgers, revenue and segments are cited in [Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects), and SOX and SOC 1 reliance in [Controls, Auditability and Security by Design](#controls-and-auditability).
+- None specific to this chapter; the accounting standards behind ledgers, revenue and segments are cited in [Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects), and SOX and SOC 1 reliance in [Controls by Design, Not by Audit Season](#controls-and-auditability).
 
 *Practitioner and research sources*
 

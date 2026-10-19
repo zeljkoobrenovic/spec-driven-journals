@@ -1,7 +1,7 @@
 {id: modernization-patterns}
-# 15. Modernization Patterns for Legacy Finance Systems
+# 15. Changing the Engine in Flight: Modernization Patterns for Finance
 
-![Modernization Patterns for Legacy Finance Systems — logo](enterprise-applications-and-financial-systems/posts/12-modernization-patterns/assets/images/12-modernization-patterns/logo.jpeg)
+![Changing the Engine in Flight: Modernization Patterns for Finance — logo](enterprise-applications-and-financial-systems/posts/12-modernization-patterns/assets/images/12-modernization-patterns/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn the modernization patterns for finance systems (six dispositions, ERP migration approaches, accounting hubs as stranglers for ledgers, incremental displacement patterns) and how parallel runs, data migration choices, period-boundary cut-overs and decommissioning keep the books provable while the platform changes underneath them.
 
@@ -25,12 +25,12 @@ Most finance modernization does not start on an empty site. It starts with a led
 
 The software industry has a good vocabulary for this (strangler fig, legacy displacement patterns, branch by abstraction, the cloud "R" dispositions), and the ERP vendors add their own. This chapter maps it onto finance, where every step has to end in a **reconciliation**, every cut-over is tied to the **accounting calendar**, and a retired system still owes the enterprise its records for years.
 
-The chapter owns the pattern catalog, the parallel run and the cut-over. The full worked migration of Stayloft's merchant subledger is in [Modernizing Without Stopping the Close: An Incremental Migration](#incremental-modernization). The program leadership of an ERP transformation is in [Leading an ERP Modernization and Finance Transformation](#finance-transformation).
+The chapter owns the pattern catalog, the parallel run and the cut-over. The full worked migration of Stayloft's merchant subledger is in [Modernizing Without Stopping the Close](#incremental-modernization). The program leadership of an ERP transformation is in [The Technology Is the Easy Part: Leading a Finance Transformation](#finance-transformation).
 
 {id: modernization-patterns--setting-the-scene-three-modernization-files-at-northmere}
 ## Setting the Scene: Three Modernization Files at Northmere
 
-Northmere, the fictional multi-brand digital commerce group this book follows ([Meet Northmere: The Running Example](#meet-northmere)), reaches October 2027 with three modernization files before the design authority that Dana Whitlock, the Chief Architect, chairs with Leila Haddad, the Chief Accounting Officer.
+Northmere, the fictional multi-brand digital commerce group this book follows ([Meet Northmere: Five Brands, One Set of Books](#meet-northmere)), reaches October 2027 with three modernization files before the design authority that Dana Whitlock, the Chief Architect, chairs with Leila Haddad, the Chief Accounting Officer.
 
 **The Wayfare EBS archive.** Wayfare, the flights, rail and ground-transport brand Northmere acquired in 2024, moved from Oracle E-Business Suite (EBS) to Oracle Fusion Cloud ERP in 2022 and kept EBS running read-only as an archive. The colocation contract that hosts EBS ends on **31 December 2028**, and the September 2027 rationalization plan puts its decommissioning in wave 1 ([Manage the Application Portfolio as an Investment](#application-portfolio)). Hana Kowalski, Wayfare's Director of Finance Systems, must bring a plan that says what has to be retained, for how long, in what form, and who can reach it once EBS is switched off.
 
@@ -48,7 +48,7 @@ Five properties make a finance system harder to displace than an ordinary applic
 1. **The books never stop.** Transactions keep arriving and every period must close on time; no maintenance window is long enough to move a ledger without an interim state.
 2. **State must carry over exactly.** Open items (unpaid invoices, partner payables, unapplied cash), balances and deferred revenue must arrive complete and accurate, proven per legal entity, currency and account.
 3. **History stays owed.** Statutory retention runs for years after retirement, so history left behind must stay readable.
-4. **Controls must be continuous.** For a SOX registrant such as Northmere, a key control that ran in the old system must operate in the new one from the cut-over date, and the migration itself needs evidence ([Controls, Auditability and Security by Design](#controls-and-auditability)).
+4. **Controls must be continuous.** For a SOX registrant such as Northmere, a key control that ran in the old system must operate in the new one from the cut-over date, and the migration itself needs evidence ([Controls by Design, Not by Audit Season](#controls-and-auditability)).
 5. **Someone else's clock.** Vendor maintenance dates, subscription terms and hosting contracts set deadlines the enterprise does not control. SAP's mainstream maintenance for ECC 6.0 core applications [ends at the end of 2027, with optional extended maintenance to the end of 2030](https://news.sap.com/africa/2020/02/sap-extends-its-innovation-commitment-for-sap-s-4hana-provides-clarity-and-choice-on-sap-business-suite-7/). For EBS 12.2, Oracle states Premier Support runs ["through at least 2037"](https://www.oracle.com/support/premier/software/ebs/) and reviews the date each year (both as of October 2026).
 
 The fifth property is what creates pressure for a big switch. The first four are why a big switch is dangerous.
@@ -66,17 +66,17 @@ A disposition is how a portfolio verdict gets carried out. The TIME model in [Ma
 | **Retire** | Switch off; archive what retention requires | No transactions, or capability moved elsewhere | Retirement is archive plus read path plus control closure, not deletion | Wayfare EBS archive, 2028 |
 | **Rehost** | Move unchanged to other infrastructure | Infrastructure contract ends, application still needed | Moves cost, not risk; the IT general control (ITGC) evidence (access, change, operations) must be rebuilt for the new hosting | The rejected option for EBS: rehost to cloud and keep it for years |
 | **Replatform** | Change runtime, database or hosting model with limited code change | Differentiating component on an end-of-life platform | Re-test every report used in a control (information produced by the entity, IPE) after the move | None in flight; the candidate is SFP's commission rating, which stays custom, if its runtime reaches end of life |
-| **Refactor** | Restructure in place without changing behavior | Logic worth keeping, but too hard to change | Behavior includes rounding, cut-off and netting order; "unchanged" must be proven by replay against closed periods | The 2,300 custom objects in S/4HANA; SFP's merchant subledger redesign ([Designing Custom Ledgers and Financial Event Processing](#designing-financial-ledgers)) |
+| **Refactor** | Restructure in place without changing behavior | Logic worth keeping, but too hard to change | Behavior includes rounding, cut-off and netting order; "unchanged" must be proven by replay against closed periods | The 2,300 custom objects in S/4HANA; SFP's merchant subledger redesign ([Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers)) |
 | **Replace** | Move the capability to another product or platform | Capability is commodity, or the target does the hardest scenario better | The replacement must carry open items and history, and its accounting policy must match or be formally changed | Agency invoicing from SFP to FI-CA, 2025; merchant invoicing, 2028 |
 
-Two rules make the catalog usable. First, **decide per component, not per system**. [Why Enterprises Build Their Own Finance Platforms](#custom-finance-platforms) split SFP into nine components with nine answers, and that is the normal case. Second, **write down the disposition's end state and its date**. "Replace" without a date for retiring the old component is how an enterprise ends up with two invoicing engines, which is where Stayloft stands today.
+Two rules make the catalog usable. First, **decide per component, not per system**. [When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms) split SFP into nine components with nine answers, and that is the normal case. Second, **write down the disposition's end state and its date**. "Replace" without a date for retiring the old component is how an enterprise ends up with two invoicing engines, which is where Stayloft stands today.
 
 {id: modernization-patterns--erp-migration-approaches-greenfield-brownfield-selective}
 ## ERP Migration Approaches: Greenfield, Brownfield, Selective
 
 When the system is an ERP, the vendors and integrators use their own vocabulary. For SAP it is commonly described in three approaches. The step names below are standard practitioner knowledge, not SAP product definitions.
 
-- **Greenfield (new implementation).** A new S/4HANA system, processes designed again starting from SAP's standard (fit-to-standard, see [Build, Buy or Compose: Vendor Selection and Portfolio Rationalization](#build-versus-buy)), with open items and balances migrated and limited history if any. It gives the cleanest data model: a new chart of accounts (CoA), document splitting, new organizational structures. The cost is change effort and the loss of history in the new system.
+- **Greenfield (new implementation).** A new S/4HANA system, processes designed again starting from SAP's standard (fit-to-standard, see [Build, Buy or Compose: Choosing What to Own](#build-versus-buy)), with open items and balances migrated and limited history if any. It gives the cleanest data model: a new chart of accounts (CoA), document splitting, new organizational structures. The cost is change effort and the loss of history in the new system.
 - **Brownfield (system conversion).** The existing ECC system is converted in place: readiness and custom-code checks, the mandatory business-partner conversion, the move to SAP HANA, then the finance data conversion into the Universal Journal, S/4HANA's single accounting line-item table. It keeps history and customizations, and with them the technical debt and the old data model.
 - **Selective data transition (SDT).** A new or "shell" system into which selected company codes, selected years of history and structural changes (for example a chart-of-accounts or company-code merge) are moved with specialist tooling from SAP or partners. Integrators sometimes call this "bluefield", which is a partner marketing term, not an SAP product name.
 
@@ -93,9 +93,9 @@ The deadline pressure is real but often misread. Mainstream maintenance for ECC 
 
 **Northmere's 2021 decision shows what greenfield does and does not buy.** The group rejected a conversion of its ECC 6.0 system and implemented S/4HANA greenfield. That gave it a new data model but not a clean core: much of the ECC customization, including Stayloft-specific posting logic and reports, was specified again and rebuilt. **Greenfield buys the option of a clean design. It does not take that option for you.** Only a custom-code triage, with "rebuild" as the answer that needs the most justification, does that.
 
-Sven's 2027 triage of the 2,300 objects shows the refactor and retire dispositions applied inside an ERP (figures illustrative). It starts from the April 2027 baseline in [SAP S/4HANA: The Enterprise Finance Core](#sap-s4hana): about 1,240 objects not executed in thirteen months of usage statistics. About 690 of those are confirmed unused and retired; the rest are year-end or rarely run logic and join the other groups. Across the whole set, about 480 objects that duplicate standard functionality are replaced by it, about 420 Stayloft-specific objects move out of the core behind released interfaces, about 460 are rewritten to upgrade-safe extensions, and about 250 stay, each with an owner and a review date.
+Sven's 2027 triage of the 2,300 objects shows the refactor and retire dispositions applied inside an ERP (figures illustrative). It starts from the April 2027 baseline in [SAP S/4HANA: One Journal, Clean Core](#sap-s4hana): about 1,240 objects not executed in thirteen months of usage statistics. About 690 of those are confirmed unused and retired; the rest are year-end or rarely run logic and join the other groups. Across the whole set, about 480 objects that duplicate standard functionality are replaced by it, about 420 Stayloft-specific objects move out of the core behind released interfaces, about 460 are rewritten to upgrade-safe extensions, and about 250 stay, each with an owner and a review date.
 
-SAP now rates extensions on [clean-core levels A to D](https://news.sap.com/2025/08/extend-sap-s4hana-cloud-right-way-clean-clear/); only the lowest level (modifications, direct table writes, implicit enhancements) is considered not clean, so the goal is not zero custom code. The goal is an upgrade that no longer takes seven months. How to measure that is in [Technical Debt, Architectural Fitness and Modernization Priorities](#technical-debt-and-fitness), and the S/4HANA specifics are in [SAP S/4HANA: The Enterprise Finance Core](#sap-s4hana).
+SAP now rates extensions on [clean-core levels A to D](https://news.sap.com/2025/08/extend-sap-s4hana-cloud-right-way-clean-clear/); only the lowest level (modifications, direct table writes, implicit enhancements) is considered not clean, so the goal is not zero custom code. The goal is an upgrade that no longer takes seven months. How to measure that is in [Technical Debt on the Balance Sheet](#technical-debt-and-fitness), and the S/4HANA specifics are in [SAP S/4HANA: One Journal, Clean Core](#sap-s4hana).
 
 {id: modernization-patterns--accounting-hubs-as-stranglers-for-ledgers}
 ## Accounting Hubs as Stranglers for Ledgers
@@ -129,9 +129,9 @@ flowchart LR
 
 **Figure 1:** *A hub strangles ledgers in two ways. Replicated postings give the group one set of books before the source ledgers go. Events sent into an accounting rules engine take account determination out of the custom platform. In both cases, a source ledger function is retired only after reconciliation has proven source and core equal for several closes.*
 
-The strangler metaphor hides a cost. **The hub is a system in its own right**, with a mapping layer to govern, an error queue to work every day, and a source-to-hub reconciliation that is a key control as long as both exist. Central Finance is not a migration in itself: if operational convergence never follows, the enterprise has added a ledger rather than removed one. I recommend approving a hub only together with a dated plan for what it will retire, and treating the mapping as governed master data ([Finance Data Architecture: Master Data, Systems of Record and Governance](#finance-data-architecture)), never as a spreadsheet beside the interface.
+The strangler metaphor hides a cost. **The hub is a system in its own right**, with a mapping layer to govern, an error queue to work every day, and a source-to-hub reconciliation that is a key control as long as both exist. Central Finance is not a migration in itself: if operational convergence never follows, the enterprise has added a ledger rather than removed one. I recommend approving a hub only together with a dated plan for what it will retire, and treating the mapping as governed master data ([Finance Data Architecture: Who Owns the Truth](#finance-data-architecture)), never as a spreadsheet beside the interface.
 
-Which hub Northmere chooses in Q4 2027, and whether it converges, federates or tiers its three ERPs, is the subject of [Multiple ERPs, One Finance Core: Coexistence and Convergence](#multiple-erps). This chapter's point is narrower: whichever is chosen, it is a strangler mechanism, and it needs the same gates as any other.
+Which hub Northmere chooses in Q4 2027, and whether it converges, federates or tiers its three ERPs, is the subject of [Converge or Coexist: Living with More Than One ERP](#multiple-erps). This chapter's point is narrower: whichever is chosen, it is a strangler mechanism, and it needs the same gates as any other.
 
 {id: modernization-patterns--incremental-displacement-patterns-applied-to-finance}
 ## Incremental Displacement Patterns Applied to Finance
@@ -144,7 +144,7 @@ Ian Cartwright, Rob Horn and James Lewis's [*Patterns of Legacy Displacement*](h
 | **Legacy mimic** | Thoughtworks: the new system "interacts with legacy system in such a way that the old system is not aware of any changes" | Feed the new system's results into the legacy read paths (statements, reports, downstream feeds) so consumers keep working | A write-back adapter whose numbers must reconcile to the new book of record |
 | **Transitional architecture** | Thoughtworks: "software elements installed to ease the displacement of a legacy system that we intend to remove when the displacement is complete" | Interceptors, mimics, dual-posting bridges, temporary mapping tables, migration clearing accounts | Everything in this row needs an owner and an expiry date at the moment it is built |
 | **Branch by abstraction** | [Fowler, 2014](https://martinfowler.com/bliki/BranchByAbstraction.html): introduce an abstraction, move clients onto it, swap the implementation, remove the old one, staying releasable throughout | Put a posting or invoicing interface in front of the legacy engine, move callers to it, then switch the implementation | The abstraction must carry accounting semantics (entity, period, idempotency key), not just a technical call |
-| **Revert to source** | Thoughtworks: "identify the originating source of data and integrate to that" | Feed the new ledger from the canonical financial events, not from the legacy system's summarized output | Requires the source to publish usable events ([Canonical Events and Adapters for Loosely Coupled Financial Domains](#loosely-coupled-domains)) |
+| **Revert to source** | Thoughtworks: "identify the originating source of data and integrate to that" | Feed the new ledger from the canonical financial events, not from the legacy system's summarized output | Requires the source to publish usable events ([Canonical Events: A Common Language for Money](#loosely-coupled-domains)) |
 
 *Patterns of Legacy Displacement* mentions **parallel running** only in passing, as one of several cut-over strategies, not as a named pattern; I treat it separately below because finance depends on it more than other domains do. The authors' warning that technology is "at most only 50% of the legacy problem" applies with extra force in finance, where the other half is accounting policy hidden in code and controls tied to the old system.
 
@@ -170,7 +170,7 @@ flowchart LR
 
 **What went well.**
 
-- **The seam was right.** Product-coupled commission rating stayed in SFP; only invoicing and receivables moved, the boundary [Why Enterprises Build Their Own Finance Platforms](#custom-finance-platforms) later formalized.
+- **The seam was right.** Product-coupled commission rating stayed in SFP; only invoicing and receivables moved, the boundary [When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms) later formalized.
 - **Partners saw nothing.** The legacy mimic kept statements and the partner extranet unchanged, removing a dependency on partner-facing product teams.
 - **Open items moved with proof.** About **€236 million** of open agency commission receivables across about 402,000 contract accounts with a balance were migrated with control totals per legal entity and currency, and the migration clearing account was zero by the end of cut-over day (figures illustrative). The simplicity of the journal pair is what makes it auditable:
 
@@ -187,7 +187,7 @@ flowchart LR
 
 - **The first close on FI-CA was a quarter-end.** Cut-over was the June 2025 invoicing cycle, so unexplained differences surfaced while finance was preparing the Q2 10-Q, the quarterly report to the SEC.
 - **A policy difference was treated as noise.** SFP rounds commission per booking line; FI-CA rounds per invoice. The team wrote the parallel-run differences off as "rounding noise" instead of taking a policy question to the controller, and the effect (about €38,000 net in the first month, illustrative) kept returning in the reconciliation until Leila's team ruled on it in 2026.
-- **Master data was migrated wholesale.** Every partner record ever created was loaded, active or not: the main source of the ~31,000 FI-CA business partners with no live SFP partner that the 2027 registry match found ([Finance Data Architecture: Master Data, Systems of Record and Governance](#finance-data-architecture)), an instance of **The Doppelgänger Record**.
+- **Master data was migrated wholesale.** Every partner record ever created was loaded, active or not: the main source of the ~31,000 FI-CA business partners with no live SFP partner that the 2027 registry match found ([Finance Data Architecture: Who Owns the Truth](#finance-data-architecture)), an instance of **The Doppelgänger Record**.
 - **History was cut short.** Thirteen months of agency invoices moved to FI-CA. Older agency invoices remain in SFP, so SFP's agency tables cannot be dropped and SFP keeps an archive obligation nobody planned for.
 - **The transitional architecture has no end date.** Two years on, the interceptor and the statement mimic have no owner and no retirement date, and every change to partner statements is made twice.
 
@@ -227,7 +227,7 @@ Exit criteria belong in the plan before the run starts, agreed by the controller
 - **Rollback rehearsed**, with a stated last point at which rollback is still possible.
 - **Sign-off** by Leila (accounting) and Mei Tanaka (internal controls), with the evidence pack filed as control evidence.
 
-The parallel run is the strongest form of the rule that runs through this book, **reconcile at every boundary**: old and new are two records of the same reality, and the migration is complete only when they are proven to agree. The stage-gate design per stage and entity is in [Modernizing Without Stopping the Close: An Incremental Migration](#incremental-modernization).
+The parallel run is the strongest form of the rule that runs through this book, **reconcile at every boundary**: old and new are two records of the same reality, and the migration is complete only when they are proven to agree. The stage-gate design per stage and entity is in [Modernizing Without Stopping the Close](#incremental-modernization).
 
 {id: modernization-patterns--data-migration-choices}
 ## Data Migration Choices
@@ -243,7 +243,7 @@ Every finance migration answers three data questions: how much history moves, wh
 
 My default for a finance replacement is **open items plus current-year balances, with everything older in a governed archive**. More history costs a great deal and mostly moves old data quality problems. The exception is an open item that needs its history to be understood, such as a three-year-old deferred-revenue item; that history moves with it.
 
-Whatever moves, the migration is proven the same way. Record counts, amount totals and hash totals are compared per entity, currency and account between the extract, the load and the target. A migration clearing account must be zero at the end, and the opening trial balance of the new system must equal the closing trial balance of the old one. These are control totals in the sense of [Integration Architecture for Finance](#integration-architecture), applied once at very high stakes.
+Whatever moves, the migration is proven the same way. Record counts, amount totals and hash totals are compared per entity, currency and account between the extract, the load and the target. A migration clearing account must be zero at the end, and the opening trial balance of the new system must equal the closing trial balance of the old one. These are control totals in the sense of [Files, Events and APIs: How Finance Systems Talk](#integration-architecture), applied once at very high stakes.
 
 **Retention decides how long the history must stay readable.** Retention periods vary by country and record type, and the clock usually starts at the end of the year in which the record was created. Dutch businesses must keep records [for at least seven years](https://business.gov.nl/regulation/keeping-business-records/). In Germany, books and annual financial statements are kept for ten years, while accounting vouchers, including invoices, [moved from ten to eight years from 1 January 2025](https://www.haufe.de/steuern/gesetzgebung-politik/viertes-buerokratieentlastungsgesetz_168_613390.html), with a delay for supervised financial entities. Tax audits, litigation holds and multi-year tax regimes can extend the practical period.
 
@@ -256,7 +256,7 @@ A finance cut-over is not a deployment. It is the moment the book of record chan
 
 **The pattern that works is "close in the old, open in the new".** The old system takes every transaction dated up to the last day of period M and closes M on its usual calendar. The new system takes every transaction from the first day of M+1, starting from balances and open items migrated as of the end of M. For about two weeks both are live, one closing and one transacting, and the cut-over date must leave both teams the capacity for it.
 
-**Why not year-end.** Year-end is the traditional choice because it gives a clean start for annual balances, and it is usually the worst. Year-end adjustments, the annual audit, statutory accounts for every entity and, for an SEC registrant, the 10-K annual report all fall on the same finance team in the same weeks. Every migrated balance gets audited at its most closely examined point. This is **Big-Bang Bravado**'s favorite date. For Northmere the opening guide describes the case: an integrator proposed 1 January 2029 for the merchant subledger, and Leila rejected it ([Where Finance Architecture Goes Wrong](#where-finance-architecture-goes-wrong)).
+**Why not year-end.** Year-end is the traditional choice because it gives a clean start for annual balances, and it is usually the worst. Year-end adjustments, the annual audit, statutory accounts for every entity and, for an SEC registrant, the 10-K annual report all fall on the same finance team in the same weeks. Every migrated balance gets audited at its most closely examined point. This is **Big-Bang Bravado**'s favorite date. For Northmere the opening guide describes the case: an integrator proposed 1 January 2029 for the merchant subledger, and Leila rejected it ([Unreconciled: Fourteen Ways Finance Architecture Goes Wrong](#where-finance-architecture-goes-wrong)).
 
 **Why not quarter-end.** For a US-listed group, every quarter-end close feeds a 10-Q with a fixed filing deadline. A new system's first close should not be one of those.
 
@@ -340,9 +340,9 @@ The table pulls the chapter together. It starts from the situation, not from the
 {id: modernization-patterns--integration-with-the-rest-of-the-estate}
 ## Integration With the Rest of the Estate
 
-Modernization patterns depend on the integration architecture in two ways. **Interception requires a seam**, and in finance the best seam is the canonical financial event (`BookingConfirmed`, `StayCompleted`, `CommissionInvoiced` and the rest), because it lets old and new consume the same input. That is why Keystone's canonical events ([Canonical Events and Adapters for Loosely Coupled Financial Domains](#loosely-coupled-domains)) come before its migrations in the roadmap. **Reconciliation requires matching keys**, and those keys have to be designed into the transitional architecture, as [Designing for Traceability, Reconciliation and Audit Across Boundaries](#traceability-and-reconciliation) explains.
+Modernization patterns depend on the integration architecture in two ways. **Interception requires a seam**, and in finance the best seam is the canonical financial event (`BookingConfirmed`, `StayCompleted`, `CommissionInvoiced` and the rest), because it lets old and new consume the same input. That is why Keystone's canonical events ([Canonical Events: A Common Language for Money](#loosely-coupled-domains)) come before its migrations in the roadmap. **Reconciliation requires matching keys**, and those keys have to be designed into the transitional architecture, as [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation) explains.
 
-Migration reconciliations and parallel-run variances belong in BlackLine, the group's reconciliation platform ([BlackLine: Close Automation, Reconciliation and Continuous Accounting](#blackline)), so that they are evidence and not spreadsheets. OneStream must keep consolidating while entities move between ledgers, so its mappings are part of every cut-over plan. And [Target State, Transition States and the Roadmap](#target-and-transition-states) is where a migration's intermediate states are declared stable: the formal admission that coexistence will last for years.
+Migration reconciliations and parallel-run variances belong in BlackLine, the group's reconciliation platform ([BlackLine: Matching, Certifying and Closing](#blackline)), so that they are evidence and not spreadsheets. OneStream must keep consolidating while entities move between ledgers, so its mappings are part of every cut-over plan. And [The Middle Matters: Transition States and the Roadmap](#target-and-transition-states) is where a migration's intermediate states are declared stable: the formal admission that coexistence will last for years.
 
 {id: modernization-patterns--failure-modes}
 ## Failure Modes
@@ -356,7 +356,7 @@ Migration reconciliations and parallel-run variances belong in BlackLine, the gr
 {id: modernization-patterns--the-chief-architect-s-view}
 ## The Chief Architect's View
 
-The Chief Architect does not run migrations; programs do ([Leading an ERP Modernization and Finance Transformation](#finance-transformation)). The Chief Architect owns four things that determine whether those programs can succeed.
+The Chief Architect does not run migrations; programs do ([The Technology Is the Easy Part: Leading a Finance Transformation](#finance-transformation)). The Chief Architect owns four things that determine whether those programs can succeed.
 
 **The pattern decision, recorded.** Every Keystone migration starts with an architecture decision record that names the disposition per component, the approach, the supporting patterns, the transitional architecture with its expiry conditions, and the control impact. Dana's design authority decides it with Leila, because the accounting consequences (history, policy, cut-over period) are as important as the technical ones.
 
@@ -364,7 +364,7 @@ The Chief Architect does not run migrations; programs do ([Leading an ERP Modern
 
 **The exit criteria standard.** Parallel-run variants, variance classes, sign-offs and migration control totals are a group standard owned with Mei's controls team, so the auditor sees one evidence shape for every migration.
 
-**The end state.** A modernization is counted as done when the legacy system is decommissioned, not when the new system goes live. I recommend tracking transitional components and running-but-retired systems as debt items with carrying costs, as [Technical Debt, Architectural Fitness and Modernization Priorities](#technical-debt-and-fitness) describes, so that "nearly finished" shows up as a cost and not as a success.
+**The end state.** A modernization is counted as done when the legacy system is decommissioned, not when the new system goes live. I recommend tracking transitional components and running-but-retired systems as debt items with carrying costs, as [Technical Debt on the Balance Sheet](#technical-debt-and-fitness) describes, so that "nearly finished" shows up as a cost and not as a success.
 
 What to watch over the long term: the hub mapping becoming the new Spreadsheet Glue, vendor maintenance dates moving (in both directions), and the number of systems in "archive only" state, which should go down each year rather than up.
 
@@ -385,7 +385,7 @@ What to watch over the long term: the hub mapping becoming the new Spreadsheet G
 {id: modernization-patterns--closing}
 ## Closing
 
-This chapter completes Part I: the foundations now run from capabilities and portfolio through accounting, data, controls, integration and sourcing to changing a live finance estate without breaking its books. Part II ([PLATFORMS: The Core Enterprise Finance Platforms](#part-2)) turns to the platforms themselves, starting where many modernization decisions start: the custom platforms enterprises build around their ERPs, in [Why Enterprises Build Their Own Finance Platforms](#custom-finance-platforms).
+This chapter completes Part I: the foundations now run from capabilities and portfolio through accounting, data, controls, integration and sourcing to changing a live finance estate without breaking its books. Part II ([PLATFORMS: What Each Is For, and What It Costs to Depend On](#part-2)) turns to the platforms themselves, starting where many modernization decisions start: the custom platforms enterprises build around their ERPs, in [When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms).
 
 {id: modernization-patterns--sources-and-evidence}
 ## Sources and Evidence

@@ -1,7 +1,7 @@
 {id: finance-processes}
-# 9. The End-to-End Finance Processes
+# 9. Order to Cash, Procure to Pay, Record to Report
 
-![The End-to-End Finance Processes — logo](enterprise-applications-and-financial-systems/posts/06-finance-processes/assets/images/06-finance-processes/logo.jpeg)
+![Order to Cash, Procure to Pay, Record to Report — logo](enterprise-applications-and-financial-systems/posts/06-finance-processes/assets/images/06-finance-processes/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Walk through the end-to-end finance processes an enterprise estate serves (Record-to-Report, Procure-to-Pay, Order-to-Cash and its marketplace variants, partner payouts, treasury, tax, Plan-to-Perform, Acquire-to-Retire and the finance side of Hire-to-Retire) and learn to read each one as a chain of hand-offs, with the controls, failure points and metrics that belong to each hand-off.
 
@@ -42,7 +42,7 @@ The sheet for the invoice had 11 hand-offs across five systems. The sheet for th
 {id: finance-processes--process-versus-capability}
 ### Process versus capability
 
-A **business capability** is what the organization must be able to do, stable over time and independent of how it is done: *account for partner liabilities*, *determine indirect tax*, *execute payments*. [Map Capabilities Before Systems](#capability-mapping) owns the capability map and explains why architects should map capabilities before systems. A **process** is how work flows across capabilities, in sequence, to produce an outcome a stakeholder cares about: a supplier paid correctly, a period closed, a partner paid on time. The capability map tells you what must exist; the process map tells you the order in which those capabilities are exercised and where responsibility passes from one to the next.
+A **business capability** is what the organization must be able to do, stable over time and independent of how it is done: *account for partner liabilities*, *determine indirect tax*, *execute payments*. [Map What Finance Does Before What Runs It](#capability-mapping) owns the capability map and explains why architects should map capabilities before systems. A **process** is how work flows across capabilities, in sequence, to produce an outcome a stakeholder cares about: a supplier paid correctly, a period closed, a partner paid on time. The capability map tells you what must exist; the process map tells you the order in which those capabilities are exercised and where responsibility passes from one to the next.
 
 The two views fail differently. A capability map with no process view hides hand-offs: "execute payments" is one box, but P2P, payouts, payroll and tax each invoke it with different cut-offs and approvals. A process map with no capability view hides duplication: Northmere's "pay partner" step is implemented by two payout engines, which nobody notices until both are drawn against the same capability.
 
@@ -78,7 +78,7 @@ A **hand-off** is any point where a financial item changes system, owner, identi
 | **Completeness proof** | What control total, count or reconciliation proves nothing was lost or duplicated? | SFP's daily summary posts to S/4 without a record count; a re-sent file doubles a day's revenue. |
 | **Failure path** | Where do rejected or unmatched items go, who sees them, and how do they age? | Unmatched items land in a suspense account with no owner and no aging report. |
 
-These five properties are the unit of design in this chapter. [Integration Architecture for Finance](#integration-architecture) covers the mechanics behind them (idempotency, control totals, the transactional outbox), and [Designing for Traceability, Reconciliation and Audit Across Boundaries](#traceability-and-reconciliation) turns them into a reconciliation catalog. Here the job is to find them.
+These five properties are the unit of design in this chapter. [Files, Events and APIs: How Finance Systems Talk](#integration-architecture) covers the mechanics behind them (idempotency, control totals, the transactional outbox), and [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation) turns them into a reconciliation catalog. Here the job is to find them.
 
 ![Two runners passing a document baton across a lane boundary, the baton tagged with five properties.](enterprise-applications-and-financial-systems/posts/06-finance-processes/assets/images/06-finance-processes/handoff-five-properties.jpeg)
 
@@ -127,7 +127,7 @@ In the sections that follow, metrics are **Northmere illustrations**: fictional 
 5. **Trial balance load and consolidation.** OneStream loads trial balances from S/4, Fusion and Workday, maps three charts of accounts to the group chart, translates to US dollars, eliminates intercompany and produces group results.
 6. **Review, disclosure and filing.** Flux review by brand, then Workiva for the 10-Q or 10-K.
 
-**Hand-offs that matter.** Subledger-to-GL (summary with drill-back key), ERP-to-consolidation (trial balance plus mapping) and consolidation-to-disclosure (linked figures). The second is Northmere's weakest: mappings live in spreadsheets, so a new Fusion account can reach consolidation unmapped. [Finance Data Architecture: Master Data, Systems of Record and Governance](#finance-data-architecture) takes up the group chart of accounts program.
+**Hand-offs that matter.** Subledger-to-GL (summary with drill-back key), ERP-to-consolidation (trial balance plus mapping) and consolidation-to-disclosure (linked figures). The second is Northmere's weakest: mappings live in spreadsheets, so a new Fusion account can reach consolidation unmapped. [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture) takes up the group chart of accounts program.
 
 | Aspect | At Northmere |
 | --- | --- |
@@ -135,7 +135,7 @@ In the sections that follow, metrics are **Northmere illustrations**: fictional 
 | **Typical failure points** | Summaries posted twice or not at all (no record count); late changes pushed to the next period without a flag; top-side adjustments that never flow back to entity ledgers; stale mapping spreadsheets. |
 | **Metrics (illustrative)** | **Days to close:** 9 (2027), target 5 by end-2028. **Reconciliations auto-certified** (closed by rule): 22%, target 50%. **Post-close adjustments:** target zero material. |
 
-Days to close is a lagging indicator: **it measures how long it takes to prove that every upstream hand-off worked.** The levers sit in the other processes; if settlements matched first time and accruals came from systems rather than spreadsheets, the close would shrink without anyone working faster. [Controls, Auditability and Security by Design](#controls-and-auditability) covers the controls; [BlackLine: Close Automation, Reconciliation and Continuous Accounting](#blackline) and [OneStream: Consolidation, Planning and Performance Management](#onestream) the platforms.
+Days to close is a lagging indicator: **it measures how long it takes to prove that every upstream hand-off worked.** The levers sit in the other processes; if settlements matched first time and accruals came from systems rather than spreadsheets, the close would shrink without anyone working faster. [Controls by Design, Not by Audit Season](#controls-and-auditability) covers the controls; [BlackLine: Matching, Certifying and Closing](#blackline) and [OneStream: Consolidating Actuals, Planning the Future](#onestream) the platforms.
 
 {id: finance-processes--procure-to-pay-the-supplier-invoice-across-four-systems}
 ## Procure-to-Pay: The Supplier Invoice Across Four Systems
@@ -276,7 +276,7 @@ At the **March close** the €600 is a liability, not revenue, the €1.74 is an
 | **Typical failure points** | Modified bookings that lose the link to their payment; each PSP and alternative payment method (APM) reporting fees, FX and timing differently; settlement straddling month-end; refunds reaching payments before SFP; chargebacks after the partner is paid. |
 | **Metrics (illustrative)** | **First-pass settlement match at working day 3:** 98.1% by count for Stayloft APMs (2026), target 99.7%. **Suspense:** €14 million average month-end, €2.1 million older than 90 days. **Deferred merchant bookings roll-forward explained:** 100%. |
 
-The €14 million is Northmere's clearest case of The Suspense Swamp, and its root cause is a hand-off property: in an April 2027 analysis of about 40,000 unmatched APM lines, 48% lacked the booking reference. [Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP](#payments-to-ledger) fixes it; [Payments for Finance Architects: The Lifecycle of Money Movement](#payments-fundamentals) explains why settlement is hard. Wayfare runs the same process in a different estate: the €84 Paris–Lyon rail ticket is paid through Stripe, with Wayfare as merchant of record but, under Northmere's policy, agent for the rail operator. Oracle Fusion recognizes the €6.72 margin at ticket issue and holds the €77.28 fare as a payable to the operator, who is paid monthly by Wayfare's own payout engine. **Same process, second implementation.**
+The €14 million is Northmere's clearest case of The Suspense Swamp, and its root cause is a hand-off property: in an April 2027 analysis of about 40,000 unmatched APM lines, 48% lacked the booking reference. [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger) fixes it; [Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals) explains why settlement is hard. Wayfare runs the same process in a different estate: the €84 Paris–Lyon rail ticket is paid through Stripe, with Wayfare as merchant of record but, under Northmere's policy, agent for the rail operator. Oracle Fusion recognizes the €6.72 margin at ticket issue and holds the €77.28 fare as a payable to the operator, who is paid monthly by Wayfare's own payout engine. **Same process, second implementation.**
 
 {id: finance-processes--commission-to-cash-the-agency-model}
 ### Commission-to-Cash: the agency model
@@ -356,11 +356,11 @@ Bank formats are often stated wrongly: SWIFT's MT/ISO 20022 coexistence ended in
 5. **Pay** through the payment factory, from the right entity and account.
 6. **Provide** jurisdiction-level data to the income-tax provision and to Pillar Two, the OECD's 15% global minimum tax, which needs consolidation-grade, entity-level data.
 
-**Systems.** Vertex determines indirect tax for S/4 and for SFP's commission invoicing; Wayfare uses Oracle's tax engine in nine markets. In May 2027 the design authority made Vertex the group standard, called only through a Northmere-owned tax service adapter, which turns tax determination into one standard hand-off instead of one per calling system ([Around the Core: Tax, Treasury, Procurement and Reporting Platforms](#satellite-platforms)). OneStream and the Snowflake finance data platform supply provision and Pillar Two data; Kyriba pays.
+**Systems.** Vertex determines indirect tax for S/4 and for SFP's commission invoicing; Wayfare uses Oracle's tax engine in nine markets. In May 2027 the design authority made Vertex the group standard, called only through a Northmere-owned tax service adapter, which turns tax determination into one standard hand-off instead of one per calling system ([Around the Core: Where Specialist Platforms Earn Their Place](#satellite-platforms)). OneStream and the Snowflake finance data platform supply provision and Pillar Two data; Kyriba pays.
 
 **The Lisbon booking's tax.** The €90 commission is a service to a Portuguese host. If the host is a VAT-registered business, the general B2B rule places the supply where the customer is established and the host self-assesses under reverse charge; if the host is a private individual, the answer changes. **The same booking can produce different tax outcomes depending on master data that lives in another process**, which is why each determination is logged with its inputs. The host reappears in January 2028 in Northmere's DAC7 report, with €510 paid and €90 in fees. DAC7 and VAT data must come from the same partner master and transaction record, or they will disagree in front of a tax authority.
 
-**The horizon.** The EU's [VAT in the Digital Age package](https://taxation-customs.ec.europa.eu/news/adoption-vat-digital-age-package-2025-03-11_en), adopted in March 2025, makes e-invoicing the default for intra-EU cross-border B2B supplies from 1 July 2030 and lets member states mandate domestic e-invoicing without derogation; as of 2026 Belgium, Poland, France and Germany are already phasing in mandates. Under clearance, **invoice issuance moves into the critical path of Commission-to-Cash and P2P**: an outage at an accredited platform stops invoicing. That is an architecture decision, not only a tax one; [Many Entities, Currencies, Jurisdictions and Brands](#global-scale) goes further.
+**The horizon.** The EU's [VAT in the Digital Age package](https://taxation-customs.ec.europa.eu/news/adoption-vat-digital-age-package-2025-03-11_en), adopted in March 2025, makes e-invoicing the default for intra-EU cross-border B2B supplies from 1 July 2030 and lets member states mandate domestic e-invoicing without derogation; as of 2026 Belgium, Poland, France and Germany are already phasing in mandates. Under clearance, **invoice issuance moves into the critical path of Commission-to-Cash and P2P**: an outage at an accredited platform stops invoicing. That is an architecture decision, not only a tax one; [Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale) goes further.
 
 | Aspect | At Northmere |
 | --- | --- |
@@ -375,7 +375,7 @@ Bank formats are often stated wrongly: SWIFT's MT/ISO 20022 coexistence ended in
 
 **Steps and systems.** Load closed actuals into OneStream; build driver-based plans (for Stayloft: room nights, average daily rate, take rate, merchant mix, marketing) from drivers in Snowflake's FinDB and headcount from Workday HCM; reforecast monthly with FX and demand scenarios; review performance; feed treasury's cash forecast.
 
-**The Lisbon booking in the plan.** It is one of millions in the drivers: 3 room nights at €200, a 15% take rate, merchant model. The plan needs the **definitions** behind the drivers to match the ledger. If FinDB counts room nights at booking and the ledger recognizes revenue at stay, the take rate computed from the two drifts whenever the booking curve shifts, and the review becomes a debate about whose number is right. [Finance Data Across the Estate: From Operations to Analytics](#finance-data-flows) resolves it with governed metrics.
+**The Lisbon booking in the plan.** It is one of millions in the drivers: 3 room nights at €200, a 15% take rate, merchant model. The plan needs the **definitions** behind the drivers to match the ledger. If FinDB counts room nights at booking and the ledger recognizes revenue at stay, the take rate computed from the two drifts whenever the booking curve shifts, and the review becomes a debate about whose number is right. [One Number, Many Views: Finance Data from Operations to Analytics](#finance-data-flows) resolves it with governed metrics.
 
 | Aspect | At Northmere |
 | --- | --- |
@@ -453,7 +453,7 @@ Read down a column and the platform's blast radius appears: Kyriba is in the mon
 | Q1, Q2 VAT returns | Reverse charge reported in NL | Commission VAT reported per host status | Tax |
 | Jan 2028 | — | Host reported in DAC7 | Tax |
 
-Every row in the right-hand column is a different process owner. **No single system sees either document whole**, and only a deliberately designed chain of identifiers lets anyone reconstruct it. [From Customer Transaction to Financial Statement](#transaction-to-report) traces the booking in full depth, hop by hop, with the invariants that must hold at each one.
+Every row in the right-hand column is a different process owner. **No single system sees either document whole**, and only a deliberately designed chain of identifiers lets anyone reconstruct it. [The Life of a Booking: From €600 Payment to $97.38 of Revenue](#transaction-to-report) traces the booking in full depth, hop by hop, with the invariants that must hold at each one.
 
 {id: finance-processes--trade-offs-where-process-logic-lives-and-who-owns-it}
 ## Trade-offs: Where Process Logic Lives and Who Owns It
@@ -474,7 +474,7 @@ On ownership, the choice is between system-aligned ownership (clear technical ac
 {id: finance-processes--integration-with-the-rest-of-the-estate}
 ## Integration With the Rest of the Estate
 
-This chapter owns the process view; other chapters own the layers it crosses. [Anatomy of a Financial Systems Landscape](#finance-landscape) places each system of the matrix in the reference model. [Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects) owns the journal entries behind each step. [Finance Data Architecture: Master Data, Systems of Record and Governance](#finance-data-architecture) owns the master data every hand-off depends on. [Controls, Auditability and Security by Design](#controls-and-auditability) turns the key controls here into a control framework. [Integration Architecture for Finance](#integration-architecture) supplies the idempotency and control-total mechanics, [Canonical Events and Adapters for Loosely Coupled Financial Domains](#loosely-coupled-domains) the canonical events the Lisbon trace used, and [Systems of Record and Authoritative Data Boundaries](#systems-of-record) formalizes how authority over an item moves from booking platform to subledger to GL.
+This chapter owns the process view; other chapters own the layers it crosses. [Anatomy of a Finance Estate: Layers, Planes and Boundaries](#finance-landscape) places each system of the matrix in the reference model. [Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects) owns the journal entries behind each step. [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture) owns the master data every hand-off depends on. [Controls by Design, Not by Audit Season](#controls-and-auditability) turns the key controls here into a control framework. [Files, Events and APIs: How Finance Systems Talk](#integration-architecture) supplies the idempotency and control-total mechanics, [Canonical Events: A Common Language for Money](#loosely-coupled-domains) the canonical events the Lisbon trace used, and [Systems of Record: Ending the Doppelgänger Record](#systems-of-record) formalizes how authority over an item moves from booking platform to subledger to GL.
 
 {id: finance-processes--failure-modes}
 ## Failure Modes
@@ -487,7 +487,7 @@ This chapter owns the process view; other chapters own the layers it crosses. [A
 
 **The accrual spreadsheet.** Accruals built from extracts and finished by hand are IPE, key to the close, and owned by one person: Spreadsheet Glue in its purest form, and usually the first thing to automate because the source data already exists.
 
-**Two front doors for master data.** Supplier bank details editable in Coupa *and* in S/4; partner bank details editable in SFP's console *and* a support tool. Every second door is a fraud path and a reconciliation break. The fix is one front door per master object with replication outward, which [Finance Data Architecture: Master Data, Systems of Record and Governance](#finance-data-architecture) develops.
+**Two front doors for master data.** Supplier bank details editable in Coupa *and* in S/4; partner bank details editable in SFP's console *and* a support tool. Every second door is a fraud path and a reconciliation break. The fix is one front door per master object with replication outward, which [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture) develops.
 
 **Duplicate process implementations.** Two payout engines, three billing approaches and two tax engines run "the same" process differently, so metrics are not comparable and controls are tested twice. The process view exposes them; the capability view decides which survives.
 
@@ -514,7 +514,7 @@ This chapter owns the process view; other chapters own the layers it crosses. [A
 - How do late-arriving events (refunds, chargebacks, late receipts, restated usage) find their period, and are they visible when they do?
 - Which upcoming regulatory changes alter a hand-off, and who is redesigning it?
 
-Processes describe how items flow; they cannot work unless the items flowing through them are described consistently in every system they touch. The Kestrel invoice depended on one supplier record and one chart of accounts; the Lisbon booking depended on one partner identity across SFP, Kyriba, Vertex and the DAC7 report. The next chapter, [Finance Data Architecture: Master Data, Systems of Record and Governance](#finance-data-architecture), takes up the master data, systems of record and governance that every hand-off in this chapter quietly assumes.
+Processes describe how items flow; they cannot work unless the items flowing through them are described consistently in every system they touch. The Kestrel invoice depended on one supplier record and one chart of accounts; the Lisbon booking depended on one partner identity across SFP, Kyriba, Vertex and the DAC7 report. The next chapter, [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture), takes up the master data, systems of record and governance that every hand-off in this chapter quietly assumes.
 
 {id: finance-processes--sources-and-evidence}
 ## Sources and Evidence

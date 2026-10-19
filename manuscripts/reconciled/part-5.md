@@ -1,7 +1,7 @@
 {class: part, id: part-5}
-# LEARN: Lessons From Public Case Studies
+# PRACTICE: How Others Built It
 
-![LEARN: Lessons From Public Case Studies — logo](enterprise-applications-and-financial-systems/posts/part-5-intro/assets/images/part-5-intro/logo.jpeg)
+![PRACTICE: How Others Built It — logo](enterprise-applications-and-financial-systems/posts/part-5-intro/assets/images/part-5-intro/logo.jpeg)
 
 > **IN THIS PART, YOU WILL:** Test the book's patterns against real finance and payments platforms described in public by the engineers who built them, and learn to read each case for what it documents, what it only suggests and what it leaves out.
 
@@ -40,7 +40,7 @@ The third column matters as much as the first. Where a case falls silent, usuall
 {id: part-5--the-case-in-this-part}
 ## The Case in This Part
 
-- [Uber's Payments Platform: A Ledger at the Center of Money Movement](#case-uber-payments) — Uber's engineers have described, since 2018, one payments platform between many lines of business, payment service providers and banks, built on a zero-sum ledger of immutable money orders. Correctness at scale comes from the edges: at-least-once streams, idempotent consumers, dead letters and a request store before any retry across providers. Later posts show accounting computed from money movement by a separate, rule-driven platform, the facts-versus-accounting split of [Designing Custom Ledgers and Financial Event Processing](#designing-financial-ledgers). What stays unpublished is the governance of the book of record: chart of accounts, rule approval, periods and the tie-out to the general ledger.
+- [Uber's Payments Platform: A Ledger at the Center of Money Movement](#case-uber-payments) — Uber's engineers have described, since 2018, one payments platform between many lines of business, payment service providers and banks, built on a zero-sum ledger of immutable money orders. Correctness at scale comes from the edges: at-least-once streams, idempotent consumers, dead letters and a request store before any retry across providers. Later posts show accounting computed from money movement by a separate, rule-driven platform, the facts-versus-accounting split of [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers). What stays unpublished is the governance of the book of record: chart of accounts, rule approval, periods and the tie-out to the general ledger.
 
 {id: part-5--a-growing-collection}
 ## A Growing Collection
@@ -50,6 +50,6 @@ This part is a collection, not a fixed set. The journal is a living book, and fu
 {id: part-5--using-the-cases}
 ## Using the Cases
 
-Read a case with the chapter it tests open beside it. The comparison tables in each case name those chapters: for Uber, [Designing Custom Ledgers and Financial Event Processing](#designing-financial-ledgers), [Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP](#payments-to-ledger), [Designing for Traceability, Reconciliation and Audit Across Boundaries](#traceability-and-reconciliation) and [Why Enterprises Build Their Own Finance Platforms](#custom-finance-platforms) above all. Where a case confirms a pattern, it is evidence you can cite in a decision record; where it differs from Northmere, ask which conditions (volume, team, regulation, history) explain the difference. Where it falls silent, take the gap to the [Toolkit: Templates for the Finance Architect](#toolkit), whose canonical event specification, reconciliation design card and decision record are built for exactly that design work.
+Read a case with the chapter it tests open beside it. The comparison tables in each case name those chapters: for Uber, [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers), [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger), [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation) and [When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms) above all. Where a case confirms a pattern, it is evidence you can cite in a decision record; where it differs from Northmere, ask which conditions (volume, team, regulation, history) explain the difference. Where it falls silent, take the gap to the [Working Papers: Templates for the Finance Architect](#toolkit), whose canonical event specification, reconciliation design card and decision record are built for exactly that design work.
 
 Begin with [Uber's Payments Platform: A Ledger at the Center of Money Movement](#case-uber-payments).

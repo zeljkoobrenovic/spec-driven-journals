@@ -1,7 +1,7 @@
 {class: part, id: part-4}
-# LEAD: Strategic Architecture and Transformation
+# LEADERSHIP: The Chief Architect's Agenda
 
-![LEAD: Strategic Architecture and Transformation — logo](enterprise-applications-and-financial-systems/posts/part-4-intro/assets/images/part-4-intro/logo.jpeg)
+![LEADERSHIP: The Chief Architect's Agenda — logo](enterprise-applications-and-financial-systems/posts/part-4-intro/assets/images/part-4-intro/logo.jpeg)
 
 > **IN THIS PART, YOU WILL:** Learn to lead the finance estate over years rather than projects: how decisions get made and enforced, how a target state turns into stable steps, how vendor dependency and transformation risk are managed, how the estate is kept healthy and recoverable, and how the organization, AI and a decade of change are kept inside the architecture.
 
@@ -46,24 +46,24 @@ flowchart TB
 **Decide well.**
 
 - [Architecture Governance That Speeds Decisions](#architecture-governance) — route decisions by reversibility and reach, write one decision record for every path, and make standards bite through expiring waivers and automated checks.
-- [Principles, Standards and Reference Architectures](#principles-standards-reference) — a principle is real only if something can fail it; few standards, and golden paths that make the conformant design the cheapest to build.
+- [Principles That Decide Things](#principles-standards-reference) — a principle is real only if something can fail it; few standards, and golden paths that make the conformant design the cheapest to build.
 
 **Plan the journey.**
 
-- [Target State, Transition States and the Roadmap](#target-and-transition-states) — a target state as a hypothesis with a register of what is not yet decided, and plateaus that are funded, measured and re-baselined.
-- [Vendor Strategy and Avoiding Excessive Dependency](#vendor-portfolio-strategy) — dependency as a chosen and capped budget, exit plans that have been exercised, and abstraction only at the seams where a switch would happen.
-- [Leading an ERP Modernization and Finance Transformation](#finance-transformation) — benefits owned by Finance and landed in budgets, a design authority that budgets exceptions, and delivery outsourced but never the architecture, the data or the proof.
+- [The Middle Matters: Transition States and the Roadmap](#target-and-transition-states) — a target state as a hypothesis with a register of what is not yet decided, and plateaus that are funded, measured and re-baselined.
+- [Own Your Roadmap: Vendor Strategy Without Lock-In Panic](#vendor-portfolio-strategy) — dependency as a chosen and capped budget, exit plans that have been exercised, and abstraction only at the seams where a switch would happen.
+- [The Technology Is the Easy Part: Leading a Finance Transformation](#finance-transformation) — benefits owned by Finance and landed in budgets, a design authority that budgets exceptions, and delivery outsourced but never the architecture, the data or the proof.
 
 **Keep the estate healthy.**
 
-- [Technical Debt, Architectural Fitness and Modernization Priorities](#technical-debt-and-fitness) — debt priced in money, risk and close days, fitness functions with owners and thresholds, and tranches gated by what they actually removed.
-- [Technology Spend as Financial Data: FinOps Meets the Ledger](#finops) — cloud, SaaS and AI spend as financial data: FOCUS billing data under contract, allocation as master data, accruals and recharges from one snapshot, and unit cost tied to the ledger.
-- [Resilience, Observability, Security and Recovery for Finance Systems](#resilience-and-security) — criticality that follows money and the close calendar, correctness with no error budget, and incidents corrected by entries rather than by restore.
+- [Technical Debt on the Balance Sheet](#technical-debt-and-fitness) — debt priced in money, risk and close days, fitness functions with owners and thresholds, and tranches gated by what they actually removed.
+- [FinOps Meets the Ledger: Technology Spend as Financial Data](#finops) — cloud, SaaS and AI spend as financial data: FOCUS billing data under contract, allocation as master data, accruals and recharges from one snapshot, and unit cost tied to the ledger.
+- [Recover Before the Close: Resilience and Security for Finance](#resilience-and-security) — criticality that follows money and the close calendar, correctness with no error budget, and incidents corrected by entries rather than by restore.
 
 **Organize and look ahead.**
 
-- [Organizing Architecture Ownership Across Finance, Engineering, Security and Data](#organizing-for-architecture) — in finance the organization is the architecture; teams aligned to flows and platforms, led through products rather than permissions.
-- [AI, Automation and Agentic Finance Operations](#ai-in-finance) — AI in the exception layer, agents that propose while controlled processes dispose, and every agent treated as an application plus a control.
-- [Evolving the Finance Estate Over a Decade](#long-term-evolution) — design for stressors rather than forecasts and invest in the residues that survive many of them, keep data, events and evidence in the enterprise's own form, move the architecture function from reviewing to providing, and draw the book's argument together.
+- [Who Owns What: Organizing Architecture Across Finance and Technology](#organizing-for-architecture) — in finance the organization is the architecture; teams aligned to flows and platforms, led through products rather than permissions.
+- [Automate the Work, Not the Accountability](#ai-in-finance) — AI in the exception layer, agents that propose while controlled processes dispose, and every agent treated as an application plus a control.
+- [Built to Be Replaced: Evolving the Finance Estate Over a Decade](#long-term-evolution) — design for stressors rather than forecasts and invest in the residues that survive many of them, keep data, events and evidence in the enterprise's own form, move the architecture function from reviewing to providing, and draw the book's argument together.
 
-By the end of this part you should be able to set up governance that speeds decisions rather than slowing them, defend a roadmap of stable plateaus against a big-bang plan, price your vendor dependencies and technical debt, bring technology spend into the books as trustworthy data, and show how the estate stays correct and auditable while it changes. Begin with [Architecture Governance That Speeds Decisions](#architecture-governance). The templates behind these chapters (decision record, vendor scorecard, cut-over checklist, debt register, agent control card) are collected in [Toolkit: Templates for the Finance Architect](#toolkit).
+By the end of this part you should be able to set up governance that speeds decisions rather than slowing them, defend a roadmap of stable plateaus against a big-bang plan, price your vendor dependencies and technical debt, bring technology spend into the books as trustworthy data, and show how the estate stays correct and auditable while it changes. Begin with [Architecture Governance That Speeds Decisions](#architecture-governance). The templates behind these chapters (decision record, vendor scorecard, cut-over checklist, debt register, agent control card) are collected in [Working Papers: Templates for the Finance Architect](#toolkit).

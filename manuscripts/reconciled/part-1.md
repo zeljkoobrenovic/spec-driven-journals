@@ -1,7 +1,7 @@
 {class: part, id: part-1}
-# FOUNDATIONS: The Enterprise and Its Finance Domain
+# FOUNDATIONS: How Money Moves Through an Enterprise
 
-![FOUNDATIONS: The Enterprise and Its Finance Domain — logo](enterprise-applications-and-financial-systems/posts/part-1-intro/assets/images/part-1-intro/logo.jpeg)
+![FOUNDATIONS: How Money Moves Through an Enterprise — logo](enterprise-applications-and-financial-systems/posts/part-1-intro/assets/images/part-1-intro/logo.jpeg)
 
 > **IN THIS PART, YOU WILL:** Build the vocabulary and the models a Chief Architect needs before judging any finance platform: what the architecture function is for, what finance does, how a finance estate is layered, what accounting demands of systems, and how data, controls, integration, scale, sourcing and modernization shape every later decision.
 
@@ -45,26 +45,26 @@ flowchart TB
 
 **The architecture practice.**
 
-- [The Chief Architect's Job: Coherence Across a Finance Estate](#chief-architect-role) — what the architecture function is for, which decisions it owns and how finance changes the job.
-- [Map Capabilities Before Systems](#capability-mapping) — how to name what finance does independently of systems, heat-map it, and draw bounded contexts.
+- [The Chief Architect's Job: Making Many Systems Tell One Story](#chief-architect-role) — what the architecture function is for, which decisions it owns and how finance changes the job.
+- [Map What Finance Does Before What Runs It](#capability-mapping) — how to name what finance does independently of systems, heat-map it, and draw bounded contexts.
 - [Manage the Application Portfolio as an Investment](#application-portfolio) — how to build an inventory that reconciles, cost applications in full and retire them for real.
 
 **The finance domain.**
 
-- [Anatomy of a Financial Systems Landscape](#finance-landscape) — the layers of a finance estate, the volume gradient between them and the failures that occur at layer boundaries.
+- [Anatomy of a Finance Estate: Layers, Planes and Boundaries](#finance-landscape) — the layers of a finance estate, the volume gradient between them and the failures that occur at layer boundaries.
 - [Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects) — double entry, revenue recognition and principal versus agent, worked through the €600 Lisbon booking.
-- [The End-to-End Finance Processes](#finance-processes) — the end-to-end processes as chains of hand-offs, including the marketplace variants of Order-to-Cash.
+- [Order to Cash, Procure to Pay, Record to Report](#finance-processes) — the end-to-end processes as chains of hand-offs, including the marketplace variants of Order-to-Cash.
 
 **Cross-cutting disciplines.**
 
-- [Finance Data Architecture: Master Data, Systems of Record and Governance](#finance-data-architecture) — who is authoritative for each master data domain and attribute, and why a mapping table is a control.
-- [Controls, Auditability and Security by Design](#controls-and-auditability) — IT general controls, remediation by architecture and evidence produced by the systems themselves.
-- [Integration Architecture for Finance](#integration-architecture) — integration styles chosen by job, idempotent postings and why a dead letter is not a suspense account.
-- [Many Entities, Currencies, Jurisdictions and Brands](#global-scale) — legal entity, brand, market, business model and currency as separate dimensions, and intercompany by design.
+- [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture) — who is authoritative for each master data domain and attribute, and why a mapping table is a control.
+- [Controls by Design, Not by Audit Season](#controls-and-auditability) — IT general controls, remediation by architecture and evidence produced by the systems themselves.
+- [Files, Events and APIs: How Finance Systems Talk](#integration-architecture) — integration styles chosen by job, idempotent postings and why a dead letter is not a suspense account.
+- [Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale) — legal entity, brand, market, business model and currency as separate dimensions, and intercompany by design.
 
 **Sourcing and change.**
 
-- [Build, Buy or Compose: Vendor Selection and Portfolio Rationalization](#build-versus-buy) — sourcing capabilities rather than systems, costed over a decade and selected on the hardest scenarios.
-- [Modernization Patterns for Legacy Finance Systems](#modernization-patterns) — choosing a modernization pattern by what must change, with reconciliation as the gate and retrievability as the end.
+- [Build, Buy or Compose: Choosing What to Own](#build-versus-buy) — sourcing capabilities rather than systems, costed over a decade and selected on the hardest scenarios.
+- [Changing the Engine in Flight: Modernization Patterns for Finance](#modernization-patterns) — choosing a modernization pattern by what must change, with reconciliation as the gate and retrievability as the end.
 
-By the end of this part you should be able to place any finance system in a layer, name the capability it serves and the data it masters, say which controls and integrations it depends on, and frame a sourcing or modernization decision in terms a CFO and an auditor will both accept. You will not yet know how the individual platforms work; that is the next part. Begin with [The Chief Architect's Job: Coherence Across a Finance Estate](#chief-architect-role). [PLATFORMS: The Core Enterprise Finance Platforms](#part-2) then examines the platforms themselves.
+By the end of this part you should be able to place any finance system in a layer, name the capability it serves and the data it masters, say which controls and integrations it depends on, and frame a sourcing or modernization decision in terms a CFO and an auditor will both accept. You will not yet know how the individual platforms work; that is the next part. Begin with [The Chief Architect's Job: Making Many Systems Tell One Story](#chief-architect-role). [PLATFORMS: What Each Is For, and What It Costs to Depend On](#part-2) then examines the platforms themselves.

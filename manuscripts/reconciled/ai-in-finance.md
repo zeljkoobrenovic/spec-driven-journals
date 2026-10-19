@@ -1,7 +1,7 @@
 {id: ai-in-finance}
-# 46. AI, Automation and Agentic Finance Operations
+# 46. Automate the Work, Not the Accountability
 
-![AI, Automation and Agentic Finance Operations — logo](enterprise-applications-and-financial-systems/posts/42-ai-in-finance/assets/images/42-ai-in-finance/logo.jpeg)
+![Automate the Work, Not the Accountability — logo](enterprise-applications-and-financial-systems/posts/42-ai-in-finance/assets/images/42-ai-in-finance/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Place rules, robotic process automation, machine learning, generative AI and agents on one ladder, rank finance use cases by value and control risk, and design the architecture that lets an agent work on the books without becoming an unowned control: a tool layer with least privilege, a proposal store, human approval in the system of record, and an evidence log that can reconstruct every run.
 
@@ -30,9 +30,9 @@ This chapter's argument is that the two facts are reconcilable by architecture. 
 {id: ai-in-finance--setting-the-scene-at-northmere-three-pilots-and-a-controls-lead}
 ## Setting the Scene at Northmere: Three Pilots and a Controls Lead
 
-Northmere, the fictional multinational commerce group this book follows ([Meet Northmere: The Running Example](#meet-northmere)), wrote "AI-assisted reconciliation and controls with auditable evidence" into the Year 5 aspiration of Program Keystone, its finance transformation. By June 2027 the phrase had become three requests on the desk of Dana Whitlock, the Chief Architect.
+Northmere, the fictional multinational commerce group this book follows ([Meet Northmere: Five Brands, One Set of Books](#meet-northmere)), wrote "AI-assisted reconciliation and controls with auditable evidence" into the Year 5 aspiration of Program Keystone, its finance transformation. By June 2027 the phrase had become three requests on the desk of Dana Whitlock, the Chief Architect.
 
-The first came from the payments-to-ledger program. In 2026, about **1.9%** of the settlement lines for Stayloft's **alternative payment methods (APMs)** — local wallets, bank transfers and vouchers that are not card payments — were still unmatched at working day 3 of the close, and the unreconciled balances in the payment-service-provider (PSP) clearing and suspense accounts averaged **€14 million** at month-end, with about **€2.1 million** older than 90 days. BlackLine Transaction Matching was being extended to APMs in mid-2027 ([Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP](#payments-to-ledger)); the team wanted an agent to work whatever the rules still left: classify each exception, find the counterpart, propose a match or a correcting entry.
+The first came from the payments-to-ledger program. In 2026, about **1.9%** of the settlement lines for Stayloft's **alternative payment methods (APMs)** — local wallets, bank transfers and vouchers that are not card payments — were still unmatched at working day 3 of the close, and the unreconciled balances in the payment-service-provider (PSP) clearing and suspense accounts averaged **€14 million** at month-end, with about **€2.1 million** older than 90 days. BlackLine Transaction Matching was being extended to APMs in mid-2027 ([Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger)); the team wanted an agent to work whatever the rules still left: classify each exception, find the counterpart, propose a match or a correcting entry.
 
 The second came from Leila Haddad, the Chief Accounting Officer, whose controllers write **variance commentary** — the explanation of why an account or line moved between periods beyond a threshold — for every close. They wanted first drafts generated, so that controllers reviewed explanations instead of writing them.
 
@@ -106,12 +106,12 @@ Every major platform in a finance estate now ships things it calls agents. The l
 | **Adyen** | Uplift, an AI payment-optimization suite for conversion, risk and cost | Launched 9 Jan 2025 | [Adyen release](https://www.nasdaq.com/press-release/introducing-adyen-uplift-payment-solution-optimizing-every-transaction-ai-2025-01-09) |
 | **Microsoft** | The Finance solution in Microsoft 365 Copilot (formerly Copilot for Finance): financial reconciliation GA; variance analysis in preview as of October 2025 | Naming subject to change | [Microsoft blog, Oct 2025](https://microsoft.com/en-us/dynamics-365/blog/it-professional/2025/10/20/empowering-finance-with-an-ai-assistant-in-microsoft-365-copilot) |
 
-Three cautions keep this table honest. **Announcement is not availability**: check general availability, region and contract packaging before planning on any of these. **Vendor numbers are vendor claims**: SAP's up-to-70% time saving for cash-management reconciliation, OneStream's forecast-accuracy figures, Stripe's 64% card-testing improvement and Adyen's up-to-6% conversion uplift are what the vendors say, not results in your estate. And **not all of these are finance-operations agents**: Stripe's and Adyen's AI acts on authorization, fraud and routing, upstream of the ledger; it matters to finance because it changes the data finance reconciles, which [Stripe: Programmable Payments, Billing and Connected Accounts](#stripe) and [Adyen: Single-Platform Acquiring and Platform Payments](#adyen) cover.
+Three cautions keep this table honest. **Announcement is not availability**: check general availability, region and contract packaging before planning on any of these. **Vendor numbers are vendor claims**: SAP's up-to-70% time saving for cash-management reconciliation, OneStream's forecast-accuracy figures, Stripe's 64% card-testing improvement and Adyen's up-to-6% conversion uplift are what the vendors say, not results in your estate. And **not all of these are finance-operations agents**: Stripe's and Adyen's AI acts on authorization, fraud and routing, upstream of the ledger; it matters to finance because it changes the data finance reconciles, which [Stripe: Every Movement Is a Balance Transaction](#stripe) and [Adyen: One Platform from Checkout to Settlement](#adyen) cover.
 
 {id: ai-in-finance--what-vendor-embedded-agents-do-well-and-what-they-cannot-do}
 ### What vendor-embedded agents do well, and what they cannot do
 
-A vendor-embedded agent runs inside the platform that holds the data and the workflow. It inherits the platform's security model, audit trail, approval routing and — if the vendor has scoped it in — its SOC 1 report, the independent auditor's report on a service organization's controls relevant to its customers' financial reporting ([Controls, Auditability and Security by Design](#controls-and-auditability) owns SOC 1 and complementary user-entity controls). For work that lives inside one platform — invoice intake in Oracle Payables, reconciliation preparation in BlackLine — the embedded agent is usually the right first answer.
+A vendor-embedded agent runs inside the platform that holds the data and the workflow. It inherits the platform's security model, audit trail, approval routing and — if the vendor has scoped it in — its SOC 1 report, the independent auditor's report on a service organization's controls relevant to its customers' financial reporting ([Controls by Design, Not by Audit Season](#controls-and-auditability) owns SOC 1 and complementary user-entity controls). For work that lives inside one platform — invoice intake in Oracle Payables, reconciliation preparation in BlackLine — the embedded agent is usually the right first answer.
 
 What it cannot do is see past its platform. Northmere's APM exception needs evidence from the settlement file in BlackLine, the payment in Northmere Pay and the booking in the Stayloft Finance Platform. No vendor's agent holds all three. Enterprise-built agents exist for cross-platform exceptions, and that is also where their risk lives: they need identities and tool access in several systems at once.
 
@@ -127,12 +127,12 @@ What it cannot do is see past its platform. Northmere's APM exception needs evid
 
 The rule I recommend, and Northmere adopted: **embedded first for single-platform work; enterprise-built only where the evidence spans platforms; the same control standard for both.** Teams skip the last clause. A vendor agent switched on by a configuration toggle is still a change to a financially relevant system and an automated participant in a control management certifies.
 
-The rule also checks **Capability Creep**. An estate like Northmere's can have reconciliation agents from BlackLine, OneStream, Oracle and Microsoft available at once, mostly under licenses it already holds; reconciliation already happens in three places, and the agents would make it six. The overlap register in [Preventing Redundant Capabilities and Unnecessary Coupling](#redundancy-and-coupling) should name which platform owns each AI-assisted capability, as it does for matching.
+The rule also checks **Capability Creep**. An estate like Northmere's can have reconciliation agents from BlackLine, OneStream, Oracle and Microsoft available at once, mostly under licenses it already holds; reconciliation already happens in three places, and the agents would make it six. The overlap register in [Duplicates and Dependencies: The Hidden Costs of a Grown Estate](#redundancy-and-coupling) should name which platform owns each AI-assisted capability, as it does for matching.
 
 {id: ai-in-finance--reference-architecture-for-agentic-finance-workflows}
 ## Reference Architecture for Agentic Finance Workflows
 
-The architecture has one organizing principle, which I state as a standard in [Principles, Standards and Reference Architectures](#principles-standards-reference) terms:
+The architecture has one organizing principle, which I state as a standard in [Principles That Decide Things](#principles-standards-reference) terms:
 
 > **Principle — the agent may propose; a controlled process disposes.** An AI agent may read financial data through scoped tools and may create proposals. It may not post, approve, pay or change master data. Every proposal is disposed of — accepted, amended or rejected — by the system of record's existing control, operated by a named person or by a deterministic rule that is itself a tested control.
 
@@ -173,7 +173,7 @@ The **Model Context Protocol (MCP)** is a reasonable standard for this layer. It
 
 **Human approval in the system of record.** Disposition happens where it already happens: a proposed journal enters BlackLine Journal Entry and follows the existing approval matrix; a proposed coding appears in Coupa's approval flow as a pre-filled field; a proposed match appears in the BlackLine matching workspace. I am strict about this: **no parallel approval interface built for the agent**. A second approval path is a second control to design, test and evidence, and it invites reviewers to treat agent output as more trustworthy than a colleague's.
 
-**Evidence log.** Append-only, retained as long as the records it supports, and held in the enterprise's own store — for vendor agents too, wherever the vendor exposes logs. For each run: trigger, inputs, step sequence, every tool call and response, output, model and prompt versions, validation results, and the reviewer's disposition with identity and time. Gartner's August 2026 guidance puts the bar exactly here: ["the finance team should be able to reconstruct what the agent planned, accessed, and produced for every run."](https://www.gartner.com/en/newsroom/new/pr-q-a-new-vis-template/2026-08-20-gartner-says-cfos-mus-pilot-governance-first-before-scaling-ai-agents) The traceability design in [Designing for Traceability, Reconciliation and Audit Across Boundaries](#traceability-and-reconciliation) applies unchanged: a correlation key — the proposal identifier — links the agent run to the journal, the journal to the reconciliation, and the reconciliation to the balance.
+**Evidence log.** Append-only, retained as long as the records it supports, and held in the enterprise's own store — for vendor agents too, wherever the vendor exposes logs. For each run: trigger, inputs, step sequence, every tool call and response, output, model and prompt versions, validation results, and the reviewer's disposition with identity and time. Gartner's August 2026 guidance puts the bar exactly here: ["the finance team should be able to reconstruct what the agent planned, accessed, and produced for every run."](https://www.gartner.com/en/newsroom/new/pr-q-a-new-vis-template/2026-08-20-gartner-says-cfos-mus-pilot-governance-first-before-scaling-ai-agents) The traceability design in [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation) applies unchanged: a correlation key — the proposal identifier — links the agent run to the journal, the journal to the reconciliation, and the reconciliation to the balance.
 
 **Model and prompt registry.** Every model version, prompt version, tool definition and threshold an agent uses, with its approver and evaluation results — the change-management evidence an auditor will ask for.
 
@@ -226,7 +226,7 @@ The worked example the reviewers used most: an Indonesian e-wallet settlement li
 | Analyst time per exception line, median | from about 6 minutes to about 2 |
 | Proposals that would have misstated a balance if accepted, caught by review | 11, the largest €2,300 |
 
-The most useful output was not the time saved but the category distribution: **58%** of exceptions were "missing or truncated booking reference", concentrated in two APM providers. That is a data contract problem, not an AI problem, and it went back to Lucía's team and Ingrid Solberg's PSP relationship owners as a fix to the providers' file specifications ([Canonical Events and Adapters for Loosely Coupled Financial Domains](#loosely-coupled-domains) covers the contracts). This is the trap I warn every finance team about: **an agent that makes exceptions cheap to work can make them permanent.** If triage is efficient enough, nobody fixes the cause, and the suspense account becomes a well-managed backlog instead of an empty one. The Suspense Swamp is not cured by a faster shovel. Northmere put the category distribution into the program's monthly metrics so root-cause fixes were measured alongside triage.
+The most useful output was not the time saved but the category distribution: **58%** of exceptions were "missing or truncated booking reference", concentrated in two APM providers. That is a data contract problem, not an AI problem, and it went back to Lucía's team and Ingrid Solberg's PSP relationship owners as a fix to the providers' file specifications ([Canonical Events: A Common Language for Money](#loosely-coupled-domains) covers the contracts). This is the trap I warn every finance team about: **an agent that makes exceptions cheap to work can make them permanent.** If triage is efficient enough, nobody fixes the cause, and the suspense account becomes a well-managed backlog instead of an empty one. The Suspense Swamp is not cured by a faster shovel. Northmere put the category distribution into the program's monthly metrics so root-cause fixes were measured alongside triage.
 
 ![A robot quickly shovels exception slips out of a basin fed by a leaking pipe, while two people repair the leak upstream.](enterprise-applications-and-financial-systems/posts/42-ai-in-finance/assets/images/42-ai-in-finance/faster-shovel.jpeg)
 
@@ -237,7 +237,7 @@ The most useful output was not the time saved but the category distribution: **5
 
 Northmere's controllers write about **1,400** variance explanations per close, for lines that move beyond both a percentage and an absolute threshold. The pilot drafted them from ledger and subledger movements in S/4HANA, close task notes in BlackLine, and operational metrics in FinDB, Northmere's Snowflake finance data platform.
 
-The pilot surfaced an architectural problem before a model problem. FinDB is not yet tied out to the ledger — the gap [Finance Data Across the Estate: From Operations to Analytics](#finance-data-flows) describes — so a draft explaining revenue with FinDB's booking volumes is only as reliable as unreconciled data. In audit language, data used in performing a control is **information produced by the entity (IPE)** and must be shown to be complete and accurate. Mei's position, which Dana supported: drafts cite the ledger for every financial figure, and FinDB only for operational drivers.
+The pilot surfaced an architectural problem before a model problem. FinDB is not yet tied out to the ledger — the gap [One Number, Many Views: Finance Data from Operations to Analytics](#finance-data-flows) describes — so a draft explaining revenue with FinDB's booking volumes is only as reliable as unreconciled data. In audit language, data used in performing a control is **information produced by the entity (IPE)** and must be shown to be complete and accurate. Mei's position, which Dana supported: drafts cite the ledger for every financial figure, and FinDB only for operational drivers.
 
 Two design choices made the drafts reviewable. Every sentence carried a citation to the data it relied on — an account movement, a journal, a task note — so that the controller could click through rather than trust. And the agent was required to write "no explanation found in the available evidence" rather than infer one; drafts with that phrase went to the controller unfilled. The most dangerous output of a generative model in a close is a plausible explanation of a movement that is actually an error. A commentary that says "increase driven by higher merchant volume in Iberia" for a movement caused by a misposted accrual does not just fail to detect the error; it documents it as reviewed.
 
@@ -253,7 +253,7 @@ Accounts payable is where fraud lives, so three rules were non-negotiable. The c
 {id: ai-in-finance--icfr-what-changes-when-an-agent-joins-a-control}
 ## ICFR: What Changes When an Agent Joins a Control
 
-**Internal control over financial reporting (ICFR)** is the set of processes that give reasonable assurance that the financial statements are reliable; for Northmere, a New York–listed SEC registrant, management assesses it annually under Sarbanes-Oxley section 404 and the external auditor attests to it. [Controls, Auditability and Security by Design](#controls-and-auditability) owns the vocabulary. This section owns what an agent changes.
+**Internal control over financial reporting (ICFR)** is the set of processes that give reasonable assurance that the financial statements are reliable; for Northmere, a New York–listed SEC registrant, management assesses it annually under Sarbanes-Oxley section 404 and the external auditor attests to it. [Controls by Design, Not by Audit Season](#controls-and-auditability) owns the vocabulary. This section owns what an agent changes.
 
 {id: ai-in-finance--who-owns-the-control}
 ### Who owns the control
@@ -295,7 +295,7 @@ Three sources are worth citing to an audit committee, with their status stated p
 {id: ai-in-finance--data-privacy}
 ### Data privacy
 
-Finance data is full of personal data: traveler names in remittances, sole traders on invoices, employees in expense entries. The **General Data Protection Regulation (GDPR)** applies to an agent as to any system: the gateway returns only the fields a task needs; the model provider's terms exclude training on Northmere's data and fix retention; transfers outside the EEA need the usual safeguards; and the evidence log, which holds inputs, is itself a personal-data store whose retention must balance statutory retention against minimization. No agent's tools touch systems in PCI DSS scope ([Resilience, Observability, Security and Recovery for Finance Systems](#resilience-and-security)).
+Finance data is full of personal data: traveler names in remittances, sole traders on invoices, employees in expense entries. The **General Data Protection Regulation (GDPR)** applies to an agent as to any system: the gateway returns only the fields a task needs; the model provider's terms exclude training on Northmere's data and fix retention; transfers outside the EEA need the usual safeguards; and the evidence log, which holds inputs, is itself a personal-data store whose retention must balance statutory retention against minimization. No agent's tools touch systems in PCI DSS scope ([Recover Before the Close: Resilience and Security for Finance](#resilience-and-security)).
 
 {id: ai-in-finance--the-eu-ai-act}
 ### The EU AI Act
@@ -323,7 +323,7 @@ An agent is a new consumer and producer on the integration architecture, and it 
 
 Five relationships matter.
 
-- **Integration.** The gateway is an API product on the integration layer of [Integration Architecture for Finance](#integration-architecture), not a side channel: its tools call published APIs, never databases, and its write tools land in proposal intakes the systems of record own.
+- **Integration.** The gateway is an API product on the integration layer of [Files, Events and APIs: How Finance Systems Talk](#integration-architecture), not a side channel: its tools call published APIs, never databases, and its write tools land in proposal intakes the systems of record own.
 - **Canonical events.** When agents create business records upstream — AI assistants booking stays for travelers is the obvious case — those are ordinary canonical events (`BookingConfirmed` with the agent as channel), distinguishable only by an attribute.
 - **Data platform.** Agents reading FinDB inherit its reconciliation status; until the tie-out exists, financial figures come from the ledger.
 - **Identity.** Agent identities are provisioned, reviewed and deprovisioned like privileged accounts and appear in segregation-of-duties (SoD) analysis; an identity that can both propose and approve is a conflict, as for a person.
@@ -351,7 +351,7 @@ Five relationships matter.
 {id: ai-in-finance--the-agent-control-card}
 ## The Agent Control Card
 
-Northmere made the control card a mandatory standard, STD-FIN-06, in Q3 2027: no agent — enterprise-built or vendor-embedded — goes into a financially relevant process without one, approved by the control owner, the system owner and Internal Controls. A blank version belongs in the [Toolkit: Templates for the Finance Architect](#toolkit). Here it is filled in for Pilot 1.
+Northmere made the control card a mandatory standard, STD-FIN-06, in Q3 2027: no agent — enterprise-built or vendor-embedded — goes into a financially relevant process without one, approved by the control owner, the system owner and Internal Controls. A blank version belongs in the [Working Papers: Templates for the Finance Architect](#toolkit). Here it is filled in for Pilot 1.
 
 | Field | What to record | Pilot 1: APM exception triage agent |
 | --- | --- | --- |
@@ -432,7 +432,7 @@ Who decides what: the **control owner** in Finance decides whether an agent's ou
 
 The three Northmere pilots did not deliver an autonomous finance function, and were not meant to. They delivered something more durable: a pattern — tools, proposals, approval, evidence — and a control card that let Mei's team walk the external auditor through every agent run in the FY2027 audit without a new finding on how the agents were changed or accessed. The Year 5 aspiration of AI-assisted reconciliation with auditable evidence now has an architecture that can grow into it, one rung and one use case at a time.
 
-AI is also the clearest example of a stressor the estate will keep meeting: a technology shift that arrives through every vendor at once, faster than any roadmap, with a regulatory and assurance regime still catching up. [Evolving the Finance Estate Over a Decade](#long-term-evolution) takes that view across a decade — regulation, acquisitions, vendor change and technologies like this one — and asks what has to stay true about the estate for it to remain reconcilable through all of them.
+AI is also the clearest example of a stressor the estate will keep meeting: a technology shift that arrives through every vendor at once, faster than any roadmap, with a regulatory and assurance regime still catching up. [Built to Be Replaced: Evolving the Finance Estate Over a Decade](#long-term-evolution) takes that view across a decade — regulation, acquisitions, vendor change and technologies like this one — and asks what has to stay true about the estate for it to remain reconcilable through all of them.
 
 {id: ai-in-finance--sources-and-evidence}
 ## Sources and Evidence

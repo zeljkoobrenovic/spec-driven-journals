@@ -1,7 +1,7 @@
 {id: technical-debt-and-fitness}
-# 42. Technical Debt, Architectural Fitness and Modernization Priorities
+# 42. Technical Debt on the Balance Sheet
 
-![Technical Debt, Architectural Fitness and Modernization Priorities — logo](enterprise-applications-and-financial-systems/posts/39-technical-debt-and-fitness/assets/images/39-technical-debt-and-fitness/logo.jpeg)
+![Technical Debt on the Balance Sheet — logo](enterprise-applications-and-financial-systems/posts/39-technical-debt-and-fitness/assets/images/39-technical-debt-and-fitness/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn to name the debt types that are specific to a finance estate, measure the estate's health with a catalog of finance fitness functions, keep a debt register in three columns (cost carried, risk carried, speed lost), and turn it into a sequenced, tranche-funded modernization plan that a CFO can approve.
 
@@ -30,7 +30,7 @@ The method builds on one I proposed for a different audience. **In my book OWNED
 {id: technical-debt-and-fitness--setting-the-scene-at-northmere-the-2028-funding-question}
 ## Setting the Scene at Northmere: The 2028 Funding Question
 
-Northmere, the fictional multi-brand commerce group this book follows, finished its Q3 2027 close in about eight working days, one fewer than in 2026, after the BlackLine configuration work described in [BlackLine: Close Automation, Reconciliation and Continuous Accounting](#blackline). The S/4HANA upgrade to release 2025 went live on the first weekend of October 2027. It took six months, one less than the previous upgrade, after 900 dead custom objects were archived out of the system first ([SAP S/4HANA: The Enterprise Finance Core](#sap-s4hana)).
+Northmere, the fictional multi-brand commerce group this book follows, finished its Q3 2027 close in about eight working days, one fewer than in 2026, after the BlackLine configuration work described in [BlackLine: Matching, Certifying and Closing](#blackline). The S/4HANA upgrade to release 2025 went live on the first weekend of October 2027. It took six months, one less than the previous upgrade, after 900 dead custom objects were archived out of the system first ([SAP S/4HANA: One Journal, Clean Core](#sap-s4hana)).
 
 On Thursday 21 October 2027, Dana Whitlock, the Chief Architect, chairs Northmere's Q3 architecture fitness review. A week later Tomás Ferreira, the Group CFO, will review Program Keystone's 2028 plan with the steering committee. Keystone is Northmere's five-year finance transformation, and its 2028 plan includes a line for what the plan calls "estate remediation". Tomás has read the line and sent Dana two questions in one email:
 
@@ -48,8 +48,8 @@ The quadrant is useful in a finance estate because it separates **who owns the r
 | Quadrant | Northmere example | Who owns the remedy |
 | --- | --- | --- |
 | Prudent, deliberate | SFP posting daily summaries into S/4HANA through a custom function module in 2021, to make the go-live date | The design authority, which should have recorded the shortcut with a revisit date |
-| Reckless, deliberate | 14 SFP engineers with standing production write access, granted during a 2024 incident and not withdrawn until June 2027 | The control owner; this became the FY2026 significant deficiency ([Controls, Auditability and Security by Design](#controls-and-auditability)) |
-| Prudent, inadvertent | The SAP group chart of accounts grown to about 3,900 accounts by country and product, before anyone designed dimensions ([Finance Data Architecture: Master Data, Systems of Record and Governance](#finance-data-architecture)) | The data owner (Leila), through the Finance Data Council |
+| Reckless, deliberate | 14 SFP engineers with standing production write access, granted during a 2024 incident and not withdrawn until June 2027 | The control owner; this became the FY2026 significant deficiency ([Controls by Design, Not by Audit Season](#controls-and-auditability)) |
+| Prudent, inadvertent | The SAP group chart of accounts grown to about 3,900 accounts by country and product, before anyone designed dimensions ([Finance Data Architecture: Who Owns the Truth](#finance-data-architecture)) | The data owner (Leila), through the Finance Data Council |
 | Reckless, inadvertent | Hundreds of flat-file interfaces built with no receiver-checked control totals | The integration standard owner (Lucía), through the interface contract standard |
 
 A fifth origin matters more in finance than in product engineering: **acquired debt**. Wayfare and Tablekin each brought their own ERP, chart of accounts, integration platform and payout or billing logic. Nobody at Northmere chose that debt. The acquisition did, and its owner is whoever owns the integration decision.
@@ -76,7 +76,7 @@ The risk and speed columns are not converted into money. A significant deficienc
 {id: technical-debt-and-fitness--seven-debt-types-specific-to-finance}
 ## Seven Debt Types Specific to Finance
 
-Beyond ordinary code-level debt, seven types set the CFO's agenda. Each charges interest differently, and each ends in a failure pattern from [Where Finance Architecture Goes Wrong](#where-finance-architecture-goes-wrong).
+Beyond ordinary code-level debt, seven types set the CFO's agenda. Each charges interest differently, and each ends in a failure pattern from [Unreconciled: Fourteen Ways Finance Architecture Goes Wrong](#where-finance-architecture-goes-wrong).
 
 | Debt type | What it is | How it charges interest | End-state failure pattern |
 | --- | --- | --- | --- |
@@ -88,7 +88,7 @@ Beyond ordinary code-level debt, seven types set the CFO's agenda. Each charges 
 | **Control debt** | Manual controls that could be automated; controls designed around a workaround; remediation not yet tested | Operating and testing effort every year; deficiency risk; manual review on the close critical path | Audit Archaeology |
 | **Documentation and knowledge debt** | Hand-offs with no written contract; logic that only two people understand; custom objects with no design record | Slow diagnosis; key-person risk; every change starts with discovery | The Shadow Ledger, eventually |
 
-Three of the seven are not code at all. **Control debt** and **Spreadsheet Glue** are invisible to a static-analysis tool and to an IT budget, because Finance's time and the auditor's fees pay for them. **Data debt** looks like an operations problem until a mapping error moves $41 million of Tablekin usage revenue into the wrong line, as in Northmere's Q1 2027 close ([Finance Data Architecture: Master Data, Systems of Record and Governance](#finance-data-architecture)).
+Three of the seven are not code at all. **Control debt** and **Spreadsheet Glue** are invisible to a static-analysis tool and to an IT budget, because Finance's time and the auditor's fees pay for them. **Data debt** looks like an operations problem until a mapping error moves $41 million of Tablekin usage revenue into the wrong line, as in Northmere's Q1 2027 close ([Finance Data Architecture: Who Owns the Truth](#finance-data-architecture)).
 
 ![An iceberg with code and version debt above the waterline and larger control, spreadsheet and data debt below it.](enterprise-applications-and-financial-systems/posts/39-technical-debt-and-fitness/assets/images/39-technical-debt-and-fitness/debt-below-the-waterline.jpeg)
 
@@ -123,7 +123,7 @@ The catalog below is the set Dana's team adopted for 2028. Baselines are October
 
 | Fitness function | Metric and how it is measured | Baseline → threshold | Owner | Automation and cadence |
 | --- | --- | --- | --- | --- |
-| **Reconciliation completeness** | Balance-changing interfaces whose receiver checks a record count and control total on every run, from the delivery ledgers ([Integration Architecture for Finance](#integration-architecture)) | ~240 of ~430 → all ~120 tier-1 interfaces (feeding a ledger, BlackLine or OneStream) by end 2028 | Lucía Romero | Daily, delivery-ledger events to FinDB |
+| **Reconciliation completeness** | Balance-changing interfaces whose receiver checks a record count and control total on every run, from the delivery ledgers ([Files, Events and APIs: How Finance Systems Talk](#integration-architecture)) | ~240 of ~430 → all ~120 tier-1 interfaces (feeding a ledger, BlackLine or OneStream) by end 2028 | Lucía Romero | Daily, delivery-ledger events to FinDB |
 | **Auto-match rate** | PSP settlement lines matched automatically by WD3, by payment-method family, from BlackLine Transaction Matching | Cards 99.6%; APMs 98.1% (Q2 2027) → APMs ≥ 99.0% for consecutive closes in 2028 | Ingrid Solberg | Daily extract; read at WD3 |
 | **Suspense aging** | Unexplained items in PSP clearing and suspense older than 30 and 90 days at month end | Over 90 days: €2.1M (2026 average) → ≤ €0.5M by end 2028 | Leila Haddad | Month end, from BlackLine |
 | **Subledger-to-GL tie-out breaks** | Unexplained differences at WD1 between each subledger (SFP, FI-CA, Stripe to Workday) and its GL control accounts | SFP: 23 breaks, ~€310,000 (Q2 2027), falling in shadow posting since August 2027; target 0 unexplained after the 1 November 2027 cut-over; FI-CA and Tablekin on the same basis by end 2028 | Leila Haddad, with each subledger owner | Daily tie-out feeding BlackLine |
@@ -141,13 +141,13 @@ The catalog below is the set Dana's team adopted for 2028. Baselines are October
 
 **Most rows measure the books, not the code.** Ten of the fifteen are computed from finance data: matching results, reconciliation detail, close task timestamps, control-matrix attributes. A finance estate is healthy when its money can be proven, and the proof is in the data.
 
-**Each owner can move the number.** Auto-match rate belongs to Ingrid Solberg, who runs Northmere Pay, not to Leila. About two-thirds of the unmatched APM lines are a data problem in the payment flow (missing booking references, provider daily aggregates) that no matching rule can fix ([BlackLine: Close Automation, Reconciliation and Continuous Accounting](#blackline), [Adyen: Single-Platform Acquiring and Platform Payments](#adyen)). Leila owns suspense aging because clearing it takes accounting decisions. An owner who cannot change the outcome turns a fitness function into a report.
+**Each owner can move the number.** Auto-match rate belongs to Ingrid Solberg, who runs Northmere Pay, not to Leila. About two-thirds of the unmatched APM lines are a data problem in the payment flow (missing booking references, provider daily aggregates) that no matching rule can fix ([BlackLine: Matching, Certifying and Closing](#blackline), [Adyen: One Platform from Checkout to Settlement](#adyen)). Leila owns suspense aging because clearing it takes accounting decisions. An owner who cannot change the outcome turns a fitness function into a report.
 
 **Thresholds that tighten carry dates.** "≥ 99.0% for two consecutive closes in 2028" is a threshold. "Improve the match rate" is not. A threshold without a date cannot be failed, and a fitness function that cannot fail does no governing.
 
 **A catalog needs both atomic and holistic rows.** Clean-core score and idempotency conformance are atomic and triggered: they run in a pipeline and block a change, so they stop new debt arriving. Close duration by phase and suspense aging are holistic: they move only when several debts are paid, so they show whether paying old debt made any difference to Finance.
 
-Money in flight, the value that has left one system and not yet arrived in the next, is not in this catalog. It is an operational signal monitored in real time, and [Resilience, Observability, Security and Recovery for Finance Systems](#resilience-and-security) treats it as business observability. The fitness review reads its monthly trend but does not own it.
+Money in flight, the value that has left one system and not yet arrived in the next, is not in this catalog. It is an operational signal monitored in real time, and [Recover Before the Close: Resilience and Security for Finance](#resilience-and-security) treats it as business observability. The fitness review reads its monthly trend but does not own it.
 
 {id: technical-debt-and-fitness--architecture-how-the-fitness-functions-are-measured-and-reviewed}
 ## Architecture: How the Fitness Functions Are Measured and Reviewed
@@ -177,9 +177,9 @@ flowchart LR
 {id: technical-debt-and-fitness--three-measurement-mechanisms}
 ### Three measurement mechanisms
 
-**Pipelines block new debt.** Two fitness functions are enforced before a change reaches production. Since June 2027, the ABAP Test Cockpit's clean-core checks run in the S/4HANA transport pipeline, and a new Level D object needs a design-authority waiver with an expiry date ([SAP S/4HANA: The Enterprise Finance Core](#sap-s4hana)). In 2028, every deployment of a balance-changing interface runs a duplicate-delivery test: the pipeline sends the same batch twice under the same idempotency key and checks that the receiver posts once.
+**Pipelines block new debt.** Two fitness functions are enforced before a change reaches production. Since June 2027, the ABAP Test Cockpit's clean-core checks run in the S/4HANA transport pipeline, and a new Level D object needs a design-authority waiver with an expiry date ([SAP S/4HANA: One Journal, Clean Core](#sap-s4hana)). In 2028, every deployment of a balance-changing interface runs a duplicate-delivery test: the pipeline sends the same batch twice under the same idempotency key and checks that the receiver posts once.
 
-**Operational data proves the books.** BlackLine already holds the evidence for matching, reconciliation and close tasks. The delivery ledgers designed in [Integration Architecture for Finance](#integration-architecture) already record counts, control totals and dead letters per batch. The task is to extract it daily into FinDB, not to create new measurements; BlackLine's own reports remain the audit evidence.
+**Operational data proves the books.** BlackLine already holds the evidence for matching, reconciliation and close tasks. The delivery ledgers designed in [Files, Events and APIs: How Finance Systems Talk](#integration-architecture) already record counts, control totals and dead letters per batch. The task is to extract it daily into FinDB, not to create new measurements; BlackLine's own reports remain the audit evidence.
 
 **FinDB computes and tests.** Owen's team keeps a small fitness mart in FinDB, built with dbt. Each threshold is written as a dbt data test, a SQL query that, in dbt's own definition, returns "a set of failing records" ([dbt documentation](https://docs.getdbt.com/docs/build/data-tests)). A breach is therefore a list of the interfaces, accounts or controls that fail, not a red cell, and the review starts from those records.
 
@@ -206,13 +206,13 @@ Dana's team builds the register in the week after the review, from every candida
 | 1 | **S/4HANA custom code.** ~1,400 objects after the first retirement wave; 250 executed Level D, 34 in posting or billing logic | Custom code in ERP; prudent-deliberate in 2021, never revisited | $0.7M cash (integrator remediation per upgrade, annualized); $1.9M capacity (upgrade regression and remediation; IT general controls testing) | 34 Level D objects where an upgrade defect changes the books | Six months of upgrade and change freeze per upgrade | 2029 upgrade: posting-path Level D must be 0 by end 2028 |
 | 2 | **Colocation estate.** Read-only Wayfare EBS archive, RateKeeper, six Wayfare satellite tools | Unsupported versions and vendor deadline; acquired | $1.7M cash (hosting, archive, support); $0.7M capacity (~4 FTE) | A five-market tax engine kept by two engineers; audit and tax records on a platform with an end date | Satellite tools block Wayfare's own retirements | **Colocation ends 31 December 2028** |
 | 3 | **Spreadsheet Glue in the close.** ~70 EUCs; 17 still registered after the 14 mapping workbooks retired in May 2027 | End-user computing; reckless-inadvertent | $1.4M capacity (~7 FTE upkeep and preparation; ~1.5 FTE extra SOX testing) | 27 key controls without change control; the Q1 2027 $41M misclassification shows the class of error | ~Half a close day: accrual workbooks and the Coupa open-PO extract at WD1–2 | BlackLine renewal 2028 |
-| 4 | **Integration debt.** ~240 flat files; ~190 balance-changing interfaces without receiver-checked control totals; three integration technologies | Integration; reckless-inadvertent plus acquired | $1.1M cash (MuleSoft legacy lane); $2.3M capacity (~14 FTE break-fix and reruns) | The January 2027 double post: €38M control-account gap, €2.9M of revenue reversed by hand ([Integration Architecture for Finance](#integration-architecture)) | ~Half a close day of late or rerun feeds; ~11 weeks to onboard a PSP or brand feed | None; MuleSoft retires with convergence |
+| 4 | **Integration debt.** ~240 flat files; ~190 balance-changing interfaces without receiver-checked control totals; three integration technologies | Integration; reckless-inadvertent plus acquired | $1.1M cash (MuleSoft legacy lane); $2.3M capacity (~14 FTE break-fix and reruns) | The January 2027 double post: €38M control-account gap, €2.9M of revenue reversed by hand ([Files, Events and APIs: How Finance Systems Talk](#integration-architecture)) | ~Half a close day of late or rerun feeds; ~11 weeks to onboard a PSP or brand feed | None; MuleSoft retires with convergence |
 | 5 | **Payments reference and matching debt.** APM lines without usable references, card-timed matching windows, refunds outside the PSP | Integration and data; prudent-inadvertent | $2.0M capacity (~12 FTE manual matching and suspense investigation) | €14M average in PSP clearing and suspense (2026), €2.1M over 90 days | ~One close day (WD3–5) | **Brazil launch 2028** ("ledger-ready before launch") |
 | 6 | **Data debt.** Three charts of accounts; ~31,000 orphan FI-CA partners, ~12,400 double links, ~4% VAT-number mismatch | Data; acquired | $1.3M capacity (~8 FTE corrections, re-issues, mapping upkeep) | Invoices and dunning against the wrong partner; VAT data errors under e-invoicing | Group chart v2 waits for convergence (2029) | Partner hub sole path into FI-CA, 2029 |
 | 7 | **Control debt.** ~378 of 610 key controls manual; SFP remediation in its first year | Control; mixed | $3.1M capacity (~19 FTE operating and testing manual controls) | A significant deficiency to close in the FY2027 audit | ~One close day of manual review at WD8–9 | **FY2027 audit fieldwork**, to February 2028 |
 | 8 | **Knowledge debt.** ~150 of ~430 balance-changing hand-offs have a registered contract; design records for about a third of posting-path custom code | Documentation and knowledge; reckless-inadvertent | $0.5M capacity (~3 FTE diagnosis and rediscovery) | ~1.5 days to diagnose a feed failure; key-person dependence | Every change starts with discovery | None binding |
 
-All figures are illustrative. Read across, the eight items carry about **$3.5 million a year of cash and $13.2 million of capacity**, about 80 FTE-years of Northmere's people. Those two totals are the only sums Dana presents. The risk and speed columns are not added up. Close days in particular are not additive, because removing one phase's delay moves the critical path to the next phase; each figure is the item's share of the upstream plan in [BlackLine: Close Automation, Reconciliation and Continuous Accounting](#blackline).
+All figures are illustrative. Read across, the eight items carry about **$3.5 million a year of cash and $13.2 million of capacity**, about 80 FTE-years of Northmere's people. Those two totals are the only sums Dana presents. The risk and speed columns are not added up. Close days in particular are not additive, because removing one phase's delay moves the critical path to the next phase; each figure is the item's share of the upstream plan in [BlackLine: Matching, Certifying and Closing](#blackline).
 
 Three cross-checks keep the register honest.
 
@@ -220,7 +220,7 @@ Three cross-checks keep the register honest.
 
 **Each item names its fitness functions.** Item 1 is read through the clean-core score and upgrade lead time; item 3 through EUCs in key controls; item 4 through reconciliation completeness, idempotency conformance and interface error rate; item 5 through auto-match rate and suspense aging; item 7 through key-control automation. Without a fitness function nobody can show that the money worked, so the register requires one before the first tranche.
 
-**Debt carried deliberately is recorded as a decision.** MuleSoft's legacy lane (part of item 4) is carried until ledger convergence, because migrating working flows earlier means rebuilding them twice ([Integration Architecture for Finance](#integration-architecture)). The register records the reason, the cost ($1.1 million of cash a year) and what would reopen it: a sharply higher renewal, or convergence slipping past 2030.
+**Debt carried deliberately is recorded as a decision.** MuleSoft's legacy lane (part of item 4) is carried until ledger convergence, because migrating working flows earlier means rebuilding them twice ([Files, Events and APIs: How Finance Systems Talk](#integration-architecture)). The register records the reason, the cost ($1.1 million of cash a year) and what would reopen it: a sharply higher renewal, or convergence slipping past 2030.
 
 {id: technical-debt-and-fitness--sequencing-dates-first-then-removal-per-effort}
 ## Sequencing: Dates First, Then Removal per Effort
@@ -248,7 +248,7 @@ flowchart TB
 {id: technical-debt-and-fitness--finance-s-dates}
 ### Finance's dates
 
-A finance estate has five kinds of external date, and the register records each with its source: **vendor maintenance and hosting** (S/4HANA release maintenance, the colocation contract), **contract renewal and notice** (OneStream's notice date of 30 September 2027, used for wave 0; BlackLine's 2028 renewal), the **audit cycle** (FY2027 testing of the SFP remediation), **regulation** (e-invoicing mandates, ViDA and Pillar Two, [Around the Core: Tax, Treasury, Procurement and Reporting Platforms](#satellite-platforms)) and **business launches** (Brazil in 2028). Missing a regulatory or launch date has a particular cost in finance: the workaround that fills the gap is usually a spreadsheet, so a missed date creates new Spreadsheet Glue.
+A finance estate has five kinds of external date, and the register records each with its source: **vendor maintenance and hosting** (S/4HANA release maintenance, the colocation contract), **contract renewal and notice** (OneStream's notice date of 30 September 2027, used for wave 0; BlackLine's 2028 renewal), the **audit cycle** (FY2027 testing of the SFP remediation), **regulation** (e-invoicing mandates, ViDA and Pillar Two, [Around the Core: Where Specialist Platforms Earn Their Place](#satellite-platforms)) and **business launches** (Brazil in 2028). Missing a regulatory or launch date has a particular cost in finance: the workaround that fills the gap is usually a spreadsheet, so a missed date creates new Spreadsheet Glue.
 
 {id: technical-debt-and-fitness--applying-the-rule}
 ### Applying the rule
@@ -256,7 +256,7 @@ A finance estate has five kinds of external date, and the register records each 
 **Step 1, dates.** Four items have dates that bind.
 
 - **Item 2 (colocation):** moving RateKeeper's five markets to Vertex needs about four months of configuration, one quarter of reconciled parallel determinations and an archive read path for auditors and tax. With a margin, the latest start is Q1 2028; the work starts in Q4 2027.
-- **Item 5 (payments references):** Brazil's local methods must match automatically before launch, so the known fixes for references, matching windows and refunds outside the PSP ([Adyen: Single-Platform Acquiring and Platform Payments](#adyen)) must be proven on existing APMs first.
+- **Item 5 (payments references):** Brazil's local methods must match automatically before launch, so the known fixes for references, matching windows and refunds outside the PSP ([Adyen: One Platform from Checkout to Settlement](#adyen)) must be proven on existing APMs first.
 - **Item 7 (control debt):** the FY2027 audit tests the SFP remediation regardless. The work is funded; the register ensures no tranche touches the payout controls during fieldwork.
 - **Item 1 (custom code):** a three-month 2029 upgrade needs posting-path Level D at zero by the end of 2028. The work takes about a year, so the latest start is Q1 2028.
 
@@ -344,9 +344,9 @@ The register-plus-fitness approach costs real effort: someone must build the fee
 ## Integration With the Rest of the Estate
 
 - **Portfolio.** Waves in [Manage the Application Portfolio as an Investment](#application-portfolio) retire whole applications; the register prices the debt carried while they wait and gives wave gates their evidence.
-- **Governance and standards.** An expired waiver from [Architecture Governance That Speeds Decisions](#architecture-governance) becomes a register item. Each mandatory standard, STD-FIN-01 to STD-FIN-06, has at least one fitness function; a standard without one is hope. [Principles, Standards and Reference Architectures](#principles-standards-reference) owns the standards themselves.
-- **Roadmap and migrations.** Tranches are the debt view of the transition states in [Target State, Transition States and the Roadmap](#target-and-transition-states); a transition state is not reached until its thresholds pass. [Modernizing Without Stopping the Close: An Incremental Migration](#incremental-modernization) owns migration stage gates, which hand over to these steady-state thresholds.
-- **Controls and AI.** Control debt is measured in Mei's risk and control matrix ([Controls, Auditability and Security by Design](#controls-and-auditability)), and automated controls are designed with the control owner. Agents can raise the auto-match rate, but under [AI, Automation and Agentic Finance Operations](#ai-in-finance) an agent proposes and a controlled process disposes, so an agent-driven rise is read together with match quality.
+- **Governance and standards.** An expired waiver from [Architecture Governance That Speeds Decisions](#architecture-governance) becomes a register item. Each mandatory standard, STD-FIN-01 to STD-FIN-06, has at least one fitness function; a standard without one is hope. [Principles That Decide Things](#principles-standards-reference) owns the standards themselves.
+- **Roadmap and migrations.** Tranches are the debt view of the transition states in [The Middle Matters: Transition States and the Roadmap](#target-and-transition-states); a transition state is not reached until its thresholds pass. [Modernizing Without Stopping the Close](#incremental-modernization) owns migration stage gates, which hand over to these steady-state thresholds.
+- **Controls and AI.** Control debt is measured in Mei's risk and control matrix ([Controls by Design, Not by Audit Season](#controls-and-auditability)), and automated controls are designed with the control owner. Agents can raise the auto-match rate, but under [Automate the Work, Not the Accountability](#ai-in-finance) an agent proposes and a controlled process disposes, so an agent-driven rise is read together with match quality.
 
 {id: technical-debt-and-fitness--failure-modes}
 ## Failure Modes
@@ -357,7 +357,7 @@ The register-plus-fitness approach costs real effort: someone must build the fee
 
 **Metrics without owners.** A fitness function owned by "Finance and IT", or by the architect who proposed it, breaches and nobody has the authority and budget to fix it. Northmere's auto-match rate sat with Leila at first and did not move for two quarters; it moved once Ingrid owned it, because the cause was in the payment data her teams produce.
 
-**Gaming the holistic metrics.** Match rates rise when tolerances widen; suspense aging falls when items are written off instead of explained; close duration falls when work moves into the days before the close. Each holistic fitness function needs a companion check: logged tolerance changes ([BlackLine: Close Automation, Reconciliation and Continuous Accounting](#blackline)), write-offs beside suspense aging, pre-close hours beside close days.
+**Gaming the holistic metrics.** Match rates rise when tolerances widen; suspense aging falls when items are written off instead of explained; close duration falls when work moves into the days before the close. Each holistic fitness function needs a companion check: logged tolerance changes ([BlackLine: Matching, Certifying and Closing](#blackline)), write-offs beside suspense aging, pre-close hours beside close days.
 
 **Paying debt into the new core.** Funding the new core while leaving partner, reference and interface debt in place means migrating it, and convergence programs commonly discover this during data migration, when it is most expensive to fix.
 
@@ -390,7 +390,7 @@ The register-plus-fitness approach costs real effort: someone must build the fee
 {id: technical-debt-and-fitness--handing-off}
 ## Handing Off
 
-The register prices debt partly in hosting and subscription cash, and the Keystone savings it promises are claimed against the same bills. Neither figure is better than the data behind it. Today, cloud cost reaches the books by a quarterly spreadsheet, and nobody can say what technology costs per Stayloft booking. [Technology Spend as Financial Data: FinOps Meets the Ledger](#finops) treats technology spend as financial data: billing data under a contract, allocation as master data, accruals and amortization from a cut-off snapshot, a tie-out to the ledger, and unit cost as a governed metric. After it, [Resilience, Observability, Security and Recovery for Finance Systems](#resilience-and-security) asks how a measured estate survives the day something fails.
+The register prices debt partly in hosting and subscription cash, and the Keystone savings it promises are claimed against the same bills. Neither figure is better than the data behind it. Today, cloud cost reaches the books by a quarterly spreadsheet, and nobody can say what technology costs per Stayloft booking. [FinOps Meets the Ledger: Technology Spend as Financial Data](#finops) treats technology spend as financial data: billing data under a contract, allocation as master data, accruals and amortization from a cut-off snapshot, a tie-out to the ledger, and unit cost as a governed metric. After it, [Recover Before the Close: Resilience and Security for Finance](#resilience-and-security) asks how a measured estate survives the day something fails.
 
 {id: technical-debt-and-fitness--sources-and-evidence}
 ## Sources and Evidence
@@ -398,7 +398,7 @@ The register prices debt partly in hosting and subscription cash, and the Keysto
 *Vendor documentation*
 
 - [Add data tests to your DAG](https://docs.getdbt.com/docs/build/data-tests), dbt Labs, accessed October 2026 — data tests as SQL assertions that return failing records; used for the FinDB fitness mart design.
-- [Extend SAP S/4HANA Cloud the Right Way](https://news.sap.com/2025/08/extend-sap-s4hana-cloud-right-way-clean-clear/), SAP, 2025 — clean-core levels A–D underlying the clean-core score; detail in [SAP S/4HANA: The Enterprise Finance Core](#sap-s4hana).
+- [Extend SAP S/4HANA Cloud the Right Way](https://news.sap.com/2025/08/extend-sap-s4hana-cloud-right-way-clean-clear/), SAP, 2025 — clean-core levels A–D underlying the clean-core score; detail in [SAP S/4HANA: One Journal, Clean Core](#sap-s4hana).
 - [Navigating release upgrades (SAP S/4HANA Cloud Private Edition)](https://learning.sap.com/courses/implementing-sap-s-4hana-cloud-private-edition/navigating-release-upgrades_ae2d796c-bafd-4e04-8b41-562ebda9eb49), SAP Learning — upgrade responsibilities and cadence behind upgrade lead time as a fitness function.
 
 *Practitioner and research sources*

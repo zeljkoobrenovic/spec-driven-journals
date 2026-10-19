@@ -1,7 +1,7 @@
 {id: payments-fundamentals}
-# 23. Payments for Finance Architects: The Lifecycle of Money Movement
+# 23. Payments for Finance Architects: Eleven Reasons the Numbers Disagree
 
-![Payments for Finance Architects: The Lifecycle of Money Movement — logo](enterprise-applications-and-financial-systems/posts/20-payments-fundamentals/assets/images/20-payments-fundamentals/logo.jpeg)
+![Payments for Finance Architects: Eleven Reasons the Numbers Disagree — logo](enterprise-applications-and-financial-systems/posts/20-payments-fundamentals/assets/images/20-payments-fundamentals/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Follow one €600 booking and one €420 chargeback through every step of a payment's life. You will learn who holds the money and who bears the risk at each step, how pricing, payment methods, tokens, foreign exchange and regulation shape the records, and why settlement reconciliation is hard enough to need its own architecture.
 
@@ -23,9 +23,9 @@
 
 Most finance architects meet payments as a feed: a settlement file arrives, a bank credit arrives, and someone has to make them agree with the bookings. That view starts too late. By the time the file arrives, the decisions that determine whether it can be matched have already been made, by the payments team, when it chose a provider, a payment method, a capture policy, a reference format and a payout schedule. **The reconciliation problem is designed upstream, in places finance rarely looks.**
 
-This chapter is the payments primer a finance architect needs before reading the provider chapters, [Adyen: Single-Platform Acquiring and Platform Payments](#adyen) and [Stripe: Programmable Payments, Billing and Connected Accounts](#stripe), and before [Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP](#payments-to-ledger), which owns the integration design. It does not repeat the accounting; [Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects) owns the journal entries. It explains the **lifecycle of money movement**: the parties, the steps, the prices, the methods, the regulation, and the mechanisms that make a provider's payout differ from the sales a commerce system thinks it made.
+This chapter is the payments primer a finance architect needs before reading the provider chapters, [Adyen: One Platform from Checkout to Settlement](#adyen) and [Stripe: Every Movement Is a Balance Transaction](#stripe), and before [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger), which owns the integration design. It does not repeat the accounting; [Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects) owns the journal entries. It explains the **lifecycle of money movement**: the parties, the steps, the prices, the methods, the regulation, and the mechanisms that make a provider's payout differ from the sales a commerce system thinks it made.
 
-The method is to trace real-looking money. Northmere, the fictional group this book follows (see [Meet Northmere: The Running Example](#meet-northmere)), moved about 420 million payment transactions through its payments platform in 2026. We follow two of them, a €600 booking and a €420 chargeback, from the moment a traveler presses "pay" to the moment the books can prove what happened.
+The method is to trace real-looking money. Northmere, the fictional group this book follows (see [Meet Northmere: Five Brands, One Set of Books](#meet-northmere)), moved about 420 million payment transactions through its payments platform in 2026. We follow two of them, a €600 booking and a €420 chargeback, from the moment a traveler presses "pay" to the moment the books can prove what happened.
 
 {id: payments-fundamentals--setting-the-scene-why-is-600-not-cash-yet}
 ## Setting the Scene: Why Is €600 Not Cash Yet?
@@ -67,7 +67,7 @@ Point 3 is where Northmere's own structure becomes instructive.
 | Stayloft agency booking | The property and its own acquirer | The property | The property | Net: commission invoiced monthly |
 | Wayfare flight (agency) | The airline | The airline | The airline | Net: commission or service fee |
 | Wayfare rail ticket (merchant) | Wayfare, until the operator is paid monthly | Wayfare | Wayfare | **Net**: Wayfare is agent for the operator's transport service |
-| Tablekin venue payment | Stripe, then the venue's connected account | Depends on the Stripe Connect charge type (see [Stripe: Programmable Payments, Billing and Connected Accounts](#stripe)) | Depends on the charge type | Net: Tablekin's platform fees |
+| Tablekin venue payment | Stripe, then the venue's connected account | Depends on the Stripe Connect charge type (see [Stripe: Every Movement Is a Balance Transaction](#stripe)) | Depends on the charge type | Net: Tablekin's platform fees |
 
 The Stayloft and Wayfare merchant rows are the ones that confuse people. Northmere is merchant of record for the *payment*: its name is on the statement, it receives the chargebacks, and its licensed entity holds the money. Yet Stayloft is an *agent* for the *stay*, so its revenue on the €600 booking is the €90 commission, not the €600. **Payments vocabulary and accounting vocabulary describe the same transaction but answer different questions**, and the architecture has to keep both answers.
 
@@ -198,7 +198,7 @@ Contracts package these in two ways. **Blended pricing** charges one rate whatev
 | PSP markup | Negotiated, illustrative: €0.23 on the transaction line plus a €0.10 processing fee charged at batch level | €0.33 |
 | **Total** | | **€1.74** |
 
-In Adyen's reports the €1.74 appears in two places: €1.64 (interchange, scheme fees and €0.23 of the markup) on the payment's settlement line, which therefore shows a net of €598.36, and the remaining €0.10 of the markup as a processing fee charged once per batch. Northmere Pay attributes that €0.10 back to the payment, so the canonical net is €598.26; [Adyen: Single-Platform Acquiring and Platform Payments](#adyen) walks through the batch.
+In Adyen's reports the €1.74 appears in two places: €1.64 (interchange, scheme fees and €0.23 of the markup) on the payment's settlement line, which therefore shows a net of €598.36, and the remaining €0.10 of the markup as a processing fee charged once per batch. Northmere Pay attributes that €0.10 back to the payment, so the canonical net is €598.26; [Adyen: One Platform from Checkout to Settlement](#adyen) walks through the batch.
 
 Had the traveler used a consumer credit card, the interchange cap alone would have been €1.80; with a corporate card, no EU cap would apply. **Card mix is a cost driver that the commerce system never sees**, and IC++ makes it visible only if data is kept at transaction level.
 
@@ -233,7 +233,7 @@ Merchants store **tokens** instead of card numbers. A **PSP token** stands in fo
 
 The finance architect's interest is **portability**. PSP tokens do not move between providers, and network tokens are usually requested by the PSP as token requestor, so moving them also needs cooperation. A merchant that wants to move stored cards has three routes: a third-party vault it controls, which forwards card data or network tokens to each provider (Spreedly, for example, describes its vault as one "the merchant owns" ([Spreedly](https://www.spreedly.com/))); network tokens under its own token-requestor identity where the schemes allow; or a negotiated provider-to-provider card-data export at exit. That export right belongs in the contract before signature.
 
-At Northmere in 2027 the payments platform stores no card numbers. Returning Stayloft travelers' cards are Adyen tokens; the Stripe share carries Stripe tokens. Ingrid's team can route a *new* card to either provider, but not a *stored* card to the provider that lacks its token. **The vault, not the contract, decides how much volume Northmere can move**, which makes it a question for [Vendor Strategy and Avoiding Excessive Dependency](#vendor-portfolio-strategy) as much as for payments.
+At Northmere in 2027 the payments platform stores no card numbers. Returning Stayloft travelers' cards are Adyen tokens; the Stripe share carries Stripe tokens. Ingrid's team can route a *new* card to either provider, but not a *stored* card to the provider that lacks its token. **The vault, not the contract, decides how much volume Northmere can move**, which makes it a question for [Own Your Roadmap: Vendor Strategy Without Lock-In Panic](#vendor-portfolio-strategy) as much as for payments.
 
 {id: payments-fundamentals--refunds-a-new-payment-in-the-other-direction}
 ## Refunds: A New Payment in the Other Direction
@@ -348,7 +348,7 @@ Regulation changes which flows are allowed, which data must be kept and which re
 
 **PCI DSS.** The Payment Card Industry Data Security Standard v4.0.1 was published in June 2024; v4.0 was retired on 31 December 2024, and the future-dated requirements took effect on 31 March 2025 ([PCI SSC](https://blog.pcisecuritystandards.org/just-published-pci-dss-v4-0-1)). The architectural point is **scope**. Provider-hosted fields, redirects and SDKs keep card numbers off merchant systems; a merchant-run vault, or an orchestrator that proxies raw card numbers through merchant systems, brings those systems into scope. Version 4's payment-page script-integrity requirements apply even to iframe and redirect integrations, and the PCI SSC has since adjusted the eligibility wording of the simplest self-assessment questionnaire (SAQ A), so check the current text with the assessor. Marco Bellini, Northmere's CISO, treats "no card number touches a Northmere server" as a constraint on any orchestration design.
 
-**DORA.** The EU Digital Operational Resilience Act has applied since 17 January 2025 to financial entities, including e-money institutions. For Northmere Payments B.V., the PSPs, the payments platform and bank connectivity are ICT services that may support critical or important functions, which brings contractual clauses, a register of information and exit strategies; [Resilience, Observability, Security and Recovery for Finance Systems](#resilience-and-security) and [Vendor Strategy and Avoiding Excessive Dependency](#vendor-portfolio-strategy) take it further.
+**DORA.** The EU Digital Operational Resilience Act has applied since 17 January 2025 to financial entities, including e-money institutions. For Northmere Payments B.V., the PSPs, the payments platform and bank connectivity are ICT services that may support critical or important functions, which brings contractual clauses, a register of information and exit strategies; [Recover Before the Close: Resilience and Security for Finance](#resilience-and-security) and [Own Your Roadmap: Vendor Strategy Without Lock-In Panic](#vendor-portfolio-strategy) take it further.
 
 {id: payments-fundamentals--architecture-where-the-payments-components-sit}
 ## Architecture: Where the Payments Components Sit
@@ -411,7 +411,7 @@ flowchart TB
 | Reconciliation | Booking to transaction, transaction to payout, payout to bank | Owns exception queues and aging |
 | Treasury and bank | Statements, safeguarding accounts, payouts | The independent third leg |
 
-Two boundaries matter most. The **boundary between webhooks and reports**: designs that post to the ledger from webhooks alone drift, because fees, FX and batch membership appear only in reports. And the **boundary between Northmere Pay and finance**: the payments team owns provider relationships and data contracts, finance owns the accounts, and the canonical events are the agreement between them. [Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP](#payments-to-ledger) designs that agreement; [Integration Architecture for Finance](#integration-architecture) covers the patterns.
+Two boundaries matter most. The **boundary between webhooks and reports**: designs that post to the ledger from webhooks alone drift, because fees, FX and batch membership appear only in reports. And the **boundary between Northmere Pay and finance**: the payments team owns provider relationships and data contracts, finance owns the accounts, and the canonical events are the agreement between them. [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger) designs that agreement; [Files, Events and APIs: How Finance Systems Talk](#integration-architecture) covers the patterns.
 
 {id: payments-fundamentals--multiple-providers-and-orchestration}
 ## Multiple Providers and Orchestration
@@ -436,7 +436,7 @@ My recommendation at Northmere's scale is to **keep the canonical payment event 
 {id: payments-fundamentals--eleven-reasons-payments-do-not-reconcile-themselves}
 ## Eleven Reasons Payments Do Not Reconcile Themselves
 
-Everything above leads to one conclusion: a provider's payout and the bookings it pays for will not agree on their own. Here are the reasons, each traceable to a mechanism already described. They are the bridge to Part III, where [Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP](#payments-to-ledger) designs the response.
+Everything above leads to one conclusion: a provider's payout and the bookings it pays for will not agree on their own. Here are the reasons, each traceable to a mechanism already described. They are the bridge to Part III, where [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger) designs the response.
 
 1. **Timing.** The sale is recorded at authorization or capture, revenue at fulfillment, cash at payout. Stripe separates a balance transaction's `created` and `available_on` dates, and default delays differ by country: 2 business days in the US, 7 calendar days initially then 3 business days in Germany, 4 business days in Japan ([Stripe](https://docs.stripe.com/payouts)). The Lisbon €600 was paid on 12 March, settled into an Adyen batch on 14 March, credited to the bank on 16 March and earned in April.
 2. **Batching and netting.** One bank credit equals many sales minus refunds, chargebacks, fees and reserves. Stripe's payout reconciliation report exists to list "every payment, refund, dispute, fee, and other balance transaction included in the payout" ([Stripe](https://docs.stripe.com/reports/payout-reconciliation)).
@@ -498,7 +498,7 @@ Everything above leads to one conclusion: a provider's payout and the bookings i
 {id: payments-fundamentals--from-fundamentals-to-providers}
 ## From Fundamentals to Providers
 
-This chapter described payments in vendor-neutral terms: the parties, the steps, the prices, the methods, the rules and the eleven reasons the records diverge. The next two chapters make it concrete for the providers Northmere uses most. [Adyen: Single-Platform Acquiring and Platform Payments](#adyen) shows what a single-platform acquirer's account structure, batches and reports look like from the ledger's side, including the settlement details report that explained the Lisbon payment's €598.36 line and the batch fee behind the €598.26 net. [Stripe: Programmable Payments, Billing and Connected Accounts](#stripe) shows how an object model built around the balance transaction shapes integration. Part III returns to the eleven reasons in [Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP](#payments-to-ledger), where Northmere designs the clearing accounts, the three-way match and the canonical events that bring the €14 million suspense balance under control.
+This chapter described payments in vendor-neutral terms: the parties, the steps, the prices, the methods, the rules and the eleven reasons the records diverge. The next two chapters make it concrete for the providers Northmere uses most. [Adyen: One Platform from Checkout to Settlement](#adyen) shows what a single-platform acquirer's account structure, batches and reports look like from the ledger's side, including the settlement details report that explained the Lisbon payment's €598.36 line and the batch fee behind the €598.26 net. [Stripe: Every Movement Is a Balance Transaction](#stripe) shows how an object model built around the balance transaction shapes integration. Part III returns to the eleven reasons in [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger), where Northmere designs the clearing accounts, the three-way match and the canonical events that bring the €14 million suspense balance under control.
 
 {id: payments-fundamentals--sources-and-evidence}
 ## Sources and Evidence

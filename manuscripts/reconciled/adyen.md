@@ -1,7 +1,7 @@
 {id: adyen}
-# 24. Adyen: Single-Platform Acquiring and Platform Payments
+# 24. Adyen: One Platform from Checkout to Settlement
 
-![Adyen: Single-Platform Acquiring and Platform Payments — logo](enterprise-applications-and-financial-systems/posts/21-adyen/assets/images/21-adyen/logo.jpeg)
+![Adyen: One Platform from Checkout to Settlement — logo](enterprise-applications-and-financial-systems/posts/21-adyen/assets/images/21-adyen/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn what makes Adyen architecturally different from a gateway-plus-acquirer stack, how to map its company and merchant accounts to legal entities, brands and business models, how to carry its references into canonical events and the ledger, how to consume its webhooks safely, and how to reconcile one settlement batch from its reports to the bank credit.
 
@@ -21,11 +21,11 @@
 > * **Lost in Aggregation** — Posting one ledger line per payout hides the sales, refunds, chargebacks and fees that netted into it, so the clearing account cannot be explained at transaction level.
 > * **The Borrowed Roadmap** — With about two-thirds of payment transactions on one platform, Adyen's vocabulary, report formats and product packaging can quietly become the enterprise's payments architecture unless the boundary is held.
 
-[Payments for Finance Architects: The Lifecycle of Money Movement](#payments-fundamentals) followed one payment through its lifecycle: authorization, authentication, capture, clearing, settlement and payout, and the parties who take a share on the way. This chapter takes one provider that implements that lifecycle and asks the architect's questions about it: what is distinctive about its design, what data it gives back, and how the enterprise should be shaped around it so that **every euro it pays out can be explained**.
+[Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals) followed one payment through its lifecycle: authorization, authentication, capture, clearing, settlement and payout, and the parties who take a share on the way. This chapter takes one provider that implements that lifecycle and asks the architect's questions about it: what is distinctive about its design, what data it gives back, and how the enterprise should be shaped around it so that **every euro it pays out can be explained**.
 
 Adyen publishes unusually detailed reconciliation documentation: report columns, journal types and webhook semantics an architect can design against. This chapter treats that documentation as the contract and makes no claims about internals Adyen has not published.
 
-The illustrations use **Northmere, the fictional group this book follows** (see [Meet Northmere: The Running Example](#meet-northmere)). Northmere Pay, Northmere's internal payments platform and licensed e-money institution, uses Adyen as its primary provider for Stayloft's merchant-model bookings. The running example is the Lisbon booking: €600.00, paid by card on 12 March 2027.
+The illustrations use **Northmere, the fictional group this book follows** (see [Meet Northmere: Five Brands, One Set of Books](#meet-northmere)). Northmere Pay, Northmere's internal payments platform and licensed e-money institution, uses Adyen as its primary provider for Stayloft's merchant-model bookings. The running example is the Lisbon booking: €600.00, paid by card on 12 March 2027.
 
 {id: adyen--setting-the-scene-at-northmere-one-batch-three-answers}
 ## Setting the Scene at Northmere: One Batch, Three Answers
@@ -46,7 +46,7 @@ Ingrid could answer the first question from Adyen's settlement details report in
 {id: adyen--gateway-risk-and-acquiring-on-one-platform}
 ### Gateway, risk and acquiring on one platform
 
-A **payment service provider (PSP)** packages the capabilities a merchant needs to accept payments: a **gateway** that routes payment requests, **risk** screening, connections to payment methods, and **acquiring**, the licensed role of contracting the merchant, receiving funds from the card schemes and paying the merchant (see [Payments for Finance Architects: The Lifecycle of Money Movement](#payments-fundamentals)). Many estates assemble these from separate parties: a gateway from one vendor, acquiring from a bank, fraud screening from a third.
+A **payment service provider (PSP)** packages the capabilities a merchant needs to accept payments: a **gateway** that routes payment requests, **risk** screening, connections to payment methods, and **acquiring**, the licensed role of contracting the merchant, receiving funds from the card schemes and paying the merchant (see [Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals)). Many estates assemble these from separate parties: a gateway from one vendor, acquiring from a bank, fraud screening from a third.
 
 Adyen markets itself as a **single platform** that provides gateway, risk and acquiring together, across online and in-person commerce ([Adyen pricing](https://www.adyen.com/pricing)). It acquires under its own European banking license, which Adyen reports was granted in 2017 ([Adyen press release](https://www.adyen.com/press-and-media/adyens-branch-license-application-approved-by-us-federal-reserve)), and the US Federal Reserve approved a federal branch of Adyen N.V. in San Francisco in May 2021 ([Federal Reserve order, 24 May 2021](https://www.federalreserve.gov/newsevents/pressreleases/orders20210524a.htm)). Adyen has been listed on Euronext Amsterdam since its initial public offering on 13 June 2018 (as reported in secondary sources such as [Wikipedia: Adyen](https://en.wikipedia.org/wiki/Adyen)). Claims about a "single code base" are Adyen's own description; the consequences below follow from the documented data, not the marketing.
 
@@ -151,7 +151,7 @@ Reconciliation is a join, and a join needs keys. The settlement details report's
 
 The decision with the longest consequences is what to put in the **merchant reference**. Sending the **booking ID** is tempting, because finance thinks in bookings. But one booking can produce several payments (a failed attempt then a successful one, a top-up for an extra night), and if they share the booking ID every matching rule needs an amount or date tiebreak.
 
-Northmere sends its own **payment ID**, unique per payment attempt, as the merchant reference, for example `NPY-270312-004418` for the Lisbon booking, and keeps the mapping from payment ID to booking ID in Northmere Pay, which owns it. Refunds carry Northmere's refund ID in the modification merchant reference. The **booking ID** (`SL-BK-9921347` for the Lisbon stay) travels in the canonical event as `correlation_id`, the envelope field Keystone's event model reserves for the business key (see [Integration Architecture for Finance](#integration-architecture)). Brand and business model travel as envelope fields too, not as merchant-account names.
+Northmere sends its own **payment ID**, unique per payment attempt, as the merchant reference, for example `NPY-270312-004418` for the Lisbon booking, and keeps the mapping from payment ID to booking ID in Northmere Pay, which owns it. Refunds carry Northmere's refund ID in the modification merchant reference. The **booking ID** (`SL-BK-9921347` for the Lisbon stay) travels in the canonical event as `correlation_id`, the envelope field Keystone's event model reserves for the business key (see [Files, Events and APIs: How Finance Systems Talk](#integration-architecture)). Brand and business model travel as envelope fields too, not as merchant-account names.
 
 Every canonical payment event emitted by Northmere Pay therefore carries, in its payload, the full key set: `psp_reference`, `original_reference` for modifications, `merchant_reference`, `modification_merchant_reference`, `merchant_account` and, once known, `batch_number`. SFP stores them on every merchant-subledger line. The **daily summarization** into S/4HANA, which compresses about three million subledger lines into about 38,000 general-ledger lines, keeps `merchant_account`, currency and `batch_number` as summarization keys. That last choice is what turns Leila's third question into a lookup: each general-ledger line on the Adyen clearing account belongs to exactly one batch, and each batch can be expanded back to its lines in SFP and in the report. Summarizing by day alone, which is what Northmere did until 2027, is **Lost in Aggregation** in its purest form.
 
@@ -161,7 +161,7 @@ Every canonical payment event emitted by Northmere Pay therefore carries, in its
 {id: adyen--synchronous-requests-asynchronous-outcomes}
 ### Synchronous requests, asynchronous outcomes
 
-The Lisbon payment is a single card payment with immediate capture: the stay is five weeks away, and card authorizations for card-not-present payments typically expire within about a week (see [Payments for Finance Architects: The Lifecycle of Money Movement](#payments-fundamentals)), so Stayloft captures at booking and holds the funds as a liability until the stay is delivered.
+The Lisbon payment is a single card payment with immediate capture: the stay is five weeks away, and card authorizations for card-not-present payments typically expire within about a week (see [Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals)), so Stayloft captures at booking and holds the funds as a liability until the stay is delivered.
 
 Adyen's modifications are asynchronous. A capture request returns `received`, and the outcome arrives later by webhook with event code `CAPTURE` and a `success` flag ([Adyen: Capture](https://docs.adyen.com/online-payments/capture)). The same pattern applies to refunds and cancellations. A partial capture cancels the uncaptured remainder automatically, and multiple partial captures are disabled by default. The architectural rule follows directly: **an API response is an acknowledgment, not a state**. Northmere Pay records the request as pending and moves the payment's state only when the webhook arrives.
 
@@ -269,7 +269,7 @@ Some names appear in both lists, which is the source of the confusion. **Receive
 {id: adyen--from-journal-types-to-accounting-events-and-postings}
 ### From journal types to accounting events and postings
 
-The table below is the core of Northmere's posting design. **It is illustrative**: it shows one defensible design for a payments entity that safeguards customer funds, not a prescribed treatment. The accounts are Northmere's; the credit side of the capture belongs to the merchant subledger, whose design [Why Enterprises Build Their Own Finance Platforms](#custom-finance-platforms) and [Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP](#payments-to-ledger) cover.
+The table below is the core of Northmere's posting design. **It is illustrative**: it shows one defensible design for a payments entity that safeguards customer funds, not a prescribed treatment. The accounts are Northmere's; the credit side of the capture belongs to the merchant subledger, whose design [When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms) and [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger) cover.
 
 | Adyen source | Canonical event | Illustrative posting (Northmere Payments B.V.) | Note |
 | --- | --- | --- | --- |
@@ -289,7 +289,7 @@ The table below is the core of Northmere's posting design. **It is illustrative*
 | Bank statement line with payout reference | (bank receipt) | Dr *Bank, safeguarding EUR* / Cr *Cash in transit, Adyen* | Matched in BlackLine on the `TX…XT` reference |
 | Journal **BankInstructionReturned** | (payout returned) | Dr *Adyen batch receivable* / Cr *Cash in transit, Adyen* | Bank rejected the payout |
 
-Three accounts carry the design: an **in-flight receivable** that holds captured-but-unsettled amounts, a **batch receivable** per merchant account and currency that must return to zero when each batch is paid out, and **cash in transit** that must return to zero when the bank credit arrives. Each is a clearing account in the sense of [Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP](#payments-to-ledger), and each zero is a separate assertion with a separate owner.
+Three accounts carry the design: an **in-flight receivable** that holds captured-but-unsettled amounts, a **batch receivable** per merchant account and currency that must return to zero when each batch is paid out, and **cash in transit** that must return to zero when the bank credit arrives. Each is a clearing account in the sense of [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger), and each zero is a separate assertion with a separate owner.
 
 Two record types deserve a word. **SettledReversed** and **CaptureFailed** exist because under sales day payout Adyen pre-finances a sales day and reverses funds it does not receive within 30 days; the webhooks for these reversals are "disabled by default" ([Settlement details report](https://docs.adyen.com/reporting/settlement-reconciliation/transaction-level/settlement-details-report)). Northmere enabled them, because a reversal that only appears in a report a week later is a reversal the merchant subledger learns about too late.
 
@@ -306,7 +306,7 @@ Adyen pays out per **payable batch**: if a batch's payable balance is positive w
 
 Payout frequency is configured per merchant account. After a batch closes, initiating the payout takes one to two business days, and the bank may need up to three more; if funds have not arrived five business days after batch close, Adyen directs merchants to the BankInstructionReturned journal in the aggregate report. Bank holidays block payouts in the affected currencies. Batches with a negative balance are carried forward with Balancetransfer entries rather than paid.
 
-For Northmere, the dates matter because the scenario fixes them. The Lisbon payment was captured on Friday 12 March 2027; its Settled line was booked into **batch 1047** of NMPay_Stayloft_EEA on **14 March 2027**, two days after capture, the settlement date Northmere's finance team records for the booking. Because 14 March 2027 is a Sunday, Adyen initiated the batch payout on Monday 15 March and the credit reached the Northmere Payments B.V. safeguarding account on **Tuesday 16 March**. Between 14 and 16 March the €598.36 the Lisbon line contributed was a receivable from Adyen, then cash in transit. That distinction is not pedantry: Northmere Payments B.V. is an e-money institution with a daily **safeguarding reconciliation**, and funds held at a PSP before payout are a recurring question for its compliance function, which [Payments for Finance Architects: The Lifecycle of Money Movement](#payments-fundamentals) introduces. Ingrid's team treats the age of undisbursed batch balances at Adyen as a treasury metric reported to Kofi Asante, the group head of tax and treasury.
+For Northmere, the dates matter because the scenario fixes them. The Lisbon payment was captured on Friday 12 March 2027; its Settled line was booked into **batch 1047** of NMPay_Stayloft_EEA on **14 March 2027**, two days after capture, the settlement date Northmere's finance team records for the booking. Because 14 March 2027 is a Sunday, Adyen initiated the batch payout on Monday 15 March and the credit reached the Northmere Payments B.V. safeguarding account on **Tuesday 16 March**. Between 14 and 16 March the €598.36 the Lisbon line contributed was a receivable from Adyen, then cash in transit. That distinction is not pedantry: Northmere Payments B.V. is an e-money institution with a daily **safeguarding reconciliation**, and funds held at a PSP before payout are a recurring question for its compliance function, which [Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals) introduces. Ingrid's team treats the age of undisbursed batch balances at Adyen as a treasury metric reported to Kofi Asante, the group head of tax and treasury.
 
 {id: adyen--fees-under-interchange}
 ### Fees under interchange++
@@ -323,7 +323,7 @@ The Lisbon traveler paid with a German consumer debit card. Under the EU Interch
 | Processing fee (the rest of the €0.33 negotiated markup) | Fee journal for the Received transaction; Processing Fee column in the payment accounting report | 0.10 | Adyen |
 | **Total** | | **1.74** | |
 
-So the Lisbon line in the settlement details report shows a gross credit of 600.00, a commission of 1.64 split into its three parts, and a net credit of 598.36; the remaining 0.10 arrives as part of the batch's Fee entry. Adyen's own margin is therefore €0.33, split €0.23 on the line and €0.10 at batch level, which is the IC++ view [Payments for Finance Architects: The Lifecycle of Money Movement](#payments-fundamentals) shows. Northmere Pay's adapter attributes the €0.10 back to the payment from the payment accounting report, so the canonical `PSPFeeCharged` event carries €1.74 and `PaymentSettled` a net of €598.26. Two consequences for accounting follow.
+So the Lisbon line in the settlement details report shows a gross credit of 600.00, a commission of 1.64 split into its three parts, and a net credit of 598.36; the remaining 0.10 arrives as part of the batch's Fee entry. Adyen's own margin is therefore €0.33, split €0.23 on the line and €0.10 at batch level, which is the IC++ view [Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals) shows. Northmere Pay's adapter attributes the €0.10 back to the payment from the payment accounting report, so the canonical `PSPFeeCharged` event carries €1.74 and `PaymentSettled` a net of €598.26. Two consequences for accounting follow.
 
 First, **the fee is known at settlement, not at booking**. Under interchange++ the interchange and scheme fees are fixed at clearing, and some scheme fees reach the merchant later through Adyen's invoice. The payment accounting report exists to match those costs to payment statuses ([Payment accounting report](https://docs.adyen.com/reporting/invoice-reconciliation/payment-accounting-report)). Northmere accrues an expected fee at capture for margin reporting in FinDB but posts actual fees only from the report, and trues up invoice-only costs when Adyen's monthly invoice arrives, using CET month boundaries as Adyen does.
 
@@ -332,7 +332,7 @@ Second, **fees belong to the brand that caused them**. Northmere Pay is an enabl
 {id: adyen--chargebacks-in-reports}
 ### Chargebacks in reports
 
-The chargeback in the same batch shows how disputes appear. It is an earlier €420 dispute, not the June 2027 chargeback that [Payments for Finance Architects: The Lifecycle of Money Movement](#payments-fundamentals) follows: a separate Stayloft stay from 30 January to 2 February 2027; the traveler disputed it, and the chargeback was debited on 14 March, 40 days after the stay. In the settlement details report it is a **Chargeback** journal line with a gross and net debit of 420.00, carrying the original payment's `pspReference`. For Chargeback lines the Modification Reference can match the capture reference, which Adyen documents as expected behavior. The earlier `NOTIFICATION_OF_CHARGEBACK` webhook opened the dispute case in Northmere Pay's dispute tool; no money moved then. If Stayloft wins, a **ChargebackReversed** line credits a later batch. Dispute handling fees follow Northmere's contract and arrive through the invoice.
+The chargeback in the same batch shows how disputes appear. It is an earlier €420 dispute, not the June 2027 chargeback that [Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals) follows: a separate Stayloft stay from 30 January to 2 February 2027; the traveler disputed it, and the chargeback was debited on 14 March, 40 days after the stay. In the settlement details report it is a **Chargeback** journal line with a gross and net debit of 420.00, carrying the original payment's `pspReference`. For Chargeback lines the Modification Reference can match the capture reference, which Adyen documents as expected behavior. The earlier `NOTIFICATION_OF_CHARGEBACK` webhook opened the dispute case in Northmere Pay's dispute tool; no money moved then. If Stayloft wins, a **ChargebackReversed** line credits a later batch. Dispute handling fees follow Northmere's contract and arrive through the invoice.
 
 {id: adyen--worked-example-reconciling-batch-1047-to-the-bank}
 ## Worked Example: Reconciling Batch 1047 to the Bank
@@ -364,7 +364,7 @@ The arithmetic a reconciler checks, in order:
 | MerchantPayout journal | | 1,380.52 |
 | Bank credit, 16 March, camt.053 statement via Kyriba, reference TX…XT | | **1,380.52** |
 
-The **three-way match** that [Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP](#payments-to-ledger) owns then has three legs, each with its own key:
+The **three-way match** that [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger) owns then has three legs, each with its own key:
 
 1. **Subledger to report.** Each Settled, Refunded and Chargeback line is matched to SFP by `merchant_reference` (or `modification_merchant_reference` for the refund) and `psp_reference`. Lines 1–6 match.
 2. **Report to batch payout.** The lines of batch 1047 sum to the MerchantPayout amount. Line 8 matches.
@@ -421,7 +421,7 @@ Finance reconciles it with the **Balance Platform accounting report**, a daily r
 {id: adyen--should-a-marketplace-use-it-or-pay-its-partners-itself}
 ### Should a marketplace use it or pay its partners itself?
 
-This is a sourcing decision with ledger consequences, and Northmere has already made it once: Stayloft pays its properties from SFP, out of funds safeguarded by Northmere Payments B.V., about nine million partner payouts a month across Stayloft and Tablekin. [Why Enterprises Build Their Own Finance Platforms](#custom-finance-platforms) explains why Stayloft built that payout capability. The question Dana was asked in 2027 is whether moving Stayloft's merchant-model payouts onto Adyen's Balance Platform would retire it.
+This is a sourcing decision with ledger consequences, and Northmere has already made it once: Stayloft pays its properties from SFP, out of funds safeguarded by Northmere Payments B.V., about nine million partner payouts a month across Stayloft and Tablekin. [When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms) explains why Stayloft built that payout capability. The question Dana was asked in 2027 is whether moving Stayloft's merchant-model payouts onto Adyen's Balance Platform would retire it.
 
 | Question | Use the provider's platform product (Adyen Balance Platform, Stripe Connect) | Pay partners yourself |
 | --- | --- | --- |
@@ -432,9 +432,9 @@ This is a sourcing decision with ledger consequences, and Northmere has already 
 | Exit cost | High: balances, KYC records and payout instruments sit with the provider | Lower for payouts, higher for build and run |
 | Typical fit | Platforms starting out, single-PSP marketplaces, SaaS with embedded payments | Large marketplaces with a license and several acquirers |
 
-For Northmere the answer was clear. About **32%** of Northmere Pay's transactions arrive through Stripe and local APM providers, not Adyen; a Balance Platform would hold only Adyen's share, so every property paid from mixed sources would need a second payout path, and Northmere would add a third payout engine to the two it is already trying to consolidate (see [Preventing Redundant Capabilities and Unnecessary Coupling](#redundancy-and-coupling)). The license, the safeguarding accounts and the partner relationships already sit with Northmere. The provider product would move the partner balance, the most sensitive record in the merchant model, outside the estate.
+For Northmere the answer was clear. About **32%** of Northmere Pay's transactions arrive through Stripe and local APM providers, not Adyen; a Balance Platform would hold only Adyen's share, so every property paid from mixed sources would need a second payout path, and Northmere would add a third payout engine to the two it is already trying to consolidate (see [Duplicates and Dependencies: The Hidden Costs of a Grown Estate](#redundancy-and-coupling)). The license, the safeguarding accounts and the partner relationships already sit with Northmere. The provider product would move the partner balance, the most sensitive record in the merchant model, outside the estate.
 
-Tablekin is the counter-example. It holds no payments license of its own and processes mainly through Stripe, so venue payouts run on Stripe Connect, the equivalent product (see [Stripe: Programmable Payments, Billing and Connected Accounts](#stripe)). Both answers are right for their brand; the rule is about license, acquirer count and who should own the partner balance, not about which vendor is better.
+Tablekin is the counter-example. It holds no payments license of its own and processes mainly through Stripe, so venue payouts run on Stripe Connect, the equivalent product (see [Stripe: Every Movement Is a Balance Transaction](#stripe)). Both answers are right for their brand; the rule is about license, acquirer count and who should own the partner balance, not about which vendor is better.
 
 {id: adyen--issuing-and-capital-briefly}
 ### Issuing and Capital, briefly
@@ -460,11 +460,11 @@ The pattern in the table is consistent with the rest of this book: **use the pro
 Each Adyen interface has an owner:
 
 - **Northmere Pay** (Ingrid) owns the relationship, merchant accounts, webhook consumer, report loader and the mapping to canonical events. Nothing outside Northmere Pay parses Adyen formats.
-- **Kafka**, owned by Ravi Menon's Platform Engineering, carries the canonical events ([From Customer Transaction to Financial Statement](#transaction-to-report) follows them end to end).
-- **SFP** (Jonas Berg) is the merchant subledger of record. It consumes the events and produces the daily summary for **SAP S/4HANA**, where the Adyen clearing accounts live in Northmere Payments B.V.'s company code ([SAP S/4HANA: The Enterprise Finance Core](#sap-s4hana)).
-- **BlackLine Transaction Matching** performs the three-way match among SFP, the settlement details report and bank statements delivered through **Kyriba** ([BlackLine: Close Automation, Reconciliation and Continuous Accounting](#blackline)).
+- **Kafka**, owned by Ravi Menon's Platform Engineering, carries the canonical events ([The Life of a Booking: From €600 Payment to $97.38 of Revenue](#transaction-to-report) follows them end to end).
+- **SFP** (Jonas Berg) is the merchant subledger of record. It consumes the events and produces the daily summary for **SAP S/4HANA**, where the Adyen clearing accounts live in Northmere Payments B.V.'s company code ([SAP S/4HANA: One Journal, Clean Core](#sap-s4hana)).
+- **BlackLine Transaction Matching** performs the three-way match among SFP, the settlement details report and bank statements delivered through **Kyriba** ([BlackLine: Matching, Certifying and Closing](#blackline)).
 - **FinDB** on Snowflake, owned by Owen Mbeki, keeps raw reports and normalized lines for fee and settlement-time analysis.
-- **Stripe**, the secondary provider for Stayloft, produces the same canonical events from its balance transactions, so nothing downstream of Northmere Pay knows which provider processed a booking unless it asks ([Stripe: Programmable Payments, Billing and Connected Accounts](#stripe)).
+- **Stripe**, the secondary provider for Stayloft, produces the same canonical events from its balance transactions, so nothing downstream of Northmere Pay knows which provider processed a booking unless it asks ([Stripe: Every Movement Is a Balance Transaction](#stripe)).
 
 The **anti-corruption layer**, the boundary that translates a vendor's model into the enterprise's, sits at Northmere Pay's edge. It is the most important structural decision in this chapter, and the one that makes the dependency hedges below possible.
 
@@ -485,7 +485,7 @@ About 420 million payment transactions a year run through Northmere Pay, and abo
 
 Northmere Payments B.V. is a financial entity under the EU's Digital Operational Resilience Act (DORA), so its dependency on critical third parties must be documented, tested and backed by exit plans ([Regulation (EU) 2022/2554](https://eur-lex.europa.eu/eli/reg/2022/2554/oj)). Whether a given PSP service falls under DORA's information and communication technology third-party rules is a legal classification for compliance to make; I recommend treating Adyen as a critical dependency in the architecture regardless of how that classification falls.
 
-The hedges Northmere uses are the ones [Vendor Strategy and Avoiding Excessive Dependency](#vendor-portfolio-strategy) develops in general:
+The hedges Northmere uses are the ones [Own Your Roadmap: Vendor Strategy Without Lock-In Panic](#vendor-portfolio-strategy) develops in general:
 
 - **A warm second provider.** Stripe already processes about 22% of Northmere Pay's transactions through the same abstraction, so routing more volume to it is a configuration and capacity question, not a project. The cost is real (integration, dispute operations, reconciliation rules, weaker pricing tiers), and Northmere accepts it because the alternative is a single point of failure for most of its revenue.
 - **Provider-neutral records.** Canonical events, the merchant subledger and the clearing-account design do not use Adyen vocabulary. A provider change alters a mapping, not the ledger.
@@ -522,7 +522,7 @@ The decisions about Adyen that belong at the architecture board, not in the paym
 
 Three things I watch over time. First, **clearing-account aging per merchant account and payment method**, the earliest signal that a reference, a matching rule or a provider behavior has changed. Second, **the share of fees explained at component level**, which drops when card mix shifts or a report change breaks the split. Third, **Adyen's product packaging**: new platform, risk and financing products arrive bundled with commercial incentives, and each one is a chance for **The Borrowed Roadmap** to move a capability that the enterprise decided to own. The test I apply is the same each time: does the product sit behind Northmere Pay's boundary and produce canonical events, or does it ask the estate to speak Adyen?
 
-Mei Tanaka, who owns Northmere's internal-controls program, asked one more question that belongs here. Adyen's reports are information produced by an outside party and used in key controls, so the reconciliation control must evidence that the report is complete (batch lines sum to the payout and the payout to the bank) and that the loader did not alter it (the raw file is stored and hashed). [Controls, Auditability and Security by Design](#controls-and-auditability) covers how that evidence is tested.
+Mei Tanaka, who owns Northmere's internal-controls program, asked one more question that belongs here. Adyen's reports are information produced by an outside party and used in key controls, so the reconciliation control must evidence that the report is complete (batch lines sum to the payout and the payout to the bank) and that the loader did not alter it (the raw file is stored and hashed). [Controls by Design, Not by Audit Season](#controls-and-auditability) covers how that evidence is tested.
 
 {id: adyen--questions-to-ask}
 ## Questions to Ask
@@ -541,7 +541,7 @@ Mei Tanaka, who owns Northmere's internal-controls program, asked one more quest
 {id: adyen--from-one-provider-to-the-other}
 ## From One Provider to the Other
 
-Adyen's design rewards an enterprise that treats its reports as evidence and its webhooks as signals, and that decides account structure and references before the first payment. Its single platform makes those disciplines easier and the dependency deeper. The next chapter turns to the other provider in Northmere's estate, whose object model takes a different route to the same problem: [Stripe: Programmable Payments, Billing and Connected Accounts](#stripe) reconciles through the balance transaction rather than the batch report, and puts billing and connected accounts on the same platform. The chapter after the platforms, [Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP](#payments-to-ledger), takes both providers' data and turns it into one clearing-account design for the whole group.
+Adyen's design rewards an enterprise that treats its reports as evidence and its webhooks as signals, and that decides account structure and references before the first payment. Its single platform makes those disciplines easier and the dependency deeper. The next chapter turns to the other provider in Northmere's estate, whose object model takes a different route to the same problem: [Stripe: Every Movement Is a Balance Transaction](#stripe) reconciles through the balance transaction rather than the batch report, and puts billing and connected accounts on the same platform. The chapter after the platforms, [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger), takes both providers' data and turns it into one clearing-account design for the whole group.
 
 {id: adyen--sources-and-evidence}
 ## Sources and Evidence

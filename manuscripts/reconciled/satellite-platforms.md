@@ -1,7 +1,7 @@
 {id: satellite-platforms}
-# 26. Around the Core: Tax, Treasury, Procurement and Reporting Platforms
+# 26. Around the Core: Where Specialist Platforms Earn Their Place
 
-![Around the Core: Tax, Treasury, Procurement and Reporting Platforms — logo](enterprise-applications-and-financial-systems/posts/23-satellite-platforms/assets/images/23-satellite-platforms/logo.jpeg)
+![Around the Core: Where Specialist Platforms Earn Their Place — logo](enterprise-applications-and-financial-systems/posts/23-satellite-platforms/assets/images/23-satellite-platforms/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn the satellite pattern, a specialized platform that owns one finance capability and attaches to the core through a narrow, owned interface, and apply it to indirect tax and e-invoicing, treasury and bank connectivity, source-to-pay and expenses, direct tax, disclosure and the finance data platform, with the rules that tell you when a satellite is right and when it has become a tangle.
 
@@ -25,7 +25,7 @@ The general ledger is the book of record, but much of the enterprise's finance l
 
 This chapter calls them **satellites** and argues that the useful question is not "which vendor?" but "what does this platform own, and how is it attached?" A satellite that owns one capability, talks to the core through a narrow interface someone is accountable for, and is reconciled to the ledger is one of the cheapest ways to get specialist depth. A satellite that quietly acquires a second capability, keeps its own copy of master data, or is called by five systems in five ways is how an estate turns into a tangle.
 
-The chapter works through each satellite family, then compares ERP-native modules with specialists. Payment service providers belong to [Payments for Finance Architects: The Lifecycle of Money Movement](#payments-fundamentals) and the finance data platform's internals to [Finance Data Across the Estate: From Operations to Analytics](#finance-data-flows); this chapter owns the **satellite pattern**, the **payment factory** and the **architecture of e-invoicing and continuous transaction controls**.
+The chapter works through each satellite family, then compares ERP-native modules with specialists. Payment service providers belong to [Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals) and the finance data platform's internals to [One Number, Many Views: Finance Data from Operations to Analytics](#finance-data-flows); this chapter owns the **satellite pattern**, the **payment factory** and the **architecture of e-invoicing and continuous transaction controls**.
 
 {id: satellite-platforms--setting-the-scene-at-northmere-two-requests-in-one-week}
 ## Setting the Scene at Northmere: Two Requests in One Week
@@ -48,13 +48,13 @@ A **satellite platform** is a specialized system that owns one finance capabilit
 
 | Test | What it means | What failure looks like |
 | --- | --- | --- |
-| **One capability** | The platform owns one business capability from the capability map in [Map Capabilities Before Systems](#capability-mapping): tax determination, payment execution, disclosure. | The treasury system starts approving supplier invoices; the procurement suite starts doing expense reports for one country. |
+| **One capability** | The platform owns one business capability from the capability map in [Map What Finance Does Before What Runs It](#capability-mapping): tax determination, payment execution, disclosure. | The treasury system starts approving supplier invoices; the procurement suite starts doing expense reports for one country. |
 | **Core keeps the book** | The general ledger remains the book of record. The satellite owns its working data and evidence, and the ledger receives the accounting consequence. | The satellite holds balances nobody posts to the ledger: The Shadow Ledger. |
 | **Narrow interface** | A small number of contracted interactions, each documented, versioned and owned: a call, a file, an event. | Every consuming system integrates its own way; the satellite exposes its database to reporting. |
 | **Named owner** | A business owner accountable for the capability and a technical owner accountable for the platform and its interfaces. | The platform belongs to "Finance"; the interfaces belong to whoever built them. |
 | **Proven agreement** | At least one reconciliation proves the satellite and the ledger agree, at a defined frequency, with breaks owned. | Tax returns are prepared from the engine's journal and nobody ties it to the GL tax accounts. |
 
-The **capability** test is the one that erodes first, because vendors expand their footprints. A tax engine vendor buys an e-invoicing company; a treasury vendor adds accounts-payable automation; a disclosure tool adds a consolidation engine. Whether the enterprise uses each addition is an architecture decision, not a license default, recorded in the capability overlap register described in [Preventing Redundant Capabilities and Unnecessary Coupling](#redundancy-and-coupling).
+The **capability** test is the one that erodes first, because vendors expand their footprints. A tax engine vendor buys an e-invoicing company; a treasury vendor adds accounts-payable automation; a disclosure tool adds a consolidation engine. Whether the enterprise uses each addition is an architecture decision, not a license default, recorded in the capability overlap register described in [Duplicates and Dependencies: The Hidden Costs of a Grown Estate](#redundancy-and-coupling).
 
 {id: satellite-platforms--four-ways-a-satellite-attaches}
 ### Four ways a satellite attaches
@@ -124,7 +124,7 @@ The signs that a satellite has become a tangle are concrete, and I look for them
 4. **Every consumer integrates differently.** Five callers in five integration technologies turn one version upgrade into five regression tests.
 5. **Nobody reconciles.** The satellite's report is treated as the truth, and the ledger is adjusted to match.
 
-Each of these maps to a failure pattern from [Where Finance Architecture Goes Wrong](#where-finance-architecture-goes-wrong): The Doppelgänger Record, Point-to-Point Spaghetti, Capability Creep and The Shadow Ledger. The remainder of the chapter applies the pattern to each family.
+Each of these maps to a failure pattern from [Unreconciled: Fourteen Ways Finance Architecture Goes Wrong](#where-finance-architecture-goes-wrong): The Doppelgänger Record, Point-to-Point Spaghetti, Capability Creep and The Shadow Ledger. The remainder of the chapter applies the pattern to each family.
 
 ![Left: specialist platforms in neat orbits, each tied to the ledger core by one owned interface with a reconciliation check. Right: the same platforms knotted together with duplicate data copies and no checks.](enterprise-applications-and-financial-systems/posts/23-satellite-platforms/assets/images/23-satellite-platforms/satellite-versus-tangle.jpeg)
 
@@ -136,7 +136,7 @@ Each of these maps to a failure pattern from [Where Finance Architecture Goes Wr
 {id: satellite-platforms--why-specialists-exist}
 ### Why specialists exist
 
-**Indirect tax** is tax on transactions rather than on profit: value-added tax (VAT) and goods and services tax (GST) in most of the world, sales and use tax in the United States, and a long tail of transaction-specific levies such as digital services taxes and tourist taxes. Determining it requires **content** (rates, rules and thresholds for thousands of jurisdictions), facts about the **parties** (who is established and registered where) and facts about the **transaction** (what is sold, where it is deemed supplied, whether a reverse charge applies). [Many Entities, Currencies, Jurisdictions and Brands](#global-scale) owns the tax concepts; this chapter owns how the engine is attached.
+**Indirect tax** is tax on transactions rather than on profit: value-added tax (VAT) and goods and services tax (GST) in most of the world, sales and use tax in the United States, and a long tail of transaction-specific levies such as digital services taxes and tourist taxes. Determining it requires **content** (rates, rules and thresholds for thousands of jurisdictions), facts about the **parties** (who is established and registered where) and facts about the **transaction** (what is sold, where it is deemed supplied, whether a reverse charge applies). [Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale) owns the tax concepts; this chapter owns how the engine is attached.
 
 **Tax engines** exist because the content changes constantly and is the same for every customer. Vertex says its O Series automates tax calculation "on your sales and purchase transactions" and can be deployed on-premise, in the cloud, or in containers "to manage tax calculation at the point of transaction" ([Vertex O Series](https://www.vertexinc.com/solutions/products/vertex-indirect-tax-o-series)). Avalara's AvaTax is a cloud API in which a transaction is created through a `CreateTransaction` call whose document type distinguishes an uncommitted estimate (such as a sales order) from a recorded invoice ([AvaTax SDK](https://www.npmjs.com/package/avatax)). Thomson Reuters ONESOURCE is the other engine common in large SAP and Oracle estates. The ERPs have their own engines too; Oracle Fusion's is the one Wayfare uses.
 
@@ -221,9 +221,9 @@ The control set for a tax engine has three parts:
 
 - **Content change control.** The tax team, not IT, changes the taxability matrix; each change is versioned, regression-tested on real transactions and approved, and the rule version is stored with each determination.
 - **Determination evidence.** Inputs, rule version, result and timestamp per committed line: what answers "why did you charge this rate on 12 March?" in days rather than weeks.
-- **Tax-to-ledger reconciliation.** The committed journal, per jurisdiction and period, is reconciled to the GL tax accounts before the return is filed. Breaks come from postings without commits, commits without postings, and manual journals to tax accounts. It belongs in the catalog of [Designing for Traceability, Reconciliation and Audit Across Boundaries](#traceability-and-reconciliation) and in BlackLine.
+- **Tax-to-ledger reconciliation.** The committed journal, per jurisdiction and period, is reconciled to the GL tax accounts before the return is filed. Breaks come from postings without commits, commits without postings, and manual journals to tax accounts. It belongs in the catalog of [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation) and in BlackLine.
 
-The engine's SOC 1 Type II report and its **complementary user entity controls** (controls the customer must operate, such as tenant access reviews) must map to owned controls in Mei Tanaka's internal control over financial reporting (ICFR) program; [Controls, Auditability and Security by Design](#controls-and-auditability) owns the general treatment.
+The engine's SOC 1 Type II report and its **complementary user entity controls** (controls the customer must operate, such as tenant access reviews) must map to owned controls in Mei Tanaka's internal control over financial reporting (ICFR) program; [Controls by Design, Not by Audit Season](#controls-and-auditability) owns the general treatment.
 
 {id: satellite-platforms--a-worked-example-one-commission-two-answers}
 ### A worked example: one commission, two answers
@@ -258,7 +258,7 @@ Traditionally the seller issued and kept invoices and the tax authority audited 
 
 **Peppol** is, in OpenPeppol's words, an interoperability framework, "not a portal, or a provider of exchange services," with the **four-corner model** "at the heart of Peppol": seller and buyer each connect through their chosen accredited service provider, and the providers exchange the document ([OpenPeppol](https://peppol.org/about/)). The standard document, Peppol BIS Billing 3.0, implements the European e-invoicing standard EN 16931.
 
-Germany adds a post-audit-style mandate without a central platform: receiving structured e-invoices from 1 January 2025, issuing from 1 January 2027 for companies above €800,000 prior-year turnover and for all from 1 January 2028. These dates, as of October 2026, have moved repeatedly; check them against each tax authority, and see [Many Entities, Currencies, Jurisdictions and Brands](#global-scale) for the register.
+Germany adds a post-audit-style mandate without a central platform: receiving structured e-invoices from 1 January 2025, issuing from 1 January 2027 for companies above €800,000 prior-year turnover and for all from 1 January 2028. These dates, as of October 2026, have moved repeatedly; check them against each tax authority, and see [Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale) for the register.
 
 At EU level, the **VAT in the Digital Age (ViDA)** package entered into force on 14 April 2025, letting member states mandate domestic e-invoicing without a derogation. From **1 July 2030** digital reporting requirements apply to intra-EU cross-border business-to-business transactions, with structured e-invoices as the default, and national real-time systems must align by 1 January 2035 ([European Commission](https://taxation-customs.ec.europa.eu/taxation/vat/vat-digital-age-vida_en)). Domestic e-invoicing remains a national choice.
 
@@ -354,7 +354,7 @@ The **cash position** answers "how much cash do we have, where, and what is abou
 {id: satellite-platforms--the-payment-factory}
 ### The payment factory
 
-A **payment factory** centralizes the execution of outgoing payments: the ERPs decide *what* to pay and *when*; the factory decides *how*. It receives proposals from each ERP's payment run, screens, deduplicates and approves them, formats and signs pain.001 instructions, routes them to the right bank and channel, and returns status to the originating ERP. A mature factory can pay and collect **on behalf of** subsidiaries (POBO and COBO) from central accounts, replacing external payments with intercompany balances; an **in-house bank** then keeps the internal accounts, charges internal interest and nets positions. It needs tight intercompany reconciliation, so the intercompany design in [Many Entities, Currencies, Jurisdictions and Brands](#global-scale) must be settled first.
+A **payment factory** centralizes the execution of outgoing payments: the ERPs decide *what* to pay and *when*; the factory decides *how*. It receives proposals from each ERP's payment run, screens, deduplicates and approves them, formats and signs pain.001 instructions, routes them to the right bank and channel, and returns status to the originating ERP. A mature factory can pay and collect **on behalf of** subsidiaries (POBO and COBO) from central accounts, replacing external payments with intercompany balances; an **in-house bank** then keeps the internal accounts, charges internal interest and nets positions. It needs tight intercompany reconciliation, so the intercompany design in [Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale) must be settled first.
 
 ```mermaid
 flowchart LR
@@ -394,12 +394,12 @@ The **bank account master** (accounts, banks, entities, signatories) is often ma
 
 Kyriba is Northmere's treasury system: cash positioning, bank connectivity over SWIFT and host-to-host connections, FX hedging, and the payment factory that executes S/4HANA's payment runs, across roughly **410 bank accounts at 27 banks**. Four features make Northmere's treasury harder than the generic picture:
 
-- **Partner payouts bypass the factory.** Roughly 9 million partner payouts a month leave through Northmere Pay and its payment providers; Kyriba sees their funding, not each payout. That boundary is right for a high-volume payments capability ([Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP](#payments-to-ledger)), but the cash position then depends on the payments platform's forecasts.
+- **Partner payouts bypass the factory.** Roughly 9 million partner payouts a month leave through Northmere Pay and its payment providers; Kyriba sees their funding, not each payout. That boundary is right for a high-volume payments capability ([Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger)), but the cash position then depends on the payments platform's forecasts.
 - **Safeguarded funds are restricted.** Northmere Payments B.V. safeguards traveler funds in segregated accounts reconciled daily; they appear in the cash position as restricted, and the safeguarding reconciliation belongs to the e-money entity, not to treasury.
 - **The FX exposure is born in the subledger.** Customers pay in 46 currencies and partners are settled in 31, so SFP's merchant balances are an exposure Kyriba must receive daily, not a month-end ERP extract.
 - **Wayfare and Tablekin still pay from their own ERPs** in 2027. Bringing them into the factory is a Keystone Year 3 item and the precondition for paying on behalf of subsidiaries across brands.
 
-Because Northmere Payments B.V. is a financial entity under the EU's Digital Operational Resilience Act (DORA), any SaaS platform supporting its critical or important functions needs DORA contract terms and a place in its register of information; [Resilience, Observability, Security and Recovery for Finance Systems](#resilience-and-security) covers this.
+Because Northmere Payments B.V. is a financial entity under the EU's Digital Operational Resilience Act (DORA), any SaaS platform supporting its critical or important functions needs DORA contract terms and a place in its register of information; [Recover Before the Close: Resilience and Security for Finance](#resilience-and-security) covers this.
 
 {id: satellite-platforms--source-to-pay-and-expenses}
 ## Source-to-Pay and Expenses
@@ -425,17 +425,17 @@ The supplier record is where The Doppelgänger Record appears first: in Coupa wh
 {id: satellite-platforms--expenses}
 ### Expenses
 
-Expense platforms (SAP Concur at Northmere; Navan, formerly TripActions, is a newer entrant) are **subledger satellites**: they own reports, receipts, policy checks and approvals, post summarized journals to the ERP against employee payables, and leave reimbursement to the ERP's payment run. Approvers and cost centers come from Workday HCM ([Workday: Financials, People and the Organizational Backbone](#workday)); each posting carries the report identifier for drill-back; and because the receipts and approvals that auditors sample live in the satellite, its retention must match the ledger's.
+Expense platforms (SAP Concur at Northmere; Navan, formerly TripActions, is a newer entrant) are **subledger satellites**: they own reports, receipts, policy checks and approvals, post summarized journals to the ERP against employee payables, and leave reimbursement to the ERP's payment run. Approvers and cost centers come from Workday HCM ([Workday: The Org Chart Behind the Ledger](#workday)); each posting carries the report identifier for drill-back; and because the receipts and approvals that auditors sample live in the satellite, its retention must match the ledger's.
 
 {id: satellite-platforms--billing-and-subscription-platforms-subledgers-not-satellites}
 ## Billing and Subscription Platforms: Subledgers, Not Satellites
 
-Billing platforms such as Stripe Billing, Zuora and SAP's BRIM components look like satellites but are **subledgers**: they own subscriptions, rating, invoices and often receivables, and hold balances that must reconcile to a GL control account. Zuora describes its Billing product as serving "as an accounts receivable subledger" ([Zuora](https://www.zuora.com/products/)). Northmere's three billing approaches (SFP, FI-CA and Stripe Billing) are treated in [Designing Custom Ledgers and Financial Event Processing](#designing-financial-ledgers), [Stripe: Programmable Payments, Billing and Connected Accounts](#stripe) and [Preventing Redundant Capabilities and Unnecessary Coupling](#redundancy-and-coupling); this chapter asks only that all three call the same tax service and use the same e-invoicing gateway.
+Billing platforms such as Stripe Billing, Zuora and SAP's BRIM components look like satellites but are **subledgers**: they own subscriptions, rating, invoices and often receivables, and hold balances that must reconcile to a GL control account. Zuora describes its Billing product as serving "as an accounts receivable subledger" ([Zuora](https://www.zuora.com/products/)). Northmere's three billing approaches (SFP, FI-CA and Stripe Billing) are treated in [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers), [Stripe: Every Movement Is a Balance Transaction](#stripe) and [Duplicates and Dependencies: The Hidden Costs of a Grown Estate](#redundancy-and-coupling); this chapter asks only that all three call the same tax service and use the same e-invoicing gateway.
 
 {id: satellite-platforms--direct-tax-and-pillar-two}
 ## Direct Tax and Pillar Two
 
-**Direct tax** is tax on profit. The quarterly income tax provision is computed in a provision tool (Thomson Reuters ONESOURCE Tax Provision, Oracle EPM Tax Reporting and insightsoftware's Longview Tax are examples) or, in less mature estates, in spreadsheets. **Pillar Two** is the OECD's global minimum tax: groups with consolidated revenue of at least €750 million compute an effective tax rate per jurisdiction and pay top-up tax to 15%. The first **GloBE Information Return** fell due on 30 June 2026 in many jurisdictions, and a January 2026 "side-by-side" package changed parts of the regime; [Many Entities, Currencies, Jurisdictions and Brands](#global-scale) tracks the moving dates.
+**Direct tax** is tax on profit. The quarterly income tax provision is computed in a provision tool (Thomson Reuters ONESOURCE Tax Provision, Oracle EPM Tax Reporting and insightsoftware's Longview Tax are examples) or, in less mature estates, in spreadsheets. **Pillar Two** is the OECD's global minimum tax: groups with consolidated revenue of at least €750 million compute an effective tax rate per jurisdiction and pay top-up tax to 15%. The first **GloBE Information Return** fell due on 30 June 2026 in many jurisdictions, and a January 2026 "side-by-side" package changed parts of the regime; [Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale) tracks the moving dates.
 
 The architectural effect: the calculation starts from the financial accounts used for consolidation, by constituent entity and jurisdiction, adjusted for many specific items. That makes the provision and Pillar Two tools **analytical consumers of the consolidation layer**, not of the ERPs directly. They need entity-level, reconciled data, deferred tax detail, payroll and tangible asset data for the substance carve-out, and lineage strong enough to defend each adjustment years later.
 
@@ -453,14 +453,14 @@ Disclosure is an **analytical consumer** at the end of the chain:
 3. Tie-outs prove the face statements and notes agree with the consolidated trial balance.
 4. Tag review, approval and audit sign-off follow, and the filing is submitted.
 
-Three decisions matter. **Link, do not re-key**, so a late adjustment flows through. **Govern the taxonomy mapping** from group accounts to XBRL elements like the chart of accounts mapping, because a tagging error is a public error. **Retain evidence** of tie-outs and approvals for SOX 404. Northmere's 2027 weakness is upstream: OneStream's mappings from three charts of accounts live partly in spreadsheets, so the final tie-out proves agreement with a number whose own lineage is weak. [OneStream: Consolidation, Planning and Performance Management](#onestream) and [From Customer Transaction to Financial Statement](#transaction-to-report) pick up that thread.
+Three decisions matter. **Link, do not re-key**, so a late adjustment flows through. **Govern the taxonomy mapping** from group accounts to XBRL elements like the chart of accounts mapping, because a tagging error is a public error. **Retain evidence** of tie-outs and approvals for SOX 404. Northmere's 2027 weakness is upstream: OneStream's mappings from three charts of accounts live partly in spreadsheets, so the final tie-out proves agreement with a number whose own lineage is weak. [OneStream: Consolidating Actuals, Planning the Future](#onestream) and [The Life of a Booking: From €600 Payment to $97.38 of Revenue](#transaction-to-report) pick up that thread.
 
 {id: satellite-platforms--the-finance-data-platform-as-a-satellite}
 ## The Finance Data Platform as a Satellite
 
 The finance data platform is the newest satellite and has the most ambiguous boundary. Snowflake, Databricks and BigQuery harmonize multi-ERP data and hold subledger detail too voluminous for the ledger; ERP vendors offer their own variants: SAP Business Data Cloud (announced in February 2025 with Databricks, bundling SAP Datasphere, SAP Analytics Cloud, BW and SAP Databricks) and Oracle Fusion Data Intelligence (the renamed Fusion Analytics Warehouse).
 
-As a satellite, FinDB passes the tests only if its boundary is explicit: it **consumes** ledger, subledger and operational data, it **owns** derived datasets and governed metric definitions, it **never** becomes a place where accounting is done, and it **ties out** to the ledger for any dataset presented as financial. Northmere's known 2027 gap is exactly the last test: FinDB's revenue does not tie to the ledger's, which produces the "three revenue numbers" problem [Finance Data Across the Estate: From Operations to Analytics](#finance-data-flows) resolves. As AI agents start answering finance questions, the tie-out stops being a reporting nicety: an agent asked for last quarter's gross margin must read a governed, tied-out metric, a point [AI, Automation and Agentic Finance Operations](#ai-in-finance) develops.
+As a satellite, FinDB passes the tests only if its boundary is explicit: it **consumes** ledger, subledger and operational data, it **owns** derived datasets and governed metric definitions, it **never** becomes a place where accounting is done, and it **ties out** to the ledger for any dataset presented as financial. Northmere's known 2027 gap is exactly the last test: FinDB's revenue does not tie to the ledger's, which produces the "three revenue numbers" problem [One Number, Many Views: Finance Data from Operations to Analytics](#finance-data-flows) resolves. As AI agents start answering finance questions, the tie-out stops being a reporting nicety: an agent asked for last quarter's gross margin must read a governed, tied-out metric, a point [Automate the Work, Not the Accountability](#ai-in-finance) develops.
 
 {id: satellite-platforms--erp-native-modules-or-specialists}
 ## ERP-Native Modules or Specialists?
@@ -483,10 +483,10 @@ Two cautions apply across the table. First, "included in the subscription" is no
 {id: satellite-platforms--integration-with-the-rest-of-the-estate}
 ## Integration With the Rest of the Estate
 
-At Northmere the satellites are attached through SAP Integration Suite, MuleSoft and direct connectors, so a tax engine upgrade needs regression tests in several places. The principles of [Integration Architecture for Finance](#integration-architecture) apply with three satellite-specific additions:
+At Northmere the satellites are attached through SAP Integration Suite, MuleSoft and direct connectors, so a tax engine upgrade needs regression tests in several places. The principles of [Files, Events and APIs: How Finance Systems Talk](#integration-architecture) apply with three satellite-specific additions:
 
-- **An internal facade per shared satellite.** The tax service adapter and the e-invoicing gateway are Northmere-owned facades. Callers depend on Northmere's contract, not the vendor's API, so a vendor change is contained. This is the anti-corruption layer from [Canonical Events and Adapters for Loosely Coupled Financial Domains](#loosely-coupled-domains), applied to vendors.
-- **Master data is published, not copied.** Legal entities, counterparties, bank accounts and product tax codes are published from their systems of record to the satellites that need them. [Systems of Record and Authoritative Data Boundaries](#systems-of-record) owns the matrix; the satellite charter names which objects each satellite consumes and which it owns.
+- **An internal facade per shared satellite.** The tax service adapter and the e-invoicing gateway are Northmere-owned facades. Callers depend on Northmere's contract, not the vendor's API, so a vendor change is contained. This is the anti-corruption layer from [Canonical Events: A Common Language for Money](#loosely-coupled-domains), applied to vendors.
+- **Master data is published, not copied.** Legal entities, counterparties, bank accounts and product tax codes are published from their systems of record to the satellites that need them. [Systems of Record: Ending the Doppelgänger Record](#systems-of-record) owns the matrix; the satellite charter names which objects each satellite consumes and which it owns.
 - **Every satellite has a reconciliation in the catalog.** Tax engine to GL tax accounts; bank statements to GL bank accounts; Coupa approved invoices to S/4HANA AP postings; Concur reports to employee payables; Workiva figures to OneStream; FinDB metrics to the ledger. If a satellite has no reconciliation, nobody knows when it disagrees with the ledger.
 
 {id: satellite-platforms--failure-modes}
@@ -537,7 +537,7 @@ Two smaller decisions ride along: Kyriba becomes the system of record for the ba
 
 The indicators I would review each quarter: the share of tax determinations made by the standard engine (target: all of them); the number of determinations overridden after the engine answered; tax-to-GL reconciliation breaks by jurisdiction; e-invoices rejected and their age; bank accounts on automated statements; payment files accepted without hash verification (target: none); and the number of satellites without a charter. Each points to a specific owner, and each is the kind of number that slips quietly if nobody asks.
 
-The satellite market changes ownership often: Coupa, Zuora and Avalara were taken private in recent years, and Vertex has been buying e-invoicing companies. That is not a reason to avoid vendors; it is a reason to keep internal facades and exit paths in each charter, so a vendor's change of strategy is a migration, not a redesign. [Vendor Strategy and Avoiding Excessive Dependency](#vendor-portfolio-strategy) treats vendor risk as a portfolio.
+The satellite market changes ownership often: Coupa, Zuora and Avalara were taken private in recent years, and Vertex has been buying e-invoicing companies. That is not a reason to avoid vendors; it is a reason to keep internal facades and exit paths in each charter, so a vendor's change of strategy is a migration, not a redesign. [Own Your Roadmap: Vendor Strategy Without Lock-In Panic](#vendor-portfolio-strategy) treats vendor risk as a portfolio.
 
 {id: satellite-platforms--questions-to-ask}
 ## Questions to Ask
@@ -556,7 +556,7 @@ The satellite market changes ownership often: Coupa, Zuora and Avalara were take
 {id: satellite-platforms--from-platforms-to-one-system}
 ## From Platforms to One System
 
-This chapter closes Part II. The platforms are now on the table: custom ledgers, three ERPs, close and consolidation, payment providers, and the satellites around them. Each has been examined on its own terms, with its own boundary and its own reconciliation. But no transaction respects those boundaries. A traveler's booking becomes an event, a tax determination, a payment, a settlement, a journal, a reconciled balance, a consolidated figure and a tagged number in a 10-K, crossing almost every platform in Part II on the way. Part III ([INTEGRATED: The Finance Estate as One System](#part-3)) follows that path, starting with [From Customer Transaction to Financial Statement](#transaction-to-report), which traces one customer transaction from the moment it happens to the financial statements and asks what must hold true at every hop.
+This chapter closes Part II. The platforms are now on the table: custom ledgers, three ERPs, close and consolidation, payment providers, and the satellites around them. Each has been examined on its own terms, with its own boundary and its own reconciliation. But no transaction respects those boundaries. A traveler's booking becomes an event, a tax determination, a payment, a settlement, a journal, a reconciled balance, a consolidated figure and a tagged number in a 10-K, crossing almost every platform in Part II on the way. Part III ([INTEGRATION: The Finance Estate as One System](#part-3)) follows that path, starting with [The Life of a Booking: From €600 Payment to $97.38 of Revenue](#transaction-to-report), which traces one customer transaction from the moment it happens to the financial statements and asks what must hold true at every hop.
 
 {id: satellite-platforms--sources-and-evidence}
 ## Sources and Evidence

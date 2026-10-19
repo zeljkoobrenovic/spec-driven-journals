@@ -1,7 +1,7 @@
 {id: designing-financial-ledgers}
-# 17. Designing Custom Ledgers and Financial Event Processing
+# 17. Never Update, Only Append: Designing Custom Ledgers
 
-![Designing Custom Ledgers and Financial Event Processing — logo](enterprise-applications-and-financial-systems/posts/14-designing-financial-ledgers/assets/images/14-designing-financial-ledgers/logo.jpeg)
+![Never Update, Only Append: Designing Custom Ledgers — logo](enterprise-applications-and-financial-systems/posts/14-designing-financial-ledgers/assets/images/14-designing-financial-ledgers/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn how to design a high-volume subledger and the financial event pipeline that feeds it: the separation of financial events from accounting entries, posting rules as approved configuration, the invariants that must hold on every write, money and currency representation, the time dimensions of a ledger, summarization to the general ledger with drill-back, built-in reconciliation, testing, scaling, and when to buy instead of build.
 
@@ -21,7 +21,7 @@
 > * **Lost in Aggregation** — summarization to the general ledger is designed here with a drill-back key that is stored with the detail and retained as long as the detail.
 > * **Audit Archaeology** — posting rules, period states and reconciliation are built into the engine, so evidence is produced by normal operation rather than reconstructed for the auditor.
 
-Most enterprises do not set out to build a ledger. They build a payout engine, a billing service or a wallet, and that system needs to know how much is owed to whom. Within a few years it holds balances that the general ledger depends on, and it has become a **subledger** (a detailed record of one area of the books, such as partner payables or customer funds, whose totals feed a control account in the general ledger). [Why Enterprises Build Their Own Finance Platforms](#custom-finance-platforms) covers when a business should own such a system at all. This chapter assumes the decision has been made and asks how to build it well.
+Most enterprises do not set out to build a ledger. They build a payout engine, a billing service or a wallet, and that system needs to know how much is owed to whom. Within a few years it holds balances that the general ledger depends on, and it has become a **subledger** (a detailed record of one area of the books, such as partner payables or customer funds, whose totals feed a control account in the general ledger). [When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms) covers when a business should own such a system at all. This chapter assumes the decision has been made and asks how to build it well.
 
 The answer is not a technology. It is a small set of disciplines accountants have used for centuries: **record what happened, never overwrite it, correct by adding, and prove that the totals agree**. What most custom builds lack is not knowledge of these disciplines but the decision to treat the subledger as a book of record from the first line of code.
 
@@ -36,9 +36,9 @@ SFP works, in the sense that partners are paid and the books close. But three fa
 
 1. **Accounting logic lives in code.** The mapping from a booking or payment to debits and credits is spread across four services. When Leila's team changed the account used for alternative-payment-method fees in 2026, the change took a sprint, and the old and new logic coexisted for eleven days because one service deployed late.
 2. **Corrections are updates.** When a defect booked fees to the wrong cost center, an engineer ran a script that updated 140,000 lines in place. The numbers were right afterwards; nobody can now show what they were before.
-3. **The drill-back is fragile.** Summary lines in S/4HANA carry a batch identifier, but the map from batch to subledger lines lived in a log store with 13-month retention until 2025. The external auditor's request to trace a March revenue balance for a Portuguese entity is the story told in [Where Finance Architecture Goes Wrong](#where-finance-architecture-goes-wrong).
+3. **The drill-back is fragile.** Summary lines in S/4HANA carry a batch identifier, but the map from batch to subledger lines lived in a log store with 13-month retention until 2025. The external auditor's request to trace a March revenue balance for a Portuguese entity is the story told in [Unreconciled: Fourteen Ways Finance Architecture Goes Wrong](#where-finance-architecture-goes-wrong).
 
-The FY2026 **significant deficiency** on the SFP payout engine, covered in [Controls, Auditability and Security by Design](#controls-and-auditability), adds urgency: the auditor could not rely on SFP's automated calculations because nobody could prove which logic ran when.
+The FY2026 **significant deficiency** on the SFP payout engine, covered in [Controls by Design, Not by Audit Season](#controls-and-auditability), adds urgency: the auditor could not rely on SFP's automated calculations because nobody could prove which logic ran when.
 
 Dana sets three constraints. The redesign must use the Keystone canonical financial events, so the producers do not change again when the subledger moves. It must be **replaceable**: Keystone plans to migrate the merchant subledger to the group finance core in 2029, and the 2027 Q4 decision between SAP Central Finance and an accounting-hub pattern is still open. And it must give Leila's team, not engineers, ownership of the accounting.
 
@@ -52,7 +52,7 @@ Leila's condition is shorter: *"I want to be able to pick any euro on the S/4 ba
 {id: designing-financial-ledgers--financial-event-versus-accounting-entry}
 ### Financial event versus accounting entry
 
-A **financial event** is an immutable record that something with financial consequences happened in the business: a booking was confirmed, a payment was captured, a payout settled. It is written by the system that owns the business fact, in business terms, and it says nothing about debits, credits or accounts. Keystone's canonical events (`BookingConfirmed`, `PaymentCaptured`, `PaymentSettled` and so on) share an envelope: `event_id`, `event_type`, `event_version`, `occurred_at`, `recorded_at`, `brand`, `legal_entity`, `business_model`, `source_system`, `correlation_id`, `amount` (minor units plus currency), `counterparty_id`, `tax_jurisdiction` and a type-specific `payload`. [Integration Architecture for Finance](#integration-architecture) introduces the event model.
+A **financial event** is an immutable record that something with financial consequences happened in the business: a booking was confirmed, a payment was captured, a payout settled. It is written by the system that owns the business fact, in business terms, and it says nothing about debits, credits or accounts. Keystone's canonical events (`BookingConfirmed`, `PaymentCaptured`, `PaymentSettled` and so on) share an envelope: `event_id`, `event_type`, `event_version`, `occurred_at`, `recorded_at`, `brand`, `legal_entity`, `business_model`, `source_system`, `correlation_id`, `amount` (minor units plus currency), `counterparty_id`, `tax_jurisdiction` and a type-specific `payload`. [Files, Events and APIs: How Finance Systems Talk](#integration-architecture) introduces the event model.
 
 An **accounting entry** (a journal entry) is the ledger's interpretation of one or more events: two or more lines, each with an account, dimensions, a side and an amount, whose debits equal their credits. One event can produce zero, one or several entries; the same event can be interpreted differently by a US GAAP ledger and a local statutory ledger.
 
@@ -130,7 +130,7 @@ flowchart LR
 | **Balances** | Maintain running balances and periodic snapshots derived from the journal | Balance tables | Act as a source of truth that disagrees with the journal |
 | **Summarizer and tie-out** | Aggregate lines to GL documents, post to S/4HANA, prove the two agree | Summary records, tie-out results | Lose the link from a summary to its lines |
 
-Two boundaries deserve emphasis. First, **the payout engine is a producer, not a writer**: it decides what to pay and emits `PartnerPayoutInstructed`; it does not update a partner balance. The partner's payable balance is a ledger account that the payout engine reads, which removes the Shadow Ledger inside SFP. Second, **intake rejects; the engine does not guess**. An event that fails validation goes to quarantine with an owner, an age and a control total, because an event silently dropped is an incomplete ledger. Quarantine is a suspense account for events, and it is watched the same way (see [Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP](#payments-to-ledger) on suspense).
+Two boundaries deserve emphasis. First, **the payout engine is a producer, not a writer**: it decides what to pay and emits `PartnerPayoutInstructed`; it does not update a partner balance. The partner's payable balance is a ledger account that the payout engine reads, which removes the Shadow Ledger inside SFP. Second, **intake rejects; the engine does not guess**. An event that fails validation goes to quarantine with an owner, an age and a control total, because an event silently dropped is an incomplete ledger. Quarantine is a suspense account for events, and it is watched the same way (see [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger) on suspense).
 
 {id: designing-financial-ledgers--the-core-schema}
 ### The core schema
@@ -182,12 +182,12 @@ CREATE TABLE journal_line (
 );
 ```
 
-The application role that writes these tables has `INSERT` rights only, with one exception: the summarizer may set `summary_id` once, from null to a value. Every other change is a new row. That is how "append-only" stops being a convention and becomes a property of the system, which matters to the control described in [Controls, Auditability and Security by Design](#controls-and-auditability): no human writes to a production financial data store except through an application path.
+The application role that writes these tables has `INSERT` rights only, with one exception: the summarizer may set `summary_id` once, from null to a value. Every other change is a new row. That is how "append-only" stops being a convention and becomes a property of the system, which matters to the control described in [Controls by Design, Not by Audit Season](#controls-and-auditability): no human writes to a production financial data store except through an application path.
 
 {id: designing-financial-ledgers--posting-rules-as-versioned-approved-configuration}
 ## Posting Rules as Versioned, Approved Configuration
 
-The most consequential design decision is where the accounting lives. Northmere's answer is a **rule store** with the same lifecycle that [Controls, Auditability and Security by Design](#controls-and-auditability) built for payout rules: drafted by an accounting analyst, approved by a different person in Leila's accounting policy team, effective from a date, superseded but never overwritten. Engineers change the engine through the code pipeline; accountants change the rules through the rule workflow; each path leaves its own evidence.
+The most consequential design decision is where the accounting lives. Northmere's answer is a **rule store** with the same lifecycle that [Controls by Design, Not by Audit Season](#controls-and-auditability) built for payout rules: drafted by an accounting analyst, approved by a different person in Leila's accounting policy team, effective from a date, superseded but never overwritten. Engineers change the engine through the code pipeline; accountants change the rules through the rule workflow; each path leaves its own evidence.
 
 A rule is data with a small, declarative grammar. One way to express it:
 
@@ -307,7 +307,7 @@ Rule selection by `occurred_at` rather than by posting time is deliberate. A rul
 {id: designing-financial-ledgers--idempotency-and-deduplication}
 ## Idempotency and Deduplication
 
-Event delivery is at least once. Kafka's exactly-once guarantee covers read-process-write within Kafka, not side effects in an external database ([Confluent, 2017](https://www.confluent.io/blog/exactly-once-semantics-are-possible-heres-how-apache-kafka-does-it/)); change-data-capture tools such as Debezium deliver duplicates after a crash, and those duplicates "will always be visible to downstream consuming applications" ([Debezium FAQ](https://debezium.io/documentation/faq/)). PSP webhooks are also delivered at least once and out of order. **Exactly-once effect is something the ledger provides, not something the middleware delivers.** [Integration Architecture for Finance](#integration-architecture) owns the general pattern; three layers of it matter inside the ledger.
+Event delivery is at least once. Kafka's exactly-once guarantee covers read-process-write within Kafka, not side effects in an external database ([Confluent, 2017](https://www.confluent.io/blog/exactly-once-semantics-are-possible-heres-how-apache-kafka-does-it/)); change-data-capture tools such as Debezium deliver duplicates after a crash, and those duplicates "will always be visible to downstream consuming applications" ([Debezium FAQ](https://debezium.io/documentation/faq/)). PSP webhooks are also delivered at least once and out of order. **Exactly-once effect is something the ledger provides, not something the middleware delivers.** [Files, Events and APIs: How Finance Systems Talk](#integration-architecture) owns the general pattern; three layers of it matter inside the ledger.
 
 1. **Transport duplicates** carry the same `event_id`. The primary key on `financial_event` absorbs them. If a redelivered `event_id` arrives with a different payload hash, the event is not a duplicate but a conflict, and it goes to quarantine. Stripe's idempotency keys behave the same way: a reused key with different parameters is an error, not a silent replay ([Stripe API docs](https://docs.stripe.com/api/idempotent_requests)).
 2. **Semantic duplicates** carry different `event_id`s for the same business fact, typically because a producer retried after a timeout and generated a new identifier, or because the same capture arrives from a webhook and from a settlement report. The `UNIQUE (event_type, natural_key)` constraint catches them, where the natural key is defined per event type: the PSP's payment reference plus the modification reference for captures and refunds, the payout instruction identifier for payouts. Defining the natural key is part of the event contract, not an implementation detail.
@@ -333,7 +333,7 @@ Allocation across nights is the second case. Allocating a €100.00 promotional 
 {id: designing-financial-ledgers--multi-currency-entries-and-fx}
 ## Multi-Currency Entries and FX
 
-[Many Entities, Currencies, Jurisdictions and Brands](#global-scale) owns the multi-currency model of the group: transaction, functional and presentation currencies, rate types, revaluation and translation. Inside a subledger, three design rules carry most of the weight.
+[Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale) owns the multi-currency model of the group: transaction, functional and presentation currencies, rate types, revaluation and translation. Inside a subledger, three design rules carry most of the weight.
 
 **Every line carries both amounts.** The transaction-currency amount (what moved) and the functional-currency amount (what the entity reports), plus a reference to the rate used: its value, its source and its timestamp. A line whose functional amount cannot be explained from a governed rate table fails audit.
 
@@ -387,7 +387,7 @@ A ledger has more clocks than most systems, and confusing them is the most commo
 | `received_at` / `posted_at` | When the subledger accepted and posted it | Subledger | Audit trail; what was known at a given time |
 | `accounting_date` | The date whose period the entry belongs to | Accounting engine, by rule | Period assignment; GL posting date |
 
-Two practical details trip teams up. **Time zones**: the accounting date is a local date in the entity's calendar, not a UTC date. An event at 23:30 UTC on 31 March 2027 happened at 00:30 on 1 April in Lisbon, because Portugal moved to summer time (UTC+1) on 28 March. Whether it is a March or an April event depends on the entity's calendar, so the conversion uses the entity's time zone from the legal-entity master, and the rule is written down. **PSP cut-offs**: Adyen's reports follow the account's time-zone setting, while Stripe's Sigma uses UTC (see [Payments for Finance Architects: The Lifecycle of Money Movement](#payments-fundamentals)); the subledger normalizes to the entity's calendar and keeps the source timestamp.
+Two practical details trip teams up. **Time zones**: the accounting date is a local date in the entity's calendar, not a UTC date. An event at 23:30 UTC on 31 March 2027 happened at 00:30 on 1 April in Lisbon, because Portugal moved to summer time (UTC+1) on 28 March. Whether it is a March or an April event depends on the entity's calendar, so the conversion uses the entity's time zone from the legal-entity master, and the rule is written down. **PSP cut-offs**: Adyen's reports follow the account's time-zone setting, while Stripe's Sigma uses UTC (see [Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals)); the subledger normalizes to the entity's calendar and keeps the source timestamp.
 
 {id: designing-financial-ledgers--period-states-and-late-events}
 ### Period states and late events
@@ -409,7 +409,7 @@ stateDiagram-v2
 
 **Figure 5:** *SFP period states. Standard event postings land only in Open periods; SoftClosed accepts only approved adjustment entries; Closed and Locked accept nothing. Reopening is an exception with its own approval and evidence, not an operational convenience.*
 
-The interesting case is an event whose `occurred_at` falls in a closed period. Interchange-plus-plus fees are often finalized after the sale (see [Payments for Finance Architects: The Lifecycle of Money Movement](#payments-fundamentals)), so PSP fee adjustments regularly arrive late. Suppose an Adyen fee adjustment of €0.12 on the Lisbon payment, which occurred on 14 March, reaches SFP on 20 April. March's SFP period closed in the first week of April. The engine's rule:
+The interesting case is an event whose `occurred_at` falls in a closed period. Interchange-plus-plus fees are often finalized after the sale (see [Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals)), so PSP fee adjustments regularly arrive late. Suppose an Adyen fee adjustment of €0.12 on the Lisbon payment, which occurred on 14 March, reaches SFP on 20 April. March's SFP period closed in the first week of April. The engine's rule:
 
 ```text
 function accounting_date(event, ledger):
@@ -440,7 +440,7 @@ Correction is the ledger's most important operational procedure, and the place w
 
 Reversals and re-posts land in the current open period under the late-event rule above, and the job is an application path with its own approval, not a script. Fowler warns that replay must not re-send instructions to external systems ([Event Sourcing](https://martinfowler.com/eaaDev/EventSourcing.html)); in SFP only the payout engine moves money, never the journal, so re-derivation cannot trigger a payout.
 
-This also separates **logical recovery from disaster recovery**. Replication protects against losing a data center; it faithfully replicates a bad rule's entries too. Recovery from a logical error is a reversal-and-repost job, not a restore. [Resilience, Observability, Security and Recovery for Finance Systems](#resilience-and-security) covers the difference for financial incidents.
+This also separates **logical recovery from disaster recovery**. Replication protects against losing a data center; it faithfully replicates a bad rule's entries too. Recovery from a logical error is a reversal-and-repost job, not a restore. [Recover Before the Close: Resilience and Security for Finance](#resilience-and-security) covers the difference for financial incidents.
 
 {id: designing-financial-ledgers--summarization-to-the-general-ledger}
 ## Summarization to the General Ledger
@@ -460,16 +460,16 @@ Partner, booking and payment references are deliberately **not** in the key; the
 
 **The drill-back key** is a `summary_id` generated per summary document and written onto every contributing subledger line (the one permitted update, null to value). The S/4HANA journal entry carries the `summary_id` in a reference field of the document header, and S/4HANA's document number comes back to SFP in an acknowledgment and is stored against the summary. The chain from a GL balance to a booking is then four joins, each on a stored key: GL document → `summary_id` → subledger lines → entry → `event_id` → `correlation_id` (the booking). Leila's three clicks.
 
-**Retention of the map equals retention of the detail.** The `summary_id` lives on the line, in the ledger, not in a log store. The failure in [Where Finance Architecture Goes Wrong](#where-finance-architecture-goes-wrong), where the batch map expired after 13 months, cannot recur because there is no separate map to expire.
+**Retention of the map equals retention of the detail.** The `summary_id` lives on the line, in the ledger, not in a log store. The failure in [Unreconciled: Fourteen Ways Finance Architecture Goes Wrong](#where-finance-architecture-goes-wrong), where the batch map expired after 13 months, cannot recur because there is no separate map to expire.
 
 **Control totals travel with every summary.** Each summary batch carries the number of lines, total debits and total credits per currency, and a hash over the `summary_id`s it contains. The inbound interface on the S/4HANA side validates the totals before posting; a batch that fails is rejected whole, never partially posted. The SFP summarizer tracks every batch through three states (sent, acknowledged with a document number, rejected) and an unacknowledged batch older than four hours is an alert.
 
-Summarization also decides what the GL can report. Revenue by partner or channel cannot come from S/4HANA if those attributes are not in the key; it comes from the subledger or from FinDB, the Snowflake finance data platform. That choice, which decides which reports are certified from which system, is made explicitly with Owen Mbeki's finance data team and the controllers ([Finance Data Across the Estate: From Operations to Analytics](#finance-data-flows)).
+Summarization also decides what the GL can report. Revenue by partner or channel cannot come from S/4HANA if those attributes are not in the key; it comes from the subledger or from FinDB, the Snowflake finance data platform. That choice, which decides which reports are certified from which system, is made explicitly with Owen Mbeki's finance data team and the controllers ([One Number, Many Views: Finance Data from Operations to Analytics](#finance-data-flows)).
 
 {id: designing-financial-ledgers--reconciliation-built-in}
 ## Reconciliation Built In
 
-[Designing for Traceability, Reconciliation and Audit Across Boundaries](#traceability-and-reconciliation) owns the reconciliation catalog for the estate. A well-designed subledger runs three reconciliations of its own every day, automatically, and publishes the results as evidence.
+[Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation) owns the reconciliation catalog for the estate. A well-designed subledger runs three reconciliations of its own every day, automatically, and publishes the results as evidence.
 
 **1. Event completeness (source to subledger).** For each producer and day: events published (from the producer's control total, carried in a daily `SourceControlTotal` message), events received, events posted, events with a no-entry rule, events in quarantine. The equation must close: published = posted + no-entry + quarantined + in flight. A gap is a missing event, which is the most dangerous kind of error because nothing else will reveal it.
 
@@ -485,7 +485,7 @@ GROUP  BY 1, 2, 3, 4;
 -- every non-zero difference is a break with an owner and an age
 ```
 
-Running this daily rather than at month-end is the single largest contribution a subledger can make to a shorter close. A difference found on 4 March is one day of data to investigate; found on working day 3 of April, it is a month. Breaks feed BlackLine as reconciling items ([BlackLine: Close Automation, Reconciliation and Continuous Accounting](#blackline)), so the account reconciliation at month-end starts from a known list, not from a search.
+Running this daily rather than at month-end is the single largest contribution a subledger can make to a shorter close. A difference found on 4 March is one day of data to investigate; found on working day 3 of April, it is a month. Breaks feed BlackLine as reconciling items ([BlackLine: Matching, Certifying and Closing](#blackline)), so the account reconciliation at month-end starts from a known list, not from a search.
 
 **3. Clearing and open-item health.** Every clearing account (PSP clearing accounts per PSP and currency, payouts in transit, FX conversion) is aged daily by expected zero date. Traveler funds held is reconciled per booking: each booking's balance must equal captured amounts minus refunds for bookings not yet completed, and zero for completed ones. The total is handed to Northmere Payments B.V.'s daily safeguarding calculation, because the regulator cares that safeguarded money covers what the subledger says is owed.
 
@@ -507,7 +507,7 @@ These tests find the bugs that example tests miss: the refund that arrives befor
 
 **Replay of production event logs.** Because events are stored, any month can be re-run through a candidate engine or rule version in an isolated environment, and its journal compared line by line, aggregated by account, entity and day, with production. For a rule change, the expected differences are exactly those the change intends; anything else blocks the change. A month of SFP is about 90 million lines, which is a routine batch job.
 
-**Shadow posting.** For an engine change of the size of this redesign, run the new engine in parallel on live events, writing to a shadow journal, for at least one full close. A daily diff by account, entity and day is reviewed by the engineering team, and the month-end diff by the controller. [Modernization Patterns for Legacy Finance Systems](#modernization-patterns) discusses parallel runs as a cut-over strategy; for a ledger they are the main evidence that the new system is right.
+**Shadow posting.** For an engine change of the size of this redesign, run the new engine in parallel on live events, writing to a shadow journal, for at least one full close. A daily diff by account, entity and day is reviewed by the engineering team, and the month-end diff by the controller. [Changing the Engine in Flight: Modernization Patterns for Finance](#modernization-patterns) discusses parallel runs as a cut-over strategy; for a ledger they are the main evidence that the new system is right.
 
 {id: designing-financial-ledgers--scaling-storage-and-retention}
 ## Scaling, Storage and Retention
@@ -520,14 +520,14 @@ Where scale does bite:
 - **Storage growth.** 3 million lines a day is about 1.1 billion a year. Kept for ten years at a few hundred bytes a line plus indexes, that is several terabytes of lines, and a multiple of that once indexes, events and replicas are counted. Square reported managing about 20 TB in its Books service with a three-person team ([Square, 2019](https://developer.squareup.com/blog/books-an-immutable-double-entry-accounting-database-service/)). Plan for tiering: recent months hot, closed years in cheaper storage that remains queryable for drill-back.
 - **Indexes.** The drill-back needs indexes on `summary_id`, `correlation_id` and `event_id`; the tie-out needs entity, account and date. Each index is a write cost on every line, so add them for named queries only.
 
-**Retention** is set by the longest applicable statutory and audit requirement across the entities whose books the subledger holds, not by engineering convenience. Requirements vary: Germany, for example, now requires accounting vouchers for eight years and books for ten, with the clock starting at year-end (see [Controls, Auditability and Security by Design](#controls-and-auditability) for the regime overview). The safe design rule is that **the event store, the journal and the drill-back keys share one retention schedule**, so detail never expires before the summaries that depend on it.
+**Retention** is set by the longest applicable statutory and audit requirement across the entities whose books the subledger holds, not by engineering convenience. Requirements vary: Germany, for example, now requires accounting vouchers for eight years and books for ten, with the clock starting at year-end (see [Controls by Design, Not by Audit Season](#controls-and-auditability) for the regime overview). The safe design rule is that **the event store, the journal and the drill-back keys share one retention schedule**, so detail never expires before the summaries that depend on it.
 
 **Personal data** stays out of the journal: lines reference a `counterparty_id`, and identity lives in a separate store. GDPR Article 17(3) exempts data needed for a legal obligation from erasure ([GDPR Art. 17](https://gdpr-info.eu/art-17-gdpr/)), but the cleaner design lets an erasure request remove the identity mapping while the immutable ledger keeps only an opaque identifier. That is a design pattern, not legal advice.
 
 {id: designing-financial-ledgers--observability-of-money-in-flight}
 ## Observability of Money in Flight
 
-Infrastructure metrics say the engine is up; they do not say the money is accounted for. A ledger needs **business observability**, metrics in money and counts with finance meaning ([Resilience, Observability, Security and Recovery for Finance Systems](#resilience-and-security) owns the general practice). Leila's team watches six, per entity and currency:
+Infrastructure metrics say the engine is up; they do not say the money is accounted for. A ledger needs **business observability**, metrics in money and counts with finance meaning ([Recover Before the Close: Resilience and Security for Finance](#resilience-and-security) owns the general practice). Leila's team watches six, per entity and currency:
 
 | Signal | Definition | Healthy |
 | --- | --- | --- |
@@ -551,7 +551,7 @@ The design authority approves Jonas's proposal in May 2027 with the following de
 
 **Ownership.** Leila's accounting policy team owns the rule store's content: eleven merchant-model rule families at go-live, each with a named owner. Jonas's team owns the engine, intake, summarizer and tie-out. Mei Tanaka's controls team classifies the rule workflow, the period table and the tie-out as key controls, and the evidence comes from the platform's own logs.
 
-**Migration.** Shadow posting runs on live events through the August, September and October 2027 closes; the controller reviews the month-end diff for each. The cut-over is Monday 1 November 2027, in the second month of the quarter as the Keystone cut-over rule in [Modernization Patterns for Legacy Finance Systems](#modernization-patterns) requires, well away from the quarter-end on 31 December and clear of Stayloft's July–August peak; opening balances per booking are migrated as an entry per booking from the legacy subledger with control totals, and the legacy summarizer stops after posting Sunday 31 October. [Modernizing Without Stopping the Close: An Incremental Migration](#incremental-modernization) describes the stage-gate design behind this.
+**Migration.** Shadow posting runs on live events through the August, September and October 2027 closes; the controller reviews the month-end diff for each. The cut-over is Monday 1 November 2027, in the second month of the quarter as the Keystone cut-over rule in [Changing the Engine in Flight: Modernization Patterns for Finance](#modernization-patterns) requires, well away from the quarter-end on 31 December and clear of Stayloft's July–August peak; opening balances per booking are migrated as an entry per booking from the legacy subledger with control totals, and the legacy summarizer stops after posting Sunday 31 October. [Modernizing Without Stopping the Close](#incremental-modernization) describes the stage-gate design behind this.
 
 **Measured results**, illustrative and for the November and December 2027 closes after cut-over:
 
@@ -565,12 +565,12 @@ The design authority approves Jonas's proposal in May 2027 with the following de
 
 The close-day saving is not the whole story of Northmere's journey from nine days to five, but it removes SFP from the critical path of the Stayloft entities' close.
 
-**The 2029 question.** Because producers publish canonical events and the accounting lives in approved rules rather than code, the 2029 migration is a replacement of the engine and journal behind a stable event contract. If Keystone chooses an accounting-hub pattern, the rule store's content is the specification for the hub's rules; if it chooses to post through SAP FI-CA and Central Finance, the same events feed a different engine. Dana's insistence on replaceability is what makes the 2027 work worth doing even if the code is retired in 2029. (As it turned out, the December 2027 decision chose the accounting-hub pattern and went one step further: Keystone generalized this engine into the group accounting engine; see [Multiple ERPs, One Finance Core: Coexistence and Convergence](#multiple-erps).)
+**The 2029 question.** Because producers publish canonical events and the accounting lives in approved rules rather than code, the 2029 migration is a replacement of the engine and journal behind a stable event contract. If Keystone chooses an accounting-hub pattern, the rule store's content is the specification for the hub's rules; if it chooses to post through SAP FI-CA and Central Finance, the same events feed a different engine. Dana's insistence on replaceability is what makes the 2027 work worth doing even if the code is retired in 2029. (As it turned out, the December 2027 decision chose the accounting-hub pattern and went one step further: Keystone generalized this engine into the group accounting engine; see [Converge or Coexist: Living with More Than One ERP](#multiple-erps).)
 
 {id: designing-financial-ledgers--trade-offs-build-buy-or-use-the-erp-s-hub}
 ## Trade-offs: Build, Buy or Use the ERP's Hub
 
-[Build, Buy or Compose: Vendor Selection and Portfolio Rationalization](#build-versus-buy) owns the general method. For a subledger and accounting engine the realistic options are four: build on a general-purpose database as Northmere did, use a purpose-built ledger database or ledger product, use an ERP vendor's accounting hub, or use the ERP's own high-volume subledger. The table covers facts the vendors document; where a vendor does not publish a fact, the table says so.
+[Build, Buy or Compose: Choosing What to Own](#build-versus-buy) owns the general method. For a subledger and accounting engine the realistic options are four: build on a general-purpose database as Northmere did, use a purpose-built ledger database or ledger product, use an ERP vendor's accounting hub, or use the ERP's own high-volume subledger. The table covers facts the vendors document; where a vendor does not publish a fact, the table says so.
 
 | Option | What it is (documented) | Where the accounting rules live | Volume and limits | What you still build | Fits when |
 | --- | --- | --- | --- | --- | --- |
@@ -592,7 +592,7 @@ The architectural reading, which is my judgment rather than any vendor's claim:
 {id: designing-financial-ledgers--integration-with-the-rest-of-the-estate}
 ## Integration with the Rest of the Estate
 
-Upstream, the subledger consumes the canonical events that [Integration Architecture for Finance](#integration-architecture) introduces and [From Customer Transaction to Financial Statement](#transaction-to-report) traces end to end; payment events arrive normalized through [Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP](#payments-to-ledger), whose three-way match has its ledger side in the PSP clearing accounts. Partner and entity master data come from the golden sources in [Finance Data Architecture: Master Data, Systems of Record and Governance](#finance-data-architecture); the subledger never creates its own. Downstream, S/4HANA receives summaries ([SAP S/4HANA: The Enterprise Finance Core](#sap-s4hana)), BlackLine receives tie-out breaks ([BlackLine: Close Automation, Reconciliation and Continuous Accounting](#blackline)) and FinDB receives line detail with its own tie-out ([Finance Data Across the Estate: From Operations to Analytics](#finance-data-flows)). [Systems of Record and Authoritative Data Boundaries](#systems-of-record) records the authority hand-off: the booking platform owns the booking, the subledger owns the per-booking liability and partner payable, and S/4HANA owns the entity's balance.
+Upstream, the subledger consumes the canonical events that [Files, Events and APIs: How Finance Systems Talk](#integration-architecture) introduces and [The Life of a Booking: From €600 Payment to $97.38 of Revenue](#transaction-to-report) traces end to end; payment events arrive normalized through [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger), whose three-way match has its ledger side in the PSP clearing accounts. Partner and entity master data come from the golden sources in [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture); the subledger never creates its own. Downstream, S/4HANA receives summaries ([SAP S/4HANA: One Journal, Clean Core](#sap-s4hana)), BlackLine receives tie-out breaks ([BlackLine: Matching, Certifying and Closing](#blackline)) and FinDB receives line detail with its own tie-out ([One Number, Many Views: Finance Data from Operations to Analytics](#finance-data-flows)). [Systems of Record: Ending the Doppelgänger Record](#systems-of-record) records the authority hand-off: the booking platform owns the booking, the subledger owns the per-booking liability and partner payable, and S/4HANA owns the entity's balance.
 
 {id: designing-financial-ledgers--failure-modes}
 ## Failure Modes
@@ -617,7 +617,7 @@ A custom ledger is a twenty-year commitment disguised as a sprint plan. The deci
 
 **Decide what is a ledger.** Any system that holds a balance someone else relies on is a subledger, whatever its team calls it. I make that a standard: such systems either meet the ledger disciplines in this chapter or feed a system that does. That rule finds Shadow Ledgers early, before an auditor does.
 
-**Separate the three owners.** Producers own facts; Finance owns accounting rules; the platform team owns the engine and its invariants. The rule workflow and the code pipeline are distinct control paths, and nobody can approve their own change on either. This is the same separation that [Controls, Auditability and Security by Design](#controls-and-auditability) built for payout rules, and it is the remediation that keeps a significant deficiency from coming back.
+**Separate the three owners.** Producers own facts; Finance owns accounting rules; the platform team owns the engine and its invariants. The rule workflow and the code pipeline are distinct control paths, and nobody can approve their own change on either. This is the same separation that [Controls by Design, Not by Audit Season](#controls-and-auditability) built for payout rules, and it is the remediation that keeps a significant deficiency from coming back.
 
 **Standardize the invariants, not the implementation.** At Northmere the Keystone ledger standard lists the invariants (balanced per currency, append-only, posting key, open period, recomputable balances), the required timestamps, the drill-back key and the daily tie-out. Any subledger, custom or bought, must demonstrate them. That lets the estate evaluate an FI-CA configuration, an accounting hub or a custom engine against one bar.
 
@@ -637,7 +637,7 @@ A custom ledger is a twenty-year commitment disguised as a sprint plan. The deci
 7. What is reconciled every day, against what, and how many breaks are open today, by age?
 8. If we replaced this engine in two years, what would the producers and the GL have to change?
 
-The redesigned SFP subledger gives Northmere a merchant subledger it can prove; its summaries land in the system that is the group's book of record for the Stayloft entities. The next chapter, [SAP S/4HANA: The Enterprise Finance Core](#sap-s4hana), turns to that core: the Universal Journal, FI-CA and Central Finance, and how S/4HANA should be implemented and integrated so that subledgers like this one connect to it cleanly.
+The redesigned SFP subledger gives Northmere a merchant subledger it can prove; its summaries land in the system that is the group's book of record for the Stayloft entities. The next chapter, [SAP S/4HANA: One Journal, Clean Core](#sap-s4hana), turns to that core: the Universal Journal, FI-CA and Central Finance, and how S/4HANA should be implemented and integrated so that subledgers like this one connect to it cleanly.
 
 {id: designing-financial-ledgers--sources-and-evidence}
 ## Sources and Evidence
