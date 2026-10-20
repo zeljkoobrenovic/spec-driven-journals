@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Part IV — DISCOVERY: Matching Intent to Inventory
@@ -50,3 +50,5 @@ None.
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: made the Ranking policy v1 summary match the ledger (paid cap plus relevance floor) and credited the brands for the carousel decision. *(AI-mediated session)*
 - **2026-10-19** — Added 1 inline illustration (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 641 → 642 words; headings unchanged (shared with sibling part intros); "sets requirements forward" replaced, since Part VII supplies discovery rather than depending on it; "the same questions" made "three questions". *(AI-mediated session)*
+- **2026-10-20** — Term alignment with the glossary: "projection" → "read model", "copy register" → "consumer registry", "filter compiler" → "query compiler", where they occur on this page. *(AI-mediated session)*

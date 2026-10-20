@@ -33,7 +33,7 @@ For twenty years, the classifieds bargain was simple: the platform finds the buy
 
 From about 2017 the large European horizontals began to move into that moment for some categories. They added in-platform payment, shipping labels and buyer protection, so that a buyer in Utrecht can pay a seller in Groningen for a phone without either of them trusting the other. This chapter owns three terms: the **transactional pivot** (adding payment, delivery and protection to a classifieds marketplace), **marketplace payments** (the payment architecture in which a platform collects from buyers and pays out to many sellers) and **buyer protection** (the platform's promise to refund the buyer when a covered problem occurs).
 
-The chapter does not re-teach payments. The sibling book RECONCILED covers the payment lifecycle in [[payments-fundamentals]], the two main providers in [[adyen]] and [[stripe]], and the reconciliation design in [[payments-to-ledger]] and [[designing-financial-ledgers]]. Here the question is architectural and strategic: **when should a listing marketplace take part in the transaction, and which systems does it then have to own?**
+This chapter starts where [[messaging-and-leads]] ends: with an offer accepted in chat, which the marketplace can leave to the parties or carry through payment and delivery. The question is architectural and strategic: **when should a listing marketplace take part in the transaction, and which systems does it then have to own?** The answer becomes the transactional revenue line that [[monetization-models]] compares with the other ways a marketplace earns. The chapter does not re-teach payments. The sibling book RECONCILED covers the payment lifecycle in [[payments-fundamentals]], the two main providers in [[adyen]] and [[stripe]], and the reconciliation design in [[payments-to-ledger]] and [[designing-financial-ledgers]].
 
 ## Setting the Scene at Veldmark: Three Proposals and a Clearing Account
 
@@ -53,7 +53,7 @@ The rest of this chapter is the framework the forum used to decide.
 
 ## Concepts: What Changes When the Platform Takes Part in the Sale
 
-A classifieds marketplace's job ends at the contact ([[marketplace-taxonomy]]). A transactional marketplace's job ends when payment and delivery are complete. The transactional pivot moves a category from the first to the second, and it introduces a vocabulary the classifieds side of the organization has usually never needed.
+A classifieds marketplace's job ends at the contact ([[marketplace-taxonomy]]). A transactional marketplace's job ends when payment and delivery are complete. The transactional pivot moves a category from the first to the second, and brings terms the classifieds side of the organization has usually never needed.
 
 - **Order**: the record of an agreed sale between a buyer and a seller for a listing, with a price, fees, a fulfilment method and a state. It is created when the buyer commits, not when the listing is published.
 - **Marketplace payments**: a payment model in which the platform collects one payment from a buyer and pays out to the seller, net of the platform's fees, often after holding the funds for a period. In the EU, the platform either holds a payment licence itself or uses a licensed provider whose marketplace product does the collecting, holding and paying out.
@@ -66,7 +66,7 @@ A classifieds marketplace's job ends at the contact ([[marketplace-taxonomy]]). 
 - **Dispute** versus **chargeback**: a dispute is opened with the platform under its buyer protection; a chargeback is opened by the buyer's card issuer under card-scheme rules. Both can occur for the same order, and they follow different clocks.
 - **Pick-up and drop-off point (PUDO)**: a shop or locker where parcels are handed in and collected; the default shipping method for low-value consumer parcels in much of Europe.
 
-Two distinctions matter more than the rest. **Holding the money and taking the risk are separate**: the PSP holds the funds, but a buyer-protection refund that the seller cannot cover is paid by the marketplace. And **the order is a separate aggregate from the listing**: a listing can have many conversations and, for multi-quantity sellers, many orders; an order belongs to one buyer, one seller and one agreed price. [[listing-aggregate]] keeps availability on the listing and leaves everything about money to the order.
+**Holding the money and taking the risk are separate**: the PSP holds the funds, but a buyer-protection refund that the seller cannot cover is paid by the marketplace. And **the order is a separate aggregate from the listing**: a listing can have many conversations and, for multi-quantity sellers, many orders; an order belongs to one buyer, one seller and one agreed price. [[listing-aggregate]] keeps availability on the listing and leaves everything about money to the order.
 
 ## When to Take Part in the Transaction
 
@@ -162,7 +162,7 @@ flowchart LR
 
 The most common integration bug in a transactional pivot is the double sale: two buyers pay for the same one-off item because the listing still looked available. The order context must therefore **reserve the listing atomically when payment is committed**, and the listing must treat a reservation from an order as authoritative. At Tradeyard, a Safe Deal order emits `ListingReserved` on the listing event stream and the listing transitions to reserved; search shows a badge and alerts stop notifying ([[event-driven-listings]]). A reservation needs a timeout: an order that is never paid, never shipped or never collected must release the listing again, or the reservation becomes Ghost Inventory in reverse, a sellable item nobody can buy.
 
-The sold event is the other half. When the order completes, the listing becomes sold through the same stream, and every copy of the listing must react: search, saved-search alerts, digests, recommendations and sitemaps ([[saved-searches-and-alerts]], [[publication-pipeline]]). Femke's bike is the canonical warning. It sold through Safe Deal at 18:10 on Monday 8 March 2027 and was gone from search a minute later, but the next morning's alert digest, assembled from an older snapshot, still featured it to **214** users.
+When the order completes, the listing becomes sold through the same stream, and every copy of the listing must react: search, saved-search alerts, digests, recommendations and sitemaps ([[saved-searches-and-alerts]], [[publication-pipeline]]). Femke's bike is the canonical warning. It sold through Safe Deal at 18:10 on Monday 8 March 2027 and was gone from search a minute later, but the next morning's alert digest, assembled from an older snapshot, still featured it to **214** users.
 
 ### The order state machine
 
@@ -210,7 +210,7 @@ Shipping also changes discovery. An item that ships nationwide is no longer cons
 
 A dispute desk is a case-management system with money attached. Kleinanzeigen's coverage, as published in 2026, lists five cases: item not shipped, significantly different from the description, not authentic, a different item, incomplete ([Kleinanzeigen, n.d.](https://themen.kleinanzeigen.de/sicher-bezahlen/)). Adevinta built a dispute-management back office as a reusable component "that can be plugged into any marketplace", which ingested per-marketplace transaction events through Kafka, SQS or REST and normalized them into a common model; its designers noted, "We couldn't hardcode anything… or make any assumptions" ([Adevinta tech blog, 2023](https://adevinta.com/techblog/from-hello-world-to-a-dispute-management-back-office/)). That is the right shape for a shared capability across brands: an anti-corruption layer per marketplace and a canonical case model.
 
-The financial side is easy to underestimate. eBay's 2025 annual report describes its transaction losses as consisting "primarily of losses resulting from our buyer protection programs, chargebacks" ([eBay Form 10-K for 2025, filed 2026](https://www.sec.gov/Archives/edgar/data/1065088/000106508826000027/ebay-20251231.htm)). A protection promise is a liability that must be provisioned, measured per category and priced into the fee.
+A protection promise is also a liability that must be provisioned, measured per category and priced into the fee. eBay's 2025 annual report describes its transaction losses as consisting "primarily of losses resulting from our buyer protection programs, chargebacks" ([eBay Form 10-K for 2025, filed 2026](https://www.sec.gov/Archives/edgar/data/1065088/000106508826000027/ebay-20251231.htm)).
 
 ### Reconciliation and the ledger
 
@@ -239,13 +239,13 @@ Femke listed her city bike on Tradeyard Netherlands for **€240** on Sunday 7 M
 | 18:10 | Order completed; listing marked sold | Order, Listing | None |
 | Tue 9 Mar | Payout to Femke's bank account | Payment edge | €225 paid out |
 
-Three details carry the design. The handover code is the release event: by giving it, the buyer confirms they have seen and accepted the bike, so pay-at-pickup protection covers payment security and the seller not turning up, not "not as described" after handover. Femke had already been verified as a payee by Adyen before her first Safe Deal payout, which is why Veldmark ID will carry that fact as a `payee.verified` claim ([[identity-and-verification]]). And the €11.95 fee is charged to the buyer on top of the price, so Femke's DAC7 consideration is €225; with four Safe Deal sales in 2027 totaling €610, she is an excluded seller.
+The handover code is the release event: by giving it, the buyer confirms they have seen and accepted the bike, so pay-at-pickup protection covers payment security and the seller not turning up, not "not as described" after handover. Femke had already been verified as a payee by Adyen before her first Safe Deal payout, which is why Veldmark ID will carry that fact as a `payee.verified` claim ([[identity-and-verification]]). The €11.95 fee is charged to the buyer on top of the price, so Femke's DAC7 consideration is €225; with four Safe Deal sales in 2027 totaling €610, she is an excluded seller.
 
-The incident that dominated Femke's Sunday evening is the other half of the story. At 20:11 on Sunday a "buyer" had sent her a link to a fake Safe Deal payment page, on a domain registered that day. **A protected-payment brand is the scammer's favorite disguise**: Tradeyard users in the Netherlands and Belgium reported about **41,000** payment-link phishing attempts in 2026. The countermeasure is not in the payment platform, which never saw the fake page; it is in the message safety gate that holds links imitating Safe Deal ([[messaging-and-leads]]). A transactional pivot that does not budget for this is building **The Scam Inbox** with its own logo on it.
+**A protected-payment brand is the scammer's favorite disguise**, as Femke's Sunday evening showed. At 20:11 on Sunday a "buyer" had sent her a link to a fake Safe Deal payment page, on a domain registered that day. Tradeyard users in the Netherlands and Belgium reported about **41,000** payment-link phishing attempts in 2026. The countermeasure is not in the payment platform, which never saw the fake page; it is in the message safety gate that holds links imitating Safe Deal ([[messaging-and-leads]]). A transactional pivot that does not budget for this is building **The Scam Inbox** with its own logo on it.
 
 ### A shipped order with a dispute
 
-The second order is a local illustration. On Tuesday 13 April 2027, a buyer in Antwerp agrees to buy a used camera lens from a private seller in Ghent on Tradeyard Belgium for **€60**, shipped by parcel.
+On Tuesday 13 April 2027, a buyer in Antwerp agrees to buy a used camera lens from a private seller in Ghent on Tradeyard Belgium for **€60**, shipped by parcel.
 
 | Date | Step | Money and evidence |
 | --- | --- | --- |
@@ -275,7 +275,7 @@ Every step produced an event, and every amount has a ledger line: €70.65 captu
 | Card chargebacks | under 0.1% of orders |
 | Unmatched items in clearing at the December month-end | about €2.3 million |
 
-The numbers make two points. Safe Deal is a good business: €75 million of revenue on €1.02 billion of GMV is a 7.4% take rate, and losses are an order of magnitude below revenue. And it was **run as a feature on top of Yardstick's world view** until 2027: its dispute desk worked from e-mail templates, partial refunds were manual and the finance view was reconstructed at month-end.
+Safe Deal is a good business: €75 million of revenue on €1.02 billion of GMV is a 7.4% take rate, and losses are an order of magnitude below revenue. But it was **run as a feature on top of Yardstick's world view** until 2027: its dispute desk worked from e-mail templates, partial refunds were manual and the finance view was reconstructed at month-end.
 
 ## The Architecture Advice Forum's Decisions
 
@@ -302,7 +302,9 @@ On 22 September 2027 the forum applied the four conditions and the architecture 
 | Scope of a shared platform | One transaction platform for all goods brands and countries | Per-brand transaction stacks | Same model, same provider, same legal regime | Different providers, carriers and consumer rules that make sharing an abstraction tax |
 | Pivot depth | Optional protected payment beside contact | Payment-first, contact second | Classifieds liquidity is the asset | The marketplace is recommerce from the start (Vinted) |
 
-Two of these deserve a comment. **Buyer-paid fees** keep selling free, which protects supply, and put the price at the moment of highest intent; Vinted describes its mandatory fee, long known as the Buyer Protection fee and called "the Vinted fee" on its UK price list as of October 2026, as paid at checkout and "usually 3% to 8% + £0.3 to £0.8" in the UK ([Vinted UK price list, 2026](https://www.vinted.co.uk/pricelist)). Marktplaats' 2017 product charged the buyer 2% plus €0.40 ([RetailTrends, 2017](https://retailtrends.nl/news/pdf/50855)), its 2022 successor 5% ([AVROTROS Radar, 2022](https://radar.avrotros.nl/artikel/dit-is-de-vervanger-voor-de-gelijk-oversteken-functie-van-marktplaats-52677)). And **sharing the transaction platform across countries** is attractive, but it is the layer most exposed to local differences: payment methods, carriers, consumer law and dispute norms. Adevinta's 2023 plan named "the full transactional journey" among the investments it would stop duplicating; under its 2025 decentralization, each market's provider contracts, carriers and consumer-law regimes argue for local ownership again (Adevinta Annual Report 2023; Strategic Report 2025).
+**Buyer-paid fees** keep selling free, which protects supply, and put the price at the moment of highest intent; Vinted describes its mandatory fee, long known as the Buyer Protection fee and called "the Vinted fee" on its UK price list as of October 2026, as paid at checkout and "usually 3% to 8% + £0.3 to £0.8" in the UK ([Vinted UK price list, 2026](https://www.vinted.co.uk/pricelist)). Marktplaats' 2017 product charged the buyer 2% plus €0.40 ([RetailTrends, 2017](https://retailtrends.nl/news/pdf/50855)), its 2022 successor 5% ([AVROTROS Radar, 2022](https://radar.avrotros.nl/artikel/dit-is-de-vervanger-voor-de-gelijk-oversteken-functie-van-marktplaats-52677)).
+
+**Sharing the transaction platform across countries** is attractive, but it is the layer most exposed to local differences: payment methods, carriers, consumer law and dispute norms. Adevinta's 2023 plan named "the full transactional journey" among the investments it would stop duplicating; under its 2025 decentralization, each market's provider contracts, carriers and consumer-law regimes argue for local ownership again (Adevinta Annual Report 2023; Strategic Report 2025).
 
 > **INFERENCE, NOT DOCUMENTED:** The public descriptions of Kleinanzeigen's and Marktplaats' flows fit a common pattern: a licensed provider holds funds; the marketplace owns the offer and acceptance in chat, the buyer-fee pricing, label generation and tracking, the release timer and dispute handling. It is a plausible reference architecture, not a description of either company's systems.
 

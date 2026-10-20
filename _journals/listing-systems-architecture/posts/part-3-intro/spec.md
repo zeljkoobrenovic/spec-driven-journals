@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Part III — SUPPLY: Getting Inventory In
@@ -49,3 +49,4 @@ Internal: [[listing-ingestion]], [[normalization-and-enrichment]], [[entity-reso
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: restored [[part-1]] and [[part-5]] links in the connections section. *(AI-mediated session)*
 - **2026-10-19** — Added 1 inline illustration (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 657 → 657 words; headings unchanged (match sibling part intros); long connections sentence split; [[meet-veldmark]] link added to the Veldmark thread to match sibling intros. *(AI-mediated session)*

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Part VIII — LEADERSHIP: The Chief Architect's Agenda
@@ -50,3 +50,4 @@ None.
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: American spelling (program); Veldmark thread no longer says Ingrid's team takes decisions owned by the CTO, board and forum. *(AI-mediated session)*
 - **2026-10-19** — Added 1 inline illustration (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 793 → 799 words; headings unchanged (house shape for part intros); lead and "How this part connects" opening sentences made concrete. *(AI-mediated session)*

@@ -73,3 +73,5 @@ Article only for now.
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 6 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
 - **2026-10-20** — Architecture heading now names the design (a geo query compiler in front of the engine). *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 7,522 → 7,516 words; lead now ties the chapter to Part IV's "compile places into structure" argument and to entity resolution; "five ways" corrected to the table's six rows; topic sentences sharpened; outline unchanged; spec unchanged. *(AI-mediated session)*
+- **2026-10-20** — Consistency fix: unsourced "one of the most requested features" claim for commute search removed. *(AI-mediated session)*

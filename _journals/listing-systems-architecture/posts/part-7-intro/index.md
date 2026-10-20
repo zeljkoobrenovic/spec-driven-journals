@@ -51,7 +51,7 @@ The argument of this part is that **a shared platform earns trust through contra
 
 ## How this part connects
 
-[[part-6]] assumed this layer for paid effects, leads, contact counts and pricing tests. The lifecycle from [[part-2]] becomes the event contract, discovery in [[part-4]] reads the stream, and trust decisions in [[part-5]] must propagate to every copy. [[part-8]] takes the platform to the Chief Architect's agenda: consolidating acquired stacks onto it, organizing teams around it and retiring the monolith while it runs.
+Every earlier part rests on this layer. [[part-6]] assumed it for paid effects, leads, contact counts and pricing tests. The lifecycle from [[part-2]] becomes the event contract, discovery in [[part-4]] reads the stream, and trust decisions in [[part-5]] must propagate to every copy. [[part-8]] takes the platform to the Chief Architect's agenda: consolidating acquired stacks onto it, organizing teams around it and retiring the monolith while it runs.
 
 ## The Veldmark thread
 
@@ -60,6 +60,6 @@ Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark
 - **journey service level objectives** with error budgets and a search degradation ladder (April 2027);
 - **server-rendered pages and event-driven sitemaps** for Tradeyard's 40 million indexed URLs (May 2027), and **Tenancy model v1**: ten brand × country tenants (9 June 2027);
 - **Experimentation standard v1** (30 June 2027), after a bump-price test that looked like a win, and **Listing event contract v1** on Kafka (Confluent Cloud), live on 1 July 2027;
-- an **Iceberg-based data platform** with tracking plan v1 (September 2027), a **group retention schedule** and copy register (October 2027), and a **group model registry** mandatory for every production model (9 November 2027).
+- an **Iceberg-based data platform** with tracking plan v1 (September 2027), a **group retention schedule** and the consumer registry extended to every listing copy (October 2027), and a **group model registry** mandatory for every production model (9 November 2027).
 
 By the end of Part VII you should be able to say, for any listing fact, where it is true, which copies hold it and how you would rebuild or erase them. Begin with [[event-driven-listings]].

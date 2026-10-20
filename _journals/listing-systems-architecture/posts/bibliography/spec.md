@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Bibliography
@@ -54,3 +54,4 @@ Article only. A reference page is not adapted into other modalities.
 ## Changelog
 
 - **2026-10-19** — Initial bibliography harvested from every page's Sources and Evidence section. *(AI-mediated session)*
+- **2026-10-20** — Term alignment with the glossary: "projection" → "read model", "copy register" → "consumer registry", "filter compiler" → "query compiler", where they occur on this page. *(AI-mediated session)*

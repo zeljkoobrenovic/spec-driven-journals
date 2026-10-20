@@ -69,3 +69,4 @@ Chief and enterprise architects, CTOs, heads of platform engineering and enginee
 - **2026-10-19** — Editorial review pass: restored [[long-term-evolution]] link (was hard-coded .html); dated and qualified the leboncoin feed-summary citation; American spelling (program, catalog). *(AI-mediated session)*
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 3 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 5,646 → 5,642 words; lead now names [[platform-consolidation]] as the chapter it builds on and [[modernization-and-migration]] as the one that uses it; six first sentences now state their point; three overloaded paragraphs split; no headings renamed; spec unchanged. *(AI-mediated session)*

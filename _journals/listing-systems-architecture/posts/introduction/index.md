@@ -45,7 +45,7 @@ The book is written for people who are accountable for how a listing marketplace
 - **Product and engineering directors** of classifieds, real-estate, automotive, jobs and recommerce marketplaces.
 - **Technology leaders integrating acquired marketplaces**, who must decide what to consolidate, in what order, and what to leave alone.
 
-The book takes the perspective of a **Chief Architect of a multi-country, multi-vertical marketplace group**: several brands in several countries, each with its own history, traffic, sellers and stack, and an owner who wants growth and lower run costs at the same time. A single-country, single-vertical marketplace will find almost all of the reasoning applies; the trade-offs are simply drawn at group scale, where the cost of building a capability four times becomes visible.
+The book takes the perspective of a **Chief Architect of a multi-country, multi-vertical marketplace group**: several brands in several countries, each with its own history, traffic, sellers and stack, and an owner who wants growth and lower run costs at the same time. A single-country, single-vertical marketplace will find almost all of the reasoning applies; the trade-offs are drawn at group scale, where the cost of building a capability four times becomes visible.
 
 **What it assumes.** Architecture literacy: you know what an API, a database, an event stream, a search engine and Kubernetes are, and you have made and defended architecture decisions. The book does not explain them.
 
@@ -57,7 +57,7 @@ A listing marketplace sells one thing: **matches**. A private seller wants a buy
 
 That probability is **liquidity**: the likelihood that a listing finds a buyer, or a search finds a listing worth contacting, within the time window that matters in its category. [[liquidity-and-network-effects]] defines it precisely. Two properties matter for architecture from the first page. Liquidity is **local**: it is measured per cell (a region crossed with a category), so a group can be liquid in Amsterdam bikes and illiquid in rural Portuguese furniture at the same time. And liquidity is **what compounds**: buyers come back where they find things, sellers list where buyers are, and every network effect a marketplace has is liquidity accumulated over years.
 
-The central claim of this book follows from that. **A listing marketplace is a liquidity machine, and its architecture should be judged by how reliably it turns fresh, trustworthy supply into matches with demand**, in every country, category and vertical, while letting each marketplace evolve at its own pace. Listings, search, trust and monetization are not separate products; they are stages of one pipeline whose throughput is liquidity.
+The book's central claim follows: **a listing marketplace is a liquidity machine, and its architecture should be judged by how reliably it turns fresh, trustworthy supply into matches with demand**, in every country, category and vertical, while letting each marketplace evolve at its own pace. Listings, search, trust and monetization are not separate products; they are stages of one pipeline whose throughput is liquidity.
 
 ---begin mermaid---
 flowchart LR
@@ -76,13 +76,13 @@ flowchart LR
 ---end mermaid---
 **Figure 2:** *The liquidity machine. Supply becomes listings that are published, found, trusted, contacted and paid for; outcomes flow back into discovery and trust, and paid effects flow back into discovery under policy. Each part of the book designs one stage, and the platform carries them all.*
 
-Read that way, most architectural questions in a marketplace change shape. A freshness objective is no longer an engineering preference; it is justified by the liquidity metric it protects, such as time to first contact. A removal that reaches search but not the alert digest is not a minor bug; it spends buyers' trust on an item that no longer exists. A paid placement is not only a product line; it is a sale of liquidity that must earn more than it costs the match rate. And a shared platform in a group is not good because it is shared; it is good if every brand's machine runs faster on it than without it.
+Read that way, every architectural choice is judged by the liquidity it protects or spends. A freshness objective is no longer an engineering preference; it is justified by the liquidity metric it protects, such as time to first contact. A removal that reaches search but not the alert digest is not a minor bug; it spends buyers' trust on an item that no longer exists. A paid placement is not only a product line; it is a sale of liquidity that must earn more than it costs the match rate. And a shared platform in a group is not good because it is shared; it is good if every brand's machine runs faster on it than without it.
 
-The argument is stated here so you can watch it form. The individual chapters work on one stage at a time and do not stop to restate it. The last chapter of Part VIII, [[long-term-evolution]], draws it together: it maps each part to the stage of the machine it designs, the guarantee that stage must give, the liquidity metric it protects and the failure pattern that appears when it does not, and turns that map into marketplace fitness functions a group can measure every quarter.
+The chapters work on one stage at a time and do not stop to restate the argument. The last chapter of Part VIII, [[long-term-evolution]], draws it together: it maps each part to the stage of the machine it designs, the guarantee that stage must give, the liquidity metric it protects and the failure pattern that appears when it does not, and turns that map into marketplace fitness functions a group can measure every quarter.
 
 ## Why This Book Exists
 
-There is a great deal of good material near this subject. Search-engine, streaming and cloud documentation explains the engines. Marketplace economics, from two-sided market theory to practitioner writing on network effects, explains why liquidity matters. Marketplace companies have published years of engineering posts, talks and annual reports, some remarkably candid.
+Good material exists on each side of this subject. Search-engine, streaming and cloud documentation explains the engines. Marketplace economics, from two-sided market theory to practitioner writing on network effects, explains why liquidity matters. Marketplace companies have published years of engineering posts, talks and annual reports, some remarkably candid.
 
 What I have found missing, working with marketplace architecture, is the material **between** them. Engine documentation explains how to run an index; it does not say that the index must never become the system of record for listings, or what to do when a dealer's truncated file unpublishes tens of thousands of cars at three in the morning. Economics explains liquidity; it does not say which latency target, event contract or duplicate policy protects it. Company engineering posts describe one team's solution at one moment, usually without the constraints, the alternatives or what happened two years later.
 
@@ -92,7 +92,7 @@ The gap is most expensive at **group scale**. The classifieds industry has spent
 
 **Company-aware but company-neutral.** The book draws on the public engineering and investor record of Adevinta, OLX Group, eBay Classifieds Group, AVIV Group, Kleinanzeigen, Marktplaats, leboncoin, mobile.de, Auto Trader, Rightmove, Zillow, Idealista, CoStar and others, because architects work with real precedents and generic advice does not survive contact with them. But it organizes the argument around architectural questions, not company profiles. Engines and vendors (Elasticsearch, OpenSearch, Solr, Vespa, Kafka, Adyen and others) appear where the choice between them is the decision; no chapter recommends a product in general.
 
-**Five kinds of statement.** Architecture writing becomes unreliable when facts, habits, guesses, opinions and examples blur into one confident voice. Every chapter keeps them apart, and you can tell them apart from the wording and the sources:
+**Five kinds of statement.** Architecture writing becomes unreliable when facts, habits, guesses, opinions and examples blur into one confident voice. Every chapter keeps them apart, and the wording and the sources show which is which:
 
 | Kind of statement | What it is | How to recognize it |
 | --- | --- | --- |
@@ -105,7 +105,7 @@ The gap is most expensive at **group scale**. The classifieds industry has spent
 ![A sorting desk routes mixed cards into five trays labeled Fact, Practice, Inference, Recommendation and Illustration, with a balance scale beside them.](assets/images/introduction/five-kinds-of-statement.jpeg)
 **Figure 3:** *The book keeps five kinds of statement apart, from dated documented fact to fictional illustration, so each can be weighed for what it is.*
 
-The distinctions matter most where they are easiest to lose. A Veldmark figure, such as six minutes from submission to searchable, is an illustration, not a benchmark. An inference about how a public marketplace probably indexes its listings is not evidence of how it does. And a recommendation that sounds like a fact, such as "the search index is not the system of record", is still a recommendation, which is why each one comes with its reasoning and its exceptions.
+Three of these distinctions are easy to lose. A Veldmark figure, such as six minutes from submission to searchable, is an illustration, not a benchmark. An inference about how a public marketplace probably indexes its listings is not evidence of how it does. And a recommendation that sounds like a fact, such as "the search index is not the system of record", is still a recommendation, which is why each one comes with its reasoning and its exceptions.
 
 **Why company claims carry dates.** Marketplace groups change faster than their engineering blogs. Adevinta's [2023 annual report](https://live.euronext.com/sites/default/files/company_press_releases/attachments_oslo/2024/04/26/616971_Adevinta%20AR%202023.pdf) (published 2024) described turning the leboncoin and Kleinanzeigen platforms into "a unified global platform" for its generalist marketplaces; the same report records the rebrand of eBay Kleinanzeigen as Kleinanzeigen. After a 2024 take-private, the group's [2025 strategic report](https://adevinta.com/wp-content/uploads/2026/05/Strategic-Report-2025-Aurelia-UK-Feederco-Ltd.pdf) (published 2026) describes a move to "a decentralised, standalone operating model". Both statements were true when they were written. A chapter that cited the first without its date would describe a strategy the company had since reversed. So every company-specific claim says when it was published, and where the evidence is more than about three years old, the chapter says that the current state may differ. Where a brand has been renamed or a business sold, the chapter uses the current name and mentions the former one once.
 
@@ -198,7 +198,7 @@ The parts are a learning sequence for a first reading. If a decision is already 
 | We are piloting a photo-to-listing assistant or conversational search | [[ai-in-listing-systems]] | [[ml-platform]], [[query-understanding]], [[trust-and-safety-architecture]] |
 | The owner asks what it would cost to sell or carve out one brand | [[long-term-evolution]] | [[multi-country-platforms]], [[platform-consolidation]], [[case-olx]] |
 
-Two rows deserve a warning. The payments row starts with the marketplace taxonomy, not with payments, on purpose: moving from contact to transaction changes who holds the money and the risk, and that decides identity depth, trust and regulation before it decides a payment provider. And the single-platform row starts with what differs between verticals, because the most common failure I see is a shared platform designed for one vertical's physics and then imposed on the others.
+Two rows start somewhere unexpected, on purpose. The payments row starts with the marketplace taxonomy, not with payments: moving from contact to transaction changes who holds the money and the risk, and that decides identity depth, trust and regulation before it decides a payment provider. And the single-platform row starts with what differs between verticals, because the most common failure I see is a shared platform designed for one vertical's physics and then imposed on the others.
 
 ## The Failure Patterns
 
@@ -218,7 +218,7 @@ I developed the book through AI-mediated authoring: I set the concept, the struc
 
 ## Where to Go Next
 
-If you read in order, turn next to [[where-listing-systems-go-wrong]]. It names the fifteen failure patterns the rest of the book keeps returning to, and will help you recognize which are already in your marketplace. Then read [[meet-veldmark]], so that every chapter's opening scene lands in a group you know. If a decision is waiting, use the routing table and come back to the preface later. Either way, keep the general manager's question in mind: why does a smaller competitor turn its listings into more contacts? Every chapter is, in the end, part of the answer, and part of the design of a marketplace that turns fresh, trustworthy supply into matches with demand.
+If you read in order, turn next to [[where-listing-systems-go-wrong]]. It names the fifteen failure patterns the rest of the book keeps returning to, and will help you recognize which are already in your marketplace. Then read [[meet-veldmark]], so that every chapter's opening scene lands in a group you know. If a decision is waiting, use the routing table and come back to the preface later. Either way, keep the general manager's question in mind: why does a smaller competitor turn its listings into more contacts? Every chapter is part of the answer, and part of the design of a marketplace that turns fresh, trustworthy supply into matches with demand.
 
 ## Sources and Evidence
 

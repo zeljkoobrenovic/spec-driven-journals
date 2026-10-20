@@ -33,7 +33,7 @@ Every marketplace has an opinion about which listing comes first, whether it adm
 
 Ranking in a listing marketplace is harder than in retail search for three reasons. Inventory is unique and short-lived, so a model has days, not years, to learn about each item. The outcome that matters, a contact that leads to a sale, is rare, delayed and often happens off the platform. And the marketplace serves **two sides at once**: the order that is best for a buyer this minute is not always the order that keeps sellers listing next month, and some sellers have paid to be seen.
 
-This chapter is about the function that turns the candidates retrieved by [[search-architecture]] and interpreted by [[query-understanding]] into an ordered page. It owns **learning to rank** (LTR), **paid-organic blending** and **ranking transparency**. It does not re-teach the product catalog and entitlements behind paid products ([[products-and-entitlements]]), the experimentation methods for two-sided markets ([[experimentation]]) or the full regulatory map ([[marketplace-regulation]]). It shows where each one enters the ranking function.
+Part IV judges every discovery component by how fast and how fairly it turns fresh supply into contacts; ranking is where "fairly" gets decided. This chapter turns the candidates retrieved by [[search-architecture]] and interpreted by [[query-understanding]] into an ordered page. It owns **learning to rank** (LTR), **paid-organic blending** and **ranking transparency**. The paid products of [[part-6]] depend on its relevance floor and delivery events, and [[recommendations]] reuses its machinery without a query. It does not re-teach the product catalog and entitlements behind paid products ([[products-and-entitlements]]), the experimentation methods for two-sided markets ([[experimentation]]) or the full regulatory map ([[marketplace-regulation]]); it shows where each one enters the ranking function.
 
 ## Setting the Scene at Veldmark: The "Top Listing" Boost That Ate Relevance
 
@@ -59,19 +59,19 @@ Each change was reasonable when it was made and was A/B tested on revenue per se
 - The share of search sessions that end with at least one contact fell from **10.6%** in 2021 to **9.4%** in 2026. Over the same period VAS revenue in the Netherlands grew every year.
 - The share of new private listings with **no contact within 48 hours** rose from 24% to 33%.
 
-The concrete case Ingrid used in the review was a familiar one. On Sunday **7 March 2027**, Femke listed her **€240** city bike in Rotterdam at 19:42; it became searchable at 19:48. A buyer searching "stadsfiets" within ten kilometers of Rotterdam at 19:50 saw Femke's bike at **position 14**. Above it were three top-listing slots, two electric bikes priced around €1,400, a children's bike, and four listings from one bike reseller with Visibility Plus. Femke's first contact, at 19:55, came from one of the **312** saved searches her listing matched ([[saved-searches-and-alerts]]), not from ranking.
+Ingrid made the drift concrete with a familiar listing. On Sunday **7 March 2027**, Femke listed her **€240** city bike in Rotterdam at 19:42; it became searchable at 19:48. A buyer searching "stadsfiets" within ten kilometers of Rotterdam at 19:50 saw Femke's bike at **position 14**. Above it were three top-listing slots, two electric bikes priced around €1,400, a children's bike, and four listings from one bike reseller with Visibility Plus. Femke's first contact, at 19:55, came from one of the **312** saved searches her listing matched ([[saved-searches-and-alerts]]), not from ranking.
 
 Olivier Petit, VP Monetization, made the fair counterpoint: sellers buy top listings because they work, and the revenue funds the free private listings that make Tradeyard liquid. Tomasz Wiśniewski, head of the new group search platform, added the technical one: Tradeyard would move from Solr to OpenSearch by the end of 2028, and nobody wanted to port five layers of boost functions nobody owned. The question for the architecture advice forum was therefore not "less paid visibility" but **"what should own the order of a results page, and how will we know when it is wrong?"**
 
-## What Ranking Is, Precisely
+## What Ranking Is: Prominence, Not a Sort
 
-The EU's consumer law offers the best definition. Directive (EU) 2019/2161, the Omnibus Directive, defines **ranking** as "the relative prominence given to products, as presented, organised or communicated by the trader, irrespective of the technological means used for such presentation, organisation or communication" ([Directive (EU) 2019/2161, Art. 3](http://publications.europa.eu/resource/celex/32019L2161), 2019, inserting point (m) into Article 2 of the Unfair Commercial Practices Directive). Three consequences follow, and all three matter architecturally.
+The most useful definition of ranking comes from EU consumer law. Directive (EU) 2019/2161, the Omnibus Directive, defines **ranking** as "the relative prominence given to products, as presented, organised or communicated by the trader, irrespective of the technological means used for such presentation, organisation or communication" ([Directive (EU) 2019/2161, Art. 3](http://publications.europa.eu/resource/celex/32019L2161), 2019, inserting point (m) into Article 2 of the Unfair Commercial Practices Directive). Three architectural consequences follow.
 
 1. **Ranking is about prominence, not about a sort algorithm.** Reserved slots, carousels, highlighted cards and the first map pins are all ranking, even when no score is involved.
 2. **Ranking covers every surface that presents listings in an order:** results pages, category browse, map pins ([[map-search]]), alerts ordered by match quality and recommendation modules ([[recommendations]]).
 3. **"Irrespective of the technological means"** means a rule in a template is as much ranking as a neural network. The obligations described later in this chapter attach to both.
 
-Four terms recur through the chapter.
+The chapter uses four more terms.
 
 - **Sort order** is the ordering mode a user can choose: newest, price, distance, or the marketplace's default ("best match", "recommended", "relevance").
 - **Relevance model** is the component that estimates, for one query and one listing, how likely the buyer is to act on it: click, save, contact, buy.
@@ -96,9 +96,9 @@ Signals fall into families with different owners, update rates and risks. The ta
 
 Two rules of thumb come from this table. First, **signals that change often should not live in the inverted index**. In segment-based engines such as Elasticsearch, OpenSearch and Solr, a partial update re-indexes the whole document, so engagement counters and bump timestamps cause update storms; [[search-architecture]] covers the mitigation. Second, **every signal in the "paid" and "trust" rows carries a legal duty**, which is a reason to apply them in a layer that can be logged and explained, not inside a score.
 
-## Architecture: The Ranking Function
+## Architecture: Model, Policy Layer and Ranking Log
 
-The pattern that the documented large marketplaces converge on is a **multi-stage pipeline**. Each stage scores fewer candidates with a more expensive method. Airbnb's 2026 description of its search stack is typical: retrieval of tens of thousands of homes, a first-stage neural ranker, then a set-wise re-ranker, with each stage scoring about an order of magnitude fewer listings than the last ([Abdool et al., 2026](https://arxiv.org/html/2601.06873v1)). Vespa's documentation names the same phases, first, second and global ([Vespa](https://docs.vespa.ai/en/phased-ranking.html), n.d.). In a 2024 engineering post, Vinted reported that after moving to Vespa it could rank 200,000 candidates per query ([Vinted, 2024](https://vinted.engineering/2024/09/05/goodbye-elasticsearch-hello-vespa/)).
+Large marketplaces that publish their designs converge on a **multi-stage pipeline**: each stage scores fewer candidates with a more expensive method. Airbnb's 2026 description of its search stack is typical: retrieval of tens of thousands of homes, a first-stage neural ranker, then a set-wise re-ranker, with each stage scoring about an order of magnitude fewer listings than the last ([Abdool et al., 2026](https://arxiv.org/html/2601.06873v1)). Vespa's documentation names the same phases, first, second and global ([Vespa](https://docs.vespa.ai/en/phased-ranking.html), n.d.). In a 2024 engineering post, Vinted reported that after moving to Vespa it could rank 200,000 candidates per query ([Vinted, 2024](https://vinted.engineering/2024/09/05/goodbye-elasticsearch-hello-vespa/)).
 
 For a listing marketplace I add one stage that the published papers rarely draw separately, because it is where the business rules live: the **ranking policy layer**.
 
@@ -119,7 +119,7 @@ flowchart LR
 ---end mermaid---
 **Figure 2:** *A ranking function as four stages. The relevance model estimates what the buyer will act on; the policy layer applies freshness, paid placement, diversity and trust rules from versioned configuration; the log records what was served and why, which is what training, evaluation, billing and regulators all need.*
 
-The responsibilities are worth stating as contracts, because the failure in Tradeyard's case was not bad engineering but missing boundaries.
+Each component needs a written contract, because Tradeyard's failure was missing boundaries, not bad engineering.
 
 | Component | Responsibility | Owns | Must not |
 | --- | --- | --- | --- |
@@ -133,7 +133,7 @@ The responsibilities are worth stating as contracts, because the failure in Trad
 
 ### What one ranked query records
 
-The sequence below shows a single text query in the target architecture. The point is the side effects: every ranked page produces data that four other teams depend on.
+Every ranked page produces data that four other teams depend on. The sequence below shows one text query in the target architecture.
 
 ---begin mermaid---
 sequenceDiagram
@@ -173,7 +173,7 @@ The **default sort** is the most political decision in a classifieds product, be
 | **Relevance or "best match"** | Expected buyer action per position | Complete, well-priced, well-photographed listings; responsive sellers | Text queries, dense categories, verticals with rich attributes |
 | **Hybrid** | Relevance with a freshness term and time-boxed paid positions | Depends entirely on the weights | Most mature marketplaces, which is why weights need governance |
 
-Newest-first is not naive. For a buyer hunting underpriced bikes, recency is relevance: a good deal listed an hour ago may be gone tonight. That is why many horizontal classifieds keep it as the default for category browsing, and why the **bump**, a paid product that re-dates a listing, is one of the most widely sold paid products. The mechanics need care.
+Newest-first is not naive. For a buyer hunting underpriced bikes, recency is relevance: a good deal listed an hour ago may be gone tonight. That is why many horizontal classifieds keep it as the default for category browsing, and why the **bump**, a paid product that re-dates a listing, is one of the most widely sold paid products. Four rules keep bumps sound.
 
 - **Keep the bump timestamp separate from the creation time.** mobile.de's API, as documented, keeps a `renewalDate` apart from `creationDate` (see [[listing-aggregate]]). Overwriting the creation date, as Tradeyard did in 2019, corrupts analytics on listing age and makes recency gameable.
 - **A bump is a ranking event, not a lifecycle transition.** It does not change the listing's status; [[listing-aggregate]] keeps the two separate.
@@ -202,11 +202,11 @@ Most marketplaces end up with a **weighted or multi-task objective**: contacts a
 
 ### Models: tree ensembles are still a good default
 
-The published lineage is clear. Airbnb described moving from gradient-boosted decision trees (GBDT) to neural networks once GBDT gains plateaued, a journey its authors summed up as "deep learning was steep learning for us" ([Haldar et al., 2018](https://arxiv.org/abs/1810.09591)). Its later papers added position-bias handling and cold-start treatment ([Haldar et al., 2020](https://arxiv.org/abs/2002.05515)), similarity-aware diversity ([2022](https://arxiv.org/abs/2210.07774)) and map-specific ranking ([2024](https://arxiv.org/abs/2407.00091v1)). Etsy reported that a unified embedding model for personalized retrieval increased search purchase rate by 5.58% across its A/B tests ([Jha et al., 2023](https://arxiv.org/abs/2306.04833v2)).
+The published lineage runs from tree ensembles to neural networks, once tree gains plateau. Airbnb described moving from gradient-boosted decision trees (GBDT) to neural networks once GBDT gains plateaued, a journey its authors summed up as "deep learning was steep learning for us" ([Haldar et al., 2018](https://arxiv.org/abs/1810.09591)). Its later papers added position-bias handling and cold-start treatment ([Haldar et al., 2020](https://arxiv.org/abs/2002.05515)), similarity-aware diversity ([2022](https://arxiv.org/abs/2210.07774)) and map-specific ranking ([2024](https://arxiv.org/abs/2407.00091v1)). Etsy reported that a unified embedding model for personalized retrieval increased search purchase rate by 5.58% across its A/B tests ([Jha et al., 2023](https://arxiv.org/abs/2306.04833v2)).
 
 Closer to classifieds, mobile.de presented learning to rank with XGBoost at Berlin Buzzwords in June 2024, for "millions of searches each day" under a latency target below 30 ms ([Berlin Buzzwords, 2024](https://program.berlinbuzzwords.de/bbuzz24/talk/MARKUE/)). In 2023 leboncoin engineers described re-ranking Elasticsearch's top candidates with a two-tower model built on DistilBERT, within a budget of a few dozen milliseconds; secondary write-ups of that work report up to 5% more clicks and contacts ([ZenML summary, 2023](https://www.zenml.io/llmops-database/llm-powered-search-relevance-re-ranking-system); [Le Monde Informatique, 2023](https://www.lemondeinformatique.fr/actualites/lire-recherche-optimisee-pour-leboncoin-grace-aux-llm-91697.html)). leboncoin's own post could not be read for this book, so treat those figures as reported, not verified.
 
-My recommendation for a mid-sized marketplace is a **GBDT ranker with a LambdaMART-style objective**, trained on contacts with click and save auxiliaries, served in the engine (OpenSearch and Solr both ship LTR plugins; see [OpenSearch](https://docs.opensearch.org/latest/search-plugins/ltr/index/), n.d.) or in a re-ranking service. Move to neural re-rankers when three conditions hold: tree gains have plateaued in online tests, text and image understanding are the limiting factor, and the team can run GPU inference within the latency budget. That condition does not hold for Tradeyard Portugal; it may hold for Tradeyard Netherlands.
+My recommendation for a mid-sized marketplace is a **GBDT ranker with a LambdaMART-style objective**, trained on contacts with click and save auxiliaries, served in the engine (OpenSearch and Solr both ship LTR plugins; see [OpenSearch](https://docs.opensearch.org/latest/search-plugins/ltr/index/), n.d.) or in a re-ranking service. Move to neural re-rankers when three conditions hold: tree gains have plateaued in online tests, text and image understanding are the limiting factor, and the team can run GPU inference within the latency budget. They do not hold for Tradeyard Portugal; they may hold for Tradeyard Netherlands.
 
 ### Features as served, not as recomputed
 
@@ -223,7 +223,9 @@ Position bias hurts new listings most: they have no engagement history, so a mod
 
 ### Diversity and per-seller caps
 
-Singh and Joachims gave the underlying idea a precise form in 2018: treat **exposure** as a resource the ranking allocates, and constrain how it is distributed among items while maximizing utility for the user ([Singh and Joachims, 2018](https://arxiv.org/abs/1802.07281)). Marketplaces rarely implement the formal constraints, but the framing is right: exploration slots and caps are exposure policies. Listings on a page are also not independent. Airbnb's 2022 work showed that booking probability depends on what else is shown, and that a similarity-aware model reduces redundant results ([Haldar et al., 2022](https://arxiv.org/abs/2210.07774)). Classifieds have a blunter version: one professional seller with two hundred near-identical listings can flood a query. A **per-seller cap**, for example no more than three listings from one seller in the first twenty positions, is a policy rule, not a model feature. It protects buyers from monotony, protects private sellers from being buried and limits the payoff from bulk posting. It must be tunable per category: a cap that is right for city bikes is wrong for new-car inventory, where one dealer group may legitimately hold most of the relevant stock.
+Exploration slots and per-seller caps are **exposure** policies: they decide how attention is shared among listings. Singh and Joachims gave this a precise form in 2018: treat exposure as a resource the ranking allocates, and constrain how it is distributed among items while maximizing utility for the user ([Singh and Joachims, 2018](https://arxiv.org/abs/1802.07281)). Marketplaces rarely implement the formal constraints, but the framing is right.
+
+Listings on a page are also not independent. Airbnb's 2022 work showed that booking probability depends on what else is shown, and that a similarity-aware model reduces redundant results ([Haldar et al., 2022](https://arxiv.org/abs/2210.07774)). Classifieds have a blunter version: one professional seller with two hundred near-identical listings can flood a query. A **per-seller cap**, for example no more than three listings from one seller in the first twenty positions, is a policy rule, not a model feature. It protects buyers from monotony, protects private sellers from being buried and limits the payoff from bulk posting. It must be tunable per category: a cap that is right for city bikes is wrong for new-car inventory, where one dealer group may legitimately hold most of the relevant stock.
 
 ## Blending Paid Visibility with Organic Results
 
@@ -264,11 +266,11 @@ European law turned ranking explanation from good practice into an obligation. T
 | **Digital Services Act (EU) 2022/2065, Arts. 26, 27 and 17** | Ads labeled in real time with who paid (Art. 26); main recommender parameters in plain language in the terms, and options where offered (Art. 27); a demotion of content is a restriction requiring a statement of reasons (Art. 17) | Label payloads per result; trust-based demotions logged as enforcement actions with reasons ([[trust-and-safety-architecture]]) |
 | **DSA Art. 38** (very large online platforms only) | At least one option for each recommender system "which is not based on profiling" ([Regulation (EU) 2022/2065, Art. 38](http://publications.europa.eu/resource/celex/32022R2065), 2022) | A non-personalized ranking variant that can be served on request |
 
-Two cautions about this table. On 19 November 2025 the Commission proposed repealing the P2B Regulation because of its overlap with the DSA and the Digital Markets Act; as of October 2026 that is a proposal, and the Commission says its non-binding ranking guidelines are proposed to remain in application ([European Commission](https://digital-strategy.ec.europa.eu/en/policies/platform-business-trading-practices), updated 2026). Second, whether a promoted classifieds listing bought by a private seller counts as an "advertisement" under DSA Art. 26 is a legal judgment, not settled text; the prudent reading treats it as one and labels it.
+Two cautions about this table. First, on 19 November 2025 the Commission proposed repealing the P2B Regulation because of its overlap with the DSA and the Digital Markets Act; as of October 2026 that is a proposal, and the Commission says its non-binding ranking guidelines are proposed to remain in application ([European Commission](https://digital-strategy.ec.europa.eu/en/policies/platform-business-trading-practices), updated 2026). Second, whether a promoted classifieds listing bought by a private seller counts as an "advertisement" under DSA Art. 26 is a legal judgment, not settled text; the prudent reading treats it as one and labels it.
 
 The DSA point that surprises ranking teams most is Art. 17. **If the ranking quietly pushes down listings that a fraud model suspects, that is a restriction of visibility**, and the affected user is owed a statement of reasons. A "trust demotion" therefore cannot be a hidden multiplier. It must be an enforcement action recorded by the trust platform, and the ranking policy applies it with a reason code. This is one more reason to keep trust rules in the policy layer rather than in the model.
 
-The architectural answer to all four rows is the same: **if the policy is explicit configuration and every result carries reason codes, the parameters description can be generated, the labels are correct by construction, and the audit trail exists.** If the policy is buried in five layers of boost functions, every one of these obligations becomes a manual reconstruction exercise.
+The architectural answer to all four rows is the same: **if the policy is explicit configuration and every result carries reason codes, the parameters description can be generated, the labels are correct by construction, and the audit trail exists.** If the policy is buried in five layers of boost functions, every one of these obligations becomes a manual reconstruction.
 
 ## Evaluating Ranking Changes
 
@@ -329,7 +331,7 @@ Fewer paid positions were shown, but each was shown where it fit, so the sellers
 
 ## Trade-offs
 
-The decisions in this chapter are not one-size-fits-all. The table summarizes when each common choice is right.
+No choice in this chapter is right everywhere. The table shows when each common option fits.
 
 | Decision | Option A | Option B | Choose A when | Choose B when |
 | --- | --- | --- | --- | --- |
@@ -354,7 +356,7 @@ Ranking physics differ more by vertical than by country.
 | Distinctive signal | Price plausibility, photo quality | **Price rating against a market-value model**; dealer response time | Energy class, price per m², agency response | Salary transparency, application rate |
 | Distinctive risk | Scam listings at the top | Price ratings perceived as unfair by dealers | Which agency's listing represents a duplicate cluster; Keybridge neutrality | Discrimination exposure; ranking candidates on the other side |
 
-Two cells deserve emphasis. At Motorvane, the market-value model that labels the Essen Golf a "good price" at €21,900 against an estimate of €22,800 is also a ranking signal, which turns a pricing model into an exposure model; dealers will contest it, and [[ml-platform]] covers its governance. At Hearthly, when entity resolution clusters the Lyon apartment's three agency listings into one canonical property, ranking must decide **which agency's listing represents the cluster**. Doing that by subscription tier would be legal, if disclosed, but it would also be read as Veldmark favoring paying agencies, and it sits uncomfortably close to the March 2027 Keybridge neutrality commitment. The rule I would choose is the most complete and most recently updated listing, with paid tier as a disclosed tie-breaker at most.
+Two cells turn a ranking signal into a business dispute. At Motorvane, the market-value model that labels the Essen Golf a "good price" at €21,900 against an estimate of €22,800 is also a ranking signal, which turns a pricing model into an exposure model; dealers will contest it, and [[ml-platform]] covers its governance. At Hearthly, when entity resolution clusters the Lyon apartment's three agency listings into one canonical property, ranking must decide **which agency's listing represents the cluster**. Doing that by subscription tier would be legal, if disclosed, but it would also be read as Veldmark favoring paying agencies, and it sits uncomfortably close to the March 2027 Keybridge neutrality commitment. The rule I would choose is the most complete and most recently updated listing, with paid tier as a disclosed tie-breaker at most.
 
 ## Failure Modes
 

@@ -68,3 +68,4 @@ Chief architects, platform and SRE leads, search platform leads and engineering 
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 5 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
 - **2026-10-20** — Retitled "Sunday Evening Peaks" to match the ledger's Sunday-evening peak; permalink unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,238 → 6,211 words; lead now places the chapter in Part VII and names what Part VIII uses from it; 3 headings renamed (Architecture, Peak rehearsals, Three unit costs); degradation-order point moved first; unverified AutoScout24 FinOps aside cut; spec unchanged. *(AI-mediated session)*

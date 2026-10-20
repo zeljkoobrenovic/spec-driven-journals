@@ -313,7 +313,7 @@ flowchart LR
 
 The rows are not a maturity ladder. **The leading automotive marketplaces moved deeper into data and workflow, and stepped back from price risk.**
 
-## Vertical Differences: How the Lessons Transfer
+## Vertical Differences in the Record
 
 | Lesson from automotive | Real estate | General classifieds | Jobs |
 | --- | --- | --- | --- |

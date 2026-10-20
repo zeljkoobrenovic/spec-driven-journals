@@ -74,3 +74,4 @@ Article only for now.
 - **2026-10-19** — Editorial review pass: acronyms expanded on first use (DMS, NHTSA), reading time corrected; frame-size baseline (23%) confirmed against the editor's ledger line; DPE, Vinted and ESCO figures re-verified. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 2 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 7,807 → 7,867 prose words; lead now places the chapter in Part II and names what it builds on and feeds; 1 heading renamed ("In Practice: Public Examples and Veldmark's Cleanup", parallel to chapter 10); 3 long paragraphs split, buried points moved first; "four examples" corrected to "three groups of examples"; spec unchanged. *(AI-mediated session)*

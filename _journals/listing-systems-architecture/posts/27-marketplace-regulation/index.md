@@ -33,7 +33,7 @@ Until about 2020, regulation reached most classifieds architects as a legal revi
 
 This chapter maps the regulations that shape listing marketplaces and turns them into requirements. It is not legal advice, and it does not replace counsel; national transposition, guidance and case law change the details. It concentrates on the EU, where Veldmark operates, and treats the UK and US rules more briefly for groups with brands there. Its claim is that the obligations look numerous but ask for a small number of architectural artifacts, and that **compliance by design** (building those artifacts as reusable components with evidence built in) is cheaper than compliance by project.
 
-Neighboring chapters own the machinery this chapter regulates. [[trust-and-safety-architecture]] owns the moderation pipeline, the decision service and enforcement propagation. [[identity-and-verification]] owns identity levels, KYB and the business registry. [[transactions-and-payments]] owns the payment flows that bring DAC7 into scope, and [[ranking]] and [[advertising-platforms]] own the systems whose disclosures this chapter specifies. The running example is Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]).
+Part V treats trust as a shared platform, and this chapter explains why the law now shapes that platform. The decision record from [[trust-and-safety-architecture]] and the trader record from [[identity-and-verification]] are the artifacts most of these rules ask for, and the labeling and tax rules set here bind the payments, paid products and advertising of Part VI. Neighboring chapters own the machinery this chapter regulates. [[trust-and-safety-architecture]] owns the moderation pipeline, the decision service and enforcement propagation. [[identity-and-verification]] owns identity levels, KYB and the business registry. [[transactions-and-payments]] owns the payment flows that bring DAC7 into scope, and [[ranking]] and [[advertising-platforms]] own the systems whose disclosures this chapter specifies. The running example is Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]).
 
 ## Setting the Scene at Veldmark: Five Exporters and One Report
 
@@ -62,9 +62,9 @@ EU digital regulation does not regulate "classifieds sites". It regulates roles,
 
 Sources: [DSA](https://eur-lex.europa.eu/eli/reg/2022/2065/oj); [P2B Regulation (EU) 2019/1150](https://eur-lex.europa.eu/eli/reg/2019/1150/oj); [Omnibus Directive (EU) 2019/2161](https://eur-lex.europa.eu/eli/dir/2019/2161/oj); [DAC7, Council Directive (EU) 2021/514](https://eur-lex.europa.eu/eli/dir/2021/514/oj); the list of designated very large online platforms ([European Commission, updated 15 October 2026](https://digital-strategy.ec.europa.eu/en/policies/list-designated-vlops-and-vloses)).
 
-The table contains the most important architectural fact in this chapter. Some definitions explicitly cover **lead generation**. The platform-to-business (P2B) Regulation applies "irrespective of where those transactions are ultimately concluded", and the Unfair Commercial Practices Directive's (UCPD) ranking-information rule, inserted by the Omnibus Directive, applies to search results "irrespective of where transactions are ultimately concluded" ([Directive (EU) 2019/2161, Art. 3](https://eur-lex.europa.eu/eli/dir/2019/2161/oj)). Other definitions turn on whether **a contract is concluded through the platform**: the DSA's trader-traceability section, the Consumer Rights Directive's marketplace information duties and, through its definition of "platform", DAC7, which excludes software that "exclusively" allows users "to list or advertise" a relevant activity or processes payments without further intervention ([Council Directive (EU) 2021/514, Annex V, Section I](https://eur-lex.europa.eu/eli/dir/2021/514/oj)).
+The table holds the most important architectural fact in this chapter: some definitions explicitly cover **lead generation**, and others turn on a contract concluded through the platform. The platform-to-business (P2B) Regulation applies "irrespective of where those transactions are ultimately concluded", and the Unfair Commercial Practices Directive's (UCPD) ranking-information rule, inserted by the Omnibus Directive, applies to search results "irrespective of where transactions are ultimately concluded" ([Directive (EU) 2019/2161, Art. 3](https://eur-lex.europa.eu/eli/dir/2019/2161/oj)). The definitions that turn on whether **a contract is concluded through the platform** are the DSA's trader-traceability section, the Consumer Rights Directive's marketplace information duties and, through its definition of "platform", DAC7, which excludes software that "exclusively" allows users "to list or advertise" a relevant activity or processes payments without further intervention ([Council Directive (EU) 2021/514, Annex V, Section I](https://eur-lex.europa.eu/eli/dir/2021/514/oj)).
 
-Whether a pure classifieds listing with a contact button "allows consumers to conclude distance contracts with traders" is a question for counsel. My working rule as an architect is to **assume the contract-based rules apply to every listing published by a trader**, because the cost of building trader traceability for dealers and agencies is small and the cost of being wrong is large, and to **treat every transaction feature as a perimeter change** that triggers a regulatory review before launch. Safe Deal, shipping labels, deposits, rental applications with payment and online car reservation all qualify.
+My working rule as an architect is to **assume the contract-based rules apply to every listing published by a trader**. Whether a pure classifieds listing with a contact button "allows consumers to conclude distance contracts with traders" is a question for counsel, but building trader traceability for dealers and agencies costs little and being wrong costs much. The second part of the rule is to **treat every transaction feature as a perimeter change** that triggers a regulatory review before launch. Safe Deal, shipping labels, deposits, rental applications with payment and online car reservation all qualify.
 
 ![A marketplace building with only a contact button in an inner zone, moving across a dashed boundary into an outer zone after adding payment, shipping and checkout modules.](assets/images/27-marketplace-regulation/features-move-the-perimeter.jpeg)
 **Figure 1:** *Lead generation sits inside some rules; adding payment, checkout or shipping moves the marketplace across the perimeter into trader traceability, marketplace duties and DAC7, so every transaction feature is also a regulatory decision.*
@@ -105,7 +105,7 @@ The DSA is the regulation that most changes listing-system architecture, because
 | 31 Compliance by design | Interface lets traders provide product identification, trader marks, and labeling and product-safety information; best efforts to check before offers go live; reasonable efforts at random checks against official databases | Listing schema fields for safety and labeling; random-check job | [[attribute-schemas]]; trust and safety |
 | 32 Right to information | When an illegal product or service was sold, inform consumers who bought it in the last six months, or publish a notice | Record which consumers bought or contacted per listing; notification job | Payments and messaging |
 
-Three entries in the table catch ranking, messaging and payments teams by surprise.
+Three entries in the table catch ranking, payments and seller-data teams by surprise.
 
 **Demotion is a restriction.** Article 17 lists "demoting content" among the restrictions that need a statement of reasons, and the Transparency Database has a decision value for it, `DECISION_VISIBILITY_CONTENT_DEMOTED` ([DSA Transparency Database API documentation](https://transparency.dsa.ec.europa.eu/page/api-documentation)). A ranking feature that quietly pushes suspected scam listings down the results is a moderation decision. [[trust-and-safety-architecture]] puts such demotions behind the decision service for that reason.
 
@@ -117,7 +117,7 @@ Three entries in the table catch ranking, messaging and payments teams by surpri
 
 The Commission's Transparency Database is the most concrete regulatory interface a classifieds architect will build against. Its API accepts single statements or batches of up to **100** per call, and a batch fails as a whole if any statement fails validation. Required fields include the decision ground, content type, category, content and application dates, the facts relied on, the source of the decision, whether detection and decision were automated, the territorial scope and a **platform unique identifier** (`puid`) of up to 500 characters, and at least one restriction field. The vocabulary is fixed: restriction values such as `DECISION_VISIBILITY_CONTENT_REMOVED` or `DECISION_ACCOUNT_SUSPENDED`; grounds `DECISION_GROUND_ILLEGAL_CONTENT` or `DECISION_GROUND_INCOMPATIBLE_CONTENT`; sources from `SOURCE_ARTICLE_16` to `SOURCE_VOLUNTARY`; automation from `AUTOMATED_DECISION_FULLY` to `AUTOMATED_DECISION_NOT_AUTOMATED`; and 16 categories, among them `STATEMENT_CATEGORY_SCAMS_AND_FRAUD` and `STATEMENT_CATEGORY_UNSAFE_AND_PROHIBITED_PRODUCTS` ([DSA Transparency Database API documentation, n.d.](https://transparency.dsa.ec.europa.eu/page/api-documentation)). Submissions must not contain personal data (DSA Art. 24(5)).
 
-The scale is large. For the 180 days to 19 October 2026, the database held about **4.4 billion** statements from 375 platforms, 41% of them fully automated decisions ([DSA Transparency Database](https://transparency.dsa.ec.europa.eu/), accessed 19 October 2026).
+The database operates at scale: for the 180 days to 19 October 2026, the database held about **4.4 billion** statements from 375 platforms, 41% of them fully automated decisions ([DSA Transparency Database](https://transparency.dsa.ec.europa.eu/), accessed 19 October 2026).
 
 > **INFERENCE, NOT DOCUMENTED:** The database's schema is, in effect, a regulator-defined moderation event model. A platform whose internal decision record cannot be mapped field by field onto it will end up maintaining a translation layer that loses information. The cheaper design is to adopt the regulatory vocabulary for the fields it covers and extend it for internal needs.
 
@@ -137,7 +137,7 @@ Veldmark's decision record, owned by the shared trust-and-safety platform, maps 
 
 ### Veldmark's statement-of-reasons pipeline
 
-The pipeline that replaced the five exporters has four stages, and one rule: **the user's statement and the database submission are two views of one decision, generated from the same record.**
+The pipeline that replaced the five exporters has four stages (look up the ground text, send the user's statement and store it as evidence, strip personal data, submit in batches keyed by decision ID), and one rule: **the user's statement and the database submission are two views of one decision, generated from the same record.**
 
 ---begin mermaid---
 sequenceDiagram
@@ -164,13 +164,13 @@ sequenceDiagram
 ---end mermaid---
 **Figure 2:** *One decision, two statements. The user receives the full statement with redress options; the Commission's database receives a version stripped of personal data, batched and keyed by the decision ID, so retries never create duplicates and every submission can be traced back to its decision.*
 
-The numbers make the design choices concrete. In 2027 Veldmark's three consumer platforms generated about **61,000** restricting decisions a week: listing removals and demotions, message withholdings, payout holds and account suspensions, with Tradeyard Netherlands' roughly 20,000 weekly listing removals the largest single source. At 100 statements per batch that is only about 610 API calls a week, so throughput is not the problem. Three other things are:
+Throughput is not the hard part. In 2027 Veldmark's three consumer platforms generated about **61,000** restricting decisions a week: listing removals and demotions, message withholdings, payout holds and account suspensions, with Tradeyard Netherlands' roughly 20,000 weekly listing removals the largest single source. At 100 statements per batch that is only about 610 API calls a week. Three other things are hard:
 
 1. **Atomic batch failure.** One malformed statement fails 99 good ones. Veldmark validates every statement against the published schema before batching and quarantines failures for repair, so a template bug in one country does not stall the others.
 2. **Personal data in free text.** Reviewers' notes and templated facts contain names, phone numbers and addresses. The stripper combines pattern detection for phone numbers, e-mail addresses, IBANs and postcodes with a rule that `decision_facts` may only be assembled from policy-registry templates and structured fields, never from free reviewer text.
 3. **Exceptions are decisions too.** The DSA does not require a statement where the platform has no electronic contact details for the user, or for "deceptive high-volume commercial content" ([Regulation (EU) 2022/2065, Art. 17(2)](https://eur-lex.europa.eu/eli/reg/2022/2065/oj)). Veldmark's policy registry defines which bot-flood rejections count as the second case, and the decision record stores the exception and its reason, so the count of decisions still reconciles with the count of statements.
 
-Take one decision through it. At 20:26 on Sunday 7 March 2027, Tradeyard Netherlands suspended the account that had sent Femke a fake Safe Deal payment link (the incident is told in [[trust-and-safety-architecture]]). Under the 2027 pipeline, the decision record carries `action = suspend_account`, policy `POL-FRAUD-PAYLINK` version 2, source "user report under the terms", detection not automated, decision partly automated (an analyst confirmed a rule hit), scope NL. The account holder receives a statement in Dutch citing the contractual ground and the complaint route. The database receives `DECISION_ACCOUNT_SUSPENDED`, `DECISION_GROUND_INCOMPATIBLE_CONTENT`, `STATEMENT_CATEGORY_SCAMS_AND_FRAUD`, `SOURCE_TYPE_OTHER_NOTIFICATION`, `AUTOMATED_DECISION_PARTIALLY`, territorial scope `NL`, and facts that describe "a message containing a link to a website imitating the platform's payment service", with no domain name, user name or phone number. The domain, the message and the analyst's identity stay in the evidence store, where an appeal, a police request or a regulator can reach them.
+One decision shows both views. At 20:26 on Sunday 7 March 2027, Tradeyard Netherlands suspended the account that had sent Femke a fake Safe Deal payment link (the incident is told in [[trust-and-safety-architecture]]). Under the 2027 pipeline, the decision record carries `action = suspend_account`, policy `POL-FRAUD-PAYLINK` version 2, source "user report under the terms", detection not automated, decision partly automated (an analyst confirmed a rule hit), scope NL. The account holder receives a statement in Dutch citing the contractual ground and the complaint route. The database receives `DECISION_ACCOUNT_SUSPENDED`, `DECISION_GROUND_INCOMPATIBLE_CONTENT`, `STATEMENT_CATEGORY_SCAMS_AND_FRAUD`, `SOURCE_TYPE_OTHER_NOTIFICATION`, `AUTOMATED_DECISION_PARTIALLY`, territorial scope `NL`, and facts that describe "a message containing a link to a website imitating the platform's payment service", with no domain name, user name or phone number. The domain, the message and the analyst's identity stay in the evidence store, where an appeal, a police request or a regulator can reach them.
 
 ### Transparency reports from the event log
 
@@ -213,9 +213,9 @@ Two Omnibus rules reach listing features that rarely get legal review.
 
 ## GDPR: Retention, Minimization and Address Privacy
 
-The General Data Protection Regulation (GDPR) is older than the rest and touches everything. For listing systems, three of its principles produce the most architecture: **data minimization** (personal data "limited to what is necessary"), **storage limitation**, and **accountability**, the duty to be able to demonstrate compliance ([Regulation (EU) 2016/679, Art. 5](https://eur-lex.europa.eu/eli/reg/2016/679/oj)).
+For listing systems, three principles of the General Data Protection Regulation (GDPR) produce the most architecture: **data minimization** (personal data "limited to what is necessary"), **storage limitation**, and **accountability**, the duty to be able to demonstrate compliance ([Regulation (EU) 2016/679, Art. 5](https://eur-lex.europa.eu/eli/reg/2016/679/oj)).
 
-The hard part is that other laws require keeping data the GDPR would have the platform delete, while fraud prevention wants to keep it longer still. The GDPR's recitals recognize processing "strictly necessary for the purposes of preventing fraud" as a legitimate interest (recital 47), which supports fraud retention but does not make it unlimited. The design that works is **retention per data class**, with a stated legal basis, a trigger and a timer for each, enforced by deletion jobs whose runs are themselves logged.
+The design that works is **retention per data class**, because other laws require keeping data the GDPR would have the platform delete, while fraud prevention wants to keep it longer still. The GDPR's recitals recognize processing "strictly necessary for the purposes of preventing fraud" as a legitimate interest (recital 47), which supports fraud retention but does not make it unlimited. Each class gets a stated legal basis, a trigger and a timer, enforced by deletion jobs whose runs are themselves logged.
 
 | Data class (Veldmark) | Legal driver | Trigger and retention | Notes |
 | --- | --- | --- | --- |
@@ -274,7 +274,7 @@ flowchart LR
 
 Three architectural lessons came out of building it. **Aggregate from the ledger, not from orders**, because consideration is what was paid or credited, net of fees, in the quarter it was paid. **Ask early**: the pipeline flags sellers approaching the threshold (20 sales or €1,500) so due diligence starts before the deadline rather than in December. **Keep the tax profile separate**: tax identification numbers and dates of birth are collected for one purpose, under tax law, and must not leak into the general identity claims or the analytics warehouse. [[transactions-and-payments]] covers the ledger, and RECONCILED's [[payments-to-ledger]] covers the accounting integration.
 
-The general lesson is the one in the key points. **The decision to launch in-platform payments is also a tax-reporting decision**, and the same is true outside the EU: under the US INFORM Consumers Act, only sales made through the marketplace with payment processed by it count toward the high-volume seller threshold (below).
+**The decision to launch in-platform payments is also a tax-reporting decision**, outside the EU as well as inside it: under the US INFORM Consumers Act, only sales made through the marketplace with payment processed by it count toward the high-volume seller threshold (below).
 
 ## Vertical Rules: Property and Vehicles
 
@@ -293,7 +293,7 @@ The **Lyon apartment** shows the consequences for Hearthly. The 68 m² T3 in Lyo
 3. **Values carry effective dates**, because a recalculation can change the class. The listing shows the certificate's current value and keeps the history.
 4. **Class constrains category**: a G-rated home cannot be published as a new long-term rental in France, so the validator rejects that combination.
 
-[[attribute-schemas]] owns the schema mechanics; [[listing-ingestion]] owns feed feedback. The architectural point here is that **regulated attributes need an owner who tracks the law**, because the schema will change on the regulator's timetable, not the product team's.
+**Regulated attributes need an owner who tracks the law**, because the schema will change on the regulator's timetable, not the product team's. [[attribute-schemas]] owns the schema mechanics; [[listing-ingestion]] owns feed feedback.
 
 ### Vehicle listings
 
@@ -301,7 +301,7 @@ Automotive rules are more fragmented, and most apply to dealers rather than to p
 
 ## Beyond the EU: UK and US Rules in Brief
 
-Veldmark operates only in the EU, but many groups do not. The UK and US rules differ in structure, and they reward the same components.
+The UK and US rules differ from the EU's in structure, but they reward the same components. Veldmark operates only in the EU; many groups do not.
 
 | Rule | Scope | Key requirement | Component it reuses |
 | --- | --- | --- | --- |
@@ -319,7 +319,7 @@ INFORM repeats the DAC7 pattern. Because only marketplace-processed sales count,
 
 ### Five components that serve every law
 
-The obligations in this chapter look like a long list. The systems they ask for are few.
+The obligations in this chapter form a long list, but they ask for only five systems.
 
 | Component | Serves | Key property |
 | --- | --- | --- |

@@ -74,3 +74,5 @@ Article only for now.
 - **2026-10-19** — Editorial review pass: country count corrected to eight (consistency-issues 19/23), Motorvane's markets completed in the cross-border example, copy count tied to Femke's erasure case, an unexplained acronym removed, reading time corrected. *(AI-mediated session)*
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 1 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,540 → 6,550 prose words; lead now ties the chapter to Part II's aggregate-and-subdomains model and names what it builds on; eight topic sentences brought forward or made concrete; no headings renamed, no sections moved; spec unchanged. *(AI-mediated session)*
+- **2026-10-20** — Consistency fix: scene heading now "Five Answers" to match the five-row table; lead no longer says "four different ideas". *(AI-mediated session)*

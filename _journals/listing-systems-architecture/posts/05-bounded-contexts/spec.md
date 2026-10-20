@@ -70,3 +70,4 @@ Chief and principal architects and engineering leaders who must draw or review a
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 4 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 6,354 → 6,314 prose words; Concepts heading renamed to "Subdomains, Contexts and Context Maps"; lead now names the chapters that build on these boundaries; topic sentences brought forward in One Listing, Many Models; one sentence on goods and product safety cut as a repeat of Vertical Differences; no spec criteria changed. *(AI-mediated session)*
+- **2026-10-20** — Consistency fix: "twelve event types" → "thirteen" to match the event catalog in [[event-driven-listings]] (pause and resume are separate types). *(AI-mediated session)*

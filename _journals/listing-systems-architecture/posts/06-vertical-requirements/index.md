@@ -1,5 +1,5 @@
 ---
-title: "Same Platform, Different Physics: General, Real Estate, Automotive and Jobs"
+title: "Same Platform, Different Physics: How Listing Verticals Differ"
 date: 2026-10-19
 author: Željko Obrenović
 excerpt: "What genuinely differs between listing verticals, and what can a group share across them? More than the category names suggest: supply mix, item identity, listing lifetime, attribute density, lead value, regulation and where the money moves all differ, so the shareable part is the machinery underneath, while the vertical content and a few vertical capabilities must be owned by the vertical."
@@ -35,7 +35,7 @@ Part I has so far treated the verticals alike. [[business-capabilities]] shows t
 
 This chapter defines those forces, compares the main verticals on them, and turns the comparison into a decision method. It owns two terms. A **vertical requirement profile** is a one-page description of a vertical's physics, written with numbers, that architecture decisions can be checked against. A **shared-versus-specific decision** is the classification of a capability into one of four layers, from fully shared platform to brand-local product, with stated reasons. The method is applied to Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]), whose three listing brands span four verticals. Part II starts from the result: [[listing-aggregate]] and the chapters after it design a listing model with room for the item identities, external systems of record and vertical schemas this chapter finds.
 
-## Setting the Scene at Veldmark: One Platform for Four Physics?
+## Setting the Scene at Veldmark: One Platform for Four Verticals?
 
 It is mid-March 2027. The board approved Common Ground in January: **€140 million** over four years to give Veldmark's brands shared platform capabilities under the principle "share platforms, not products". Ingrid Halvorsen, the Group Chief Architect, joined in February. She has called a two-day scoping workshop in Rotterdam because the program's capability list (Veldmark ID, trust and safety, media, search platform, messaging, product catalog and entitlements, event backbone, data platform, taxonomy and attribute service) says nothing about which parts of each capability are shared.
 

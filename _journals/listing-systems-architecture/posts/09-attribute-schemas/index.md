@@ -33,7 +33,7 @@ A listing title says "Gazelle Chamonix, nice condition." A buyer searching for a
 
 The neglect has a pattern. Attributes start as a few columns; a second vertical adds a key-value table; countries and feeds add their own keys. Years later the platform has thousands of keys, many of them duplicates in different languages, and nobody can say which systems depend on which. That is **The Attribute Junkyard**, and its cost shows up far from its cause: in empty facets, in duplicate detection that cannot compare listings, and in trust rules that never fire because the attribute they check is spelled four ways.
 
-This chapter is about the design that prevents it. It sits between [[categories-and-taxonomies]], which owns the category tree and its versioning, and [[normalization-and-enrichment]], which owns the pipeline that cleans and derives values and records their provenance. Here the subject is the **contract**: the attribute dictionary, the category schema, the storage model, the validation and the governance that keep one definition true across every system that reads it. Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]), provides the worked example.
+Part II models the listing as a small aggregate that references governed subdomains, and attributes are the subdomain that the most systems read. This chapter gives them a **contract**: the attribute dictionary, the category schema, the storage model, the validation and the governance that keep one definition true across every system that reads it. It builds on [[listing-aggregate]], which holds attributes as a validated value collection, and on [[categories-and-taxonomies]], which owns the category tree each schema binds to. Later chapters depend on it: [[listing-ingestion]] validates feeds against it, [[normalization-and-enrichment]] cleans values toward it, and [[search-architecture]] turns it into filters and facets. Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]), provides the worked example.
 
 ## Setting the Scene at Veldmark: Eleven Ways to Say "Frame Size"
 
@@ -74,7 +74,7 @@ The separation pays off three ways. **Meaning becomes reusable**: frame size is 
 
 ## The Attribute Dictionary Entry
 
-A dictionary entry is a small contract. The fields that matter in practice come from two kinds of evidence: the best public dictionaries that marketplaces expose to their sellers, and the systems that read attributes downstream.
+A dictionary entry is a small contract, and two kinds of evidence say which fields it needs: the public dictionaries that marketplaces expose to their sellers, and the systems that read attributes downstream.
 
 The most complete public example is eBay's Taxonomy API. Its `AspectConstraint` object records, per leaf category, requiredness, whether the value must be selected from a list or may be free text (`aspectMode`), data type and format, cardinality, whether the aspect describes the catalog product or the individual item (`aspectApplicableTo`), a maximum length, and an approximate date after which an aspect becomes required (`expectedRequiredByDate`) ([eBay Taxonomy API specification, v1.1.1](https://developer.ebay.com/develop/api/spec/taxonomy_api.json), n.d.). The specification warns that required aspects also report as recommended, "but they are actually required and a seller will be blocked from listing or revising an item without these aspects."
 
@@ -99,13 +99,13 @@ Combining those public models with what downstream systems need gives the entry 
 | **Mappings** | External standards per version | OpenImmo, RESO, mobile.de reference tables, schema.org, Google Merchant |
 | **Owner and status** | Accountability and lifecycle | Proposed, active, deprecated, retired |
 
-Two of these fields are the ones most often missing.
+Two of these fields are the ones most often missing: purposes and scope.
 
 **Purposes** make the dependency graph visible: the impact of a change is known before it is made. Without them, the only way to find dependents is to break something.
 
-**Scope** is the field that eBay's catalog history made famous. Between 2018 and 2020 eBay ran its Product-Based Shopping Experience, which required many listings to be associated with a catalog product; the playbook now states that the mandate for all categories and brands was rolled back, and that catalog matching remains recommended rather than required ([eBay PBSE playbook](https://developer.ebay.com/api-docs/sell/static/inventory/pbse_playbook_intro.html), n.d.). The durable result is the split between **product aspects**, which a matched catalog product can supply, and **instance aspects**, such as condition, that only the seller knows. A used-goods marketplace that does not mark the difference cannot prefill product facts from a match without overwriting the seller's facts.
+**Scope** separates what a catalog product can supply from what only the seller knows, and eBay's catalog history shows why it matters. Between 2018 and 2020 eBay ran its Product-Based Shopping Experience, which required many listings to be associated with a catalog product; the playbook now states that the mandate for all categories and brands was rolled back, and that catalog matching remains recommended rather than required ([eBay PBSE playbook](https://developer.ebay.com/api-docs/sell/static/inventory/pbse_playbook_intro.html), n.d.). The durable result is the split between **product aspects**, which a matched catalog product can supply, and **instance aspects**, such as condition, that only the seller knows. A used-goods marketplace that does not mark the difference cannot prefill product facts from a match without overwriting the seller's facts.
 
-Here is the frame-size entry Veldmark's Tradeyard stewards wrote. It is fictional, but the shape is the point.
+Veldmark's Tradeyard stewards wrote the frame-size entry below. It is fictional; its shape is what carries over.
 
 | Field | `bike.frame_size_cm` |
 | --- | --- |
@@ -131,7 +131,9 @@ A category schema is a list of bindings, each of which says: this attribute, in 
 
 **Immutable versions.** A schema version, once published, never changes. Every listing records the version it was last validated against, which lets the platform answer "was this listing valid when it was published?" and lets old listings stay readable when the schema moves on. The category tree has its own versioning, owned by [[categories-and-taxonomies]]; a taxonomy release usually ships with a set of schema versions, but the two are separate artifacts.
 
-The rules for evolving schemas are the same compatibility logic that event platforms use. Confluent's Schema Registry defines **backward** compatibility (consumers on the new schema can read data written with the previous one), **forward** compatibility (consumers on the previous schema can read data written with the new one), **full** compatibility (both), transitive variants that check against all earlier versions, and **none**; the default is backward ([Confluent, Schema Evolution and Compatibility](https://docs.confluent.io/platform/current/schema-registry/fundamentals/schema-evolution.html), n.d.). An attribute schema has two kinds of consumer to protect: **producers** (sellers, forms and partner feeds that write listings) and **readers** (search, trust, ads, feeds out, analytics). The table applies the logic to the changes that actually happen.
+The rules for evolving schemas are the same compatibility logic that event platforms use. Confluent's Schema Registry defines **backward** compatibility (consumers on the new schema can read data written with the previous one), **forward** compatibility (consumers on the previous schema can read data written with the new one), **full** compatibility (both), transitive variants that check against all earlier versions, and **none**; the default is backward ([Confluent, Schema Evolution and Compatibility](https://docs.confluent.io/platform/current/schema-registry/fundamentals/schema-evolution.html), n.d.).
+
+An attribute schema has two kinds of consumer to protect, and a change can be safe for one and breaking for the other: **producers** (sellers, forms and partner feeds that write listings) and **readers** (search, trust, ads, feeds out, analytics). The table applies the logic to the changes that actually happen.
 
 | Change | Producers | Readers | Rule I use |
 | --- | --- | --- | --- |
@@ -164,9 +166,9 @@ stateDiagram-v2
 
 How attributes are stored is the question architects reach for first, and it matters less than the dictionary. Still, the choice constrains validation, query patterns and the cost of change.
 
-**Wide tables** put every attribute in a column. **Entity–attribute–value (EAV)** stores rows of `(listing_id, attribute_id, value)`; it needs no schema changes but many self-joins, and it is where junkyards grow fastest, because creating a new attribute is an `INSERT` that no reviewer sees. **Documents** store each listing's attributes as one JSON document, validated against the category schema before write. PostgreSQL's `jsonb` with GIN indexes supports containment queries, and its `jsonb_path_ops` operator class produces "usually much smaller" indexes for `@>` queries but cannot answer key-existence queries. The documentation warns that any update "acquires a row-level lock on the entire row" and advises keeping documents to a manageable size with "a somewhat fixed structure" ([PostgreSQL documentation, JSON Types](https://www.postgresql.org/docs/current/datatype-json.html), current). That advice is a polite way of saying that a document store without a schema is EAV with better syntax.
+**Wide tables** put every attribute in a column. **Entity–attribute–value (EAV)** stores rows of `(listing_id, attribute_id, value)`; it needs no schema changes but many self-joins, and it is where junkyards grow fastest, because creating a new attribute is an `INSERT` that no reviewer sees. **Documents** store each listing's attributes as one JSON document, validated against the category schema before write. **Typed per-vertical models** give a vertical its own types or tables, such as a vehicle with engine, transmission and emissions as typed structures.
 
-**Typed per-vertical models** give a vertical its own types or tables, such as a vehicle with engine, transmission and emissions as typed structures.
+A document store needs a schema as much as any other. PostgreSQL's `jsonb` with GIN indexes supports containment queries, and its `jsonb_path_ops` operator class produces "usually much smaller" indexes for `@>` queries but cannot answer key-existence queries. The documentation warns that any update "acquires a row-level lock on the entire row" and advises keeping documents to a manageable size with "a somewhat fixed structure" ([PostgreSQL documentation, JSON Types](https://www.postgresql.org/docs/current/datatype-json.html), current). That advice is a polite way of saying that a document store without a schema is EAV with better syntax.
 
 | Model | Strengths | Weaknesses | Right when |
 | --- | --- | --- | --- |
@@ -176,7 +178,7 @@ How attributes are stored is the question architects reach for first, and it mat
 | Typed vertical model | Strong validation; domain logic; analytics-friendly | Code and deploys to evolve; does not scale to thousands of leaf categories | Automotive, real estate and jobs, where domain logic is deep |
 | **Hybrid** (typed core, validated documents for the long tail, typed vertical models where justified) | Each part fits its job | Two storage patterns to run; the dictionary must cover both | **Most multi-vertical groups** |
 
-The hybrid is where most large marketplaces end up, and it is my recommendation for a group: **typed core fields** on the listing aggregate (price, location, category, seller, status, timestamps), **schema-validated documents** for long-tail attributes, and **typed vertical models** for the two or three verticals with deep domain logic. The important rule is that the typed vertical model is *registered in the dictionary*. Motorvane can keep its Kotlin vehicle types, but `vehicle.mileage_km` must still be a dictionary entry with a meaning, a unit and mappings, so that search, ads, analytics and Tradeyard Poland's car section all mean the same thing by it.
+The hybrid is where most large marketplaces end up, and it is my recommendation for a group: **typed core fields** on the listing aggregate (price, location, category, seller, status, timestamps), **schema-validated documents** for long-tail attributes, and **typed vertical models** for the two or three verticals with deep domain logic. The rule that matters is that the typed vertical model is *registered in the dictionary*. Motorvane can keep its Kotlin vehicle types, but `vehicle.mileage_km` must still be a dictionary entry with a meaning, a unit and mappings, so that search, ads, analytics and Tradeyard Poland's car section all mean the same thing by it.
 
 ### The store is not the facet engine
 
@@ -186,7 +188,7 @@ The search index has its own version of the storage dilemma. Elasticsearch's doc
 
 ## Architecture: A Schema Service That Compiles
 
-The architectural mistake to avoid is a schema service that every system calls at request time to ask "is this value valid?" or "which attributes does this category have?" That design puts a network hop on the insertion path, the ingestion path and the indexing path, and it turns a governance tool into an availability dependency. The better design treats schemas as **source code that compiles into artifacts**.
+Treat schemas as **source code that compiles into artifacts**, not as a service that every system calls at request time to ask "is this value valid?" or "which attributes does this category have?" A request-time service puts a network hop on the insertion path, the ingestion path and the indexing path, and it turns a governance tool into an availability dependency.
 
 The components:
 
@@ -225,7 +227,7 @@ Three properties of this design matter more than its components.
 
 **Readers tolerate the unknown.** A reader that fails on an unfamiliar attribute or enumeration value turns every additive change into a coordinated release. Readers should ignore attributes they do not know and map unknown enumeration values to a safe default ("other") while logging them. This is the reader-side half of backward compatibility, and it is a coding standard, not a schema feature.
 
-The listing event contract carries attributes too. For Veldmark's **Listing event contract v1** (live **1 July 2027**), the team could model each attribute as an event field, making every new attribute an event-schema change, or carry a typed map whose meaning comes from the dictionary, at the cost of weaker compile-time typing. Veldmark chose the map, each entry carrying key, normalized value, unit and schema version; [[event-driven-listings]] covers the event side.
+Veldmark's **Listing event contract v1** (live **1 July 2027**) carries attributes as a typed map, not as event fields. One event field per attribute would make every new attribute an event-schema change; the map takes its meaning from the dictionary, at the cost of weaker compile-time typing. Each map entry carries key, normalized value, unit and schema version; [[event-driven-listings]] covers the event side.
 
 ## Reference Data: Makes, Models, Property Types and Energy Classes
 
@@ -233,7 +235,7 @@ Enumerations work for a dozen values. They do not work for vehicle derivatives, 
 
 **Automotive reference data** is the deepest case. Autotrader UK exposes a vehicle taxonomy that descends from vehicle types to makes, models, generations and derivatives; a generation combines body type and years, and its valuation and metrics calls are keyed on the derivative ID plus first-registration date and odometer reading ([Autotrader Connect](https://developers.autotrader.co.uk/), n.d.). mobile.de's Seller-API serves reference-data endpoints such as gearboxes, colors, makes and models, with valid values depending on the seller's site, and its ads carry the German type-approval codes `hsn` and `tsn` and a `schwackeCode`, which the documentation describes as the classification of makes and models given by Eurotax/Schwacke ([mobile.de Seller-API documentation](https://services.mobile.de/manual/seller-api.html), n.d.). In the United States, the National Highway Traffic Safety Administration's (NHTSA) vPIC API decodes VINs from manufacturer submissions, supports partial VINs and batches of up to 50 VINs, and recommends always sending the model year ([NHTSA vPIC API](https://vpic.nhtsa.dot.gov/api/), version 4.10, 2026). European marketplaces typically rely on licensed commercial providers for decoding and specification data.
 
-Three design rules follow, beyond cars too.
+Three design rules follow, and they apply beyond cars.
 
 1. **Keep identity, specification and listing apart.** The VIN identifies a vehicle; the taxonomy derivative and its options describe its specification; the listing is one seller's offer of it at a price. One vehicle produces many listings over its life. [[entity-resolution]] relies on that separation.
 2. **Make the internal taxonomy a mapping layer over licensed ones.** Suppliers change their trees: Autotrader's release notes record model splits that affect derivatives. A marketplace that uses a supplier's IDs as its own inherits every supplier change as a migration. Map supplier IDs to internal IDs, version the mapping, and check the license before redistributing supplier data through public APIs.
@@ -241,7 +243,9 @@ Three design rules follow, beyond cars too.
 
 The Essen Golf shows why the third rule matters. Autohaus Ruhrblick's DMS (dealer management system) feed sends the listing on **Wednesday 14 April 2027**, and VIN decoding fills **31 attributes**. The 1.5 TSI engine was sold in more than one power output, and the decoder returns two candidates, 96 kW and 110 kW, while the dealer's feed states 96 kW. The dictionary marks `vehicle.power_kw` as a field where the decode is a suggestion and a consistent dealer statement wins, with both kept. The market-value model that rates the car a "good price" against €22,800 reads the resolved value; had decode and dealer disagreed silently, it would have rated the car against the wrong derivative.
 
-**Real-estate reference data** is less about a supplier tree and more about regulation. In France, sale and rental ads must show both the energy class and the climate class from the energy-performance diagnosis (DPE, A to G), homes rated F or G must carry the mention "logement à consommation énergétique excessive", and ads must show estimated annual energy costs with the reference year of prices; fines reach €3,000 for individuals and €15,000 for legal entities. G-rated homes have been barred from new rental leases since 1 January 2025, with F following in 2028 and E in 2034. From 1 January 2026 the primary-energy factor for electricity dropped from 2.3 to 1.9, which can move a home's class without any change to the home ([Service-Public.fr, DPE](https://www.service-public.gouv.fr/particuliers/vosdroits/F16096), 2026). The dictionary consequences are concrete: DPE class, climate class and energy-cost range are **required** attributes in French residential schemas; the class carries the **DPE date and calculation method** as companion attributes, because the same home's class depends on when it was calculated; and rental eligibility is a **derived** attribute computed from class and date, not a seller input. The Lyon apartment's class D is unremarkable today and could matter for a future rental listing of the same flat.
+**Real-estate reference data** is less about a supplier tree and more about regulation. In France, sale and rental ads must show both the energy class and the climate class from the energy-performance diagnosis (DPE, A to G), homes rated F or G must carry the mention "logement à consommation énergétique excessive", and ads must show estimated annual energy costs with the reference year of prices; fines reach €3,000 for individuals and €15,000 for legal entities. G-rated homes have been barred from new rental leases since 1 January 2025, with F following in 2028 and E in 2034. From 1 January 2026 the primary-energy factor for electricity dropped from 2.3 to 1.9, which can move a home's class without any change to the home ([Service-Public.fr, DPE](https://www.service-public.gouv.fr/particuliers/vosdroits/F16096), 2026).
+
+For the dictionary, this makes DPE class, climate class and energy-cost range **required** attributes in French residential schemas; the class carries the **DPE date and calculation method** as companion attributes, because the same home's class depends on when it was calculated; and rental eligibility is a **derived** attribute computed from class and date, not a seller input. The Lyon apartment's class D is unremarkable today and could matter for a future rental listing of the same flat.
 
 The German equivalent for cars is the passenger-car energy-labeling ordinance (Pkw-EnVKV). Dealers advertising new cars must state energy consumption, CO2 emissions and the CO2 class as soon as motorization data is first shown, with a presumption that a car is "new" if first registered at most eight months ago or with 1,000 km or less ([Pkw-EnVKV](https://www.gesetze-im-internet.de/pkw-envkv/BJNR103700004.html), amended 2026). "New" is therefore a **computed regulatory classification** derived from registration date and mileage, not a category the dealer picks, and a car can cross the line while it is listed.
 
@@ -249,7 +253,7 @@ The German equivalent for cars is the passenger-car energy-labeling ordinance (P
 
 ## Normalization of Units and Values
 
-How values are cleaned belongs to [[normalization-and-enrichment]]; the dictionary defines the target. The rules I would put in a group's attribute standard are short.
+How values are cleaned belongs to [[normalization-and-enrichment]]; the dictionary defines the target. These are the rules I would put in a group's attribute standard.
 
 - **One canonical unit per attribute**: centimeters, kilometers, square meters, kilowatt-hours, minor currency units. Conversions are defined in the dictionary, not in each service.
 - **Keep the value as entered** beside the normalized value, for display, audit and seller disputes. The seller typed `22"`; the listing shows `22"` to buyers who expect inches and `56 cm` in the filter.
@@ -261,7 +265,7 @@ Using standard codes inside the dictionary, such as schema.org's UN/CEFACT unit 
 
 ## Attributes for Search, Trust, Ads and Feeds
 
-The purposes field in each entry exists because different readers need different things from the same attribute. Being explicit about those needs is what lets one definition serve all of them.
+Different readers need different things from the same attribute, and the purposes field in each entry records which reader needs what, so one definition can serve all of them.
 
 | Purpose | What the reader needs | Dictionary requirement | Example |
 | --- | --- | --- | --- |
@@ -273,7 +277,7 @@ The purposes field in each entry exists because different readers need different
 | **Outbound feeds and SEO** | Mapping to the receiving schema | Versioned mappings per channel | Google Merchant fields; schema.org markup generated at the edge |
 | **Analytics** | Comparable values across schema versions | Mapping views across versions | Year-over-year e-bike share after the bikes split |
 
-Three of these rows carry lessons from public evidence.
+Three of these rows carry lessons the table cannot show.
 
 **Trust rules depend on attribute quality more than on rule cleverness.** A vehicle price-anomaly rule compares price with the market for make, model, year and mileage; if model is free text, the rule is noisy or silent. The Barcelona fake rentals in [[fraud-prevention]] were priced about 35% below market, an anomaly computable only because district, surface and rooms were structured. [[trust-and-safety-architecture]] owns the rules; this chapter owns their inputs.
 
@@ -289,11 +293,11 @@ Inbound standards set the vocabulary partners send, and each comes with its own 
 - **OpenImmo** (German-speaking markets): the XML version defines about 250 features in XML Schema, typically exchanged as a ZIP with media over FTP; OpenImmo 2.0, a REST and JSON API, is not compatible with the XML version ([OpenImmo](https://www.openimmo.de/), n.d.).
 - **Rightmove's Real Time Datafeed** shows how a portal's inbound schema tracks regulation: version 1.4.0 (April 2022) added shared ownership, ground rent, service charge and council-tax band, and version 1.4.1 (November 2023) added utilities, parking, restrictions, flood risk and accessibility ([Rightmove Real Time Datafeed specification v1.4.1](https://media.rightmove.co.uk/ps/pdf/guides/adf/Rightmove_Real_Time_Datafeed_Specification.pdf), 2023).
 
-The lesson from all three is that a mapping is a **versioned artifact with an owner**, not a transformation hidden in an importer: it states the standard and version, the direction, the transform, what is lost, and what happens to unmapped values (rejected, stored as raw text, or queued for a steward). Hearthly's France team maintains connectors to about 160 real-estate software vendors; when each connector has its own private mapping of "heating type", there are 160 meanings of heating type. [[listing-ingestion]] owns the feed contracts; the dictionary owns what their fields mean once inside.
+All three show that a mapping is a **versioned artifact with an owner**, not a transformation hidden in an importer: it states the standard and version, the direction, the transform, what is lost, and what happens to unmapped values (rejected, stored as raw text, or queued for a steward). Hearthly's France team maintains connectors to about 160 real-estate software vendors; when each connector has its own private mapping of "heating type", there are 160 meanings of heating type. [[listing-ingestion]] owns the feed contracts; the dictionary owns what their fields mean once inside.
 
-## In Practice: Public Examples
+## In Practice: Public Examples and Veldmark's Cleanup
 
-The public record on attribute design is thin compared with search or payments, but four examples teach most of what is needed.
+The public record on attribute design is thin compared with search or payments, but three groups of examples teach most of what is needed.
 
 **eBay and Amazon publish their dictionaries as data.** Beyond the constraint fields described earlier, eBay's bulk `fetchItemAspects` file covers all leaf categories in a marketplace, can exceed 100 MB compressed, and is used by its open-source Taxonomy SDK to surface new, modified and removed entities between versions. Amazon's JSON Schema contracts let partners validate locally with off-the-shelf tools, and errors caught before submission never become support tickets.
 
@@ -320,7 +324,7 @@ Frame size's eleven keys became `bike.frame_size_cm` and `bike.frame_size_class`
 
 **Step 3: namespaces, not one flat list.** The dictionary has three tiers. The **group core** holds attributes with one meaning everywhere (condition, color, brand, mileage, living area, energy class). **Vertical namespaces** (`vehicle.*`, `property.*`, `goods.*`) hold attributes whose meaning is shared within a vertical across brands. **Country extensions** hold the rest. Promotion from extension to vertical or core needs a steward's review and a migration plan. The tiers answer Ingrid's question about centralization: the group standardizes meaning where it is shared and leaves the rest local, but everything is in one dictionary, so everything has a definition.
 
-**Step 4: the bikes split.** The four new leaves inherit eight attributes from "Bikes" and add their own. E-bikes add `bike.motor_position` (front hub, rear hub, mid-drive), `bike.battery_capacity_wh` and `bike.assist_speed_kmh`. Battery capacity was published as **recommended** with an expected-required date of **1 March 2028**, four months after the split, because Tradeyard's professional bike dealers send feeds that needed time to add it. The rollout of battery capacity followed the compatibility rules step by step.
+**Step 4: the bikes split.** The four new leaves inherit eight attributes from "Bikes" and add their own. E-bikes add `bike.motor_position` (front hub, rear hub, mid-drive), `bike.battery_capacity_wh` and `bike.assist_speed_kmh`. Battery capacity was published as **recommended** with an expected-required date of **1 March 2028**, four months after the split, because Tradeyard's professional bike dealers send feeds that needed time to add it. The rollout followed the compatibility rules in two releases.
 
 ---begin mermaid---
 sequenceDiagram
@@ -343,17 +347,17 @@ sequenceDiagram
 
 Listings that existed before 1 November were re-classified by a model, with low-confidence cases left in a transitional category until their sellers confirmed at the next edit; [[categories-and-taxonomies]] tells that part.
 
-**Step 5: backfill without blocking.** Femke's bike is a good test case. Her `maat: 57` value sits in the city-bike context, and the normalizer maps it to 57 cm with medium confidence, provenance "seller-entered, unit inferred". It now appears in the frame-size facet, and the seller app asks her to confirm the unit the next time she opens a listing. Together with the extraction pilot described in [[normalization-and-enrichment]], which reads frame sizes from descriptions and photos, the share of live Dutch bike listings with a usable frame-size value rose from **23%** to **71%** by the end of September 2027.
+**Step 5: backfill without blocking.** Existing values were normalized and confirmed later, not demanded before the listing could stay live. Femke's bike shows how. Her `maat: 57` value sits in the city-bike context, and the normalizer maps it to 57 cm with medium confidence, provenance "seller-entered, unit inferred". It now appears in the frame-size facet, and the seller app asks her to confirm the unit the next time she opens a listing. Together with the extraction pilot described in [[normalization-and-enrichment]], which reads frame sizes from descriptions and photos, the share of live Dutch bike listings with a usable frame-size value rose from **23%** to **71%** by the end of September 2027.
 
 **Step 6: Motorvane and Hearthly join without moving.** Motorvane kept its typed vehicle model and registered its 212 vehicle attributes in the `vehicle.*` namespace, with mappings to its reference-data supplier and to Tradeyard Poland's car fields, which were then retired in favor of the vehicle namespace. Hearthly registered its French and Spanish property attributes in `property.*`, with DPE fields as required companions in French residential schemas and the Spanish energy certificate as a separate attribute, not a translation of the DPE, because the two schemes are calculated differently. Neither brand moved its storage. Both now validate with the compiled schemas. On the search side, the first group schema version gave typed index fields only to canonical attributes with facet, filter or sort purposes, which covered about 610 of Tradeyard's original keys; everything else sits in a flattened field ([[search-architecture]]).
 
-**Step 7: governance with a clock.** The target set by Common Ground for a new category was two days, against six weeks before. The attribute equivalent is the same: a steward-reviewed new attribute is live in forms, validators and search within **two working days**. Stewardship is federated: Tradeyard goods, Motorvane vehicles and Hearthly property each have a named steward, and a small group platform team, under Yara Mendes's platform engineering organization, runs the service and the compiler. A new core attribute, or a promotion to core, needs a decision record in the architecture advice forum.
+**Step 7: governance with a clock.** Common Ground set a target of two days for a new category, against six weeks before, and the same target for attributes: a steward-reviewed new attribute is live in forms, validators and search within **two working days**. Stewardship is federated: Tradeyard goods, Motorvane vehicles and Hearthly property each have a named steward, and a small group platform team, under Yara Mendes's platform engineering organization, runs the service and the compiler. A new core attribute, or a promotion to core, needs a decision record in the architecture advice forum.
 
 The cleanup's most useful by-product was the reader inventory: 31 of the 990 retired keys were still read by something, mostly old reports and one partner export, and each reader was migrated first. Without the inventory, those 31 would have been discovered as incidents.
 
 ## Trade-offs
 
-The choices in this chapter are not free. The table compares the main alternatives.
+Each choice in this chapter has a cost. The table compares the main alternatives.
 
 | Decision | Option A | Option B | Choose A when | Choose B when |
 | --- | --- | --- | --- | --- |
@@ -363,11 +367,11 @@ The choices in this chapter are not free. The table compares the main alternativ
 | Enumerations | Closed (selection only) | Open (free text with suggestions) | Facets and filters depend on it; the value set is known | The value set is open-ended (models of rare items) and curation can follow |
 | Schema evolution | Central release train | Continuous per-attribute releases | Many consumers with manual mappings; regulated changes | Mature compiled artifacts and tolerant readers |
 
-The **validation** row is really a liquidity decision: every hard rule loses some supply, so the right set of hard rules is the smallest one that protects legal compliance and downstream integrity.
+The **validation** row is a liquidity decision: every hard rule loses some supply, so the right set of hard rules is the smallest one that protects legal compliance and downstream integrity.
 
 ## Vertical Differences
 
-Attributes are where the verticals differ most visibly, which is exactly why one dictionary with namespaces works better than either one flat schema or separate systems.
+Attributes are where the verticals differ most visibly, which is why one dictionary with namespaces works better than either one flat schema or separate systems.
 
 | Dimension | General classifieds | Real estate | Automotive | Jobs | Recommerce |
 | --- | --- | --- | --- | --- | --- |

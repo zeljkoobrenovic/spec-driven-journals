@@ -70,3 +70,4 @@ Article only for now.
 - **2026-10-19** — Editorial review pass: Hand-off restored to [[part-7]], VLOP statement sourced to the Commission's list (updated 15 Oct 2026), Omnibus and P2B citations verified and relinked to EUR-Lex. *(AI-mediated session)*
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 4 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 5,566 → 5,615 prose words; lead now places the chapter as Part VI's last revenue line and names what Part VII reuses; the two vocabulary distinctions moved ahead of the terms table; five first sentences rewritten to state their point; no headings renamed, no sections moved. *(AI-mediated session)*

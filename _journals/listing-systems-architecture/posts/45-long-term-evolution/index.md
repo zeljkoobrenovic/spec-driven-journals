@@ -33,7 +33,7 @@ Architecture books usually end with a target state: the clean diagram of what th
 
 So the question for a Chief Architect is not "what should the platform look like in ten years?" It is **"what must stay true while everything else changes, and how will we know?"** This chapter answers it in three moves. First, it restates the argument of this book, because the argument defines what must stay true: a listing marketplace is a liquidity machine, and its architecture should be judged by how reliably it turns fresh, trustworthy supply into matches with demand. Second, it introduces **stressor analysis**, a way to find the structures that survive an unknown future, adapted from Barry O'Reilly's residuality theory. Third, it defines the **marketplace fitness functions** that tell a group, every quarter, whether its architecture still does its job.
 
-The chapter closes Part VIII. It builds on [[platform-consolidation]], [[organizing-marketplace-engineering]], [[modernization-and-migration]] and [[ai-in-listing-systems]], and on the platform chapters of Part VII, especially [[multi-country-platforms]], which owns the tenancy model and the documented history of the centralization pendulum. The worked example belongs to Veldmark, the fictional marketplace group this book follows ([[meet-veldmark]]). Its numbers come from the earlier chapters; this chapter puts them on one page.
+The chapter closes Part VIII. It builds on [[platform-consolidation]], [[organizing-marketplace-engineering]], [[modernization-and-migration]] and [[ai-in-listing-systems]], and on the platform chapters of Part VII, especially [[multi-country-platforms]], which owns the tenancy model and the documented history of the centralization pendulum. The worked example belongs to Veldmark, the fictional marketplace group this book follows ([[meet-veldmark]]). Its numbers come from the earlier chapters; this chapter puts them on one page. The cases of [[part-9]] then test the argument against what real groups did.
 
 ## Setting the Scene at Veldmark: The Investor's Question
 
@@ -41,7 +41,7 @@ On **Tuesday 9 November 2027**, ten months after approving Common Ground, Veldma
 
 Henrik passes the question to Ingrid Halvorsen, the Group Chief Architect, with a second one of his own. Veldmark has spent 2027 deciding things: the capability map in March, the context map in May, Veldmark ID in June, the listing event contract in July, the search platform in September, Tally and the taxonomy service in October, the ML platform and the trust-and-safety platform in November. *"In 2037, nobody here will remember why we decided any of this. What stops it from turning into another Yardstick?"*
 
-Ingrid notices that both questions have the same shape. Common Ground was designed against the 2027 problems: four of everything, a six-minute publication time, duplicates, payment-link phishing, a monolith that deploys twice a week. Nobody has yet tested it against the problems of 2030 or 2035. The 2027 decisions are sound for the world they assumed. The investor is asking about a different world, one in which the group's shape changes.
+Ingrid sees that both questions ask the same thing: how Common Ground holds up in a world it was not designed for. It was designed against the 2027 problems: four of everything, a six-minute publication time, duplicates, payment-link phishing, a monolith that deploys twice a week. Nobody has yet tested it against the problems of 2030 or 2035. The 2027 decisions are sound for the world they assumed; the investor is asking about a world in which the group's shape changes.
 
 She does three things in the four weeks before the board meeting:
 
@@ -77,7 +77,7 @@ flowchart LR
 
 **Figure 1:** *The liquidity machine. Supply becomes listings, listings are published and found, trust decides which contacts are safe, contacts become matches and money. Outcomes flow back into ranking and trust; paid effects flow back into discovery under policy. The platform carries every stage; leadership decides how the platform evolves.*
 
-The table states the argument part by part. The right-hand columns are the reason this chapter can be written at all: each stage protects a liquidity metric, and each has a named way to fail.
+The table states the argument part by part: each stage protects a liquidity metric and has a named way to fail.
 
 | Part | Stage of the machine | What the architecture must guarantee | Liquidity metric it protects | Failure pattern when it does not |
 | --- | --- | --- | --- | --- |
@@ -103,7 +103,7 @@ These four ideas are the criteria for the rest of the chapter. A decision that s
 
 ### Why target states fail in marketplaces
 
-A target-state architecture describes the system once a program is done. It is useful as a communication device and dangerous as a plan, for three reasons that are specific to marketplace groups.
+A target-state architecture is useful for communication and dangerous as a plan, for three reasons specific to marketplace groups.
 
 - **Ownership changes the question.** The documented record above shows capital events (mergers, take-privates, disposals, carve-outs) arriving every two or three years in the large groups. [[case-adevinta]] tells that story in detail: shared platforms valued in a 2021 synergy case became separation costs in 2025. A target state rarely includes "half of this may be sold".
 - **Regulation arrives on fixed dates but with uncertain scope.** The Digital Services Act, DAC7, the Platform-to-Business Regulation, the AI Act and the General Product Safety Regulation all changed what marketplaces must store, show and report between 2019 and 2026 ([[marketplace-regulation]]). Each one added structure (decision records, trader records, disclosure surfaces) that no 2018 target state contained.
@@ -113,7 +113,7 @@ The alternative is not to stop planning. It is to plan for **properties** that m
 
 ### Stressors, attractors and residues
 
-**Residuality theory**, developed by Barry M. O'Reilly in a series of articles from 2020 and in his 2024 book *Residues: Time, Change, and Uncertainty in Software Architecture*, offers a vocabulary for this. I use it in a simplified, practical form; readers who want the theory should read O'Reilly.
+**Residuality theory**, developed by Barry M. O'Reilly in a series of articles from 2020 and in his 2024 book *Residues: Time, Change, and Uncertainty in Software Architecture*, offers a vocabulary for planning against an unknown future. I use it in a simplified, practical form; readers who want the theory should read O'Reilly.
 
 - A **stressor** is anything that could happen to the business or its environment: a law, a competitor's move, a fraud technique, a supplier's failure, a sale. It is deliberately not limited to likely events or to technical risks.
 - An **attractor** is the state the business is pushed into when the stressor hits: the way people, partners and the market will actually behave. A carve-out pushes the business into transitional service agreements; a fraud wave pushes it into blanket friction.
@@ -131,13 +131,13 @@ I define **stressor analysis** for this book as the practice of listing stressor
 
 ### Fitness functions
 
-The second concept comes from evolutionary architecture. Neal Ford, Rebecca Parsons, Patrick Kua and Pramod Sadalage, in *Building Evolutionary Architectures* (first edition 2017, second edition 2022), use **fitness functions** for objective, preferably automated checks that an architecture still has a property it was designed to have: a dependency rule in the build, a latency limit in production, a resilience test on a schedule. Auto Trader's engineers described in a 2026 post how they run ArchUnit tests in the build to enforce layer boundaries and conventions, a code-level example of the idea.
+The second concept, the **fitness function**, comes from evolutionary architecture: an objective, preferably automated check that an architecture still has a property it was designed to have. Neal Ford, Rebecca Parsons, Patrick Kua and Pramod Sadalage, in *Building Evolutionary Architectures* (first edition 2017, second edition 2022), give examples such as a dependency rule in the build, a latency limit in production and a resilience test on a schedule. Auto Trader's engineers described in a 2026 post how they run ArchUnit tests in the build to enforce layer boundaries and conventions, a code-level example of the idea.
 
 A **marketplace fitness function**, as this book uses the term, is a fitness function whose property is a stage of the liquidity machine: a measured, owned, regularly evaluated statement such as "a sold listing disappears from every registered consumer within two minutes at p95" or "no more than four paid listings appear in the first twenty results". It differs from a business KPI in having an architectural owner and an architectural remedy, and from a service-level objective in measuring a property of the whole machine rather than of one service. The scorecard later in this chapter is the set Veldmark adopted.
 
 ### Built to be replaced
 
-The chapter's title states the stance. **Systems are built to be replaced; contracts, identifiers and measures are built to last.** Yardstick was a reasonable design in 2006 and is the problem of 2027 not because PHP aged but because its tables became the group's contract with everything else: 214 columns in the `ads` table read by 38 modules, a digest that read a MySQL replica, ranking boosts that lived in Solr configuration. When a system's internals become everyone's interface, replacing the system means replacing the interface, and nobody can afford that. The long-term architecture work is to keep interfaces deliberate, so that the systems behind them can be replaced one by one.
+The chapter's title states its stance: **systems are built to be replaced; contracts, identifiers and measures are built to last.** Yardstick was a reasonable design in 2006 and is the problem of 2027 not because PHP aged but because its tables became the group's contract with everything else: 214 columns in the `ads` table read by 38 modules, a digest that read a MySQL replica, ranking boosts that lived in Solr configuration. When a system's internals become everyone's interface, replacing the system means replacing the interface, and nobody can afford that. The long-term architecture work is to keep interfaces deliberate, so that the systems behind them can be replaced one by one.
 
 ## What Lasts and What Gets Replaced
 
@@ -176,7 +176,9 @@ flowchart TB
 | **Engines and implementations** | OpenSearch shared search platform (Motorvane on Elasticsearch until the 2029 review); Kafka on Confluent Cloud; Apache Iceberg on S3 with Snowflake compute; Veldmark ID; Tally; MLflow registry; AWS as primary cloud | Three to eight years | Replaced behind the contract, with parallel run and parity checks ([[modernization-and-migration]]) | Platform teams under Yara Mendes, Tomasz Wiśniewski, Sven Lindqvist, Priya Raman |
 | **Content and policy** | Ranking policy v1; Tradeyard prices and packages; trust policies and thresholds; category tree 2027.11; Valuo pricing-hint rules; AI assistant prompts | Weeks to two years | Released as data, with experiments and review | Brands, with T&S, monetization and data protection |
 
-Two consequences follow. The first is that **the top layer deserves a disproportionate share of design attention**, even though it is the smallest. A wrong field in the listing event envelope will cost more over a decade than a wrong search engine, because the engine can be replaced behind the search contract in a year, while the envelope is copied into 23 consumer groups at go-live and many more later. The second is that **the middle layer should be chosen for replaceability as much as for fit**. Veldmark's September 2027 decision to put every product application on Listing Search API v1 *before* any engine changes is the clearest example: it made the engine a middle-layer decision. The deferred Vespa evaluation, the 2029 review of Motorvane's Elasticsearch and the 2029 cloud review for Hearthly are scheduled revisits, not open questions.
+**The top layer deserves a disproportionate share of design attention**, even though it is the smallest. A wrong field in the listing event envelope will cost more over a decade than a wrong search engine, because the engine can be replaced behind the search contract in a year, while the envelope is copied into 23 consumer groups at go-live and many more later.
+
+**The middle layer should be chosen for replaceability as much as for fit.** Veldmark's September 2027 decision to put every product application on Listing Search API v1 *before* any engine changes is the clearest example: it made the engine a middle-layer decision. The deferred Vespa evaluation, the 2029 review of Motorvane's Elasticsearch and the 2029 cloud review for Hearthly are scheduled revisits, not open questions.
 
 A useful test for any new proposal at the forum: *which layer does this belong in, and does its design let the layer below it change without touching the layer above?* A proposal that puts a brand's ranking rule into the event envelope fails the test; so does one that lets a consumer read the search engine's internal document format.
 
@@ -184,7 +186,7 @@ A useful test for any new proposal at the forum: *which layer does this belong i
 
 ### The method
 
-The workshop follows a simple loop. Its value comes from the breadth of the stressors and the honesty of the "what breaks" column, not from the technique.
+The workshop's value comes from the breadth of the stressors and the honesty of the "what breaks" column, not from its loop, which is simple.
 
 ---begin mermaid---
 flowchart LR
@@ -264,7 +266,7 @@ The group walks the scenario through the residues it has:
 
 One residue is missing. The shared hashed block list holds identifiers from all brands, including those contributed by Hearthly Spain's cases, and nothing records which tenant contributed which entry. After the sale, Veldmark may not keep data that the buyer's business generated, and the buyer has no legal basis to receive identifiers contributed by Tradeyard. **The block list needs source-tenant provenance on every entry**, and the shared T&S platform needs a tested per-tenant export of cases and evidence. Both were added to the T&S platform backlog for 2028.
 
-This is what the combined test is for. The scenario did not need new components; it needed one field and one export on an existing one. That is a cheap residue found in 2027 instead of an expensive one discovered during a carve-out.
+This is what the combined test is for. The scenario needed no new components, only one field and one export on an existing platform: a cheap residue found in 2027 instead of an expensive one discovered during a carve-out.
 
 ### The answer to the investor
 
@@ -274,7 +276,7 @@ The board accepts the paper with one addition from the investor: a **separabilit
 
 ## Keeping Listing Data and Events Portable
 
-Portability is the practical form of "built to be replaced". It means that the group's listings, accounts, events and evidence can move to a new system, a new owner or a new cloud without being reverse-engineered from the old one. The rules come from the earlier chapters; here they are in one place, with the stressors they answer.
+Portability is the practical form of "built to be replaced". It means that the group's listings, accounts, events and evidence can move to a new system, a new owner or a new cloud without being reverse-engineered from the old one. The rules come from the earlier chapters; the table collects them with the stressors they answer.
 
 | Rule | Where it is designed | Stressors it answers |
 | --- | --- | --- |
@@ -287,9 +289,11 @@ Portability is the practical form of "built to be replaced". It means that the g
 | **Contracts in front of every engine**: search, media, AI gateway, notification | [[search-architecture]], [[media-pipeline]], [[ai-in-listing-systems]] | Supplier price or license changes, model withdrawal |
 | **Configuration over code for per-market differences**: endpoints, Safe Deal gates, precision levels, ranking policies | [[multi-country-platforms]], [[marketplace-taxonomy]] | New countries, regulation by country, transactional pivots |
 
-Managed cloud services deserve a note. Portability does not mean avoiding them; Veldmark runs Kafka on Confluent Cloud, search on Amazon OpenSearch Service and compute on Snowflake. It means **accepting lock-in deliberately, with an exit estimate**. For each managed service, the forum records what the group would do if it had to leave within a year, what that would cost, and which contract makes it possible. A managed service behind a group-owned contract with open-format data is a reasonable bet. A managed service whose proprietary API is called directly from forty product services is a decision nobody made.
+Portability does not mean avoiding managed cloud services; Veldmark runs Kafka on Confluent Cloud, search on Amazon OpenSearch Service and compute on Snowflake. It means **accepting lock-in deliberately, with an exit estimate**. For each managed service, the forum records what the group would do if it had to leave within a year, what that would cost, and which contract makes it possible. A managed service behind a group-owned contract with open-format data is a reasonable bet. A managed service whose proprietary API is called directly from forty product services is a decision nobody made.
 
-Separability is the strongest form of portability, and the one most groups discover late. Veldmark wrote it into its rules early: Tenancy model v1, adopted at the forum on Wednesday 9 June 2027, makes the tenant code (brand × country, such as `hl:es`) mandatory in every identifier, event, API call, log, metric and cost tag, and requires every shared capability to document a tenant exit path ([[multi-country-platforms]]). The stressor workshop's contribution is to test those paths rather than trust the documents. The documented case is Adevinta's. Its 2025 strategic report states that the group "evolved from a centralised structure to a decentralised, standalone operating model", including "the ramp-down of central functions, the transfer of key capabilities, the localisation of intellectual property", and that cloud emissions more than doubled, which it expected to be "a temporary spike linked to our ongoing decentralisation, which required parallel running of central and local services during a transitional period". The parallel running is the cost of separation. It is paid in money, in carbon and in engineering attention, at exactly the moment the group least wants to spend them.
+Separability is the strongest form of portability, and the one most groups discover late. Veldmark wrote it into its rules early: Tenancy model v1, adopted at the forum on Wednesday 9 June 2027, makes the tenant code (brand × country, such as `hl:es`) mandatory in every identifier, event, API call, log, metric and cost tag, and requires every shared capability to document a tenant exit path ([[multi-country-platforms]]). The stressor workshop's contribution is to test those paths rather than trust the documents.
+
+Adevinta's is the documented case of what separation costs. Its 2025 strategic report states that the group "evolved from a centralised structure to a decentralised, standalone operating model", including "the ramp-down of central functions, the transfer of key capabilities, the localisation of intellectual property", and that cloud emissions more than doubled, which it expected to be "a temporary spike linked to our ongoing decentralisation, which required parallel running of central and local services during a transitional period". The parallel running is the cost of separation. It is paid in money, in carbon and in engineering attention, at exactly the moment the group least wants to spend them.
 
 ## Managing the Centralization Pendulum
 
@@ -298,7 +302,7 @@ Separability is the strongest form of portability, and the one most groups disco
 ![A pendulum swings between local brand workshops and a central platform hall, pushed by capital, market and leadership, under a fixed contract bar at the pivot with springs that soften each swing.](assets/images/45-long-term-evolution/centralization-pendulum.jpeg)
 **Figure 5:** *The centralization pendulum is driven mostly by capital strategy, market maturity and leadership; the architecture's job is to make each swing cheaper, which starts with sharing contracts and vocabularies that survive either direction.*
 
-That changes the question at the forum. Instead of "should this be central or local?", ask "**if we have to reverse this decision in four years, what will it cost?**" The answer depends on what is being shared.
+At the forum, the question changes from "should this be central or local?" to "**if we have to reverse this decision in four years, what will it cost?**" The answer depends on what is being shared.
 
 | What is shared | Example at Veldmark | Value of sharing | Cost to reverse | Long-term stance |
 | --- | --- | --- | --- | --- |
@@ -317,7 +321,7 @@ Three practices keep the pendulum cheap at Veldmark:
 
 ## Technical Debt as a Liquidity Tax
 
-Over a decade, technical debt is the main way architecture loses coherence. The usual framing, debt as code quality, is too narrow for a marketplace. The debt that matters is the debt that **slows a stage of the liquidity machine or hides its true state**. I find it useful to classify it by the fitness function it hurts, because that turns a debt register into an investment ranking.
+Over a decade, technical debt is the main way architecture loses coherence. The usual framing, debt as code quality, is too narrow for a marketplace. The debt that matters is the debt that **slows a stage of the liquidity machine or hides its true state**. Classifying it by the fitness function it hurts turns a debt register into an investment ranking.
 
 ![Listings flow along a conveyor toward a buyer-seller handshake, while debt toll booths along the way delay listings, skim off contacts and leave ghost listings circulating.](assets/images/45-long-term-evolution/debt-as-liquidity-tax.jpeg)
 **Figure 6:** *Technical debt in a marketplace is a liquidity tax: the debt that matters is the debt that slows a stage of the liquidity machine or hides its true state, so each item names the fitness function it hurts.*
@@ -337,7 +341,7 @@ Debt never reaches zero, and should not. A decade-long platform will always carr
 
 ## Marketplace Fitness Functions: The Scorecard
 
-The scorecard adopted by the architecture advice forum on Wednesday 8 December 2027 has twelve functions in four groups. Each has a definition, a 2027 baseline from the measurements earlier chapters describe, a target, a cadence, an owner, and the failure pattern it guards against. Some are production monitors, some are build-time or replay checks, and some are drills, because not every property can be tested continuously.
+The scorecard adopted by the architecture advice forum on Wednesday 8 December 2027 has twelve functions in four groups. Each has a definition, a 2027 baseline from the measurements earlier chapters describe, a target, an owner, and the failure pattern it guards against. Some are production monitors, some are build-time or replay checks, and some are drills, because not every property can be tested continuously.
 
 | # | Fitness function | Definition | Veldmark baseline (2027) | Target | Kind | Owner | Guards against |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -358,13 +362,13 @@ The scorecard adopted by the architecture advice forum on Wednesday 8 December 2
 | F11 | **Rebuild and replay** | Each market's search index is rebuilt from the event stream and system of record, and a new consumer is bootstrapped from the state topic, on schedule | Not tested before 2027 | Quarterly rebuild drill passed per market index | Drill | Search platform; event platform | Index-as-Database |
 | F12 | **Separability and registration** | Share of copies and production models registered with an owner; annual tenant-exit tabletop for one brand per shared platform | 64 registered copies; 23 of 146 models without owner, 41 without monitoring; no tabletop | 100% registration (models by 31 Mar 2028); first tabletop for Hearthly ES in Q3 2028 | Drill and audit | Group architecture | The Unwatched Model; The Platform Mandate |
 
-A few design choices in the scorecard are worth stating, because they are the parts other groups tend to get wrong.
+Five design choices in the scorecard are the parts other groups tend to get wrong.
 
 **Fewer functions, each with an owner.** Twelve is about as many as a quarterly review can discuss. Each function has one owner who can act on it; F6, the liquid-cell share, belongs to the Group CPO rather than to architecture, because the remedies are commercial as often as technical.
 
 **Targets are set where the remedy lives.** F5 and F6 have no central target. Time to first contact in a Portuguese rural district depends on supply, marketing and seller acquisition more than on platform latency; a central target would push teams to game the measure. The center sets the definition and the cell key, the brands set the targets.
 
-**Counter-metrics sit next to the metrics.** F1 (insertion freshness) is reported beside F2 (removal propagation) and F8 (harm), so that nobody can speed up publication by weakening the gate. F7 is reported beside VAS revenue per search, so that the trade-off is visible rather than hidden.
+**Counter-metrics sit next to the metrics.** F1 (publication freshness) is reported beside F2 (removal propagation) and F8 (harm), so that nobody can speed up publication by weakening the gate. F7 is reported beside VAS revenue per search, so that the trade-off is visible rather than hidden.
 
 **Drills count as fitness functions.** Rebuildability and separability cannot be monitored; they can only be shown. A drill that has not been run in two quarters is a failed fitness function, not a missing data point.
 
@@ -414,7 +418,7 @@ The main tension is between synergy and separability. Every shared platform save
 
 ## Vertical Differences
 
-The long-term stressors and the fitness functions that matter most differ by vertical. The table summarizes how they differ in Veldmark's four businesses and in the industry generally.
+The long-term stressors and the fitness functions that matter most differ by vertical, in Veldmark's four businesses and in the industry generally.
 
 | Dimension | General classifieds (Tradeyard) | Automotive (Motorvane) | Real estate (Hearthly) | Professional SaaS (Keybridge) and jobs |
 | --- | --- | --- | --- | --- |

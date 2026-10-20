@@ -68,3 +68,5 @@ Chief architects, principal engineers and web, app and SEO leads at classifieds,
 - **2026-10-19** — Editorial review pass: corrected the Google 12 June 2025 quote, aligned the Lyon cluster canonical rule with entity-resolution, restored the [[part-8]] link, expanded acronyms, flagged 2019 Vinted evidence as older. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 1 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 7,899 → 7,912 prose words; lead now ties the chapter to Part VII's published contracts and names what it builds on and what uses it (roadmap paragraph replaced); 6 first sentences brought forward; 2 paragraphs split; headings unchanged; spec unchanged. *(AI-mediated session)*
+- **2026-10-20** — Consistency fix: the apps-versus-web claim for large classifieds brands is now marked as the author's reading; Tradeyard's 57%/43% split leads. *(AI-mediated session)*

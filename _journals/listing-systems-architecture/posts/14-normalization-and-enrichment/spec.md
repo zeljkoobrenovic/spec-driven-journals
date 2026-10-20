@@ -18,8 +18,8 @@ Chief architects, principal engineers, data and ML leads and listing-data owners
 - [ ] Reader can distinguish normalization from enrichment (comparison table) and explain why canonical and original values are both stored.
 - [ ] Reader can list the normalization steps a multi-country listing platform needs (encoding, text, numbers and locale, units, enumerations, entities, dates, prices, addresses, contact data) and their rules.
 - [ ] Reader can define attribute provenance, name the seven source classes and apply a precedence policy, including "verify, do not derive, legally mandated disclosures".
-- [ ] Reader can draw the write-back enrichment loop (Figure 1) and state the five rules that make it replayable, including which steps block publication.
-- [ ] Reader can describe the release process for a new enricher version (shadow run, gate, prioritized backfill, churn monitoring, value-level rollback; Figure 2).
+- [ ] Reader can draw the write-back enrichment loop (Figure 2) and state the five rules that make it replayable, including which steps block publication.
+- [ ] Reader can describe the release process for a new enricher version (shadow run, gate, prioritized backfill, churn monitoring, value-level rollback; Figure 3).
 - [ ] Reader can trace the Essen Golf value by value, including the 31 decoded attributes and the power-variant conflict, consistent with [[attribute-schemas]].
 - [ ] Reader can estimate enrichment cost and explain why re-processing, evaluation and review dominate per-call model cost.
 - [ ] Every company claim carries a dated source; Etsy's figures are labeled as reported via a third-party summary.
@@ -72,3 +72,4 @@ Chief architects, principal engineers, data and ML leads and listing-data owners
 - **2026-10-19** — Editorial review pass: expanded DMS, VIN and OCR on first use, clarified the 31-attribute count, American spelling. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 1 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 5,458 → 5,477 prose words; 1 heading renamed; opening ties the chapter to Part III's supply chain; model-evidence pattern moved ahead of its examples; spec's figure references corrected to Figures 2 and 3 after the illustrator renumbering. *(AI-mediated session)*

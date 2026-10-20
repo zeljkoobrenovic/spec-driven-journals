@@ -74,3 +74,6 @@ Article only for now.
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 4 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
 - **2026-10-20** — Renamed "party model" to the glossary's "seller account model" in Intent, success criteria and the chapter's INFERENCE callout, to match the renamed Architecture heading. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 5,764 → 5,788 prose words; lead now ties the chapter to Part II and names what depends on it; 1 subheading renamed ("Who acts, who pays, who is shown" → "Four questions and the entities that answer them"); commercial-unit paragraph split out; seven topic sentences sharpened; spec unchanged. *(AI-mediated session)*
+- **2026-10-20** — Consistency fix: Figure 3 caption now counts the eight entities the diagram and table show. *(AI-mediated session)*
+- **2026-10-20** — Renamed the subheading "Four questions and the entities that answer them" (from the sharpening pass) to "One entity per question": the table has eight entities and eight questions. *(AI-mediated session)*

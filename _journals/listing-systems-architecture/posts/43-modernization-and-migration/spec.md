@@ -68,3 +68,6 @@ Chief and principal architects, engineering directors and platform leads who own
 - **2026-10-19** — Editorial review pass: American spelling; figure caption spacing; Vinted Vespa figures re-verified. *(AI-mediated session)*
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 2 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 5,419 → 5,467 prose words; lead now ties the chapter to Part VIII (after consolidation and organization) and names what depends on it; Vinted and URL paragraphs reordered point-first; no headings renamed; spec unchanged. *(AI-mediated session)*
+- **2026-10-20** — Consistency fix: Excerpt lists all five stage gates, starting with contract, to match the body and glossary. *(AI-mediated session)*
+- **2026-10-20** — Term alignment with the glossary: "projection" → "read model", "copy register" → "consumer registry", "filter compiler" → "query compiler", where they occur on this page. *(AI-mediated session)*

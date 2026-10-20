@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-20
 ---
 
-# Spec: Meet Veldmark: Four Marketplaces, One Platform to Build
+# Spec: Meet Veldmark: Four Brands, One Platform to Build
 
 ## Intent
 
@@ -69,3 +69,5 @@ Article only for now.
 - **2026-10-19** — Editorial review pass: Tradeyard country history aligned with industry-evolution (BE and PT on their own copies of Yardstick; PL by acquisition); Ruhrblick's Pro 150 package named; all figures checked against the ledger and editor lines; American spelling (program). *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 4 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 2,754 → 2,740 prose words; lead now states the page's place in the Preface (failure patterns become Veldmark's problems; every chapter's scene draws on it); a few sentences tightened, one restatement of the "no contradictions" convention cut; no headings changed; spec unchanged. *(AI-mediated session)*
+- **2026-10-20** — Title changed from "Four Marketplaces" to "Meet Veldmark: Four Brands, One Platform to Build", because the page counts three marketplaces plus Keybridge, an agent CRM (MAU row, "Four Brands, Four Business Models"); spec heading and PLAN.md updated; permalink unchanged. *(AI-mediated session)*

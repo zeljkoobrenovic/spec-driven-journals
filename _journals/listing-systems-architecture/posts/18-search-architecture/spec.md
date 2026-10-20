@@ -7,7 +7,7 @@ revised: 2026-10-20
 
 ## Intent
 
-Give architects a structural model of the search layer of a listing marketplace: the index as a rebuildable projection of the listing stream, the listing search document, index topology, the write path (near-real-time indexing, ordering, update storms, removal latency), the read path (facets, caching, latency budgets), zero-downtime reindexing and capacity planning for evening peaks. The chapter should leave the reader able to judge an engine choice by workload fit rather than benchmarks, and convinced that a stable search contract matters more than the engine behind it. It opens Part IV's technical chapters and hands off to [[query-understanding]].
+Give architects a structural model of the search layer of a listing marketplace: the index as a rebuildable read model of the listing stream, the listing search document, index topology, the write path (near-real-time indexing, ordering, update storms, removal latency), the read path (facets, caching, latency budgets), zero-downtime reindexing and capacity planning for evening peaks. The chapter should leave the reader able to judge an engine choice by workload fit rather than benchmarks, and convinced that a stable search contract matters more than the engine behind it. It opens Part IV's technical chapters and hands off to [[query-understanding]].
 
 ## Audience
 
@@ -70,3 +70,5 @@ Chief and principal architects, search platform leads and engineering directors 
 - **2026-10-19** — Editorial review pass: timetoread corrected, license acronyms expanded, Vinted facet-count wording and Rightmove/Zillow evidence dated or hedged, American spelling. *(AI-mediated session)*
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 4 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,943 → 6,905 prose words; lead rewritten to place the chapter as the start of Part IV's discovery read models; "Architecture: Components and Boundaries" renamed "Architecture: The Index as a Projection"; "Choosing an Engine" moved after capacity planning, so engine choice follows the structure it depends on; topic sentences tightened. Spec unchanged apart from this line. *(AI-mediated session)*
+- **2026-10-20** — Consistency fix: "projection" → "read model" in the excerpt, KEY POINTS, lead, Architecture heading ("Architecture: The Index as a Rebuildable Read Model") and Figure 2 caption, matching the glossary, [[listing-data-management]] and the Part IV intro; spec Intent updated to match. *(AI-mediated session)*

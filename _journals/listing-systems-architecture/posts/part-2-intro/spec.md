@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Part II — LISTING: Modeling the Thing Being Sold
@@ -49,3 +49,4 @@ None.
 
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Added 1 inline illustration (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 628 → 632 words; lead now ties the part to Part I's boundaries and listing ownership; argument sentence tightened; no headings changed. *(AI-mediated session)*

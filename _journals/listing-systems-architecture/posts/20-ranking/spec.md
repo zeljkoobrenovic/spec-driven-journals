@@ -16,7 +16,7 @@ Chief architects, search and ranking leads, data science leads and monetization 
 ## Success criteria
 
 - [ ] Reader can define ranking (the Omnibus definition), sort order, relevance model, ranking policy and exposure, and can place each signal family with its owner, update rate and risk (signal table).
-- [ ] Reader can draw the four-stage ranking function and state each component's contract, including "the relevance model must not read entitlements" (Figure 1, responsibility table).
+- [ ] Reader can draw the four-stage ranking function and state each component's contract, including "the relevance model must not read entitlements" (Figure 2, responsibility table).
 - [ ] Reader can explain bump mechanics (a separate sort timestamp, not a lifecycle transition), reposting as a free bump, and freshness decay.
 - [ ] Reader can choose labels and a model family for LTR, and explain features as served, position bias correction (Joachims 2017) and exploration for new listings.
 - [ ] Reader can compare fixed slots, multipliers, separate auction plus merge, and unified ranking with a floor (eBay 2020), and explains delivery accounting and the OLX selection-bias lesson.
@@ -72,3 +72,4 @@ Chief architects, search and ranking leads, data science leads and monetization 
 - **2026-10-19** — Editorial review pass: verified P2B, Omnibus and DSA quotes against Official Journal texts and repointed sources; completed the Omnibus ranking definition; expanded VAS, LTR, P2B and UCPD on first use; timetoread 36 min. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 1 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,911 → 6,954 prose words; lead now states the chapter's place in Part IV and what depends on it; 2 headings renamed ("What Ranking Is: Prominence, Not a Sort", "Architecture: Model, Policy Layer and Ranking Log"); exposure paragraph split; first sentences sharpened; spec success criterion repointed from Figure 1 to Figure 2 (the pipeline figure became Figure 2 when illustrations were added). *(AI-mediated session)*

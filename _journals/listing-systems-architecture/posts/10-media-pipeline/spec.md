@@ -73,3 +73,5 @@ Article only for now.
 - **2026-10-19** — Editorial review pass: AI Act Article 50 date hedged against later amendments, scene wording tightened, reading time corrected; Autotrader FY26 Co-Driver figures and the Google Merchant 500 × 500 image minimum re-verified. *(AI-mediated session)*
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 2 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,894 → 6,931 words; lead now ties the chapter to Part II's small-aggregate argument and names [[listing-aggregate]] and the `MediaReady` consumers; teaser first sentences rewritten as claims; no headings renamed, no sections moved; spec unchanged. *(AI-mediated session)*
+- **2026-10-20** — Consistency fix: two unsourced claims softened (richer media "growing fastest" in real estate and automotive; the forecast that many images will be generated "within a few years"). *(AI-mediated session)*

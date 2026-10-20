@@ -71,3 +71,5 @@ Chief and principal architects, event-platform and search leads in multi-brand m
 - **2026-10-19** — Editorial review pass: corrected the Kleinanzeigen Debezium quote, fixed a table-row reference, flagged 2022 Adevinta evidence as older, expanded SLO, American spelling. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 2 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,291 → 6,324 prose words; lead now places the chapter as Part VII's first contract; 1 heading renamed ("In Practice: Public Evidence and Contract v1"); 7 paragraph openings brought to their point; 2 paragraphs split; spec unchanged. *(AI-mediated session)*
+- **2026-10-20** — Consistency fix: Event catalog count corrected to thirteen types (pause and resume share a table row). *(AI-mediated session)*

@@ -73,3 +73,4 @@ Chief and enterprise architects, principal engineers and engineering leads respo
 - **2026-10-19** — Editorial review pass: labeled the Golf's 23 leads as raw (19 deduplicated), expanded PKCE and DVLA, American spelling, timetoread corrected. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 1 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,806 → 6,826 words; outline unchanged; opening now places the chapter as the first link of Part III's supply chain; Vertical Differences paragraph split in three; topic sentences brought forward in six paragraphs. *(AI-mediated session)*

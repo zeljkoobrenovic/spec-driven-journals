@@ -73,3 +73,4 @@ Article only for now.
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 11 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
 - **2026-10-20** — Retitled "Three Listings" to match the Lyon apartment example in the ledger, the scene heading and the body; permalink unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 5,883 → 5,915 words; new lead paragraph places the chapter in Part III (builds on normalization and enrichment, feeds publication, search, alerts and valuation); five paragraph openers rewritten to state their point; two paragraphs split; no headings changed. *(AI-mediated session)*

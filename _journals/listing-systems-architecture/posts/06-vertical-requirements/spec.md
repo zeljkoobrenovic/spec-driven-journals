@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-20
 ---
 
-# Spec: Same Platform, Different Physics: General, Real Estate, Automotive and Jobs
+# Spec: Same Platform, Different Physics: How Listing Verticals Differ
 
 ## Intent
 
@@ -71,3 +71,4 @@ Chief architects and platform leads of multi-vertical marketplace groups, and en
 - **2026-10-19** — Editorial review pass: hand-off now to [[part-2]]; Golf raw vs deduplicated leads; EPBD dates verified on the Official Journal text; toolkit link added. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 7,297 → 7,299 prose words (evidence-dense; structure unchanged); opening now ties the chapter to [[business-capabilities]], [[bounded-contexts]] and Part II; topic sentences brought forward in four sections; jobs list count corrected to four; one H3 renamed. Spec unchanged. *(AI-mediated session)*
+- **2026-10-20** — Consistency fix: title changed from "…: General, Real Estate, Automotive and Jobs" to "Same Platform, Different Physics: How Listing Verticals Differ", because Table 2 and In Practice compare five verticals including recommerce (spec heading and PLAN.md updated; permalink unchanged); scene heading "One Platform for Four Physics?" renamed "One Platform for Four Verticals?" so it no longer clashes with the worked example's "Three Listings, Three Physics" (the four are the verticals Veldmark runs, the three are the listings examined). *(AI-mediated session)*

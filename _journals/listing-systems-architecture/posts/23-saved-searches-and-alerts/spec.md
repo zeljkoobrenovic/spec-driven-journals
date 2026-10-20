@@ -71,3 +71,4 @@ Article only for now.
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 3 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
 - **2026-10-20** — Architecture heading now names the design (a saved-search store with rebuildable percolators). *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 7,317 → 7,335 prose words; opening now places the chapter after Part IV's find-what-exists chapters and points to [[part-5]]; 1 heading renamed (match set: notify on entry, retract on exit); 9 paragraph openings now state their point; no sections moved. *(AI-mediated session)*

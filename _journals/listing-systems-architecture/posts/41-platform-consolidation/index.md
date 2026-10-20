@@ -33,7 +33,7 @@ A marketplace acquisition is usually justified in two sentences: the target is a
 
 The public record of classifieds groups is unusually rich on this topic, because the industry has been assembled almost entirely by acquisition. eBay bought national leaders and kept their brands; Axel Springer combined property portals in several countries into AVIV; Naspers rebranded acquired sites as OLX; Adevinta bought eBay Classifieds Group, integrated part of it and then, under new owners, decentralized and sold businesses. **The record shows more reversals than finished integrations**, which is itself the main lesson.
 
-This chapter owns three terms: the **consolidation sequence** (the order and gates in which an acquired marketplace's capabilities move onto group platforms), the **synergy case** (the quantified hypothesis of savings and growth that justifies the integration, with its costs) and the **brand migration** (moving users, sellers, partners and search engines from one consumer brand to another). The tenancy model that a consolidation needs is in [[multi-country-platforms]]; the migration techniques for moving a live system are in [[modernization-and-migration]]; Adevinta's full record is in [[case-adevinta]].
+This chapter opens [[part-8]], the Chief Architect's agenda, by asking how an acquired marketplace joins the shared platform that Part VII built; it relies on the tenancy model of [[multi-country-platforms]]. It owns three terms: the **consolidation sequence** (the order and gates in which an acquired marketplace's capabilities move onto group platforms), the **synergy case** (the quantified hypothesis of savings and growth that justifies the integration, with its costs) and the **brand migration** (moving users, sellers, partners and search engines from one consumer brand to another). The later chapters of Part VIII build on it: [[organizing-marketplace-engineering]] decides who owns each moved capability, [[modernization-and-migration]] supplies the techniques for moving a live system, and [[case-adevinta]] tells Adevinta's full record.
 
 ## Setting the Scene at Veldmark: Where Are the Casavista Synergies?
 
@@ -64,13 +64,13 @@ An acquirer has five integration options for an acquired marketplace, plus the o
 
 Options are chosen per business and may be combined over time: a marketplace can be held separate for a year, federated, and then moved onto shared services capability by capability. What should not happen is a choice by default. **An acquisition without a recorded integration option becomes the Acquisition Archipelago by inertia.**
 
-Two documented cases show how long "hold separate" can last at the brand level while the companies are combined. Immowelt and Immonet were combined under one holding company in 2015, with two sites in Nuremberg and Hamburg ([Immowelt, 2015](https://www.immowelt.de/ueberuns/presse/pressemitteilungenkontakt/immowelt-group/immowelt-und-immonet-schliessen-sich-zusammen/)); in 2024 Immowelt GmbH was renamed AVIV Germany and still ran both immowelt and immonet.de ([Online Marketplaces, 2024](https://www.onlinemarketplaces.com/articles/immowelts-german-parent-company-rebranded-to-aviv-germany)). In France, AVIV launched **Ultimmo** in 2022, a single professional offer across SeLoger, Logic-Immo and Meilleurs Agents ([MySweetImmo, 2022](https://www.mysweetimmo.com/2022/11/03/pros-de-limmo-aviv-group-lance-ultimmo-une-offre-pour-capter-vendeurs-et-acheteurs/)). **Commercial integration can run years ahead of technical integration**, and sometimes should.
+**Commercial integration can run years ahead of technical integration**, and sometimes should. Two documented cases show how long "hold separate" can last at the brand level while the companies are combined. Immowelt and Immonet were combined under one holding company in 2015, with two sites in Nuremberg and Hamburg ([Immowelt, 2015](https://www.immowelt.de/ueberuns/presse/pressemitteilungenkontakt/immowelt-group/immowelt-und-immonet-schliessen-sich-zusammen/)); in 2024 Immowelt GmbH was renamed AVIV Germany and still ran both immowelt and immonet.de ([Online Marketplaces, 2024](https://www.onlinemarketplaces.com/articles/immowelts-german-parent-company-rebranded-to-aviv-germany)). In France, AVIV launched **Ultimmo** in 2022, a single professional offer across SeLoger, Logic-Immo and Meilleurs Agents ([MySweetImmo, 2022](https://www.mysweetimmo.com/2022/11/03/pros-de-limmo-aviv-group-lance-ultimmo-une-offre-pour-capter-vendeurs-et-acheteurs/)).
 
 ### Consolidation sequence
 
 A **consolidation sequence** is the ordered set of stages through which an acquired marketplace's capabilities move onto group platforms, with a gate before each stage. The sequence answers three questions: which capability moves next, what must be true before it moves, and what would stop or reverse it.
 
-The ordering principle I use has two parts. First, **move what users and sellers cannot see before what they can**, because invisible changes do not put liquidity at risk. Second, **move what gains value from pooling before what merely saves cost**, because pooled capabilities (fraud signals, identity, experimentation statistics, advertising audiences) make the whole group better, while cost-only moves can wait for a convenient moment. The core listing and search experience fails both tests: it is the most visible part of the marketplace and gains little from pooling. It therefore comes last, and often never.
+Two rules set the order, and the core listing and search experience fails both. First, **move what users and sellers cannot see before what they can**, because invisible changes do not put liquidity at risk. Second, **move what gains value from pooling before what merely saves cost**, because pooled capabilities (fraud signals, identity, experimentation statistics, advertising audiences) make the whole group better, while cost-only moves can wait for a convenient moment. The core experience is the most visible part of the marketplace and gains little from pooling, so it comes last, and often never.
 
 ![Cutaway of a building renovated from the foundation up, with controls, data and contracts, trust and identity and shared engines rebuilt beneath an unchanged, busy product storefront.](assets/images/41-platform-consolidation/consolidate-bottom-up.jpeg)
 **Figure 1:** *Consolidate from the bottom up: what users never see and what gains value from pooling moves first, while the core listing and search experience, the most visible layer, comes last and often never.*
@@ -89,7 +89,7 @@ A **synergy case** is the quantified hypothesis that combining a business with t
 ![A balance scale weighing savings against traffic loss, seller churn, double running and separation cost, next to an open ledger.](assets/images/41-platform-consolidation/synergy-ledger-scale.jpeg)
 **Figure 2:** *A synergy case is a hypothesis: run it as a ledger that weighs traffic loss, churn, double running and the cost of separating the business again against the savings.*
 
-Adevinta's eCG deal shows the shape at scale. It targeted run-rate cost synergies of **€130–165 million** after three years ([Adevinta, 2021](https://adevinta.com/press-releases/adevinta-completes-acquisition-of-ebay-classifieds-group/)) and recorded **€69 million** of eCG integration expenses in 2023 alone, plus €15 million for the eBay Kleinanzeigen rebrand ([Adevinta Annual Report 2023](https://live.euronext.com/sites/default/files/company_press_releases/attachments_oslo/2024/04/26/616971_Adevinta%20AR%202023.pdf), 2024). Whether the target was met is not public. Two years after the take-private, the 2025 strategic report described "parallel running of central and local services during a transitional period" as the group decentralized ([Adevinta Strategic Report 2025](https://adevinta.com/wp-content/uploads/2026/05/Strategic-Report-2025-Aurelia-UK-Feederco-Ltd.pdf), 2026): separation cost, arriving after the synergies it was never netted against. [[case-adevinta]] traces the whole cycle.
+Adevinta's eCG deal shows the parts a deal model leaves out arriving later. It targeted run-rate cost synergies of **€130–165 million** after three years ([Adevinta, 2021](https://adevinta.com/press-releases/adevinta-completes-acquisition-of-ebay-classifieds-group/)) and recorded **€69 million** of eCG integration expenses in 2023 alone, plus €15 million for the eBay Kleinanzeigen rebrand ([Adevinta Annual Report 2023](https://live.euronext.com/sites/default/files/company_press_releases/attachments_oslo/2024/04/26/616971_Adevinta%20AR%202023.pdf), 2024). Whether the target was met is not public. Two years after the take-private, the 2025 strategic report described "parallel running of central and local services during a transitional period" as the group decentralized ([Adevinta Strategic Report 2025](https://adevinta.com/wp-content/uploads/2026/05/Strategic-Report-2025-Aurelia-UK-Feederco-Ltd.pdf), 2026): separation cost, arriving after the synergies it was never netted against. [[case-adevinta]] traces the whole cycle.
 
 ### Brand migration
 
@@ -101,7 +101,7 @@ The best-documented case in the industry is a forced one. Under the acquisition 
 
 ### Choosing the option
 
-The integration option is the first architectural decision after signing, and it can be made with a short decision procedure.
+The integration option is the first architectural decision after signing, and Figure 3 makes it with four questions.
 
 ---begin mermaid---
 flowchart TB
@@ -122,7 +122,7 @@ The questions are ordered by how absolute they are. A merger-control remedy or a
 
 ### Stages and gates after an acquisition
 
-Figure 4 shows the sequence the chapter recommends for a marketplace acquired into a group that already has shared platforms. It is a reference model; the gates matter more than the exact stage boundaries.
+Figure 4 is the reference sequence for a marketplace acquired into a group that already has shared platforms; its gates matter more than its exact stage boundaries.
 
 ---begin mermaid---
 flowchart LR
@@ -143,7 +143,9 @@ flowchart LR
 | **3. Shared engines** | Media pipeline, search engine platform, taxonomy and attribute service, product catalog and entitlements, messaging service, event backbone integration | Expensive and technically uniform; the product layer above can stay local | Relevance parity, publication freshness, billing parity in shadow mode |
 | **4. Product platform** (optional) | Insertion flow, search and listing pages, apps, pro tools | Only when markets share language, law and product strategy and ownership is stable | Its own investment case and stage gates |
 
-Two features of the table are deliberate. **Payments appear in stage 1 as a contract, not as code.** Consolidating payment-provider relationships (pricing, risk models, onboarding of sub-merchants) is invisible to users and often worth more than merging checkout code. The eCG brands illustrate the pattern: Worldline's 2022 release on taking a stake in Online Payment Platform named both Marktplaats and eBay Kleinanzeigen as clients ([Worldline, 2022](https://worldline.com/de-at/home/top-navigation/media-relations/press-release/pr-2022_09_09_01)), so two marketplaces shared a provider while running their own buyer-protection flows. **Identity appears in stage 2, not stage 1**, because although it is foundational, a login change is visible to every user and must be planned with the trust capabilities that depend on it.
+**Payments appear in stage 1 as a contract, not as code.** Consolidating payment-provider relationships (pricing, risk models, onboarding of sub-merchants) is invisible to users and often worth more than merging checkout code. The eCG brands illustrate the pattern: Worldline's 2022 release on taking a stake in Online Payment Platform named both Marktplaats and eBay Kleinanzeigen as clients ([Worldline, 2022](https://worldline.com/de-at/home/top-navigation/media-relations/press-release/pr-2022_09_09_01)), so two marketplaces shared a provider while running their own buyer-protection flows.
+
+**Identity appears in stage 2, not stage 1**, because although it is foundational, a login change is visible to every user and must be planned with the trust capabilities that depend on it.
 
 ### Hygiene before consolidation
 
@@ -152,6 +154,8 @@ Every stage depends on a prerequisite that acquisitions rarely satisfy: the acqu
 The minimum hygiene I would require before stage 2 is: one identifier per user and per seller within the acquired marketplace, an inventory of every copy of listing and user data ([[listing-data-management]]), the marketplace's events mapped to the group's listing event contract ([[event-driven-listings]]), and a list of every partner integration with its owner.
 
 ### Brand migration as a separate workstream
+
+The governing rule is to **decouple the brand migration from the platform migration**. Each is a traffic risk on its own; together, a ranking drop cannot be attributed, rolled back or fixed quickly, because nobody knows which change caused it.
 
 A brand migration touches more systems than its sponsors expect. Figure 5 lists the workstreams and their dependencies.
 
@@ -175,7 +179,7 @@ flowchart TB
 
 **Figure 5:** *The workstreams of a brand migration. Most are invisible in the brand plan and visible on switch day: a broken redirect, a forced re-registration, an alert e-mail linking to a retired domain or a partner feed sent to an endpoint that no longer answers.*
 
-The workstreams and their main rules:
+Each workstream has its own rules:
 
 - **Domains and URLs.** Google's site-move guidance asks for server-side permanent redirects from each old URL to its final destination, short redirect chains, no mass redirects to an unrelated page such as the new home page, redirects kept "for as long as possible", generally at least one year, and the Change of Address tool when moving between domains; it warns to expect "temporary fluctuation" in rankings while the site is recrawled ([Google Search Central, updated 2026](https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes)). Kleinanzeigen's decision to keep its old domain accessible for several more years is consistent with that guidance. The redirect registry described in [[web-and-seo-architecture]] is the mechanism.
 - **Accounts.** Users must not re-register. German press reporting on the Kleinanzeigen rebrand said existing accounts and payment options carried over without re-registration (widely reported; not verified against a primary source). The tenant code should not change with the brand either: the tenancy model in [[multi-country-platforms]] keys data, events and cost by tenant, not by brand name.
@@ -183,8 +187,6 @@ The workstreams and their main rules:
 - **E-mail and notifications.** New sender domains need authentication and gradual volume ramp-up before they carry alert digests; every link in saved-search alerts must point to a domain that will answer for years ([[saved-searches-and-alerts]]).
 - **Partners.** Feed endpoints, API hostnames and credentials must keep working, or be migrated with each software vendor and dealer system on a published schedule ([[listing-ingestion]]).
 - **Legal.** The contracting entity, terms, privacy notices and the EU Digital Services Act points of contact may change. For business users, the EU platform-to-business regulation requires changes to terms and conditions to be notified at least 15 days before they take effect ([Regulation (EU) 2019/1150](https://eur-lex.europa.eu/eli/reg/2019/1150/oj), Article 3).
-
-The governing rule is to **decouple the brand migration from the platform migration**. Each is a traffic risk on its own; together, a ranking drop cannot be attributed, rolled back or fixed quickly, because nobody knows which change caused it.
 
 ## In Practice: Veldmark's Consolidation Review
 
@@ -209,7 +211,7 @@ The rebrand and the platform move were six months apart, which was better than d
 
 ### The revised sequence for Hearthly.es
 
-The review resequenced the remaining work against Common Ground's dates rather than against the original Casavista plan. It applied one principle in particular: **migrate to the target, not to the sibling.** Moving the Spanish login onto Hearthly France's login in 2027 would have been a migration to a system that Veldmark ID was due to replace. Instead:
+The review resequenced the remaining work on one principle: **migrate to the target, not to the sibling.** It used Common Ground's dates rather than those of the original Casavista plan. Moving the Spanish login onto Hearthly France's login in 2027 would have been a migration to a system that Veldmark ID was due to replace. Instead:
 
 | Capability | Old plan | Revised plan | Source of the date |
 | --- | --- | --- | --- |
@@ -247,7 +249,7 @@ The review classified Keybridge's integration option as **federate under group c
 
 ### The overlap inside the group
 
-The review also covered the one commercial overlap between Veldmark's own brands. Tradeyard Poland's cars section competed with Motorvane Poland for the same dealers: about **2,900** Polish dealers had accounts on both, and about **40%** paid both. This was a portfolio decision, not a platform one, and it had already been made in the marketplace profile register: Tradeyard Poland's vehicles section stays a classifieds section with insertion fees for private sellers, while dealers above a small listing count are offered Motorvane packages and their stock is syndicated to Tradeyard through Motorvane's feed ([[marketplace-taxonomy]]). The architectural consequence for consolidation is small but important: the shared listing core records which brand owns the commercial relationship for each listing, so the overlap can be managed without merging the brands.
+The one commercial overlap between Veldmark's own brands needed a portfolio decision, not a platform one. Tradeyard Poland's cars section competed with Motorvane Poland for the same dealers: about **2,900** Polish dealers had accounts on both, and about **40%** paid both. The decision had already been made in the marketplace profile register: Tradeyard Poland's vehicles section stays a classifieds section with insertion fees for private sellers, while dealers above a small listing count are offered Motorvane packages and their stock is syndicated to Tradeyard through Motorvane's feed ([[marketplace-taxonomy]]). The consequence for consolidation is one field: the shared listing core records which brand owns the commercial relationship for each listing, so the overlap can be managed without merging the brands.
 
 ## Trade-offs
 

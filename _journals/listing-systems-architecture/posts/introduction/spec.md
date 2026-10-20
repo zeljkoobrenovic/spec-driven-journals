@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Introduction: Architecture for Liquidity
@@ -68,3 +68,4 @@ Article only for now.
 - **2026-10-19** — Editorial review pass: Part VIII paragraph aligned with the written part intro (one owning team per capability; problems of change, not design); argument checked against long-term-evolution; American spelling. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Book retitled to *LISTED: Architecting Large-Scale Classifieds and Marketplace Platforms*; permalinks unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 3,873 → 3,852 words; outline unchanged; six paragraph openers rewritten to state their point (central claim, liquidity lens, gap, statement kinds, routing warning); spec unchanged. *(AI-mediated session)*

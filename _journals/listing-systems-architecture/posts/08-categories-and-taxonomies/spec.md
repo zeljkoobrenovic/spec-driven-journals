@@ -65,3 +65,4 @@ Chief architects, principal engineers, search and data leads, and product and en
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 1 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 5,193 → 5,190 prose words; lead now places the chapter in Part II's aggregate-plus-subdomains argument; "Structural Choices" renamed "Four Structural Choices"; teaser and announcing openers removed; external-taxonomy paragraph split in two; spec unchanged. *(AI-mediated session)*
