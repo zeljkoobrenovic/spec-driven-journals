@@ -1,7 +1,7 @@
 {id: meet-northmere}
 # 3. Meet Northmere: Five Brands, One Set of Books
 
-![Meet Northmere: Five Brands, One Set of Books — logo](enterprise-applications-and-financial-systems/posts/meet-northmere/assets/images/meet-northmere/logo.jpeg)
+![Meet Northmere: Five Brands, One Set of Books — logo](finance-systems-architecture/posts/meet-northmere/assets/images/meet-northmere/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Meet Northmere Group, the fictional enterprise this book follows: its brands and business models, its legal entities and licensed payments entity, its systems landscape and volumes, the people who run it, the seven problems it starts 2027 with, the transformation program approved to solve them, and the worked examples the chapters reuse.
 
@@ -35,7 +35,7 @@ Northmere is a multinational digital commerce group, headquartered in Amsterdam,
 
 The gap between GTV and revenue is the first thing an architect should notice. Most of the $64 billion is **other people's money**: payments that Northmere collects and passes on to properties, rail operators or restaurants, or that customers pay to those partners directly. Northmere's revenue is mainly the commissions and fees it earns along the way. The finance estate must track the whole flow, not just the revenue, because the money in transit is a liability, a regulatory obligation and a reconciliation problem.
 
-![A wide river of payments flows through a group's building to hotels, rail operators and restaurants, while only a small side stream fills a revenue bucket.](enterprise-applications-and-financial-systems/posts/meet-northmere/assets/images/meet-northmere/other-peoples-money.jpeg)
+![A wide river of payments flows through a group's building to hotels, rail operators and restaurants, while only a small side stream fills a revenue bucket.](finance-systems-architecture/posts/meet-northmere/assets/images/meet-northmere/other-peoples-money.jpeg)
 
 **Figure 1:** *Most of the $64 billion Northmere handles is other people's money in transit; its $8.2 billion of revenue is the smaller stream it keeps, but the estate must track the whole flow.*
 
@@ -81,31 +81,7 @@ Two entities are special because they are regulated as financial institutions:
 
 Northmere's 2027 baseline estate has a recognizable shape: one group finance core on SAP, two brand ERPs from acquisitions, a custom platform for the brand that generates most of the volume, specialist platforms for close, consolidation, tax and treasury around the core, and three integration technologies connecting them.
 
-```mermaid
-flowchart LR
-    SP["Stayloft booking platform"] -->|"booking events"| SFP["Stayloft Finance Platform"]
-    SP -->|"agency commissions"| FICA["SAP FI-CA"]
-    NP["Northmere Pay"] -->|"payments and payouts"| SFP
-    ADY["Adyen"] -->|"settlement reports"| NP
-    STR["Stripe"] -->|"balance transactions"| NP
-    APM["Local payment-method providers"] --> NP
-    SFP -->|"daily summarized journals"| S4["SAP S/4HANA group core"]
-    FICA --> S4
-    ADS["Northmere Ads billing"] -->|"summarized receivables"| S4
-    WF["Wayfare platform and payout engine"] --> ORA["Oracle Fusion Cloud ERP"]
-    TK["Tablekin platform"] --> STR
-    STR -->|"subscriptions and payouts"| WDF["Workday Financials"]
-    HCM["Workday HCM"] -->|"workers, cost centers, approvers"| S4
-    CPA["Coupa and Concur"] --> S4
-    VTX["Vertex"] -->|"tax determination"| S4
-    KYR["Kyriba"] -->|"payments and bank statements"| S4
-    S4 -->|"trial balance"| OS["OneStream"]
-    ORA -->|"trial balance"| OS
-    WDF -->|"trial balance"| OS
-    OS --> WK["Workiva"]
-    BL["BlackLine"] -.->|"reconciles"| S4
-    FDB["Snowflake FinDB"] -.->|"operational finance data"| SFP
-```
+![Three lanes: Stayloft and Northmere Pay feed thick flows through the custom Finance Platform into S/4HANA, Wayfare feeds Oracle Fusion, Tablekin feeds Workday Financials, and the three ledgers meet only at OneStream.](finance-systems-architecture/posts/meet-northmere/assets/images/meet-northmere/northmere-baseline-estate.jpeg)
 
 **Figure 2:** *Northmere's 2027 baseline: three ledgers meet only at consolidation in OneStream, and most of the volume flows through a custom platform before it reaches the group core.*
 
@@ -145,7 +121,7 @@ The numbers below are 2026 figures, rounded. They explain why Northmere cannot s
 
 The drop from 1.1 billion events to tens of thousands of daily ledger lines is the **volume gradient** that [Anatomy of a Finance Estate: Layers, Planes and Boundaries](#finance-landscape) uses to explain why finance estates have layers. Every step down that gradient is a summarization, and every summarization is a place where traceability can be lost.
 
-![A three-stage funnel narrowing from a cloud of operational events to subledger lines to a few general-ledger lines, with threads at each narrowing showing where traceability can be lost.](enterprise-applications-and-financial-systems/posts/meet-northmere/assets/images/meet-northmere/volume-gradient-funnel.jpeg)
+![A three-stage funnel narrowing from a cloud of operational events to subledger lines to a few general-ledger lines, with threads at each narrowing showing where traceability can be lost.](finance-systems-architecture/posts/meet-northmere/assets/images/meet-northmere/volume-gradient-funnel.jpeg)
 
 **Figure 3:** *The volume gradient: every step from 1.1 billion events to 38,000 ledger lines a day is a summarization, and every summarization is a place where traceability is either kept or lost.*
 
@@ -193,12 +169,7 @@ None of these is a technology problem alone. The close is slow because the estat
 
 In **December 2026** Northmere's board approved **Program Keystone**, a multi-year finance transformation sponsored by Tomás, with a design authority chaired by Dana together with Leila. Its budget is about **$310 million** over five years (capital and operating spend), against a target of **$95 million** a year in run-rate savings by 2030 from retired systems, reduced manual effort and lower payment-provider and bank costs.
 
-```mermaid
-flowchart LR
-    Y0["Baseline 2026: nine-day close, three ledgers, 14 million euro suspense"] --> Y1["Year 1, 2027: govern and stabilize"]
-    Y1 --> Y3["Year 3, 2029: one finance core"]
-    Y3 --> Y5["Year 5, 2031: continuous, real-time finance"]
-```
+![Rising terraces from a cluttered 2026 baseline to three flat plateaus: stabilize in year 1, one finance core in year 3 and real-time finance in year 5.](finance-systems-architecture/posts/meet-northmere/assets/images/meet-northmere/keystone-plateaus.jpeg)
 
 **Figure 4:** *Keystone moves through three plateaus; each must leave the estate stable and closable on its own, not only as a step toward the next.*
 

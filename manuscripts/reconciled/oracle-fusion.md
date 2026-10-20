@@ -1,7 +1,7 @@
 {id: oracle-fusion}
 # 20. Oracle Fusion: An Accounting Hub for High-Volume Events
 
-![Oracle Fusion: An Accounting Hub for High-Volume Events — logo](enterprise-applications-and-financial-systems/posts/17-oracle-fusion/assets/images/17-oracle-fusion/logo.jpeg)
+![Oracle Fusion: An Accounting Hub for High-Volume Events — logo](finance-systems-architecture/posts/17-oracle-fusion/assets/images/17-oracle-fusion/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn how Oracle Fusion Cloud ERP structures finance: ledgers and their four defining choices, primary and secondary ledgers, legal entities and balancing segments, the balances cube, the Subledger Accounting rules engine and the Accounting Hub that applies it to non-Oracle transactions. You will follow one Wayfare rail ticket into journal entries, map Fusion's integration surfaces, and weigh the options for an Oracle ERP inside a group that runs SAP.
 
@@ -59,7 +59,7 @@ In Fusion, a ledger is not just a set of books; it is a configuration object tha
 
 The first three are close to irreversible. Partner guidance consistently reports that [the chart of accounts, calendar and currency cannot be changed once the ledger is saved](https://doyensys.com/blogs/understanding-ledger-in-oracle-erp-fusion/). I treat this as the single most important design-time fact about Fusion: a ledger designed in a hurry during an implementation becomes a constraint every later architect inherits. When Wayfare designed its chart in 2021, it did not design it for a group that would report under US GAAP from a different chart; that mismatch is now the root of its spreadsheet mapping.
 
-![A ledger block built from four pieces, with chart of accounts, calendar and currency padlocked.](enterprise-applications-and-financial-systems/posts/17-oracle-fusion/assets/images/17-oracle-fusion/ledger-four-locked-choices.jpeg)
+![A ledger block built from four pieces, with chart of accounts, calendar and currency padlocked.](finance-systems-architecture/posts/17-oracle-fusion/assets/images/17-oracle-fusion/ledger-four-locked-choices.jpeg)
 
 **Figure 1:** *A Fusion ledger combines a chart of accounts, a calendar, a currency and an accounting method; the first three cannot be changed once the ledger is saved, so a ledger designed in a hurry becomes a constraint every later architect inherits.*
 
@@ -151,22 +151,7 @@ For volume, Oracle documents [Flexible Configuration](https://docs.oracle.com/en
 
 The same page carries a warning that matters for integration contracts: when new columns are added, you must download a new transaction template. **The template is part of the interface contract, and Oracle can change it.**
 
-```mermaid
-flowchart LR
-    BP["Wayfare booking platform"] -->|"ticket and PSP events"| UCM["UCM file drop"]
-    PO["Wayfare payout engine"] -->|"supplier settlement events"| UCM
-    UCM -->|"Import Accounting Transactions"| AH["Accounting Hub transaction objects"]
-    AP["Payables, Receivables, Cash Management"] -->|"accounting events"| SLA["Subledger Accounting rules engine"]
-    AH --> SLA
-    SLA -->|"detailed journals"| REPO["Subledger journal repository with supporting references"]
-    REPO -->|"transfer, summarized or detailed"| PL["Primary ledger EUR, IFRS method"]
-    PL -->|"adjustments only"| SL["Secondary ledger, US GAAP adjustments"]
-    PL -->|"balance-level translation"| RC["USD reporting currency"]
-    PL --> CUBE["Balances cube, one per chart and calendar"]
-    CUBE --> FR["Financial Reports and Smart View"]
-    CUBE -->|"trial balance"| OS["OneStream group consolidation"]
-    REPO --> FDI["Subledger analytics, FDI or FinDB"]
-```
+![External platforms through Accounting Hub and Oracle subledgers both feed one accounting rules engine; its detailed journals stay in the subledger repository, which feeds analytics, while a funnel passes summarized lines to the general ledger, the balances cube and OneStream.](finance-systems-architecture/posts/17-oracle-fusion/assets/images/17-oracle-fusion/one-accounting-engine.jpeg)
 
 **Figure 2:** *In Fusion every journal, whether from an Oracle subledger or from an external source through Accounting Hub, is produced by the same Subledger Accounting engine and keeps its detail in the subledger repository; General Ledger and the balances cube see only what the chart of accounts can express.*
 
@@ -251,26 +236,7 @@ The rules produce four journals in the EUR primary ledger of the French selling 
 
 After the four events, the ticket has left €6.72 of revenue, €1.51 of fees and €5.21 of net cash, and both the PSP clearing account and the supplier payable for this ticket are back to zero. The reason to account per event rather than per day is visible in that last sentence: **a clearing account that nets to zero per ticket can be reconciled per ticket**, and an item that does not net out is a specific ticket with a specific missing event, not an unexplained residue in a daily summary. That is the property the payments-to-ledger design in [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger) depends on, and the reason Northmere's €14 million suspense problem is a design problem rather than a staffing one.
 
-```mermaid
-sequenceDiagram
-    participant BP as Booking platform
-    participant ADP as Adapter
-    participant UCM as UCM
-    participant AH as Accounting Hub
-    participant GL as Fusion GL
-    participant OS as OneStream
-    BP->>ADP: BookingConfirmed and PaymentCaptured, 3 Mar
-    ADP->>ADP: Validate envelope, control totals per file
-    ADP->>UCM: XlaTransaction zip, header and line files
-    UCM->>AH: Import Accounting Transactions
-    AH->>AH: Apply IFRS rule set, keep ticket ID as supporting reference
-    AH->>GL: Transfer journals, summarized by account and day
-    BP->>ADP: PSPFeeCharged and PaymentSettled, 5 Mar
-    ADP->>UCM: Next file in the daily batch
-    UCM->>AH: Import and account
-    AH->>GL: Transfer and post
-    GL->>OS: Monthly trial balance after close
-```
+![Ticket events dated 3 and 5 March leave the booking platform, pass an adapter check, travel as daily files into Accounting Hub, which keeps the ticket detail in a cabinet and sends summarized journals to the general ledger, with a dotted drill-down line back to the detail and a monthly feed to OneStream.](finance-systems-architecture/posts/17-oracle-fusion/assets/images/17-oracle-fusion/rail-ticket-through-accounting-hub.jpeg)
 
 **Figure 3:** *The ticket's events travel as files, are accounted by rules rather than by the booking platform, and reach General Ledger summarized; the detail stays one drill-down away in the subledger repository instead of being discarded before Fusion sees it.*
 
@@ -302,33 +268,7 @@ Fusion exposes several integration mechanisms, each suited to a different job. T
 
 The Data Extraction capability is the one surface I would treat with the most caution. As of October 2026 its public description comes mostly from Oracle architecture blogs rather than product documentation, and practitioners report that it must be enabled by an administrator and that object coverage is being added release by release. A design that depends on it should check coverage per object in the current release notes and keep BICC as the fallback.
 
-```mermaid
-flowchart LR
-    subgraph IN["Inbound"]
-        MS["MuleSoft flows"]
-        ADP["Rail event adapter"]
-    end
-    subgraph FUS["Wayfare Fusion tenant"]
-        REST["REST APIs"]
-        FBDI["FBDI via UCM and ERP Integration Service"]
-        EV["Business events"]
-        EXT["Data Extraction or BICC"]
-        GLC["GL and balances cube"]
-    end
-    subgraph OUT["Group platforms"]
-        OSX["OneStream"]
-        BL["BlackLine"]
-        FDB["FinDB on Snowflake"]
-        KY["Kyriba"]
-    end
-    MS -->|"suppliers, low volume"| REST
-    ADP -->|"daily event files"| FBDI
-    EV -->|"journal approved, supplier created"| MS
-    GLC -->|"trial balance, monthly"| OSX
-    EXT -->|"GL balances and subledger detail"| BL
-    EXT -->|"incremental extracts"| FDB
-    MS -->|"payment files"| KY
-```
+![Inbound MuleSoft flows use the small REST door and the rail adapter's bulk files use the FBDI loading bay; business events notify MuleSoft; the general ledger feeds OneStream and the Data Extraction loading bay sends bulk extracts to BlackLine and FinDB.](finance-systems-architecture/posts/17-oracle-fusion/assets/images/17-oracle-fusion/fusion-integration-surfaces.jpeg)
 
 **Figure 4:** *Each Fusion surface has one job: REST for low-volume transactions, FBDI for bulk inbound, business events for notifications, and Data Extraction or BICC for bulk outbound. Using a reporting tool as an extraction API, or a REST API as a bulk loader, is the most common integration defect in Fusion estates.*
 
@@ -350,7 +290,7 @@ Wayfare is in cohort B, which makes its 2027 calendar concrete:
 
 A SaaS ERP **turns the upgrade from a project into an operating rhythm**: on premises the enterprise chooses when to take change; in Fusion the vendor chooses, and the enterprise pays in a fixed two-week window four times a year. The architecture must provide:
 
-![A year wheel with four two-week update windows, each just before a quarter close, filled with regression testing.](enterprise-applications-and-financial-systems/posts/17-oracle-fusion/assets/images/17-oracle-fusion/quarterly-update-rhythm.jpeg)
+![A year wheel with four two-week update windows, each just before a quarter close, filled with regression testing.](finance-systems-architecture/posts/17-oracle-fusion/assets/images/17-oracle-fusion/quarterly-update-rhythm.jpeg)
 
 **Figure 5:** *Fusion updates four times a year and the updates cannot be skipped, so each two-week window between the test and production updates becomes a fixed regression cycle for integrations, controls and configuration, often close to a quarter-end close.*
 

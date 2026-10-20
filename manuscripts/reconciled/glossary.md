@@ -1,7 +1,7 @@
 {id: glossary}
 # 50. Glossary
 
-![Glossary — logo](enterprise-applications-and-financial-systems/posts/glossary/assets/images/glossary/logo.jpeg)
+![Glossary — logo](finance-systems-architecture/posts/glossary/assets/images/glossary/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Find the book's vocabulary in one place: look a term up in the alphabetical index, read a plain-language definition next to the terms it is most often confused with, and follow the link to the chapter that explains it in depth.
 

@@ -1,7 +1,7 @@
 {id: satellite-platforms}
 # 26. Around the Core: Where Specialist Platforms Earn Their Place
 
-![Around the Core: Where Specialist Platforms Earn Their Place — logo](enterprise-applications-and-financial-systems/posts/23-satellite-platforms/assets/images/23-satellite-platforms/logo.jpeg)
+![Around the Core: Where Specialist Platforms Earn Their Place — logo](finance-systems-architecture/posts/23-satellite-platforms/assets/images/23-satellite-platforms/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn the satellite pattern, a specialized platform that owns one finance capability and attaches to the core through a narrow, owned interface, and apply it to indirect tax and e-invoicing, treasury and bank connectivity, source-to-pay and expenses, direct tax, disclosure and the finance data platform, with the rules that tell you when a satellite is right and when it has become a tangle.
 
@@ -70,33 +70,7 @@ Satellites attach to the core in four recurring shapes. Recognizing the shape te
 
 Some satellites use more than one shape. A treasury system is a gateway for payments and statements and a subledger for hedge accounting. That is acceptable as long as each interaction is contracted separately.
 
-```mermaid
-flowchart LR
-    BR["Brand platforms SFP, Ads, Fusion, Workday"]
-    CORE["Finance core S4HANA general ledger"]
-    TAX["Tax engine Vertex"]
-    EINV["E-invoicing gateway"]
-    TMS["Treasury Kyriba"]
-    S2P["Source-to-pay Coupa"]
-    EXP["Expenses Concur"]
-    CONS["Consolidation OneStream"]
-    DISC["Disclosure Workiva"]
-    DATA["Finance data platform FinDB"]
-    AUTH["Tax authorities and Peppol"]
-    BANKS["27 banks"]
-    BR -->|"tax call at quote and invoice"| TAX
-    CORE -->|"tax call at invoice"| TAX
-    CORE -->|"outbound invoices"| EINV
-    EINV -->|"clear or exchange"| AUTH
-    CORE -->|"payment runs"| TMS
-    TMS -->|"pain.001 out, camt.053 in"| BANKS
-    TMS -->|"statements and hedge journals"| CORE
-    S2P -->|"approved invoices"| CORE
-    EXP -->|"expense postings"| CORE
-    CORE -->|"trial balances"| CONS
-    CONS -->|"linked figures"| DISC
-    CORE -->|"ledger extracts"| DATA
-```
+![The finance core ledger at the centre, ringed by satellites for tax, e-invoicing, treasury, data, consolidation, disclosure, expenses and source-to-pay, each attached by one interface arrow, with tax authorities and banks at the edge.](finance-systems-architecture/posts/23-satellite-platforms/assets/images/23-satellite-platforms/satellites-around-the-core.jpeg)
 
 **Figure 1:** *Northmere's satellites around the finance core. Every arrow is a contracted interface with an owner; the e-invoicing gateway is drawn as one box because that is the target, not yet the 2027 reality.*
 
@@ -126,7 +100,7 @@ The signs that a satellite has become a tangle are concrete, and I look for them
 
 Each of these maps to a failure pattern from [Unreconciled: Fourteen Ways Finance Architecture Goes Wrong](#where-finance-architecture-goes-wrong): The Doppelgänger Record, Point-to-Point Spaghetti, Capability Creep and The Shadow Ledger. The remainder of the chapter applies the pattern to each family.
 
-![Left: specialist platforms in neat orbits, each tied to the ledger core by one owned interface with a reconciliation check. Right: the same platforms knotted together with duplicate data copies and no checks.](enterprise-applications-and-financial-systems/posts/23-satellite-platforms/assets/images/23-satellite-platforms/satellite-versus-tangle.jpeg)
+![Left: specialist platforms in neat orbits, each tied to the ledger core by one owned interface with a reconciliation check. Right: the same platforms knotted together with duplicate data copies and no checks.](finance-systems-architecture/posts/23-satellite-platforms/assets/images/23-satellite-platforms/satellite-versus-tangle.jpeg)
 
 **Figure 2:** *A satellite owns one capability and attaches to the core through one owned interface with a reconciliation; when satellites call each other, keep their own masters and go unreconciled, the estate becomes a tangle.*
 
@@ -182,31 +156,7 @@ The interesting question is the failure path. An engine called millions of times
 
 The rule I use is: **an estimate may degrade, a commit may wait, and nothing may silently guess.** A checkout page may show a price computed from a cached rate, because nothing is legally issued yet. An invoice may wait in a queue until the engine answers. What must never happen is a committed invoice carrying a fallback rate that nobody recalculates.
 
-```mermaid
-sequenceDiagram
-    participant SFP as Stayloft platform
-    participant TS as Tax service adapter
-    participant VX as Vertex engine
-    participant FICA as FI-CA invoicing
-    participant GL as S4HANA ledger
-    SFP->>TS: estimate request at checkout
-    alt engine available
-        TS->>VX: estimate call
-        VX-->>TS: tax lines and rule version
-    else engine unavailable
-        TS-->>SFP: cached rate flagged provisional
-    end
-    FICA->>TS: commit request with document id
-    TS->>VX: commit call, idempotent on document id
-    alt engine available
-        VX-->>TS: committed determination
-        TS-->>FICA: tax lines
-        FICA->>GL: post invoice and tax summary
-    else engine unavailable
-        TS-->>FICA: hold document and retry
-    end
-    VX-->>GL: monthly committed tax journal for reconciliation
-```
+![Checkout and invoicing both call the tax engine through one tax adapter; estimates can fall back to a flagged provisional rate, commits hold and retry, and the engine's tax journal is reconciled against the ledger.](finance-systems-architecture/posts/23-satellite-platforms/assets/images/23-satellite-platforms/tax-call-estimate-and-commit.jpeg)
 
 **Figure 3:** *The tax call sequence. Estimates may fall back to a flagged cached rate; commits wait for the engine and are idempotent on the document identifier; the engine's committed journal is reconciled to the ledger's tax accounts before any return is filed.*
 
@@ -267,31 +217,7 @@ At EU level, the **VAT in the Digital Age (ViDA)** package entered into force on
 
 Under clearance, the seller submits structured invoice data and waits for an acceptance, typically carrying a government-assigned identifier. Only then is the invoice legally issued, posted as issued and delivered. A rejection is not an error to log; it is an invoice that does not exist yet.
 
-```mermaid
-sequenceDiagram
-    participant BILL as Invoicing system
-    participant GW as E-invoicing gateway
-    participant PROV as CTC or Peppol provider
-    participant AUTH as Tax authority platform
-    participant GL as Ledger and AR
-    participant CUST as Customer
-    BILL->>GW: invoice data with document id and tax lines
-    GW->>GW: validate against EN 16931 and country rules
-    GW->>PROV: submit structured invoice
-    PROV->>AUTH: clearance request
-    alt accepted
-        AUTH-->>PROV: acceptance with government id
-        PROV-->>GW: cleared status and legal original
-        GW-->>BILL: issued, government id
-        BILL->>GL: post receivable as issued
-        PROV->>CUST: deliver cleared invoice
-    else rejected
-        AUTH-->>PROV: rejection with reason codes
-        PROV-->>GW: rejected status
-        GW-->>BILL: not issued, correct and resubmit
-    end
-    GW->>GW: archive legal original and status history
-```
+![An invoice passes from invoicing through the e-invoicing gateway and provider to the tax authority; accepted invoices are posted as issued and delivered to the customer, rejected ones return for correction, and the gateway archives the legal original.](finance-systems-architecture/posts/23-satellite-platforms/assets/images/23-satellite-platforms/clearance-before-issue.jpeg)
 
 **Figure 4:** *Clearance in the order-to-cash path. The receivable is posted as issued only after acceptance; rejections return to the invoicing system as documents that do not yet exist; the gateway keeps the legal original, which is the cleared version, not the ERP's copy.*
 
@@ -317,7 +243,7 @@ The response is an **e-invoicing gateway**: one internal service with one contra
 
 Most estates drift into a fifth option: each country solved separately by whichever team felt the deadline first, which is Capability Creep with a legal deadline. The gateway is primarily the decision to have one interface, so the next mandate is a provider configuration rather than a project in every ERP.
 
-![Before: four separate e-invoicing integrations with three providers built country by country. After: one internal gateway with status and an archive, shared by all issuing systems and inbound payables.](enterprise-applications-and-financial-systems/posts/23-satellite-platforms/assets/images/23-satellite-platforms/einvoicing-mandates-to-one-gateway.jpeg)
+![Before: four separate e-invoicing integrations with three providers built country by country. After: one internal gateway with status and an archive, shared by all issuing systems and inbound payables.](finance-systems-architecture/posts/23-satellite-platforms/assets/images/23-satellite-platforms/einvoicing-mandates-to-one-gateway.jpeg)
 
 **Figure 5:** *Four integrations, three providers and no shared view become one e-invoicing gateway with one contract, so the next mandate is a provider configuration rather than a project in every ERP.*
 
@@ -356,21 +282,7 @@ The **cash position** answers "how much cash do we have, where, and what is abou
 
 A **payment factory** centralizes the execution of outgoing payments: the ERPs decide *what* to pay and *when*; the factory decides *how*. It receives proposals from each ERP's payment run, screens, deduplicates and approves them, formats and signs pain.001 instructions, routes them to the right bank and channel, and returns status to the originating ERP. A mature factory can pay and collect **on behalf of** subsidiaries (POBO and COBO) from central accounts, replacing external payments with intercompany balances; an **in-house bank** then keeps the internal accounts, charges internal interest and nets positions. It needs tight intercompany reconciliation, so the intercompany design in [Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale) must be settled first.
 
-```mermaid
-flowchart LR
-    COUPA["Coupa approved invoices"] --> S4AP["S4HANA accounts payable"]
-    CONCUR["Concur expense reports"] --> S4AP
-    S4AP -->|"payment proposal and run"| PF["Kyriba payment factory"]
-    PF --> CHK["Screening, duplicate check, dual approval"]
-    CHK -->|"pain.001 signed"| CH["SWIFT or host-to-host"]
-    CH --> BANK["Banks, 27"]
-    BANK -->|"pain.002 status"| PF
-    BANK -->|"camt.053 statement"| PF
-    PF -->|"payment status"| S4AP
-    PF -->|"statements forwarded"| S4BS["S4HANA bank statement posting"]
-    S4BS --> BL["BlackLine bank reconciliation"]
-    PF -->|"cash position"| TRE["Treasury team"]
-```
+![Accounts payable sends payment runs into a payment factory that screens, approves and pays the banks; status and statements return to the factory, which updates payables, posts statements for bank reconciliation and reports the cash position to treasury.](finance-systems-architecture/posts/23-satellite-platforms/assets/images/23-satellite-platforms/payment-factory-loop.jpeg)
 
 **Figure 6:** *Northmere's payment factory. S/4HANA decides what to pay; Kyriba screens, approves, formats, signs and routes; status and statements flow back so that the ledger, the bank and the cash position agree, and BlackLine proves it.*
 

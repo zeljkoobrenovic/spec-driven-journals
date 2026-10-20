@@ -1,7 +1,7 @@
 {class: part, id: part-5}
 # PRACTICE: How Others Built It
 
-![PRACTICE: How Others Built It — logo](enterprise-applications-and-financial-systems/posts/part-5-intro/assets/images/part-5-intro/logo.jpeg)
+![PRACTICE: How Others Built It — logo](finance-systems-architecture/posts/part-5-intro/assets/images/part-5-intro/logo.jpeg)
 
 > **IN THIS PART, YOU WILL:** Test the book's patterns against real finance and payments platforms described in public by the engineers who built them, and learn to read each case for what it documents, what it only suggests and what it leaves out.
 
@@ -26,12 +26,7 @@ Every case chapter sorts its statements into three kinds, and the wording says w
 - **Interpretation**: my reading of what the documented facts imply, marked as mine.
 - **Not public**: what a finance architect would need to know and the record does not show, named rather than guessed.
 
-```mermaid
-flowchart LR
-    D["Documented: dated, linked public sources"] --> I["Interpretation: marked as the author's reading"]
-    I --> L["Lesson for your estate"]
-    N["Not public: named, never guessed"] -.->|"design it yourself"| L
-```
+![Documented sources lead to an interpretation and then a lesson; a box marked not public sends a dashed arrow labeled design it yourself into the lesson.](finance-systems-architecture/posts/part-5-intro/assets/images/part-5-intro/evidence-boundary.jpeg)
 
 **Figure 1:** *The evidence boundary. A lesson rests on what is documented and on an interpretation the reader can check; what is not public is named so that it becomes part of your own design work rather than an assumption.*
 

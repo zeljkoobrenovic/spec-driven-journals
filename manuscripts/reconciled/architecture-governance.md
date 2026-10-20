@@ -1,7 +1,7 @@
 {id: architecture-governance}
 # 37. Architecture Governance That Speeds Decisions
 
-![Architecture Governance That Speeds Decisions — logo](enterprise-applications-and-financial-systems/posts/34-architecture-governance/assets/images/34-architecture-governance/logo.jpeg)
+![Architecture Governance That Speeds Decisions — logo](finance-systems-architecture/posts/34-architecture-governance/assets/images/34-architecture-governance/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Design a governance system for a federated finance estate: a decision taxonomy that keeps most decisions away from any board, one decision record format, a review board and an advice forum that work together, a standards and waiver lifecycle, and conformance checks connected to SOX change management, procurement and vendor releases.
 
@@ -40,7 +40,7 @@ At the same time, something that should have reached a forum never did. Wayfare'
 
 Dana's conclusion: **the board was triaging by system, and it should triage by consequence.** The payment method was easy to reverse and local to one brand; it needed advice, not a ruling. The Fusion change was cheap to make but expensive to unwind, because every reconciliation moved into Fusion was one more to migrate later; it needed the capability owner. The rest of this chapter is the system she put in place over the following quarter.
 
-![Before and after: a single long queue at the board door versus a routing junction that sends most decisions to teams and advice and only a few to the board.](enterprise-applications-and-financial-systems/posts/34-architecture-governance/assets/images/34-architecture-governance/triage-by-system-vs-consequence.jpeg)
+![Before and after: a single long queue at the board door versus a routing junction that sends most decisions to teams and advice and only a few to the board.](finance-systems-architecture/posts/34-architecture-governance/assets/images/34-architecture-governance/triage-by-system-vs-consequence.jpeg)
 
 **Figure 1:** *Triaging by system sent 27 of 34 requests to a fortnightly board while a SaaS configuration change that deepened an overlap reached no forum at all; triaging by consequence sends each decision down a path set by how hard it is to undo and how far it reaches.*
 
@@ -72,7 +72,7 @@ The table explains the shape of the rest of the chapter. Architecture governance
 - **Contracts.** A three-year subscription is reversible at renewal, after a notice period.
 - **Control evidence.** A new key control must operate long enough to be tested. Changing it mid-year restarts the clock and complicates the auditor's testing.
 
-![A door fitted with four locks labelled period, migration, contract and evidence.](enterprise-applications-and-financial-systems/posts/34-architecture-governance/assets/images/34-architecture-governance/four-locks-one-way-door.jpeg)
+![A door fitted with four locks labelled period, migration, contract and evidence.](finance-systems-architecture/posts/34-architecture-governance/assets/images/34-architecture-governance/four-locks-one-way-door.jpeg)
 
 **Figure 2:** *Finance fits four locks to a door that product engineering would call two-way: period boundaries, data migration, contract terms and control evidence each make a decision harder to undo, and so push it toward advice or the board.*
 
@@ -107,24 +107,7 @@ Dana turned the grid into four paths, each with a lead-time target measured from
 
 **Triage** is a service, not a meeting. One architect on a weekly rota reads each new request within two working days and assigns a path; the requester can challenge the assignment once. Of the 34 requests in the first seven weeks, the new rules would have sent 9 to the board or design authority instead of 27.
 
-```mermaid
-flowchart LR
-    RQ["Question raised by any team"] --> TR["Triage within 2 working days by rota architect"]
-    TR -->|"local and reversible"| T0["T0 team decides"]
-    TR -->|"no trigger, needs advice"| T1["T1 advice forum, team decides"]
-    TR -->|"trigger or hard to reverse and cross-cutting"| T2["T2 review board, Dana decides"]
-    TR -->|"capability ownership, ledger structure, investment"| T3["T3 design authority, Dana and Leila"]
-    T3 -->|"investment-level"| EX["Tomás and Ravi approve"]
-    T1 --> REG["One decision register"]
-    T2 --> REG
-    T3 --> REG
-    EX --> REG
-    REG -->|"ADR id on change record"| CHG["SOX change gate"]
-    REG -->|"ADR id on purchase request"| PRC["Procurement gate"]
-    REG -->|"new or renewed waiver"| WR["Waiver register"]
-    REG -->|"standard adopted or changed"| STD["Standards catalog and conformance checks"]
-    REG -->|"disposition and review date"| PF["Application portfolio"]
-```
+![A question goes to triage within two days and is routed to the team, the advice forum, the review board or the design authority; every route above the team writes to one decision register, which feeds the change, procurement, waiver and standards gates.](finance-systems-architecture/posts/34-architecture-governance/assets/images/34-architecture-governance/four-routes-one-register.jpeg)
 
 **Figure 3:** *Every path writes to one register, and the register is what the other gates read. The board is one of four routes, and the route is chosen by consequence within two days, not by which system is touched.*
 
@@ -234,19 +217,7 @@ A **mandatory standard** is a rule that every system in its scope must meet unle
 
 The rule Dana adopted is short: **no owner, no reference implementation, no conformance check, no mandate.** A standard without a reference implementation asks every team to build its own interpretation. A standard without a conformance check is enforced by reviewers' memories. Either way, it is a recommendation with ambitions.
 
-```mermaid
-stateDiagram-v2
-    [*] --> Proposed: ADR raised with owner and scope
-    Proposed --> Rejected: review board declines
-    Proposed --> Trial: accepted as recommended, reference implementation built
-    Trial --> Mandatory: conformance check live, effective date and transition period set
-    Trial --> Rejected: trial shows cost exceeds value
-    Mandatory --> Mandatory: revised by superseding ADR
-    Mandatory --> Deprecated: successor adopted, no new use allowed
-    Deprecated --> Retired: last system migrated, checks removed
-    Rejected --> [*]
-    Retired --> [*]
-```
+![Stepping stones from Proposed through Trial and Mandatory to Deprecated and Retired, with Mandatory reached only when its conformance check is running, a self-loop for revisions, and Rejected as an exit from Proposed or Trial.](finance-systems-architecture/posts/34-architecture-governance/assets/images/34-architecture-governance/standard-lifecycle.jpeg)
 
 **Figure 4:** *The lifecycle of a standard. Each transition is a recorded decision. A standard reaches Mandatory only when the check that proves conformance is already running, and it leaves through Deprecated so that no system is left non-conformant overnight.*
 
@@ -279,22 +250,7 @@ A **waiver** is a recorded, time-limited permission for a named system not to me
 
 Every Northmere waiver names the standard clause and the system (by LeanIX ID), a person who owns closing it, the reason and the risk while it is open, and an **exit plan** linked to funded work. Where the system is in ICFR scope it names a **compensating control**, agreed with Internal Controls and itself evidenced. Its **expiry** is at most 12 months, or 6 where the compensating control is manual. The board may **renew it once**; a second renewal goes to the design authority, which must fund the exit or change the standard.
 
-```mermaid
-stateDiagram-v2
-    [*] --> Requested: requester files with reason, risk, exit plan
-    Requested --> Declined: board refuses, team must conform
-    Requested --> Granted: board grants with expiry and compensating control
-    Granted --> Closed: exit plan done, conformance check passes
-    Granted --> DueForReview: 30 days before expiry
-    DueForReview --> Closed: conformant by expiry
-    DueForReview --> Renewed: board renews once with new evidence
-    DueForReview --> Escalated: second renewal requested or exit unfunded
-    Renewed --> Closed: conformant by new expiry
-    Renewed --> Escalated: still non-conformant
-    Escalated --> Closed: design authority funds the exit or changes the standard
-    Declined --> [*]
-    Closed --> [*]
-```
+![A waiver moves from Requested to Declined or Granted, then Due for review, Renewed or Escalated; every active path ends in Closed, with escalations resolved by the design authority.](finance-systems-architecture/posts/34-architecture-governance/assets/images/34-architecture-governance/waiver-lifecycle.jpeg)
 
 **Figure 5:** *The lifecycle of a waiver. There is no state in which a waiver simply continues: every path ends in conformance, a changed standard, or a funded exit decided above the board.*
 

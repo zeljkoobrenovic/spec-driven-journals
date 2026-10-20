@@ -1,7 +1,7 @@
 {id: build-versus-buy}
 # 14. Build, Buy or Compose: Choosing What to Own
 
-![Build, Buy or Compose: Choosing What to Own — logo](enterprise-applications-and-financial-systems/posts/11-build-versus-buy/assets/images/11-build-versus-buy/logo.jpeg)
+![Build, Buy or Compose: Choosing What to Own — logo](finance-systems-architecture/posts/11-build-versus-buy/assets/images/11-build-versus-buy/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn a repeatable method for sourcing finance capabilities (three tests, a decision tree and a seven-to-ten-year cost of ownership that includes control and exit), a selection process that tests vendors on your hardest scenarios rather than theirs, a weighted scoring model that does not lie to you, and the rules for converging, keeping or wrapping the finance systems that arrive with an acquisition.
 
@@ -57,7 +57,7 @@ Two terms need precision. **Buy and extend** is only buying if the extensions si
 
 The architectural reading of composability is the part the vendor decks leave out: **composition moves cost from licenses to seams**. Every boundary between two composed finance components is an interface to operate, a reconciliation to perform and a control to evidence. A composed estate with five components and clean contracts between them can be better than a suite; a composed estate with five components and spreadsheets between them is Point-to-Point Spaghetti with better logos.
 
-![Two chains of five software blocks: one joined by engineered connectors carrying interface, reconciliation and control icons, the other by tape and loose spreadsheets.](enterprise-applications-and-financial-systems/posts/11-build-versus-buy/assets/images/11-build-versus-buy/composition-moves-cost-to-seams.jpeg)
+![Two chains of five software blocks: one joined by engineered connectors carrying interface, reconciliation and control icons, the other by tape and loose spreadsheets.](finance-systems-architecture/posts/11-build-versus-buy/assets/images/11-build-versus-buy/composition-moves-cost-to-seams.jpeg)
 
 **Figure 1:** *Composition moves cost from licenses to seams: every boundary between composed finance components is an interface to operate, a reconciliation to perform and a control to evidence, so clean contracts decide whether a composed estate beats a suite.*
 
@@ -82,29 +82,7 @@ The tests are asked **per capability**, at the second level of the capability ma
 
 Two rules govern how the tests combine. First, **a build needs a pass on differentiation plus at least one of the other two**, and the controls burden must be accepted explicitly, by name, in the decision record; volume alone argues for a high-volume package, not for a custom one. Second, **a commodity capability is bought even when it is hard**: if the general ledger cannot carry the volume, the answer is to summarize before the ledger, not to write a ledger.
 
-```mermaid
-flowchart TB
-    S["Capability at level 2 of the map"] --> D{"Source of advantage?"}
-    D -->|"yes"| V1{"Can a package carry its volume, latency and variety?"}
-    D -->|"no"| V2{"Can a package carry its volume, latency and variety?"}
-    V1 -->|"yes"| BE["Buy and extend outside the core"]
-    V1 -->|"no"| R1{"Can we carry the control and audit burden?"}
-    R1 -->|"yes"| B["Build, with controls designed in"]
-    R1 -->|"no"| FIX["Narrow the scope or fund the control capability first"]
-    V2 -->|"yes"| R2{"Does vendor assurance cover the processing?"}
-    V2 -->|"no"| C["Compose: package core plus specialist or custom edge"]
-    R2 -->|"yes"| FS["Buy and adopt fit-to-standard"]
-    R2 -->|"no"| SVC{"Is a managed service with assurance available?"}
-    SVC -->|"yes"| O["Outsource as a service"]
-    SVC -->|"no"| C
-    B --> T{"Seven to ten year cost and exit acceptable?"}
-    BE --> T
-    C --> T
-    FS --> T
-    O --> T
-    T -->|"yes"| DR["Decision record with review date"]
-    T -->|"no"| S
-```
+![A road from a capability through gates for advantage, volume and controls, fanning out to build, buy and extend, compose, fit-to-standard and outsource, all merging into a cost and exit checkpoint that leads to a decision record or loops back to the start.](finance-systems-architecture/posts/11-build-versus-buy/assets/images/11-build-versus-buy/sourcing-decision-tree.jpeg)
 
 **Figure 2:** *The sourcing decision tree. Differentiation decides whether building is even on the table; volume decides whether a package can carry the load; the controls burden decides who proves the result; and every path ends in a cost and exit check that can send the capability back to the start.*
 
@@ -157,7 +135,7 @@ Four conclusions come out of the table, and none of them is "C wins on cost".
 
 **The control line moves the comparison.** It accounts for $1.3 million of the $3.2 million difference between A and C, about 40%. This is the line that disappears from most business cases, and in finance it is rarely small.
 
-![An iceberg with a small license tip above water and large bands for build, change, control and exit costs below the waterline.](enterprise-applications-and-financial-systems/posts/11-build-versus-buy/assets/images/11-build-versus-buy/cost-iceberg.jpeg)
+![An iceberg with a small license tip above water and large bands for build, change, control and exit costs below the waterline.](finance-systems-architecture/posts/11-build-versus-buy/assets/images/11-build-versus-buy/cost-iceberg.jpeg)
 
 **Figure 3:** *The license is the visible tip: over seven to ten years the build, change, control and exit costs decide more sourcing cases than price does, and the control line is the one most business cases leave out.*
 
@@ -230,21 +208,7 @@ The publicly documented counter-example is Birmingham City Council's Oracle Fusi
 
 When the tests say buy and the rationalization rules do not already name the platform, the enterprise selects a vendor. The process below is the one Dana makes mandatory for any finance-relevant selection above $1 million over the contract term. It has seven stages, each of which can exclude a vendor.
 
-```mermaid
-flowchart LR
-    REQ["Capability-based requirements and knock-outs"] --> LONG["Longlist from capability map and market scan"]
-    LONG --> KO{"Knock-outs met?"}
-    KO -->|"no"| OUT["Excluded, reason recorded"]
-    KO -->|"yes"| DEMO["Scripted demos on our hardest scenarios"]
-    DEMO --> REF["Reference calls we choose"]
-    REF --> POC["Proof of concept on volume and edge cases"]
-    POC -->|"fails"| OUT
-    POC -->|"passes"| EXIT["Integration and data exit test"]
-    EXIT -->|"fails"| OUT
-    EXIT -->|"passes"| COM["Commercial and contract terms"]
-    COM --> SCORE["Weighted score with sensitivity"]
-    SCORE --> DR["Decision record at the design authority"]
-```
+![Vendor boxes passing from requirements and a longlist through knock-out, proof of concept and exit-test gates, each of which can drop vendors into an excluded bin, before contract terms, a weighted score and a decision record.](finance-systems-architecture/posts/11-build-versus-buy/assets/images/11-build-versus-buy/selection-gates.jpeg)
 
 **Figure 4:** *The selection process as a series of gates. Knock-outs, the proof of concept and the exit test can each exclude a vendor regardless of its score; the weighted score ranks only the vendors that survive them.*
 
@@ -338,19 +302,7 @@ Acquisitions bring most finance estates their second and third ledgers, usually 
 
 Three dispositions cover almost every case. **Converge**: move the acquired entity onto the group platform and retire the acquired system. **Keep**: retain the acquired system in a defined role, such as a governed second-tier ERP, with entry criteria, a template and an interface into the group core. **Wrap**: keep the acquired system temporarily but surround it with the group's standards, so that it behaves like a group system to everything around it (canonical events out, the group chart of accounts by rule, group identity and access, the group's close calendar), while a dated plan converges or keeps it. Wrapping is the default for the first year after almost any acquisition, because it buys time without creating a permanent exception.
 
-```mermaid
-flowchart TB
-    A["Acquired finance system"] --> W["Wrap in year one: group CoA by rule, canonical events, group identity, group close calendar"]
-    W --> Q1{"Does the acquired business model differ from the group template?"}
-    Q1 -->|"no"| CV["Converge onto the group core on a dated plan"]
-    Q1 -->|"yes"| Q2{"Is the acquired platform a fit for that model and governable as a tier?"}
-    Q2 -->|"no"| CV
-    Q2 -->|"yes"| Q3{"Would it become a template for future acquisitions?"}
-    Q3 -->|"yes"| K["Keep as a governed tier with entry criteria"]
-    Q3 -->|"no"| Q4{"Is a carve-out or sale plausible within three years?"}
-    Q4 -->|"yes"| KW["Keep wrapped, no convergence investment"]
-    Q4 -->|"no"| CV
-```
+![An acquired system is wrapped first, then passes checks for a different business model, platform fit and reusable template; it is kept as a tier only if all hold, otherwise it converges onto the group core or stays wrapped if a carve-out is likely.](finance-systems-architecture/posts/11-build-versus-buy/assets/images/11-build-versus-buy/acquisition-wrap-then-decide.jpeg)
 
 **Figure 5:** *Post-acquisition decision rules. Every acquired finance system is wrapped first; it is kept only if its business model differs from the group's, the platform fits that model, and keeping it creates a reusable tier rather than a one-off exception.*
 

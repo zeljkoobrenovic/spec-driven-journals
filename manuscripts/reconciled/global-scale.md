@@ -1,7 +1,7 @@
 {id: global-scale}
 # 13. Global by Design: Entities, Currencies, Jurisdictions and Brands
 
-![Global by Design: Entities, Currencies, Jurisdictions and Brands — logo](enterprise-applications-and-financial-systems/posts/10-global-scale/assets/images/10-global-scale/logo.jpeg)
+![Global by Design: Entities, Currencies, Jurisdictions and Brands — logo](finance-systems-architecture/posts/10-global-scale/assets/images/10-global-scale/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn how a multinational finance estate represents legal entities, intercompany trade, currencies, accounting standards and local tax and regulatory rules, and how to keep brand, entity, market and business model apart so that each can change without breaking the others.
 
@@ -55,7 +55,7 @@ Most estates start from an implicit equation: one brand, one country, one compan
 
 At Northmere the matrix is real. Stayloft trades through nine operating entities, but its contracts with European hosts are signed by **Stayloft B.V.**, its US marketplace by **Stayloft Inc.**, and merchant-booking funds are held by Northmere Payments B.V., which serves no brand of its own. Tablekin has four entities but bills venues in 11 countries. "Revenue by country" means three different things depending on whether the entity, the customer or the property is meant.
 
-![Five tangled strands on the left contrasted with five separate labeled strands for entity, brand, market, model and currency passing through one event card on the right.](enterprise-applications-and-financial-systems/posts/10-global-scale/assets/images/10-global-scale/five-dimensions-not-one.jpeg)
+![Five tangled strands on the left contrasted with five separate labeled strands for entity, brand, market, model and currency passing through one event card on the right.](finance-systems-architecture/posts/10-global-scale/assets/images/10-global-scale/five-dimensions-not-one.jpeg)
 
 **Figure 1:** *Brand, legal entity, market, business model and currency are five dimensions, not one: every financial event carries all five explicitly, so each can change without breaking the others.*
 
@@ -80,21 +80,7 @@ Northmere's 71 entities fall into five types, and the type decides most of the d
 
 In early 2027 Northmere creates entities in SAP S/4HANA, Oracle Fusion, Workday, OneStream, Vertex, Kyriba and Workday HCM, each from a different document. That is **The Doppelgänger Record** in its purest form, and the reason Kofi needed 38 extracts. Keystone's response is a **legal entity register** as golden source, owned by Legal for identity and ownership and stewarded by Leila's team for accounting attributes. The register does not replace ERP configuration; it decides it.
 
-```mermaid
-flowchart LR
-    LE["Legal entity register - golden source"] -->|"Entity created or changed"| HUB["Integration hub"]
-    HUB --> S4["SAP S/4HANA - company codes"]
-    HUB --> FU["Oracle Fusion - legal entities and balancing segment values"]
-    HUB --> WD["Workday Financials - companies"]
-    HUB --> HCM["Workday HCM - employing entities"]
-    HUB --> OS["OneStream - entity dimension and ownership"]
-    HUB --> VX["Vertex - registrations by jurisdiction"]
-    HUB --> KY["Kyriba - bank accounts, pool and netting membership"]
-    HUB --> BP["Brand platforms and Northmere Pay - contracting entity rules"]
-    S4 -->|"System code confirmed"| LE
-    FU -->|"System code confirmed"| LE
-    WD -->|"System code confirmed"| LE
-```
+![A legal entity register publishes entity changes through an integration hub to eight systems; SAP S/4HANA, Oracle Fusion and Workday Financials send their system codes back to the register.](finance-systems-architecture/posts/10-global-scale/assets/images/10-global-scale/entity-register-loop.jpeg)
 
 **Figure 2:** *The legal entity register decides how every system represents an entity, and each system confirms its code back, so the register holds the full cross-system mapping that interfaces, consolidation and tax reporting rely on.*
 
@@ -216,26 +202,7 @@ Gross invoices of EUR 4,097,211.89 settle with EUR 2,703,159.85 of net movements
 | Stayloft Inc. (USD) | Intercompany payable – Stayloft B.V. | 1,500,000.00 | | |
 | Stayloft Inc. (USD) | Netting center clearing | | 1,500,000.00 | |
 
-```mermaid
-flowchart LR
-    subgraph INV["Invoiced in March - transaction currencies"]
-        INC["Stayloft Inc. - USD functional"]
-        BV["Stayloft B.V. - EUR functional, owns brand IP"]
-        IE["Northmere Services Ireland - EUR functional"]
-        PAY["Northmere Payments B.V. - EUR functional, own funds only"]
-        INC -->|"Royalty USD 1,500,000"| BV
-        INC -->|"Shared services USD 380,000"| IE
-        BV -->|"Payment service fees EUR 2,350,000"| PAY
-    end
-    subgraph NET["Settled 15 April - Kyriba netting at 1.0760"]
-        NC["Netting center - EUR base"]
-    end
-    INC -->|"Net USD 1,880,000, one conversion"| NC
-    BV -->|"Net EUR 955,947.96"| NC
-    NC -->|"EUR 2,350,000 to own-funds account"| PAY
-    NC -->|"EUR 353,159.85"| IE
-    SG["Safeguarded client funds - never netted"] -.->|"Held by, outside the pool"| PAY
-```
+![Three March intercompany invoices between Stayloft Inc., Stayloft B.V., Northmere Services Ireland and Northmere Payments settle on 15 April as four net movements through a euro netting center with one dollar conversion, while client funds in a locked vault stay outside the netting.](finance-systems-architecture/posts/10-global-scale/assets/images/10-global-scale/netting-cycle.jpeg)
 
 **Figure 3:** *Three intercompany invoices in two currencies settle as four net movements with one currency conversion; the licensed entity takes part only with its own funds, never with safeguarded client money.*
 
@@ -257,28 +224,13 @@ Northmere's 71 entities use **19 functional currencies**. Three families of rate
 
 **Ownership follows the families.** Treasury owns market-rate sourcing: provider, fixing time, publication schedule and feed controls. The group controller owns **rate policy**: which rate type applies to which process, how averages are calculated, how rates are estimated for currencies that cannot be exchanged (IAS 21's *Lack of Exchangeability* amendments apply from 2025), and how hyperinflationary economies are handled. Brands own commercial rates within a group margin policy. Finance systems own **distribution**. At Northmere in early 2027, S/4HANA, Oracle Fusion, Workday, OneStream and the Stayloft Finance Platform each take rates from a different source, which is the structural cause of Leila's breaks. Keystone's 2027 standard is a **single group rate service**, fed by treasury from one market-data source, publishing each rate type with an identifier, effective date and version to every ledger, subledger and the consolidation engine. Every converted amount stores the rate identifier it used, so a difference can be traced to its cause rather than argued about.
 
-![Before and after: five systems each fed by their own rate tap with mismatched invoice halves, versus one rate service feeding all systems so the halves join.](enterprise-applications-and-financial-systems/posts/10-global-scale/assets/images/10-global-scale/one-rate-service.jpeg)
+![Before and after: five systems each fed by their own rate tap with mismatched invoice halves, versus one rate service feeding all systems so the halves join.](finance-systems-architecture/posts/10-global-scale/assets/images/10-global-scale/one-rate-service.jpeg)
 
 **Figure 4:** *When each ledger takes rates from its own source, the two halves of an intercompany trade are converted differently and break at close; one treasury-sourced rate service, with a rate identifier on every converted amount, lets them meet.*
 
 Two month-end processes are routinely conflated. **Revaluation** restates foreign-currency **monetary items** (cash, receivables, payables, loans) at the closing rate in each entity's books, with the difference in profit or loss; it runs **in each ledger**. **Translation** converts each entity's functional-currency statements into the group currency (assets and liabilities at closing, income and expense at transaction-date or average rates, equity at historical rates), with the balancing difference in other comprehensive income as the **cumulative translation adjustment** (CTA); it runs **once, in consolidation**. The order matters.
 
-```mermaid
-sequenceDiagram
-    participant TR as Treasury
-    participant RS as RateService
-    participant ERP as LedgersAndSubledgers
-    participant ICM as IntercompanyMatching
-    participant CON as OneStream
-    TR->>RS: Closing fixing captured on last calendar day
-    RS->>ERP: Closing and average rates by 08.00 CET on working day 1
-    RS->>CON: Same rate versions
-    ERP->>ERP: Revalue foreign-currency monetary items per entity
-    ERP->>ICM: Intercompany balances by counterparty pair
-    ICM->>ICM: Match at shared rate, resolve disputes by working day 2
-    ERP->>CON: Entity trial balances in functional currency
-    CON->>CON: Translate, compute CTA, eliminate, route differences by rule
-```
+![Treasury feeds a rate service that sends the same rate versions to the ledgers and OneStream on working day 1; ledgers revalue per entity, intercompany is matched by working day 2, and OneStream translates once centrally.](finance-systems-architecture/posts/10-global-scale/assets/images/10-global-scale/month-end-currency-calendar.jpeg)
 
 **Figure 5:** *The month-end currency calendar: one rate publication feeds every ledger and the consolidation engine, revaluation runs per entity before matching, and translation runs once, centrally, after it.*
 
@@ -326,7 +278,7 @@ Indirect tax is where the five dimensions meet most visibly: the treatment depen
 
 None of these answers determines another. ViDA's **deemed-supplier** status does not make Stayloft a principal for revenue; holding the cash does not make it the supplier of the room. A billing engine that switches to gross revenue when it starts charging VAT on the full price will misstate the accounts the day the tax rule changes.
 
-![One booking card examined by four separate magnifying glasses, each leading to its own output: revenue, VAT, reporting and safeguarding.](enterprise-applications-and-financial-systems/posts/10-global-scale/assets/images/10-global-scale/four-separate-determinations.jpeg)
+![One booking card examined by four separate magnifying glasses, each leading to its own output: revenue, VAT, reporting and safeguarding.](finance-systems-architecture/posts/10-global-scale/assets/images/10-global-scale/four-separate-determinations.jpeg)
 
 **Figure 6:** *One booking, four independent determinations: revenue presentation, VAT, seller reporting and safeguarding are carried as separate attributes, so a change in one rulebook never silently changes another.*
 
@@ -345,19 +297,7 @@ The OECD's **Pillar Two** (GloBE) rules apply to groups with consolidated revenu
 
 For the architect, what matters is the **data shape**: per constituent entity, grouped into 38 jurisdictions, accounting income **as used for consolidation, before intercompany eliminations**; current and deferred taxes; **payroll** and **tangible assets** for the substance-based exclusion; intercompany data; and lineage for every adjustment, retained for years.
 
-```mermaid
-flowchart LR
-    S4["SAP S/4HANA - 55 company codes"] --> OS["OneStream - entity results before eliminations"]
-    FU["Oracle Fusion - 12 legal entities"] --> OS
-    WD["Workday Financials - 4 companies"] --> OS
-    LE["Legal entity register - ownership and jurisdiction"] --> DS["Pillar Two dataset - versioned, with lineage"]
-    OS --> DS
-    HCM["Workday HCM - payroll by employing entity"] --> DS
-    FA["Fixed asset registers - tangible assets by entity"] --> DS
-    TP["Tax provision - current and deferred tax by entity"] --> DS
-    IC["Intercompany originator - flows by pair"] --> DS
-    DS --> CALC["GloBE calculation and information return"]
-```
+![SAP S/4HANA, Oracle Fusion and Workday Financials feed OneStream's pre-elimination results; together with the entity register, payroll, fixed assets, tax provision and intercompany data they funnel into a versioned Pillar Two dataset that produces the GloBE return.](finance-systems-architecture/posts/10-global-scale/assets/images/10-global-scale/pillar-two-data-sources.jpeg)
 
 **Figure 7:** *Pillar Two turns entity and jurisdiction data into a tax return; the calculation is only as good as the entity register, the pre-elimination entity results, and the payroll, asset and intercompany data behind them.*
 

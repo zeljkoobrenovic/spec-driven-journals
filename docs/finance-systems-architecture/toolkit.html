@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Working Papers: Templates for the Finance Architect</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">RECONCILED: Enterprise Architecture for Financial Systems</a><span class="nav-right"><a class="nav-prev" href="case-uber-payments.html" title="Uber's Payments Platform: A Ledger at the Center of Money Movement">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="glossary.html" title="Glossary">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Reference</p>
+        <h1>Working Papers: Templates for the Finance Architect</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-18  ·  45 min read · <a class="spec-link" href="toolkit.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/toolkit/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/toolkit/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">RECONCILED: Enterprise Architecture for Financial Systems</a><span class="nav-right"><a class="nav-prev" href="case-uber-payments.html" title="Uber's Payments Platform: A Ledger at the Center of Money Movement">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="glossary.html" title="Glossary">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Working Papers: Templates for the Finance Architect", "date": "2026-10-18", "author": "Željko Obrenović", "excerpt": "Which records does a Chief Architect actually need to keep a finance estate coherent, provable and changeable? Fourteen copyable templates, from the capability map to the agent control card, each taken from the chapter that teaches it and filled in once with Northmere's numbers.", "permalink": "toolkit", "timetoread": "45 min read", "icon": "assets/icons/toolkit.png", "logo": "assets/images/toolkit/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS SECTION, YOU WILL:** Find the template that fits the decision or design in front of you, copy it, and see it filled in once for Northmere, with the common mistakes to avoid and the chapter that explains the reasoning behind every field.\n\n> **KEY POINTS:**\n>\n> * **Every template names an owner, an identifier and the evidence it produces.** The records cite each other by ID (`ADR-0007`, `INT-0412`, `R2`, `STD-FIN-02`, `W-2027-004`), and that chain of references is what lets an auditor, a new architect or an AI tool follow a number from a filed statement back to the decision that shaped it.\n> * **Start with the record that changes the decision on your desk this week.** Fill the fields that change the decision, write \"unknown\" rather than guess, and add fields only when a later stage needs them. A template is useful when it changes a decision or preserves evidence, not when every cell is full.\n> * **The templates encode the standards, so a blank field is a finding.** Control totals, idempotency keys, maker-checker approval, expiry dates and a named owner for every break are built into the forms. An interface contract with no control total, or a waiver with no expiry, fails review before anyone argues about it.\n\n> **[FAILURE PATTERNS THIS SECTION ADDRESSES](where-finance-architecture-goes-wrong.html):**\n>\n> * **Audit Archaeology** — Every design template carries its control impact, evidence and owner fields up front, so controls are designed with the system instead of after the finding.\n> * **The Doppelgänger Record** — The system-of-record row, the event specification and the launch kit all force one named authority per attribute, per stage, with an end date for any transition.\n> * **Lost in Aggregation** — The event, interface, posting-rule and reconciliation templates each require the keys and control totals that keep a balance traceable to its transactions.\n\n<br>\nThese are **working templates for a finance estate**, taken from the chapters of this book and tested against Northmere, the fictional group the book follows. They are not a certification scheme or a vendor method. Each is the smallest form I have found that does its job: it makes a decision explicit, assigns an owner, and leaves evidence someone else can check. **Adapt the wording to your estate; keep the fields that carry ownership, evidence and dates.** Those are the fields that get dropped first, and the ones whose absence the next audit or incident finds.\n\nThree conventions run through all fourteen tools.\n\n- **They are maintained data, not documents.** The capability map and fact sheets live in the EA repository (SAP LeanIX at Northmere), decision records in one Git register, posting rules in the rule store, event specifications in the schema registry, reconciliation cards in the reconciliation catalog. A template filled into a slide deck stops being true within a quarter.\n- **They reference each other by identifier.** A fact sheet cites its capability (`2.4`); a decision record cites the standard clause it creates (`STD-05 cl. 4`); a reconciliation card cites the interface (`INT-0412`) and the key control it evidences. Use the same identifier everywhere, so a reader can move from any record to the next.\n- **Each has a Northmere example consistent with the chapter that teaches it.** All Northmere names, figures and dates are fictional and illustrative. The examples are deliberately short; the chapter linked at the end of each tool works the full case.\n\n## Find the Template for the Question on Your Desk\n\n| Tool | Use it when | Chapter |\n| --- | --- | --- |\n| [Tool 1](#tool-1): Capability map row and heat map | You need to show Finance where it pays twice for the same ability, or who owns a capability | [Map What Finance Does Before What Runs It](capability-mapping.html) |\n| [Tool 2](#tool-2): Application fact sheet with TIME and TCO card | You must decide whether to invest in, tolerate, migrate or eliminate an application, and when the saving can start | [Manage the Application Portfolio as an Investment](application-portfolio.html) |\n| [Tool 3](#tool-3): System-of-record matrix row | Two systems disagree about a value, or a migration is about to move authority | [Systems of Record: Ending the Doppelgänger Record](systems-of-record.html) |\n| [Tool 4](#tool-4): Architecture decision record and waiver entry | A decision crosses a team, touches a significant account or needs an exception to a standard | [Architecture Governance That Speeds Decisions](architecture-governance.html) |\n| [Tool 5](#tool-5): Vendor selection scorecard and exit-plan card | You are choosing a finance platform, or renewing one the business depends on | [Build, Buy or Compose: Choosing What to Own](build-versus-buy.html), [Own Your Roadmap: Vendor Strategy Without Lock-In Panic](vendor-portfolio-strategy.html) |\n| [Tool 6](#tool-6): Canonical financial event specification | A domain needs to publish a financial fact that other domains and the ledger will consume | [Canonical Events: A Common Language for Money](loosely-coupled-domains.html) |\n| [Tool 7](#tool-7): Interface contract with control totals and idempotency | An interface will change a balance, feed a reconciliation or carry money | [Files, Events and APIs: How Finance Systems Talk](integration-architecture.html) |\n| [Tool 8](#tool-8): Posting rule specification | An event must produce accounting entries, or an accounting policy changes | [Never Update, Only Append: Designing Custom Ledgers](designing-financial-ledgers.html) |\n| [Tool 9](#tool-9): Reconciliation design card | A boundary needs proof that both sides agree, or a clearing account will not stay at zero | [Reconciled by Design: Traceability and Audit Across Boundaries](traceability-and-reconciliation.html), [BlackLine: Matching, Certifying and Closing](blackline.html) |\n| [Tool 10](#tool-10): Cut-over runbook and parallel-run exit criteria | A book of record, subledger or invoicing engine is about to change hands | [Changing the Engine in Flight: Modernization Patterns for Finance](modernization-patterns.html), [Modernizing Without Stopping the Close](incremental-modernization.html) |\n| [Tool 11](#tool-11): Market and brand launch kit | A new market, entity or acquired brand must reach its first closed month | [The Next Brand Should Be Boring: Onboarding as Configuration](brands-entities-markets.html) |\n| [Tool 12](#tool-12): Debt register entry and fitness function card | You must price technical debt for the CFO, or prove that money spent on it worked | [Technical Debt on the Balance Sheet](technical-debt-and-fitness.html) |\n| [Tool 13](#tool-13): Financial incident playbook card | Records or money movements are wrong, missing, late or unauthorized | [Recover Before the Close: Resilience and Security for Finance](resilience-and-security.html) |\n| [Tool 14](#tool-14): Agent control card | An AI agent, vendor-embedded or built in-house, is to take part in a financially relevant process | [Automate the Work, Not the Accountability](ai-in-finance.html) |\n\nThe guidance on writing principles that can fail ([Principles That Decide Things](principles-standards-reference.html)) and the overlap register ([Duplicates and Dependencies: The Hidden Costs of a Grown Estate](redundancy-and-coupling.html)) are not repeated here; Tools 4 and 1 link to them where they are needed.\n\n## How the Records Connect\n\nThe tools are not fourteen separate forms. Most decisions in a finance estate travel through several of them, and each record points to the next.\n\n![Document stacks flow from understand to decide to design and into a reconciliation card, which forms the foundation for five operational records: cut-over, launch, fitness, incident and agent.](assets/images/toolkit/toolkit-template-map.jpeg)\n**Figure 1:** *How the templates reference each other. Understanding records feed decisions; decisions produce design contracts; and nearly every operational record rests on a reconciliation card, because in finance a change, a launch, an incident or an agent is finished only when the books are proven to agree.*\n\n## <a id=\"tool-1\"><\/a>Tool 1: Capability Map Row and Heat Map\n\n**Purpose.** A capability map describes what Finance must be able to do, independent of which system, team or process does it. The heat map scores each level-2 capability so that investment, overlap and ownership questions are argued from the same evidence. It is the frame every later record cites, because it does not move when a vendor or an organization chart does.\n\n**Use it when** you are preparing a portfolio decision, a convergence case or a steering-committee discussion about overlap, and whenever a capability has no named Finance owner.\n\n**The template.** One row per level-2 capability; level 3 only where a decision needs it.\n\n| Field | What to record | Guidance |\n| --- | --- | --- |\n| **ID and level-1 group** | e.g. `2.4`, Money Movement | Level 1 follows Finance's domains of accountability, not an ERP's modules |\n| **Capability name** | A stable noun phrase | Never a system (\"the payout engine\"), a department (\"Settlement Ops\"), a process (\"Book-to-Settle\") or a brand (\"Stayloft Billing\") |\n| **Definition** | One sentence, readable aloud in a workshop | States what must be true, not which technology does it |\n| **Selected level 3** | Only where a decision needs the detail | Leave blank rather than invent a level |\n| **Capability owner** | A named person in Finance, Tax, Treasury or Payments | Not a platform team; an empty cell is the finding |\n| **Strategic importance** | Differentiating / Critical / Commodity | *Critical* means failure is material or regulatory but not differentiating: buy and run it to a high standard |\n| **Maturity** | 1 Ad hoc to 5 Optimized, per implementation | Cite the metric or audit result behind the score |\n| **Duplication** | Count of implementations for comparable scope, named | From the application-to-capability mapping, verified in interviews |\n| **Annual run cost** | Licenses, hosting, engineering and operations allocated | Ranks attention; it is not a savings estimate |\n| **Decided or undecided** | Link to the decision record that chose the duplication, or \"undecided\" | Duplication is a problem only when nobody chose it |\n| **Bounded contexts** | The contexts implementing it, and their relationship | Customer-supplier, conformist, anticorruption layer, published language |\n| **Reading** | One sentence: what the row says to the CFO | The sentence that goes on the steering-committee slide |\n\n**Northmere example** (map v1, March 2027):\n\n| Field | 2.4 Partner Payout Management |\n| --- | --- |\n| Definition | Calculating, scheduling and releasing amounts owed to partners net of commission, holds and adjustments |\n| Level 3 | Payout calculation; payout scheduling and holds; partner bank-detail change control; payout status and remittance |\n| Owner | Proposed at v1: a new Head of Partner Settlement in the CAO organization (filled in 2027) |\n| Importance and maturity | Differentiating; 3 (SFP), 2 (Wayfare engine) |\n| Duplication | 2 engines: SFP and Wayfare's ground-transport engine. Tablekin's Stripe Connect payouts recorded, not counted |\n| Annual run cost | ~$7.6m |\n| Decided? | Undecided at v1: **Overlap 1**. Later resolved: one group payout service, Wayfare engine retired in wave 2 (2029) |\n| Reading | One capability, one owner, one control design for bank-detail changes; two implementations allowed only while a dated migration runs |\n\n**Common mistakes.**\n\n- Naming capabilities after systems, departments or brands, which makes every brand fork look like a distinct need and hides **Capability Creep**.\n- Scoring maturity from confidence instead of metrics; two scorers with no anchors produce two maps.\n- Reading the duplication count as a verdict or the cost column as a saving. Subledger Accounting appears twice at Northmere by design, with a dated plan; only undecided duplication goes to the steering committee.\n\nLearn more: [Map What Finance Does Before What Runs It](capability-mapping.html)\n\n## <a id=\"tool-2\"><\/a>Tool 2: Application Fact Sheet with TIME and TCO Card\n\n**Purpose.** The fact sheet is an application's record in the EA repository: who owns it, what it costs in full, which capabilities it serves, which contracts and controls bind it. The TIME and TCO card turns that fact base into a disposition with a date and a saving that names its cash and capacity parts separately. Together they make a portfolio decision testable by Finance and by the audit committee.\n\n**Use it when** an application is proposed for investment, retirement or consolidation, before a contract renewal notice date, and for any spreadsheet that performs a key control, feeds a ledger posting or a reconciliation, or that a close task depends on (register it as a lightweight record).\n\n**The template.** Rule for scope: *if it can be retired on its own, it gets its own record.*\n\n```text\nFACT SHEET                                   ID: <EA repository ID>\nApplication:            <name>        Primary layer: <reference-model layer 1-8>\nBusiness owner:         <person>      Technical owner: <person>\nCapabilities served:    <map IDs>     SOX relevance: <in scope? key controls in it>\nLifecycle state:        Planned | Phasing in | Active | Phasing out |\n                        Retiring | Decommissioned | Archive only | Destroyed\nActive users (90-day):  <from SSO logs>\nContracts:              <vendor, renewal date, NOTICE DATE, auto-renewal>\nData classification:    <personal, cardholder, financial records>\nRetention obligations:  <record types x jurisdictions, or \"unknown\">\n\nFITNESS (anchored criteria, owner proposes, non-owning architect reviews)\nFunctional score:       <0-5 weighted>   Technical score: <0-5 weighted>\nBorderline (within 0.3 of 3.0)?  <yes -> reviewed by hand>\n\nTIME DISPOSITION:       Tolerate | Invest | Migrate (to <destination>) | Eliminate\nReview date:            <mandatory for Tolerate>\n\nTCO, annual ($k)        License | Hosting | Run team | Change |\n                        Integration upkeep | Audit and control  = TOTAL\nVisible in IT budget:   <license + hosting, and its share of TOTAL>\nOne-time exit cost:     <$k>    Added cost at receiving platform: <$k>\nNet run-rate saving:    <$k>  = cash <$k> + capacity <$k>\nEarliest saving date:   <contract notice, hosting end, supplier schedule>\nPayback and confidence: <months>; High | Medium | Low\nDecommission evidence:  usage, data, read path, access, interfaces,\n                        controls, infrastructure, contract, fact base\n```\n\n**Northmere example** (portfolio baseline, June 2027): the OneStream reconciliation module.\n\n| Field | Entry |\n| --- | --- |\n| Capability and use | 4.2 Account Reconciliation; 22 corporate-entity balance-sheet accounts, while BlackLine reconciles ~6,800 |\n| Business owner | Account Reconciliation capability owner (Leila Haddad) |\n| Contract | Co-termed with the OneStream master subscription: renews **31 December 2027**, notice due **30 September 2027** |\n| SOX relevance | 2 key reconciliations evidenced in it |\n| TIME | **Migrate** to BlackLine; rationalization wave 0 |\n| TCO ($k/yr) | License 310, hosting 0, run 66, change 17, integration 30, audit and control 25 = **448**; 69% visible as license plus hosting |\n| Exit and saving | Exit 90 (move 22 accounts, re-evidence 2 controls); added BlackLine licenses 40; **net saving 408**; payback about 3 months; confidence High |\n| Outcome | Notice met; the two-year OneStream renewal dropped the module ([Own Your Roadmap: Vendor Strategy Without Lock-In Panic](vendor-portfolio-strategy.html)) |\n\n**Common mistakes.**\n\n- Recording license and hosting only. Across Northmere's 214 applications that left out $54 million a year of run, change, integration and control cost, about 31% of the $172 million total.\n- Using Tolerate as a permanent home. It is a holding position with a review date; the two brand ERPs were scored Tolerate precisely because the 2027 Q4 convergence decision was still open.\n- Booking a saving before the decommission evidence pack exists, or missing the notice date that decides whether the saving starts this year or a full term later.\n\nLearn more: [Manage the Application Portfolio as an Investment](application-portfolio.html)\n\n## <a id=\"tool-3\"><\/a>Tool 3: System-of-Record Matrix Row\n\n**Purpose.** The system-of-record matrix records, for each financial data object, which system is authoritative for which attribute group at which lifecycle stage, and how that authority is enforced and proven. One row answers the question \"which number is right?\" before anyone has to ask it in a close. The row's status separates what is enforced today from what has only been agreed.\n\n**Use it when** two systems disagree about a value, a new system or integration will write an object, a migration will move authority, or an auditor asks where a figure is created.\n\n**The template.** Nine columns plus status. Build from the balance sheet outward: start from an account family, follow its detail upstream to the creating event and downstream to consolidation.\n\n| Column | What to record | Guidance |\n| --- | --- | --- |\n| **Object** | In Finance's language | \"Partner payable\", not a table name |\n| **Attribute group** | The attributes this row governs | Authority is per group, not per record; splitting the group settles most double claims |\n| **Lifecycle stage** | From which event to which | A row without a stage is ambiguous |\n| **Authoritative system and status** | System; *in force*, *declared* (agreed, not enforced) or *transitional* (with end date and split key) | Never \"both\"; dual authority only by cohort, one authority per record at every moment |\n| **Owner** | A business person in Finance, Tax, Treasury or Payments | Not a platform team |\n| **Consumers** | Systems of reference and derived stores that read it | Defines the blast radius of a change and the read-only paths |\n| **Propagation** | Mechanism and contract ID | Ties the row to the interface catalog (Tool 7) |\n| **Reconciliation control** | Control and its ID | Ties the row to the risk and control matrix (Tool 9) |\n| **Retention** | Period, and who answers for history after retirement | Authority includes the obligation to answer for history |\n\nAdd the conflict rule the row relies on if it is not one of the seven standing rules (authoritative value wins over copies; external evidence wins for external facts; posted data is corrected by new entries; issued documents are immutable; after hand-off, upstream changes are new facts; closed periods are not reopened for an authority dispute; where the matrix is silent, the data owner decides and the matrix is updated).\n\n**Northmere example** (matrix v1, March 2027):\n\n| Object | Attribute group | Stage | Authoritative system | Owner | Consumers | Propagation | Reconciliation control | Retention |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| Partner | Payout bank account | Onboarding onward | SFP (**transitional** to Northmere Pay, end date 30 Jun 2028) | Ingrid Solberg | Northmere Pay execution, Adyen balance platform | API, change events with before and after values | Daily comparison SFP vs Northmere Pay bank details; any difference blocks payout (MD-11) | 10 years after last payout |\n\n**Common mistakes.**\n\n- Accepting \"source system\" as the answer to an authority question; a source on an integration diagram is often a system of reference passing on a copy.\n- Letting a sync job copy a field \"from whichever was updated last\", which is an authority decision made by a developer with no owner.\n- Leaving a transitional row without an end date. A transitional row past its end date should go to the design authority automatically, as a waiver does.\n\nLearn more: [Systems of Record: Ending the Doppelgänger Record](systems-of-record.html)\n\n## <a id=\"tool-4\"><\/a>Tool 4: Architecture Decision Record and Waiver Entry\n\n**Purpose.** An architecture decision record (ADR) captures one decision, the options rejected, and its consequences, in about a page. A finance estate needs four fields that software-team formats lack: a control impact assessment, an accounting impact, the standards and waivers involved, and the advice received. The waiver entry is its companion: a recorded, time-limited permission not to meet one clause of a mandatory standard.\n\n**Use it when** a decision crosses a team boundary, changes a system of record, touches a significant account or key control, or needs an exception to a mandatory standard. Team-local decisions may use a lighter record, indexed by the same register.\n\n**The template.** Builds on Nygard's five sections and MADR's options and confirmation, as [Architecture Governance That Speeds Decisions](architecture-governance.html) explains.\n\n```markdown\n# ADR-NNNN — <title that states the decision, not the topic>\n\nStatus: Proposed | Accepted <date> | Superseded by ADR-NNNN | Rejected\nPath: T1 advice | T2 review board | T3 design authority   Triggers: <ids>\nDecider: <name>   Control impact sign-off: <Internal Controls name>\nConsulted: <names>   First raised: <date>   Retrospective: yes/no\n\n## Context        Facts, constraints, deadlines, the finding or incident behind it.\n## Drivers        What a good answer must achieve (evidence, speed, ownership).\n## Options        At least two real options plus \"do nothing\".\n                  | Option | Summary | Build cost | Run and test cost |\n                  | Evidence | Reversibility |\n## Decision       \"We will ...\", with scope and effective date\n                  (a posting change takes effect at a period boundary).\n## Consequences   Better: ...  Worse: ...  New work carried by: ...\n## Control impact Key controls added, changed, retired; evidence each produces\n                  and where; risk and control matrix updated before go-live?\n## Accounting impact  Policy, posting meaning or chart of accounts affected?\n                  Controller's team view.\n## Standards      Applies / creates / needs a waiver from: <STD clause>\n## Advice received  Who said what; followed or not, and why.\n## Confirmation   How conformance is checked, automatically where possible.\n## Review         Date, or the trigger that reopens it.\n## Addenda        Dated refinements that do not change the option chosen.\n```\n\n```text\nWAIVER  W-YYYY-NNN\nStandard clause:      <STD-xx clause n>      System: <EA repository ID>\nOwner of closing it:  <name>\nReason:               <why conformance is not possible now>\nRisk while open:      <what can go wrong, in Finance's units>\nCompensating control: <required if the system is in ICFR scope; evidenced>\nExit plan:            <funded work item and date>\nExpiry:               <max 12 months; max 6 if the compensating control is manual>\nRenewal:              <board may renew once; a second request goes to the\n                       design authority, which funds the exit or changes the standard>\n```\n\n**Northmere example.** `ADR-0007 — Partner payout rules are versioned configuration approved through the change pipeline`. Accepted 10 February 2027, path T2, decider Dana Whitlock, control impact sign-off Mei Tanaka, first raised 13 January (20 working days, twice the T2 target, reported as such). Options: compensating manual review, manual gate, rules as approved versioned data, move rules into a vendor platform, do nothing. Decision: option C live by 1 July 2027, with option A as a bridge from March. Control impact: two key controls added, one changed, the bridge review retired on 1 July. Standards: creates clause 4 of STD-05, *financially significant configuration is approved, versioned data*. The same act created **W-2027-004**: Wayfare payout engine, STD-05 clause 4; compensating control a monthly Finance review of the engine's rule-change log and a recomputed payout sample, plus maker-checker on rule files in Wayfare's repository; expiry 31 March 2028; exit is adoption of the SFP rule store in Q1 2028.\n\n**Common mistakes.**\n\n- A record with one option. It is a justification, not a decision; include the cheap answers so the record shows why they lost.\n- Completing the control impact assessment after the decision. At Northmere that wait doubled ADR-0007's lead time, and Internal Controls now joins triage for any control-relevant decision.\n- Editing an accepted record instead of superseding it, or not marking records written after the change shipped as retrospective. Report the retrospective share; a high share means governance is documentation.\n\nLearn more: [Architecture Governance That Speeds Decisions](architecture-governance.html)\n\n## <a id=\"tool-5\"><\/a>Tool 5: Vendor Selection Scorecard and Exit-Plan Card\n\n**Purpose.** The scorecard forces the selection team to state what it values before it sees the candidates, and stops strength elsewhere from compensating for a fatal gap. The exit-plan card records how the enterprise would stop depending on a vendor while keeping the books intact, and how mature that plan is. One is used at selection; the other at every renewal for as long as the dependency lasts.\n\n**Use it when** a finance-relevant selection exceeds your threshold (Northmere: above $1 million over the contract term, touching a significant account, or touching Northmere Pay's regulated processing), and when a strategic or core vendor approaches renewal, changes owner or raises prices.\n\n**The template: scorecard.** Knock-outs first; only vendors that pass the knock-outs, the proof of concept and the data exit test are scored.\n\n| Section | Field | Guidance |\n| --- | --- | --- |\n| **Knock-outs** | Pass / Fail per vendor | Few, testable, set before any vendor is seen; never weighted |\n| **Criteria** | Criterion, weight, anchors for 0, 3 and 5, evidence | Weights signed off in the decision record before demonstrations |\n| **Scripted scenarios** | Your hardest cases, sent two weeks ahead | A vendor that cannot show one says so |\n| **Proof of concept** | Success criteria written before it starts | \"Promising, needs tuning\" is a fail |\n| **Data exit test** | Complete period exported and loaded elsewhere | Posted journals, open items, master data with history, audit trail, configuration |\n| **Scores** | Per scorer, discussed where scorers differ by 2 or more | Do not average away disagreement |\n| **Sensitivity** | Ranking after moving 5 points of weight between criteria | A ranking that flips is a tie; say so |\n\n**The template: exit-plan card.**\n\n```text\nEXIT PLAN  VR-NN   Vendor: <name>   Tier: Strategic | Core | Tactical\nDependency:       functional | data | skills | contractual | regulatory\nDependency budget: concentration <limit> | exit time <limit> |\n                  exit cost <multiple of annual spend> | proprietary surface <limit>\n1 Tested export:  <what was exported, loaded where, reconciled to what, when>\n2 Seam:           <the abstraction where the switch would happen>\n3 Alternative:    <named and, for payments, already live>\n4 Estimate:       <time, cost, parallel running, audit work, close cycles at risk;\n                   by the people who would do the work>\n5 Trigger:        <failure, defined degradation, change of control, price rise\n                   above threshold, regulatory direction>  Decides: <name>\nMaturity:         Named | Documented | Estimated | Tested   Required: <by tier>\nDORA applies?     <critical or important function: yes/no; assessed by>\nLast test / next trigger: <date> / <renewal or event>\n```\n\n**Northmere example.** Scorecard for the e-invoicing gateway (2027, vendors anonymized): Vendor R scored highest at 4.15 but **failed the knock-out** (Brazil in production) and was excluded; P and Q tied at 3.70, and five points of weight moved either way changed the leader, so the record called them equivalent and decided on remaining PoC risk and commercial terms. Exit card **VR-01 Adyen** (strategic): about 68% of Northmere Pay transactions, stored cards held as Adyen tokens; budget ≤ 75% of card transactions; estimate new cards ~2 weeks, stored credentials 9–12 months, ≈ 0.3× annual fees; seam is Northmere Pay's in-house routing with a warm Stripe secondary; moved from untested to **Tested** by routing new-card Stayloft payments from travelers in Portugal to Stripe for one week in November 2027, which exposed two APM refund flows that existed only on Adyen; next trigger the pricing renewal on 31 March 2028, where a credential-export clause is sought.\n\n**Common mistakes.**\n\n- Letting compensatory scoring hide a knock-out, which buys a roadmap instead of a product.\n- Setting weights after the demonstrations, when they drift toward the favorite.\n- Writing an exit plan as a list of alternatives and the sentence \"data will be exported\". Until an export has been loaded and reconciled somewhere you control, the plan is at best Estimated.\n\nLearn more: [Build, Buy or Compose: Choosing What to Own](build-versus-buy.html), [Own Your Roadmap: Vendor Strategy Without Lock-In Panic](vendor-portfolio-strategy.html)\n\n## <a id=\"tool-6\"><\/a>Tool 6: Canonical Financial Event Specification\n\n**Purpose.** A canonical financial event states one business fact in the group's published language, in a shape the ledger, reconciliation and the data platform can rely on for a decade. The specification is the human contract that sits beside the registered schema: what the fact means, what makes it unique, who owns it and how it may change. The producer states what happened; the accounting engine decides what it means for the books.\n\n**Use it when** a domain must publish a fact that crosses a domain boundary, a new event type or `business_model` value is proposed, or a field's meaning is in doubt.\n\n**The template.**\n\n| Section | Field | Guidance |\n| --- | --- | --- |\n| **Identity** | `event_type`, `event_version` | Past tense, a fact (`PaymentSettled`), never an instruction (`ReleaseFunds`) |\n| | Definition | One paragraph: the business moment it records, and when it is emitted |\n| **Ownership** | Event-family business owner; model owner; accounting policy reviewer | The business owner owns the meaning; the model owner owns the catalog and rules |\n| **Producer** | `source_system`, producing domain | Registered producer; transactional outbox |\n| **Envelope** | All fields mandatory: `event_id`, `event_type`, `event_version`, `occurred_at`, `recorded_at`, `brand`, `legal_entity`, `business_model`, `source_system`, `correlation_id`, `amount`, `counterparty_id`, `tax_jurisdiction`, `payload` | The hub rejects a missing `legal_entity` or `business_model`; it never defaults one |\n| **Keys** | `event_id` derivation; natural key; `correlation_id` | `event_id` identical on every retry; the natural key catches semantic duplicates |\n| **Payload** | Field, type, unit, definition, example | Every amount is `{value_minor, currency}`; no floats |\n| **Splits** | Which parts sum to which total; who absorbs a rounding remainder | Parts must sum exactly in minor units |\n| **Semantic checks** | No accounting; no vendor concepts; corrections are new facts; self-contained for replay; business time is the producer's | Seven rules; a failed check is a design-review fail |\n| **Consumers** | Named consumers and their contract tests (pacts) | A consumer without a pact will be broken silently |\n| **Completeness** | Checkpoint per source, per hour, per type: count and amount | Feeds the R1 reconciliation (Tool 9) |\n| **Change** | Class (additive, semantic, breaking); compatibility mode; lifecycle | Breaking changes dual-publish through a full quarter close |\n| **Retention** | Topic retention; schema retention | Schemas are never deleted; replay must read history in its original version |\n\n**Northmere example** (Keystone v1, June 2027):\n\n| Field | `PaymentSettled` v1 |\n| --- | --- |\n| Definition | Net cash settled by a PSP for one payment in its settlement batch |\n| Business owner | Ingrid Solberg (Northmere Pay); model owner Lucía Romero; reviewer Leila Haddad's accounting policy team |\n| Producers | Northmere Pay's PSP adapters (Adyen, Stripe), derived from settlement reports |\n| Natural key | `psp` + `psp_reference` + `psp_journal_type` |\n| `event_id` | Derived from provider batch, journal type and line reference, never from the download (rule added after the October 2027 incident in [Recover Before the Close: Resilience and Security for Finance](resilience-and-security.html)) |\n| Payload | `payment_id`, `psp_reference`, `merchant_account`, `batch_number`, `settlement_date`, `gross`, `fees_total`, `net`, `fee_event_ids`, `fx`, `source_document` (report, line, file hash) |\n| Split rule | `gross` − `fees_total` = `net`. Lisbon booking: 60000 − 174 = 59826 EUR minor units; the ACL attributes Adyen's €0.10 batch fee so the canonical fee is €1.74 |\n| Consumers | SFP subledger, BlackLine matching, FinDB |\n| Compatibility | `BACKWARD_TRANSITIVE` on the registry subject |\n\n**Common mistakes.**\n\n- Putting a GL account, cost center or \"revenue_amount\" in the payload. The account is a property of the policy, the ledger and the chart, not of the fact; a brand that picks accounts is running a **Shadow Ledger**.\n- Changing a field's meaning within a major version, as Northmere's `cancelled` flag did during the April 2027 close, when SFP released €1.3M of traveler funds for 2,180 partial cancellations. A new meaning needs a new field or a new version.\n- Referencing data instead of carrying it (\"look up the booking for the commission\"); a replay in 2033 cannot call a service retired in 2029.\n\nLearn more: [Canonical Events: A Common Language for Money](loosely-coupled-domains.html)\n\n## <a id=\"tool-7\"><\/a>Tool 7: Interface Contract with Control Totals and Idempotency\n\n**Purpose.** An interface that carries money must prove completeness, keep its effect exactly-once, assign every record to a period and keep technical failures out of the ledger. The contract records how it does each of those, in terms the receiver checks rather than the sender asserts. It is the catalog entry, the hand-off agreement between two process owners, and the specification a reviewer can fail.\n\n**Use it when** an interface changes a balance, feeds a key report or reconciliation, or moves a process hand-off between systems; and before any re-run, replay or backfill procedure is written.\n\n**The template.**\n\n```yaml\ninterface_id: INT-NNNN\nowners: {sender: <name>, receiver: <name>, cut_off_rules: <name>}\nstyle_and_technology: <API | event | batch with manifest | CDC | pipeline>; <platform>\nfinancial_relevance: <posts to GL? ICFR scope? feeds reconciliation R-nnn?>\nhandoff:                       # the process-owner contract\n  trigger_and_cut_off: <event or schedule; period rule>\n  ownership_transfer: <the moment responsibility moves to the receiver>\n  identifier: <business key carried end to end>\ncompleteness:\n  unit: <entity and posting date | source, hour and event type>\n  control_totals: [record_count, debit_total_per_currency,\n                   credit_total_per_currency, sha256_over_sorted_ids]\n  sender_total_from: <sender's system of record, not the file-writing job>\n  checked_by: <receiver component>   on_failure: <reject whole batch | hold>\naccuracy: {amounts: integer minor units + ISO 4217, mappings: versioned master data}\nidempotency:\n  key: <derived from business identity, readable by a reviewer>\n  same_key_different_content: reject and alert both owners\n  key_retention: <at least the longest replay or backfill window>\nordering: <partition key; behavior when a parent has not arrived>\nperiod_assignment: {timestamps: [occurred_at, recorded_at], timezone_rule: <rule>,\n                    late_records: current open period, original period kept}\nback_pressure: <queue | throttle | shed non-financial load; never time out blind>\nerror_path: dead-letter store with amount and age   # suspense posting not permitted\nreplay: <same keys>   corrections: <superseding run preceded by reversals>\nobservability: delivery ledger per source and day:\n               received, rejected, delivered, replayed, pending (count and amount)\ncontract_version: <data contract name and semver>\nretirement: <planned replacement and date>\n```\n\n**Northmere example** (the 2027 redesign of the SFP-to-S/4HANA daily posting):\n\n| Field | INT-0412 |\n| --- | --- |\n| Owners | Jonas Berg (sender), Sven Aalto (receiver); cut-off rule owned by Leila Haddad's team |\n| Style | Batch with manifest; SAP Integration Suite in front of the asynchronous Journal Entry Post API |\n| Unit and totals | Entity and posting date; lines, documents, debit and credit per currency. 12 March 2027, Stayloft B.V.: 38,210 summary lines in 77 documents of ≤ 500 lines |\n| Keys | Batch `SFP:NL01:2027-03-12:run-1`; document `…:doc-0042`, written into the S/4HANA reference field; posting registry retained 13 months |\n| Cut-off | Amsterdam-time rule v2 |\n| Error path | Rejected documents to a dead-letter store; batch stays incomplete until replayed under the same key |\n| Corrections | `run-2` with `supersedes: run-1`, preceded by reversals of every `run-1` document |\n| Safety net | Daily subledger-to-GL reconciliation in BlackLine |\n| Contract and retirement | `sfp-daily-gl-summary` 3.1.0; replaced by canonical events into the group core, 2029 |\n\n**Common mistakes.**\n\n- Posting unmappable records to a suspense account \"so the batch balances\". Every mapping defect then becomes a balance, the dead-letter count reads zero, and **The Suspense Swamp** begins.\n- Generating the idempotency key per attempt. The retry gets a new key and posts again, which is the January 2027 double posting into S/4HANA in another form.\n- Trusting a control total computed by the job that wrote the file, which proves only that the job can add; or keeping keys for 24 hours on an interface that may be replayed at month-end.\n\nLearn more: [Files, Events and APIs: How Finance Systems Talk](integration-architecture.html)\n\n## <a id=\"tool-8\"><\/a>Tool 8: Posting Rule Specification\n\n**Purpose.** A posting rule maps an event type, under stated conditions, to the lines of an accounting entry. Specified as approved, versioned data rather than code, it puts accounting policy where accountants can review it and engineers cannot change it in a release. Every entry then carries the rule and version that produced it, so any line can be traced to its rule text and approver.\n\n**Use it when** a new event type or business model must post, an accounting policy changes (for example the timing of revenue recognition), or a chart of accounts changes.\n\n**The template.** Rules are evaluated, not executed: amount expressions, conditions and account derivations, with no loops and no calls to other systems.\n\n```yaml\nrule_id: <SOURCE-MODEL-EVENT>           # stable; never reused\nversion: <n>\neffective_from: <date>                  # superseded, never overwritten\nauthor: <id>\napproved_by: <id>                       # never the author\npolicy_reference: <accounting policy memo and paragraph>\nevent_type: <canonical event>  event_version: <n>\nwhen: {business_model: <code>, brand: <code>, <other conditions>}\nledgers: [<accounting bases>]\nlines:                                  # must balance per currency, or the engine refuses it\n  - {account: <named account>, side: debit,  amount: <expression>}\n  - {account: <named account>, side: credit, amount: <expression>,\n     dimensions: {<dimension>: <derivation>}}\n  - {account: <named account>, side: credit,\n     amount: <total minus the other lines>}   # remainder line absorbs rounding\naccounting_date: <rule, using the entity calendar; late events to open period\n                  with original_period kept>\ntests:\n  - {event: <example>, expected_lines: [...], accounting_date: <date>}\nchange_class: <significant: simulation and approval required>\n```\n\nA rule that deliberately produces no entry is written as a rule with `lines: none`; an event with no applicable rule goes to quarantine.\n\n**Northmere example** (SFP merchant subledger rule store, owned by Leila Haddad's accounting policy team; eleven merchant rule families at the 1 November 2027 cut-over):\n\n```yaml\nrule_id: SFP-MERCH-STAY-COMPLETED\nversion: 3\neffective_from: 2027-09-01\nevent_type: StayCompleted\nwhen: {business_model: merchant, brand: stayloft}\nledgers: [US_GAAP, LOCAL_STAT]\nlines:\n  - {account: traveler_funds_held, side: debit,  amount: booking.gross}\n  - {account: partner_payable,     side: credit, amount: booking.gross - booking.commission,\n     dimensions: {partner: event.counterparty_id}}\n  - {account: commission_revenue,  side: credit, amount: booking.commission,\n     dimensions: {profit_center: derive(brand, market)}}\ntests:\n  - event: Lisbon booking SL-BK-9921347, StayCompleted 2027-04-21\n    expected: Dr traveler_funds_held 60000; Cr partner_payable 51000;\n              Cr commission_revenue 9000 (EUR minor units)\n    accounting_date: 2027-04-21\n```\n\nThe companion rule `SFP-MERCH-BOOKING-CONFIRMED` maps `BookingConfirmed` to \"no accounting\" explicitly, so the completeness check can say every event was accounted for. The test case states its simplification: VAT on the commission is omitted.\n\n**Common mistakes.**\n\n- Leaving the no-entry case implicit. A missing rule and a deliberate no-op look the same until the completeness equation fails to close.\n- Computing every amount independently, so rounding leaves the entry out of balance; derive one line as the remainder.\n- Letting brand systems choose GL accounts. SFP's internal mapping table was the first boundary fix in 2027 for exactly this reason.\n\nLearn more: [Never Update, Only Append: Designing Custom Ledgers](designing-financial-ledgers.html)\n\n## <a id=\"tool-9\"><\/a>Tool 9: Reconciliation Design Card\n\n**Purpose.** A reconciliation proves that two independent records of the same reality agree and explains every difference. The design card is one entry in the reconciliation catalog: what it compares, at what grain and cadence, with which matching rules and tolerances, who clears breaks, who owns their causes, and where the result goes. A reconciliation whose result goes nowhere is a report, not a control.\n\n**Use it when** a new boundary carries money or financial data, a clearing or suspense account does not return to zero, a key control is designed or automated, or an entity must be gated before its period locks.\n\n**The template.**\n\n| Section | Field | Guidance |\n| --- | --- | --- |\n| **Identity** | Catalog ID; type R1–R9 | Event completeness, subledger-to-GL, PSP three-way, bank-to-ledger, safeguarding, intercompany, ledger-to-consolidation, consolidation-to-disclosure, ledger-to-warehouse |\n| **Purpose** | Assertions proved | Completeness, occurrence, accuracy, cut-off; run **both ways** |\n| **Side A ↔ side B** | Sources and extracts | Independence test: if side A were wrong, would side B be wrong in the same way? If yes, it is not a reconciliation |\n| **Input checks** | Control totals checked before matching | Extracts are information produced by the entity (IPE); \"awaiting data\" is a state, not a break |\n| **Grain and frequency** | Transaction or balance; hourly, daily, monthly | Eventual during the period, hard at close |\n| **Matching rules** | Keys; tolerances; cardinality; splitting | Every tolerance is a materiality judgment; many-to-one hides errors inside a total |\n| **Tolerance** | Per assertion | Zero unless the difference is explained by items in flight |\n| **Owners** | Who clears breaks; who owns their causes | Two names, so breaks do not sit with people who can only clear them |\n| **Exception path** | Aging thresholds and escalation | Every break gets a cause code (missing key, late data, rule defect, mapping defect, cut-off, duplicate, provider error, genuine exception) |\n| **Risk tier** | High / Medium / Low; auto-certification rule | An auto-certification rule is an automated control: owner, change management, proven inputs, quarterly look-back |\n| **Evidence and destination** | What is stored; what consumes the result | Close gate, BlackLine certification, consolidation workflow or a data certification flag |\n| **Metrics** | Auto-match rate, unmatched by age, gross suspense, breaks by cause, recurrence | Watch recurrence, not just match rate |\n\n**Northmere example** (catalog v1, October 2027):\n\n| Field | R3 PSP three-way match: Adyen card lines, `NMPay_Stayloft_EEA` |\n| --- | --- |\n| Sides | SFP expected receipts ↔ normalized Adyen settlement lines ↔ batch totals ↔ bank credits via Kyriba |\n| Input check | Normalizer checks each report against its own batch totals and the count of expected batches per merchant account per day; a missing batch is held as \"awaiting data\" |\n| Keys | `merchantReference` (Northmere Pay payment ID) plus Adyen `pspReference`; batch number for the payout leg |\n| Tolerances | Gross exact in transaction currency; settlement-currency amount within 0.5% for FX; value date 0–3 business days |\n| Cardinality and splitting | One-to-one for card lines and for payout to bank credit; fees split to a fee item, FX differences to an FX item, each posted by rule |\n| Lisbon trace | Payment `NPY-270312-004418`: €600.00 gross matched exactly; €1.74 fee split; batch 1047 bank credit of €1,380.52 matched on Tuesday 16 March 2027 |\n| Owners | Northmere Pay operations match; the controller of Northmere Payments B.V. certifies the clearing account; exceptions to an owner at 30 days, reported to Leila Haddad at 90 |\n| Tier | High (PSP clearing); never auto-certified |\n| Destination | Supports the BlackLine certification of PSP clearing – Adyen; feeds the close gate that \"closed means reconciled\" requires |\n\n**Common mistakes.**\n\n- Comparing a source with a copy of itself, such as a warehouse table built from the same feed as the ledger, and calling the match a reconciliation.\n- Reporting net suspense and clearing breaks without a cause code. €7 million of debits and €7 million of credits net to zero, and a break cleared without a cause is cleared again next month.\n- Widening tolerances to raise the match rate; only an upstream fix lowers recurrence.\n\nLearn more: [Reconciled by Design: Traceability and Audit Across Boundaries](traceability-and-reconciliation.html), [BlackLine: Matching, Certifying and Closing](blackline.html)\n\n## <a id=\"tool-10\"><\/a>Tool 10: Cut-Over Runbook and Parallel-Run Exit Criteria\n\n**Purpose.** A finance cut-over is the moment the book of record changes, so the accounting calendar decides when it can happen and reconciliation decides whether it has happened. The runbook fixes, before anything moves, the date against the close calendar, the gates with their tie-outs, tolerances and approvers, the migration proof, the two rollback points and the go/no-go inputs. It is the opposite of **Big-Bang Bravado**.\n\n**Use it when** a ledger, subledger, invoicing engine, payout engine or posting interface is replaced, or authority for a data object moves between systems. Plan one runbook per cohort, with a go/no-go and a rollback switch per entity.\n\n**The template.** Three parts: the plan, the gates, and the T-counted runbook.\n\n```text\nCUT-OVER PLAN                          Scope: <capability, cohort, entities>\nDecision record:   ADR-NNNN             SoR rows changed: <Tool 3 IDs, with end dates>\nPattern:           close in the old, open in the new; opening balances = open items\nCut-over date:     <date> -> start of the SECOND month of a fiscal quarter\nBlackout check:    month-end WD-2..WD9 | 1 Dec to annual filing | quarter-end months |\n                   commercial peaks | statutory deadlines\n                   (the blackout freezes deployments, not effective dates: deploy\n                   before WD-2, switch by an approved, effective-dated change)\nParallel variant:  full parallel | shadow run | reverse shadow | replay | balance-only\nVariance classes:  timing | policy (controller decides) | data | defect\nRollback points:   cheap rollback until <first irreversible act, e.g. first payout run>;\n                   rollback with re-posting until <first close sign-off>; then fix forward\nTransitional:      <interceptors, mimics, reverse shadow, each with an expiry condition>\nHistory:           <system of record for pre-cut-over records; retention; read path>\n```\n\n| Gate | Question | What must tie out | Tolerance (set by the controller) | Duration | Approvers |\n| --- | --- | --- | --- | --- | --- |\n| **G0 enter shadow** | Is the new system ready to be compared? | Event completeness: every event the old system consumes, the new one consumes | Zero missing events | Two weeks of daily runs | Architect; platform lead |\n| **G1 go/no-go** | Can authority move? | Shadow vs old per entity, day, account and record count; 100% of variances classified; every policy variance decided | Daily and month-end unexplained **absolute** variance per entity | Two consecutive non-quarter-end closes | Technical, business, controls and operational readiness statements; sponsor decides |\n| **Cut-over load** | Did the opening balances arrive exactly? | Old closing open items = new opening entries per entity, currency and class; counts, amounts, hash totals; migration clearing zero | Zero, to the cent | Cut-over day | Controller's team; evidence to internal controls |\n| **G2 exit dual running** | Is the new book proven? | New vs reverse shadow vs external evidence, daily; new-to-GL tie-out certified | As G1; zero unexplained in money legs | Two clean closes, at least one a quarter-end; hypercare exit met | Controller and head of internal controls |\n| **G3 retire** | Can the old components go? | Archive = old closed balances = GL summaries; retrieval drills passed | Zero differences | One close with no reads of retired components | Controller, internal controls, tax for retention |\n\n```text\nRUNBOOK (T = working days; T0 = cut-over day)\nT-30  G1 evidence pack opened; last deployment before blackout (inactive,\n      effective-dated switch)\nT-12  Dress rehearsal on a production-sized copy: load, reconcile, first\n      downstream run, full rollback; times recorded\nT-7   Go/no-go 1: readiness statements signed\nT-4   Last deployment window closes; production configuration fingerprinted\nT-1   Go/no-go 2, per entity; switch approved through maker-checker\nT0    00:00 authority switches; load; load reconciled; first irreversible\n      run (cheap rollback ends); old system soft-closes; delta load of late events\nT+1   First daily tie-out of new vs reverse shadow; hypercare stand-ups\nT+2   Old system's last close signed; legacy control account zero; evidence filed\nT+8   Period locked in consolidation with opening balances in the new system\n```\n\n**Northmere example**: Stage 2 of the SFP merchant subledger migration, the EEA cohort (Stayloft B.V. and three other EEA entities, about 64% of subledger lines and about 4.9 million open bookings). T0 was **Thursday 1 November 2029**, working day 1 of the October close, one of the two good windows in 2029. G1 rested on the July and August shadow closes; the G1 tolerance for Stayloft B.V. was ≤ €10,000 daily and ≤ €50,000 at month-end, unexplained absolute. Dress rehearsal 3 on T−12 loaded in 3 h 50 min and rolled back in 2 h 10 min. The first engine-based payout run moved from 04:00 to **06:30**, same value date, so no payout read a balance before the load was reconciled; that is where cheap rollback ended. Rollback with re-posting stayed possible until the November close sign-off on Wednesday 5 December 2029, and each entity could be rolled back alone. Hypercare ran through the year-end close, because G2 needs a quarter-end inside dual running. Measured: load reconciled at 05:30, €4,800 unexplained absolute three-way variance at December month-end across the four entities.\n\n**Common mistakes.**\n\n- Choosing year-end or a quarter-end for the switch, so the first close in the new system feeds an annual or quarterly filing and every migrated balance is examined at its most scrutinized point.\n- Measuring variance net, or comparing amounts without counts, so offsetting errors pass the gate.\n- Declaring rollback possible without naming the last moment it is. After the first payout run or the first issued invoice, rollback means correcting money or documents partners have already received.\n\nLearn more: [Changing the Engine in Flight: Modernization Patterns for Finance](modernization-patterns.html), [Modernizing Without Stopping the Close](incremental-modernization.html)\n\n## <a id=\"tool-11\"><\/a>Tool 11: Market and Brand Launch Kit\n\n**Purpose.** The launch kit lists what has to exist before the first transaction of a new market, entity or acquired brand, who provides it, how long it takes and which gate it feeds. It turns \"configure the brand for a new country\" into governed configuration across nine layers, with the slow items started on the day of the decision. It also counts code changes by kind, which shows where the next launch will need a variation point.\n\n**Use it when** the design authority approves a market launch, a new legal entity or an acquisition, and again after each launch to improve the kit.\n\n**The template.** Each item: owner, planning lead time, dependencies, gate. Mark facts that depend on local law *to be confirmed with local advisers*.\n\n| # | Layer | Items to complete | Authority | Gate it feeds |\n| --- | --- | --- | --- | --- |\n| 1 | **Entity register** | Legal entity record: type, ownership, functional currency and its evidence, statutory GAAP, fiscal calendar, registrations, regulatory status, book of record per basis | Legal entity register | Everything downstream |\n| 2 | **Chart of accounts values** | Entity and intercompany-partner values; market and product values if new | Group finance core governance workflow | Posting simulation |\n| 3 | **Posting rules** | Business-model template bindings and parameters | Accounting rule store | Posting simulation signed off |\n| 4 | **Tax determination** | Registrations, jurisdiction set-up, taxability mappings, e-invoicing routes | Tax service and e-invoicing gateway | Posting simulation |\n| 5 | **PSP accounts and routes** | Merchant accounts per contracting entity, payout model and currency; clearing accounts; matching profile | Northmere Pay provider configuration | Ledger-ready test |\n| 6 | **Bank accounts** | Accounts, signatories, statement channels, netting membership, restricted-cash flags | Treasury bank account master | Ledger-ready test |\n| 7 | **Close calendar and reconciliation catalog** | Calendar entry; catalog entries with tier, owner, evidence destination | Close platform and catalog | First closed month |\n| 8 | **Consolidation mapping** | Entity member, ownership, method, translation, mapping set for a non-group chart | Consolidation platform | First closed month |\n| 9 | **Controls scoping** | Risk and control matrix instances, SOX scoping decision, sub-certification | Risk and control matrix | First year-end in scope |\n\nClose the kit with four counts: configuration items (and the share validated automatically), code items by kind (adapter, extension, brand data capture, shared-core change, fork), waivers opened at launch with expiry dates, and two dates: time to ledger-ready and lead time to the first closed month.\n\n**Northmere example** (Brazil kit, approved 14 December 2027): new entity Stayloft Brasil Ltda. (BRL functional, S/4HANA company code BR01, local GAAP parallel ledger); first trading day **1 July 2028**, first closed month July 2028. About 190 configuration items, about 60% validated automatically; **four code items** (APM settlement report mapping, fiscal-document connector behind the e-invoicing gateway, tax-ID capture in the booking platform, one Kyriba bank format) and **zero shared-core changes**; about 45 reconciliation catalog accounts. The critical path runs through incorporation (3–5 months), bank accounts (3–4 months) and the regulatory perimeter opinion (3–6 months), not through software. The perimeter question is a template parameter (`funds_holder`): the agency binding can launch alone and the merchant binding is activated later by an approved configuration change. Brazilian tax and regulatory specifics remain to be confirmed with local advisers.\n\n**Common mistakes.**\n\n- Planning around the software and meeting the banking and provider timelines in the last month.\n- Turning uncertainty into a fork. If the architecture can express an open question as a parameter, the plan does not have to wait for the answer.\n- Going live before settlement data matches automatically. Keystone's \"ledger-ready before launch\" standard exists because suspense from new providers is the commonest launch debt.\n\nLearn more: [The Next Brand Should Be Boring: Onboarding as Configuration](brands-entities-markets.html)\n\n## <a id=\"tool-12\"><\/a>Tool 12: Debt Register Entry and Fitness Function Card\n\n**Purpose.** A debt register entry prices one item of technical debt as a carrying cost in three columns that are read side by side and never added: cost carried, risk carried and speed lost. A fitness function card defines the measurement that shows whether paying the debt worked. Together they let a CFO fund debt removal in tranches gated by readings, not milestones.\n\n**Use it when** preparing the annual or quarterly debt review, asking for modernization funding, or adopting a measure of estate health that someone will be held to.\n\n**The template: register entry.**\n\n| Field | What to record | Guidance |\n| --- | --- | --- |\n| **Item** | What the debt is, with counts | \"~240 flat files; ~190 interfaces without receiver-checked control totals\", not \"integration debt\" |\n| **Debt type and origin** | One of seven finance debt types; deliberate or inadvertent, prudent or reckless, or acquired | The origin names who owns the remedy |\n| **Cost carried** | Cash per year; capacity per year | Cash stops if the debt goes; capacity is staff time at a stated planning rate |\n| **Risk carried** | In its own units | Key controls, deficiencies, suspense euros and age, incidents |\n| **Speed lost** | Close days, months of freeze, weeks to onboard | Close days are not additive across items |\n| **External date** | The date that sets the order of work | Contract end, audit fieldwork, launch, vendor deadline |\n| **Fitness functions** | The measures that show the item being paid down | Required before the first tranche |\n| **Carried deliberately?** | Reason, cost, what would reopen it | Debt carried on purpose is a decision, not an omission |\n\n**The template: fitness function card.** A candidate missing any of the five parts is not adopted.\n\n```text\nFITNESS FUNCTION   <name>          Scope: atomic | holistic\n1 Metric:          <definition two people compute identically>\n2 Measurement:     <data source; does a person touch it?>\n3 Threshold:       <baseline> -> <level> by <date>  (tightening thresholds carry dates)\n4 Owner:           <one person who can change the outcome>\n5 Automation:      <pipeline gate | daily job | close-cycle extract>; result lands in <where>\nDebt items read:   <register #>      Tranche gate: <reading required at which close>\n```\n\n**Northmere example** (Q3 2027 fitness review, held 21 October 2027): register item 5, **payments reference and matching debt**: APM lines without usable references, card-timed matching windows, refunds outside the PSP; integration and data debt, prudent-inadvertent; cost $2.0M capacity a year (~12 FTE of manual matching and suspense investigation); risk €14M average in PSP clearing and suspense (2026), €2.1M older than 90 days; speed about one close day (WD3–5); external date the 2028 Brazil launch. Read through the **auto-match rate** card: metric, PSP settlement lines matched automatically by WD3 by payment-method family; measured by a daily BlackLine Transaction Matching extract read at WD3; threshold APMs 98.1% (Q2 2027) to ≥ 99.0% for consecutive closes in 2028; owner Ingrid Solberg, because most unmatched APM lines are a payment-data problem no matching rule can fix. Tranche 1 gate, read on the June 2028 close: APM auto-match ≥ 99.0% at WD3 April–June and suspense older than 90 days ≤ €1.0M.\n\n**Common mistakes.**\n\n- Converting risk and speed into one dollar figure, which hides the judgment the CFO is being asked to make.\n- Giving a fitness function to an owner who cannot move it; the metric becomes a report.\n- Writing thresholds without dates. \"Improve the match rate\" cannot be failed, so it governs nothing.\n\nLearn more: [Technical Debt on the Balance Sheet](technical-debt-and-fitness.html)\n\n## <a id=\"tool-13\"><\/a>Tool 13: Financial Incident Playbook Card\n\n**Purpose.** A financial incident makes records or money movements wrong, incomplete, late beyond a committed deadline or unauthorized, or makes it impossible to show they are right. It may have no technical symptom, it is measured in money, entities and periods, and it is resolved by accounting. The playbook card is the incident record filled in phase by phase, so the books are proven correct and the regulatory classification can be made from facts already gathered.\n\n**Use it when** an invariant, completeness check or reconciliation breaks, a partner or finance team reports wrong money, or a security incident touches financial data or payment instructions.\n\n**The template.**\n\n| Phase | Record | Owner | Evidence produced |\n| --- | --- | --- | --- |\n| **Detect** | Alert, flow, entity, currency, amount, time | Flow owner's on-call | Alert record |\n| **Contain** | Flows paused or held (summaries to the GL, intake); payouts paused only if payout inputs are suspect; access revoked if unauthorized | Incident commander with the close duty controller | Time-stamped containment decisions |\n| **Assess impact** | Entities, accounts, periods, currencies, counterparties; money moved; payouts; safeguarding; reporting; P&L; timeliness | Close duty controller | Population file and approved impact statement |\n| **Correct by entries** | Cause fixed first; reversal and re-post job through the approved path, with two approvers | Engineering lead, approved by controller | Entries with `reverses_entry_id`; job approvals |\n| **Prove** | Completeness equation; clearing balances; subledger-to-GL tie-out; bank and safeguarding reconciliation | Controller | Reconciliation results attached |\n| **Evidence** | Incident record linked to control IDs and change records | Internal Controls receives | Complete, tamper-evident record |\n| **Notify** | Classification under the regulator's criteria and internal policy; audit committee chain if a control deficiency is possible; affected partners or customers | Compliance, CISO, controller | Classification with reasoning |\n| **Learn** | Actions with owners and dates; new invariant tests or experiments | Flow owner with architecture | Review record |\n\nRestore from backup appears only where data is physically lost and no event log can rebuild it; even then, the pass criterion is a reconciliation, not a running system.\n\n**Northmere example** (30 September–1 October 2027, quarter-end): webhooks throttled at the edge from 17:40, then a fallback poll at 23:30 and delayed notifications at 01:40 downloaded two Adyen settlement reports twice; event IDs minted per download, plus a duplicate key weakened by a 14 September release, posted **186,240** `PaymentSettled` lines twice (**€41,372,618.40**). Detected at 02:00 by the hourly completeness check; incident declared at 02:20 and the close duty controller paged (above €1 million); Adyen settlement intake paused and the 30 September summary to S/4HANA held at 02:35; payouts assessed and **not** paused, because the payout engine reads partner payables, which the duplicates did not touch; reversal approved by two people at 06:30 and posted at 06:45 in still-open September; proven at 07:05; summary to S/4HANA at 09:40 against a 06:00 target. Classified by Northmere Pay compliance as an ICT-related incident affecting data integrity, **not major**, in about an hour. Five actions followed, including deterministic event IDs and a weekly duplicate-injection experiment in pre-production.\n\n**Common mistakes.**\n\n- Correcting by in-place updates or restoring a backup when the event log can rebuild the books; both destroy the evidence the correction must leave.\n- Pausing payouts reflexively. At Northmere that would have delayed about 300,000 partner payouts on a Friday for no protective benefit.\n- Closing the incident when the service recovers rather than when the reconciliation proves the books, and leaving notification to be reconstructed later.\n\nLearn more: [Recover Before the Close: Resilience and Security for Finance](resilience-and-security.html)\n\n## <a id=\"tool-14\"><\/a>Tool 14: Agent Control Card\n\n**Purpose.** The agent control card is the design checklist, audit walkthrough document and inventory entry for one AI agent in a financially relevant process. It fixes the agent's identity, tools, limits, evidence and change management before it runs, and it applies the rule that an agent may propose while a controlled process disposes. At Northmere it is a mandatory standard (STD-FIN-06) for enterprise-built and vendor-embedded agents alike.\n\n**Use it when** any AI agent, workflow with model steps, or vendor-embedded AI feature will read or propose changes to financial data, support a key control, or feed information an auditor will rely on.\n\n**The template.** Approved by the control owner, the system owner and Internal Controls.\n\n| Field | What to record |\n| --- | --- |\n| **Agent and version** | Name; build or vendor feature; model and prompt versions |\n| **Business owner** | Named person accountable for outcomes |\n| **Technical owner** | Named person accountable for operation |\n| **Control fed** | The human-owned control its output supports; ICFR relevance |\n| **Capability types** | e.g. ingestion, transformation, judgment, as classified in COSO's generative AI guidance |\n| **Rung and pattern** | Rules, ML, generative, agent; workflow (fixed steps) or open-ended |\n| **Identity** | Service identity, never a person's; included in access review |\n| **Read tools** | Exact tools and data scopes |\n| **Write tools** | Proposal targets only |\n| **Prohibited actions** | Explicit list; at minimum post, approve, pay, change master data |\n| **Limits** | Amount, volume, account, entity scope |\n| **Deterministic validation** | Rules applied before any human review |\n| **Disposition** | Where and by whom proposals are accepted, in the system of record |\n| **Evidence captured** | Inputs, steps, tool calls, outputs, versions, validation, disposition; retention |\n| **Completeness check** | How each run proves it processed the whole population |\n| **Evaluation and acceptance** | Test set, criteria, last result |\n| **Monitoring** | Metrics and thresholds that trigger review |\n| **Change management** | What counts as a change (model, prompt, tool, threshold, limit); approval path |\n| **Data protection** | Personal data handled; masking; provider terms |\n| **Regulatory classification** | e.g. EU AI Act assessment, with whom and when |\n| **Stop rule** | Who can switch it off, and the manual fallback |\n| **Review date** | Re-approval cadence and triggers |\n\n**Northmere example** (Pilot 1, `apm-triage` v1.3, Aug–Dec 2027): feeds the monthly APM clearing-account reconciliation (key control, preparer step); a workflow with a model classification step; identity `svc-apm-triage`; writes only match and journal proposals to the proposal store; prohibited from posting, approving, changing master data or contacting PSPs or customers; journal proposals ≤ €5,000, PSP fee and FX accounts only, Northmere Payments B.V. only; validation checks balance, open period, allowed account, limit and that the counterpart is unmatched; matches disposed by an analyst in BlackLine, journals through the BlackLine Journal Entry approval matrix; completeness: queue count equals proposals plus escalations per run; acceptance on 1,200 reviewed cases with category agreement ≥ 90%; review triggered if acceptance falls below 80% or validation rejections exceed 5%; traveler names masked at the gateway; stop rule held by the business owner or Internal Controls, with manual triage as fallback; re-approved every six months. In the November 2027 close it processed about 24,000 exception lines and showed that 58% were missing or truncated booking references, a data-contract fix rather than an AI one.\n\n**Common mistakes.**\n\n- Giving an agent write access to the ledger or to master data. Agents propose; the system of record disposes through its existing approvals.\n- Omitting the completeness check, so nobody can show the agent looked at every item in the population it was meant to work.\n- Changing prompts, models or thresholds outside change management, which turns a tested control into an untested one overnight. And the trap beyond the card: an agent that makes exceptions cheap to work can make them permanent, so measure root-cause fixes alongside triage.\n\nLearn more: [Automate the Work, Not the Accountability](ai-in-finance.html)\n\n## Using the Toolkit Over Time\n\nThe templates earn their keep only when they are revisited. Three habits keep them true.\n\n- **Review them on the governance calendar, not ad hoc.** The capability heat map and fact sheets are refreshed before rationalization waves and renewal notice dates; decision records and waivers before their review and expiry dates; fitness cards at the quarterly fitness review; reconciliation cards at the weekly break review; the launch kit after every launch.\n- **Let incidents and audit findings add fields.** Clause 2.3 of Northmere's idempotent-posting standard, the deterministic `event_id` rule and the control impact field all came from something that went wrong. When a post-incident review finds a gap, the fix usually includes a new field or check in one of these templates.\n- **Keep the set small.** Every field should change a decision or preserve evidence. When a field is filled in by habit and read by nobody, remove it; when a review keeps asking a question no field answers, add it.\n\n[Built to Be Replaced: Evolving the Finance Estate Over a Decade](long-term-evolution.html) explains how a recurring review of the estate's stressors keeps the whole toolkit in use; [Glossary](glossary.html) defines the terms the templates use, and [Bibliography](bibliography.html) lists the sources behind them.\n\n## Sources and Evidence\n\nThe templates are derived from the chapters linked in each tool, which cite their sources in full. The external formats they build on:\n\n*Standards and regulation*\n\n- [Regulation (EU) 2022/2554 (DORA)](https://eur-lex.europa.eu/eli/reg/2022/2554/oj/eng), European Union, 2022 — exit strategies for ICT services supporting critical or important functions (Article 28(8)) and incident classification (Article 18), used in Tools 5 and 13.\n- [Regulation (EU) 2023/2854 (EU Data Act)](https://eur-lex.europa.eu/eli/reg/2023/2854/oj/eng), European Union, 2023 — switching and data-porting terms for data processing services, behind the data exit test in Tool 5.\n- [ISO 4217 currency codes](https://www.iso.org/iso-4217-currency-codes.html), ISO — minor-unit exponents behind the money rules in Tools 6, 7 and 8.\n\n*Practitioner and research sources*\n\n- [Documenting Architecture Decisions](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions), Michael Nygard, 2011, and [MADR](https://adr.github.io/madr/) — the record anatomy Tool 4 extends.\n- [Accounting Patterns](https://martinfowler.com/apsupp/accounting.pdf), Martin Fowler — the Posting Rule pattern behind Tool 8.\n- [CloudEvents specification](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md), CNCF — the generic envelope the canonical event envelope maps onto (Tool 6).\n- [Open Data Contract Standard](https://bitol-io.github.io/open-data-contract-standard/latest/), Bitol — a format for the human contracts in Tools 6 and 7.\n- [Idempotent requests](https://docs.stripe.com/api/idempotent_requests), Stripe documentation — the reference idempotency-key behavior Tool 7 adapts for ledger postings.\n- [Architectural fitness function](https://www.thoughtworks.com/radar/techniques/architectural-fitness-function), Thoughtworks Technology Radar, after Ford, Parsons, Kua and Sadalage, *Building Evolutionary Architectures* (2nd edition, 2022) — the concept Tool 12 applies to the books.\n- [Building Effective Agents](https://www.anthropic.com/research/building-effective-agents), Erik Schluntz and Barry Zhang, Anthropic, 2024 — the workflow-versus-agent distinction in Tool 14.\n\nNorthmere Group and every figure attributed to it are fictional; the templates and the recommendations embedded in them are the author's judgment.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

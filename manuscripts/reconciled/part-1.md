@@ -1,7 +1,7 @@
 {class: part, id: part-1}
 # FOUNDATIONS: How Money Moves Through an Enterprise
 
-![FOUNDATIONS: How Money Moves Through an Enterprise — logo](enterprise-applications-and-financial-systems/posts/part-1-intro/assets/images/part-1-intro/logo.jpeg)
+![FOUNDATIONS: How Money Moves Through an Enterprise — logo](finance-systems-architecture/posts/part-1-intro/assets/images/part-1-intro/logo.jpeg)
 
 > **IN THIS PART, YOU WILL:** Build the vocabulary and the models a Chief Architect needs before judging any finance platform: what the architecture function is for, what finance does, how a finance estate is layered, what accounting demands of systems, and how data, controls, integration, scale, sourcing and modernization shape every later decision.
 
@@ -23,23 +23,7 @@ The chapters move from the architecture practice, through the finance domain and
 {id: part-1--the-learning-path}
 ## The Learning Path
 
-```mermaid
-flowchart TB
-    subgraph S1["Stage 1: The architecture practice"]
-        A1["Chief Architect role"] --> A2["Capability mapping"] --> A3["Application portfolio"]
-    end
-    subgraph S2["Stage 2: The finance domain"]
-        B1["Finance landscape layers"] --> B2["Accounting for architects"] --> B3["End-to-end processes"]
-    end
-    subgraph S3["Stage 3: Cross-cutting disciplines"]
-        C1["Data and master data"] --> C2["Controls and auditability"] --> C3["Integration"] --> C4["Entities, currencies and brands"]
-    end
-    subgraph S4["Stage 4: Sourcing and change"]
-        D1["Build, buy or compose"] --> D2["Modernization patterns"]
-    end
-    S1 --> S2 --> S3 --> S4
-    S4 --> R["Judge any finance platform against shared models"]
-```
+![Four rising steps with stacks of chapters, from the architecture practice through the finance domain and cross-cutting disciplines to sourcing and change, ending at a flag for judging any finance platform.](finance-systems-architecture/posts/part-1-intro/assets/images/part-1-intro/part-1-four-stages.jpeg)
 
 **Figure 1:** *Twelve chapters in four stages: first the practice, then the domain it serves, then the disciplines every platform must respect, and finally how systems are sourced and replaced.*
 

@@ -1,7 +1,7 @@
 {id: finops}
 # 43. FinOps Meets the Ledger: Technology Spend as Financial Data
 
-![FinOps Meets the Ledger: Technology Spend as Financial Data — logo](enterprise-applications-and-financial-systems/posts/45-finops/assets/images/45-finops/logo.jpeg)
+![FinOps Meets the Ledger: Technology Spend as Financial Data — logo](finance-systems-architecture/posts/45-finops/assets/images/45-finops/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn to design the path from a cloud provider's billing export to the general ledger: the FOCUS data contract, allocation as master data mapped to chart-of-accounts dimensions, month-end accrual and true-up, commitment amortization, cost-of-revenue classification, chargeback across legal entities, tie-out to invoice and ledger, and unit cost as a governed metric.
 
@@ -90,7 +90,7 @@ Three semantics turn this from a reporting format into an accounting source.
 
 **`BilledCost` is the payables view and `EffectiveCost` is the expense view.** `BilledCost` is what the invoice says. `EffectiveCost` is "the cost of a charge based on the resources used, services used, or contract commitments recognized in a given charge period" ([EffectiveCost](https://focus.finops.org/docs/specification/v1-4/columns/cost-and-usage/effective-cost/)). An upfront commitment purchase carries `BilledCost` equal to the payment and `EffectiveCost` of zero. The covered usage rows then carry the amortized share. **There is no `AmortizedCost` column; amortization lives inside `EffectiveCost`.** Over a covering period the two measures sum to the same amount; month by month, the difference between them is the movement in the prepaid balance.
 
-![One stream of billing records splitting into a payables view with an upfront spike and an expense view spread evenly over twelve months, with a prepaid tank draining between them.](enterprise-applications-and-financial-systems/posts/45-finops/assets/images/45-finops/one-stream-two-views.jpeg)
+![One stream of billing records splitting into a payables view with an upfront spike and an expense view spread evenly over twelve months, with a prepaid tank draining between them.](finance-systems-architecture/posts/45-finops/assets/images/45-finops/one-stream-two-views.jpeg)
 
 **Figure 1:** *One billing stream, two views: BilledCost shows the upfront purchase when it is invoiced, EffectiveCost spreads it over the term, and the difference between them each month is the movement in the prepaid balance.*
 
@@ -120,38 +120,7 @@ A sixth case cuts across all five: **marketplace purchases**. Third-party softwa
 
 Northmere's design authority approved the target design in **May 2027**. Its central rule follows the FinDB charter in [One Number, Many Views: Finance Data from Operations to Analytics](#finance-data-flows): **FinDB is the book for nothing.** FinDB lands, conforms and enriches the billing data as a **contracted data product**, with control totals and under IT general controls. The accounting decisions (which account, which entity, which period, which amount) are made in a separate **technology cost posting service**. It is built on the posting-pipeline template from [Principles That Decide Things](#principles-standards-reference), and its rules are versioned in a rule store. The idempotent-posting standard (STD-FIN-02) applies to it like any other feed.
 
-```mermaid
-flowchart LR
-    subgraph SRC["Providers"]
-        AWS["AWS FOCUS 1.2 export"]
-        GCP["Google Cloud FOCUS view"]
-        AZ["Azure FOCUS export"]
-        SAAS["Snowflake and other FOCUS generators"]
-    end
-    subgraph FDB["FinDB contracted data product"]
-        LAND["Land every delivery by billing period"]
-        CONF["Conform and check conformance"]
-        ENR["Enrich with sub-account register and finance masters"]
-    end
-    subgraph PS["Technology cost posting service"]
-        RULES["Versioned allocation and account rules"]
-        SNAP["Cut-off snapshot"]
-        JRN["Accrual, amortization and recharge journals"]
-    end
-    AWS --> LAND
-    GCP --> LAND
-    AZ --> LAND
-    SAAS --> LAND
-    LAND --> CONF --> ENR --> RULES --> SNAP --> JRN
-    JRN -->|"idempotent posting"| GL["S/4HANA: NTI and brand entities"]
-    JRN -->|"both halves, one ID"| ICO["Intercompany originator to Fusion and Workday"]
-    INV["Provider invoices in AP"] --> TIE["Tie-out: data, invoice, AP, GL"]
-    GL --> TIE
-    SNAP --> TIE
-    TIE --> BL["BlackLine reconciliation evidence"]
-    ENR --> MET["Governed metrics: unit cost"]
-    GL --> OS["OneStream consolidation and planning"]
-```
+![FOCUS data lands in FinDB, a posting service takes one snapshot that feeds both the journals posted to S/4HANA and intercompany, and a tie-out with invoices and the ledger whose evidence goes to BlackLine.](finance-systems-architecture/posts/45-finops/assets/images/45-finops/focus-to-ledger-pipeline.jpeg)
 
 **Figure 2:** *FOCUS data is landed and enriched in FinDB as a contracted data product, but every accounting decision is made in a posting service with versioned rules. One cut-off snapshot feeds the journals and the tie-out, so the books and the evidence come from the same data.*
 
@@ -183,30 +152,11 @@ The fix treats allocation inputs as master data with authorities, as [Finance Da
 - **Defaults and exceptions.** A resource with a missing or invalid tag takes the register's default for its sub-account and raises an exception to the sub-account owner. It is never spread by headcount.
 - **Shared pools** use named methods with method IDs: enterprise support fees proportional to usage; Kafka and identity by proxy (events produced, active identities); Kubernetes clusters by pod requests from AWS split cost allocation data, which is available only in the cost and usage report, not in Cost Explorer ([AWS](https://docs.aws.amazon.com/cur/latest/userguide/split-cost-allocation-data.html)); unused commitments to a central commitment cost center.
 
-![Before and after: messy free-text tags let much of the spend pool in an unallocated basin; validated tags checked against master records route spend into owner channels.](enterprise-applications-and-financial-systems/posts/45-finops/assets/images/45-finops/tags-as-master-data.jpeg)
+![Before and after: messy free-text tags let much of the spend pool in an unallocated basin; validated tags checked against master records route spend into owner channels.](finance-systems-architecture/posts/45-finops/assets/images/45-finops/tags-as-master-data.jpeg)
 
 **Figure 3:** *When tag values are validated against the finance masters and backed by a sub-account register, spend stops pooling in an unowned basin; Northmere's allocated share rose from 77% in January 2027 to 96% in December.*
 
-```mermaid
-flowchart TB
-    BA["Billing account: NTI payer"] --> SA["Sub-account: one per product and environment"]
-    SA --> REG["Sub-account register: entity, brand, product, environment, default cost center"]
-    SA --> TAG["Required tags: nm-app-id, nm-cost-center, nm-env, nm-wbs"]
-    TAG --> VAL{"Valid against finance masters?"}
-    VAL -->|"yes"| DIM["CoA dimensions: entity, brand, cost center, product"]
-    VAL -->|"no"| DEF["Register default and exception to owner"]
-    DEF --> DIM
-    REG --> DIM
-    SH["Shared pools: support, Kafka, identity, clusters, unused commitments"] -->|"named method and method ID"| DIM
-    DIM --> NAT["Natural account by charge category and environment"]
-    NAT --> COR["Cost of revenue: prod serving customers"]
-    NAT --> RND["Research and development: nonprod"]
-    NAT --> GNA["General and administrative: corporate systems"]
-    NAT --> CAP["Capitalization review where nm-wbs is set"]
-    DIM --> ENT{"Payer and consumer in the same entity?"}
-    ENT -->|"yes"| CCC["Cost-center charge"]
-    ENT -->|"no"| ICR["Intercompany recharge"]
-```
+![A tree from billing account to sub-account, then register and tags validated against finance masters converging on dimensions, which fork into the natural account decision and a same-entity check that routes to a cost-center charge or an intercompany recharge.](finance-systems-architecture/posts/45-finops/assets/images/45-finops/allocation-hierarchy.jpeg)
 
 **Figure 4:** *The allocation hierarchy. The provider-enforced account structure is the primary key, tags refine it, and every value is validated against finance master data. Two separate decisions follow: the natural account, set by environment, and the route, set by whether the cost crosses a legal entity.*
 
@@ -230,25 +180,7 @@ The account numbers follow the group chart of accounts v2 design in [Finance Dat
 
 The posting service ran in shadow, alongside the workbook, through the **July and August 2027** closes. Its first live month was **September 2027**, and the quarterly workbook was retired after the Q3 close. The figures below are illustrative and in US dollars, NTI's functional currency.
 
-```mermaid
-sequenceDiagram
-    participant P as Providers
-    participant F as FinDB
-    participant S as PostingService
-    participant G as S4HANA
-    participant A as AP
-    participant B as BlackLine
-    P->>F: Daily FOCUS deliveries for September
-    F->>S: Snapshot at 0600 UTC on 1 October, WD1
-    S->>G: Accrual journal, BilledCost basis, auto-reversing
-    S->>G: Amortization journal, EffectiveCost minus BilledCost
-    S->>G: Intercompany recharge journals by consuming entity
-    P->>A: Final AWS invoice, 2 October
-    A->>G: Invoice posted against reversed accrual, WD3
-    S->>B: Snapshot totals, invoice totals, prepaid roll-forward
-    G->>B: GL balances for cloud accounts
-    B->>B: Tie-out certified or break raised
-```
+![A timeline: on 1 October one snapshot feeds a posting service that posts accrual, amortization and recharge journals to S/4HANA; the invoice arrives on 2 October; BlackLine ties out the snapshot totals against the ledger.](finance-systems-architecture/posts/45-finops/assets/images/45-finops/month-end-sequence.jpeg)
 
 **Figure 5:** *The month-end sequence. One snapshot taken at the cut-off produces the accrual, the amortization and the recharges, and BlackLine receives the same snapshot's totals, so the tie-out tests the numbers that were actually posted.*
 
@@ -341,7 +273,7 @@ For **September 2027**, the Stayloft numerator was **$10.64 million** fully load
 
 The metric's real value was the second answer. Keystone's wave 0 business case claimed **$0.9 million a year of hosting removed** for nine retired applications ([Manage the Application Portfolio as an Investment](#application-portfolio)). Because `nm-app-id` linked the FOCUS data to LeanIX records, Owen's team could check the claim directly. In December 2027, **$0.31 million a year (annualized) was still running** in four AWS accounts and two Google Cloud projects: backups, a non-production copy and a disaster-recovery replica that nobody had switched off. The owners removed them by February 2028. The benefits register counted the saving only from the first month in which the FOCUS data showed zero. The decommissioning criteria in [Manage the Application Portfolio as an Investment](#application-portfolio) now read the infrastructure line from this data instead of from a ticket.
 
-![A business case claiming $0.9 million a year removed beside retired applications, while a magnifying glass over billing records reveals a backup, a copy and a replica still running for $0.31 million a year.](enterprise-applications-and-financial-systems/posts/45-finops/assets/images/45-finops/savings-claim-test.jpeg)
+![A business case claiming $0.9 million a year removed beside retired applications, while a magnifying glass over billing records reveals a backup, a copy and a replica still running for $0.31 million a year.](finance-systems-architecture/posts/45-finops/assets/images/45-finops/savings-claim-test.jpeg)
 
 **Figure 6:** *Keystone's wave 0 claimed $0.9 million a year of hosting removed; billing data linked by application ID showed $0.31 million a year still running in backups, a non-production copy and a disaster-recovery replica, so the saving was counted only once the data showed zero.*
 

@@ -1,7 +1,7 @@
 {id: resilience-and-security}
 # 44. Recover Before the Close: Resilience and Security for Finance
 
-![Recover Before the Close: Resilience and Security for Finance — logo](enterprise-applications-and-financial-systems/posts/40-resilience-and-security/assets/images/40-resilience-and-security/logo.jpeg)
+![Recover Before the Close: Resilience and Security for Finance — logo](finance-systems-architecture/posts/40-resilience-and-security/assets/images/40-resilience-and-security/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn how to set criticality tiers and recovery objectives for finance systems that follow the close calendar and the movement of money, which resilience patterns protect money movement, how to observe financial flows in money rather than in CPU, and how to respond to a financial incident. The worked example is a quarter-end duplicate-posting incident at Northmere, caught by control totals and corrected without a restore.
 
@@ -53,7 +53,7 @@ At 02:00 an hourly completeness check, switched on for period-end, compares what
 | **Recovery** | Failover, restart, capacity | Containment, then correcting entries proven by reconciliation |
 | **Who decides it is over** | The on-call engineer | The controller, on evidence |
 
-![Two machines: one stopped with a red light, one running green while emitting duplicated ledger sheets that a finance reviewer spots with a magnifying glass.](enterprise-applications-and-financial-systems/posts/40-resilience-and-security/assets/images/40-resilience-and-security/up-but-wrong.jpeg)
+![Two machines: one stopped with a red light, one running green while emitting duplicated ledger sheets that a finance reviewer spots with a magnifying glass.](finance-systems-architecture/posts/40-resilience-and-security/assets/images/40-resilience-and-security/up-but-wrong.jpeg)
 
 **Figure 1:** *A system that is down is noticed in minutes; a system that is up but wrong looks healthy while it posts duplicates, which is why correctness needs its own detection.*
 
@@ -100,7 +100,7 @@ The important rule is the last column of the next table. **Criticality is a func
 | Vertex | 2 | 1 | Commission invoicing runs and e-invoicing clearance windows |
 | Kyriba | 0 | 0 | Always; payment cut-offs make every working day critical |
 
-![Calendar strip with a close window from WD-2 to WD9 during which a consolidation system's tier steps up from Tier 2 to Tier 1.](enterprise-applications-and-financial-systems/posts/40-resilience-and-security/assets/images/40-resilience-and-security/criticality-follows-calendar.jpeg)
+![Calendar strip with a close window from WD-2 to WD9 during which a consolidation system's tier steps up from Tier 2 to Tier 1.](finance-systems-architecture/posts/40-resilience-and-security/assets/images/40-resilience-and-security/criticality-follows-calendar.jpeg)
 
 **Figure 2:** *Criticality is a function of the calendar: the consolidation platform is tier 2 on the fifteenth of the month and tier 1 from WD−2 to WD9, when the close depends on it.*
 
@@ -173,29 +173,7 @@ Finance load follows the calendar. [When the ERP Isn't Enough: Custom Finance Pl
 
 OpenTelemetry is a vendor-neutral, open-source framework for traces, metrics and logs, and explicitly not a storage or visualization backend ([OpenTelemetry](https://opentelemetry.io/docs/what-is-opentelemetry/)). Northmere uses it for what it is good at: propagating the canonical `correlation_id` (the booking ID) and `event_id` across hops, so an engineer can follow one booking from webhook to subledger line to summary. **Tracing follows one transaction; control totals account for all of them.** A trace sampled at 1% says nothing about the 186,240 lines that were posted twice. The money signals therefore come from the ledgers and the delivery ledger, not from sampled telemetry.
 
-```mermaid
-flowchart LR
-    subgraph SRC["Flows and their control totals"]
-        PSP["PSP reports and webhooks"] --> NORM["Northmere Pay normalization"]
-        NORM -->|"SourceControlTotal"| DL["Delivery ledger"]
-        SFP["SFP subledger"] -->|"posted counts and amounts"| DL
-        GL["S/4HANA, Fusion, Workday"] -->|"acknowledged documents"| DL
-        BANK["Bank statements via Kyriba"] -->|"cash movements"| DL
-    end
-    DL --> CALC["Money-in-flight calculator"]
-    SFP -->|"clearing and in-transit balances"| CALC
-    CALC -->|"metrics with entity, currency, flow"| OTEL["OpenTelemetry collector"]
-    APPS["Services, traces and logs"] --> OTEL
-    OTEL --> STORE["Metrics and trace store"]
-    STORE --> SLO["SLO and invariant evaluation"]
-    SLO --> ROUTE["Alert router by flow owner"]
-    ROUTE --> OC1["Northmere Pay on-call"]
-    ROUTE --> OC2["SFP on-call"]
-    ROUTE --> CTRL["Close duty controller"]
-    ROUTE --> TRES["Treasury and safeguarding"]
-    STORE --> DASH["Money-in-flight dashboard"]
-    CALC -->|"daily evidence"| BL["BlackLine and evidence store"]
-```
+![Payments, subledger, ledgers and bank statements report control totals into a delivery ledger; a money-in-flight calculator feeds the collector alongside sampled traces and writes daily evidence; an alert router sends each alert to the Pay team, SFP team, close duty or treasury.](finance-systems-architecture/posts/40-resilience-and-security/assets/images/40-resilience-and-security/money-signals-routed-to-owners.jpeg)
 
 **Figure 3:** *Money signals come from control totals and ledger balances, not from sampled telemetry. OpenTelemetry carries them alongside traces, but every alert is routed by financial flow to the owner who can act, and the same numbers become daily control evidence.*
 
@@ -252,7 +230,7 @@ The alternatives, in order of preference for a logical error:
 | **Re-derivation from the event log** | Rebuild a ledger or projection by replaying stored events through the current rules into a new store, then compare | Yes, if the old store is kept | Requires a controlled switch-over | Corrupted projections and balances; rebuilding after a physical loss; testing |
 | **Point-in-time restore** | Return the database to an earlier state | No | Breaks consistency with every system that read it | Physical corruption or destruction where no event log can rebuild the data; then followed by replay and reconciliation |
 
-![Split image: on the left a restore rewinds a ledger and erases both good and bad pages; on the right reversal entries are added beside the wrong entries and the books reconcile.](enterprise-applications-and-financial-systems/posts/40-resilience-and-security/assets/images/40-resilience-and-security/restore-versus-reversal.jpeg)
+![Split image: on the left a restore rewinds a ledger and erases both good and bad pages; on the right reversal entries are added beside the wrong entries and the books reconcile.](finance-systems-architecture/posts/40-resilience-and-security/assets/images/40-resilience-and-security/restore-versus-reversal.jpeg)
 
 **Figure 4:** *A restore rewinds the books and erases good postings and evidence alike; a reversal adds one correcting entry per wrong entry, keeps the trail, and is proven by reconciliation.*
 
@@ -277,25 +255,7 @@ The test passed, in 6 hours 10 minutes, against a 4-hour RTO. It also found the 
 
 The timeline below is the incident from the opening, as Northmere's incident record shows it (all times Amsterdam).
 
-```mermaid
-sequenceDiagram
-    participant A as Adyen
-    participant E as Edge
-    participant L as ReportLoader
-    participant S as SFP
-    participant C as ControlCheck
-    A->>E: Webhooks at quarter-end volume
-    E-->>A: Rejected by rate limit
-    Note over A: Retry queue holds notifications
-    L->>A: Late-evening fallback poll downloads reports
-    L->>S: PaymentSettled events posted once
-    A->>E: Delayed REPORT_AVAILABLE delivered overnight
-    E->>L: Notifications accepted
-    L->>A: Same reports downloaded again
-    L->>S: New event IDs, posted a second time
-    C->>S: Hourly check compares posted with control totals
-    C-->>S: Gap of 186240 lines, incident raised
-```
+![Timeline from evening to night: provider webhooks bounce off the rate limit into a retry queue, a fallback poll posts the reports once, overnight retries cause the same reports to be fetched and posted a second time, and the hourly control check flags 186,240 lines.](finance-systems-architecture/posts/40-resilience-and-security/assets/images/40-resilience-and-security/duplicate-posting-night.jpeg)
 
 **Figure 5:** *Two defects that were harmless alone combined under peak load: event IDs minted per download, and a duplicate key that included the recording date. Adyen's retries worked as documented; the control total check, not the infrastructure, caught the result.*
 
@@ -380,24 +340,7 @@ The playbook below is the one Dana's team, Leila's close team and Marco's securi
 | **Notify** | Who must know, by when? | Classify under DORA and internal policy; inform the audit committee chain if a control deficiency is possible; inform partners or customers if they were affected | Compliance, CISO, controller | Classification with reasoning; any reports filed |
 | **Learn** | What would have prevented or caught it earlier? | Post-incident review; actions with owners and dates; new invariant tests or experiments | Flow owner with architecture | Review record; tracked actions |
 
-```mermaid
-flowchart TB
-    D["Detect: invariant or SLO alert"] --> T{"Money, records or authorization affected?"}
-    T -->|"no"| OPS["Technical incident process"]
-    T -->|"yes"| C["Contain: pause flow, hold GL summary"]
-    C --> P{"Payout inputs suspect?"}
-    P -->|"yes"| PP["Pause payout release"]
-    P -->|"no"| A["Assess impact from the ledger"]
-    PP --> A
-    A --> R{"Physical loss with no event log?"}
-    R -->|"no"| X["Correct by reversal and re-post"]
-    R -->|"yes"| RS["Restore, replay, reconcile"]
-    X --> PR["Prove by reconciliation"]
-    RS --> PR
-    PR --> EV["Evidence to the store"]
-    EV --> N["Classify and notify"]
-    N --> L["Post-incident review"]
-```
+![Incident path from Detect through a money check (non-financial incidents go to the technical process), Contain and Assess, forking into reversal and re-post or, only with no event log, restore; both branches converge on proof by reconciliation, then evidence, notification and review.](finance-systems-architecture/posts/40-resilience-and-security/assets/images/40-resilience-and-security/financial-incident-path.jpeg)
 
 **Figure 6:** *The financial incident path. Restore appears only on the branch where no event log can rebuild the data, and every path ends in a reconciliation that proves the result before evidence and notification.*
 

@@ -1,7 +1,7 @@
 {id: stripe}
 # 25. Stripe: Every Movement Is a Balance Transaction
 
-![Stripe: Every Movement Is a Balance Transaction — logo](enterprise-applications-and-financial-systems/posts/22-stripe/assets/images/22-stripe/logo.jpeg)
+![Stripe: Every Movement Is a Balance Transaction — logo](finance-systems-architecture/posts/22-stripe/assets/images/22-stripe/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn how Stripe's objects (PaymentIntent, Charge, Refund, Dispute, Transfer, ApplicationFee, Payout and, under all of them, the BalanceTransaction) become journal entries. You will also see how Connect charge types decide who carries funds, fees and losses, and where Stripe Billing, Tax and Revenue Recognition should hand over to the ERP and the group ledger.
 
@@ -60,25 +60,7 @@ Stripe's API has many objects. For finance, they fall into three groups: objects
 
 The [PaymentIntent](https://docs.stripe.com/payments/paymentintents/lifecycle) is the object engineers know best (Stripe now recommends its Checkout Sessions API over raw PaymentIntents for most integrations). For finance it is operational: `succeeded` says a payment was collected, not how much Stripe kept, when the funds become available or in which payout they leave. Captures can be partial, so its amount is not the ledger amount.
 
-```mermaid
-flowchart LR
-    SUB["Subscription"] --> INV["Invoice"]
-    INV --> IP["InvoicePayment"]
-    IP --> PI["PaymentIntent"]
-    PI --> CH["Charge"]
-    CH --> RF["Refund"]
-    CH --> DP["Dispute"]
-    CH --> AF["ApplicationFee"]
-    CH --> TR["Transfer"]
-    CH --> BT["BalanceTransaction"]
-    RF --> BT
-    DP --> BT
-    AF --> BT
-    TR --> BT
-    PO["Payout"] --> BT
-    BT -->|"grouped into"| PO
-    BT -->|"posted and matched"| GL["Ledger and reconciliation"]
-```
+![Subscription, Invoice, PaymentIntent and Charge in a chain; Charge leads to Refund, Dispute and Transfer; each money-moving object drops a slip into a tray of balance transactions, which feeds the payout bundle and the ledger book.](finance-systems-architecture/posts/22-stripe/assets/images/22-stripe/objects-leave-balance-transactions.jpeg)
 
 **Figure 1:** *Commercial and payment objects describe intent and outcome; every object that moves money leaves a balance transaction, and balance transactions are what payouts group and what the ledger should be built from.*
 
@@ -124,7 +106,7 @@ Two behaviors catch finance teams out:
 
 The ending-balance section matters most at month-end. A Stripe balance at 31 March is not zero. It holds funds not yet available, funds available but not yet paid out, and any reserve. **That balance is an asset of the entity**, in substance cash held at a payment provider, and it must appear in the ledger as a clearing or receivable account. That account is reconciled to Stripe's ending balance every month. If the ledger books only the payout, the balance disappears. That is the mechanism behind The Shadow Ledger in Tablekin's case: the Stripe balance was a set of books, and nobody reconciled it.
 
-![Before and after: a single net payout line that loses fees and the remaining balance, versus itemized balance transactions held in a clearing account that matches the provider balance.](enterprise-applications-and-financial-systems/posts/22-stripe/assets/images/22-stripe/net-payout-versus-balance-transactions.jpeg)
+![Before and after: a single net payout line that loses fees and the remaining balance, versus itemized balance transactions held in a clearing account that matches the provider balance.](finance-systems-architecture/posts/22-stripe/assets/images/22-stripe/net-payout-versus-balance-transactions.jpeg)
 
 **Figure 2:** *Booking only the net payout hides fees, refunds and the balance still held at the provider; posting each balance transaction to a clearing account keeps that balance on the books and testable against the provider's ending balance.*
 
@@ -194,17 +176,7 @@ The venue receives the same money in both designs. Tablekin's books do not look 
 
 I would approve Arjun's direction on three conditions: the policy team reassesses principal-versus-agent before the first migrated venue goes live; the commercial team reprices so the venue's all-in cost and Tablekin's margin are explicit; and OneStream's segment mapping flags gross and net presentation during the transition. Tablekin gives up some reported revenue and control of the fee experience, and gains a balance sheet that holds only its own money.
 
-```mermaid
-flowchart LR
-    D["Diner pays 180.00"] --> P1["Destination charge on Tablekin balance"]
-    P1 -->|"Stripe fee 5.52"| S["Stripe"]
-    P1 -->|"transfer 173.94"| V1["Venue connected balance"]
-    P1 -->|"retained 0.54"| T1["Tablekin balance"]
-    D2["Diner pays 180.00"] --> V2["Direct charge on venue balance"]
-    V2 -->|"Stripe fee 5.52"| S
-    V2 -->|"application fee 0.54"| T2["Tablekin balance"]
-    V2 -->|"net 173.94 stays"| V3["Venue payout"]
-```
+![Two rows: under a destination charge the 180.00 flows into Tablekin's jar and out to the venue and Stripe, leaving 0.54; under a direct charge the 180.00 flows into the venue's jar and only the 0.54 fee reaches Tablekin.](finance-systems-architecture/posts/22-stripe/assets/images/22-stripe/destination-versus-direct-charges.jpeg)
 
 **Figure 3:** *The same economics routed two ways: under destination charges the gross amount, the fee and the dispute risk pass through Tablekin's balance; under direct charges only the application fee does.*
 
@@ -267,7 +239,7 @@ The revenue row is the one readers will argue with. Stripe RevRec is a **subledg
 
 Stripe Tax gets a **dated exception** rather than a rejection. It calculates at invoice finalization without a round trip to a second engine on the billing path, and Keystone's shared tax service is not due until 2029. Until then Tablekin keeps Stripe Tax on two conditions: group tax owns the product-taxability mapping, and the tax liability posts to Workday from the invoice's tax lines, not inferred from cash. Without the expiry date the exception would be Capability Creep with paperwork.
 
-![A boundary between the provider-run commercial edge (billing, metering, payouts, tax calculation with an expiry tag) and the enterprise-run books (ledger, reconciliation, policy, analytics).](enterprise-applications-and-financial-systems/posts/22-stripe/assets/images/22-stripe/commercial-edge-versus-books.jpeg)
+![A boundary between the provider-run commercial edge (billing, metering, payouts, tax calculation with an expiry tag) and the enterprise-run books (ledger, reconciliation, policy, analytics).](finance-systems-architecture/posts/22-stripe/assets/images/22-stripe/commercial-edge-versus-books.jpeg)
 
 **Figure 4:** *Stripe runs the commercial edge for Tablekin, with Stripe Tax on a dated exception; the ledger of record, reconciliation, revenue policy and analytics stay with the enterprise, and Stripe Revenue Recognition is deliberately not adopted.*
 
@@ -333,24 +305,7 @@ The third idea is the one Tablekin is missing. A **Stripe clearing account** in 
 
 This is the posting design Dana's review approved for Tablekin. Accounts are named descriptively; in Workday they are ledger accounts with worktags (Workday's dimensional attributes such as company, cost center and revenue category, described in [Workday: The Org Chart Behind the Ledger](#workday)). Sales tax is left out to keep the arithmetic visible: in production the invoice's tax lines post to a sales-tax-payable account. The Stripe fee of **$30.14** is illustrative (it is roughly the shape of a card price of 2.9% plus 30 cents, not Tablekin's negotiated rate). The payout total is illustrative.
 
-```mermaid
-sequenceDiagram
-    participant M as Usage meter
-    participant SB as Stripe Billing
-    participant BT as Balance transactions
-    participant FD as FinDB
-    participant WD as Workday
-    participant BK as Bank and BlackLine
-    M->>SB: 3120 covers reported for March
-    Note over WD: 31 Mar accrue 780 unbilled usage
-    SB->>SB: 1 Apr invoice finalized 1029
-    SB->>BT: 1 Apr charge succeeds, gross 1029, fee 30.14
-    BT->>FD: Data Pipeline load within hours
-    FD->>WD: Daily summarized journal with drill-back IDs
-    BT->>BT: 5 Apr available, included in automatic payout
-    BK->>FD: 6 Apr bank line matched by trace_id
-    FD->>WD: Payout journal clears the Stripe clearing account
-```
+![A timeline in three segments: usage metered in March with a 780 accrual, the 1,029 invoice paid on 1 April, and the payout reaching the bank on 5 to 6 April, each segment posting its own journal into a separate book.](finance-systems-architecture/posts/22-stripe/assets/images/22-stripe/three-time-boundaries.jpeg)
 
 **Figure 5:** *The Tablekin invoice crosses three time boundaries: usage is earned in March, invoiced and paid on 1 April, and paid out on 5–6 April. Each boundary is a separate journal, not one net line.*
 
@@ -430,26 +385,7 @@ At group level, Stripe's place is defined by its interfaces:
 - **To Snowflake FinDB**: Data Pipeline shares for every Stripe account, immutable raw layer, normalized canonical layer shared with Adyen.
 - **To Northmere Pay's routing**: Stripe is one route among several. Stripe Orchestration is in [private preview](https://docs.stripe.com/payments/orchestration) as of October 2026. It routes PaymentIntents to other processors, but it "doesn't support disputes or settlement-related activity" and does not support Connect. That means it unifies routing but not the settlement data that finance needs, so it does not change Northmere Pay's design.
 
-```mermaid
-flowchart LR
-    subgraph STRIPE["Stripe accounts"]
-        TK["Tablekin platform and venues"]
-        WF["Wayfare rail"]
-        NP["Northmere Pay secondary PSP"]
-    end
-    TK -->|"webhooks"| OPS["Brand operational services"]
-    STRIPE -->|"Data Pipeline every 3 hours"| RAW["FinDB raw Stripe share"]
-    RAW --> NORM["FinDB canonical money movements"]
-    ADY["Adyen settlement detail"] --> NORM
-    NORM --> POST["Posting services"]
-    POST -->|"daily summarized journals"| WDY["Workday Tablekin"]
-    POST -->|"daily summarized journals"| ORA["Oracle Fusion Wayfare"]
-    NORM -->|"canonical events"| SFP["SFP Stayloft"]
-    NORM --> BL["BlackLine matching"]
-    BANK["Bank statements via Kyriba"] --> BL
-    WDY --> OS["OneStream consolidation"]
-    ORA --> OS
-```
+![Stripe webhooks go to brand operations; Stripe's Data Pipeline and Adyen feed one normalized layer, which feeds the Workday and Oracle Fusion ledgers and BlackLine, with the bank also feeding BlackLine and only the ledgers feeding OneStream.](finance-systems-architecture/posts/22-stripe/assets/images/22-stripe/stripe-finance-path.jpeg)
 
 **Figure 6:** *Webhooks serve operations; the finance path runs from Data Pipeline through one normalized layer, shared with Adyen, to the brand ledgers and BlackLine, and reaches consolidation only through the ledgers.*
 

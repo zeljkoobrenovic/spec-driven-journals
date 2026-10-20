@@ -1,7 +1,7 @@
 {id: finance-landscape}
 # 7. Anatomy of a Finance Estate: Layers, Planes and Boundaries
 
-![Anatomy of a Finance Estate: Layers, Planes and Boundaries — logo](enterprise-applications-and-financial-systems/posts/04-finance-landscape/assets/images/04-finance-landscape/logo.jpeg)
+![Anatomy of a Finance Estate: Layers, Planes and Boundaries — logo](finance-systems-architecture/posts/04-finance-landscape/assets/images/04-finance-landscape/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn the book's reference model of a finance estate: eight layers and two cross-cutting planes. For each one you will see why it exists separately, what data it masters, what volume and latency it carries, which vendors typically fill it and who usually owns it. Then you will map Northmere's landscape onto the model and find its overlaps and gaps.
 
@@ -34,7 +34,7 @@ Northmere, the fictional multi-brand commerce group this book follows (see [Meet
 
 Within ten minutes, three other teams said they already did this, or should. Jonas Berg said the Stayloft Finance Platform (SFP) already held the merchant subledger the settlements clear against. Sven Aalto said SAP FI-CA, the contract-accounting subledger introduced in 2025, was built for exactly this kind of open-item clearing. Owen Mbeki pointed out that FinDB, the Snowflake finance data platform, already held every settlement line and ran half of Finance's matching analysis. Leila Haddad, the Chief Accounting Officer, asked the question nobody could answer: **which of these is the book, and which are copies?**
 
-![Four teams at one table each pushing the same payment records toward a single ledger book under a question mark.](enterprise-applications-and-financial-systems/posts/04-finance-landscape/assets/images/04-finance-landscape/four-teams-one-job.jpeg)
+![Four teams at one table each pushing the same payment records toward a single ledger book under a question mark.](finance-systems-architecture/posts/04-finance-landscape/assets/images/04-finance-landscape/four-teams-one-job.jpeg)
 
 **Figure 1:** *Four teams claimed the same payment records; until the board shared one picture of the layers, nobody could say which system was the book and which were copies.*
 
@@ -80,17 +80,7 @@ The numbers come first, because they explain the shape. These are Northmere's 20
 
 The ratios matter more than the totals: roughly **80 to 1** from SFP to the ledger, more than 100 to 1 from a month of ledger lines to reconciled accounts, another factor of ten to the statements. From event to reported line, the data shrinks by six to seven orders of magnitude.
 
-```mermaid
-flowchart LR
-    A["Operational events: about 1.1 billion a year"] -->|"posting rules applied"| B["Subledger lines: about 3 million a day in SFP"]
-    B -->|"daily summarization with keys"| C["General-ledger lines: about 38,000 a day"]
-    C -->|"balances by account and entity"| D["Reconciled accounts: about 6,800 a month"]
-    D -->|"mapping, translation, eliminations"| E["Consolidated statements: a few hundred lines"]
-    E -.->|"drill-back: why is this number what it is"| D
-    D -.->|"supporting detail"| C
-    C -.->|"summarization key"| B
-    B -.->|"event and correlation ids"| A
-```
+![A staircase of shrinking blocks from 1.1 billion operational events a year through 3 million subledger lines and 38,000 GL lines a day to 6,800 reconciled accounts a month and a few hundred statement lines, with solid arrows summarizing upward and dotted arrows carrying keys back down.](finance-systems-architecture/posts/04-finance-landscape/assets/images/04-finance-landscape/volume-gradient.jpeg)
 
 **Figure 2:** *The volume gradient. Each step up summarizes by one or more orders of magnitude; each dotted arrow is the path an auditor or controller needs back down. A boundary that drops the key on the dotted path is where Lost in Aggregation begins.*
 
@@ -100,7 +90,7 @@ Three consequences follow, and the rest of the chapter depends on them.
 
 **Every upward step needs a key down and a control across.** A summarized ledger line is acceptable only if it carries a **summarization key** (the date, entity, account combination and batch that let the subledger list every line behind it) and only if somebody proves each period that the subledger total equals the ledger's control account. That proof, **subledger-to-GL reconciliation**, is defined in [Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects).
 
-![A tapering stack of five tiers from many events to a few statement lines, joined by downward key threads and balance-scale checks at each boundary.](enterprise-applications-and-financial-systems/posts/04-finance-landscape/assets/images/04-finance-landscape/keys-down-controls-across.jpeg)
+![A tapering stack of five tiers from many events to a few statement lines, joined by downward key threads and balance-scale checks at each boundary.](finance-systems-architecture/posts/04-finance-landscape/assets/images/04-finance-landscape/keys-down-controls-across.jpeg)
 
 **Figure 3:** *Every layer keeps what it must prove and points down for the rest: each summary carries a key back to the detail below and a reconciliation across the boundary.*
 
@@ -117,31 +107,7 @@ Three consequences follow, and the rest of the chapter depends on them.
 
 The numbering follows the gradient: business events at the bottom, reported numbers at the top, satellites and data beside the stack.
 
-```mermaid
-flowchart TB
-    L6["6 Reporting and disclosure"]
-    L5["5 Planning and performance"]
-    L4["4 Close, reconciliation and consolidation"]
-    L3["3 Accounting core: GL and ERP"]
-    L2["2 Financial event and subledger layer"]
-    L1["1 Operational and engagement systems"]
-    L7["7 Satellite services: tax, treasury, procurement, expenses, HCM"]
-    L8["8 Finance data platform"]
-    IP["Integration plane: events, APIs, files, control totals"]
-    CP["Control plane: master data, access, controls, evidence"]
-    L1 -->|"financial events"| L2
-    L2 -->|"summarized journals with keys"| L3
-    L3 -->|"trial balances and detail"| L4
-    L4 -->|"actuals"| L5
-    L4 -->|"consolidated numbers"| L6
-    L7 <-->|"determinations, payments, journals"| L2
-    L7 <-->|"journals and master data"| L3
-    L2 -->|"detail"| L8
-    L3 -->|"balances"| L8
-    L8 -->|"drivers and metrics"| L5
-    IP -.- L2
-    CP -.- L3
-```
+![Six stacked layers from operational systems through subledger, accounting core, close and consolidation and planning up to reporting; satellite services attach to the subledger and accounting core, a data platform reads from them and feeds planning, an integration pipe carries the arrows and a control-plane frame surrounds everything.](finance-systems-architecture/posts/04-finance-landscape/assets/images/04-finance-landscape/finance-reference-model.jpeg)
 
 **Figure 4:** *The finance reference model. Six layers form the stack from business event to published number; satellite services attach at several layers; the data platform reads from all of them and is the book for none. The integration plane carries every arrow; the control plane governs every box.*
 
@@ -301,54 +267,7 @@ Vendors sell suites, so a product rarely fits one layer. "Primary" is the layer 
 
 Dana's team gave each of the 214 finance-relevant applications in LeanIX a mandatory primary layer. The core of the result fits on one diagram.
 
-```mermaid
-flowchart TB
-    subgraph LA["1 Operational and engagement"]
-        SBP["Stayloft booking platform"]
-        WBP["Wayfare booking platform"]
-        TKP["Tablekin product"]
-        ADP["Northmere Ads platform"]
-        PAY["Northmere Pay with Adyen, Stripe, local APMs"]
-    end
-    subgraph LB["2 Financial event and subledger"]
-        SFP["SFP: merchant subledger, commission billing, payouts, traveler funds"]
-        FICA["SAP FI-CA: agency partner accounts"]
-        STB["Stripe Billing and Connect"]
-        ADB["Ad-billing service"]
-        WPE["Wayfare payout engine"]
-    end
-    subgraph LC["3 Accounting core"]
-        S4["SAP S4HANA group core"]
-        ORA["Oracle Fusion: Wayfare"]
-        WDF["Workday Financials: Tablekin"]
-    end
-    subgraph LD["4 to 6 Close, consolidation, planning, disclosure"]
-        BL["BlackLine"]
-        OS["OneStream"]
-        WK["Workiva"]
-    end
-    subgraph LS["7 Satellites"]
-        SAT["Vertex, Kyriba, Coupa, Concur, Workday HCM"]
-    end
-    FDB["8 FinDB on Snowflake"]
-    SBP -->|"events"| SFP
-    PAY -->|"settlement files"| SFP
-    SFP -->|"38,000 lines a day"| S4
-    FICA --> S4
-    ADP --> ADB
-    ADB -->|"summarized AR documents"| S4
-    WBP -->|"2,600 summarized lines a day, no subledger"| ORA
-    WPE --> ORA
-    TKP --> STB
-    STB --> WDF
-    S4 -->|"trial balance"| OS
-    ORA -->|"trial balance"| OS
-    WDF -->|"trial balance"| OS
-    BL -.->|"reconciles and matches"| S4
-    OS --> WK
-    SAT <--> S4
-    SFP -.-> FDB
-```
+![Three brand columns: Stayloft flows through a subledger into its ledger, Wayfare posts summaries straight into its ledger past an empty subledger slot, Tablekin flows through billing into its ledger, and the three separate ledgers meet only at consolidation on top.](finance-systems-architecture/posts/04-finance-landscape/assets/images/04-finance-landscape/northmere-baseline-columns.jpeg)
 
 **Figure 5:** *Northmere's 2027 baseline on the reference model. Stayloft's flow uses every layer; Wayfare's booking platform posts summaries straight into its ledger; the three ledgers meet only at consolidation. Layers 4 to 6 are drawn together for readability, since OneStream spans consolidation, planning and reporting.*
 
@@ -418,7 +337,7 @@ The model describes a multi-entity commercial group. In banks and insurers, core
 
 Most failures in a finance estate are layer failures.
 
-![Three panels: a block in the wrong tier, an arrow skipping the middle tier, and two identical machines on one tier.](enterprise-applications-and-financial-systems/posts/04-finance-landscape/assets/images/04-finance-landscape/three-layer-failures.jpeg)
+![Three panels: a block in the wrong tier, an arrow skipping the middle tier, and two identical machines on one tier.](finance-systems-architecture/posts/04-finance-landscape/assets/images/04-finance-landscape/three-layer-failures.jpeg)
 
 **Figure 6:** *Three families of layer failure: a responsibility in the wrong layer, an operational system posting straight to the ledger, and two systems doing one layer's job.*
 

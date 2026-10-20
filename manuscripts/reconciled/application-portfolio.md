@@ -1,7 +1,7 @@
 {id: application-portfolio}
 # 6. Manage the Application Portfolio as an Investment
 
-![Manage the Application Portfolio as an Investment — logo](enterprise-applications-and-financial-systems/posts/03-application-portfolio/assets/images/03-application-portfolio/logo.jpeg)
+![Manage the Application Portfolio as an Investment — logo](finance-systems-architecture/posts/03-application-portfolio/assets/images/03-application-portfolio/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn how to turn an inventory of finance applications into a decision list. The steps are a fact base you can trust, fitness scores with written criteria, the TIME classification, pace layers, a full total cost of ownership, and retirement waves that end in real decommissioning.
 
@@ -60,16 +60,7 @@ A **fact sheet** is the application's record in the EA repository. Tools such as
 
 A **lifecycle state** records where an application is in its life. EA tools ship with phase fields, and SAP LeanIX's application roadmap reports show phases such as planned, phased in, active and phased out, with end of life as a further value. For finance, I recommend making the end of the lifecycle finer than the tool's default, because the costly part of a finance application's life is often the last part:
 
-```mermaid
-flowchart LR
-    P["Planned"] --> I["Phasing in"]
-    I --> A["Active"]
-    A --> O["Phasing out: no new use, migration under way"]
-    O --> R["Retiring: read-only, data archived, access shrinking"]
-    R --> X["Decommissioned: evidence filed, contract ended"]
-    X --> K["Archive only: retention clock running"]
-    K --> D["Destroyed: retention expired, deletion evidenced"]
-```
+![A path of eight lifecycle states from Planned through Active to Destroyed; people use the system only up to Active, and the long highlighted stretch afterwards — phasing out, retiring, decommissioned, archive only — ends only when the records are destroyed.](finance-systems-architecture/posts/03-application-portfolio/assets/images/03-application-portfolio/application-lifecycle-states.jpeg)
 
 **Figure 1:** *A finance application's life does not end when users stop using it. It ends when its records leave retention. The states after "Active" are where retirement value is either taken or lost.*
 
@@ -120,25 +111,7 @@ Gartner has since moved its narrative toward "composable" ERP, so I present pace
 
 A portfolio practice is a pipeline. Facts come in from independent sources and are reconciled into the fact base. Scoring and classification turn facts into dispositions. Dispositions are sequenced into waves against contract dates and dependencies, and waves end in decommissioning, which feeds evidence back into the fact base and into the benefits register.
 
-```mermaid
-flowchart LR
-    SSO["SSO and access logs"] --> FB["Fact base in the EA repository"]
-    AP["AP spend and contracts"] --> FB
-    SOX["SOX scoping list and control matrix"] --> FB
-    IF["Interface catalog"] --> FB
-    CAP["Capability map"] --> FB
-    CLOUD["Cloud and hosting bills"] --> FB
-    FB --> SC["Fitness scoring and calibration"]
-    SC --> TIME["TIME disposition and pace layer"]
-    FB --> TCO["TCO model"]
-    TIME --> WP["Wave plan"]
-    TCO --> WP
-    CAL["Contract and renewal calendar"] --> WP
-    WP --> ADR["Decision records per wave"]
-    ADR --> SUN["Sunset and decommissioning"]
-    SUN -->|"evidence pack"| FB
-    SUN -->|"realized savings"| BR["Keystone benefits register"]
-```
+![Six external sources feed a fact base, which drives scoring, TIME disposition and a TCO model into a wave plan paced by renewals, then decision records and sunsets; each sunset returns an evidence pack to the fact base and realized savings to the benefits register.](finance-systems-architecture/posts/03-application-portfolio/assets/images/03-application-portfolio/portfolio-pipeline.jpeg)
 
 **Figure 2:** *The portfolio is a pipeline from reconciled facts to evidenced retirements. Every decision traces back to sources outside the EA tool, and every saving traces forward to a decommissioning evidence pack.*
 
@@ -244,30 +217,7 @@ Two results were not what anyone expected. The two brand ERPs landed in Tolerate
 
 The TIME classification says what to do with an application. The pace layer says **how to govern it while it lives**. In a finance estate the layers differ less in technology than in three things: how often they change, how much audit scope they carry, and how they are funded.
 
-```mermaid
-flowchart TB
-    subgraph INN["Systems of Innovation: weeks to months"]
-        I1["AI-assisted reconciliation pilot"]
-        I2["Cash-forecast model in FinDB"]
-        I3["Brazil PIX accounting prototype"]
-    end
-    subgraph DIF["Systems of Differentiation: continuous change"]
-        D1["SFP commission and pricing rules"]
-        D2["Northmere Pay payment orchestration"]
-        D3["Tablekin usage rating"]
-        D4["Ad-billing service"]
-    end
-    subgraph REC["Systems of Record: slow, controlled change"]
-        R1["SAP S4HANA group ledger"]
-        R2["SAP FI-CA partner accounts"]
-        R3["SFP merchant subledger posting"]
-        R4["OneStream consolidation"]
-        R5["Workday HCM"]
-        R6["Kyriba treasury"]
-    end
-    INN -->|"proven ideas harden into"| DIF
-    DIF -->|"canonical financial events"| REC
-```
+![Three stacked layers: innovation on top, fast-changing differentiation in the middle, and slow, heavy systems of record at the bottom; proven ideas move down, and differentiating systems reach the systems of record only through a single canonical-events gate.](finance-systems-architecture/posts/03-application-portfolio/assets/images/03-application-portfolio/pace-layers.jpeg)
 
 **Figure 3:** *Northmere's finance applications by pace layer. Differentiating systems change weekly and feed the systems of record through a stable event contract, so fast change on top does not become uncontrolled change underneath.*
 
@@ -312,7 +262,7 @@ The **audit and control** line is the one I insist on. A SOX-relevant applicatio
 
 When Dana's team completed the six-component costing for the 214 applications, the total came to about **$172 million a year**. The license and hosting lines, the figures the IT budget had always shown, accounted for about $118 million of it. The remaining **$54 million, about 31%**, was run effort, change, integration upkeep and control cost that had never been attributed to an application.
 
-![An iceberg whose small visible tip is license and hosting cost, with run team, change, integration and audit-and-control cost hidden below the waterline.](enterprise-applications-and-financial-systems/posts/03-application-portfolio/assets/images/03-application-portfolio/tco-iceberg.jpeg)
+![An iceberg whose small visible tip is license and hosting cost, with run team, change, integration and audit-and-control cost hidden below the waterline.](finance-systems-architecture/posts/03-application-portfolio/assets/images/03-application-portfolio/tco-iceberg.jpeg)
 
 **Figure 4:** *The IT budget showed about $118 million of license and hosting; the full six-component cost of Northmere's 214 finance applications was about $172 million, with $54 million never attributed to any application.*
 
@@ -387,7 +337,7 @@ Dana's team computes a **decision-due date** for each retirement:
 
 For the OneStream module the arithmetic is short: renewal 31 December 2027, notice 90 days, migration lead time 6 weeks for 22 accounts, one close cycle as buffer. The decision was due in mid-July 2027, and it went through the review board on 8 July. For a payout engine the migration lead time is twelve months or more, so the decision is due well over a year before any contract date.
 
-![A timeline working back from a renewal date through notice period, migration lead time and a buffer to an earlier decision-due flag.](enterprise-applications-and-financial-systems/posts/03-application-portfolio/assets/images/03-application-portfolio/decision-due-date.jpeg)
+![A timeline working back from a renewal date through notice period, migration lead time and a buffer to an earlier decision-due flag.](finance-systems-architecture/posts/03-application-portfolio/assets/images/03-application-portfolio/decision-due-date.jpeg)
 
 **Figure 5:** *The decision-due date is the renewal date minus the notice period, the migration lead time and one close cycle; for the OneStream module that put the decision in July for a 31 December renewal.*
 
@@ -439,7 +389,7 @@ An application is **decommissioned** at Northmere when every item on the followi
 
 The **controls** row is where finance decommissioning differs most from the general IT kind. A key control that ran inside a retired application does not disappear. Either the risk it addressed is gone, or the control must now run somewhere else, designed and tested before the old one stops. Retiring an application mid-year without that work is how a migration silently breaks a key control, which is the outcome the SOX lead fears most. The control side is covered in [Controls by Design, Not by Audit Season](#controls-and-auditability).
 
-![Left: a system tagged end of life but still connected to users, interfaces and a renewing contract. Right: the system unplugged, its records in an archive with a read path, controls moved and contract terminated.](enterprise-applications-and-financial-systems/posts/03-application-portfolio/assets/images/03-application-portfolio/retired-versus-decommissioned.jpeg)
+![Left: a system tagged end of life but still connected to users, interfaces and a renewing contract. Right: the system unplugged, its records in an archive with a read path, controls moved and contract terminated.](finance-systems-architecture/posts/03-application-portfolio/assets/images/03-application-portfolio/retired-versus-decommissioned.jpeg)
 
 **Figure 6:** *A lifecycle label is not a retirement: a system counts as decommissioned only when access, interfaces and the contract are gone, its records sit in an archive with a read path, and its controls run somewhere else.*
 

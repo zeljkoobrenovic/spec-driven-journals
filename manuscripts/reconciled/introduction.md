@@ -1,7 +1,7 @@
 {id: introduction}
 # 1. Introduction: Architecture Where Every Number Must Reconcile
 
-![Introduction: Architecture Where Every Number Must Reconcile — logo](enterprise-applications-and-financial-systems/posts/introduction/assets/images/introduction/logo.jpeg)
+![Introduction: Architecture Where Every Number Must Reconcile — logo](finance-systems-architecture/posts/introduction/assets/images/introduction/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn what this book is for and whom it serves, why it is called RECONCILED, how to tell its documented facts from industry practice, my recommendations and the fictional Northmere, and which chapter to open first for the decision already on your desk.
 
@@ -51,7 +51,7 @@ The idea extends beyond accounting records. The book argues for five reconciliat
 | **Vendors' roadmaps with the enterprise's strategy** | Does each platform have a defined place and boundary, or is a vendor's packaging deciding the architecture? |
 | **Finance with Engineering** | Are decision rights, controls and the pace of change agreed between those who own the numbers and those who build the systems? |
 
-![Five rows of paired objects joined by a key-shaped connector and a check mark: systems, ledgers and money, brands and group, vendor roadmaps and strategy, finance and engineering.](enterprise-applications-and-financial-systems/posts/introduction/assets/images/introduction/five-reconciliations.jpeg)
+![Five rows of paired objects joined by a key-shaped connector and a check mark: systems, ledgers and money, brands and group, vendor roadmaps and strategy, finance and engineering.](finance-systems-architecture/posts/introduction/assets/images/introduction/five-reconciliations.jpeg)
 
 **Figure 1:** *The book's five reconciliations: in each pair, two independent records or agendas must be joined on something shared and shown to agree.*
 
@@ -66,7 +66,7 @@ Vendor documentation explains one platform from the inside. It rarely tells you 
 
 The gap has a cost, and it falls on the people the book is written for. A finance estate assembled platform by platform, each chosen and implemented well, can still be incoherent as a whole. **The failures appear at the boundaries**, and the boundaries belong to no project, no vendor and often no team. The Chief Architect is one of very few people with a mandate to look at all of them, with a position between the CFO's questions and the engine room where their causes sit. This book is written from that position.
 
-![Five finance platforms each marked as working, with coins and records leaking from the bridges between them while an architect surveys all the seams from above.](enterprise-applications-and-financial-systems/posts/introduction/assets/images/introduction/failures-at-the-boundaries.jpeg)
+![Five finance platforms each marked as working, with coins and records leaking from the bridges between them while an architect surveys all the seams from above.](finance-systems-architecture/posts/introduction/assets/images/introduction/failures-at-the-boundaries.jpeg)
 
 **Figure 2:** *Each platform can work as specified while the estate fails at the seams between them; the boundaries belong to no project, which is why the Chief Architect's whole-estate view matters.*
 
@@ -107,17 +107,7 @@ The book opens with three preface pages, continues with four parts that form a l
 | **[PRACTICE: How Others Built It](#part-5)** | What do publicly documented platforms teach about these patterns, and where does the public evidence stop? | 44: [Uber's Payments Platform: A Ledger at the Center of Money Movement](#case-uber-payments) |
 | **Reference** | Where are the templates, definitions and sources? | [Working Papers: Templates for the Finance Architect](#toolkit), [Glossary](#glossary), [Bibliography](#bibliography) |
 
-```mermaid
-flowchart LR
-    P["Preface: purpose, failure patterns, Northmere"] --> I["Part I: Foundations"]
-    I --> II["Part II: Platforms"]
-    II --> III["Part III: Integration"]
-    III --> IV["Part IV: Leadership"]
-    IV --> V["Part V: Practice"]
-    I -.->|"concepts"| R["Toolkit, glossary, bibliography"]
-    III -.->|"templates"| R
-    IV -.->|"templates"| R
-```
+![A road from the preface through Parts I to V, with dashed links from Parts I, III and IV to a toolkit bookshelf of templates and references.](finance-systems-architecture/posts/introduction/assets/images/introduction/book-route-map.jpeg)
 
 **Figure 3:** *The four parts move from concepts to platforms, from platforms to the estate as one system, and from the estate to leading it over time; the case studies test the patterns against public evidence, and the reference pages serve every part.*
 

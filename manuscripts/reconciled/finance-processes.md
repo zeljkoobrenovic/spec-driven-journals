@@ -1,7 +1,7 @@
 {id: finance-processes}
 # 9. Order to Cash, Procure to Pay, Record to Report
 
-![Order to Cash, Procure to Pay, Record to Report — logo](enterprise-applications-and-financial-systems/posts/06-finance-processes/assets/images/06-finance-processes/logo.jpeg)
+![Order to Cash, Procure to Pay, Record to Report — logo](finance-systems-architecture/posts/06-finance-processes/assets/images/06-finance-processes/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Walk through the end-to-end finance processes an enterprise estate serves (Record-to-Report, Procure-to-Pay, Order-to-Cash and its marketplace variants, partner payouts, treasury, tax, Plan-to-Perform, Acquire-to-Retire and the finance side of Hire-to-Retire) and learn to read each one as a chain of hand-offs, with the controls, failure points and metrics that belong to each hand-off.
 
@@ -80,7 +80,7 @@ A **hand-off** is any point where a financial item changes system, owner, identi
 
 These five properties are the unit of design in this chapter. [Files, Events and APIs: How Finance Systems Talk](#integration-architecture) covers the mechanics behind them (idempotency, control totals, the transactional outbox), and [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation) turns them into a reconciliation catalog. Here the job is to find them.
 
-![Two runners passing a document baton across a lane boundary, the baton tagged with five properties.](enterprise-applications-and-financial-systems/posts/06-finance-processes/assets/images/06-finance-processes/handoff-five-properties.jpeg)
+![Two runners passing a document baton across a lane boundary, the baton tagged with five properties.](finance-systems-architecture/posts/06-finance-processes/assets/images/06-finance-processes/handoff-five-properties.jpeg)
 
 **Figure 1:** *A hand-off is designed when its cut-off, ownership transfer, identifier, completeness proof and failure path are all agreed; platforms work well internally, and items are lost between them.*
 
@@ -89,23 +89,7 @@ These five properties are the unit of design in this chapter. [Files, Events and
 
 Every process eventually feeds Record-to-Report. That is the structural fact that makes the close the place where every upstream weakness surfaces.
 
-```mermaid
-flowchart LR
-    P2P["Procure-to-Pay"] -->|"payables, accruals"| R2R["Record-to-Report"]
-    O2C["Order-to-Cash variants"] -->|"receivables, liabilities, revenue"| R2R
-    PAY["Partner payouts"] -->|"payout clearing"| R2R
-    A2R["Acquire-to-Retire"] -->|"capitalization, depreciation"| R2R
-    H2R["Hire-to-Retire"] -->|"payroll journals, accruals"| R2R
-    TRE["Treasury"] -->|"bank, FX, hedge entries"| R2R
-    TAX["Tax determine-report-pay"] -->|"tax lines, provision"| R2R
-    P2P -->|"payment instructions"| TRE
-    PAY -->|"payout funding"| TRE
-    O2C -->|"tax requests"| TAX
-    P2P -->|"tax requests"| TAX
-    R2R -->|"actuals"| PLAN["Plan-to-Perform"]
-    PLAN -->|"cash forecast"| TRE
-    R2R -->|"consolidated statements"| PUB["Filing and disclosure"]
-```
+![Procure-to-pay, order-to-cash, partner payouts, acquire-to-retire and hire-to-retire all flow into a central record-to-report hub; treasury and tax are shared desks the processes call, which also post into the hub; the hub feeds plan-to-perform and filing and disclosure.](finance-systems-architecture/posts/06-finance-processes/assets/images/06-finance-processes/processes-converge-on-record-to-report.jpeg)
 
 **Figure 2:** *Every finance process converges on Record-to-Report, and treasury and tax are shared services that the operational processes call; a weak hand-off anywhere on the left shows up as a late or wrong number on the right.*
 
@@ -146,33 +130,7 @@ Days to close is a lagging indicator: **it measures how long it takes to prove t
 
 **Systems at Northmere.** Coupa handles requisitions, POs, receipts and supplier invoices for indirect spend. S/4HANA holds the payable, the GL posting and the payment run. Vertex determines tax. Kyriba is the **payment factory**, the central hub that formats, screens and routes payment files to the banks, and returns statements to S/4 for clearing. Employee expenses run in parallel through SAP Concur into S/4.
 
-```mermaid
-flowchart LR
-    subgraph CP["Coupa"]
-        A["Requisition and PO"] --> B["Service receipt"]
-        B --> C["Invoice capture and 3-way match"]
-    end
-    subgraph S4["SAP S/4HANA"]
-        D["Supplier invoice posted"] --> E["Payment proposal and dual approval"]
-        F["Bank statement processing and clearing"]
-    end
-    subgraph TX["Vertex"]
-        T["Tax determination"]
-    end
-    subgraph KY["Kyriba"]
-        G["Payment factory: format, screen, route"]
-        H["Statement collection"]
-    end
-    BK["Bank"]
-    C -->|"approved invoice with PO id"| D
-    D -->|"tax request"| T
-    T -->|"tax lines and rule version"| D
-    E -->|"payment file with batch total"| G
-    G -->|"payment instruction"| BK
-    BK -->|"end-of-day statement"| H
-    H -->|"statement lines"| F
-    F -->|"cleared payable"| D
-```
+![Procure-to-pay crosses procurement, the ERP, a tax engine, treasury and the bank; every crossing — invoice, tax lines, payment file, payment and returning statements — carries a hand-off badge for identifier, control total and exception owner.](finance-systems-architecture/posts/06-finance-processes/assets/images/06-finance-processes/procure-to-pay-handoffs.jpeg)
 
 **Figure 3:** *Procure-to-Pay at Northmere crosses four systems and a bank; the five arrows between subgraphs are the hand-offs that need identifiers, control totals and an exception owner.*
 
@@ -197,7 +155,7 @@ Kestrel Media GmbH is onboarded in Coupa in January 2027: VAT ID validated, bank
 
 Three things in that table are architecture, not operations. The **cut-off**: a March service receipted in April can only be accrued from PO data, so the PO must carry a service period. The **identifier chain**: PO id, invoice id, S/4 document, payment reference and statement reference must each carry the previous one, or the bank line cannot be traced to the PO. The **ownership transfer at the payment file**: once Kyriba has it, an error is Treasury's, and the status must flow back so AP does not pay twice. The reverse charge nets to zero but must still appear in the VAT return, so the tax hand-off is mandatory even when no cash tax is paid; [Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects) covers the accruals and reversals.
 
-![Five chain links from purchase order to bank statement, each carrying the previous document's key, with a trace arrow back to the order.](enterprise-applications-and-financial-systems/posts/06-finance-processes/assets/images/06-finance-processes/identifier-chain.jpeg)
+![Five chain links from purchase order to bank statement, each carrying the previous document's key, with a trace arrow back to the order.](finance-systems-architecture/posts/06-finance-processes/assets/images/06-finance-processes/identifier-chain.jpeg)
 
 **Figure 4:** *Each document on the Kestrel invoice's path must carry the previous one's identifier; if any link drops its key, the bank line can no longer be traced back to the purchase order.*
 
@@ -227,42 +185,7 @@ The principal-versus-agent judgment and revenue timing belong to [Accounting for
 
 **Steps.** Booking published as a financial event; payment captured; PSP settlement received net of fees; liability recorded in the subledger (**deferred merchant bookings**, cash held for trips not yet taken); changes and cancellations adjust it; stay completed and revenue recognized; partner payable created; payout instructed and settled; three-way reconciliation of booking, PSP and bank; summary to the GL.
 
-```mermaid
-flowchart TB
-    subgraph BR["Stayloft booking platform"]
-        B1["Booking confirmed"]
-        B2["Stay completed"]
-    end
-    subgraph NP["Northmere Pay and Adyen"]
-        P1["Authorize and capture"]
-        P2["Settlement batch and report"]
-    end
-    subgraph SFP["Stayloft Finance Platform"]
-        S1["Liability per booking"]
-        S2["Revenue and partner payable"]
-        S3["Payout calculation and schedule"]
-    end
-    subgraph TK["Northmere Pay payouts and banks"]
-        K1["Payout execution"]
-        K2["Bank confirmations"]
-    end
-    subgraph GL["S/4HANA and BlackLine"]
-        G1["Daily summary journal"]
-        G2["Three-way match and reconciliation"]
-    end
-    B1 -->|"BookingConfirmed"| S1
-    B1 --> P1
-    P1 -->|"PaymentCaptured"| S1
-    P2 -->|"PaymentSettled and PSPFeeCharged"| G2
-    B2 -->|"StayCompleted"| S2
-    S2 --> S3
-    S3 -->|"PartnerPayoutInstructed"| K1
-    K2 -->|"PartnerPayoutSettled"| S3
-    K2 --> G2
-    S1 --> G1
-    S2 --> G1
-    G1 --> G2
-```
+![Four swimlanes — booking, payments, finance platform and payouts — each on its own clock; booking and capture events create the liability, stay completion triggers revenue and the payout, and settlement, revenue and bank confirmations all meet at a three-way match on the right.](finance-systems-architecture/posts/06-finance-processes/assets/images/06-finance-processes/book-to-settle-swimlanes.jpeg)
 
 **Figure 5:** *Book-to-Settle as swimlanes: the booking, the money and the accounting run in different systems on different clocks, and BlackLine's three-way match is where they are proven to agree.*
 

@@ -1,7 +1,7 @@
 {id: onestream}
 # 22. OneStream: Consolidating Actuals, Planning the Future
 
-![OneStream: Consolidating Actuals, Planning the Future — logo](enterprise-applications-and-financial-systems/posts/19-onestream/assets/images/19-onestream/logo.jpeg)
+![OneStream: Consolidating Actuals, Planning the Future — logo](finance-systems-architecture/posts/19-onestream/assets/images/19-onestream/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn what a consolidation and performance-management platform adds above the ERPs, how consolidation works mechanically, step by step and with numbers, and how to integrate, govern and run OneStream in an estate with three ledgers and three charts of accounts.
 
@@ -34,7 +34,7 @@ Northmere, the fictional multi-brand group this book follows, reports in US doll
 
 The cause is found the same afternoon. Tablekin, the restaurant-software brand that runs Workday Financial Management, had opened a new ledger account for usage revenue during the quarter. The account reached OneStream in the trial balance, but the mapping workbook for Tablekin, one of fourteen workbooks that three people in group reporting maintain, had no row for it. A catch-all rule sent any unrecognized revenue account to "Other revenue". The load passed every check, because the catch-all counted as a mapping. Nothing failed; a reviewer had to notice a number that looked wrong. The [Unreconciled: Fourteen Ways Finance Architecture Goes Wrong](#where-finance-architecture-goes-wrong) and [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture) chapters tell this story from the point of view of failure patterns and master data. This chapter tells it from the consolidation platform's.
 
-![A new account card slipping into an Other bin through a catch-all funnel, versus being stopped at a barrier until mapped.](enterprise-applications-and-financial-systems/posts/19-onestream/assets/images/19-onestream/silent-default-versus-hard-stop.jpeg)
+![A new account card slipping into an Other bin through a catch-all funnel, versus being stopped at a barrier until mapped.](finance-systems-architecture/posts/19-onestream/assets/images/19-onestream/silent-default-versus-hard-stop.jpeg)
 
 **Figure 1:** *A catch-all rule let Tablekin's new usage-revenue account pass every check and put $41 million into group Other revenue; a load that fails on any account nobody mapped deliberately would have stopped it at the gate.*
 
@@ -78,18 +78,7 @@ Vendor facts go stale quickly, so this section carries dates.
 
 An architect does not need to be able to prepare consolidated statements. They do need to know the steps well enough to see which steps depend on which data, which steps are controls, and where design errors show up. Group accounting standards set the rules: ASC 810 and ASC 830 under US GAAP, which Northmere follows, and [IFRS 10](https://www.ifrs.org/issued-standards/list-of-standards/ifrs-10-consolidated-financial-statements/) and [IAS 21](https://www.ifrs.org/issued-standards/list-of-standards/ias-21-the-effects-of-changes-in-foreign-exchange-rates/) under IFRS, which several of Northmere's statutory entities use. The sequence below is generic; OneStream, Oracle's consolidation service and SAP Group Reporting each implement a version of it.
 
-```mermaid
-flowchart LR
-    A["Collect: entity trial balances and supplementary data"] --> B["Validate: balanced, complete, control totals agree"]
-    B --> C["Map to group chart, then check every code mapped"]
-    C --> D["Certify and lock entity data"]
-    D --> E["Translate: functional to presentation currency, CTA"]
-    E --> F["Apply ownership: share, NCI, equity pickup"]
-    F --> G["Eliminate intercompany, post differences"]
-    G --> H["Top-side adjustments: approved group journals"]
-    H --> I["Consolidated result per scenario and GAAP"]
-    I --> J["Reports and disclosure hand-off"]
-```
+![A pipeline from Collect, Validate, Map and Certify on a teal panel, through a padlock, to Translate, Ownership, Eliminate and Adjust on an orange panel, ending in a book of group numbers.](finance-systems-architecture/posts/19-onestream/assets/images/19-onestream/consolidation-pipeline.jpeg)
 
 **Figure 2:** *Consolidation is a pipeline of dependent steps. Collection, validation, mapping and certification decide whether the data is fit to consolidate; translation, ownership, elimination and adjustment then produce group numbers that no single ledger contains.*
 
@@ -189,7 +178,7 @@ The vendor's [design guide](https://documentation.onestream.com/docs/Content/Des
 
 This is OneStream's answer to an old dilemma in EPM design. A single rigid global model is simple and comparable but cannot hold local detail, so the detail moves to spreadsheets. Many separate applications hold local detail but fragment the group view. An extensible model keeps one governed core and lets brands extend below it, but only below it. The cost is design complexity. **Most of the performance problems I have seen in EPM platforms came from the model design, not from the platform's capacity.** They came from a user-defined dimension carrying a high-cardinality list such as customers or properties, from data units that grew with every acquisition, and from business rules that calculated every intersection instead of the populated ones.
 
-![Three cube models: a rigid cube surrounded by spreadsheets, scattered separate cubes, and a core cube with extensions beneath it.](enterprise-applications-and-financial-systems/posts/19-onestream/assets/images/19-onestream/rigid-fragmented-extensible.jpeg)
+![Three cube models: a rigid cube surrounded by spreadsheets, scattered separate cubes, and a core cube with extensions beneath it.](finance-systems-architecture/posts/19-onestream/assets/images/19-onestream/rigid-fragmented-extensible.jpeg)
 
 **Figure 3:** *A single rigid model pushes local detail into spreadsheets and many separate applications fragment the group view; an extensible model keeps one governed core and lets brands add detail below it, but only below it.*
 
@@ -213,19 +202,7 @@ The deliberate omissions matter as much as the entries. Northmere does **not** h
 
 An EPM platform is a process engine as much as a calculation engine. OneStream's **workflow** defines, for each entity and scenario, who loads what data, which validations it must pass, who certifies it and when it is locked. The 10-K describes "hierarchical workflow management and task execution" combined in one engine. That is where the platform's controls live.
 
-```mermaid
-stateDiagram-v2
-    [*] --> Imported: TB file or connector load
-    Imported --> Validated: balanced, mapped, valid intersections, control totals agree
-    Imported --> Rejected: unmapped account or failed check
-    Rejected --> Imported: source fix or approved mapping change, then reload
-    Validated --> Certified: entity controller certifies, recs status complete
-    Certified --> Locked: group reporting locks the entity
-    Locked --> Consolidated: consolidation run
-    Locked --> Unlocked: approved unlock with reason
-    Unlocked --> Imported: reload
-    Consolidated --> [*]
-```
+![Stepping stones from Imported through Validated, Certified and Locked to Consolidated, with a Rejected stone looping back to Imported, and an Unlocked stone reached from Locked only with an approved reason, also returning to Imported.](finance-systems-architecture/posts/19-onestream/assets/images/19-onestream/workflow-gate-states.jpeg)
 
 **Figure 4:** *A workflow gate is a state machine. The control value comes from the transitions that are not allowed: no consolidation without lock, no lock without certification, no certification while an account is unmapped, and no unlock without an approved reason.*
 
@@ -253,22 +230,7 @@ The integration design determines whether the EPM platform stays a consolidation
 
 **Flash and final close.** A **flash close** is a fast, approximate view of the period, typically a few days in, based on preliminary trial balances and estimates. It gives management early numbers. The **final close** produces the numbers that are certified, locked and published. Northmere runs a flash consolidation on working day 3 and the final consolidation on working day 7, and locks on working day 9. The two must be separate scenarios or versions in the platform, with the flash never overwriting the final. The difference between them is itself a useful quality signal. Large flash-to-final movements in the same entity month after month point at a ledger close problem.
 
-```mermaid
-flowchart LR
-    S4["SAP S/4HANA: group CoA entities"] -->|"TB, control totals"| OS["OneStream: import, map, validate"]
-    FU["Oracle Fusion: Wayfare CoA"] -->|"TB by segment combination"| OS
-    WF["Workday Financials: Tablekin CoA"] -->|"TB by account and worktags"| OS
-    KY["Kyriba: FX rates"] -->|"spot, average, closing"| OS
-    BL["BlackLine"] -->|"recs certified status per entity"| OS
-    HCM["Workday HCM"] -->|"positions, headcount, compensation"| PL["OneStream planning"]
-    FDB["FinDB: governed metrics"] -->|"bookings, room nights, take rate"| PL
-    OS --> CN["OneStream consolidation: translate, eliminate, adjust"]
-    PL --> CN
-    CN -->|"locked Top results"| WK["Workiva: 10-K, 10-Q, iXBRL"]
-    CN -->|"consolidated results and mapping"| FDB
-    OS -.->|"drill-back"| S4
-    OS -.->|"drill-back"| FU
-```
+![Ledgers, Kyriba rates, a BlackLine certified flag and planning drivers flow into OneStream, which sends locked results to Workiva and its mapping to FinDB, with a dotted drill-back line to the ledgers.](finance-systems-architecture/posts/19-onestream/assets/images/19-onestream/onestream-inputs-and-outputs.jpeg)
 
 **Figure 5:** *OneStream at Northmere receives balances, rates, statuses and drivers, and sends locked results onward. Detail stays in the ledgers and is reached by drill-back. The mapping is published to FinDB so that the warehouse and the consolidation use the same translation of accounts.*
 
@@ -354,21 +316,7 @@ The working-day-7 incident gave the mapping problem a cost and a date. Dana and 
 
 **Consequences and how they are checked.** The mapping change becomes a testable key control, and brand ERP teams take on work they previously pushed onto group reporting. The quarterly fitness check counts unmapped-load failures (expected to rise at first, then fall), mapping changes made during the close window (target: none), and differences between OneStream and FinDB revenue by brand (target: zero unexplained). [Architecture Governance That Speeds Decisions](#architecture-governance) describes how such decision records are kept and revisited. [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture) treats the group chart of accounts as master data.
 
-```mermaid
-sequenceDiagram
-    participant Brand as Brand finance systems
-    participant ERP as Source ERP
-    participant GR as Group reporting steward
-    participant OS as OneStream
-    participant FDB as FinDB
-    Brand->>ERP: Propose new ledger account
-    Brand->>OS: Propose mapping rule, linked to the ERP change
-    GR->>OS: Review and approve mapping
-    OS-->>ERP: Mapping approved, account may go live
-    ERP->>OS: Next TB load includes the new account
-    OS->>OS: Validate every code is mapped, no catch-all hit
-    OS->>FDB: Publish approved mapping set
-```
+![Brand finance sends a new account to the source ERP and a linked mapping rule to OneStream; group reporting approves the mapping, OneStream gives the ERP a green light to go live, and the approved mapping goes to FinDB.](finance-systems-architecture/posts/19-onestream/assets/images/19-onestream/governed-mapping-change.jpeg)
 
 **Figure 6:** *Under the Keystone decision, a new source account cannot go live without an approved mapping, and the same approved mapping reaches FinDB. Ownership sits with the team that changes the source; group reporting approves.*
 

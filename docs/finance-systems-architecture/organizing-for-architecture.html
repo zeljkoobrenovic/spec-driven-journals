@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Who Owns What: Organizing Architecture Across Finance and Technology</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">RECONCILED: Enterprise Architecture for Financial Systems</a><span class="nav-right"><a class="nav-prev" href="resilience-and-security.html" title="Recover Before the Close: Resilience and Security for Finance">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="ai-in-finance.html" title="Automate the Work, Not the Accountability">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part IV — LEADERSHIP: The Chief Architect's Agenda</p>
+        <h1>Who Owns What: Organizing Architecture Across Finance and Technology</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-18  ·  33 min read · <a class="spec-link" href="organizing-for-architecture.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/41-organizing-for-architecture/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/41-organizing-for-architecture/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">RECONCILED: Enterprise Architecture for Financial Systems</a><span class="nav-right"><a class="nav-prev" href="resilience-and-security.html" title="Recover Before the Close: Resilience and Security for Finance">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="ai-in-finance.html" title="Automate the Work, Not the Accountability">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Who Owns What: Organizing Architecture Across Finance and Technology", "date": "2026-10-18", "author": "Željko Obrenović", "excerpt": "Which organizational design makes a finance architecture work? Treat the organization as part of the architecture: stream-aligned brand finance teams that consume a small number of finance platforms as services, specialist teams for the ERP and tax engine, enabling teams for architecture and controls, and Finance process owners paired with Technology product owners, with handoffs, cognitive load and ownership gaps measured like any other property of the estate.", "permalink": "organizing-for-architecture", "timetoread": "33 min read", "icon": "assets/icons/41-organizing-for-architecture.png", "logo": "assets/images/41-organizing-for-architecture/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** See how the shape of the organization produced a finance estate's duplicate ledgers and payout engines, design a team topology for finance technology with explicit interaction modes, close the gap between Finance and Engineering with paired owners and finance-literate engineers, assign recurring decisions across Finance, Engineering, Security, Data, Payments, Controls and Tax, and define the architect roles, career paths and health measures that keep the design working.\n\n> **WHY FINANCE CARES:** Most of what slows the close, delays a payment-method launch or produces an audit finding is a handoff between teams that nobody owns end to end. A controller who can name the team that owns each capability, and the person in Finance who decides its rules, spends less time chasing and more time closing.\n\n> **WHY ARCHITECTS SHOULD CARE:** A target state that ignores who builds and runs each part will be rebuilt by the organization in its own image. The team design is the part of the architecture that decides whether every other decision survives contact with delivery.\n\n> **KEY POINTS:**\n>\n> * **In finance, the organization is the architecture.** Three ERPs, two payout engines and three billing approaches are the org chart of past acquisitions written in software. Retire a duplicate without changing the ownership that produced it, and it grows back under another name.\n> * **Organize around flows and a few platforms, and keep the boundaries that controls need.** Brand finance teams are stream-aligned and consume the ledger, integration, data and payments platforms as services; the ERP and the tax engine get specialist teams; architecture and controls engineering enable rather than approve. Finance owns the rules and Engineering owns the platforms: that segregation is a boundary to design in, not a silo to remove.\n> * **Lead the matrix with products, not permissions, and measure the organization like the estate.** A Chief Architect without line authority leads through narrow mandatory standards, funded golden paths, embedded architects, career paths and an open forum. Handoffs per change, team cognitive load and capabilities without an owner are measurable, and they move before the close does.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-finance-architecture-goes-wrong.html):**\n>\n> * **Capability Creep** — duplicate payout engines and reconciliation tools are what two teams with overlapping missions and no shared owner produce, one reasonable decision at a time.\n> * **The Permanent Exception** — brand teams fork shared platforms when the platform behaves like a queue and the exception is faster than the conversation.\n> * **Customization Concrete** — an ERP team run as a ticket queue turns every brand request into custom code inside the ERP, because that is the only service it offers.\n\n<br>\nEvery chapter of this book so far has described the finance estate as systems: ledgers, subledgers, payment platforms, integration hubs and the contracts between them. This chapter describes it as people, because the two descriptions are the same object seen from different sides. **The boundaries in a finance estate usually sit where the boundaries between teams sat when the systems were built**, and they move only when the teams do.\n\nThat observation is old, and it is usually applied to product software. In finance it has sharper consequences. A boundary between two teams becomes a boundary between two ledgers, and every boundary between ledgers needs a reconciliation, a mapping and a control. A capability split between two teams becomes two implementations, each with its own evidence for the auditor. And some boundaries must exist for reasons that have nothing to do with delivery speed: the people who write payout rules must not be the people who approve them, and the people who deploy a platform must not hold standing write access to its data.\n\nSo the Chief Architect cannot leave organization design to HR and the line managers. The task is to **design the organization as part of the architecture**: which teams exist, what each owns, how they interact, which boundaries are deliberate, who decides what, and how anyone would know whether the design is working.\n\n## Setting the Scene at Northmere: Thirteen Weeks for an E-Wallet\n\nNorthmere, the fictional multi-brand digital commerce group this book follows, spent the first half of 2027 on governance and on payments-to-ledger completeness ([Meet Northmere: Five Brands, One Set of Books](meet-northmere.html)). In September 2027, Ingrid Solberg, Managing Director of Northmere Pay, brought Dana Whitlock, the Chief Architect, a complaint that had nothing to do with architecture on its face. A second Indonesian e-wallet for Stayloft travelers had been technically ready in the payments platform in early May. It went live at the end of July. Ingrid's team had done its part in about two weeks. \"Finance needed three months,\" she said, \"and nobody in Finance can tell me why.\"\n\nDana answered the way she had answered the CFO's question about the nine-day close a year earlier ([The Chief Architect's Job: Making Many Systems Tell One Story](chief-architect-role.html)): she walked the work. Two of her solution architects reconstructed the launch from tickets, emails and calendars, and listed every point where one team handed work to another. The result became known internally as the **handoff trace**.\n\n| Team | What it had to do | Hands-on work (days) | Waiting before it could start (days) |\n| --- | --- | --- | --- |\n| Stayloft checkout (brand) | Show the method in checkout; pass the booking reference | 3 | 0 |\n| Northmere Pay acceptance | Integrate the provider; map the provider's references | 4 | 0 |\n| Northmere Pay settlement normalization | Parse the provider's daily settlement file into normalized lines | 2 | 6 |\n| Accounting policy (Leila Haddad's organization) | Approve the clearing and fee posting pattern; confirm it fits an existing rule family | 1 | 9 |\n| Stayloft Finance Engineering (SFP) | Configure the posting rule family for the new clearing account | 1 | 5 |\n| ERP platform team (Sven Aalto) | Create the clearing GL account in two S/4HANA company codes | 1 | 8, then 6 more after a rework loop |\n| Group reporting | Add the mapping row for the new account to OneStream | 0.5 | 4 |\n| Group close systems | Configure BlackLine Transaction Matching rules for the new source | 2 | 7 |\n| Treasury (Kofi Asante's organization) | Confirm the provider's payout bank account and statement feed in Kyriba | 0.5 | 3 |\n| Internal controls (Mei Tanaka) | Assess control impact; update the risk and control matrix | 1 | 5 |\n| Security (Marco Bellini) | Third-party risk review of the provider | 2 | done in parallel |\n\nEleven teams, **17 handoffs** including two rework loops, about 65 working days elapsed and about 18 days of hands-on work. Roughly **four-fifths of the elapsed time was waiting**. The finance data platform was missing from the list altogether: nobody told Owen Mbeki's team, and the new method's settlement lines were absent from FinDB, the group's finance data platform, until an analyst noticed in late August.\n\n![Timeline of a new payment method passing eleven team desks, with short green work blocks separated by long grey waiting stretches; bars compare about 18 days of work with about 65 days elapsed.](assets/images/41-organizing-for-architecture/handoff-trace-waiting.jpeg)\n**Figure 1:** *The e-wallet's handoff trace: about 18 days of hands-on work spread across about 65 working days, because no team owned the outcome and roughly four-fifths of the time was waiting.*\n\nNobody had behaved badly; the e-wallet was simply never the most important item in any of eleven reasonable queues. The work was slow because **no team owned the outcome \"a new payment method is ledger-ready\"**. Northmere already had the standard (\"ledger-ready before launch\", a Keystone rule that no new payment method goes live until its settlement data matches automatically; [Payments for Finance Architects: Eleven Reasons the Numbers Disagree](payments-fundamentals.html)). It did not have an organization that could meet the standard quickly.\n\nDana took the trace to the Keystone design authority in October with a proposition that surprised some of its members: the next architecture decision Northmere needed was not about systems. It was about teams.\n\n## Conway's Law in a Finance Estate\n\nMelvin Conway's 1968 paper in *Datamation* argued that organizations which design systems \"are constrained to produce designs which are copies of the communication structures of these organizations\" ([Conway, How Do Committees Invent?](https://www.melconway.com/Home/Committees_Paper.html)). Martin Fowler's summary of the law, and of the **Inverse Conway Maneuver** (deliberately shaping teams to get the architecture you want, a term he credits to Jonny LeRoy and Matt Simons in 2010), adds a warning: reorganizing teams does not quickly change a rigid legacy system ([Fowler, Conway's Law, 2022](https://martinfowler.com/bliki/ConwaysLaw.html)).\n\nNorthmere's estate reads like an org chart once you know its history.\n\n| Feature of the estate | The organizational structure behind it |\n| --- | --- |\n| **Three ledgers** (S/4HANA, Oracle Fusion, Workday Financials) | Two acquisitions kept their finance-systems teams and their ledgers; the group connected them where its own reporting team sat, in consolidation |\n| **Two partner-payout engines** | Stayloft Finance Engineering and Wayfare Finance Systems each owned a payout problem; no Finance role owned partner payouts across brands ([Map What Finance Does Before What Runs It](capability-mapping.html)) |\n| **Three billing approaches** | Stayloft engineering built commission billing; the SAP team introduced FI-CA for agency partners; Tablekin arrived with Stripe Billing. Each team solved invoicing inside its own boundary |\n| **Reconciliation in three tools** | The close team owns BlackLine; a OneStream module was bought by a project that ended; Wayfare reconciles intercompany where its team works, in Fusion |\n| **SFP determining its own GL accounts** | Stayloft finance maintained an account-mapping table inside SFP because asking the group was slower than doing it locally |\n| **Spreadsheet mappings feeding OneStream** | The mapping work fell between three ledger teams and group reporting, so it landed in the only place nobody had to agree on: a workbook |\n\n![Four fenced team islands, Stayloft, Group SAP, Wayfare and Tablekin, each with its own ledger; Stayloft sends daily summaries to Group SAP, and Group SAP, Wayfare and Tablekin send trial balances across to the Group reporting island's consolidation.](assets/images/41-organizing-for-architecture/conway-team-islands.jpeg)\n**Figure 2:** *Conway's law in Northmere's finance estate. Each team built or kept a ledger-shaped system inside its own boundary, and the only place the boundaries met was the team that had to produce group numbers. The integration points of the estate are the communication paths of the organization.*\n\nThree lessons follow, and the third is specific to finance.\n\n**First, duplication is an organizational outcome before it is a technical one.** Two payout engines exist because two teams each owned a payout problem and nobody owned partner payouts. The May 2027 decision to make SFP's engine the group payout service and retire Wayfare's in 2029 ([When the ERP Isn't Enough: Custom Finance Platforms](custom-finance-platforms.html)) will not hold unless the ownership changes with it.\n\n**Second, the inverse maneuver is slow, and Fowler's warning applies with force.** A team topology can be redesigned in a quarter. SFP's merchant subledger moves to the group core in 2029, and three ledgers converge on that timetable or later ([Converge or Coexist: Living with More Than One ERP](multiple-erps.html)). The right sequence is to change the teams first, so that the people who will own the target state are the ones who build the transition, and to accept that the systems will lag the org chart by years.\n\n**Third, finance needs some boundaries that Conway would call friction.** Segregation of duties, the control principle that no single person can initiate, approve and record the same transaction, is a deliberately designed communication barrier. The FY2026 significant deficiency on SFP's payout engine was, in Conway's terms, an organization with too little separation: the engineers who changed payout rules could deploy them and held standing write access to production ([Controls by Design, Not by Audit Season](controls-and-auditability.html)). The design principle I use is **remove the boundaries that only add waiting; keep, and make cheap to cross, the boundaries that controls require**. Finance owns the rules; Engineering owns the platform; Internal Controls decides what evidence a change needs. Those three boundaries are part of the target design, and the topology below is built around them.\n\n![Left: a long waiting queue in front of a closed window crossed out in favor of self-service. Right: a glass wall with a quick approval gate where one person approves another's rule.](assets/images/41-organizing-for-architecture/control-boundary-versus-queue.jpeg)\n**Figure 3:** *Remove the boundaries that only add waiting; keep, and make cheap to cross, the boundaries that controls require, such as the separation between who writes a rule and who approves it.*\n\n## Concepts: Team Types, Interaction Modes and Owners\n\nMatthew Skelton and Manuel Pais's *Team Topologies* gives the vocabulary used in the rest of the chapter. The second edition (IT Revolution, September 2025) keeps the model of the first: four team types, three interaction modes, and team cognitive load as a design constraint ([IT Revolution, Team Topologies, 2nd edition](https://itrevolution.com/book/team-topologies/)). The authors' own summaries are short ([Team Topologies, key concepts](https://teamtopologies.com/key-concepts)):\n\n| Term | Team Topologies definition (paraphrased from the authors' summary) | In a finance estate |\n| --- | --- | --- |\n| **Stream-aligned team** | Aligned to a flow of work from a segment of the business domain | A brand's finance flow: Stayloft bookings to commission and partner statements; Tablekin subscriptions to invoices |\n| **Platform team** | Provides a compelling internal product that accelerates stream-aligned teams | Ledger and posting platform, integration hub and adapter kit, finance data platform, payments platform |\n| **Complicated-subsystem team** | Owns a part that needs significant specialist expertise | The ERP platform (S/4HANA, FI-CA); the tax engine; the close and consolidation platforms |\n| **Enabling team** | Helps stream-aligned teams overcome obstacles and detects missing capabilities | Architecture; controls engineering |\n| **Collaboration** | Two teams work together for a defined period to discover something new | Ledger platform and Stayloft during the subledger cut-over |\n| **X-as-a-Service** | One team provides, another consumes, through a clear interface | Brand teams posting through the posting pipeline template and the posting registry |\n| **Facilitating** | One team helps and mentors another | Controls engineering helping Wayfare adopt the payout-rule approval pattern |\n| **Cognitive load** | The amount a team can hold in its head; \"overloaded teams make poor decisions and move slowly\" | Wayfare's nine-person team holding a ledger, a payout engine, tax content, intercompany reconciliation and MuleSoft flows |\n\nEvan Bottcher's definition of a platform is useful because it sets a bar most internal \"platforms\" do not clear: \"a foundation of self-service APIs, tools, services, knowledge and support\", arranged as an internal product ([Bottcher, What I Talk About When I Talk About Platforms, 2018](https://martinfowler.com/articles/talk-about-platforms.html)). An ERP team that takes tickets is not a platform in that sense, however central the ERP is.\n\nFinance adds four ownership roles that the team types do not cover, and [Map What Finance Does Before What Runs It](capability-mapping.html) defined them. A **process owner** and a **capability owner** sit in Finance and are accountable for an end-to-end process (Leila Haddad for record-to-report; Ingrid for the end-to-end partner payout process and the payments platform that executes payouts, while the payout *rules* belong to the Head of Partner Settlement as capability owner; [Order to Cash, Procure to Pay, Record to Report](finance-processes.html)) or for a capability's outcome regardless of system. A **product owner** and an **application owner** sit in Technology and are accountable for a platform's backlog and service, and for one application's operation, access and change evidence, which is where the auditor tests controls. The four are often collapsed into one, usually by giving an engineering leader the whole job because nobody in Finance volunteered. That is how the payout engines grew without a business arbiter.\n\n## Architecture: Northmere's Target Topology\n\nThe design authority approved a target topology in October 2027, effective from January 2028. It has fourteen teams, organized by type, and it was designed backwards from two inputs: the capability map's owners, and the Keystone target state's platforms ([The Middle Matters: Transition States and the Roadmap](target-and-transition-states.html)).\n\n| Team | Type | Owns | Line | Size (2028, approximate) |\n| --- | --- | --- | --- | --- |\n| **Stayloft Finance** | Stream-aligned | Commission rating, merchant statements, Stayloft's canonical event publication; merchant invoicing until its move to FI-CA in 2028 | Jonas Berg, Stayloft | 24 engineers |\n| **Wayfare Finance Systems** | Stream-aligned | Oracle Fusion configuration, Wayfare event publication; hands over its payout engine and tax content during convergence | Hana Kowalski, Wayfare | 9 |\n| **Tablekin Finance Systems** | Stream-aligned | Workday Financials, Stripe integration, Tablekin billing events | Arjun Rao, Tablekin | 11 |\n| **Northmere Ads Billing** | Stream-aligned | Click rating; invoicing and receivables moving to FI-CA in 2028–2029 | Northmere Ads engineering | 8 |\n| **Ledger and Posting Platform** | Platform | Merchant subledger until 2029, posting pipeline template, rule store, tie-out; later the group accounting engine | Jonas Berg (formed from SFP engineers in 2027) | 18 |\n| **Group Payout Service** | Platform | Payout calculation, netting, holds, scheduling for every brand that pays partners; absorbs Wayfare's engine in 2029 | Jonas Berg until the 2029 migration, then reviewed | 18 |\n| **Integration Hub and Adapter Kit** | Platform | Hub services on Kafka, schema registry, adapter kit, conformance harness | Lucía Romero's integration group (engineers, separate from the architects) | 14 |\n| **Finance Data Platform** | Platform | FinDB on Snowflake and dbt, governed metrics, ledger-to-warehouse tie-out | Owen Mbeki | 22 |\n| **Payments Platform** | Platform (team of teams) | Acceptance, routing, settlement normalization, payout execution, safeguarding | Ingrid Solberg, Northmere Pay | Northmere Pay's own teams; the finance-facing slice is about 20 |\n| **ERP Platform** | Complicated subsystem | S/4HANA, FI-CA, SAP Integration Suite, posting registry | Sven Aalto | 40, including functional specialists |\n| **Tax Technology** | Complicated subsystem | Vertex, the tax service adapter, the e-invoicing gateway's tax content | Kofi Asante | 6 |\n| **Close and Consolidation Systems** | Complicated subsystem | BlackLine, OneStream, Workiva connections | Leila Haddad's organization | 10 |\n| **Architecture** | Enabling | Standards, golden-path specifications, decision service, embedded solution architects | Dana Whitlock | about 30 architects |\n| **Controls Engineering** | Enabling | Evidence patterns, pipeline controls, segregation of duties by design, control impact assessments with teams | Mei Tanaka, dotted line to Marco Bellini | 6 (new) |\n\nFour choices in the table carry most of the design.\n\n**The ledger and the payout engine left SFP as platforms.** Splitting Jonas's roughly 60 engineers into a stream-aligned Stayloft Finance team, a ledger platform and a payout platform changed nothing in the code on day one. It changed who the customers were: the ledger platform's backlog now included Northmere Ads and, from 2029, every brand on the group core; the payout service's backlog included Wayfare's ground-transport suppliers. That is what makes the 2029 retirement of Wayfare's engine a migration onto a platform rather than a takeover of one brand by another.\n\n**The ERP is a complicated subsystem, not a platform the brands build inside.** Sven's team owns deep SAP expertise that no brand team should need. Brand teams reach S/4HANA through released interfaces (the posting pipeline template, the posting registry described in [Files, Events and APIs: How Finance Systems Talk](integration-architecture.html), and self-service account provisioning inside the chart-of-accounts governance) rather than through custom development requests. The rule follows from the clean-core standard: if the only way to get something from the ERP team is to ask for code, the ERP fills with brand code.\n\n**Two enabling teams, and one of them is not architecture.** Controls engineering exists because the SFP remediation showed that control design needs engineers who understand pipelines, identity and evidence, not only control owners who write narratives. It is enabling, not a gate: it builds the patterns, helps a team adopt them for a defined period, and leaves. Internal Controls keeps the decision on what evidence a change needs.\n\n**Payments is one platform, run by its own leadership.** Northmere Pay is a licensed e-money institution, and its internal organization is Ingrid's; the finance topology sees one platform with a defined finance-facing service.\n\n![Brand teams on top plug into five finance platforms as a service, platforms plug into three specialist subsystems, two striped overlaps with hourglasses mark time-boxed collaboration, and architecture and controls teams on the side facilitate with dashed arrows.](assets/images/41-organizing-for-architecture/target-team-topology.jpeg)\n**Figure 4:** *Northmere's target finance-technology topology for 2028, simplified to the principal interactions. Most edges are X-as-a-Service through a published interface; collaboration is reserved for named, time-boxed transitions; architecture and controls engineering facilitate rather than approve.*\n\n### Interaction modes, with end dates\n\nAn interaction mode is a design decision with a shelf life: collaboration that never ends usually means the boundary is wrong or the interface is missing. Northmere records each non-default interaction with its reason and an expected end.\n\n| Teams | Mode in 2028 | Why | Expected change |\n| --- | --- | --- | --- |\n| Stayloft Finance and Ledger Platform | Collaboration | Merchant rule families still evolving after the November 2027 cut-over | X-as-a-Service by mid-2028, when rule changes no longer need platform code |\n| Wayfare Finance Systems and Group Payout Service | Collaboration | The 2029 migration of ground-transport payouts | X-as-a-Service after the Wayfare engine retires |\n| Every producing team and Integration Hub | X-as-a-Service | Adapter kit and conformance harness are the interface | None; facilitation on request for new brands |\n| Ledger Platform, Tablekin and Ads, and ERP Platform | X-as-a-Service | Posting registry and released posting APIs | None |\n| Payments Platform and brand teams | X-as-a-Service | New-payment-method onboarding offer | None |\n| Controls Engineering and Wayfare Finance Systems | Facilitating | Adopt the payout-rule approval pattern before the 2029 migration | Ends Q2 2028 |\n| Architecture and every team | Facilitating, plus binding decisions on mandatory standards | Decision rights from [The Chief Architect's Job: Making Many Systems Tell One Story](chief-architect-role.html) | Embedded architects rotate yearly |\n\n### What the topology did to the e-wallet\n\nThe handoff trace was the test case. Under the new design, the Payments Platform offers **new-payment-method onboarding as a service** with a bundled finance package: a normalization template, a pre-approved accounting pattern for alternative-payment-method clearing (a rule family Leila's accounting policy team approved once, not per method), clearing-account provisioning through the ERP platform's self-service request, a BlackLine matching template owned by close systems, and a control impact assessment template pre-agreed with Internal Controls. FinDB subscribes to normalized settlement events automatically through the hub.\n\n![Before: a payment change waits in six queues in sequence, Policy, SFP, ERP, Reporting, Close and Controls, and goes live after 13 weeks. After: one team delivers an onboarding bundle, policy reviews exceptions only, and it goes live in about 3 weeks.](assets/images/41-organizing-for-architecture/onboarding-before-after.jpeg)\n**Figure 5:** *The same change before and after the topology. Before, seven queues in sequence; after, one team runs a bundled service and Finance reviews only what departs from an approved pattern. The control boundary stays: accounting policy still owns the pattern and any exception.*\n\nThe target is **at most six handoffs and about three weeks** for a payment method that fits an approved pattern, by the end of 2028. A method that does not fit, such as one that settles net of refunds in a new way, still goes to accounting policy, and should.\n\n## In Practice: Closing the Finance–IT Gap\n\nThe gap between Finance and IT is rarely hostility. It is two groups with different calendars and definitions of done: Engineering ships continuously and measures lead time; Finance works to a period calendar and measures whether the numbers are right and evidenced at its end. Each side is right about its own constraints and often wrong about the other's.\n\nThree structural moves close the gap. None of them is a workshop.\n\n### Pair process owners with product owners\n\nEvery finance platform at Northmere now has a named pair: a **process or capability owner in Finance** who decides rules, priorities that affect the books, and acceptance; and a **product owner in Technology** who owns the backlog, the roadmap and the service. They hold a joint quarterly planning session and share one set of outcome measures.\n\n| Capability or process | Finance owner (decides rules and acceptance) | Technology product owner (decides how and when) | Shared measure |\n| --- | --- | --- | --- |\n| Partner Payout Management | Head of Partner Settlement (new role in the CAO organization, filled in 2027) | Group Payout Service product owner | On-time partner payouts (98.6% baseline, 99.5% target) |\n| Subledger and posting rules | Head of Accounting Policy (Leila's organization) | Ledger Platform product owner | Subledger-to-GL tie-out complete at working day 1 |\n| Account Reconciliation and close | Leila Haddad, delegated to the group close lead | Close and Consolidation Systems lead | Reconciliations auto-certified (22% baseline, 50% target) |\n| Indirect Tax Determination | Kofi Asante | Tax Technology lead | Markets on Vertex through the tax service adapter |\n| Invoicing | Group billing lead (delegated by Leila) | FI-CA product owner in the ERP Platform team | Billing approaches in use (three, falling to two by 2029) |\n| Financial Event Management | Interim: Lucía Romero, pending a Finance owner | Integration Hub product owner | Sources with proven completeness |\n| Finance metrics | Leila for meaning; Owen Mbeki for implementation | Finance Data Platform product owner | Conflicting metric versions |\n\nThe pairing works only if the split of authority is written down. The rule [When the ERP Isn't Enough: Custom Finance Platforms](custom-finance-platforms.html) proposed holds across all of them: **Finance owns the rules; Engineering owns the platform.** Finance decides what a payout netting rule or a posting rule says and approves its change; Engineering decides how it is implemented, tested and deployed, and owns the evidence that the approved rule is the one running. The rule store with maker-checker approval, built for the SFP remediation, is that split turned into software ([Never Update, Only Append: Designing Custom Ledgers](designing-financial-ledgers.html)).\n\n![A finance owner inserts approved rule cards into a platform maintained by an engineer, both watching one shared measure gauge.](assets/images/41-organizing-for-architecture/finance-rules-engineering-platform.jpeg)\n**Figure 6:** *Finance owns the rules and Engineering owns the platform: each finance platform pairs a Finance owner who approves rule changes with a product owner who runs the service, and both answer to one shared measure.*\n\nOf the six level-2 capabilities with no named Finance owner in March 2027, five had one by October 2027. The sixth, Financial Event Management, still had an architect as interim owner. I prefer that to be visible in the table rather than resolved by naming someone who will not act on it. Completeness of financial events is a business outcome; it needs a Finance owner, and the gap is a standing item at the design authority until it has one.\n\n### Make engineers finance-literate, and accountants platform-literate\n\n**Finance engineering**, as I use the term, is the discipline of building systems whose outputs are accounting facts: posting engines, subledgers, payouts, reconciliations, financial events and the evidence around them. It is software engineering plus four kinds of literacy: double entry and subledgers, the period and its cut-offs, controls and evidence, and money in flight. An engineer without them builds a system that is fast, correct by its own tests and unreconcilable at month end.\n\nNorthmere's program for finance literacy, run jointly by Dana's architects and Leila's organization from 2027, has three parts.\n\n- **A short curriculum**, about twenty hours, built on Northmere's own examples: the Lisbon booking's journal entries from capture to payout, the Tablekin invoice's contract liability, the €420 chargeback's correction in the current period, a reconciliation from end to end ([Accounting for Architects: Ledgers, Journals and Revenue](accounting-for-architects.html)). It is required for engineers joining any finance platform or brand finance team, and for every architect.\n- **The close residency.** Each finance platform team sends one engineer per quarter to sit with the close team for a full close, from working day 1 to sign-off, the way Dana did in 2026. They come back knowing which of their alerts matter on working day 2 and which can wait.\n- **Accountants in the platform teams.** Each platform team has a finance analyst or accountant as a standing member, not a stakeholder: the Ledger Platform has two from accounting policy, the Payout Service one from partner settlement. They write acceptance criteria in accounting terms and sign off posting simulations before release ([Canonical Events: A Common Language for Money](loosely-coupled-domains.html)).\n\nThe reverse matters as much: controllers who understand a pipeline and a rule store stop asking for sign-off spreadsheets, because the pipeline already produces better evidence.\n\n### Hire for finance literacy\n\nThe scarce profile is an engineer or architect who is fluent in both worlds. It is commonly hired from payments companies, fintechs and ERP consultancies; each source brings a bias (payments engineers underestimate the close, ERP consultants overestimate configuration). The interview that has worked best for Dana's team is a single exercise: give the candidate the Lisbon booking (€600.00 captured on 12 March, €90.00 commission, €510.00 payout after the stay) and ask what the systems must record, in which period, and how anyone would prove that the PSP, the subledger and the ledger agree. The strongest candidates ask who approves the rule, which period a late event lands in, and what happens when the file arrives twice. Candidates who recite accounting standards but cannot place a reconciliation do worse than candidates who know little accounting and ask those three questions.\n\n## Product Funding for Platforms, Plateau Funding for Change\n\nSriram Narayan's critique of project-mode IT funding names the problems a finance estate shows clearly: budgets justified by projected benefits that are rarely checked afterwards, temporary teams that take the knowledge with them, build-only teams handing over to separate run teams, and project teams with little reason to respect long-term architecture because they do not live with the consequences ([Narayan, Products Over Projects, 2018](https://martinfowler.com/articles/products-over-projects.html)).\n\nFinance adds two reasons of its own. **Controls and evidence need a permanent owner**: an application control designed by a project team and handed to a run team that did not build it is where change-management findings come from. And **posting rules and reconciliations encode accounting policy**: a team that disbands takes the reasons for each rule with it, which is how platforms end up with rules nobody can explain ([When the ERP Isn't Enough: Custom Finance Platforms](custom-finance-platforms.html)).\n\n| Funding model | Suits | Fails when | Northmere's use |\n| --- | --- | --- | --- |\n| **Project** | Self-contained changes with their own benefit: a one-off regulatory report, a vendor upgrade with a fixed end | Used for platforms; the team disbands and the control owner goes with it | Small regulatory changes inside a team's capacity |\n| **Plateau tranches** | Multi-year transformation with dependent changes; money released against exit criteria | Gates become theater; the tranche funds people who leave at its end | Keystone migrations and retirements ([The Middle Matters: Transition States and the Roadmap](target-and-transition-states.html)) |\n| **Persistent product funding** | Platforms and brand finance teams with continuing customers | No target state, so the platform drifts and accretes features | The core of each platform team from 2028; all platforms from 2030 |\n\nNorthmere's choice is a hybrid, and I recommend it for any group in the middle of a transformation. **Each platform team has a persistent, product-funded core**: its run, its evolution and a stable membership, sized so the team can own its controls and keep its knowledge. **Keystone's plateau tranches add capacity for migration work** and are released against exit criteria. When a plateau lands, the tranche ends but the team does not. From 2030, when the transformation has landed, the platforms are funded wholly as products, as [The Middle Matters: Transition States and the Roadmap](target-and-transition-states.html) sets out.\n\nThe test I apply to any funding proposal is simple: when this money stops, who owns what it built, and who answers the auditor about it? If the answer is a team that will not exist, the funding model is wrong.\n\n## Leading the Matrix Without Line Authority\n\nDana leads about 30 architects. The roughly 320 engineers and finance-systems specialists in the topology above report to brand leaders, to Sven, to Owen, to Ingrid, to Kofi or to Leila. About eight more architects sit in brand and Northmere Pay engineering lines with a professional line to Dana. This is the matrix [The Chief Architect's Job: Making Many Systems Tell One Story](chief-architect-role.html) described as a contract with consideration on both sides. Organization design is where that contract is made concrete. The levers that work are the ones that make the right thing the easy thing for a team that does not report to her.\n\n| Lever | What it is at Northmere | Why it works | Its limit |\n| --- | --- | --- | --- |\n| **Narrow mandatory standards** | Six mandatory standards (STD-FIN-01 to STD-FIN-06) under Dana's decision rights, with expiring waivers ([Architecture Governance That Speeds Decisions](architecture-governance.html)) | Binding without line authority; few enough to defend | A long list turns the matrix into a fight about the list |\n| **Funded golden paths** | Adapter kit and posting pipeline template, funded centrally by Keystone ([Principles That Decide Things](principles-standards-reference.html)) | Conformance becomes cheaper than divergence | Unmaintained kits get forked; each needs a platform team with a backlog |\n| **Design authority** | Dana and Leila co-chair decisions on capability ownership and target state | Finance and architecture decide together, so neither can be played off against the other | Program capture if it only rules on program scope |\n| **Embedded architects** | Domain architects work inside brand and platform teams; solid line to Dana; rotate yearly | Advice arrives early, from someone who knows the team's constraints | Embedded architects \"go native\"; rotation and the forum counter it |\n| **Open forum and community** | Weekly Architecture Advisory Forum; communities of practice (below) | Influence through shared reasoning in public | Advice can be ignored, on the record |\n| **Career paths** | Dana co-owns architect-titled roles and promotions across the group | Ambitious engineers want what the function offers | Slow; takes two or three promotion cycles to show |\n| **Facts** | Portfolio, decision lead times and organizational health measures, published | Hard to argue with a team's own handoff trace | Measures that feel like surveillance are gamed or ignored |\n\nThe two levers I would not give up are the **golden paths**, which decide what teams do every day, and the **career paths**, which decide who wants to work on the hard shared problems. A Chief Architect who controls neither is left with persuasion and escalation.\n\n### Who decides recurring decisions\n\nThe decision-rights table in [The Chief Architect's Job: Making Many Systems Tell One Story](chief-architect-role.html) settles the architecture function's own rights. The table below covers something different: **recurring operational decisions** that cross Finance, Engineering, Security, Data, Payments, Controls and Tax every month. It uses RACI: **A** accountable (exactly one per row), **R** responsible for doing the work, **C** consulted before the decision, **I** informed after.\n\n| Recurring decision | Finance (Leila) | Engineering (Ravi, brand CTOs, platform leads) | Security (Marco) | Data (Owen) | Payments (Ingrid) | Controls (Mei) | Tax and Treasury (Kofi) | Architecture (Dana) |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| Launch a new payment method or PSP route | C (accounting pattern) | R (brand team) | C (third-party risk, PCI scope) | I | **A**, R | C (control impact) | C (bank account, FX) | C (ledger-ready standard) |\n| Change a posting rule or account determination | **A** (accounting policy) | R (ledger or ERP platform) | I | I | I | C | C if tax accounts | I |\n| Change a partner payout rule | **A** (Head of Partner Settlement) | R (payout service) | I | I | C (process owner; payout execution) | C | I | I |\n| Add or change a GL account or mapping | **A** (Finance Data Council) | R (source ledger team) | I | C | I | I | C | I |\n| Add or change a canonical event type | C (accounting policy reviews) | R (producing team) | I | C | C if payment events | C if breaking | I | **A** (change board) |\n| Add a finance application or extend one into a new capability | C (capability owner) | R (requesting team) | C | C | C if payments | C | C if tax or treasury | **A** (portfolio gate) |\n| Schedule an ERP or SaaS release around the close | C (close calendar) | **A**, R (platform owner) | I | I | I | C (regression evidence) | I | I |\n| Grant privileged or break-glass access to a finance system | I | R (system owner approves each session) | **A** (privileged access policy and tool) | I | I | C (review of sessions) | I | I |\n| Deploy an AI agent into a finance process | **A** (process owner) | R (building team) | C (identity, data access) | C | C if payments | C (agent control card) | C if tax | C (standard conformance) |\n| Define or change a governed finance metric | **A** (meaning) | I | I | R | C if payments | I | C if tax or cash | I |\n| Add a tax jurisdiction or e-invoicing mandate | C | R (issuing systems) | I | I | I | C | **A**, R (tax technology) | C (gateway standard) |\n\nThree properties make the table usable. **Every row has one A**, and the A sits where the consequence lands: posting rules with the controller, privileged access with the CISO, payment routes with the payments owner. The payout row separates two kinds of ownership: the Head of Partner Settlement, in Leila's organization, owns what the payout rules say; Ingrid owns the payout process and the platform that executes the payouts, so she is consulted on every rule change and accountable for the payout running. **Architecture is accountable for few rows**, only those where coherence across the estate is the point: the canonical model and the portfolio gate. And **Controls is consulted almost everywhere and accountable nowhere** in this table, because Internal Controls decides what evidence a change needs ([Controls by Design, Not by Audit Season](controls-and-auditability.html)), not the change itself.\n\nThe row on AI agents is the newest and, by 2028, the busiest. It puts accountability for an agent with the process owner whose control it supports, which is the organizational half of the agent control card in [Automate the Work, Not the Accountability](ai-in-finance.html).\n\n## Architect Roles, Ratios and Career Paths\n\n\"Architect\" covers several jobs in a finance estate, and an architecture function that does not distinguish them hires the wrong people and promotes them into the wrong roles. Dana's function in 2027 has five roles.\n\n| Role | What they own | Where they sit | Northmere count | Typical background |\n| --- | --- | --- | --- | --- |\n| **Enterprise architect** | Capability map, portfolio, target and transition states, standards catalog; rides the elevator between the CFO's floor and the engine room ([Hohpe, The Software Architect Elevator](https://architectelevator.com/book/)) | Central | 4 including Dana | Solution or domain architect with a finance transformation behind them |\n| **Domain or solution architect** | Design of one domain end to end: record-to-report and close, payments-to-ledger, partner settlement, billing and revenue, spend, tax and treasury, plus one each for Wayfare and Tablekin | Embedded in teams, solid line to Dana | 11 | Senior engineer or ERP consultant with domain depth |\n| **Data architect** | Finance data model, chart-of-accounts structures in data, lineage, governed metrics | With Owen's platform | 4 | Data engineer or BI architect who learned the ledger |\n| **Integration architect** | Canonical events, contracts, idempotency, the interface inventory | Lucía Romero's group | 6 | Integration or platform engineer |\n| **Platform-specific architect** | Deep design authority on one vendor platform: S/4HANA (2), Oracle and Workday (1), payments (1) | Paired with the platform team | 4 | Vendor-certified specialist with clean-core discipline |\n\nThat makes Dana plus 29. Measured against about 320 engineers and finance-systems specialists, plus the eight architects in brand lines, it is roughly one architect for every eight to ten people building and running finance technology. I would not take that as a benchmark; credible public data on architect ratios is thin, and the right number depends on how much of the estate is in transition. My rule of thumb is that **a regulated finance estate in the middle of a transformation needs about twice the architecture density of a stable product estate**, and that the extra capacity should be domain and integration architects embedded in teams, not more enterprise architects at the center.\n\n### Career paths\n\nThree principles shape Northmere's paths.\n\n1. **Architect is a role, not the next rung above engineer.** Staff and principal engineers on the finance platforms are paid and titled at the same levels as solution architects. An engineer who wants to stay deep in the ledger platform should not have to become an architect to be promoted, and an architect who wants to go back to building should be able to.\n2. **Domain depth is the main path, and it crosses the Finance–IT line.** An engineer can move from a brand finance team to a platform team to a domain architect role. An accountant from accounting policy can move into a product owner or domain architect role, and two did in 2027. Both moves require the finance-literacy curriculum and a close residency.\n3. **Enterprise architecture comes after domain depth, not instead of it.** Northmere does not hire enterprise architects straight from frameworks. The four in the role each led a domain design through at least one close before taking it.\n\n## Communities of Practice and the Advice Forum\n\nTeams and decision rights cannot carry all the knowledge a federated estate needs; with about 1,100 interfaces and 214 finance-relevant applications, no team sees more than a slice. **Communities of practice**, Etienne Wenger's term for practitioners who share a domain of concern and learn from each other across organizational lines, are where knowledge crosses team boundaries without a handoff. Northmere runs three, each with a named host and a small budget: **Finance Engineering** (owns the finance-literacy curriculum; a monthly session on a real incident, such as the February 2027 duplicate posting in [Files, Events and APIs: How Finance Systems Talk](integration-architecture.html)); **ERP and SaaS Configuration** (S/4HANA, Fusion, Workday, BlackLine and OneStream specialists, so that one configuration problem is not solved three ways in three ledgers before they converge); and **Payments-to-Ledger** (maintains the approved accounting patterns behind the payment-method onboarding offer).\n\nThe **Architecture Advisory Forum**, Andrew Harmel-Law's weekly open hour in which anyone taking an architecture decision seeks advice in public ([Harmel-Law, Scaling the Practice of Architecture, Conversationally](https://martinfowler.com/articles/scaling-architecture-conversationally.html)), is the bridge between the communities and the decision service. [Architecture Governance That Speeds Decisions](architecture-governance.html) owns its mechanics, and its limit for systems in the scope of internal control over financial reporting (ICFR): advice never replaces documented change approval. The organizational point is narrower: communities are for learning, the forum for decisions, teams for delivery. A community that starts approving designs has become an unaccountable board.\n\n## Measuring Organizational Health\n\nAn organization designed as part of the architecture should be measured like the rest of the architecture. Northmere tracks six measures. Each is taken from data the teams already produce, and each is reviewed quarterly at the design authority next to the estate's technical fitness measures ([Technical Debt on the Balance Sheet](technical-debt-and-fitness.html)).\n\n| Measure | How it is taken | Northmere baseline (2027) | Target |\n| --- | --- | --- | --- |\n| **Handoffs per change**, for five recurring change types | Handoff trace from tickets for one recent instance of each: new payment method, new GL account, payout rule change, new brand event type, new tax market | New payment method: 17 handoffs across 11 teams | At most 6 by end of 2028 |\n| **Wait share of elapsed time** | Waiting days over elapsed days in the same traces | About 80% for the e-wallet | Under 40% |\n| **Capabilities without a Finance owner** | From the capability map | 6 (March 2027); 1 (October 2027) | 0 |\n| **Team cognitive load** | Quarterly self-assessment per team (domains, systems and on-call scope it holds; perceived load), plus a count of distinct systems owned | Wayfare Finance Systems: five domains with nine people, rated \"overloaded\" | No team rated overloaded for two quarters running |\n| **Key-person concentration** | Critical components that fewer than three people can safely change | Not measured before 2027 | Every SOX-relevant component above three |\n| **Cross-team incidents** | Share of finance incidents whose cause lies in a different team from the one that detected it | The February 2027 duplicate posting: caused in integration, found by the close | Falling, and each reviewed jointly |\n\nTwo cautions. **Handoffs are not bad in themselves.** The handoff from the team that writes a payout rule to the person who approves it is a control. The measure counts handoffs, but the review asks of each one whether it is a control boundary, which stays, or a queue, which should become a service. **Cognitive load measures are self-reported and easily distorted**. A team that rates itself overloaded every quarter in order to win headcount teaches the design authority to ignore the measure. Northmere pairs the survey with the count of systems and domains a team owns, which is harder to argue with.\n\n## Trade-offs: Ways to Organize Finance Technology\n\n| Option | How it works | Strengths | Weaknesses | When it is right |\n| --- | --- | --- | --- | --- |\n| **By brand** (Northmere's starting point) | Each brand owns its whole finance stack | Fast for the brand; clear local accountability | Duplication by construction; three ledgers; the group joins it all at consolidation | A holding company that never intends to integrate its brands |\n| **One central finance-technology organization** | All finance systems in one central organization, brands as customers | Coherence; one owner per capability | Distant from brand products; becomes a queue; brands build shadow systems around it | Small groups, or single-brand companies with a stable business model |\n| **By system or vendor** | An SAP team, an Oracle team, a Workday team, a payments team | Deep platform skill; clear vendor relationship | Organizes around tools, not flows; every business change crosses several teams; protects the vendor's footprint | Rarely as the whole design; right for a complicated subsystem inside another design |\n| **Stream-aligned brands on finance platforms** (recommended) | Brand finance teams own their flows; a few platforms provide ledger, integration, data and payments as services; specialists own the ERP and tax; enabling teams for architecture and controls | Brand speed with group coherence; duplicates retire into platforms; controls designed once | Needs real platform product management, funding and a design authority to hold it; slower to set up | Multi-brand groups with a shared finance core and a convergence agenda |\n\nI recommend the fourth for groups like Northmere, with one condition: **the platforms must be run as products, with product owners, service levels and backlogs open to their customers**. Without that, the fourth option decays into the second within two years, because a platform that behaves like a queue is a central organization with a newer name.\n\n## Integration with the Rest of the Estate\n\nThe topology is the organizational side of decisions made elsewhere: capability owners from [Map What Finance Does Before What Runs It](capability-mapping.html), platforms from [The Middle Matters: Transition States and the Roadmap](target-and-transition-states.html), boundaries from the bounded contexts and canonical events of [Canonical Events: A Common Language for Money](loosely-coupled-domains.html), data authority from [Systems of Record: Ending the Doppelgänger Record](systems-of-record.html), and the Finance-rules, Engineering-platform split from [Controls by Design, Not by Audit Season](controls-and-auditability.html). When one of those decisions changes, the topology is reviewed with it; if the 2027 Q4 convergence decision selects an accounting hub rather than SAP Central Finance, the Ledger Platform's and the ERP team's scopes change accordingly ([Converge or Coexist: Living with More Than One ERP](multiple-erps.html)).\n\n## Failure Modes\n\n- **Architecture as an ivory tower.** Architects sit centrally, write standards and review documents, and do not build or run anything. Brand teams learn to describe their changes so that they fall below the review threshold. Symptom: no architect could explain last month's close incident without reading the ticket. Remedy: embed most architects in teams, require every architect to have done the close residency, and measure the function by decision lead time rather than documents ([The Chief Architect's Job: Making Many Systems Tell One Story](chief-architect-role.html)).\n- **The ERP team as a ticket queue.** The ERP platform team receives requests (\"add a field\", \"build a report\", \"change this posting\") and works through them in order. Brand teams wait weeks, and the requests that are fastest to fulfill are custom code inside the ERP, so the ERP fills with brand-specific logic: **Customization Concrete**, the origin of many of Northmere's 2,300 custom objects. Remedy: run the ERP as a complicated subsystem with published services (released posting APIs, the posting registry, self-service account provisioning within governance) and a reserved share of capacity for its own clean-core work, and route anything else through the design authority.\n- **Brand teams forking.** A brand team copies the adapter kit into its repository and changes it, builds its own reconciliation tool, or keeps a local account-mapping table \"temporarily\". Each fork is faster this quarter and more expensive every quarter after. Symptom: several versions of the same kit, none current; a capability map whose overlaps grow between versions. Remedy: platforms that are faster to use than to fork, waivers with expiry dates for the rest, and a capability owner with the authority to say which implementation survives.\n- **Reorganizing instead of deciding.** Teams are renamed and the systems stay as they were, because the decisions about capability ownership and platform scope were never taken. Remedy: tie each team change to a recorded capability decision and a plateau in the target state.\n- **Platforms in name only, and enabling teams that become gates.** A \"platform\" with no product owner, service levels or roadmap is routed around; a controls engineering team that starts approving releases becomes the old sign-off spreadsheet with a new name. Remedy: no team is labeled a platform until it has all three; every facilitation engagement is time-boxed, and change approval stays with Internal Controls and the process owner.\n\n## The Chief Architect's View\n\n**What to decide.** The team topology for finance technology, with every team typed, its scope written down and its non-default interactions dated. The pairing of a Finance owner with a Technology product owner for every finance platform. The funding model for each platform: a persistent core plus transition tranches. The RACI for recurring decisions, with exactly one accountable party per row. The architect roles and the career paths that make them attractive.\n\n**Who decides.** The topology is a design-authority decision recommended by the Chief Architect and the CAO, approved by the CFO and CTO because it moves people across their organizations. Individual team designs inside it belong to the line leaders. The Chief Architect owns the architecture function's own structure.\n\n**What to watch.** Handoffs per change on the five recurring change types; capabilities without a Finance owner; the number of teams rated overloaded; the first brand request that reaches the ERP team as a ticket rather than through a service; and whether brand engineering leaders bring their best engineers to the platform teams or keep them. The last is the most reliable signal I know. When the strongest engineers want to work on the shared platforms, the matrix is working.\n\n**Long term.** The teams will change at every acquisition and plateau; the shape should not. A new brand should arrive as a stream-aligned team on existing platforms, not as a fourth ledger with its own finance-systems department ([The Next Brand Should Be Boring: Onboarding as Configuration](brands-entities-markets.html)).\n\n## Questions to Ask\n\n1. For the last new payment method, GL account or payout rule change, how many teams touched it, how many handoffs did it take, and how much of the elapsed time was waiting?\n2. Which capabilities have no named owner in Finance, and which have an engineering owner acting as the business owner by default?\n3. Which of our \"platform\" teams have a product owner, published service levels and a roadmap their consumers can influence?\n4. How do brand teams get things from the ERP: through published services, or through tickets that end as custom code?\n5. Which handoffs exist because a control requires them, and which exist only because nobody owns the end-to-end outcome?\n6. When the current program's funding ends, who owns each platform it built and answers the auditor about its controls?\n7. How many of our engineers on finance platforms could explain the journal entries their system produces, and how many have sat through a close?\n8. Which team is carrying more domains and systems than it can hold, and what will we take away from it?\n9. Is our architecture career path a promotion away from engineering, or a parallel path that domain experts actually want?\n\n## From Teams to Agents\n\nThe topology assigns every capability, platform and recurring decision to a team and every rule to an owner in Finance. By 2028 a new kind of actor was arriving in almost every one of those teams: AI agents embedded in BlackLine, OneStream, Coupa and the ERPs, and agents built by Northmere's own platforms, each able to read the books and propose changes to them. An agent is not a team, but it needs everything this chapter gives a team: an owner, a scope, a place in the RACI and a boundary it must not cross. [Automate the Work, Not the Accountability](ai-in-finance.html) takes up how to give it those things without turning a productivity gain into a new, unowned control.\n\n## Sources and Evidence\n\n**Vendor documentation**\n\n- [Team Topologies, 2nd edition](https://itrevolution.com/book/team-topologies/), Matthew Skelton and Manuel Pais, IT Revolution, 2025. Publisher's page confirming the September 2025 second edition, its four team types, three interaction patterns and team cognitive load as a design factor.\n\n**Standards and regulation**\n\n- No regulatory source is cited directly. The segregation-of-duties and change-approval requirements referred to are developed, with sources, in [Controls by Design, Not by Audit Season](controls-and-auditability.html).\n\n**Practitioner and research sources**\n\n- [How Do Committees Invent?](https://www.melconway.com/Home/Committees_Paper.html), Melvin E. Conway, *Datamation*, April 1968. The original statement that system designs copy the communication structures of the organizations that produce them.\n- [Conway's Law](https://martinfowler.com/bliki/ConwaysLaw.html), Martin Fowler, martinfowler.com, 2022. Summary of the law, attribution of the Inverse Conway Maneuver to Jonny LeRoy and Matt Simons (2010), and the warning that reorganizing alone does not quickly fix a rigid legacy system.\n- [Team Topologies: key concepts](https://teamtopologies.com/key-concepts), Matthew Skelton and Manuel Pais. The authors' definitions of the four team types, three interaction modes and team cognitive load used in this chapter.\n- [What I Talk About When I Talk About Platforms](https://martinfowler.com/articles/talk-about-platforms.html), Evan Bottcher, martinfowler.com, 2018. Definition of a digital platform as self-service APIs, tools, services, knowledge and support, run as an internal product.\n- [Products Over Projects](https://martinfowler.com/articles/products-over-projects.html), Sriram Narayan, martinfowler.com, 2018. The case against project-mode funding: unvalidated benefits, team churn, handoffs, output over outcome and weakened architectural integrity.\n- [Scaling the Practice of Architecture, Conversationally](https://martinfowler.com/articles/scaling-architecture-conversationally.html), Andrew Harmel-Law, martinfowler.com, 2021. The advice process and the Architecture Advisory Forum.\n- [The Software Architect Elevator](https://architectelevator.com/book/), Gregor Hohpe, O'Reilly. The architect's role between strategy and implementation, used for the enterprise architect role.\n- *Cultivating Communities of Practice*, Etienne Wenger, Richard McDermott and William M. Snyder, Harvard Business School Press, 2002. Background for the concept of communities of practice; cited from the author's prior knowledge, the publisher page was not consulted for this chapter.\n\nNorthmere is fictional, and so are all of its figures, people and events. The architectural recommendations in this chapter are the author's judgment.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

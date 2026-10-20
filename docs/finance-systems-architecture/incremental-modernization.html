@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Modernizing Without Stopping the Close</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">RECONCILED: Enterprise Architecture for Financial Systems</a><span class="nav-right"><a class="nav-prev" href="brands-entities-markets.html" title="The Next Brand Should Be Boring: Onboarding as Configuration">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="part-4.html" title="LEADERSHIP: The Chief Architect's Agenda">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part III — INTEGRATION: The Finance Estate as One System</p>
+        <h1>Modernizing Without Stopping the Close</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-18  ·  38 min read · <a class="spec-link" href="incremental-modernization.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/33-incremental-modernization/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/33-incremental-modernization/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">RECONCILED: Enterprise Architecture for Financial Systems</a><span class="nav-right"><a class="nav-prev" href="brands-entities-markets.html" title="The Next Brand Should Be Boring: Onboarding as Configuration">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="part-4.html" title="LEADERSHIP: The Chief Architect's Agenda">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Modernizing Without Stopping the Close", "date": "2026-10-18", "author": "Željko Obrenović", "excerpt": "How do you move a live finance ecosystem to a new architecture without disrupting the close or the money it pays out? Slice the migration along reconciliation boundaries, let the accounting calendar set the cut-over dates, make every stage pass a reconciliation gate with a rehearsed rollback, and count the work done only when the old components are decommissioned and their history can be retrieved without them.", "permalink": "incremental-modernization", "timetoread": "38 min read", "icon": "assets/icons/33-incremental-modernization.png", "logo": "assets/images/33-incremental-modernization/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Follow Northmere's migration of Stayloft's merchant subledger from the Stayloft Finance Platform onto the group accounting engine and the S/4HANA core, from the 2028 shadow stage through two cut-over stages in 2029 to decommissioning in 2030. Each stage is described by scope, transitional architecture, dual running and reconciliation gates, cut-over calendar, rollback, controls and audit, people, and measured outcome. You will also get a stage-gate table, a cut-over runbook and an honest account of what went wrong in the first stage.\n\n> **WHY FINANCE CARES:** The merchant subledger holds billions in partner payables and pays about 7.6 million partner payouts a month. A migration that loses one open item, pays one partner twice or delays a quarter-end sign-off is an accounting problem, a partner problem and, for a SOX registrant, a controls problem.\n\n> **WHY ARCHITECTS SHOULD CARE:** The hard part of a finance migration is not the target design but the eighteen months in between. During that time two systems are capable of being the book of record and both must be reconciled. The cut-over has to fit a calendar that finance controls, and every temporary component built for it must eventually be removed.\n\n> **KEY POINTS:**\n>\n> * **Slice along reconciliation boundaries, not modules.** A good migration slice keeps every reconciliation (entity, currency, payment-provider account, safeguarding entity) whole on one side of the line. Northmere sliced by contracting legal entity, aligned with its payment-provider merchant accounts, and never split one booking's accounting across two books.\n> * **Gates are reconciliations with owners, tolerances and durations.** Each stage enters on shadow results from two non-quarter-end closes and exits after the reverse shadow has tied out over two clean closes. Each has a rehearsed rollback and a stated last point of return. The calendar, not the plan, decides when a gate can be passed.\n> * **The first stage exists to fail cheaply.** Stage 1 exposed late chargebacks on bookings settled before cut-over, a foreign-exchange rounding policy difference and a payout reference that partners could not match. Each fix became a gate criterion for stage 2. The migration was finished when SFP's subledger components were switched off and their history could be retrieved without them, not at the last cut-over.\n\n> **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-finance-architecture-goes-wrong.html):**\n>\n> * **Big-Bang Bravado** — the integrator's 1 January 2029 single-step plan is replaced by entity cohorts that each cut over at a quiet period boundary and can each be rolled back.\n> * **The Shadow Ledger** — the merchant subledger, a book of record run by a brand engineering team, becomes a governed part of the group finance core, and its legacy control account ends at zero and is blocked.\n> * **Audit Archaeology** — migration controls, temporary reconciliations and walkthrough updates are designed with each stage and tested by the auditor before the first close on the new book, not reconstructed after it.\n\n<br>\nEarlier chapters supplied the parts of this migration. [Changing the Engine in Flight: Modernization Patterns for Finance](modernization-patterns.html) defined the vocabulary (strangler fig, event interception, legacy mimic, transitional architecture, the parallel run, the period-boundary cut-over) and the calendar rule. [Never Update, Only Append: Designing Custom Ledgers](designing-financial-ledgers.html) rebuilt the merchant subledger as an engine with approved posting rules. [Converge or Coexist: Living with More Than One ERP](multiple-erps.html) chose where it should end up, and [The Middle Matters: Transition States and the Roadmap](target-and-transition-states.html) placed it on the critical path of Program Keystone, the group's finance transformation. This chapter puts them together into **one worked migration, stage by stage**, with the dates, numbers, setbacks and controls that a real one has.\n\nThe question every finance modernization meets once the target is agreed is **how to move the book of record while the books keep closing and the money keeps moving**. My answer: cut the migration into slices that keep reconciliations whole, let each slice pass gates that finance can sign, and plan the switch-off and the archive as carefully as the start.\n\nThe chapter owns **migration stage-gate design**. It does not re-teach the pattern catalog ([Changing the Engine in Flight: Modernization Patterns for Finance](modernization-patterns.html)), program leadership and go/no-go governance ([The Technology Is the Easy Part: Leading a Finance Transformation](finance-transformation.html)), or the reconciliation catalog ([Reconciled by Design: Traceability and Audit Across Boundaries](traceability-and-reconciliation.html)); it uses them.\n\n## Setting the Scene at Northmere: One Subledger, No Bad Closes\n\nNorthmere is the fictional multi-brand digital commerce group this book follows ([Meet Northmere: Five Brands, One Set of Books](meet-northmere.html)). On 8 December 2027 its Keystone design authority, chaired by Dana Whitlock, the Chief Architect, with Leila Haddad, the Chief Accounting Officer, decided how the group's ledgers converge. Northmere chose an **accounting-hub pattern**: a Northmere-built **group accounting engine**, generalized from the posting engine inside the Stayloft Finance Platform (SFP) and operated outside the SAP S/4HANA core by a new group finance platform team. The engine applies posting rules owned by Leila's accounting policy team and posts summarized journals with drill-back keys into S/4HANA through released APIs. The decision was conditional on a peak-day volume proof in the first half of 2028 ([Converge or Coexist: Living with More Than One ERP](multiple-erps.html)).\n\nIn 2027 [When the ERP Isn't Enough: Custom Finance Platforms](custom-finance-platforms.html) had recommended SAP FI-CA, the contract-accounting subledger, as the merchant subledger's home, if FI-CA passed a volume proof. The December decision went the other way. FI-CA keeps the receivables-shaped work it already has: agency commission billing since 2025, and **merchant commission invoicing from 2028**: a parallel run in April, the first cohort with the May 2028 invoicing cycle and the remaining cohorts through the rest of the year ([Changing the Engine in Flight: Modernization Patterns for Finance](modernization-patterns.html), [Systems of Record: Ending the Doppelgänger Record](systems-of-record.html)). The partner payables move to the engine.\n\nSFP's merchant subledger is the largest flow in the group: about **3 million subledger lines a day** from Stayloft's merchant model, in which Stayloft collects the traveler's payment and pays the property net of commission after the stay. It holds every open partner payable, every expected receivable from the payment service providers (PSPs) and the timing of Stayloft's commission revenue, and it feeds about **7.6 million partner payouts a month**. Keystone moves it into the group core during 2029.\n\nAn integrator had proposed moving it in one step on 1 January 2029. Leila had already rejected that ([Unreconciled: Fourteen Ways Finance Architecture Goes Wrong](where-finance-architecture-goes-wrong.html)). Tomás Ferreira, the Group CFO, put the remaining requirement to Dana in January 2028:\n\n*\"I want this done in 2029. I do not want one late close, one late payout or one new audit finding because of it. Show me where it can go wrong and what we do when it does.\"*\n\nDana asked for one plan with five owners: Jonas Berg (Stayloft Finance Engineering, which builds SFP), Sven Aalto (SAP Platform Lead), Ingrid Solberg (Northmere Pay, which executes payouts), Mei Tanaka (Head of Internal Controls) and the new Head of Partner Settlement in Leila's organization. The rest of this chapter is that plan and what happened when it ran.\n\n## What Moves, What Stays, and What \"Migrated\" Means\n\nFirst the words. **Book-of-record authority** for a balance is the right to be the system whose numbers the general ledger (GL) and the auditor rely on. In a migration it moves on a date, per slice, and at any moment exactly one system holds it. A **cohort** is a slice of the business that changes authority together. A **stage** is a time-boxed piece of the migration that moves one or more cohorts and ends at a **gate**: a decision point with written criteria, evidence and named approvers. **Dual running** means both systems process the same live events. Before cut-over the new system runs as a shadow; after cut-over the old one runs as a **reverse shadow**, computing but not posting, so that the new book can be reconciled against it and authority can go back if needed. The **point of no return** is the last moment at which authority can return to the old system without restating anything already signed.\n\nNext, the scope. SFP has nine components, and the May 2027 decision record gave each its own future ([When the ERP Isn't Enough: Custom Finance Platforms](custom-finance-platforms.html)). Only some of them are in this migration.\n\n| SFP component | Fate | Effect on this migration |\n| --- | --- | --- |\n| Merchant subledger (partner payables, expected PSP receivables, traveler-side open items) | **Moves** to the group accounting engine; summaries into S/4HANA | The subject of this chapter |\n| Revenue-recognition timing rules | **Move** into the engine's rule store | Move with the subledger, cohort by cohort |\n| GL summarization and posting interface | **Retired** | Stops for a cohort at its cut-over; removed in 2030 |\n| Merchant commission invoicing | Already in FI-CA: first cohort with the May 2028 cycle, all cohorts by 31 December 2028 | A precondition, done in Stage 0 |\n| SFP finance reports | Already rebuilt in FinDB, the finance data platform, in 2028 | Repointed from SFP tables to the engine |\n| Commission rating | **Stays** in SFP | Keeps publishing rated amounts as events |\n| Traveler funds ledger | **Stays** in SFP | Gains a new permanent reconciliation to the engine |\n| Payout calculation and orchestration | **Stays**, as the group payout service | Reads partner balances from the engine instead of SFP |\n| Payout rules and partner bank details | Rules stay as approved configuration; bank details authored only in Northmere Pay since 2028 | No change during the migration |\n\nSo \"migrating the merchant subledger\" means moving **three balance classes** (partner payables per booking, expected receivables from PSPs, traveler-side open items such as refunds due), the **accounting rules** that create them, and the **posting path** to the GL. Commission rating and payout calculation stay where they are and point at a new book.\n\nThe engine's design gave this migration one large advantage. The group engine is a generalization of SFP's 2027 engine, so most rule families arrived with the same meaning, and the producers already published Keystone's canonical financial events (`BookingConfirmed`, `StayCompleted`, `PaymentSettled`, `PartnerPayoutSettled` and the rest, [Canonical Events: A Common Language for Money](loosely-coupled-domains.html)). **The event contract did not change, so no producer had to change.** What remained was data, authority, operations and the small but real differences that generalizing an engine introduces.\n\n## Choosing the Slices\n\nThe first design decision is the slicing dimension. Fowler's account of the strangler fig asks for seams and small replacements delivered early ([Fowler, 2024](https://martinfowler.com/bliki/StranglerFigApplication.html)). In a ledger the seam has to be one that **every reconciliation can respect**. A reconciliation that has to look into two books to prove one boundary is a new manual control that exists only because of the migration.\n\nDana's team listed the reconciliations that touch the merchant subledger, using the catalog in [Reconciled by Design: Traceability and Audit Across Boundaries](traceability-and-reconciliation.html): subledger-to-GL per entity and currency; the three-way PSP match per merchant account and currency ([Payments-to-Ledger: Draining the Suspense Swamp](payments-to-ledger.html)); safeguarding per licensed entity; the traveler funds ledger against partner payables per booking; payouts in transit against bank debits; and intercompany between the contracting entity and the payments entity. Then they tested five slicing options against that list.\n\n| Slicing option | Example | Reconciliations kept whole | Rollback unit | Verdict |\n| --- | --- | --- | --- | --- |\n| **By module** | Partner payables first, expected PSP receivables later | None: one booking's accounting split across two books | Unclear | Rejected: every booking would need cross-book matching |\n| **By booking date (run-off)** | New bookings to the engine; old bookings run off in SFP | Few: every entity in two books for over a year, since stays are booked up to a year ahead | Hard | Rejected: two books of record per entity for 12–14 months |\n| **By property market within an entity** | Portugal's properties out of Stayloft B.V. first | Subledger-to-GL only via the market dimension; PSP and safeguarding split | Market | Rejected as the primary slice; kept as a fallback for the largest entity |\n| **By business-model variant** | Apartments before hotels | None of the entity-level ones | Variant | Rejected: variants share entities, PSP accounts and partners |\n| **By contracting legal entity, aligned with PSP merchant accounts** | Stayloft UK Ltd as one cohort | All of them, once PSP routing is aligned | Entity | **Chosen** |\n\nThe legal entity that contracts with the property is the natural boundary. Period states, subledger-to-GL tie-out and access control are already partitioned by entity in the 2027 journal design ([Never Update, Only Append: Designing Custom Ledgers](designing-financial-ledgers.html)). It is also the unit in which the close calendar, the controller's sign-off and the auditor's testing work.\n\n![A layered block cut horizontally with reconciliations crossing the cut, beside a block cut vertically into three slices that keep all layers intact.](assets/images/33-incremental-modernization/slice-along-reconciliations.jpeg)\n**Figure 1:** *Slice along reconciliation boundaries: a cohort of contracting entities keeps every reconciliation whole on one side of the line, while a module slice splits one booking's accounting across two books.*\n\nOne reconciliation did not line up at first. Northmere Pay routes Stayloft payments through three Adyen merchant accounts: `NMPay_Stayloft_EEA`, `NMPay_Stayloft_UK` and `NMPay_Stayloft_INTL` ([Adyen: One Platform from Checkout to Settlement](adyen.html)). An analysis in March 2028 found that about 2.6% of Stayloft B.V.'s bookings settled through the international account, because routing followed the traveler's region and not the contracting entity (illustrative). That would have split the international account's clearing match across two books for months. Ingrid's team changed the routing rule in September 2028 so that each merchant account settles for exactly one cohort. **The cheapest migration work is often a change to a neighbor's configuration that makes your seam clean.**\n\nThat gave three cohorts. The figures are illustrative.\n\n| Cohort | Contracting entities | Adyen merchant account and licensed entity | Share of subledger lines | Partners with open items | Open bookings at cut-over |\n| --- | --- | --- | --- | --- | --- |\n| **UK** | Stayloft UK Ltd (GBP) | `NMPay_Stayloft_UK`; Northmere Payments UK Ltd | ~7% | ~29,000 | ~530,000 |\n| **INTL** | Stayloft Inc. (USD) and three Asia-Pacific and Americas entities | `NMPay_Stayloft_INTL`; Northmere Payments B.V. | ~29% | ~104,000 | ~2.1 million |\n| **EEA** | Stayloft B.V. (EUR) and three other EEA entities | `NMPay_Stayloft_EEA`; Northmere Payments B.V. | ~64% | ~231,000 | ~4.9 million |\n\nAbout 3,900 property managers contract with entities in two cohorts. Their payouts and statements are already issued per contracting entity, so the cohorts do not split them. Their extranet \"current balance\", which sums across entities, needed a transitional read path, described below.\n\n## The Calendar Decides the Shape\n\nThe Keystone cut-over rule from [Changing the Engine in Flight: Modernization Patterns for Finance](modernization-patterns.html) is to cut over at the start of the **second month of a fiscal quarter**, never in a quarter-end month. Blackouts cover working day −2 to working day 9 of every close, 1 December to the 10-K filing, and Stayloft's July–August peak. Three dependencies from [The Middle Matters: Transition States and the Roadmap](target-and-transition-states.html) narrow 2029 further. Chart of accounts (CoA) v2 goes live on 1 January 2029 and must come first. Wayfare's twelve entities move onto S/4HANA through the engine from the 2029 fiscal year ([Converge or Coexist: Living with More Than One ERP](multiple-erps.html)), which takes the group's migration capacity in the first quarter. And the group payout service takes on Wayfare's suppliers in cohorts from April–May 2029 ([Duplicates and Dependencies: The Hidden Costs of a Grown Estate](redundancy-and-coupling.html)).\n\nThat leaves **two good windows in 2029: 1 May and 1 November**. Three cohorts, two windows. Dana put three options to the design authority in March 2028.\n\n| Option | Shape | For | Against |\n| --- | --- | --- | --- |\n| **A. One cohort per window, finish in 2030** | UK in May 2029, INTL in November 2029, EEA in May 2030 | Smallest steps | Misses the Plateau 2 exit; SFP and the reverse shadow run six more months; contradicts the board's 2029 commitment |\n| **B. Use first-month exceptions** | UK in April, INTL in May, EEA in October or November | Three separate steps in 2029 | No stage can pass a gate built on two clean closes of the stage before it; two first closes in consecutive months heading into year-end |\n| **C. Two stages, sized by risk** | UK and INTL on 1 May 2029 (~36%); EEA on 1 November 2029 (~64%) | Each stage gated by the previous one's closes; EEA moves with six months of production evidence | The second stage is large; incremental in risk, not evenly in volume |\n\nDana recommended option C, and Leila and Mei agreed, with two conditions that matter more than the cohort sizes. First, **every entity keeps its own go/no-go decision and its own rollback switch**, even inside a stage, so a stage can go ahead without one of its entities. Second, **the EEA cohort does not cut over until the engine has carried the UK and INTL cohorts through a quarter-end close.** \"Incremental\" here means each step is reversible and proven by the step before. It does not mean each step is the same size. If the EEA stage had failed its gate, the fallback was the market-within-entity slice for Stayloft B.V. in May 2030, with the Plateau 2 slip reported to the board.\n\nA cut-over at the start of a month falls inside the month-end blackout by definition, since 1 May is working day 1 of the April close. The rule was clarified rather than broken: **the blackout freezes deployments, not effective dates.** Everything is deployed before working day −2, and the switch is an approved, effective-dated configuration change that takes effect at 00:00 on day one.\n\n![A year wheel with blackout and peak bands, leaving two green-flagged windows at the start of May and November.](assets/images/33-incremental-modernization/two-windows-calendar.jpeg)\n**Figure 2:** *The calendar decides the shape: close blackouts, year-end, the summer peak and other first-quarter work leave two good windows in 2029, 1 May and 1 November.*\n\n## The Target and the Transitional Architecture\n\nThree architectures matter: the shadow stage, the transitional state with cohorts on both sides, and the end state. The first two are shown here and the third under decommissioning.\n\n![Product systems publish events onto a backbone; the SFP subledger posts to the general ledger and payouts while a ghostly accounting engine computes the same summaries that go only to a shadow comparison desk.](assets/images/33-incremental-modernization/stage-zero-dark-launch.jpeg)\n**Figure 3:** *Stage 0. The engine consumes the same events as SFP but posts nothing; its would-be summaries are compared with SFP's real ones per entity and day. This is the Dark Launching pattern applied to a ledger: production inputs, no production effect.*\n\nFive transitional components were built for the cut-over stages. [Changing the Engine in Flight: Modernization Patterns for Finance](modernization-patterns.html) requires each to have an owner and an expiry condition from the day it is designed, so they were entered in Keystone's scaffolding register before any code was written.\n\n| Transitional component | Pattern | What it does | Owner | Expires when |\n| --- | --- | --- | --- | --- |\n| **Cohort register** | Event interception | Effective-dated table: entity → authoritative book, mode (shadow, authority, reverse shadow, retired). Engine and SFP read it to decide whether to post or only compute | Leila's team (content), group finance platform team (service) | Last cohort's reverse shadow ends |\n| **Opening-balance loader** | Transitional architecture | Loads open items per booking from an SFP snapshot as engine entries tagged with their SFP `summary_id`, with control totals per entity, currency and class | Group finance platform team | Last cohort loaded and reconciled |\n| **Reverse-shadow comparison** | Transitional architecture | Daily three-way tie-out of SFP (computing), engine (posting) and PSP clearing per entity | Leila's team, certified in BlackLine | Two clean closes per cohort |\n| **Partner balance read model** | Legacy mimic | Serves the extranet \"current balance\" and statements from SFP or the engine per entity, so partners see no change | Stayloft product engineering | Last cohort cut over |\n| **Legacy control account** | Transitional architecture | A separate CoA v2 account, \"Partner payables – merchant, legacy SFP\", so SFP-fed and engine-fed balances are reconciled separately | Group reporting | Balance zero after the last cohort; blocked after the FY2029 audit |\n\n![A cohort register switch routing events either to the SFP subledger or to the new engine, each crowned as book of record for its cohorts, with a reverse-shadow ghost book tied out against the new engine and both books feeding one read model for partners.](assets/images/33-incremental-modernization/cohort-register-switch.jpeg)\n**Figure 4:** *The transitional state during 2029. The cohort register gives every entity exactly one book of record. Moved cohorts are recomputed by SFP as a reverse shadow so the new book can be proven and, until the point of no return, handed back. Partners and the payout service read through paths that hide which book is authoritative.*\n\nTwo rules governed these components. **The cohort register is financially significant configuration.** Under the segregation-of-duties standard (STD-FIN-05, [Principles That Decide Things](principles-standards-reference.html)), every change is approved by someone other than its author, versioned and logged to the evidence store, and a register change that moves authority needs Leila's approval. **The payout service never decides which book is authoritative.** It asks one endpoint for a booking's payable, and the endpoint consults the register. That kept the payout service's change during 2029 to one interface, which mattered because the same team was absorbing Wayfare's suppliers in the same months.\n\n## The Stage-Gate Design\n\nEach cohort follows the same lifecycle, and every transition is a gate.\n\n![Six stepping stones from SFP book through Shadow, Cut-over day, Dual run and Engine only to Retired, separated by gates G0 to G3, with rollback arrows back to Shadow that end at the first signed close.](assets/images/33-incremental-modernization/cohort-lifecycle-path.jpeg)\n**Figure 5:** *The lifecycle of one cohort. Rollback paths exist until the first close on the new book is signed; after that, problems are fixed forward. Retirement needs its own gate, because a system that is no longer authoritative may still be needed for history.*\n\nThe gates, with what must tie out, the tolerance, how long and who signs:\n\n| Gate | Question | What must tie out | Tolerance (set by the controller) | Duration | Approvers |\n| --- | --- | --- | --- | --- | --- |\n| **G0: enter shadow** | Is the engine ready to be compared? | Event completeness: every event SFP consumes is consumed by the engine (counts per type per day) | Zero missing events | Two weeks of daily runs | Dana; group finance platform lead |\n| **G1: go/no-go** | Can this cohort's authority move? | Shadow vs SFP per entity, day, account and booking count; 100% of variances classified as timing, policy, data or defect | Daily unexplained absolute ≤ €5,000 per entity (Stayloft B.V. ≤ €10,000); month-end unexplained absolute ≤ €25,000 per entity (Stayloft B.V. ≤ €50,000); every policy variance decided | Two consecutive non-quarter-end closes in shadow | Four readiness statements (Dana technical, Leila business, Mei controls, Head of Partner Settlement payouts); Tomás decides |\n| **Cut-over: load** | Did the opening balances arrive exactly? | SFP closing open items = engine opening entries per entity, currency and class; counts, amounts and hash totals; migration clearing zero | Zero, to the cent | Cut-over day | Leila's team; evidence to Mei |\n| **G2: exit dual running** | Is the new book proven? | Three-way tie-out (engine, reverse shadow, PSP clearing) daily; engine-to-GL tie-out certified at working day 1; traveler funds ledger vs engine per booking | Same as G1, applied to engine vs reverse shadow; zero unexplained in the PSP leg | Two clean closes, at least one a quarter-end; hypercare exit criteria met | Leila and Mei |\n| **G3: retire** | Can SFP's components go? | Archive balances = SFP closed balances per entity and month = S/4HANA summaries by `summary_id`; retrieval drills passed | Zero differences; 25 of 25 drill samples retrieved per drill | One close with no reads of retired components | Leila, Mei, Kofi Asante for tax retention |\n\n**Counts are compared as well as amounts**, because offsetting errors hide in totals. **Tolerances are absolute and per entity**, so a large positive and a large negative cannot net to a pass. **G2 requires a quarter-end inside dual running**, because hypercare must not end before the first quarter-end close on the new system ([The Technology Is the Easy Part: Leading a Finance Transformation](finance-transformation.html)).\n\n## Stage 0 (2028): Prove Without Moving Anything\n\n**Scope.** No authority moves. Stage 0 builds and proves everything the cut-overs need: the engine's volume proof, the rules under CoA v2, the shadow run, merchant invoicing in FI-CA, partner identity in coexistence through the partner hub, aligned PSP routing, and the people.\n\n**What happened.** The engine's first peak-day volume test in April 2028 replayed a synthetic peak of about 13 million lines across the brands, the bar set by [Converge or Coexist: Living with More Than One ERP](multiple-erps.html). It posted everything but finished the tie-out at 06:50, fifty minutes after the 06:00 working-day-1 cut-off. The cause was summarization: the engine built one summary per entity, day and account combination before posting any of them. The fix was to summarize per partition as partitions closed. The retest in June 2028 tied out at 04:40 (illustrative). Merchant commission invoicing moved to FI-CA after an April 2028 parallel run, the first cohort with the May 2028 cycle and the rest by the end of 2028, which gave every merchant partner a contract account for invoices, and the 2025 interceptor and statement mimic were retired after the September 2028 close, as planned.\n\nThe shadow run started on 3 September 2028 for all nine entities. The first month produced about 41,000 unexplained differences a day (illustrative). Most were policy, not defects: the generalized engine applied group conventions that SFP did not. Leila's team decided each one, and every decision was recorded as a versioned rule change with an owner. Variances fell below the G1 tolerances in the November 2028 shadow close. The Q4 2028 dry-run closes then ran the whole Stayloft close on both books in parallel and found nothing that the shadow comparison had missed. That was reassuring, and it later proved incomplete, for a reason that only a production cut-over would show.\n\n**CoA v2 on 1 January 2029.** Both books switched charts on the same date. SFP's summarizer posted CoA v2 accounts from that date, and the engine's rules were effective-dated to match. The January and February 2029 closes, both non-quarter-end, became the shadow cycles for the stage 1 gate.\n\n**Controls and the auditor.** The engine became a key system in the FY2028 scoping, with source-to-engine completeness as a key control ([Converge or Coexist: Living with More Than One ERP](multiple-erps.html)). In the third quarter of 2028 Mei's team and the external auditor walked through the engine's design: intake, rule store approvals, period states, summarization, the released posting API and the tie-out. They used shadow transactions as samples. The auditor's planning for FY2029 named the two cut-overs as **changes in internal control over financial reporting (ICFR)** to be tested, along with the **data migration controls**: load completeness and accuracy, migration clearing and cut-off. Migration reconciliations are a normal focus of IT general controls over system implementations.\n\n**People.** The work of about 25 Stayloft finance-operations staff ([When the ERP Isn't Enough: Custom Finance Platforms](custom-finance-platforms.html)) moved to the Dublin finance shared services center. Training was a \"day in the life\" on each analyst's own cohort's shadow data: clearing quarantined events, explaining a tie-out break, approving a late posting. Fourteen of Jonas's engineers moved to the group finance platform team, and Sven's team added six people for posting-API operations. **Conway's law applies to ledgers too**: an engine left in Stayloft's engineering organization would have stayed a Stayloft system with a group label.\n\n**Measured outcome.** Volume proof passed on retest. Shadow variance was inside tolerance for three consecutive closes before G1. The PSP routing alignment removed about 2.6% of cross-cohort settlement lines. Stage 0 took about 60% of the migration budget: **in a finance migration, proving is the work, and moving is the event.**\n\n## Stage 1 (1 May 2029): The UK and International Cohorts\n\n**Scope.** Stayloft UK Ltd and the four INTL entities, about 36% of subledger lines and about 2.63 million open bookings, move to the engine.\n\n**Calendar.** Cut-over on Tuesday 1 May 2029, working day 1 of the April close. The first close on the new book is May, an ordinary month-end. The first quarter-end, June, comes one month later and falls inside dual running, as G2 requires. The 1 May date is a public holiday in Singapore and much of continental Europe, so the cut-over team and on-call analysts sat in Dublin, London and Amsterdam, where it is a working day.\n\n**The migration journal.** Open items move per booking in the engine, and the GL moves balances through a migration clearing account per entity and currency. For Stayloft UK Ltd's partner payables the pair looks like this (illustrative):\n\n| Account | Debit | Credit | Note |\n| --- | --- | --- | --- |\n| Partner payables – merchant, legacy SFP | £218.4m | | Closes the SFP-fed balance at 30 April |\n| Migration clearing | | £218.4m | Total of SFP open items per snapshot |\n| Migration clearing | £218.4m | | Total of engine opening entries |\n| Partner payables – merchant (engine control account) | | £218.4m | One opening entry per open booking, each carrying its SFP `summary_id` |\n\nThe same pattern ran for expected PSP receivables and traveler-side open items in every entity and currency of the stage, nineteen pairs in all. Each opening entry kept the booking's original dates, so aging and the recognition trigger (the stay-completion date) survive the move. **Migration clearing must be zero by the end of cut-over day. If it is not, the stage does not proceed.**\n\n**Dual running.** From 1 May, SFP ran as reverse shadow for the five entities. The daily three-way tie-out compared engine, reverse shadow and Adyen clearing per merchant account. The G2 plan was two clean closes, May and June.\n\n**Rollback plan.** Cheap rollback ran until the first engine-based payout run on 1 May at 06:30: flip the register back and reverse the opening entries through migration clearing. Rollback with re-posting was possible until the May close sign-off on working day 3 of June. SFP's reverse shadow held a complete, reconciled book until then, so authority could return with the engine's entries reversed. After that, problems were fixed forward. The rollback was rehearsed twice on production-sized copies, and the last rehearsal took 2 hours 10 minutes.\n\n**Controls.** Of SFP's 41 key controls, 17 concerned the merchant subledger. For the moved entities, six SFP controls were placed in suspension (still operated, since SFP was computing, but no longer relied on). The engine's controls took over: rule approval, period state transitions, engine-to-GL tie-out by `summary_id`, and source-to-engine completeness. Three temporary key controls were added: opening-load reconciliation, migration clearing at zero, and the daily three-way tie-out. The auditor attended the load reconciliation on 1 May and re-performed the control totals for two entities. Northmere's disclosure committee judged that a change of this size was reasonably likely to materially affect ICFR. Item 308(c) of Regulation S-K requires a registrant to [disclose such changes that occurred during the last fiscal quarter](https://www.law.cornell.edu/cfr/text/17/229.308), so the change was described in the Q2 2029 quarterly report. That was a judgment by the disclosure committee, not a rule that every migration triggers disclosure.\n\n**People and hypercare.** Hypercare ran with two stand-ups a day, a single incident queue for finance, payments and engineering, and a named decision-maker on duty: the Head of Partner Settlement for payouts and Leila's deputy for accounting. Under the exit criteria in [The Technology Is the Easy Part: Leading a Finance Transformation](finance-transformation.html), hypercare could not end before the June quarter-end close and four weeks without priority-1 or priority-2 incidents.\n\n### What we learned after stage 1\n\nStage 1 did not go cleanly, and that is why it came first.\n\n**Late chargebacks on bookings settled before cut-over.** The opening load moved *open* items. A booking whose stay was completed, whose payout settled and whose commission was recognized before 1 May had no entry in the engine. Chargebacks do not respect cut-over dates. Northmere's €420 dispute in 2027 arrived 40 days after the stay ([Payments for Finance Architects: Eleven Reasons the Numbers Disagree](payments-fundamentals.html)), and goodwill refunds and late modifications follow the same pattern. From the first week of May, `ChargebackReceived` and `RefundIssued` events arrived for bookings the engine had never seen. They were routed correctly by entity, but no rule could post them. The engine did what [Never Update, Only Append: Designing Custom Ledgers](designing-financial-ledgers.html) designed it to do: it **quarantined** them, never posting a guess to suspense. By Monday 4 June, working day 2 of the May close, about 8,400 such events sat in quarantine, about $3.1 million in absolute value across the cohorts (illustrative). The June quarter-end close was four weeks away.\n\nThe shadow run had not caught it because **the shadow started from history, and production started from a snapshot.** The shadow engine had context for every booking since September 2028, and late events for older bookings were filtered out of the comparison as \"outside shadow scope\". The production engine started on 1 May with open items only. The dry runs reproduced the shadow, not the cut-over.\n\nThe design absorbed it in two moves. The first was a bridge. Leila and Mei approved a dated waiver: until 31 July, late events for bookings settled in SFP before cut-over would be posted by SFP's reverse shadow, which still held the full history, and summarized to the legacy control account. The cohort register gained a rule, \"pre-cut-over settled bookings → SFP\", with an expiry date. Quarantine was cleared by working day 3 of the May close. The second was the permanent fix: a **booking origin register**. For every booking settled in SFP in the previous 18 months, the engine loaded a reference stub with no balance: the booking ID, partner, entity, amounts, dates, original posting accounts and SFP `summary_id`. A late event for a stubbed booking now posts in the engine in the current period, carrying `original_period` and the SFP reference. If the property must repay, the recovery is netted against its next payout as usual, or, if it has no future payouts, raised as a receivable in FI-CA for collection. The stubs for UK and INTL were loaded by 19 July, and the bridge rule expired on schedule.\n\n**A foreign-exchange rounding policy difference.** In the INTL cohort, many partners are paid in a currency other than the one the traveler paid in. SFP converted each booking's payable to the payout currency and rounded per booking. The generalized engine, built to the group convention, converted the partner's summed payables per payout and rounded once, using the treasury-sourced rate ID from the group rate service ([Global by Design: Entities, Currencies, Jurisdictions and Brands](global-scale.html)). The difference was at most a cent per booking, but it did not reverse: about $11,600 net and $27,900 absolute in May (illustrative). In the shadow it had been classified as **timing**, because day-level comparisons with slightly different rate snapshots made it look as if it reversed. It was **policy**, the same lesson as the 2025 FI-CA rounding difference in [Changing the Engine in Flight: Modernization Patterns for Finance](modernization-patterns.html), in a new form. Leila ruled for per-booking conversion at the rate ID recorded at stay completion, because the partner statement shows per-booking amounts. The rule change went live in mid-June. The variance-classification procedure gained a test: **a variance is timing only if a later cycle actually reverses it.**\n\n**A missed partner payout reference.** The first engine-based payout run for Stayloft UK Ltd on 1 May built the remittance reference from the engine's posting reference instead of the payout ID. Every payout amount was right and on time. But about 2,600 UK partners received remittance advice they could not match to their bookings, and BlackLine's matching of payout bank debits against payouts in transit failed for that run: £5.9 million unmatched on 2 May (illustrative). Matching was restored manually the same day, and the reference was fixed for the 3 May run. The cause was a test suite that compared amounts and counts but not references. The hand-off contract between payout service and Northmere Pay ([Order to Cash, Procure to Pay, Record to Report](finance-processes.html)) already named the payout ID as the identifier. **Nobody had turned that clause into a test.**\n\nThe results went into the stage 2 gate. G1 for the EEA cohort gained three criteria:\n\n1. **Late-event drill.** Replay 90 days of production late events for the cohort's entities against a production-like starting state of open items plus stubs; 100% posted, none quarantined for missing context.\n2. **Reversal test for timing variances.** Every variance classed as timing must show its reversal in a later shadow cycle.\n3. **Reference-level comparison.** Payout instructions from the dress rehearsal compared with SFP's field by field, including remittance and bank references, not only amounts.\n\nThe reverse shadow for UK and INTL ran through the July close instead of stopping after June, because June was not clean. Quarantine was cleared, but the bridge waiver was still open at quarter-end. G2 passed on 13 August, working day 9 of the July close, and the reverse shadow for those entities was switched off on 20 August 2029.\n\n**Measured outcome, stage 1** (illustrative): opening load 2.63 million bookings in 3 hours 10 minutes, reconciled at 05:20, migration clearing zero in all nineteen pairs; engine-to-GL tie-out certified at working day 1 in every close from May; unexplained absolute three-way variance $212,000 at May month-end, $41,000 at June, $9,400 at July; on-time partner payouts 99.2% in May and 99.4% in June, against a 98.6% baseline and a 99.5% target ([Order to Cash, Procure to Pay, Record to Report](finance-processes.html)); about 2,900 additional partner support tickets in May, back to baseline by mid-June.\n\n## Stage 2 (1 November 2029): The EEA Cohort\n\n**Scope.** Stayloft B.V. and three other EEA entities: about 64% of subledger lines, about 4.9 million open bookings, and about 41 million booking-origin stubs covering 18 months of settled bookings. The stubs were loaded in monthly batches from September and topped up on cut-over day, so the cut-over load itself stayed small.\n\n**A booking that straddles the line.** Take a booking with the same shape as the Lisbon booking in [Accounting for Architects: Ledgers, Journals and Revenue](accounting-for-architects.html): €600.00 paid by card through Adyen on Monday 15 October 2029, booking ID `SL-BK-1184402`, for a stay from 19 to 22 November 2029, commission 15% (€90.00), payout €510.00. It shows which system holds what on each date.\n\n| Date | Event | Book of record | What happens |\n| --- | --- | --- | --- |\n| 15 Oct 2029 | `PaymentCaptured`, `BookingConfirmed` | SFP | SFP records the expected PSP receivable, the €510.00 partner payable (not yet due) and the €90.00 commission, not yet recognized; the engine computes the same in shadow |\n| 31 Oct 2029, end of day | Snapshot | SFP | The booking's open items are in SFP's October closing balances |\n| 1 Nov 2029, 02:00 | Opening load | Engine | One opening entry per open item, carrying `SL-BK-1184402` and SFP's `summary_id`; the traveler funds ledger still holds €600.00 for the traveler, now reconciled to the engine |\n| 22 Nov 2029 | `StayCompleted` | Engine | Payable becomes due; €90.00 commission recognized by the engine's rules; summary to S/4HANA with the engine's `summary_id` |\n| 23 Nov 2029 | `PartnerPayoutInstructed` | Engine | Group payout service reads the payable from the engine and instructs €510.00 with its payout ID |\n| 27 Nov 2029 | `PartnerPayoutSettled` | Engine | Payable cleared; traveler funds released; SFP's reverse shadow has computed every step and agrees |\n\nAn auditor who picks this booking in the FY2029 walkthrough follows two drill paths. October's numbers lead into SFP's journal through SFP's `summary_id`, and November's lead into the engine's journal through the engine's. The trace service in [Reconciled by Design: Traceability and Audit Across Boundaries](traceability-and-reconciliation.html) was extended in Stage 0 to follow both, and later the archive, from one booking ID.\n\n**The cut-over runbook.** T counts working days, with T0 = Thursday 1 November 2029, working day 1 of the October close. An excerpt:\n\n| When | Step | Owner | Evidence |\n| --- | --- | --- | --- |\n| **T−30** (Thu 20 Sep) | G1 evidence pack opened: July and August shadow closes inside tolerance; late-event drill passed; reversal test passed; last deployment before the Q3 blackout (rule set and an inactive cohort register entry, effective 1 Nov) | Dana, group finance platform lead | Shadow reconciliation certified in BlackLine |\n| **T−25 to T−15** (27 Sep–11 Oct) | Q3 quarter-end close blackout: no deployments; shadow continues; September is reviewed but is not a gate cycle | Leila | Blackout calendar |\n| **T−12** (Tue 16 Oct) | Dress rehearsal 3 on a production-sized copy from the 30 September snapshot: load, reconcile, first payout run, reference-level comparison, full rollback | Group finance platform team, Northmere Pay | Rehearsal report: load 3 h 50 min, rollback 2 h 10 min |\n| **T−10** (Thu 18 Oct) | Finance operations sign-off on day-in-the-life training; partner support briefed; hypercare roster and decision-makers named | Head of Partner Settlement, Dublin service lead | Training records per analyst |\n| **T−7** (Tue 23 Oct) | Go/no-go 1: four readiness statements per [The Technology Is the Easy Part: Leading a Finance Transformation](finance-transformation.html); any no-go stops the stage | Tomás decides | Signed statements |\n| **T−4** (Fri 26 Oct) | Last deployment window closes; production configuration fingerprinted; bank-detail changes only through the standard approval | Group finance platform lead | Configuration hashes in the evidence store |\n| **T−1** (Wed 31 Oct) | Go/no-go 2 at 16:00, per entity; activation of the register entries approved through maker-checker, effective 1 Nov 00:00 CET | Dana, Leila, Mei, Ingrid; Tomás | Register change log |\n| **T0** (Thu 1 Nov) | 00:00 authority switches; 02:00 main load from SFP snapshot; 05:30 load reconciled per entity, currency and class, migration clearing zero; **06:30 first engine-based payout run (normally 04:00; same value date): cheap rollback ends**; 20:00 SFP soft-closes October for EEA; 22:00 delta load of late October events | Group finance platform team, Leila's team, Northmere Pay | Load reconciliation; payout control totals |\n| **T+1** (Fri 2 Nov) | First daily three-way tie-out; delta load reconciled; hypercare stand-ups at 08:30 and 16:30 | Dublin service lead | Tie-out certification |\n| **T+2** (Mon 5 Nov) | Working day 3: SFP's last EEA close signed; legacy control account zero for EEA; migration evidence pack filed | Leila, Mei | Signed close; evidence pack |\n| **T+5** (Thu 8 Nov) | First weekly break review with EEA in scope; temporary key controls confirmed operating daily | Mei's team | Break review minutes |\n| **T+8** (Tue 13 Nov) | October close locked in OneStream, the consolidation platform, with EEA opening balances in the engine | Group reporting | Lock record |\n| **T+10** (Thu 15 Nov) | Hypercare checkpoint: incident trend, quarantine age, partner tickets; hypercare continues to the year-end close by rule | Program director | Checkpoint record |\n\nTwo details in the runbook came from stage 1. The delta load exists because October-dated events keep arriving until SFP's soft close at the end of working day 1. In May those had been posted by hand. The payout run is moved two and a half hours later, keeping the same value date, so that no payout reads a balance before the load is reconciled.\n\n**Rollback plan.** As in stage 1, with one addition: **each of the four entities has its own register entry and can be rolled back alone.** Cheap rollback ended at 06:30 on T0. Rollback with re-posting was possible until the November close sign-off on working day 3, Wednesday 5 December 2029. After that, problems were fixed forward.\n\n**Controls and the auditor.** Stage 2's first close was a month before year-end, so the controls the auditor would rely on at 31 December had operated for the EEA population for only two months. Stage 1 mattered here. **The engine's controls had been operating since May on the UK and INTL population**, and the auditor's interim testing in the third quarter covered them. For the year-end, the auditor tested the EEA migration controls and rolled forward the operating-effectiveness evidence. Without a first stage, management's assessment at 31 December would have rested on two months of controls nobody had tested. The change was again described in the annual report under the disclosure committee's judgment.\n\n**People and hypercare.** Hypercare ran through the December year-end close. Year-end is the first quarter-end inside dual running for EEA, so by rule hypercare ended only after the December close locked on Monday 14 January 2030 and the auditor's first year-end procedures on the engine were complete, in late January.\n\n**Measured outcome, stage 2** (illustrative): opening load 4.9 million bookings plus the final stub delta in 3 hours 40 minutes, reconciled at 05:30; no event quarantined for missing booking context; unexplained absolute three-way variance €11,300 at November month-end and €4,800 at December across the four entities; on-time partner payouts 99.5% in November; no additional partner tickets above weekly variation; SFP's last posting through the GL summarization interface was the summary for 31 October 2029. Stayloft's entities closed their subledger at working day 1 of the FY2029 year-end close, and the group met its four-day target for that close.\n\n## Stage 3 (2030): Decommissioning the SFP Subledger Components\n\n[Changing the Engine in Flight: Modernization Patterns for Finance](modernization-patterns.html) defines a modernization as finished when the old system is gone, its controls are closed or moved, its contracts are terminated and its records can be retrieved without it. The SFP merchant subledger was not a vendor system with a license to end, but it had everything else: three databases, the summarization service, its custom posting path into S/4HANA, the reverse-shadow jobs, six suspended controls, the legacy control account, and history going back to 2012.\n\n**What must be retained, for how long and in what form.** The system-of-record matrix in [Systems of Record: Ending the Doppelgänger Record](systems-of-record.html) gives partner payable detail a ten-year retention. The archive therefore holds SFP's merchant journal and its pre-2027 predecessor tables per entity and month. It also holds the agency invoice history that stayed behind in SFP after the 2025 FI-CA move, which closes an obligation nobody had planned for ([Changing the Engine in Flight: Modernization Patterns for Finance](modernization-patterns.html)). Everything is extracted to open formats in Northmere's archive store with a **reconciliation pack**: for every entity and month, archived balances equal SFP's closed balances, which equal the S/4HANA summaries carrying SFP's `summary_id`. Personal data that the law does not require, such as free-text partner notes, was left out of the extract.\n\n**The sequence**, kept out of the year-end window:\n\n1. **After the 10-K filing, early March 2030:** EEA reverse shadow switched off; the cohort register retired, so events flow straight to the engine; SFP subledger set read-only.\n2. **March–May 2030:** extraction and reconciliation pack; trace service repointed from SFP tables to the archive.\n3. **June 2030:** retrieval drills. Internal audit and the external auditor each retrieved 25 SFP-era items, from booking to GL summary, without SFP. All 25 passed on the first drill.\n4. **August 2030:** all human and service access to SFP subledger stores removed, after a full close cycle with no reads.\n5. **October 2030:** databases deleted, summarization and posting code removed, the custom posting path in S/4HANA deleted, the legacy control account blocked after the FY2029 audit. The scaffolding register rows for this migration were closed.\n\n![A four-lane timeline from 2028 to 2030: a long shadow run, two short cut-over days for UK and INTL and for EEA each followed by reverse shadow bars, and archive drills ending with SFP's deletion, every bar ending at a gate.](assets/images/33-incremental-modernization/migration-on-one-page.jpeg)\n**Figure 6:** *The migration on one page. The cut-overs are two days; most of the timeline is proving before them and dual running and decommissioning after them. Every bar ends at a gate, not at a planned date.*\n\n**What SFP is after 2030.** Three components remain: commission rating, the traveler funds ledger and the group payout service. One reconciliation is new and permanent: the traveler funds ledger against the engine's partner payables per booking, part of Northmere Payments B.V.'s safeguarding evidence ([When the ERP Isn't Enough: Custom Finance Platforms](custom-finance-platforms.html)).\n\n**Measured outcome of the whole migration** (illustrative, first half of 2030 against 2027): the SFP-to-S/4HANA summarization interface and its custom posting path retired; partner payables and expected PSP receivables drill back from S/4HANA to the booking through one engine for every Stayloft and Wayfare entity; Stayloft finance operations for the subledger reduced from about 25 FTE to about 14 in Dublin; 11 SFP key controls retired and 6 replaced by the engine's group controls; about $2.2 million a year of infrastructure and controls cost removed from SFP; and the Stayloft engineers who built the engine now run it as a group service.\n\n## Trade-Offs: How Else the Subledger Could Have Moved\n\n| Approach | How it works | Strength | Weakness | Right when |\n| --- | --- | --- | --- | --- |\n| **Single step at year-end** | All entities switch on 1 January | One transition; clean annual balances | Migration and annual audit on the same team at once; no way back; every migrated balance audited at its most examined point | Almost never for a high-volume book of record |\n| **Entity cohorts with open-item migration** (chosen) | Cohorts cut over at quiet period boundaries; reverse shadow; per-entity rollback | Reconciliations whole; reversible; auditor sees controls operate before year-end | Transitional components to build and remove; calendar limits cohort count; late events need history stubs | High volume, many entities, a calendar with good windows |\n| **Run-off** | New bookings to the new book; old bookings complete in the old one | No open-item migration; no opening load | Two books per entity for the longest booking horizon; every reconciliation doubled | Short-lived balances, such as a payments book with days of float |\n\nNorthmere's approach cost the most in transitional architecture, and it is the only one where **every intermediate state could be closed, audited and, until a stated point, reversed.**\n\n## Integration With the Rest of the Estate\n\nThe migration changed little outside the subledger, by design. **Producers did not change**, because the canonical event contract in [Canonical Events: A Common Language for Money](loosely-coupled-domains.html) was the seam. **Payments-to-ledger did not change**: only the system holding the expected receivables moved, as [Payments-to-Ledger: Draining the Suspense Swamp](payments-to-ledger.html) intended. **OneStream did not change**, because trial balances still came from S/4HANA under CoA v2 ([OneStream: Consolidating Actuals, Planning the Future](onestream.html)). **BlackLine** carried the temporary reconciliations as catalog entries with expiry dates, removed when their cohorts exited ([BlackLine: Matching, Certifying and Closing](blackline.html)). The **partner hub** became the only path into FI-CA in 2029 ([Finance Data Architecture: Who Owns the Truth](finance-data-architecture.html)), so no cohort carried the duplicate partner records of the 2025 load.\n\n## Failure Modes\n\n- **Shadow that is not a dress rehearsal.** The shadow runs from history; the production book starts from a snapshot. *Signal:* comparison filters that exclude records \"outside scope\" without asking whether production will see them.\n- **Cohorts that cut a reconciliation in half.** A PSP account, a safeguarding entity or a partner spans two books for months. *Signal:* a new manual reconciliation in the plan that exists only because of the slicing.\n- **Timing variances that never reverse.** *Signal:* \"timing\" differences with no matching reversal in a later cycle, or a classification written by engineers rather than decided by the controller.\n- **Amount-only testing.** References, dates and counts drive partners' and banks' reconciliations. *Signal:* a test suite that compares totals but not identifiers.\n- **Transitional components without expiry.** The cohort register, read model and legacy account outlive the migration. *Signal:* a \"temporary\" component that appears in next year's architecture diagram.\n\n## The Chief Architect's View\n\nDana did not run this migration; the Keystone program did ([The Technology Is the Easy Part: Leading a Finance Transformation](finance-transformation.html)). She owned five things that decided whether it could succeed.\n\n**The slicing decision.** This is the most consequential architecture decision in a migration and the easiest to leave to the integrator's work breakdown. It belongs in a decision record, tested against the reconciliation catalog, with the neighbor changes it requires named and owned, such as PSP routing in this case.\n\n**The stage-gate standard.** Gates G0 to G3, variance classes, tolerance setting, reverse shadow, per-entity rollback and the disclosure check are a group standard. Every Keystone migration (Wayfare's entities, Tablekin's events, the payout engine's cohorts) produces the same evidence shape, and the auditor can rely on one method instead of learning a new one each time.\n\n**The cohort register as a controlled object.** Authority moves through configuration, so the configuration is a key control. In my experience this is where finance migrations most often lose their audit trail. A routing table changed by an engineer at 01:00 on cut-over night moves billions of balances without an approval anyone can show.\n\n**The calendar.** Published once a year, shared by every program; blackouts freeze deployments, not effective dates.\n\n**The end state.** Dana counted the migration done in October 2030, not in November 2029. Transitional components carried a carrying cost in the debt register ([Technical Debt on the Balance Sheet](technical-debt-and-fitness.html)) until they were removed, so \"nearly finished\" showed up as a cost.\n\n**Who decides what.** Leila decides tolerances, policy variances and authority moves. Mei decides whether evidence is sufficient. The Head of Partner Settlement can hold a payout run. Tomás decides go/no-go on four signed readiness statements. Dana decides the slicing, the gate standard and what counts as done. **No single person can move authority alone.**\n\n**What to watch:** quarantine age and reason after each cut-over; unexplained absolute variance per entity per day, not per cohort per month; the number of live transitional components with passed expiry dates; partner tickets per thousand payouts; and the time to retrieve an archived item, which should not rise once the old system is gone.\n\n## Questions to Ask\n\n1. Which reconciliations cross the slice boundary, and what would we have to change elsewhere to keep each one whole?\n2. For each cohort, what are the G1 and G2 criteria, who set the tolerances, and were they written before the shadow started?\n3. Does the shadow start from the same state as production will on cut-over day, including history that late events will need?\n4. Which variances are classed as timing, and where is the cycle in which each one reverses?\n5. What is the last point at which authority can go back to the old system, and when did we last rehearse the rollback, on what volume, and how long did it take?\n6. Which dates fall inside a blackout, and is anything deployed after working day −2?\n7. Do our tests compare identifiers and references as well as amounts and counts?\n8. Which controls will the auditor rely on at year-end, and how long will they have operated on the migrated population by then?\n9. Does hypercare end after the first quarter-end close on the new book?\n10. When will the old components be deleted, who has retrieved an item from the archive without them, and what was the result?\n\n## Closing\n\nThis chapter closes Part III. The estate has been treated as one system: events, payments, data, authority, coupling, traceability, onboarding, and now the movement of a book of record from one part of that system to another without a bad close. Every chapter in this part relied on decisions someone had to take, record and enforce: slicing, tolerances, standards, waivers with expiry dates, and the right to say no to a plan date. Part IV ([LEADERSHIP: The Chief Architect's Agenda](part-4.html)) turns to that leadership work, starting with how a Chief Architect governs a federated finance estate so that decisions like these are fast, recorded and respected, in [Architecture Governance That Speeds Decisions](architecture-governance.html).\n\n## Sources and Evidence\n\n*Vendor documentation*\n\n- [Describing general ledger integration](https://learning.sap.com/courses/implementing-sap-financial-contract-accounting/describing-general-ledger-integration), SAP Learning — FI-CA totals records and reconciliation keys, the posting model behind the merchant invoicing and receivables that remain in FI-CA.\n- [Adyen: Getting paid](https://docs.adyen.com/account/getting-paid), Adyen documentation — payout models per merchant account, the background to aligning merchant accounts with cohorts.\n\n*Standards and regulation*\n\n- [17 CFR 229.308, Item 308 of Regulation S-K](https://www.law.cornell.edu/cfr/text/17/229.308), US Securities and Exchange Commission via Cornell LII — paragraph (c): disclosure of changes in ICFR during the last fiscal quarter that materially affected or are reasonably likely to materially affect it.\n- [AS 2201, An Audit of Internal Control Over Financial Reporting](https://pcaobus.org/oversight/standards/auditing-standards/details/AS2201), PCAOB — the integrated audit framework within which walkthroughs and tests of changed controls take place (cited for the framework, not for specific paragraphs).\n\n*Practitioner and research sources*\n\n- [Strangler Fig](https://martinfowler.com/bliki/StranglerFigApplication.html), Martin Fowler, 22 August 2024 — seams, small early replacements and temporary coexistence code.\n- [Patterns of Legacy Displacement](https://martinfowler.com/articles/patterns-legacy-displacement/), Ian Cartwright, Rob Horn and James Lewis, 2021 (revised 2024) — event interception, legacy mimic, dark launching and canary release as named patterns; parallel running is mentioned only as a cut-over strategy, not as a named pattern.\n- [Transitional Architecture](https://martinfowler.com/articles/patterns-legacy-displacement/transitional-architecture.html), Cartwright, Horn and Lewis, 2022 — temporary elements built to be removed, the basis of the scaffolding register.\n- [BranchByAbstraction](https://martinfowler.com/bliki/BranchByAbstraction.html), Martin Fowler, 2014 — the payout service's single balance endpoint is a branch-by-abstraction seam.\n- [Building Evolutionary Architectures, 2nd edition](https://thoughtworks.com/insights/books/building-evolutionaryarchitectures-second-edition), Neal Ford, Rebecca Parsons, Patrick Kua and Pramod Sadalage, O'Reilly, 2022 — fitness functions, the steady-state form of the gate checks after the migration.\n\nNorthmere Group and all its people, systems, dates and figures are fictional; the architectural recommendations are the author's judgment.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

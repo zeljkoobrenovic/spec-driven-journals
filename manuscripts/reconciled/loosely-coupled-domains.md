@@ -1,7 +1,7 @@
 {id: loosely-coupled-domains}
 # 33. Canonical Events: A Common Language for Money
 
-![Canonical Events: A Common Language for Money — logo](enterprise-applications-and-financial-systems/posts/30-loosely-coupled-domains/assets/images/30-loosely-coupled-domains/logo.jpeg)
+![Canonical Events: A Common Language for Money — logo](finance-systems-architecture/posts/30-loosely-coupled-domains/assets/images/30-loosely-coupled-domains/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Design a canonical financial event model in depth (envelope, identifiers, money, classification tags, semantic rules and versioning), then the adapter kit, integration hub, schema registry, contract tests and anti-corruption layers that let finance domains change independently without losing reconcilability.
 
@@ -56,7 +56,7 @@ The close clock is the one that does not bend. A closed period is locked, and an
 
 The coupling taxonomy (temporal, data, semantic, deployment, vendor) belongs to [Duplicates and Dependencies: The Hidden Costs of a Grown Estate](#redundancy-and-coupling). The design consequence for this chapter is that **semantic coupling is the expensive one in finance**. Temporal coupling is solved with queues and deployment coupling with contracts; semantic coupling, two systems reading the same field differently, is solved only by a governed language. The `cancelled` flag was a semantic coupling.
 
-![Three clocks running at different speeds, each connected loosely to a shared stream of event cards rather than geared to each other.](enterprise-applications-and-financial-systems/posts/30-loosely-coupled-domains/assets/images/30-loosely-coupled-domains/three-clocks.jpeg)
+![Three clocks running at different speeds, each connected loosely to a shared stream of event cards rather than geared to each other.](finance-systems-architecture/posts/30-loosely-coupled-domains/assets/images/30-loosely-coupled-domains/three-clocks.jpeg)
 
 **Figure 1:** *Finance runs on three clocks that cannot be synchronized, product releases, vendor releases and the close, so the integration must let each turn without dragging the others.*
 
@@ -266,18 +266,7 @@ A canonical model is only as stable as its change rules. Northmere's rules disti
 
 **Breaking changes** (removing a field, renaming, changing a type, splitting an event) create a new major version and follow a lifecycle that respects the close:
 
-```mermaid
-stateDiagram-v2
-    [*] --> Proposed
-    Proposed --> Approved: change board accepts, control impact assessed
-    Approved --> DualPublish: producer emits v1 and v2 outside a close window
-    DualPublish --> DualPublish: consumers migrate, contract tests pass
-    DualPublish --> Verified: one full quarter close tied out on v1 and v2
-    Verified --> V1Deprecated: no consumer pact on v1 remains
-    V1Deprecated --> V1Retired: next month start, never in December or January
-    V1Retired --> Readable: v1 schema kept for replay for the retention period
-    Readable --> [*]
-```
+![A path from Proposed and Approved to Dual publish, where v1 and v2 envelopes are both sent while consumers migrate, then Verified after a quarter close, v1 deprecated, v1 retired at a month start, and finally Readable in an archive for replay.](finance-systems-architecture/posts/30-loosely-coupled-domains/assets/images/30-loosely-coupled-domains/breaking-change-lifecycle.jpeg)
 
 **Figure 2:** *The lifecycle of a breaking change to a canonical event. The producer publishes both versions until every consumer has migrated and one quarter close has been tied out on both; v1 stops being produced only at a month start outside year-end, and its schema remains readable for the retention period because replay must read history in the version it was written.*
 
@@ -317,30 +306,7 @@ Contract tests do not replace the registry; they cover what a schema cannot. A s
 {id: loosely-coupled-domains--architecture-adapters-hub-and-consumers}
 ## Architecture: Adapters, Hub and Consumers
 
-```mermaid
-flowchart LR
-    SB["Stayloft booking platform"] -->|"adapter kit SDK"| KF["Kafka: canonical event topics"]
-    WB["Wayfare booking platform"] -->|"adapter kit SDK"| KF
-    NP["Northmere Pay with Adyen and Stripe ACLs"] -->|"payment and payout events"| KF
-    PO["SFP payout engine"] -->|"PartnerPayoutInstructed"| KF
-    TK["Tablekin Stripe Billing adapter"] -->|"SubscriptionInvoiced, UsageRated"| KF
-    ADS["Ads billing service"] -->|"AdClickBilled"| KF
-    SR["Schema registry and contracts"] -.->|"validates"| HI
-    KF --> HI["Hub intake: validate, enrich with reference keys"]
-    REF["Entity register, partner hub, code lists"] --> HI
-    HI -->|"rejected"| QU["Quarantine with owner and age"]
-    HI --> DL["Delivery ledger and control totals"]
-    HI --> RT["Router"]
-    RT --> SUB["SFP merchant subledger and accounting engine"]
-    RT --> FDB["FinDB on Snowflake"]
-    RT --> BLK["BlackLine matching files"]
-    RT --> WDA["Workday Accounting Center ACL"]
-    RT --> FUS["Oracle Fusion ACL"]
-    SUB -->|"daily summarized journals"| IS["SAP Integration Suite: S4 posting ACL"]
-    IS --> S4["SAP S/4HANA GL"]
-    RP["Replay service"] --> RT
-    DL -.->|"counts by source and day"| BLK
-```
+![Producers publish through adapter kits onto Kafka; a simple hub validates, adds reference keys, counts and routes, rejects to quarantine, and delivers to the subledger, FinDB, BlackLine, Workday and Fusion, with vendor ledgers including S/4HANA behind their own adapter layers.](finance-systems-architecture/posts/30-loosely-coupled-domains/assets/images/30-loosely-coupled-domains/target-event-topology.jpeg)
 
 **Figure 3:** *Northmere's target topology. Producers publish canonical events through the adapter kit or a vendor ACL onto Kafka; the hub validates, enriches with reference keys, counts and routes; consumers receive the delivery shape they need; every vendor ledger is reached through its own anti-corruption layer. Business rules live at the edges, never in the hub.*
 
@@ -376,7 +342,7 @@ James Lewis and Martin Fowler's 2014 microservices article argued for **smart en
 
 In my experience the test is simple: **if a change to accounting policy, a brand's product or a vendor's release requires a change to the hub, logic has leaked into the pipe.** Counting and validating are not logic in that sense; they are the evidence that the pipe did its job, and finance cannot do without them. An ESB fails by knowing too much about the messages; a finance hub fails by knowing too little about whether they arrived.
 
-![A pipeline with checkpoint, counter, quarantine tank and replay loop, connecting producer workshops to consumers where the accounting rules live.](enterprise-applications-and-financial-systems/posts/30-loosely-coupled-domains/assets/images/30-loosely-coupled-domains/counting-pipe-smart-edges.jpeg)
+![A pipeline with checkpoint, counter, quarantine tank and replay loop, connecting producer workshops to consumers where the accounting rules live.](finance-systems-architecture/posts/30-loosely-coupled-domains/assets/images/30-loosely-coupled-domains/counting-pipe-smart-edges.jpeg)
 
 **Figure 4:** *The hub validates, counts, quarantines and replays, but never decides accounts or timing: if an accounting-policy change needs a hub change, logic has leaked into the pipe.*
 

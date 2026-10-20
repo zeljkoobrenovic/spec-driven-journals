@@ -1,7 +1,7 @@
 {id: chief-architect-role}
 # 4. The Chief Architect's Job: Making Many Systems Tell One Story
 
-![The Chief Architect's Job: Making Many Systems Tell One Story — logo](enterprise-applications-and-financial-systems/posts/01-chief-architect-role/assets/images/01-chief-architect-role/logo.jpeg)
+![The Chief Architect's Job: Making Many Systems Tell One Story — logo](finance-systems-architecture/posts/01-chief-architect-role/assets/images/01-chief-architect-role/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Define what enterprise architecture is for in a finance estate, choose an operating model and a set of decision rights that fit a federated, multi-brand group, and see how a new Chief Architect turns a CFO's three blunt questions into a 90-day plan.
 
@@ -95,36 +95,7 @@ Dana's catalog, as she drafted it in her second month, had six services.
 5. **Design authority for transformation.** For Keystone, a standing forum that rules on design questions with the authority of the program sponsor. Dana chairs it with Leila Haddad, the Chief Accounting Officer ([The Technology Is the Easy Part: Leading a Finance Transformation](#finance-transformation) owns the term).
 6. **Embedded architecture.** Solution and integration architects who work inside brand and platform teams on their hardest problems. This is the service that earns the trust the other five spend.
 
-```mermaid
-flowchart LR
-    subgraph CUST["Customers of the function"]
-        CFO["CFO and finance leadership"]
-        CAO["Controller and close owners"]
-        BRAND["Brand finance engineering"]
-        PAY["Payments platform"]
-        CTRL["Internal controls"]
-        KEY["Keystone program"]
-    end
-    subgraph SVC["Architecture services"]
-        DEC["Decision service"]
-        STD["Standards and reference implementations"]
-        PORT["Portfolio fact base"]
-        TGT["Target state and dependency map"]
-        DA["Keystone design authority"]
-        EMB["Embedded solution architects"]
-    end
-    BRAND -->|"decision requests"| DEC
-    PAY -->|"decision requests"| DEC
-    DEC -->|"recorded decisions"| BRAND
-    STD -->|"adapter kit and patterns"| BRAND
-    STD -->|"control impact of standards"| CTRL
-    PORT -->|"cost and duplication facts"| CFO
-    TGT -->|"transition states"| KEY
-    DA -->|"design rulings"| KEY
-    EMB -->|"hard problems solved with teams"| BRAND
-    CAO -->|"accounting requirements"| DEC
-    TGT -->|"close and cut-over constraints"| CAO
-```
+![Six architecture services on the left — portfolio facts, target state, decisions, embedded architects, standards, design authority — each delivering along a straight arrow to a named customer on the right: CFO, controller, payments, brand finance, internal controls and Keystone.](finance-systems-architecture/posts/01-chief-architect-role/assets/images/01-chief-architect-role/function-services-and-customers.jpeg)
 
 **Figure 1:** *The architecture function as a set of services with named customers. Each arrow is something a customer would notice if it stopped. A document set has readers; a function has customers who can complain.*
 
@@ -172,7 +143,7 @@ For a group like Northmere I recommend **federated, with a thin mandatory core a
 
 There is one finance-specific caveat, and I would not soften it. **The advice process does not remove documented change approval for systems in ICFR scope.** A brand team may decide its own design through advice. A change to a system that feeds the financial statements still needs authorization and evidence that satisfies the auditor, and that is what Northmere's SFP finding was about. The credible model runs advice for design and keeps a thin, explicit control gate for in-scope changes, owned jointly with internal controls. Where this recommendation does not hold: during the remediation of a significant deficiency, I would run the affected platform under a temporarily centralized model, with every change reviewed, and say in writing when that will end.
 
-![A small solid core of mandatory standards surrounded by a wide advisory ring where teams decide, with an orange control gate on the edge through which in-scope changes pass.](enterprise-applications-and-financial-systems/posts/01-chief-architect-role/assets/images/01-chief-architect-role/thin-core-advisory-periphery.jpeg)
+![A small solid core of mandatory standards surrounded by a wide advisory ring where teams decide, with an orange control gate on the edge through which in-scope changes pass.](finance-systems-architecture/posts/01-chief-architect-role/assets/images/01-chief-architect-role/thin-core-advisory-periphery.jpeg)
 
 **Figure 2:** *Federated with a thin mandatory core: the Chief Architect decides a short list of standards, teams decide the rest through advice, and every change to an in-scope system still passes the control gate.*
 
@@ -205,24 +176,7 @@ Three properties make a decision-rights table like this one work.
 
 Decisions are also routed by **materiality**, so that most never reach a forum.
 
-```mermaid
-flowchart TB
-    Q["A decision is needed"] --> M1{"Does it touch a mandatory standard or cross teams?"}
-    M1 -->|"No"| T["Team decides after seeking advice"]
-    M1 -->|"Yes"| M2{"Does it need a waiver or change a standard?"}
-    M2 -->|"No"| F["Architecture advisory forum: advice recorded, team decides"]
-    M2 -->|"Yes"| B["Review: options, cost, control impact; Dana decides"]
-    B --> M3{"Is it investment-level or cross-brand capability ownership?"}
-    M3 -->|"No"| R["Decision recorded with review date"]
-    M3 -->|"Yes"| DA["Keystone design authority: Dana and Leila recommend"]
-    DA --> EX["Tomás and Ravi approve or resolve within ten working days"]
-    T --> S{"Is the system in ICFR scope?"}
-    F --> S
-    R --> S
-    EX --> S
-    S -->|"Yes"| G["Change control gate with evidence, owned with internal controls"]
-    S -->|"No"| GO["Proceed"]
-```
+![A decision enters at the top and routes into four lanes — team, advisory forum, architecture review, design authority — with most traffic on the team lane; all lanes converge on an ICFR-scope check that leads either to a control gate with evidence or straight on.](finance-systems-architecture/posts/01-chief-architect-role/assets/images/01-chief-architect-role/decision-routing-by-materiality.jpeg)
 
 **Figure 3:** *Decisions route by materiality, and most never reach a forum. Every path converges on the same control gate for systems in ICFR scope: advice can replace approval for design, never for change evidence.*
 
@@ -254,19 +208,7 @@ Gregor Hohpe's image for the architect's position is an elevator. The architect 
 
 In finance, the penthouse speaks of days to close and audit findings, the engine room of summarization levels and settlement file formats. Between them sits a floor technology-side architects underrate: the controller's floor, where accounting policy, close calendars and reconciliations live. Dana answered Tomás's first question by riding all the way down and back up.
 
-```mermaid
-flowchart TB
-    P["Penthouse: Tomás asks why the close takes nine working days"] --> C1["Controller floor: Leila's close calendar, day by day"]
-    C1 --> C2["Days 3 to 5 lost to unmatched payment-provider lines and suspense clearing"]
-    C1 --> C3["Days 6 to 7 lost to chart-of-accounts mapping in spreadsheets"]
-    C2 --> E1["Engine room: SFP daily summaries carry no reconciliation key to settlement lines"]
-    C2 --> E2["Engine room: transaction matching covers cards but not local payment methods"]
-    C3 --> E3["Engine room: three ledgers joined only in OneStream"]
-    E1 --> O["Back up: three costed options with days saved, cost and control impact"]
-    E2 --> O
-    E3 --> O
-    O --> P2["Penthouse: a decision Tomás can fund, and a date he can check"]
-```
+![A three-floor building: the CFO's question about nine close days in the penthouse, lost days on the controller's calendar, root causes in the engine room, and three costed options carried back up to the penthouse.](finance-systems-architecture/posts/01-chief-architect-role/assets/images/01-chief-architect-role/elevator-ride-close-question.jpeg)
 
 **Figure 4:** *The elevator ride behind the CFO's first question. The question arrives in the penthouse in days; the causes are found in the engine room as missing keys and missing coverage; the answer goes back up as options priced in days, money and control risk.*
 
@@ -284,7 +226,7 @@ Dana did not start with the systems. She asked Leila to let her sit in on the Se
 
 The walk changed the conversation. Nine days was not one problem. It was three, each with a different owner and a different cure. **Days 3 to 5 were a traceability problem**: SFP summarized before posting and kept no key from summary to settlement line, so every break had to be investigated by reconstructing the detail. This is **Lost in Aggregation**, and [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation) treats its cure. **Days 6 to 7 were a coherence problem**: three ledgers and spreadsheet mappings, which is **Spreadsheet Glue** on top of an unmade decision about ledger convergence. **Days 8 to 9 were mostly consequences** of the first two, and would shrink as they did.
 
-![A nine-day calendar strip where days 3 to 5 are a traceability problem, days 6 to 7 a coherence problem, and days 8 to 9 the consequences of both.](enterprise-applications-and-financial-systems/posts/01-chief-architect-role/assets/images/01-chief-architect-role/nine-days-three-problems.jpeg)
+![A nine-day calendar strip where days 3 to 5 are a traceability problem, days 6 to 7 a coherence problem, and days 8 to 9 the consequences of both.](finance-systems-architecture/posts/01-chief-architect-role/assets/images/01-chief-architect-role/nine-days-three-problems.jpeg)
 
 **Figure 5:** *The close walk split nine days into three problems with different owners: days 3 to 5 lost to traceability, days 6 to 7 to coherence across three ledgers, and days 8 to 9 to the consequences of both.*
 

@@ -1,7 +1,7 @@
 {id: technical-debt-and-fitness}
 # 42. Technical Debt on the Balance Sheet
 
-![Technical Debt on the Balance Sheet — logo](enterprise-applications-and-financial-systems/posts/39-technical-debt-and-fitness/assets/images/39-technical-debt-and-fitness/logo.jpeg)
+![Technical Debt on the Balance Sheet — logo](finance-systems-architecture/posts/39-technical-debt-and-fitness/assets/images/39-technical-debt-and-fitness/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn to name the debt types that are specific to a finance estate, measure the estate's health with a catalog of finance fitness functions, keep a debt register in three columns (cost carried, risk carried, speed lost), and turn it into a sequenced, tranche-funded modernization plan that a CFO can approve.
 
@@ -69,7 +69,7 @@ Two conventions keep the figures honest. **Cash** means money paid to a third pa
 
 The risk and speed columns are not converted into money. A significant deficiency, €2.1 million of suspense older than 90 days or a close day on the critical path are understood by a CFO in their own units. Converting them into a single dollar figure would hide the judgment the CFO is being asked to make.
 
-![A finance executive reading three separate instruments labelled cost, risk and speed, with no combined total.](enterprise-applications-and-financial-systems/posts/39-technical-debt-and-fitness/assets/images/39-technical-debt-and-fitness/carrying-cost-three-gauges.jpeg)
+![A finance executive reading three separate instruments labelled cost, risk and speed, with no combined total.](finance-systems-architecture/posts/39-technical-debt-and-fitness/assets/images/39-technical-debt-and-fitness/carrying-cost-three-gauges.jpeg)
 
 **Figure 1:** *Debt is reported as a carrying cost in three columns read side by side and never added: cost carried with cash and capacity kept apart, risk carried in its own units, and speed lost in close days and months.*
 
@@ -90,7 +90,7 @@ Beyond ordinary code-level debt, seven types set the CFO's agenda. Each charges 
 
 Three of the seven are not code at all. **Control debt** and **Spreadsheet Glue** are invisible to a static-analysis tool and to an IT budget, because Finance's time and the auditor's fees pay for them. **Data debt** looks like an operations problem until a mapping error moves $41 million of Tablekin usage revenue into the wrong line, as in Northmere's Q1 2027 close ([Finance Data Architecture: Who Owns the Truth](#finance-data-architecture)).
 
-![An iceberg with code and version debt above the waterline and larger control, spreadsheet and data debt below it.](enterprise-applications-and-financial-systems/posts/39-technical-debt-and-fitness/assets/images/39-technical-debt-and-fitness/debt-below-the-waterline.jpeg)
+![An iceberg with code and version debt above the waterline and larger control, spreadsheet and data debt below it.](finance-systems-architecture/posts/39-technical-debt-and-fitness/assets/images/39-technical-debt-and-fitness/debt-below-the-waterline.jpeg)
 
 **Figure 2:** *Three of the seven finance debt types are not code: control debt, Spreadsheet Glue and data debt sit below the line that static analysis and IT budgets can see, paid for in Finance's time and the auditor's fees.*
 
@@ -154,23 +154,7 @@ Money in flight, the value that has left one system and not yet arrived in the n
 
 A fitness function that someone computes by hand before each review is a status report. Northmere's rule is that every fitness function lands in FinDB from a system feed, and the review reads one model.
 
-```mermaid
-flowchart LR
-    ATC["ABAP Test Cockpit in transport pipeline"] -->|"clean-core results"| FM["FinDB fitness mart"]
-    CI["Interface deployment pipelines"] -->|"duplicate-delivery test results"| FM
-    DL["Delivery ledgers of three integration lanes"] -->|"counts, control totals, dead letters, replays"| FM
-    BL["BlackLine"] -->|"match results, reconciliations, task timestamps"| FM
-    OS["OneStream load validation"] -->|"mapping coverage"| FM
-    RCM["Risk and control matrix"] -->|"control attributes"| FM
-    LX["SAP LeanIX"] -->|"application and EUC records"| FM
-    GL["Ledgers S4HANA, Fusion, Workday"] -->|"daily balances"| FM
-    FM -->|"dbt tests and thresholds"| SC["Fitness scorecard"]
-    SC --> QR["Quarterly architecture fitness review"]
-    QR -->|"re-measured items"| DR["Debt register"]
-    QR -->|"gate readings"| TG["Tranche gates"]
-    DR --> TG
-    TG -->|"release or hold funding"| KS["Keystone steering committee"]
-```
+![Five existing feeds (pipelines, delivery ledgers, reconciliation, control matrix, ledgers) flow into FinDB, which feeds a fitness scorecard read in the quarterly review; the review updates the debt register and reads the tranche gates, which decide funding at the steering committee.](finance-systems-architecture/posts/39-technical-debt-and-fitness/assets/images/39-technical-debt-and-fitness/fitness-feeds-quarterly-review.jpeg)
 
 **Figure 3:** *Fitness functions are computed from feeds the estate already produces, land in one FinDB model and are read in one quarterly review. The review updates the debt register and reads the gates that decide whether the next tranche of funding is released.*
 
@@ -227,21 +211,7 @@ Three cross-checks keep the register honest.
 
 In OWNED I wrote the sequencing rule into the register in three steps. First, find the items whose external date leaves little more time than the work needs. Second, weigh each of them against the harm the undated items are doing now. Third, order the rest by what each tranche removes for its effort, read across all three columns. A finance estate needs the same rule with two adaptations: **finance has more kinds of dates**, and **the close critical path and key controls weigh in the third step**.
 
-```mermaid
-flowchart TB
-    A["All register items with three columns measured"] --> B{"External date close: time left barely exceeds work plus margin?"}
-    B -->|"yes"| C["Weigh cost of missing the date against harm of undated items now"]
-    C -->|"date wins"| D["Brought forward, in date order"]
-    C -->|"harm now wins"| E["Undated item first; latest start of dated item recorded"]
-    B -->|"no"| F["Latest start written next to the item"]
-    F --> G["Rank by removal per tranche effort across cost, risk and speed"]
-    E --> G
-    G --> H{"Equal ratio?"}
-    H -->|"tie-break"| I["Item on close critical path or in a key control goes first"]
-    H -->|"clear order"| J["Ordered list for tranche planning"]
-    I --> J
-    D --> J
-```
+![Register items pass a date check: if the external date is close, the date is weighed against harm now and the item is brought forward or the undated item goes first; otherwise its latest start is recorded; items are ranked by removal per effort, with the close critical path as tie-break, into an ordered list.](finance-systems-architecture/posts/39-technical-debt-and-fitness/assets/images/39-technical-debt-and-fitness/debt-sequencing-rule.jpeg)
 
 **Figure 4:** *The OWNED sequencing rule adapted to a finance estate: dated items first when waiting would miss the date, then the rest by what each tranche removes for its effort, with the close critical path and key controls as the tie-break.*
 
@@ -281,21 +251,7 @@ Item 8 has no tranche of its own. Hand-off contracts are cheap to write while so
 
 A **tranche** is a separately approved stage of work and spending. A **gate** is the check, agreed before the stage starts, that the stage delivered what it promised and made nothing worse. In OWNED, gates were read from rehearsal results and bills. In a finance estate, the gate conditions are fitness-function readings, read by the same quarterly review, and a gate that is a fitness function cannot be passed by a status report.
 
-```mermaid
-stateDiagram-v2
-    [*] --> Raised
-    Raised --> Measured: three columns and fitness function named
-    Measured --> Sequenced: date check and removal per effort
-    Sequenced --> TrancheFunded: steering committee releases tranche
-    Sequenced --> CarriedOnPurpose: reason cost and review date recorded
-    TrancheFunded --> GateRead: fitness readings at agreed date
-    GateRead --> TrancheFunded: pass next tranche released
-    GateRead --> Redesign: miss cause found
-    Redesign --> TrancheFunded: re-read passes
-    GateRead --> Retired: final tranche passes
-    CarriedOnPurpose --> Measured: quarterly re-measurement
-    Retired --> [*]
-```
+![Stepping stones from Raised to Measured, Sequenced, Tranche funded, Gate read and Retired; a gate pass loops back to fund the next tranche, a miss goes through Redesign, and items carried on purpose are re-measured quarterly.](finance-systems-architecture/posts/39-technical-debt-and-fitness/assets/images/39-technical-debt-and-fitness/register-item-lifecycle.jpeg)
 
 **Figure 5:** *A register item's life. An item is funded only after it has been measured and given a fitness function, and every tranche ends at a gate read from the fitness scorecard. Carrying an item is a recorded decision that is re-measured each quarter.*
 

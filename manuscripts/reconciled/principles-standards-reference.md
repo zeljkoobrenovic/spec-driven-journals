@@ -1,7 +1,7 @@
 {id: principles-standards-reference}
 # 38. Principles That Decide Things
 
-![Principles That Decide Things — logo](enterprise-applications-and-financial-systems/posts/35-principles-standards-reference/assets/images/35-principles-standards-reference/logo.jpeg)
+![Principles That Decide Things — logo](finance-systems-architecture/posts/35-principles-standards-reference/assets/images/35-principles-standards-reference/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn to write architecture principles that can be tested, separate principles from standards, guidelines, patterns and reference architectures, work through eleven finance-architecture principles and three reference architectures (payments-to-ledger, subledger-to-GL with drill-back, close orchestration and evidence), and see how golden paths turn them into something a brand team can use.
 
@@ -34,7 +34,7 @@ Northmere, the fictional multi-brand digital commerce group this book follows, c
 
 Dana Whitlock, Northmere's Chief Architect for enterprise applications and financial systems, reread the draft principles her team had circulated in December 2026. Principle 4 said: "Financial data is accurate, complete and consistent across systems." Every system involved would have claimed to comply. Workday was accurate; the mapping spreadsheet was internally consistent; OneStream consolidated what it was given. The defect lived at a **boundary**, and the principle said nothing about boundaries, nothing about who was authoritative for the mapping, and nothing about what should happen to an account with no mapping.
 
-![Three systems each with a green check, while a new account drops through the gap between them into an overflowing Other revenue bin.](enterprise-applications-and-financial-systems/posts/35-principles-standards-reference/assets/images/35-principles-standards-reference/defect-at-the-boundary.jpeg)
+![Three systems each with a green check, while a new account drops through the gap between them into an overflowing Other revenue bin.](finance-systems-architecture/posts/35-principles-standards-reference/assets/images/35-principles-standards-reference/defect-at-the-boundary.jpeg)
 
 **Figure 1:** *Every system involved could claim it was accurate, complete and consistent; the $41 million in "Other revenue" lived at the boundary between them, which the untestable principle never mentioned.*
 
@@ -66,20 +66,7 @@ Architecture functions produce several kinds of guidance and often blur them. Th
 | **How it is tested** | Design review against its test | Automated checks, or attestation with sampling | Peer review | — | Conformance checklist at design and go-live | By construction: the kit runs the checks |
 | **Changes** | Rarely; recorded | Versioned; major versions need a transition period | Freely | Rarely | With the standards it implements | Released like software |
 
-```mermaid
-flowchart TB
-    INT["Intent: Keystone goals, CFO questions, audit findings"] --> PR["Principles: eleven, each with a conformance test"]
-    PR -->|"load-bearing ones promoted"| ST["Mandatory standards"]
-    PR -->|"the rest guide judgment"| GL["Guidelines and patterns library"]
-    ST --> RA["Reference architectures"]
-    GL --> RA
-    RA --> GP["Golden paths: adapter kit, posting pipeline template"]
-    GP --> BUILD["Brand and platform builds"]
-    BUILD --> CC["Conformance checks in CI and production"]
-    CC -->|"results and waivers"| GOV["Design authority and waiver register"]
-    GOV -->|"revise, deprecate, add"| PR
-    GOV -->|"revise, deprecate, add"| ST
-```
+![A chain of links from Intent through Principles, Standards, Reference architectures and Golden paths to Builds and Conformance checks, with results flowing down to the design authority and arrows back up to revise principles and standards.](finance-systems-architecture/posts/35-principles-standards-reference/assets/images/35-principles-standards-reference/guidance-chain.jpeg)
 
 **Figure 2:** *Guidance as a chain. Each link narrows interpretation and adds support; conformance results flow back to governance, which revises principles and standards. A link without a test breaks the chain.*
 
@@ -261,19 +248,7 @@ Note what was *not* promoted. P9 is enforced through STD-FIN-01's envelope rathe
 
 Every brand that takes payments faces the same question: how do provider events and settlement reports become accounting entries and reconciled cash? [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger) owns the clearing account design, the three-way match and the €14 million suspense remediation; this section gives the reusable shape and its checks.
 
-```mermaid
-flowchart LR
-    BK["Brand booking or order with reference"] -->|"merchant reference"| WH["Webhook intake, idempotent"]
-    WH -->|"operational state"| NM["Normalization to canonical events, raw kept beside"]
-    RI["Settlement report ingestion with completeness check"] -->|"settlement truth"| NM
-    NM -->|"PaymentSettled, PSPFeeCharged, RefundIssued, ChargebackReceived"| AE["Accounting engine and rule store"]
-    AE --> CL["Subledger journal and clearing accounts per PSP and currency"]
-    NM -->|"normalized lines and control totals"| TM["Three-way matching: order, PSP, bank"]
-    CL -->|"expected receipts"| TM
-    BS["Bank statements via treasury"] --> TM
-    TM --> EQ["Exception queue with owner and age"]
-    TM -->|"match status"| CL
-```
+![Webhooks with early state and settlement reports with later money converge on one normalization funnel, which feeds the accounting engine and three-way matching; clearing accounts and the bank also feed matching, with exceptions flowing to a tray.](finance-systems-architecture/posts/35-principles-standards-reference/assets/images/35-principles-standards-reference/payments-to-ledger-reference.jpeg)
 
 **Figure 3:** *Payments-to-ledger reference architecture. Webhooks carry state early, settlement reports carry money later; both converge on one enterprise-owned normalization layer. The accounting engine posts from canonical events, and matching proves that clearing accounts empty out against the bank.*
 
@@ -308,25 +283,7 @@ flowchart LR
 
 The second reference architecture applies wherever a high-volume subledger, custom or vendor, feeds a general ledger. [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers) builds SFP's version component by component; this section abstracts it into a contract that any subledger must meet, whether SFP, SAP FI-CA, a vendor accounting engine or the Northmere Ads billing service.
 
-```mermaid
-sequenceDiagram
-    participant SRC as Producers
-    participant SL as Subledger
-    participant SUM as Summarizer
-    participant GL as GeneralLedger
-    participant TO as TieOut
-    participant REC as Reconciliation
-    SRC->>SL: Canonical events with control totals
-    SL->>SL: Validate, dedupe, apply rule version, write lines
-    SL->>SUM: Lines for the accounting date
-    SUM->>SUM: Group by summary key, write summary_id on each line
-    SUM->>GL: Summary document with summary_id and batch totals
-    GL->>GL: Validate totals, post or reject the whole batch
-    GL-->>SUM: Acknowledgment with GL document number
-    TO->>SL: Movement by entity, account, currency, day
-    TO->>GL: Movement for the same keys from this source
-    TO->>REC: Differences with owner and age
-```
+![The subledger's lines are summarized into a batch carrying a summary_id key and control totals, the general ledger accepts or rejects the whole batch and returns its document number, and a daily tie-out compares both sides and sends differences to reconciliation.](finance-systems-architecture/posts/35-principles-standards-reference/assets/images/35-principles-standards-reference/subledger-to-gl-handoff.jpeg)
 
 **Figure 4:** *Subledger-to-GL reference architecture. The summary carries a drill-back key and control totals; the GL accepts or rejects whole batches and returns its document number; a daily tie-out compares movements on both sides and sends any difference to reconciliation with an owner.*
 
@@ -350,22 +307,7 @@ sequenceDiagram
 
 The third reference architecture governs the period end. Its components are mostly signals and gates rather than data pipelines, which makes it the least obvious to engineers and the most valuable to the controller, because the critical path of the close runs through it. [BlackLine: Matching, Certifying and Closing](#blackline) covers the close platform, [OneStream: Consolidating Actuals, Planning the Future](#onestream) consolidation, and [Order to Cash, Procure to Pay, Record to Report](#finance-processes) record-to-report as a process.
 
-```mermaid
-flowchart TB
-    SLC["Subledger and ledger cut-off signals with control totals"] -->|"cut-off complete"| CAL["Close calendar: tasks, owners, dependencies"]
-    PER["Period state per ledger"] -->|"soft-close status"| CAL
-    CAL -->|"release dependent tasks"| MAT["Matching and reconciliation"]
-    MAT --> CERT["Certification status per entity"]
-    PRE["Preliminary trial balance loads"] --> FIN["Final consolidation"]
-    CERT -->|"key reconciliations certified"| LOCK["Entity lock gate"]
-    LOCK --> FIN
-    SLC --> EVS["Central evidence store, tagged by control"]
-    MAT --> EVS
-    CERT --> EVS
-    LOCK --> EVS
-    EVS --> CCM["Continuous control monitors"]
-    CCM -->|"exceptions as close tasks"| CAL
-```
+![Cut-off signals release tasks in the close calendar, which flow to matching, certification, an entity lock gate and consolidation; four gates write to a shared evidence store that control monitors query, feeding exceptions back to the calendar.](finance-systems-architecture/posts/35-principles-standards-reference/assets/images/35-principles-standards-reference/close-orchestration-reference.jpeg)
 
 **Figure 5:** *Close orchestration reference architecture. Ledgers emit cut-off signals with control totals; the calendar releases tasks on signals, not dates; consolidation locks an entity only when its key reconciliations are certified; every gate writes evidence that monitors can query.*
 
@@ -404,7 +346,7 @@ The first two feeds on the adapter kit, in the second half of 2027, were Northme
 
 Golden paths change the economics of compliance. Leaving the path is allowed, as Spotify's framing intends, but a team that leaves it must demonstrate conformance with its own evidence, which is more work than adopting the kit. That is the point. A golden path harder to use than building from scratch is a mandate in a library's clothing, and teams route around it.
 
-![A paved golden path with adapter kit and posting template stations next to a rough side route where a team hauls its own evidence.](enterprise-applications-and-financial-systems/posts/35-principles-standards-reference/assets/images/35-principles-standards-reference/golden-path-economics.jpeg)
+![A paved golden path with adapter kit and posting template stations next to a rough side route where a team hauls its own evidence.](finance-systems-architecture/posts/35-principles-standards-reference/assets/images/35-principles-standards-reference/golden-path-economics.jpeg)
 
 **Figure 6:** *Golden paths change the economics of compliance: the adapter kit and the posting pipeline template make the conformant design the cheapest to build, and a team that leaves the path must demonstrate conformance with its own evidence.*
 

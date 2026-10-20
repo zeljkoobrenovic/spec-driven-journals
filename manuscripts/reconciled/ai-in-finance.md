@@ -1,7 +1,7 @@
 {id: ai-in-finance}
 # 46. Automate the Work, Not the Accountability
 
-![Automate the Work, Not the Accountability — logo](enterprise-applications-and-financial-systems/posts/42-ai-in-finance/assets/images/42-ai-in-finance/logo.jpeg)
+![Automate the Work, Not the Accountability — logo](finance-systems-architecture/posts/42-ai-in-finance/assets/images/42-ai-in-finance/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Place rules, robotic process automation, machine learning, generative AI and agents on one ladder, rank finance use cases by value and control risk, and design the architecture that lets an agent work on the books without becoming an unowned control: a tool layer with least privilege, a proposal store, human approval in the system of record, and an evidence log that can reconstruct every run.
 
@@ -57,7 +57,7 @@ For a finance architect, "AI" is five rungs of a ladder, and the properties an a
 
 Two observations follow. First, **each rung up buys reach into the exception layer at the price of determinism**, and that price is worth paying only where the lower rung has run out. A one-to-one match between a PSP settlement line and a captured payment should be a rule, forever; a model that matches it "correctly 99.7% of the time" has replaced a certainty with a probability. The rule I use: *push every case as far down the ladder as it will go, and point AI at the residue.*
 
-![A five-rung ladder labeled Rules, RPA, ML, GenAI and Agents; most transactions flow through rules at the bottom while a few exception documents move up the ladder.](enterprise-applications-and-financial-systems/posts/42-ai-in-finance/assets/images/42-ai-in-finance/automation-ladder.jpeg)
+![A five-rung ladder labeled Rules, RPA, ML, GenAI and Agents; most transactions flow through rules at the bottom while a few exception documents move up the ladder.](finance-systems-architecture/posts/42-ai-in-finance/assets/images/42-ai-in-finance/automation-ladder.jpeg)
 
 **Figure 1:** *Each rung up the automation ladder buys reach into the exception layer at the price of determinism: push every case as far down as it will go, and point AI at the residue.*
 
@@ -85,7 +85,7 @@ I rank use cases on two axes. **Value** is the effort and delay removed from the
 
 The high-value, contained-risk rows are preparer work in the exception layer: triage, drafting, coding. The dangerous rows post, pay or change master data without a human decision. Northmere chose its three pilots from the first group on purpose, which matches Gartner's August 2026 advice to finance leaders: [start with a low-risk, contained workflow where mistakes can be detected and reversed](https://www.gartner.com/en/newsroom/new/pr-q-a-new-vis-template/2026-08-20-gartner-says-cfos-mus-pilot-governance-first-before-scaling-ai-agents), treat the first agent as a governance pilot, and keep restatements and regulatory reporting out of pilots.
 
-![Value versus control-risk map with a green pilot zone holding triage, drafting and coding icons and a locked red zone holding posting, payment and master-data icons.](enterprise-applications-and-financial-systems/posts/42-ai-in-finance/assets/images/42-ai-in-finance/value-risk-map.jpeg)
+![Value versus control-risk map with a green pilot zone holding triage, drafting and coding icons and a locked red zone holding posting, payment and master-data icons.](finance-systems-architecture/posts/42-ai-in-finance/assets/images/42-ai-in-finance/value-risk-map.jpeg)
 
 **Figure 2:** *Rank use cases by value and control risk: the pilots belong in preparer work such as triage, drafting and coding, while anything that posts, pays or changes master data stays out of agent authority.*
 
@@ -138,23 +138,7 @@ The architecture has one organizing principle, which I state as a standard in [P
 
 Everything else is mechanism.
 
-```mermaid
-flowchart LR
-    TRIG["Trigger: close task, exception queue, new invoice"] --> RT["Agent runtime: pinned model and prompt versions"]
-    RT --> GW["Tool gateway: MCP servers, policy check, rate limits"]
-    GW -->|"read only"| SRC["Read tools: BlackLine, S/4HANA, SFP, Northmere Pay, FinDB"]
-    GW -->|"write proposal only"| PS["Proposal store"]
-    PS --> VAL["Deterministic validation: balance, period open, account allowed, limits"]
-    VAL --> APR["Human approval in system-of-record workflow"]
-    APR -->|"approved"| SOR["System of record posts: BlackLine JE to S/4HANA, Coupa"]
-    APR -->|"rejected or amended"| FB["Feedback and evaluation set"]
-    SOR --> REC["Reconciliation and monitoring"]
-    RT --> EV["Evidence log: inputs, plan, tool calls, outputs, versions"]
-    GW --> EV
-    APR --> EV
-    REG["Model and prompt registry under change management"] --> RT
-    IAM["Service identity per agent, least privilege"] --> GW
-```
+![A trigger starts the agent, which goes through a tool gateway that allows read-only access to systems and lets it write only proposals; proposals pass validation and a human approval, which posts to the ledger or returns feedback, while an evidence log records the agent, gateway and approval steps.](finance-systems-architecture/posts/42-ai-in-finance/assets/images/42-ai-in-finance/agent-never-holds-pen.jpeg)
 
 **Figure 3:** *The agent never holds the pen. It reads through a policy-checked tool gateway, writes only proposals, and every disposition happens in the system of record's own approval control; the evidence log captures each step so a run can be reconstructed.*
 
@@ -180,21 +164,7 @@ The **Model Context Protocol (MCP)** is a reasonable standard for this layer. It
 {id: ai-in-finance--the-proposal-lifecycle}
 ### The proposal lifecycle
 
-```mermaid
-stateDiagram-v2
-    [*] --> Proposed
-    Proposed --> RejectedByRule: "validation fails"
-    Proposed --> AwaitingReview: "validation passes"
-    AwaitingReview --> Approved: "reviewer accepts"
-    AwaitingReview --> Amended: "reviewer changes"
-    AwaitingReview --> Rejected: "reviewer rejects"
-    Amended --> Approved
-    Approved --> Posted: "system of record posts"
-    Posted --> Reconciled: "next reconciliation confirms"
-    RejectedByRule --> [*]
-    Rejected --> [*]
-    Reconciled --> [*]
-```
+![Stepping stones from Proposed, the only state the agent controls, to Awaiting review, then Approved, Posted and Reconciled; validation failures end Rejected by rule, reviewer changes go through Amended, and amended and rejected proposals drop into an evaluation set.](finance-systems-architecture/posts/42-ai-in-finance/assets/images/42-ai-in-finance/proposal-lifecycle.jpeg)
 
 **Figure 4:** *The agent controls only the first state of a proposal's lifecycle; amended and rejected proposals are kept, because they are the agent's measured error rate and the evaluation set for the next model or prompt change.*
 
@@ -228,7 +198,7 @@ The worked example the reviewers used most: an Indonesian e-wallet settlement li
 
 The most useful output was not the time saved but the category distribution: **58%** of exceptions were "missing or truncated booking reference", concentrated in two APM providers. That is a data contract problem, not an AI problem, and it went back to Lucía's team and Ingrid Solberg's PSP relationship owners as a fix to the providers' file specifications ([Canonical Events: A Common Language for Money](#loosely-coupled-domains) covers the contracts). This is the trap I warn every finance team about: **an agent that makes exceptions cheap to work can make them permanent.** If triage is efficient enough, nobody fixes the cause, and the suspense account becomes a well-managed backlog instead of an empty one. The Suspense Swamp is not cured by a faster shovel. Northmere put the category distribution into the program's monthly metrics so root-cause fixes were measured alongside triage.
 
-![A robot quickly shovels exception slips out of a basin fed by a leaking pipe, while two people repair the leak upstream.](enterprise-applications-and-financial-systems/posts/42-ai-in-finance/assets/images/42-ai-in-finance/faster-shovel.jpeg)
+![A robot quickly shovels exception slips out of a basin fed by a leaking pipe, while two people repair the leak upstream.](finance-systems-architecture/posts/42-ai-in-finance/assets/images/42-ai-in-finance/faster-shovel.jpeg)
 
 **Figure 5:** *An agent that makes exceptions cheap to work can make them permanent: 58% of APM exceptions came from missing or truncated booking references, a data-contract fix that no faster shovel replaces.*
 

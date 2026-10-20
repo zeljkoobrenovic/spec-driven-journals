@@ -1,7 +1,7 @@
 {id: case-uber-payments}
 # 48. Uber's Payments Platform: A Ledger at the Center of Money Movement
 
-![Uber's Payments Platform: A Ledger at the Center of Money Movement — logo](enterprise-applications-and-financial-systems/posts/44-case-uber-payments/assets/images/44-case-uber-payments/logo.jpeg)
+![Uber's Payments Platform: A Ledger at the Center of Money Movement — logo](finance-systems-architecture/posts/44-case-uber-payments/assets/images/44-case-uber-payments/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Read Uber's payments platform as a case study: what Uber's engineers have said in public since 2018, what that evidence supports and what it does not, and how its choices compare with the patterns this book recommends and with the choices made at Northmere, the fictional group this book follows.
 
@@ -58,36 +58,7 @@ In this book's vocabulary, the starting point was **The Permanent Exception** ap
 
 The answer Uber's engineers described is a single platform in the middle, which my 2019 analysis drew as an hourglass.
 
-```mermaid
-flowchart TB
-    subgraph LOB["Lines of business"]
-        R["Rides"]
-        E["Eats"]
-        F["Freight"]
-        N["New business"]
-    end
-    subgraph WAIST["Payments platform: the narrow waist"]
-        CFG["Self-service configuration"]
-        API["Payments API"]
-        ORD["Orders, accounts and entries"]
-        PROC["Stream processing with retries and validation"]
-    end
-    subgraph EXT["Money movement partners"]
-        PSP["Payment service providers, API-based"]
-        BANK["Banks, file-based"]
-        CASH["Cash and wallet flows"]
-    end
-    R --> CFG
-    E --> CFG
-    F --> CFG
-    N --> CFG
-    CFG --> API
-    API --> ORD
-    ORD --> PROC
-    PROC --> PSP
-    PROC --> BANK
-    PROC --> CASH
-```
+![An hourglass with four lines of business at the top, a narrow payments platform waist of configuration, API and orders in the middle, and providers, banks and cash flows at the bottom.](finance-systems-architecture/posts/44-case-uber-payments/assets/images/44-case-uber-payments/payments-hourglass.jpeg)
 
 **Figure 1:** *The hourglass, redrawn from my 2019 analysis of the 2018 talks. Many businesses above and many providers below meet at one generic waist; a new business configures the waist instead of integrating with providers, and a new provider integrates once instead of once per business.*
 
@@ -117,7 +88,7 @@ A ride paid by card, in this model, is one order with three entries. The amounts
 
 **Table 2:** *One order, three entries (illustrative amounts). Collection, disbursement and the platform's share are one transaction, not three separate payments that might drift apart. Uber's own published example, in a 2020 post, is a $20 trip split into an $18 trip fare and a $2 service fee, with entries that net to zero ([Singla and Wu, 2020](https://www.uber.com/blog/money-scale-strong-data/)).*
 
-![An order card linked to a rider account at minus 20.00, a driver account at plus 15.00 and a platform account at plus 5.00, with a balanced scale showing zero.](enterprise-applications-and-financial-systems/posts/44-case-uber-payments/assets/images/44-case-uber-payments/zero-sum-order.jpeg)
+![An order card linked to a rider account at minus 20.00, a driver account at plus 15.00 and a platform account at plus 5.00, with a balanced scale showing zero.](finance-systems-architecture/posts/44-case-uber-payments/assets/images/44-case-uber-payments/zero-sum-order.jpeg)
 
 **Figure 2:** *My illustration of the order model, not Uber's data: one order's entries across rider, driver and platform accounts must sum to zero, so an order that does not net to zero is a defect found mechanically.*
 
@@ -168,20 +139,7 @@ My 2019 analysis described the implementation as microservices, mostly in Go and
 
 Uber also published the retry-and-dead-letter design in writing. [Building Reliable Reprocessing and Dead Letter Queues with Apache Kafka](https://www.uber.com/blog/reliable-reprocessing/) by Ning Xia (February 2018) describes tiered retry topics with increasing delays and a dead letter queue whose messages can be listed, purged or merged back into the first retry topic once the cause is fixed, and it states the consequence of at-least-once delivery plainly: consumers that move money must be idempotent. A 2020 post on migrating to the new platform adds the mechanism: identifiers are generated deterministically, and "the processed order unique identifiers are used to guarantee exactly once order processing" ([Singla and Wu, 2020](https://www.uber.com/blog/money-scale-strong-data/)).
 
-```mermaid
-flowchart LR
-    IN["Order topic"] --> C["Idempotent consumer"]
-    C -->|"processed"| OUT["Next stage topic"]
-    C -->|"retryable error"| RT1["Retry topic, short delay"]
-    RT1 --> C2["Retry consumer"]
-    C2 -->|"still failing"| RT2["Retry topic, longer delay"]
-    RT2 --> C3["Retry consumer"]
-    C3 -->|"exhausted or poison pill"| DLQ["Dead letter queue with owner"]
-    C -->|"records expected side effects"| SE["Side effect store"]
-    OUT --> V["Validator"]
-    SE --> V
-    V -->|"mismatch"| AL["Alert and repair by new order"]
-```
+![Messages flow from an order topic through a consumer to the next stage, with failures dropping through short and longer retry tiers into an owned dead letter bin, and a validator comparing expected effects with outcomes and repairing by a new order.](finance-systems-architecture/posts/44-case-uber-payments/assets/images/44-case-uber-payments/tiered-retries-and-validator.jpeg)
 
 **Figure 3:** *Processing as described in the talks and the 2018 dead-letter post, redrawn: retries in tiers, dead letters for messages that cannot be processed, and a validator that compares what should have happened with what did. The repair is a new order, never an edit.*
 
@@ -207,28 +165,7 @@ At the end of 2018, according to Paul Sorenson's talk [To the Nines: Building Ub
 
 The talk's most instructive example is the **multi-PSP retry trap**. A payment is sent to provider A. The network times out. The caller does not know whether A charged the card. If the routing logic treats the timeout as a failure and sends the payment to provider B, and A did in fact charge, the customer is charged twice. A timeout is not a failure; it is an unknown outcome.
 
-```mermaid
-sequenceDiagram
-    participant P as Payments platform
-    participant RS as Request store
-    participant A as PSP A
-    participant B as PSP B
-    Note over P,B: Wrong path, a timeout treated as a failure
-    P->>A: Charge 20.00, idempotency key K1
-    A--xP: Timeout, outcome unknown
-    P->>B: Charge 20.00, idempotency key K2
-    B-->>P: Charged
-    Note over A,B: If A also charged, the rider pays twice
-    Note over P,B: Right path, record the request and retry where it went
-    P->>RS: Store request K1 sent to PSP A
-    P->>A: Charge 20.00, key K1
-    A--xP: Timeout, outcome unknown
-    P->>RS: Look up K1
-    RS-->>P: K1 was sent to PSP A
-    P->>A: Retry with key K1
-    A-->>P: Already charged, original result
-    Note over P,B: Only a definite failure from A may route to B
-```
+![Two panels: on the wrong path a timeout from PSP A leads to a new charge at PSP B with key K2 and the rider is charged twice; on the right path the request is stored first and retried at PSP A with the same key K1, charging once.](finance-systems-architecture/posts/44-case-uber-payments/assets/images/44-case-uber-payments/multi-psp-retry-trap.jpeg)
 
 **Figure 4:** *The multi-PSP retry trap, redrawn from my 2019 analysis of Sorenson's talk. The wrong path treats an unknown outcome as a failure and moves to a second provider with a new key; the right path stores every request before sending it, so a retry returns to the original provider with the original key.*
 
@@ -274,7 +211,7 @@ The 2024 migration post says the platform launched in 2017 on DynamoDB, kept "on
 
 Two lessons transfer. **A ledger migration is validated like a reconciliation**: shadow reads, full offline comparison, an explicit completeness threshold and the old store kept as a fallback, the discipline [Changing the Engine in Flight: Modernization Patterns for Finance](#modernization-patterns) recommends for finance data. And **immutability survived three storage platforms**: the model, not the database, carried the guarantee.
 
-![A sealed append-only ledger book carried unchanged across three generic storage foundations, with a validation checklist at the final move.](enterprise-applications-and-financial-systems/posts/44-case-uber-payments/assets/images/44-case-uber-payments/model-outlives-storage.jpeg)
+![A sealed append-only ledger book carried unchanged across three generic storage foundations, with a validation checklist at the final move.](finance-systems-architecture/posts/44-case-uber-payments/assets/images/44-case-uber-payments/model-outlives-storage.jpeg)
 
 **Figure 5:** *My interpretation of Uber's 2024 posts: immutability survived three storage platforms because the model, not the database, carried the guarantee, and the migration was validated like a reconciliation.*
 
@@ -287,19 +224,7 @@ The finding that changes this chapter most is not about payments at all. In 2019
 
 The 2021 post on the **Finance Computation Platform** describes a system that exists "to perform accounting operations and record the necessary financial numbers in the general ledger (GL)". Its financial engine "maintains a rule repository to host various configurable business rules that have been modeled by Financial experts"; "editing a Transaction is disabled, and any corrections are taken as additional transactions"; and the system "guarantees to always produce the same transaction for a given event". Collections are reconciled: "collection transactions need to tally with Payment service provider (PSP) files" ([Agarwal, 2021](https://www.uber.com/blog/ubers-finance-computation-platform/)). The 2023 audit framework records, for every accounting transaction, the rule parameters and the execution graph "needed to reproduce the same journal entries", and notes that accounting-approved rule commits follow SOX controls ([Kumar, Srinivasan and Kathpalia, 2023](https://www.uber.com/blog/automated-audit-framework-for-internet-scale-financial-transactions/)). It also gives the reason for the effort in one sentence a controller will recognize: a variance of one cent per trip found in an auditor's sample, extrapolated, "would be 15 million dollars for a quarter". The 2024 testing post describes shadow testing and capture-replay of accounting builds against about 1.5 billion journal entries a day ([Ramakkagari, Ravuri and Srinivasan, 2024](https://www.uber.com/blog/accounting-data-testing-strategies/)).
 
-```mermaid
-flowchart LR
-    LOB["Lines of business and Entity Fares"] -->|"zero-sum money orders"| GS["Gulfstream payments platform"]
-    GS --> LS["LedgerStore, append-only"]
-    GS -->|"charge, disburse, refund"| EXT["PSPs, banks, local methods"]
-    GS -.->|"financial events, my interpretation"| FCP["Finance Computation Platform"]
-    RULES["Rule repository modeled by finance experts"] --> FCP
-    FCP -->|"journal entries, immutable"| AGG["Aggregation"]
-    EXT -->|"PSP files"| REC["Collection reconciliation"]
-    FCP --> REC
-    FCP -->|"rule parameters and execution graph"| AUD["Audit framework"]
-    AGG -.->|"not described: system, mapping, tie-out"| GL["General ledger"]
-```
+![Uber's components: lines of business feed Gulfstream, which writes to LedgerStore and moves money through PSPs and banks; the Finance Computation Platform applies a rule repository and feeds aggregation, an audit framework and reconciliation, with dashed links to the platform and to the general ledger marking the author's interpretation.](finance-systems-architecture/posts/44-case-uber-payments/assets/images/44-case-uber-payments/uber-money-and-accounting.jpeg)
 
 **Figure 6:** *Money movement and accounting as Uber's 2020–2026 posts describe them. Component names are Uber's; solid arrows are relationships stated within a post. The dashed arrows are mine: the feed from the payments platform to the accounting platform, which no post draws, and the hand-off to the general ledger, which the posts mention but do not describe.*
 
@@ -364,17 +289,7 @@ Third, **the multi-provider trap is the most transferable lesson**. Northmere's 
 
 The public record of Uber's payments platform is unusually rich on how money moves correctly, and, since 2021, it shows that accounting is computed from those movements by a separate, rule-driven platform. It still says very little about the last steps: how journal entries reach the general ledger, how the general ledger is structured and governed, how periods close, and how anyone proves that the payments ledger, the accounting platform and the book of record agree. This is not a criticism of Uber's engineers, who wrote about what they built. It is a boundary a reader must not cross by assumption.
 
-```mermaid
-flowchart LR
-    PAY["Payments ledger: money orders and balances"] --> ACC["Accounting platform: rules and journal entries"]
-    PAY --> PSP["Providers and banks"]
-    PSP -->|"PSP files"| REC1["Collection reconciliation"]
-    ACC --> REC1
-    ACC -.->|"not described: mapping, summarization, drill-back"| GL["General ledger: the book of record"]
-    PAY -.->|"not described: balance tie-out per entity"| GL
-    PSP -.->|"not described: bank to ledger"| GL
-    GL -.-> CLOSE["Period close, consolidation and audit"]
-```
+![Documented solid links among the payments ledger, accounting platform, providers and reconciliation, and dashed links into the general ledger and period close in a misty zone where the public evidence stops.](finance-systems-architecture/posts/44-case-uber-payments/assets/images/44-case-uber-payments/where-evidence-stops.jpeg)
 
 **Figure 7:** *Where the public evidence stops. Solid arrows are documented in Uber's posts; dashed arrows are the links every enterprise must still design between a payments ledger, an accounting platform and the book of record, and which the public material does not show for Uber.*
 

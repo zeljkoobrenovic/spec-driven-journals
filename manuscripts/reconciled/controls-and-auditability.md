@@ -1,7 +1,7 @@
 {id: controls-and-auditability}
 # 11. Controls by Design, Not by Audit Season
 
-![Controls by Design, Not by Audit Season — logo](enterprise-applications-and-financial-systems/posts/08-controls-and-auditability/assets/images/08-controls-and-auditability/logo.jpeg)
+![Controls by Design, Not by Audit Season — logo](finance-systems-architecture/posts/08-controls-and-auditability/assets/images/08-controls-and-auditability/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn the control vocabulary auditors use and see how each term becomes a design decision, then follow Northmere's remediation of an audit finding on a custom payout engine as an architecture change rather than a paperwork exercise.
 
@@ -91,26 +91,7 @@ A **control** is a specific activity that reduces the risk that a financial stat
 | **IT operations** | Job scheduling and monitoring; interface failure handling; backup and recovery; incident management | Monitored schedules, interface error queues with owners, restore tests, incident records linked to financial impact |
 | **Program development (implementation)** | Controls over new systems and data migrations, especially the completeness and accuracy of migrated balances | Migration reconciliations as go-live gates (see [Changing the Engine in Flight: Modernization Patterns for Finance](#modernization-patterns)) |
 
-```mermaid
-flowchart TB
-    E["Entity-level controls: governance, risk assessment, CFO close review"]
-    subgraph ITGC["General IT controls"]
-        A1["Logical access"]
-        A2["Change management"]
-        A3["IT operations"]
-        A4["Program development and migration"]
-    end
-    AC["Application controls: posting rules, period locks, payout calculation, interface counts"]
-    IPE["System-generated reports used in controls"]
-    PC["Process-level controls: reviews, reconciliations, approvals"]
-    FS["Financial statement assertions: completeness, accuracy, existence, cut-off"]
-    E --> ITGC
-    ITGC -->|"make reliable"| AC
-    ITGC -->|"make reliable"| IPE
-    AC --> FS
-    IPE -->|"feed"| PC
-    PC --> FS
-```
+![A temple-like structure: entity-level controls and a foundation of four general IT control blocks support pillars for application controls, key reports and process controls, which hold up the financial statement assertions; an inset shows a cracked foundation tilting everything above.](finance-systems-architecture/posts/08-controls-and-auditability/assets/images/08-controls-and-auditability/control-reliance-chain.jpeg)
 
 **Figure 1:** *The reliance chain. Automated controls and system-generated reports are trusted only because the general IT controls beneath them operated all year; a failed access or change control removes the foundation from everything that sits on it.*
 
@@ -185,19 +166,7 @@ The rule Dana writes into the Keystone standard on segregation of duties by desi
 
 The most consequential change is to move payout rules out of code and configuration files into a **rule store**: configuration held as data, with a schema, validation, effective dates and an approval workflow. A rule change is proposed by a partner-settlement operations analyst (the maker), approved by a finance approver (the checker) who cannot be the maker, and becomes active only at its effective date. Engineers change the rule *engine* through the code pipeline; Finance changes the *rules* through the rule workflow. Neither can do the other's job, and each path has its own evidence.
 
-```mermaid
-stateDiagram-v2
-    [*] --> Draft
-    Draft --> Submitted: maker submits with reason and impact estimate
-    Submitted --> Rejected: checker rejects
-    Submitted --> Approved: checker approves, maker not equal to checker
-    Approved --> Scheduled: effective date in future
-    Approved --> Active: effective date reached
-    Scheduled --> Active: effective date reached
-    Active --> Superseded: new version becomes active
-    Rejected --> [*]
-    Superseded --> [*]
-```
+![A payout rule moves from Draft to Submitted, is rejected or approved by a different person, becomes Active directly or via Scheduled, and is finally Superseded and archived rather than overwritten.](finance-systems-architecture/posts/08-controls-and-auditability/assets/images/08-controls-and-auditability/payout-rule-lifecycle.jpeg)
 
 **Figure 2:** *The lifecycle of an SFP payout rule. Every transition is recorded with who, when and why; a rule cannot reach Active without passing an approval by someone other than its author, and a superseded version is kept, never overwritten.*
 
@@ -215,22 +184,7 @@ A worked example shows why this matters. Take the Lisbon booking that this book 
 
 An €18 difference per booking is immaterial on its own. Applied by an unreviewed change to thousands of bookings for a quarter, it moves real revenue and real cash, and Finance would find out only when the margin analysis looked odd. That is why the auditor cared about nine undocumented changes even though the sampled payouts were correct: **an unapproved rule change is a revenue decision taken by someone without the authority to take it.**
 
-```mermaid
-sequenceDiagram
-    participant Analyst as SettlementAnalyst
-    participant Rules as RuleStore
-    participant Approver as FinanceApprover
-    participant Engine as PayoutEngine
-    participant Evidence as EvidenceStore
-    Analyst->>Rules: Propose override 12 percent, reason, dates, impact
-    Rules->>Evidence: RuleChangeProposed with author and diff
-    Rules->>Approver: Approval request
-    Approver->>Rules: Approve, approver differs from author
-    Rules->>Evidence: RuleChangeApproved with approver and time
-    Rules->>Engine: Publish rule version at its effective date
-    Engine->>Engine: Calculate payout with rule version id
-    Engine->>Evidence: PayoutCalculated with rule version id
-```
+![An analyst proposes a 12% override in the rule store, an approver approves it, the rule store publishes a rule version to the payout engine, and each step drops a sealed record into an evidence store below.](finance-systems-architecture/posts/08-controls-and-auditability/assets/images/08-controls-and-auditability/rule-change-evidence-trail.jpeg)
 
 **Figure 3:** *A payout rule change at Northmere after remediation. The evidence is not collected afterwards; each step emits its own record, and each payout carries the version of the rule that produced it.*
 
@@ -247,28 +201,7 @@ Every rule change, deployment, privileged session, approval and payout release w
 {id: controls-and-auditability--the-architecture-as-a-whole}
 ### The architecture as a whole
 
-```mermaid
-flowchart LR
-    Dev["SFP engineer"] -->|"pull request"| Repo["Protected repository"]
-    Rev["Second engineer"] -->|"review and approve"| Repo
-    Repo --> CI["Pipeline with tests and payout regression suite"]
-    CI -->|"service identity"| Prod["SFP production"]
-    Analyst["Settlement analyst"] -->|"propose rule"| RS["Payout rule store"]
-    Appr["Finance approver"] -->|"approve rule"| RS
-    RS -->|"versioned rules"| Prod
-    OnCall["On-call engineer"] -->|"break-glass request"| PAM["Privileged access tool"]
-    PAM -->|"time-boxed recorded session"| Prod
-    IdP["Identity provider fed by Workday HCM"] --> PAM
-    IdP --> Repo
-    IdP --> RS
-    CI --> Ev["Evidence store"]
-    RS --> Ev
-    PAM --> Ev
-    Prod -->|"payouts with rule version"| Ev
-    Ev --> CCM["Control monitoring"]
-    CCM --> Reg["Control and evidence register"]
-    Reg --> Aud["Auditor evidence requests"]
-```
+![Three change paths, for code via repository and pipeline, rules via a rule store, and emergencies via break-glass, all reach SFP production; each path and production feed one evidence store, read by control monitoring and the auditor.](finance-systems-architecture/posts/08-controls-and-auditability/assets/images/08-controls-and-auditability/three-change-paths.jpeg)
 
 **Figure 4:** *Remediation as architecture. Three change paths, for code, for rules and for emergencies, each enforce separation of duties and each feed one evidence store; the control register and the auditor read from that store instead of asking engineers.*
 
@@ -303,7 +236,7 @@ Two practical issues follow. Reports rarely cover the customer's fiscal year exa
 
 The principle is one sentence: **a SaaS platform transfers the operation of controls, not the accountability for them.** Northmere's configuration, roles, integrations and reports on every one of these platforms remain fully in scope.
 
-![A sealed cloud platform box with an assurance seal, surrounded by a customer-held ring of access, change, monitoring and reconciliation controls.](enterprise-applications-and-financial-systems/posts/08-controls-and-auditability/assets/images/08-controls-and-auditability/saas-controls-handed-back.jpeg)
+![A sealed cloud platform box with an assurance seal, surrounded by a customer-held ring of access, change, monitoring and reconciliation controls.](finance-systems-architecture/posts/08-controls-and-auditability/assets/images/08-controls-and-auditability/saas-controls-handed-back.jpeg)
 
 **Figure 5:** *A SOC 1 report covers the controls the vendor operates; the complementary user entity controls around the platform, such as access, configuration changes, interface monitoring and reconciliation, remain the customer's to run.*
 
@@ -351,7 +284,7 @@ The patterns below are the ones I would require for any finance-relevant system 
 
 These patterns are cheap at design time and expensive afterwards: a rule store with approval is a few weeks of work in a new platform, but retrofitting one into SFP, with the migration and reconciliation of every active rule, takes Jonas's team most of a quarter. That difference is the economic case against **Audit Archaeology**.
 
-![Left: a person compiling a binder with gaps. Right: pipeline stations dropping sealed receipts into a locked vault that an auditor reads.](enterprise-applications-and-financial-systems/posts/08-controls-and-auditability/assets/images/08-controls-and-auditability/evidence-as-by-product.jpeg)
+![Left: a person compiling a binder with gaps. Right: pipeline stations dropping sealed receipts into a locked vault that an auditor reads.](finance-systems-architecture/posts/08-controls-and-auditability/assets/images/08-controls-and-auditability/evidence-as-by-product.jpeg)
 
 **Figure 6:** *The cheapest control evidence is a by-product of normal operation: each step of the pipeline writes its own record into a store the controlled team cannot alter, instead of someone assembling proof at quarter-end.*
 

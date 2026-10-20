@@ -1,7 +1,7 @@
 {class: part, id: part-3}
 # INTEGRATION: The Finance Estate as One System
 
-![INTEGRATION: The Finance Estate as One System — logo](enterprise-applications-and-financial-systems/posts/part-3-intro/assets/images/part-3-intro/logo.jpeg)
+![INTEGRATION: The Finance Estate as One System — logo](finance-systems-architecture/posts/part-3-intro/assets/images/part-3-intro/logo.jpeg)
 
 > **IN THIS PART, YOU WILL:** Learn to treat the finance estate as one system rather than a set of platforms: how a transaction and its money travel from the customer to the published statements, who is authoritative for each fact at each stage, how several ledgers coexist under one set of rules, how coupling is kept deliberate, how every hop is proven, and how the estate grows and changes without stopping the close.
 
@@ -23,23 +23,7 @@ The chapters first follow the money end to end, then decide who owns what, then 
 {id: part-3--the-learning-path}
 ## The Learning Path
 
-```mermaid
-flowchart TB
-    subgraph S1["Stage 1: Follow the money"]
-        A1["Transaction to report"] --> A2["Payments to ledger"] --> A3["Finance data flows"]
-    end
-    subgraph S2["Stage 2: Decide authority and boundaries"]
-        B1["Systems of record"] --> B2["Multiple ERPs, one core"] --> B3["Redundancy and coupling"]
-    end
-    subgraph S3["Stage 3: Design the seams"]
-        C1["Canonical events and adapters"] --> C2["Traceability and reconciliation"]
-    end
-    subgraph S4["Stage 4: Grow and change"]
-        D1["Brands, entities, markets"] --> D2["Incremental modernization"]
-    end
-    S1 --> S2 --> S3 --> S4
-    S4 --> R["Run the finance estate as one provable system"]
-```
+![Four stages joined by arrows: follow the money, decide authority, design the seams and grow and change, ending at one provable system.](finance-systems-architecture/posts/part-3-intro/assets/images/part-3-intro/part-3-four-stages.jpeg)
 
 **Figure 1:** *Ten chapters in four stages: trace money and data end to end, decide which system is authoritative for what, design the events and reconciliations that join the platforms, and use that design to onboard and migrate without breaking the close.*
 

@@ -1,7 +1,7 @@
 {id: workday}
 # 19. Workday: The Org Chart Behind the Ledger
 
-![Workday: The Org Chart Behind the Ledger — logo](enterprise-applications-and-financial-systems/posts/16-workday/assets/images/16-workday/logo.jpeg)
+![Workday: The Org Chart Behind the Ledger — logo](finance-systems-architecture/posts/16-workday/assets/images/16-workday/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn how Workday is built (one object model, configured business processes, worktags instead of account strings), what its Accounting Center, Adaptive Planning, Prism and Data Cloud, and integration tools can and cannot do as of October 2026, and how to decide whether Workday should be an enterprise's people backbone, a finance core, a second-tier ERP, or all three.
 
@@ -118,7 +118,7 @@ In a **segment-based chart of accounts**, the Oracle and classic-ERP style, a jo
 | Mapping to a group chart | Segment-to-segment rules | Combination rules: account plus worktag values to group account plus group dimensions |
 | Main failure mode | Combination explosion and "miscellaneous" segment values | Too many required worktags at entry, or worktags that duplicate the legacy string |
 
-![Comparison of a rigid segmented account string with a ledger account carrying separate worktags.](enterprise-applications-and-financial-systems/posts/16-workday/assets/images/16-workday/worktags-vs-account-string.jpeg)
+![Comparison of a rigid segmented account string with a ledger account carrying separate worktags.](finance-systems-architecture/posts/16-workday/assets/images/16-workday/worktags-vs-account-string.jpeg)
 
 **Figure 1:** *A segment-based chart packs meaning into fixed positions in one account string; Workday keeps the ledger account for accounting classification and carries the analytical meaning as typed worktags on the line.*
 
@@ -157,15 +157,7 @@ Revenue posting rules shrink to one per stream, and the OneStream mapping become
 
 The lesson generalizes: **a good FDM is designed from both ends**, from the attributes feeder systems can supply reliably and from the group chart consolidation needs. Designed only from the first, it is a tidy tenant nobody can consolidate; only from the second, an account string with extra steps.
 
-```mermaid
-flowchart LR
-    A["Stripe invoice line: price ID, customer, venue address"] --> B["Worktag mapping: Revenue Category, Plan, Region, Customer"]
-    B --> C["Related worktags default: Group Market from Region"]
-    C --> D["Account posting rule: Revenue Category to ledger account"]
-    D --> E["Workday journal line: account plus worktags"]
-    E --> F["OneStream mapping rule: account plus Group Market to group account and market"]
-    F --> G["Group consolidation in US dollars"]
-```
+![An invoice line gains worktags for revenue category, plan, region and customer; Group Market derives from region; a posting rule turns the revenue category into the account; the journal line carries account and worktags, and a rule on account plus Group Market maps it into group consolidation.](finance-systems-architecture/posts/16-workday/assets/images/16-workday/worktags-derive-account.jpeg)
 
 **Figure 2:** *In Workday the ledger account is derived from categories and worktags, so the mapping to a group chart can be a rule on account plus worktag rather than a spreadsheet of account strings, provided the FDM was designed with the group dimensions in mind.*
 
@@ -204,7 +196,7 @@ For finance, the important group types are **role-based groups**, whose membersh
 
 The consequence I find most underestimated: **in a combined HCM and Financials tenant, organization design in HCM is financial access design**. Making someone a cost-center manager in HCM grants approval authority over that cost center's spend on the same effective date. HCM role assignment therefore falls within internal control over financial reporting (ICFR), and segregation of duties (SoD) must be analyzed at domain and business-process level, not only in the finance team's role catalog; [Controls by Design, Not by Audit Season](#controls-and-auditability) owns both concepts. Integrations run as **integration system users** (ISUs) secured through the same domain model; an ISU with broad access is privileged access and belongs in the same review as a human administrator.
 
-![An organization chart change that hands a person approval rights over invoices on an effective date.](enterprise-applications-and-financial-systems/posts/16-workday/assets/images/16-workday/org-design-is-access-design.jpeg)
+![An organization chart change that hands a person approval rights over invoices on an effective date.](finance-systems-architecture/posts/16-workday/assets/images/16-workday/org-design-is-access-design.jpeg)
 
 **Figure 3:** *In a combined HCM and Financials tenant, making someone a cost-center manager grants approval authority over that cost center's spend on the same effective date, so organization design is financial access design.*
 
@@ -257,20 +249,7 @@ Tablekin's Stripe inputs come from two products that [Stripe: Every Movement Is 
 
 Until the cutover, a MuleSoft flow pulls Stripe's reports nightly, aggregates them by company, revenue category and region using a mapping spreadsheet, and writes a file that an **EIB** (Enterprise Interface Builder, Workday's no-code file loader) posts as one summarized journal per company per day. It mostly works. But the mapping sits outside any audit trail, a re-run after failure can double-post, and the trail from a ledger balance to its balance transactions runs through a spreadsheet and a file nobody keeps: **Lost in Aggregation** in miniature. The March 2027 Stripe design review, described in [Stripe: Every Movement Is a Balance Transaction](#stripe), approved the replacement: Stripe Data Pipeline delivers all Northmere Stripe data into FinDB, and Tablekin's accounting moves to Accounting Center as daily summarized journals per reporting category, with drill-back to balance transactions. Dana makes the cutover conditional on proof:
 
-```mermaid
-flowchart LR
-    S1["Stripe Billing: invoices and credit notes"] --> M["Stripe Data Pipeline into FinDB, batch IDs and control totals"]
-    S2["Stripe Connect: balance transactions"] --> M
-    M --> P["Prism ingestion table in Tablekin tenant"]
-    P --> V["Validation stages: required fields, known customers, currency"]
-    V --> W["Worktag mapping: price ID to Revenue Category and Plan, Stripe account to Company"]
-    W --> R["Accounting rules: event type to debit and credit"]
-    R --> J["Summarized journals per company per day"]
-    J --> L["Workday ledger, Tablekin companies"]
-    L --> O["OneStream group consolidation"]
-    V -->|"rejected rows"| E["Error queue: resolve and reprocess"]
-    L -.->|"drill-back"| P
-```
+![Outside Workday, Stripe data is extracted into FinDB with control totals; inside the Workday tenant, a Prism table feeds validation, worktag mapping and accounting rules into the Workday ledger and group consolidation, with errors queued and the ledger drilling back to the Prism table.](finance-systems-architecture/posts/16-workday/assets/images/16-workday/accounting-center-flow.jpeg)
 
 **Figure 4:** *With Accounting Center the mapping and the accounting rules move inside the tenant, under audit, and detail stays in a Prism table that the ledger can drill back to; the extraction from Stripe, the control totals and the rating of usage still happen outside Workday.*
 
@@ -347,22 +326,7 @@ Its subtlety: **HCM masters the people and their assignments; finance masters th
 {id: workday--northmere-s-flows}
 ### Northmere's flows
 
-```mermaid
-flowchart LR
-    S4["SAP S/4HANA: group legal entities and cost centers"] -->|"cost centers and companies, daily"| HCM["Workday HCM group tenant"]
-    FUS["Oracle Fusion: Wayfare cost centers"] -->|"cost centers, daily"| HCM
-    HCM -->|"workers, managers, joiners and leavers, near real time"| IAM["Identity and access management"]
-    HCM -->|"workers, cost-center assignment, approver roles"| S4
-    HCM -->|"workers and approvers"| FUS
-    HCM -->|"workers, approval limits, cost centers"| COU["Coupa"]
-    HCM -->|"employees, managers, cost centers"| CON["SAP Concur"]
-    HCM -->|"workers and managers, nightly"| TWF["Tablekin Workday Financials tenant"]
-    HCM -->|"payroll results by cost center"| S4
-    HCM -->|"payroll results, Tablekin entities"| TWF
-    PAY["Third-party payroll providers"] -->|"payroll journals"| S4
-    HCM -->|"worker master"| PAY
-    HCM -->|"report extracts"| FDB["FinDB on Snowflake"]
-```
+![S/4HANA and Oracle Fusion send cost centers into Workday HCM; HCM sends workers and approvers back to both ledgers and out to identity and access, Coupa, Concur, payroll providers and the separate Tablekin Financials tenant.](finance-systems-architecture/posts/16-workday/assets/images/16-workday/hcm-org-and-access.jpeg)
 
 **Figure 5:** *Finance owns legal entities and cost centers and sends them into HCM; HCM owns workers, managers and approver roles and sends them everywhere else. Tablekin's separate Financials tenant is one more consumer, which is the point: the shared-object benefit of Workday is lost when HCM and Financials sit in different tenants.*
 

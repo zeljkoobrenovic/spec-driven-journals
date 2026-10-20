@@ -1,7 +1,7 @@
 {id: bibliography}
 # 51. Bibliography
 
-![Bibliography — logo](enterprise-applications-and-financial-systems/posts/bibliography/assets/images/bibliography/logo.jpeg)
+![Bibliography — logo](finance-systems-architecture/posts/bibliography/assets/images/bibliography/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Find where the book's evidence comes from, what kind of evidence each source provides and which chapters rely on it, by topic or by chapter.
 

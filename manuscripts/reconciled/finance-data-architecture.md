@@ -1,7 +1,7 @@
 {id: finance-data-architecture}
 # 10. Finance Data Architecture: Who Owns the Truth
 
-![Finance Data Architecture: Who Owns the Truth — logo](enterprise-applications-and-financial-systems/posts/07-finance-data-architecture/assets/images/07-finance-data-architecture/logo.jpeg)
+![Finance Data Architecture: Who Owns the Truth — logo](finance-systems-architecture/posts/07-finance-data-architecture/assets/images/07-finance-data-architecture/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn which financial master data domains an enterprise finance estate depends on, how to choose a master data management style for each, and how to design and govern a group chart of accounts and a partner master that several platforms share.
 
@@ -88,7 +88,7 @@ The rule I use is simple. **Centralize where the record is rare, shared and cont
 
 Registry and consolidation are useful but transitional. A registry tells you how bad the duplication is; it does not stop the next duplicate. A consolidated golden record in the data platform makes reports agree; it does not make the payout file agree with the tax engine. I fund them as measurement and as a migration step, and I do not let a program declare victory on either.
 
-![Four panels: an index pointing to sources, a one-way golden copy, two-way sync with a hub, and a single hub broadcasting to locked consumers.](enterprise-applications-and-financial-systems/posts/07-finance-data-architecture/assets/images/07-finance-data-architecture/mdm-styles.jpeg)
+![Four panels: an index pointing to sources, a one-way golden copy, two-way sync with a hub, and a single hub broadcasting to locked consumers.](finance-systems-architecture/posts/07-finance-data-architecture/assets/images/07-finance-data-architecture/mdm-styles.jpeg)
 
 **Figure 1:** *The four MDM styles differ in where records are authored and whether the hub writes back: centralize what is rare, shared and control-relevant; coexist where records are born in operational processes.*
 
@@ -99,25 +99,7 @@ In SAP-centric estates, the centralized style is commonly implemented with SAP M
 
 The target shape is a small number of authoring points, a governed distribution path, and consumers that subscribe rather than create.
 
-```mermaid
-flowchart LR
-    HCM["Workday HCM: workers, org hierarchy, approvers"] -->|"org and owner feed"| FMD
-    LER["Legal entity register"] --> FMD
-    TRE["Treasury: rate policy, house banks"] -->|"rates and bank master"| FMD
-    FMD["Financial master data hub: CoA, dimensions, cost centers, calendars, mappings"]
-    SFP["Brand platforms: partner onboarding"] -->|"partner created"| PH["Partner hub: group partner ID, match, steward queue"]
-    PAY["Northmere Pay: payout bank details, KYC"] -->|"verified bank attributes"| PH
-    FMD -->|"master-data-changed events"| S4["SAP S/4HANA and FI-CA"]
-    FMD --> ORA["Oracle Fusion, Wayfare"]
-    FMD --> WD["Workday Financials, Tablekin"]
-    FMD --> OS["OneStream: hierarchies and mappings"]
-    FMD --> BL["BlackLine: account and entity lists"]
-    PH -->|"business partner and contract account"| S4
-    PH -->|"tax registration"| VTX["Vertex"]
-    PH --> PAY
-    FMD --> FDB["FinDB: conformed dimensions"]
-    PH --> FDB
-```
+![Few authoring sources feed a financial master data hub and a partner hub, which distribute to many padlocked subscriber systems such as SAP S/4HANA, Oracle Fusion, Workday Financials, OneStream, BlackLine, FinDB and Vertex.](finance-systems-architecture/posts/07-finance-data-architecture/assets/images/07-finance-data-architecture/few-authors-many-subscribers.jpeg)
 
 **Figure 2:** *Financial master data has few authoring points and many subscribers. Centralized domains are authored in one governed hub; the partner master coexists with the brand platforms that create partners, with bank attributes authored only in the payments platform in the target state.*
 
@@ -158,7 +140,7 @@ The Keystone design team, led by Leila's group reporting function with Dana's da
 
 Under this design, the €90.00 commission on the Lisbon booking (the €600.00 merchant-model stay that recurs through this book) posts to account 410100 with entity Stayloft B.V. (the contracting entity), brand STL, business model MER, market PT and product ACC-APT. In the current SAP chart it posts to one of eleven country-specific commission accounts, and the business model is inferred from which account was used. The new string can answer "merchant commission in Portugal for apartments" without anyone knowing an account number.
 
-![Left: a crowded wall of near-duplicate account drawers. Right: one account card with seven dimension tags.](enterprise-applications-and-financial-systems/posts/07-finance-data-architecture/assets/images/07-finance-data-architecture/accounts-into-dimensions.jpeg)
+![Left: a crowded wall of near-duplicate account drawers. Right: one account card with seven dimension tags.](finance-systems-architecture/posts/07-finance-data-architecture/assets/images/07-finance-data-architecture/accounts-into-dimensions.jpeg)
 
 **Figure 3:** *Group CoA v2 collapses the SAP chart's 3,900 accounts into a group chart of about 1,150 natural accounts by moving country, brand and product variants into seven dimensions on every posting.*
 
@@ -232,26 +214,7 @@ Changes are classified by impact.
 
 The flow for a significant change looks like this.
 
-```mermaid
-flowchart TB
-    A["Change request raised in the master data workflow"] --> B["Steward triage: complete, valid, duplicate of an existing account?"]
-    B -->|"rejected"| R["Returned to requester with reason"]
-    B --> C{"Change class"}
-    C -->|"standard"| G["Four-eyes approval by second steward"]
-    C -->|"significant"| D["Impact analysis: mappings, posting rules, FI-CA account determination, OneStream, BlackLine, FinDB, tax"]
-    C -->|"structural"| E["Finance Data Council and design authority"]
-    D --> F["Group reporting approval"]
-    F --> H{"SOX-relevant caption?"}
-    H -->|"yes"| I["Internal controls review"]
-    H -->|"no"| J["Build in hub, test in non-production"]
-    I --> J
-    E --> J
-    G --> J
-    J --> K["Activate effective from period start"]
-    K --> L["Publish master-data-changed event"]
-    L --> M["Consumers apply and acknowledge"]
-    M --> N["Evidence pack archived: request, approvals, tests, acknowledgments"]
-```
+![A chart of accounts change request is triaged, classified as standard, significant or structural with different approvals, then built, activated at period start, published as an event, acknowledged by consumers and archived as an evidence pack.](finance-systems-architecture/posts/07-finance-data-architecture/assets/images/07-finance-data-architecture/coa-change-flow.jpeg)
 
 **Figure 4:** *A chart of accounts change is a controlled change with an evidence trail: classified by impact, analyzed for downstream effects, approved by the owner, activated from a period start, and complete only when every consumer has acknowledged it.*
 
@@ -276,18 +239,7 @@ Owen's team runs a registry-style match in Q2 2027 across SFP, FI-CA and Northme
 
 The answer is coexistence with **authority set per attribute**.
 
-```mermaid
-flowchart LR
-    EXT["Stayloft partner extranet"] -->|"partner created or changed"| SFP["SFP"]
-    SFP -->|"PartnerRegistered event"| PH["Partner hub: group partner ID"]
-    PH --> ST["Steward queue: duplicates, VAT check failures"]
-    ST --> PH
-    NPAY["Northmere Pay: bank details, KYC, screening"] -->|"verified bank attributes"| PH
-    PH -->|"create or update business partner"| FICA["SAP FI-CA"]
-    PH -->|"tax registration"| VTX["Vertex"]
-    PH -->|"golden partner view"| FDB["FinDB"]
-    NPAY --> ADY["Adyen balance platform"]
-```
+![Partners created in the extranet flow through SFP into a partner hub with a steward queue and a group partner ID; the hub distributes to SAP FI-CA, Vertex and FinDB, while verified bank details flow from Northmere Pay into the hub and on to Adyen.](finance-systems-architecture/posts/07-finance-data-architecture/assets/images/07-finance-data-architecture/partner-master-coexistence.jpeg)
 
 **Figure 5:** *The partner master as coexistence: partners are born in the brand platform, matched and governed in a hub that assigns the group partner ID, and distributed to FI-CA and Vertex; in the target state, bank attributes are authored only in the payments platform and flow to the hub, never the other way.*
 
@@ -347,16 +299,7 @@ The **data strand** follows records: a group revenue figure comes from OneStream
 
 The **rule strand** follows the master data and rule versions that shaped the number: which mapping version, which account hierarchy, which FX rate set, which posting rule. A reported number is reproducible only if both strands are recorded. When the auditor asks why Tablekin's Q1 2027 usage revenue moved between captions between the original close and the corrected one, the answer is a mapping version change with its approval, and it should take minutes to produce.
 
-```mermaid
-flowchart RL
-    R["Group revenue line, quarterly report"] --> OS["OneStream consolidation run"]
-    OS --> MV["Mapping rule set, version and approval"]
-    OS --> FX["FX rate set for the period"]
-    OS --> TB["Tablekin trial balance, Workday"]
-    TB --> J["Workday journals with worktags"]
-    J --> SB["Stripe Billing invoices and usage records"]
-    MV --> CR["Change request and approvals"]
-```
+![Lineage from a group revenue line through OneStream back along a data strand to Tablekin's trial balance, Workday journals and Stripe Billing records, and along a rule strand to the mapping rule set with its change approvals and the FX rate set.](finance-systems-architecture/posts/07-finance-data-architecture/assets/images/07-finance-data-architecture/data-and-rule-lineage.jpeg)
 
 **Figure 6:** *Finance lineage has a data strand and a rule strand. A reported line is reproducible only when both the source records and the versions of the mapping and rate sets that shaped it are recorded.*
 

@@ -1,7 +1,7 @@
 {id: custom-finance-platforms}
 # 16. When the ERP Isn't Enough: Custom Finance Platforms
 
-![When the ERP Isn't Enough: Custom Finance Platforms — logo](enterprise-applications-and-financial-systems/posts/13-custom-finance-platforms/assets/images/13-custom-finance-platforms/logo.jpeg)
+![When the ERP Isn't Enough: Custom Finance Platforms — logo](finance-systems-architecture/posts/13-custom-finance-platforms/assets/images/13-custom-finance-platforms/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn which finance capabilities enterprises legitimately build themselves, the boundary rules that keep a custom platform from becoming a second book of record, how it should integrate into the ERP, what owning it really costs, and how to decide, component by component, what to keep, converge or retire.
 
@@ -25,7 +25,7 @@ Every large digital enterprise I have worked with runs finance software it wrote
 
 The trouble is that these platforms grow. A commission engine acquires an invoicing module because the ERP's invoicing was slow to configure. The payout service keeps partner balances because it needed them to net refunds. A few years later the brand has a **custom finance platform** that keeps its own books, posts its own journals and runs its own controls, and nobody decided that it should.
 
-![A small commission workshop grows over four stages, adding invoicing, balances and journals, until it stands as a second ledger beside the official ERP building.](enterprise-applications-and-financial-systems/posts/13-custom-finance-platforms/assets/images/13-custom-finance-platforms/platform-that-grows-into-a-ledger.jpeg)
+![A small commission workshop grows over four stages, adding invoicing, balances and journals, until it stands as a second ledger beside the official ERP building.](finance-systems-architecture/posts/13-custom-finance-platforms/assets/images/13-custom-finance-platforms/platform-that-grows-into-a-ledger.jpeg)
 
 **Figure 1:** *Custom finance platforms grow by accretion: a commission engine acquires invoicing, then partner balances, then its own journals, until the brand has a second book of record that nobody decided to build.*
 
@@ -136,26 +136,7 @@ From the table follow six rules I make mandatory in any estate I am responsible 
 5. **Accounting policy is configuration with an owner.** Recognition triggers, netting rules and payout rules are versioned artifacts approved by Finance, not constants in code.
 6. **Corrections are reversals, not updates.** Posted facts are immutable; the platform corrects them with new entries (the mechanics are in [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers)).
 
-```mermaid
-flowchart LR
-    BK["Stayloft booking platform"] -->|"BookingConfirmed, StayCompleted, BookingCancelled"| SFP
-    subgraph SFP["Stayloft Finance Platform"]
-        CR["Commission rating"]
-        MS["Merchant subledger"]
-        TF["Traveler funds ledger"]
-        PO["Payout engine"]
-        SUM["GL summarization"]
-    end
-    NP["Northmere Pay"] -->|"PaymentCaptured, RefundIssued"| SFP
-    PO -->|"PartnerPayoutInstructed"| NP
-    VX["Vertex tax service"] <-->|"tax determination"| CR
-    SUM -->|"38,000 summary lines a day, batch keys, control totals"| S4["SAP S/4HANA general ledger"]
-    S4 -->|"drill-back by batch key"| SUM
-    S4 -->|"account determination, periods, CoA"| SUM
-    TF -->|"per-booking positions"| SG["Safeguarding reconciliation"]
-    MS -->|"open items, matches"| BL["BlackLine"]
-    SFP -->|"detail lines"| FDB["FinDB on Snowflake"]
-```
+![The Stayloft Finance Platform with commission rating, subledgers, payouts and summarization receives booking events, calls shared payment, tax and safeguarding services, and sends summaries to the S/4HANA general ledger, which owns accounts, periods and balances and drills back into the platform.](finance-systems-architecture/posts/13-custom-finance-platforms/assets/images/13-custom-finance-platforms/sfp-boundary.jpeg)
 
 **Figure 2:** *SFP's boundary as it should be: the platform owns per-transaction facts and computes amounts; S/4HANA owns accounts, periods and balances and receives only summaries it can drill back from; payment execution, tax and safeguarding are shared services the platform calls rather than reimplements.*
 
@@ -215,16 +196,7 @@ Summarization is only safe if it is provably lossless. Each day's posting carrie
 
 The fourth row is the one that matters most to Finance and is most often missing. A platform can post every summary correctly and still drift from the GL if a summary is posted to a closed period, reversed manually in the ERP or rejected and re-sent twice. The daily **subledger-to-GL reconciliation** catches all of these; the monthly version catches them too late to fix before the close. BlackLine already reconciles about 6,800 balance-sheet accounts a month at Northmere; SFP's control accounts should be among them with daily auto-certification.
 
-```mermaid
-flowchart TB
-    D["3 million detail lines a day in SFP"] -->|"summarize by entity, account, currency, date, model"| S["38,000 summary lines with batch IDs"]
-    S -->|"post with control totals"| G["S/4HANA journal entries"]
-    G -->|"drill-back by batch ID"| B["Batch index in SFP"]
-    B -->|"lists detail lines"| D
-    D -->|"open items per entity and currency"| R["Daily subledger-to-GL reconciliation"]
-    G -->|"control account balances"| R
-    R -->|"breaks with owner"| X["Exception queue"]
-```
+![Detail lines are summarized into batch summaries posted to the general ledger; drill-back through the batch index returns to the detail lines, and a daily reconciliation weighs detail against the ledger, sending breaks to an exception queue.](finance-systems-architecture/posts/13-custom-finance-platforms/assets/images/13-custom-finance-platforms/summarize-and-prove.jpeg)
 
 **Figure 3:** *Summarization is safe only when it is reversible and provably complete: the batch index makes every GL line traceable to its detail, and the daily subledger-to-GL reconciliation proves that nothing was lost, duplicated or posted outside the platform.*
 
@@ -283,19 +255,7 @@ Every custom finance component should face the same question every year: **would
 4. **Can its data obligations be met after retirement?** Retention, drill-back and audit access for every period it supported, through an archive with a read path.
 5. **Can the team keep it to standard?** If the controls, evidence and knowledge cannot be sustained (key people leaving, audit findings recurring), the component is a risk, whatever its other merits.
 
-```mermaid
-flowchart TB
-    Q1{"Does it still differentiate?"} -->|"yes"| Q5{"Can the team keep it to standard?"}
-    Q1 -->|"no"| Q2{"Can a group platform carry its hardest scenario?"}
-    Q5 -->|"yes"| K["Keep custom, review next year"]
-    Q5 -->|"no"| F["Fix controls and staffing, or treat as no"]
-    Q2 -->|"yes"| Q3{"Is owning dearer than converging over five years?"}
-    Q2 -->|"no"| T["Tolerate, set a date to retest"]
-    Q3 -->|"yes"| Q4{"Can retention and drill-back be kept?"}
-    Q3 -->|"no"| T
-    Q4 -->|"yes"| C["Converge or retire on a dated plan"]
-    Q4 -->|"no"| A["Build the archive and read path first"]
-```
+![Four checks in a row: does it differentiate, is a platform proven, is converging cheaper, can the audit trail be kept; passing all leads to converging on a plan, otherwise keep custom, tolerate and retest, or build the archive first.](finance-systems-architecture/posts/13-custom-finance-platforms/assets/images/13-custom-finance-platforms/component-retirement-test.jpeg)
 
 **Figure 4:** *The retirement test applied per component: differentiation decides whether convergence is even considered, and a proven alternative, a full cost comparison and a preserved audit trail decide whether it happens now.*
 
@@ -324,7 +284,7 @@ Three judgments in the table deserve a sentence each. Keeping the **payout engin
 
 The table also answers the original question in Tomás's terms. Of SFP's nine components, three stay custom, four converge, and two are retired. Dana's team estimates that the converged scope would free about a third of Jonas's engineers for product-coupled work by 2029 and cut the finance-operations line roughly in half, the latter subject to the convergence proof.
 
-![Nine blocks taken out of one platform outline: three kept in a teal workshop, four moving to a blue group platform, two in a grey retirement bin.](enterprise-applications-and-financial-systems/posts/13-custom-finance-platforms/assets/images/13-custom-finance-platforms/nine-components-nine-answers.jpeg)
+![Nine blocks taken out of one platform outline: three kept in a teal workshop, four moving to a blue group platform, two in a grey retirement bin.](finance-systems-architecture/posts/13-custom-finance-platforms/assets/images/13-custom-finance-platforms/nine-components-nine-answers.jpeg)
 
 **Figure 5:** *SFP is nine components, not one, and they get nine answers: three stay custom, four converge onto group platforms and two are retired, because the retirement test is asked per component rather than per platform.*
 

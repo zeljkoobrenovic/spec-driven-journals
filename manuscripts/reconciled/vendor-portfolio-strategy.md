@@ -1,7 +1,7 @@
 {id: vendor-portfolio-strategy}
 # 40. Own Your Roadmap: Vendor Strategy Without Lock-In Panic
 
-![Own Your Roadmap: Vendor Strategy Without Lock-In Panic — logo](enterprise-applications-and-financial-systems/posts/37-vendor-portfolio-strategy/assets/images/37-vendor-portfolio-strategy/logo.jpeg)
+![Own Your Roadmap: Vendor Strategy Without Lock-In Panic — logo](finance-systems-architecture/posts/37-vendor-portfolio-strategy/assets/images/37-vendor-portfolio-strategy/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn to manage finance vendors as a portfolio of dependencies. The tools are a tiering model with governance for each tier, a five-dimension dependency analysis, a dependency budget, exit plans that have been tested, contract levers, and abstraction placed where it pays.
 
@@ -50,19 +50,7 @@ Procurement negotiates price and terms. Architecture decides what the enterprise
 
 **Ownership decides incentives.** Finance software changes hands often. Thoma Bravo took Coupa private in [February 2023](https://www.thomabravo.com/press-releases/thoma-bravo-completes-acquisition-of-coupa-software); Silver Lake and GIC took Zuora private in [February 2025](https://www.zuora.com/press-release/silver-lake-gic-zuora); Hg took OneStream private in April 2026. A new owner is not a bad owner. It does bring a new investment thesis, and Forrester's [analysis of the OneStream deal](https://www.forrester.com/blogs/onestream-goes-private-three-strategic-imperatives-for-tech-leaders/) is typical in expecting tighter pricing and sharper product focus and in advising customers to secure roadmap and support commitments before renewal.
 
-```mermaid
-flowchart LR
-    V1["Vendor roadmap and releases"] --> P["Enterprise architecture choices"]
-    V2["Vendor packaging and pricing"] --> P
-    V3["Vendor ownership and strategy"] --> P
-    P --> D["Dependencies accumulate"]
-    D --> L["Negotiating power falls at renewal"]
-    L -->|"Borrowed Roadmap loop"| V2
-    T["Enterprise-owned target state"] --> G["Vendor strategy: tiers, budgets, exit plans"]
-    G -->|"filters"| P
-    G -->|"prepares"| R["Renewal on enterprise calendar"]
-    R -->|"restores"| L
-```
+![A clockwise orange loop from vendor decisions to architecture choices, dependencies and falling negotiating power, labeled the Borrowed Roadmap, with an enterprise target state and vendor strategy filtering choices and preparing renewals that restore negotiating power.](finance-systems-architecture/posts/37-vendor-portfolio-strategy/assets/images/37-vendor-portfolio-strategy/borrowed-roadmap-loop.jpeg)
 
 **Figure 1:** *The Borrowed Roadmap is a loop: vendor decisions shape architecture, dependencies reduce negotiating power, and weaker negotiating power lets the vendor's next decision land unopposed. An enterprise-owned target state and a vendor strategy break the loop by filtering choices and preparing renewals in advance.*
 
@@ -113,7 +101,7 @@ The budget has four lines, each expressed in units the design authority can chec
 
 A team that wants to adopt a new proprietary capability (an ERP vendor's embedded agents, a PSP's payout platform, a close vendor's AI matching) states which line it consumes. If the line has room, the team records it and proceeds. If the line is exhausted, the design authority decides whether to raise the budget, pay down another dependency first, or decline. **The budget does not forbid dependency; it makes each increase visible and owned.** I have seen enterprises try to ban proprietary features altogether. They end up paying for a platform and using it as a database, which is the most expensive way to own software.
 
-![A control panel with four budget bars for one vendor, a team spending a new feature from a bar with room, and a full bar escalated to a decision table.](enterprise-applications-and-financial-systems/posts/37-vendor-portfolio-strategy/assets/images/37-vendor-portfolio-strategy/dependency-budget-gauges.jpeg)
+![A control panel with four budget bars for one vendor, a team spending a new feature from a bar with room, and a full bar escalated to a decision table.](finance-systems-architecture/posts/37-vendor-portfolio-strategy/assets/images/37-vendor-portfolio-strategy/dependency-budget-gauges.jpeg)
 
 **Figure 2:** *The dependency budget does not forbid dependency: each new proprietary feature is spent from one of four lines (concentration, exit time, exit cost or proprietary surface), and a line that has run out goes to the design authority.*
 
@@ -126,15 +114,7 @@ For Northmere Payments B.V., this is law. DORA, the EU Digital Operational Resil
 
 For the rest of the group DORA does not apply, but its logic is sound, and I recommend applying it to every strategic vendor. Exit plans mature in four stages, and the tier decides which stage is required.
 
-```mermaid
-stateDiagram-v2
-    [*] --> Named
-    Named --> Documented: alternative named, data and interfaces listed
-    Documented --> Estimated: time, cost and skills to exit estimated
-    Estimated --> Tested: export restored and run, or traffic moved
-    Tested --> Estimated: contract, scope or vendor changes
-    Tested --> Tested: annual re-test
-```
+![A staircase of exit-plan maturity from Named to Documented, Estimated and Tested, with an annual re-test loop on Tested and an arrow dropping back to Estimated when contract or scope changes.](finance-systems-architecture/posts/37-vendor-portfolio-strategy/assets/images/37-vendor-portfolio-strategy/exit-plan-maturity.jpeg)
 
 **Figure 3:** *Exit maturity. A plan drops back from Tested to Estimated whenever scope or contract changes enough to invalidate the last test; tier and regulation decide the required stage.*
 
@@ -189,7 +169,7 @@ Contracts are where dependency becomes enforceable. The levers below are the one
 
 Two warnings. **A lever is worth only what the enterprise is prepared to use.** A change-of-control termination right is worthless if no alternative has been estimated. And **the renewal date is a reason to decide on time, not a reason to switch.** Using every renewal as a threat damages relationships that the enterprise needs, and it is The Borrowed Roadmap in reverse: the contract calendar decides the architecture instead of the vendor's roadmap.
 
-![A timeline working backwards from the renewal date through the notice period and migration lead time to an earlier decision point.](enterprise-applications-and-financial-systems/posts/37-vendor-portfolio-strategy/assets/images/37-vendor-portfolio-strategy/renewal-decision-date.jpeg)
+![A timeline working backwards from the renewal date through the notice period and migration lead time to an earlier decision point.](finance-systems-architecture/posts/37-vendor-portfolio-strategy/assets/images/37-vendor-portfolio-strategy/renewal-decision-date.jpeg)
 
 **Figure 4:** *The real decision date is the renewal date minus the notice period minus the migration lead time; contract levers give negotiating power only when the enterprise has prepared before it, on its own calendar.*
 
@@ -200,23 +180,7 @@ An **anti-corruption layer** is a boundary component that translates a vendor's 
 
 I use three tests. An abstraction pays when (1) **a change of vendor at that seam is plausible within the planning horizon** because of concentration, price, ownership or regulation; (2) **several consumers would otherwise depend on the vendor's format**, so the abstraction removes many dependencies at once; and (3) **the enterprise's concept at the seam is stable and well understood**, so the abstraction does not have to chase the vendor's features. If all three hold, build it. If none hold, it is waste.
 
-```mermaid
-flowchart LR
-    BP["Brand platforms and SFP"] -->|"canonical financial events"| K["Event backbone"]
-    BP -->|"payment requests"| NP["Northmere Pay adapters"]
-    NP --> AD["Adyen"]
-    NP --> ST["Stripe"]
-    NP --> APM["Local APM providers"]
-    NP -->|"PaymentSettled, PSPFeeCharged"| K
-    BP -->|"tax requests"| TA["Tax service adapter"]
-    TA --> VX["Vertex"]
-    K --> S4["SAP S/4HANA GL, used directly"]
-    K --> BL["BlackLine via normalized files"]
-    S4 -->|"trial balances"| OS["OneStream"]
-    S4 -->|"ISO 20022 payment files"| KY["Kyriba"]
-    EG["E-invoicing gateway"] --> EP["E-invoicing provider"]
-    S4 --> EG
-```
+![Brand platforms reach payment providers, the tax engine and finance tools through enterprise-owned adapters and an event backbone; the general ledger is used directly, feeding consolidation, an e-invoicing gateway and treasury via a standard ISO 20022 file.](finance-systems-architecture/posts/37-vendor-portfolio-strategy/assets/images/37-vendor-portfolio-strategy/where-northmere-abstracts.jpeg)
 
 **Figure 5:** *Where Northmere abstracts. Seams with plausible vendor change and many consumers (payments, tax, e-invoicing, events) get an enterprise-owned boundary; the general ledger is used directly, and bank connectivity relies on a standard format rather than a custom layer.*
 
@@ -252,7 +216,7 @@ Northmere Pay's 2027 numbers (illustrative): Adyen about 68% of transactions, St
 
 The hedge has a known limit. **Stored credentials do not move.** Returning Stayloft travelers' saved cards are Adyen tokens, and Northmere Pay stores no card numbers ([Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals)). If Adyen became unavailable, new-card traffic could move within days, but recurring and one-click payments with stored cards would need customers to re-enter details or a credential migration. Dana's team estimates (illustrative) that a full exit from Adyen takes about **two weeks for new-card traffic and nine to twelve months for stored credentials** without a contractual export.
 
-![New-card payments switching easily to a secondary provider while stored-card tokens stay chained to the primary provider.](enterprise-applications-and-financial-systems/posts/37-vendor-portfolio-strategy/assets/images/37-vendor-portfolio-strategy/stored-credentials-anchor.jpeg)
+![New-card payments switching easily to a secondary provider while stored-card tokens stay chained to the primary provider.](finance-systems-architecture/posts/37-vendor-portfolio-strategy/assets/images/37-vendor-portfolio-strategy/stored-credentials-anchor.jpeg)
 
 **Figure 6:** *A warm secondary provider moves new-card traffic within days, but stored credentials stay with the primary acquirer: without a contractual export, moving them takes an estimated nine to twelve months.*
 

@@ -1,7 +1,7 @@
 {id: finance-transformation}
 # 41. The Technology Is the Easy Part: Leading a Finance Transformation
 
-![The Technology Is the Easy Part: Leading a Finance Transformation — logo](enterprise-applications-and-financial-systems/posts/38-finance-transformation/assets/images/38-finance-transformation/logo.jpeg)
+![The Technology Is the Easy Part: Leading a Finance Transformation — logo](finance-systems-architecture/posts/38-finance-transformation/assets/images/38-finance-transformation/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn what a Chief Architect owns in a multi-year ERP modernization and finance transformation: the business case and how its benefits are tracked, the logic that sequences scope, the design authority and its global template, fit-to-standard and how to refuse a customization, the system integrator model, data migration, finance testing, operating-model change, cut-over and hypercare. You will follow the first year of Northmere's Program Keystone, including one hard trade-off between Stayloft's commission rules and the global template.
 
@@ -94,7 +94,7 @@ Three rules turn this table into a business case that survives contact with the 
 
 **Risk reduction keeps its own units.** A suspense balance, an audit deficiency and a manual control are tracked as what they are, in euros outstanding, findings and controls. Converting them into an expected-loss figure invites argument about probabilities, and it tends to happen precisely when the cash benefits are falling short.
 
-![Three zones: lead-indicator gauges without money, a finance owner's falling budget line feeding a vault, and risk measures kept in their own units.](enterprise-applications-and-financial-systems/posts/38-finance-transformation/assets/images/38-finance-transformation/lead-indicators-vs-banked-benefits.jpeg)
+![Three zones: lead-indicator gauges without money, a finance owner's falling budget line feeding a vault, and risk measures kept in their own units.](finance-systems-architecture/posts/38-finance-transformation/assets/images/38-finance-transformation/lead-indicators-vs-banked-benefits.jpeg)
 
 **Figure 1:** *Close days and match rates are lead indicators, not money; a benefit is banked only when a Finance owner's budget line falls in the plan of record, and risk reduction is tracked in its own units rather than converted into dollars.*
 
@@ -137,23 +137,7 @@ The criterion I see violated most is the fifth, and it is the one public failure
 {id: finance-transformation--keystone-s-sequence}
 ### Keystone's sequence
 
-```mermaid
-flowchart LR
-    G["2027: decision rights, SoR matrix, capability map"] --> P2L["2027: payments-to-ledger completeness"]
-    G --> CTRL["2027: SFP deficiency remediated"]
-    G --> COA["2027 to 2028: group CoA v2 designed"]
-    G --> W0["2027 to 2028: rationalization wave 0"]
-    COA --> TAX["2028: Vertex standard and e-invoicing gateway"]
-    TAX --> VIDA["1 July 2028: ViDA deemed supplier"]
-    COA --> FICA["2028: merchant invoicing to FI-CA"]
-    P2L --> FICA
-    W0 --> W1["2028: wave 1 incl. EBS archive, RateKeeper"]
-    W1 --> COLO["31 Dec 2028: colocation ends"]
-    COA --> EVT["2028: canonical events and adapter kit"]
-    EVT --> CONV["2029: ledger convergence on the group core"]
-    FICA --> CONV
-    CONV --> CC["2030 to 2031: continuous close"]
-```
+![A roadmap from 2027 to 2030: decision rights first, then CoA v2, payments to ledger and wave 0; in 2028 ViDA and the colocation end as dated constraints, canonical events and merchant invoicing; ledger convergence in 2029 and continuous close last.](finance-systems-architecture/posts/38-finance-transformation/assets/images/38-finance-transformation/keystone-sequence-roadmap.jpeg)
 
 **Figure 2:** *Keystone's sequence follows dependencies first and dated constraints second. Regulatory and contract dates (ViDA, the colocation end) pull specific items forward; ledger convergence comes last because almost everything else is its prerequisite.*
 
@@ -173,29 +157,7 @@ A **global template** is the single, documented design that every entity, brand 
 
 Keystone's governance, as chartered in December 2026 and adjusted in March 2027, is below.
 
-```mermaid
-flowchart TB
-    BOARD["Board of directors"] --> SC["Keystone steering committee: Tomás chairs; Ravi, Leila, Dana, Ingrid, Kofi, brand CEOs"]
-    SC --> PMO["Program director and PMO: plan, budget, risks, SI management"]
-    SC --> DA["Design authority: Dana and Leila co-chair"]
-    SC --> BEN["Benefits review: Group FP&A director, quarterly"]
-    ESC["Escalation: Tomás and Ravi, ten working days"] --> SC
-    DA --> ESC
-    DA --> TPL["Global template and variation register"]
-    DA --> ADR["Decision records, linked to the enterprise review board"]
-    ARB["Enterprise architecture review board and advice forum"] -->|"cross-estate standards"| DA
-    MEI["Internal controls: control impact sign-off"] --> DA
-    PMO --> WS1["Workstream: payments-to-ledger"]
-    PMO --> WS2["Workstream: ledger and CoA"]
-    PMO --> WS3["Workstream: data migration"]
-    PMO --> WS4["Workstream: integration and canonical events"]
-    PMO --> WS5["Workstream: testing and cut-over"]
-    PMO --> WS6["Workstream: change and operating model"]
-    WS1 -->|"design questions"| DA
-    WS2 -->|"design questions"| DA
-    WS3 -->|"design questions"| DA
-    WS4 -->|"design questions"| DA
-```
+![Board above a steering committee, which oversees three pillars: the PMO with six workstreams, the design authority holding the template and taking advice from the review board and internal controls, and the benefits review; workstreams send design questions to the design authority.](finance-systems-architecture/posts/38-finance-transformation/assets/images/38-finance-transformation/keystone-governance-authorities.jpeg)
 
 **Figure 3:** *Keystone separates three authorities under one steering committee: the PMO owns plan and cost, the design authority owns the template and its variations, and a Finance-led benefits review owns the money. Workstreams bring design questions to the design authority, not to the integrator.*
 
@@ -245,20 +207,7 @@ The rule I use is the **"show me the control or the regulation" test.** When Fin
 
 If none of the three is shown, the answer is the standard process, and the organization changes instead of the software. If the regulation or the control is shown, the variation is granted and owned centrally. If the money is shown, the capability is real but almost never belongs inside the ERP core: it goes to a product-owned service at the edge, and the ERP receives its result through a released interface. Commission rules, pricing programs and payout logic are the classic examples, as [When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms) argues.
 
-```mermaid
-flowchart TB
-    GAP["Gap raised in a fit-to-standard workshop"] --> STD{"Can the standard process be adopted with configuration?"}
-    STD -->|"Yes"| CFG["Configure the template; no variation"]
-    STD -->|"No"| REG{"Is a regulation cited and confirmed by Tax or Accounting?"}
-    REG -->|"Yes"| LOC["Statutory localization, owned centrally"]
-    REG -->|"No"| CON{"Is a key control cited and confirmed by Internal Controls?"}
-    CON -->|"Yes"| TCH["Change the template for everyone, or a control variation"]
-    CON -->|"No"| DIF{"Does a business owner fund it as differentiation?"}
-    DIF -->|"Yes"| EDGE["Build outside the ERP core; ERP consumes the result"]
-    DIF -->|"No"| PREF{"Cheap, key-user configurable, and within budget?"}
-    PREF -->|"Yes"| VAR["Dated variation from the brand budget"]
-    PREF -->|"No"| NO["Refused: adopt the standard and change the process"]
-```
+![A conveyor carrying a gap through five gates: standard fit leads to configure, regulation to localization, key control to template change, funded differentiation to a service outside the core, cheap preference to a dated variation, and everything else is refused.](finance-systems-architecture/posts/38-finance-transformation/assets/images/38-finance-transformation/gap-sorting-rule.jpeg)
 
 **Figure 4:** *The design authority's rule for gaps. Regulation and controls earn central localizations; differentiation earns a service outside the core; preference earns, at most, a cheap dated variation. Custom code inside the ERP core is not one of the outcomes.*
 
@@ -284,7 +233,7 @@ Large finance programs are almost always delivered with integrators: they bring 
 
 The three items in the left column that programs most often give away are **architecture, data and testing**, and each has the same consequence: the integrator marks its own homework. An integrator that owns the testing strategy will test what it built, to its definition of done. An integrator that owns the template will propose the template it knows. An integrator that owns data migration will report load success, which is not the same as reconciled balances. None of this implies bad faith; it is the incentive the contract creates.
 
-![Integrator crew building a platform while an enterprise team at a checkpoint keeps three keys labelled architecture, data and testing.](enterprise-applications-and-financial-systems/posts/38-finance-transformation/assets/images/38-finance-transformation/keep-the-proof-in-house.jpeg)
+![Integrator crew building a platform while an enterprise team at a checkpoint keeps three keys labelled architecture, data and testing.](finance-systems-architecture/posts/38-finance-transformation/assets/images/38-finance-transformation/keep-the-proof-in-house.jpeg)
 
 **Figure 5:** *Outsource delivery, never the proof: the integrator configures and builds, while the enterprise keeps architecture, data and testing, because a builder that owns them ends up marking its own homework.*
 
@@ -373,7 +322,7 @@ Two practices help the architecture directly. **Finance super-users in the desig
 
 **The calendar is a constraint, not a preference.** Keystone's cut-over windows follow the rule in [Changing the Engine in Flight: Modernization Patterns for Finance](#modernization-patterns): they exclude the month-end close days (working day −2 to 9), the last month of each quarter, the year-end window from 1 December to the 10-K filing at the end of February, and Stayloft's July–August peak (illustrative). That leaves two good slots a year, early May and early November, which is why the merchant subledger cohorts in [Modernizing Without Stopping the Close](#incremental-modernization) cut over on 1 May and 1 November 2029. A cut-over that slips past its window waits for the next one. This rule costs schedule; that is its purpose.
 
-![A cut-over gate with four green readiness lights and a calendar where only May and November are open windows.](enterprise-applications-and-financial-systems/posts/38-finance-transformation/assets/images/38-finance-transformation/go-no-go-gate.jpeg)
+![A cut-over gate with four green readiness lights and a calendar where only May and November are open windows.](finance-systems-architecture/posts/38-finance-transformation/assets/images/38-finance-transformation/go-no-go-gate.jpeg)
 
 **Figure 6:** *Go-live is gated by four signed readiness statements (technical, business, control and build) and by the close calendar, which leaves Keystone two good cut-over windows a year, early May and early November; the plan date alone opens nothing.*
 

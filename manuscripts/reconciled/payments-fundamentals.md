@@ -1,7 +1,7 @@
 {id: payments-fundamentals}
 # 23. Payments for Finance Architects: Eleven Reasons the Numbers Disagree
 
-![Payments for Finance Architects: Eleven Reasons the Numbers Disagree — logo](enterprise-applications-and-financial-systems/posts/20-payments-fundamentals/assets/images/20-payments-fundamentals/logo.jpeg)
+![Payments for Finance Architects: Eleven Reasons the Numbers Disagree — logo](finance-systems-architecture/posts/20-payments-fundamentals/assets/images/20-payments-fundamentals/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Follow one €600 booking and one €420 chargeback through every step of a payment's life. You will learn who holds the money and who bears the risk at each step, how pricing, payment methods, tokens, foreign exchange and regulation shape the records, and why settlement reconciliation is hard enough to need its own architecture.
 
@@ -71,22 +71,11 @@ Point 3 is where Northmere's own structure becomes instructive.
 
 The Stayloft and Wayfare merchant rows are the ones that confuse people. Northmere is merchant of record for the *payment*: its name is on the statement, it receives the chargebacks, and its licensed entity holds the money. Yet Stayloft is an *agent* for the *stay*, so its revenue on the €600 booking is the €90 commission, not the €600. **Payments vocabulary and accounting vocabulary describe the same transaction but answer different questions**, and the architecture has to keep both answers.
 
-![One booking examined through three lenses for money, risk and statement name, beside a ledger that recognizes only a small slice as revenue.](enterprise-applications-and-financial-systems/posts/20-payments-fundamentals/assets/images/20-payments-fundamentals/three-separate-questions.jpeg)
+![One booking examined through three lenses for money, risk and statement name, beside a ledger that recognizes only a small slice as revenue.](finance-systems-architecture/posts/20-payments-fundamentals/assets/images/20-payments-fundamentals/three-separate-questions.jpeg)
 
 **Figure 1:** *Holding the money, bearing the risk and being merchant of record are separate questions; Northmere is merchant of record for the €600 Lisbon payment, yet Stayloft acts as agent for the stay, so its revenue is the €90 commission.*
 
-```mermaid
-flowchart LR
-    T["Traveler and card"] -->|"pays"| I["Issuer"]
-    I -->|"interchange retained, net funds"| S["Card scheme"]
-    S -->|"net settlement"| A["Acquirer or PSP"]
-    A -->|"net payout per batch"| M["Northmere Payments B.V."]
-    M -->|"safeguarded until after the stay"| SG["Safeguarding account"]
-    SG -->|"payout net of commission"| P["Property"]
-    SG -->|"commission released"| SL["Stayloft own funds"]
-    A -.->|"settlement report"| R["Northmere Pay reconciliation"]
-    I -.->|"chargeback via scheme"| A
-```
+![Money flowing net through issuer, scheme, acquirer and Northmere Pay into a safeguarding vault, split to property and commission, while a settlement report travels separately to reconciliation and a chargeback arrow runs backwards.](finance-systems-architecture/posts/20-payments-fundamentals/assets/images/20-payments-fundamentals/money-path-and-data-path.jpeg)
 
 **Figure 2:** *Money and data take different paths. Funds move issuer to scheme to acquirer to merchant, net at every hop, while the settlement report that explains the net travels separately. Chargebacks travel backwards along the money path.*
 
@@ -106,24 +95,7 @@ Steps 4 and 5 are industry practice that varies in detail by scheme. A marketpla
 
 The common misconception is that **"authorized" means "paid."** The order system records success at authorization or capture. The cash arrives days later, inside a net figure that also contains other customers' refunds, earlier chargebacks and this week's fees. Every reconciliation problem in this chapter starts from that gap.
 
-```mermaid
-stateDiagram-v2
-    [*] --> Authorized: issuer approves and holds funds
-    Authorized --> Expired: not captured in time
-    Authorized --> Cancelled: merchant voids, no money moved
-    Authorized --> Captured: merchant captures all or part
-    Captured --> Cleared: submitted to scheme, fees fixed
-    Cleared --> Settled: scheme settles to acquirer
-    Settled --> PaidOut: PSP pays merchant net in a batch
-    PaidOut --> Refunded: merchant returns money
-    PaidOut --> Disputed: cardholder disputes via issuer
-    Refunded --> RefundFailed: refund returned or rejected
-    Disputed --> ChargebackLost: issuer rules for cardholder
-    Disputed --> ChargebackReversed: merchant defense accepted
-    ChargebackReversed --> Disputed: second chargeback or arbitration
-    Expired --> [*]
-    Cancelled --> [*]
-```
+![A path of payment states from Authorized through Captured, Cleared and Settled to Paid out, with side branches to Expired and Cancelled and later branches to refunds and disputes, including a loop from reversed chargeback back to disputed.](finance-systems-architecture/posts/20-payments-fundamentals/assets/images/20-payments-fundamentals/card-payment-states.jpeg)
 
 **Figure 3:** *A card payment's states. Only the first transitions are visible at checkout. Expiry and void move no money, refunds can fail, and a reversed chargeback can be disputed again. The ledger must handle every state, including those that occur after the original period has closed.*
 
@@ -150,33 +122,7 @@ The Friday sale is booked into Adyen's settlement batch on Sunday 14 March, but 
 
 **The 16 March bank credit matched nothing on its own.** It was the net of every Stayloft card payment in the batch, minus their fees, refunds and chargebacks. Only the provider's settlement report links the €598.26 inside it to the Lisbon booking's reference. Without that report, the bank credit cannot be traced back to the booking.
 
-```mermaid
-sequenceDiagram
-    participant TR as Traveler
-    participant SL as Stayloft checkout
-    participant NP as Northmere Pay
-    participant AD as Adyen
-    participant IS as Issuer
-    participant BK as Safeguarding bank
-    participant SFP as Stayloft Finance Platform
-    TR->>SL: Books Lisbon stay, 600 EUR, 12 March
-    SL->>NP: Payment request with booking reference
-    NP->>AD: Authorize 600 EUR, merchantReference = booking id
-    AD->>IS: Authorization request with 3DS2 data
-    IS-->>TR: SCA challenge
-    IS-->>AD: Approved, hold placed
-    AD-->>NP: Authorised
-    NP->>AD: Capture 600 EUR
-    AD-->>NP: Capture received, result follows by webhook
-    AD-->>NP: Webhook CAPTURE success
-    NP->>SFP: PaymentAuthorised and PaymentCaptured events
-    AD-->>NP: Settlement report, batch 1047, 14 March, line net 598.36 after 1.64 commission, plus 0.10 batch fee
-    NP->>SFP: PaymentSettled and PSPFeeCharged events
-    AD->>BK: Net batch payout, 16 March
-    SFP->>SFP: StayCompleted 21 April, commission 90 EUR earned
-    SFP->>BK: Payout instruction 510 EUR, 22 April
-    BK-->>SFP: Payout settled, 26 April
-```
+![A timeline from 12 March to 22 April showing the Lisbon booking's authorization, webhook, settlement report, safeguarded payout and partner payout, with a booking reference tag attached to every arrow.](finance-systems-architecture/posts/20-payments-fundamentals/assets/images/20-payments-fundamentals/lisbon-booking-timeline.jpeg)
 
 **Figure 4:** *The Lisbon booking. The traveler sees one step; Northmere sees an authorization, an asynchronous capture, a net batch payout explained by a separate report, and a partner payout five weeks later. Every arrow that carries the booking reference makes reconciliation possible; every arrow that drops it makes reconciliation manual.*
 
@@ -213,7 +159,7 @@ An **alternative payment method (APM)** is any way to pay other than a card on t
 | --- | --- | --- | --- | --- | --- |
 | Card-based wallets | Apple Pay, Google Pay | Yes, as cards | As cards | Card chargebacks | As cards |
 | Own-network wallets | PayPal | Method-specific | Method-specific | Provider's process; Stripe notes such methods "typically allow customers up to 180 days" | Provider-specific |
-| Bank redirect | iDEAL (now "iDEAL \| Wero") | No | At payment (a push from the payer's bank) | No card-style chargeback | Provider-specific |
+| Bank redirect | iDEAL (now "iDEAL Wero") | No | At payment (a push from the payer's bank) | No card-style chargeback | Provider-specific |
 | Instant account-to-account | Pix (Brazil), UPI (India, operated by the National Payments Corporation of India, NPCI) | No | Near-immediate | Scheme-specific return mechanisms (verify per market) | Often daily; sometimes pass-through only |
 | Buy-now-pay-later | Klarna, Afterpay, Affirm | Yes, with method-specific windows (Stripe: Klarna by the 28th day, Afterpay 13 days, Affirm 30) | When the lender pays the merchant | The lender's process | Lender pays merchant; consumer repays lender |
 | Direct debit | SEPA Direct Debit, ACH | Pull payment | Only after the return window | Long return rights | Stripe: ACH Debit 4 business days, SEPA Direct Debit 6 |
@@ -252,22 +198,7 @@ A **dispute** is the cardholder's challenge to a payment through their issuer; a
 
 Adyen's documented stages run from an optional request for information, through notification of chargeback (which starts the defense period), the chargeback debit, information supplied and chargeback reversed, to optional pre-arbitration, arbitration (where a loss can add a fee of up to USD 600) and second chargeback ([Adyen](https://docs.adyen.com/risk-management/understanding-disputes/dispute-process-and-flow)). Stripe debits the disputed amount plus a dispute fee, does not support the arbitration phase, and can report "late win" changes outside the normal cycle. **Two providers, two lifecycles**, one ledger.
 
-```mermaid
-stateDiagram-v2
-    [*] --> Inquiry: optional request for information
-    [*] --> Notified: notification of chargeback
-    Inquiry --> Notified: issuer proceeds
-    Notified --> Debited: chargeback, funds debited
-    Debited --> Defended: merchant supplies evidence
-    Debited --> Accepted: merchant does not defend
-    Defended --> Reversed: issuer accepts defense, funds returned
-    Defended --> Lost: issuer rules for cardholder
-    Reversed --> SecondCycle: pre-arbitration or second chargeback
-    SecondCycle --> Lost: merchant loses
-    SecondCycle --> Reversed: merchant wins
-    Accepted --> [*]
-    Lost --> [*]
-```
+![Dispute states from Inquiry and Notified to Debited, where funds leave, then either Accepted or Defended, ending Reversed or Lost, with a second cycle that can reopen a win.](finance-systems-architecture/posts/20-payments-fundamentals/assets/images/20-payments-fundamentals/card-dispute-states.jpeg)
 
 **Figure 5:** *A card dispute, generalized from documented provider flows. Funds leave at "Debited", long before the outcome is known, and a win can be reopened. Each state needs its own accounting, and each transition can land in a different period from the sale.*
 
@@ -355,47 +286,7 @@ Regulation changes which flows are allowed, which data must be kept and which re
 
 A finance architect needs a component view that shows where payment data is created, transformed and matched.
 
-```mermaid
-flowchart TB
-    subgraph Commerce["Brand commerce"]
-        CK["Checkout and booking"]
-    end
-    subgraph Pay["Northmere Pay platform"]
-        RT["Routing and retry"]
-        VT["Token references per PSP"]
-        WH["Webhook intake"]
-        RI["Settlement report ingestion"]
-        NM["Normalization to canonical events"]
-    end
-    subgraph Providers["Providers"]
-        AD["Adyen"]
-        ST["Stripe"]
-        LA["Local APM providers"]
-    end
-    subgraph Finance["Finance"]
-        SFP["Stayloft Finance Platform subledger"]
-        RC["Reconciliation in BlackLine"]
-        KY["Kyriba and bank statements"]
-        S4["SAP S/4HANA general ledger"]
-    end
-    CK --> RT
-    RT --> VT
-    RT --> AD
-    RT --> ST
-    RT --> LA
-    AD --> WH
-    ST --> WH
-    AD --> RI
-    ST --> RI
-    LA --> RI
-    WH --> NM
-    RI --> NM
-    NM --> SFP
-    NM --> RC
-    KY --> RC
-    SFP --> S4
-    RC --> S4
-```
+![Architecture bands for commerce, Northmere Pay, providers and finance: provider webhooks and reports converge on normalization, which feeds the subledger and reconciliation, with bank statements arriving separately and everything ending in the general ledger.](finance-systems-architecture/posts/20-payments-fundamentals/assets/images/20-payments-fundamentals/payment-data-components.jpeg)
 
 **Figure 6:** *Webhooks give operational state early; settlement reports give financial truth later. Both converge on normalization, which feeds the subledger and the reconciliation engine. Bank statements arrive independently, through treasury, to close the third leg of the match.*
 
@@ -452,7 +343,7 @@ Everything above leads to one conclusion: a provider's payout and the bookings i
 
 **None of the eleven is an error.** Each is the payments system working as designed, which is why the response is architectural, not operational: a booking reference mandatory on every provider call; a **clearing account per provider and currency** that returns to zero once the order, provider and bank legs are matched; reversals recorded as new events, never as updates; fees accrued and trued up; exception queues with owners and aging. Stripe's engineering team describes the same principle for its internal Ledger: clearing accounts should be zero at steady state, and a non-zero balance signals missing, late or incorrect data ([Stripe engineering, 2024](https://stripe.dev/blog/ledger-stripe-system-for-tracking-and-validating-money-movement)). That system is internal to Stripe, not a product, but the idea transfers directly.
 
-![One shared clearing tank hiding offsetting errors, versus four separate tanks where three are at zero and one break is flagged.](enterprise-applications-and-financial-systems/posts/20-payments-fundamentals/assets/images/20-payments-fundamentals/clearing-account-per-provider.jpeg)
+![One shared clearing tank hiding offsetting errors, versus four separate tanks where three are at zero and one break is flagged.](finance-systems-architecture/posts/20-payments-fundamentals/assets/images/20-payments-fundamentals/clearing-account-per-provider.jpeg)
 
 **Figure 7:** *A clearing account per provider and currency returns to zero once the order, provider and bank legs are matched, so a break shows; one shared account lets a €200,000 shortfall at one provider hide behind a €190,000 surplus at another.*
 

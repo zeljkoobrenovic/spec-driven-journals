@@ -1,7 +1,7 @@
 {class: part, id: part-2}
 # PLATFORMS: What Each Is For, and What It Costs to Depend On
 
-![PLATFORMS: What Each Is For, and What It Costs to Depend On — logo](enterprise-applications-and-financial-systems/posts/part-2-intro/assets/images/part-2-intro/logo.jpeg)
+![PLATFORMS: What Each Is For, and What It Costs to Depend On — logo](finance-systems-architecture/posts/part-2-intro/assets/images/part-2-intro/logo.jpeg)
 
 > **IN THIS PART, YOU WILL:** Learn what each core finance platform is for, how its data model and integration surfaces work, where its boundaries with the rest of the estate should sit, and what it costs to depend on it, from custom ledgers through the ERPs, close and consolidation, to payments and the satellites.
 
@@ -23,23 +23,7 @@ The order follows the finance landscape from [FOUNDATIONS: How Money Moves Throu
 {id: part-2--the-learning-path}
 ## The Learning Path
 
-```mermaid
-flowchart TB
-    subgraph S1["Stage 1: Built in-house"]
-        A1["Custom finance platforms"] --> A2["Designing custom ledgers"]
-    end
-    subgraph S2["Stage 2: The ERP cores"]
-        B1["SAP S/4HANA"] --> B2["Workday"] --> B3["Oracle Fusion"]
-    end
-    subgraph S3["Stage 3: Close and consolidation"]
-        C1["BlackLine"] --> C2["OneStream"]
-    end
-    subgraph S4["Stage 4: Money movement and the satellites"]
-        D1["Payments fundamentals"] --> D2["Adyen"] --> D3["Stripe"] --> D4["Tax, treasury, procurement, reporting"]
-    end
-    S1 --> S2 --> S3 --> S4
-    S4 --> R["Know what each platform should own and what it should not"]
-```
+![Four islands joined by bridges: built-in-house platforms, the ERP cores, close and consolidation, and payments and satellite platforms, ending at a flag for knowing what each platform owns.](finance-systems-architecture/posts/part-2-intro/assets/images/part-2-intro/part-2-four-stages.jpeg)
 
 **Figure 1:** *Eleven chapters in four stages, following the finance landscape: custom platforms, the ledgers of record, the close and consolidation layer above them, and the payment and satellite platforms at the edge of the core.*
 

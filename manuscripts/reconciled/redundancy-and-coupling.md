@@ -1,7 +1,7 @@
 {id: redundancy-and-coupling}
 # 32. Duplicates and Dependencies: The Hidden Costs of a Grown Estate
 
-![Duplicates and Dependencies: The Hidden Costs of a Grown Estate — logo](enterprise-applications-and-financial-systems/posts/29-redundancy-and-coupling/assets/images/29-redundancy-and-coupling/logo.jpeg)
+![Duplicates and Dependencies: The Hidden Costs of a Grown Estate — logo](finance-systems-architecture/posts/29-redundancy-and-coupling/assets/images/29-redundancy-and-coupling/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn why finance estates accumulate duplicate capabilities, tell legitimate duplication from waste, run an overlap register that forces a dated decision on every duplicate, classify coupling into six finance-specific types with remedies, measure coupling from data you already have, and follow Northmere's decision to collapse two partner-payout engines into one.
 
@@ -106,20 +106,7 @@ The five decision verbs have precise meanings. **Accept** keeps the duplication 
 {id: redundancy-and-coupling--how-a-row-moves}
 ### How a row moves
 
-```mermaid
-stateDiagram-v2
-    [*] --> Detected
-    Detected --> Assessed : owner, volume, cost, controls filled in
-    Assessed --> Accepted : legitimate reason written
-    Assessed --> Contained : target known, date pending
-    Assessed --> InTransition : converge or retire approved
-    Assessed --> Prevented : proposal rejected
-    Contained --> InTransition : dependency decided
-    InTransition --> Resolved : exit gate passed and evidence filed
-    Accepted --> Assessed : annual review or trigger
-    Prevented --> [*]
-    Resolved --> [*]
-```
+![An overlap-register row moves from Detected to Assessed, then to Accepted, Contained, In transition or Prevented; Contained moves to In transition, In transition ends in Resolved with evidence filed, and Accepted loops back to Assessed at its review date.](finance-systems-architecture/posts/29-redundancy-and-coupling/assets/images/29-redundancy-and-coupling/overlap-row-lifecycle.jpeg)
 
 **Figure 1:** *The lifecycle of an overlap-register row. Every row ends in a decision state; an accepted row returns to assessment at its review date, and a resolved row closes only when the exit evidence is filed.*
 
@@ -144,24 +131,7 @@ The excerpt below shows the rows the steering committee discussed. Volumes are m
 
 Two features of the excerpt are worth noticing. First, **the register splits rows by scope when the decision differs by scope.** Partner payouts appear three times, because Wayfare's suppliers, Tablekin's venues and a proposed Adyen product each get a different verb. A register that forced one verb per capability would either overrule Tablekin's legitimate model or wave through Wayfare's engine. Second, **the register records decisions taken elsewhere rather than retaking them.** The three integration technologies were decided by the design authority in June 2027, together with the canonical events v1; the row points to that record and carries its dates, so the register stays one list without becoming a second forum.
 
-```mermaid
-flowchart LR
-    PAY["2.4 Partner Payout Management"] --> SFPP["SFP payout engine - group service"]
-    PAY --> WAYP["Wayfare payout engine - converge 2029"]
-    PAY --> CON["Stripe Connect - accept"]
-    PAY -.-> ADY["Adyen platform product - prevented"]
-    INV["3.2 Invoicing"] --> FICA["FI-CA - target"]
-    INV --> SFPI["SFP merchant invoicing - converge 2028"]
-    INV --> SB["Stripe Billing - accept"]
-    INV --> ADS["Ad billing - converge 2028-29"]
-    REC["4.2 Account Reconciliation"] --> BL["BlackLine - sole record from Q1 2028"]
-    REC --> OSR["OneStream module - retire wave 0"]
-    REC --> FIC["Fusion intercompany - converge 2029"]
-    TAX["6.1 Indirect Tax Determination"] --> VTX["Vertex - group standard"]
-    TAX --> ORT["Oracle tax engine - contain, migrate"]
-    TAX --> RK["RateKeeper - retire 2028"]
-    TAX --> ST["Stripe Tax - dated exception"]
-```
+![Four capabilities — partner payouts, invoicing, reconciliation and indirect tax — each branching to several systems tagged with a verb and date such as converge 2029 or retire 2028, with one dotted branch to a prevented duplicate.](finance-systems-architecture/posts/29-redundancy-and-coupling/assets/images/29-redundancy-and-coupling/overlap-map-2027.jpeg)
 
 **Figure 2:** *Northmere's overlap map in October 2027. Every implementation of the four March overlaps now carries a verb and a date; the dotted line is a duplication the register prevented.*
 
@@ -200,7 +170,7 @@ Even a published interface leaks. Hyrum's Law, as its author states it, is that 
 
 Semantic coupling is the type I watch hardest in finance, because it produces no errors. Two systems exchange a field called `booking_date` or a measure called `revenue`; both validate; both are correct by their own definition. The difference appears only when someone compares totals, usually at a close or in front of an auditor. The July 2027 booking-date change is the archetype: no schema changed, no contract test could fail, and €3.1 million of gross bookings moved across a month boundary in a flash report.
 
-![Two systems both labeled with the term booking date, each correct, while coins slide across the June-July boundary.](enterprise-applications-and-financial-systems/posts/29-redundancy-and-coupling/assets/images/29-redundancy-and-coupling/same-word-two-meanings.jpeg)
+![Two systems both labeled with the term booking date, each correct, while coins slide across the June-July boundary.](finance-systems-architecture/posts/29-redundancy-and-coupling/assets/images/29-redundancy-and-coupling/same-word-two-meanings.jpeg)
 
 **Figure 3:** *Semantic coupling produces no errors: when 'booking date' moved from request to confirmation, about €3.1 million of gross bookings crossed the June–July boundary in a flash report without any interface breaking.*
 
@@ -223,22 +193,7 @@ Melvin Conway's 1968 observation that systems mirror the communication structure
 
 Lucía's team scored the twelve busiest finance boundaries on the six types, using the interface catalog, incident records and release data. The diagram shows the hottest edges.
 
-```mermaid
-flowchart LR
-    BP["Stayloft booking platform"] -->|"semantic HIGH, schema MED"| FDB["FinDB"]
-    BP -->|"schema HIGH, shared replica"| WPE["Wayfare payout engine"]
-    WPE -->|"temporal MED, semantic HIGH"| FUS["Oracle Fusion GL"]
-    FUS -->|"release HIGH, quarterly updates"| MUL["MuleSoft flows"]
-    SFP["SFP"] -->|"temporal HIGH, nightly window"| S4["SAP S/4HANA GL"]
-    SFP -->|"schema MED, account mapping"| S4
-    STR["Stripe"] -->|"release MED, API versions"| WD["Workday Financials"]
-    S4 -->|"temporal MED"| OS["OneStream"]
-    FUS -->|"temporal MED, spreadsheet mapping"| OS
-    WD -->|"temporal MED, spreadsheet mapping"| OS
-    OS -->|"contractual HIGH, co-termed module"| OSR["OneStream recon module"]
-    HK["Wayfare finance systems team"] -->|"organizational HIGH"| WPE
-    HK -->|"organizational HIGH"| FUS
-```
+![A heat map of finance system boundaries: red, hot edges cluster around Wayfare — a shared database link from the booking platform, the payout engine to Fusion, vendor releases to MuleSoft and one team on every path — while the SAP side has one hot nightly window and medium edges into OneStream.](finance-systems-architecture/posts/29-redundancy-and-coupling/assets/images/29-redundancy-and-coupling/coupling-heat-map.jpeg)
 
 **Figure 4:** *Coupling heat on Northmere's busiest finance boundaries, Q3 2027. The hottest edges cluster around Wayfare: a shared database replica, an undefined handover of cancellations to the ledger, quarterly vendor releases and one team on every path.*
 
@@ -319,17 +274,7 @@ One difference is not configuration. Stayloft merchant payouts are paid from **s
 {id: redundancy-and-coupling--the-sequence}
 ### The sequence
 
-```mermaid
-flowchart TB
-    P0["Preconditions 2027-28 - SFP controls remediated and tested, canonical payout events live"] --> P1["1 Clear the shadow balance - reconcile engine to Fusion, post the cancellation entries"]
-    P1 --> P2["2 Cut the shared replica - cancellations arrive as BookingCancelled events"]
-    P2 --> P3["3 Configure Wayfare scope - schedule, netting rule, funding entity, maker-checker"]
-    P3 --> P4["4 Re-verify supplier bank details - authored in Northmere Pay beneficiary store"]
-    P4 --> P5["5 Parallel run - two monthly cycles, instruction by instruction"]
-    P5 -->|"zero unexplained differences"| P6["6 Cohort cutover - small currencies, then GBP, then EUR incl. rail operators"]
-    P5 -->|"differences unexplained"| P3
-    P6 --> P7["7 Old engine read-only, archive with read path, decommission"]
-```
+![Eight gated stages from preconditions, clearing the shadow balance and cutting the shared replica, through configuration, bank-detail re-verification and a parallel run that loops back to configuration, to cohort cutover and decommissioning.](finance-systems-architecture/posts/29-redundancy-and-coupling/assets/images/29-redundancy-and-coupling/payout-collapse-gates.jpeg)
 
 **Figure 5:** *The payout-engine collapse as gated stages. Fixing the shadow balance and removing the shared database come before any supplier moves; the parallel run loops back to configuration until every difference is explained.*
 
@@ -374,7 +319,7 @@ The payout decision shows the chapter's central trade-off. Every duplicate remov
 
 I recommend the second posture for any group with more than one business model, and I would choose the first deliberately, not by default, for a business that is likely to be sold within three years. The fourth row is the one to watch for: it is what a consolidation program produces when it removes duplicates faster than it publishes interfaces.
 
-![A seesaw balancing duplicate modules against one shared module with many consumer cables, resting on a published-interface fulcrum.](enterprise-applications-and-financial-systems/posts/29-redundancy-and-coupling/assets/images/29-redundancy-and-coupling/redundancy-coupling-seesaw.jpeg)
+![A seesaw balancing duplicate modules against one shared module with many consumer cables, resting on a published-interface fulcrum.](finance-systems-architecture/posts/29-redundancy-and-coupling/assets/images/29-redundancy-and-coupling/redundancy-coupling-seesaw.jpeg)
 
 **Figure 6:** *Redundancy and coupling trade against each other: every duplicate removed makes the survivor a dependency of more consumers, so consolidation is safe only behind a published interface.*
 

@@ -1,7 +1,7 @@
 {class: part, id: part-4}
 # LEADERSHIP: The Chief Architect's Agenda
 
-![LEADERSHIP: The Chief Architect's Agenda — logo](enterprise-applications-and-financial-systems/posts/part-4-intro/assets/images/part-4-intro/logo.jpeg)
+![LEADERSHIP: The Chief Architect's Agenda — logo](finance-systems-architecture/posts/part-4-intro/assets/images/part-4-intro/logo.jpeg)
 
 > **IN THIS PART, YOU WILL:** Learn to lead the finance estate over years rather than projects: how decisions get made and enforced, how a target state turns into stable steps, how vendor dependency and transformation risk are managed, how the estate is kept healthy and recoverable, and how the organization, AI and a decade of change are kept inside the architecture.
 
@@ -23,23 +23,7 @@ The chapters move from how decisions are made, through how the journey is planne
 {id: part-4--the-learning-path}
 ## The Learning Path
 
-```mermaid
-flowchart TB
-    subgraph S1["Stage 1: Decide well"]
-        A1["Architecture governance"] --> A2["Principles, standards, reference architectures"]
-    end
-    subgraph S2["Stage 2: Plan the journey"]
-        B1["Target and transition states"] --> B2["Vendor strategy"] --> B3["Leading the transformation"]
-    end
-    subgraph S3["Stage 3: Keep the estate healthy"]
-        C1["Technical debt and fitness"] --> CF["Technology spend as financial data"] --> C2["Resilience, security, recovery"]
-    end
-    subgraph S4["Stage 4: Organize and look ahead"]
-        D1["Organizing ownership"] --> D2["AI in finance operations"] --> D3["Evolving over a decade"]
-    end
-    S1 --> S2 --> S3 --> S4
-    S4 --> R["Lead a finance estate that stays coherent through change"]
-```
+![Four milestones: decide well, plan the journey, keep the estate healthy and look ahead, ending at a compass for a coherent estate.](finance-systems-architecture/posts/part-4-intro/assets/images/part-4-intro/part-4-four-stages.jpeg)
 
 **Figure 1:** *Eleven chapters in four stages: how decisions are made and enforced, how the journey is planned and delivered, how the estate is kept measurable and recoverable, and how ownership, AI and long-term change are kept inside the architecture.*
 

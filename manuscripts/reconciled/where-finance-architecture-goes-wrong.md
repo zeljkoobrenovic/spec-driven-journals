@@ -1,7 +1,7 @@
 {id: where-finance-architecture-goes-wrong}
 # 2. Unreconciled: Fourteen Ways Finance Architecture Goes Wrong
 
-![Unreconciled: Fourteen Ways Finance Architecture Goes Wrong — logo](enterprise-applications-and-financial-systems/posts/where-finance-architecture-goes-wrong/assets/images/where-finance-architecture-goes-wrong/logo.jpeg)
+![Unreconciled: Fourteen Ways Finance Architecture Goes Wrong — logo](finance-systems-architecture/posts/where-finance-architecture-goes-wrong/assets/images/where-finance-architecture-goes-wrong/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Learn fourteen named failure patterns that recur in enterprise finance estates, recognize their warning signs, understand the incentives that produce them and what they cost in control, money, speed and audit risk, and find the chapters whose designs prevent or repair each one.
 
@@ -50,6 +50,10 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 
 **What it looks like.** A brand platform, a payout engine or a billing service holds balances that matter financially: amounts owed to partners, credits granted to customers, prepaid funds, accrued fees. It computes them, reports them on its own dashboards, and acts on them by paying out or netting. The general ledger receives a monthly figure, typed in or loaded from a file, and nobody proves that the platform's balances and the ledger's balances agree. Observable signs: finance cannot reproduce what the platform says a partner is owed; month-end adjustments are booked "to align with the platform".
 
+![A product platform keeping its own ledger book in shadow, separated by an unbridged gap from the general ledger in the light.](finance-systems-architecture/posts/where-finance-architecture-goes-wrong/assets/images/where-finance-architecture-goes-wrong/pattern-shadow-ledger.jpeg)
+
+**Figure 1:** *The Shadow Ledger: a platform that holds balances is a subledger whether or not anyone calls it one; at Wayfare the unreconciled gap reached €1.3 million.*
+
 **Why it happens.** Product engineering builds what the product needs. A payout engine needs a running balance per partner to decide what to pay, so it gets one; that balance is, functionally, a subledger, but nobody calls it one, so nobody designs it to the standards of one (double entry, immutability, period locks, reconciliation to the general ledger). Acquisitions add more: the acquired platform keeps working and reports its balances upward as totals.
 
 **What it costs.** **Control**: an unreconciled balance is uncontrolled, so the reported liability rests on code nobody audits. **Cost**: every close investigates differences by hand. **Speed**: payout-rule changes become slow and fearful. **Audit risk**: a material balance computed outside the control environment pulls audit testing into the platform, usually at the worst moment.
@@ -67,15 +71,15 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 
 **What it looks like.** A **clearing account** is a temporary account where money waits between two events, for example between a payment provider confirming a payment and the money arriving at the bank. A **suspense account** holds items that cannot yet be classified or matched. Both are legitimate and should net to near zero over a short, predictable period. The Suspense Swamp is the state where they do not: the balance grows, the aging profile lengthens, and the population becomes a mixture of genuine timing differences, unrecorded fees, missed refunds, duplicated postings and real losses that nobody can tell apart. Observable signs: the share of items older than 90 days rises month after month; the reconciliation of the account is "explained" by a list rather than a match; periodic write-offs are booked as a policy.
 
+![A swamp filling with receipts from several payment-method pipes while only a trickle drains out as matched, with older items sunk to the bottom.](finance-systems-architecture/posts/where-finance-architecture-goes-wrong/assets/images/where-finance-architecture-goes-wrong/pattern-suspense-swamp.jpeg)
+
+**Figure 2:** *The Suspense Swamp: each new payment method adds a small unmatched stream, and the oldest layer, €2.1 million over 90 days of Northmere's €14 million average balance, is the hardest to clear.*
+
 **Why it happens.** Suspense is where integration gaps go to hide. A new payment method launches before its settlement file can be matched automatically. A refund is processed in the payments platform but reaches the subledger late. A provider changes a report format. Each gap puts a small number of items into suspense; each item is individually immaterial, so nobody prioritizes it. Launching the payment method is somebody's target; clearing suspense is somebody else's chore.
 
 **What it costs.** **Control**: the enterprise cannot assert that cash and liabilities are complete and accurate. **Cost**: old items cost far more to clear than new ones, because the context is gone, and some become write-offs. **Speed**: the close waits for the suspense review. **Audit risk**: aged suspense is a classic source of audit adjustments.
 
 **An illustration.** At Northmere in 2026, on working day 3 of each close, about **1.9%** of payment-provider settlement lines for Stayloft's alternative payment methods (wallets, local bank transfers) are unmatched. Unreconciled balances in clearing and suspense accounts average **€14 million** at month-end, of which about **€2.1 million** is older than 90 days. Each new local payment method added a small, unmatched stream; together they made the largest open item on Leila Haddad's close agenda.
-
-![A clearing-account tank filling with sediment layers from several small payment-method pipes, with an older compacted layer at the bottom and only a trickle draining out as matched.](enterprise-applications-and-financial-systems/posts/where-finance-architecture-goes-wrong/assets/images/where-finance-architecture-goes-wrong/suspense-gravity-sediment.jpeg)
-
-**Figure 1:** *The Suspense Swamp as sediment: small unmatched streams settle faster than they are cleared, and the oldest layer, €2.1 million over 90 days of Northmere's €14 million average balance, is the hardest to explain.*
 
 **The remedy direction.** Treat suspense as a measured output of the architecture, not an accounting chore: matching rules designed before a payment method launches, settlement files treated as contracts with completeness checks, aging limits with owners, and the suspense balance reported as an engineering metric.
 
@@ -87,6 +91,10 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 *"We created the new entity in SAP. Can someone set it up in the other systems?"*
 
 **What it looks like.** **Master data** is the shared reference data that transactions point to: legal entities, accounts, cost centers, customers, suppliers, partners, bank accounts. The Doppelgänger Record is the state where the same entity is created and maintained independently in several systems, each with slightly different attributes, and no system or team is agreed to be the authority. Observable signs: the same partner has different bank details in two systems; a legal entity exists in the ERP but not yet in the tax engine; the auditor's entity list takes a week to assemble.
+
+![Six systems each holding a slightly different copy of the same entity record, with a puzzled analyst in the middle.](finance-systems-architecture/posts/where-finance-architecture-goes-wrong/assets/images/where-finance-architecture-goes-wrong/pattern-doppelganger-record.jpeg)
+
+**Figure 3:** *The Doppelgänger Record: the same entity created in several systems with no agreed authority drifts apart; Northmere's 71 entities must stay identical in six or more systems.*
 
 **Why it happens.** Every platform ships with its own master data model and its own create screen, and the path of least resistance is to use it. Projects scope their own system, not the authority question. Mergers bring complete parallel sets of master data. Master data management delivers no visible feature, so it is deferred.
 
@@ -105,6 +113,10 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 
 **What it looks like.** High-volume businesses must summarize: putting every booking, click or payment into the general ledger would make it slow and unreadable. Summarization becomes a failure when the summary loses its link to the detail. Observable signs: a general-ledger line cannot be traced to the subledger lines that make it up; the summarization key changed and nobody kept the old one; the detail is retained for less time than the audit and statutory retention period; answering "which transactions make up this revenue figure for this property in March?" requires an engineer and a week.
 
+![A funnel compressing thousands of transaction dots into a single summary block, with the drill-back thread to the detail snapped.](finance-systems-architecture/posts/where-finance-architecture-goes-wrong/assets/images/where-finance-architecture-goes-wrong/pattern-lost-in-aggregation.jpeg)
+
+**Figure 4:** *Lost in Aggregation: summarizing is necessary at 3 million lines a day; losing the link from each summary line back to its detail is the failure.*
+
 **Why it happens.** Summarization is designed for performance by people who are not asked about investigation. The summarization key (which attributes are kept: entity, account, currency, date, business model) is set once, early, and then becomes invisible. Retention of detail is trimmed as a storage cost. Drill-back, going from a ledger line to its sources, is a requirement nobody states until an auditor asks.
 
 **What it costs.** **Control**: a balance that cannot be traced can only be asserted, not demonstrated. **Cost**: every investigation becomes a data-engineering project. **Speed**: errors in summaries take days to locate. **Audit risk**: auditors who sample transactions need a reliable path from the reported figure to the population; without it they expand testing.
@@ -121,6 +133,10 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 *"Only one person in group reporting knows how the mapping file works, and they are on leave during close."*
 
 **What it looks like.** **End-user computing** (EUC) is any spreadsheet, desktop database or personal script that performs a step a business process depends on. Spreadsheet Glue is the state where the close relies on EUCs for mappings, allocations, reconciliations, journal preparation or interface hand-offs. Observable signs: a journal is uploaded from a spreadsheet each month; account mappings between ledgers live in a workbook; a "macro" transforms a provider report before it is loaded; nobody can say how many such files exist or which are key to financial reporting.
+
+![Three ledger systems held together by spreadsheet-patterned tape that all runs to one laptop at an empty desk.](finance-systems-architecture/posts/where-finance-architecture-goes-wrong/assets/images/where-finance-architecture-goes-wrong/pattern-spreadsheet-glue.jpeg)
+
+**Figure 5:** *Spreadsheet Glue: the close depends on files only one person understands; at Northmere an unmaintained mapping workbook misplaced $41 million of usage revenue.*
 
 **Why it happens.** Spreadsheets are the most flexible integration tool ever built, and controllers are skilled at them. When a new brand is acquired, the mapping of its chart of accounts to the group chart is needed by the first quarter close, long before a system could be configured; a workbook solves it in a week. The workbook then becomes permanent because it works.
 
@@ -139,6 +155,10 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 
 **What it looks like.** Vendor platforms allow extension, and some extension is necessary. Customization Concrete is the state where custom code inside the vendor platform (modified standard objects, custom tables, user exits, bespoke reports) has grown until it governs the upgrade schedule. Observable signs: each upgrade needs months of regression testing; the custom object count is known only roughly; release notes are read for what they will break.
 
+![A vendor platform encased in concrete blocks of custom code, with an upgrade crane straining to lift it.](finance-systems-architecture/posts/where-finance-architecture-goes-wrong/assets/images/where-finance-architecture-goes-wrong/pattern-customization-concrete.jpeg)
+
+**Figure 6:** *Customization Concrete: each enhancement was approved alone, but together 2,300 custom objects turn every upgrade into a seven-month project.*
+
 **Why it happens.** Each customization is approved in isolation, against a go-live date, by a project that will not run the system afterward. Clean-core disciplines (extend through published interfaces, outside the core) are cheaper over the system's life but more expensive in the project, and projects are measured on the project.
 
 **What it costs.** **Control**: errors in custom posting logic hit the book of record directly. **Cost**: regression testing at every upgrade and scarce skills to maintain old code. **Speed**: vendor capability arrives late or never. **Audit risk**: custom posting logic draws IT general controls testing.
@@ -155,6 +175,10 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 *"Once everything is in one ERP, we'll have one version of the truth."*
 
 **What it looks like.** A single enterprise resource planning (ERP) platform is expected to absorb every finance capability: high-volume transaction processing, partner settlement, billing, payments, revenue allocation, planning and analytics. Observable signs: requirements for billions of events a year are written as ERP requirements; product teams wait for ERP configuration to launch a business model; the program's scope grows every quarter; "we will do it in the ERP" ends design discussions. The result is a Swiss-Army knife of finance: every blade present, none sharp enough at billions of events.
+
+![A generic multi-tool with a blade for every finance function, one blade bending under a mountain of transaction events.](finance-systems-architecture/posts/where-finance-architecture-goes-wrong/assets/images/where-finance-architecture-goes-wrong/pattern-swiss-army-erp.jpeg)
+
+**Figure 7:** *The Swiss-Army ERP: every blade present, none sharp enough at billions of events; use the ERP as the accounting core and put high volume in layers built for it.*
 
 **Why it happens.** The ERP's original promise, one integrated database, is real and valuable for the accounting core. It is extended by analogy to everything financial. Vendors encourage it, because suite adoption is their growth model. It is also a reaction to the opposite failure: after years of Point-to-Point Spaghetti, one platform looks like the cure.
 
@@ -173,6 +197,10 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 
 **What it looks like.** Systems integrate directly with each other, each pair with its own format, schedule, error handling and owner. Observable signs: an interface inventory nobody trusts; the same booking data transformed differently in four places; failures discovered by downstream users; several integration technologies, each with a different owner.
 
+![Eight systems tangled together by multicolored noodle-like interface lines, with one person trying to trace a strand.](finance-systems-architecture/posts/where-finance-architecture-goes-wrong/assets/images/where-finance-architecture-goes-wrong/pattern-point-to-point-spaghetti.jpeg)
+
+**Figure 8:** *Point-to-Point Spaghetti: every pair of systems with its own interface; Northmere counts about 1,100 finance interfaces and five ways of representing a cancellation.*
+
 **Why it happens.** Each interface is the cheapest way to meet one project's need. Shared integration patterns require someone to fund and own them before any single project benefits. Acquisitions bring their own integration platforms. Finance-specific requirements, such as completeness proofs, control totals, period cut-off and replay, are not visible to the project until the first close.
 
 **What it costs.** **Control**: without control totals, a missing file shows up only when a reconciliation fails. **Cost**: every source change ripples through every consumer. **Speed**: replacing a system means re-implementing all its interfaces. **Audit risk**: undocumented interfaces in the reporting path become findings.
@@ -189,6 +217,10 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 *"We already pay for that module. Let's use it for our team's reconciliations."*
 
 **What it looks like.** Several platforms in the estate offer the same capability (reconciliation, billing, tax determination, payouts, planning), and different teams use different ones, each for good local reasons. Observable signs: two or three tools perform the same function for different entities; license renewals include modules nobody can name an owner for; the same metric is computed differently in two tools and the results disagree.
+
+![Three platforms each sprouting a vine that grows the same reconciliation capability, overlapping in the middle.](finance-systems-architecture/posts/where-finance-architecture-goes-wrong/assets/images/where-finance-architecture-goes-wrong/pattern-capability-creep.jpeg)
+
+**Figure 9:** *Capability Creep: suites grow sideways, so Northmere reconciles in three tools, bills three ways and runs two tax engines, each choice defensible when made.*
 
 **Why it happens.** Enterprise suites grow sideways: each major release adds adjacent capability, often bundled at a marginal price. Teams adopt what is already licensed; acquired companies bring their own. Nobody holds the capability map that would show the overlap, or the decision right to resolve it.
 
@@ -207,6 +239,10 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 
 **What it looks like.** Every brand, market or acquired company argues for its own variant of a shared capability: its own payout logic, its own revenue calculation, its own chart of accounts, its own integration platform. Some exceptions are justified. The failure is that exceptions have no expiry, so each becomes a permanent fork. Observable signs: "temporary" exceptions older than two years; group standards with more waivers than adopters; new brands onboarded by copying the most similar existing brand's stack.
 
+![A main standard road with side branches marked temporary that have grown into permanent highways, their signs overgrown with moss.](finance-systems-architecture/posts/where-finance-architecture-goes-wrong/assets/images/where-finance-architecture-goes-wrong/pattern-permanent-exception.jpeg)
+
+**Figure 10:** *The Permanent Exception: an exception without an expiry date becomes a fork; Wayfare's payout engine was kept in 2024 for differences that are now just configuration.*
+
 **Why it happens.** Brand leaders are measured on brand growth, and a shared standard is a dependency they do not control. The central function often cannot deliver the shared capability as fast as the brand needs it, so the exception is rational. Acquisitions are integrated lightly to protect the deal's value, and light integration hardens.
 
 **What it costs.** **Control**: each fork needs its own documented and tested control design. **Cost**: duplicated engineering, licenses and operations. **Speed**: a new tax rule or reporting requirement is built once per fork. **Audit risk**: more variants, more testing.
@@ -223,6 +259,10 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 *"We'll cut over on 1 January. Clean start, new year, new system."*
 
 **What it looks like.** A finance system replacement is planned as a single switch: all entities, all processes, all data, on one date, commonly the start of a fiscal year, with the old system decommissioned shortly after. Observable signs: no parallel run; rollback described as "not an option"; migration rehearsals scheduled late; a cut-over date set by the board calendar rather than readiness.
+
+![A team pulling a single cut-over lever on 1 January while the bridge back to the old system collapses behind them.](finance-systems-architecture/posts/where-finance-architecture-goes-wrong/assets/images/where-finance-architecture-goes-wrong/pattern-big-bang-bravado.jpeg)
+
+**Figure 11:** *Big-Bang Bravado: one switch, on the busiest date, with no way back; the safer plan moves entity by entity with parallel runs as gates.*
 
 **Why it happens.** Big-bang plans look cheaper on paper: no interim interfaces, no dual maintenance, one training wave. The fiscal-year boundary is attractive because balances carry forward cleanly. Program leaders are rewarded for a date. Incremental patterns, such as moving one entity or one process at a time, require interim architecture that looks like waste to a steering committee.
 
@@ -241,6 +281,10 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 
 **What it looks like.** Architectural choices are made in the vendor's terms and on the vendor's timetable: a maintenance deadline drives a migration date, a license bundle drives the choice of module, a new product name drives a re-platforming. Observable signs: the target state reads like a vendor's product map; decisions cluster around renewal dates; nobody can say what the enterprise would do if the vendor changed prices or packaging.
 
+![A company car following a vendor salesperson's route map while its own map lies folded on the seat.](finance-systems-architecture/posts/where-finance-architecture-goes-wrong/assets/images/where-finance-architecture-goes-wrong/pattern-borrowed-roadmap.jpeg)
+
+**Figure 12:** *The Borrowed Roadmap: when the vendor's roadmap and renewal deadline set the architecture, the enterprise moves at the vendor's pace; decide the architecture first, then negotiate.*
+
 **Why it happens.** Strategic vendors invest heavily in executive relationships and roadmap briefings, and their roadmaps are often good. Internal architecture functions may lack an independent target state, so the vendor's fills the gap. Maintenance deadlines are real and create genuine urgency. Commercial teams optimize the discount, not the dependency.
 
 **What it costs.** **Control**: indirect; vendor-default control designs may not fit the enterprise's risks. **Cost**: lost negotiating power, and unused bundles that feed Capability Creep. **Speed**: the enterprise moves at the vendor's pace. **Audit risk**: low directly; the real risk is a concentration nobody chose.
@@ -257,6 +301,10 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 *"Let's get the system live first. We'll sort out the controls before the auditors come."*
 
 **What it looks like.** Systems that affect financial reporting are designed and built without control requirements, and controls are added later, typically after an audit finding. Observable signs: internal controls learns about a new system at go-live; production access is broad "for support"; change approvals live in chat; evidence is assembled by hand before each audit. Each audit season becomes an excavation: teams dig through logs, tickets and chat history to reconstruct proof the system should have produced as a by-product.
+
+![Engineers excavating layers of logs, tickets and chat messages to dig up evidence while an auditor waits with a clipboard.](finance-systems-architecture/posts/where-finance-architecture-goes-wrong/assets/images/where-finance-architecture-goes-wrong/pattern-audit-archaeology.jpeg)
+
+**Figure 13:** *Audit Archaeology: proof the system should have produced as a by-product is dug up by hand each audit season; evidence by design removes the dig.*
 
 **Why it happens.** Controls are perceived as compliance overhead, not as requirements. Product engineering teams building finance-relevant platforms often come from consumer software, where production access for developers is normal. Internal controls teams lack architecture vocabulary, and architects lack controls vocabulary, so neither engages early. Under the **Sarbanes-Oxley Act**, management must assess **internal control over financial reporting** (ICFR) and, for large filers, the auditor attests to it, yet the systems that carry those controls are designed without ICFR in mind.
 
@@ -275,6 +323,10 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 
 **What it looks like.** Robotic process automation, scheduled scripts, auto-matching rules and, increasingly, AI agents create, approve or change financial data. The automation itself may be sound; the failure is that it has no named owner, no control over its own changes, no evidence of what it did and why, and often runs under a shared or generic service account. Observable signs: journals posted by a user ID nobody recognizes; matching rules edited by whoever is on duty; an AI tool clearing reconciliation items with no record of its reasoning.
 
+![A robot posting journal entries at speed, wearing a blank name badge, with an empty logbook beside it.](finance-systems-architecture/posts/where-finance-architecture-goes-wrong/assets/images/where-finance-architecture-goes-wrong/pattern-nobodys-bot.jpeg)
+
+**Figure 14:** *Nobody's Bot: automation without an owner, its own identity, controlled changes or a log; Northmere's reclassification bot posted with an outdated mapping for two months.*
+
 **Why it happens.** Automation is introduced bottom-up by operations teams under pressure to reduce manual work, often successfully. It does not pass through the architecture or controls processes designed for "systems". AI tools add a new twist: their behavior can change with a model update or a prompt edit, outside traditional change management. The savings are visible at once; the control gap is visible only when something goes wrong.
 
 **What it costs.** **Control**: an unowned bot is an uncontrolled control. **Cost**: errors made at machine speed, investigated without logs. **Speed**: once trust is lost, the automation is switched off and manual work returns. **Audit risk**: generic service accounts and unlogged changes are typical findings.
@@ -290,24 +342,9 @@ Every chapter in Parts I to IV opens with a callout naming the patterns it addre
 
 The patterns rarely appear alone. Most estates show several, and they feed each other in recognizable chains. Seeing the chain matters because **fixing a downstream symptom while the upstream pattern continues produces the same symptom again**, usually within a year.
 
-```mermaid
-flowchart LR
-    BE["The Permanent Exception"] -->|"each brand keeps its own setup"| MM["The Doppelgänger Record"]
-    BE -->|"each brand picks its own tools"| TO["Capability Creep"]
-    TO -->|"each tool needs its own feeds"| PP["Point-to-Point Spaghetti"]
-    MM -->|"identifiers must be translated"| SG["Spreadsheet Glue"]
-    PP -->|"gaps patched by hand"| SG
-    SG -->|"mapping errors leave items unmatched"| SU["The Suspense Swamp"]
-    SI["Lost in Aggregation"] -->|"differences cannot be traced"| SU
-    SL["The Shadow Ledger"] -->|"unreconciled balances"| SU
-    VG["The Borrowed Roadmap"] -->|"suite promises everything"| OE["The Swiss-Army ERP"]
-    OE -->|"product work forced into the core"| CC["Customization Concrete"]
-    CC -->|"upgrades deferred until forced"| BB["Big-Bang Bravado"]
-    AA["Audit Archaeology"] -->|"no control design for bots"| AW["Nobody's Bot"]
-    SU -->|"pressure to clear items fast"| AW
-```
+![Two river systems of failure patterns: from the Permanent Exception through the Doppelgänger Record, Capability Creep and Point-to-Point Spaghetti into Spreadsheet Glue and the Suspense Swamp, which with Audit Archaeology feeds Nobody's Bot; and from the Borrowed Roadmap through the Swiss-Army ERP and Customization Concrete to Big-Bang Bravado.](finance-systems-architecture/posts/where-finance-architecture-goes-wrong/assets/images/where-finance-architecture-goes-wrong/pattern-chains.jpeg)
 
-**Figure 2:** *The patterns form chains; most downstream symptoms, such as growing suspense balances, trace back to an upstream choice about authority, standards or vendors.*
+**Figure 15:** *The patterns form chains; most downstream symptoms, such as growing suspense balances, trace back to an upstream choice about authority, standards or vendors.*
 
 Four chains appear most often.
 
@@ -321,9 +358,9 @@ Four chains appear most often.
 
 Two patterns sit at the roots of most chains. **The Permanent Exception** is a governance failure: nobody has the decision right, or the will, to say no with an expiry date. **The Borrowed Roadmap** is a strategy failure: the enterprise lacks a target state of its own. That is why this book spends Part IV on governance, target states and vendor strategy, not only on technology.
 
-![Two panels: on the left, people mop a flooded basin while an upstream valve stays open; on the right, someone closes the valve at the top and the basin drains.](enterprise-applications-and-financial-systems/posts/where-finance-architecture-goes-wrong/assets/images/where-finance-architecture-goes-wrong/break-the-chain-upstream.jpeg)
+![Two panels: on the left, people mop a flooded basin while an upstream valve stays open; on the right, someone closes the valve at the top and the basin drains.](finance-systems-architecture/posts/where-finance-architecture-goes-wrong/assets/images/where-finance-architecture-goes-wrong/break-the-chain-upstream.jpeg)
 
-**Figure 3:** *Fixing a downstream symptom while the upstream pattern keeps flowing brings the symptom back; the cheaper fix is usually at the origin, a decision right, a standard or an expiry date.*
+**Figure 16:** *Fixing a downstream symptom while the upstream pattern keeps flowing brings the symptom back; the cheaper fix is usually at the origin, a decision right, a standard or an expiry date.*
 
 {id: where-finance-architecture-goes-wrong--a-diagnostic-table}
 ### A diagnostic table

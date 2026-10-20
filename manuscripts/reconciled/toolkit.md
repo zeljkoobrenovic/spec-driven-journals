@@ -1,7 +1,7 @@
 {id: toolkit}
 # 49. Working Papers: Templates for the Finance Architect
 
-![Working Papers: Templates for the Finance Architect — logo](enterprise-applications-and-financial-systems/posts/toolkit/assets/images/toolkit/logo.jpeg)
+![Working Papers: Templates for the Finance Architect — logo](finance-systems-architecture/posts/toolkit/assets/images/toolkit/logo.jpeg)
 
 > **IN THIS SECTION, YOU WILL:** Find the template that fits the decision or design in front of you, copy it, and see it filled in once for Northmere, with the common mistakes to avoid and the chapter that explains the reasoning behind every field.
 
@@ -52,24 +52,7 @@ The guidance on writing principles that can fail ([Principles That Decide Things
 
 The tools are not fourteen separate forms. Most decisions in a finance estate travel through several of them, and each record points to the next.
 
-```mermaid
-flowchart LR
-    CAP["Tool 1 Capability map row"] --> FS["Tool 2 Application fact sheet"]
-    CAP --> SOR["Tool 3 System-of-record row"]
-    FS --> ADR["Tool 4 Decision record"]
-    SOR --> ADR
-    VEN["Tool 5 Scorecard and exit plan"] --> ADR
-    ADR --> EVT["Tool 6 Event specification"]
-    EVT --> INT["Tool 7 Interface contract"]
-    INT --> RULE["Tool 8 Posting rule"]
-    RULE --> REC["Tool 9 Reconciliation card"]
-    INT --> REC
-    REC --> CUT["Tool 10 Cut-over runbook"]
-    REC --> KIT["Tool 11 Launch kit"]
-    REC --> FIT["Tool 12 Debt and fitness"]
-    REC --> INC["Tool 13 Incident playbook"]
-    REC --> AGT["Tool 14 Agent control card"]
-```
+![Document stacks flow from understand to decide to design and into a reconciliation card, which forms the foundation for five operational records: cut-over, launch, fitness, incident and agent.](finance-systems-architecture/posts/toolkit/assets/images/toolkit/toolkit-template-map.jpeg)
 
 **Figure 1:** *How the templates reference each other. Understanding records feed decisions; decisions produce design contracts; and nearly every operational record rests on a reconciliation card, because in finance a change, a launch, an incident or an agent is finished only when the books are proven to agree.*
 

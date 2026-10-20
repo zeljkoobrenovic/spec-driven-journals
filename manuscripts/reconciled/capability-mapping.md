@@ -1,7 +1,7 @@
 {id: capability-mapping}
 # 5. Map What Finance Does Before What Runs It
 
-![Map What Finance Does Before What Runs It — logo](enterprise-applications-and-financial-systems/posts/02-capability-mapping/assets/images/02-capability-mapping/logo.jpeg)
+![Map What Finance Does Before What Runs It — logo](finance-systems-architecture/posts/02-capability-mapping/assets/images/02-capability-mapping/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Build a three-level finance capability map you can reuse, heat-map it to find overlap and weakness, decompose finance into bounded contexts with explicit relationships, and trace capabilities to applications and teams to find the gaps in ownership.
 
@@ -82,7 +82,7 @@ These are the mistakes I see most often in finance capability maps, with the Nor
 
 The rule I use when a name is disputed: **if the name would still be true after replacing every system and reorganizing every team, it is a capability name.** "Indirect Tax Determination" passes. "Vertex Tax" fails. "Group Tax Team Services" fails.
 
-![A fixed capability tile stays in place while generic systems and teams beneath it are swapped by a crane on a conveyor belt.](enterprise-applications-and-financial-systems/posts/02-capability-mapping/assets/images/02-capability-mapping/capability-name-survives.jpeg)
+![A fixed capability tile stays in place while generic systems and teams beneath it are swapped by a crane on a conveyor belt.](finance-systems-architecture/posts/02-capability-mapping/assets/images/02-capability-mapping/capability-name-survives.jpeg)
 
 **Figure 1:** *A capability name passes the rename test when it would stay true after every system is replaced and every team is reorganized; that stability is what makes the map a planning frame.*
 
@@ -97,25 +97,7 @@ Three design choices shape it:
 - **Controls and Finance Data are level-1 groups,** not footnotes. Both are performed across every other group, both have owners (the Head of Internal Controls, the Head of Finance Data), and both are where audit findings and "three revenue numbers" problems come from.
 - **Payment acceptance itself is outside the map.** Checkout, PSP routing and fraud scoring belong to the payments product owned by Northmere Pay. The finance map starts where a payment becomes a financial fact. The boundary is drawn on the map's edge so nobody assumes it is missing by accident.
 
-```mermaid
-flowchart TB
-    SPD["Spend: buy and pay suppliers"] -->|"payables"| REC["Record and Account: the books of record"]
-    RAB["Revenue and Billing: charge, invoice, recognize"] -->|"receivables and revenue"| REC
-    MOV["Money Movement: collect, settle, pay out"] -->|"cash and liabilities"| REC
-    TAX["Tax: determine, file, provide"] -->|"tax postings"| REC
-    TRS["Treasury: cash, banks, FX risk"] -->|"cash and hedge postings"| REC
-    REC -->|"trial balances"| CLS["Close and Report: reconcile, consolidate, disclose"]
-    CLS -->|"closed actuals"| PLN["Plan and Perform: plan, forecast, explain"]
-    CTL["Controls: design, monitor, evidence"] -.->|"assures"| REC
-    CTL -.->|"assures"| CLS
-    DAT["Finance Data: events, datasets, metrics"] -.->|"feeds"| RAB
-    DAT -.->|"feeds"| MOV
-    DAT -.->|"serves"| PLN
-    O1["Overlap 1: partner payouts in two engines"] -.-> MOV
-    O2["Overlap 2: billing in three approaches"] -.-> RAB
-    O3["Overlap 3: reconciliation in three tools"] -.-> CLS
-    O4["Overlap 4: tax determination in two engines"] -.-> TAX
-```
+![Spend, revenue and billing, money movement, tax and treasury feed the books of record, which feed close and report and then plan and perform; controls assure the books and the close, finance data feeds from below, and overlap badges sit on money movement, revenue and billing, tax, and close and report.](finance-systems-architecture/posts/02-capability-mapping/assets/images/02-capability-mapping/level-one-capability-flows.jpeg)
 
 **Figure 2:** *Northmere's ten level-1 capability groups and the main flows of financial facts between them; the four overlaps Keystone must resolve sit on Money Movement, Revenue and Billing, Close and Report, and Tax.*
 
@@ -282,24 +264,7 @@ A **context map** shows the bounded contexts and the relationships between them.
 - **Open-host service.** A context offers a defined protocol that any consumer may use. The Tax context offers tax determination as a service to every context that issues invoices or charges.
 - **Published language.** A documented, shared language for exchange between contexts. Keystone's canonical financial events (`BookingConfirmed`, `PaymentSettled`, `PartnerPayoutInstructed` and the rest) are Northmere's published language; [Canonical Events: A Common Language for Money](#loosely-coupled-domains) owns their design.
 
-```mermaid
-flowchart LR
-    BK["Booking: brand platforms"] -->|"Published Language: canonical events"| PAY["Payments"]
-    BK -->|"Published Language: canonical events"| SUB["Subledger"]
-    PSP["Adyen and Stripe models"] -->|"Anticorruption Layer: report normalization"| PAY
-    PAY -->|"Customer-Supplier: settled funds"| PST["Partner Settlement"]
-    PAY -->|"Customer-Supplier: normalized payments"| SUB
-    BIL["Billing and Invoicing"] -->|"Customer-Supplier: billable items"| SUB
-    TAX["Tax"] -->|"Open-host Service: determination API"| BIL
-    SUB -->|"Customer-Supplier: revenue triggers"| REV["Revenue"]
-    PST -->|"Customer-Supplier: payout instructions"| TRS["Treasury"]
-    SUB -->|"Anticorruption Layer: posting adapter"| GL["General Ledger"]
-    REV -->|"Anticorruption Layer: posting adapter"| GL
-    TRS -->|"Customer-Supplier: cash and bank postings"| GL
-    SPD["Spend"] -->|"Customer-Supplier: approved invoices"| GL
-    HCM["People: Workday HCM"] -->|"Conformist: org and cost centers"| GL
-    GL -->|"Conformist: OneStream dimension model"| CON["Consolidation"]
-```
+![Brand platforms send canonical events to payments and the subledger; PSP models enter payments through an adapter; payments and billing feed the subledger, which feeds revenue; the subledger and revenue post to the general ledger through adapters, and the ledger feeds consolidation.](finance-systems-architecture/posts/02-capability-mapping/assets/images/02-capability-mapping/target-context-map.jpeg)
 
 **Figure 3:** *Northmere's target context map: canonical events as the published language from the brand platforms, anticorruption layers at the PSP and ERP boundaries, and customer-supplier relationships where finance contexts depend on each other's facts.*
 
@@ -328,7 +293,7 @@ The Lisbon booking makes the boundaries concrete. A traveler from Germany books 
 
 Five contexts and one booking: the same €600 is a capture, a liability, an open item and part of a summary, and €90 of it is revenue. That is not duplication. It is **five legitimate models of one economic event**, each owned by a team that understands it. The design problem is not to merge them into one model; it is to keep the relationships explicit and the totals reconcilable at every boundary, which is the subject of [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation).
 
-![One €600 booking card at the center, seen through five windows as a capture, a liability, an open item, €90 of revenue and part of a ledger summary.](enterprise-applications-and-financial-systems/posts/02-capability-mapping/assets/images/02-capability-mapping/one-booking-many-models.jpeg)
+![One €600 booking card at the center, seen through five windows as a capture, a liability, an open item, €90 of revenue and part of a ledger summary.](finance-systems-architecture/posts/02-capability-mapping/assets/images/02-capability-mapping/one-booking-many-models.jpeg)
 
 **Figure 4:** *One Lisbon booking, five legitimate models: the same €600 is a capture, a liability, an open item and part of a summary, and €90 of it is revenue; the design task is to keep the boundaries reconcilable, not to merge the models.*
 
@@ -360,23 +325,7 @@ Conway's law, in Fowler's summary, says organizations design systems that mirror
 
 The final step of version 1 was a three-column trace for every level-2 capability: the capability, the applications that implement it, and the team that owns each application, plus a fourth column for the **capability owner**, a named Finance leader accountable for the outcome regardless of tool. The trace is mechanical. What it reveals is not.
 
-```mermaid
-flowchart LR
-    C1["Account Reconciliation"] --> A1["BlackLine"]
-    C1 --> A2["OneStream recon module"]
-    C1 --> A3["Oracle Fusion intercompany recs"]
-    C2["Indirect Tax Determination"] --> A4["Vertex"]
-    C2 --> A5["Oracle Fusion tax engine"]
-    C3["Partner Payout Management"] --> A6["SFP payout engine"]
-    C3 --> A7["Wayfare payout engine"]
-    A1 --> T1["Group Close Systems"]
-    A2 --> T0["No owner recorded"]
-    A3 --> T2["Wayfare Finance Systems"]
-    A4 --> T3["Group Tax and Treasury"]
-    A5 --> T2
-    A6 --> T4["Stayloft Finance Engineering"]
-    A7 --> T2
-```
+![Account reconciliation, tax determination and partner payouts each trace to applications tagged with their owning teams: one reconciliation tool has no owner, and Wayfare owns one application in each of the three overlaps.](finance-systems-architecture/posts/02-capability-mapping/assets/images/02-capability-mapping/overlaps-to-owning-teams.jpeg)
 
 **Figure 5:** *Three overlapping capabilities traced to applications and owning teams: one application has no owner, and one team owns the minority implementation of all three overlaps.*
 

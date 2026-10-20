@@ -1,7 +1,7 @@
 {id: integration-architecture}
 # 12. Files, Events and APIs: How Finance Systems Talk
 
-![Files, Events and APIs: How Finance Systems Talk — logo](enterprise-applications-and-financial-systems/posts/09-integration-architecture/assets/images/09-integration-architecture/logo.jpeg)
+![Files, Events and APIs: How Finance Systems Talk — logo](finance-systems-architecture/posts/09-integration-architecture/assets/images/09-integration-architecture/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn the five integration styles a finance estate uses and when each fits, the ten requirements that make an interface fit to carry money, and the transactional outbox and idempotent consumer patterns behind them. You will then see Northmere's daily posting from its custom subledger into SAP S/4HANA redesigned with a batch manifest, idempotency and safe replay.
 
@@ -36,7 +36,7 @@ That night the flow times out after posting about 60% of the entries. The monito
 
 The error surfaces on working day 3, when the BlackLine reconciliation of the traveler-funds control account shows S/4HANA about €38 million higher than SFP. Commission revenue for 31 January is overstated by about €2.9 million (illustrative figures). The fix is a manual reversal journal, approved by the Stayloft entity controller, and a day of the close is lost confirming that nothing else was doubled.
 
-![A ledger container part-filled by an interrupted run, then overfilled past its full line after a restart from the top.](enterprise-applications-and-financial-systems/posts/09-integration-architecture/assets/images/09-integration-architecture/january-posted-twice.jpeg)
+![A ledger container part-filled by an interrupted run, then overfilled past its full line after a restart from the top.](finance-systems-architecture/posts/09-integration-architecture/assets/images/09-integration-architecture/january-posted-twice.jpeg)
 
 **Figure 1:** *A flow timed out after posting about 60% of 31 January's entries; restarting from the top of the file posted everything again, and nothing told the ledger it had seen those entries before.*
 
@@ -91,23 +91,7 @@ Lucía's inventory maps the 1,100 interfaces onto these styles (counts rounded, 
 
 The mix is not the problem; each of the 1,100 making its own decisions about completeness, retries and errors is.
 
-```mermaid
-flowchart LR
-    BP["Brand booking platforms"] -->|"events, keyed by booking"| K["Kafka event backbone"]
-    NP["Northmere Pay"] -->|"payment events"| K
-    PSP["Adyen and Stripe"] -->|"webhooks"| NP
-    PSP -->|"settlement report files"| NP
-    K --> SFP["SFP merchant subledger"]
-    SFP -->|"daily batch with manifest"| IS["SAP Integration Suite"]
-    IS -->|"asynchronous journal entry API"| S4["SAP S/4HANA general ledger"]
-    SFP -->|"synchronous tax call"| VX["Vertex"]
-    WD["Workday HCM"] -->|"changes plus weekly snapshot"| IS
-    S4 -->|"trial balance per entity and period"| OS["OneStream"]
-    MS["MuleSoft legacy flows"] -->|"journal files"| WF["Oracle Fusion and Workday Financials"]
-    WF -->|"trial balances"| OS
-    K -->|"replication"| DB["FinDB on Snowflake"]
-    S4 -->|"extracts"| DB
-```
+![A finance estate map where booking and payment events stream through Kafka into SFP, a daily batch goes via Integration Suite to the S/4HANA ledger, Vertex is called synchronously, PSP webhooks reach Northmere Pay, trial balances flow to OneStream from S/4HANA and from Oracle and Workday via MuleSoft, and Kafka replicates into FinDB.](finance-systems-architecture/posts/09-integration-architecture/assets/images/09-integration-architecture/five-styles-one-estate.jpeg)
 
 **Figure 2:** *One finance estate uses all five styles. The architecture question for each arrow is not which technology carries it but what unit of completeness it must prove: one transaction, one batch or one period.*
 
@@ -136,7 +120,7 @@ An operational integration is judged on latency and availability. A finance inte
 
 **10. Observability of money in flight.** Operational observability asks whether the pipes are healthy. Finance asks **how much money is between systems right now, and for how long**. At any moment some value has left one system and not yet been accepted by the next: events consumed but not yet summarized, batches sent but not yet posted, documents parked in a dead-letter queue. I recommend that each finance interface publishes, per source and day, the counts and amounts received, rejected, delivered, replayed and pending. That record is the **delivery ledger**, and it makes "money in flight" a metric with an owner and an aging profile, not a guess on working day 3. Tracing standards such as [OpenTelemetry](https://opentelemetry.io/docs/what-is-opentelemetry/) correlate the hops; the delivery ledger counts the money.
 
-![Systems joined by transparent pipes carrying coins and documents, each pipe with a value gauge and stopwatch, and a side tank of stuck items.](enterprise-applications-and-financial-systems/posts/09-integration-architecture/assets/images/09-integration-architecture/money-in-flight.jpeg)
+![Systems joined by transparent pipes carrying coins and documents, each pipe with a value gauge and stopwatch, and a side tank of stuck items.](finance-systems-architecture/posts/09-integration-architecture/assets/images/09-integration-architecture/money-in-flight.jpeg)
 
 **Figure 3:** *Finance observability asks how much money sits between systems right now and for how long, including the value parked in dead-letter stores.*
 
@@ -161,18 +145,7 @@ The anti-pattern is easy to slip into. A deadline approaches and someone configu
 
 **The rule I use: technical failures stay out of the ledger.** An interface may post to a suspense account only where an accounting policy defines that account for a specific business situation, such as an unmatched PSP settlement line. It may never use one as an error handler. Dead letters carry money too, so they are reported in the delivery ledger with amounts and ages. An interface with zero dead letters and a growing suspense account is not healthy.
 
-```mermaid
-flowchart TB
-    REC["Incoming record"] --> V{"Valid against contract and master data?"}
-    V -->|"no"| DL["Dead letter store, counted with amount and age"]
-    DL -->|"engineer fixes data or code"| RP["Replay with same idempotency key"]
-    RP --> REC
-    V -->|"yes"| P["Posted to subledger or ledger"]
-    P --> M{"Matched to its business counterpart?"}
-    M -->|"yes"| CL["Cleared"]
-    M -->|"no"| SU["Suspense or clearing account, per accounting policy"]
-    SU -->|"accountant matches, reclassifies or writes off"| CL
-```
+![Records are validated before the books: invalid ones go to a dead-letter bin, fixed by an engineer and replayed; valid ones are posted, then either matched and cleared or placed in a suspense account that an accountant clears, on the other side of the wall.](finance-systems-architecture/posts/09-integration-architecture/assets/images/09-integration-architecture/dead-letter-vs-suspense.jpeg)
 
 **Figure 4:** *Two error paths with two owners. Technical failures stop before the books and are replayed after a fix; business exceptions are posted to accounts defined by policy and cleared by accounting decisions. The dangerous arrow is the one this diagram leaves out: from dead letter straight to suspense.*
 
@@ -189,7 +162,7 @@ What finance can have is an **exactly-once effect**: each business fact changes 
 2. **Idempotent processing**, so repeats change nothing: the consumer recognizes a fact it has already applied and returns the earlier result.
 3. **Reconciliation**, so any residual error is caught: control totals per batch and a subledger-to-GL comparison per day.
 
-![An equation: a van delivering a parcel, plus a clerk setting a duplicate parcel aside, plus a tally check, equals a ledger with one check mark.](enterprise-applications-and-financial-systems/posts/09-integration-architecture/assets/images/09-integration-architecture/exactly-once-effect.jpeg)
+![An equation: a van delivering a parcel, plus a clerk setting a duplicate parcel aside, plus a tally check, equals a ledger with one check mark.](finance-systems-architecture/posts/09-integration-architecture/assets/images/09-integration-architecture/exactly-once-effect.jpeg)
 
 **Figure 5:** *Exactly-once is an effect, not a delivery guarantee: at-least-once delivery, an idempotent receiver and reconciliation together make each business fact change the books once.*
 
@@ -213,26 +186,7 @@ Most ERP posting interfaces will not do this for you. SAP's knowledge base state
 
 The producer side has its own version of the problem, called the **dual write**. A service that updates its database and then publishes an event can crash between the two, leaving a change with no event or, if it publishes first, an event with no change. The **transactional outbox** ([Richardson](https://microservices.io/patterns/data/transactional-outbox.html)) removes the gap. The service writes the business change and an outbox row in the same database transaction; a separate **relay** reads the outbox and publishes. Debezium's [Outbox Event Router](https://debezium.io/documentation/reference/stable/transformations/outbox-event-router.html) is a common relay. It routes rows to topics by aggregate type and keys messages by aggregate identifier, which preserves per-aggregate order. The relay can publish a row twice after a crash, so the outbox always pairs with an **idempotent consumer**: Hohpe and Woolf's [Idempotent Receiver](https://www.enterpriseintegrationpatterns.com/patterns/messaging/IdempotentReceiver.html), "one that can safely receive the same message multiple times". In practice the consumer records each processed event identifier **in the same transaction as its own effect**.
 
-```mermaid
-sequenceDiagram
-    participant BP as Booking platform
-    participant DB as Booking database
-    participant RL as Outbox relay
-    participant K as Kafka
-    participant SFP as SFP consumer
-    participant SL as SFP subledger store
-    BP->>DB: One transaction writes booking row and outbox row BookingConfirmed
-    RL->>DB: Read new outbox rows
-    RL->>K: Publish event keyed by booking id
-    Note over RL,K: Relay crashes before recording progress
-    RL->>K: Publish the same event again after restart
-    K->>SFP: Deliver event, first copy
-    SFP->>SL: One transaction writes subledger entries and processed event_id
-    K->>SFP: Deliver event, second copy
-    SFP->>SL: Look up event_id
-    SL-->>SFP: Already processed
-    SFP->>K: Acknowledge without effect
-```
+![A booking database writes the booking and an outbox row in one transaction; a relay crashes and publishes BookingConfirmed twice through Kafka; the SFP consumer applies the first copy to the subledger with its processed ID and sets the duplicate aside as already processed.](finance-systems-architecture/posts/09-integration-architecture/assets/images/09-integration-architecture/outbox-and-idempotent-consumer.jpeg)
 
 **Figure 6:** *The outbox closes the gap between changing state and announcing it; the idempotent consumer closes the gap the relay reopens. Neither guarantees exactly-once delivery. Together they give an exactly-once effect on the subledger, which reconciliation then confirms.*
 
@@ -365,30 +319,7 @@ The asynchronous API removes the timeout that left January's outcome unknown. Ea
 
 **7. Daily subledger-to-GL reconciliation.** BlackLine compares SFP's control-account balances with S/4HANA's each day, per entity and currency, instead of once a month. It is the safety net for everything the first six steps miss: a manual journal on an SFP control account, a posting into a closed period, a document posted outside the gate.
 
-```mermaid
-sequenceDiagram
-    participant SFP as SFP posting service
-    participant IS as Integration Suite flow
-    participant REG as Posting registry
-    participant S4 as SAP S4HANA
-    participant DLG as Delivery ledger
-    SFP->>IS: Manifest for batch SFP NL01 2027-03-12 run-1
-    IS->>DLG: Record batch declared, 38210 lines, 77 documents
-    loop For each of 77 documents
-        SFP->>IS: Document with key doc-NNNN
-        IS->>REG: Check key and content digest
-        alt Key not seen
-            REG-->>IS: New
-            IS->>S4: Asynchronous journal entry post with key in reference field
-            S4-->>IS: Confirmation with document number, or rejection
-            IS->>REG: Record posted or rejected
-        else Key already posted
-            REG-->>IS: Posted, return document number
-        end
-    end
-    IS->>DLG: Compare posted totals with manifest
-    DLG-->>SFP: Batch complete, or incomplete with dead letters listed
-```
+![SFP sends a manifest to the delivery ledger and 77 documents through a posting registry gate that sends only new keys to S/4HANA and returns stored document numbers for repeats; the delivery ledger compares posted totals with the manifest and marks the batch complete.](finance-systems-architecture/posts/09-integration-architecture/assets/images/09-integration-architecture/idempotent-daily-posting.jpeg)
 
 **Figure 7:** *The redesigned daily posting. The manifest declares what should arrive, the registry makes every resend harmless, and the delivery ledger compares what arrived with what was declared before anyone calls the batch complete.*
 

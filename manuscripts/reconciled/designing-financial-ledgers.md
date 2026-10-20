@@ -1,7 +1,7 @@
 {id: designing-financial-ledgers}
 # 17. Never Update, Only Append: Designing Custom Ledgers
 
-![Never Update, Only Append: Designing Custom Ledgers — logo](enterprise-applications-and-financial-systems/posts/14-designing-financial-ledgers/assets/images/14-designing-financial-ledgers/logo.jpeg)
+![Never Update, Only Append: Designing Custom Ledgers — logo](finance-systems-architecture/posts/14-designing-financial-ledgers/assets/images/14-designing-financial-ledgers/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn how to design a high-volume subledger and the financial event pipeline that feeds it: the separation of financial events from accounting entries, posting rules as approved configuration, the invariants that must hold on every write, money and currency representation, the time dimensions of a ledger, summarization to the general ledger with drill-back, built-in reconciliation, testing, scaling, and when to buy instead of build.
 
@@ -60,7 +60,7 @@ The separation matters for three reasons. The producer team does not need to kno
 
 Fowler's "Event Sourcing" essay makes the connection directly: accounting entries are a log of everything that changed an account, so **an account is itself an example of event sourcing** ([Fowler, 2005](https://martinfowler.com/eaaDev/EventSourcing.html)). The subledger described here is event-sourced twice: the event store holds the business facts, and the journal holds the accounting facts derived from them.
 
-![A locked cabinet of fact cards projects through an approved rule lens onto balanced journal pages, with a spare lens waiting to be swapped in.](enterprise-applications-and-financial-systems/posts/14-designing-financial-ledgers/assets/images/14-designing-financial-ledgers/post-facts-derive-accounting.jpeg)
+![A locked cabinet of fact cards projects through an approved rule lens onto balanced journal pages, with a spare lens waiting to be swapped in.](finance-systems-architecture/posts/14-designing-financial-ledgers/assets/images/14-designing-financial-ledgers/post-facts-derive-accounting.jpeg)
 
 **Figure 1:** *Post facts, derive accounting: events are immutable business facts, an approved and versioned posting rule interprets them, and a changed accounting policy swaps the rule and re-derives the entries instead of repairing data.*
 
@@ -89,7 +89,7 @@ Fowler's accounting patterns describe three ways to adjust posted entries: **Rep
 
 Published designs agree: Square's Books service ([2019](https://developer.squareup.com/blog/books-an-immutable-double-entry-accounting-database-service/)), Stripe's internal Ledger, in which transactions "cannot be deleted or modified" ([2024](https://stripe.dev/blog/ledger-stripe-system-for-tracking-and-validating-money-movement)), and TigerBeetle's append-only transfers ([docs](https://docs.tigerbeetle.com/concepts/debit-credit/)) all correct by adding. Immutability is a control concept, not a technology mandate; an append-only table in a relational database satisfies it.
 
-![Left: a ledger row erased so the auditor finds nothing. Right: original row, its exact reversal and the corrected row all visible to the auditor.](enterprise-applications-and-financial-systems/posts/14-designing-financial-ledgers/assets/images/14-designing-financial-ledgers/correct-by-adding.jpeg)
+![Left: a ledger row erased so the auditor finds nothing. Right: original row, its exact reversal and the corrected row all visible to the auditor.](finance-systems-architecture/posts/14-designing-financial-ledgers/assets/images/14-designing-financial-ledgers/correct-by-adding.jpeg)
 
 **Figure 2:** *Correct by adding, never by overwriting: a reversal and a new entry keep both the original and the correction visible, while an update in place destroys the evidence of what was reported.*
 
@@ -98,26 +98,7 @@ Published designs agree: Square's Books service ([2019](https://developer.square
 
 The redesigned SFP subledger is a pipeline with six responsibilities, each owned by one component.
 
-```mermaid
-flowchart LR
-    BP["Stayloft booking platform"] -->|"BookingConfirmed, StayCompleted"| KB["Kafka event backbone"]
-    NP["Northmere Pay"] -->|"PaymentCaptured, PSPFeeCharged, PaymentSettled, RefundIssued, ChargebackReceived"| KB
-    PO["SFP payout engine"] -->|"PartnerPayoutInstructed, PartnerPayoutSettled"| KB
-    KB --> IN["Intake: validate, dedupe, store raw event"]
-    IN --> ES["Event store, append-only"]
-    IN -->|"rejected"| QU["Quarantine with owner and age"]
-    ES --> AE["Accounting engine"]
-    RS["Rule store, versioned and approved"] --> AE
-    PT["Period table"] --> AE
-    AE --> JR["Journal, append-only lines"]
-    JR --> BL["Balances and snapshots"]
-    JR --> SU["Daily summarizer"]
-    SU -->|"summary documents with drill-back key"| S4["SAP S/4HANA GL"]
-    S4 -->|"document number acknowledgment"| SU
-    JR --> TO["Daily tie-out"]
-    S4 --> TO
-    TO -->|"differences"| BLK["BlackLine reconciliation"]
-```
+![Booking, payment and payout producers publish events to a backbone; intake quarantines bad events and stores the rest; only the accounting engine, using approved rules and an open period, writes the journal; a summarizer posts to the S/4HANA GL and a tie-out weighs the journal against it.](finance-systems-architecture/posts/14-designing-financial-ledgers/assets/images/14-designing-financial-ledgers/subledger-pipeline.jpeg)
 
 **Figure 3:** *The redesigned SFP subledger pipeline. Producers publish business facts; only the accounting engine writes entries, only under an approved rule version and an open period; the summarizer and the tie-out turn the general-ledger posting into a reconcilable boundary rather than a one-way export.*
 
@@ -256,28 +237,7 @@ Three observations a reviewer should make about this table:
 
 The engine's work for one event, in sequence:
 
-```mermaid
-sequenceDiagram
-    participant NP as NorthmerePay
-    participant KB as Kafka
-    participant IN as Intake
-    participant RS as RuleStore
-    participant AE as AccountingEngine
-    participant PT as PeriodTable
-    participant JR as Journal
-    NP->>KB: PaymentCaptured event_id e1, 60000 EUR
-    KB->>IN: deliver e1, possibly more than once
-    IN->>IN: validate contract version, check event_id and natural key
-    IN->>AE: accepted event e1
-    AE->>RS: rules for PaymentCaptured, merchant, effective on occurred_at
-    RS-->>AE: SFP-MERCH-PAYMENT-CAPTURED version 2
-    AE->>PT: is 2027-03 open for standard postings in this entity
-    PT-->>AE: open
-    AE->>AE: evaluate lines, check sum per currency is zero
-    AE->>JR: insert entry with posting key e1 plus rule plus ledger
-    JR-->>AE: inserted, or duplicate key returns existing entry
-    AE->>KB: EntryPosted for downstream consumers
-```
+![Two deliveries of the same PaymentCaptured event reach intake and the accounting engine, which picks the rule by business time and checks the period by accounting date, then writes one journal entry; the posting key turns the duplicate into a no-op returning the same entry.](finance-systems-architecture/posts/14-designing-financial-ledgers/assets/images/14-designing-financial-ledgers/one-event-one-entry.jpeg)
 
 **Figure 4:** *One event becomes one entry. Rule selection uses the event's business time, the period check uses the accounting date, and the posting key turns a duplicate delivery into a no-op that returns the original result.*
 
@@ -394,18 +354,7 @@ Two practical details trip teams up. **Time zones**: the accounting date is a lo
 
 Periods are per legal entity, per ledger. The period table is the engine's gate:
 
-```mermaid
-stateDiagram-v2
-    [*] --> Future
-    Future --> Open: first day of the period
-    Open --> SoftClosed: subledger cut-off at end of working day 1
-    SoftClosed --> Closed: tie-out passed and controller sign-off at working day 3
-    SoftClosed --> Open: controller reopens before sign-off
-    Closed --> Reopened: CAO approval for a material correction
-    Reopened --> Closed: correction posted and tie-out re-run
-    Closed --> Locked: year-end audit complete
-    Locked --> [*]
-```
+![Period states from Future to Open, SoftClosed, Closed and Locked; open periods take many postings, soft-closed only approved adjustments, closed and locked none; a soft-closed period can return to open, and a closed period can be reopened with approval and closed again.](finance-systems-architecture/posts/14-designing-financial-ledgers/assets/images/14-designing-financial-ledgers/period-states.jpeg)
 
 **Figure 5:** *SFP period states. Standard event postings land only in Open periods; SoftClosed accepts only approved adjustment entries; Closed and Locked accept nothing. Reopening is an exception with its own approval and evidence, not an operational convenience.*
 

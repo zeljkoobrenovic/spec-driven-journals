@@ -1,7 +1,7 @@
 {id: transaction-to-report}
 # 27. The Life of a Booking: From €600 Payment to $97.38 of Revenue
 
-![The Life of a Booking: From €600 Payment to $97.38 of Revenue — logo](enterprise-applications-and-financial-systems/posts/24-transaction-to-report/assets/images/24-transaction-to-report/logo.jpeg)
+![The Life of a Booking: From €600 Payment to $97.38 of Revenue — logo](finance-systems-architecture/posts/24-transaction-to-report/assets/images/24-transaction-to-report/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Follow one Stayloft merchant booking from the traveler's click to the 10-Q and 10-K, hop by hop: the system, the record, the identifier, the invariant, the control and the dates at each step. Then compare it with a Tablekin subscription invoice and a Wayfare rail ticket, whose chains are shaped by different business models and different ERPs.
 
@@ -77,41 +77,7 @@ The fourth idea is **time**. Every hop has at least three dates, and the trace u
 
 Figure 1 is the Lisbon booking's chain as Dana's team drew it after the walkthrough, with the dates of the scenario.
 
-```mermaid
-sequenceDiagram
-    participant BP as BookingPlatform
-    participant NP as NorthmerePay
-    participant AD as Adyen
-    participant KB as Kafka
-    participant SFP as SFP
-    participant S4 as S4HANA
-    participant BK as BankViaKyriba
-    participant BL as BlackLine
-    participant OS as OneStream
-    participant WK as Workiva
-    participant FD as FinDB
-    BP->>KB: BookingConfirmed SL-BK-9921347, 12 Mar
-    NP->>AD: Authorize and capture NPY-270312-004418, EUR 600
-    NP->>KB: PaymentAuthorised, PaymentCaptured, 12 Mar
-    KB->>SFP: Events deduplicated by event_id
-    SFP->>S4: Nightly summary with summary_id, posting date 12 Mar
-    AD->>NP: Settled line in batch 1047, 14 Mar
-    NP->>KB: PaymentSettled and PSPFeeCharged, 14 Mar
-    AD->>BK: Batch payout EUR 1380.52, credit 16 Mar
-    BK->>BL: camt.053 statement line with payout reference
-    BL->>BL: Three-way match, report to batch to bank
-    S4->>BL: Daily balances for clearing and control accounts
-    S4->>OS: March trial balance, final consolidation WD7
-    OS->>WK: Locked Q1 results, liability in the Q1 10-Q
-    BP->>KB: StayCompleted, 21 Apr
-    SFP->>S4: Revenue 90 and intercompany halves, posting date 21 Apr
-    SFP->>NP: PartnerPayoutInstructed 510, 22 Apr
-    NP->>BK: Payout settled at the partner bank, 26 Apr
-    S4->>OS: April trial balance, revenue translated at April average
-    OS->>WK: Locked Q2 results, revenue in the Q2 10-Q
-    KB->>FD: Events, payments and ledger keys for analytics
-    OS->>FD: Consolidated results and approved mapping set
-```
+![Money flows from the provider to the bank and on to the partner, while records flow from events through the subledger, general ledger and consolidation to filing; the two paths meet only at bank reconciliation and the subledger-to-ledger tie-out.](finance-systems-architecture/posts/24-transaction-to-report/assets/images/24-transaction-to-report/money-path-and-record-path.jpeg)
 
 **Figure 1:** *The Lisbon booking crosses eleven systems. Money moves along one path (Adyen, bank, partner) and records along another (events, subledger, GL, consolidation, filing); the two meet only at the reconciliations in BlackLine and at the subledger-to-GL tie-out, which is why those are the controls that hold the chain together.*
 
@@ -121,7 +87,7 @@ Three structural facts are visible in the diagram before any detail.
 
 **Granularity collapses three times.** The booking is a row in SFP. In S/4HANA it is part of a summary line, one of about 38,000 lines a day built from about 3 million subledger lines. In OneStream it is part of a Stayloft B.V. balance. In the 10-Q it is part of a caption. Each collapse is an aggregation that must be reversible: the summary through its summary ID, the balance through drill-back to S/4HANA, the caption through Workiva's link to a locked consolidation version.
 
-![One highlighted booking merged into a summary, a balance and a statement caption, with a thread of keys running through every layer back to the booking.](enterprise-applications-and-financial-systems/posts/24-transaction-to-report/assets/images/24-transaction-to-report/granularity-collapse-with-keys.jpeg)
+![One highlighted booking merged into a summary, a balance and a statement caption, with a thread of keys running through every layer back to the booking.](finance-systems-architecture/posts/24-transaction-to-report/assets/images/24-transaction-to-report/granularity-collapse-with-keys.jpeg)
 
 **Figure 2:** *The Lisbon booking is merged with other transactions three times, into an S/4HANA summary line, an entity balance and a 10-Q caption; each collapse stays reversible only if the key of the layer below is stored with it.*
 
@@ -299,37 +265,7 @@ The table is the walkthrough document Mei Tanaka now gives the auditor at the st
 
 Figure 3 shows the same chain against the calendar, which is where period errors are found.
 
-```mermaid
-flowchart LR
-    subgraph MAR["March period, Q1"]
-        A1["12 Mar: booking, capture, funds held 600"]
-        A2["14 Mar: Settled in batch 1047, fee 1.74"]
-        A3["16 Mar: bank credit 1380.52, safeguarding top-up"]
-        A1 --> A2 --> A3
-    end
-    subgraph MCL["March close"]
-        B1["WD1 1 Apr: SFP cut-off, accruals, recharge"]
-        B2["WD7 9 Apr: final consolidation, liability 654 USD"]
-        B3["WD9 13 Apr: Q1 locked"]
-        B1 --> B2 --> B3
-    end
-    subgraph APR["April period, Q2"]
-        C1["21 Apr: stay completed, revenue 90"]
-        C2["22 Apr: payout instructed, commission swept"]
-        C3["26 Apr: payout settled at partner bank"]
-        C1 --> C2 --> C3
-    end
-    subgraph FIL["Reporting"]
-        D1["10 May: Q1 10-Q, no revenue"]
-        D2["9 Aug: Q2 10-Q, revenue 97.38 USD"]
-        D3["29 Feb 2028: FY2027 10-K"]
-        D1 --> D2 --> D3
-    end
-    A3 --> B1
-    B3 --> D1
-    B3 --> C1
-    C3 --> D2
-```
+![A timeline with cash arriving on 16 March and revenue on 21 April; the March close feeds the Q1 10-Q, filed during April, and April feeds the Q2 10-Q and later the 10-K.](finance-systems-architecture/posts/24-transaction-to-report/assets/images/24-transaction-to-report/two-periods-two-closes.jpeg)
 
 **Figure 3:** *The booking spans two periods, two closes and three filings. The cash arrives in March, the revenue in April, and the Q1 10-Q is filed while the April close is running, so the chain needs period-correct dates at every hop and no system may reassign a period it did not own.*
 
@@ -387,22 +323,7 @@ The chain differs from Lisbon's in four ways:
 - **Two translations exist.** Fusion keeps a US dollar reporting currency on Wayfare's euro ledgers, and OneStream translates the same balances again from Kyriba's rates, breaking the rule to translate once, in consolidation. Hana Kowalski's team explains the differences every quarter.
 - **Intercompany and supplier payment stay inside Wayfare.** Fusion reconciles Wayfare's intercompany, and the operator is paid from Wayfare's own bank, outside the Kyriba payment factory; the group's controls see both only as balances.
 
-```mermaid
-flowchart LR
-    SB["Stayloft booking platform"] --> SFP["SFP subledger"]
-    NP["Northmere Pay and Adyen"] --> SFP
-    SFP -->|"daily summaries with summary_id"| S4["SAP S/4HANA"]
-    STB["Stripe Billing and balance"] -->|"Data Pipeline"| FDB["FinDB detail"]
-    STB -->|"daily summarized journal"| WD["Workday Financials"]
-    WBP["Wayfare booking platform"] -->|"FBDI summary, 2600 lines a day"| FU["Oracle Fusion"]
-    WST["Stripe for Wayfare"] --> WBP
-    S4 -->|"TB, group CoA"| OS["OneStream"]
-    WD -->|"TB, accounts and worktags mapped"| OS
-    FU -->|"TB, segment strings mapped"| OS
-    BL["BlackLine certification"] --> OS
-    OS --> WK["Workiva filings"]
-    OS --> FDB
-```
+![Three chains converge on one consolidation: Stayloft through its subledger and the group ledger, Tablekin and Wayfare through their own ledgers and a mapping step, with consolidation feeding the filings.](finance-systems-architecture/posts/24-transaction-to-report/assets/images/24-transaction-to-report/three-chains-one-consolidation.jpeg)
 
 **Figure 4:** *Three business models, three chains, one consolidation. Only Stayloft's chain joins the group in the general ledger; Tablekin and Wayfare join in OneStream, so for two of the three chains the mapping rule is the first group-level control their transactions meet.*
 
@@ -467,7 +388,7 @@ Measured against that list, Northmere's 2027 chains had a break at almost every 
 | FinDB revenue not tied to the ledger | 11 | "Three revenue numbers" in executive reviews | [One Number, Many Views: Finance Data from Operations to Analytics](#finance-data-flows) |
 | Three integration technologies and no canonical events for Tablekin and Wayfare | 1–3 | Each brand's chain different in shape and controls | [Canonical Events: A Common Language for Money](#loosely-coupled-domains), [Converge or Coexist: Living with More Than One ERP](#multiple-erps) |
 
-![A chain of solid system links from a purchase to a published report, where the links are sound but several joints between them are cracked and unattended.](enterprise-applications-and-financial-systems/posts/24-transaction-to-report/assets/images/24-transaction-to-report/chain-breaks-at-the-handoffs.jpeg)
+![A chain of solid system links from a purchase to a published report, where the links are sound but several joints between them are cracked and unattended.](finance-systems-architecture/posts/24-transaction-to-report/assets/images/24-transaction-to-report/chain-breaks-at-the-handoffs.jpeg)
 
 **Figure 5:** *Northmere's 2027 chains broke at almost every boundary, yet none of the breaks was a platform defect: each was a hand-off without an owner or a control.*
 

@@ -1,7 +1,7 @@
 {id: payments-to-ledger}
 # 28. Payments-to-Ledger: Draining the Suspense Swamp
 
-![Payments-to-Ledger: Draining the Suspense Swamp — logo](enterprise-applications-and-financial-systems/posts/25-payments-to-ledger/assets/images/25-payments-to-ledger/logo.jpeg)
+![Payments-to-Ledger: Draining the Suspense Swamp — logo](finance-systems-architecture/posts/25-payments-to-ledger/assets/images/25-payments-to-ledger/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Design the end-to-end path from payment provider data to the general ledger: provider adapters and canonical events, clearing accounts per provider, entity and currency, the three-way match with its separate fee and foreign exchange (FX) legs, month-end cut-off, late refunds and chargebacks, ownership and metrics. Then follow the 2027 program that brought Northmere's €14 million suspense balance under control.
 
@@ -45,7 +45,7 @@ After the February 2027 close, Leila Haddad, the Chief Accounting Officer, asked
 
 The first row changed the conversation. **About 40% of the "unreconciled" balance was not a problem at all.** It was money in flight: local-method payments from the last weekend of February, settling in the first days of March exactly as the provider contracts said it would. Card payments in flight were already explained by Adyen's and Stripe's batch reports; these were not, because the local providers' files arrived days later and the accounts held no item list of their own. Nothing in the accounts said which item was expected to clear when, so the preparer could not tell €5.8 million of normal timing from €8.4 million of genuine breaks, and the whole €14.2 million was reported as one unexplained balance.
 
-![A murky tank of unexplained balance sorted into dated money in flight and four bins of genuine breaks, each pointing upstream to its cause.](enterprise-applications-and-financial-systems/posts/25-payments-to-ledger/assets/images/25-payments-to-ledger/suspense-sorted-into-flight-and-breaks.jpeg)
+![A murky tank of unexplained balance sorted into dated money in flight and four bins of genuine breaks, each pointing upstream to its cause.](finance-systems-architecture/posts/25-payments-to-ledger/assets/images/25-payments-to-ledger/suspense-sorted-into-flight-and-breaks.jpeg)
 
 **Figure 1:** *Decomposing February's €14.2 million showed €5.8 million of dated money in flight that was never a problem, and €8.4 million of genuine breaks, each pointing upstream to a cause.*
 
@@ -87,41 +87,7 @@ Two **side legs** explain why amounts differ. The **fee leg** splits gross minus
 
 Figure 2 shows the reference architecture Northmere's design authority approved in March 2027 (it is the worked example in [Principles That Decide Things](#principles-standards-reference)).
 
-```mermaid
-flowchart LR
-    subgraph PSPS["Providers"]
-        ADY["Adyen"]
-        STR["Stripe"]
-        APM["Local APM providers"]
-    end
-    subgraph NPAY["Northmere Pay"]
-        ADA["PSP adapters, one per provider"]
-        RAW["Raw file and webhook store"]
-        NORM["Normalization and control totals"]
-        PRS["Payment record store"]
-    end
-    BUS["Kafka: canonical payment events"]
-    SFP["SFP merchant subledger: expected receivables"]
-    GL["SAP S/4HANA: clearing accounts per PSP, entity, currency"]
-    KYR["Kyriba: camt.053 statements"]
-    BL["BlackLine: matching and reconciliation"]
-    FDB["FinDB: analysis and lineage"]
-    ADY -->|"webhooks and reports"| ADA
-    STR -->|"events and balance transactions"| ADA
-    APM -->|"settlement files"| ADA
-    ADA --> RAW
-    ADA --> NORM
-    NORM --> PRS
-    NORM -->|"PaymentCaptured, PaymentSettled, PSPFeeCharged, RefundIssued, Chargeback events"| BUS
-    BUS --> SFP
-    SFP -->|"daily summary by stage, PSP, currency, batch"| GL
-    KYR -->|"bank leg postings"| GL
-    NORM -->|"normalized settlement file"| BL
-    SFP -->|"expected receivables"| BL
-    KYR -->|"statement lines"| BL
-    BL -->|"breaks by root cause"| NPAY
-    BUS --> FDB
-```
+![Providers' differing files stop at adapters and normalization; canonical events feed the subledger and ledger, while a matching engine compares normalized settlements, subledger receivables and bank statements and sends breaks back upstream.](finance-systems-architecture/posts/25-payments-to-ledger/assets/images/25-payments-to-ledger/payments-to-ledger-reference.jpeg)
 
 **Figure 2:** *Northmere's payments-to-ledger reference architecture. Provider formats stop at the adapters; everything downstream speaks canonical events. The subledger holds expected receivables item by item, the ledger holds clearing balances by stage, and the matching engine proves the three legs against an independent bank feed. Breaks go back to the team that can remove their cause.*
 
@@ -234,20 +200,7 @@ For Northmere Pay the rule produced ten positions: Adyen and Stripe each with eu
 {id: payments-to-ledger--the-lifecycle-of-one-expected-receivable}
 ### The lifecycle of one expected receivable
 
-```mermaid
-stateDiagram-v2
-    [*] --> InFlight: PaymentCaptured
-    InFlight --> Settled: PaymentSettled, fee and FX split
-    InFlight --> AwaitingData: expected date passed, file not yet received
-    AwaitingData --> Settled: late file arrives
-    AwaitingData --> Break: grace period passed
-    Settled --> InTransit: payout line for the batch
-    InTransit --> Banked: bank statement line matched
-    Banked --> [*]
-    Break --> Settled: identified and matched
-    Break --> WrittenOff: approved write-off
-    WrittenOff --> [*]
-```
+![Receivable states from In flight through Settled and In transit to Banked, with a side state Awaiting data that returns to Settled or becomes a Break, which leaves either back to Settled or by approved write-off.](finance-systems-architecture/posts/25-payments-to-ledger/assets/images/25-payments-to-ledger/expected-receivable-states.jpeg)
 
 **Figure 3:** *An expected receivable moves through stage accounts until the bank leg closes it. "Awaiting data" is a status, not an exception: the item is overdue only because a file is late. An item becomes a break only after its grace period, and it leaves the break state by identification or by an approved write-off, never by netting.*
 
@@ -303,20 +256,7 @@ SFP opens the expected receivable in the in-flight account of the provider's USD
 
 The provider settles on Monday 5 April. Under its 2027 contract, it converted the net amount at IDR 16,330 per dollar and credited **USD 292.54** for this payment, within a daily payout for all its Northmere e-wallet payments of 1 April.
 
-```mermaid
-flowchart LR
-    ER["Expected receivable NPY-270331-118204<br>IDR 4,850,000, expected USD 297.91"]
-    PL["Provider settlement line<br>gross IDR 4,850,000, fee IDR 72,750, net USD 292.54"]
-    FEE["Fee leg<br>IDR 72,750 = 1.5% contract, USD 4.47"]
-    FX["FX leg<br>USD 0.90, 0.31%, within 0.5%"]
-    PO["Provider payout for business day 1 April"]
-    BK["Bank credit 5 April, camt.053 via Kyriba"]
-    ER -->|"Leg 1: payment ID, gross exact in IDR"| PL
-    PL -->|"split by rule"| FEE
-    PL -->|"split by rule"| FX
-    PL -->|"Leg 2: payout ID"| PO
-    PO -->|"Leg 3: payout ID in remittance, amount exact"| BK
-```
+![One e-wallet payment matched along three legs, from expected receivable to settlement line to payout to bank credit, with the fee and FX difference split off the settlement line as side legs.](finance-systems-architecture/posts/25-payments-to-ledger/assets/images/25-payments-to-ledger/three-legs-one-payment.jpeg)
 
 **Figure 4:** *The three legs and two side legs for one e-wallet payment. Leg 1 matches in the currency the traveler paid, so FX cannot cause a false break. The fee is checked against the contract in that same currency; the conversion difference is measured against a tolerance and posted by rule.*
 
@@ -450,25 +390,14 @@ In April 2027, Dana's team analyzed the roughly 40,000 APM lines unmatched at WD
 
 About a third of the problem (the refunds and the cut-offs) could be fixed in matching rules and adapters within weeks. About two-thirds (the references and the aggregates) needed provider code changes and contract amendments. **No row could be fixed by working items faster.**
 
-![Left: workers bail a suspense tub that four taps keep filling. Right: the four taps (references, aggregates, refunds, cut-off) are closed upstream and the level falls.](enterprise-applications-and-financial-systems/posts/25-payments-to-ledger/assets/images/25-payments-to-ledger/drain-suspense-at-the-source.jpeg)
+![Left: workers bail a suspense tub that four taps keep filling. Right: the four taps (references, aggregates, refunds, cut-off) are closed upstream and the level falls.](finance-systems-architecture/posts/25-payments-to-ledger/assets/images/25-payments-to-ledger/drain-suspense-at-the-source.jpeg)
 
 **Figure 5:** *Every root cause sat upstream (references, provider aggregates, netted refunds and cut-off windows), so suspense fell when those taps were closed, not when the exception team worked items faster.*
 
 {id: payments-to-ledger--the-program-timeline}
 ### The program timeline
 
-```mermaid
-flowchart LR
-    Q1["Q1 2027<br>Scope decision, decomposition of the 14.2m,<br>reference architecture and clearing standard"]
-    Q2["Q2 2027<br>Root-cause analysis, Adyen reference fix,<br>matching rule fixes, manual refund events"]
-    Q3["Q3 2027<br>New clearing accounts live 1 July,<br>matching for all APM providers, legacy clean-up,<br>Brazilian provider returns full payment IDs"]
-    Q4["Q4 2027<br>Indonesian refunds as separate lines,<br>daily clearing reconciliation, measured results"]
-    Y2["2028<br>Last two local providers on the data standard,<br>Brazil entity launched ledger-ready"]
-    Q1 --> Q2
-    Q2 --> Q3
-    Q3 --> Q4
-    Q4 --> Y2
-```
+![A roadmap from Q1 2027 design through internal fixes, new clearing accounts and daily reconciliation to the last providers in 2028, measured throughout by the same six metrics.](finance-systems-architecture/posts/25-payments-to-ledger/assets/images/25-payments-to-ledger/program-year-one.jpeg)
 
 **Figure 6:** *Northmere's payments-to-ledger program in Keystone Year 1. Design came first, then the fixes Northmere controlled itself, then the provider changes that took contract negotiation. Every step was measured by the same six metrics.*
 

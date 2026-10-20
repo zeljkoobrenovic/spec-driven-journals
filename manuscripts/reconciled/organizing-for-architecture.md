@@ -1,7 +1,7 @@
 {id: organizing-for-architecture}
 # 45. Who Owns What: Organizing Architecture Across Finance and Technology
 
-![Who Owns What: Organizing Architecture Across Finance and Technology — logo](enterprise-applications-and-financial-systems/posts/41-organizing-for-architecture/assets/images/41-organizing-for-architecture/logo.jpeg)
+![Who Owns What: Organizing Architecture Across Finance and Technology — logo](finance-systems-architecture/posts/41-organizing-for-architecture/assets/images/41-organizing-for-architecture/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** See how the shape of the organization produced a finance estate's duplicate ledgers and payout engines, design a team topology for finance technology with explicit interaction modes, close the gap between Finance and Engineering with paired owners and finance-literate engineers, assign recurring decisions across Finance, Engineering, Security, Data, Payments, Controls and Tax, and define the architect roles, career paths and health measures that keep the design working.
 
@@ -50,7 +50,7 @@ Dana answered the way she had answered the CFO's question about the nine-day clo
 
 Eleven teams, **17 handoffs** including two rework loops, about 65 working days elapsed and about 18 days of hands-on work. Roughly **four-fifths of the elapsed time was waiting**. The finance data platform was missing from the list altogether: nobody told Owen Mbeki's team, and the new method's settlement lines were absent from FinDB, the group's finance data platform, until an analyst noticed in late August.
 
-![Timeline of a new payment method passing eleven team desks, with short green work blocks separated by long grey waiting stretches; bars compare about 18 days of work with about 65 days elapsed.](enterprise-applications-and-financial-systems/posts/41-organizing-for-architecture/assets/images/41-organizing-for-architecture/handoff-trace-waiting.jpeg)
+![Timeline of a new payment method passing eleven team desks, with short green work blocks separated by long grey waiting stretches; bars compare about 18 days of work with about 65 days elapsed.](finance-systems-architecture/posts/41-organizing-for-architecture/assets/images/41-organizing-for-architecture/handoff-trace-waiting.jpeg)
 
 **Figure 1:** *The e-wallet's handoff trace: about 18 days of hands-on work spread across about 65 working days, because no team owned the outcome and roughly four-fifths of the time was waiting.*
 
@@ -74,32 +74,7 @@ Northmere's estate reads like an org chart once you know its history.
 | **SFP determining its own GL accounts** | Stayloft finance maintained an account-mapping table inside SFP because asking the group was slower than doing it locally |
 | **Spreadsheet mappings feeding OneStream** | The mapping work fell between three ledger teams and group reporting, so it landed in the only place nobody had to agree on: a workbook |
 
-```mermaid
-flowchart LR
-    subgraph ORG["Organization, 2023 to 2026"]
-        SE["Stayloft Finance Engineering"]
-        WF["Wayfare Finance Systems"]
-        TK["Tablekin Finance Systems"]
-        SAPT["Group SAP team"]
-        GR["Group reporting"]
-    end
-    subgraph SYS["Estate, 2027 baseline"]
-        SFP["SFP: billing, subledger, payout engine"]
-        ORA["Oracle Fusion and Wayfare payout engine"]
-        WDF["Workday Financials and Stripe Billing"]
-        S4["S/4HANA and FI-CA"]
-        OS["OneStream with spreadsheet mappings"]
-    end
-    SE -->|"built"| SFP
-    WF -->|"kept"| ORA
-    TK -->|"kept"| WDF
-    SAPT -->|"built"| S4
-    GR -->|"joined the three in"| OS
-    SFP -->|"daily summaries"| S4
-    ORA -->|"trial balance"| OS
-    WDF -->|"trial balance"| OS
-    S4 -->|"trial balance"| OS
-```
+![Four fenced team islands, Stayloft, Group SAP, Wayfare and Tablekin, each with its own ledger; Stayloft sends daily summaries to Group SAP, and Group SAP, Wayfare and Tablekin send trial balances across to the Group reporting island's consolidation.](finance-systems-architecture/posts/41-organizing-for-architecture/assets/images/41-organizing-for-architecture/conway-team-islands.jpeg)
 
 **Figure 2:** *Conway's law in Northmere's finance estate. Each team built or kept a ledger-shaped system inside its own boundary, and the only place the boundaries met was the team that had to produce group numbers. The integration points of the estate are the communication paths of the organization.*
 
@@ -111,7 +86,7 @@ Three lessons follow, and the third is specific to finance.
 
 **Third, finance needs some boundaries that Conway would call friction.** Segregation of duties, the control principle that no single person can initiate, approve and record the same transaction, is a deliberately designed communication barrier. The FY2026 significant deficiency on SFP's payout engine was, in Conway's terms, an organization with too little separation: the engineers who changed payout rules could deploy them and held standing write access to production ([Controls by Design, Not by Audit Season](#controls-and-auditability)). The design principle I use is **remove the boundaries that only add waiting; keep, and make cheap to cross, the boundaries that controls require**. Finance owns the rules; Engineering owns the platform; Internal Controls decides what evidence a change needs. Those three boundaries are part of the target design, and the topology below is built around them.
 
-![Left: a long waiting queue in front of a closed window crossed out in favor of self-service. Right: a glass wall with a quick approval gate where one person approves another's rule.](enterprise-applications-and-financial-systems/posts/41-organizing-for-architecture/assets/images/41-organizing-for-architecture/control-boundary-versus-queue.jpeg)
+![Left: a long waiting queue in front of a closed window crossed out in favor of self-service. Right: a glass wall with a quick approval gate where one person approves another's rule.](finance-systems-architecture/posts/41-organizing-for-architecture/assets/images/41-organizing-for-architecture/control-boundary-versus-queue.jpeg)
 
 **Figure 3:** *Remove the boundaries that only add waiting; keep, and make cheap to cross, the boundaries that controls require, such as the separation between who writes a rule and who approves it.*
 
@@ -167,42 +142,7 @@ Four choices in the table carry most of the design.
 
 **Payments is one platform, run by its own leadership.** Northmere Pay is a licensed e-money institution, and its internal organization is Ingrid's; the finance topology sees one platform with a defined finance-facing service.
 
-```mermaid
-flowchart TB
-    subgraph SA["Stream-aligned brand finance teams"]
-        STL["Stayloft Finance"]
-        WAY["Wayfare Finance Systems"]
-        TBK["Tablekin Finance Systems"]
-        ADS["Northmere Ads Billing"]
-    end
-    subgraph PL["Finance platforms"]
-        LED["Ledger and Posting Platform"]
-        PAYO["Group Payout Service"]
-        HUB["Integration Hub and Adapter Kit"]
-        FDB["Finance Data Platform"]
-        NPY["Payments Platform"]
-    end
-    subgraph CS["Complicated subsystems"]
-        ERP["ERP Platform"]
-        TAX["Tax Technology"]
-        CLS["Close and Consolidation Systems"]
-    end
-    subgraph EN["Enabling"]
-        ARC["Architecture"]
-        CEN["Controls Engineering"]
-    end
-    STL -->|"X-as-a-Service: canonical events"| HUB
-    ADS -->|"X-as-a-Service: canonical events"| HUB
-    STL -->|"Collaboration until cut-over"| LED
-    WAY -->|"Collaboration in 2029 migration"| PAYO
-    LED -->|"X-as-a-Service: posting registry"| ERP
-    NPY -->|"X-as-a-Service: settlement events"| HUB
-    HUB -->|"X-as-a-Service"| FDB
-    HUB -->|"X-as-a-Service"| CLS
-    TBK -->|"X-as-a-Service: tax determination"| TAX
-    ARC -.->|"Facilitating"| SA
-    CEN -.->|"Facilitating"| PL
-```
+![Brand teams on top plug into five finance platforms as a service, platforms plug into three specialist subsystems, two striped overlaps with hourglasses mark time-boxed collaboration, and architecture and controls teams on the side facilitate with dashed arrows.](finance-systems-architecture/posts/41-organizing-for-architecture/assets/images/41-organizing-for-architecture/target-team-topology.jpeg)
 
 **Figure 4:** *Northmere's target finance-technology topology for 2028, simplified to the principal interactions. Most edges are X-as-a-Service through a published interface; collaboration is reserved for named, time-boxed transitions; architecture and controls engineering facilitate rather than approve.*
 
@@ -226,19 +166,7 @@ An interaction mode is a design decision with a shelf life: collaboration that n
 
 The handoff trace was the test case. Under the new design, the Payments Platform offers **new-payment-method onboarding as a service** with a bundled finance package: a normalization template, a pre-approved accounting pattern for alternative-payment-method clearing (a rule family Leila's accounting policy team approved once, not per method), clearing-account provisioning through the ERP platform's self-service request, a BlackLine matching template owned by close systems, and a control impact assessment template pre-agreed with Internal Controls. FinDB subscribes to normalized settlement events automatically through the hub.
 
-```mermaid
-flowchart LR
-    subgraph BEFORE["2027: e-wallet launch, 11 teams"]
-        B1["Payments ready"] --> B2["Policy queue"] --> B3["SFP queue"] --> B4["ERP queue"] --> B5["Reporting queue"] --> B6["Close systems queue"] --> B7["Controls queue"] --> B8["Live after 13 weeks"]
-    end
-    subgraph AFTER["2028 target: onboarding as a service"]
-        A1["Payments Platform runs onboarding bundle"] --> A2["Pre-approved posting pattern applied"]
-        A2 --> A3["Self-service clearing account"]
-        A3 --> A4["Matching template and control check"]
-        A4 --> A5["Accounting policy confirms exceptions only"]
-        A5 --> A6["Live in about 3 weeks"]
-    end
-```
+![Before: a payment change waits in six queues in sequence, Policy, SFP, ERP, Reporting, Close and Controls, and goes live after 13 weeks. After: one team delivers an onboarding bundle, policy reviews exceptions only, and it goes live in about 3 weeks.](finance-systems-architecture/posts/41-organizing-for-architecture/assets/images/41-organizing-for-architecture/onboarding-before-after.jpeg)
 
 **Figure 5:** *The same change before and after the topology. Before, seven queues in sequence; after, one team runs a bundled service and Finance reviews only what departs from an approved pattern. The control boundary stays: accounting policy still owns the pattern and any exception.*
 
@@ -268,7 +196,7 @@ Every finance platform at Northmere now has a named pair: a **process or capabil
 
 The pairing works only if the split of authority is written down. The rule [When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms) proposed holds across all of them: **Finance owns the rules; Engineering owns the platform.** Finance decides what a payout netting rule or a posting rule says and approves its change; Engineering decides how it is implemented, tested and deployed, and owns the evidence that the approved rule is the one running. The rule store with maker-checker approval, built for the SFP remediation, is that split turned into software ([Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers)).
 
-![A finance owner inserts approved rule cards into a platform maintained by an engineer, both watching one shared measure gauge.](enterprise-applications-and-financial-systems/posts/41-organizing-for-architecture/assets/images/41-organizing-for-architecture/finance-rules-engineering-platform.jpeg)
+![A finance owner inserts approved rule cards into a platform maintained by an engineer, both watching one shared measure gauge.](finance-systems-architecture/posts/41-organizing-for-architecture/assets/images/41-organizing-for-architecture/finance-rules-engineering-platform.jpeg)
 
 **Figure 6:** *Finance owns the rules and Engineering owns the platform: each finance platform pairs a Finance owner who approves rule changes with a product owner who runs the service, and both answer to one shared measure.*
 

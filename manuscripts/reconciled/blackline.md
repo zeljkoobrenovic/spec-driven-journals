@@ -1,7 +1,7 @@
 {id: blackline}
 # 21. BlackLine: Matching, Certifying and Closing
 
-![BlackLine: Matching, Certifying and Closing — logo](enterprise-applications-and-financial-systems/posts/18-blackline/assets/images/18-blackline/logo.jpeg)
+![BlackLine: Matching, Certifying and Closing — logo](finance-systems-architecture/posts/18-blackline/assets/images/18-blackline/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Place a close-automation platform in the finance estate. You will learn how reconciliation types, risk ratings, auto-certification, transaction matching, task management, journal entry and intercompany work as architecture, follow an Adyen settlement batch through a three-way match, and see which close days the tool removes and which only upstream fixes can remove.
 
@@ -106,7 +106,7 @@ The last rule is the most useful and the most dangerous, because it is only as g
 
 Northmere's 2028 target is to auto-certify about **2,400 of the 6,800 reconciliations**, almost all in the low tier, which frees roughly 25 preparer-days a month. It removes **less close time than people expect**, because low-risk accounts are rarely on the critical path. The close is as long as its longest chain of dependencies, not its largest pile of work.
 
-![A large pile of low-risk reconciliations being automated beside a thin chain of dependent tasks that sets the finish line.](enterprise-applications-and-financial-systems/posts/18-blackline/assets/images/18-blackline/longest-chain-not-largest-pile.jpeg)
+![A large pile of low-risk reconciliations being automated beside a thin chain of dependent tasks that sets the finish line.](finance-systems-architecture/posts/18-blackline/assets/images/18-blackline/longest-chain-not-largest-pile.jpeg)
 
 **Figure 1:** *Auto-certifying about 2,400 of 6,800 reconciliations frees preparer time but removes less close time than people expect, because the close is as long as its longest chain of dependencies, not its largest pile of work.*
 
@@ -123,38 +123,7 @@ BlackLine's FY2025 annual report (Form 10-K) groups its products into three suit
 
 They run on a platform it calls **Studio360**, whose Integrate area covers connectors and APIs. Older literature uses names the 10-K no longer lists, such as "Variance Analysis" and "Intercompany Hub". Treat those as historical. Northmere licenses four modules: Account Reconciliations, Task Management, Journal Entry and Transaction Matching.
 
-```mermaid
-flowchart LR
-    subgraph Sources["Sources of balances and transactions"]
-        S4["SAP S/4HANA group core"]
-        FUS["Oracle Fusion - Wayfare"]
-        WD["Workday Financials - Tablekin"]
-        SFP["SFP merchant subledger"]
-        PSP["Adyen, Stripe, local APM files"]
-        BANK["Bank statements via Kyriba"]
-    end
-    ING["Ingestion layer - connectors, SFTP, integration hub"]
-    subgraph BL["BlackLine tenant"]
-        AR["Account Reconciliations"]
-        TM["Transaction Matching"]
-        TASK["Task Management"]
-        JE["Journal Entry"]
-    end
-    OS["OneStream consolidation"]
-    EVID["Evidence archive - control register"]
-    S4 -->|"daily balances"| ING
-    FUS -->|"daily balances"| ING
-    WD -->|"daily balances"| ING
-    SFP -->|"expected receipts"| ING
-    PSP -->|"settlement lines"| ING
-    BANK -->|"camt.053 lines"| ING
-    ING --> AR
-    ING --> TM
-    TM -->|"matching result supports"| AR
-    JE -->|"approved journals"| S4
-    TASK -->|"entity certified signal"| OS
-    AR -->|"certified packages"| EVID
-```
+![Ledgers, payment providers and banks send copies through an ingestion funnel into BlackLine, which sends approved journals back to the ledgers, only a certified flag to OneStream, and its evidence to a locked archive.](finance-systems-architecture/posts/18-blackline/assets/images/18-blackline/close-platform-copies-and-signals.jpeg)
 
 **Figure 2:** *Northmere's close platform receives copies of balances and transactions from six kinds of source, writes back only approved manual journals, and hands consolidation a status signal rather than data. It is the system of record for evidence and status, never for balances.*
 
@@ -198,18 +167,7 @@ Adyen's settlement details report for Northmere Payments B.V.'s EEA merchant acc
 
 The −€420.00 chargeback in this batch is an earlier, separate dispute on a January stay, not the June 2027 chargeback that [Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals) follows. The report carries gross amounts in the transaction currency, net amounts in the settlement currency, an exchange rate and fee columns for each line. Adyen's own guidance is to reconcile at two levels: the payout entry (payout reference, batch number and merchant account) against the bank statement, and the individual lines against the merchant's sales. [Adyen: One Platform from Checkout to Settlement](#adyen) explains the report family. Northmere's matching runs three legs:
 
-```mermaid
-flowchart LR
-    SFPX["SFP expected receipt - booking SL-BK-9921347 - EUR 600.00"]
-    ADL["Adyen settled line - merchantReference NPY-270312-004418 - gross 600.00, commission 1.64, net 598.36"]
-    BATCH["Adyen batch 1047 - MerchantPayout 1,380.52"]
-    BANKC["Bank credit 16 March - remittance carries payout reference - 1,380.52"]
-    FEE["Fee item 1.64 - payment processing fees"]
-    SFPX -->|"Leg 1 - key booking id, gross exact"| ADL
-    ADL -->|"split by rule"| FEE
-    ADL -->|"Leg 2 - batch number"| BATCH
-    BATCH -->|"Leg 3 - payout reference, amount exact, date within 3 days"| BANKC
-```
+![A chain from the 600.00 expected receipt to the Adyen line on the booking id key, from the line to batch 1047 on the batch number key, and from the batch to the 1,380.52 bank credit on the payout reference key, with the fee split off below the Adyen line.](finance-systems-architecture/posts/18-blackline/assets/images/18-blackline/three-way-match-lisbon.jpeg)
 
 **Figure 3:** *The three-way match for one Lisbon booking. The fee is split by rule rather than left as an exception, and the batch, not the booking, is what reaches the bank. Each leg uses a different key.*
 
@@ -330,23 +288,7 @@ The table holds the main design facts.
 
 **Timing is part of the interface.** Adyen's batch-level settlement report is generated before 10:00 in the account's time zone, Stripe warns that a payout can arrive before its reconciliation data, and local providers deliver when they deliver. When one leg is late, the item should be marked "awaiting data", not "unmatched", with its aging clock running from the expected arrival time. Otherwise the WD3 dashboard mixes genuine exceptions with data that has not arrived yet.
 
-```mermaid
-sequenceDiagram
-    participant PSP as Adyen
-    participant NP as NorthmerePay
-    participant SFP as SFP
-    participant KY as Kyriba
-    participant BL as BlackLine
-    PSP->>NP: Settlement report available for batch 1047
-    NP->>NP: Normalize lines, attach booking id, compute control totals
-    NP->>BL: Settlement file with line count and amount total
-    SFP->>BL: Expected receipts file with control totals
-    KY->>BL: camt.053 statement lines for 16 March
-    BL->>BL: Check control totals, then run matching legs 1 to 3
-    BL-->>NP: Exceptions for items without a usable key
-    SFP->>BL: Daily balances for the clearing account
-    BL->>BL: Clearing reconciliation supported by matching result
-```
+![Adyen's report goes to Northmere Pay for normalization; Northmere Pay, SFP and Kyriba send files whose control totals are checked at BlackLine's gate before matching, which supports the clearing reconciliation and sends exceptions back to Northmere Pay.](finance-systems-architecture/posts/18-blackline/assets/images/18-blackline/settlement-day-ingestion.jpeg)
 
 **Figure 4:** *Ingestion for one settlement day. Every file carries control totals checked before matching runs, exceptions caused by missing keys go back to the team that owns the keys, and the account reconciliation is supported by the matching result rather than prepared separately.*
 
@@ -439,20 +381,7 @@ In September 2027 Dana and Leila took the critical-path data from Task Managemen
 | F | SFP and the brand ledgers post their final daily summary by 06:00 on WD1, with control totals | ½ | Jonas; Hana; Arjun | **Upstream** |
 | | **Total** | **4 days: 9 → 5** | | |
 
-```mermaid
-flowchart LR
-    NINE["9-day close 2027"]
-    BLONLY["BlackLine configuration - A and B - 1 day"]
-    BOTH["BlackLine plus upstream data - C and D - 2 days"]
-    UP["Upstream only - E and F - 1 day"]
-    FIVE["5-day close by end 2028"]
-    NINE --> BLONLY
-    NINE --> BOTH
-    NINE --> UP
-    BLONLY --> FIVE
-    BOTH --> FIVE
-    UP --> FIVE
-```
+![From a 9-day close to a 5-day close along three lanes: BlackLine only removes one day, BlackLine plus upstream data removes two days, and upstream changes alone remove one day.](finance-systems-architecture/posts/18-blackline/assets/images/18-blackline/nine-days-to-five.jpeg)
 
 **Figure 5:** *Where Northmere's four days come from. BlackLine configuration alone removes about one day. Two days need BlackLine and upstream data together, and one day needs no close-platform change at all.*
 

@@ -1,7 +1,7 @@
 {id: systems-of-record}
 # 30. Systems of Record: Ending the Doppelgänger Record
 
-![Systems of Record: Ending the Doppelgänger Record — logo](enterprise-applications-and-financial-systems/posts/27-systems-of-record/assets/images/27-systems-of-record/logo.jpeg)
+![Systems of Record: Ending the Doppelgänger Record — logo](finance-systems-architecture/posts/27-systems-of-record/assets/images/27-systems-of-record/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn to tell a system of record from a system of reference, a system of engagement, a golden copy and a derived store; build a system-of-record matrix that assigns authority per data element and lifecycle stage; and enforce it through integration contracts, write-path restrictions and reconciliations, including during migrations.
 
@@ -80,7 +80,7 @@ The coarsest useful unit of authority is not the system and not the object; it i
 
 **KYC** is the identity verification a payment institution performs on the people it pays; **DAC7** is the EU directive requiring platforms to report seller income ([Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale) covers both). The rule that makes this workable is **one attribute group, one authority, at any moment**. The partner record as a whole has no single system of record; forcing one on it either pushes self-service onboarding through a steward's queue or lets a brand platform edit bank details.
 
-![A partner record split into six attribute strips, each tied by one line to the single system that is authoritative for it.](enterprise-applications-and-financial-systems/posts/27-systems-of-record/assets/images/27-systems-of-record/one-attribute-group-one-authority.jpeg)
+![A partner record split into six attribute strips, each tied by one line to the single system that is authoritative for it.](finance-systems-architecture/posts/27-systems-of-record/assets/images/27-systems-of-record/one-attribute-group-one-authority.jpeg)
 
 **Figure 1:** *The Stayloft partner record has no single system of record: each attribute group has exactly one authoritative system at any moment, which is what makes self-service onboarding and controlled bank details possible together.*
 
@@ -98,21 +98,7 @@ Master data authority mostly stays put. Transaction authority moves. A financial
 
 The Lisbon booking (merchant model: €600.00 paid by card through Adyen on 12 March 2027, stay 18–21 April, 15% commission of €90.00, €510.00 payout instructed on 22 April and settled on 26 April) crosses six hand-offs between booking and consolidated statements.
 
-```mermaid
-flowchart LR
-    BP["Stayloft booking platform - booking terms, stay dates"] -->|"BookingConfirmed, 12 Mar"| NP["Northmere Pay - payment record"]
-    ADY["Adyen - capture and settlement facts"] -->|"H1 capture 12 Mar, H2 settlement report 14 Mar"| NP
-    NP -->|"H3 payment events"| SFP["SFP subledger - traveler funds 600, later payable 510 and commission 90"]
-    BP -->|"H3 StayCompleted, 21 Apr"| SFP
-    SFP -->|"H4 nightly summary with summary_id"| S4["S/4HANA - entity balances"]
-    SFP -->|"H5 PartnerPayoutInstructed, 22 Apr"| NP
-    BANK["Bank - payout confirmation, 26 Apr"] --> NP
-    S4 -->|"H6 trial balance, month end"| OS["OneStream - consolidated balances"]
-    NP -.->|"proof: booking-to-capture match"| P1["Reconciliations"]
-    NP -.->|"proof: PSP clearing to zero"| P1
-    SFP -.->|"proof: daily subledger-to-GL tie-out"| P1
-    S4 -.->|"proof: TB load tie-out and BlackLine certification"| P1
-```
+![Authority passes like a relay baton from the booking platform to Northmere Pay, the subledger, the ledger and consolidation, with provider and bank feeding Northmere Pay and dotted lines from each hand-off down to reconciliations that prove the transfer.](finance-systems-architecture/posts/27-systems-of-record/assets/images/27-systems-of-record/authority-relay.jpeg)
 
 **Figure 2:** *Authority over the Lisbon booking moves through six hand-offs. Each solid arrow transfers authority for a specific fact; each dotted arrow is the reconciliation that proves the transfer. A hand-off without a dotted arrow is where a Shadow Ledger can grow.*
 
@@ -225,26 +211,7 @@ The netting case shows the rules at work. Under rule 1, SFP's nightly extract of
 
 A matrix that is not enforced is a description of what people hope is true. Enforcement has three layers, and an estate needs all three because each catches what the others miss.
 
-```mermaid
-flowchart TB
-    subgraph PREV["Preventive - write paths"]
-        R["Create and update roles exist only in the authoritative system"]
-        G["APIs and gateways reject writes from non-authoritative callers"]
-        D["No shared databases - each store has one writing owner"]
-    end
-    subgraph CONTRACT["At the boundary - integration contracts"]
-        C1["Contract names the authority and the consumers"]
-        C2["Consumers are read-only by contract"]
-        C3["Control totals on every hand-off"]
-    end
-    subgraph DET["Detective - after the fact"]
-        X1["Daily comparison of copies against the authority"]
-        X2["Hand-off reconciliations with owners"]
-        X3["Periodic create-path and role review"]
-    end
-    PREV --> CONTRACT --> DET
-    DET -->|"breaks and new create paths"| OWN["Data owner and design authority"]
-```
+![Three stacked enforcement layers, preventive write-path controls, boundary contracts and detective checks, with breaks from the detective layer going to the data owner and design authority, who update the authority matrix.](finance-systems-architecture/posts/27-systems-of-record/assets/images/27-systems-of-record/three-layers-of-enforcement.jpeg)
 
 **Figure 3:** *Authority is enforced in three layers: preventive write-path restrictions, contracts at each boundary, and detective controls that find what slipped through. The detective layer feeds the data owner and the design authority, which update the matrix or close the path.*
 
@@ -292,7 +259,7 @@ The matrix fixes the order of the response:
 
 The first step fixes the Shadow Ledger without waiting for the master data program, because it changes only *where the netting reads from*. The Doppelgänger Record takes two years; the shadow balance took one quarter, once the matrix showed the netting was reading a copy.
 
-![Before: a payout engine nets against a stale snapshot and collects one commission twice. After: it reads the authoritative open items live and collects once.](enterprise-applications-and-financial-systems/posts/27-systems-of-record/assets/images/27-systems-of-record/netting-from-stale-copy-versus-live-read.jpeg)
+![Before: a payout engine nets against a stale snapshot and collects one commission twice. After: it reads the authoritative open items live and collects once.](finance-systems-architecture/posts/27-systems-of-record/assets/images/27-systems-of-record/netting-from-stale-copy-versus-live-read.jpeg)
 
 **Figure 4:** *The netting became a Shadow Ledger because it paid out on a balance computed from last night's copy; reading FI-CA's open items at payout time removed the double collections in one quarter.*
 
@@ -303,14 +270,7 @@ Authority is hardest to keep clean when it is moving. Keystone moves several aut
 
 The rule I use: **dual authority is allowed only as a declared transitional state, with an end date, a split key, and one authority per record at every moment.** "Both systems are authoritative" for the same record is never acceptable, because then neither is.
 
-```mermaid
-flowchart LR
-    A["SFP authoritative for merchant commission invoices"] --> B["Parallel run, April 2028: FI-CA calculates, SFP issues; differences reconciled"]
-    B -->|"variance within tolerance"| C["First cohort cut over with the May 2028 invoicing cycle - one authority per partner at any moment"]
-    C -->|"remaining cohorts through 2028, all moved by 31 Dec 2028"| D["FI-CA authoritative; SFP read-only for history"]
-    D --> E["SFP invoicing retired; history kept per retention"]
-    C -.->|"rollback per cohort, before first issued invoice"| B
-```
+![A roadmap moving invoice authority from SFP through a parallel run in April 2028 and cohort cutovers from May 2028 to FI-CA by 31 December 2028, with SFP kept read-only for history and rollback possible per cohort.](finance-systems-architecture/posts/27-systems-of-record/assets/images/27-systems-of-record/moving-invoice-authority.jpeg)
 
 **Figure 5:** *Moving the authority for merchant commission invoices from SFP to FI-CA. Dual capability exists for most of the migration, but at every moment each partner's invoices have exactly one issuing system; the transitional row in the matrix carries the end date.*
 

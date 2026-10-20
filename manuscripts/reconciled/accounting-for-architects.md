@@ -1,7 +1,7 @@
 {id: accounting-for-architects}
 # 8. Accounting for Architects: Ledgers, Journals and Revenue
 
-![Accounting for Architects: Ledgers, Journals and Revenue — logo](enterprise-applications-and-financial-systems/posts/05-accounting-for-architects/assets/images/05-accounting-for-architects/logo.jpeg)
+![Accounting for Architects: Ledgers, Journals and Revenue — logo](finance-systems-architecture/posts/05-accounting-for-architects/assets/images/05-accounting-for-architects/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn the accounting that finance systems are built to carry out (double entry, journal entries, charts of accounts, subledgers, accrual and the period close, revenue recognition, principal versus agent, currency and intercompany) by following one booking, one subscription invoice, one refund and one chargeback through the books, entry by entry.
 
@@ -121,18 +121,7 @@ Three layers hold financial truth in an enterprise, and much of finance architec
 
 Each subledger has a **control account** in the GL (for example `Partner payables`) whose balance must equal the sum of the open items in the subledger. Proving that equality every period, **subledger-to-GL reconciliation**, is one of the most important key controls in any finance estate.
 
-```mermaid
-flowchart LR
-    A["Operational events: bookings, captures, refunds, payouts"] -->|"about 3 million lines per day"| B["Posting rules: accounting treatment applied"]
-    B --> C["Merchant subledger in SFP: per booking, per property"]
-    C -->|"daily summarization with keys"| D["SAP S/4HANA general ledger"]
-    D -->|"about 38,000 lines per day"| E["Trial balance per entity"]
-    E --> F["OneStream consolidation"]
-    F --> G["Group financial statements"]
-    C -.->|"drill-back by summarization key"| D
-    C -->|"open items equal control account"| H["Subledger-to-GL reconciliation"]
-    D --> H
-```
+![Three million operational lines a day pass through posting rules into the subledger, are funnelled into 38,000 GL lines a day, then trial balance, consolidation and statements; a dotted key arrow drills back from the GL to the subledger, and a level balance scale reconciles the two.](finance-systems-architecture/posts/05-accounting-for-architects/assets/images/05-accounting-for-architects/detail-narrows-to-statements.jpeg)
 
 **Figure 1:** *Detail narrows as it moves toward the statements: millions of operational lines become tens of thousands of GL lines. The design works only if every summarized line can be traced back to its detail and the subledger's open items can be proven equal to the GL control account.*
 
@@ -227,7 +216,7 @@ The merchant model fills the balance sheet with money that is not Northmere's in
 
 Because Northmere Payments B.V. is a licensed e-money institution, travelers' funds are also subject to **safeguarding**: the [E-Money Directive (2009/110/EC), Article 7](https://eur-lex.europa.eu/eli/dir/2009/110/oj), requires e-money institutions to safeguard funds received, typically by holding them in segregated accounts protected from other creditors. Safeguarding turns a balance-sheet distinction into a regulatory control: Northmere must show, daily, that the cash in its safeguarding accounts covers what it owes travelers and properties. That is only possible if the chart of accounts separates safeguarded cash from Northmere's own operating cash, and the subledger can say at any moment how much is held, for which bookings, in which entity and currency. [Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals) covers the regulation; [Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale) covers licensed entities.
 
-![A shielded vault of coins that splits at the stay into a large share for the property and a small share of revenue.](enterprise-applications-and-financial-systems/posts/05-accounting-for-architects/assets/images/05-accounting-for-architects/three-kinds-of-money.jpeg)
+![A shielded vault of coins that splits at the stay into a large share for the property and a small share of revenue.](finance-systems-architecture/posts/05-accounting-for-architects/assets/images/05-accounting-for-architects/three-kinds-of-money.jpeg)
 
 **Figure 2:** *Of the €600 a traveler pays, €510 is owed to the property and only €90 ever becomes Stayloft's revenue; until the stay, all of it is safeguarded funds held, not deferred revenue.*
 
@@ -301,18 +290,7 @@ The booking confirmation itself creates no entry. `BookingConfirmed` carries the
 
 Read the "At 31 Mar close" column as Leila would. The booking has put €600 of cash in a safeguarded account and an equal liability on the balance sheet; March's income statement shows a €1.74 expense and no revenue. A dashboard that called the €600 "March revenue" would overstate March by €600 for this booking, and by €510 even if it netted out the property's share. When the stay completes in April, revenue of €90 appears, the liability changes character from "owed to the traveler" to "owed to the property", and by 26 April every balance-sheet account the booking touched is back to zero except Northmere's own cash, up €88.26, which equals revenue minus the fee.
 
-```mermaid
-flowchart LR
-    T["Traveler pays 600 EUR, 12 Mar"] --> C["PSP clearing - Adyen"]
-    C -->|"bank credit 598.26, 16 Mar"| S["Bank - safeguarding"]
-    C -->|"fee 1.74"| F["Payment processing fees"]
-    T -.->|"liability 600"| H["Traveler funds held"]
-    H -->|"stay completed, 21 Apr: 510"| P["Partner payables"]
-    H -->|"stay completed, 21 Apr: 90"| R["Commission revenue"]
-    P -->|"payout instructed, 22 Apr"| IT["Payouts in transit"]
-    IT -->|"settled, 26 Apr"| L["Lisbon property"]
-    S -->|"own funds 90 swept, 22 Apr"| O["Bank - operating"]
-```
+![A €600 booking flows through PSP clearing into safeguarding (€598.26, with €1.74 fees) and €90 to the operating bank, while the €600 liability splits into €510 partner payables, paid out via payouts in transit to the property, and €90 revenue — the only amount that stays.](finance-systems-architecture/posts/05-accounting-for-architects/assets/images/05-accounting-for-architects/booking-through-five-accounts.jpeg)
 
 **Figure 3:** *One merchant booking moves through five balance-sheet accounts before it settles. Only €90 ever becomes revenue; every other account it touches must return to zero, which is what reconciliation checks.*
 
@@ -423,7 +401,7 @@ Under ASC 606, platform access is a stand-ready obligation satisfied **over time
 
 The coincidence in this example is instructive. March revenue for this venue is $249 + $780 = **$1,029**, and the 1 April invoice is also **$1,029**, but the two numbers are made of different things. A design that used the invoice as the revenue record would get March right only by luck, and would be wrong in every month in which usage changes. The billing system's invoice lines and the ledger's revenue schedule are two records that must reconcile, which is the point of the misconception "billing equals revenue".
 
-![Two equal-height bars totaling $1,029: the invoice mixes an April block and a March block, the revenue column holds two March blocks.](enterprise-applications-and-financial-systems/posts/05-accounting-for-architects/assets/images/05-accounting-for-architects/same-total-different-contents.jpeg)
+![Two equal-height bars totaling $1,029: the invoice mixes an April block and a March block, the revenue column holds two March blocks.](finance-systems-architecture/posts/05-accounting-for-architects/assets/images/05-accounting-for-architects/same-total-different-contents.jpeg)
 
 **Figure 4:** *The 1 April invoice and March revenue are both $1,029 but made of different things: the invoice carries April's $249 subscription and March's $780 usage, while March revenue is March's subscription plus March's usage.*
 
@@ -467,7 +445,7 @@ The design requirements are specific. Every line in a foreign currency must stor
 
 When OneStream consolidates Stayloft B.V. into the US-dollar group, the Lisbon booking's €90 of April commission is translated at April's average rate (1.0820, illustrative): **$97.38**. Stayloft B.V.'s euro balance sheet is translated at the 30 April closing rate, and because income, balance sheet and equity use different rates, a difference appears that is posted to CTA. Translation does not change any euro amount in Stayloft B.V.'s own books, and it does not go through profit or loss. [Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale) owns the multi-currency model, rate types and hyperinflationary cases.
 
-![Left: one payable re-weighed at a new rate with the difference to P&L. Right: a whole statement stack passed through a currency lens with the difference to OCI.](enterprise-applications-and-financial-systems/posts/05-accounting-for-architects/assets/images/05-accounting-for-architects/revaluation-versus-translation.jpeg)
+![Left: one payable re-weighed at a new rate with the difference to P&L. Right: a whole statement stack passed through a currency lens with the difference to OCI.](finance-systems-architecture/posts/05-accounting-for-architects/assets/images/05-accounting-for-architects/revaluation-versus-translation.jpeg)
 
 **Figure 5:** *Revaluation remeasures an entity's foreign-currency monetary items and runs through profit or loss; translation converts a whole entity's statements into the presentation currency and parks the difference in other comprehensive income.*
 
@@ -507,20 +485,7 @@ Everything above reduces to five properties that every system producing or holdi
 
 I add a sixth to my own reviews, because the other five depend on it: **posting rules are deterministic and versioned.** The same event, processed under the same rule version, always produces the same entry, and every entry records which rule version produced it. That is what makes a policy change replayable, a historical entry explainable and an automated posting auditable. It is the subject of [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers).
 
-```mermaid
-flowchart LR
-    E["Financial event with event_id and correlation_id"] --> D{"Seen this event_id before?"}
-    D -->|"yes"| X["Acknowledge, post nothing: complete, no duplicates"]
-    D -->|"no"| R["Apply versioned posting rule"]
-    R --> B{"Debits equal credits?"}
-    B -->|"no"| Q["Reject to an owned error queue, not to suspense"]
-    B -->|"yes"| P{"Posting period open?"}
-    P -->|"no"| N["Post to open period, keep event date"]
-    P -->|"yes"| W["Append entry with source reference and rule version"]
-    N --> W
-    W --> S["Summarize to GL with summarization key"]
-    S --> C["Control totals and clearing accounts reconciled"]
-```
+![An event with an ID rides a conveyor through three gates — duplicates are acknowledged and dropped, unbalanced entries go to an owned error queue, late events detour to the open period — before being appended to a locked ledger, summarized to the GL and reconciled.](finance-systems-architecture/posts/05-accounting-for-architects/assets/images/05-accounting-for-architects/posting-path-invariant-checks.jpeg)
 
 **Figure 6:** *Each invariant becomes a check on the posting path: idempotency for completeness, a balance check before acceptance, a period check that redirects rather than rejects late events, append-only storage with source references, and reconciliation of what was summarized.*
 

@@ -1,7 +1,7 @@
 {id: sap-s4hana}
 # 18. SAP S/4HANA: One Journal, Clean Core
 
-![SAP S/4HANA: One Journal, Clean Core — logo](enterprise-applications-and-financial-systems/posts/15-sap-s4hana/assets/images/15-sap-s4hana/logo.jpeg)
+![SAP S/4HANA: One Journal, Clean Core — logo](finance-systems-architecture/posts/15-sap-s4hana/assets/images/15-sap-s4hana/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn what SAP S/4HANA does inside an enterprise finance architecture: editions and RISE, the Universal Journal, ledgers, currencies, organizational structures and document splitting, FI-CA and BRIM for high volume, Central Finance, Group Reporting, MDG, integration surfaces, clean core, migration approaches, release cadence, operations under RISE and Joule. You will follow Northmere's SAP core through an upgrade deadline, a custom-code remediation plan and the 2027 Q4 convergence decision.
 
@@ -84,21 +84,7 @@ The **Universal Journal** is S/4HANA's single line-item store for accounting. Ea
 
 Practitioners commonly describe two further changes, documented in SAP Notes 2428741 and 2842890 for each release: **cost elements are general-ledger accounts**, so the separate cost-element master and the FI–CO reconciliation ledger of ECC are gone and allocations are themselves journal entries; and **margin analysis**, account-based profitability analysis, is SAP's direction, with the costing-based variant still available on-premise and in Private Edition but not where SAP invests.
 
-```mermaid
-flowchart LR
-    SD["Sales and billing"] -->|"accounting documents"| UJ
-    MM["Procurement and invoices"] -->|"accounting documents"| UJ
-    AA["Asset accounting"] -->|"postings per ledger"| UJ
-    CO["Allocations and settlements"] -->|"secondary postings"| UJ
-    FICA["FI-CA totals records"] -->|"summarized by reconciliation key"| UJ
-    EXT["SFP and other external feeds"] -->|"summarized journals"| UJ
-    UJ["Universal Journal: one line item, many dimensions, ledgers and currencies"]
-    UJ --> LR["Legal reporting per ledger"]
-    UJ --> MR["Management reporting: cost center, profit center, margin"]
-    UJ --> GR["Trial balance to OneStream"]
-    UJ --> BL["Balances to BlackLine"]
-    UJ --> DW["Extracts to FinDB"]
-```
+![Sales, procurement, asset and allocation modules inside SAP write detailed lines into one Universal Journal, while external feeds arrive as a single summary block; legal and management reporting both read the same lines.](finance-systems-architecture/posts/15-sap-s4hana/assets/images/15-sap-s4hana/universal-journal-hub.jpeg)
 
 **Figure 1:** *Inside SAP, every module writes to one journal, so legal and management views read the same lines. Feeds from outside SAP arrive as summaries, and the journal is only as detailed as what they deliver.*
 
@@ -107,7 +93,7 @@ flowchart LR
 
 Three changes matter to an architect. **Internal reconciliations disappear by construction**: in ECC the general ledger, cost accounting, asset subledger and material ledger kept separate records that month-end had to prove equal; in S/4HANA they are views of the same lines. **Dimensions become columns, not accounts**: an analysis that once needed an account variant can use a dimension. Northmere's S/4HANA chart has about 3,900 accounts, many of them country or product variants of one account, an ECC habit carried into a greenfield system; [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture) describes the redesign, and the Universal Journal is what makes moving "Portugal" from the account number into a dimension cheap. **Extraction gets simpler**: OneStream's trial balance, BlackLine's balances and FinDB's extracts all start from one structure.
 
-![Left: four separate ledger books linked by reconciliation arrows and a tired clerk. Right: one journal viewed through four windows, with an outside parcel passing a checkpoint first.](enterprise-applications-and-financial-systems/posts/15-sap-s4hana/assets/images/15-sap-s4hana/four-records-one-journal.jpeg)
+![Left: four separate ledger books linked by reconciliation arrows and a tired clerk. Right: one journal viewed through four windows, with an outside parcel passing a checkpoint first.](finance-systems-architecture/posts/15-sap-s4hana/assets/images/15-sap-s4hana/four-records-one-journal.jpeg)
 
 **Figure 2:** *The Universal Journal removes internal reconciliations by construction, because ledger, cost, asset and material views read the same lines; feeds from outside SAP still need their own control totals before they reach it.*
 
@@ -188,17 +174,7 @@ The architecturally important property is **how it posts to the general ledger**
 
 Since 2025 Stayloft's agency business runs through FI-CA. SFP's commission billing rates commission per completed stay and sends **billable items** to Convergent Invoicing; at month-end Convergent Invoicing produces each property's commission invoice, Vertex determines VAT, and FI-CA holds the invoice as an open item, runs dunning and clears payments.
 
-```mermaid
-flowchart LR
-    BP["Stayloft booking platform"] -->|"StayCompleted"| SFPB["SFP commission billing: rate commission"]
-    SFPB -->|"billable items, daily"| CI["SAP Convergent Invoicing"]
-    CI -->|"tax call"| VTX["Vertex"]
-    CI -->|"monthly invoice per property"| FICA["FI-CA: 850,000 contract accounts"]
-    BANK["Bank statements and direct debits"] -->|"payment lots"| FICA
-    FICA -->|"totals records by reconciliation key"| GL["S/4HANA general ledger"]
-    FICA -->|"open items"| BLK["BlackLine: subledger-to-GL proof"]
-    GL -->|"balances"| BLK
-```
+![Commission rating stays in SFP; invoicing and FI-CA open items run in SAP, with bank payments arriving there; FI-CA posts only totals tagged by reconciliation key to the general ledger, and a subledger-to-GL proof weighs the two.](finance-systems-architecture/posts/15-sap-s4hana/assets/images/15-sap-s4hana/fica-totals-to-ledger.jpeg)
 
 **Figure 3:** *FI-CA keeps partner accounts as open items and posts only totals to the ledger, each traceable through its reconciliation key. Commission rating stays in SFP; invoicing, receivables and collection run in SAP.*
 
@@ -253,21 +229,7 @@ Central Finance is good at **harmonizing the general ledger over a heterogeneous
 
 **Option B, an accounting hub.** Brand platforms publish Keystone's canonical financial events (`StayCompleted`, `PaymentSettled`, `PartnerPayoutSettled` and the rest). A group accounting engine applies posting rules owned by Leila's team, keeps event-level detail and posts summarized journals with drill-back keys into the Universal Journal through released APIs, or into FI-CA where the work is receivables-shaped. Brand ERPs shrink toward whatever local operations remain.
 
-```mermaid
-flowchart TB
-    subgraph CF["Option A: Central Finance"]
-        WFA["Oracle Fusion: Wayfare journals"] -->|"accounting documents"| CFI["Central Finance inbound and AIF"]
-        TKA["Workday Financials: Tablekin journals"] -->|"accounting documents"| CFI
-        CFI -->|"mapped to group chart"| UJA["Universal Journal"]
-        SFPA["SFP and ad billing"] -->|"summaries, as today"| UJA
-    end
-    subgraph AH["Option B: accounting hub"]
-        BRD["Brand platforms"] -->|"canonical financial events"| ENG["Group accounting engine: posting rules and event detail"]
-        ENG -->|"summaries with drill-back keys"| UJB["Universal Journal"]
-        ENG -->|"receivables-shaped items"| FIB["FI-CA"]
-        FIB -->|"totals records"| UJB
-    end
-```
+![Two routes into one Universal Journal: in Central Finance, brand ledgers make the accounting decisions and send finished documents through mapping; in an accounting hub, brand platforms send events to a group accounting engine that makes the decisions.](finance-systems-architecture/posts/15-sap-s4hana/assets/images/15-sap-s4hana/central-finance-vs-hub.jpeg)
 
 **Figure 4:** *Central Finance centralizes accounting documents that brand ledgers have already produced; an accounting hub centralizes the posting logic itself and feeds S/4HANA from events. Both end in the same journal; they differ in where accounting decisions are made.*
 
@@ -335,7 +297,7 @@ Northmere's integration rules, set by Lucía Romero's integration team with Sven
 
 Two corrections to common readings. **Clean core does not mean no custom code**: Levels A and B are custom code SAP expects. And **in Private Edition clean core is a governance discipline**: Public Edition enforces it technically, Private Edition and on-premise permit everything down to D. SAP names the ABAP Test Cockpit as the key tool for code-level governance.
 
-![A sealed machine with modules cleanly plugged into released sockets on one side and modules bolted through drilled holes on the other, while a crane lowers an upgrade.](enterprise-applications-and-financial-systems/posts/15-sap-s4hana/assets/images/15-sap-s4hana/clean-core-sealed-engine.jpeg)
+![A sealed machine with modules cleanly plugged into released sockets on one side and modules bolted through drilled holes on the other, while a crane lowers an upgrade.](finance-systems-architecture/posts/15-sap-s4hana/assets/images/15-sap-s4hana/clean-core-sealed-engine.jpeg)
 
 **Figure 5:** *Clean core is a sealed engine with extension ports: extensions on released interfaces survive each upgrade, while Level D modifications drilled into the core turn every upgrade into a remediation project.*
 

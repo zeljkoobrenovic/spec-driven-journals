@@ -1,7 +1,7 @@
 {id: brands-entities-markets}
 # 35. The Next Brand Should Be Boring: Onboarding as Configuration
 
-![The Next Brand Should Be Boring: Onboarding as Configuration — logo](enterprise-applications-and-financial-systems/posts/32-brands-entities-markets/assets/images/32-brands-entities-markets/logo.jpeg)
+![The Next Brand Should Be Boring: Onboarding as Configuration — logo](finance-systems-architecture/posts/32-brands-entities-markets/assets/images/32-brands-entities-markets/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn what "configuration, not code" means in each layer of a finance estate, how business-model templates and a market launch kit turn onboarding into a repeatable product, how to bring an acquired brand in over its first hundred days, and how to recognize, time-box and measure the forks that remain.
 
@@ -61,7 +61,7 @@ Four more terms recur:
 
 The rule I use is P7 in [Principles That Decide Things](#principles-standards-reference): **configuration before code, code before forks**. Express a difference as configuration of a shared capability first. If that cannot carry it, write code behind a published extension point. Fork only by recorded decision, with a retirement date.
 
-![Concentric rings of configuration dials, extension sockets and edge adapters around a sealed core, with a separate time-boxed copy outside.](enterprise-applications-and-financial-systems/posts/32-brands-entities-markets/assets/images/32-brands-entities-markets/configuration-before-forks.jpeg)
+![Concentric rings of configuration dials, extension sockets and edge adapters around a sealed core, with a separate time-boxed copy outside.](finance-systems-architecture/posts/32-brands-entities-markets/assets/images/32-brands-entities-markets/configuration-before-forks.jpeg)
 
 **Figure 1:** *Configuration before code, code before forks: the shared core stays unchanged, extensions plug into published extension points, adapters sit at the edges, and a fork is a recorded, time-boxed exception.*
 
@@ -82,26 +82,7 @@ The rule I use is P7 in [Principles That Decide Things](#principles-standards-re
 | 8 | **Consolidation mapping** | OneStream entity member, ownership and consolidation method, translation rules, mapping set for a non-group chart, intercompany pairs | OneStream | Group reporting | Significant (mapping); structural (ownership) | Two to six weeks |
 | 9 | **Controls scoping** | Risk and control matrix instances for the entity and its flows, SOX scoping decision, entity-level controls, sub-certification | Risk and control matrix | Mei Tanaka's internal controls team | Significant | One quarter before the first relevant year-end |
 
-```mermaid
-flowchart TB
-    DEC["Design authority decision - market, entity or acquisition"] --> L1["1 Entity register - the root record"]
-    L1 --> L2["2 CoA dimension values - entity, intercompany partner, market"]
-    L1 --> L6["6 Bank accounts - Kyriba bank master"]
-    L1 --> L5["5 PSP merchant accounts and payment routes"]
-    L2 --> L3["3 Posting rules - business-model template bindings"]
-    L1 --> L4["4 Tax determination and e-invoicing routes"]
-    L3 --> SIM["Posting simulation in the adapter kit conformance suite"]
-    L4 --> SIM
-    L5 --> MATCH["Payments-to-ledger matching profile"]
-    L6 --> MATCH
-    L3 --> L7["7 Close calendar and reconciliation catalog"]
-    MATCH --> L7
-    L2 --> L8["8 Consolidation mapping - OneStream"]
-    L7 --> L9["9 Controls scoping - risk and control matrix"]
-    L8 --> L9
-    SIM --> GATE["Go-live gate - ledger-ready, simulation signed off, controls scoped"]
-    L9 --> GATE
-```
+![Three lanes starting from the entity register: dimensions and posting rules to posting simulation, PSP and bank accounts to the matching profile, close calendar and consolidation to controls scoping, all converging on one go-live gate.](finance-systems-architecture/posts/32-brands-entities-markets/assets/images/32-brands-entities-markets/configuration-layers-converge.jpeg)
 
 **Figure 2:** *The nine configuration layers form a dependency graph rooted in the entity register. Nothing downstream can be configured for an entity the register does not know, and nothing goes live until the posting simulation, the settlement matching profile and the controls scoping have converged on the same gate.*
 
@@ -217,24 +198,7 @@ Here is the Brazil kit as the design authority approved it on **14 December 2027
 | Controls scoping and risk and control matrix instances | Mei Tanaka | 1 quarter before the first year-end in scope | All above | Brazil will be immaterial at launch; scoping decides which group-level controls cover it |
 | Ledger-ready test: settlement data from Adyen and the APM provider matches automatically at the agreed rate | Northmere Pay, Leila's team | 4 weeks of testing | Providers, BlackLine | Keystone's "ledger-ready before launch" criterion ([Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals)) |
 
-```mermaid
-flowchart LR
-    D["Design authority decision - 14 Dec 2027"] --> INC["Incorporation and tax registrations - 3 to 5 months"]
-    D --> PER["Regulatory perimeter opinion - 3 to 6 months"]
-    INC --> REG["Entity register record"]
-    INC --> BNK["Bank accounts and Kyriba channels - 3 to 4 months"]
-    REG --> CFG["Chart values, company code, OneStream, close calendar - 6 weeks"]
-    INC --> TAX["Tax service and fiscal-document connector - 3 to 5 months"]
-    BNK --> PSP["Adyen and APM provider domestic profiles - 2 to 3 months"]
-    PER --> BIND["Template bindings - agency now, merchant when cleared"]
-    CFG --> BIND
-    PSP --> LR["Ledger-ready settlement test - 4 weeks"]
-    BIND --> SIMU["Posting simulation signed off"]
-    TAX --> SIMU
-    LR --> GO["First trading day - 1 Jul 2028"]
-    SIMU --> GO
-    GO --> FCM["First closed month - July 2028, closed in August"]
-```
+![A timeline from 14 December 2027 to 1 July 2028 in which incorporation, banking, providers and a settlement test form the long critical chain, regulatory and tax work run alongside, and software configuration is a short six-week bar.](finance-systems-architecture/posts/32-brands-entities-markets/assets/images/32-brands-entities-markets/brazil-critical-path.jpeg)
 
 **Figure 3:** *The Brazil critical path runs through incorporation, banking and providers. The software configuration fits in a few weeks inside that path, which is why the kit starts the slow items on the day of the decision.*
 
@@ -260,7 +224,7 @@ The Brazil plan contains about **190 configuration items** across the nine layer
 
 There are no changes to the accounting rule engine, the subledger, consolidation, the close platform or the payout service. That is the result Keystone is aiming for.
 
-![A grid of about 190 configuration tiles, four code blocks at the edge, and five shared platforms marked unchanged.](enterprise-applications-and-financial-systems/posts/32-brands-entities-markets/assets/images/32-brands-entities-markets/brazil-as-configuration.jpeg)
+![A grid of about 190 configuration tiles, four code blocks at the edge, and five shared platforms marked unchanged.](finance-systems-architecture/posts/32-brands-entities-markets/assets/images/32-brands-entities-markets/brazil-as-configuration.jpeg)
 
 **Figure 4:** *Brazil as configuration: about 190 configuration items across the nine layers and four code items at the edges, with no change to the accounting engine, subledger, consolidation, close platform or payout service.*
 
@@ -271,18 +235,7 @@ An acquisition differs from a market launch in one respect that changes everythi
 
 The generalized domain model behind this book puts the response in one phrase: **consolidate from day one, stream canonical events, retire legacy on a dated plan**. Northmere's playbook splits that into three horizons.
 
-```mermaid
-flowchart LR
-    C["Deal closes - 1 Sep 2027"] --> D1["Day 1 - consolidation only"]
-    D1 --> D30["Day 30 - first group close with Roamly"]
-    D30 --> D100["Day 100 - 9 Dec 2027 - canonical events and group controls"]
-    D100 --> FY["FY2027 10-K - Roamly excluded from ICFR assessment, disclosed"]
-    D100 --> FY28["FY2028 - Roamly in ICFR scope"]
-    FY28 --> CONV["Convergence decision - converge or keep, per multiple-erps"]
-    D1 -.->|"monthly trial balance load"| OS["OneStream"]
-    D100 -.->|"canonical events via adapter kit"| HUB["Integration hub and FinDB"]
-    D100 -.->|"reconciliations certified"| BL["BlackLine"]
-```
+![A timeline from deal close on 1 September 2027 to Day 1 (report), Day 30, Day 100 on 9 December 2027 (rely), FY2028 and a later decision on whether to replace the brand's systems.](finance-systems-architecture/posts/32-brands-entities-markets/assets/images/32-brands-entities-markets/acquired-brand-timeline.jpeg)
 
 **Figure 5:** *The acquired-brand timeline separates three questions that are often merged: when the group can report the brand (day 1), when the group can rely on its data and controls (day 100), and whether the brand's systems should be replaced (a later decision on evidence).*
 

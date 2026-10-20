@@ -1,7 +1,7 @@
 {id: multiple-erps}
 # 31. Converge or Coexist: Living with More Than One ERP
 
-![Converge or Coexist: Living with More Than One ERP — logo](enterprise-applications-and-financial-systems/posts/28-multiple-erps/assets/images/28-multiple-erps/logo.jpeg)
+![Converge or Coexist: Living with More Than One ERP — logo](finance-systems-architecture/posts/28-multiple-erps/assets/images/28-multiple-erps/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn why enterprises end up with several ERPs, the five coexistence patterns (single instance, two-tier, central-finance replication, accounting hub, consolidation-only federation) and the criteria that choose between them, how to price convergence, how to absorb an acquisition from the ERP side, and how to run several ERPs as one finance core. You will follow Northmere's 2027 Q4 decision on how its three brand ledgers converge.
 
@@ -72,7 +72,7 @@ So I split the goal in two:
 
 The left column is what [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture) and [Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale) call golden sources. The right column is where the convergence decision lives. The rule I use is that **the left column is mandatory from day one for every ledger, and the right column is decided case by case with a dated review.** An enterprise that achieves the left column with three ERPs is better governed than one that has a single ERP without it. None of this makes convergence wrong; it makes the burden of proof specific: *this* ledger converges because of *these* criteria, not because one is a nice number.
 
-![Three ledger buildings of different sizes standing on one shared foundation of five rule blocks.](enterprise-applications-and-financial-systems/posts/28-multiple-erps/assets/images/28-multiple-erps/one-core-many-ledgers.jpeg)
+![Three ledger buildings of different sizes standing on one shared foundation of five rule blocks.](finance-systems-architecture/posts/28-multiple-erps/assets/images/28-multiple-erps/one-core-many-ledgers.jpeg)
 
 **Figure 1:** *One finance core is a set of shared rules, not a single product: chart semantics, entities, rates, calendar and evidence must each be one thing, while the number of ledgers built on them is a separate decision.*
 
@@ -81,26 +81,7 @@ The left column is what [Finance Data Architecture: Who Owns the Truth](#finance
 
 Five patterns cover nearly every multi-ERP estate. They differ in one thing above all: **where accounting decisions are made**, and therefore what the group core receives.
 
-```mermaid
-flowchart LR
-    subgraph P1["1. Single global instance"]
-        A1["All entities"] -->|"transactions"| L1["One ERP: one ledger"]
-    end
-    subgraph P2["2. Two-tier ERP"]
-        T2["Tier-2 ERP: subsidiary books"] -->|"TB, intercompany, master data under contract"| L2["Tier-1 ERP: group core"]
-    end
-    subgraph P3["3. Central-finance replication"]
-        S3["Source ERPs: own accounting"] -->|"accounting documents"| M3["Mapping and error queue"]
-        M3 -->|"harmonized documents"| L3["Central ledger"]
-    end
-    subgraph P4["4. Accounting hub"]
-        S4["Brand platforms"] -->|"canonical financial events"| H4["Accounting engine: rules and detail"]
-        H4 -->|"summaries with drill-back keys"| L4["Group ledger"]
-    end
-    subgraph P5["5. Consolidation-only federation"]
-        S5["Independent ERPs"] -->|"trial balances, mapped"| C5["Consolidation platform"]
-    end
-```
+![Five lanes, from most to least centralized: single instance sending transactions, two-tier sending a trial balance, central finance sending documents through mapping, an accounting hub sending events through an engine, and a federation sending mapped balances to consolidation.](finance-systems-architecture/posts/28-multiple-erps/assets/images/28-multiple-erps/five-coexistence-patterns.jpeg)
 
 **Figure 2:** *The five coexistence patterns, ordered roughly by how much they centralize. What crosses each arrow differs: transactions, a contracted trial balance, finished accounting documents, business events, or mapped trial balances. That difference decides where the group can drill down and who owns the posting logic.*
 
@@ -126,17 +107,7 @@ What makes two-tier ERP an architecture rather than a polite name for an excepti
 | **Controls and release** | Run the group's control standard and its own regression testing | The control framework and the evidence store | Tier-2 controls in the risk and control matrix, tested by the same auditor |
 | **Entry criteria and review** | Meet the tier's criteria while it exists | A dated review | A decision record with an exit test |
 
-```mermaid
-flowchart LR
-    REG["Entity register and group chart"] -->|"identities and chart"| T2["Tier-2 ERP"]
-    RATE["Group rate service"] -->|"period rate snapshot"| T2
-    T2 -->|"intercompany postings with both identifiers"| IC["Intercompany interface"]
-    IC -->|"counterpart entry"| T1["Tier-1 core ERP"]
-    T2 -->|"trial balance per entity, control total, load ID"| CON["Consolidation platform"]
-    T1 -->|"trial balance per entity"| CON
-    T2 -->|"canonical financial events"| BUS["Event backbone"]
-    CON -->|"lock only after reconciliations certified"| CAL["Close calendar and evidence store"]
-```
+![A tier-2 ERP receiving identities and rates from golden sources, sending intercompany entries through an interface to the tier-1 core, sending trial balances to consolidation and events to an event backbone, with every arrow tagged as a signed contract and the close locked after consolidation.](finance-systems-architecture/posts/28-multiple-erps/assets/images/28-multiple-erps/governed-tier-two-contracts.jpeg)
 
 **Figure 3:** *A tier-2 ERP is governable only if every arrow is a contract with an owner and a proof. Identities, chart and rates flow in from golden sources. Intercompany flows across through an interface rather than being matched late at consolidation. Trial balances and events flow out under control totals.*
 
@@ -228,7 +199,7 @@ Measured against doing nothing, the arithmetic is unflattering: $24 million ÷ (
 
 But doing nothing is not an option, because **Wayfare's event-accounting gap exists under every option**. Its 150 million events a year reach Fusion as about 2,600 summarized lines a day, which is Lost in Aggregation ([Oracle Fusion: An Accounting Hub for High-Volume Events](#oracle-fusion)). The realistic alternative to convergence is Option C: keep Fusion and put Wayfare's rail events onto Oracle Accounting Hub. Hana's team priced that at about $7 million one-off, plus about $0.5 million a year of added license and operation. Against that alternative the calculation becomes ($24M − $7M) ÷ ($5.4M + $0.5M − $2.1M + $0.6M) = $17M ÷ $4.4M ≈ **3.9 years**. That is inside a normal subscription term, and it is before counting the close days and control-scope reductions, which Dana states separately as benefits rather than converting them into dollars nobody can audit.
 
-![Two payback timelines: about 6.2 years against doing nothing, about 3.9 years against the realistic alternative.](enterprise-applications-and-financial-systems/posts/28-multiple-erps/assets/images/28-multiple-erps/payback-against-realistic-alternative.jpeg)
+![Two payback timelines: about 6.2 years against doing nothing, about 3.9 years against the realistic alternative.](finance-systems-architecture/posts/28-multiple-erps/assets/images/28-multiple-erps/payback-against-realistic-alternative.jpeg)
 
 **Figure 4:** *Measured against doing nothing, Wayfare's convergence pays back in about 6.2 years; measured against the realistic alternative, which needs about $7 million of investment anyway, it pays back in about 3.9 years.*
 
@@ -294,21 +265,7 @@ A decision without reversal conditions is a preference. Dana wrote down four, ea
 
 The first row reconciles the two fallbacks that [SAP S/4HANA: One Journal, Clean Core](#sap-s4hana) and [Oracle Fusion: An Accounting Hub for High-Volume Events](#oracle-fusion) recorded separately. If the group engine cannot carry the peak day, Oracle Accounting Hub keeps Wayfare's detail traceable, and Central Finance becomes the cheapest route for finished documents to reach the core. The two vendor components that each lost on its own become the fallback together.
 
-```mermaid
-flowchart LR
-    SFP["SFP: Stayloft bookings and payouts"] -->|"canonical events"| BUS["Kafka event backbone"]
-    WAY["Wayfare booking platform"] -->|"canonical events via adapter kit"| BUS
-    ADS["Ad billing"] -->|"canonical events"| BUS
-    BUS --> ENG["Group accounting engine: Finance-owned rules, event detail"]
-    ENG -->|"summaries with drill-back keys"| S4["S/4HANA group core: CoA v2, 67 company codes"]
-    ENG -->|"receivables-shaped items"| FICA["FI-CA"]
-    FICA -->|"totals records"| S4
-    TK["Tablekin on Workday: governed second tier"] -->|"intercompany interface"| S4
-    TK -->|"canonical events"| BUS
-    S4 -->|"trial balances"| OS["OneStream consolidation"]
-    TK -->|"trial balances, mapped by rule"| OS
-    ENG -->|"tie-out breaks"| BL["BlackLine"]
-```
+![Stayloft, Wayfare and ad billing feed an event backbone into one accounting engine that posts to the S/4HANA group core and sends breaks to BlackLine; Tablekin is a separate ledger joined to the core by agreement; OneStream consolidates two sources, the core and Tablekin.](finance-systems-architecture/posts/28-multiple-erps/assets/images/28-multiple-erps/northmere-2030-estate.jpeg)
 
 **Figure 5:** *Northmere's 2030 estate after the decision. Wayfare's ledger has gone, and its 12 entities join the 55 SAP company codes. One engine holds the posting rules for every event-shaped flow. Tablekin is the only second ledger, connected by contract rather than by a mapping spreadsheet. OneStream consolidates two trial-balance sources instead of three.*
 
@@ -319,20 +276,7 @@ The decision changes the 2028 plan in specific ways. The route-A branch of the r
 
 Most multi-ERP estates are created by acquisitions, so the most valuable discipline is the one applied on the day a new ledger arrives. Northmere's playbook, adopted with the decision, turns [Build, Buy or Compose: Choosing What to Own](#build-versus-buy)'s post-acquisition rule into dated steps.
 
-```mermaid
-stateDiagram-v2
-    [*] --> Day1 : Deal closes
-    Day1 --> Wrapping : TB loaded into OneStream and entities registered
-    Wrapping --> Wrapped : Within 12 months chart by rule, events, identity, calendar
-    Wrapped --> Converge : Same model as the group template
-    Wrapped --> Tier : Durable model difference and tier criteria met
-    Wrapped --> KeepWrapped : Sale or carve-out plausible
-    Converge --> [*]
-    Tier --> Review : Dated review
-    Review --> Tier
-    Review --> Converge
-    KeepWrapped --> Review
-```
+![An acquired ledger moves from deal close through day one and wrapping within 12 months to wrapped, then to converge, second tier, or keep wrapped; the latter two go through a dated review that can lead back to second tier or on to converge.](finance-systems-architecture/posts/28-multiple-erps/assets/images/28-multiple-erps/acquired-ledger-path.jpeg)
 
 **Figure 6:** *An acquired ledger moves through wrapping to one of three governed states. There is no path in which it remains merely tolerated, and every state other than convergence has a dated review.*
 

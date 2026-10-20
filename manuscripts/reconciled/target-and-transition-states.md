@@ -1,7 +1,7 @@
 {id: target-and-transition-states}
 # 39. The Middle Matters: Transition States and the Roadmap
 
-![The Middle Matters: Transition States and the Roadmap — logo](enterprise-applications-and-financial-systems/posts/36-target-and-transition-states/assets/images/36-target-and-transition-states/logo.jpeg)
+![The Middle Matters: Transition States and the Roadmap — logo](finance-systems-architecture/posts/36-target-and-transition-states/assets/images/36-target-and-transition-states/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn to describe a finance estate's target state at the right altitude, mark what is not yet decided, and plan the route as baseline, transition architectures and plateaus. You will follow Northmere's Program Keystone from its 2027 baseline through plateaus in 2027 and 2029 to its 2031 target, map the dependencies that set its critical path, and see how plateaus are funded, measured and kept honest.
 
@@ -75,19 +75,7 @@ The vocabulary comes from two Open Group standards.
 
 Do not confuse these with **transitional architecture**, Thoughtworks' term for "software elements installed to ease the displacement of a legacy system", removed once migration completes ([Cartwright, Horn and Lewis, 2022](https://martinfowler.com/articles/patterns-legacy-displacement/transitional-architecture.html)). A transition *state* is a whole estate; transitional *architecture* is the scaffolding inside it: a replication feed, a dual posting, an interim reconciliation. Every plateau has some. The discipline is to list it, control it and give it a removal date.
 
-```mermaid
-flowchart LR
-    B["Baseline: estate as it is, with controls and close calendar"] -->|"gap 1"| P1["Plateau 1: stable, closable, valuable"]
-    P1 -->|"gap 2"| P2["Plateau 2: stable, closable, valuable"]
-    P2 -->|"gap 3"| T["Target state: current hypothesis"]
-    W1["Work packages 1"] -->|"realize"| P1
-    W2["Work packages 2"] -->|"realize"| P2
-    W3["Work packages 3"] -->|"realize"| T
-    S1["Transitional scaffolding with removal dates"] -.->|"lives inside"| P1
-    S2["Transitional scaffolding with removal dates"] -.->|"lives inside"| P2
-    R["Decision register: open questions with dates"] -.->|"may revise"| T
-    R -.->|"may revise"| P2
-```
+![Stepped mesas from Baseline to Plateau 1, Plateau 2 and a hazy Target, with work-package bridges across the gaps, scaffolding with removal dates on the plateaus, and a decision register that may revise Plateau 2 and the target.](finance-systems-architecture/posts/36-target-and-transition-states/assets/images/36-target-and-transition-states/plateaus-and-gaps.jpeg)
 
 **Figure 1:** *Plateaus are whole estates at points in time, separated by gaps that work packages close; scaffolding lives inside plateaus with removal dates, and the open-decision register can revise the target and the later plateaus without invalidating the earlier ones.*
 
@@ -107,7 +95,7 @@ A plateau is not a project or a program phase. Projects staff work packages; a p
 
 The fourth test is the one programs skip, and it protects the enterprise against its own funding decisions. Boards change priorities and CFOs leave. A roadmap whose intermediate states have value on their own can be paused without waste; one whose value all arrives at the end is a bet that nothing changes for five years.
 
-![A platform on a mountain path resting on four legs labelled operable, auditable, closable and valuable.](enterprise-applications-and-financial-systems/posts/36-target-and-transition-states/assets/images/36-target-and-transition-states/four-legs-of-a-plateau.jpeg)
+![A platform on a mountain path resting on four legs labelled operable, auditable, closable and valuable.](finance-systems-architecture/posts/36-target-and-transition-states/assets/images/36-target-and-transition-states/four-legs-of-a-plateau.jpeg)
 
 **Figure 2:** *A plateau is a place the enterprise could stop without loss only if it stands on all four legs: operable, auditable, closable at period end and valuable on its own.*
 
@@ -167,18 +155,7 @@ The fourth row matters as much as the first. **Deferring a decision on purpose, 
 
 Dana's roadmap has four states: the baseline, two plateaus and the target. She considered making 2028, the year with the most fixed external dates, a third plateau, and decided against it: the estate's shape barely changes in 2028, when shared services, the partner hub and the new chart are built and proven *beside* the old flows. Instead 2028 holds **waypoints**, landings that must pass the same four stability tests on a smaller scope.
 
-```mermaid
-flowchart LR
-    B["Baseline, early 2027: three ledgers, nine-day close, 214 applications"] --> P1["Plateau 1, FY2027 close: governed and complete"]
-    P1 --> W["2028 waypoints: Brazil, ViDA readiness, EBS archive retired, five-day close"]
-    W --> P2["Plateau 2, FY2029 close: one finance core"]
-    D{"2027 Q4 convergence decision"} -->|"route A"| P2A["Brand ledgers replicate into Central Finance"]
-    D -->|"route B"| P2B["Brand events feed group accounting engine"]
-    P2A --> P2
-    P2B --> P2
-    P2 --> T["Target 2031: continuous, real-time finance"]
-    P1 -.->|"informs"| D
-```
+![A road from Baseline 2027 through Plateau 1 and 2028 waypoints to Plateau 2 and Target 2031, with the 2027 Q4 decision forking into Route A and Route B that both rejoin at the same Plateau 2 gate.](finance-systems-architecture/posts/36-target-and-transition-states/assets/images/36-target-and-transition-states/keystone-route-fork.jpeg)
 
 **Figure 3:** *Keystone's route passes through two plateaus, each defined as the estate on which a fiscal year-end closes; the 2027 Q4 decision forks the internal shape of Plateau 2 but not its exit tests, which is what lets the plateau be planned before the decision is taken.*
 
@@ -216,7 +193,7 @@ Each plateau lists its temporary scaffolding, with the control that covers it an
 
 A scaffold without a removal date is not scaffolding; it is a new permanent component nobody designed. **Every row in this register is also a reconciliation**, and the close calendar must carry it until it is gone.
 
-![A building with scaffolding sections tagged with removal dates and reconciliations, and one untagged section bricked permanently into the wall.](enterprise-applications-and-financial-systems/posts/36-target-and-transition-states/assets/images/36-target-and-transition-states/scaffolding-with-removal-dates.jpeg)
+![A building with scaffolding sections tagged with removal dates and reconciliations, and one untagged section bricked permanently into the wall.](finance-systems-architecture/posts/36-target-and-transition-states/assets/images/36-target-and-transition-states/scaffolding-with-removal-dates.jpeg)
 
 **Figure 4:** *Scaffolding is temporary only if it carries a removal date and a control; every piece is also a reconciliation the close calendar must carry until it is gone, and an untagged one becomes a permanent component nobody designed.*
 
@@ -241,23 +218,7 @@ A roadmap is a set of dependencies before it is a set of dates. Finance roadmaps
 
 Each dependency gets an owner, a date and its slack. The **critical path** is the chain with none, and in finance it is usually set by a decision date and a period boundary rather than by build effort.
 
-```mermaid
-flowchart TB
-    DEC["2027 Q4: convergence decision"] --> PROOF["H1 2028: volume proof at peak day"]
-    PROOF --> RULES["2028: posting rules and adapters per brand"]
-    COA["2028: CoA v2 designed and approved"] --> GOLIVE["1 Jan 2029: CoA v2 live"]
-    RULES --> GOLIVE
-    GOLIVE --> MIG["2029: merchant subledger migrated by cohort"]
-    MIG --> P2["FY2029 close: Plateau 2 exit"]
-    REM["Jul 2027: SFP payout controls operating"] --> AUD["FY2027 audit: controls tested"]
-    AUD --> PAY["2029: group payout service absorbs Wayfare"]
-    PAY --> P2
-    COLO["31 Dec 2028: colocation ends"] --> EBS["2028: EBS archive and RateKeeper retired"]
-    VIDA["1 Jul 2028: ViDA platform rules"] --> TAX["2028: tax service and e-invoicing gateway"]
-    TAX --> FICA["2028: FI-CA merchant invoicing"]
-    FICA --> MIG
-    PART["2028: partner hub coexistence"] --> MIG
-```
+![A critical path of stepping stones from the 2027 Q4 decision through volume proof, posting rules and the 1 January 2029 CoA v2 go-live to the subledger migration and Plateau 2 exit, with side paths from FI-CA invoicing and the payout service.](finance-systems-architecture/posts/36-target-and-transition-states/assets/images/36-target-and-transition-states/critical-path-dominoes.jpeg)
 
 **Figure 5:** *Keystone's critical path runs from the 2027 Q4 decision through the volume proof, posting rules and the 1 January 2029 chart go-live to the merchant subledger migration; because the chart can only go live at a year start, a three-month slip in the decision becomes a twelve-month slip in Plateau 2.*
 
@@ -286,35 +247,7 @@ Three rules keep the labels meaningful.
 
 **Far items are directions, not dates.** "Continuous close by 2030" is a direction with a measure; where the roadmap figure shows such items, the label travels in the name.
 
-```mermaid
-gantt
-    title Program Keystone roadmap by plateau
-    dateFormat YYYY-MM
-    axisFormat %Y
-    section Plateau 1
-    Decision record and mandatory standards :a1, 2027-01, 2027-04
-    SFP payout control remediation :a2, 2027-03, 2027-07
-    Payments to ledger for APMs :a3, 2027-06, 2027-12
-    Wave 0 retirements :a4, 2027-07, 2028-03
-    Convergence decision :milestone, m1, 2027-12, 0d
-    section Waypoints 2028
-    Volume proof for group accounting :b1, 2028-01, 2028-06
-    Tax service and ViDA readiness :b2, 2027-10, 2028-07
-    FI-CA merchant invoicing :b3, 2028-01, 2028-12
-    Brazil launch on group core :b4, 2028-01, 2028-09
-    Wave 1 retirements incl EBS archive :b5, 2028-01, 2028-12
-    Five day close :milestone, m2, 2028-12, 0d
-    section Plateau 2
-    CoA v2 design and dry runs :c1, 2028-03, 2028-12
-    CoA v2 live :milestone, m3, 2029-01, 0d
-    Merchant subledger migration by cohort :c2, 2029-01, 2029-12
-    Wave 2 incl Wayfare payout engine :c3, 2029-01, 2029-12
-    Wave 3 brand ledgers :c4, 2029-06, 2030-12
-    section Target
-    Continuous close exploratory :d1, 2030-01, 2031-06
-    Real time cash and liability views exploratory :d2, 2030-01, 2031-12
-    Three day close :milestone, m4, 2030-12, 0d
-```
+![A roadmap in four plateau bands from 2027 to 2031, with milestones such as the convergence decision, five-day close, CoA v2 go-live and three-day close sitting on year boundaries, and the later target bars drawn hatched and labeled exploratory.](finance-systems-architecture/posts/36-target-and-transition-states/assets/images/36-target-and-transition-states/roadmap-by-plateau.jpeg)
 
 **Figure 6:** *The roadmap is organized by plateau, not by project; milestones sit on period boundaries, and items beyond the 2027 Q4 decision carry their confidence label in the name so that an exploratory bar cannot be read as a commitment.*
 

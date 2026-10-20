@@ -1,7 +1,7 @@
 {id: long-term-evolution}
 # 47. Built to Be Replaced: Evolving the Finance Estate Over a Decade
 
-![Built to Be Replaced: Evolving the Finance Estate Over a Decade — logo](enterprise-applications-and-financial-systems/posts/43-long-term-evolution/assets/images/43-long-term-evolution/logo.jpeg)
+![Built to Be Replaced: Evolving the Finance Estate Over a Decade — logo](finance-systems-architecture/posts/43-long-term-evolution/assets/images/43-long-term-evolution/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Take a ten-year view of a finance estate: what will change and what must not. You will learn stressor analysis as a design method, see it applied to ten Northmere stressors including a carve-out of Wayfare and an exit from Adyen, and design the architecture function and its annual rhythm for the long run. The chapter closes the book with a synthesis of its argument.
 
@@ -66,29 +66,7 @@ Against all this, some things must not change, or must change only by a delibera
 
 **The right-hand column's lifetime is set by law and by the books, not by contracts.** German law, for example, requires books and annual financial statements to be kept for ten years ([Haufe, on the 2025 changes](https://www.haufe.de/steuern/gesetzgebung-politik/viertes-buerokratieentlastungsgesetz_168_613390.html)); under such a rule, a Wayfare ledger from 2021 has to remain readable until the end of 2031 ([Changing the Engine in Flight: Modernization Patterns for Finance](#modernization-patterns)). An architecture that keeps the right-hand column in vendor-specific form has tied a ten-year obligation to a three-year contract.
 
-```mermaid
-flowchart LR
-    subgraph Volatile["Changes on other people's timetables"]
-        V1["ERP, close and consolidation products"]
-        V2["PSPs and banks"]
-        V3["Tax engines and e-invoicing networks"]
-        V4["Brands, entities and markets"]
-        V5["People, rules, models and agents"]
-    end
-    subgraph Durable["Owned by the enterprise and kept for a decade or more"]
-        D1["Owned identifiers"]
-        D2["Canonical financial events"]
-        D3["Books of record per entity"]
-        D4["Evidence store"]
-    end
-    V1 -->|"post through"| D2
-    V2 -->|"settle against"| D1
-    V3 -->|"determine on"| D2
-    V4 -->|"tagged on every event"| D2
-    V5 -->|"log every action to"| D4
-    D2 -->|"derive"| D3
-    D3 -->|"prove with"| D4
-```
+![On the left, drifting boxes for ERP products, PSPs and banks, tax engines, brands and markets, and people and agents; on the right, a stone keep holding owned identifiers, canonical events, books of record and an evidence store; the volatile parts connect into the core, and events derive the books, which are proved with evidence.](finance-systems-architecture/posts/43-long-term-evolution/assets/images/43-long-term-evolution/volatile-edge-durable-core.jpeg)
 
 **Figure 1:** *The decade view of a finance estate. Products, providers and actors on the left change on external timetables; they connect to a small durable core the enterprise owns. Long-term architecture is mostly about keeping that core in the enterprise's own form.*
 
@@ -125,27 +103,13 @@ Finance organizations already have risk registers and scenario plans. Stressor a
 
 A carve-out of Wayfare may be unlikely. It is still worth simulating, because what it demands (entity-scoped data, separable services, exportable evidence) is mostly what an acquisition, a regulatory audit and a vendor exit also demand. **Probability decides how much to spend on a mitigation. Recurrence decides which properties to build into the architecture.**
 
-![A building struck by icons for regulation, acquisition, provider outage, vendor change and AI agents, held up by four reinforced teal columns labeled Residues.](enterprise-applications-and-financial-systems/posts/43-long-term-evolution/assets/images/43-long-term-evolution/residues-survive-stressors.jpeg)
+![A building struck by icons for regulation, acquisition, provider outage, vendor change and AI agents, held up by four reinforced teal columns labeled Residues.](finance-systems-architecture/posts/43-long-term-evolution/assets/images/43-long-term-evolution/residues-survive-stressors.jpeg)
 
 **Figure 2:** *Probability decides how much to spend on a mitigation; recurrence decides what to build. A property needed against many stressors is a residue that will probably help with the next one too.*
 
 Two other long-horizon tools sit beside it. A **Wardley map** places components on a value chain against their evolution from genesis to commodity ([Learn Wardley Mapping](https://learnwardleymapping.com/)); it shows what will commoditize within the decade, such as Northmere's custom payout orchestration, and when the retirement test of [When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms) should be run again. **Evolutionary architecture** ([Ford, Parsons, Kua and Sadalage, 2nd ed., 2022](https://thoughtworks.com/insights/books/building-evolutionaryarchitectures-second-edition)) supplies the feedback loop. Stressor analysis tells you what to build; fitness functions ([Technical Debt on the Balance Sheet](#technical-debt-and-fitness)) tell you whether it is still built.
 
-```mermaid
-flowchart TB
-    N["Naive architecture: the estate as it is"] --> S["Pick a stressor"]
-    S --> SIM["Simulate: which flows, books and controls break"]
-    SIM --> R{"Residue acceptable?"}
-    R -->|"no"| A["Change the design until it is"]
-    A --> LOG["Record the change against the stressor"]
-    R -->|"yes"| LOG
-    LOG --> MORE{"More stressors?"}
-    MORE -->|"yes"| S
-    MORE -->|"no"| INC["Incidence matrix: which changes recur"]
-    INC --> RES["Build the recurring changes as residues"]
-    RES --> FRESH["Test against fresh stressors next year"]
-    FRESH --> N
-```
+![An inner loop picks a stressor, simulates it, changes the design if needed and records the change, then repeats; the records feed an incidence matrix whose recurring changes are built as residues, tested against fresh stressors, and fed back to the estate.](finance-systems-architecture/posts/43-long-term-evolution/assets/images/43-long-term-evolution/stressor-analysis-loop.jpeg)
 
 **Figure 3:** *The stressor-analysis loop. The output that matters is the incidence matrix: design changes that recur across many stressors become residues, are built into the roadmap, and are tested against a new set of stressors the following year.*
 
@@ -200,7 +164,7 @@ The estimate was blunt. Separating Wayfare from the 2031 target state as designe
 2. **History follows the entity.** Before Fusion is retired, Wayfare's Fusion history is extracted to the archive store in the open format and with the reconciliation pack already designed for the EBS archive ([Changing the Engine in Flight: Modernization Patterns for Finance](#modernization-patterns)).
 3. **Brand-scoped evidence.** The evidence store indexes every control record by legal entity, so a buyer's auditor can be given Wayfare's evidence without anyone else's.
 
-![Before and after: a brand tangled into shared platforms takes about 20 months to separate, beyond a 12-month line; with export, metering and indexed evidence it separates in about 11 months.](enterprise-applications-and-financial-systems/posts/43-long-term-evolution/assets/images/43-long-term-evolution/carve-out-separation.jpeg)
+![Before and after: a brand tangled into shared platforms takes about 20 months to separate, beyond a 12-month line; with export, metering and indexed evidence it separates in about 11 months.](finance-systems-architecture/posts/43-long-term-evolution/assets/images/43-long-term-evolution/carve-out-separation.jpeg)
 
 **Figure 4:** *The Wayfare carve-out simulation: about 20 months to separate from the target as designed, against a 12-month TSA; separability, entity-scoped history and brand-scoped evidence cut it to about 11.*
 
@@ -273,7 +237,7 @@ The direction of travel is from **reviewing** to **providing**: making the confo
 | **Measures** | Decision lead time, waiver count | Fitness functions read continuously ([Technical Debt on the Balance Sheet](#technical-debt-and-fitness)); share of change that needed no review |
 | **Where architects spend time** | Reviews and the board | Embedded in the hardest problems; stressor reviews; the platforms' product management |
 
-![Left: teams queue at an architect's review desk. Right: teams travel a paved platform road through automated check gates while an architect builds the road.](enterprise-applications-and-financial-systems/posts/43-long-term-evolution/assets/images/43-long-term-evolution/reviewing-to-providing.jpeg)
+![Left: teams queue at an architect's review desk. Right: teams travel a paved platform road through automated check gates while an architect builds the road.](finance-systems-architecture/posts/43-long-term-evolution/assets/images/43-long-term-evolution/reviewing-to-providing.jpeg)
 
 **Figure 5:** *Over a decade the architecture function moves from reviewing to providing: golden paths, pipeline checks and decision services replace the review queue, while documented approval of ICFR-relevant changes remains.*
 
@@ -299,17 +263,7 @@ Long-term coherence comes from a rhythm, not from a plan. Over a decade, Northme
 | **Vendor review** | September, before the main notice dates | Vendor tiers, dependency budgets, exit-plan maturity, vendor events | Tier and budget changes; exit tests for the next year; renewal postures ([Own Your Roadmap: Vendor Strategy Without Lock-In Panic](#vendor-portfolio-strategy)) | Dana with procurement, business owners, compliance |
 | **Stressor review** | November–December, before the year-end freeze and the next budget | Stressor list; detection signals; regulatory calendar; incidence matrix | New and retired stressors; residue ranking; funded changes (this chapter) | Dana; stressor owners |
 
-```mermaid
-flowchart LR
-    Q1["March: strategy refresh"] --> F1["Quarterly fitness reviews"]
-    F1 --> P["June: portfolio review"]
-    P --> V["September: vendor review"]
-    V --> SR["November to December: stressor review"]
-    SR -->|"residue ranking and funded changes"| Q1
-    F1 -->|"breaches feed"| SR
-    V -->|"vendor events feed"| SR
-    SR -->|"new stressors with signals"| V
-```
+![A year wheel: March strategy refresh, quarterly fitness reviews, June portfolio review, September vendor review and November to December stressor review, which feeds residue ranking back into the strategy refresh; fitness breaches and vendor events feed the stressor review, which returns new stressors to the vendor review.](finance-systems-architecture/posts/43-long-term-evolution/assets/images/43-long-term-evolution/annual-architecture-rhythm.jpeg)
 
 **Figure 6:** *The annual rhythm. Each review feeds the next. The stressor review closes the loop by ranking residues before the strategy refresh re-baselines the roadmap.*
 

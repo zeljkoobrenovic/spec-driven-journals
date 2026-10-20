@@ -1,7 +1,7 @@
 {id: incremental-modernization}
 # 36. Modernizing Without Stopping the Close
 
-![Modernizing Without Stopping the Close — logo](enterprise-applications-and-financial-systems/posts/33-incremental-modernization/assets/images/33-incremental-modernization/logo.jpeg)
+![Modernizing Without Stopping the Close — logo](finance-systems-architecture/posts/33-incremental-modernization/assets/images/33-incremental-modernization/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Follow Northmere's migration of Stayloft's merchant subledger from the Stayloft Finance Platform onto the group accounting engine and the S/4HANA core, from the 2028 shadow stage through two cut-over stages in 2029 to decommissioning in 2030. Each stage is described by scope, transitional architecture, dual running and reconciliation gates, cut-over calendar, rollback, controls and audit, people, and measured outcome. You will also get a stage-gate table, a cut-over runbook and an honest account of what went wrong in the first stage.
 
@@ -82,7 +82,7 @@ Dana's team listed the reconciliations that touch the merchant subledger, using 
 
 The legal entity that contracts with the property is the natural boundary. Period states, subledger-to-GL tie-out and access control are already partitioned by entity in the 2027 journal design ([Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers)). It is also the unit in which the close calendar, the controller's sign-off and the auditor's testing work.
 
-![A layered block cut horizontally with reconciliations crossing the cut, beside a block cut vertically into three slices that keep all layers intact.](enterprise-applications-and-financial-systems/posts/33-incremental-modernization/assets/images/33-incremental-modernization/slice-along-reconciliations.jpeg)
+![A layered block cut horizontally with reconciliations crossing the cut, beside a block cut vertically into three slices that keep all layers intact.](finance-systems-architecture/posts/33-incremental-modernization/assets/images/33-incremental-modernization/slice-along-reconciliations.jpeg)
 
 **Figure 1:** *Slice along reconciliation boundaries: a cohort of contracting entities keeps every reconciliation whole on one side of the line, while a module slice splits one booking's accounting across two books.*
 
@@ -115,7 +115,7 @@ Dana recommended option C, and Leila and Mei agreed, with two conditions that ma
 
 A cut-over at the start of a month falls inside the month-end blackout by definition, since 1 May is working day 1 of the April close. The rule was clarified rather than broken: **the blackout freezes deployments, not effective dates.** Everything is deployed before working day −2, and the switch is an approved, effective-dated configuration change that takes effect at 00:00 on day one.
 
-![A year wheel with blackout and peak bands, leaving two green-flagged windows at the start of May and November.](enterprise-applications-and-financial-systems/posts/33-incremental-modernization/assets/images/33-incremental-modernization/two-windows-calendar.jpeg)
+![A year wheel with blackout and peak bands, leaving two green-flagged windows at the start of May and November.](finance-systems-architecture/posts/33-incremental-modernization/assets/images/33-incremental-modernization/two-windows-calendar.jpeg)
 
 **Figure 2:** *The calendar decides the shape: close blackouts, year-end, the summer peak and other first-quarter work leave two good windows in 2029, 1 May and 1 November.*
 
@@ -124,17 +124,7 @@ A cut-over at the start of a month falls inside the month-end blackout by defini
 
 Three architectures matter: the shadow stage, the transitional state with cohorts on both sides, and the end state. The first two are shown here and the third under decommissioning.
 
-```mermaid
-flowchart LR
-    PROD["Booking platform, Northmere Pay, commission rating"] -->|"canonical financial events"| BUS["Kafka event backbone"]
-    BUS --> SFPS["SFP merchant subledger: book of record"]
-    BUS --> ENG["Group accounting engine: shadow for Stayloft"]
-    SFPS -->|"daily summaries, CoA v2 from Jan 2029"| GL["S/4HANA general ledger"]
-    ENG -->|"summaries to a non-posting comparison store"| CMP["Shadow comparison per entity and day"]
-    SFPS --> CMP
-    CMP -->|"variances classified"| BL["BlackLine: temporary shadow reconciliation"]
-    SFPS -->|"partner balances"| PAY["Group payout service"]
-```
+![Product systems publish events onto a backbone; the SFP subledger posts to the general ledger and payouts while a ghostly accounting engine computes the same summaries that go only to a shadow comparison desk.](finance-systems-architecture/posts/33-incremental-modernization/assets/images/33-incremental-modernization/stage-zero-dark-launch.jpeg)
 
 **Figure 3:** *Stage 0. The engine consumes the same events as SFP but posts nothing; its would-be summaries are compared with SFP's real ones per entity and day. This is the Dark Launching pattern applied to a ledger: production inputs, no production effect.*
 
@@ -148,25 +138,7 @@ Five transitional components were built for the cut-over stages. [Changing the E
 | **Partner balance read model** | Legacy mimic | Serves the extranet "current balance" and statements from SFP or the engine per entity, so partners see no change | Stayloft product engineering | Last cohort cut over |
 | **Legacy control account** | Transitional architecture | A separate CoA v2 account, "Partner payables – merchant, legacy SFP", so SFP-fed and engine-fed balances are reconciled separately | Group reporting | Balance zero after the last cohort; blocked after the FY2029 audit |
 
-```mermaid
-flowchart LR
-    BUS["Kafka event backbone"] --> REG{"Cohort register: which book per entity"}
-    REG -->|"cohorts not yet moved"| SFPS["SFP subledger: book of record"]
-    REG -->|"moved cohorts"| ENG["Group accounting engine: book of record"]
-    REG -.->|"moved cohorts, compute only"| RSH["SFP reverse shadow"]
-    SFPS -->|"summaries to legacy control account"| GL["S/4HANA general ledger"]
-    ENG -->|"summaries with summary_id via released API"| GL
-    ENG --> TIE["Three-way tie-out per entity and day"]
-    RSH --> TIE
-    PSP["PSP clearing per merchant account"] --> TIE
-    TIE --> BL["BlackLine certification"]
-    SFPS --> RM["Partner balance read model"]
-    ENG --> RM
-    RM --> EXT["Partner extranet and statements"]
-    ENG -->|"payables by booking"| PAY["Group payout service"]
-    SFPS -->|"payables by booking"| PAY
-    TFL["Traveler funds ledger in SFP"] -->|"per-booking match"| ENG
-```
+![A cohort register switch routing events either to the SFP subledger or to the new engine, each crowned as book of record for its cohorts, with a reverse-shadow ghost book tied out against the new engine and both books feeding one read model for partners.](finance-systems-architecture/posts/33-incremental-modernization/assets/images/33-incremental-modernization/cohort-register-switch.jpeg)
 
 **Figure 4:** *The transitional state during 2029. The cohort register gives every entity exactly one book of record. Moved cohorts are recomputed by SFP as a reverse shadow so the new book can be proven and, until the point of no return, handed back. Partners and the payout service read through paths that hide which book is authoritative.*
 
@@ -177,24 +149,7 @@ Two rules governed these components. **The cohort register is financially signif
 
 Each cohort follows the same lifecycle, and every transition is a gate.
 
-```mermaid
-stateDiagram-v2
-    state "SFP is book of record" as LEG
-    state "Shadow: engine computes, SFP posts" as SHD
-    state "Cut-over day: load and reconcile" as CUT
-    state "Engine is book of record, SFP reverse shadow" as DUAL
-    state "Engine only" as MIG
-    state "SFP components retired and archived" as RET
-    [*] --> LEG
-    LEG --> SHD : G0 entry, shadow running and rules approved
-    SHD --> CUT : G1 go-no-go, two clean shadow closes
-    CUT --> DUAL : opening balances tie, migration clearing zero
-    CUT --> SHD : load fails to tie, cheap rollback
-    DUAL --> SHD : rollback before first close sign-off
-    DUAL --> MIG : G2 exit, two clean closes and hypercare exit
-    MIG --> RET : G3, archive proven and no reads for one close
-    RET --> [*]
-```
+![Six stepping stones from SFP book through Shadow, Cut-over day, Dual run and Engine only to Retired, separated by gates G0 to G3, with rollback arrows back to Shadow that end at the first signed close.](finance-systems-architecture/posts/33-incremental-modernization/assets/images/33-incremental-modernization/cohort-lifecycle-path.jpeg)
 
 **Figure 5:** *The lifecycle of one cohort. Rollback paths exist until the first close on the new book is signed; after that, problems are fixed forward. Retirement needs its own gate, because a system that is no longer authoritative may still be needed for history.*
 
@@ -339,27 +294,7 @@ Two details in the runbook came from stage 1. The delta load exists because Octo
 4. **August 2030:** all human and service access to SFP subledger stores removed, after a full close cycle with no reads.
 5. **October 2030:** databases deleted, summarization and posting code removed, the custom posting path in S/4HANA deleted, the legacy control account blocked after the FY2029 audit. The scaffolding register rows for this migration were closed.
 
-```mermaid
-gantt
-    title Merchant subledger migration
-    dateFormat YYYY-MM-DD
-    axisFormat %b %Y
-    section Stage 0
-    Volume proof and retest :s0a, 2028-04-01, 2028-06-30
-    First FI-CA merchant invoicing cohort :milestone, s0b, 2028-05-01, 0d
-    Shadow run all entities :s0c, 2028-09-03, 2029-04-30
-    CoA v2 live :milestone, s0d, 2029-01-01, 0d
-    section Stage 1
-    UK and INTL cut-over :milestone, s1a, 2029-05-01, 0d
-    Reverse shadow UK and INTL :s1b, 2029-05-01, 2029-08-20
-    Bridge waiver for late events :s1c, 2029-06-06, 2029-07-31
-    section Stage 2
-    EEA cut-over :milestone, s2a, 2029-11-01, 0d
-    Reverse shadow EEA :s2b, 2029-11-01, 2030-03-01
-    section Stage 3
-    Archive and retrieval drills :s3a, 2030-03-01, 2030-06-30
-    SFP subledger components deleted :milestone, s3b, 2030-10-31, 0d
-```
+![A four-lane timeline from 2028 to 2030: a long shadow run, two short cut-over days for UK and INTL and for EEA each followed by reverse shadow bars, and archive drills ending with SFP's deletion, every bar ending at a gate.](finance-systems-architecture/posts/33-incremental-modernization/assets/images/33-incremental-modernization/migration-on-one-page.jpeg)
 
 **Figure 6:** *The migration on one page. The cut-overs are two days; most of the timeline is proving before them and dual running and decommissioning after them. Every bar ends at a gate, not at a planned date.*
 

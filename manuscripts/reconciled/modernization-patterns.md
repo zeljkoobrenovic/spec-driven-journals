@@ -1,7 +1,7 @@
 {id: modernization-patterns}
 # 15. Changing the Engine in Flight: Modernization Patterns for Finance
 
-![Changing the Engine in Flight: Modernization Patterns for Finance — logo](enterprise-applications-and-financial-systems/posts/12-modernization-patterns/assets/images/12-modernization-patterns/logo.jpeg)
+![Changing the Engine in Flight: Modernization Patterns for Finance — logo](finance-systems-architecture/posts/12-modernization-patterns/assets/images/12-modernization-patterns/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn the modernization patterns for finance systems (six dispositions, ERP migration approaches, accounting hubs as stranglers for ledgers, incremental displacement patterns) and how parallel runs, data migration choices, period-boundary cut-overs and decommissioning keep the books provable while the platform changes underneath them.
 
@@ -110,22 +110,7 @@ For ledgers, the usual answer is a **hub**: a central accounting system that rec
 
 That difference decides what each one can strangle. **A replication hub strangles the ledger from the reporting side**: the group gets one set of books on the target chart of accounts first, and the source ledgers can be retired later, entity by entity, once their operations move. **An accounting hub strangles the accounting logic**: posting rules move out of the source system into governed configuration, and the source becomes a producer of business events. A brand ERP with its own subledgers is a natural candidate for replication. A custom platform that decides its own general-ledger (GL) accounts, as SFP still does in 2027, is a natural candidate for an accounting hub, because the thing worth taking away from it is the account determination.
 
-```mermaid
-flowchart LR
-    subgraph SRC["Source systems keep running"]
-        FUS["Wayfare Oracle Fusion ledger"]
-        WD["Tablekin Workday Financials"]
-        SFP["SFP custom subledger"]
-    end
-    FUS -->|"replicated postings"| MAP["Mapping to group CoA and entities"]
-    WD -->|"replicated postings"| MAP
-    SFP -->|"business events, not journals"| RULES["Accounting rules engine"]
-    MAP --> CORE["Group finance core ledger"]
-    RULES --> CORE
-    CORE --> REC["Source-to-core reconciliation per entity and period"]
-    REC -->|"proven equal for N closes"| RET["Retire source ledger function"]
-    CORE --> CONS["Consolidation and reporting"]
-```
+![Three source ledgers feed a group core ledger, two through mapping of replicated postings and the custom subledger through events into a rules engine; reconciliation against the core leads to retiring a source ledger, and the core feeds reporting.](finance-systems-architecture/posts/12-modernization-patterns/assets/images/12-modernization-patterns/hub-strangles-ledgers.jpeg)
 
 **Figure 1:** *A hub strangles ledgers in two ways. Replicated postings give the group one set of books before the source ledgers go. Events sent into an accounting rules engine take account determination out of the custom platform. In both cases, a source ledger function is retired only after reconciliation has proven source and core equal for several closes.*
 
@@ -153,18 +138,7 @@ Ian Cartwright, Rob Horn and James Lewis's [*Patterns of Legacy Displacement*](h
 
 Jonas's review of the 2025 FI-CA move used most of these patterns, some well and some badly. Figure 2 shows the shape that went live.
 
-```mermaid
-flowchart LR
-    BKG["Booking platform"] -->|"booking and stay events"| RATE["SFP commission rating"]
-    RATE --> INT["Interceptor routes by business model"]
-    INT -->|"agency partners"| FICA["SAP FI-CA invoicing, dunning, balances"]
-    INT -->|"merchant partners"| SINV["SFP merchant invoicing"]
-    FICA -->|"invoices and open items"| MIM["Statement adapter, a legacy mimic"]
-    MIM --> STMT["SFP partner statements and extranet"]
-    SINV --> STMT
-    FICA -->|"summarized postings"| GL["S/4HANA general ledger"]
-    SINV -->|"daily summarized journals"| GL
-```
+![Booking events flow to commission rating and an interceptor that routes agency partners to FI-CA invoicing and merchant partners to SFP invoicing; a legacy mimic feeds FI-CA results into partner statements, and both invoicing paths post to the general ledger.](finance-systems-architecture/posts/12-modernization-patterns/assets/images/12-modernization-patterns/agency-displacement-interceptor.jpeg)
 
 **Figure 2:** *The 2025 agency displacement. Commission rating stayed in SFP; an interceptor sent agency partners' invoicing to FI-CA; a legacy mimic fed FI-CA's results back into SFP's statement pages so that partners saw no change. The interceptor and the mimic were transitional architecture, and both are still running in 2027.*
 
@@ -205,7 +179,7 @@ The point of a parallel run is the **variance classification**, not the comparis
 3. **Data.** Master or reference data differs, such as a partner's VAT number or tax code. The fix is in master data, not code.
 4. **Defect.** One of the systems is wrong. It is fixed and re-run.
 
-![Old and new systems fed the same documents; differences from a comparison scale are sorted on a conveyor into four bins labeled timing, policy, data and defect.](enterprise-applications-and-financial-systems/posts/12-modernization-patterns/assets/images/12-modernization-patterns/parallel-run-variance-sorter.jpeg)
+![Old and new systems fed the same documents; differences from a comparison scale are sorted on a conveyor into four bins labeled timing, policy, data and defect.](finance-systems-architecture/posts/12-modernization-patterns/assets/images/12-modernization-patterns/parallel-run-variance-sorter.jpeg)
 
 **Figure 3:** *The point of a parallel run is the variance classification: every difference between old and new is sorted as timing, policy, data or defect and explained before the new system becomes the book of record.*
 
@@ -272,7 +246,7 @@ Blackout windows narrow the choice further. Northmere's 2028 calendar, published
 
 That leaves two good slots a year: early May and early November. **A short list of good dates is the most useful constraint a modernization roadmap can have**, because it forces the sequencing conversation early; it is why Keystone's merchant-invoicing move is planned for the May 2028 cycle. The rollback plan is part of the date choice. Until the first invoices go out, rollback means re-pointing the interceptor; after that, it means correcting invoices partners have already received.
 
-![Twelve month tiles in a row, ten blocked by hatching and padlocks, with only May and November open as doors for a cut-over.](enterprise-applications-and-financial-systems/posts/12-modernization-patterns/assets/images/12-modernization-patterns/two-good-cut-over-slots.jpeg)
+![Twelve month tiles in a row, ten blocked by hatching and padlocks, with only May and November open as doors for a cut-over.](finance-systems-architecture/posts/12-modernization-patterns/assets/images/12-modernization-patterns/two-good-cut-over-slots.jpeg)
 
 **Figure 4:** *After year-end, quarter-end months, the summer peak and month-end blackouts are blocked, Northmere's 2028 calendar leaves two good cut-over slots a year, early May and early November, which forces the sequencing conversation early.*
 
@@ -297,23 +271,7 @@ A modernization is finished when the old system is gone, its controls are closed
 
 Order matters. The archive must prove itself while EBS still exists to check it against, and access must be removed before infrastructure, so that nothing is switched off while someone still depends on it.
 
-```mermaid
-stateDiagram-v2
-    state "Read-only in EBS since 2022" as RO
-    state "Extracted and reconciled" as EX
-    state "Dual access and retrieval drills" as DUAL
-    state "Access removed" as ACC
-    state "Shut down, licenses terminated" as OFF
-    state "Archive under disposal schedule" as ARC
-    [*] --> RO
-    RO --> EX : extract per entity, trial balances tie
-    EX --> DUAL : archive search live
-    DUAL --> EX : drill fails, re-extract
-    DUAL --> ACC : auditor retrieval sample passes
-    ACC --> OFF : no logins or interface calls for one close cycle
-    OFF --> ARC : record set to archive only
-    ARC --> [*] : last records past retention and not on hold
-```
+![Stepping stones from read-only through extracted, retrieval drills, access removed and shut down to the archive, with a failed drill looping back to extraction and records leaving only when retention ends.](finance-systems-architecture/posts/12-modernization-patterns/assets/images/12-modernization-patterns/archive-decommissioning-path.jpeg)
 
 **Figure 5:** *The decommissioning sequence for the Wayfare EBS archive. The archive must prove itself against the live system before access is removed, and a failed retrieval drill sends the plan back to extraction. Records leave the archive only when their retention period ends and no hold applies.*
 
