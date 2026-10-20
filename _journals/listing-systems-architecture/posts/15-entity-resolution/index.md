@@ -1,5 +1,5 @@
 ---
-title: "One Property, Five Listings: Duplicates and Entity Resolution"
+title: "One Property, Three Listings: Duplicates and Entity Resolution"
 date: 2026-10-19
 author: Željko Obrenović
 excerpt: "How do you recognize that several listings describe the same thing, and what do you do about it? Separate abusive duplicates, which call for enforcement, from legitimate ones, which call for clustering, and resolve listings to a durable real-world entity with a stable identifier, owned outside the search index and governed like any other consequential model."

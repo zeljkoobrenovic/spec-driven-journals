@@ -73,3 +73,4 @@ Chief and enterprise architects, ML and data leads, and engineering directors of
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 6,800 → 6,867 prose words; opening now ties the case to [[case-aviv]], the Part IX question and the chapters it tests; 3 headings renamed (one aligned with sibling cases); Zestimate-error paragraph split; teaser first sentences replaced. *(AI-mediated session)*
 - **2026-10-20** — Trade-offs heading capitalized as in the 45 chapters. *(AI-mediated session)*
+- **2026-10-20** — "The final section" now points to the Veldmark comparison near the end, since two sections follow it. *(AI-mediated session)*

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Same Platform, Different Physics: General, Real Estate, Automotive and Jobs
@@ -70,3 +70,4 @@ Chief architects and platform leads of multi-vertical marketplace groups, and en
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: hand-off now to [[part-2]]; Golf raw vs deduplicated leads; EPBD dates verified on the Official Journal text; toolkit link added. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 7,297 → 7,299 prose words (evidence-dense; structure unchanged); opening now ties the chapter to [[business-capabilities]], [[bounded-contexts]] and Part II; topic sentences brought forward in four sections; jobs list count corrected to four; one H3 renamed. Spec unchanged. *(AI-mediated session)*

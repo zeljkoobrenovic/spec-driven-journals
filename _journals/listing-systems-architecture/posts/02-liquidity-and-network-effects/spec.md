@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics
@@ -68,3 +68,4 @@ Chief architects, data and ML leads, product directors and engineering directors
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: brown-out cost aligned with reliability-and-scale (3.4M failed requests, ~9,800 fewer first contacts); Common Ground timing fixed (three months in April 2027); Hemnet, Rightmove and Facebook claims spot-checked. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,142 → 6,138 words; 1 heading renamed ("Getting Started and Staying Ahead" → "Competing for Liquidity"); winner-take-most paragraphs reordered (mechanism before limits); opening names where the requirements are traced; bike paragraph leads with the six-minute split. Spec unchanged. *(AI-mediated session)*

@@ -33,7 +33,7 @@ Most marketplace groups in this book's Part IX either built their platforms or b
 
 The evidence is thin. AVIV's GitHub organization has no public repositories, its Medium publication had no posts when the book's research fetched it in October 2026, and no conference talk by AVIV engineers was found. What exists is corporate history, regulatory decisions, trade-press interviews with AVIV executives and a handful of product announcements. **That evidence is enough to show the direction of the strategy and the funnel it served; it is not enough to describe a single system.**
 
-The record tests the argument of [[vertical-requirements]] and [[multi-country-platforms]]: in real estate, ingestion formats, mandatory disclosures, address systems, agent software and monetization norms are national, so a group platform has to stop well short of the product. **AVIV's documented moves (shared valuation science, a bundled professional offer, then local autonomy with group functions) trace that boundary from the outside.** The final section applies the same boundary to Hearthly, Veldmark's property portal in France and Spain.
+The record tests the argument of [[vertical-requirements]] and [[multi-country-platforms]]: in real estate, ingestion formats, mandatory disclosures, address systems, agent software and monetization norms are national, so a group platform has to stop well short of the product. **AVIV's documented moves (shared valuation science, a bundled professional offer, then local autonomy with group functions) trace that boundary from the outside.** The comparison with Veldmark near the end applies the same boundary to Hearthly, Veldmark's property portal in France and Spain.
 
 ## How to Read This Case
 

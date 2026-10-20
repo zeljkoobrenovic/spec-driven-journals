@@ -50,3 +50,4 @@ Internal: [[marketplace-taxonomy]], [[liquidity-and-network-effects]], [[industr
 - **2026-10-19** — Editorial review pass: ch. 03 table row and Veldmark bullet rewritten from the written chapter (five waves, sediment, March 2027 separability decision). *(AI-mediated session)*
 - **2026-10-19** — Added 1 inline illustration (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 678 → 680 prose words (already within budget; light pass); headings unchanged (fixed part-intro shape); lead's three steps made explicit; "How this part connects" now opens with its point (the vocabulary); one Veldmark bullet reworded. *(AI-mediated session)*
+- **2026-10-20** — Second sharpening pass: 680 → 689 prose words; headings unchanged; the lead's second paragraph now opens with a claim ("Sharing decisions need three pieces of business knowledge") instead of "The part argues in three steps". *(AI-mediated session)*

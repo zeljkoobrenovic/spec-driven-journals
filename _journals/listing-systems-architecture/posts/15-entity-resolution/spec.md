@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-20
 ---
 
-# Spec: One Property, Five Listings: Duplicates and Entity Resolution
+# Spec: One Property, Three Listings: Duplicates and Entity Resolution
 
 ## Intent
 
@@ -72,3 +72,4 @@ Article only for now.
 - **2026-10-19** — Editorial review pass: aligned the Barcelona-ring detection with fraud-prevention (flags fired but went to separate queues), expanded UPRN and GTIN. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 11 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
+- **2026-10-20** — Retitled "Three Listings" to match the Lyon apartment example in the ledger, the scene heading and the body; permalink unchanged. *(AI-mediated session)*

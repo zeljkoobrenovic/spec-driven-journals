@@ -1,9 +1,9 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
-# Spec: Classifieds, Lead Generation and Transactions: A Marketplace Taxonomy
+# Spec: Classifieds, Leads, Transactions and Managed Models: A Marketplace Taxonomy
 
 ## Intent
 
@@ -70,3 +70,5 @@ Chief and enterprise architects of marketplace groups, principal engineers and p
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: Safe Deal figures updated to 11.6M / ~€1.02B with take rate, DSA Art. 30 and Omnibus wording checked against the Official Journal, Golf raw vs deduplicated leads, Safe Deal profile count corrected. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 7,118 → 7,092 prose words; lead now states the chapter's place in Part I and the later chapters that use the marketplace profile; excerpt names all four rungs; Deal Builder/mobile.de subsection renamed "Pattern 4" to match the patterns list; DAC7 point split into its own paragraph; topic sentences tightened; no spec criteria changed. *(AI-mediated session)*
+- **2026-10-20** — Retitled to name all four models the chapter covers, including managed marketplaces; permalink unchanged. *(AI-mediated session)*

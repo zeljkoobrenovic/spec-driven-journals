@@ -73,3 +73,4 @@ Chief and enterprise architects of marketplace groups with property portals in s
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 5,480 → 5,434 prose words; outline unchanged (house case-study shape); opening now names the Hearthly comparison it feeds; point-first openers in the Meilleurs Agents, two-portals, Germany/Belgium and vertical-table paragraphs; duplicate 300-hire mention and meta sentences cut. *(AI-mediated session)*
 - **2026-10-20** — Trade-offs heading capitalized as in the 45 chapters. *(AI-mediated session)*
+- **2026-10-20** — "The final section" now points to the Veldmark comparison near the end, since two sections follow it. *(AI-mediated session)*
