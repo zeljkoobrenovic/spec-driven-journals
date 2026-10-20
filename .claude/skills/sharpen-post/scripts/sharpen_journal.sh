@@ -13,13 +13,17 @@
 #   -f               re-run posts whose spec.md already logs a "Sharpening pass"
 #   -n               dry run: list the posts that would run
 #   -c               after the run, a read-only claude session checks headings
-#                    and terms across all chapters (report only, no edits)
+#                    and terms across chapters (report only, no edits)
+#   -C               run only that check, without sharpening (-o sets its scope)
+#   -A               check the whole book; by default the check reports only on
+#                    this run's posts and their neighbours in config.yaml order
 #   -t MIN           time limit per post session (default 15 minutes)
 #   -T MIN           time limit for the -c check session (default 20 minutes)
 #
 # Logs go to _temp/sharpen-post/<journal>/<folder>.log. Every run also writes
 # results.md there (per post: words before -> after against HEAD, headings
-# changed, fact-check result), outlines.md (all chapters' headings in book
+# changed, fact-check result, then each session's REPORT block: title
+# suggestion, deleted claims, questions for the author), outlines.md (all chapters' headings in book
 # order) and, with -c, consistency.md. A session over its time limit is
 # stopped and recorded as "timeout". Nothing is committed: review with git diff.
 
@@ -30,8 +34,8 @@ cd "$ROOT"
 SKEL=".claude/skills/sharpen-post/scripts/skeleton.py"
 FACT=".claude/skills/sharpen-post/scripts/factcheck.py"
 
-JOBS=1 MODEL="" ONLY="" SKIP="bibliography,glossary" FORCE=0 DRY=0 CHECK=0 LIMIT=15 CHECK_LIMIT=20
-while getopts "j:m:o:s:t:T:fnch" opt; do
+JOBS=1 MODEL="" ONLY="" SKIP="bibliography,glossary" FORCE=0 DRY=0 CHECK=0 CHECK_ONLY=0 WHOLE=0 LIMIT=15 CHECK_LIMIT=20
+while getopts "j:m:o:s:t:T:fncCAh" opt; do
   case "$opt" in
     j) JOBS="$OPTARG" ;;
     m) MODEL="$OPTARG" ;;
@@ -40,9 +44,11 @@ while getopts "j:m:o:s:t:T:fnch" opt; do
     f) FORCE=1 ;;
     n) DRY=1 ;;
     c) CHECK=1 ;;
+    C) CHECK=1; CHECK_ONLY=1 ;;
+    A) WHOLE=1 ;;
     t) LIMIT="$OPTARG" ;;
     T) CHECK_LIMIT="$OPTARG" ;;
-    *) sed -n '2,27p' "$0"; exit 0 ;;
+    *) sed -n '2,28p' "$0"; exit 0 ;;
   esac
 done
 shift $((OPTIND - 1))
@@ -61,10 +67,12 @@ all_posts=()
 while IFS= read -r folder; do all_posts+=("$folder"); done \
   < <(sed -nE 's#^[[:space:]]*-[[:space:]]+([^/[:space:]]+)/index\.md[[:space:]]*$#\1#p' "$CONFIG")
 
-posts=()
+posts=() selected=()
 for folder in "${all_posts[@]}"; do
   [[ -n "$ONLY" ]] && ! in_list "$folder" "$ONLY" && continue
   in_list "$folder" "$SKIP" && continue
+  selected+=("$folder")
+  [[ $CHECK_ONLY -eq 1 ]] && continue
   spec="_journals/$JOURNAL/posts/$folder/spec.md"
   if [[ $FORCE -eq 0 && -f "$spec" ]] && grep -q "Sharpening pass" "$spec"; then
     echo "[done] $folder (already sharpened; -f to redo)"
@@ -73,8 +81,26 @@ for folder in "${all_posts[@]}"; do
   posts+=("$folder")
 done
 
-echo "${#posts[@]} post(s) to sharpen in $JOURNAL, $JOBS at a time"
-[[ $DRY -eq 1 ]] && { printf '  %s\n' "${posts[@]}"; exit 0; }
+# The check's scope: the selected posts and their neighbours, or the whole book.
+scope=()
+if [[ $WHOLE -eq 0 && ( -n "$ONLY" || $CHECK_ONLY -eq 0 ) ]]; then
+  for i in "${!all_posts[@]}"; do
+    for d in -1 0 1; do
+      j=$((i + d)); (( j < 0 || j >= ${#all_posts[@]} )) && continue
+      for s in ${selected[@]+"${selected[@]}"}; do
+        if [[ "${all_posts[$j]}" == "$s" ]]; then scope+=("${all_posts[$i]}"); break 2; fi
+      done
+    done
+  done
+fi
+
+if [[ $CHECK_ONLY -eq 1 ]]; then
+  echo "Check only; scope: ${scope[*]:-whole book}"
+  [[ $DRY -eq 1 ]] && exit 0
+else
+  echo "${#posts[@]} post(s) to sharpen in $JOURNAL, $JOBS at a time"
+  [[ $DRY -eq 1 ]] && { printf "  %s\n" ${posts[@]+"${posts[@]}"}; echo "Check scope: ${scope[*]:-whole book}"; exit 0; }
+fi
 
 ALLOWED=(
   Read Edit Write Grep Glob
@@ -113,7 +139,7 @@ run_limited() {
 }
 
 STATUS="$LOGDIR/status.txt"
-: > "$STATUS"
+[[ $CHECK_ONLY -eq 0 ]] && : > "$STATUS"
 
 sharpen_one() {
   local folder="$1" file="_journals/$JOURNAL/posts/$1/index.md" log="$LOGDIR/$1.log"
@@ -125,7 +151,12 @@ sharpen_one() {
   local args=(-p --permission-mode acceptEdits --no-session-persistence --allowedTools "$tools")
   [[ -n "$MODEL" ]] && args+=(--model "$MODEL")
   printf '%s\n\n%s\n' "/sharpen-post $file" \
-    "Run the skill autonomously on this one post: do not ask questions, do not edit other posts, do not commit. Finish with the skill's short report." > "$prompt"
+    "Run the skill autonomously on this one post: do not ask questions, do not edit other posts, do not commit. Finish with the skill's short report, and end it with this block exactly, one line per field, 'none' when empty:
+REPORT
+title: <suggested title and why, or none>
+deleted claims: <each deleted claim or quote with its reason, separated by '; '>
+questions: <questions for the author, separated by '; '>
+END REPORT" > "$prompt"
   run_limited "$prompt" "$log" "$LIMIT" claude "${args[@]}" || rc=$?
   rm -f "$prompt"
   local state=ok
@@ -146,8 +177,10 @@ else
   wait
 fi
 
-echo "Rebuilding to confirm the journal still builds..."
-python3 _wiring/build.py 2>&1 | grep -iE "$JOURNAL|error|Traceback" || true
+if [[ $CHECK_ONLY -eq 0 ]]; then
+  echo "Rebuilding to confirm the journal still builds..."
+  python3 _wiring/build.py 2>&1 | grep -iE "$JOURNAL|error|Traceback" || true
+fi
 # Every chapter's outline in one file, so headings and terms can be read side by side.
 OUTLINES="$LOGDIR/outlines.md"
 {
@@ -162,7 +195,7 @@ OUTLINES="$LOGDIR/outlines.md"
 echo "Outlines of all chapters: $OUTLINES"
 
 # Results table for the posts this run touched, measured against HEAD.
-if [[ -s "$STATUS" ]]; then
+if [[ ${#posts[@]} -gt 0 && -s "$STATUS" ]]; then
   RESULTS="$LOGDIR/results.md"
   {
     echo "# Sharpening results: $JOURNAL ($(date '+%Y-%m-%d %H:%M'))"
@@ -177,12 +210,19 @@ if [[ -s "$STATUS" ]]; then
       after=$(python3 "$SKEL" "$file" --stats | sed 's/.*prose_words=//')
       before=$(git show "HEAD:./$file" 2>/dev/null | python3 "$SKEL" /dev/stdin --stats | sed 's/.*prose_words=//')
       headings=$(git diff -U0 -- "$file" | grep -c '^+#' || true)
-      lost=$(python3 "$FACT" "$file" | grep -cE '^(LOST|CHANGED|FIGURES)' || true)
+      lost=$(python3 "$FACT" "$file" | grep -cE '^(LOST|CHANGED|FIGURES|POINTER )' || true)
       [[ "$lost" -eq 0 ]] && check="OK" || check="$lost flagged (see log)"
       echo "| $folder | $state | ${secs}s | ${before:-?} → $after | $headings | $check |"
     done
+    echo
+    echo "## Session reports"
+    for folder in "${posts[@]}"; do
+      echo; echo "### $folder"
+      block=$(sed -n '/^REPORT[[:space:]]*$/,/^END REPORT/p' "$LOGDIR/$folder.log" 2>/dev/null | sed '1d;$d')
+      if [[ -n "$block" ]]; then echo "$block" | sed 's/^/- /'; else echo "- no REPORT block; read $LOGDIR/$folder.log"; fi
+    done
   } > "$RESULTS"
-  sed -n '5,$p' "$RESULTS"
+  sed -n '5,/^## Session reports/p' "$RESULTS" | sed '$d'
   echo "Results: $RESULTS"
 fi
 
@@ -192,7 +232,12 @@ if [[ $CHECK -eq 1 ]]; then
   [[ -n "$MODEL" ]] && check_args+=(--model "$MODEL")
   DECISIONS="_journals/$JOURNAL/_research/heading-decisions.md"
   prompt="$LOGDIR/consistency.prompt"
-  printf '%s\n' "Read $OUTLINES: the heading outline of every chapter in _journals/$JOURNAL, in book order, after a sharpen-post pass that edited each chapter in isolation. Read _journals/$JOURNAL/README.md and any _research/style-guide.md or glossary post for the book's fixed terms. If $DECISIONS exists, read it: it records heading conventions the author has already decided, including variations that are intentional. Do not report anything it covers; list only new findings. Report, without editing anything:
+  if [[ ${#scope[@]} -gt 0 ]]; then
+    scope_note="Report findings only for these chapter folders: $(IFS=,; echo "${scope[*]}"). Read the other outlines only for comparison."
+  else
+    scope_note="Report findings for every chapter."
+  fi
+  printf '%s\n' "Read $OUTLINES: the heading outline of every chapter in _journals/$JOURNAL, in book order, after a sharpen-post pass that edited each chapter in isolation. Read _journals/$JOURNAL/README.md and any _research/style-guide.md or glossary post for the book's fixed terms. If $DECISIONS exists, read it: it records heading conventions the author has already decided, including variations that are intentional. Do not report anything it covers; list only new findings. $scope_note Report, without editing anything:
 1. the same concept named differently in different chapters' headings (give both wordings, the chapters, and which wording to keep, preferring the glossary's);
 2. headings in the same position across parallel pages (part intros, cases, hand-offs) that no longer share a shape;
 3. headings that became vague or generic;

@@ -99,7 +99,11 @@ deletes wastes the effort.
   - plain-text mentions: run `grep -rnF "<old heading text>" _journals/<journal>/`
     to find prose such as "see the Layer Map" or captions that name the section.
     Inside this post, update the mention. In another page, keep the old heading,
-    or report the mention so the author can update it.
+    or report the mention so the author can update it;
+  - pointers by position: moving or deleting a section can strand phrases such
+    as "the final section", "the next section" or "below", in this post or in
+    a page that links to it. `factcheck.py` lists them when the outline
+    changed; confirm each one, fix those in this post, and report the others.
 - Edit only the requested file and its `spec.md`. Report problems in other
   pages instead of fixing them.
 
@@ -113,10 +117,14 @@ diagrams and tables. For a paragraph that opens with a bold run-in label
 `--base REF`). It reports what was lost or changed:
 - every number, date, `[[link]]`, URL, evidence label, callout label and
   quotation whose count fell;
-- every number word in prose ("three", "dozen") whose count fell;
+- every number word in prose ("three", "dozen") whose count fell, with the old
+  sentences that held it and the closest new sentence, so a rewording can be
+  told from a lost fact;
 - any number word that changed in a heading, such as "four stages" becoming
   "five stages";
-- figure captions that no longer run 1, 2, 3 in order.
+- figure captions that no longer run 1, 2, 3 in order;
+- when the outline changed, positional pointers ("the final section", "below")
+  in this post and in other posts that link to it.
 
 It exits with status 1 when anything is flagged.
 
@@ -365,6 +373,10 @@ Keep the report short:
   (the title itself is left unchanged);
 - anything left vague because fixing it needs facts the post does not have.
   These are questions for the author.
+
+When `sharpen_journal.sh` runs the skill, its prompt also asks for a closing
+`REPORT … END REPORT` block (title, deleted claims, questions), which the
+script copies into `results.md`.
 
 ## Anti-patterns
 
