@@ -23,7 +23,7 @@
 
 Ask five people in a finance organization to draw "the finance systems" and you get five pictures. The controller draws the close. The payments lead draws money moving between providers, banks and partners. The data lead draws pipelines into a warehouse. The enterprise resource planning (ERP) lead draws the ERP's modules, with everything else as an interface. A brand's engineering director draws the product with "finance" as one box at the edge. Each picture is accurate from where its author stands; none can settle a disagreement between the others.
 
-A **reference model** is a shared, vendor-neutral decomposition of a domain into parts whose purpose and boundaries are agreed in advance. This chapter defines the reference model the rest of the book uses: **eight layers and two cross-cutting planes**. When [When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms) says a brand platform sits in the financial event and subledger layer, or [BlackLine: Matching, Certifying and Closing](#blackline) places close automation in the close, reconciliation and consolidation layer, they mean exactly the layers defined here.
+A **reference model** is a shared, vendor-neutral decomposition of a domain into parts whose purpose and boundaries are agreed in advance. [Map What Finance Does Before What Runs It](#capability-mapping) named what finance must do and [Manage the Application Portfolio as an Investment](#application-portfolio) listed what Northmere runs; neither explains why the estate has the shape it has. This chapter defines the reference model the rest of the book uses for that: **eight layers and two cross-cutting planes**. When [When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms) says a brand platform sits in the financial event and subledger layer, or [BlackLine: Matching, Certifying and Closing](#blackline) places close automation in the close, reconciliation and consolidation layer, they mean exactly the layers defined here.
 
 The model rests on one physical fact about finance data: **it gets smaller as it moves up**. Billions of operational events become millions of subledger lines, thousands of ledger summaries and a few hundred reported lines. Every layer boundary is a summarization, and every summarization is where traceability is preserved or lost. That **volume gradient** explains why there are layers, where detail must live, and what goes wrong when a layer is skipped, duplicated or used for the wrong job.
 
@@ -42,10 +42,10 @@ Dana Whitlock, the Chief Architect, took no position that day. The four teams we
 
 By March the board had adopted the model in this chapter. Every decision record now states which layer a proposal belongs to, what data it would master, and which existing system already claims that layer. The payments proposal came back as a layer-2 question: which layer-2 component should own payment records and PSP clearing, and how would it prove completeness to the ledger? Whether the general ledger or the warehouse should do the job was no longer on the table. The answer belongs to [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger); this chapter builds the frame that made the question answerable.
 
-{id: finance-landscape--what-a-reference-model-is-and-what-it-is-not}
-## What a Reference Model Is, and What It Is Not
+{id: finance-landscape--a-reference-model-and-four-tests-for-a-layer}
+## A Reference Model and Four Tests for a Layer
 
-Four artifacts are often confused. Each answers a different question.
+Four artifacts are often confused, though each answers a different question.
 
 | Artifact | Question it answers | Unit | Owner in this book |
 | --- | --- | --- | --- |
@@ -68,7 +68,7 @@ I separate layers with four tests. A candidate deserves its own layer only if it
 {id: finance-landscape--the-volume-gradient}
 ## The Volume Gradient
 
-The numbers come first, because they explain the shape. These are Northmere's 2026 figures, rounded.
+Northmere's 2026 figures, rounded, show the gradient.
 
 | Level | What a record is | Northmere volume | Grain |
 | --- | --- | --- | --- |
@@ -84,7 +84,7 @@ The ratios matter more than the totals: roughly **80 to 1** from SFP to the ledg
 
 **Figure 2:** *The volume gradient. Each step up summarizes by one or more orders of magnitude; each dotted arrow is the path an auditor or controller needs back down. A boundary that drops the key on the dotted path is where Lost in Aggregation begins.*
 
-Three consequences follow, and the rest of the chapter depends on them.
+Three consequences follow, and the layers, placement rules and failure modes below rest on them.
 
 **Detail must live at the lowest layer that has to answer questions about it.** The general ledger's job is balances by entity, account and period, audited as the book of record. "Which bookings make up this partner payable?" and "which settlement lines are unmatched?" are subledger questions, asked at subledger grain. The rule I use: **every layer keeps what it must prove, and points down for the rest.**
 
@@ -127,14 +127,14 @@ The numbering follows the gradient: business events at the bottom, reported numb
 {id: finance-landscape--layer-1-operational-and-engagement-systems}
 ### Layer 1: Operational and engagement systems
 
-Booking engines, checkouts, subscription products, ad servers, partner portals and the payments platform's routing. They create the events finance cares about but are not finance systems: they are measured on conversion and availability, and their logic changes with the product. A booking engine can say a booking exists; it should not decide that €90 of it is revenue on 22 April. In digital businesses this layer is mostly built. PSPs such as Adyen and Stripe are external operational systems here, authorizing and capturing for the checkout; their settlement output feeds layer 2.
+Booking engines, checkouts, subscription products, ad servers, partner portals and the payments platform's routing create the events finance cares about but are not finance systems: they are measured on conversion and availability, and their logic changes with the product. A booking engine can say a booking exists; it should not decide that €90 of it is revenue on 22 April. In digital businesses this layer is mostly built. PSPs such as Adyen and Stripe are external operational systems here, authorizing and capturing for the checkout; their settlement output feeds layer 2.
 
 The one obligation finance should impose is to **emit complete, well-formed financial events**, the canonical events of [Canonical Events: A Common Language for Money](#loosely-coupled-domains) such as `BookingConfirmed`, `PaymentCaptured` and `StayCompleted`. In return, layer 1 is spared from knowing accounting.
 
 {id: finance-landscape--layer-2-financial-event-and-subledger-layer}
 ### Layer 2: Financial event and subledger layer
 
-This is the layer this chapter owns, and the one most enterprise diagrams leave out.
+Most enterprise diagrams leave this layer out, so it gets the longest description here.
 
 **Purpose.** The **financial event and subledger layer** turns business events into financial facts at transaction grain, applies the accounting treatment, keeps the resulting open items until they clear, and summarizes them to the ledger with keys. A **subledger**, in the sense of [Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects), is a detailed record for one area whose total must equal a control account in the general ledger. Typical components:
 
@@ -188,12 +188,12 @@ Layer 3 is not the ERP *product*. SAP's suite around S/4HANA also offers FI-CA (
 {id: finance-landscape--layer-5-planning-and-performance}
 ### Layer 5: Planning and performance
 
-Budgeting, forecasting, scenarios, driver-based plans, allocations and variance analysis. The layer masters something no other layer has: **intentions**. Plans and forecasts are not facts and must never be confused with them. It is dimensionally richer than the ledger (room nights, take rate, merchant mix) and owned by FP&A on its own cadence. Typical vendors are OneStream, Oracle EPM Planning, Workday Adaptive Planning, Anaplan and SAP Analytics Cloud. Whether planning shares a platform with consolidation is a real choice: one dimensional model for actuals and plan removes a mapping; separate platforms let each be chosen on its merits. Actuals come from layer 4; operational drivers increasingly come from layer 8.
+The planning layer masters something no other layer has: **intentions**, in budgets, forecasts, scenarios, driver-based plans, allocations and variance analysis. Plans and forecasts are not facts and must never be confused with them. It is dimensionally richer than the ledger (room nights, take rate, merchant mix) and owned by FP&A on its own cadence. Typical vendors are OneStream, Oracle EPM Planning, Workday Adaptive Planning, Anaplan and SAP Analytics Cloud. Whether planning shares a platform with consolidation is a real choice: one dimensional model for actuals and plan removes a mapping; separate platforms let each be chosen on its merits. Actuals come from layer 4; operational drivers increasingly come from layer 8.
 
 {id: finance-landscape--layer-6-reporting-and-disclosure}
 ### Layer 6: Reporting and disclosure
 
-The numbers the enterprise publishes or files: SEC filings (10-K, 10-Q) in inline XBRL (eXtensible Business Reporting Language, the machine-readable format the SEC requires), statutory accounts per entity, returns for licensed entities such as daily e-money safeguarding, and tax filings drawn from ledger data. The output is legally consequential and frozen once filed; the data is material non-public information until release; the controls are tie-out, tagging review and sign-off. Workiva is the common disclosure platform, linking consolidation output to narrative, tagging and filing ([ERP Research overview](https://erpresearch.com/erp-add-ons/esg-sustainability/workiva)); CPM reporting modules and, for licensed entities, often built tools fill the rest. Management dashboards are a related job but belong to layers 5 and 8, because nothing there is filed.
+The reporting layer holds the numbers the enterprise publishes or files: SEC filings (10-K, 10-Q) in inline XBRL (eXtensible Business Reporting Language, the machine-readable format the SEC requires), statutory accounts per entity, returns for licensed entities such as daily e-money safeguarding, and tax filings drawn from ledger data. The output is legally consequential and frozen once filed; the data is material non-public information until release; the controls are tie-out, tagging review and sign-off. Workiva is the common disclosure platform, linking consolidation output to narrative, tagging and filing ([ERP Research overview](https://erpresearch.com/erp-add-ons/esg-sustainability/workiva)); CPM reporting modules and, for licensed entities, often built tools fill the rest. Management dashboards are a related job but belong to layers 5 and 8, because nothing there is filed.
 
 {id: finance-landscape--layer-7-satellite-services}
 ### Layer 7: Satellite services
@@ -297,7 +297,7 @@ Three findings changed how Northmere talked about its estate.
 {id: finance-landscape--alternative-decompositions}
 ## Alternative Decompositions
 
-The layered model is one useful cut of the estate. Others answer different questions well.
+The layered model is one cut of the estate; other cuts answer other questions better.
 
 - **Process-centric** views ([Order to Cash, Procure to Pay, Record to Report](#finance-processes)) show hand-offs and control points, but processes cross layers: order-to-cash at Northmere touches layers 1, 2, 3, 4 and 7, and a process view alone does not show that three processes share one subledger, or that two have each built their own.
 - **Vendor-suite-centric** views follow the dominant ERP's modules and erase what the vendor does not sell: payouts, customer funds and safeguarding become "interfaces". As a skeleton, that is a mild form of **The Borrowed Roadmap**.

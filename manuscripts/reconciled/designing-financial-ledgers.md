@@ -7,7 +7,7 @@
 
 > **WHY FINANCE CARES:** A subledger the controller cannot interrogate is a liability on the audit file. Finance needs to know, for any balance, which approved rule produced it, from which business events, and whether every event that should have been accounted for was.
 
-> **WHY ARCHITECTS SHOULD CARE:** A ledger is the one system where "eventually correct" is not good enough and "we fixed the row in production" is a control failure. The design decisions in this chapter (immutability, idempotency, versioned rules, time handling) are cheap on day one and very expensive to retrofit once a few billion lines exist.
+> **WHY ARCHITECTS SHOULD CARE:** A ledger is the one system where "eventually correct" is not good enough and "we fixed the row in production" is a control failure. The design decisions in this chapter (immutability, idempotency, versioned rules, time handling) are cheap on day one and expensive to retrofit once a few billion lines exist.
 
 > **KEY POINTS:**
 >
@@ -21,11 +21,11 @@
 > * **Lost in Aggregation** — summarization to the general ledger is designed here with a drill-back key that is stored with the detail and retained as long as the detail.
 > * **Audit Archaeology** — posting rules, period states and reconciliation are built into the engine, so evidence is produced by normal operation rather than reconstructed for the auditor.
 
-Most enterprises do not set out to build a ledger. They build a payout engine, a billing service or a wallet, and that system needs to know how much is owed to whom. Within a few years it holds balances that the general ledger depends on, and it has become a **subledger** (a detailed record of one area of the books, such as partner payables or customer funds, whose totals feed a control account in the general ledger). [When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms) covers when a business should own such a system at all. This chapter assumes the decision has been made and asks how to build it well.
+Most enterprises do not set out to build a ledger. They build a payout engine, a billing service or a wallet, and that system needs to know how much is owed to whom. Within a few years it holds balances that the general ledger depends on, and it has become a **subledger** (a detailed record of one area of the books, such as partner payables or customer funds, whose totals feed a control account in the general ledger). [When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms) decided what such a platform should own and where its boundary with the ERP sits. This chapter takes what the platform keeps and asks how to build it so that accountants and auditors can trust it.
 
 The answer is not a technology. It is a small set of disciplines accountants have used for centuries: **record what happened, never overwrite it, correct by adding, and prove that the totals agree**. What most custom builds lack is not knowledge of these disciplines but the decision to treat the subledger as a book of record from the first line of code.
 
-The chapter follows Northmere, the fictional group this book follows, as it redesigns the merchant-model subledger inside the Stayloft Finance Platform in 2027. It goes deeper technically than most chapters; the code is deliberately language-neutral, because the design choices are the point.
+The worked example is Northmere's 2027 redesign of the merchant-model subledger inside the Stayloft Finance Platform. Its summaries feed the S/4HANA core that [SAP S/4HANA: One Journal, Clean Core](#sap-s4hana) covers next, and its engine is built to be replaced when Keystone moves the subledger into that core. The chapter goes deeper technically than most; the code is language-neutral, because the design choices are the point.
 
 {id: designing-financial-ledgers--setting-the-scene-rebuilding-the-sfp-merchant-subledger}
 ## Setting the Scene: Rebuilding the SFP Merchant Subledger
@@ -47,7 +47,7 @@ Leila's condition is shorter: *"I want to be able to pick any euro on the S/4 ba
 {id: designing-financial-ledgers--concepts-events-entries-rules-and-the-ledger}
 ## Concepts: Events, Entries, Rules and the Ledger
 
-[Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects) teaches double entry, journal entries and the merchant-model accounting this chapter implements. Here the concepts are defined as a ledger designer needs them.
+[Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects) teaches double entry, journal entries and the merchant-model accounting this chapter implements; this section adds what a ledger designer needs on top.
 
 {id: designing-financial-ledgers--financial-event-versus-accounting-entry}
 ### Financial event versus accounting entry
@@ -56,7 +56,7 @@ A **financial event** is an immutable record that something with financial conse
 
 An **accounting entry** (a journal entry) is the ledger's interpretation of one or more events: two or more lines, each with an account, dimensions, a side and an amount, whose debits equal their credits. One event can produce zero, one or several entries; the same event can be interpreted differently by a US GAAP ledger and a local statutory ledger.
 
-The separation matters for three reasons. The producer team does not need to know accounting, and the accounting team does not need to read producer code. A change in accounting policy changes the interpretation, not the facts, so it can be re-run against the stored facts. And the auditor gets two populations that can be reconciled to each other: every event either produced its entries or is explicitly marked as producing none.
+Keeping events and entries apart lets each side change without the other. The producer team does not need to know accounting, and the accounting team does not need to read producer code. A change in accounting policy changes the interpretation, not the facts, so it can be re-run against the stored facts. And the auditor gets two populations that can be reconciled to each other: every event either produced its entries or is explicitly marked as producing none.
 
 Fowler's "Event Sourcing" essay makes the connection directly: accounting entries are a log of everything that changed an account, so **an account is itself an example of event sourcing** ([Fowler, 2005](https://martinfowler.com/eaaDev/EventSourcing.html)). The subledger described here is event-sourced twice: the event store holds the business facts, and the journal holds the accounting facts derived from them.
 
@@ -111,12 +111,14 @@ The redesigned SFP subledger is a pipeline with six responsibilities, each owned
 | **Balances** | Maintain running balances and periodic snapshots derived from the journal | Balance tables | Act as a source of truth that disagrees with the journal |
 | **Summarizer and tie-out** | Aggregate lines to GL documents, post to S/4HANA, prove the two agree | Summary records, tie-out results | Lose the link from a summary to its lines |
 
-Two boundaries deserve emphasis. First, **the payout engine is a producer, not a writer**: it decides what to pay and emits `PartnerPayoutInstructed`; it does not update a partner balance. The partner's payable balance is a ledger account that the payout engine reads, which removes the Shadow Ledger inside SFP. Second, **intake rejects; the engine does not guess**. An event that fails validation goes to quarantine with an owner, an age and a control total, because an event silently dropped is an incomplete ledger. Quarantine is a suspense account for events, and it is watched the same way (see [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger) on suspense).
+**The payout engine is a producer, not a writer.** It decides what to pay and emits `PartnerPayoutInstructed`; it does not update a partner balance. The partner's payable balance is a ledger account that the payout engine reads, which removes the Shadow Ledger inside SFP.
+
+**Intake rejects; the engine does not guess.** An event that fails validation goes to quarantine with an owner, an age and a control total, because an event silently dropped is an incomplete ledger. Quarantine is a suspense account for events, and it is watched the same way (see [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger) on suspense).
 
 {id: designing-financial-ledgers--the-core-schema}
 ### The core schema
 
-The journal needs fewer tables than most teams expect. A sketch in standard SQL:
+The journal needs three tables. A sketch in standard SQL:
 
 ```sql
 CREATE TABLE financial_event (
@@ -198,7 +200,7 @@ lines:
 
 Three properties make this auditable. **Every entry carries `rule_id` and `rule_version`**, so any line can be traced to the exact rule text and its approver. **Rules are evaluated, not executed**: the grammar has amount expressions, conditions and account derivations, but no loops and no calls to other systems, so a rule can be reviewed by an accountant and tested exhaustively. And **the engine refuses an entry that does not balance**, whatever the rule says, so a badly written rule fails loudly at posting time rather than quietly at month-end.
 
-Note the amount on the partner line: `booking.gross - booking.commission`. Computing one amount and deriving the other as the remainder guarantees the entry balances after rounding (see the money section below).
+The partner line, `booking.gross - booking.commission`, derives its amount as the remainder after the commission, which guarantees the entry balances after rounding (see the money section below).
 
 {id: designing-financial-ledgers--the-worked-rule-table-the-lisbon-booking}
 ### The worked rule table: the Lisbon booking
@@ -230,7 +232,7 @@ Three observations a reviewer should make about this table:
 - **Traveler funds held is a per-booking open item.** It rises to 600.00 on 12 March and returns to zero on 21 April. At the 31 March close it holds the Lisbon booking's €600.00 along with every other future stay, and that balance must agree with the safeguarding calculation at Northmere Payments B.V.
 - **Cash is 88.26 at the end**, across the safeguarding and operating accounts. €598.26 settled in, €510.00 paid out: €88.26 remains, which is the €90.00 commission less the €1.74 fee. If the cash, revenue and expense lines do not tell the same story, a rule is wrong.
 
-`BookingConfirmed` produces no entry, and that is a rule too: `SFP-MERCH-BOOKING-CONFIRMED` maps the event to "no accounting" explicitly. **A deliberate no-op is different from a missing rule.** The engine treats an event with no applicable rule as an error that goes to quarantine; an event whose rule says "no entry" is marked as consumed. That distinction is what lets the completeness check say "every event was accounted for" without exceptions.
+**A deliberate no-op is different from a missing rule.** `BookingConfirmed` produces no entry because a rule, `SFP-MERCH-BOOKING-CONFIRMED`, maps it explicitly to "no accounting". The engine sends an event with no applicable rule to quarantine as an error, and marks an event whose rule says "no entry" as consumed. That distinction lets the completeness check say "every event was accounted for" without exceptions.
 
 {id: designing-financial-ledgers--from-event-to-entry}
 ### From event to entry
@@ -278,7 +280,7 @@ The pattern Brandur Leach described for Stripe's API applies inside the ledger: 
 {id: designing-financial-ledgers--money-representation}
 ## Money Representation
 
-The rules for money are short and absolute.
+Five rules govern money, with no exceptions.
 
 - **Integers in minor units, never binary floating point.** €600.00 is stored as `60000` with currency `EUR`. Fowler's Money pattern exists because mixing currencies and accumulating rounding errors are real defects ([Fowler, PoEAA](https://martinfowler.com/eaaCatalog/money.html)).
 - **The currency travels with the amount.** A bare number in a ledger column is a defect waiting for a second currency. Use ISO 4217 codes ([ISO 4217](https://www.iso.org/iso-4217-currency-codes.html)).
@@ -286,9 +288,9 @@ The rules for money are short and absolute.
 - **Rounding is a policy with a name.** Each rule states its rounding mode (half-up, half-even) and the point at which it rounds. Rounding once, at the last step, beats rounding at every intermediate step.
 - **Allocate remainders deterministically.** When an amount is split, compute all but one part and derive the last as the remainder, or distribute leftover minor units by a stated order.
 
-Two Stayloft cases show why. A €599.99 booking at 15% gives a commission of €89.9985. Rounded half-up, the commission is €90.00, and the partner payable, **derived as the remainder**, is €509.99; the entry balances to the cent by construction. Rounding the two amounts independently balances on some bookings and misses by a cent on others, and a ledger that rejects unbalanced entries then rejects them. The rule "compute one, derive the other" removes the class of error.
+Deriving the remainder makes a Stayloft entry balance by construction. A €599.99 booking at 15% gives a commission of €89.9985. Rounded half-up, the commission is €90.00, and the partner payable, **derived as the remainder**, is €509.99; the entry balances to the cent. Rounding the two amounts independently balances on some bookings and misses by a cent on others, and a ledger that rejects unbalanced entries then rejects them. The rule "compute one, derive the other" removes the class of error. The same booking in yen (¥9,999 at 15%, a commission of ¥1,499.85) rounds to ¥1,500 because the yen has no minor unit, which is the bug the exponent table prevents.
 
-Allocation across nights is the second case. Allocating a €100.00 promotional discount across a three-night stay gives 3333.33 cents a night, which cannot be stored. A deterministic allocation gives 3334, 3333 and 3333, with the extra cent on the first night by stated rule. Whether the first or last night takes it does not matter; that it is always the same, and documented, does. The same booking in yen (¥9,999 at 15%, a commission of ¥1,499.85) rounds to ¥1,500 because the yen has no minor unit, which is the bug the exponent table prevents.
+Allocation across nights needs a stated order for the leftover cent. Allocating a €100.00 promotional discount across a three-night stay gives 3333.33 cents a night, which cannot be stored. A deterministic allocation gives 3334, 3333 and 3333, with the extra cent on the first night by stated rule. Whether the first or last night takes it does not matter; that it is always the same, and documented, does.
 
 {id: designing-financial-ledgers--multi-currency-entries-and-fx}
 ## Multi-Currency Entries and FX
@@ -317,7 +319,7 @@ USD lines sum to zero in USD; EUR lines sum to zero in EUR; all lines sum to zer
 {id: designing-financial-ledgers--balances-running-computed-snapshotted-and-hot}
 ## Balances: Running, Computed, Snapshotted and Hot
 
-A balance is a derived fact. The journal is the truth; a balance is a cached sum. Three ways to keep it, often used together:
+A balance is a cached sum of journal lines; the journal is the truth. Three ways to keep it, often used together:
 
 | Approach | How it works | Strength | Weakness |
 | --- | --- | --- | --- |
@@ -347,7 +349,7 @@ A ledger has more clocks than most systems, and confusing them is the most commo
 | `received_at` / `posted_at` | When the subledger accepted and posted it | Subledger | Audit trail; what was known at a given time |
 | `accounting_date` | The date whose period the entry belongs to | Accounting engine, by rule | Period assignment; GL posting date |
 
-Two practical details trip teams up. **Time zones**: the accounting date is a local date in the entity's calendar, not a UTC date. An event at 23:30 UTC on 31 March 2027 happened at 00:30 on 1 April in Lisbon, because Portugal moved to summer time (UTC+1) on 28 March. Whether it is a March or an April event depends on the entity's calendar, so the conversion uses the entity's time zone from the legal-entity master, and the rule is written down. **PSP cut-offs**: Adyen's reports follow the account's time-zone setting, while Stripe's Sigma uses UTC (see [Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals)); the subledger normalizes to the entity's calendar and keeps the source timestamp.
+Two details trip teams up: time zones and PSP cut-offs. **Time zones**: the accounting date is a local date in the entity's calendar, not a UTC date. An event at 23:30 UTC on 31 March 2027 happened at 00:30 on 1 April in Lisbon, because Portugal moved to summer time (UTC+1) on 28 March. Whether it is a March or an April event depends on the entity's calendar, so the conversion uses the entity's time zone from the legal-entity master, and the rule is written down. **PSP cut-offs**: Adyen's reports follow the account's time-zone setting, while Stripe's Sigma uses UTC (see [Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals)); the subledger normalizes to the entity's calendar and keeps the source timestamp.
 
 {id: designing-financial-ledgers--period-states-and-late-events}
 ### Period states and late events
@@ -358,7 +360,7 @@ Periods are per legal entity, per ledger. The period table is the engine's gate:
 
 **Figure 5:** *SFP period states. Standard event postings land only in Open periods; SoftClosed accepts only approved adjustment entries; Closed and Locked accept nothing. Reopening is an exception with its own approval and evidence, not an operational convenience.*
 
-The interesting case is an event whose `occurred_at` falls in a closed period. Interchange-plus-plus fees are often finalized after the sale (see [Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals)), so PSP fee adjustments regularly arrive late. Suppose an Adyen fee adjustment of €0.12 on the Lisbon payment, which occurred on 14 March, reaches SFP on 20 April. March's SFP period closed in the first week of April. The engine's rule:
+The hard case is an event whose `occurred_at` falls in a closed period. Interchange-plus-plus fees are often finalized after the sale (see [Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals)), so PSP fee adjustments regularly arrive late. Suppose an Adyen fee adjustment of €0.12 on the Lisbon payment, which occurred on 14 March, reaches SFP on 20 April. March's SFP period closed in the first week of April. The engine's rule:
 
 ```text
 function accounting_date(event, ledger):
@@ -374,7 +376,7 @@ function accounting_date(event, ledger):
 
 The entry posts in April with `original_period = 2027-03`. Nothing about March changes; March's reported numbers stay what they were. A **late-postings report**, grouped by original period, account and amount, goes to the entity controller each month. Leila's team sets a threshold above which a late item triggers a decision on whether to reopen or to disclose; below it, the April posting is the correct treatment. The architecture's job is to make that decision possible with data, not to make it.
 
-This is where bi-temporality earns its keep. The ledger can answer two different questions, and auditors ask both: *what are March's balances as reported* (lines with accounting date in March, as known at sign-off) and *what do we now know about March* (lines with `original_period = 2027-03`, whenever posted). A ledger that overwrites can answer only one of them.
+Bi-temporality lets the ledger answer two different questions, and auditors ask both: *what are March's balances as reported* (lines with accounting date in March, as known at sign-off) and *what do we now know about March* (lines with `original_period = 2027-03`, whenever posted). A ledger that overwrites can answer only one of them.
 
 {id: designing-financial-ledgers--corrections-by-reversal}
 ## Corrections by Reversal
@@ -389,12 +391,12 @@ Correction is the ledger's most important operational procedure, and the place w
 
 Reversals and re-posts land in the current open period under the late-event rule above, and the job is an application path with its own approval, not a script. Fowler warns that replay must not re-send instructions to external systems ([Event Sourcing](https://martinfowler.com/eaaDev/EventSourcing.html)); in SFP only the payout engine moves money, never the journal, so re-derivation cannot trigger a payout.
 
-This also separates **logical recovery from disaster recovery**. Replication protects against losing a data center; it faithfully replicates a bad rule's entries too. Recovery from a logical error is a reversal-and-repost job, not a restore. [Recover Before the Close: Resilience and Security for Finance](#resilience-and-security) covers the difference for financial incidents.
+**Logical recovery is not disaster recovery.** Replication protects against losing a data center, but it faithfully replicates a bad rule's entries too, so recovery from a logical error is a reversal-and-repost job, not a restore. [Recover Before the Close: Resilience and Security for Finance](#resilience-and-security) covers the difference for financial incidents.
 
 {id: designing-financial-ledgers--summarization-to-the-general-ledger}
 ## Summarization to the General Ledger
 
-S/4HANA is the group's book of record for the Stayloft entities; SFP is its subledger. Posting 3 million lines a day into the GL would make the GL slow and unreadable and buys nothing, because the detail already lives in a ledger designed for it. Summarization is right. The failure is summarization that loses the link.
+Summarizing into the GL is right; the failure is summarization that loses the link back to the detail. S/4HANA is the group's book of record for the Stayloft entities, and SFP is its subledger. Posting 3 million lines a day into the GL would make the GL slow and unreadable and buy nothing, because the detail already lives in a ledger designed for it.
 
 SAP's own high-volume subledger works this way: in FI-CA, documents "are consolidated into totals records" grouped by attributes such as GL account, company code, posting date, currency and tax code, under a **reconciliation key** that must be closed before the totals are transferred, a technique that "greatly reduces the volume of postings in the general ledger" ([SAP Learning, FI-CA general ledger integration](https://learning.sap.com/courses/implementing-sap-financial-contract-accounting/describing-general-ledger-integration)). Workday's Accounting Center posts summarized journals to the ledger and supports drill-down from a summarized report to source level ([Workday Accounting Center](https://www.workday.com/en-us/products/financial-management/accounting-center.html)). The custom design copies the principle.
 
@@ -441,7 +443,7 @@ Running this daily rather than at month-end is the single largest contribution a
 {id: designing-financial-ledgers--testing-a-ledger}
 ## Testing a Ledger
 
-Unit tests of individual rules are necessary and nowhere near sufficient. A ledger needs three further layers.
+Unit tests of individual rules are necessary but not sufficient; a ledger needs three further layers.
 
 **Property-based tests of invariants.** Instead of example cases, generate random but valid event sequences for a booking (captures, partial refunds, fee adjustments, chargebacks, late events, duplicates, out-of-order deliveries) and assert properties that must hold for all of them. Tools such as Hypothesis implement this style ([Hypothesis docs](https://hypothesis.readthedocs.io/)). The properties for SFP:
 
@@ -461,7 +463,7 @@ These tests find the bugs that example tests miss: the refund that arrives befor
 {id: designing-financial-ledgers--scaling-storage-and-retention}
 ## Scaling, Storage and Retention
 
-The arithmetic is reassuring. **Three million lines a day is about 35 lines a second on average.** Even at ten times average in a peak hour, that is a few hundred inserts a second into an append-only table, which a well-configured relational database handles. Stripe's internal Ledger processes about five billion events a day ([Stripe, 2024](https://stripe.dev/blog/ledger-stripe-system-for-tracking-and-validating-money-movement)); SFP is three orders of magnitude smaller. Most enterprise subledgers do not need an exotic database. They need correct design.
+**Three million lines a day is about 35 lines a second on average**, so throughput is not the problem. Even at ten times average in a peak hour, that is a few hundred inserts a second into an append-only table, which a well-configured relational database handles. Stripe's internal Ledger processes about five billion events a day ([Stripe, 2024](https://stripe.dev/blog/ledger-stripe-system-for-tracking-and-validating-money-movement)); SFP is three orders of magnitude smaller. Most enterprise subledgers do not need an exotic database. They need correct design.
 
 Where scale does bite:
 
@@ -546,7 +548,7 @@ Upstream, the subledger consumes the canonical events that [Files, Events and AP
 {id: designing-financial-ledgers--failure-modes}
 ## Failure Modes
 
-Most custom-ledger failures are one of these, and each has a structural remedy already described above.
+Most custom-ledger failures are one of these, and each has a structural remedy described above.
 
 | Failure | What it looks like | Structural remedy |
 | --- | --- | --- |

@@ -11,7 +11,7 @@
 
 > **KEY POINTS:**
 >
-> * **Finance debt is a carrying cost in three columns, and two of its biggest types are not code.** Customization Concrete, unsupported versions, Spreadsheet Glue, integration, data, control and knowledge debt each charge interest in money, risk and close days. Count items on a register with those three columns, never as a backlog count or a code-quality percentage.
+> * **Finance debt is a carrying cost in three columns, and two of its biggest types are not code.** Customization Concrete, unsupported versions, Spreadsheet Glue, integration, data, control and knowledge debt each charge interest in money, risk and close days. Record items on a register with those three columns, never as a backlog count or a code-quality percentage.
 > * **Fitness functions make architectural intent measurable and owned.** Reconciliation completeness, auto-match rate, suspense aging, tie-out breaks, close duration by phase, clean-core score, upgrade lead time, idempotency conformance and decision lead time each get a definition, a threshold, one named owner and an automated feed from data the estate already produces. A quarterly architecture fitness review reads them.
 > * **Sequence by dates, then by removal per effort, and gate each tranche with fitness readings.** Vendor, contract, audit and launch dates go first if waiting would miss them. The rest are ordered by what each tranche removes for its effort. Each tranche is released only when the fitness functions show it delivered and broke nothing the close depends on.
 
@@ -21,11 +21,11 @@
 > * **Spreadsheet Glue** — about 70 end-user computing tools sit in the close, 27 key controls still depend on one, and the register prices them like any other system.
 > * **The Suspense Swamp** — unmatched payment lines are debt with a balance attached, and suspense aging is the fitness function that shows whether the debt is shrinking.
 
-Every finance estate carries **technical debt**: the extra cost, risk and delay an enterprise carries because its systems were built, or have aged, in ways that make them harder to change or to trust than they need to be. In a software product, debt shows up as slow feature delivery. In a finance estate, it shows up somewhere less obvious: in the **days of the close**, in the number of **manual key controls** the auditor must test, in balances that sit in **suspense accounts** because a payment line carries no usable reference, and in upgrades that take most of a year.
+[The Technology Is the Easy Part: Leading a Finance Transformation](#finance-transformation) ended on a warning: the close days, custom objects and parallel interfaces a program promises to fix decay as soon as nobody measures them. This chapter gives the Chief Architect the instruments that keep measuring the estate after Keystone's last steering committee. What they measure is **technical debt**: the extra cost, risk and delay an enterprise carries because its systems were built, or have aged, in ways that make them harder to change or to trust than they need to be. In a software product, debt shows up as slow feature delivery. In a finance estate, it shows up in the **days of the close**, in the number of **manual key controls** the auditor must test, in balances that sit in **suspense accounts** because a payment line carries no usable reference, and in upgrades that take most of a year.
 
-The usual measures do not help a CFO. A static-analysis tool reports thousands of findings; a portfolio tool reports 97 applications as "Tolerate"; an integration team reports 1,100 interfaces. None says what the debt costs, risks or slows, or what money would remove. This chapter prices debt per item in a register the CFO can read, and measures the estate's architectural properties continuously with **fitness functions**, so that each modernization tranche is judged on evidence.
+The usual measures do not help a CFO. A static-analysis tool reports thousands of findings; a portfolio tool reports 97 applications as "Tolerate"; an integration team reports 1,100 interfaces. None says what the debt costs, risks or slows, or what money would remove. This chapter prices debt per item in a register the CFO can read, and measures the estate's architectural properties continuously with **fitness functions**, so that each modernization tranche is judged on evidence. The register becomes a template in [Working Papers: Templates for the Finance Architect](#toolkit), and [FinOps Meets the Ledger: Technology Spend as Financial Data](#finops) adds technology spend to the same catalog.
 
-The method builds on one I proposed for a different audience. **In my book OWNED, written for investors and the technology leaders of the companies they own, I proposed a three-column carrying-cost register (cost carried, risk carried, speed lost), a sequencing rule that puts dated items first and orders the rest by what each unit of effort removes, and funding in tranches with gates.** A finance estate needs that method plus three extensions: debt types that are not code, units that Finance already uses (close days, key controls, suspense balances), and gates that are read from fitness functions rather than from project status reports.
+**In my book OWNED, written for investors and the technology leaders of the companies they own, I proposed a three-column carrying-cost register (cost carried, risk carried, speed lost), a sequencing rule that puts dated items first and orders the rest by what each unit of effort removes, and funding in tranches with gates.** A finance estate needs that method plus three extensions: debt types that are not code, units that Finance already uses (close days, key controls, suspense balances), and gates that are read from fitness functions rather than from project status reports.
 
 {id: technical-debt-and-fitness--setting-the-scene-at-northmere-the-2028-funding-question}
 ## Setting the Scene at Northmere: The 2028 Funding Question
@@ -41,7 +41,7 @@ Dana has material but no answer. Sven Aalto, the SAP Platform Lead, has a clean-
 {id: technical-debt-and-fitness--what-debt-means-in-a-finance-estate}
 ## What Debt Means in a Finance Estate
 
-Ward Cunningham introduced the debt metaphor in 1992 to explain why shipping code before you fully understand a problem is acceptable if you go back and fix it. Martin Fowler's [Technical Debt Quadrant](https://martinfowler.com/bliki/TechnicalDebtQuadrant.html) (2009) separates debt along two axes. **Deliberate or inadvertent** asks whether the team knew it was taking the debt on. **Prudent or reckless** asks whether the trade-off was sensible. Fowler argues that prudent, inadvertent debt is inevitable even for excellent teams: "the moment you realize what the design should have been, you also realize that you have an inadvertent debt."
+Martin Fowler's [Technical Debt Quadrant](https://martinfowler.com/bliki/TechnicalDebtQuadrant.html) (2009) separates debt along two axes. It builds on the metaphor Ward Cunningham introduced in 1992 to explain why shipping code before you fully understand a problem is acceptable if you go back and fix it. **Deliberate or inadvertent** asks whether the team knew it was taking the debt on. **Prudent or reckless** asks whether the trade-off was sensible. Fowler argues that prudent, inadvertent debt is inevitable even for excellent teams: "the moment you realize what the design should have been, you also realize that you have an inadvertent debt."
 
 The quadrant is useful in a finance estate because it separates **who owns the remedy**. Northmere's debt arrived by every route:
 
@@ -52,7 +52,7 @@ The quadrant is useful in a finance estate because it separates **who owns the r
 | Prudent, inadvertent | The SAP group chart of accounts grown to about 3,900 accounts by country and product, before anyone designed dimensions ([Finance Data Architecture: Who Owns the Truth](#finance-data-architecture)) | The data owner (Leila), through the Finance Data Council |
 | Reckless, inadvertent | Hundreds of flat-file interfaces built with no receiver-checked control totals | The integration standard owner (Lucía), through the interface contract standard |
 
-A fifth origin matters more in finance than in product engineering: **acquired debt**. Wayfare and Tablekin each brought their own ERP, chart of accounts, integration platform and payout or billing logic. Nobody at Northmere chose that debt. The acquisition did, and its owner is whoever owns the integration decision.
+A fifth origin matters more in finance than in product engineering: **acquired debt**. Wayfare and Tablekin each brought their own ERP, chart of accounts, integration platform and payout or billing logic. Nobody at Northmere chose that debt; it came with the acquisition, and its owner is whoever owns the integration decision.
 
 {id: technical-debt-and-fitness--the-carrying-cost-in-three-columns}
 ### The carrying cost, in three columns
@@ -65,7 +65,7 @@ The useful answer to "how much debt?" is not a total but a **carrying cost**: wh
 | **Risk carried** | Key controls depending on the item; control deficiencies; unsupported software; suspense balances and their age; incidents that changed the books | Own units: controls, euros, days, incidents | Risk and control matrix; BlackLine; incident records; vendor support dates |
 | **Speed lost** | Close days on the critical path; upgrade months of change freeze; lead time to onboard a market, PSP or entity | Close days, months, weeks | Close calendar by phase; upgrade history |
 
-Two conventions keep the figures honest. **Cash** means money paid to a third party that would stop if the debt were removed: a license, hosting, a systems integrator. **Capacity** means existing staff time valued at Northmere's planning rate of **$165,000 per fully loaded FTE-year**. Freeing capacity does not reduce payroll by itself; it frees people for work that matters more. [Manage the Application Portfolio as an Investment](#application-portfolio) uses the same split for retirement savings, so the two documents compare.
+Two conventions keep the figures honest. **Cash** means money paid to a third party that would stop if the debt were removed: a license, hosting, a systems integrator. **Capacity** means existing staff time valued at Northmere's planning rate of **$165,000 per fully loaded FTE-year**. Freeing capacity does not reduce payroll by itself; it frees people for work that matters more. [Manage the Application Portfolio as an Investment](#application-portfolio) uses the same split for retirement savings, so its figures and the register's can be compared.
 
 The risk and speed columns are not converted into money. A significant deficiency, €2.1 million of suspense older than 90 days or a close day on the critical path are understood by a CFO in their own units. Converting them into a single dollar figure would hide the judgment the CFO is being asked to make.
 
@@ -99,14 +99,14 @@ Three of the seven are not code at all. **Control debt** and **Spreadsheet Glue*
 {id: technical-debt-and-fitness--fitness-functions-for-finance}
 ## Fitness Functions for Finance
 
-Neal Ford, Rebecca Parsons, Patrick Kua and Pramod Sadalage, in [Building Evolutionary Architectures](https://www.thoughtworks.com/insights/books/building-evolutionaryarchitectures-second-edition) (2nd edition, 2022), describe the **architectural fitness function**. Thoughtworks' Technology Radar summarizes it as a function that "provides an objective integrity assessment of some architectural characteristics" ([Thoughtworks](https://www.thoughtworks.com/radar/techniques/architectural-fitness-function)). Their book presents fitness functions as a way to automate architectural governance and classifies them along several dimensions. Three of them matter here: **scope** (atomic, checking one part, or holistic, checking a property of the whole system), **cadence** (triggered by a change, run continually, or run on a schedule) and **result** (a fixed threshold or a dynamic one).
+Neal Ford, Rebecca Parsons, Patrick Kua and Pramod Sadalage, in [Building Evolutionary Architectures](https://www.thoughtworks.com/insights/books/building-evolutionaryarchitectures-second-edition) (2nd edition, 2022), describe the **architectural fitness function**. Thoughtworks' Technology Radar summarizes it as a function that "provides an objective integrity assessment of some architectural characteristics" ([Thoughtworks](https://www.thoughtworks.com/radar/techniques/architectural-fitness-function)). The book presents fitness functions as a way to automate architectural governance and classifies them along several dimensions, three of which matter here: **scope** (atomic, checking one part, or holistic, checking a property of the whole system), **cadence** (triggered by a change, run continually, or run on a schedule) and **result** (a fixed threshold or a dynamic one).
 
-The term needs one clarification in this book. [Manage the Application Portfolio as an Investment](#application-portfolio) scores applications on **functional and technical fitness**, which are judgments made with written anchors. A **fitness function** in this chapter is a measurement of an architectural property of the estate, computed from data, with a threshold. The two meet in one place: a portfolio fitness score should cite the fitness functions that bear on it.
+A fitness function is not the **functional and technical fitness** that [Manage the Application Portfolio as an Investment](#application-portfolio) scores per application. Those scores are judgments made with written anchors. A **fitness function** in this chapter is a measurement of an architectural property of the estate, computed from data, with a threshold. The two meet in one place: a portfolio fitness score should cite the fitness functions that bear on it.
 
-{id: technical-debt-and-fitness--what-makes-a-finance-fitness-function}
-### What makes a finance fitness function
+{id: technical-debt-and-fitness--five-parts-of-a-finance-fitness-function}
+### Five parts of a finance fitness function
 
-Most software fitness functions check code structure or runtime behavior, and a finance estate needs those too: "no service writes to the general ledger except through the posting service" is a dependency rule a build pipeline can enforce. But the properties Finance cares about most concern the **books**: every balance provably complete, differences found the day they arise, platforms changeable without stopping the close. Those are measured from finance data, not from code.
+The properties Finance cares about most concern the **books**: every balance provably complete, differences found the day they arise, platforms changeable without stopping the close. Those are measured from finance data, not from code. A finance estate still needs the usual checks of code structure and runtime behavior: "no service writes to the general ledger except through the posting service" is a dependency rule a build pipeline can enforce.
 
 Every Northmere fitness function has five parts, and a candidate missing any one of them is not adopted:
 
@@ -152,7 +152,7 @@ Money in flight, the value that has left one system and not yet arrived in the n
 {id: technical-debt-and-fitness--architecture-how-the-fitness-functions-are-measured-and-reviewed}
 ## Architecture: How the Fitness Functions Are Measured and Reviewed
 
-A fitness function that someone computes by hand before each review is a status report. Northmere's rule is that every fitness function lands in FinDB from a system feed, and the review reads one model.
+Every Northmere fitness function lands in FinDB from a system feed, and the review reads that one model. A fitness function that someone computes by hand before each review is only a status report.
 
 ![Five existing feeds (pipelines, delivery ledgers, reconciliation, control matrix, ledgers) flow into FinDB, which feeds a fitness scorecard read in the quarterly review; the review updates the debt register and reads the tranche gates, which decide funding at the steering committee.](finance-systems-architecture/posts/39-technical-debt-and-fitness/assets/images/39-technical-debt-and-fitness/fitness-feeds-quarterly-review.jpeg)
 
@@ -163,7 +163,7 @@ A fitness function that someone computes by hand before each review is a status 
 
 **Pipelines block new debt.** Two fitness functions are enforced before a change reaches production. Since June 2027, the ABAP Test Cockpit's clean-core checks run in the S/4HANA transport pipeline, and a new Level D object needs a design-authority waiver with an expiry date ([SAP S/4HANA: One Journal, Clean Core](#sap-s4hana)). In 2028, every deployment of a balance-changing interface runs a duplicate-delivery test: the pipeline sends the same batch twice under the same idempotency key and checks that the receiver posts once.
 
-**Operational data proves the books.** BlackLine already holds the evidence for matching, reconciliation and close tasks. The delivery ledgers designed in [Files, Events and APIs: How Finance Systems Talk](#integration-architecture) already record counts, control totals and dead letters per batch. The task is to extract it daily into FinDB, not to create new measurements; BlackLine's own reports remain the audit evidence.
+**Operational data proves the books.** BlackLine already holds the evidence for matching, reconciliation and close tasks. The delivery ledgers designed in [Files, Events and APIs: How Finance Systems Talk](#integration-architecture) already record counts, control totals and dead letters per batch. The work is a daily extract into FinDB, not new measurement; BlackLine's own reports remain the audit evidence.
 
 **FinDB computes and tests.** Owen's team keeps a small fitness mart in FinDB, built with dbt. Each threshold is written as a dbt data test, a SQL query that, in dbt's own definition, returns "a set of failing records" ([dbt documentation](https://docs.getdbt.com/docs/build/data-tests)). A breach is therefore a list of the interfaces, accounts or controls that fail, not a red cell, and the review starts from those records.
 
@@ -196,7 +196,7 @@ Dana's team builds the register in the week after the review, from every candida
 | 7 | **Control debt.** ~378 of 610 key controls manual; SFP remediation in its first year | Control; mixed | $3.1M capacity (~19 FTE operating and testing manual controls) | A significant deficiency to close in the FY2027 audit | ~One close day of manual review at WD8–9 | **FY2027 audit fieldwork**, to February 2028 |
 | 8 | **Knowledge debt.** ~150 of ~430 balance-changing hand-offs have a registered contract; design records for about a third of posting-path custom code | Documentation and knowledge; reckless-inadvertent | $0.5M capacity (~3 FTE diagnosis and rediscovery) | ~1.5 days to diagnose a feed failure; key-person dependence | Every change starts with discovery | None binding |
 
-All figures are illustrative. Read across, the eight items carry about **$3.5 million a year of cash and $13.2 million of capacity**, about 80 FTE-years of Northmere's people. Those two totals are the only sums Dana presents. The risk and speed columns are not added up. Close days in particular are not additive, because removing one phase's delay moves the critical path to the next phase; each figure is the item's share of the upstream plan in [BlackLine: Matching, Certifying and Closing](#blackline).
+Read across, the eight items carry about **$3.5 million a year of cash and $13.2 million of capacity**, about 80 FTE-years of Northmere's people; all figures are illustrative. Those two totals are the only sums Dana presents. The risk and speed columns are not added up. Close days in particular are not additive, because removing one phase's delay moves the critical path to the next phase; each figure is the item's share of the upstream plan in [BlackLine: Matching, Certifying and Closing](#blackline).
 
 Three cross-checks keep the register honest.
 
@@ -215,8 +215,8 @@ In OWNED I wrote the sequencing rule into the register in three steps. First, fi
 
 **Figure 4:** *The OWNED sequencing rule adapted to a finance estate: dated items first when waiting would miss the date, then the rest by what each tranche removes for its effort, with the close critical path and key controls as the tie-break.*
 
-{id: technical-debt-and-fitness--finance-s-dates}
-### Finance's dates
+{id: technical-debt-and-fitness--five-kinds-of-external-date}
+### Five kinds of external date
 
 A finance estate has five kinds of external date, and the register records each with its source: **vendor maintenance and hosting** (S/4HANA release maintenance, the colocation contract), **contract renewal and notice** (OneStream's notice date of 30 September 2027, used for wave 0; BlackLine's 2028 renewal), the **audit cycle** (FY2027 testing of the SFP remediation), **regulation** (e-invoicing mandates, ViDA and Pillar Two, [Around the Core: Where Specialist Platforms Earn Their Place](#satellite-platforms)) and **business launches** (Brazil in 2028). Missing a regulatory or launch date has a particular cost in finance: the workaround that fills the gap is usually a spreadsheet, so a missed date creates new Spreadsheet Glue.
 
@@ -267,14 +267,14 @@ Dana's 2028 request has two tranches and a third that is described but not reque
 
 The tranches are inside Keystone's approved $310 million envelope. Tomás is not asked for new money. He is asked to release 2028 funds against named results, and to hold tranche 2 until tranche 1's gate is read.
 
-**A miss has a defined response.** If the APM match rate reaches 98.8% instead of 99.0%, tranche 2 waits. Ingrid's team takes the failing records from the fitness mart; if they come from one provider's daily aggregates, the fix is a reference agreement with that provider. Tranche 2 is released after the next reading passes, and Brazil's readiness is judged on the same evidence. Only the review can change a threshold, with a recorded reason, never an owner to make a reading pass.
+**A miss has a defined response.** If the APM match rate reaches 98.8% instead of 99.0%, tranche 2 waits. Ingrid's team takes the failing records from the fitness mart; if they come from one provider's daily aggregates, the fix is a reference agreement with that provider. Tranche 2 is released after the next reading passes, and Brazil's readiness is judged on the same evidence. Only the review can change a threshold, and only with a recorded reason; an owner never changes one to make a reading pass.
 
 **Why not one big remediation program?** The alternative Dana's team considered and rejected was a single 2028 "estate remediation program" of about $16 million with one end date. It would have looked simpler, but it would have put every benefit at the end, freed no close days before the 2028 year-end close and given Tomás no point at which to stop on evidence. The tranche shape gives him two, the first before year-end.
 
 {id: technical-debt-and-fitness--presenting-it-to-the-cfo}
 ## Presenting It to the CFO
 
-Tomás asked two questions. Dana answers in his units, in the order he asked, and puts the register and the catalog in the appendix.
+Dana answers Tomás's two questions in his units, in the order he asked, and puts the register and the catalog in the appendix.
 
 **"How much technical debt do we have?"** Eight items that cost about $3.5 million a year in cash we would stop paying and about 80 people's worth of time, mostly in finance operations and controls. Four have dates we do not control: the colocation contract ending in December 2028, the Brazil launch, the FY2027 audit and the 2029 SAP upgrade. They sit in the close phases where the three days between our eight-day close and the five-day target must come from, and they keep 27 key controls on spreadsheets and €2.1 million of payments in suspense for more than 90 days. One item we carry on purpose: the legacy MuleSoft flows, at $1.1 million a year until the ledgers converge, because migrating them earlier means building them twice.
 
@@ -284,8 +284,6 @@ The script follows three rules I recommend for any CFO conversation about debt. 
 
 {id: technical-debt-and-fitness--trade-offs-how-to-measure-estate-health}
 ## Trade-offs: How to Measure Estate Health
-
-Each way of measuring estate health fits a different purpose.
 
 | Approach | What it measures | Good for | Fails when | Use it |
 | --- | --- | --- | --- | --- |

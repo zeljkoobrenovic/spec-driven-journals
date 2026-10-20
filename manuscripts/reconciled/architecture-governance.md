@@ -25,7 +25,7 @@
 
 In a finance estate, governance carries a burden that product architecture does not. Decisions about posting, reconciliation, payout rules and access reach the financial statements, so some of them must leave evidence that an auditor can test. That pressure pushes organizations toward a review board that sees everything. The opposite pressure, from teams that deploy forty times a week, pushes toward no review at all. Both fail: the first becomes **a queue that teams learn to route around**, and the second lets the decisions that bind for a decade be taken as configuration changes on a Friday afternoon.
 
-[The Chief Architect's Job: Making Many Systems Tell One Story](#chief-architect-role) set out Northmere's decision rights: five proposed mandatory standards owned by the Chief Architect (a sixth, for AI agents, followed in Q3 2027), advice everywhere else, expiring waivers, and a control gate that advice never replaces for systems in internal control over financial reporting (ICFR) scope. This chapter builds the machinery that turns those rights into decisions.
+[The Chief Architect's Job: Making Many Systems Tell One Story](#chief-architect-role) set out Northmere's decision rights: five proposed mandatory standards owned by the Chief Architect (a sixth, for AI agents, followed in Q3 2027), advice everywhere else, expiring waivers, and a control gate that advice never replaces for systems in internal control over financial reporting (ICFR) scope. Part III then relied on decisions someone had to take, record and enforce: slicing plans, tolerances, standards and waivers with expiry dates. This chapter opens Part IV by building the machinery that turns those rights into decisions. The rest of Part IV runs through it: [Principles That Decide Things](#principles-standards-reference) writes the standards it enforces, and the chapters on transition states, vendors, transformation and technical debt record their decisions in its register.
 
 {id: architecture-governance--setting-the-scene-the-first-queue}
 ## Setting the Scene: The First Queue
@@ -51,7 +51,7 @@ Governance has two jobs: **better decisions and faster decisions**. "Better" mea
 
 Anything else is **compliance theater**. My test is to ask what would change if a given review stopped; if the answer is "nothing, except that we could no longer say we reviewed it", it is theater.
 
-Governance is often confused with three neighboring processes. Each has a different purpose, owner and evidence standard, and the confusion is costly in both directions.
+Governance is often confused with three neighboring processes, each with a different purpose, owner and evidence standard.
 
 | Process | Question it answers | Owner at Northmere | Evidence it needs | What goes wrong when it is confused with architecture governance |
 | --- | --- | --- | --- | --- |
@@ -60,7 +60,7 @@ Governance is often confused with three neighboring processes. Each has a differ
 | **Procurement and contract approval** | Should we buy this, from whom, at what price and terms? | Procurement through Coupa, budget owners | Purchase approvals and contracts | A new platform is bought without anyone asking which capability it duplicates |
 | **Program steering** | Is the program on time, in budget and delivering its value case? | Keystone program board, sponsored by Tomás Ferreira | Status, risks, value tracking | Design decisions are optimized for milestones and the run estate drifts |
 
-The table explains the shape of the rest of the chapter. Architecture governance does not replace the other three. It **feeds them a record**, and they check for it at their own gates.
+Architecture governance does not replace the other three. It **feeds them a record**, and they check for it at their own gates.
 
 {id: architecture-governance--a-decision-taxonomy-reversibility-reach-and-triggers}
 ## A Decision Taxonomy: Reversibility, Reach and Triggers
@@ -116,7 +116,7 @@ Dana turned the grid into four paths, each with a lead-time target measured from
 
 An **architecture decision record (ADR)** is a short document that captures one architecture decision: its context, the options considered, the decision, and its consequences. Michael Nygard proposed the form in 2011 with five sections (title, context, decision, status, consequences), numbered sequentially, written in active voice, and never deleted: a reversed decision is kept and marked superseded ([Nygard, Documenting Architecture Decisions](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions)). The Markdown Architectural Decision Records template, MADR, now at version 4.0.0, adds decision drivers, considered options with pros and cons, and a "confirmation" section for how compliance with the decision will be checked ([MADR](https://adr.github.io/madr/)). Martin Fowler's 2026 summary of the practice adds two useful rules: keep a record to about a page, and do not edit an accepted record, supersede it ([Fowler, Architecture Decision Record](https://martinfowler.com/bliki/ArchitectureDecisionRecord.html)).
 
-Those formats were designed for software teams. A finance estate needs a few more fields, each because a specific failure happens without it.
+A finance estate needs more fields than these software-team formats, each because a specific failure happens without it.
 
 | Field | What it holds | Why it is there in a finance estate |
 | --- | --- | --- |
@@ -221,12 +221,12 @@ The rule Dana adopted is short: **no owner, no reference implementation, no conf
 
 **Figure 4:** *The lifecycle of a standard. Each transition is a recorded decision. A standard reaches Mandatory only when the check that proves conformance is already running, and it leaves through Deprecated so that no system is left non-conformant overnight.*
 
-The first five were declared mandatory together on 1 April 2027 for new builds and changed interfaces, with dated transition plans for existing systems; enforcement of STD-FIN-01 and STD-FIN-02 waited for the schema registry on 1 July 2027 ([Principles That Decide Things](#principles-standards-reference) owns the catalog itself). The register held 14 active waivers at the end of Q3 2027 and 11 at year-end.
-
-Two details matter at Northmere. A standard that affects posting must run in **Trial** for at least one close cycle. And a **Mandatory** standard applies to new systems and changed parts of existing ones from its effective date; existing systems get a **transition period**, typically one to four quarters, after which non-conformance needs a waiver.
+Northmere adds two rules to the lifecycle. A standard that affects posting must run in **Trial** for at least one close cycle. And a **Mandatory** standard applies to new systems and changed parts of existing ones from its effective date; existing systems get a **transition period**, typically one to four quarters, after which non-conformance needs a waiver.
 
 {id: architecture-governance--northmere-s-catalog-at-the-end-of-2027}
 ### Northmere's catalog at the end of 2027
+
+The first five were declared mandatory together on 1 April 2027 for new builds and changed interfaces, with dated transition plans for existing systems; enforcement of STD-FIN-01 and STD-FIN-02 waited for the schema registry on 1 July 2027 ([Principles That Decide Things](#principles-standards-reference) owns the catalog itself). The register held 14 active waivers at the end of Q3 2027 and 11 at year-end.
 
 | Standard | Owner | In force | Conformance check | Active waivers, Dec 2027 |
 | --- | --- | --- | --- | --- |
@@ -239,9 +239,11 @@ Two details matter at Northmere. A standard that affects posting must run in **T
 
 Three further candidates sat in the Proposed or Trial state at year-end: a **ledger-ready launch criterion**, under which no payment method, provider or market goes live until its settlement can be matched automatically at an agreed rate ([Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals)); a **single rate service** for foreign-exchange conversion; and **released interfaces only** for new integrations with S/4HANA. Each waits for a reference implementation and a conformance check.
 
-STD-FIN-06 went from proposal to mandatory in one quarter, because its reference implementation (the control card and the agent gateway) was built during three pilots and few agents existed. The first retirement is scheduled: STD-FIN-03 contains an interim clause allowing SFP to post daily summaries provided each carries a reconciliation key to settlement lines. It is marked for deprecation when the SFP merchant subledger moves into the group finance core in 2029, and its check will be removed then.
+STD-FIN-06 went from proposal to mandatory in one quarter, because its reference implementation (the control card and the agent gateway) was built during three pilots and few agents existed.
 
-Six entries is the point, not modesty. **Every mandatory standard costs every team something**, and the list must stay short enough for a brand architect to recite. Adding one is a T2 decision, so the list cannot grow by stealth.
+The first retirement is scheduled: STD-FIN-03 contains an interim clause allowing SFP to post daily summaries provided each carries a reconciliation key to settlement lines. It is marked for deprecation when the SFP merchant subledger moves into the group finance core in 2029, and its check will be removed then.
+
+The catalog stays short on purpose. **Every mandatory standard costs every team something**, and the list must stay short enough for a brand architect to recite. Adding one is a T2 decision, so the list cannot grow by stealth.
 
 {id: architecture-governance--waivers-expiry-compensating-controls-and-a-register}
 ## Waivers: Expiry, Compensating Controls and a Register
@@ -265,12 +267,12 @@ A sample of the register at the end of 2027 shows the range.
 
 In 2027 the board granted 17 waivers and declined 5. At year-end 11 were active and the oldest was 10 months old. Six fell due during 2027: five were closed by their expiry date and one was renewed, which is 83% closed on time against Dana's target of more than 80%.
 
-Two practices matter more than the fields. **The waiver register is published next to the conformance results**, so nobody reads "100% conformant" without seeing what the waivers excuse. And **a waiver's exit plan must be funded**: otherwise it is a permanent exception with a date on it, and the escalation rule forces that conversation into the design authority, where the money is.
+**The waiver register is published next to the conformance results**, so nobody reads "100% conformant" without seeing what the waivers excuse. **A waiver's exit plan must be funded**: otherwise it is a permanent exception with a date on it, and the escalation rule forces that conversation into the design authority, where the money is.
 
 {id: architecture-governance--conformance-automated-where-possible-sampled-where-not}
 ## Conformance: Automated Where Possible, Sampled Where Not
 
-A standard is only as real as the check that proves conformance. The most useful idea here comes from evolutionary architecture: a **fitness function** is an objective, preferably automated, test of an architectural characteristic, run as part of delivery or in production ([Ford, Parsons, Kua and Sadalage, *Building Evolutionary Architectures*, 2nd edition](https://www.thoughtworks.com/insights/books/building-evolutionaryarchitectures-second-edition)). [Technical Debt on the Balance Sheet](#technical-debt-and-fitness) owns fitness functions as a way to measure the health of the estate. Governance uses the same mechanism for a narrower purpose: to prove that each mandatory standard holds, continuously, without a reviewer.
+A standard is only as real as the check that proves conformance. Evolutionary architecture supplies the mechanism: a **fitness function** is an objective, preferably automated, test of an architectural characteristic, run as part of delivery or in production ([Ford, Parsons, Kua and Sadalage, *Building Evolutionary Architectures*, 2nd edition](https://www.thoughtworks.com/insights/books/building-evolutionaryarchitectures-second-edition)). [Technical Debt on the Balance Sheet](#technical-debt-and-fitness) owns fitness functions as a way to measure the health of the estate. Governance uses the same mechanism for a narrower purpose: to prove that each mandatory standard holds, continuously, without a reviewer.
 
 Conformance happens at four moments, and each standard should be checked at the earliest moment that works.
 
@@ -281,7 +283,7 @@ Conformance happens at four moments, and each standard should be checked at the 
 | **Release** | The change gate checks links and approvals | Change records for structural changes in ICFR systems must cite an accepted ADR; a missing link stops the release |
 | **Run** | Production monitors confirm the property still holds | Weekly reconciliation of deployment logs to production versions; monthly check that every subledger feed has a certified reconciliation (STD-FIN-03); agent registry check (STD-FIN-06) |
 
-Automated checks stop somewhere, and the honest move is to say where. **SaaS configuration** is the largest gap: Northmere cannot run its own checks inside Workday, Oracle Fusion, BlackLine or OneStream. There, conformance to STD-FIN-05 rests on the platforms' own audit trails of configuration changes, where available, exported into the evidence store, and on a **quarterly sample** in which Mei's team checks that changes to financially significant configuration were approved by someone other than their author. Sampling is weaker than enforcement, and the catalog says which kind each check is.
+**SaaS configuration** is the largest gap in automated checks: Northmere cannot run its own checks inside Workday, Oracle Fusion, BlackLine or OneStream. There, conformance to STD-FIN-05 rests on the platforms' own audit trails of configuration changes, where available, exported into the evidence store, and on a **quarterly sample** in which Mei's team checks that changes to financially significant configuration were approved by someone other than their author. Sampling is weaker than enforcement, and the catalog says which kind each check is.
 
 A second limit is **meaning**: a pipeline can prove a feed emits schema-valid canonical events, not that its `business_model` attribute is right for a new product. That stays a question for people.
 
@@ -326,7 +328,7 @@ Under these rules the Fusion change would have been classed as a capability boun
 {id: architecture-governance--measuring-governance}
 ## Measuring Governance
 
-[The Chief Architect's Job: Making Many Systems Tell One Story](#chief-architect-role) set the architecture function's scorecard. Governance needs a few measures of its own, read together, because each one alone is easy to game.
+Governance needs a few measures of its own, beyond the function's scorecard in [The Chief Architect's Job: Making Many Systems Tell One Story](#chief-architect-role), read together because each one alone is easy to game.
 
 | Measure | Definition | Q4 2026 baseline | 2027 result | Caution |
 | --- | --- | --- | --- | --- |
@@ -345,7 +347,7 @@ The measure I watch most closely is the **path mix**. When the board's share ris
 {id: architecture-governance--governance-anti-patterns}
 ## Governance Anti-Patterns
 
-[The Chief Architect's Job: Making Many Systems Tell One Story](#chief-architect-role) described how architecture functions fail. Governance systems fail in their own ways, and each has a measurable symptom.
+Governance systems fail in ways distinct from the function failures in [The Chief Architect's Job: Making Many Systems Tell One Story](#chief-architect-role), and each has a measurable symptom.
 
 | Anti-pattern | What it looks like | Symptom you can measure | Cure |
 | --- | --- | --- | --- |

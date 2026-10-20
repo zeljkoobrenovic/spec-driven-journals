@@ -21,15 +21,15 @@
 > * **Audit Archaeology** — custom platforms are built by product engineers to product standards, and their controls usually arrive with the first audit finding.
 > * **Capability Creep** — custom platforms quietly duplicate invoicing, payouts and master data that group platforms already provide.
 
-Every large digital enterprise I have worked with runs finance software it wrote itself. It is rarely a full ERP. It is the machinery that turns the company's particular business model into money: the engine that calculates a marketplace commission on every order, the service that decides when and how much to pay a partner, the ledger that tracks customer money held before a service is delivered. Packages exist for each in general; at the volumes involved, "almost fits" is expensive.
+Every large digital enterprise I have worked with runs finance software it wrote itself. It is rarely a full ERP. It is the machinery that turns the company's business model into money: the engine that calculates a marketplace commission on every order, the service that decides when and how much to pay a partner, the ledger that tracks customer money held before a service is delivered. Packages exist for each; at these volumes, "almost fits" is expensive.
 
-The trouble is that these platforms grow. A commission engine acquires an invoicing module because the ERP's invoicing was slow to configure. The payout service keeps partner balances because it needed them to net refunds. A few years later the brand has a **custom finance platform** that keeps its own books, posts its own journals and runs its own controls, and nobody decided that it should.
+These platforms grow. A commission engine acquires an invoicing module because the ERP's invoicing was slow to configure. The payout service keeps partner balances because it needed them to net refunds. A few years later the brand has a **custom finance platform** that keeps its own books, posts its own journals and runs its own controls, and nobody decided that it should.
 
 ![A small commission workshop grows over four stages, adding invoicing, balances and journals, until it stands as a second ledger beside the official ERP building.](finance-systems-architecture/posts/13-custom-finance-platforms/assets/images/13-custom-finance-platforms/platform-that-grows-into-a-ledger.jpeg)
 
 **Figure 1:** *Custom finance platforms grow by accretion: a commission engine acquires invoicing, then partner balances, then its own journals, until the brand has a second book of record that nobody decided to build.*
 
-This chapter is about the decision nobody made: which finance capabilities to build, **where the boundary with the ERP must sit**, what owning really costs, and an **explicit retirement test** for deciding what to keep, converge or switch off. The internals of a custom ledger (posting rules, invariants, idempotency, bi-temporality) belong to the next chapter, [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers). This chapter decides what such a ledger should own; that one explains how to build it.
+Part II asks every platform what it masters, what it only receives, how its numbers are proven against the ledger and what it would cost to leave. It starts with the platforms an enterprise builds itself, because their boundary is the one most often never drawn. This chapter makes the decision nobody made: which finance capabilities to build, **where the boundary with the ERP must sit**, what owning really costs, and an **explicit retirement test** for deciding what to keep, converge or switch off. It applies the per-capability method of [Build, Buy or Compose: Choosing What to Own](#build-versus-buy) and the per-component dispositions of [Changing the Engine in Flight: Modernization Patterns for Finance](#modernization-patterns) to Northmere's Stayloft Finance Platform, and its boundary rules and control totals are the ones [SAP S/4HANA: One Journal, Clean Core](#sap-s4hana), [The Life of a Booking: From €600 Payment to $97.38 of Revenue](#transaction-to-report) and [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation) rely on. The internals of a custom ledger (posting rules, invariants, idempotency, bi-temporality) belong to the next chapter, [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers): this chapter decides what such a ledger should own; that one explains how to build it.
 
 {id: custom-finance-platforms--setting-the-scene-the-sfp-question-at-northmere}
 ## Setting the Scene: The SFP Question at Northmere
@@ -71,15 +71,15 @@ The platforms in this table share a property that matters more than their functi
 {id: custom-finance-platforms--why-enterprises-build-five-legitimate-reasons}
 ## Why Enterprises Build: Five Legitimate Reasons
 
-Building finance software is rarely the default. Packages are cheaper to keep compliant, and [Build, Buy or Compose: Choosing What to Own](#build-versus-buy) gives the general criteria. Five reasons recur when building is right, and each has a test that separates a real reason from a preference.
+Five reasons recur when building finance software is right, and each has a test that separates a real reason from a preference. Packages stay the default because they are cheaper to keep compliant; [Build, Buy or Compose: Choosing What to Own](#build-versus-buy) gives the general criteria.
 
-**1. Volume and latency.** A marketplace that books millions of transactions a day needs commission, liability and payout positions per transaction, often within seconds, because partners and customers see them. General-ledger systems are designed for summarized postings; even packages built for volume, such as SAP's FI-CA, which SAP describes as [the first-choice subledger in S/4HANA "for industries with high volume and high performance requirements"](https://learning.sap.com/courses/implementing-sap-financial-contract-accounting/describing-sap-billing-and-revenue-innovation-management-sap-brim-), are batch-oriented subledgers rather than real-time product services. *The test:* does a user or partner need the number before the next batch would deliver it? A partner app that shows "you will be paid €510 on 26 April" the moment a booking is made passes. A monthly commission statement does not.
+**1. Volume and latency.** A marketplace that books millions of transactions a day needs commission, liability and payout positions per transaction, often within seconds, because partners and customers see them. General-ledger systems are designed for summarized postings. Even packages built for volume, such as SAP's FI-CA, which SAP describes as [the first-choice subledger in S/4HANA "for industries with high volume and high performance requirements"](https://learning.sap.com/courses/implementing-sap-financial-contract-accounting/describing-sap-billing-and-revenue-innovation-management-sap-brim-), are batch-oriented subledgers rather than real-time product services. *The test:* does a user or partner need the number before the next batch would deliver it? A partner app that shows "you will be paid €510 on 26 April" the moment a booking is made passes. A monthly commission statement does not.
 
-**2. Coupling to the product.** When a financial rule is part of what the business sells, it changes at product speed. Stayloft's commission depends on the property's program membership, its visibility boosts and promotional overrides, and Stayloft's commercial team changes these weekly. Putting that logic in an ERP pricing condition table would put the product release cycle behind the ERP's change process. *The test:* who asks for changes to this logic, and how often? If the answer is the product or commercial team, monthly or faster, the logic belongs near the product.
+**2. Coupling to the product.** When a financial rule is part of what the business sells, it changes at product speed. Stayloft's commission depends on the property's program membership, its visibility boosts and promotional overrides, and Stayloft's commercial team changes these weekly. In an ERP pricing condition table, every such change would wait for the ERP's change process. *The test:* who asks for changes to this logic, and how often? If the answer is the product or commercial team, monthly or faster, the logic belongs near the product.
 
 **3. Novel business models.** Packages encode yesterday's business models. A company that invents a new one (merchant-model accommodation in 2005, subscription-plus-usage-plus-payments for restaurants today) often finds no package that represents its obligations naturally. *The test:* can you describe the model with the package's standard objects without inventing meanings for its fields? If every implementation workshop ends in "we'll use the reference field for that", the model is not standard yet.
 
-**4. Licensed-entity needs.** A company that holds customer money under a payments or e-money license must prove, every day, what it owes to whom. Under [PSD2 Article 10](https://eur-lex.europa.eu/eli/dir/2015/2366/oj), funds still held at the end of the business day after receipt must be segregated in a separate account at a credit institution (or in secure low-risk assets), or covered by insurance or a comparable guarantee. Northmere Payments B.V., the group's e-money institution, safeguards traveler funds this way. Proving the safeguarded amount is right requires a per-booking liability position reconciled daily to bank balances, which is a product of how bookings, cancellations and payouts flow, not of the general ledger. *The test:* does a regulator require a position at a granularity or frequency the ERP does not keep?
+**4. Licensed-entity needs.** A company that holds customer money under a payments or e-money license must prove, every day, what it owes to whom. Under [PSD2 Article 10](https://eur-lex.europa.eu/eli/dir/2015/2366/oj), funds still held at the end of the business day after receipt must be segregated in a separate account at a credit institution (or in secure low-risk assets), or covered by insurance or a comparable guarantee. Northmere Payments B.V., the group's e-money institution, safeguards traveler funds this way. Proving the safeguarded amount requires a per-booking liability position reconciled daily to bank balances. That position comes from how bookings, cancellations and payouts flow, not from the general ledger. *The test:* does a regulator require a position at a granularity or frequency the ERP does not keep?
 
 **5. Cost at scale.** Per-transaction license or processing fees that are trivial at a thousand transactions become material at a billion. A platform priced per invoice, per payout or per event can cost more each year than the team that would build the equivalent. *The test:* model the full cost both ways at today's volume and at three times today's, including the controls and people described later in this chapter. Cost at scale is the weakest of the five reasons on its own, because teams consistently undercount the cost of owning.
 
@@ -92,7 +92,7 @@ The case against building is not that engineers cannot write finance software. I
 
 **The control burden.** Every automated calculation that feeds the financial statements is an **application control** the company must design, document and evidence, and every such control relies on **IT general controls (ITGCs)**: logical access, change management and operations over the system (see [Controls by Design, Not by Audit Season](#controls-and-auditability)). A vendor's ERP comes with an assurance report on the vendor's side of those controls; a custom platform comes with nothing. Northmere's significant deficiency is the textbook case: an engineering team that deployed safely and often, with a pipeline that recorded every change, still drew an audit finding because nobody could show that a second person approved each payout rule change and that developers could not reach production data.
 
-**The audit burden.** Auditors test custom platforms more deeply than configured packages because nothing about them is standard. They walk through the logic, test the reports and extracts that controls depend on (information produced by the entity), and ask for evidence that controls operated for every change in the period. Each audit cycle consumes engineering time to produce that evidence, and each new auditor asks for it again.
+**The audit burden.** Auditors test custom platforms more deeply than configured packages because nothing about them is standard. They walk through the logic, test the reports and extracts that controls depend on (information produced by the entity), and ask for evidence that controls operated for every change in the period. Producing that evidence takes engineering time every audit cycle, and each new auditor asks for it again.
 
 **The talent burden.** A custom finance platform needs engineers who understand accounting, and accountants who understand the platform. Both are scarce and both concentrate knowledge. Platforms built over eight years by a stable team carry rules nobody wrote down. When two or three people leave, the platform keeps running, but nobody can change its recognition rules with confidence.
 
@@ -105,6 +105,24 @@ The case against building is not that engineers cannot write finance software. I
 | Novel business model | Accounting interpretation lives in code | Accounting policy owned by the controller, implemented by engineering, with traceable rule versions |
 | Licensed-entity needs | Regulatory reporting and daily reconciliation obligations | The licensed entity owns the requirement; the platform owns the evidence |
 | Cost at scale | Hidden people and control costs | A full cost of owning, refreshed every year |
+
+{id: custom-finance-platforms--the-true-cost-of-owning}
+## The True Cost of Owning
+
+The four burdens add costs that business cases for custom finance platforms leave out. Those cases count engineers and cloud spend; at Northmere the rest comes to almost half the total. In March 2027 Dana's team estimated SFP's annual cost of owning (illustrative, rounded):
+
+| Cost line | What it covers | Estimate per year |
+| --- | --- | --- |
+| Engineering | ~60 engineers in Jonas's organization at the group planning rate of $165,000 per fully loaded FTE-year | ~$9.9M |
+| Infrastructure | Cloud compute, storage, the event backbone share, environments | ~$3.0M |
+| Controls and audit | Design and testing of SFP's 41 key controls, evidence production for internal controls and the external auditor, remediation of the FY2026 deficiency | ~$1.5M |
+| Finance operations | ~25 full-time equivalents in Stayloft finance working SFP-specific exceptions, manual mappings and reconciliations | ~$4.1M |
+| Regulatory change | E-invoicing mandates, ViDA preparation, safeguarding reporting changes implemented in SFP rather than in shared services | Included in engineering; about a fifth of 2027 capacity |
+| **Total** | | **~$18.5M** |
+
+The table shows why SFP looked cheaper than it was. **Controls and finance operations together cost more than half as much as the engineering line**, and neither appears in Stayloft engineering's budget. **About a fifth of the engineering capacity is spent on change that creates no differentiation**: e-invoicing formats and tax content that a shared service would absorb once for all brands. And **people are the binding constraint, not money**: a handful of senior engineers understand SFP's recognition and netting rules, and the audit remediation competes with product work for exactly those people.
+
+The FY2026 deficiency shows what the control line buys. Mei Tanaka, Head of Internal Controls, and Jonas found that SFP's pipeline already recorded every change and every deployment. What was missing was separation and approval: 14 engineers held standing production write access left over from a 2024 incident, and 9 of the 23 payout rule changes in 2026 had no documented request or approval. The auditor re-performed sampled payouts and found no misstatement: the deficiency was in the controls, not in the numbers. The remediation is architectural, not procedural: payout rules become **versioned configuration** with maker-checker approval by Stayloft finance, standing production access is replaced by time-limited, logged break-glass access, and the pipeline refuses to deploy a rule change without a recorded approval. Standing access was removed on 15 June 2027 and the new controls operate from 1 July 2027 (detail in [Controls by Design, Not by Audit Season](#controls-and-auditability)). The engineering cost is modest. These controls belonged in the first payout release; adding them after an audit finding is the definition of Audit Archaeology.
 
 {id: custom-finance-platforms--boundary-rules-between-custom-platforms-and-the-erp}
 ## Boundary Rules Between Custom Platforms and the ERP
@@ -140,7 +158,7 @@ From the table follow six rules I make mandatory in any estate I am responsible 
 
 **Figure 2:** *SFP's boundary as it should be: the platform owns per-transaction facts and computes amounts; S/4HANA owns accounts, periods and balances and receives only summaries it can drill back from; payment execution, tax and safeguarding are shared services the platform calls rather than reimplements.*
 
-The diagram shows SFP as it should be. In 2027 SFP still determines its own GL accounts from a mapping table that Stayloft finance maintains inside SFP, bypassing group chart-of-accounts governance. Moving account determination out is the first boundary fix in Dana's plan: cheap, and it removes the largest silent risk.
+In 2027 SFP does not yet match Figure 2: it still determines its own GL accounts from a mapping table that Stayloft finance maintains inside SFP, bypassing group chart-of-accounts governance. Moving account determination out is the first boundary fix in Dana's plan: cheap, and it removes the largest silent risk.
 
 {id: custom-finance-platforms--who-owns-the-financial-data}
 ## Who Owns the Financial Data
@@ -159,7 +177,7 @@ Two further obligations follow from data ownership in finance:
 {id: custom-finance-platforms--integration-into-the-core-summarized-postings-with-drill-back}
 ## Integration Into the Core: Summarized Postings With Drill-Back
 
-The standard integration pattern between a high-volume custom platform and an ERP is the one in Figure 2: **detail in the subledger, summaries in the GL, with keys that connect them**. The pattern is old (it is how ERP subledgers have always posted to their own general ledgers) and vendors package it: Oracle describes its [Accounting Hub](https://docs.oracle.com/en/cloud/saas/financials/26c/faiac/how-oracle-accounting-hub-cloud-works.html) as an accounting rules engine that creates detailed journals from external source systems and transfers them to the GL with drill-down to transaction details, and Workday's [Accounting Center](https://workday.com/en-us/products/financial-management/accounting-center.html) turns high volumes of external business events into accounting entries and lets users drill from summarized reports to source level.
+The standard integration pattern between a high-volume custom platform and an ERP is the one in Figure 2: **detail in the subledger, summaries in the GL, with keys that connect them**. ERP subledgers have always posted to their own general ledgers this way, and vendors now package the pattern for external sources. Oracle describes its [Accounting Hub](https://docs.oracle.com/en/cloud/saas/financials/26c/faiac/how-oracle-accounting-hub-cloud-works.html) as an accounting rules engine that creates detailed journals from external source systems and transfers them to the GL with drill-down to transaction details, and Workday's [Accounting Center](https://workday.com/en-us/products/financial-management/accounting-center.html) turns high volumes of external business events into accounting entries and lets users drill from summarized reports to source level.
 
 {id: custom-finance-platforms--the-lisbon-booking-through-sfp}
 ### The Lisbon booking through SFP
@@ -185,7 +203,7 @@ None of these lines reaches S/4HANA individually. Each night SFP summarizes the 
 {id: custom-finance-platforms--control-totals-proving-the-summary-is-complete}
 ### Control totals: proving the summary is complete
 
-Summarization is only safe if it is provably lossless. Each day's posting carries control totals at three hops, and each comparison is automated with a named owner for breaks:
+Summarization is safe only if it is provably lossless. Each day's posting carries control totals at each hop, and each comparison is automated with a named owner for breaks:
 
 | Hop | What is compared | Example, posting date 12 March 2027 (illustrative) | Break owner |
 | --- | --- | --- | --- |
@@ -200,25 +218,7 @@ The fourth row is the one that matters most to Finance and is most often missing
 
 **Figure 3:** *Summarization is safe only when it is reversible and provably complete: the batch index makes every GL line traceable to its detail, and the daily subledger-to-GL reconciliation proves that nothing was lost, duplicated or posted outside the platform.*
 
-The two alternatives are worse defaults. **Per-transaction posting** into the GL moves the volume problem into the ERP and is right only at low volume or when the receiver is a high-volume subledger such as FI-CA. **Balance-only feeds**, one month-end balance per account, remove traceability and are the direct route to Lost in Aggregation. [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation) treats the reconciliation design in depth.
-
-{id: custom-finance-platforms--the-true-cost-of-owning}
-## The True Cost of Owning
-
-Business cases for custom finance platforms count engineers and cloud spend. The real cost has four further lines, and at Northmere they turn out to be almost half the total. In March 2027 Dana's team estimated SFP's annual cost of owning (illustrative, rounded):
-
-| Cost line | What it covers | Estimate per year |
-| --- | --- | --- |
-| Engineering | ~60 engineers in Jonas's organization at the group planning rate of $165,000 per fully loaded FTE-year | ~$9.9M |
-| Infrastructure | Cloud compute, storage, the event backbone share, environments | ~$3.0M |
-| Controls and audit | Design and testing of SFP's 41 key controls, evidence production for internal controls and the external auditor, remediation of the FY2026 deficiency | ~$1.5M |
-| Finance operations | ~25 full-time equivalents in Stayloft finance working SFP-specific exceptions, manual mappings and reconciliations | ~$4.1M |
-| Regulatory change | E-invoicing mandates, ViDA preparation, safeguarding reporting changes implemented in SFP rather than in shared services | Included in engineering; about a fifth of 2027 capacity |
-| **Total** | | **~$18.5M** |
-
-Three observations come out of the table. First, **about a fifth of the engineering capacity is spent on change that creates no differentiation**: e-invoicing formats and tax content that a shared service would absorb once for all brands. Second, **controls and finance operations together cost more than half as much as the engineering line**, and neither appears in Stayloft engineering's budget, which is why SFP looked cheaper than it was. Third, **people are the binding constraint, not money**: a handful of senior engineers understand SFP's recognition and netting rules, and the audit remediation competes with product work for exactly those people.
-
-The FY2026 deficiency shows what the control line buys. Mei Tanaka, Head of Internal Controls, and Jonas found that SFP's pipeline already recorded every change and every deployment. What was missing was separation and approval: 14 engineers held standing production write access left over from a 2024 incident, and 9 of the 23 payout rule changes in 2026 had no documented request or approval. The auditor re-performed sampled payouts and found no misstatement: the deficiency was in the controls, not in the numbers. The remediation is architectural, not procedural: payout rules become **versioned configuration** with maker-checker approval by Stayloft finance, standing production access is replaced by time-limited, logged break-glass access, and the pipeline refuses to deploy a rule change without a recorded approval. Standing access was removed on 15 June 2027 and the new controls operate from 1 July 2027 (detail in [Controls by Design, Not by Audit Season](#controls-and-auditability)). The engineering cost is modest; the lesson is that it should have been designed in from the first payout, which is the definition of Audit Archaeology.
+The two alternatives to summarized posting are worse defaults. **Per-transaction posting** into the GL moves the volume problem into the ERP and is right only at low volume or when the receiver is a high-volume subledger such as FI-CA. **Balance-only feeds**, one month-end balance per account, remove traceability and are the direct route to Lost in Aggregation. [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation) treats the reconciliation design in depth.
 
 {id: custom-finance-platforms--scalability-where-custom-platforms-earn-and-lose-their-keep}
 ## Scalability: Where Custom Platforms Earn and Lose Their Keep
@@ -231,10 +231,10 @@ Finance workloads scale differently from product workloads. Three patterns matte
 
 Scalability is also where the build case most often expires. SFP was built partly because the group's 2012 ERP could not carry per-booking subledger volume. FI-CA now carries 850,000 Stayloft agency partner accounts; a 2027 volume test, not a 2012 assumption, should decide whether it can carry the merchant subledger too.
 
-{id: custom-finance-platforms--modernization-challenges-specific-to-custom-finance-platforms}
-## Modernization Challenges Specific to Custom Finance Platforms
+{id: custom-finance-platforms--why-custom-finance-platforms-are-hard-to-modernize}
+## Why Custom Finance Platforms Are Hard to Modernize
 
-Modernizing a custom finance platform is harder than modernizing an ordinary application of the same size, for five reasons. The general patterns (strangler fig, parallel run, event interception, cut-over at period boundaries) are in [Changing the Engine in Flight: Modernization Patterns for Finance](#modernization-patterns); these are the finance-specific obstacles.
+A custom finance platform is harder to modernize than an ordinary application of the same size, for five reasons. The general patterns (strangler fig, parallel run, event interception, cut-over at period boundaries) are in [Changing the Engine in Flight: Modernization Patterns for Finance](#modernization-patterns); these are the finance-specific obstacles.
 
 1. **Accounting policy is buried in code.** Recognition triggers, netting order and rounding rules were implemented once and changed many times. Nobody can migrate them without first extracting them as explicit rules and having the controller confirm them. At Northmere, Leila's team found that SFP rounds commission per booking line while FI-CA rounds per invoice; at 7.6 million payouts a month, the difference is visible in the reconciliation.
 2. **Open items must move, not just balances.** A subledger migration carries every unpaid partner payable, every traveler-funds position and every unsettled payout, with its history, and must prove that the sum of open items before and after is equal per entity and currency.

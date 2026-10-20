@@ -25,7 +25,7 @@
 
 Most finance data problems that reach a Chief Architect are master data problems in disguise. "The close takes nine days" turns out to include two days of reclassifying postings that carried the wrong dimensions. "We cannot onboard partners faster" turns out to be five systems that each need the partner created by hand. "Consolidation is a black box" turns out to be **a mapping maintained in spreadsheets** that nobody can reproduce for last year's numbers.
 
-This chapter covers the master data domains, the four management styles, ownership and stewardship, chart of accounts governance, data quality, lineage, data contracts and retention. It stays light on one topic: the full matrix of **which system is authoritative for which object at which lifecycle stage** belongs to [Systems of Record: Ending the Doppelgänger Record](#systems-of-record). Here the question is how master data is designed, owned and kept correct.
+[Order to Cash, Procure to Pay, Record to Report](#finance-processes) traced items across the estate's hand-offs, and every hand-off assumed that each system describes the partner, the entity and the account the same way. This chapter answers the question behind that assumption: **which financial data must be mastered where, and how is it governed?** The group chart of accounts, the governed mappings and the partner hub designed here are what [Controls by Design, Not by Audit Season](#controls-and-auditability) puts under control and what [Converge or Coexist: Living with More Than One ERP](#multiple-erps) uses to converge Northmere's ledgers. The full matrix of **which system is authoritative for which object at which lifecycle stage** belongs to [Systems of Record: Ending the Doppelgänger Record](#systems-of-record); here the question is how master data is designed, owned and kept correct.
 
 {id: finance-data-architecture--setting-the-scene-at-northmere-the-usage-revenue-that-went-missing}
 ## Setting the Scene at Northmere: The Usage Revenue That Went Missing
@@ -34,14 +34,14 @@ Northmere Group, the fictional multi-brand digital commerce group this book foll
 
 Nothing in any system was broken. Workday posted correctly. OneStream applied the rules it was given. The workbook did what workbooks do. The failure was a missing decision: nobody owned the rule that a new account in a brand ledger must have a group mapping before it can be posted to.
 
-Dana Whitlock, Northmere's Chief Architect for Enterprise Applications and Financial Systems, is asked by Tomás Ferreira, the Group CFO, a question that sounds simple: "How many charts of accounts do we have?" The honest answer is four. There is the SAP S/4HANA chart used by Stayloft, Northmere Pay, Northmere Ads and the corporate entities, with about **3,900 general ledger accounts**, many of them country or product variants of the same account. There is Wayfare's Oracle Fusion chart, a segmented string with about **2,100 natural account values**. There is Tablekin's Workday Financials structure, about **640 ledger accounts** plus worktags. And there is the fourth, invisible one: about **6,100 mapping rows** across those 14 workbooks, maintained by three people in group reporting, which is the only place where the other three become one group.
+Tomás Ferreira, the Group CFO, asks Dana Whitlock, Northmere's Chief Architect for Enterprise Applications and Financial Systems, a question that sounds simple: "How many charts of accounts do we have?" The honest answer is four. There is the SAP S/4HANA chart used by Stayloft, Northmere Pay, Northmere Ads and the corporate entities, with about **3,900 general ledger accounts**, many of them country or product variants of the same account. There is Wayfare's Oracle Fusion chart, a segmented string with about **2,100 natural account values**. There is Tablekin's Workday Financials structure, about **640 ledger accounts** plus worktags. And there is the fourth, invisible one: about **6,100 mapping rows** across those 14 workbooks, maintained by three people in group reporting, which is the only place where the other three become one group.
 
 Dana's follow-up finding is worse for operations than for reporting. Stayloft has about **850,000 partners** (hotels, apartment operators and individual hosts). The same partner exists in the Stayloft Finance Platform (SFP), as a business partner with a contract account in SAP FI-CA (contract accounting, the high-volume subledger for Stayloft's agency partners), in the payout records of Northmere Pay (including, where payouts run through Adyen's balance platform, as a legal entity with a verified payout bank account there), and in Vertex as the party whose VAT registration determines the tax on Stayloft's commission invoices. Each system has its own identifier and its own create path. Program Keystone, Northmere's finance transformation, commits to one group chart of accounts by 2029. This chapter is the design behind that commitment, and behind the partner master that has to come with it.
 
 {id: finance-data-architecture--four-kinds-of-finance-data}
 ## Four Kinds of Finance Data
 
-Finance data comes in four kinds that differ in volume, change rate and governance. Mixing them up produces the classic mistakes: transactional data managed with master data workflows (too slow), or master data managed like transactional data (no approval, no history).
+Finance data comes in four kinds that differ in volume, change rate and governance. Mixing them up produces two mistakes: transactional data managed with master data workflows (too slow), or master data managed like transactional data (no approval, no history).
 
 | Kind | What it is | Examples at Northmere | How it is governed |
 | --- | --- | --- | --- |
@@ -55,7 +55,7 @@ Two boundaries cause most arguments. The first is **reference versus master**: F
 {id: finance-data-architecture--the-financial-master-data-domains}
 ## The Financial Master Data Domains
 
-Ten domains carry nearly all of a finance estate's master data. The table names each, its main attributes, who should own it and why it matters. "Golden source" here means the place where the authoritative version of a record or attribute is created and maintained; [Systems of Record: Ending the Doppelgänger Record](#systems-of-record) distinguishes that carefully from the system of record for a transaction at each lifecycle stage.
+Ten domains carry nearly all of a finance estate's master data. "Golden source" in the table means the place where the authoritative version of a record or attribute is created and maintained; [Systems of Record: Ending the Doppelgänger Record](#systems-of-record) distinguishes that carefully from the system of record for a transaction at each lifecycle stage.
 
 | Domain | Key attributes | Natural golden source | Why it is hard |
 | --- | --- | --- | --- |
@@ -70,7 +70,7 @@ Ten domains carry nearly all of a finance estate's master data. The table names 
 | **FX rates** | Rate type (spot, closing, average, budget), source, cut-off time, currency pairs | Treasury policy; a single market rate feed | Two systems using different rates for the same day create intercompany and reconciliation breaks |
 | **Fiscal calendars** | Fiscal year, periods, adjustment periods, period status per entity and ledger | Group finance core | Period status is master data with control significance: who can open a closed period |
 
-Three observations matter more than the table. First, **fan-out decides governance effort, not record count**: Northmere has 71 legal entities and 850,000 partners, but a wrong entity attribute reaches every platform, while a wrong partner address reaches one invoice. Second, **domains often have split authority**, with structure in one system and assignment in another; cost centers are the standard example: where HCM and the ERP come from different vendors, a common pattern is for the ERP to own the cost-center structure and feed it to HCM, while HCM owns which worker sits in which cost center. Third, some of the most consequential master data is not called master data by any vendor: the mapping tables, account determination rules and summarization keys that decide where an amount lands.
+Three observations matter more than the table. First, **fan-out decides governance effort, not record count**: Northmere has 71 legal entities and 850,000 partners, but a wrong entity attribute reaches every platform, while a wrong partner address reaches one invoice. Second, **domains often have split authority**, with structure in one system and assignment in another. Cost centers are the standard example: where HCM and the ERP come from different vendors, a common pattern is for the ERP to own the cost-center structure and feed it to HCM, while HCM owns which worker sits in which cost center. Third, some of the most consequential master data is not called master data by any vendor: the mapping tables, account determination rules and summarization keys that decide where an amount lands.
 
 {id: finance-data-architecture--management-styles-registry-consolidation-coexistence-centralized}
 ## Management Styles: Registry, Consolidation, Coexistence, Centralized
@@ -84,7 +84,7 @@ Three observations matter more than the table. First, **fan-out decides governan
 | **Coexistence** | In sources *and* in the hub | Matches, merges, publishes the golden record and synchronizes back | Yes | Fits domains where operational systems must keep creating records (self-service onboarding), but authority per attribute must be enforced | 2028 target for the partner master between the brand platform, FI-CA and payouts |
 | **Centralized** (transactional) | Only in the hub, through a governed workflow | Is the system of record; distributes to consumers, which cannot create | Distributes (consumers are read-only) | Fits low-volume, high-fan-out, high-control domains | Group CoA, dimensions, legal entities, fiscal calendar, rate policy, cost-center structure |
 
-The rule I use is simple. **Centralize where the record is rare, shared and control-relevant; coexist where the record is born in an operational process that cannot wait for a workflow.** Nobody should create a natural account in a brand ledger, so the chart of accounts is centralized. A host signing up on Stayloft at midnight cannot wait for a steward, so the partner is born in the brand platform, and the hub's job is to match, enrich, govern sensitive attributes and distribute.
+The rule I use: **centralize where the record is rare, shared and control-relevant; coexist where the record is born in an operational process that cannot wait for a workflow.** Nobody should create a natural account in a brand ledger, so the chart of accounts is centralized. A host signing up on Stayloft at midnight cannot wait for a steward, so the partner is born in the brand platform, and the hub's job is to match, enrich, govern sensitive attributes and distribute.
 
 Registry and consolidation are useful but transitional. A registry tells you how bad the duplication is; it does not stop the next duplicate. A consolidated golden record in the data platform makes reports agree; it does not make the payout file agree with the tax engine. I fund them as measurement and as a migration step, and I do not let a program declare victory on either.
 
@@ -92,10 +92,10 @@ Registry and consolidation are useful but transitional. A registry tells you how
 
 **Figure 1:** *The four MDM styles differ in where records are authored and whether the hub writes back: centralize what is rare, shared and control-relevant; coexist where records are born in operational processes.*
 
-In SAP-centric estates, the centralized style is commonly implemented with SAP Master Data Governance (MDG), SAP's governance application for change requests on master data such as financial objects and business partners ([SAP S/4HANA: One Journal, Clean Core](#sap-s4hana) covers its fit; Northmere does not run MDG in 2027); the coexistence and consolidation styles are commonly built with a specialist MDM platform or a custom partner hub. Which product implements the style is a secondary decision. **The style is the architecture; the tool is a sourcing choice**, and [Build, Buy or Compose: Choosing What to Own](#build-versus-buy) covers how to make it.
+**The style is the architecture; the tool is a sourcing choice**, and [Build, Buy or Compose: Choosing What to Own](#build-versus-buy) covers how to make it. In SAP-centric estates, the centralized style is commonly implemented with SAP Master Data Governance (MDG), SAP's governance application for change requests on master data such as financial objects and business partners ([SAP S/4HANA: One Journal, Clean Core](#sap-s4hana) covers its fit; Northmere does not run MDG in 2027). The coexistence and consolidation styles are commonly built with a specialist MDM platform or a custom partner hub.
 
-{id: finance-data-architecture--the-architecture-of-financial-master-data}
-## The Architecture of Financial Master Data
+{id: finance-data-architecture--few-authoring-points-many-subscribers}
+## Few Authoring Points, Many Subscribers
 
 The target shape is a small number of authoring points, a governed distribution path, and consumers that subscribe rather than create.
 
@@ -111,7 +111,7 @@ Five design decisions sit behind the picture.
 
 **Identifiers are owned and immutable.** The hub assigns the group identifier (group account, group entity code, group partner ID) and never reuses one. Local identifiers are kept as cross-references. Renaming a record never changes its identifier.
 
-**Distribution is complete and checked.** A change is not "done" when the hub approves it; it is done when every consumer has applied it. The hub records acknowledgments and raises an exception when a consumer has not applied a change within its agreed window. This is the check that would have caught the renamed Asian entity that reached four systems in a month and the fifth only when treasury noticed it.
+**Distribution is complete and checked.** A change is not "done" when the hub approves it; it is done when every consumer has applied it. The hub records acknowledgments and raises an exception when a consumer has not applied a change within its agreed window. This check would have caught the renamed Asian entity in [Unreconciled: Fourteen Ways Finance Architecture Goes Wrong](#where-finance-architecture-goes-wrong), which reached four systems in a month and the fifth only when treasury noticed it.
 
 **Analytics subscribe to the same masters.** FinDB, Northmere's Snowflake-based finance data platform, uses the hub's dimensions as its conformed dimensions. If the warehouse builds its own brand or market hierarchy, management reporting and statutory reporting will disagree by construction, and Owen Mbeki's team will spend its time explaining the difference.
 
@@ -120,7 +120,7 @@ Five design decisions sit behind the picture.
 
 A **chart of accounts** (CoA) is the list of accounts a ledger posts to. Modern charts separate **what** happened, the **natural account** (cash, partner payables, commission revenue, salaries), from **where, who and why**, the **dimensions** (entity, brand, market, cost center). The combination of account and dimension values on a posting is often called the accounting string. [Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects) covers the accounting; this section covers the design choices.
 
-The design guidance most practitioners accept is short: keep the natural account list small and stable, push analytical variety into dimensions, define the intercompany counterparty as a dimension from day one, map accounts to reporting hierarchies rather than duplicating accounts, and make sure the dimensions that segment reporting needs exist **at posting time**, because they are very expensive to retrofit. New disclosure rules make the last point sharper. US public companies adopt the expense disaggregation requirements of [ASU 2024-03](https://dart.deloitte.com/USDART/home/news/all-news/2025/jan/fasb-effective-date-asu-disaggregation-income-statement) for annual periods beginning after 15 December 2026 (as of 2026), and a disclosure that needs a category the ledger does not carry becomes a data project.
+Most practitioners accept five design rules. Keep the natural account list small and stable. Push analytical variety into dimensions. Define the intercompany counterparty as a dimension from day one. Map accounts to reporting hierarchies rather than duplicating accounts. And make sure the dimensions that segment reporting needs exist **at posting time**, because they are very expensive to retrofit. New disclosure rules make the last rule sharper. US public companies adopt the expense disaggregation requirements of [ASU 2024-03](https://dart.deloitte.com/USDART/home/news/all-news/2025/jan/fasb-effective-date-asu-disaggregation-income-statement) for annual periods beginning after 15 December 2026 (as of 2026), and a disclosure that needs a category the ledger does not carry becomes a data project.
 
 {id: finance-data-architecture--northmere-s-group-coa-version-2}
 ### Northmere's group CoA, version 2
@@ -144,7 +144,7 @@ Under this design, the €90.00 commission on the Lisbon booking (the €600.00 
 
 **Figure 3:** *Group CoA v2 collapses the SAP chart's 3,900 accounts into a group chart of about 1,150 natural accounts by moving country, brand and product variants into seven dimensions on every posting.*
 
-Three deliberate exceptions keep the design honest.
+The design makes three deliberate exceptions.
 
 1. **Clearing accounts stay granular.** Payment service provider (PSP) clearing accounts remain separate natural accounts per provider and currency (Adyen EUR, Stripe EUR and so on), even though a "PSP" dimension would be tidier. The reconciliation unit drives this: BlackLine reconciles accounts, and a clearing account that mixes providers cannot be matched to one provider's settlement report. [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger) designs the clearing structure.
 2. **Some splits must happen in the natural account.** Partner payables (money owed to properties and venues, often safeguarded funds) and trade payables (money owed to suppliers) are different liabilities with different controls and different regulatory meaning. They are separate natural accounts, not one account with a dimension, because their reconciliations, owners and disclosures differ.
@@ -155,7 +155,7 @@ The design deliberately has no customer or booking dimension (that detail stays 
 {id: finance-data-architecture--platform-realities}
 ### Platform realities
 
-The same design lands differently in each ledger, and the differences are architectural, not cosmetic.
+Each ledger's model decides what adopting the design costs.
 
 - **Oracle Fusion** defines the chart as segments of an accounting key (Wayfare's has six: company, cost center, natural account, product line, intercompany and a reserved future segment), and Oracle states that the chart of accounts is one of the elements combined to create a primary ledger. Oracle's standard GL balances cubes have one dimension per chart segment and, in Oracle's words, "dimensions are predefined and new ones can't be added" ([Oracle GL balances cube dimensions](https://docs.oracle.com/en/cloud/saas/financials/26c/faigl/dimensions-for-standard-balance-cubes.html)). For Wayfare, adopting the group design inside Fusion therefore means a new chart and a new ledger, not an edit; that is one reason the group CoA arrives with ledger convergence in 2029, not before.
 - **Workday Financials** uses its Foundation Data Model: transactions carry **worktags** (company, cost center, revenue category, spend category and others), and account posting rules derive the ledger account from them ([Workday Financial Management datasheet](https://www.workday.com/content/dam/web/en-us/documents/datasheets/datasheet-workday-financial-management.pdf)). Tablekin's mapping must therefore read ledger account *and* worktags. A common implementation failure is a dimensional model designed as a copy of the legacy account list, which keeps the account explosion and loses the benefit of worktags.
@@ -164,7 +164,7 @@ The same design lands differently in each ledger, and the differences are archit
 {id: finance-data-architecture--in-practice-the-mapping-table-as-master-data}
 ## In Practice: The Mapping Table as Master Data
 
-Until 2029, three ledgers keep their own charts and the group is assembled in OneStream. The decision Dana and Leila take in May 2027 is not to wait. **The mapping comes out of the workbooks in 2027**, into governed transformation rules in OneStream, authored through the same change workflow as the chart itself, with every rule effective-dated and versioned. The reason is simple: in consolidation on an enterprise performance management (EPM) platform, the mapping tables *are* the translation between local and group charts, so they deserve the ownership, change control and testing given to the charts themselves.
+Until 2029, three ledgers keep their own charts and the group is assembled in OneStream. The decision Dana and Leila take in May 2027 is not to wait. **The mapping comes out of the workbooks in 2027**, into governed transformation rules in OneStream, authored through the same change workflow as the chart itself, with every rule effective-dated and versioned. In consolidation on an enterprise performance management (EPM) platform, the mapping tables *are* the translation between local and group charts, so they deserve the ownership, change control and testing given to the charts themselves.
 
 {id: finance-data-architecture--a-worked-mapping-table}
 ### A worked mapping table
@@ -212,13 +212,13 @@ Changes are classified by impact.
 | **Significant** | New natural account; change to an account's reporting-line mapping; new mapping rule for a brand account; new required dimension on an account range | Steward, group reporting lead, internal controls review where the account is in a SOX-relevant caption | Two weeks; effective from a period start |
 | **Structural** | New dimension; change to a dimension's definition (what "market" means); new entity; change to the account numbering scheme | Finance Data Council, with the design authority for platform impact | One quarter; effective from a quarter or year start |
 
-The flow for a significant change looks like this.
+Figure 4 shows the flow for a significant change.
 
 ![A chart of accounts change request is triaged, classified as standard, significant or structural with different approvals, then built, activated at period start, published as an event, acknowledged by consumers and archived as an evidence pack.](finance-systems-architecture/posts/07-finance-data-architecture/assets/images/07-finance-data-architecture/coa-change-flow.jpeg)
 
 **Figure 4:** *A chart of accounts change is a controlled change with an evidence trail: classified by impact, analyzed for downstream effects, approved by the owner, activated from a period start, and complete only when every consumer has acknowledged it.*
 
-The link to SOX is direct. Under the US Sarbanes-Oxley Act, management must maintain effective internal control over financial reporting, and the external auditor tests it. A change to an account's reporting-line mapping changes which financial statement caption a balance lands in, which is exactly what the April usage revenue incident did. Mapping and chart changes are therefore in scope of the same change-management discipline auditors expect for financial applications: authorized, tested, approved before production, with evidence that the control operated for every change in the period, not just a policy. [Controls by Design, Not by Audit Season](#controls-and-auditability) covers IT general controls, information produced by the entity and evidence by design; the design point here is that **the master data workflow produces that evidence as a by-product**. Nobody assembles it before the audit.
+**Chart and mapping changes fall under SOX.** Under the US Sarbanes-Oxley Act, management must maintain effective internal control over financial reporting, and the external auditor tests it. A change to an account's reporting-line mapping changes which financial statement caption a balance lands in, which is exactly what the April usage revenue incident did. Mapping and chart changes therefore need the same change-management discipline auditors expect for financial applications: authorized, tested, approved before production, with evidence that the control operated for every change in the period, not just a policy. [Controls by Design, Not by Audit Season](#controls-and-auditability) covers IT general controls, information produced by the entity and evidence by design; the design point here is that **the master data workflow produces that evidence as a by-product**. Nobody assembles it before the audit.
 
 {id: finance-data-architecture--the-partner-master-coexistence-in-practice}
 ## The Partner Master: Coexistence in Practice
@@ -243,7 +243,7 @@ The answer is coexistence with **authority set per attribute**.
 
 **Figure 5:** *The partner master as coexistence: partners are born in the brand platform, matched and governed in a hub that assigns the group partner ID, and distributed to FI-CA and Vertex; in the target state, bank attributes are authored only in the payments platform and flow to the hub, never the other way.*
 
-The attribute-level authority is what makes this more than a synchronization project:
+Attribute-level authority makes this more than a synchronization project:
 
 - **Identity and contact data** (name, address, contacts) are authored in the extranet through SFP; the hub matches and distributes.
 - **Tax identifiers** are entered in the extranet but are not trusted until validated (for EU VAT numbers, against the EU's VAT Information Exchange System, VIES) and, on failure, reviewed by a steward. Until validated, the partner can trade but commission invoices apply the treatment for an unregistered party, as the tax team's policy prescribes.
@@ -288,7 +288,7 @@ Data quality is managed as rules with owners, thresholds and an action, not as a
 | Every cost center has an active owner in Workday HCM | Consistency | Detective | Daily HCM-to-hub comparison | Owner's manager notified; cost center blocked for new purchase orders after 30 days |
 | Subscribed master lists in each consumer match the hub | Consistency | Detective | Daily comparison | Exception to technical steward |
 
-Each rule is published with its owner, threshold and trend in the council's monthly scorecard. The scorecard's purpose is not a green dashboard. It is to make visible the rules that keep failing, because a rule that fails every month is a process problem upstream, usually a create path that should not exist.
+The council's monthly scorecard publishes each rule with its owner, threshold and trend. Its purpose is not a green dashboard but to show the rules that keep failing, because a rule that fails every month is a process problem upstream, usually a create path that should not exist.
 
 {id: finance-data-architecture--lineage-and-data-contracts}
 ## Lineage and Data Contracts
@@ -340,11 +340,11 @@ The contract gives Sven's team grounds to reject a batch that references a retir
 {id: finance-data-architecture--retention-and-privacy}
 ## Retention and Privacy
 
-Finance data must be kept for statutory periods and, at the same time, personal data must be minimized and erased when no longer needed. Both are true; the architecture reconciles them.
+Finance data must be kept for statutory periods, while personal data must be minimized and erased when no longer needed. The architecture has to satisfy both.
 
 Retention periods vary by country and record type, and the clock usually starts at the end of the year in which the record was created. Germany is a current example: since 1 January 2025, accounting vouchers such as invoices must be kept for eight years, while books and annual financial statements remain at ten ([reported by Haufe](https://www.haufe.de/steuern/gesetzgebung-politik/viertes-buerokratieentlastungsgesetz_168_613390.html)). Master data has a derived retention: **a master record must be kept as long as any record that references it**, so a partner that last traded in 2027 must remain resolvable until the last invoice referencing it expires, and the chart of accounts and its mapping versions must outlive every period reported with them.
 
-The [GDPR's Article 17(3)](https://gdpr-info.eu/art-17-gdpr/) disapplies the right to erasure to the extent processing is necessary for compliance with a legal obligation or for legal claims. That covers what the law requires, for as long as it requires it, and no more. Stayloft's partner master makes this concrete, because many hosts are individuals, so the partner master holds personal data. Northmere's design:
+The [GDPR's Article 17(3)](https://gdpr-info.eu/art-17-gdpr/) disapplies the right to erasure to the extent processing is necessary for compliance with a legal obligation or for legal claims. That covers what the law requires, for as long as it requires it, and no more. Many Stayloft hosts are individuals, so the partner master holds personal data. Northmere's design:
 
 - **Ledgers and subledgers hold the group partner ID, not identity.** Name, address and contact data live in the partner master, with its own lifecycle.
 - **On an erasure request or at the end of the relationship,** attributes not needed for statutory records (contact preferences, phone numbers, extranet profile) are erased; attributes needed to support retained invoices and payouts (legal name, tax identifier, address on the invoice) are restricted: removed from operational use, visible only to a small finance role, and deleted when the last referencing record's retention expires.
@@ -356,7 +356,7 @@ The design decision is to make retention a property of the data asset, recorded 
 {id: finance-data-architecture--trade-offs-where-to-put-the-authority}
 ## Trade-offs: Where to Put the Authority
 
-The central choice for each domain is where authority sits. The table compares the options for the two Northmere domains that matter most.
+The central choice for each domain is where authority sits. The table compares the options for Northmere's two hardest domains, the chart of accounts and the partner master.
 
 | Option | Strengths | Weaknesses | When it is right |
 | --- | --- | --- | --- |
@@ -386,7 +386,7 @@ Master data touches every other chapter, and the authority decisions here constr
 {id: finance-data-architecture--the-chief-architect-s-view}
 ## The Chief Architect's View
 
-The Chief Architect's job here is not to run MDM. It is to make five decisions explicit and to make sure they are enforced in the design of every platform the estate buys or builds.
+The Chief Architect's job here is not to run MDM. It is to make five decisions explicit and enforce them in the design of every platform the estate buys or builds.
 
 1. **The domain list and the authority per domain and attribute.** Recorded in the system-of-record (SoR) matrix, decided with the data owners, reviewed when a platform is added.
 2. **The management style per domain.** Centralized for the vocabulary (CoA, dimensions, entities, calendars, rate policy), coexistence for high-volume operational masters, registry and consolidation as steps.

@@ -23,9 +23,9 @@
 
 Every chapter of this book has been about a decision taken in the present: which system is authoritative, how a payment reaches the ledger, where a vendor's product should stop. This chapter is about the decade those decisions have to survive. A finance estate built in 2027 will close its books in 2037, and the auditors of 2037 will ask about transactions from 2029. Between those dates, a payment provider will be replaced or hedged, a brand will be bought or sold, a tax regime will move from periodic returns to near-real-time reporting, and software agents will take on work that clerks did when Program Keystone started. **The architecture will not be the one anyone drew.** The question is whether it will still reconcile.
 
-The usual answer to that question is a target state with a date on it. [The Middle Matters: Transition States and the Roadmap](#target-and-transition-states) showed why that is necessary and why it is not enough. A target state is a hypothesis about one future. The estate has to survive the futures nobody wrote down. This chapter introduces a complementary method, **stressor analysis**, adapted from Barry O'Reilly's residuality theory. It does not predict the future. It lists the things that could happen, simulates each one against the architecture, and finds the properties that let the estate survive many of them. Those properties are where long-term investment goes.
+The usual answer to that question is a target state with a date on it. [The Middle Matters: Transition States and the Roadmap](#target-and-transition-states) showed why that is necessary and why it is not enough. A target state is a hypothesis about one future. The estate has to survive the futures nobody wrote down. This chapter introduces a complementary method, **stressor analysis**, adapted from Barry O'Reilly's residuality theory. Instead of predicting the future, it lists the things that could happen, simulates each one against the architecture, and finds the properties that let the estate survive many of them. Those properties are where long-term investment goes.
 
-The chapter then turns to **what stays portable**, so that no vendor or acquisition can trap the books, and to **how the architecture function itself must evolve**. It closes with Northmere in 2031 and with the argument of the whole book.
+The chapter then turns to **what stays portable**, so that no vendor or acquisition can trap the books, and to **how the architecture function itself must evolve**. It closes with Northmere in 2031 and draws together the five reconciliations the [Introduction: Architecture Where Every Number Must Reconcile](#introduction) named, which the [Working Papers: Templates for the Finance Architect](#toolkit) then turns into templates.
 
 {id: long-term-evolution--setting-the-scene-two-questions-at-the-board-offsite}
 ## Setting the Scene: Two Questions at the Board Offsite
@@ -45,7 +45,7 @@ Dana's answer was not a new target state. It was a method, run for the first tim
 {id: long-term-evolution--a-decade-is-longer-than-any-system}
 ## A Decade Is Longer Than Any System
 
-Start with what a decade does to a finance estate. Most of the change comes from outside the enterprise, on other people's timetables.
+Most of what a decade does to a finance estate comes from outside the enterprise, on other people's timetables.
 
 **Vendors change owners and products.** OneStream was taken private by Hg in a deal [completed on 1 April 2026](https://www.onestream.com/news/onestream-announces-completion-of-acquisition-by-hg-for-usd6-4-billion/); Coupa by Thoma Bravo in [February 2023](https://www.thomabravo.com/press-releases/thoma-bravo-completes-acquisition-of-coupa-software). Since release 2023, SAP has shipped S/4HANA on a [two-year release cycle with seven years of mainstream maintenance per release](https://news.sap.com/2022/09/new-sap-s4hana-release-maintenance-strategy/), so a decade on S/4HANA means at least one mandatory upgrade. Oracle Fusion updates quarterly and cannot be skipped ([Oracle Fusion: An Accounting Hub for High-Volume Events](#oracle-fusion)).
 
@@ -78,7 +78,7 @@ Against all this, some things must not change, or must change only by a delibera
 
 **Residuality theory** is an approach to software architecture developed by Barry O'Reilly, a former chief architect at Microsoft, and set out in his book [*Residues: Time, Change, and Uncertainty in Software Architecture*](https://leanpub.com/residuality) and in earlier articles such as ["Residuality Theory: An Introduction"](https://cutter.com/article/residuality-theory-introduction) (Cutter Consortium, 2020). It draws on complexity science. Its central claim is that architects cannot predict the environment a system will meet, so they should not design against a forecast. They should expose a design to many plausible stresses and keep what survives.
 
-The vocabulary is small. In my own words, and adapted to finance:
+The vocabulary is small. In my own words, adapted to finance:
 
 - **Naive architecture.** The starting design, either the estate as it is or the simplest design that meets today's requirements.
 - **Stressor.** Anything that could happen to the estate's environment: a regulation, an acquisition, a vendor event, a market shift, a provider failure, a new kind of actor.
@@ -92,7 +92,7 @@ The insight that matters for finance is the **recurrence**. A design change that
 {id: long-term-evolution--how-it-differs-from-what-finance-already-does}
 ### How it differs from what finance already does
 
-Finance organizations already have risk registers and scenario plans. Stressor analysis complements them; it does not replace them.
+Stressor analysis complements the risk registers and scenario plans finance already has; it does not replace them.
 
 | | Risk register | Scenario planning | Stressor analysis |
 | --- | --- | --- | --- |
@@ -101,13 +101,13 @@ Finance organizations already have risk registers and scenario plans. Stressor a
 | **Output** | Mitigations per risk | Strategic options and signposts | Design changes that recur across stressors |
 | **Typical failure** | Mitigation per risk, none shared | Elegant stories with no design consequence | Stressor theater: a workshop with no change to the roadmap |
 
-A carve-out of Wayfare may be unlikely. It is still worth simulating, because what it demands (entity-scoped data, separable services, exportable evidence) is mostly what an acquisition, a regulatory audit and a vendor exit also demand. **Probability decides how much to spend on a mitigation. Recurrence decides which properties to build into the architecture.**
+**Probability decides how much to spend on a mitigation. Recurrence decides which properties to build into the architecture.** A carve-out of Wayfare may be unlikely. It is still worth simulating, because what it demands (entity-scoped data, separable services, exportable evidence) is mostly what an acquisition, a regulatory audit and a vendor exit also demand.
 
 ![A building struck by icons for regulation, acquisition, provider outage, vendor change and AI agents, held up by four reinforced teal columns labeled Residues.](finance-systems-architecture/posts/43-long-term-evolution/assets/images/43-long-term-evolution/residues-survive-stressors.jpeg)
 
 **Figure 2:** *Probability decides how much to spend on a mitigation; recurrence decides what to build. A property needed against many stressors is a residue that will probably help with the next one too.*
 
-Two other long-horizon tools sit beside it. A **Wardley map** places components on a value chain against their evolution from genesis to commodity ([Learn Wardley Mapping](https://learnwardleymapping.com/)); it shows what will commoditize within the decade, such as Northmere's custom payout orchestration, and when the retirement test of [When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms) should be run again. **Evolutionary architecture** ([Ford, Parsons, Kua and Sadalage, 2nd ed., 2022](https://thoughtworks.com/insights/books/building-evolutionaryarchitectures-second-edition)) supplies the feedback loop. Stressor analysis tells you what to build; fitness functions ([Technical Debt on the Balance Sheet](#technical-debt-and-fitness)) tell you whether it is still built.
+Two other long-horizon tools sit beside stressor analysis: Wardley mapping and evolutionary architecture. A **Wardley map** places components on a value chain against their evolution from genesis to commodity ([Learn Wardley Mapping](https://learnwardleymapping.com/)); it shows what will commoditize within the decade, such as Northmere's custom payout orchestration, and when the retirement test of [When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms) should be run again. **Evolutionary architecture** ([Ford, Parsons, Kua and Sadalage, 2nd ed., 2022](https://thoughtworks.com/insights/books/building-evolutionaryarchitectures-second-edition)) supplies the feedback loop. Stressor analysis tells you what to build; fitness functions ([Technical Debt on the Balance Sheet](#technical-debt-and-fitness)) tell you whether it is still built.
 
 ![An inner loop picks a stressor, simulates it, changes the design if needed and records the change, then repeats; the records feed an incidence matrix whose recurring changes are built as residues, tested against fresh stressors, and fed back to the estate.](finance-systems-architecture/posts/43-long-term-evolution/assets/images/43-long-term-evolution/stressor-analysis-loop.jpeg)
 
@@ -158,7 +158,7 @@ Hana's team and Dana's architects walked each Wayfare flow through the 2031 targ
 - **Shared services.** After convergence Wayfare uses nine shared services, from the group payout service and tax adapter to BlackLine, OneStream and FinDB. None could report its usage or export its data by brand and entity, and a TSA priced on guesses is a TSA the buyer disputes. **Not acceptable.**
 - **Payments.** Wayfare is merchant of record for rail and transfers and uses Stripe as its secondary provider. Its PSP accounts were already contracted per legal entity, so they could transfer. **Acceptable.**
 
-The estimate was blunt. Separating Wayfare from the 2031 target state as designed would take **about 20 months**, against the 12 months a buyer would accept as a TSA term. With three changes, the estimate fell to **about 11 months**:
+Separating Wayfare from the 2031 target state as designed would take **about 20 months**, against the 12 months a buyer would accept as a TSA term. With three changes, the estimate fell to **about 11 months**:
 
 1. **Separability as a convergence condition.** Every shared service Wayfare joins must be able to export one brand's data by entity, with history, and to meter its usage by entity. This was added as an acceptance criterion to the convergence plan the design authority had approved the week before, on 8 December 2027: the accounting-hub route recorded in [Converge or Coexist: Living with More Than One ERP](#multiple-erps), with Wayfare's entities moving onto S/4HANA from FY2029.
 2. **History follows the entity.** Before Fusion is retired, Wayfare's Fusion history is extracted to the archive store in the open format and with the reconciliation pack already designed for the EBS archive ([Changing the Engine in Flight: Modernization Patterns for Finance](#modernization-patterns)).
@@ -168,7 +168,9 @@ The estimate was blunt. Separating Wayfare from the 2031 target state as designe
 
 **Figure 4:** *The Wayfare carve-out simulation: about 20 months to separate from the target as designed, against a 12-month TSA; separability, entity-scoped history and brand-scoped evidence cut it to about 11.*
 
-None of these changes is specific to a sale. Entity-scoped export is what a regulator's request, a single-jurisdiction tax audit and a vendor exit also need. That is the recurrence the method looks for. The simulation also raised a question it could not answer: if a sale is plausible, should Wayfare converge at all? The post-acquisition rule in [Build, Buy or Compose: Choosing What to Own](#build-versus-buy) allows an acquired system to be "kept wrapped if a sale is plausible", and the 8 December decision lists a plausible Wayfare sale among its reversal conditions. The design authority priced both answers and left the choice to Tomás and the board.
+None of these changes is specific to a sale. Entity-scoped export is what a regulator's request, a single-jurisdiction tax audit and a vendor exit also need. That is the recurrence the method looks for.
+
+The simulation also raised a question it could not answer: if a sale is plausible, should Wayfare converge at all? The post-acquisition rule in [Build, Buy or Compose: Choosing What to Own](#build-versus-buy) allows an acquired system to be "kept wrapped if a sale is plausible", and the 8 December decision lists a plausible Wayfare sale among its reversal conditions. The design authority priced both answers and left the choice to Tomás and the board.
 
 {id: long-term-evolution--simulating-s9-three-days-without-settlement-and-a-forced-exit}
 ### Simulating S9: three days without settlement, and a forced exit
@@ -206,7 +208,7 @@ Four residues were needed by seven of the ten stressors. **None of them is a pro
 
 **Canonical events.** Facts that cross a domain boundary are published as Keystone canonical financial events, with the enterprise's envelope and vocabulary ([Canonical Events: A Common Language for Money](#loosely-coupled-domains)). A vendor's document types, journal types and object models stay behind anti-corruption layers. When Wayfare's ledger, Tablekin's billing platform or a PSP changes, the change stops at an adapter, and the events stay in FinDB for as long as the books they support.
 
-**Owned identifiers.** The enterprise issues the identifiers that matter (booking, payment, refund, payout, partner, legal entity, event, summary) and requires every vendor to carry them. Adyen's `pspReference` and Stripe's balance transaction IDs are recorded but never become the only key ([Adyen: One Platform from Checkout to Settlement](#adyen), [Stripe: Every Movement Is a Balance Transaction](#stripe)). The test is simple: could a late refund from a provider we left two years ago be traced to its booking without that provider's help?
+**Owned identifiers.** The enterprise issues the identifiers that matter (booking, payment, refund, payout, partner, legal entity, event, summary) and requires every vendor to carry them. Adyen's `pspReference` and Stripe's balance transaction IDs are recorded but never become the only key ([Adyen: One Platform from Checkout to Settlement](#adyen), [Stripe: Every Movement Is a Balance Transaction](#stripe)). The test: could a late refund from a provider we left two years ago be traced to its booking without that provider's help?
 
 **Exportable evidence.** Approvals, reconciliations, matching results, posted journals and agent run logs are copied regularly into an enterprise store, indexed by entity and period, in an open format. The test is the one the [Controls by Design, Not by Audit Season](#controls-and-auditability) chapter applies to SaaS: if this vendor disappeared, could management still show the auditor what happened in a closed period?
 
@@ -224,7 +226,7 @@ The fourth row is the one this book recommends, and it has a deliberate limit. *
 {id: long-term-evolution--how-the-architecture-function-must-evolve}
 ## How the Architecture Function Must Evolve
 
-A decade also changes the architecture function itself. Dana's first year built what a federated estate needs first: decision rights, one decision record format, a review board, an advice forum and six mandatory standards, STD-FIN-01 to STD-FIN-06 ([The Chief Architect's Job: Making Many Systems Tell One Story](#chief-architect-role), [Architecture Governance That Speeds Decisions](#architecture-governance)). That is the right start and the wrong place to stay. A function whose main product is review grows with the number of changes, and at Keystone's delivery peak in 2028–2029 it would have become the bottleneck.
+The architecture function must change too, because a function whose main product is review grows with the number of changes; at Keystone's delivery peak in 2028–2029 it would have become the bottleneck. Dana's first year built what a federated estate needs first: decision rights, one decision record format, a review board, an advice forum and six mandatory standards, STD-FIN-01 to STD-FIN-06 ([The Chief Architect's Job: Making Many Systems Tell One Story](#chief-architect-role), [Architecture Governance That Speeds Decisions](#architecture-governance)). That is the right start and the wrong place to stay.
 
 The direction of travel is from **reviewing** to **providing**: making the conformant design the cheapest one to build, measuring whether it was built, and answering recurring questions with services rather than meetings.
 
@@ -248,7 +250,9 @@ A **decision service** is a recurring architectural question turned into somethi
 - *"Is this interface conformant?"* Idempotency, control totals and schema registration became pipeline tests ([Files, Events and APIs: How Finance Systems Talk](#integration-architecture)).
 - *"Trace this number."* The trace service live since October 2027 answers in minutes what took nine working days in the first walkthrough ([Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation)).
 
-The shift changes the team: architects become product managers for platforms they helped design, and some platforms move to engineering teams under Ravi Menon, the Group CTO ([Who Owns What: Organizing Architecture Across Finance and Technology](#organizing-for-architecture)). **The function must plan its own evolution as deliberately as it plans the estate's.** The shift has one limit. Documented approval of changes to systems in scope for internal control over financial reporting does not become a service; pipelines can enforce maker-checker and produce the evidence, but not remove the need for it ([Controls by Design, Not by Audit Season](#controls-and-auditability)). Providing makes compliance cheap, not optional.
+The shift changes the team: architects become product managers for platforms they helped design, and some platforms move to engineering teams under Ravi Menon, the Group CTO ([Who Owns What: Organizing Architecture Across Finance and Technology](#organizing-for-architecture)). **The function must plan its own evolution as deliberately as it plans the estate's.**
+
+The shift has one limit: documented approval of changes to systems in scope for internal control over financial reporting does not become a service; pipelines can enforce maker-checker and produce the evidence, but not remove the need for it ([Controls by Design, Not by Audit Season](#controls-and-auditability)). Providing makes compliance cheap, not optional.
 
 {id: long-term-evolution--the-chief-architect-s-annual-rhythm}
 ## The Chief Architect's Annual Rhythm

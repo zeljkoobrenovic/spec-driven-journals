@@ -23,9 +23,9 @@
 
 Most finance-system failures I have seen were not technology failures. They were **accounting misunderstandings built into software**. A payment service that called captured cash "revenue". A refund flow that corrected a posted entry by editing it. A ledger that summarized a day's bookings so well that nobody could tell which booking a balance belonged to. Each was a reasonable engineering decision made by someone who did not know what the numbers would be used for.
 
-This chapter gives architects the accounting they need to avoid those mistakes. It is not an accounting course; it does not teach you to prepare financial statements. It teaches you what the systems you design must **record, preserve and prove**, and why. Every concept comes with the design decision it drives, and every rule is shown in a worked journal entry with real numbers.
+The previous chapter, [Anatomy of a Finance Estate: Layers, Planes and Boundaries](#finance-landscape), placed a subledger layer between the operational systems and the general ledger and said that layer "applies the accounting treatment". This chapter says what that treatment is. It is not an accounting course; it does not teach you to prepare financial statements. It teaches you what the systems you design must **record, preserve and prove**, and why. Every concept comes with the design decision it drives, and every rule is shown in a worked journal entry with numbers from Northmere.
 
-Other chapters build on this one. When [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers) discusses posting rules, when [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger) designs clearing accounts, when [Controls by Design, Not by Audit Season](#controls-and-auditability) discusses audit trails, and when [The Life of a Booking: From €600 Payment to $97.38 of Revenue](#transaction-to-report) follows a booking into the published statements, they assume the vocabulary and the entries set out here. The chapter ends with the **accounting invariants your systems must preserve**, the five properties that later chapters turn into designs, standards and tests.
+Later chapters assume the vocabulary and the entries set out here: [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers) for posting rules, [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger) for clearing accounts, [Controls by Design, Not by Audit Season](#controls-and-auditability) for audit trails, and [The Life of a Booking: From €600 Payment to $97.38 of Revenue](#transaction-to-report) for following a booking into the published statements. The chapter ends with the **accounting invariants your systems must preserve**, the five properties that later chapters turn into designs, standards and tests.
 
 {id: accounting-for-architects--setting-the-scene-at-northmere-the-event-that-could-not-be-booked}
 ## Setting the Scene at Northmere: The Event That Could Not Be Booked
@@ -34,7 +34,7 @@ Northmere, the fictional group this book follows, is a multi-brand digital comme
 
 It is February 2027. Lucía Romero, Dana Whitlock's lead integration architect, is reviewing the first draft of the Keystone canonical financial events with Jonas Berg's Stayloft Finance Engineering team. The draft has one event for a merchant booking: `BookingPaid`, carrying the booking id, the amount and the currency. It is clean, small and easy to publish from the booking engine.
 
-Leila Haddad, Chief Accounting Officer, reads the draft and asks three questions. When the traveler pays €600 in March for an April stay, how much of it is Stayloft's revenue in March? When the property is paid in April, where does the €510 come from in the books? And if the traveler cancels on 2 April, which entry undoes what? The draft cannot answer any of them. A single "paid" event tells the ledger that money arrived. It does not say that the money belongs mostly to someone else, that the part that does belong to Stayloft is not yet earned, or when it will be.
+Leila Haddad, Chief Accounting Officer, reads the draft and asks three questions. When the traveler pays €600 in March for an April stay, how much of it is Stayloft's revenue in March? When the property is paid in April, where does the €510 come from in the books? And if the traveler cancels on 2 April, which entry undoes what? The draft cannot answer any of them. A single "paid" event tells the ledger that money arrived. It does not say that the money belongs mostly to someone else, that Stayloft's share is not yet earned, or when it will be.
 
 Dana's conclusion, recorded in the first Keystone design-authority minutes, is the premise of this chapter: **the event model is downstream of the accounting model**. Before her architects design an event, a subledger or a summarization job, they need to know which accounts the business touches, when each amount moves between them, and what has to stay true at every step. The rest of this chapter is the briefing she asked Leila's team and her own architects to write together.
 
@@ -61,17 +61,17 @@ For an engineer, the useful translation is to store each line as a signed amount
 
 `SUM(amount) = 0` for every journal entry, per currency, per ledger.
 
-That invariant is the reason a ledger is trustworthy in a way an application database is not. It is checkable for every entry, by machine, at the moment of posting. A ledger that only checks it afterwards, in a nightly job, has already accepted an entry it should have rejected. Two further engineering rules follow directly: never represent money in binary floating point, and decide where rounding happens and which line absorbs the rounding difference, because an entry that is out of balance by one cent is out of balance. [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers) covers money representation and rounding policy in depth.
+That invariant makes a ledger trustworthy in a way an application database is not, because a machine can check it for every entry at the moment of posting. A ledger that checks it only afterwards, in a nightly job, has already accepted an entry it should have rejected. Two further engineering rules follow: never represent money in binary floating point, and decide where rounding happens and which line absorbs the rounding difference, because an entry out of balance by one cent is out of balance. [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers) covers money representation and rounding policy in depth.
 
 {id: accounting-for-architects--what-a-balanced-trial-balance-does-not-prove}
 ### What a balanced trial balance does not prove
 
-A **trial balance** lists every account's balance at a date; total debits equal total credits. It is the starting point for the financial statements and for the auditor. A balanced trial balance proves that the double-entry invariant held. It does **not** prove that the books are right. A booking posted twice, revenue posted to the wrong period, a refund posted to the wrong account, a payment never posted at all: every one of these leaves the trial balance perfectly balanced. Balance is a necessary condition, cheap to enforce. Completeness and accuracy are the expensive part, and they are what reconciliations, controls and traceability exist to prove.
+A balanced **trial balance** proves that the double-entry invariant held; it does **not** prove that the books are right. The trial balance lists every account's balance at a date, with total debits equal to total credits, and it is the starting point for the financial statements and for the auditor. A booking posted twice, revenue posted to the wrong period, a refund posted to the wrong account, a payment never posted at all: each leaves the trial balance balanced. Balance is a necessary condition and cheap to enforce. Completeness and accuracy are the expensive part, and reconciliations, controls and traceability exist to prove them.
 
 {id: accounting-for-architects--anatomy-of-a-journal-entry}
 ## Anatomy of a Journal Entry
 
-A journal entry is not just "debit this, credit that". In an enterprise ledger it carries the context that lets a controller, an auditor or a regulator understand it years later, and every field exists because something downstream depends on it. The table below lists the fields I expect any system that produces journal entries to populate, and why each matters to an architect.
+In an enterprise ledger a journal entry carries the context that lets a controller, an auditor or a regulator understand it years later, and every field exists because something downstream depends on it. The table lists the fields I expect any system that produces journal entries to populate, and why each matters to an architect.
 
 | Field | What it is | Why the architect cares |
 | --- | --- | --- |
@@ -97,9 +97,9 @@ The **chart of accounts** (CoA) is the list of accounts an entity posts to. A mo
 - The **natural account** says *what* the amount is: cash at bank, trade receivables, traveler funds held, commission revenue, payment processing fees.
 - **Dimensions** (also called segments) say *where, for whom and why*: legal entity, brand, business model, market, channel, cost center, product, intercompany counterparty.
 
-The combination of a natural account and its dimension values is the **accounting string** or account combination. The design rule that practitioners converge on is to keep natural accounts few and stable (hundreds, not tens of thousands) and push analytical variety into dimensions. The classic anti-pattern is account explosion, where "Commission revenue – Stayloft – Portugal – mobile app – merchant" becomes its own account, and every new market or channel means a chart change, a mapping change and a consolidation change.
+The combination of a natural account and its dimension values is the **accounting string** or account combination. The common practitioner rule is to keep natural accounts few and stable (hundreds, not tens of thousands) and push analytical variety into dimensions. The classic anti-pattern is account explosion, where "Commission revenue – Stayloft – Portugal – mobile app – merchant" becomes its own account, and every new market or channel means a chart change, a mapping change and a consolidation change.
 
-The question architects face is not only "natural account or dimension?" It is a four-way placement decision for every piece of detail, and it is one of the most consequential decisions in a finance design:
+For every piece of detail, architects face a four-way placement decision, not only "natural account or dimension?", and getting it wrong is expensive to undo:
 
 | Where the detail lives | What belongs there | Northmere example | Cost of getting it wrong |
 | --- | --- | --- | --- |
@@ -108,31 +108,31 @@ The question architects face is not only "natural account or dimension?" It is a
 | **Subledger** | Per-counterparty and per-document detail needed to *operate and reconcile*: each booking, each property's open items | The €510 owed to the Lisbon property, linked to booking id | Putting it in the GL makes the GL slow and unreadable; omitting it means nobody can explain a balance. |
 | **Operational system only** | Detail with no accounting meaning: room type, guest names, search channel | Apartment amenities, traveler's preferences | Copying it into finance creates privacy exposure and noise. |
 
-The test I use for the second row: if the CFO's reporting, the segment note, a statutory filing or an elimination needs to cut a balance by an attribute, that attribute must exist as a dimension *at posting time*. US segment reporting (ASC 280) and new disclosure rules such as the US expense disaggregation standard (ASU 2024-03, effective for US public companies for annual periods beginning after 15 December 2026, as of 2026) are examples of "disclosure changes" that are really data-model changes. Northmere's three charts of accounts, one in each ERP and mapped only in OneStream spreadsheets, are the cost of not deciding this once; [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture) owns the group chart of accounts program.
+The test I use for the second row: if the CFO's reporting, the segment note, a statutory filing or an elimination needs to cut a balance by an attribute, that attribute must exist as a dimension *at posting time*. US segment reporting (ASC 280) and the US expense disaggregation standard (ASU 2024-03, effective for US public companies for annual periods beginning after 15 December 2026, as of 2026) are "disclosure changes" that are really data-model changes. Northmere's three charts of accounts, one in each ERP and mapped only in OneStream spreadsheets, are the cost of not deciding this once; [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture) owns the group chart of accounts program.
 
 {id: accounting-for-architects--operational-records-subledgers-and-the-general-ledger}
 ## Operational Records, Subledgers and the General Ledger
 
-Three layers hold financial truth in an enterprise, and much of finance architecture is about the boundaries between them.
+Three layers hold financial records in an enterprise, and much of finance architecture is about the boundaries between them.
 
 - **Operational records** are the business events themselves: bookings, modifications, payments, refunds, usage, payouts. They are high volume, per event, and owned by the brand and payments platforms.
 - A **subledger** holds accounting-relevant detail for one area, with the accounting treatment already applied: every booking's funds held, every property's payable, every customer's open invoices. Accounts receivable, accounts payable, fixed assets and Stayloft's merchant subledger in the Stayloft Finance Platform (SFP) are subledgers.
 - The **general ledger** (GL) holds balances by account and dimension, summarized, and is the source of the financial statements.
 
-Each subledger has a **control account** in the GL (for example `Partner payables`) whose balance must equal the sum of the open items in the subledger. Proving that equality every period, **subledger-to-GL reconciliation**, is one of the most important key controls in any finance estate.
+Each subledger has a **control account** in the GL (for example `Partner payables`) whose balance must equal the sum of the open items in the subledger. Proving that equality every period, **subledger-to-GL reconciliation**, is a key control in every finance estate.
 
 ![Three million operational lines a day pass through posting rules into the subledger, are funnelled into 38,000 GL lines a day, then trial balance, consolidation and statements; a dotted key arrow drills back from the GL to the subledger, and a level balance scale reconciles the two.](finance-systems-architecture/posts/05-accounting-for-architects/assets/images/05-accounting-for-architects/detail-narrows-to-statements.jpeg)
 
 **Figure 1:** *Detail narrows as it moves toward the statements: millions of operational lines become tens of thousands of GL lines. The design works only if every summarized line can be traced back to its detail and the subledger's open items can be proven equal to the GL control account.*
 
-At Northmere the volume gradient is concrete: SFP turns about 3 million subledger lines a day into about 38,000 GL lines posted to SAP S/4HANA. That ratio is not a problem; it is the reason the subledger exists. The problem appears when the summarization drops the information needed to go back. A summarized line must carry a **summarization key** (the date, entity, account combination and batch it summarizes) that the subledger can use to list every line behind it. Without that key, Northmere has the failure pattern **Lost in Aggregation**: a balance nobody can explain. [Anatomy of a Finance Estate: Layers, Planes and Boundaries](#finance-landscape) places the subledger layer in the wider reference model, and [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers) designs the summarization.
+At Northmere, SFP turns about 3 million subledger lines a day into about 38,000 GL lines posted to SAP S/4HANA. That ratio is the reason the subledger exists. The problem appears when the summarization drops the information needed to go back. A summarized line must carry a **summarization key** (the date, entity, account combination and batch it summarizes) that the subledger can use to list every line behind it. Without that key, Northmere has the failure pattern **Lost in Aggregation**: a balance nobody can explain. [Anatomy of a Finance Estate: Layers, Planes and Boundaries](#finance-landscape) places the subledger layer in the wider reference model, and [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers) designs the summarization.
 
-A point that matters for brand platforms: a system that decides how an operational event is treated in accounting (what is a liability, what is revenue, when it moves) is **keeping books**, whatever it is called. SFP is a subledger in this sense, and so is any brand service that computes "net revenue" for its own dashboards. If its numbers are not reconciled to the GL, it is **The Shadow Ledger**.
+A system that decides how an operational event is treated in accounting (what is a liability, what is revenue, when it moves) is **keeping books**, whatever it is called. SFP is a subledger in this sense, and so is any brand service that computes "net revenue" for its own dashboards. If its numbers are not reconciled to the GL, it is **The Shadow Ledger**.
 
 {id: accounting-for-architects--accrual-accounting-and-the-period}
 ## Accrual Accounting and the Period
 
-Financial statements under US GAAP and IFRS (apart from the cash-flow statement) are prepared on the **accrual basis**: revenue is recorded when earned and expenses when incurred, regardless of when cash moves. Operational systems, by contrast, are mostly event- or cash-driven. The finance stack's job is to turn one into the other, and the instruments it uses are a small set:
+Financial statements under US GAAP and IFRS (apart from the cash-flow statement) are prepared on the **accrual basis**: revenue is recorded when earned and expenses when incurred, regardless of when cash moves. Operational systems are mostly event- or cash-driven. The finance stack turns one into the other with a small set of instruments:
 
 | Instrument | What it does | Northmere example |
 | --- | --- | --- |
@@ -146,9 +146,9 @@ Financial statements under US GAAP and IFRS (apart from the cash-flow statement)
 {id: accounting-for-architects--the-period-close-and-what-it-asks-of-systems}
 ### The period close, and what it asks of systems
 
-A **period** is the unit of financial reporting, a month for Northmere's management accounts, a quarter for its SEC filings. The **period close** is the routine that makes a period's books complete, accurate and final: cut off the subledgers, post accruals and deferrals, run revaluations, match intercompany, reconcile balance-sheet accounts, consolidate, review and finally **lock** the period so nothing more can post to it. Northmere's close takes nine working days; Keystone's target is five by the end of 2028. [Order to Cash, Procure to Pay, Record to Report](#finance-processes) follows the close as a process; this chapter is concerned with what it demands of the systems underneath.
+A **period** is the unit of financial reporting, a month for Northmere's management accounts, a quarter for its SEC filings. The **period close** makes a period's books complete, accurate and final: cut off the subledgers, post accruals and deferrals, run revaluations, match intercompany, reconcile balance-sheet accounts, consolidate, review and finally **lock** the period so nothing more can post to it. Northmere's close takes nine working days; Keystone's target is five by the end of 2028. [Order to Cash, Procure to Pay, Record to Report](#finance-processes) follows the close as a process; this chapter covers what it demands of the systems underneath.
 
-Three design consequences follow.
+The close has three design consequences.
 
 1. **Every event needs two dates.** The **event date** says when something happened; the **posting date** says which period it belongs to in the books. Usually they fall in the same period. When an event arrives after its period is locked (a settlement file for 31 March delivered on 3 April after the March cut-off), it is posted in the current open period with its original event date preserved, so the late arrival can be explained and measured. The systems must never silently post into a locked period, and must never discard the event date.
 2. **Cut-off is a design, not a moment.** For each feed, finance and engineering agree what "all of March" means: by which event date, in which time zone, received by when, proven complete by which control total. A cut-off that depends on a batch job happening to run after midnight in Amsterdam is not a cut-off.
@@ -157,7 +157,7 @@ Three design consequences follow.
 {id: accounting-for-architects--revenue-recognition-five-steps-translated-into-system-requirements}
 ## Revenue Recognition: Five Steps, Translated Into System Requirements
 
-Revenue is the most scrutinized number in the statements, and its rules are where engineering intuition fails most often. IFRS 15 and its US counterpart, ASC Topic 606, were issued jointly in May 2014 and are substantially converged; both organize revenue recognition into [five steps](https://www.ifrs.org/issued-standards/list-of-standards/ifrs-15-revenue-from-contracts-with-customers/). Northmere reports under US GAAP, so its policies cite ASC 606; its European subsidiaries' statutory books apply IFRS 15 or local GAAP. The table translates each step into what systems must hold.
+Revenue is the most scrutinized number in the statements, and its rules are where engineering intuition fails most often: they decide which operational events finance must receive. IFRS 15 and its US counterpart, ASC Topic 606, were issued jointly in May 2014 and are substantially converged; both organize revenue recognition into [five steps](https://www.ifrs.org/issued-standards/list-of-standards/ifrs-15-revenue-from-contracts-with-customers/). Northmere reports under US GAAP, so its policies cite ASC 606; its European subsidiaries' statutory books apply IFRS 15 or local GAAP. The table translates each step into what systems must hold.
 
 | Step | What the standard asks | What the systems must hold | Northmere example |
 | --- | --- | --- | --- |
@@ -167,7 +167,7 @@ Revenue is the most scrutinized number in the statements, and its rules are wher
 | 4. Allocate the price | Split across obligations by relative standalone selling price | Standalone selling price tables as governed, versioned reference data | Not material in the Lisbon booking; matters in bundles |
 | 5. Recognize revenue when (or as) each obligation is satisfied | At a point in time or over time | Recognition triggers (events) and schedules, with the rule version applied | Commission at stay completion; subscription ratably over the month |
 
-Three consequences matter more than the steps themselves.
+For system design, three consequences matter more than the steps themselves.
 
 - **Billing is not revenue.** An invoice is a legal and tax document; revenue follows performance. An invoice for a service not yet delivered creates a contract liability, not revenue, and usage delivered but not yet invoiced is revenue without an invoice. A billing system is not a revenue subledger, and the two must reconcile.
 - **Revenue timing decides which operational events finance needs.** If Stayloft recognizes commission at stay completion, a `StayCompleted` event (or a reliable derivation of it) is a financial event, not an operational detail. If the policy recognized at check-in, check-in would be the trigger.
@@ -176,9 +176,9 @@ Three consequences matter more than the steps themselves.
 {id: accounting-for-architects--principal-or-agent-the-judgment-that-decides-what-you-capture}
 ## Principal or Agent: The Judgment That Decides What You Capture
 
-When a third party is involved in providing the service, an entity must decide whether it is the **principal**, which controls the service before it is transferred to the customer and reports revenue **gross** (the full price, with the third party's share as a cost), or an **agent**, which arranges for the other party to provide it and reports revenue **net** (its commission or margin). Control is the test. Indicators such as primary responsibility for fulfillment, inventory risk and discretion over price support the control assessment; they are not a checklist that overrides it. The assessment is made per specified good or service, so one platform can be principal for some products and agent for others.
+When a third party helps provide the service, an entity must decide whether it is the **principal**, which controls the service before it is transferred to the customer and reports revenue **gross** (the full price, with the third party's share as a cost), or an **agent**, which arranges for the other party to provide it and reports revenue **net** (its commission or margin). Control is the test. Indicators such as primary responsibility for fulfillment, inventory risk and discretion over price support the control assessment; they are not a checklist that overrides it. The assessment is made per specified good or service, so one platform can be principal for some products and agent for others.
 
-For a marketplace like Stayloft the contrast between the two business models looks like this:
+For Stayloft, the two business models compare like this:
 
 | | Agency model | Merchant model |
 | --- | --- | --- |
@@ -188,12 +188,12 @@ For a marketplace like Stayloft the contrast between the two business models loo
 | Stayloft's revenue | Commission, invoiced to the property | Commission, retained from the traveler's payment |
 | What else Stayloft's books carry | A receivable from the property | Funds held for travelers, payables to properties, PSP clearing, refunds, chargebacks, safeguarded cash |
 
-The teaching point in the right-hand column is the one engineers most often miss: **collecting the cash does not make you the principal.** Being the merchant of record, holding funds, and having tax obligations are separate questions from the revenue standard's control assessment. Under the EU's VAT in the Digital Age package (ViDA), short-term accommodation platforms will become [deemed suppliers](https://taxation-customs.ec.europa.eu/taxation/vat/vat-digital-age-vida_en) for VAT from 1 July 2028 (member states may delay to 1 January 2030) where the underlying provider does not charge VAT. That makes the platform liable for the VAT; it does not make it the principal for revenue. The same transaction can be "agent" for revenue, "deemed supplier" for VAT, "marketplace facilitator" for US sales tax and "reporting platform" under the EU's DAC7 platform-reporting rules. Systems therefore need the tax treatment and the accounting treatment as **separate attributes** of a transaction, determined by separate services.
+The right-hand column holds the point engineers most often miss: **collecting the cash does not make you the principal.** Being the merchant of record, holding funds, and having tax obligations are separate questions from the revenue standard's control assessment. Under the EU's VAT in the Digital Age package (ViDA), short-term accommodation platforms will become [deemed suppliers](https://taxation-customs.ec.europa.eu/taxation/vat/vat-digital-age-vida_en) for VAT from 1 July 2028 (member states may delay to 1 January 2030) where the underlying provider does not charge VAT. That makes the platform liable for the VAT; it does not make it the principal for revenue. The same transaction can be "agent" for revenue, "deemed supplier" for VAT, "marketplace facilitator" for US sales tax and "reporting platform" under the EU's DAC7 platform-reporting rules. Systems therefore need the tax treatment and the accounting treatment as **separate attributes** of a transaction, determined by separate services.
 
 > **What this chapter simplifies.** The principal-versus-agent conclusion is a judgment made by the accounting team, documented in policy, agreed with the auditor, and specific to contract terms. This chapter treats Stayloft as agent in both models because Northmere's (fictional) accounting policy says so, not because the merchant model always leads there; real companies disclose different conclusions for different product lines. The *timing* of an agent's revenue (at booking, at check-in or at stay completion) is also a judgment that depends on what the agent promised and on cancellation terms; Northmere's policy recognizes Stayloft commission at stay completion, while Wayfare, which is merchant of record for rail tickets but also an agent, recognizes its €6.72 margin on the €84.00 Paris–Lyon ticket at ticket issue, because its promise (arranging and issuing the ticket) is complete then. Architects implement these policies; they do not make them.
 
-{id: accounting-for-architects--why-the-architect-needs-this}
-### Why the architect needs this
+{id: accounting-for-architects--what-the-conclusion-decides-in-the-data}
+### What the conclusion decides in the data
 
 The principal-versus-agent conclusion determines the **shape of the data**, not only a line in the income statement:
 
@@ -203,7 +203,7 @@ The principal-versus-agent conclusion determines the **shape of the data**, not 
 | Agent, merchant model | Commission (net) | Payment captured, settled, fees, stay completed, refunds, chargebacks, payout instructed and settled | Funds held for travelers, PSP clearing, partner payables, safeguarding bank accounts, payouts in transit, commission revenue |
 | Principal | Gross price | All of the above, plus the cost of the room night and any inventory commitments | Gross revenue, cost of revenue, supplier payables, inventory or prepayments |
 
-A change of conclusion, for example a new product where Stayloft pre-buys room allotments and bears unsold-inventory risk, is therefore not a reporting change. It changes which events must be captured, what the subledger stores and how the GL is structured. That is why I ask, in every design review of a new business model, "has accounting policy concluded on principal versus agent yet?" before I ask anything about the event model.
+A change of conclusion, for example a new product where Stayloft pre-buys room allotments and bears unsold-inventory risk, is therefore not a reporting change: it changes which events must be captured, what the subledger stores and how the GL is structured. That is why I ask, in every design review of a new business model, "has accounting policy concluded on principal versus agent yet?" before I ask anything about the event model.
 
 {id: accounting-for-architects--three-kinds-of-money-that-are-not-revenue}
 ## Three Kinds of Money That Are Not Revenue
@@ -214,7 +214,7 @@ The merchant model fills the balance sheet with money that is not Northmere's in
 - **Funds held for customers** (Northmere's account is `Traveler funds held`; public filings in the travel industry often call this balance **deferred merchant bookings**) is cash collected from travelers for stays not yet taken. It is mostly *not* Northmere's revenue at all: most of it will be paid to properties or refunded, and only the commission share will ever be earned. Treating all of it as deferred revenue overstates future revenue by several times.
 - A **partner payable** is the amount owed to a property once the stay has happened and the obligation is fixed.
 
-Because Northmere Payments B.V. is a licensed e-money institution, travelers' funds are also subject to **safeguarding**: the [E-Money Directive (2009/110/EC), Article 7](https://eur-lex.europa.eu/eli/dir/2009/110/oj), requires e-money institutions to safeguard funds received, typically by holding them in segregated accounts protected from other creditors. Safeguarding turns a balance-sheet distinction into a regulatory control: Northmere must show, daily, that the cash in its safeguarding accounts covers what it owes travelers and properties. That is only possible if the chart of accounts separates safeguarded cash from Northmere's own operating cash, and the subledger can say at any moment how much is held, for which bookings, in which entity and currency. [Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals) covers the regulation; [Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale) covers licensed entities.
+Safeguarding turns this balance-sheet distinction into a regulatory control. Because Northmere Payments B.V. is a licensed e-money institution, the [E-Money Directive (2009/110/EC), Article 7](https://eur-lex.europa.eu/eli/dir/2009/110/oj), requires it to safeguard funds received, typically by holding them in segregated accounts protected from other creditors. Northmere must show, daily, that the cash in its safeguarding accounts covers what it owes travelers and properties. That is only possible if the chart of accounts separates safeguarded cash from Northmere's own operating cash, and the subledger can say at any moment how much is held, for which bookings, in which entity and currency. [Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals) covers the regulation; [Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale) covers licensed entities.
 
 ![A shielded vault of coins that splits at the stay into a large share for the property and a small share of revenue.](finance-systems-architecture/posts/05-accounting-for-architects/assets/images/05-accounting-for-architects/three-kinds-of-money.jpeg)
 
@@ -223,13 +223,13 @@ Because Northmere Payments B.V. is a licensed e-money institution, travelers' fu
 {id: accounting-for-architects--the-lisbon-booking-entry-by-entry}
 ## The Lisbon Booking, Entry by Entry
 
-The canonical worked example of this book is a merchant-model booking. A traveler from Germany books a three-night stay in a Lisbon apartment on Stayloft: **€600.00** including VAT, paid by card through Adyen on **12 March 2027**, for a stay on **18–21 April 2027**. The commission rate is **15%**, so Stayloft's commission is **€90.00** and the property is owed **€510.00**. Adyen books the capture into its settlement batch on Sunday **14 March** and the batch payout reaches Northmere's bank on Tuesday **16 March** (illustrative), after deducting a **€1.74** processing fee (illustrative). The payout is instructed on **22 April** and settles on **26 April**.
+The book's canonical worked example is a merchant-model booking. A traveler from Germany books a three-night stay in a Lisbon apartment on Stayloft: **€600.00** including VAT, paid by card through Adyen on **12 March 2027**, for a stay on **18–21 April 2027**. The commission rate is **15%**, so Stayloft's commission is **€90.00** and the property is owed **€510.00**. Adyen books the capture into its settlement batch on Sunday **14 March** and the batch payout reaches Northmere's bank on Tuesday **16 March** (illustrative), after deducting a **€1.74** processing fee (illustrative). The payout is instructed on **22 April** and settles on **26 April**.
 
 {id: accounting-for-architects--simplifications-stated-up-front}
 ### Simplifications stated up front
 
 - **One entity view.** The entries below show the group's books as if one euro-functional entity performed every step. In Northmere's structure the cash sits in Northmere Payments B.V. and the commission in Stayloft B.V.; the intercompany section later in this chapter splits the entries across the two.
-- **VAT.** The €600 includes the property's VAT on the accommodation, which is the property's obligation in the agency relationship and passes through Stayloft's books inside the partner payable. For the commission, I assume a business-to-business supply to a VAT-registered Portuguese property that accounts for the VAT itself under the reverse-charge mechanism, so no output VAT appears in Stayloft's entries. Where a host is not VAT-registered, the platform may have to charge VAT on its commission, and ViDA's deemed-supplier rules change the picture from mid-2028. Kofi Asante's tax team and Vertex decide those treatments; the entries here are for teaching.
+- **VAT.** The €600 includes the property's VAT on the accommodation; in the agency relationship that VAT is the property's obligation, and it passes through Stayloft's books inside the partner payable. For the commission, I assume a business-to-business supply to a VAT-registered Portuguese property that accounts for the VAT itself under the reverse-charge mechanism, so no output VAT appears in Stayloft's entries. Where a host is not VAT-registered, the platform may have to charge VAT on its commission, and ViDA's deemed-supplier rules change the picture from mid-2028. Kofi Asante's tax team and Vertex decide those treatments; the entries here are for teaching.
 - **Booking-level entries.** In production, Adyen settles thousands of payments in one batch and SFP posts daily summaries. The entries show one booking so that each movement is visible.
 - **Policy.** Revenue at stay completion and agent treatment are Northmere's (fictional) accounting policy, as stated above.
 
@@ -270,7 +270,7 @@ The canonical worked example of this book is a merchant-model booking. A travele
 | 8 | 26 Apr | `PartnerPayoutSettled` | Payouts in transit | 510.00 | | Bank confirms the transfer |
 | | | | Bank – safeguarding | | 510.00 | |
 
-The booking confirmation itself creates no entry. `BookingConfirmed` carries the data every later entry needs (entity, business model, amounts, stay dates, cancellation terms, property), but no money has moved and nothing is owed until the payment is captured. Entries 4 and 6 are not driven by booking events at all; they come from treasury's daily safeguarding process. They are shown because they are what the bank statements will contain, and the reconciliation must explain them.
+The booking confirmation itself creates no entry. `BookingConfirmed` carries the data every later entry needs (entity, business model, amounts, stay dates, cancellation terms, property), but no money has moved and nothing is owed until the payment is captured. Entries 4 and 6 come from treasury's daily safeguarding process, not from booking events. They are shown because the bank statements will contain them, and the reconciliation must explain them.
 
 {id: accounting-for-architects--the-balances-period-by-period}
 ### The balances, period by period
@@ -297,7 +297,7 @@ Read the "At 31 Mar close" column as Leila would. The booking has put €600 of 
 {id: accounting-for-architects--what-the-design-must-therefore-do}
 ### What the design must therefore do
 
-The entries tell the architect what the systems need, more precisely than any requirements workshop:
+The entries state what the systems need more precisely than any requirements workshop:
 
 - **Six booking and payment events** drive six of the entries (treasury's daily safeguarding process drives the other two), and each must carry the booking id as correlation key so that the eight entries can be tied together and to the bank.
 - **Two clearing accounts** (PSP clearing and payouts in transit) exist to be emptied. Each must be emptied by matching specific items, not by netting totals. When they do not return to zero, the items left behind are the €14 million of unreconciled PSP clearing balances Northmere carried at month-end in 2026. That is **The Suspense Swamp**, and [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger) designs the cure.
@@ -329,7 +329,9 @@ The income statement is identical: €90 of commission revenue in April. Everyth
 | Reconciliations | Booking to PSP, PSP to bank, payouts to bank, safeguarding daily, subledger to GL | Invoices to collections, subledger to GL |
 | Regulatory exposure | E-money license, safeguarding, payment regulation | Invoicing and VAT rules |
 
-This is why the rise in Stayloft's merchant share from 51% of GTV in 2023 to 64% in 2026 is an architecture event, not only a commercial one. Revenue barely changed shape; the volume of entries, reconciliations, liabilities and regulated cash multiplied. The agency invoice also shows why "commission revenue at stay" and "commission invoice at month end" are different events: the revenue belongs in April whether or not the invoice run happens on 30 April or slips to 2 May.
+This is why the rise in Stayloft's merchant share from 51% of GTV in 2023 to 64% in 2026 is an architecture event, not only a commercial one. Revenue barely changed shape; the volume of entries, reconciliations, liabilities and regulated cash multiplied.
+
+The agency invoice also shows why "commission revenue at stay" and "commission invoice at month end" are different events: the revenue belongs in April whether the invoice run happens on 30 April or slips to 2 May.
 
 {id: accounting-for-architects--when-the-money-goes-back-a-refund-and-the-420-chargeback}
 ## When the Money Goes Back: A Refund and the €420 Chargeback
@@ -346,9 +348,9 @@ Suppose the Lisbon traveler had canceled on 2 April, within the free-cancellatio
 | 1 | 2 Apr | `BookingCancelled`, `RefundIssued` | Traveler funds held | 600.00 | | The obligation to the traveler is discharged by repayment |
 | | | | PSP clearing – Adyen | | 600.00 | Adyen will deduct the refund from a later settlement batch |
 
-No revenue is reversed, because none was ever recognized: a fully refunded cancellation is never revenue. The €1.74 processing fee is commonly not returned when a payment is refunded (it depends on the PSP contract), so the canceled booking costs Northmere €1.74 and earns nothing. The PSP clearing account now carries a *credit* item, to be matched against the deduction in a later settlement report.
+No revenue is reversed, because none was ever recognized. The €1.74 processing fee is commonly not returned when a payment is refunded (it depends on the PSP contract), so the canceled booking costs Northmere €1.74 and earns nothing. The PSP clearing account now carries a *credit* item, to be matched against the deduction in a later settlement report.
 
-A partial refund is more demanding. If the traveler had shortened the stay to two nights and received €200 back, the funds held would fall to €400, and the eventual commission (€60) and payout (€340) would be recalculated from the modified booking. That recalculation depends on `BookingModified` reaching finance before `StayCompleted`; if it arrives late, the subledger recognizes revenue on the old amount and someone corrects it during the close. Late modifications are among the commonest causes of manual journals in marketplace finance.
+A partial refund depends on event order. If the traveler had shortened the stay to two nights and received €200 back, the funds held would fall to €400, and the eventual commission (€60) and payout (€340) would be recalculated from the modified booking. That recalculation depends on `BookingModified` reaching finance before `StayCompleted`; if it arrives late, the subledger recognizes revenue on the old amount and someone corrects it during the close. Late modifications are among the commonest causes of manual journals in marketplace finance.
 
 {id: accounting-for-architects--the-420-chargeback}
 ### The €420 chargeback
@@ -372,9 +374,9 @@ Northmere Pay submits evidence (**representment**). Two outcomes are possible; i
 | | | | Refunds and chargebacks (contra-revenue) | 63.00 | | The commission is given up |
 | | | | Chargebacks under dispute | | 420.00 | |
 
-The outcome in 3b is a policy choice, not an accounting law. Whether a lost chargeback is recovered from the property depends on the partner contract and on the reason; fraud chargebacks on a stay that genuinely took place are commonly absorbed and expensed as losses; whether Northmere's lost €63 is a reduction of revenue or an expense is an accounting policy that Leila's team sets. What is not a choice is **where** the correction lands: in June and July, the periods in which the chargeback was received and resolved. May's revenue of €63 is not reopened. At the June close, the €420 under dispute is assessed for recoverability, and the refund-and-chargeback reserve, an estimate of future reversals based on history, is trued up. That estimate is itself a key control and needs governed data by cohort, which the subledger must keep.
+The outcome in 3b is a policy choice; **where** the correction lands is not. Whether a lost chargeback is recovered from the property depends on the partner contract and on the reason; fraud chargebacks on a stay that genuinely took place are commonly absorbed and expensed as losses; whether Northmere's lost €63 is a reduction of revenue or an expense is an accounting policy that Leila's team sets. The correction lands in June and July, the periods in which the chargeback was received and resolved. May's revenue of €63 is not reopened. At the June close, the €420 under dispute is assessed for recoverability, and the refund-and-chargeback reserve, an estimate of future reversals based on history, is trued up. That estimate is itself a key control and needs governed data by cohort, which the subledger must keep.
 
-For architects the chargeback carries three requirements. The booking id must survive for months across payments, subledger and partner systems, so that a chargeback can find its booking and its property. The partner subledger must be able to hold a *receivable* from a partner, not only payables, and net it against future payouts. And every reversal must post in the current open period, linked to the original entries, never by editing them.
+The chargeback gives architects three requirements. The booking id must survive for months across payments, subledger and partner systems, so that a chargeback can find its booking and its property. The partner subledger must be able to hold a *receivable* from a partner, not only payables, and net it against future payouts. And every reversal must post in the current open period, linked to the original entries, never by editing them.
 
 {id: accounting-for-architects--tablekin-one-invoice-two-revenue-treatments}
 ## Tablekin: One Invoice, Two Revenue Treatments
@@ -399,13 +401,13 @@ Under ASC 606, platform access is a stand-ready obligation satisfied **over time
 | 5 | 30 Apr | Month end, April subscription | Contract liability | 249.00 | | |
 | | | | Subscription revenue | | 249.00 | |
 
-The coincidence in this example is instructive. March revenue for this venue is $249 + $780 = **$1,029**, and the 1 April invoice is also **$1,029**, but the two numbers are made of different things. A design that used the invoice as the revenue record would get March right only by luck, and would be wrong in every month in which usage changes. The billing system's invoice lines and the ledger's revenue schedule are two records that must reconcile, which is the point of the misconception "billing equals revenue".
+March revenue for this venue is $249 + $780 = **$1,029**, and the 1 April invoice is also **$1,029**, but the two numbers are made of different things. A design that used the invoice as the revenue record would get March right only by luck, and would be wrong in every month in which usage changes. The billing system's invoice lines and the ledger's revenue schedule are two records that must reconcile; treating them as one is the misconception "billing equals revenue".
 
 ![Two equal-height bars totaling $1,029: the invoice mixes an April block and a March block, the revenue column holds two March blocks.](finance-systems-architecture/posts/05-accounting-for-architects/assets/images/05-accounting-for-architects/same-total-different-contents.jpeg)
 
 **Figure 4:** *The 1 April invoice and March revenue are both $1,029 but made of different things: the invoice carries April's $249 subscription and March's $780 usage, while March revenue is March's subscription plus March's usage.*
 
-Three further points. Sales tax charged on the invoice is owed to the taxing authorities and posts to a sales-tax payable, not to revenue; US GAAP allows an entity to exclude such taxes from the transaction price, and Tablekin does. Whether recognition is daily or monthly is a policy choice with system consequences (a daily schedule is more precise for mid-month upgrades and cancellations and much more voluminous). And where the revenue schedule lives (in a billing tool's revenue module, in Workday or in a custom service) is a system-of-record decision that [Systems of Record: Ending the Doppelgänger Record](#systems-of-record) addresses; what matters here is that exactly one system owns it.
+Sales tax on the invoice is not revenue either: it is owed to the taxing authorities and posts to a sales-tax payable; US GAAP allows an entity to exclude such taxes from the transaction price, and Tablekin does. Whether recognition is daily or monthly is a policy choice with system consequences (a daily schedule is more precise for mid-month upgrades and cancellations and much more voluminous). And where the revenue schedule lives (in a billing tool's revenue module, in Workday or in a custom service) is a system-of-record decision that [Systems of Record: Ending the Doppelgänger Record](#systems-of-record) addresses; what matters here is that exactly one system owns it.
 
 {id: accounting-for-architects--currency-revaluation-is-not-translation}
 ## Currency: Revaluation Is Not Translation
@@ -416,7 +418,7 @@ Northmere customers pay in 46 currencies and partners are settled in 31. Three c
 - **Functional currency** is the currency of the primary economic environment in which an entity operates. It is determined by facts (prices, costs, financing), not chosen. Stayloft B.V.'s is the euro.
 - **Presentation currency** is the currency the statements are presented in; Northmere's group presentation currency is the US dollar.
 
-Three processes use them, and systems that conflate them produce errors that are hard to find:
+Three processes use them, and systems that confuse them produce errors that are hard to find:
 
 1. **Initial recognition**: a foreign-currency transaction is recorded in the functional currency at the rate on the transaction date.
 2. **Revaluation (remeasurement)**: at each reporting date, **monetary items** (cash, receivables, payables) in a foreign currency are retranslated at the closing rate, and the difference goes to **profit or loss**. Non-monetary items, such as deferred revenue in most analyses, stay at their historical rate.
@@ -438,7 +440,7 @@ A New York hotel is contracted to Stayloft B.V. (euro functional currency) and s
 
 Over the life of the payable, Northmere gained €7.25 (€1,574.07 − €1,566.82): €14.44 in March and −€7.19 in April. Two simplifications: some ledgers reverse the month-end revaluation on day one of the next period instead of carrying it forward (the total is the same; the split between realized and unrealized differs), and the US dollar bank account is itself a monetary item that is revalued, which partly offsets the payable's movement. Commission revenue recognized from the stay is *not* revalued later: it stays at the rate on the day it was recognized.
 
-The design requirements are specific. Every line in a foreign currency must store the transaction amount, the rate applied, the rate type (spot, closing, average) and the functional-currency amount. Rates come from one governed rate table with a source and a timestamp, not from whatever service each system happens to call. And revaluation must know which accounts are monetary, which is a property of the account in the chart, set by accounting.
+Revaluation sets three design requirements. Every line in a foreign currency must store the transaction amount, the rate applied, the rate type (spot, closing, average) and the functional-currency amount. Rates come from one governed rate table with a source and a timestamp, not from whatever service each system happens to call. And revaluation must know which accounts are monetary, which is a property of the account in the chart, set by accounting.
 
 {id: accounting-for-architects--translation-briefly}
 ### Translation, briefly
@@ -452,7 +454,7 @@ When OneStream consolidates Stayloft B.V. into the US-dollar group, the Lisbon b
 {id: accounting-for-architects--intercompany-the-booking-across-two-legal-entities}
 ## Intercompany: The Booking Across Two Legal Entities
 
-Groups trade between their own legal entities, and each side records its half. In consolidation, intercompany balances, income and expenses are **eliminated** so that the group presents only transactions with outside parties. Intercompany is one of the most persistent close bottlenecks, because the two halves are often posted by different systems, at different times, at different rates.
+Groups trade between their own legal entities, and each side records its half. In consolidation, intercompany balances, income and expenses are **eliminated** so that the group presents only transactions with outside parties. Intercompany is a persistent close bottleneck, because the two halves are often posted by different systems, at different times, at different rates.
 
 In Northmere's (fictional) structure the Lisbon booking involves two entities. Northmere Payments B.V., the e-money institution, receives the Adyen settlement and holds travelers' funds in safeguarding accounts. Stayloft B.V. is the contracting entity with the traveler and the property, and earns the commission. Adyen's fee is incurred by Northmere Payments B.V. and recharged to Stayloft B.V. The real allocation of legal obligations between such entities is a legal, regulatory and tax design; this split is illustrative. At stay completion the entries become:
 
@@ -468,12 +470,12 @@ In Northmere's (fictional) structure the Lisbon booking involves two entities. N
 
 The fee recharge follows the same pattern: Northmere Payments B.V. records recharge income of €1.74 and Stayloft B.V. a fee expense of €1.74; consolidation eliminates the pair, leaving the group with the original €1.74 fee to Adyen, an outside party. After elimination the group's figures equal the single-entity tables earlier in the chapter, which is why those tables can be read as the consolidated view.
 
-The architectural lessons are the ones Northmere's intercompany backlog teaches every month. Both halves must carry the **intercompany counterparty** as a dimension from the moment of posting, since elimination depends on it. Both halves should be generated from the same event, with the same amount, rate and posting date, by one posting rule, rather than by two systems that hope to agree. And intercompany settlement (the actual movement of the €90 between the entities) is a treasury process with its own entries and reconciliation. [Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale) owns the legal-entity model and transfer pricing.
+Northmere's monthly intercompany backlog teaches three lessons. Both halves must carry the **intercompany counterparty** as a dimension from the moment of posting, since elimination depends on it. Both halves should be generated from the same event, with the same amount, rate and posting date, by one posting rule, rather than by two systems that hope to agree. And intercompany settlement (the actual movement of the €90 between the entities) is a treasury process with its own entries and reconciliation. [Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale) owns the legal-entity model and transfer pricing.
 
 {id: accounting-for-architects--accounting-invariants-your-systems-must-preserve}
 ## Accounting Invariants Your Systems Must Preserve
 
-Everything above reduces to five properties that every system producing or holding financial records must preserve. They are the contract between Finance and Engineering: Finance decides what the entries are; Engineering guarantees these properties hold for every entry, at every volume, through every failure. Later chapters turn each into designs, standards and controls; this section defines them.
+Everything above reduces to five properties that every system producing or holding financial records must preserve. They are the contract between Finance and Engineering: Finance decides what the entries are; Engineering guarantees these properties hold for every entry, at every volume, through every failure. Later chapters turn each into designs, standards and controls.
 
 | Invariant | What it means | How a system enforces it | What the auditor sees | Deepened in |
 | --- | --- | --- | --- | --- |
@@ -489,7 +491,9 @@ I add a sixth to my own reviews, because the other five depend on it: **posting 
 
 **Figure 6:** *Each invariant becomes a check on the posting path: idempotency for completeness, a balance check before acceptance, a period check that redirects rather than rejects late events, append-only storage with source references, and reconciliation of what was summarized.*
 
-Two notes on the invariants. "Immutable" is a control concept, not a technology mandate: an append-only table with reversal entries and controlled access satisfies auditors; nothing requires a blockchain. And the invariants apply to every system that keeps books in the sense used above, including brand platforms, not only to the ERP. A brand subledger that updates rows in place is not exempt because its summaries post correctly to S/4HANA.
+"Immutable" is a control concept, not a technology mandate: an append-only table with reversal entries and controlled access satisfies auditors; nothing requires a blockchain.
+
+The invariants apply to every system that keeps books in the sense used above, including brand platforms, not only to the ERP. A brand subledger that updates rows in place is not exempt because its summaries post correctly to S/4HANA.
 
 {id: accounting-for-architects--where-the-accounting-treatment-should-be-applied}
 ## Where the Accounting Treatment Should Be Applied
@@ -526,7 +530,7 @@ These are the accounting-shaped failures I would look for first in any finance e
 {id: accounting-for-architects--the-chief-architect-s-view}
 ## The Chief Architect's View
 
-The most important governance point in this chapter is a boundary of decision rights. **Accounting policy belongs to the Chief Accounting Officer; the systems that implement it belong to architecture and engineering; the posting rules that connect the two are owned jointly.** At Northmere, Leila decides that Stayloft is an agent and that commission is earned at stay completion. Dana's architecture function decides how that policy is implemented once, for every brand, with the invariants preserved. Neither can do the other's job, and every serious failure I have seen in this area started with one side assuming the other had done it.
+The governance point that matters most here is a boundary of decision rights. **Accounting policy belongs to the Chief Accounting Officer; the systems that implement it belong to architecture and engineering; the posting rules that connect the two are owned jointly.** At Northmere, Leila decides that Stayloft is an agent and that commission is earned at stay completion. Dana's architecture function decides how that policy is implemented once, for every brand, with the invariants preserved. Neither can do the other's job, and every serious failure I have seen in this area started with one side assuming the other had done it.
 
 The decisions I would put on a Chief Architect's agenda:
 
@@ -538,7 +542,7 @@ The decisions I would put on a Chief Architect's agenda:
 
 The metrics I would watch, because each reveals an invariant weakening before an auditor does: the number and value of manual journal entries per close and their causes; aging of items in clearing accounts; volume of events arriving after cut-off; unexplained subledger-to-GL differences; and the share of GL lines that can be drilled back to source automatically.
 
-Long-term, the question is not whether Northmere's systems can produce the right entries today, but whether they can keep doing so as business models change. The 2023–2026 shift toward the merchant model, ViDA's deemed-supplier rules in 2028 and a Brazil launch with local payment methods will each change which events matter and which accounts they touch. An estate where policy is implemented once, as versioned rules over canonical events, absorbs those changes as configuration. An estate where policy is scattered across brand code absorbs them as projects.
+The long-term test is whether Northmere's systems keep producing the right entries as business models change. The 2023–2026 shift toward the merchant model, ViDA's deemed-supplier rules in 2028 and a Brazil launch with local payment methods will each change which events matter and which accounts they touch. An estate where policy is implemented once, as versioned rules over canonical events, absorbs those changes as configuration. An estate where policy is scattered across brand code absorbs them as projects.
 
 {id: accounting-for-architects--questions-to-ask}
 ## Questions to Ask

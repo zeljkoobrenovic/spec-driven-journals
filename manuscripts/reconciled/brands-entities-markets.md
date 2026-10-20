@@ -23,7 +23,7 @@
 
 Most groups say they want to onboard new brands and markets "as configuration". Few can say what that means. In practice it usually means that somebody configures a company code, somebody else asks the payment provider for an account, a third person adds a mapping row to a spreadsheet, and the brand team writes whatever code is left. **Configuration that nobody has enumerated is not an architecture. It is a hope that the next launch resembles the last one.**
 
-This chapter makes the idea precise. It builds on [Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale), which separated legal entity, brand, market, business model and currency into five independent dimensions and introduced the legal entity register, intercompany design and the group rate service. It also builds on [Canonical Events: A Common Language for Money](#loosely-coupled-domains), which designed the canonical financial events and the brand adapter kit. Those chapters supply the dimensions and the contract. This one turns them into a **repeatable onboarding capability**: the configuration layers, the business-model templates, the market launch kit, the acquired-brand playbook, the rules for legitimate forks, and the metrics that show whether any of it works.
+This chapter makes the idea precise, and it is where the design of Part III meets growth. It builds on [Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale), which separated legal entity, brand, market, business model and currency into five independent dimensions and introduced the legal entity register, intercompany design and the group rate service. It also builds on [Canonical Events: A Common Language for Money](#loosely-coupled-domains), which designed the canonical financial events and the brand adapter kit, and on the reconciliation catalog of [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation). Those chapters supply the dimensions, the contract and the proof. This one turns them into a **repeatable onboarding capability**: the configuration layers, the business-model templates, the market launch kit, the acquired-brand playbook, the rules for legitimate forks, and the metrics that show whether any of it works. [Modernizing Without Stopping the Close](#incremental-modernization) then applies the same discipline to moving the core itself.
 
 {id: brands-entities-markets--setting-the-scene-at-northmere-one-launch-and-one-acquisition}
 ## Setting the Scene at Northmere: One Launch and One Acquisition
@@ -34,7 +34,7 @@ The first is **Brazil**. Stayloft, Northmere's accommodation marketplace, will o
 
 The second is **Roamly**. Roamly is a fictional campervan and motorhome rental marketplace headquartered in Copenhagen. Owners list vehicles and renters book them, with Roamly collecting payment through Stripe and paying owners net of an 18% commission. Northmere signed to acquire it in July 2027 and the deal closed on **1 September 2027**. Roamly is small: about $38 million of revenue in 2026, about 0.5% of the group's $8.2 billion. It runs three legal entities on its own NetSuite instance (Roamly ApS in Denmark, Roamly AB in Sweden and Roamly GmbH in Germany), keeps its reconciliations in spreadsheets, and has an 11-person finance team that has never worked to a group close calendar.
 
-Dana Whitlock, the Chief Architect, puts the two cases side by side in front of the design authority, which she chairs with Leila Haddad, the Chief Accounting Officer. Her argument is that they are the same problem. Both add entities, currencies, payment routes, bank accounts, tax obligations, reconciliations and controls to an estate that already struggles with three charts of accounts and two payout engines. And both tempt everyone involved toward the same shortcut. For Brazil it is "copy Stayloft's European setup and patch it". For Roamly it is "leave them alone, they're tiny".
+Dana Whitlock, the Chief Architect, puts the two cases side by side in front of the design authority, which she chairs with Leila Haddad, the Chief Accounting Officer. Her argument is that they are the same problem. Both add entities, currencies, payment routes, bank accounts, tax obligations, reconciliations and controls to an estate that already struggles with three charts of accounts and two payout engines. And both invite the same shortcut. For Brazil it is "copy Stayloft's European setup and patch it". For Roamly it is "leave them alone, they're tiny".
 
 Keystone's five-year goal is that **new brands and markets are onboarded as configuration**. The question for this chapter is what has to be true for that sentence to mean something.
 
@@ -68,7 +68,7 @@ The rule I use is P7 in [Principles That Decide Things](#principles-standards-re
 {id: brands-entities-markets--the-nine-configuration-layers}
 ## The Nine Configuration Layers
 
-"Configure Stayloft for Brazil" is a sentence. The architecture needs a list. At Northmere, onboarding touches nine layers. Each layer is a governed data structure with an authority (the system of record, in the sense of [Systems of Record: Ending the Doppelgänger Record](#systems-of-record)), an owner, a change class from the Finance Data Council's scheme in [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture), and a typical lead time.
+At Northmere, onboarding touches nine layers, which turn "Configure Stayloft for Brazil" from a sentence into a list. Each layer is a governed data structure with an authority (the system of record, in the sense of [Systems of Record: Ending the Doppelgänger Record](#systems-of-record)), an owner, a change class from the Finance Data Council's scheme in [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture), and a typical lead time.
 
 | # | Layer | What configuration means concretely | Authority | Owner | Change class | Typical lead time |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -86,7 +86,7 @@ The rule I use is P7 in [Principles That Decide Things](#principles-standards-re
 
 **Figure 2:** *The nine configuration layers form a dependency graph rooted in the entity register. Nothing downstream can be configured for an entity the register does not know, and nothing goes live until the posting simulation, the settlement matching profile and the controls scoping have converged on the same gate.*
 
-The figure shows which configuration depends on which, and so what to start first. Three properties make these layers *configuration* rather than a list of tasks.
+Three properties make these layers *configuration* rather than a list of tasks.
 
 **Every layer reads from the register, never from a document.** [Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale) made the legal entity register the golden source for entity identity and attributes. In the launch kit that becomes enforceable. The integration hub rejects events for an unknown `legal_entity`, as [Canonical Events: A Common Language for Money](#loosely-coupled-domains) describes. The tax service refuses a determination for an entity without registrations. Kyriba will not open a statement channel for an account whose owning entity is missing. Without these checks, **The Doppelgänger Record** returns with every launch: a merchant account opened from the commercial plan, a company code configured from a legal memo, and a OneStream entity built from an email.
 
@@ -94,7 +94,7 @@ The figure shows which configuration depends on which, and so what to start firs
 
 **Every layer is effective-dated.** A Brazilian entity exists in the register from its incorporation date, books from its first trading date, and enters consolidation from its first reporting period. Tax configuration for a reform carries old and new regimes side by side, each with its own effective dates. Effective dating is how a launch can be prepared months ahead without anything going live early.
 
-The layers also show where Northmere's variation points are missing. In 2027 a new **payout schedule** for a partner type requires code in SFP's payout engine. The configuration pattern exists for payout *rules* after the remediation in [Controls by Design, Not by Audit Season](#controls-and-auditability), but not yet for *schedules*. That is a known gap, recorded against the Keystone convergence of the payout engines. The layers are a checklist and, just as usefully, an inventory of missing variation points.
+The layers also show where Northmere's variation points are missing. In 2027 a new **payout schedule** for a partner type requires code in SFP's payout engine. The configuration pattern exists for payout *rules* after the remediation in [Controls by Design, Not by Audit Season](#controls-and-auditability), but not yet for *schedules*. That is a known gap, recorded against the Keystone convergence of the payout engines.
 
 {id: brands-entities-markets--business-model-templates}
 ## Business-Model Templates
@@ -108,8 +108,6 @@ Layer 3 is where most forks start. A new brand says its business is different, a
 | **Marketplace with payouts** (provider-held funds) | A payment provider's platform product holds balances for the platform and its sellers | As merchant, with payouts executed by the provider platform rather than Northmere Pay | As merchant, with "provider balance" accounts replacing safeguarding accounts | Provider balance to ledger; provider payout to bank; seller payable to provider transfers | Provider-side seller onboarding evidence; transfer reconciliation; complementary user entity controls from the provider's assurance report | Tablekin venue payments (Stripe Connect), Roamly from day 100 |
 | **Subscription and usage** | The customer pays Northmere for its own service | `SubscriptionInvoiced`, `UsageRated`, payment events | Billing in advance as contract liability; ratable recognition; usage recognized as delivered; sales tax liability | Billing system to revenue subledger; contract liability roll-forward; usage rated to usage billed | Price book change control; usage completeness; revenue schedule review | Tablekin subscriptions (the $1,029 invoice) |
 | **Advertising** | The advertiser pays Northmere for placement | `AdClickBilled`, payment events | Billed click revenue; invalid-click credits; receivable | Click rating to billing; billing to receivables | Invalid-traffic adjustment approval; rate card change control | Northmere Ads |
-
-Each row needs some explanation.
 
 **A template is a package, not a document.** At Northmere it is a versioned entry in the accounting rule store that names the event types and versions it consumes, the posting rule families it applies, the reconciliation catalog entries it creates, the control instances it requires and the conformance test cases it must pass. When Leila's policy team changes a rule family in the merchant template, every binding to that template version gets the change on the same effective date, and the change goes through the posting simulation once for all of them.
 
@@ -140,7 +138,7 @@ The parameters are not free text. Each refers to a value the rule store already 
 
 **Agency, merchant and marketplace are accounting and regulatory distinctions, not payment-flow distinctions.** The difference between the merchant template and the marketplace-with-payouts template is *who holds the money and under which regulatory regime*. Northmere Payments B.V. holds Stayloft's merchant-model funds under e-money safeguarding. A provider platform such as Stripe Connect holds Tablekin's and Roamly's balances, and the provider's documentation of its charge types decides who bears refunds, disputes and fees ([Stripe: Connect charges](https://docs.stripe.com/connect/charges)). Revenue presentation is a third, separate question. Under Northmere's policy, all three of Stayloft merchant, Wayfare rail and Roamly are *agents* recognizing net revenue, while Tablekin is principal for the payment-processing service it sells venues. [Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects) explains why collecting the cash does not make a company the principal. The templates encode that separation, which is why `revenue_basis` is a parameter set by the accounting policy team after its principal-versus-agent assessment, and never inferred from `funds_holder`.
 
-**Templates also travel to tax, and that is where they are least uniform.** Tax treatment varies with market, counterparty status and date, so templates carry a `tax_profile` reference rather than tax rules. The profile lives in the shared tax service ([Around the Core: Where Specialist Platforms Earn Their Place](#satellite-platforms)). As [Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale) showed for the Lisbon booking, accounting, tax and regulatory treatments are separate determinations. A template that hard-codes VAT on commission will be wrong the day a deemed-supplier rule applies to that market.
+**Templates carry a tax profile, not tax rules**, because tax treatment varies with market, counterparty status and date. The `tax_profile` lives in the shared tax service ([Around the Core: Where Specialist Platforms Earn Their Place](#satellite-platforms)). As [Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale) showed for the Lisbon booking, accounting, tax and regulatory treatments are separate determinations. A template that hard-codes VAT on commission will be wrong the day a deemed-supplier rule applies to that market.
 
 {id: brands-entities-markets--what-the-template-does-to-one-transaction}
 ### What the template does to one transaction
@@ -163,7 +161,7 @@ The rule families are exactly those of the Lisbon booking, with two parameter di
 {id: brands-entities-markets--where-templates-change}
 ### Where templates change
 
-Templates are not frozen. Roamly needed one genuine extension. `StayCompleted` was defined in Keystone v1 as "the guest checked out of an accommodation", and a campervan rental is not a stay. Lucía Romero's canonical model change board, described in [Canonical Events: A Common Language for Money](#loosely-coupled-domains), approved an additive change in v1.4. The event's definition was generalized to "the service period ended", and a `service_type` payload field was added with values for stays, rentals and journeys. This was a governed change to the shared language, made once and usable by every future brand. The alternative, a `RentalCompleted` event that only Roamly would ever publish, would have been the first step toward a Roamly-specific posting pipeline.
+Templates change through governed changes to the shared language, not through brand-specific events. Roamly needed one genuine extension. `StayCompleted` was defined in Keystone v1 as "the guest checked out of an accommodation", and a campervan rental is not a stay. Lucía Romero's canonical model change board, described in [Canonical Events: A Common Language for Money](#loosely-coupled-domains), approved an additive change in v1.4. The event's definition was generalized to "the service period ended", and a `service_type` payload field was added with values for stays, rentals and journeys. Made once, the change is usable by every future brand. The alternative, a `RentalCompleted` event that only Roamly would ever publish, would have been the first step toward a Roamly-specific posting pipeline.
 
 {id: brands-entities-markets--the-market-launch-kit}
 ## The Market Launch Kit
@@ -202,8 +200,6 @@ Here is the Brazil kit as the design authority approved it on **14 December 2027
 
 **Figure 3:** *The Brazil critical path runs through incorporation, banking and providers. The software configuration fits in a few weeks inside that path, which is why the kit starts the slow items on the day of the decision.*
 
-Three design choices in the Brazil plan are worth drawing out.
-
 **The perimeter decision is a parameter, not a redesign.** Nobody at Northmere knows in December 2027 whether Stayloft Brasil may hold travelers' money between booking and stay without a local authorization. In a forked architecture that uncertainty would freeze the build. Here, the merchant binding exists with `funds_holder` either `provider_held` or `own_entity`, and the agency binding can launch alone. If the opinion arrives late, Brazil launches as agency on 1 July and the merchant binding is activated later by an approved configuration change, with its own simulation. **Uncertainty that the architecture can express as a parameter does not block the plan.**
 
 **The tax reform is effective-dated configuration, not a project.** Brazil's consumption-tax reform was enacted by constitutional amendment in December 2023. It is widely reported to phase in new value-added taxes alongside the existing taxes over several years, with the old taxes withdrawn in stages into the 2030s. The specific rules, rates and document requirements for an intermediation platform are exactly what Northmere must confirm with local advisers, and this book does not state them. The architectural point holds whatever the details are. A tax service that stores every determination with its rule version and effective date can run both regimes side by side during the transition. A booking platform with tax arithmetic in its code cannot. Early in the plan, the Stayloft Brazil product team asked to compute Brazilian taxes in the booking service so that checkout could show a tax-inclusive price. The design authority declined, and the booking service calls the tax service's estimate endpoint instead, as [Around the Core: Where Specialist Platforms Earn Their Place](#satellite-platforms) describes for quotes. That was **The Permanent Exception** in its smallest form, caught at design time.
@@ -231,7 +227,7 @@ There are no changes to the accounting rule engine, the subledger, consolidation
 {id: brands-entities-markets--onboarding-an-acquired-brand-the-first-hundred-days}
 ## Onboarding an Acquired Brand: The First Hundred Days
 
-An acquisition differs from a market launch in one respect that changes everything. **The business already trades.** On the day the deal closes, the acquired company has entities, books, a payment provider, bank accounts, tax filings and staff, all of it working. The group's job is not to build its finance stack. It is to bring the acquired company into group reporting immediately, into group controls and data quickly, and into the group's platforms only when that is worth doing.
+An acquisition differs from a market launch because **the business already trades.** On the day the deal closes, the acquired company has entities, books, a payment provider, bank accounts, tax filings and staff, all of it working. The group's job is not to build its finance stack. It is to bring the acquired company into group reporting immediately, into group controls and data quickly, and into the group's platforms only when that is worth doing.
 
 The generalized domain model behind this book puts the response in one phrase: **consolidate from day one, stream canonical events, retire legacy on a dated plan**. Northmere's playbook splits that into three horizons.
 
@@ -242,7 +238,7 @@ The generalized domain model behind this book puts the response in one phrase: *
 {id: brands-entities-markets--day-1-consolidation-only}
 ### Day 1: consolidation only
 
-On the day the deal closed, Roamly entered the group through the thinnest possible interface, a **monthly trial-balance (TB) load** into OneStream. No interface to S/4HANA, no change to Roamly's booking platform and no change to its Stripe integration. What *did* happen on day 1 was configuration in five of the nine layers:
+On the day the deal closed, Roamly entered the group through the thinnest possible interface, a **monthly trial-balance (TB) load** into OneStream. No interface to S/4HANA, no change to Roamly's booking platform and no change to its Stripe integration. Day 1 did configure five of the nine layers:
 
 - **Entity register.** Roamly ApS (DKK functional currency), Roamly AB (SEK) and Roamly GmbH (EUR) were registered as brand operating entities. NetSuite was recorded as their book of record, and acquisition date and ownership were recorded for consolidation. Kofi's team confirmed the functional currencies against economic facts rather than copying NetSuite's settings.
 - **Chart values.** Brand code `RMY` and three entity and intercompany-partner values were added. Both the brand list and the business-model list grow by configuration.
@@ -255,7 +251,7 @@ Consolidation-only is not the same as "no accounting change". Roamly's managemen
 {id: brands-entities-markets--day-30-the-first-group-close}
 ### Day 30: the first group close
 
-Roamly's September 2027 numbers entered the group's September quarter close. It was tight. Roamly had closed on working day 10. Northmere's calendar runs a flash consolidation on working day 3 and the final consolidation on working day 7. For the first quarter the design authority granted a recorded exception: Roamly submitted a preliminary trial balance for the flash and its final one on working day 6, the latest point at which group reporting could still review the mapping and the reclassification before the final run. The exception expires with the December close.
+The first group close needed a recorded exception on timing. Roamly's September 2027 numbers entered the group's September quarter close, and Roamly had closed on working day 10. Northmere's calendar runs a flash consolidation on working day 3 and the final consolidation on working day 7. For the first quarter the design authority allowed Roamly to submit a preliminary trial balance for the flash and its final one on working day 6, the latest point at which group reporting could still review the mapping and the reclassification before the final run. The exception expires with the December close.
 
 {id: brands-entities-markets--day-100-canonical-events-and-group-controls}
 ### Day 100: canonical events and group controls
@@ -327,7 +323,7 @@ The first two are the ones I would put in front of the CFO. Lead time to the fir
 {id: brands-entities-markets--trade-offs-how-much-to-standardize}
 ## Trade-Offs: How Much to Standardize
 
-There is a real tension here. Over-standardize, and the group forces a campervan marketplace into a hotel model and pays for it in workarounds. Under-standardize, and every brand runs its own stack. The options:
+Standardizing too much and too little both cost money. Over-standardize, and the group forces a campervan marketplace into a hotel model and pays for it in workarounds. Under-standardize, and every brand runs its own stack.
 
 | Approach | Strengths | Weaknesses | Right when |
 | --- | --- | --- | --- |
@@ -356,7 +352,7 @@ The launch kit owns none of the layers it configures; it orchestrates them. Regi
 {id: brands-entities-markets--the-chief-architect-s-view}
 ## The Chief Architect's View
 
-Onboarding is where an architecture's claims meet the business's growth plans. A Chief Architect can draw a clean target state. Whether it holds is decided the first time a market launch has a hard date and the shared capability is not ready. The decisions that matter:
+Onboarding is where a target state is tested: whether it holds is decided the first time a market launch has a hard date and the shared capability is not ready. The decisions that matter:
 
 | Decision | Who decides | The architect's role |
 | --- | --- | --- |

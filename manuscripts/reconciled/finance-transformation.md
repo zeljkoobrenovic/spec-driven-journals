@@ -23,9 +23,11 @@
 
 A **finance transformation** is a multi-year program that changes Finance's systems, processes, data and organization together: typically a new or converged ERP core, a new chart of accounts, a faster close, shared services and new controls. An **ERP modernization** is the technology half of it. The two are sold as one investment, and they fail together, because a new ledger that Finance cannot close on, or a new close process with no system to run it, delivers none of the business case.
 
-Large finance programs have a reputation they have earned. Public cases, some collected in [CIO's compilation of ERP disasters](https://www.cio.com/article/278677/enterprise-resource-planning-10-famous-erp-disasters-dustups-and-disappointments.html), describe programs that stopped plants shipping, broke financial reporting, or ran several times over budget before being reimplemented. Reading them closely, the causes are rarely the software. They are **governance, data, process mapping, testing and go-live timing**, which is to say the parts of a program the architect is supposed to protect.
+Large finance programs fail for reasons other than software. Public cases, some collected in [CIO's compilation of ERP disasters](https://www.cio.com/article/278677/enterprise-resource-planning-10-famous-erp-disasters-dustups-and-disappointments.html), describe programs that stopped plants shipping, broke financial reporting, or ran several times over budget before being reimplemented. Read closely, their causes are **governance, data, process mapping, testing and go-live timing**: the parts of a program the architect is supposed to protect.
 
-This chapter is about that protection. It is not a program-management manual, and it does not re-teach what other chapters own: the choice of migration pattern belongs to [Changing the Engine in Flight: Modernization Patterns for Finance](#modernization-patterns) and, for SAP, to [SAP S/4HANA: One Journal, Clean Core](#sap-s4hana); stage gates, parallel runs and rollback design for a live migration belong to [Modernizing Without Stopping the Close](#incremental-modernization); decision records and the review board belong to [Architecture Governance That Speeds Decisions](#architecture-governance); the roadmap and its plateaus belong to [The Middle Matters: Transition States and the Roadmap](#target-and-transition-states). Here the question is narrower and harder: **what does the Chief Architect do, year after year, so that the program succeeds and the estate it leaves behind is better than the one it found?**
+Part IV has already given Keystone, Northmere's transformation program, its plateaus and its $310 million envelope in [The Middle Matters: Transition States and the Roadmap](#target-and-transition-states), and capped the vendor dependencies it deepens in [Own Your Roadmap: Vendor Strategy Without Lock-In Panic](#vendor-portfolio-strategy). This chapter runs the program through those plateaus and asks a narrower, harder question: **what does the Chief Architect do, year after year, so that the program succeeds and the estate it leaves behind is better than the one it found?** That estate is what [Technical Debt on the Balance Sheet](#technical-debt-and-fitness) goes on to measure.
+
+This is not a program-management manual, and it does not re-teach what other chapters own: the choice of migration pattern belongs to [Changing the Engine in Flight: Modernization Patterns for Finance](#modernization-patterns) and, for SAP, to [SAP S/4HANA: One Journal, Clean Core](#sap-s4hana); stage gates, parallel runs and rollback design for a live migration belong to [Modernizing Without Stopping the Close](#incremental-modernization); decision records and the review board belong to [Architecture Governance That Speeds Decisions](#architecture-governance).
 
 {id: finance-transformation--setting-the-scene-at-northmere-the-second-steering-committee}
 ## Setting the Scene at Northmere: The Second Steering Committee
@@ -66,7 +68,7 @@ The **system integrator (SI)**, the consulting firm contracted to configure, bui
 | Go/no-go recommendation | R (technical readiness) | **A** for the recommendation | R (business readiness) | Decides | R (control readiness) | R (build readiness) |
 | Hypercare exit | R | **A** | R | I | R | R |
 
-Two lines need comment. **Testing strategy is the architect's**, not the integrator's and not the PMO's, because in finance the test is whether the new estate reconciles, and reconciliation design is architecture (see [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation)). **Data migration acceptance is the controller's**, because a migrated balance becomes the opening balance of an audited ledger; the architect designs the proof, but the person who signs the balance sheet accepts it.
+**Testing strategy is the architect's**, not the integrator's and not the PMO's, because in finance the test is whether the new estate reconciles, and reconciliation design is architecture (see [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation)). **Data migration acceptance is the controller's**, because a migrated balance becomes the opening balance of an audited ledger; the architect designs the proof, but the person who signs the balance sheet accepts it.
 
 The two distortions I see most are opposites: the architect absorbed into delivery, running a workstream and chasing integrator tasks, and the architecture group that publishes a target state in year one and is not heard from again until someone asks why the core is full of custom code. **The architect's work in a transformation is continuous but narrow**: hold the template, decide the variations, design the proof, and say when a step is not safe.
 
@@ -114,9 +116,9 @@ Dana and the program director rebuilt Keystone's business case in March 2027 fro
 
 The lead indicators sit beside it: the group close at **9 working days**, targeted at 5 by end of 2028 and 3 by 2030; about **1.9%** of Stayloft local-payment-method settlement lines unmatched at working day 3; reconciliations auto-certified at 22% against a 50% target.
 
-The first honest report, at the end of 2027, was uncomfortable and useful. The close had moved from 9 to about **8 working days**, and reconciliation work had fallen measurably. **None of that was banked**, because Leila had redeployed the freed capacity to clear the backlog of aged items in the PSP clearing accounts. That was the right call, and the register made it a recorded decision instead of a silent leak: the effort benefit moved one year to the right, and the risk line showed what it had bought. The banked benefit at the end of 2027 was **$4.6M of run-rate**, all from the first rationalization wave in [Manage the Application Portfolio as an Investment](#application-portfolio). A dashboard showing "close days: green" would have hidden both facts.
+The first honest report, at the end of 2027, showed the lead indicators moving and almost nothing banked. The close had moved from 9 to about **8 working days**, and reconciliation work had fallen measurably. **None of that was banked**, because Leila had redeployed the freed capacity to clear the backlog of aged items in the PSP clearing accounts. That was the right call, and the register made it a recorded decision instead of a silent leak: the effort benefit moved one year to the right, and the risk line showed what it had bought. The banked benefit at the end of 2027 was **$4.6M of run-rate**, all from the first rationalization wave in [Manage the Application Portfolio as an Investment](#application-portfolio). A dashboard showing "close days: green" would have hidden both facts.
 
-The budget side gets the same discipline. Keystone's $310M is planned roughly as follows (illustrative): SI and partner services $118M, Northmere staff $86M, incremental subscriptions $41M, migration and test tooling $19M, change management and training $14M, and a contingency of $32M held by Tomás rather than spread across workstreams. By plateau, the same $310M is released in tranches of about $54M, $171M and $85M ([The Middle Matters: Transition States and the Roadmap](#target-and-transition-states)). A contingency held centrally is visible when it is spent; one buried in every estimate is spent without anyone deciding to.
+The cost side gets the same discipline, and its main rule is that contingency is held centrally. Keystone's $310M is planned roughly as follows (illustrative): SI and partner services $118M, Northmere staff $86M, incremental subscriptions $41M, migration and test tooling $19M, change management and training $14M, and a contingency of $32M held by Tomás rather than spread across workstreams. By plateau, the same $310M is released in tranches of about $54M, $171M and $85M ([The Middle Matters: Transition States and the Roadmap](#target-and-transition-states)). A contingency held centrally is visible when it is spent; one buried in every estimate is spent without anyone deciding to.
 
 {id: finance-transformation--scope-and-sequencing}
 ## Scope and Sequencing
@@ -124,12 +126,12 @@ The budget side gets the same discipline. Keystone's $310M is planned roughly as
 {id: finance-transformation--five-criteria-for-ordering-the-work}
 ### Five criteria for ordering the work
 
-A multi-year program cannot do everything first. The order is a design decision, and I sequence by five criteria, applied in roughly this priority:
+The order of a multi-year program is a design decision. I sequence by five criteria, in roughly this priority:
 
 1. **Dependency.** Some things must exist before others make sense: decision rights before decisions, the system-of-record matrix before integration contracts, the group chart of accounts before ledger convergence, canonical events before brand adapters. Dependencies are the only hard constraint; everything else is a trade-off.
 2. **Regulatory dates.** A regulation's application date does not move for a program. Under EU VAT in the Digital Age (ViDA), the **platform deemed-supplier rules for short-term accommodation apply from 1 July 2028**, with member states allowed to delay to 1 January 2030, and digital reporting with intra-EU B2B e-invoicing follows on 1 July 2030 ([European Commission](https://taxation-customs.ec.europa.eu/taxation/vat/vat-digital-age-vida_en)). Work these rules need must be live, tested and controlled before the date in the earliest member state that applies it.
 3. **Contract dates.** Notice periods and renewal dates decide when a retirement can be banked. Missing a notice date usually means another year of subscription.
-4. **Value and risk.** Early releases should deliver visible value with contained risk, both to fund the program's credibility and to teach the organization how to cut over safely before it attempts something larger.
+4. **Value and risk.** Early releases should deliver visible value with contained risk, to earn the program credibility and to teach the organization to cut over safely before it attempts something larger.
 5. **Business calendar.** Finance has seasons. No finance cut-over in the last month of a quarter, never in the year-end window that runs from 1 December to the 10-K filing at the end of February, and not during the business's peak trading period ([Changing the Engine in Flight: Modernization Patterns for Finance](#modernization-patterns) sets the rule).
 
 The criterion I see violated most is the fifth, and it is the one public failures punish most visibly (see the failure modes below). The second most violated is the first: programs that start the ledger build before the chart of accounts is agreed spend the following year re-mapping it.
@@ -174,7 +176,7 @@ Membership is deliberately small. The voting members are the two co-chairs, Dana
 | Integration contracts and the canonical events used | Vendor management and contract changes | Operating-model and role changes in Finance |
 | Technical readiness criteria for every gate | The go/no-go recommendation, with inputs from all parties | Business readiness at go/no-go |
 
-The border that matters most is the middle one. When a schedule is in trouble, the program will ask the design authority to accept a design shortcut, typically a custom interface, an extra variation or a deferred reconciliation. The design authority may agree, but **the shortcut becomes a recorded variation with an owner, a cost and an expiry**, and it is reported to the steering committee as a debt the program took on, not as a delivery success.
+The border that matters most is the one with the program, because schedule pressure pushes design shortcuts across it. When a schedule is in trouble, the program will ask the design authority to accept a design shortcut, typically a custom interface, an extra variation or a deferred reconciliation. The design authority may agree, but **the shortcut becomes a recorded variation with an owner, a cost and an expiry**, and it is reported to the steering committee as a debt the program took on, not as a delivery success.
 
 {id: finance-transformation--the-variation-budget}
 ### The variation budget
@@ -197,7 +199,7 @@ Keystone's 2027 allowance was twelve open variations and $1.5M of estimated annu
 
 **Fit-to-standard** is the practice of designing an implementation by demonstrating the vendor's standard processes and asking the business to adopt them, recording only genuine gaps, instead of collecting requirements first and building to them. In SAP's implementation methodology, SAP Activate, fit-to-standard workshops run in the Explore phase, starting from SAP's best-practice content, with gaps and delta configuration captured in a backlog ([SAP Learning: methodology structure](https://learning.sap.com/courses/discovering-sap-activate-implementation-tools-and-methodology/describing-the-methodology-structure)). Workday's deployment approach is similar in shape: the Workday Methodology and Launch Flex stages run from planning through iterative architect-and-configure tenant builds to test and deploy, typically delivered with a certified partner ([Workday Launch Flex overview](https://community-content.workday.com/en-us/public/learn/resources/customer-deployment/launch-flex-overview.html)). The vendors differ in vocabulary; the discipline is the same.
 
-Fit-to-standard fails in a predictable way. The workshops run, the gaps are logged, and then every gap is treated as a requirement, because the people in the room are the ones who run today's process and the integrator is paid to build what is asked. The cure is not a better workshop; it is a **decision rule for gaps**, applied by the design authority.
+Fit-to-standard fails when every logged gap is treated as a requirement. That is the predictable outcome, because the people in the room are the ones who run today's process and the integrator is paid to build what is asked. The cure is not a better workshop; it is a **decision rule for gaps**, applied by the design authority.
 
 The rule I use is the **"show me the control or the regulation" test.** When Finance asks for a customization, the requester shows one of three things:
 
@@ -211,7 +213,7 @@ If none of the three is shown, the answer is the standard process, and the organ
 
 **Figure 4:** *The design authority's rule for gaps. Regulation and controls earn central localizations; differentiation earns a service outside the core; preference earns, at most, a cheap dated variation. Custom code inside the ERP core is not one of the outcomes.*
 
-Saying no well has a few habits. **Say it early**, in the workshop week, not after the integrator has estimated the build. **Say it with the cost**, in regression hours per release and upgrade months, because a controller who hears that a custom report adds two days of testing every quarter makes a different choice. **Say it with a path**, naming what changes in the process and who will help. And **say it consistently**, because the second brand will ask for whatever the first one was given.
+Saying no well takes four habits. **Say it early**, in the workshop week, not after the integrator has estimated the build. **Say it with the cost**, in regression hours per release and upgrade months, because a controller who hears that a custom report adds two days of testing every quarter makes a different choice. **Say it with a path**, naming what changes in the process and who will help. And **say it consistently**, because the second brand will ask for whatever the first one was given.
 
 The gap rule matters most in a new implementation, where the template is still open. Northmere learned this the expensive way: its 2021 S/4HANA implementation was a new build that should have reset the core, and it accumulated about 2,300 custom objects anyway, many recreating legacy behavior that fit-to-standard should have challenged. Upgrades now take seven months. **A migration pattern resets the data model; only a design authority with a gap rule keeps the core clean afterwards.**
 
@@ -221,7 +223,7 @@ The gap rule matters most in a new implementation, where the template is still o
 {id: finance-transformation--what-to-outsource-and-what-never-to}
 ### What to outsource and what never to
 
-Large finance programs are almost always delivered with integrators: they bring trained configurators, methodology and the capacity to scale a team to hundreds of people for two years. The question is not whether to use them but what the enterprise keeps.
+The question about integrators is not whether to use them but what the enterprise keeps. Large finance programs are almost always delivered with them, because they bring trained configurators, methodology and the capacity to scale a team to hundreds of people for two years.
 
 | Keep in-house, always | Outsource readily | Decide case by case |
 | --- | --- | --- |
@@ -287,7 +289,7 @@ Most program testing is functional: does the screen work, does the interface del
 | **Control testing** | Key controls operate and produce evidence in the new design | Mei's team tests design and operation before go-live; evidence stored centrally |
 | **Integration contract tests** | Every interface meets its contract: completeness, identifiers, failure path | Consumer-driven contract tests per canonical event; control totals per batch |
 
-Two of these need emphasis. **The parallel close is expensive and worth it.** It doubles part of the close team's work for a real quarter-end, and late programs try to cut it, yet it is the only test that exercises real data, real timing and real people together, and auditors commonly expect evidence of it for a ledger change. Budget it from the start.
+**The parallel close is expensive and worth it.** It doubles part of the close team's work for a real quarter-end, and late programs try to cut it, yet it is the only test that exercises real data, real timing and real people together, and auditors commonly expect evidence of it for a ledger change. Budget it from the start.
 
 **Performance testing must use month-end shape, not month averages.** Northmere's averages are reassuring: about 38,000 summarized GL lines a day from SFP into S/4HANA, and about 1.3 million PSP settlement lines a day through BlackLine Transaction Matching. The month-end shape is not. The FI-CA invoicing and dunning runs for about 850,000 partner contract accounts concentrate in the first working days, exactly when the close's posting, matching and trial-balance loads run. A test that loads an average day passes and proves nothing about working day 1.
 
@@ -307,7 +309,7 @@ These criteria are written by Northmere and attached to the integrator's milesto
 {id: finance-transformation--change-management-and-the-finance-operating-model}
 ## Change Management and the Finance Operating Model
 
-A finance transformation changes what people in Finance do every day, and the program's benefits depend on it. The effort benefit in the register is realized only when work stops being done, and work stops only when roles, procedures and controls change with the system.
+The effort benefit in the register is realized only when work stops being done, and work stops only when Finance's roles, procedures and controls change with the system.
 
 The operating-model changes that commonly accompany a finance transformation are concrete: **end-to-end process owners** accountable across systems and entities (Northmere named its owners in 2027, see [Order to Cash, Procure to Pay, Record to Report](#finance-processes)); **roles** that move accountants from preparing reconciliations to reviewing exceptions; **shared service centers**, which work only if the template is actually global; **automated controls** replacing manual ones, which changes what the auditor tests; and **external parties** who see new invoices, statements and payment timings. At Northmere, 850,000 Stayloft partners will receive FI-CA-produced statements in 2028.
 
@@ -333,7 +335,7 @@ Two practices help the architecture directly. **Finance super-users in the desig
 {id: finance-transformation--failure-modes-what-the-public-record-teaches}
 ## Failure Modes: What the Public Record Teaches
 
-The public record of ERP and finance-program failures is large, uneven and full of retold stories. I use only cases with a documented source, read them for what the source actually says, and draw the architecture lesson without claiming to know the inside story. **None of the cases below is evidence that a particular product does not work.** Several have been reimplemented on the same platform.
+The public record of ERP and finance-program failures is large, uneven and full of retold stories. I use only cases with a documented source, read them for what the source says, and draw the architecture lesson without claiming to know the inside story. **None of the cases below is evidence that a particular product does not work.** Several have been reimplemented on the same platform.
 
 | Case | What the source reports | Architecture lesson |
 | --- | --- | --- |
@@ -345,7 +347,7 @@ The public record of ERP and finance-program failures is large, uneven and full 
 | **Haribo** (from 2018) | An S/4HANA rollout across 16 factories in 10 countries, reported as a process-mapping failure that disrupted raw-material and inventory tracking ([CIO](https://www.cio.com/article/278677/enterprise-resource-planning-10-famous-erp-disasters-dustups-and-disappointments.html)); discussed in [SAP S/4HANA: One Journal, Clean Core](#sap-s4hana) | Fit-to-standard does not mean skipping process mapping. The template must be checked against how each site actually works before it rolls out |
 | **Birmingham City Council** (2022–2026) | An Oracle Fusion finance and HR system intended to be used "out of the box" but customized, including a bank-reconciliation design that did not work; auditors found business case and governance not adequately designed, and the compilation reports their observation that "bad news was not welcome" ([CIO](https://www.cio.com/article/278677/enterprise-resource-planning-10-famous-erp-disasters-dustups-and-disappointments.html)); the costs, their differing definitions and the 2026 reimplementation are covered in [Oracle Fusion: An Accounting Hub for High-Volume Events](#oracle-fusion) | A design authority must be able to refuse customization, and a program must be able to hear bad news. Both are governance designs, and both are cheaper than a reimplementation |
 
-The pattern across these cases is not subtle. **Programs fail on governance, data, testing, controls and go-live timing**, and each of those has an owner in the RACI earlier in this chapter. When I review a program in trouble, I ask five questions before looking at the plan: who can say no to a customization, who signs the migrated balances, who wrote the test exit criteria, who owns control readiness, and what would make the go-live date move. Vague answers to any of them predict the next failure better than the status report does.
+Across these cases, **programs fail on governance, data, testing, controls and go-live timing**, and each of those has an owner in the RACI earlier in this chapter. When I review a program in trouble, I ask five questions before looking at the plan: who can say no to a customization, who signs the migrated balances, who wrote the test exit criteria, who owns control readiness, and what would make the go-live date move. Vague answers to any of them predict the next failure better than the status report does.
 
 Inside programs, the failure modes are quieter: **the template erodes one reasonable exception at a time**, **the integrator becomes the architect by default** because the enterprise's architects are too few to attend the design workshops, **benefits are re-baselined silently** so the program meets a target that has moved, and **decommissioning is dropped** when the budget tightens, so old and new both run and the retired-systems benefit never arrives.
 
@@ -401,7 +403,7 @@ What it bought is also written down: no commission logic in the ERP core, so no 
 {id: finance-transformation--trade-offs-how-much-template-how-much-speed}
 ## Trade-offs: How Much Template, How Much Speed
 
-The design authority's posture is itself a trade-off, and the right setting depends on the program.
+How strictly the design authority guards the template is itself a choice, and the right setting depends on how many business models the group runs.
 
 | Posture | What it looks like | Right when | Costs |
 | --- | --- | --- | --- |

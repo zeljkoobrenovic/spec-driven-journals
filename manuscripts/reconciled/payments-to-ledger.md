@@ -21,11 +21,11 @@
 > * **Lost in Aggregation** — Daily summaries and provider aggregates removed the keys that would have let a clearing balance be expanded back into payments.
 > * **The Shadow Ledger** — Four teams each proposed to keep "the" payments balance, and without a decision each copy would have become a book of its own.
 
-Earlier chapters described the parts: why a provider's payout never equals the sales behind it ([Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals)), what two providers send back ([Adyen: One Platform from Checkout to Settlement](#adyen), [Stripe: Every Movement Is a Balance Transaction](#stripe)), and how a matching engine pairs records at volume ([BlackLine: Matching, Certifying and Closing](#blackline)). This chapter joins them into one architecture and asks one question of it: **can the enterprise prove, for every payment it accepted, where the money is now?**
+Earlier chapters described the parts: why a provider's payout never equals the sales behind it ([Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals)), what two providers send back ([Adyen: One Platform from Checkout to Settlement](#adyen), [Stripe: Every Movement Is a Balance Transaction](#stripe)), and how a matching engine pairs records at volume ([BlackLine: Matching, Certifying and Closing](#blackline)). [The Life of a Booking: From €600 Payment to $97.38 of Revenue](#transaction-to-report) then traced the whole chain and found its weight on one boundary: where money reported by a provider meets the bookings and the ledger. This chapter designs that boundary as one architecture and asks one question of it: **can the enterprise prove, for every payment it accepted, where the money is now?**
 
 **Payments-to-ledger** is the name I use for that end-to-end path: the events and settlement reports of each payment service provider (PSP), through normalization and the subledger, into clearing accounts in the general ledger (GL), matched against bank statements and closed by reconciliation. It runs across a payments platform, a brand finance platform, an ERP, a treasury system and a close platform, each owned by a different team. Each team does its own part correctly, and the gaps between the parts end up in suspense.
 
-The illustrations use **Northmere, the fictional group this book follows** (see [Meet Northmere: Five Brands, One Set of Books](#meet-northmere)). In 2026, Northmere's provider clearing and suspense accounts held an average of **€14 million** of unreconciled balance at month-end, about **€2.1 million** of it older than 90 days. About **1.9%** of the settlement lines for Stayloft's alternative payment methods (APMs: local wallets, bank transfers and other non-card methods) were still unmatched at working day 3 (WD3) of each close. This chapter shows the architecture and the Keystone Year-1 program that brought the balance down.
+The examples use **Northmere, the fictional group this book follows** (see [Meet Northmere: Five Brands, One Set of Books](#meet-northmere)). In 2026, Northmere's provider clearing and suspense accounts held an average of **€14 million** of unreconciled balance at month-end, about **€2.1 million** of it older than 90 days. About **1.9%** of the settlement lines for Stayloft's alternative payment methods (APMs: local wallets, bank transfers and other non-card methods) were still unmatched at working day 3 (WD3) of each close. This chapter shows the architecture and the Keystone Year-1 program that brought the balance down. Its expected receivables and match keys are what the daily clearing reconciliation in the close plan ([BlackLine: Matching, Certifying and Closing](#blackline)) and the ledger tie-out in [One Number, Many Views: Finance Data from Operations to Analytics](#finance-data-flows) build on.
 
 {id: payments-to-ledger--setting-the-scene-at-northmere-the-14-million-nobody-owned}
 ## Setting the Scene at Northmere: The €14 Million Nobody Owned
@@ -43,7 +43,7 @@ After the February 2027 close, Leila Haddad, the Chief Accounting Officer, asked
 | Items from before 2026 whose cause could no longer be established | 1.8 | 0.9 |
 | **Total** | **14.2** | **2.1** |
 
-The first row changed the conversation. **About 40% of the "unreconciled" balance was not a problem at all.** It was money in flight: local-method payments from the last weekend of February, settling in the first days of March exactly as the provider contracts said it would. Card payments in flight were already explained by Adyen's and Stripe's batch reports; these were not, because the local providers' files arrived days later and the accounts held no item list of their own. Nothing in the accounts said which item was expected to clear when, so the preparer could not tell €5.8 million of normal timing from €8.4 million of genuine breaks, and the whole €14.2 million was reported as one unexplained balance.
+**About 40% of the "unreconciled" balance was not a problem at all.** It was money in flight: local-method payments from the last weekend of February, settling in the first days of March exactly as the provider contracts said it would. Card payments in flight were already explained by Adyen's and Stripe's batch reports; these were not, because the local providers' files arrived days later and the accounts held no item list of their own. Nothing in the accounts said which item was expected to clear when, so the preparer could not tell €5.8 million of normal timing from €8.4 million of genuine breaks, and the whole €14.2 million was reported as one unexplained balance.
 
 ![A murky tank of unexplained balance sorted into dated money in flight and four bins of genuine breaks, each pointing upstream to its cause.](finance-systems-architecture/posts/25-payments-to-ledger/assets/images/25-payments-to-ledger/suspense-sorted-into-flight-and-breaks.jpeg)
 
@@ -82,8 +82,8 @@ Two **side legs** explain why amounts differ. The **fee leg** splits gross minus
 {id: payments-to-ledger--the-target-architecture}
 ## The Target Architecture
 
-{id: payments-to-ledger--components-and-flow}
-### Components and flow
+{id: payments-to-ledger--components-and-responsibilities}
+### Components and responsibilities
 
 Figure 2 shows the reference architecture Northmere's design authority approved in March 2027 (it is the worked example in [Principles That Decide Things](#principles-standards-reference)).
 
@@ -114,7 +114,7 @@ Three choices in this table answer the "payments ledger" debate.
 {id: payments-to-ledger--where-adapters-run-and-who-owns-them}
 ### Where adapters run and who owns them
 
-For Tablekin's and Wayfare's Stripe accounts, the finance feed is Stripe's Data Pipeline into FinDB ([Stripe: Every Movement Is a Balance Transaction](#stripe)), so the Stripe adapter's transformations run on Snowflake. That does not make Owen's team the owner. **An adapter is owned by the team that owns the provider relationship and the data contract, wherever it executes.** Northmere Pay owns the mapping code, its tests and its change approvals; FinDB provides the runtime. A mapping change is a change to a financial control, and it needs one accountable owner.
+**An adapter is owned by the team that owns the provider relationship and the data contract, wherever it executes.** For Tablekin's and Wayfare's Stripe accounts, the finance feed is Stripe's Data Pipeline into FinDB ([Stripe: Every Movement Is a Balance Transaction](#stripe)), so the Stripe adapter's transformations run on Snowflake. That does not make Owen's team the owner: Northmere Pay owns the mapping code, its tests and its change approvals; FinDB provides the runtime. A mapping change is a change to a financial control, and it needs one accountable owner.
 
 {id: payments-to-ledger--normalization-one-vocabulary-for-many-providers}
 ## Normalization: One Vocabulary for Many Providers
@@ -133,7 +133,7 @@ Keystone's canonical financial events ([Canonical Events: A Common Language for 
 | `ChargebackReceived` | Payer's bank has reversed the payment | Chargeback journal line | Balance transaction for the dispute | Method-specific return or dispute notice, often by email or portal |
 | `ChargebackResolved` | Dispute closed, won or lost | ChargebackReversed line, or no further movement | Dispute closed; reversal balance transaction if won | Often not reported as data at all |
 
-Payouts are published as settlement records of their own type, and every `PaymentSettled` event carries the batch or payout ID, so the second and third legs have something to join. **Every money event carries the same mandatory key set**, whatever the provider: provider and provider account; provider transaction reference and, for modifications, the original reference; Northmere's payment ID or refund ID as sent; batch or payout ID once known; gross, fee components and net in minor units with currency; the rate the provider applied; the provider's event time and time zone. The booking ID travels as the envelope's `correlation_id`. A record that cannot fill the keys is quarantined in a queue Ingrid's team owns, and counted.
+**Every money event carries the same mandatory key set**, whatever the provider: provider and provider account; provider transaction reference and, for modifications, the original reference; Northmere's payment ID or refund ID as sent; batch or payout ID once known; gross, fee components and net in minor units with currency; the rate the provider applied; the provider's event time and time zone. The booking ID travels as the envelope's `correlation_id`. Payouts are published as settlement records of their own type, and every `PaymentSettled` event carries the batch or payout ID, so the second and third legs have something to join. A record that cannot fill the keys is quarantined in a queue Ingrid's team owns, and counted.
 
 {id: payments-to-ledger--what-the-adapter-must-guarantee}
 ### What the adapter must guarantee
@@ -193,7 +193,7 @@ Within each position, the stages follow the life of the money ([Adyen: One Platf
 
 The numbers are illustrative. In 2027 S/4HANA, each stage is a separate account per provider, kept in one currency, in the contracting entity's company code; the group chart-of-accounts redesign ([Finance Data Architecture: Who Owns the Truth](#finance-data-architecture)) will decide whether the provider becomes a dimension.
 
-Two properties make this work. **Only 113900 is suspense**, and every item in it is a break; all other accounts hold items with expected zero dates. And **the stages are separate assertions with separate owners**: an overdue in-flight item is a provider or reference question for Northmere Pay, an overdue settlement receivable a payout question for treasury, overdue cash in transit a bank question.
+**Only 113900 is suspense**: every item in it is a break, while all other accounts hold items with expected zero dates. **The stages are also separate assertions with separate owners**: an overdue in-flight item is a provider or reference question for Northmere Pay, an overdue settlement receivable a payout question for treasury, overdue cash in transit a bank question.
 
 For Northmere Pay the rule produced ten positions: Adyen and Stripe each with euro and US-dollar positions in Northmere Payments B.V. and a sterling position in Northmere Payments UK Ltd, and the four local providers each with a US-dollar position in Northmere Payments B.V. That is seventy stage accounts, replacing twelve 2026 accounts that mixed stages and providers and fed one "PSP suspense" account per entity. Seventy accounts are less work, not more: most auto-certify when the ledger agrees with the subledger's open items, and the rest show exactly where the problem is. Tablekin's "Stripe clearing – USD" and "Cash in transit – Stripe payouts" in Workday ([Stripe: Every Movement Is a Balance Transaction](#stripe)) are the same standard applied to a Stripe position.
 
@@ -222,7 +222,7 @@ Matching windows are set **per provider and method from observed data**, not fro
 {id: payments-to-ledger--the-three-way-match-in-practice}
 ## The Three-Way Match in Practice
 
-[Adyen: One Platform from Checkout to Settlement](#adyen) reconciles batch 1047, which contained the Lisbon booking's €598.36 Settled line, to the €1,380.52 bank credit on 16 March 2027, and [BlackLine: Matching, Certifying and Closing](#blackline) shows the matching rules for card batches. Cards were never Northmere's main problem; local methods were, so this chapter works the harder case.
+Cards were never Northmere's main problem; local methods were, so this chapter works the harder case. [Adyen: One Platform from Checkout to Settlement](#adyen) already reconciles batch 1047, which contained the Lisbon booking's €598.36 Settled line, to the €1,380.52 bank credit on 16 March 2027, and [BlackLine: Matching, Certifying and Closing](#blackline) shows the matching rules for card batches.
 
 {id: payments-to-ledger--keys-per-provider-family}
 ### Keys per provider family
@@ -233,7 +233,7 @@ Matching windows are set **per provider and method from observed data**, not fro
 | 2. Provider line ↔ payout | Batch number and the MerchantPayout line | `automatic_payout_id` | Settlement batch or payout ID on every line |
 | 3. Payout ↔ bank credit | Payout reference on the MerchantPayout line, in the statement's remittance information | `trace_id` or `payout_reference_token` | Payout ID in the remittance information of the credit transfer |
 
-The Stripe keys appear in its [payout reconciliation report](https://docs.stripe.com/reports/payout-reconciliation); the Adyen keys in its [settlement details report](https://docs.adyen.com/reporting/settlement-reconciliation/transaction-level/settlement-details-report), where the MerchantPayout line's modification reference contains the payout reference that also appears on the bank statement. For local providers, the right-hand column is not what they sent in 2027. It is the **minimum settlement data standard** Northmere wrote into its provider contracts that year.
+For local providers, the right-hand column is not what they sent in 2027. It is the **minimum settlement data standard** Northmere wrote into its provider contracts that year. The Stripe keys appear in its [payout reconciliation report](https://docs.stripe.com/reports/payout-reconciliation); the Adyen keys in its [settlement details report](https://docs.adyen.com/reporting/settlement-reconciliation/transaction-level/settlement-details-report), where the MerchantPayout line's modification reference contains the payout reference that also appears on the bank statement.
 
 {id: payments-to-ledger--worked-example-a-bali-villa-paid-by-e-wallet}
 ### Worked example: a Bali villa paid by e-wallet
@@ -301,7 +301,7 @@ The Bali payment straddles a month-end: Amsterdam says 31 March, Jakarta says 1 
 - **Provider business days and files never decide the period.** The Jakarta date decides when the money should arrive, not the month it belongs to.
 - **Late events post in the open period**, with the original accounting date carried as an attribute ([Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers) describes period states).
 
-Provider documents use different clocks (Adyen's reports the account's time zone, its invoices Central European Time; Stripe's Dashboard local time, Sigma UTC; see [Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals)), so without one written rule the same fee lands in two periods, or none.
+Without one written rule, the same fee lands in two periods, or none, because provider documents use different clocks (Adyen's reports the account's time zone, its invoices Central European Time; Stripe's Dashboard local time, Sigma UTC; see [Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals)).
 
 {id: payments-to-ledger--in-flight-money-is-a-reconciling-item}
 ### In-flight money is a reconciling item
@@ -315,7 +315,7 @@ At the March 2027 close, the Bali payment was one of 3,940 payments in the in-fl
 | Difference | 0.00 |
 | Of which past expected zero date | 0.00 |
 
-The account is not zero, and it is fully reconciled. Every item has an identity, an amount and a date by which it will clear; the preparer certifies that the ledger equals the subledger list, and BlackLine checks on WD3 that the items due by then have cleared. **The month-end question changes from "why is this not zero?" to "is anything overdue?"** The first has no good answer; the second has a precise one. An account reconciled to its open items can also be certified on any day of the month, which is the basis of the daily clearing reconciliation in Northmere's close plan ([BlackLine: Matching, Certifying and Closing](#blackline)).
+The account is not zero, and it is fully reconciled. Every item has an identity, an amount and a date by which it will clear; the preparer certifies that the ledger equals the subledger list, and BlackLine checks on WD3 that the items due by then have cleared. **The month-end question changes from "why is this not zero?" to "is anything overdue?"** An account reconciled to its open items can also be certified on any day of the month, which is the basis of the daily clearing reconciliation in Northmere's close plan ([BlackLine: Matching, Certifying and Closing](#blackline)).
 
 {id: payments-to-ledger--refunds-and-chargebacks-months-later}
 ## Refunds and Chargebacks, Months Later
@@ -353,7 +353,7 @@ The 2027 decision record split ownership along one line: **Northmere Pay owns th
 
 *A = accountable, R = responsible, C = consulted, I = informed.*
 
-Two rows carry the design. **Reference breaks belong to Northmere Pay**, not to the accountants who find them. Until 2027 they were found and cleared in Finance, and the team that could remove their cause never heard of them. **Matching tolerances belong to Finance**, because every tolerance is a materiality judgment about what nobody will review. Engineers may propose a wider window; only Leila's team approves it.
+**Reference breaks belong to Northmere Pay**, not to the accountants who find them. Until 2027 they were found and cleared in Finance, and the team that could remove their cause never heard of them. **Matching tolerances belong to Finance**, because every tolerance is a materiality judgment about what nobody will review. Engineers may propose a wider window; only Leila's team approves it.
 
 The last row is the Keystone standard "ledger-ready before launch" ([Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals)), made concrete in 2027: a new provider, method, market or payout route runs for two settlement cycles on production-like data, reaches at least 99.5% automatic matching by count on Leg 1 with every Leg 2 and Leg 3 matched, and has a named owner for each break category before launch. A waiver needs an owner and an expiry.
 
@@ -371,7 +371,7 @@ Northmere tracks six measures per clearing position and method, published daily 
 | **Breaks by root cause** | Share of new breaks per category, per provider | Points each break at the owner who can remove its cause |
 | **Reference coverage** | Share of provider lines carrying a valid Northmere payment ID | The leading indicator of most of the other five |
 
-Two warnings. **A falling suspense balance can be bad news**: write-offs, wider tolerances and many-to-one matches all reduce it without fixing anything, so the review shows them next to the balance. And **the inflow matters more than the stock**: new breaks per million provider lines, by root cause, show whether the system is improving; the backlog shows only whether people have been busy.
+**A falling suspense balance can be bad news**: write-offs, wider tolerances and many-to-one matches all reduce it without fixing anything, so the review shows them next to the balance. And **the inflow matters more than the stock**: new breaks per million provider lines, by root cause, show whether the system is improving; the backlog shows only whether people have been busy.
 
 {id: payments-to-ledger--the-2027-program-draining-suspense-at-the-source}
 ## The 2027 Program: Draining Suspense at the Source
@@ -423,7 +423,7 @@ The steps that carried the program:
 | Breaks older than 90 days | €2.1m | €0.4m | Of the €2.1m: €1.1m identified and matched or recovered, €0.6m written off with approval, €0.4m open, in dispute with one provider |
 | Write-offs in the year | €1.3m | €0.6m | 2027 write-offs all legacy items, all approved under the threshold matrix |
 
-Three observations matter more than the numbers. **The largest single reduction came from the definition**: separating €6.2 million of dated, explained in-flight money from the true suspense. That was not cosmetic: the close team spent WD3 to WD5 on €3.4 million of breaks instead of €14 million of everything. **The second largest came from references**, fixed in code and contracts by the payments team, which had not been in the room before 2027. And **the breaks that remain are concentrated and owned**: by December, about 57% of new APM breaks were missing references from two named providers, with contracted dates for the fix.
+**The largest single reduction came from the definition**: separating €6.2 million of dated, explained in-flight money from the true suspense. That was not cosmetic: the close team spent WD3 to WD5 on €3.4 million of breaks instead of €14 million of everything. **The second largest came from references**, fixed in code and contracts by the payments team, which had not been in the room before 2027. And **the breaks that remain are concentrated and owned**: by December, about 57% of new APM breaks were missing references from two named providers, with contracted dates for the fix.
 
 The program did not by itself shorten the 2027 close. In December the payments work finished a day early and the Adyen EUR clearing reconciliation was certified on WD3 for the first time, but the close plan counts that day in 2028, once daily reconciliation has run through a year-end ([BlackLine: Matching, Certifying and Closing](#blackline)).
 

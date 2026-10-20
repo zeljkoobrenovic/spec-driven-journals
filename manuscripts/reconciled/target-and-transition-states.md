@@ -21,11 +21,11 @@
 > * **The Borrowed Roadmap** — A target state drawn around one vendor's suite, or paced by its release calendar, lets the vendor's packaging decide what Northmere converges on.
 > * **Audit Archaeology** — Transition states designed without their controls produce a year-end close that runs on a half-built estate nobody can evidence.
 
-Every finance transformation produces a picture of the future estate, and most produce only that: one ledger, one chart of accounts, a short close, drawn for the year the program ends. What it does not show is **the estate on each of the four or five year-end closes between now and then**, and those are the states in which the company will actually report its results, be audited and pay its suppliers.
+Part IV has so far said how a finance estate should be governed and built: decision records in [Architecture Governance That Speeds Decisions](#architecture-governance), principles and standards in [Principles That Decide Things](#principles-standards-reference). It has not said where the estate as a whole is going, or in what order. Most finance transformations answer only the first half, with a picture of the future estate: one ledger, one chart of accounts, a short close, drawn for the year the program ends. The picture does not show **the estate on each of the four or five year-end closes between now and then**, and those are the states in which the company will report its results, be audited and pay its suppliers.
 
-This chapter treats the route as the main design object: baseline, target and transition architectures, the **plateau** (a relatively stable state of the estate that lasts a limited time), what makes a plateau stable in finance, and how dependencies, confidence levels, funding and re-baselining turn a picture into a roadmap a CFO can fund and an auditor can follow.
+This chapter makes the route the main design object. It defines baseline, target and transition architectures and the **plateau** (a relatively stable state of the estate that lasts a limited time), sets out what makes a plateau stable in finance, and shows how dependencies, confidence levels, funding and re-baselining turn a picture into a roadmap a CFO can fund and an auditor can follow.
 
-The worked example is Program Keystone at Northmere, the fictional group this book follows. Migration patterns such as strangler, parallel run and cut-over belong to [Changing the Engine in Flight: Modernization Patterns for Finance](#modernization-patterns) and [Modernizing Without Stopping the Close](#incremental-modernization); leading the program belongs to [The Technology Is the Easy Part: Leading a Finance Transformation](#finance-transformation). This chapter decides **which stable states the program passes through, and why in that order**.
+The worked example is Program Keystone at Northmere, the fictional group this book follows. Its plateaus take their retirements and contract dates from the rationalization waves in [Manage the Application Portfolio as an Investment](#application-portfolio), and their biggest open decision from the convergence choice in [Converge or Coexist: Living with More Than One ERP](#multiple-erps). Migration patterns such as strangler, parallel run and cut-over belong to [Changing the Engine in Flight: Modernization Patterns for Finance](#modernization-patterns) and [Modernizing Without Stopping the Close](#incremental-modernization); leading the program belongs to [The Technology Is the Easy Part: Leading a Finance Transformation](#finance-transformation). This chapter decides **which stable states the program passes through, and why in that order**. The chapters after it build on that order: [Own Your Roadmap: Vendor Strategy Without Lock-In Panic](#vendor-portfolio-strategy) works from the roadmap's contract dates, [The Technology Is the Easy Part: Leading a Finance Transformation](#finance-transformation) releases money by plateau, and [Technical Debt on the Balance Sheet](#technical-debt-and-fitness) turns the exit criteria into fitness functions.
 
 {id: target-and-transition-states--setting-the-scene-a-picture-of-2031-and-nothing-in-between}
 ## Setting the Scene: A Picture of 2031 and Nothing in Between
@@ -58,7 +58,7 @@ Treating the target state as a hypothesis changes how it is written. Each elemen
 | When reality differs | The program is "late" | The hypothesis is updated and the change recorded |
 | What gets funded | The end state, in one business case | The next plateau, with the end state as direction |
 
-This is not an argument for a vague target. A hypothesis must be specific enough to be wrong. "A modern, integrated finance platform" cannot be tested; "every brand's accounting reaches the group core under one chart of accounts, with drill-back from any group balance to the originating event, by the FY2029 close" can.
+A hypothesis is not a vague target: it must be specific enough to be wrong. "A modern, integrated finance platform" cannot be tested; "every brand's accounting reaches the group core under one chart of accounts, with drill-back from any group balance to the originating event, by the FY2029 close" can.
 
 {id: target-and-transition-states--baseline-target-transition-and-plateau}
 ## Baseline, Target, Transition and Plateau
@@ -108,7 +108,7 @@ Two finance-specific rules follow.
 {id: target-and-transition-states--describing-the-target-state-for-a-finance-estate}
 ## Describing the Target State for a Finance Estate
 
-A target state is useless as a slogan or as a thousand-box diagram. The question is altitude: high enough to stay true while solutions are designed, low enough to constrain them. For a finance estate I use six short views, about ten pages in all.
+Describing a target state is a question of altitude: high enough to stay true while solutions are designed, low enough to constrain them. A slogan is too high and a thousand-box diagram too low. For a finance estate I use six short views, about ten pages in all.
 
 1. **Capabilities.** Which platform realizes each finance capability, with a recorded reason where there are two ([Map What Finance Does Before What Runs It](#capability-mapping)). Northmere's four undecided overlaps (partner payouts, invoicing, account reconciliation, indirect tax) each get a target platform.
 2. **Layers.** Where each component sits in the reference model from [Anatomy of a Finance Estate: Layers, Planes and Boundaries](#finance-landscape), from operational systems through the financial event and subledger layer, accounting core, close and consolidation, planning, reporting and disclosure, satellite services and the finance data platform, to the integration and control plane. This view shows where summarization happens.
@@ -133,7 +133,7 @@ The altitude rule I apply: **name the role and the boundary always; name the pro
 | Finance data platform | FinDB on Snowflake with governed metrics and a daily ledger-to-warehouse tie-out | None |
 | Integration and control plane | Kafka for canonical events; SAP Integration Suite for SAP flows; MuleSoft retired; control evidence captured by default | Whether MuleSoft survives if Tablekin remains on Workday (follows the Q1 2028 review) |
 
-The table names few products, almost all already in the estate; a target state that introduces many new products is usually a procurement plan in disguise. And the right-hand column is not a list of weaknesses. **The open items are the target state's most useful content**: they tell every team which parts of its design must keep two options alive, and until when.
+The table names few products, almost all already in the estate; a target state that introduces many new products is usually a procurement plan in disguise. The right-hand column is not a list of weaknesses. **The open items are the target state's most useful content**: they tell every team which parts of its design must keep two options alive, and until when.
 
 {id: target-and-transition-states--the-not-decided-yet-register}
 ### The "not decided yet" register
@@ -148,7 +148,7 @@ Each open item gets a row in a register that travels with the target state, not 
 | Consolidation home after convergence | OneStream; S/4HANA group reporting | Leila | 2030 | Nothing; deliberately deferred so it does not distract from convergence |
 | E-invoicing gateway provider | Competitive evaluation | Kofi Asante | End 2027 | Poland migrates behind the internal gateway interface first |
 
-The fourth row matters as much as the first. **Deferring a decision on purpose, with a date, is a design choice.** Deferring it by not writing it down is how Northmere ended up with three ledgers, as [The Chief Architect's Job: Making Many Systems Tell One Story](#chief-architect-role) described.
+The fourth row, deferred to 2030 on purpose, matters as much as the first. **Deferring a decision on purpose, with a date, is a design choice.** Deferring it by not writing it down is how Northmere ended up with three ledgers, as [The Chief Architect's Job: Making Many Systems Tell One Story](#chief-architect-role) described.
 
 {id: target-and-transition-states--northmere-from-baseline-to-2031-in-plateaus}
 ## Northmere: From Baseline to 2031 in Plateaus
@@ -222,7 +222,7 @@ Each dependency gets an owner, a date and its slack. The **critical path** is th
 
 **Figure 5:** *Keystone's critical path runs from the 2027 Q4 decision through the volume proof, posting rules and the 1 January 2029 chart go-live to the merchant subledger migration; because the chart can only go live at a year start, a three-month slip in the decision becomes a twelve-month slip in Plateau 2.*
 
-The arithmetic is unforgiving. CoA v2 can go live only at a fiscal year start, because a mid-year chart change splits a year's balances across two structures. Working back from 1 January 2029: dry-run closes in Q4 2028, rules and adapters in Q2 and Q3, the volume proof in H1 2028, the decision by the end of 2027. **There is no slack.** If the decision slips to March 2028, the next chance for the chart is January 2030.
+CoA v2 can go live only at a fiscal year start, because a mid-year chart change splits a year's balances across two structures. Working back from 1 January 2029: dry-run closes in Q4 2028, rules and adapters in Q2 and Q3, the volume proof in H1 2028, the decision by the end of 2027. **There is no slack.** If the decision slips to March 2028, the next chance for the chart is January 2030.
 
 Dana does three things with that fact. She makes the decision date a commitment, with the evidence pack due in October. She runs the CoA v2 design, which does not depend on the route, in parallel. And she writes down in advance what a miss means: Plateau 2 is redefined around a January 2030 chart, the savings forecast drops by the wave 3 portion for a year, and the board hears it at the next quarterly re-baseline.
 
@@ -231,7 +231,7 @@ Two other dependencies are easy to miss. **ViDA pulls the tax service forward**:
 {id: target-and-transition-states--roadmap-horizons-and-confidence}
 ## Roadmap Horizons and Confidence
 
-The Keystone horizons of one, three and five years are the board's frame. Inside them, every item on Dana's roadmap carries one of three confidence labels, and the label says what kind of promise it is.
+Every item on Dana's roadmap carries one of three confidence labels, and the label says what kind of promise it is. The labels sit inside the board's frame of one-, three- and five-year Keystone horizons.
 
 | Label | Meaning | Typical horizon | Date precision | Funding | Northmere examples (as of September 2027) |
 | --- | --- | --- | --- | --- | --- |
@@ -304,7 +304,7 @@ Plateau value is measured by the outcome owners, from the systems that produce i
 {id: target-and-transition-states--trade-offs-in-how-to-express-the-route}
 ## Trade-offs in How to Express the Route
 
-The plateau roadmap is not the only way to plan an estate's evolution.
+The plateau roadmap is one of four ways to express the route, and each is right under different conditions.
 
 | Approach | Strengths | Weaknesses | When it is right |
 | --- | --- | --- | --- |

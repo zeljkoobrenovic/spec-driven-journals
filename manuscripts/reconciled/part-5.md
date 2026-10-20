@@ -30,7 +30,7 @@ Every case chapter sorts its statements into three kinds, and the wording says w
 
 **Figure 1:** *The evidence boundary. A lesson rests on what is documented and on an interpretation the reader can check; what is not public is named so that it becomes part of your own design work rather than an assumption.*
 
-The third column matters as much as the first. Where a case falls silent, usually at the governance of the book of record, the earlier chapters of this book are where the answer lies.
+The third kind matters as much as the first. Where a case falls silent, usually at the governance of the book of record, the earlier chapters of this book supply the answer.
 
 {id: part-5--the-case-in-this-part}
 ## The Case in This Part
@@ -40,11 +40,11 @@ The third column matters as much as the first. Where a case falls silent, usuall
 {id: part-5--a-growing-collection}
 ## A Growing Collection
 
-This part is a collection, not a fixed set. The journal is a living book, and further cases will be added as public records accumulate that are rich enough to read this way, chosen for depth of evidence rather than fame. Each will follow the same three-way discipline and end where its evidence ends.
+This part is a collection that grows with the journal, not a fixed set. Further cases will be added when a public record is rich enough to read this way, chosen for depth of evidence rather than fame. Each will follow the same three-way discipline and end where its evidence ends.
 
 {id: part-5--using-the-cases}
 ## Using the Cases
 
-Read a case with the chapter it tests open beside it. The comparison tables in each case name those chapters: for Uber, [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers), [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger), [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation) and [When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms) above all. Where a case confirms a pattern, it is evidence you can cite in a decision record; where it differs from Northmere, ask which conditions (volume, team, regulation, history) explain the difference. Where it falls silent, take the gap to the [Working Papers: Templates for the Finance Architect](#toolkit), whose canonical event specification, reconciliation design card and decision record are built for exactly that design work.
+Read a case with the chapter it tests open beside it. The comparison tables in each case name those chapters: for Uber, [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers), [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger), [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation) and [When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms) above all. Where a case confirms a pattern, it is evidence you can cite in a decision record; where it differs from Northmere, ask which conditions (volume, team, regulation, history) explain the difference. Where it falls silent, take the gap to the [Working Papers: Templates for the Finance Architect](#toolkit), whose canonical event specification, reconciliation design card and decision record are built for that design work.
 
 Begin with [Uber's Payments Platform: A Ledger at the Center of Money Movement](#case-uber-payments).

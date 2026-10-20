@@ -21,11 +21,11 @@
 > * **Capability Creep** — reconciliation happens in three platforms at once, and nobody has decided which one is the system of record for which balance.
 > * **Nobody's Bot** — auto-certification rules and AI preparers sign off balances that no named person has reviewed or owns.
 
-Every finance team reconciles. The question for an architect is not whether reconciliation happens. It is **where it happens, on what data, at what grain, under whose rules, and with what evidence**. In a small company the answer is a spreadsheet per balance-sheet account, a tick from the controller and a folder the auditor opens once a year. In a group with 71 legal entities, three ERPs, three payment service providers and 46 customer currencies, that answer stops working. The spreadsheets multiply, the folder becomes a file share, and the close becomes a coordination problem that nobody can see whole.
+The ledgers in the previous chapters ([SAP S/4HANA: One Journal, Clean Core](#sap-s4hana), [Workday: The Org Chart Behind the Ledger](#workday), [Oracle Fusion: An Accounting Hub for High-Volume Events](#oracle-fusion)) record Northmere's books. This chapter covers the platform that proves those books agree with banks, payment providers and each other before [OneStream: Consolidating Actuals, Planning the Future](#onestream) consolidates them. For an architect the question is not whether reconciliation happens. It is **where it happens, on what data, at what grain, under whose rules, and with what evidence**. In a small company the answer is a spreadsheet per balance-sheet account, a tick from the controller and a folder the auditor opens once a year. In a group with 71 legal entities, three ERPs, three payment service providers and 46 customer currencies, that answer stops working. The spreadsheets multiply, the folder becomes a file share, and the close becomes a coordination problem that nobody can see whole.
 
 Close-automation platforms exist to solve that coordination problem. BlackLine, this chapter's main example, was founded in 2001 to move accounting work, reconciliations above all, out of spreadsheets. It **popularized "continuous accounting"**, the idea that period-end work should be done daily so that month-end becomes a confirmation, though there is no evidence it coined the term.
 
-The platform is valuable and limited in predictable ways. It is an excellent **system of record for reconciliation evidence and close status**, a capable matching engine and, with care, part of the posting path for manual journals. It is **not a remedy for bad data**: it cannot shorten the parts of the close where data arrives late, without keys, or summarized beyond use. Northmere's plan to go from a 9-day close to 5, at the end of the chapter, shows where that line falls.
+Both the platform's value and its limits are predictable. It is an excellent **system of record for reconciliation evidence and close status**, a capable matching engine and, with care, part of the posting path for manual journals. It is **not a remedy for bad data**: it cannot shorten the parts of the close where data arrives late, without keys, or summarized beyond use. Northmere's plan to go from a 9-day close to 5, at the end of the chapter, shows where that line falls. Part III builds on that line: [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger) fixes the payment data that matching exposes, and [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation) places these reconciliations in the group's catalog.
 
 A note on corporate status, because it changes quickly: **as of October 2026**, BlackLine, Inc. was listed on Nasdaq (ticker BL). It had been the subject of acquisition interest, including a 2025 offer from SAP that was reported and that BlackLine rejected. In March 2026 its board confirmed a Strategic Committee empowered to evaluate strategic transactions. Check the current position before you rely on it in a vendor strategy.
 
@@ -70,12 +70,14 @@ A **reconciliation** proves that two records of the same reality agree, and expl
 | **Intercompany** | One entity's receivable or revenue against the counterparty's payable or expense | Balance by counterparty, sometimes by transaction | Due-to and due-from, intercompany revenue and expense | Stayloft B.V. management-fee recharge against Wayfare's expense in Oracle Fusion |
 | **Transaction-level matching** | Line-by-line records from two or more sources, by rule | Transaction | PSP clearing, card settlement, payouts | Adyen settlement detail lines against SFP expected receipts, and Adyen payouts against bank credits |
 
-Two consequences follow. First, **balance reconciliations need balances and transaction matching needs transactions**: a light daily or monthly feed versus a high-volume pipeline with its own latency, retention and failure modes. Both are called "reconciliation", but they are different integrations. Second, **a balance reconciliation of a high-volume account is supported by a matching result**. The Adyen EUR clearing account is certified on the strength of the matching run: matched items net to zero, and the open items *are* the explanation of the balance. Oracle's Account Reconciliation product makes the same split, with Reconciliation Compliance for balances and Transaction Matching for volume, integrated with each other.
+**Balance reconciliations need balances and transaction matching needs transactions**: a light daily or monthly feed versus a high-volume pipeline with its own latency, retention and failure modes. Both are called "reconciliation", but they are different integrations.
+
+**A balance reconciliation of a high-volume account is supported by a matching result.** The Adyen EUR clearing account is certified on the strength of the matching run: matched items net to zero, and the open items *are* the explanation of the balance. Oracle's Account Reconciliation product makes the same split, with Reconciliation Compliance for balances and Transaction Matching for volume, integrated with each other.
 
 {id: blackline--risk-rating-spend-review-effort-where-error-is-likely}
 ### Risk Rating: Spend Review Effort Where Error Is Likely
 
-Not every account deserves the same attention. **Risk-based reconciliation** rates each account, usually on balance size, volatility, transaction volume, judgment content and history of errors. The rating then drives four things: which template the account uses, how often it is reconciled, how many review levels it needs, and whether it may be auto-certified. BlackLine describes this practice in its own guidance. The exact configuration syntax is in customer documentation behind a login, and this book does not describe it.
+**Risk-based reconciliation** gives accounts different treatment according to how likely they are to be wrong. It rates each account, usually on balance size, volatility, transaction volume, judgment content and history of errors. The rating then drives four things: which template the account uses, how often it is reconciled, how many review levels it needs, and whether it may be auto-certified. BlackLine describes this practice in its own guidance; the configuration syntax is in customer documentation behind a login, and this book does not describe it.
 
 Northmere's rating model, rebuilt in 2027 under Mei Tanaka's SOX program, has three tiers:
 
@@ -136,7 +138,7 @@ Three boundaries in Figure 2 carry most of the architecture:
 {id: blackline--transaction-matching-rule-design-for-high-volume}
 ## Transaction Matching: Rule Design for High Volume
 
-**Transaction matching** compares records from two or more sources and pairs them by rule. Matched items drop out, and what remains are exceptions for people to work. BlackLine's 10-K describes the module as automating the reconciliation of high-volume transactions and flagging exceptions. The rule types below are standard across matching tools; Oracle documents one-to-one, one-to-many, many-to-one and many-to-many rules with tolerances in its own product. Treat them as the general vocabulary of the field, not as BlackLine internals.
+**Transaction matching** compares records from two or more sources and pairs them by rule. Matched items drop out, and what remains are exceptions for people to work. BlackLine's 10-K describes the module as automating the reconciliation of high-volume transactions and flagging exceptions. The rule types below are the general vocabulary of matching tools, not BlackLine internals; Oracle documents one-to-one, one-to-many, many-to-one and many-to-many rules with tolerances in its own product.
 
 At Northmere, Transaction Matching handles about **1.3 million PSP settlement lines a day** across Adyen, Stripe and the local APM providers. Each day it compares them with SFP's expected receipts, and compares about **1,500 PSP payout credits** with bank statement lines. The volume is the reason the matching runs in a dedicated engine and not in a spreadsheet. It is also the reason rule design matters: a rule that is 99% right still leaves 13,000 lines a day for people to look at.
 
@@ -202,7 +204,11 @@ When Dana's team analyzed the roughly 40,000 unmatched APM lines in the April cl
 
 About a third of the problem (the partial refunds and the cut-off differences) is a matching-rule problem. About two-thirds (the missing references and most of the aggregate lines) is a data problem that no rule can solve. **This analysis, more than any product decision, set the shape of the 2027 program.** The matching rules were fixed in six weeks. The provider references needed changes in Northmere Pay's integrations, owned by Ingrid Solberg's team, and contract changes with two providers. [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger) tells that story from the payments side, including how the €14 million suspense balance came down.
 
-Three cautions generalize. **Tolerances drift wider under deadline pressure**: widening a date window from three to ten days at WD3 raises the match rate and lowers match quality, so Northmere logs and approves tolerance changes like any rule change. **Many-to-one matches need a ceiling**: a rule that lets 4,318 expected receipts match one provider line "if the sum is within €50" will eventually absorb two offsetting errors larger than €50. **Unmatched items need a named owner by age**: items over 30 days have one, items over 90 days are reported to Leila, and the €2.1 million over 90 days was the measure the audit committee watched in 2027.
+Three cautions apply to any matching program:
+
+- **Tolerances drift wider under deadline pressure.** Widening a date window from three to ten days at WD3 raises the match rate and lowers match quality, so Northmere logs and approves tolerance changes like any rule change.
+- **Many-to-one matches need a ceiling.** A rule that lets 4,318 expected receipts match one provider line "if the sum is within €50" will eventually absorb two offsetting errors larger than €50.
+- **Unmatched items need a named owner by age.** Items over 30 days have one, items over 90 days are reported to Leila, and the €2.1 million over 90 days was the measure the audit committee watched in 2027.
 
 {id: blackline--task-management-the-close-calendar-as-orchestration}
 ## Task Management: The Close Calendar as Orchestration
@@ -222,7 +228,7 @@ Northmere's 9-day calendar, reconstructed from early-2027 task data, looks like 
 | WD6–7 | Entity certification and lock; trial balances loaded to OneStream; mapping and consolidation | Last entity certified; mapping exceptions across three charts of accounts |
 | WD8–9 | Eliminations review, top-side adjustments, group review and sign-off; flash results to the CFO | — |
 
-Task Management makes this visible: every task has an owner, a predecessor and a timestamp. That visibility is what made the critical path analysis possible. **Visibility is not acceleration, though.** A task that waits for SFP's late summary waits just as long in BlackLine as it did in a spreadsheet. The module accelerates the close in two narrower ways:
+**Task Management makes the critical path visible, but visibility is not acceleration.** Every task has an owner, a predecessor and a timestamp, which is what made the critical-path analysis possible. A task that waits for SFP's late summary waits just as long in BlackLine as it did in a spreadsheet. The module accelerates the close in two narrower ways:
 
 - **Enforced dependencies.** A downstream task cannot start on stale data. This removes rework, which is a hidden source of delay.
 - **Re-sequencing.** When the data shows that intercompany agreement waits for a reconciliation it does not need, the dependency is removed and the work runs in parallel.
@@ -255,11 +261,13 @@ Northmere reconciles intercompany in three places, which is a textbook case of *
 - **Oracle Fusion** for Wayfare's own intercompany, using Fusion's intercompany capabilities within its ledgers.
 - **OneStream**, where eliminations surface the differences that slipped through. Northmere also bought a OneStream reconciliation module in 2022, now used for only 22 corporate-entity accounts.
 
-The result is predictable. Differences between Wayfare and SAP entities are found on WD5 in reconciliations, or on WD6–7 in consolidation, and argued over by email.
+As a result, differences between Wayfare and SAP entities are found on WD5 in reconciliations, or on WD6–7 in consolidation, and argued over by email.
 
-BlackLine's intercompany suite came largely from its acquisition of FourQ in January 2022. It has three parts: **Intercompany Create** originates intercompany transactions and invoices, **Balance & Resolve** reconciles balances and manages disputes, and **Net and Settle** nets and settles balances with treasury. The architectural question is not whether to buy it. It is **where intercompany is originated**. If both halves are generated from one agreed transaction, with one amount, one rate, one date and one counterparty, then matching becomes confirmation. If each side books independently, matching remains investigation, whichever tool does it.
+BlackLine's intercompany suite came largely from its acquisition of FourQ in January 2022. It has three parts: **Intercompany Create** originates intercompany transactions and invoices, **Balance & Resolve** reconciles balances and manages disputes, and **Net and Settle** nets and settles balances with treasury.
 
-Dana's recommendation to the design authority in mid-2027 was as follows. These are judgments, recorded in a decision record:
+The architectural question is not whether to buy the suite. It is **where intercompany is originated**. If both halves are generated from one agreed transaction, with one amount, one rate, one date and one counterparty, then matching becomes confirmation. If each side books independently, matching remains investigation, whichever tool does it.
+
+Dana's mid-2027 recommendation to the design authority, recorded as judgments in a decision record, had three parts:
 
 1. **One intercompany process owner** (Leila's team), and one cross-ERP matching platform for all entity pairs. SAP's intercompany matching serves SAP entities well, but Northmere's hard pairs cross ERPs.
 2. **Originate recurring recharges once.** Management fees, IT recharges and royalties are calculated centrally and generated for both sides before month-end. Whether that happens in a close platform's intercompany module or in the S/4HANA core is a 2028 decision, tied to the convergence decision in [Converge or Coexist: Living with More Than One ERP](#multiple-erps).
@@ -280,9 +288,7 @@ A close platform is an integration hub that most enterprises do not design as on
 | **Reference data** | Entities, chart of accounts, account-to-owner assignments, FX rates, users | Small | On change | File or API, mastered elsewhere |
 | **Write-back** | Approved manual journals | ~11,500 per close | On approval | Connector to S/4HANA; Fusion and Workday planned |
 
-The table holds the main design facts.
-
-**Connectors versus flat files.** BlackLine published an Oracle connector for balances, transactions and currency rates in 2018, and its 2019 ecosystem announcement relied on iPaaS partners for Workday and other sources. This book claims no technical detail beyond that. Flat files over SFTP remain common for bank and payment data. They are fine if they carry **control totals**: a record count and an amount total per file, checked on arrival against the source. Most ingestion failures I have seen were not "the file failed". They were "the file arrived with 80% of its lines and nobody noticed".
+**Connectors versus flat files.** Either transport works if each load carries **control totals**: a record count and an amount total per file, checked on arrival against the source. BlackLine published an Oracle connector for balances, transactions and currency rates in 2018, and its 2019 ecosystem announcement relied on iPaaS partners for Workday and other sources; this book claims no technical detail beyond that. Flat files over SFTP remain common for bank and payment data. Most ingestion failures I have seen were not "the file failed". They were "the file arrived with 80% of its lines and nobody noticed".
 
 **Normalize before you match.** Northmere does not send raw Adyen, Stripe and local-provider files to BlackLine. Northmere Pay's normalization service maps each provider's settlement data to one internal settlement record, keyed by booking id, with the provider's reference and batch preserved. That is the canonical `PaymentSettled` and `PSPFeeCharged` events from [Canonical Events: A Common Language for Money](#loosely-coupled-domains) in file form. One matching rule set then works for every provider. Without that layer, every new APM means new rules, and every provider format change breaks the close.
 
@@ -295,7 +301,7 @@ The table holds the main design facts.
 {id: blackline--retention-and-residency}
 ### Retention and Residency
 
-Matching detail is large, and statutory retention is long: Germany, for example, requires books and annual financial statements to be kept for ten years. A SaaS tenant is not an archive. Northmere **exports certified reconciliation packages and matching summaries each quarter to the group's evidence archive**, owned by Mei's team. BlackLine keeps line-level matching detail for the period agreed in the contract, and older detail can be rebuilt from the source files Northmere Pay retains. Ask where the tenant is hosted and record the answer: BlackLine has used its own data centers and Google Cloud facilities, so do not assume either.
+**A SaaS tenant is not an archive.** Matching detail is large, and statutory retention is long: Germany, for example, requires books and annual financial statements to be kept for ten years. Northmere **exports certified reconciliation packages and matching summaries each quarter to the group's evidence archive**, owned by Mei's team. BlackLine keeps line-level matching detail for the period agreed in the contract, and older detail can be rebuilt from the source files Northmere Pay retains. Ask where the tenant is hosted and record the answer: BlackLine has used its own data centers and Google Cloud facilities, so do not assume either.
 
 {id: blackline--evidence-and-audit}
 ## Evidence and Audit
@@ -364,7 +370,9 @@ The market splits into ERP-native capabilities, EPM suites with reconciliation m
 | **Trintech** | Specialist close platform | Cadency and Adra product lines; Transaction Matching, Reconciliation, Journal Entry and Close Task Management modules | Enterprise (Cadency) or mid-market (Adra) close standardization | Ownership and roadmap not verified here; ask |
 | **FloQast** | Accountant-led close management | Close Checklist, Account Reconciliations, AI Matching, journal entry and variance analysis; founded 2013 | Mid-market and fast-growing companies with NetSuite, Workday or Intacct | Depth at very high transaction volume should be proven in a pilot |
 
-Two rules guide the choice. First, **follow the grain and the owner, not the vendor list**. Transaction-level, high-volume matching run by an operations team points to a specialist platform. Balance-level reconciliation by the people who certify consolidation data can live in the EPM tool. Second, **one reconciliation system of record per balance**. Two tools may coexist after an acquisition, but each account belongs to exactly one, and that assignment is written into the control framework. Northmere's overlap register, owned by [Duplicates and Dependencies: The Hidden Costs of a Grown Estate](#redundancy-and-coupling), carries the reconciliation entry: BlackLine is the system of record for all balance-sheet reconciliations from Q1 2028, Fusion intercompany reconciliation retires with the Wayfare convergence, and the OneStream module's 22 accounts move to BlackLine in the first rationalization wave, which ends in Q1 2028.
+**Follow the grain and the owner, not the vendor list.** Transaction-level, high-volume matching run by an operations team points to a specialist platform. Balance-level reconciliation by the people who certify consolidation data can live in the EPM tool.
+
+**Keep one reconciliation system of record per balance.** Two tools may coexist after an acquisition, but each account belongs to exactly one, and that assignment is written into the control framework. Northmere's overlap register, owned by [Duplicates and Dependencies: The Hidden Costs of a Grown Estate](#redundancy-and-coupling), carries the reconciliation entry: BlackLine is the system of record for all balance-sheet reconciliations from Q1 2028, Fusion intercompany reconciliation retires with the Wayfare convergence, and the OneStream module's 22 accounts move to BlackLine in the first rationalization wave, which ends in Q1 2028.
 
 {id: blackline--in-practice-from-9-days-to-5}
 ## In Practice: From 9 Days to 5
@@ -385,7 +393,11 @@ In September 2027 Dana and Leila took the critical-path data from Task Managemen
 
 **Figure 5:** *Where Northmere's four days come from. BlackLine configuration alone removes about one day. Two days need BlackLine and upstream data together, and one day needs no close-platform change at all.*
 
-Three lessons generalize. **The tool-only day is real but small**: measures A and B were done in 2027 and took the close to about 8 days, cheaply, and produced the data that justified the rest. **The shared days decide the program**: measure C is the payments-to-ledger program by another name, funded in Keystone Year 1, owned by Ingrid's and Jonas's teams and measured in BlackLine. A close team that buys more matching capacity without it gets more exceptions, faster. **The last day is not in the close team's hands**: measures E and F belong to data and engineering teams that do not run the close, and without governance to assign them they do not happen.
+Three lessons apply beyond Northmere:
+
+- **The tool-only day is real but small.** Measures A and B were done in 2027 and took the close to about 8 days, cheaply, and produced the data that justified the rest.
+- **The shared days decide the program.** Measure C is the payments-to-ledger program by another name, funded in Keystone Year 1, owned by Ingrid's and Jonas's teams and measured in BlackLine. A close team that buys more matching capacity without it gets more exceptions, faster.
+- **The last day is not in the close team's hands.** Measures E and F belong to data and engineering teams that do not run the close, and without governance to assign them they do not happen.
 
 The plan also says what *not* to do. The second Transaction Matching environment proposed at the WD3 stand-up would have matched nothing the first could not. Dana's decision record declined it and funded the provider-reference work instead.
 

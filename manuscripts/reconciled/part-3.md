@@ -14,11 +14,11 @@
 
 In August 2027 the external auditor of Northmere, the fictional group this book follows, sent a planning memo with a simple request: pick any number in the revenue note and trace it to transactions, and pick any booking and trace it to the statements. The September dry run used the €600 Lisbon booking. Tracing it top-down took three engineers nine working days, and the chain broke at a daily safeguarding sweep that was posted as one amount per entity pair. Through 2026 the payment-provider clearing accounts had averaged **€14 million** of unexplained balance at month-end. Every platform involved was working as designed. **Where does a finance estate fail when each of its platforms works?**
 
-At the boundaries between them. Part II examined the platforms one at a time; this part follows money and data across them. The questions change from what a platform can do to what crosses each line: which identifier, which definition, which period, and which control proves the crossing was complete and accurate.
+It fails at the boundaries between them. Part II examined the platforms one at a time; this part follows money and data across them. The questions change from what a platform can do to what crosses each line: which identifier, which definition, which period, and which control proves the crossing was complete and accurate.
 
 Two terms recur. A **hop** is one hand-off of a financial fact from one system to the next; each hop needs a record, a carried key, an invariant and a control. **Authority** is the right to create and change a fact, held by one system per data element and lifecycle stage, and passed on only with proof. Most of the defects in this part are hops with no proof or facts with more than one authority.
 
-The chapters first follow the money end to end, then decide who owns what, then design the seams so that the system can be coupled loosely and proven tightly, and finally show how the same design absorbs new brands and a migration of the core.
+The chapters first follow the money end to end, then decide who owns what, then design the seams so that the platforms are coupled loosely and proven tightly, and finally show how the same design absorbs new brands and a migration of the core.
 
 {id: part-3--the-learning-path}
 ## The Learning Path

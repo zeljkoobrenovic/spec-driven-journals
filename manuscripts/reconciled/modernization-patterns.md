@@ -21,11 +21,11 @@
 > * **Customization Concrete** — a migration approach chosen without a plan for custom code carries yesterday's modifications into tomorrow's platform, even when the project is called greenfield.
 > * **Audit Archaeology** — parallel-run results, migration reconciliations and archive retrieval are control evidence; when they are designed after go-live, the auditor finds the gaps first.
 
-Most finance modernization does not start on an empty site. It starts with a ledger that closed last month, will close again next month, and holds ten years of history that tax authorities can ask for. In those conditions **"replace the system" is not a pattern but an outcome**. The patterns are the steps that reach it while the books stay provable at every point.
+[Build, Buy or Compose: Choosing What to Own](#build-versus-buy) decides what should hold each finance capability. This chapter, the last of Part I, answers the question that follows: how the enterprise gets there from what it runs today. It never starts on an empty site. It starts with a ledger that closed last month, will close again next month, and holds ten years of history that tax authorities can ask for. In those conditions **"replace the system" is not a pattern but an outcome**. The patterns are the steps that reach it while the books stay provable at every point.
 
-The software industry has a good vocabulary for this (strangler fig, legacy displacement patterns, branch by abstraction, the cloud "R" dispositions), and the ERP vendors add their own. This chapter maps it onto finance, where every step has to end in a **reconciliation**, every cut-over is tied to the **accounting calendar**, and a retired system still owes the enterprise its records for years.
+Software engineering already names these steps (strangler fig, legacy displacement patterns, branch by abstraction, the cloud "R" dispositions), and the ERP vendors add their own terms. This chapter maps them onto finance, where every step has to end in a **reconciliation**, every cut-over is tied to the **accounting calendar**, and a retired system still owes the enterprise its records for years.
 
-The chapter owns the pattern catalog, the parallel run and the cut-over. The full worked migration of Stayloft's merchant subledger is in [Modernizing Without Stopping the Close](#incremental-modernization). The program leadership of an ERP transformation is in [The Technology Is the Easy Part: Leading a Finance Transformation](#finance-transformation).
+The chapter owns the pattern catalog, the parallel run and the cut-over, and later chapters build on them. [Converge or Coexist: Living with More Than One ERP](#multiple-erps) makes the hub decision this chapter leaves open, [Modernizing Without Stopping the Close](#incremental-modernization) works through the full migration of Stayloft's merchant subledger, and [The Technology Is the Easy Part: Leading a Finance Transformation](#finance-transformation) covers the program leadership of an ERP transformation.
 
 {id: modernization-patterns--setting-the-scene-three-modernization-files-at-northmere}
 ## Setting the Scene: Three Modernization Files at Northmere
@@ -74,7 +74,7 @@ Two rules make the catalog usable. First, **decide per component, not per system
 {id: modernization-patterns--erp-migration-approaches-greenfield-brownfield-selective}
 ## ERP Migration Approaches: Greenfield, Brownfield, Selective
 
-When the system is an ERP, the vendors and integrators use their own vocabulary. For SAP it is commonly described in three approaches. The step names below are standard practitioner knowledge, not SAP product definitions.
+For an ERP, vendors and integrators use their own vocabulary; for SAP it is commonly described as three approaches. The step names below are standard practitioner knowledge, not SAP product definitions.
 
 - **Greenfield (new implementation).** A new S/4HANA system, processes designed again starting from SAP's standard (fit-to-standard, see [Build, Buy or Compose: Choosing What to Own](#build-versus-buy)), with open items and balances migrated and limited history if any. It gives the cleanest data model: a new chart of accounts (CoA), document splitting, new organizational structures. The cost is change effort and the loss of history in the new system.
 - **Brownfield (system conversion).** The existing ECC system is converted in place: readiness and custom-code checks, the mandatory business-partner conversion, the move to SAP HANA, then the finance data conversion into the Universal Journal, S/4HANA's single accounting line-item table. It keeps history and customizations, and with them the technical debt and the old data model.
@@ -89,7 +89,7 @@ Central Finance as a first step is a fourth option, covered in the next section.
 | **Selective data transition** | Chosen structures (CoA, company codes), chosen history | Chosen entities and years | Selected | Tooling and specialist dependency; complex reconciliation of transformed data | Several systems or entities merge, or structure must change but some history must stay |
 | **Central Finance first** | A central finance system is added; sources keep running | Source postings replicated and remapped | From the initial load onward | A permanent extra system and mapping layer | Group reporting and a target CoA are needed before operational migration is possible |
 
-The deadline pressure is real but often misread. Mainstream maintenance for ECC ends at the end of 2027. Extended maintenance to the end of 2030 costs [two percentage points on top of the existing maintenance basis](https://news.sap.com/africa/2020/02/sap-extends-its-innovation-commitment-for-sap-s-4hana-provides-clarity-and-choice-on-sap-business-suite-7/). SAP also offers a [transition option for selected customers to run SAP ERP, private edition, from 2031 to 2033](https://news.sap.com/2025/02/sap-erp-private-edition-transition-option-navigate-complex-rise-with-sap-transformations/), which SAP describes as "not a maintenance prolongation", and in October 2026 SAP indicated that [subscriptions under it may run to the end of 2035](https://news.sap.com/2025/08/rise-with-sap-journey-sap-erp-private-edition-transition-option-updates/) under further prerequisites. These dates are commercial instruments as much as technical ones. A conversion chosen only because it is fastest to the deadline buys time and keeps every problem.
+The deadline pressure is real but often misread: **a conversion chosen only because it is fastest to the deadline buys time and keeps every problem**. Mainstream maintenance for ECC ends at the end of 2027. Extended maintenance to the end of 2030 costs [two percentage points on top of the existing maintenance basis](https://news.sap.com/africa/2020/02/sap-extends-its-innovation-commitment-for-sap-s-4hana-provides-clarity-and-choice-on-sap-business-suite-7/). SAP also offers a [transition option for selected customers to run SAP ERP, private edition, from 2031 to 2033](https://news.sap.com/2025/02/sap-erp-private-edition-transition-option-navigate-complex-rise-with-sap-transformations/), which SAP describes as "not a maintenance prolongation", and in October 2026 SAP indicated that [subscriptions under it may run to the end of 2035](https://news.sap.com/2025/08/rise-with-sap-journey-sap-erp-private-edition-transition-option-updates/) under further prerequisites. These dates are commercial instruments as much as technical ones.
 
 **Northmere's 2021 decision shows what greenfield does and does not buy.** The group rejected a conversion of its ECC 6.0 system and implemented S/4HANA greenfield. That gave it a new data model but not a clean core: much of the ECC customization, including Stayloft-specific posting logic and reports, was specified again and rebuilt. **Greenfield buys the option of a clean design. It does not take that option for you.** Only a custom-code triage, with "rebuild" as the answer that needs the most justification, does that.
 
@@ -100,9 +100,9 @@ SAP now rates extensions on [clean-core levels A to D](https://news.sap.com/2025
 {id: modernization-patterns--accounting-hubs-as-stranglers-for-ledgers}
 ## Accounting Hubs as Stranglers for Ledgers
 
-The strangler fig is the most cited displacement pattern. Martin Fowler's 2004 bliki post was retitled "Strangler Fig Application" in [April 2019](https://martinfowler.com/bliki/OriginalStranglerFigApplication.html), and his [current entry, dated 22 August 2024](https://martinfowler.com/bliki/StranglerFigApplication.html), argues that big replacement plans "go down in flames most of the time". It recommends building alongside the legacy system, finding seams, delivering small replacements early and accepting temporary code that lets old and new coexist. The open question for a ledger is where the new growth attaches.
+The strangler fig is the most cited displacement pattern, and for a ledger its open question is where the new growth attaches. Martin Fowler's 2004 bliki post was retitled "Strangler Fig Application" in [April 2019](https://martinfowler.com/bliki/OriginalStranglerFigApplication.html), and his [current entry, dated 22 August 2024](https://martinfowler.com/bliki/StranglerFigApplication.html), argues that big replacement plans "go down in flames most of the time". It recommends building alongside the legacy system, finding seams, delivering small replacements early and accepting temporary code that lets old and new coexist.
 
-For ledgers, the usual answer is a **hub**: a central accounting system that receives financial data from many sources and produces one set of books, while the sources keep running. Three vendor implementations illustrate the idea, and they differ in an important way.
+For ledgers, the usual answer is a **hub**: a central accounting system that receives financial data from many sources and produces one set of books, while the sources keep running. Three vendor implementations illustrate the idea, and they differ in what they take as input.
 
 - **SAP Central Finance** is commonly described as a central S/4HANA system that [replicates financial postings from several source ERPs, SAP and non-SAP, maps them to a harmonized model and posts them into its own Universal Journal](https://blog.sap-press.com/what-is-sap-central-finance). Operational documents such as sales orders stay in the sources. Practitioners describe an initial load, then real-time replication, key and value mapping, and an error queue to operate. The input is **accounting already done** by the source.
 - **Oracle Accounting Hub** applies ["the same subledger accounting rules engine"](https://docs.oracle.com/en/cloud/saas/financials/26c/faiac/how-oracle-accounting-hub-cloud-works.html) that Oracle's own subledgers use to transactions from non-Oracle systems, creates detailed journals in an accounting repository and transfers them to Oracle General Ledger with drill-down to transaction detail. The input is **business transactions**, and the hub does the accounting.
@@ -114,7 +114,7 @@ That difference decides what each one can strangle. **A replication hub strangle
 
 **Figure 1:** *A hub strangles ledgers in two ways. Replicated postings give the group one set of books before the source ledgers go. Events sent into an accounting rules engine take account determination out of the custom platform. In both cases, a source ledger function is retired only after reconciliation has proven source and core equal for several closes.*
 
-The strangler metaphor hides a cost. **The hub is a system in its own right**, with a mapping layer to govern, an error queue to work every day, and a source-to-hub reconciliation that is a key control as long as both exist. Central Finance is not a migration in itself: if operational convergence never follows, the enterprise has added a ledger rather than removed one. I recommend approving a hub only together with a dated plan for what it will retire, and treating the mapping as governed master data ([Finance Data Architecture: Who Owns the Truth](#finance-data-architecture)), never as a spreadsheet beside the interface.
+**The hub is a system in its own right**, a cost the strangler metaphor hides. It has a mapping layer to govern, an error queue to work every day, and a source-to-hub reconciliation that is a key control as long as both exist. Central Finance is not a migration in itself: if operational convergence never follows, the enterprise has added a ledger rather than removed one. I recommend approving a hub only together with a dated plan for what it will retire, and treating the mapping as governed master data ([Finance Data Architecture: Who Owns the Truth](#finance-data-architecture)), never as a spreadsheet beside the interface.
 
 Which hub Northmere chooses in Q4 2027, and whether it converges, federates or tiers its three ERPs, is the subject of [Converge or Coexist: Living with More Than One ERP](#multiple-erps). This chapter's point is narrower: whichever is chosen, it is a strangler mechanism, and it needs the same gates as any other.
 
@@ -136,7 +136,7 @@ Ian Cartwright, Rob Horn and James Lewis's [*Patterns of Legacy Displacement*](h
 {id: modernization-patterns--the-2025-billing-displacement-reviewed}
 ### The 2025 billing displacement, reviewed
 
-Jonas's review of the 2025 FI-CA move used most of these patterns, some well and some badly. Figure 2 shows the shape that went live.
+The 2025 FI-CA move used most of these patterns, some well and some badly, and Jonas's review lists both. Figure 2 shows the shape that went live.
 
 ![Booking events flow to commission rating and an interceptor that routes agency partners to FI-CA invoicing and merchant partners to SFP invoicing; a legacy mimic feeds FI-CA results into partner statements, and both invoicing paths post to the general ledger.](finance-systems-architecture/posts/12-modernization-patterns/assets/images/12-modernization-patterns/agency-displacement-interceptor.jpeg)
 
@@ -170,7 +170,7 @@ None of these failures came from the patterns. They came from treating the patte
 {id: modernization-patterns--the-parallel-run-and-reconciliation-as-the-gate}
 ## The Parallel Run and Reconciliation as the Gate
 
-A **parallel run** feeds the same business inputs to the old and the new system for a defined period, compares their outputs at an agreed level of detail, and explains every difference before the new system becomes the book of record. In finance it is common practice and auditors often expect it, but finance runs two closes and engineering two systems. Budget for it explicitly, or it gets cut to fit the schedule.
+A **parallel run** feeds the same business inputs to the old and the new system for a defined period, compares their outputs at an agreed level of detail, and explains every difference before the new system becomes the book of record. It is common practice in finance and auditors often expect it, but it is expensive: finance runs two closes and engineering runs two systems. Budget for it explicitly, or it gets cut to fit the schedule.
 
 The point of a parallel run is the **variance classification**, not the comparison. Every difference falls into one of four classes:
 
@@ -215,9 +215,9 @@ Every finance migration answers three data questions: how much history moves, wh
 | **Open items plus N years of line items** | Line-item history for a defined window, often the current and prior year | Archive for older years | Moderate to high; historical data must fit the new data model | Comparative analysis and most audit queries served in the new system | Analysis or regulatory needs prior-year detail in the new system |
 | **Full history** | Everything | Nowhere else | Highest; old data quality problems move too | Complete, but in a model the old data was not designed for | Rarely; brownfield conversion does it by construction |
 
-My default for a finance replacement is **open items plus current-year balances, with everything older in a governed archive**. More history costs a great deal and mostly moves old data quality problems. The exception is an open item that needs its history to be understood, such as a three-year-old deferred-revenue item; that history moves with it.
+My default for a finance replacement is **open items plus current-year balances, with everything older in a governed archive**. More history adds migration effort and mostly moves old data quality problems. The exception is an open item that needs its history to be understood, such as a three-year-old deferred-revenue item; that history moves with it.
 
-Whatever moves, the migration is proven the same way. Record counts, amount totals and hash totals are compared per entity, currency and account between the extract, the load and the target. A migration clearing account must be zero at the end, and the opening trial balance of the new system must equal the closing trial balance of the old one. These are control totals in the sense of [Files, Events and APIs: How Finance Systems Talk](#integration-architecture), applied once at very high stakes.
+Whatever moves, the migration is proven with control totals. Record counts, amount totals and hash totals are compared per entity, currency and account between the extract, the load and the target. A migration clearing account must be zero at the end, and the opening trial balance of the new system must equal the closing trial balance of the old one. These are control totals in the sense of [Files, Events and APIs: How Finance Systems Talk](#integration-architecture), applied once at very high stakes.
 
 **Retention decides how long the history must stay readable.** Retention periods vary by country and record type, and the clock usually starts at the end of the year in which the record was created. Dutch businesses must keep records [for at least seven years](https://business.gov.nl/regulation/keeping-business-records/). In Germany, books and annual financial statements are kept for ten years, while accounting vouchers, including invoices, [moved from ten to eight years from 1 January 2025](https://www.haufe.de/steuern/gesetzgebung-politik/viertes-buerokratieentlastungsgesetz_168_613390.html), with a delay for supervised financial entities. Tax audits, litigation holds and multi-year tax regimes can extend the practical period.
 
@@ -230,7 +230,7 @@ A finance cut-over is not a deployment. It is the moment the book of record chan
 
 **The pattern that works is "close in the old, open in the new".** The old system takes every transaction dated up to the last day of period M and closes M on its usual calendar. The new system takes every transaction from the first day of M+1, starting from balances and open items migrated as of the end of M. For about two weeks both are live, one closing and one transacting, and the cut-over date must leave both teams the capacity for it.
 
-**Why not year-end.** Year-end is the traditional choice because it gives a clean start for annual balances, and it is usually the worst. Year-end adjustments, the annual audit, statutory accounts for every entity and, for an SEC registrant, the 10-K annual report all fall on the same finance team in the same weeks. Every migrated balance gets audited at its most closely examined point. This is **Big-Bang Bravado**'s favorite date. For Northmere the opening guide describes the case: an integrator proposed 1 January 2029 for the merchant subledger, and Leila rejected it ([Unreconciled: Fourteen Ways Finance Architecture Goes Wrong](#where-finance-architecture-goes-wrong)).
+**Why not year-end.** Year-end is the traditional choice because it gives a clean start for annual balances, but it is usually the worst. Year-end adjustments, the annual audit, statutory accounts for every entity and, for an SEC registrant, the 10-K annual report all fall on the same finance team in the same weeks. Every migrated balance gets audited at its most closely examined point. This is **Big-Bang Bravado**'s favorite date. For Northmere the opening guide describes the case: an integrator proposed 1 January 2029 for the merchant subledger, and Leila rejected it ([Unreconciled: Fourteen Ways Finance Architecture Goes Wrong](#where-finance-architecture-goes-wrong)).
 
 **Why not quarter-end.** For a US-listed group, every quarter-end close feeds a 10-Q with a fixed filing deadline. A new system's first close should not be one of those.
 
@@ -244,11 +244,13 @@ Blackout windows narrow the choice further. Northmere's 2028 calendar, published
 - **Commercial peaks:** Stayloft's July–August travel peak, when payout volumes are highest and many finance staff are on leave.
 - **Statutory deadlines:** VAT return and e-invoicing reporting dates in the affected countries, and the filing window for Pillar Two, the OECD global minimum tax.
 
-That leaves two good slots a year: early May and early November. **A short list of good dates is the most useful constraint a modernization roadmap can have**, because it forces the sequencing conversation early; it is why Keystone's merchant-invoicing move is planned for the May 2028 cycle. The rollback plan is part of the date choice. Until the first invoices go out, rollback means re-pointing the interceptor; after that, it means correcting invoices partners have already received.
+That leaves two good slots a year: early May and early November. **A short list of good dates is the most useful constraint a modernization roadmap can have**, because it forces the sequencing conversation early; it is why Keystone's merchant-invoicing move is planned for the May 2028 cycle.
 
 ![Twelve month tiles in a row, ten blocked by hatching and padlocks, with only May and November open as doors for a cut-over.](finance-systems-architecture/posts/12-modernization-patterns/assets/images/12-modernization-patterns/two-good-cut-over-slots.jpeg)
 
 **Figure 4:** *After year-end, quarter-end months, the summer peak and month-end blackouts are blocked, Northmere's 2028 calendar leaves two good cut-over slots a year, early May and early November, which forces the sequencing conversation early.*
+
+The rollback plan is part of the date choice. Until the first invoices go out, rollback means re-pointing the interceptor; after that, it means correcting invoices partners have already received.
 
 {id: modernization-patterns--decommissioning-finishing-the-job}
 ## Decommissioning: Finishing the Job
@@ -269,7 +271,7 @@ A modernization is finished when the old system is gone, its controls are closed
 {id: modernization-patterns--the-sequence}
 ### The sequence
 
-Order matters. The archive must prove itself while EBS still exists to check it against, and access must be removed before infrastructure, so that nothing is switched off while someone still depends on it.
+The archive must prove itself while EBS still exists to check it against, and access must be removed before infrastructure, so that nothing is switched off while someone still depends on it.
 
 ![Stepping stones from read-only through extracted, retrieval drills, access removed and shut down to the archive, with a failed drill looping back to extraction and records leaving only when retention ends.](finance-systems-architecture/posts/12-modernization-patterns/assets/images/12-modernization-patterns/archive-decommissioning-path.jpeg)
 
@@ -282,7 +284,7 @@ Decommissioning also closes the transitional architecture. **Every interceptor, 
 {id: modernization-patterns--choosing-a-pattern}
 ## Choosing a Pattern
 
-The table pulls the chapter together. It starts from the situation, not from the technology.
+The table maps each situation, not each technology, to the chapter's dispositions and patterns.
 
 | Situation | Disposition and approach | Supporting patterns | Watch out for |
 | --- | --- | --- | --- |

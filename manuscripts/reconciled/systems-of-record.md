@@ -21,11 +21,11 @@
 > * **The Shadow Ledger** — a payout engine nets balances from its own copy of another ledger's open items, and shows partners a balance that no ledger holds.
 > * **Capability Creep** — reconciliation, invoicing and payout capabilities exist in several platforms, and without an authority assignment each one becomes a candidate source of truth.
 
-"System of record" is one of the most used and least precise phrases in enterprise architecture. Portfolio tools label whole applications with it and vendors claim it in their marketing. In a finance estate it is asked about a system ("is SFP a system of record?") when it is really a question about **a piece of data at a moment in its life**.
+Part III has followed the Lisbon booking across the estate ([The Life of a Booking: From €600 Payment to $97.38 of Revenue](#transaction-to-report)) and decided which of three revenue numbers wins ([One Number, Many Views: Finance Data from Operations to Analytics](#finance-data-flows)). Every one of those answers assumed that someone had decided which system is authoritative for which fact; this chapter makes that decision explicit. Portfolio tools label whole applications "system of record" and vendors claim the label in their marketing, so the question gets asked about a system ("is SFP a system of record?"). It is really a question about **a piece of data at a moment in its life**.
 
-The Lisbon booking that runs through this book makes the point. On 12 March 2027 the booking platform knows the stay dates and the price, Adyen knows the card was captured, the Stayloft Finance Platform knows that €600 is owed back to the traveler if the stay is canceled, and by the next morning SAP S/4HANA knows the balance of traveler funds that Northmere Payments B.V. holds. All four are right, about different things. **Authority is per data element and per lifecycle stage, and it moves.** The architect's job is to write down where each move happens, what proves it, and what stops any other system from claiming the same authority.
+On 12 March 2027 four systems hold true facts about the Lisbon booking: the booking platform knows the stay dates and the price, Adyen knows the card was captured, the Stayloft Finance Platform knows that €600 is owed back to the traveler if the stay is canceled, and by the next morning SAP S/4HANA knows the balance of traveler funds that Northmere Payments B.V. holds. All four are right, about different things. **Authority is per data element and per lifecycle stage, and it moves.** The architect's job is to write down where each move happens, what proves it, and what stops any other system from claiming the same authority.
 
-This chapter owns the **system-of-record matrix** and the **authority hand-off**. Master data domains, management styles and stewardship belong to [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture) and are not re-taught here.
+This chapter owns the **system-of-record matrix** and the **authority hand-off**. The rest of Part III builds on both: ledger convergence and the SFP migration move authority through the matrix's transitional rows ([Converge or Coexist: Living with More Than One ERP](#multiple-erps), [Modernizing Without Stopping the Close](#incremental-modernization)), and the hand-off proofs become the reconciliation catalog ([Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation)). Master data domains, management styles and stewardship belong to [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture) and are not re-taught here.
 
 {id: systems-of-record--setting-the-scene-at-northmere-three-answers-to-one-question}
 ## Setting the Scene at Northmere: Three Answers to One Question
@@ -38,8 +38,8 @@ A fourth answer arrives unprompted. The partner extranet shows each host a "curr
 
 Each team is right about something: SFP for the payable per booking, S/4HANA for the entity's balance, FI-CA for agency open items. The extranet figure is authoritative for nothing, and it is the one partners act on. Dana Whitlock, the Chief Architect, has committed in the Keystone plan to a **system-of-record matrix, version 1, by the end of Q1 2027**. Mei's question gives it its shape: not a list of systems, but a list of data elements, each with its authority per lifecycle stage, its hand-offs and the reconciliation that proves each one.
 
-{id: systems-of-record--concepts-five-roles-a-system-can-play-for-a-piece-of-data}
-## Concepts: Five Roles a System Can Play for a Piece of Data
+{id: systems-of-record--five-roles-a-system-can-play-for-a-piece-of-data}
+## Five Roles a System Can Play for a Piece of Data
 
 A system does not *have* a role; it plays a role for a specific data element at a specific stage. The same system can be the system of record for one attribute, a system of reference for another and a system of engagement for a third. Five roles cover nearly every case.
 
@@ -61,7 +61,7 @@ A system does not *have* a role; it plays a role for a specific data element at 
 | **Golden copy** | Only if declared and enforced as SoR | Matching and stewardship rules | As a master record | The 2027 partner registry match | Treated as authoritative while sources still write freely |
 | **Derived store** | No, for inputs; yes, for its own outputs | Recompute from sources | Its outputs, if they are evidence | FinDB; BlackLine's balance copies | Reports from it are "certified" with no tie-out to the ledger |
 
-Two cautions on vocabulary. Gartner's pace-layered application strategy, as widely reported, uses "systems of record" as a *category of application* by rate of change, beside systems of differentiation and innovation. That is a portfolio idea, not data authority: a commission-rating engine can be a system of differentiation and still the system of record for the commission amount. And "source system" on integration diagrams usually means only where the data came from, which may be a system of reference passing on a copy. **Never accept "source" as an answer to an authority question.**
+Two other uses of the term have nothing to do with data authority. Gartner's pace-layered application strategy, as widely reported, uses "systems of record" as a *category of application* by rate of change, beside systems of differentiation and innovation. That is a portfolio idea, not data authority: a commission-rating engine can be a system of differentiation and still the system of record for the commission amount. And "source system" on integration diagrams usually means only where the data came from, which may be a system of reference passing on a copy. **Never accept "source" as an answer to an authority question.**
 
 {id: systems-of-record--authority-at-the-level-of-the-attribute}
 ## Authority at the Level of the Attribute
@@ -78,13 +78,13 @@ The coarsest useful unit of authority is not the system and not the object; it i
 | Merchant payable per booking | SFP merchant subledger | Per-booking liability detail | Group finance core, 2029 |
 | Partner payables balance per entity | S/4HANA general ledger | Book of record | Unchanged |
 
-**KYC** is the identity verification a payment institution performs on the people it pays; **DAC7** is the EU directive requiring platforms to report seller income ([Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale) covers both). The rule that makes this workable is **one attribute group, one authority, at any moment**. The partner record as a whole has no single system of record; forcing one on it either pushes self-service onboarding through a steward's queue or lets a brand platform edit bank details.
+The rule that makes this workable is **one attribute group, one authority, at any moment**. The partner record as a whole has no single system of record; forcing one on it either pushes self-service onboarding through a steward's queue or lets a brand platform edit bank details. (**KYC** is the identity verification a payment institution performs on the people it pays; **DAC7** is the EU directive requiring platforms to report seller income; [Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale) covers both.)
 
 ![A partner record split into six attribute strips, each tied by one line to the single system that is authoritative for it.](finance-systems-architecture/posts/27-systems-of-record/assets/images/27-systems-of-record/one-attribute-group-one-authority.jpeg)
 
 **Figure 1:** *The Stayloft partner record has no single system of record: each attribute group has exactly one authoritative system at any moment, which is what makes self-service onboarding and controlled bank details possible together.*
 
-Attribute authority also explains one of the registry-match numbers in [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture): about 4% of partners have a VAT number that differs between SFP and the tax determination calls. That is an authority problem, not a matching problem. SFP holds the number the host typed, Northmere Pay the number it verified, and the invoice process reads whichever copy is nearer.
+The registry match in [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture) found that about 4% of partners have a VAT number that differs between SFP and the tax determination calls. That is an authority problem, not a matching problem. SFP holds the number the host typed, Northmere Pay the number it verified, and the invoice process reads whichever copy is nearer.
 
 {id: systems-of-record--authority-over-a-lifecycle-the-hand-off}
 ## Authority Over a Lifecycle: The Hand-Off
@@ -101,8 +101,6 @@ The Lisbon booking (merchant model: €600.00 paid by card through Adyen on 12 M
 ![Authority passes like a relay baton from the booking platform to Northmere Pay, the subledger, the ledger and consolidation, with provider and bank feeding Northmere Pay and dotted lines from each hand-off down to reconciliations that prove the transfer.](finance-systems-architecture/posts/27-systems-of-record/assets/images/27-systems-of-record/authority-relay.jpeg)
 
 **Figure 2:** *Authority over the Lisbon booking moves through six hand-offs. Each solid arrow transfers authority for a specific fact; each dotted arrow is the reconciliation that proves the transfer. A hand-off without a dotted arrow is where a Shadow Ledger can grow.*
-
-Walking the stages makes the abstraction concrete.
 
 | Stage | Date | Authoritative system for the fact | Fact | Hand-off and proof |
 | --- | --- | --- | --- | --- |
@@ -163,7 +161,7 @@ Dana's architects (data, integration and solution architects working with each d
 | 21 | GL balance | S/4HANA, Fusion, Workday per entity | In force |
 | 22 | Consolidated balance | OneStream | In force |
 
-The summary hides what makes the matrix useful. The excerpt below shows the detailed rows for the partner, the Lisbon-booking chain and the ledger end of the estate. Control identifiers are local to Northmere's risk and control matrix.
+The detailed rows carry what the summary hides: owners, propagation, proofs and retention. The excerpt below shows them for the partner, the Lisbon-booking chain and the ledger end of the estate. Control identifiers are local to Northmere's risk and control matrix.
 
 | Object | Attribute group | Lifecycle stage | Authoritative system | Owner | Consumers | Propagation | Reconciliation control | Retention |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -180,12 +178,18 @@ The summary hides what makes the matrix useful. The excerpt below shows the deta
 | Journal entry | Posted entry | Posting onward | Ledger of the entity (in force) | Leila Haddad | BlackLine, FinDB | Ledger APIs and extracts | Journal completeness tie-out ledger vs FinDB (FDA-02, gap in 2027) | 10 years |
 | Consolidated balance | Group numbers in USD | Consolidation onward | OneStream (in force) | Leila Haddad | Workiva, FinDB | Published consolidation outputs | Trial-balance load equals ledger per entity (CON-01) | Permanent |
 
-Three things in the excerpt are worth more than the rest. The **retention column** forced the first real argument: SFP's batch-to-detail map had only 13 months of retention before 2025, which the matrix made visible as an authority without memory. The **status column** separates truth from intention; a row marked *declared* is a known weakness, not a decision implemented. And the **reconciliation column** connects every hand-off to a control identifier, so the matrix and the risk and control matrix that [Controls by Design, Not by Audit Season](#controls-and-auditability) describes reference each other. The one row whose control is marked as a gap, the ledger-to-FinDB tie-out, is the root of the "three revenue numbers" problem that [One Number, Many Views: Finance Data from Operations to Analytics](#finance-data-flows) takes up.
+Three columns do most of the work. The **retention column** forced the first real argument: SFP's batch-to-detail map had only 13 months of retention before 2025, which the matrix made visible as an authority without memory. The **status column** separates truth from intention; a row marked *declared* is a known weakness, not a decision implemented. And the **reconciliation column** connects every hand-off to a control identifier, so the matrix and the risk and control matrix that [Controls by Design, Not by Audit Season](#controls-and-auditability) describes reference each other. The one row whose control is marked as a gap, the ledger-to-FinDB tie-out, is the root of the "three revenue numbers" problem that [One Number, Many Views: Finance Data from Operations to Analytics](#finance-data-flows) takes up.
 
 {id: systems-of-record--how-the-matrix-is-built}
 ### How the matrix is built
 
-I recommend building it **from the balance sheet outward**, not from the application list inward. For each balance-sheet account family (PSP clearing, traveler funds held, partner payables, payouts in transit, receivables), ask which system holds the detail that composes it; follow each object upstream to the event that creates it and downstream to consolidation, marking each change of system as a candidate hand-off; record attribute-level authority for the master data each object references; list every create path per row (more than one is a declared exception or a defect); name the proof for each hand-off; and have the data owner sign the row.
+I recommend building it **from the balance sheet outward**, not from the application list inward:
+
+1. For each balance-sheet account family (PSP clearing, traveler funds held, partner payables, payouts in transit, receivables), ask which system holds the detail that composes it.
+2. Follow each object upstream to the event that creates it and downstream to consolidation, marking each change of system as a candidate hand-off.
+3. Record attribute-level authority for the master data each object references.
+4. List every create path per row; more than one is a declared exception or a defect.
+5. Name the proof for each hand-off, and have the data owner sign the row.
 
 The workshop that resolved the 14 double claims is where the matrix earned its cost. Most were settled by splitting the attribute group or the stage, not by picking a winner: SFP and FI-CA stopped competing for "the partner balance" once the matrix recorded that one is authoritative for merchant payables per booking, the other for agency open items, and that the *net* position is not a fact of any ledger.
 
@@ -204,10 +208,10 @@ A matrix assigns authority; it also needs rules for the moments when two systems
 
 Rule 7 matters more than it looks: a sync job that copies a field "from whichever was updated last" is an authority decision made by a developer, with no owner.
 
-The netting case shows the rules at work. Under rule 1, SFP's nightly extract of FI-CA open items is a copy; when a host has paid since the extract, FI-CA is right and the netting is wrong. The March 2027 decision: SFP asks FI-CA through an open-item API at payout time which items are open, and FI-CA clears the netted items in the same run's acknowledgment. The extranet then displays two authoritative figures, labeled as such, rather than a figure of its own.
+Rule 1 settles the netting case. SFP's nightly extract of FI-CA open items is a copy; when a host has paid since the extract, FI-CA is right and the netting is wrong. The March 2027 decision: SFP asks FI-CA through an open-item API at payout time which items are open, and FI-CA clears the netted items in the same run's acknowledgment. The extranet then displays two authoritative figures, labeled as such, rather than a figure of its own.
 
-{id: systems-of-record--enforcing-authority}
-## Enforcing Authority
+{id: systems-of-record--enforcing-authority-in-three-layers}
+## Enforcing Authority in Three Layers
 
 A matrix that is not enforced is a description of what people hope is true. Enforcement has three layers, and an estate needs all three because each catches what the others miss.
 
@@ -266,7 +270,7 @@ The first step fixes the Shadow Ledger without waiting for the master data progr
 {id: systems-of-record--migrations-temporary-dual-authority-with-an-end-date}
 ## Migrations: Temporary Dual Authority With an End Date
 
-Authority is hardest to keep clean when it is moving. Keystone moves several authorities between 2027 and 2029: merchant commission invoicing from SFP to FI-CA (2028), partner bank details from SFP to Northmere Pay (2028), the merchant subledger from SFP to the group finance core (2029), and, depending on the 2027 Q4 decision, brand ledgers from Oracle Fusion and Workday Financials into the group core. Every one of these creates a period when two systems are capable of being the authority.
+Authority is hardest to keep clean when it is moving. Keystone moves several authorities between 2027 and 2029: merchant commission invoicing from SFP to FI-CA (2028), partner bank details from SFP to Northmere Pay (2028), the merchant subledger from SFP to the group finance core (2029), and, depending on the 2027 Q4 decision, brand ledgers from Oracle Fusion and Workday Financials into the group core. Each creates a period when two systems can act as the authority.
 
 The rule I use: **dual authority is allowed only as a declared transitional state, with an end date, a split key, and one authority per record at every moment.** "Both systems are authoritative" for the same record is never acceptable, because then neither is.
 
@@ -304,7 +308,7 @@ I recommend the fourth level for transactional objects, the third for master dat
 A second trade-off concerns **figures that combine two authorities**, such as a partner's net position. There are three sound options: compute it at the moment of use from live reads of each authority (right when the figure drives cash or a legal document); hold it in one ledger by posting the other side into it (right when the combination is permanent and material, at the price of moving a ledger boundary); or compute it in a derived store, labeled as derived, for display and analytics only. The 2027 netting was none of these: a derived figure, from a stale copy, that drove payment. The fix chose the first option; the 2029 convergence of the merchant subledger makes the second available.
 
 {id: systems-of-record--integration-with-the-rest-of-the-estate}
-## Integration with the Rest of the Estate
+## Integration With the Rest of the Estate
 
 [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture) owns the master data domains behind rows 1–11, and [Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale) the entity register and rate service. [Files, Events and APIs: How Finance Systems Talk](#integration-architecture) supplies the control totals that make hand-offs provable; [Canonical Events: A Common Language for Money](#loosely-coupled-domains) owns the events and the contract registry where authority clauses live; [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger) designs the proofs for H1 and H2; [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers) and [When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms) define what a subledger must be to deserve its authority; [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation) owns the reconciliation catalog and [The Life of a Booking: From €600 Payment to $97.38 of Revenue](#transaction-to-report) the end-to-end trace. [BlackLine: Matching, Certifying and Closing](#blackline) and [OneStream: Consolidating Actuals, Planning the Future](#onestream) are the systems of record for reconciliation evidence and consolidated numbers. [Duplicates and Dependencies: The Hidden Costs of a Grown Estate](#redundancy-and-coupling) uses the matrix to tell legitimate duplicate capabilities (billing engines authoritative for different customers) from harmful ones (two places to change a bank account), and [One Number, Many Views: Finance Data from Operations to Analytics](#finance-data-flows) designs FinDB's tie-out as a derived store.
 

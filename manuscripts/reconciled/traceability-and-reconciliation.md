@@ -21,11 +21,11 @@
 > * **The Suspense Swamp** — unmatched items land in clearing and suspense accounts, reconciliation teams clear them by hand, and nobody fixes the upstream cause, so the same breaks recur every month.
 > * **Audit Archaeology** — the walkthrough path is discovered when the auditor asks for it, and is rebuilt by engineers every year instead of being designed once.
 
-Earlier chapters built the pieces: the controls vocabulary of internal control over financial reporting (ICFR) and information produced by the entity (IPE) in [Controls by Design, Not by Audit Season](#controls-and-auditability), control totals on one interface in [Files, Events and APIs: How Finance Systems Talk](#integration-architecture), a self-reconciling subledger in [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers) and a matching engine in [BlackLine: Matching, Certifying and Closing](#blackline). This chapter is about **the spaces between them**: the hops where one system's output becomes another system's input, and where nobody owns the proof that the two agree.
+Part III argues that a finance estate fails at the boundaries between platforms that each work. [Canonical Events: A Common Language for Money](#loosely-coupled-domains) coupled the platforms loosely, through events that carry keys and control totals; this chapter makes every boundary provable. Earlier chapters built the pieces: the controls vocabulary of internal control over financial reporting (ICFR) and information produced by the entity (IPE) in [Controls by Design, Not by Audit Season](#controls-and-auditability), control totals on one interface in [Files, Events and APIs: How Finance Systems Talk](#integration-architecture), a self-reconciling subledger in [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers) and a matching engine in [BlackLine: Matching, Certifying and Closing](#blackline). This chapter is about **the spaces between them**: the hops where one system's output becomes another system's input, and where nobody owns the proof that the two agree.
 
 Northmere, the fictional group this book follows, inventoried about 1,100 finance interfaces in 2027. Each can lose, duplicate or alter a record, or strip the key that links it to its source. Together they decide whether the group can answer two questions an auditor will ask: **where did this number come from**, and **where did this transaction go**?
 
-The answer has to be a **designed property of the estate**, not a heroic investigation: identifiers that survive every hop, control totals that prove every hand-off, a catalog of owned reconciliations, and a consistency model that says what is guaranteed when. This chapter owns that catalog. Clearing-account design and the three-way payment match belong to [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger), the canonical event envelope to [Canonical Events: A Common Language for Money](#loosely-coupled-domains), and governed metrics to [One Number, Many Views: Finance Data from Operations to Analytics](#finance-data-flows).
+The answer has to be a **designed property of the estate**, not a heroic investigation: identifiers that survive every hop, control totals that prove every hand-off, a catalog of owned reconciliations, and a consistency model that says what is guaranteed when. This chapter owns that catalog; [The Next Brand Should Be Boring: Onboarding as Configuration](#brands-entities-markets) ships its entries with every new entity, and [Modernizing Without Stopping the Close](#incremental-modernization) uses them as stage gates. Clearing-account design and the three-way payment match belong to [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger), the canonical event envelope to [Canonical Events: A Common Language for Money](#loosely-coupled-domains), and governed metrics to [One Number, Many Views: Finance Data from Operations to Analytics](#finance-data-flows).
 
 {id: traceability-and-reconciliation--setting-the-scene-at-northmere-the-walkthrough-request}
 ## Setting the Scene at Northmere: The Walkthrough Request
@@ -34,7 +34,7 @@ In August 2027 the external auditor sends Mei Tanaka, Northmere's Head of Intern
 
 *"For the revenue walkthrough we will select items in both directions. Pick any number in the revenue disaggregation note and show us the transactions that make it up. Pick any booking and show us where it landed in the financial statements. We will select at the meeting."*
 
-A **walkthrough** is the procedure in which the auditor follows a transaction from origination through the company's processes and information systems until it is reflected in the financial records, to confirm their understanding of the process and the design of its controls. The PCAOB's integrated-audit standard, [AS 2201](https://pcaobus.org/oversight/standards/auditing-standards/details/AS2201), describes walkthroughs in these terms. What is new in the memo is the second direction, and the warning that the selection will be made live.
+A **walkthrough** is the procedure in which the auditor follows a transaction from origination through the company's processes and information systems until it is reflected in the financial records, to confirm their understanding of the process and the design of its controls. The PCAOB's integrated-audit standard, [AS 2201](https://pcaobus.org/oversight/standards/auditing-standards/details/AS2201), describes walkthroughs in these terms. What is new in the memo is the second direction and the live selection.
 
 Mei asks Dana Whitlock, the Chief Architect, for a dry run in September with the Lisbon booking. The booking is a three-night stay in Lisbon, sold on Stayloft for **€600.00** on 12 March 2027, with a **€90.00** commission recognized at stay completion on 21 April and a **€510.00** partner payout settled on 26 April. Dana's team runs the dry run twice, once in each direction. The results are uncomfortable:
 
@@ -68,10 +68,10 @@ Two clarifications prevent common mistakes. **Lineage is not traceability**: a l
 
 Every trace is a chain of joins, and each join needs a key that both sides stored. The design question is **which key crosses each hop, which key comes back, and where the pair is stored**.
 
-{id: traceability-and-reconciliation--the-keys-that-matter}
-### The keys that matter
+{id: traceability-and-reconciliation--nine-keys-that-carry-the-trace}
+### Nine keys that carry the trace
 
-At Northmere, nine kinds of identifier carry the whole trace. Most already exist; Keystone's contribution is to make their propagation mandatory.
+At Northmere, nine kinds of identifier carry the whole trace. Most already exist; Keystone makes their propagation mandatory.
 
 | Identifier | Generated by | Identifies | Lisbon example (illustrative) |
 | --- | --- | --- | --- |
@@ -118,7 +118,7 @@ Four rules make the contract work, and I recommend writing them into the mandato
 {id: traceability-and-reconciliation--keys-that-fail-in-practice}
 ### Keys that fail in practice
 
-Three failures recur. **Keys that cannot travel**: some local payment providers return only their own transaction id, and some banks truncate remittance fields. If your reference cannot reach the counterparty, the counterparty's reference must be recorded against yours when you send the instruction; Northmere Pay now refuses to onboard an APM provider that can do neither. **Keys reused across meanings**: a booking id stops being unambiguous when a booking is split or two bookings share a payment, so the contract defines each key's cardinality and adds a separate key wherever it would be ambiguous, which is why Northmere Pay sends a payment id per attempt to Adyen rather than the booking id. **Keys that carry personal data**: an email address or card number used as a key spreads into every archive it reaches and collides with erasure requests, so every key in the contract is opaque.
+Three failures recur, and the contract answers each. **Keys that cannot travel**: some local payment providers return only their own transaction id, and some banks truncate remittance fields. If your reference cannot reach the counterparty, record the counterparty's reference against yours when you send the instruction; Northmere Pay now refuses to onboard an APM provider that can do neither. **Keys reused across meanings**: a booking id becomes ambiguous when a booking is split or two bookings share a payment. The contract therefore defines each key's cardinality and adds a separate key wherever one would be ambiguous; this is why Northmere Pay sends Adyen a payment id per attempt rather than the booking id. **Keys that carry personal data**: an email address or card number used as a key spreads into every archive it reaches and collides with erasure requests, so every key in the contract is opaque.
 
 {id: traceability-and-reconciliation--control-totals-per-batch-and-per-period}
 ## Control Totals per Batch and per Period
@@ -147,7 +147,7 @@ Two details matter more than the algorithm. **Debits and credits are totaled sep
 | PSP settlement files → normalizer → BlackLine | Normalizer, against the report's own batch totals | Count of expected batches per merchant account per day | Hold the batch; raise "awaiting data", not "unmatched" |
 | Bank statements → Kyriba → BlackLine and S/4HANA | Kyriba, against opening and closing balances on the statement | Statement sequence numbers per account: no gaps | Request the missing statement from the bank |
 
-[When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms) shows these totals for the SFP hops on 12 March 2027. The point here is that **every boundary in the estate** needs them. In September 2027, Lucía Romero's integration architects found control totals on only 31% of the finance interfaces that carry amounts; the rest relied on "the job did not fail".
+**Every boundary in the estate** needs these totals, not only the SFP hops that [When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms) shows for 12 March 2027. In September 2027, Lucía Romero's integration architects found control totals on only 31% of the finance interfaces that carry amounts; the rest relied on "the job did not fail".
 
 {id: traceability-and-reconciliation--completeness-and-accuracy-at-every-boundary}
 ## Completeness and Accuracy at Every Boundary
@@ -161,7 +161,9 @@ Control totals prove that a batch arrived intact, not that every business item p
 | **Accuracy** | Amounts, currencies, accounts and dimensions agree within tolerance | Gross in transaction currency exact; GL account determined by an approved posting-rule version |
 | **Cut-off** | Items fall in the same period on both sides, under a written time-zone rule | Events at 23:30 UTC on 31 March assigned by the entity's local calendar, as [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers) specifies |
 
-The **occurrence** direction is the one teams forget. A manual journal posted directly into a clearing account in S/4HANA has no source in SFP, and a check that only asks "did each source item arrive?" never sees it. Every catalog reconciliation therefore runs **both ways** and reports unmatched items on each side separately. The extracts that feed these checks are **IPE** ([Controls by Design, Not by Audit Season](#controls-and-auditability)): each carries its own control total back to its source system, and a reconciliation's first step is to check those totals before it matches a single line.
+The **occurrence** direction is the one teams forget. A manual journal posted directly into a clearing account in S/4HANA has no source in SFP, and a check that only asks "did each source item arrive?" never sees it. Every catalog reconciliation therefore runs **both ways** and reports unmatched items on each side separately.
+
+The extracts that feed these checks are **IPE** ([Controls by Design, Not by Audit Season](#controls-and-auditability)): each carries its own control total back to its source system, and a reconciliation's first step is to check those totals before it matches a single line.
 
 {id: traceability-and-reconciliation--the-reconciliation-design-catalog}
 ## The Reconciliation Design Catalog
@@ -235,7 +237,7 @@ The architecture therefore needs a **consistency model** stating what is guarant
 | **Lock and consolidation** | Nothing unexplained | The entity period cannot lock, and OneStream cannot consolidate it, until the gate passes | OneStream workflow reads reconciliation status, as [OneStream: Consolidating Actuals, Planning the Future](#onestream) describes |
 | **After lock** | — | Corrections post only in an open period, with the original period referenced; reopening needs CAO approval | Reversal, never update |
 
-The gate is the point. **Eventual consistency is acceptable only if the system enforces a moment when it must be resolved.** Without the gate, "eventually" drifts into next month and becomes The Suspense Swamp. With it, the controller can still close with known exceptions, but as a recorded decision with an owner and a threshold.
+**Eventual consistency is acceptable only if the system enforces a moment when it must be resolved.** Without the gate, "eventually" drifts into next month and becomes The Suspense Swamp. With it, the controller can still close with known exceptions, but as a recorded decision with an owner and a threshold.
 
 ![A meandering stream of items converging on a lock gate, then resting in neat rows in a padlocked ledger.](finance-systems-architecture/posts/31-traceability-and-reconciliation/assets/images/31-traceability-and-reconciliation/eventual-then-gated.jpeg)
 
@@ -290,8 +292,8 @@ In the November 2027 walkthrough, a controller with read access traced the audit
 
 A daily reconciliation produces a stream of **breaks**: differences beyond tolerance. Clearing a break makes the reconciliation green this month; fixing its cause keeps it green next month.
 
-{id: traceability-and-reconciliation--the-metrics}
-### The metrics
+{id: traceability-and-reconciliation--what-to-measure}
+### What to measure
 
 | Metric | Definition | Why it matters | Northmere 2026 baseline / 2027 direction |
 | --- | --- | --- | --- |

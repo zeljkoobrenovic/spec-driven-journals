@@ -21,11 +21,11 @@
 > * **The Suspense Swamp** — Every hop that moves money has a clearing account that must reach zero by a known date; the trace names them and the controls that prove they did.
 > * **Spreadsheet Glue** — Northmere's 2027 chain had spreadsheets at three hops (chart-of-accounts mapping, fee accruals and disclosure schedules), and each is a place where the trace can only be repeated by the person who built it.
 
-Every chapter in Part II looked at one platform from the inside. This chapter looks at the **chain of platforms** from the outside, by following one transaction until it becomes a number someone signs. The question is simple: how does a traveler's €600 payment for a Lisbon apartment end up as $97.38 of revenue in a US dollar income statement filed with the Securities and Exchange Commission (SEC), and what has to be true at each step for that number to be right?
+Every chapter in Part II looked at one platform from the inside. This chapter opens Part III by looking at the **chain of platforms** from the outside, following one transaction until it becomes a number someone signs. It asks how a traveler's €600 payment for a Lisbon apartment ends up as $97.38 of revenue in a US dollar income statement filed with the Securities and Exchange Commission (SEC), and what has to be true at each step for that number to be right.
 
-The answer is less simple than most architecture diagrams suggest. The booking passes through eleven systems owned by eight teams. It carries about ten identifiers, is recorded on three clocks, and lives in two legal entities and two currencies. At three points it is merged with millions of other transactions into totals that someone must be able to take apart again. **Each of those hand-offs is a place where the number can go wrong without any single system being wrong.**
+The booking passes through eleven systems owned by eight teams. It carries about ten identifiers, is recorded on three clocks, and lives in two legal entities and two currencies. At three points it is merged with millions of other transactions into totals that someone must be able to take apart again. **Each of those hand-offs is a place where the number can go wrong without any single system being wrong.**
 
-This chapter owns the **end-to-end financial event chain**. It does not re-teach the accounting ([Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects)), the posting engine ([Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers)) or the matching rules ([BlackLine: Matching, Certifying and Closing](#blackline)). It connects them, and for each hop it states the record, the identifier carried, the **invariant** that must hold, the **control** that proves it, the timing, and what goes wrong when the invariant breaks. The chapters that follow in Part III take the chain apart again, one boundary at a time.
+This chapter owns the **end-to-end financial event chain**. It does not re-teach the accounting ([Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects)), the posting engine ([Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers)) or the matching rules ([BlackLine: Matching, Certifying and Closing](#blackline)). It connects them, and for each hop it states the record, the identifier carried, the **invariant** that must hold, the **control** that proves it, the timing, and what goes wrong when the invariant breaks. The rest of Part III takes the chain apart one boundary at a time, starting with the hardest one in [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger).
 
 {id: transaction-to-report--setting-the-scene-at-northmere-one-booking-eleven-days}
 ## Setting the Scene at Northmere: One Booking, Eleven Days
@@ -45,7 +45,7 @@ A **hop** is a step at which a record is created in, or moved into, a system wit
 
 An **invariant** is a property that must be true at a hop for every transaction, at every volume, through every failure. [Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects) defines five for any single ledger: balanced, immutable, period-locked, traceable and complete. Across a chain they take a specific form at each hop, such as "the bank credit equals the batch payout".
 
-A **control** is the activity that provides evidence that the invariant held, whether automated (a posting engine rejecting an unbalanced entry) or manual (a controller certifying a reconciliation); [Controls by Design, Not by Audit Season](#controls-and-auditability) owns the taxonomy. The rule for this chapter is simple: **an invariant without a control is a hope, and a control without an owner is a document.**
+A **control** is the activity that provides evidence that the invariant held, whether automated (a posting engine rejecting an unbalanced entry) or manual (a controller certifying a reconciliation); [Controls by Design, Not by Audit Season](#controls-and-auditability) owns the taxonomy. The rule for this chapter: **an invariant without a control is a hope, and a control without an owner is a document.**
 
 A **key** is the identifier that lets the next hop find the record from the previous one. The chain needs several, because no single identifier survives every hop:
 
@@ -72,16 +72,16 @@ The fourth idea is **time**. Every hop has at least three dates, and the trace u
 
 [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers) owns the mechanics of these dates inside a ledger. This chapter follows how they are passed along the chain, which is where a date gets reinterpreted by a system with a different calendar, time zone or cut-off.
 
-{id: transaction-to-report--the-chain-at-northmere-architecture}
-## The Chain at Northmere: Architecture
+{id: transaction-to-report--architecture-two-paths-three-collapses-two-entities}
+## Architecture: Two Paths, Three Collapses, Two Entities
 
-Figure 1 is the Lisbon booking's chain as Dana's team drew it after the walkthrough, with the dates of the scenario.
+Figure 1 is the Lisbon booking's chain as Dana's team drew it after the walkthrough.
 
 ![Money flows from the provider to the bank and on to the partner, while records flow from events through the subledger, general ledger and consolidation to filing; the two paths meet only at bank reconciliation and the subledger-to-ledger tie-out.](finance-systems-architecture/posts/24-transaction-to-report/assets/images/24-transaction-to-report/money-path-and-record-path.jpeg)
 
 **Figure 1:** *The Lisbon booking crosses eleven systems. Money moves along one path (Adyen, bank, partner) and records along another (events, subledger, GL, consolidation, filing); the two meet only at the reconciliations in BlackLine and at the subledger-to-GL tie-out, which is why those are the controls that hold the chain together.*
 
-Three structural facts are visible in the diagram before any detail.
+The diagram shows three structural facts.
 
 **Money and records travel separately.** The €600 moves from the card through Adyen to Northmere Payments B.V.'s safeguarding account, and €510 of it on to the property; no accounting system moves money. The two paths are joined only by reconciliation: BlackLine's three-way match on the payment side and the subledger-to-GL tie-out on the accounting side. If either is missing, the books describe one reality and the bank another.
 
@@ -96,9 +96,9 @@ Three structural facts are visible in the diagram before any detail.
 {id: transaction-to-report--the-lisbon-booking-hop-by-hop}
 ## The Lisbon Booking, Hop by Hop
 
-The facts are the book's canonical ones. A traveler from Germany books a three-night stay in a Lisbon apartment on Stayloft: **€600.00** including VAT, paid with a German consumer debit card through Adyen on **Friday 12 March 2027**, for a stay on **18–21 April 2027**. The commission is **15%, €90.00**, and the property is owed **€510.00**. Adyen's total processing cost is **€1.74** (illustrative). The capture is settled into Adyen batch 1047 on **Sunday 14 March**, and the batch payout reaches Northmere Payments B.V.'s bank on **Tuesday 16 March**. The payout of €510.00 to the property is instructed on **Thursday 22 April** and reaches the property's bank on **Monday 26 April**.
+The trace uses the book's canonical facts. A traveler from Germany books a three-night stay in a Lisbon apartment on Stayloft: **€600.00** including VAT, paid with a German consumer debit card through Adyen on **Friday 12 March 2027**, for a stay on **18–21 April 2027**. The commission is **15%, €90.00**, and the property is owed **€510.00**. Adyen's total processing cost is **€1.74** (illustrative). The capture is settled into Adyen batch 1047 on **Sunday 14 March**, and the batch payout reaches Northmere Payments B.V.'s bank on **Tuesday 16 March**. The payout of €510.00 to the property is instructed on **Thursday 22 April** and reaches the property's bank on **Monday 26 April**.
 
-Three simplifications, stated once. VAT on the commission is ignored: I assume a VAT-registered Portuguese property that accounts for VAT under the reverse charge, as [Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects) does. Northmere's accounting policy treats Stayloft as **agent**, so revenue is the €90 commission, recognized when the stay is completed. And the US dollar rates are illustrative: March average 1.0860, 31 March closing 1.0900, April average 1.0820 and 30 April closing 1.0840, in US dollars per euro.
+The trace makes three simplifications. VAT on the commission is ignored: I assume a VAT-registered Portuguese property that accounts for VAT under the reverse charge, as [Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects) does. Northmere's accounting policy treats Stayloft as **agent**, so revenue is the €90 commission, recognized when the stay is completed. And the US dollar rates are illustrative: March average 1.0860, 31 March closing 1.0900, April average 1.0820 and 30 April closing 1.0840, in US dollars per euro.
 
 {id: transaction-to-report--hop-1-the-operational-event-in-the-booking-platform}
 ### Hop 1: The operational event in the booking platform
@@ -158,7 +158,7 @@ The March close starts on working day 1, Thursday 1 April 2027. For the Lisbon b
 
 **FX revaluation.** Revaluation retranslates foreign-currency monetary items at the closing rate, with the difference in profit or loss ([Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects)). It does not touch the Lisbon booking, because every amount is in euros in two euro-functional entities. The trace template still has the step: the same booking for a New York property settled in dollars would carry a revalued partner payable from 21 April onward.
 
-At the March close, the booking's footprint is small and specific:
+At the March close, the booking leaves these balances:
 
 | Entity | Account | Balance at 31 Mar 2027 (EUR) |
 | --- | --- | --- |
@@ -186,7 +186,7 @@ Then come the two consolidation steps that touch the booking:
 {id: transaction-to-report--hop-8-the-q1-10-q}
 ### Hop 8: The Q1 10-Q
 
-March is a quarter-end. OneStream locks the Q1 consolidation on working day 9, Tuesday 13 April. Workiva, Northmere's disclosure management platform, links to the locked Q1 results. As a large accelerated filer, Northmere must file the 10-Q within 40 days of quarter-end ([SEC: Form 10-Q](https://www.sec.gov/answers/form10q.htm)), so by **Monday 10 May 2027**. That deadline falls during the April close. The Q1 numbers must therefore be locked and linked before April's close starts competing for the same people.
+March is a quarter-end, so the March close feeds the Q1 10-Q. OneStream locks the Q1 consolidation on working day 9, Tuesday 13 April. Workiva, Northmere's disclosure management platform, links to the locked Q1 results. As a large accelerated filer, Northmere must file the 10-Q within 40 days of quarter-end ([SEC: Form 10-Q](https://www.sec.gov/answers/form10q.htm)), so by **Monday 10 May 2027**. That deadline falls during the April close. The Q1 numbers must therefore be locked and linked before April's close starts competing for the same people.
 
 The Lisbon booking appears in the Q1 10-Q in three places, none of them as revenue:
 
@@ -242,7 +242,7 @@ FinDB, Northmere's Snowflake finance data platform, receives the canonical event
 | Booked commission | €90.00 | March (booking date) | Expected commission at booking, before cancellations | Stayloft commercial |
 | Recognized revenue | €90.00 / $97.38 | April (stay completion) | Ledger revenue under Northmere's policy | Leila Haddad |
 
-All three are legitimate and different. The 2027 problem was that dashboards showed them without labels, and nobody could show that FinDB's recognized revenue, summed by entity and month, equalled OneStream's. **The invariant at this hop is that any figure presented as financial ties to the ledger within a stated tolerance, or is labeled as an operational metric.** The control is the ledger-to-warehouse **tie-out**, which [One Number, Many Views: Finance Data from Operations to Analytics](#finance-data-flows) designs.
+All three numbers are legitimate, but in 2027 dashboards showed them without labels, and nobody could show that FinDB's recognized revenue, summed by entity and month, equalled OneStream's. **The invariant at this hop is that any figure presented as financial ties to the ledger within a stated tolerance, or is labeled as an operational metric.** The control is the ledger-to-warehouse **tie-out**, which [One Number, Many Views: Finance Data from Operations to Analytics](#finance-data-flows) designs.
 
 {id: transaction-to-report--the-whole-chain-in-one-table}
 ## The Whole Chain in One Table
@@ -285,7 +285,7 @@ Three timing disagreements produced most of Northmere's period errors in 2026 an
 
 Tablekin, Northmere's restaurant software brand, sells subscriptions and usage, not stays. Its chain shows how much of the Lisbon chain is driven by the business model and the ERP, and how much is universal.
 
-The facts are the book's canonical ones. Juniper & Ash, an Austin venue on the Pro plan, pays **$249 a month** plus **$0.25 per seated cover**. In March 2027 it seated 3,120 covers, so usage is **$780**. Stripe Billing bills the subscription in advance and usage in arrears, so the **$1,029** invoice dated **1 April 2027** (before sales tax) contains **April's** subscription and **March's** usage. The card on file is charged on 1 April; Stripe's fee is **$30.14** (illustrative), the net **$998.86** becomes available on 5 April and arrives in an automatic payout of **$214,386.12** on 6 April. [Stripe: Every Movement Is a Balance Transaction](#stripe) works the entries.
+The canonical example is Juniper & Ash, an Austin venue on the Pro plan, pays **$249 a month** plus **$0.25 per seated cover**. In March 2027 it seated 3,120 covers, so usage is **$780**. Stripe Billing bills the subscription in advance and usage in arrears, so the **$1,029** invoice dated **1 April 2027** (before sales tax) contains **April's** subscription and **March's** usage. The card on file is charged on 1 April; Stripe's fee is **$30.14** (illustrative), the net **$998.86** becomes available on 5 April and arrives in an automatic payout of **$214,386.12** on 6 April. [Stripe: Every Movement Is a Balance Transaction](#stripe) works the entries.
 
 | # | System | Record | Identifier | Invariant | Control | Timing |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -395,7 +395,7 @@ Measured against that list, Northmere's 2027 chains had a break at almost every 
 {id: transaction-to-report--failure-modes}
 ## Failure Modes
 
-Beyond Northmere's specific breaks, four failures recur in end-to-end chains in any enterprise, in addition to the reinterpreted clock described above.
+Four failures recur in the end-to-end chains of any enterprise, besides the disagreeing clocks covered under timing.
 
 - **The orphaned hop.** Each platform has an owner, but the hand-off between two of them does not, and its control is written in both teams' documents and performed by neither. The test: for each row of the chain table, name one person.
 - **The key dropped for convenience.** A summary, a file format or a vendor field limit removes an identifier "because nobody uses it", most often during a migration. Years later the auditor uses it.

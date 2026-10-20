@@ -21,11 +21,13 @@
 > * **The Permanent Exception** — Capabilities named per brand ("Stayloft Billing", "Wayfare Billing") make every brand fork look like a distinct need; one map across brands exposes the fork.
 > * **The Borrowed Roadmap** — A map copied from a vendor's module catalog bakes the vendor's packaging into the enterprise's planning frame.
 
-Every finance estate is described, sooner or later, by a list of systems. The list is easy to produce, because the EA tool already holds it, and it answers the questions an infrastructure team asks: what runs where, on what version, at what cost. It does not answer the questions a CFO asks. "How many ways do we pay partners?" is not a question about systems. It is a question about an **ability** the enterprise has, and about how many times the enterprise has paid to acquire it.
+A list of systems answers an infrastructure team's questions (what runs where, on what version, at what cost) but not a CFO's. "How many ways do we pay partners?" is a question about an **ability** the enterprise has, and about how many times the enterprise has paid to acquire it.
 
 A **business capability** is what an organization is able to do, independent of how, where, by whom or with which system it does it. The Business Architecture Guild's BIZBOK Guide defines it as a particular ability or capacity that a business may possess or exchange to achieve a specific purpose or outcome ([BIZBOK v12 glossary, as reproduced by the Government of Canada](https://wiki.gccollab.ca/Business_Architecture/Key_Definitions)). A **capability map** arranges those abilities into a hierarchy (here three levels) that covers the domain once, without gaps and without overlap. **The value of the map is that it does not move when the organization chart, the vendor list or the process design moves.** That stability is what makes it a planning frame.
 
-The second half of this chapter adds a different decomposition with a different job. A **bounded context**, in domain-driven design, is the boundary within which one model and its language apply consistently. Capability maps tell you where to invest; bounded contexts tell you where one model should stop and a translation should begin. **Finance needs both**, because finance is a domain where the same word ("account", "settlement", "revenue") means different things a few systems apart, and the cost of confusing them is a misstated balance.
+A capability map cannot draw software boundaries, so the second half of this chapter adds a second decomposition. A **bounded context**, in domain-driven design, is the boundary within which one model and its language apply consistently. Capability maps tell you where to invest; bounded contexts tell you where one model should stop and a translation should begin. **Finance needs both**, because finance is a domain where the same word ("account", "settlement", "revenue") means different things a few systems apart, and the cost of confusing them is a misstated balance.
+
+The previous chapter gave the Chief Architect the right to decide which platform owns a capability ([The Chief Architect's Job: Making Many Systems Tell One Story](#chief-architect-role)); this chapter builds the list of capabilities that right needs. The portfolio ([Manage the Application Portfolio as an Investment](#application-portfolio)), the overlap register ([Duplicates and Dependencies: The Hidden Costs of a Grown Estate](#redundancy-and-coupling)) and the canonical events ([Canonical Events: A Common Language for Money](#loosely-coupled-domains)) all start from the map and the contexts drawn here.
 
 {id: capability-mapping--setting-the-scene-at-northmere-the-question-the-portfolio-could-not-answer}
 ## Setting the Scene at Northmere: The Question the Portfolio Could Not Answer
@@ -34,20 +36,20 @@ Northmere, the fictional group this book follows (see [Meet Northmere: Five Bran
 
 Dana had a duplicate-capability list from her first month, built from interviews: two payout engines, three billing approaches, three reconciliation tools, two tax engines. She could not tell Tomás whether the list was complete, because the fact base could not confirm it.
 
-SAP LeanIX, the EA repository, listed **214 finance-relevant applications**. Each had an owner, a cost center, a lifecycle state and a capability tag. The tags were the problem. They had been entered by application owners over five years, and they came in three dialects:
+SAP LeanIX, the EA repository, listed **214 finance-relevant applications**. Each had an owner, a cost center, a lifecycle state and a capability tag. The tags were the problem: application owners had entered them over five years, in three dialects:
 
 - **System dialect:** "BlackLine Recs", "Vertex Tax", "SFP Payouts". The tag repeated the application's name, so every application had its own capability.
 - **Department dialect:** "Accounts Payable", "Settlement Operations", "Wayfare Finance". The tag named the team that used the tool.
 - **Process dialect:** "Record to Report", "Order to Cash", "Month-end close". The tag named an end-to-end flow that ran through dozens of systems.
 
-Filtering by tag gave nonsense. "Reconciliation" returned BlackLine but not the reconciliation module bought with OneStream in 2022, which was tagged "Consolidation". It did not return the intercompany reconciliation that Wayfare ran in Oracle Fusion, which was tagged "Wayfare Finance". Tax determination returned Vertex and missed Oracle's tax engine, which Wayfare used for some markets and which was tagged as part of "Oracle Fusion ERP".
+Filtering by tag missed every implementation tagged in another dialect. "Reconciliation" returned BlackLine but not the reconciliation module bought with OneStream in 2022, which was tagged "Consolidation". It did not return the intercompany reconciliation that Wayfare ran in Oracle Fusion, which was tagged "Wayfare Finance". Tax determination returned Vertex and missed Oracle's tax engine, which Wayfare used for some markets and which was tagged as part of "Oracle Fusion ERP".
 
-Dana's commitment in the Keystone plan was a **capability map and a system-of-record matrix, version 1, by the end of Q1 2027**. This chapter follows the capability map. The system-of-record matrix is the subject of [Systems of Record: Ending the Doppelgänger Record](#systems-of-record).
+Dana's commitment in the Keystone plan was a **capability map and a system-of-record matrix, version 1, by the end of Q1 2027**. This chapter builds the capability map; the matrix is the subject of [Systems of Record: Ending the Doppelgänger Record](#systems-of-record).
 
 {id: capability-mapping--concepts-capability-process-value-stream-application-organization-unit}
 ## Concepts: Capability, Process, Value Stream, Application, Organization Unit
 
-Five concepts get confused in almost every finance capability workshop I have attended. They describe the same enterprise from five angles, and each answers a different question.
+Five concepts describe the same enterprise from five angles, each answering a different question, and almost every finance capability workshop I have attended confuses them.
 
 | Concept | Question it answers | Named as | Changes when | Northmere example | Typical owner |
 | --- | --- | --- | --- | --- | --- |
@@ -59,8 +61,6 @@ Five concepts get confused in almost every finance capability workshop I have at
 
 The BIZBOK Guide defines a **value stream** as an end-to-end collection of activities that creates a result for a customer, who may be the ultimate customer or an internal end user ([BIZBOK v12 glossary](https://wiki.gccollab.ca/Business_Architecture/Key_Definitions)). The usual business-architecture convention is that capability maps show *what*, value streams show *how value is delivered*, and processes are the detailed *how* inside each value-stream stage. Each value-stream stage is enabled by several capabilities. "Settle a merchant-model property" crosses Payment Settlement Reconciliation, Contract Liability Management, Partner Payout Management, Outbound Payment Execution and Subledger Accounting.
 
-Two clarifications save weeks of argument.
-
 **Record-to-Report, Procure-to-Pay and Order-to-Cash are not capabilities.** They are end-to-end process families (value streams, in BIZBOK language) that cut across capabilities. Finance teams use them as organizational labels, and many vendors present them as top-level menu items. I keep them, but on a different view: the process view in [Order to Cash, Procure to Pay, Record to Report](#finance-processes). When R2R appears as a box on a capability map, the map has silently mixed two decompositions, and every application ends up "supporting R2R".
 
 **A capability has no location in the organization chart.** Partner Payout Management is performed by Stayloft Finance Engineering's software, Wayfare's software, Northmere Pay's payment factory and a payout operations team in Dublin. The capability is one. The organizations performing it are four. This is the point of the exercise: once you can see one capability performed four ways, you can ask whether that is a choice.
@@ -68,7 +68,7 @@ Two clarifications save weeks of argument.
 {id: capability-mapping--common-modeling-mistakes}
 ### Common modeling mistakes
 
-These are the mistakes I see most often in finance capability maps, with the Northmere version of each and the correction.
+Seven mistakes recur in the finance capability maps I see. The table gives the Northmere version of each and the correction.
 
 | Mistake | Northmere example (from the LeanIX tags) | Why it breaks the map | Correction |
 | --- | --- | --- | --- |
@@ -89,7 +89,7 @@ The rule I use when a name is disputed: **if the name would still be true after 
 {id: capability-mapping--architecture-a-three-level-finance-capability-map}
 ## Architecture: A Three-Level Finance Capability Map
 
-The map below is the one Dana's team took into the Finance workshops as a strawman, and the one that came out of them as version 1 in March 2027. It has **ten level-1 groups and 45 level-2 capabilities**, with level 3 shown only where Keystone needed it for a decision. It is written for a multi-brand, multi-entity commerce group with marketplace and subscription models. A manufacturer would add Inventory Valuation and Product Costing; a bank would replace most of Money Movement. The structure travels; the content should be challenged.
+Dana's team took the map below into the Finance workshops as a strawman; it came out of them as version 1 in March 2027. It has **ten level-1 groups and 45 level-2 capabilities**, with level 3 shown only where Keystone needed it for a decision. It is written for a multi-brand, multi-entity commerce group with marketplace and subscription models. A manufacturer would add Inventory Valuation and Product Costing; a bank would replace most of Money Movement. The structure travels; the content should be challenged.
 
 Three design choices shape it:
 
@@ -101,10 +101,10 @@ Three design choices shape it:
 
 **Figure 2:** *Northmere's ten level-1 capability groups and the main flows of financial facts between them; the four overlaps Keystone must resolve sit on Money Movement, Revenue and Billing, Close and Report, and Tax.*
 
-The arrows are not integrations. They show which group's outputs another group depends on, which is what a reader needs to understand why a weak capability in Money Movement shows up as a late close.
+The arrows are dependencies, not integrations: they show which group uses another's outputs, which is why a weak capability in Money Movement shows up as a late close.
 
-{id: capability-mapping--the-map}
-### The map
+{id: capability-mapping--ten-groups-45-capabilities}
+### Ten groups, 45 capabilities
 
 Definitions are one sentence each, written to be read aloud in a workshop. Level 3 is selective.
 
@@ -156,14 +156,14 @@ Definitions are one sentence each, written to be read aloud in a workshop. Level
 | | 10.2 Finance Data Provisioning | Providing curated, governed finance datasets for analysis, audit sampling and planning. | Ledger-to-warehouse tie-out; dataset access control; lineage capture |
 | | 10.3 Finance Metric Governance | Defining each finance metric once, with an owner, logic and version. | Metric catalog; metric certification; metric change control |
 
-A note on 10.1. Purists object that event integration is a technical capability and does not belong on a business map. I keep it, deliberately, because in a marketplace finance estate **completeness of financial events is a business ability with a business owner**: if 0.1% of bookings never become financial events, revenue is understated and nobody will notice from the ledger. The definition is written so that it says what must be true (validated, complete, evidenced), not which technology does it.
+Financial Event Management (10.1) stays on the business map deliberately. Purists object that event integration is a technical capability; I keep it because in a marketplace finance estate **completeness of financial events is a business ability with a business owner**: if 0.1% of bookings never become financial events, revenue is understated and nobody will notice from the ledger. The definition is written so that it says what must be true (validated, complete, evidenced), not which technology does it.
 
-Readers will notice what is absent. There is no "Integration", "Reporting Platform" or "ERP" capability, because those are implementations. There is no "Shared Services" capability, because that is an organization unit. And there are no brand-named capabilities.
+The map has no "Integration", "Reporting Platform" or "ERP" capability, because those are implementations; no "Shared Services" capability, because that is an organization unit; and no brand-named capabilities.
 
 {id: capability-mapping--in-practice-heat-mapping-northmere}
 ## In Practice: Heat-Mapping Northmere
 
-A capability map becomes useful when it carries attributes. Northmere scored every level-2 capability on four dimensions, each with a defined scale so that two people scoring the same capability get the same answer.
+A capability map supports decisions only once it carries attributes. Northmere scored every level-2 capability on four dimensions, each with a defined scale so that two people scoring the same capability get the same answer.
 
 | Dimension | Scale | Evidence used | Who scores |
 | --- | --- | --- | --- |
@@ -194,16 +194,14 @@ The table shows the twelve level-2 capabilities that mattered most to Keystone's
 | **6.1 Indirect Tax Determination** | Critical | 4 (Vertex), 2 (Oracle tax engine) | **2 engines** | ~$2.6m | **Overlap 4**; ViDA and e-invoicing raise the stakes |
 | 10.1 Financial Event Management | Critical | 2 | 3 integration technologies | ~$5.2m | Kafka, SAP Integration Suite and MuleSoft; ~70 spreadsheets-in-the-loop |
 
-Two cautions about reading a heat map like this.
+**Duplication is not a verdict.** Subledger Accounting appears twice because the agency and merchant models were introduced at different times and have different shapes: FI-CA holds about 850,000 agency partner contract accounts, and SFP holds merchant-model traveler liabilities. That duplication is a known transition state with a dated plan (the merchant subledger moves to the group core in 2029). General Ledger Management appears three times because Northmere bought two companies with their own ledgers; that is the convergence question, with its own decision in 2027 Q4. **The four overlaps Dana highlighted are different: no decision record created them, no owner arbitrates between the implementations, and no plan retires either.** That is the definition of Capability Creep, and it is why these four go to the steering committee and the other duplications do not.
 
-First, **duplication is not a verdict.** Subledger Accounting appears twice because the agency and merchant models were introduced at different times and have different shapes: FI-CA holds about 850,000 agency partner contract accounts, and SFP holds merchant-model traveler liabilities. That duplication is a known transition state with a dated plan (the merchant subledger moves to the group core in 2029). General Ledger Management appears three times because Northmere bought two companies with their own ledgers; that is the convergence question, with its own decision in 2027 Q4. **The four overlaps Dana highlighted are different: no decision record created them, no owner arbitrates between the implementations, and no plan retires either.** That is the definition of Capability Creep, and it is why these four go to the steering committee and the other duplications do not.
-
-Second, **the cost column is not a savings estimate.** Removing the OneStream reconciliation module saves its license. Removing the Wayfare payout engine saves almost nothing until Wayfare's ground-transport suppliers are migrated onto the Stayloft payout path, which costs more in its first year than the engine costs to run. [Manage the Application Portfolio as an Investment](#application-portfolio) turns these numbers into investment decisions; here they only rank attention.
+**The cost column is not a savings estimate.** Removing the OneStream reconciliation module saves its license. Removing the Wayfare payout engine saves almost nothing until Wayfare's ground-transport suppliers are migrated onto the Stayloft payout path, which costs more in its first year than the engine costs to run. [Manage the Application Portfolio as an Investment](#application-portfolio) turns these numbers into investment decisions; here they only rank attention.
 
 {id: capability-mapping--the-four-overlaps-one-at-a-time}
 ### The four overlaps, one at a time
 
-**Overlap 1: Partner payouts in two engines.** Of the roughly 9 million partner payouts Northmere makes each month, SFP calculates and schedules those for Stayloft merchant-model properties; Tablekin's venue payouts run through Stripe Connect inside Tablekin's payments-facilitation product, and the workshop recorded them but did not count them as an overlap. Wayfare's own engine pays ground-transport suppliers. Both calculate amounts net of commission, both hold partner bank details, and both release instructions to banks. The payout engine is also where Northmere's FY2026 significant deficiency sits: developers had production access to SFP, and payout-rule changes lacked documented approval. The capability map turns an engineering argument ("our engine is better") into a capability question: **one Partner Payout Management capability, one owner, one control design for bank-detail changes**, with two implementations allowed only while a dated migration runs. Dana's first decision under her new rights, in December 2026, set the change-approval standard for SFP payout rules; the capability view extends that standard to both engines.
+**Overlap 1: Partner payouts in two engines.** SFP calculates and schedules payouts for Stayloft merchant-model properties, and Wayfare's own engine pays ground-transport suppliers. Both calculate amounts net of commission, both hold partner bank details, and both release instructions to banks. (Of the roughly 9 million partner payouts Northmere makes each month, Tablekin's venue payouts run through Stripe Connect inside Tablekin's payments-facilitation product; the workshop recorded them but did not count them as an overlap.) The payout engine is also where Northmere's FY2026 significant deficiency sits: developers had production access to SFP, and payout-rule changes lacked documented approval. The capability map turns an engineering argument ("our engine is better") into a capability question: **one Partner Payout Management capability, one owner, one control design for bank-detail changes**, with two implementations allowed only while a dated migration runs. Dana's first decision under her new rights, in December 2026, set the change-approval standard for SFP payout rules; the capability view extends that standard to both engines.
 
 **Overlap 2: Billing in three approaches.** SFP calculates and bills commission for merchant-model properties as part of the payout statement. SAP FI-CA (contract accounting, SAP's high-volume subledger for business-partner accounts) issues commission invoices, dunning and partner balances for agency-model properties. Tablekin bills subscriptions and usage with Stripe Billing, so the Austin venue on the "Pro" plan receives an invoice dated 1 April 2027 for $1,029 before sales tax (the April subscription of $249 plus March usage of 3,120 covers at $0.25). The map separates what is legitimately different from what is duplicated. Charge Calculation and Rating differs genuinely by business model: commission on a stay and usage rating per seated cover are different calculations. **Invoicing, the issuance of a compliant document with jurisdiction-correct numbering and, increasingly, e-invoice clearance, is the same capability three times**, and every new national e-invoicing mandate has to be implemented in all three. (Northmere Ads' custom ad-billing service sits under the same capability; the workshop scored it as low volume and recorded it, but did not add it to the overlap list.)
 
@@ -218,7 +216,7 @@ A capability map is the right frame for investment and ownership. It is the wron
 
 Eric Evans's DDD Reference defines a **bounded context** as a description of a boundary (typically a subsystem, or the work of a particular team) within which a particular model is defined and applicable ([DDD Reference, 2015](https://www.domainlanguage.com/ddd/reference/)). Inside the boundary, every term has one meaning, the **ubiquitous language**. Across boundaries, meanings differ, and the relationship between contexts has to be designed. Martin Fowler's short explanation uses a utility where "meter" meant three different things in three parts of the business ([Bounded Context, 2014](https://martinfowler.com/bliki/BoundedContext.html)).
 
-Finance is full of such words. The strongest example is **account**:
+Finance is full of such words; the strongest example is **account**:
 
 | Context | What "account" means | Northmere example |
 | --- | --- | --- |
@@ -229,7 +227,7 @@ Finance is full of such words. The strongest example is **account**:
 | Billing and Invoicing | A customer or billing account with terms and an invoice history | The Austin venue's Stripe Billing customer |
 | Partner Settlement | A partner's payout profile and balance | The Lisbon property's payout profile, with bank details under change control |
 
-"Settlement" is almost as treacherous. In Payments it means the acquirer transferring funds to Northmere Payments B.V. In Partner Settlement it means paying the property. In Treasury it can mean settlement of an FX trade. In intercompany accounting it means clearing balances between entities. A single "settlement" table shared by these contexts is a defect waiting to happen.
+"Settlement" has four meanings. In Payments it means the acquirer transferring funds to Northmere Payments B.V. In Partner Settlement it means paying the property. In Treasury it can mean settlement of an FX trade. In intercompany accounting it means clearing balances between entities. A single "settlement" table shared by these contexts is a defect waiting to happen.
 
 {id: capability-mapping--northmere-s-finance-bounded-contexts}
 ### Northmere's finance bounded contexts
@@ -268,9 +266,9 @@ A **context map** shows the bounded contexts and the relationships between them.
 
 **Figure 3:** *Northmere's target context map: canonical events as the published language from the brand platforms, anticorruption layers at the PSP and ERP boundaries, and customer-supplier relationships where finance contexts depend on each other's facts.*
 
-Three relationships on this map deserve a sentence of justification each, because teams will argue about them.
+Teams will argue about three relationships on this map.
 
-**Anticorruption layer at the ERP boundary.** SFP posts about 38,000 summarized GL lines a day into S/4HANA, summarized from about 3 million subledger lines. The posting adapter translates Subledger facts (accounting events, posting rules, reconciliation keys) into S/4HANA's document model. The rule I apply: **no ERP-specific concept (document types, company-code numbers, posting keys) appears in a brand or subledger model**; it lives only in the adapter. The day Northmere decides between Central Finance and an accounting hub (2027 Q4), the adapter changes and the Subledger context does not. Without the ACL, SFP would quietly become a conformist to S/4HANA, and every S/4 change would become an SFP change.
+**Anticorruption layer at the ERP boundary.** The posting adapter translates Subledger facts (accounting events, posting rules, reconciliation keys) into S/4HANA's document model: SFP posts about 38,000 summarized GL lines a day into S/4HANA, summarized from about 3 million subledger lines. The rule I apply: **no ERP-specific concept (document types, company-code numbers, posting keys) appears in a brand or subledger model**; it lives only in the adapter. The day Northmere decides between Central Finance and an accounting hub (2027 Q4), the adapter changes and the Subledger context does not. Without the ACL, SFP would quietly become a conformist to S/4HANA, and every S/4 change would become an SFP change.
 
 **Conformist where conforming is cheaper than translating.** Not every vendor boundary deserves an ACL. Consolidation conforming to OneStream's dimensional model is a reasonable choice, because nobody else consumes that model and the translation would be pure cost. The test I use: **build an ACL where the vendor's model would otherwise spread into contexts you own; conform where the vendor's model stays inside the vendor's context.** Payments needs an ACL because Adyen's and Stripe's report models are different from each other and both would otherwise leak into reconciliation, revenue and payouts.
 
@@ -323,7 +321,7 @@ Conway's law, in Fowler's summary, says organizations design systems that mirror
 {id: capability-mapping--capabilities-to-applications-to-teams-finding-the-ownership-gaps}
 ## Capabilities to Applications to Teams: Finding the Ownership Gaps
 
-The final step of version 1 was a three-column trace for every level-2 capability: the capability, the applications that implement it, and the team that owns each application, plus a fourth column for the **capability owner**, a named Finance leader accountable for the outcome regardless of tool. The trace is mechanical. What it reveals is not.
+The final step of version 1 was a three-column trace for every level-2 capability: the capability, the applications that implement it, and the team that owns each application, plus a fourth column for the **capability owner**, a named Finance leader accountable for the outcome regardless of tool.
 
 ![Account reconciliation, tax determination and partner payouts each trace to applications tagged with their owning teams: one reconciliation tool has no owner, and Wayfare owns one application in each of the three overlaps.](finance-systems-architecture/posts/02-capability-mapping/assets/images/02-capability-mapping/overlaps-to-owning-teams.jpeg)
 
@@ -359,9 +357,9 @@ Capability mapping can be done lightly or heavily, and the choice should follow 
 | **Inferred bottom-up from the application portfolio** | A map of what the applications do today | Low | You need an inventory for rationalization | You need a target; it reproduces today's overlaps as if they were capabilities |
 | **Only one of the two maps** | Either an investment frame or a boundary design | Low to medium | Capability map only: rationalization without platform redesign; context map only: one engineering organization designing its own platform | Capability map only: re-platforming custom systems, where meaning conflicts go undetected; context map only: investment conversations, because contexts are not Finance's language |
 
-Northmere used the first approach for the capability map, and context-mapped only where Keystone was changing software: a strawman built by Dana's architects from reference material and the portfolio, challenged by Finance in workshops. I recommend that combination for most multi-brand groups. The conditions under which it fails: when the strawman is presented as finished (people defer to it), or when the architects running the workshops do not know enough accounting to hear what Finance is telling them.
+Northmere used the first approach: Dana's architects built a strawman from reference material and the portfolio, and Finance challenged it in workshops. It drew bounded contexts only where Keystone was changing software. I recommend that combination for most multi-brand groups. It fails when the strawman is presented as finished (people defer to it), or when the architects running the workshops do not know enough accounting to hear what Finance is telling them.
 
-A note on tools. Northmere maintains the map in SAP LeanIX, which SAP acquired in November 2023 ([SAP News, 2023](https://news.sap.com/2023/11/sap-completes-acquisition-of-leanix/)). The map's structure should not depend on any tool: keep it exportable as a plain table, so the repository itself can be replaced, and so a vendor-owned EA tool does not become the place where a vendor-neutral frame quietly acquires a vendor's shape.
+Keep the map exportable as a plain table, whatever tool holds it. Northmere maintains the map in SAP LeanIX, which SAP acquired in November 2023 ([SAP News, 2023](https://news.sap.com/2023/11/sap-completes-acquisition-of-leanix/)). An export lets the repository itself be replaced, and stops a vendor-owned EA tool from quietly giving a vendor-neutral frame a vendor's shape.
 
 {id: capability-mapping--running-a-capability-mapping-exercise-with-finance}
 ## Running a Capability Mapping Exercise with Finance

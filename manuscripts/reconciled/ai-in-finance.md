@@ -5,7 +5,7 @@
 
 > **IN THIS CHAPTER, YOU WILL:** Place rules, robotic process automation, machine learning, generative AI and agents on one ladder, rank finance use cases by value and control risk, and design the architecture that lets an agent work on the books without becoming an unowned control: a tool layer with least privilege, a proposal store, human approval in the system of record, and an evidence log that can reconstruct every run.
 
-> **WHY FINANCE CARES:** The close is slow where people work exceptions, and that is exactly where AI is now useful. But the CFO signs a certification about internal control, and an agent that changes the books without an owner, a reviewer and evidence turns a productivity gain into an audit finding.
+> **WHY FINANCE CARES:** The close is slow where people work exceptions, and that is where AI is now useful. But the CFO signs a certification about internal control, and an agent that changes the books without an owner, a reviewer and evidence turns a productivity gain into an audit finding.
 
 > **WHY ARCHITECTS SHOULD CARE:** Every vendor in the estate now ships agents, and each one wants to act on the same ledger. Without an enterprise pattern for identity, tools, proposals, approval and evidence, the estate acquires a dozen unowned automated controls in eighteen months.
 
@@ -21,11 +21,13 @@
 > * **Audit Archaeology** — prompt and model changes that nobody put under change management become the next significant deficiency, discovered by the auditor rather than designed out.
 > * **Capability Creep** — the ERP, the close platform, the consolidation platform and the productivity suite each ship a reconciliation agent, and nobody decides which one owns the job.
 
-Finance has automated for as long as it has had computers. Posting rules, matching rules, batch interfaces and scheduled reports took the arithmetic out of accounting decades ago; **robotic process automation (RPA)**, software that drives an application's user interface the way a person would, took a slice of the keystrokes in the 2010s. What none of it reached was the **exception layer**: the settlement line with no booking reference, the supplier invoice with no purchase order, the account balance that moved for a reason nobody has written down. That layer is where finance people spend their time, and it is where the close loses its days.
+Parts I to III of this book automate the happy path of a finance estate; this chapter is about the residue they leave, the work that fills Northmere's suspense accounts ([Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger)). Posting rules, matching rules, batch interfaces and scheduled reports took the arithmetic out of accounting decades ago; **robotic process automation (RPA)**, software that drives an application's user interface the way a person would, took a slice of the keystrokes in the 2010s. What none of it reached was the **exception layer**: the settlement line with no booking reference, the supplier invoice with no purchase order, the account balance that moved for a reason nobody has written down. That layer is where finance people spend their time, and it is where the close loses its days.
 
 Generative models and agents are the first automation that can read the messy evidence of an exception — a remittance note, an email thread, a free-text invoice line — and propose what it means. They also bring properties finance has spent a century designing out: outputs that are not reproducible, reasoning that cannot be fully inspected, and a confident explanation whether or not one exists.
 
 This chapter's argument is that the two facts are reconcilable by architecture. **The agent may propose; a controlled process disposes.** An agent reads through narrow tools, writes proposals to a store it does not own, and hands them to the approval workflow the system of record already runs. Every run leaves evidence a reviewer can re-perform. Built that way, an agent is a fast, tireless preparer inside an existing control. Built any other way, it is a new control nobody owns.
+
+[Who Owns What: Organizing Architecture Across Finance and Technology](#organizing-for-architecture) showed that an agent needs what a team needs: an owner, a scope and a boundary. This chapter supplies them through architecture, and the book reuses the result: the standard STD-FIN-06 in [Architecture Governance That Speeds Decisions](#architecture-governance), the agent control card in the [Working Papers: Templates for the Finance Architect](#toolkit), and AI as one of the stressors in [Built to Be Replaced: Evolving the Finance Estate Over a Decade](#long-term-evolution).
 
 {id: ai-in-finance--setting-the-scene-at-northmere-three-pilots-and-a-controls-lead}
 ## Setting the Scene at Northmere: Three Pilots and a Controls Lead
@@ -55,15 +57,15 @@ For a finance architect, "AI" is five rungs of a ladder, and the properties an a
 | **Generative AI** | A large language model produces text or structured output from a prompt and context | Reading unstructured evidence; drafting; summarizing | Arithmetic without tools; facts not in context; fluent wrong explanations | Not reliably reproducible; explanation is a narrative, not a trace | Input to human review; prompts and models under change management; runs logged |
 | **Agents** | A model directs its own sequence of tool calls toward a goal | Multi-step exception work across systems | Open-ended authority; compounding errors; irreversible actions | Path and output vary between runs; explanation is the logged plan and calls | Scoped identity and tools, propose-only writes, approval in the system of record, full run evidence |
 
-Two observations follow. First, **each rung up buys reach into the exception layer at the price of determinism**, and that price is worth paying only where the lower rung has run out. A one-to-one match between a PSP settlement line and a captured payment should be a rule, forever; a model that matches it "correctly 99.7% of the time" has replaced a certainty with a probability. The rule I use: *push every case as far down the ladder as it will go, and point AI at the residue.*
+**Each rung up buys reach into the exception layer at the price of determinism**, and that price is worth paying only where the lower rung has run out. A one-to-one match between a PSP settlement line and a captured payment should be a rule, forever; a model that matches it "correctly 99.7% of the time" has replaced a certainty with a probability. The rule I use: *push every case as far down the ladder as it will go, and point AI at the residue.*
 
 ![A five-rung ladder labeled Rules, RPA, ML, GenAI and Agents; most transactions flow through rules at the bottom while a few exception documents move up the ladder.](finance-systems-architecture/posts/42-ai-in-finance/assets/images/42-ai-in-finance/automation-ladder.jpeg)
 
 **Figure 1:** *Each rung up the automation ladder buys reach into the exception layer at the price of determinism: push every case as far down as it will go, and point AI at the residue.*
 
-Second, **the word "agent" covers two different designs**. Anthropic's widely cited engineering note, [Building Effective Agents](https://www.anthropic.com/research/building-effective-agents) (Erik Schluntz and Barry Zhang, December 2024), distinguishes **workflows**, where models and tools run along predefined code paths, from **agents**, where the model directs its own process and tool use. Nearly every finance process I would automate in 2027 should be a workflow with model steps inside it — classify, retrieve, propose, with programmatic checks between steps. I keep the word "agent" because vendors and finance teams use it, but the architecture constrains it toward the workflow end.
+**The word "agent" covers two different designs**. Anthropic's widely cited engineering note, [Building Effective Agents](https://www.anthropic.com/research/building-effective-agents) (Erik Schluntz and Barry Zhang, December 2024), distinguishes **workflows**, where models and tools run along predefined code paths, from **agents**, where the model directs its own process and tool use. Nearly every finance process I would automate in 2027 should be a workflow with model steps inside it — classify, retrieve, propose, with programmatic checks between steps. I keep the word "agent" because vendors and finance teams use it, but the architecture constrains it toward the workflow end.
 
-Gartner has a name for the opposite habit. In June 2025 it predicted that [over 40% of agentic AI projects will be canceled by the end of 2027](https://www.gartner.com/en/newsroom/press-releases/2025-06-25-gartner-predicts-over-40-percent-of-agentic-ai-projects-will-be-canceled-by-end-of-2027.) because of cost, unclear value or inadequate risk controls, and warned of **"agent washing"**: relabeling chatbots and RPA as agents. It estimated that only about 130 of the thousands of vendors claiming agentic capability were real. "Which rung is this, really?" is the fastest question in a vendor demonstration.
+Gartner calls the opposite habit **"agent washing"**: relabeling chatbots and RPA as agents. In June 2025 it predicted that [over 40% of agentic AI projects will be canceled by the end of 2027](https://www.gartner.com/en/newsroom/press-releases/2025-06-25-gartner-predicts-over-40-percent-of-agentic-ai-projects-will-be-canceled-by-end-of-2027.) because of cost, unclear value or inadequate risk controls, and estimated that only about 130 of the thousands of vendors claiming agentic capability were real. "Which rung is this, really?" is the fastest question in a vendor demonstration.
 
 {id: ai-in-finance--where-the-value-is-use-cases-by-value-and-control-risk}
 ## Where the Value Is: Use Cases by Value and Control Risk
@@ -149,7 +151,7 @@ Everything else is mechanism.
 
 **Tool gateway.** The single path from any agent to any system. It exposes narrow, named tools — `get_settlement_line`, `find_payment_by_psp_reference`, `create_match_proposal` — rather than general database or API access. Each agent has its own service identity, never a person's credentials, and a tool allow-list; the gateway enforces it, logs every call, applies volume limits and strips fields the agent does not need. This is where **least privilege** becomes concrete: the triage agent can read four systems and write to one table.
 
-The **Model Context Protocol (MCP)** is a reasonable standard for this layer. It is an open protocol, introduced by Anthropic in November 2024 and [donated in December 2025 to the Agentic AI Foundation](https://www.anthropic.com/news/donating-the-model-context-protocol-and-establishing-of-the-agentic-ai-foundation) under the Linux Foundation, that standardizes how model applications (hosts and clients) discover and call tools and read resources exposed by servers, over JSON-RPC 2.0. Workday's Agent Gateway exposes MCP tools, and other platforms are following. The [current specification (2026-07-28)](https://modelcontextprotocol.io/specification/2026-07-28) states that "tools represent arbitrary code execution and must be treated with appropriate caution", that tool descriptions from untrusted servers are untrusted, and that MCP "cannot enforce these security principles at the protocol level". MCP standardizes the plug; it does not make anything behind the plug safe. The enterprise's gateway, identity and policy enforcement do that.
+The **Model Context Protocol (MCP)** is a reasonable standard for this layer. It is an open protocol that standardizes how model applications (hosts and clients) discover and call tools and read resources exposed by servers, over JSON-RPC 2.0. Anthropic introduced it in November 2024 and [donated it in December 2025 to the Agentic AI Foundation](https://www.anthropic.com/news/donating-the-model-context-protocol-and-establishing-of-the-agentic-ai-foundation) under the Linux Foundation. Workday's Agent Gateway exposes MCP tools. The [current specification (2026-07-28)](https://modelcontextprotocol.io/specification/2026-07-28) states that "tools represent arbitrary code execution and must be treated with appropriate caution", that tool descriptions from untrusted servers are untrusted, and that MCP "cannot enforce these security principles at the protocol level". MCP standardizes the plug; it does not make anything behind the plug safe. The enterprise's gateway, identity and policy enforcement do that.
 
 **Proposal store.** The only place the agent can write. Each proposal carries the agent identity and run identifier, the proposed action (a match, a journal, a coding), the evidence references relied on, a category or confidence, and the model and prompt versions. Proposals are immutable; an amendment is a new linked record. The store is a deliberate seam that turns agent output into data ordinary, deterministic software can check and route.
 
@@ -171,7 +173,7 @@ The **Model Context Protocol (MCP)** is a reasonable standard for this layer. It
 {id: ai-in-finance--when-can-a-proposal-be-approved-in-bulk}
 ### When can a proposal be approved in bulk?
 
-Reviewing every proposal one by one kills the value of high-volume use cases. Bulk or threshold acceptance is acceptable when — and only when — the accepted class behaves like a rule-based automated control: narrowly defined, its error rate measured on a re-performed sample, monitored continuously, its threshold under change management. At that point, ask whether the class should simply become a matching rule. Usually it should. An agent that keeps proposing the same type of match with 99.9% acceptance has discovered a rule; write it, move the case one rung down, and let the agent work on what remains.
+Bulk or threshold acceptance is acceptable when — and only when — the accepted class behaves like a rule-based automated control: narrowly defined, its error rate measured on a re-performed sample, monitored continuously, its threshold under change management. The pressure for it is real, because reviewing every proposal one by one kills the value of high-volume use cases. But once a class qualifies, ask whether it should simply become a matching rule. Usually it should. An agent that keeps proposing the same type of match with 99.9% acceptance has discovered a rule; write it, move the case one rung down, and let the agent work on what remains.
 
 {id: ai-in-finance--in-practice-the-three-northmere-pilots}
 ## In Practice: The Three Northmere Pilots
@@ -196,7 +198,9 @@ The worked example the reviewers used most: an Indonesian e-wallet settlement li
 | Analyst time per exception line, median | from about 6 minutes to about 2 |
 | Proposals that would have misstated a balance if accepted, caught by review | 11, the largest €2,300 |
 
-The most useful output was not the time saved but the category distribution: **58%** of exceptions were "missing or truncated booking reference", concentrated in two APM providers. That is a data contract problem, not an AI problem, and it went back to Lucía's team and Ingrid Solberg's PSP relationship owners as a fix to the providers' file specifications ([Canonical Events: A Common Language for Money](#loosely-coupled-domains) covers the contracts). This is the trap I warn every finance team about: **an agent that makes exceptions cheap to work can make them permanent.** If triage is efficient enough, nobody fixes the cause, and the suspense account becomes a well-managed backlog instead of an empty one. The Suspense Swamp is not cured by a faster shovel. Northmere put the category distribution into the program's monthly metrics so root-cause fixes were measured alongside triage.
+The most useful output was not the time saved but the category distribution: **58%** of exceptions were "missing or truncated booking reference", concentrated in two APM providers. That is a data contract problem, not an AI problem, and it went back to Lucía's team and Ingrid Solberg's PSP relationship owners as a fix to the providers' file specifications ([Canonical Events: A Common Language for Money](#loosely-coupled-domains) covers the contracts).
+
+**An agent that makes exceptions cheap to work can make them permanent.** This is the trap I warn every finance team about: if triage is efficient enough, nobody fixes the cause, and the suspense account becomes a well-managed backlog instead of an empty one. The Suspense Swamp is not cured by a faster shovel. Northmere put the category distribution into the program's monthly metrics so root-cause fixes were measured alongside triage.
 
 ![A robot quickly shovels exception slips out of a basin fed by a leaking pipe, while two people repair the leak upstream.](finance-systems-architecture/posts/42-ai-in-finance/assets/images/42-ai-in-finance/faster-shovel.jpeg)
 
@@ -218,7 +222,9 @@ The controller's review is a **management review control**, which auditors test 
 
 About **9,000** non-PO indirect invoices a month arrive in Coupa needing account and cost-center coding. The pilot pre-filled proposed coding in Coupa's existing approval flow, with the supplier's coding history and the reason, for the approver to confirm or change. Whether proposals come from Coupa's own AI features or an enterprise model behind the integration was the embedded-versus-built decision; the design authority chose to evaluate the embedded option first, because the evidence — invoice, supplier, history — lives in Coupa.
 
-Accounts payable is where fraud lives, so three rules were non-negotiable. The coding agent has **no access to supplier master data changes**, including bank details; supplier bank changes remain a separate, call-back-verified control. The agent's identity is **segregated** from approval and payment: it cannot approve an invoice, release a payment, or be the approver of record. And coding that crosses a classification boundary that matters to the financial statements — capital versus expense, intercompany versus third party — is always routed to a human regardless of confidence. The pilot's measured result was modest and useful: approvers accepted **78%** of proposals unchanged, and the most common change was cost center, not account, which pointed at Workday HCM's cost-center assignments as stale input rather than at the model.
+Accounts payable is where fraud lives, so three rules were non-negotiable. The coding agent has **no access to supplier master data changes**, including bank details; supplier bank changes remain a separate, call-back-verified control. The agent's identity is **segregated** from approval and payment: it cannot approve an invoice, release a payment, or be the approver of record. And coding that crosses a classification boundary that matters to the financial statements — capital versus expense, intercompany versus third party — is always routed to a human regardless of confidence.
+
+The pilot's measured result was modest and useful: approvers accepted **78%** of proposals unchanged, and the most common change was cost center, not account, which pointed at Workday HCM's cost-center assignments as stale input rather than at the model.
 
 {id: ai-in-finance--icfr-what-changes-when-an-agent-joins-a-control}
 ## ICFR: What Changes When an Agent Joins a Control
@@ -289,9 +295,7 @@ None of these measures autonomous agents posting to a ledger; survey "adoption" 
 {id: ai-in-finance--integration-with-the-rest-of-the-estate}
 ## Integration with the Rest of the Estate
 
-An agent is a new consumer and producer on the integration architecture, and it should use the same paths as everything else.
-
-Five relationships matter.
+An agent is a new consumer and producer on the integration architecture, and it should use the same paths as everything else. Five relationships matter.
 
 - **Integration.** The gateway is an API product on the integration layer of [Files, Events and APIs: How Finance Systems Talk](#integration-architecture), not a side channel: its tools call published APIs, never databases, and its write tools land in proposal intakes the systems of record own.
 - **Canonical events.** When agents create business records upstream — AI assistants booking stays for travelers is the obvious case — those are ordinary canonical events (`BookingConfirmed` with the agent as channel), distinguishable only by an attribute.
@@ -353,7 +357,7 @@ The card does three jobs: it is the design checklist, so nothing is discovered l
 {id: ai-in-finance--trade-offs}
 ## Trade-offs
 
-Three choices recur in every agent design decision, and none has a universal answer.
+Four choices recur in every agent design decision, and none has a universal answer.
 
 | Decision | Option A | Option B | When A is right | When B is right |
 | --- | --- | --- | --- | --- |
@@ -381,7 +385,9 @@ Dana's job was not to choose models. It was to make five decisions that let anyo
 
 The shortcut Dana declined was letting the first vendor agent through on the vendor's certifications. Vendor assurance covers the vendor's controls, not Northmere's configuration, reliance or reviewers' attention — the complementary user-entity controls SaaS always leaves with the customer.
 
-Who decides what: the **control owner** in Finance decides whether an agent's output can support their control; **Internal Controls** (Mei) decides whether the design and evidence satisfy ICFR; the **Chief Architect** decides the platform pattern and standards; the **CISO** decides identity, data protection and threat controls; and the **CFO** decides the risk appetite — how much autonomy, in which processes, on what evidence. What to watch over the next three years: vendor SOC 1 scopes extending to AI features (or not); auditors' inspection focus on AI as IPE; the EU AI Act high-risk date of 2 December 2027 for any credit or HR uses in the group; and model provider changes, which will arrive faster than finance release calendars.
+Who decides what: the **control owner** in Finance decides whether an agent's output can support their control; **Internal Controls** (Mei) decides whether the design and evidence satisfy ICFR; the **Chief Architect** decides the platform pattern and standards; the **CISO** decides identity, data protection and threat controls; and the **CFO** decides the risk appetite — how much autonomy, in which processes, on what evidence.
+
+What to watch over the next three years: vendor SOC 1 scopes extending to AI features (or not); auditors' inspection focus on AI as IPE; the EU AI Act high-risk date of 2 December 2027 for any credit or HR uses in the group; and model provider changes, which will arrive faster than finance release calendars.
 
 {id: ai-in-finance--questions-to-ask}
 ## Questions to Ask
