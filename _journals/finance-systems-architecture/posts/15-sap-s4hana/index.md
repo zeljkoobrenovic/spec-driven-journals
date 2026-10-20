@@ -303,7 +303,7 @@ In April 2027 Sven's team ran the ABAP Test Cockpit's clean-core checks and thir
 3. **Move Level C reads to released views**, rebuilding reports and print programs on released analytical views and output management.
 4. **Gate new code.** From June 2027 the clean-core check runs in the transport pipeline: new Level D objects are blocked without a design-authority waiver, new Level C objects need Sven's approval, and every waiver expires.
 
-### The fitness function
+### The clean-core fitness function
 
 A plan without a measurement decays, so Keystone tracks clean core as an **architecture fitness function**, a measurable property reviewed quarterly ([[technical-debt-and-fitness]]):
 
@@ -384,7 +384,7 @@ Two conditions shape what an architect does with this. **Access is commercial as
 | Explicit maintenance commitments to 2040 and a published release rule | Every release has an end date; in Private Edition an upgradable core is a permanent governance cost |
 | Clean-core levels and tooling that make extension risk measurable | Strong pull toward SAP-native adjacent products; opaque, frequently changed licensing and names |
 
-## Integration With the Rest of the Estate
+## Integration with the Rest of the Estate
 
 S/4HANA receives summarized, control-totaled feeds from brand platforms ([[custom-finance-platforms]]), with the merchant subledger's migration worked through in [[incremental-modernization]]; payments reach it through Northmere Pay's clearing accounts, never directly from PSPs ([[payments-to-ledger]]). It is the group master for legal entities that Workday HCM consumes, and receives cost-center owners and approvers from it ([[workday]]); it faces Oracle Fusion in the convergence decision ([[oracle-fusion]]). BlackLine reconciles its balances and proves the FI-CA and SFP subledgers to it; OneStream consolidates its trial balance; Vertex, Kyriba, Coupa and Concur attach as satellites ([[satellite-platforms]]); FinDB's tie-out starts from its trial balance.
 
@@ -428,7 +428,7 @@ Dana's position, presented to the Keystone design authority in June 2027, has fo
 9. In our RISE contract, which operational responsibilities are ours, and does our SOC 1 reliance match that split?
 10. Which AI capabilities are generally available, what would they post or approve, and are they tied to a commercial commitment we have not decided to make?
 
-## Hand-Off
+## From SAP to Workday
 
 S/4HANA is Northmere's book of record, but it is not where Northmere's people, approvers and cost-center owners are defined, and it is not the ledger of every brand. The next chapter, [[workday]], turns to the platform that holds the organizational backbone for the whole group and the books of one acquired brand, and asks where Workday belongs beside an SAP core.
 

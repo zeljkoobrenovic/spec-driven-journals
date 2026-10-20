@@ -35,7 +35,7 @@ This chapter makes the route the main design object. It defines baseline, target
 
 The worked example is Program Keystone at Northmere, the fictional group this book follows. Its plateaus take their retirements and contract dates from the rationalization waves in [[application-portfolio]], and their biggest open decision from the convergence choice in [[multiple-erps]]. Migration patterns such as strangler, parallel run and cut-over belong to [[modernization-patterns]] and [[incremental-modernization]]; leading the program belongs to [[finance-transformation]]. This chapter decides **which stable states the program passes through, and why in that order**. The chapters after it build on that order: [[vendor-portfolio-strategy]] works from the roadmap's contract dates, [[finance-transformation]] releases money by plateau, and [[technical-debt-and-fitness]] turns the exit criteria into fitness functions.
 
-## Setting the Scene: A Picture of 2031 and Nothing in Between
+## Setting the Scene at Northmere: A Picture of 2031 and Nothing in Between
 
 In June 2027 Dana Whitlock, Northmere's Chief Architect for Enterprise Applications and Financial Systems, puts Keystone's target-state slide on the screen at a design-authority session. It came from the business case the board approved in December 2026 and shows Northmere in 2031: one group finance core on SAP S/4HANA, one chart of accounts, every brand publishing canonical financial events through an adapter kit, tax and e-invoicing as shared services, one payout service, a three-day close. It is a good picture of the end state, and, as [[chief-architect-role]] noted, it has no route.
 

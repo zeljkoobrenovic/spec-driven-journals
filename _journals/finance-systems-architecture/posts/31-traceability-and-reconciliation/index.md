@@ -306,7 +306,7 @@ Every break gets a **cause code** from a fixed list, and every code has an **ups
 
 The weekly **break review** is run like an incident review, not a clearing session: for the top three causes by amount, the owning team commits to a fix and an expected reduction, and next month's metrics test it. The 1.9% APM analysis in [[blackline]] is this work in practice. The rule I use: **a break cleared without a cause code is a break you will clear again.** Watch the recurrence rate, not the match rate; widening tolerances raises the match rate, but only an upstream fix lowers recurrence.
 
-## Trade-Offs: How Much Traceability to Build
+## Trade-offs: How Much Traceability to Build
 
 Traceability costs keys, retained mappings, totals and reconciliations. The realistic options for a high-volume flow such as SFP's:
 

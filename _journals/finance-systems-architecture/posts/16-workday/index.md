@@ -33,7 +33,7 @@ Most enterprises meet **Workday** twice. The first time it is the human capital 
 
 [[sap-s4hana]] described Northmere's group core; this chapter covers the platform that decides who approves spending in it, and the ledger of an acquired brand that does not run on it. It covers Financials because the group's convergence decision, which [[multiple-erps]] frames, must say whether that ledger stays, and HCM because the **HCM-as-master pattern**, Workday as the authoritative source of people and organization data for every other platform, is one of the most consequential and least documented integration patterns in a finance estate. It owns four terms: **worktags**, the **Foundation Data Model**, **Accounting Center** and the HCM-as-master pattern. Ledger design in general belongs to [[designing-financial-ledgers]], master-data governance to [[finance-data-architecture]], and running several ERPs side by side to [[multiple-erps]].
 
-## Setting the Scene: Tablekin's Ledger in 2027
+## Setting the Scene at Northmere: Tablekin's Ledger in 2027
 
 Northmere, the fictional group this book follows, bought **Tablekin** in 2023. Tablekin sells reservations, table-management and embedded-payments software to restaurants and venues, and earns subscriptions, a usage fee per seated cover, and a margin on payments it facilitates through Stripe Connect: about 11% of Northmere's $8.2 billion 2026 revenue. It ran **Workday Financial Management** before the acquisition and still does; **Arjun Rao**, Head of Finance Systems at Tablekin, owns that tenant and the Stripe integration that feeds it.
 
@@ -321,7 +321,7 @@ The ownership matrix behind the diagram:
 
 Three design points carry most of the weight. **Leavers must propagate fastest**: a terminated worker's ability to approve, buy or expense should end the same day, through an outbound step on the termination business process, not a nightly batch. **Approval limits belong to policy**: Coupa and S/4HANA should read a worker's approval tier from one published source rather than each keep a table. And **payroll journals should carry the same cost-center and company keys as everything else**, so payroll cost reconciles to HCM headcount by cost center.
 
-## Boundaries and Overlaps With the Rest of the Estate
+## Integration with the Rest of the Estate
 
 Workday overlaps with almost every platform in this book. The question is which platform owns each capability, not which tool is better; the table gives my defaults.
 

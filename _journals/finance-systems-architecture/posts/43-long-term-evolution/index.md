@@ -35,7 +35,7 @@ The usual answer to that question is a target state with a date on it. [[target-
 
 The chapter then turns to **what stays portable**, so that no vendor or acquisition can trap the books, and to **how the architecture function itself must evolve**. It closes with Northmere in 2031 and draws together the five reconciliations the [[introduction]] named, which the [[toolkit]] then turns into templates.
 
-## Setting the Scene: Two Questions at the Board Offsite
+## Setting the Scene at Northmere: Two Questions at the Board Offsite
 
 Northmere, the fictional multi-brand commerce group this book follows (see [[meet-northmere]]), held its board strategy offsite in November 2027. Program Keystone was in its first year. Plateau 1 was on track, and the 2027 Q4 decision between Central Finance and an accounting-hub pattern for brand ledger convergence was weeks away ([[multiple-erps]]).
 
@@ -198,7 +198,7 @@ Four residues were needed by seven of the ten stressors. **None of them is a pro
 
 **Optionality** is the ability to make a decision later, at a cost known in advance. Every stressor in the matrix that hurt did so by trapping something the enterprise needed (history, an identifier, a rule, a piece of evidence) inside a system it might have to leave. Over a decade, **The Borrowed Roadmap** works less through contracts than through data form: the only complete, usable record of something important exists in one vendor's model ([[vendor-portfolio-strategy]]). The remedy is three disciplines, each with a named owner and a fitness function.
 
-**Canonical events.** Facts that cross a domain boundary are published as Keystone canonical financial events, with the enterprise's envelope and vocabulary ([[loosely-coupled-domains]]). A vendor's document types, journal types and object models stay behind anti-corruption layers. When Wayfare's ledger, Tablekin's billing platform or a PSP changes, the change stops at an adapter, and the events stay in FinDB for as long as the books they support.
+**Canonical events.** Facts that cross a domain boundary are published as Keystone canonical financial events, with the enterprise's envelope and vocabulary ([[loosely-coupled-domains]]). A vendor's document types, journal types and object models stay behind anticorruption layers. When Wayfare's ledger, Tablekin's billing platform or a PSP changes, the change stops at an adapter, and the events stay in FinDB for as long as the books they support.
 
 **Owned identifiers.** The enterprise issues the identifiers that matter (booking, payment, refund, payout, partner, legal entity, event, summary) and requires every vendor to carry them. Adyen's `pspReference` and Stripe's balance transaction IDs are recorded but never become the only key ([[adyen]], [[stripe]]). The test: could a late refund from a provider we left two years ago be traced to its booking without that provider's help?
 

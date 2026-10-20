@@ -280,7 +280,7 @@ The script follows three rules I recommend for any CFO conversation about debt. 
 
 The register-plus-fitness approach costs real effort: someone must build the feeds, and owners must accept a number that can fail. I would not start with fifteen fitness functions. Northmere started in 2027 with four (clean-core score, auto-match rate, suspense aging, close duration by phase) and added the rest as feeds became reliable. A fitness function on a manual feed is worse than none: its first wrong reading destroys trust in the rest.
 
-## Integration With the Rest of the Estate
+## Integration with the Rest of the Estate
 
 - **Portfolio.** Waves in [[application-portfolio]] retire whole applications; the register prices the debt carried while they wait and gives wave gates their evidence.
 - **Governance and standards.** An expired waiver from [[architecture-governance]] becomes a register item. Each mandatory standard, STD-FIN-01 to STD-FIN-06, has at least one fitness function; a standard without one is hope. [[principles-standards-reference]] owns the standards themselves.
@@ -323,7 +323,7 @@ The register-plus-fitness approach costs real effort: someone must build the fee
 8. Which debt are we carrying on purpose, at what stated cost, until what date, and does the CFO know?
 9. If we converge onto a new finance core, which debt items will we migrate into it unless we pay them first?
 
-## Handing Off
+## From Technical Debt to Technology Spend
 
 The register prices debt partly in hosting and subscription cash, and the Keystone savings it promises are claimed against the same bills. Neither figure is better than the data behind it. Today, cloud cost reaches the books by a quarterly spreadsheet, and nobody can say what technology costs per Stayloft booking. [[finops]] treats technology spend as financial data: billing data under a contract, allocation as master data, accruals and amortization from a cut-off snapshot, a tie-out to the ledger, and unit cost as a governed metric. After it, [[resilience-and-security]] asks how a measured estate survives the day something fails.
 

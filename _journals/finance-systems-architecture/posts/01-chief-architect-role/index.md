@@ -35,7 +35,7 @@ A finance estate is the set of systems, data flows, controls and people that tur
 
 This chapter sets out the job: what architecture is for in a finance estate, why finance makes it different, how the function is organized, where its decision rights stop, and how to tell whether it is any good. It opens Part I because every later chapter assumes the decision rights, standards and vocabulary set out here, applied to the Northmere estate introduced in [[meet-northmere]]. The next chapter, [[capability-mapping]], builds the map those rights need first.
 
-## Setting the Scene: Dana's First Month at Northmere
+## Setting the Scene at Northmere: Dana's First Month at Northmere
 
 Northmere, the fictional multi-brand digital commerce group this book follows, is introduced in full in [[meet-northmere]]. In 2026 it reported about $8.2 billion of revenue on about $64 billion of gross transaction value. It has 71 legal entities in 38 countries and a New York listing that puts its financial reporting under the Sarbanes-Oxley Act. **Dana Whitlock** joined from a payments company in September 2026 as Chief Architect, Enterprise Applications and Financial Systems. She reports to Ravi Menon, the Group CTO, with a dotted line to Tomás Ferreira, the Group CFO, and leads about 30 architects. Her mandate letter gives her **final decision rights on mandatory enterprise-application standards**. The roughly 60 engineers who run the Stayloft Finance Platform, and the finance-systems teams at Wayfare and Tablekin, do not report to her.
 
@@ -225,7 +225,7 @@ The walk showed that nine days was not one problem but three, each with a differ
 
 Dana did not answer "nine days" with "we need a new ERP", the answer vendors and integrators are commercially inclined to give. Nor did she claim architecture alone would fix the close: the calendar is Leila's, and some of the time is policy and people. Her answer was a contribution, in days, with its assumptions shown.
 
-## Dana's Answers to the Three Questions
+## Dana's Answers to Tomás's Three Questions
 
 Dana answered Tomás in writing in mid-November 2026. Each answer was one page, and the three summarized to a table that went into the Keystone board pack.
 

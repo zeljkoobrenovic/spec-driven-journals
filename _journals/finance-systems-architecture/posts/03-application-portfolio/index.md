@@ -224,7 +224,7 @@ Three lessons from applying the layers to finance.
 
 **Innovation must not become record by accident.** A pilot that starts posting to a ledger has changed layer without a decision. At Northmere it is promoted through a decision record, with an owner, a control assessment and a cost line, before it posts, approves or changes financial data. Otherwise it is **Nobody's Bot** in waiting.
 
-## The Full Cost of a Finance Application
+## Total Cost of Ownership of a Finance Application
 
 ### Six components
 
@@ -396,7 +396,7 @@ The main choices in running the practice, with my verdicts:
 
 The right-hand column has a price. Northmere's portfolio practice takes about four FTEs: a portfolio manager, a cost analyst on loan from finance, and the equivalent of two FTEs of domain-architect time for scoring, calibration and decommissioning checks. That is about $0.7 million a year. Wave 0 alone repays it.
 
-## Integration With the Rest of the Estate
+## Integration with the Rest of the Estate
 
 The portfolio shares its data with most of the practices in this book. Every application maps to the capabilities it serves ([[capability-mapping]]), so duplication is a capability with more than one application in the same scope. Waves are approved as decision records, and Tolerate dispositions carry their review dates in the same register ([[architecture-governance]]). The SOX scoping list feeds the fact base, and every decommissioning updates the control matrix ([[controls-and-auditability]]). Technical-fitness scores feed the debt register ([[technical-debt-and-fitness]]), and the contract calendar is shared with vendor tiering ([[vendor-portfolio-strategy]]). One distinction needs care: not every duplicate should go. Two payment service providers are a deliberate redundancy; two payout engines are not ([[redundancy-and-coupling]]). The portfolio marks deliberate redundancy as such so that it is not rationalized away.
 

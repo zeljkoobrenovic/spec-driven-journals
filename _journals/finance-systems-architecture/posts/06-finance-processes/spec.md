@@ -3,7 +3,7 @@ status: accepted
 revised: 2026-10-20
 ---
 
-# Spec: Order to Cash, Procure to Pay, Record to Report
+# Spec: Order-to-Cash, Procure-to-Pay, Record-to-Report
 
 ## Intent
 
@@ -79,3 +79,5 @@ Article only for now.
 - **2026-10-19** — Title renamed from "The End-to-End Finance Processes" to "Order to Cash, Procure to Pay, Record to Report" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 5,823 → 5,870 prose words; lead now states the argument first and the chapter's place in the book (Part I's nine-day-close question, builds on accounting-for-architects, feeds finance-data-architecture and transaction-to-report); 2 headings renamed ("Naming conventions" → "The processes and their owners", "Anatomy of a hand-off" → "The five properties of a hand-off"); 3 two-point paragraphs split; ownership recommendation moved first. Spec unchanged. *(AI-mediated session)*
+- **2026-10-20** — Title renamed from "Order to Cash, Procure to Pay, Record to Report" to "Order-to-Cash, Procure-to-Pay, Record-to-Report" for consistency with the glossary’s hyphenated process names. *(AI-mediated session)*
+- **2026-10-20** — Consistency pass across the book: headings and terms aligned with the style guide and glossary (Setting the Scene at Northmere, From X to Y hand-offs, Trade-offs, Integration with, Total Cost of Ownership, Architecture Advisory Forum, anticorruption, hand-off) and cross-chapter contradictions resolved against the scenario ledger. *(AI-mediated session)*

@@ -398,7 +398,7 @@ The steps that carried the program:
 
 The program did not by itself shorten the 2027 close. In December the payments work finished a day early and the Adyen EUR clearing reconciliation was certified on WD3 for the first time, but the close plan counts that day in 2028, once daily reconciliation has run through a year-end ([[blackline]]).
 
-## Trade-Offs
+## Trade-offs: Northmere's Choices and Their Alternatives
 
 | Decision | Northmere's choice | Alternative | When the alternative is right |
 | --- | --- | --- | --- |

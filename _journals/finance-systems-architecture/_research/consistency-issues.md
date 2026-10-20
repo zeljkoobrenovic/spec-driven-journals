@@ -25,3 +25,10 @@
 23. **FI-CA merchant-invoicing timing 2028.** ch. 27: cohort cut-over from the May 2028 invoicing cycle, done by 31 Dec 2028. ch. 38: Q2 2028 parallel run with SFP still book of record. Canonical: parallel run April 2028 (first month of Q2), first cohort live with the May 2028 cycle (second month of Q2), remaining cohorts through 2028. Align ch. 12, 27, 38 wording.
 24. **ch. 14 SFP subledger cut-over on 1 Sep 2027** violates the calendar rule (September = last month of Q3). Canonical: move to **2 Aug 2027** (second month of Q3) — fix ch. 14 and any chapter that cites the September 2027 cut-over (grep "September 2027" / "Sept 2027" with "cut-over"); ledger line [designing-financial-ledgers] to be annotated.
 25. **SUPERSEDES 24 — SFP merchant subledger cut-over = 1 November 2027** (second month of Q4; ch. 12's early-November slot), shadow posting through the Aug/Sep/Oct 2027 closes. 2 Aug 2027 rejected (Stayloft July–August peak blackout). ch. 12 month-end blackout bullet amended to exempt the planned cut-over at the period boundary.
+
+## 2026-10-20 consistency pass (after the sharpening run)
+
+- Tablekin design authority: the decision meeting is **June 2027** (ledger, [workday]); build-versus-buy's January 2027 scene now asks for it "in June", which also fits its March and May 2027 data.
+- APM root-cause analysis: run **in April 2027** on the ~40,000 lines unmatched at **WD3 of the March close** (payments-to-ledger, finance-processes); blackline aligned.
+- BlackLine "entity certified" signal gates the **entity lock** in OneStream (ledger, onestream); blackline aligned.
+- Headings: "Setting the Scene at Northmere: …" for every opening scene; "From X to Y" for every closing hand-off; "Trade-offs: <subject>"; "Integration with the Rest of the Estate"; level-3 headings in sentence case; glossary terms Total Cost of Ownership, Architecture Advisory Forum, anticorruption layer, hand-off.

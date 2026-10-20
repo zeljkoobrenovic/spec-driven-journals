@@ -330,7 +330,7 @@ Across these cases, **programs fail on governance, data, testing, controls and g
 
 Inside programs, the failure modes are quieter: **the template erodes one reasonable exception at a time**, **the integrator becomes the architect by default** because the enterprise's architects are too few to attend the design workshops, **benefits are re-baselined silently** so the program meets a target that has moved, and **decommissioning is dropped** when the budget tightens, so old and new both run and the retired-systems benefit never arrives.
 
-## Northmere in Practice: Keystone's First Year
+## In Practice: Keystone's First Year
 
 ### The decisions of 2027
 

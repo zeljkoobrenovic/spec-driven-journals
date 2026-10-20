@@ -37,7 +37,7 @@ Both the platform's value and its limits are predictable. It is an excellent **s
 
 A note on corporate status, because it changes quickly: **as of October 2026**, BlackLine, Inc. was listed on Nasdaq (ticker BL). It had been the subject of acquisition interest, including a 2025 offer from SAP that was reported and that BlackLine rejected. In March 2026 its board confirmed a Strategic Committee empowered to evaluate strategic transactions. Check the current position before you rely on it in a vendor strategy.
 
-## Setting the Scene at Northmere: Working Day Three
+## Setting the Scene at Northmere: Working Day 3
 
 Northmere, the fictional multi-brand digital commerce group this book follows, closes its books in **9 working days**. Leila Haddad, the Chief Accounting Officer and Group Controller, has committed to Tomás Ferreira, the Group CFO, that the close will take **5 days by the end of 2028** and 3 by 2030, as part of Program Keystone.
 
@@ -133,7 +133,7 @@ Three boundaries in Figure 2 carry most of the architecture:
 
 - **Inbound copies are not authority.** If a balance in BlackLine disagrees with S/4HANA, S/4HANA is right and the feed is broken. Every feed needs a control total that proves the copy is complete.
 - **Write-back is narrow.** Only approved manual journals flow back to a ledger. Matching results do not post directly; the next sections explain why.
-- **Consolidation gets status, not data.** OneStream's workflow consumes an "entity certified" signal before it accepts that entity's trial balance. Duplicating reconciliation data into the consolidation system creates a second reconciliation system of record. This is the "status, not data" pattern that [[onestream]] develops from the consolidation side.
+- **Consolidation gets status, not data.** OneStream's workflow consumes an "entity certified" signal before it lets that entity be locked. Duplicating reconciliation data into the consolidation system creates a second reconciliation system of record. This is the "status, not data" pattern that [[onestream]] develops from the consolidation side.
 
 ## Transaction Matching: Rule Design for High Volume
 
@@ -188,7 +188,7 @@ I recommend that **these postings come from the subledger or payments platform, 
 
 ### Why 1.9% Stays Unmatched
 
-When Dana's team analyzed the roughly 40,000 unmatched APM lines in the April close, they fell into four groups:
+When Dana's team analyzed the roughly 40,000 APM lines unmatched at WD3 of the March close, they fell into four groups:
 
 | Cause | Share of unmatched lines | Can a better rule fix it? | Real fix |
 | --- | --- | --- | --- |
@@ -340,7 +340,7 @@ Three controls questions apply to any AI preparer, from any vendor:
 
 Northmere's 2027 stance, agreed between Mei and Dana: pilot Verity Prepare on 300 medium-tier accounts, keep a human reviewer on every one, and measure review rejection rates for two quarters before expanding. High-tier accounts stay human-prepared until the evidence supports a change. That is the opposite of **Nobody's Bot**. [[ai-in-finance]] develops the general model.
 
-## Trade-Offs: Alternatives and Overlaps
+## Trade-offs: Alternatives and Overlaps
 
 The market splits into ERP-native capabilities, EPM suites with reconciliation modules, and specialist close platforms. The table below uses only facts verified from vendor documentation or filings; the "when it fits" column is my judgment.
 
@@ -382,7 +382,7 @@ Three lessons apply beyond Northmere:
 
 The plan also says what *not* to do. The second Transaction Matching environment proposed at the WD3 stand-up would have matched nothing the first could not. Dana's decision record declined it and funded the provider-reference work instead.
 
-## Integration With the Rest of the Estate
+## Integration with the Rest of the Estate
 
 The ledgers ([[sap-s4hana]], [[oracle-fusion]], [[workday]]) supply balances and receive approved journals, and their period locks stay authoritative. The payment providers ([[adyen]], [[stripe]]) supply settlement data through Northmere Pay's normalization layer, under the clearing design owned by [[payments-to-ledger]]. OneStream consumes certification status, not reconciliation data. The reconciliation catalog, which lists every boundary that must be proven complete and the tool that proves it, belongs to [[traceability-and-reconciliation]]: BlackLine proves most of those boundaries, but it is not the catalog.
 

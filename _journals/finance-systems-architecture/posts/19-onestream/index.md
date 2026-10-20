@@ -37,7 +37,7 @@ An enterprise with one legal entity and one ledger has no need of a consolidatio
 
 This chapter asks Part II's question of the consolidation layer: what OneStream is for, and what it costs Northmere to depend on it. It starts where [[blackline]] stops. Each entity's books are reconciled, but the ledgers of [[sap-s4hana]], [[oracle-fusion]] and [[workday]] still use three charts of accounts. The governed-mapping decision at the end is the consolidation side of the group chart problem in [[finance-data-architecture]], and it holds until the ERP convergence in [[multiple-erps]] shrinks that problem.
 
-## Setting the Scene: Working Day 7 at Northmere
+## Setting the Scene at Northmere: Working Day 7
 
 Northmere, the fictional multi-brand group this book follows, reports in US dollars under US GAAP and closes its books in nine working days (see [[meet-northmere]]). It is working day 7 of the first-quarter close in April 2027. Leila Haddad, the Chief Accounting Officer, is reviewing revenue by brand in OneStream. Tablekin's usage revenue is $41 million lower than Tablekin's controller reported, and group "Other revenue" is $41 million higher.
 

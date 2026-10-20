@@ -312,7 +312,7 @@ The chain differs from Lisbon's in four ways:
 ![Three chains converge on one consolidation: Stayloft through its subledger and the group ledger, Tablekin and Wayfare through their own ledgers and a mapping step, with consolidation feeding the filings.](assets/images/24-transaction-to-report/three-chains-one-consolidation.jpeg)
 **Figure 4:** *Three business models, three chains, one consolidation. Only Stayloft's chain joins the group in the general ledger; Tablekin and Wayfare join in OneStream, so for two of the three chains the mapping rule is the first group-level control their transactions meet.*
 
-## Trade-Offs: Where a Brand's Chain Joins the Group
+## Trade-offs: Where a Brand's Chain Joins the Group
 
 The most consequential design choice in the chain is **where each brand's records join the group's books**. Northmere has three answers at once, and the 2027 Q4 convergence decision is about which one becomes the standard ([[multiple-erps]]).
 
@@ -325,7 +325,7 @@ The most consequential design choice in the chain is **where each brand's record
 
 The test I recommend, and the one Dana put to Northmere's design authority, is: **at which hop does a transaction first meet a group-owned control, and how far is that hop from where the transaction happened?** For Stayloft it is hop 5, the posting into S/4HANA under the group chart and period table, the night after the event. For Tablekin and Wayfare it is the OneStream mapping, weeks after the event. The further away the first group control sits, the more the chain depends on the brand's controls being as good as the group's, and the later errors are found. That is not an argument for converging everything: a small acquired brand with a good ERP can stay federated for years. But federation must be paid for with controls at the mapping hop as strict as those on a posting hop, and in 2027 Northmere did not have them.
 
-## Integration With the Rest of the Estate
+## Integration with the Rest of the Estate
 
 Each hop is owned elsewhere in the book: the entries by [[accounting-for-architects]], the engine by [[designing-financial-ledgers]], SFP's boundaries by [[custom-finance-platforms]], the payment hops by [[payments-fundamentals]], [[adyen]] and [[stripe]], the ledgers by [[sap-s4hana]], [[workday]] and [[oracle-fusion]], the close by [[blackline]] and consolidation by [[onestream]]. The rest of Part III takes the chain apart at its hardest boundaries: hop 4 in [[payments-to-ledger]], hop 11 in [[finance-data-flows]], authority per hop in [[systems-of-record]], the events behind hops 1–3 in [[loosely-coupled-domains]], and the keys and controls as a reconciliation catalog in [[traceability-and-reconciliation]].
 

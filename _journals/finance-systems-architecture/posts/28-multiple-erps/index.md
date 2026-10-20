@@ -35,7 +35,7 @@ This chapter treats coexistence as an architectural choice with five patterns. I
 
 The chapter builds on two earlier threads. [[systems-of-record]] assigned authority for each piece of data but assumed that each entity's books live in one ledger. The platform chapters supplied the vendor facts: [[sap-s4hana]] covers Central Finance at SAP level, [[oracle-fusion]] covers Accounting Hub and Wayfare's options, and [[workday]] covers Accounting Center and Tablekin's second-tier recommendation. This chapter turns those facts into the decision Northmere took in December 2027, which [[incremental-modernization]] then carries out brand by brand. It owns three terms: **two-tier ERP**, **accounting-hub coexistence** and the **convergence criteria**.
 
-## Setting the Scene: Three Ledgers and a Date That Cannot Move
+## Setting the Scene at Northmere: Three Ledgers and a Date That Cannot Move
 
 Northmere, the fictional multi-brand digital commerce group this book follows, runs three ERPs in 2027. **SAP S/4HANA** is the group finance core for 55 company codes: Stayloft, Northmere Pay, Northmere Ads and the corporate entities. **Oracle Fusion Cloud ERP** holds Wayfare's 12 legal entities in three primary ledgers, one per functional currency. **Workday Financial Management** holds Tablekin's four companies in Tablekin's own pre-acquisition tenant. The three meet only at consolidation, in **OneStream**, through three charts of accounts. Until May 2027, about 6,100 mapping rows sat in 14 workbooks.
 
@@ -297,7 +297,7 @@ Whatever the pattern, the left column of the Swiss-Army ERP table must be enforc
 
 **Intercompany** needs one rule more: **originate once, record twice.** A cross-ERP charge is created in one place with both entities' register IDs and a shared reference, and the counterpart is generated from it, so matching confirms agreement instead of discovering differences. The rate service removes Northmere's FX-driven differences; originating once removes most of the rest. This is the interface Tablekin's second tier needs.
 
-## Integration With the Rest of the Estate
+## Integration with the Rest of the Estate
 
 The canonical events and adapter kit that route B depends on are owned by [[loosely-coupled-domains]]. The migration of each brand through shadow mode, parallel runs and period-boundary cut-overs follows [[incremental-modernization]]. Authority over balances moves from brand ledgers to the group core in [[systems-of-record]]'s transitional rows. OneStream remains the only consolidation ([[onestream]]). BlackLine certifies the engine's tie-outs and the remaining tier's reconciliations ([[blackline]]). The vendor-dependency consequences, with one ERP vendor fewer and an in-house engine to sustain, belong to [[vendor-portfolio-strategy]].
 

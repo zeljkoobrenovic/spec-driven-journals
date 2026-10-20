@@ -35,7 +35,7 @@ Finance is where untestable principles cost the most. The defects they fail to p
 
 [[architecture-governance]] built the machinery that approves, waives and checks standards; this chapter supplies what that machinery governs. It treats principles, standards and reference architectures as one chain: **intent becomes principles, the load-bearing principles become standards, standards are made concrete in reference architectures, and reference architectures are delivered as golden paths**. Each link carries a test. The chain is how a Chief Architect with narrow decision rights ([[chief-architect-role]]) shapes an estate whose engineers mostly report elsewhere, and its standards and waivers become a measure of progress in [[target-and-transition-states]].
 
-## Setting the Scene: A Principle That Did Not Stop $41 Million
+## Setting the Scene at Northmere: A Principle That Did Not Stop $41 Million
 
 Northmere, the fictional multi-brand digital commerce group this book follows, closed its first quarter of 2027 in April. On working day 7, a group reporting analyst noticed that "Other revenue" was $41 million higher than forecast. The cause, described in [[finance-data-architecture]], was ordinary. Tablekin's finance systems team had added a ledger account for usage revenue in Workday. No mapping row existed for it in the spreadsheets that fed OneStream, and a catch-all rule put the whole balance in "Other revenue". Nobody had done anything forbidden, because nothing was forbidden.
 
@@ -144,7 +144,7 @@ These are the principles Northmere adopted in May 2027. I would propose them, ad
 **Statement:** Vendor platforms are extended through released interfaces, side-by-side services and configuration; no modifications to vendor objects and no direct writes to vendor tables.
 
 - **Rationale.** Northmere carries about 2,300 custom objects in S/4HANA and needs about seven months per upgrade (**Customization Concrete**). SAP classifies extensions by **clean core levels A to D**: Level A uses released APIs, and Level D (modifications, direct table writes, implicit enhancements) is not recommended; SAP names the ABAP Test Cockpit (ATC) as the key code-governance tool ([SAP News, 2025](https://news.sap.com/2025/08/extend-sap-s4hana-cloud-right-way-clean-clear/)). The principle applies equally to Fusion, Workday and SaaS close tools.
-- **Implications.** There must be a sanctioned place for the extension: a side-by-side platform or a Northmere service behind an anti-corruption layer. Without one, the principle is a ban, and bans get waived.
+- **Implications.** There must be a sanctioned place for the extension: a side-by-side platform or a Northmere service behind an anticorruption layer. Without one, the principle is a ban, and bans get waived.
 - **Conformance test.** ATC clean-core checks run in the transport pipeline; new Level D objects fail; Level C needs a recorded decision. For SaaS, custom objects are inventoried before each vendor release.
 - **Counter-example.** A user exit that changes posting logic inside the ERP for one brand.
 
@@ -369,7 +369,7 @@ Guidance decays predictably: it goes stale as platforms change, accumulates exce
 
 **A yearly review that can delete.** The design authority reviews each principle and standard against the year's incidents, waivers and decisions, and must be able to retire guidance, not only add it. A catalog that only grows stops being read.
 
-## Integration With the Rest of the Estate
+## Integration with the Rest of the Estate
 
 This chapter supplies the content that the governance machinery in [[architecture-governance]] approves and waives. The reference architectures summarize designs owned by [[payments-to-ledger]], [[loosely-coupled-domains]], [[designing-financial-ledgers]], [[traceability-and-reconciliation]] and [[systems-of-record]]; clean core depends on the extension options in [[sap-s4hana]] and [[oracle-fusion]].
 

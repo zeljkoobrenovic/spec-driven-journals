@@ -282,7 +282,7 @@ The Lisbon booking makes the boundaries concrete. A traveler from Germany books 
 | Tax | A determination on the commission (simplified here; VAT on commission depends on the property's status and location) | on €90.00 | Taxable event, jurisdiction |
 | General Ledger | One contribution to a daily summarized journal line among ~38,000 | (summarized) | Journal entry, GL account, period |
 
-Five contexts and one booking: the same €600 is a capture, a liability, an open item and part of a summary, and €90 of it is revenue. That is not duplication. It is **five legitimate models of one economic event**, each owned by a team that understands it. The design problem is not to merge them into one model; it is to keep the relationships explicit and the totals reconcilable at every boundary, which is the subject of [[traceability-and-reconciliation]].
+Seven contexts and one booking: the same €600 is a capture, a liability, an open item and part of a summary, and €90 of it is revenue. That is not duplication. It is **seven legitimate models of one economic event**, each owned by a team that understands it. The design problem is not to merge them into one model; it is to keep the relationships explicit and the totals reconcilable at every boundary, which is the subject of [[traceability-and-reconciliation]].
 
 ![One €600 booking card at the center, seen through five windows as a capture, a liability, an open item, €90 of revenue and part of a ledger summary.](assets/images/02-capability-mapping/one-booking-many-models.jpeg)
 **Figure 4:** *One Lisbon booking, five legitimate models: the same €600 is a capture, a liability, an open item and part of a summary, and €90 of it is revenue; the design task is to keep the boundaries reconcilable, not to merge the models.*
@@ -311,7 +311,7 @@ Conway's law, in Fowler's summary, says organizations design systems that mirror
 
 ## Capabilities to Applications to Teams: Finding the Ownership Gaps
 
-The final step of version 1 was a three-column trace for every level-2 capability: the capability, the applications that implement it, and the team that owns each application, plus a fourth column for the **capability owner**, a named Finance leader accountable for the outcome regardless of tool.
+The final step of version 1 was a trace for every level-2 capability: the capability, the applications that implement it and the team that owns each application, plus a column for the **capability owner**, a named Finance leader accountable for the outcome regardless of tool, and one for the gap the trace revealed.
 
 ![Account reconciliation, tax determination and partner payouts each trace to applications tagged with their owning teams: one reconciliation tool has no owner, and Wayfare owns one application in each of the three overlaps.](assets/images/02-capability-mapping/overlaps-to-owning-teams.jpeg)
 **Figure 5:** *Three overlapping capabilities traced to applications and owning teams: one application has no owner, and one team owns the minority implementation of all three overlaps.*

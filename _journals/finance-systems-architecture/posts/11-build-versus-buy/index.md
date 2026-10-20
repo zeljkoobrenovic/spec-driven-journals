@@ -35,7 +35,7 @@ This chapter replaces that argument with a method. The unit of decision is the *
 
 The second half is about buying well: **fit-to-standard**, a selection process built on the enterprise's hardest scenarios, a scoring model that survives scrutiny, exit terms under the EU Data Act and DORA, and the rules for rationalizing finance systems after an acquisition. Part II applies the method platform by platform: [[workday]] uses it to settle whether Tablekin stays on Workday, and [[custom-finance-platforms]] to classify SFP's components. Vendor tiering and exit plans across the portfolio belong to [[vendor-portfolio-strategy]], and running several ERPs side by side to [[multiple-erps]].
 
-## Setting the Scene: Three Sourcing Decisions at Northmere
+## Setting the Scene at Northmere: Three Sourcing Decisions at Northmere
 
 Northmere, the fictional multi-brand digital commerce group this book follows (see [[meet-northmere]]), carries three sourcing decisions that show the whole problem between them.
 
@@ -45,7 +45,7 @@ Northmere, the fictional multi-brand digital commerce group this book follows (s
 
 **An inheritance from 2023.** Northmere acquired **Tablekin**, a software company for restaurants and venues, in 2023. Tablekin earns subscription fees, a usage fee per seated cover, and a margin on payments it facilitates through Stripe Connect, about 11% of group revenue in 2026. It ran **Workday Financial Management** before the acquisition and still does, in its own Workday tenant, federated into the group only at consolidation in OneStream. Nobody decided that it should stay; nobody decided that it should go.
 
-In January 2027 Tomás Ferreira, the Group CFO, asks Dana Whitlock, the Chief Architect, to bring the Tablekin question to the Keystone design authority in February. Program Keystone, the group's five-year finance transformation, aims for one group finance core on S/4HANA by 2029, and the choice between SAP Central Finance and an accounting-hub pattern for converging the brand ledgers is due in the fourth quarter of 2027. Arjun Rao, Tablekin's Head of Finance Systems, wants to keep Workday; Sven Aalto, the SAP Platform Lead, wants Tablekin on the group template. Both vendors' account teams have already sent offers. Tomás's question is short: *stay, move, or something else?* Dana answers that she wants one method, applied first to SFP, which was built, and OneStream, which was bought, so the design authority can see whether it would have caught what went wrong. The platform-level comparison of Workday against the group S/4HANA template belongs to [[workday]]; this chapter builds the method that produced it.
+In January 2027 Tomás Ferreira, the Group CFO, asks Dana Whitlock, the Chief Architect, to bring the Tablekin question to the Keystone design authority in June. Program Keystone, the group's five-year finance transformation, aims for one group finance core on S/4HANA by 2029, and the choice between SAP Central Finance and an accounting-hub pattern for converging the brand ledgers is due in the fourth quarter of 2027. Arjun Rao, Tablekin's Head of Finance Systems, wants to keep Workday; Sven Aalto, the SAP Platform Lead, wants Tablekin on the group template. Both vendors' account teams have already sent offers. Tomás's question is short: *stay, move, or something else?* Dana answers that she wants one method, applied first to SFP, which was built, and OneStream, which was bought, so the design authority can see whether it would have caught what went wrong. The platform-level comparison of Workday against the group S/4HANA template belongs to [[workday]]; this chapter builds the method that produced it.
 
 ## The Sourcing Spectrum and When Each Choice Fits
 
@@ -110,7 +110,7 @@ Nothing in Tablekin's finance estate passes the differentiation test except the 
 
 The tests also narrowed the options. A **compose** option, with Stripe Billing and Stripe Revenue Recognition feeding an accounting hub that posts into S/4HANA, is the route Option B would take if the fourth-quarter decision chooses a hub, so it is assessed with that decision. An **outsource** option fails the controls test for a significant account at an SEC registrant building one finance core; the decision record says so in one line. That left three options for the cost comparison.
 
-## Cost of Ownership Over Seven to Ten Years
+## Total Cost of Ownership Over Seven to Ten Years
 
 The tests decide what kind of answer is admissible. The cost decides whether it is affordable, and it must be counted over the life of the decision, not the life of the business case.
 
@@ -310,7 +310,7 @@ The rules behind the figure, which Northmere adopted in its decision-record temp
 
 Applied to Northmere: **Tablekin** was never properly wrapped in 2023 (its chart is mapped in a spreadsheet, its workers copied nightly), and its business model differs from the group template, which is why it reaches the "keep as a tier" question at all. **Wayfare**, acquired in 2024 on Oracle Fusion, is closer to the group template; its future belongs to the fourth-quarter convergence decision and [[oracle-fusion]]. Coexistence patterns and convergence economics belong to [[multiple-erps]].
 
-## Integration With the Rest of the Estate
+## Integration with the Rest of the Estate
 
 Sourcing decisions start from the **capability map** ([[capability-mapping]]), whose level-2 capabilities are the unit of the three tests, and from the **portfolio fact base** ([[application-portfolio]]), whose dispositions and six-component costs are the baseline for every option. [[controls-and-auditability]] supplies the controls-burden evidence, and [[integration-architecture]] sets the interface knock-outs; the canonical financial events are what make a composed or wrapped estate reconcilable at all. Downstream, a sourcing decision becomes a migration ([[modernization-patterns]]), a dependency to manage ([[vendor-portfolio-strategy]]) and a step in the roadmap ([[target-and-transition-states]]). The decision record links in both directions, so that when a PoC condition fails or a vendor repackages, the dependent decisions can be found.
 

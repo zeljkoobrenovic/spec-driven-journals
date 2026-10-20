@@ -38,7 +38,7 @@ These platforms grow. A commission engine acquires an invoicing module because t
 
 Part II asks every platform what it masters, what it only receives, how its numbers are proven against the ledger and what it would cost to leave. It starts with the platforms an enterprise builds itself, because their boundary is the one most often never drawn. This chapter makes the decision nobody made: which finance capabilities to build, **where the boundary with the ERP must sit**, what owning really costs, and an **explicit retirement test** for deciding what to keep, converge or switch off. It applies the per-capability method of [[build-versus-buy]] and the per-component dispositions of [[modernization-patterns]] to Northmere's Stayloft Finance Platform, and its boundary rules and control totals are the ones [[sap-s4hana]], [[transaction-to-report]] and [[traceability-and-reconciliation]] rely on. The internals of a custom ledger (posting rules, invariants, idempotency, bi-temporality) belong to the next chapter, [[designing-financial-ledgers]]: this chapter decides what such a ledger should own; that one explains how to build it.
 
-## Setting the Scene: The SFP Question at Northmere
+## Setting the Scene at Northmere: The SFP Question at Northmere
 
 Northmere, the fictional group this book follows (see [[meet-northmere]]), is a multi-brand digital commerce group with about $8.2 billion of revenue in 2026. Its largest brand, Stayloft, is an accommodation marketplace that runs two business models side by side. Under the **agency model**, the property collects the traveler's payment and Stayloft invoices the property a monthly commission. Under the **merchant model**, Stayloft collects the payment, holds it until after the stay, and pays the property net of commission. The merchant share of Stayloft's gross transaction value rose from 51% in 2023 to 64% in 2026, and with it the amount of money, liability and reconciliation that runs through Stayloft's finance systems.
 
@@ -109,9 +109,9 @@ The case against building is not that engineers cannot write finance software. I
 | Licensed-entity needs | Regulatory reporting and daily reconciliation obligations | The licensed entity owns the requirement; the platform owns the evidence |
 | Cost at scale | Hidden people and control costs | A full cost of owning, refreshed every year |
 
-## The True Cost of Owning
+## The Total Cost of Ownership
 
-The four burdens add costs that business cases for custom finance platforms leave out. Those cases count engineers and cloud spend; at Northmere the rest comes to almost half the total. In March 2027 Dana's team estimated SFP's annual cost of owning (illustrative, rounded):
+The four burdens add costs that business cases for custom finance platforms leave out. Those cases count engineers and cloud spend; at Northmere the rest comes to nearly a third of the total. In March 2027 Dana's team estimated SFP's annual cost of owning (illustrative, rounded):
 
 | Cost line | What it covers | Estimate per year |
 | --- | --- | --- |
@@ -277,7 +277,7 @@ The table also answers the original question in Tomás's terms. Of SFP's nine co
 ![Nine blocks taken out of one platform outline: three kept in a teal workshop, four moving to a blue group platform, two in a grey retirement bin.](assets/images/13-custom-finance-platforms/nine-components-nine-answers.jpeg)
 **Figure 5:** *SFP is nine components, not one, and they get nine answers: three stay custom, four converge onto group platforms and two are retired, because the retirement test is asked per component rather than per platform.*
 
-## Trade-Offs: Where the Merchant Subledger Could Live
+## Trade-offs: Where the Merchant Subledger Could Live
 
 The most consequential verdict in the table is the merchant subledger's, and it is not settled until the Q4 2027 decision on how brand ledgers converge. The options are compared below; the platform chapters explain each vendor product in depth ([[sap-s4hana]], [[oracle-fusion]], [[workday]]).
 
@@ -293,7 +293,7 @@ My recommendation to Northmere is the FI-CA option, conditional on the volume pr
 
 *A note from later in the story: this May 2027 recommendation did not survive. On 8 December 2027 the Keystone design authority chose the accounting-hub pattern for brand-ledger convergence, with a group accounting engine generalized from SFP's redesigned subledger engine posting into S/4HANA; FI-CA keeps merchant invoicing but not the merchant subledger. The record above is left as it was argued at the time; [[multiple-erps]] tells the decision and [[incremental-modernization]] the migration that followed.*
 
-## Integration With the Rest of the Estate
+## Integration with the Rest of the Estate
 
 A custom finance platform touches nearly every other part of the estate, and each contact has an owner elsewhere in this book:
 

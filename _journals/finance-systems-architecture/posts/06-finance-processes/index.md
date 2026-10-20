@@ -1,5 +1,5 @@
 ---
-title: "Order to Cash, Procure to Pay, Record to Report"
+title: "Order-to-Cash, Procure-to-Pay, Record-to-Report"
 date: 2026-10-18
 author: Željko Obrenović
 excerpt: "Which end-to-end processes does a finance estate serve, and where do they cross systems? Every process, from Record-to-Report to partner payouts, is a chain of hand-offs between systems and owners, and the architecture of a finance estate lives in those hand-offs: their cut-offs, identifiers, ownership changes and reconciliations."
@@ -35,7 +35,7 @@ Finance teams describe their work in processes: **Record-to-Report** (R2R), **Pr
 
 Two documents run through the chapter: a supplier invoice that enters through Coupa and leaves through a bank, and the Lisbon booking, a €600 merchant-model stay that touches seven processes before it becomes €90 of revenue. Following both is the fastest way I know to find where an estate's design is weak.
 
-## Setting the Scene: Two Documents Dana Asked to Follow
+## Setting the Scene at Northmere: Two Documents Dana Asked to Follow
 
 Northmere, the fictional multi-brand digital commerce group this book follows, closes its books in nine working days in early 2027; Program Keystone, its finance transformation, targets five by the end of 2028. In February 2027 Dana Whitlock, the Chief Architect for Enterprise Applications and Financial Systems, asked Leila Haddad, the Chief Accounting Officer: "Where do the nine days go?" Leila answered with a close calendar. Dana asked instead for two documents to be followed from origin to the consolidated statements, with every change of system, owner and identifier recorded on one sheet.
 
@@ -381,7 +381,7 @@ The rule I use: **put judgment in the system that owns the domain, put translati
 
 On ownership, I recommend process-aligned ownership paired with capability-aligned ownership: **the process owner signs the hand-off contract; the capability owner implements it.** System-aligned ownership gives clear technical accountability but orphans the hand-offs. Process-aligned ownership gives one owner for end-to-end metrics and exceptions, but it needs authority over brand teams. Capability-aligned ownership prevents duplicates, but nobody owns the outcome. Where a process owner cannot be given authority over brand engineering, the hand-off contract should at least be an architecture standard the review board enforces.
 
-## Integration With the Rest of the Estate
+## Integration with the Rest of the Estate
 
 This chapter owns the process view; other chapters own the layers it crosses. [[finance-landscape]] places each system of the matrix in the reference model. [[accounting-for-architects]] owns the journal entries behind each step. [[finance-data-architecture]] owns the master data every hand-off depends on. [[controls-and-auditability]] turns the key controls here into a control framework. [[integration-architecture]] supplies the idempotency and control-total mechanics, [[loosely-coupled-domains]] the canonical events the Lisbon trace used, and [[systems-of-record]] formalizes how authority over an item moves from booking platform to subledger to GL.
 

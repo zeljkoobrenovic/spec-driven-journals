@@ -312,7 +312,7 @@ The layers are **logical responsibilities, not physical tiers**. Misreading this
 
 The model describes a multi-entity commercial group. In banks and insurers, core banking and policy administration are subledgers of extraordinary depth; the model still applies, but layer 2 becomes most of the estate.
 
-## Integration With the Rest of the Estate
+## Integration with the Rest of the Estate
 
 [[systems-of-record]] decides authority per data object, which often moves between layers: the booking in layer 1, the receivable in layer 2, the balance in layer 3. [[integration-architecture]] designs the integration plane; [[controls-and-auditability]] and [[traceability-and-reconciliation]] design the control plane and the reconciliation at each boundary. [[designing-financial-ledgers]] goes deep into layer 2, Part II places each vendor on the model, and [[transaction-to-report]] follows one booking through every layer from event to filing.
 

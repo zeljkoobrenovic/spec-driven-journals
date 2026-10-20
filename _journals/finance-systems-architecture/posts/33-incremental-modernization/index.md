@@ -205,7 +205,7 @@ The same pattern ran for expected PSP receivables and traveler-side open items i
 
 **People and hypercare.** Hypercare ran with two stand-ups a day, a single incident queue for finance, payments and engineering, and a named decision-maker on duty: the Head of Partner Settlement for payouts and Leila's deputy for accounting. Under the exit criteria in [[finance-transformation]], hypercare could not end before the June quarter-end close and four weeks without priority-1 or priority-2 incidents.
 
-### What Went Wrong in Stage 1
+### What went wrong in stage 1
 
 Stage 1 did not go cleanly, and that is why it came first.
 
@@ -295,7 +295,7 @@ Two details in the runbook came from stage 1. The delta load exists because Octo
 
 **Measured outcome of the whole migration** (illustrative, first half of 2030 against 2027): the SFP-to-S/4HANA summarization interface and its custom posting path retired; partner payables and expected PSP receivables drill back from S/4HANA to the booking through one engine for every Stayloft and Wayfare entity; Stayloft finance operations for the subledger reduced from about 25 FTE to about 14 in Dublin; 11 SFP key controls retired and 6 replaced by the engine's group controls; about $2.2 million a year of infrastructure and controls cost removed from SFP; and the Stayloft engineers who built the engine now run it as a group service.
 
-## Trade-Offs: How Else the Subledger Could Have Moved
+## Trade-offs: How Else the Subledger Could Have Moved
 
 | Approach | How it works | Strength | Weakness | Right when |
 | --- | --- | --- | --- | --- |
@@ -305,7 +305,7 @@ Two details in the runbook came from stage 1. The delta load exists because Octo
 
 Northmere's approach cost the most in transitional architecture, and it is the only one where **every intermediate state could be closed, audited and, until a stated point, reversed.**
 
-## Integration With the Rest of the Estate
+## Integration with the Rest of the Estate
 
 The migration changed little outside the subledger, by design. **Producers did not change**, because the canonical event contract in [[loosely-coupled-domains]] was the seam. **Payments-to-ledger did not change**: only the system holding the expected receivables moved, as [[payments-to-ledger]] intended. **OneStream did not change**, because trial balances still came from S/4HANA under CoA v2 ([[onestream]]). **BlackLine** carried the temporary reconciliations as catalog entries with expiry dates, removed when their cohorts exited ([[blackline]]). The **partner hub** became the only path into FI-CA in 2029 ([[finance-data-architecture]]), so no cohort carried the duplicate partner records of the 2025 load.
 
@@ -348,7 +348,7 @@ Dana did not run this migration; the Keystone program did ([[finance-transformat
 9. Does hypercare end after the first quarter-end close on the new book?
 10. When will the old components be deleted, who has retrieved an item from the archive without them, and what was the result?
 
-## Closing
+## From Integration to Leadership
 
 This chapter closes Part III. The estate has been treated as one system: events, payments, data, authority, coupling, traceability, onboarding, and now the movement of a book of record from one part of that system to another without a bad close. Every chapter in this part relied on decisions someone had to take, record and enforce: slicing, tolerances, standards, waivers with expiry dates, and the right to say no to a plan date. Part IV ([[part-4]]) turns to that leadership work, starting with how a Chief Architect governs a federated finance estate so that decisions like these are fast, recorded and respected, in [[architecture-governance]].
 

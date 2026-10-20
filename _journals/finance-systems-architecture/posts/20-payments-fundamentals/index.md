@@ -35,7 +35,7 @@ Part II has so far covered the ledgers, ERPs and close platforms; this chapter t
 
 The chapter traces two real-looking payments, a €600 booking and a €420 chargeback, from the moment a traveler presses "pay" to the moment the books can prove what happened. Both come from Northmere, the fictional group this book follows (see [[meet-northmere]]), which moved about 420 million payment transactions through its payments platform in 2026.
 
-## Setting the Scene: Why Is €600 Not Cash Yet?
+## Setting the Scene at Northmere: Why Is €600 Not Cash Yet?
 
 It is late March 2027. Tomás Ferreira, Northmere's Group CFO, has a question that sounds simple. A traveler from Germany booked a three-night stay in a Lisbon apartment on Stayloft, Northmere's accommodation brand, on 12 March. The booking screen showed the payment as successful that afternoon. Why did the €600 appear in no bank report that day? Why was the bank credit that later contained it a net figure that matched no single booking? And why, at month-end, did Northmere's provider clearing and suspense accounts hold about **€14 million** that nobody could fully explain?
 
@@ -101,7 +101,7 @@ The common misconception is that **"authorized" means "paid."** The order system
 ![A path of payment states from Authorized through Captured, Cleared and Settled to Paid out, with side branches to Expired and Cancelled and later branches to refunds and disputes, including a loop from reversed chargeback back to disputed.](assets/images/20-payments-fundamentals/card-payment-states.jpeg)
 **Figure 3:** *A card payment's states. Only the first transitions are visible at checkout. Expiry and void move no money, refunds can fail, and a reversed chargeback can be disputed again. The ledger must handle every state, including those that occur after the original period has closed.*
 
-### The Lisbon Booking, Step by Step
+### The Lisbon booking, step by step
 
 The traveler pays **€600.00** including VAT with a German consumer debit card, through Adyen, on Friday **12 March 2027**, for a stay on **18–21 April 2027**. Stayloft's commission is **15%**, or **€90.00**; the property is owed **€510.00**. The contracting entity is Stayloft B.V.; Northmere Payments B.V. receives the money. VAT on the commission is ignored to keep the example readable. Event names are Program Keystone's canonical financial events.
 
@@ -188,7 +188,7 @@ Adyen's documented stages run from an optional request for information, through 
 ![Dispute states from Inquiry and Notified to Debited, where funds leave, then either Accepted or Defended, ending Reversed or Lost, with a second cycle that can reopen a win.](assets/images/20-payments-fundamentals/card-dispute-states.jpeg)
 **Figure 5:** *A card dispute, generalized from documented provider flows. Funds leave at "Debited", long before the outcome is known, and a win can be reopened. Each state needs its own accounting, and each transition can land in a different period from the sale.*
 
-### The €420 Chargeback
+### The €420 chargeback
 
 The second example is a separate Stayloft merchant booking of **€420**, paid by card through Adyen on 2 April 2027 for a stay on 1–4 May. The commission is €63 (15%), and the property's €357 payout settles on 7 May. On **13 June 2027**, 40 days after check-out, Adyen notifies Northmere Pay of a chargeback: the traveler says the apartment was not as described.
 

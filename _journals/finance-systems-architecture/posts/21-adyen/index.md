@@ -374,7 +374,7 @@ Two further Balance Platform products would each add a flow to reconcile. **Issu
 
 The pattern in the table is consistent with the rest of this book: **use the provider's data as the evidence, keep the record in the enterprise**. The provider's reports are excellent evidence. They are not the enterprise's ledger, and an architecture that lets them become one has built **The Shadow Ledger** on someone else's servers.
 
-## Integration With the Rest of the Estate
+## Integration with the Rest of the Estate
 
 Each Adyen interface has an owner:
 
@@ -385,7 +385,7 @@ Each Adyen interface has an owner:
 - **FinDB** on Snowflake, owned by Owen Mbeki, keeps raw reports and normalized lines for fee and settlement-time analysis.
 - **Stripe**, the secondary provider for Stayloft, produces the same canonical events from its balance transactions, so nothing downstream of Northmere Pay knows which provider processed a booking unless it asks ([[stripe]]).
 
-The **anti-corruption layer**, the boundary that translates a vendor's model into the enterprise's, sits at Northmere Pay's edge. It is the most important structural decision in this chapter, and the one that makes the dependency hedges below possible.
+The **anticorruption layer**, the boundary that translates a vendor's model into the enterprise's, sits at Northmere Pay's edge. It is the most important structural decision in this chapter, and the one that makes the dependency hedges below possible.
 
 ## Strengths, Limits and Dependency Risk
 

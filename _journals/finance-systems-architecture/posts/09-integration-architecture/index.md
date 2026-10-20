@@ -35,7 +35,7 @@ That standard adds **control totals** (counts and sums that sender and receiver 
 
 Every interface count, control total and reconciliation in [[controls-and-auditability]] assumes that data moves between systems completely, once and on time; this chapter designs for that assumption. It owns four terms that later chapters rely on: the **integration styles**, **idempotency**, **control totals** and the **transactional outbox**. It introduces the canonical financial events that [[loosely-coupled-domains]] develops in depth, and it gives the vendor integration surfaces at a glance; the platform chapters hold the detail.
 
-## Setting the Scene: The Night January Was Posted One and a Half Times
+## Setting the Scene at Northmere: The Night January Was Posted One and a Half Times
 
 Northmere, the fictional group this book follows, closes January 2027 in the first week of February. On Monday 1 February, at 02:40 Amsterdam time, the Stayloft Finance Platform (SFP), the custom system that holds Stayloft's merchant subledger, writes its daily summary for posting date 31 January: about 38,000 general-ledger lines summarized from about 3 million subledger lines. The file goes by SFTP to an SAP Integration Suite flow, which splits it into journal entries and posts them into SAP S/4HANA through SAP's journal entry posting API.
 
@@ -386,7 +386,7 @@ Lucía's team built the inventory in six weeks from LeanIX, integration-platform
 8. Which vendor surface and version does this interface depend on, and what is the plan when that version is deprecated?
 9. How much money is in flight on this interface right now, and how old is the oldest item?
 
-## Next: Many Entities, Currencies and Jurisdictions
+## From Interfaces to Entities, Currencies and Jurisdictions
 
 This chapter treated an interface as a pipe between two systems. At Northmere, almost every pipe also crosses a boundary between legal entities, currencies or jurisdictions. The Lisbon booking's €600 moves from a Dutch e-money institution's safeguarding account to a Portuguese property, its commission settles intercompany, and its period depends on whose clock is read. The next chapter, [[global-scale]], takes up the legal-entity, intercompany, multi-currency and multi-jurisdiction design that the integration layer has to carry correctly.
 
