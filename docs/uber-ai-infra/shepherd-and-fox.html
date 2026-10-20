@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Shepherd and Fox: From Migration Campaigns to Self-Improving Codebases</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">RETROFITTED: How Uber Built AI-Native Engineering on a Decade of Developer Platforms</a><span class="nav-right"><a class="nav-prev" href="code-review-signals.html" title="Code Inbox: Spending Human Review Where the Risk Is">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="wisdom-and-debug-assist.html" title="From Bug Report to Fix: Wisdom, DebugAssist and the Closed Loop">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part III — LIFECYCLE: The Feature Path, Rewired</p>
+        <h1>Shepherd and Fox: From Migration Campaigns to Self-Improving Codebases</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-20  ·  25 min read · <a class="spec-link" href="shepherd-and-fox.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/17-shepherd-and-fox/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/17-shepherd-and-fox/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">RETROFITTED: How Uber Built AI-Native Engineering on a Decade of Developer Platforms</a><span class="nav-right"><a class="nav-prev" href="code-review-signals.html" title="Code Inbox: Spending Human Review Where the Risk Is">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="wisdom-and-debug-assist.html" title="From Bug Report to Fix: Wisdom, DebugAssist and the Closed Loop">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Shepherd and Fox: From Migration Campaigns to Self-Improving Codebases", "date": "2026-10-20", "author": "Željko Obrenović", "excerpt": "Who upgrades a library across a monorepo, and who keeps code healthy every week? At Uber, Shepherd turns each migration into a campaign of deterministic or agentic per-module PRs routed to their owners, and Fox, built on the same platform, enrolls services in maintenance skills that open a PR every Sunday; the documented lesson underneath is that deterministic tools still do the bulk of the work and AI handles the long tail.", "permalink": "shepherd-and-fox", "timetoread": "25 min read", "icon": "assets/icons/17-shepherd-and-fox.png", "logo": "assets/images/17-shepherd-and-fox/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Follow how Uber runs migrations as campaigns on its Shepherd platform, using the documented JUnit 4 to JUnit 5 migration as the worked example, and how Fox reuses that platform to run maintenance skills as a weekly managed agentic loop that services opt into.\n\n> **WHY IT MATTERS:** AI makes code cheaper to write, so codebases grow faster and decay faster. A company that cannot change code across thousands of modules owned by hundreds of teams will spend its AI gains on maintenance by hand. A change platform with ownership, per-module PRs and campaign tracking is what lets agents do that maintenance safely.\n\n> **KEY POINTS:**\n>\n> * **A campaign is the unit of change, and the PR per module is its delivery.** Shepherd knows which team owns which module, generates one PR per module, sends each through normal CI and review, and gives a campaign owner a tracker. Uber's 2026 JUnit post reports 75,000+ test classes migrated in about four months through 5,000+ diffs.\n> * **Deterministic first, agentic for the rest.** Uber's written account says bulk migration with generative AI was tried and failed. OpenRewrite recipes did the JUnit migration, and AI was kept for debugging failures. Agentic Shepherd campaigns exist for changes no recipe can express, such as fixing tracing context propagation across services.\n> * **Fox turns one-off migrations into a standing loop.** As Medisetty described it, services enroll in skills such as dead code cleanup, performance analysis and noisy logs. Every Sunday, when CI load is low, Fox opens a PR. Maintenance PRs written by hand are mined to find the next skill. Uber's 2020 Piranha tool already ran a weekly stale-flag cleanup in the same pattern.\n\n> **BUILT ON:** the per-language monorepos and Bazel build targets ([From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html)), uOwn module ownership ([Build What the Market Cannot Yet Sell: Uber's Pre-AI Platform Bets](build-what-does-not-exist.html)), Piranha's weekly cleanup diffs (2017–2020), CI and SubmitQueue capacity ([Shift Left or Drown: Inner-Loop Validation and Self-Healing CI](inner-loop-and-self-healing-ci.html)), the skills monorepo ([Skills as a Product: The Agent Skills Monorepo](skills-monorepo.html)) and the review signals in Code Inbox ([Code Inbox: Spending Human Review Where the Risk Is](code-review-signals.html))\n\n<br>\nMedisetty explains Shepherd by retelling Uber's monorepo story. Uber moved from thousands of repositories to one monorepo per language \"because upgrading libraries was very hard.\" The move solved one problem and exposed another. With every module in one repository, a library upgrade could be made in one place, \"but then now someone has to go and upgrade this library usage across all of the modules in that repository.\" **A monorepo makes a fleet-wide change possible. It does not make anyone do it.**\n\nThat gap is where Uber built **Shepherd**, an internal platform for large-scale code changes, and later **Fox**, a feature on the same platform that runs maintenance continuously instead of once. Shepherd is confirmed by name in Uber's written record, most fully in the April 2026 post on the JUnit migration. Fox is named only in the October 2026 Pragmatic Engineer episode, though a public talk describes a Sunday maintenance loop that matches it closely.\n\nThis chapter owns four terms: **Shepherd** (Uber's large-scale change platform), **campaign** (one change run across the codebase, defined by a policy file and tracked by an owner), **Fox** (Shepherd's continuous-maintenance feature) and **managed agentic loop** (Medisetty's phrase for a recurring, centrally run agent task that opens PRs for enrolled services). Their PRs land in the review queue of [Code Inbox: Spending Human Review Where the Risk Is](code-review-signals.html) and are the likeliest candidates for its green lane.\n\n## The Problem: Changes Nobody Is Funded to Make\n\nA large-scale change has a structural problem that is older than AI. The team that needs the change, such as a platform team retiring a library, a security team patching a vulnerability or a test-infrastructure team moving to a new framework, does not own the code that has to change. The teams that own the code did not ask for the change. *Software Engineering at Google* says it in four words: \"nobody likes unfunded mandates\" ([Wright, 2020](https://abseil.io/resources/swe-book/html/ch22.html)). The same chapter notes that as a codebase grows, \"the largest atomic change possible counterintuitively decreases.\"\n\nUber's codebase shows this at the size where it hurts. The 2025 CI-cost post describes **six major monorepos and seven languages**, used by more than 4,500 engineers. The Java monorepo alone held **600,000+ JUnit 4 tests across about 15 million lines of code** when the JUnit migration began ([Uber, 2026](https://www.uber.com/blog/junit-migration/)). A migration at that size cannot be done by one team editing by hand, and asking hundreds of teams to each do their part turns into years of reminders.\n\nAI adds a second problem. Agents write more code, and the code they write needs maintenance too. GitClear's analysis of 211 million changed lines found that copy-pasted lines rose from 8.3% to 12.3% between 2021 and 2024, while moved (refactored) lines fell from 25% to under 10% ([GitClear, 2025](https://www.gitclear.com/ai_assistant_code_quality_2025_research)); GitClear's causal reading is its own interpretation. Medisetty frames the goal as toil: \"the more toil we reduce, the more amount of time engineers can spend on the true feature work.\" Uber's PR type tagging ([From Diff Velocity to Feature Velocity: Measuring Productivity When PRs Are Cheap](feature-velocity.html)) tracks this; Medisetty reports the feature share rising and the maintenance share falling.\n\n## The Lineage: From Piranha to Fox\n\nShepherd and Fox have a documented history at Uber. Each step kept the same delivery pattern, a machine-generated change sent to an accountable owner, and changed the engine that produced the change.\n\n| Period | System | Engine | Delivery | Evidence |\n| --- | --- | --- | --- | --- |\n| Late 2017 – 2020 | **Piranha** | AST rewriting of stale feature-flag code (Java, Swift, Objective-C) | Weekly; one diff per stale flag, assigned to the flag's author | Uber blog, 2020; ICSE-SEIP 2020 paper |\n| By 2024 | **PolyglotPiranha** | A rule language for match-and-replace across languages | Several refactorings, nearly 5,000 PRs | PLDI 2024 paper; Sonar/Gitar post, 2024 |\n| After the monorepo move | **Shepherd** (deterministic) | OpenRewrite recipes | One PR per module, routed to its owners, tracked as a campaign | Podcast; Uber JUnit blog, 2026 |\n| AI era | **Shepherd** (agentic) | Prompts and skills run by an agent per module | Same as deterministic | Podcast only |\n| 2026 (\"a few months ago\" as of Oct 2026) | **Fox** | Maintenance skills run on a schedule | One PR per enrolled service per week, on Sunday | Podcast; talk summary, 2026 |\n\n**Piranha** is the clearest precedent. Uber's 2020 blog post \"Introducing Piranha\" describes a tool that finds feature flags untouched for a configurable period, for example eight weeks, deletes the code behind them and opens a diff assigned to the flag's author, on a weekly pipeline ([Uber, 2020](https://www.uber.com/blog/piranha/)). A diff took under three minutes to generate, and about 2,000 stale flags had been removed across Android and iOS. The companion ICSE-SEIP 2020 paper reports that from late 2017 to mid-2019 Piranha generated cleanup diffs for 1,381 flags, and **about two-thirds were merged unmodified** ([Ramanathan et al., 2020](https://2020.icse-conferences.org/details/icse-2020-Software-Engineering-in-Practice/16/Piranha-Reducing-Feature-Flag-Debt-at-Uber)). The other third, modified or not merged, is the important number: even a narrow deterministic tool needed a human on a third of its changes, and that human was always the flag's owner.\n\n**PolyglotPiranha** (PLDI 2024, open source) generalized the idea into a rule language. Sonar and Gitar (Gitar was co-founded by former Uber engineers, so the source is close to Uber) reported in 2024 that Uber used it for three refactorings over six months, producing nearly 5,000 PRs and deleting more than 200,000 lines ([Sonar, 2024](https://www.sonarsource.com/blog/automated-refactoring-at-scale/)). Both systems are years old and may have changed.\n\nThe lineage matters for an imitator because it shows that **Fox is not a new idea. It is Piranha's weekly loop with skills instead of a single hard-coded rule.** Uber had been running machine-generated maintenance PRs, sent to owners on a schedule, for nearly a decade before agents arrived.\n\n## What Uber Built: Shepherd Campaigns\n\nAs Medisetty described it in the episode, Shepherd works in four steps:\n\n1. **A policy defines the change.** For a deterministic change, \"if it's a simple signature change, you can write that in an OpenRewrite policy.\" OpenRewrite is an open-source refactoring engine that edits a lossless syntax tree through recipes and keeps the original formatting ([OpenRewrite docs](https://docs.openrewrite.org/)). For a change no recipe can express, an AI-based Shepherd campaign uses \"a set of prompts and skills\" that an agent runs across every module.\n2. **Shepherd knows ownership.** It \"knows what are the unique modules owned by different teams.\"\n3. **It creates one PR per module.** Each PR goes to the module's owners.\n4. **A campaign owner tracks it.** Each migration is a **campaign** with \"a YAML file with the policy,\" a list of the PRs created for each module, and a status the campaign owner can follow.\n\nMedisetty's agentic example is fixing context propagation for tracing \"across all the services so that tracing works better.\" This is a revealing choice. Trace context propagation is the foundation that Slate's routing and much of Uber's debugging depend on ([The Hidden Foundations: Typed Contracts, Ownership Metadata and Trace Baggage](contracts-and-context-propagation.html), [Slate: Letting Agents Test Their Own Changes End to End](slate.html)). Where it breaks, the fix depends on how each service handles requests, threads and asynchronous calls, so no single syntactic rule can make it. An agent reading each service can.\n\n"}, {"type": "mermaid", "content": "flowchart LR\n    A[\"Campaign owner\"] -->|\"writes\"| B[\"YAML campaign policy\"]\n    B --> C{\"Change type\"}\n    C -->|\"deterministic\"| D[\"OpenRewrite recipe\"]\n    C -->|\"non-deterministic\"| E[\"Agent with prompts and skills\"]\n    D --> F[\"Apply per module or Bazel target\"]\n    E --> F\n    F --> G{\"Builds and tests pass\"}\n    G -->|\"no\"| H[\"Skip or revert target, log reason\"]\n    G -->|\"yes\"| I[\"One PR per module\"]\n    I -->|\"routed by ownership\"| J[\"Owning team reviews in Code Inbox\"]\n    J --> K[\"Lands via CI and SubmitQueue\"]\n    H --> L[\"Campaign tracker\"]\n    K --> L\n    L --> A"}, {"type": "markdown", "content": "\n**Figure 1:** *A Shepherd campaign as described in the episode and the 2026 JUnit post. The policy and the engine change from campaign to campaign; ownership routing, per-module PRs, the build-and-test gate and the tracker stay the same. The skip-and-revert branch comes from the JUnit post; whether agentic campaigns use the same gate is not documented.*\n\n### The Worked Example: JUnit 4 to JUnit 5\n\nMedisetty used JUnit 4 to JUnit 5 as the campaign example in the episode. Uber had already described that migration in detail, in \"How Uber Executed a JUnit Migration at Massive Scale\" (Uber blog, April 2026, by Anshuman Mishra and Kaushik Vejju) ([Uber, 2026](https://www.uber.com/blog/junit-migration/)). It is the best public account of Shepherd at work.\n\n**The starting point.** JUnit 4 development stopped in 2021. Uber's Java monorepo had more than 600,000 JUnit 4 tests across about 15 million lines of code.\n\n**The engine.** Uber used OpenRewrite's `JUnit4to5Migration` recipe plus custom recipes for Uber-specific test utilities. A deterministic migration needs the compilation classpath to resolve types, so Uber wrote a **custom Bazel aspect** to supply it. For each target, the aspect collects the source files and the full classpath, passes them to Uber's OpenRewrite integration and produces a patch file and CSV diagnostics. Bazel aspects add extra actions to existing build targets, and this one let a refactoring engine work inside the build system's view of the code.\n\n**The precondition.** An OpenRewrite precondition filters files against a list of supported test runners, rules and base classes. A target using unsupported utilities is skipped instead of half-migrated. **This is the most transferable design decision in the post: a campaign should know what it cannot do, and skip it on purpose.**\n\n**The per-target gate.** For each Bazel target, the script applies the patch, updates build dependencies from the diagnostics, builds the target and runs its tests. A build failure fails the migration for that target. The post states that the workflow \"ensures migrations only proceed when all tests pass.\" During rollout, files whose tests failed reverted to JUnit 4.\n\n**The delivery.** Shepherd \"identifies successfully migrated targets and automatically generates diffs for each one,\" and each diff goes through Uber's CI, including integration tests, linters and coverage enforcement. The post does not say who reviewed the diffs or whether any were auto-approved.\n\n**The result.** More than **75,000 test classes** and **1.25 million lines** were migrated in **about four months**, through **more than 5,000 diffs**. The initial rollout alone produced more than 2,000.\n\n**The AI lesson.** Uber tried generative AI on the bulk migration, migrating multiple test files at once, and it failed. AI was kept for debugging test and build failures. In the post's words, \"a deterministic approach proved more practical than an AI-driven migration.\"\n\nThis does not mean AI is useless for migrations. Uber runs agentic Shepherd campaigns, and the AI Engineer World's Fair 2026 talk by Medisetty and Adam Huda claims **more than 250 automated migrations** covering about 9 million lines. What it shows is a division of labor:\n\n| Change type | Right engine | Why | Uber example |\n| --- | --- | --- | --- |\n| Mechanical, rule-expressible (API renames, signature changes, framework annotations) | Deterministic recipe | Same input, same output; reviewable as a pattern; cheap to run on 75,000 classes | JUnit 4 to 5 via OpenRewrite (documented, 2026) |\n| Mechanical but with a long tail of exceptions | Recipe for the bulk, with a precondition that skips the rest; AI to debug or handle the skipped tail | Recipes fail loudly on edge cases; agents can read the failure | AI used to debug JUnit build and test failures (documented) |\n| Semantic, context-dependent (behavior differs per service) | Agent with prompts and skills per module | No rule can express it; the agent reads each module | Fixing tracing context propagation (podcast) |\n| Judgement calls (is this code dead? is this log noisy?) | Agent skill, with the owner deciding | Needs understanding of intent and usage | Fox skills (podcast) |\n\n**Deterministic tools are the default for the bulk; agents are for what the tools cannot express.** A company that starts its migration program by pointing an agent at the whole codebase is repeating the experiment Uber reports as a failure.\n\n## What Uber Built: Fox and the Managed Agentic Loop\n\nMedisetty introduced Fox as a feature added to the Shepherd platform \"a few months ago,\" because \"we want to continuously improve the code base, not one-time migrations.\" The description has five parts.\n\n1. **Enrollment.** \"Any service at Uber, they can go here and enroll their service into different skills.\" The examples were dead code cleanup, performance analysis and noisy logs, out of \"a whole bunch of these skills.\"\n2. **A weekly PR.** For each enrolled service and skill, Fox generates a new PR every week. It runs on Sunday, \"when we don't have that much CI load.\"\n3. **Opt-in, moving to opt-out.** \"We are still in the opt-in phase. Once we improve some of the skills, we'll move some of them to opt-out phase.\"\n4. **A managed agentic loop.** Once a service enrolls, \"every week, in some sense, you are getting a PR created, like a managed agentic loop.\"\n5. **Mining maintenance PRs for new skills.** Uber looks at PRs tagged as maintenance, asking: \"Do we need to create a new skill? Do we need to improve that skill so that that class of PRs can be onboarded to this automated managed loop?\"\n\nThe name Fox appears only in the episode. A written account of the AI Engineer World's Fair 2026 talk, Port's August 2026 summary, describes a maintenance system that matches it ([Port, 2026](https://newsletter.port.io/p/how-uber-built-a-software-factory)). Engineers enroll a service in maintenance skills. One example is a skill that removes the losing variant of an A/B test once the experiment is decided. Loops run on Sunday, when CI has spare capacity. **A cap limits how many diffs can land on an engineer's Monday.** There is \"one place you go to set a loop up,\" and when diffs are commented on, landed or dropped, that outcome becomes data for improving the skill. Once a month, Uber mines incident reviews for new maintenance skills to roll out across every service. This is the nearest public description of Fox, and this book treats it as the same system while noting that the name is podcast-only.\n\nMedisetty's August 2026 blog post adds the economics. Managed agents handle \"self-healing CI failures\" and \"a variety of code maintenance tasks with human reviews/escalations,\" and each managed agent gets an outcome-based cost metric, such as cost per cleanup, paired with a quality signal such as revert rate ([Uber, 2026](https://www.uber.com/us/en/blog/efficient-software-factory/)). A Fox skill is therefore measured as a small product: what each merged cleanup costs, and how often it is reverted.\n\n"}, {"type": "mermaid", "content": "flowchart TB\n    A[\"Service owner enrolls service in a skill\"] --> B[\"Fox schedule: Sunday, low CI load\"]\n    B --> C[\"Agent runs skill on the service\"]\n    C --> D[\"One maintenance PR\"]\n    D -->|\"capped per engineer\"| E[\"Owner reviews Monday in Code Inbox\"]\n    E -->|\"lands, comments or drops\"| F[\"Outcome data per skill\"]\n    F --> G[\"Skill improved in skills monorepo\"]\n    G --> B\n    H[\"Hand-written maintenance PRs, tagged by type\"] --> I[\"Find recurring classes\"]\n    J[\"Monthly incident reviews\"] --> I\n    I -->|\"new skill\"| G\n    G -->|\"once proven\"| K[\"Move skill from opt-in to opt-out\"]"}, {"type": "markdown", "content": "\n**Figure 2:** *Fox as a managed agentic loop, combining Medisetty's account with the 2026 talk summary. Two feedback paths keep it alive: outcomes from Fox's own PRs improve existing skills, and hand-written maintenance PRs and incident reviews suggest new ones. The Monday cap and the incident-review mining come from the talk summary, not from the episode.*\n\nThree design choices in Fox are worth spelling out.\n\n**Enrollment is per service, by the owner.** Orosz pointed out in the episode that this works \"because a code base is owned by an engineer or team at Uber.\" Fox does not decide on its own that a service should be cleaned. The owner opts in, and the owner reviews the result. This is Piranha's rule: send the machine's diff to an accountable human.\n\n**Sunday scheduling trades CI capacity for review timing.** Running Fox when CI is idle protects the weekday CI capacity that triggered Uber's 2026 CI code red ([Shift Left or Drown: Inner-Loop Validation and Self-Healing CI](inner-loop-and-self-healing-ci.html)). It also means the PRs wait for Monday. The Monday cap described in the talk is the necessary counterweight: without it, an engineer enrolled in ten skills across five services could start every week with fifty maintenance PRs.\n\n![A weekly calendar: an agent produces maintenance PRs on a quiet Sunday, and a limiter gate lets only a few into each engineer's inbox on Monday.](assets/images/17-shepherd-and-fox/fox-sunday-loop-monday-cap.jpeg)\n**Figure 3:** *Fox runs when CI load is low on Sunday; the cap on how many diffs land on an engineer's Monday, described in the 2026 talk summary, keeps the weekly loop from becoming PR spam.*\n\n**Opt-out is a trust milestone, not a default.** Under opt-out every service receives a skill's PRs unless the owner declines, so Uber plans to switch only skills it has improved. A plausible reading — not a documented description — is that a skill earns opt-out through its outcome data: merge rate, revert rate and drop rate.\n\n## The Foundation Underneath\n\nTake away the agent and almost everything that makes Shepherd and Fox work is still there, because it was built for humans first.\n\n| What Shepherd and Fox need | Pre-AI foundation | Chapter | Why it would be hard without it |\n| --- | --- | --- | --- |\n| One place to change all code in a language | Per-language monorepos (2017–2018 onward) | [From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html) | With thousands of repos, a campaign has to clone, build and open PRs in each, with different build tools |\n| A unit of change and a way to build and test it | Bazel targets; the custom Bazel aspect for classpaths | [From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html) | Without a uniform build graph, there is no per-target gate and no reliable classpath for recipes |\n| Knowing who owns each module | uOwn and module ownership metadata | [Build What the Market Cannot Yet Sell: Uber's Pre-AI Platform Bets](build-what-does-not-exist.html) | Without ownership, per-module PRs have no reviewer and enrollment has no owner |\n| A green main that can absorb thousands of PRs | SubmitQueue and CI capacity | [From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html), [Shift Left or Drown: Inner-Loop Validation and Self-Healing CI](inner-loop-and-self-healing-ci.html) | 5,000 PRs on a red or overloaded main become 5,000 rebases |\n| Reusable agent behavior | The skills monorepo and its quality gate | [Skills as a Product: The Agent Skills Monorepo](skills-monorepo.html) | A Fox skill is a skill; without a shared repository and quality gate there is nothing to enroll in |\n| An environment where an agent can run a skill on any service | DevPods and the mega DevPod | [DevPods: Cloud Workspaces Built for Engineers, Ready for Agents](devpods.html), [Minion: Background Coding Agents on the Mega DevPod](minion.html) | Agentic campaigns need the same warm, pre-built workspace Minion uses |\n| A way to find the next skill | PR type tagging (feature, bugfix, maintenance) | [From Diff Velocity to Feature Velocity: Measuring Productivity When PRs Are Cheap](feature-velocity.html) | Without tagged maintenance PRs, recurring hand-written toil is invisible |\n| Owners who can review quickly | Code Inbox signals | [Code Inbox: Spending Human Review Where the Risk Is](code-review-signals.html) | Maintenance PRs compete with feature PRs for the same attention |\n\nThe first four rows carry the book's thesis for this chapter ([The Harness Is the Easy Part: Why Uber's AI Tooling Took a Decade and a Year](the-harness-is-the-easy-part.html)). The JUnit migration used no AI for its bulk. It succeeded because Uber had a monorepo, a programmable build graph, ownership data and a CI system that could take more than 5,000 diffs in four months. **A company without those foundations cannot buy its way into Shepherd by buying an agent**: it would have a patch and no way to apply, test, route or track it across the codebase.\n\n## Design Choices and Trade-offs\n\n| Choice | Option A | Option B | When A is right | When B is right |\n| --- | --- | --- | --- | --- |\n| Change engine | Deterministic recipe (OpenRewrite, Piranha) | Agent with prompts and skills | The change is expressible as a rule; volume is high; reviewers should see a pattern | The change depends on each module's behavior; volume per pattern is low |\n| PR granularity | One PR per module or target (Shepherd, Google's Rosie) | One large PR or a few batched PRs | Many owners; independent testability; partial progress is useful | One owner; the change is only valid if applied everywhere at once |\n| Who reviews | The owning team | A central approver for expected patterns (Google's global approvers) | Behavior can change; owners have context | The change is mechanical and verified by pattern; owners would only rubber-stamp |\n| Enrollment | Opt-in by owners (Fox today) | Opt-out (Fox's plan for proven skills) | The skill is new or its merge rate is unproven | The skill has a high merge rate, a low revert rate and few drops |\n| Schedule | Off-peak (Fox: Sunday) | During the owners' working hours (Spotify, 2026) | CI capacity is the binding constraint; PRs wait for human review anyway | Changes may auto-merge, so a human must be awake if something breaks |\n| Where maintenance logic lives | Central skills, run as a managed loop (Fox) | Each team runs its own agent loop (the pattern Orosz described engineers doing with Claude Code or Codex nightly) | Many services need the same maintenance; quality and cost need central measurement | A team's maintenance needs are unique |\n\nThe schedule row has no universal answer. Fox can run on Sunday because its PRs wait for a human anyway. Spotify schedules automated changes in owners' working hours because many of them **auto-merge**, and whoever can roll back should be awake. The schedule follows from the review policy.\n\n## Elsewhere in the Industry\n\n**Google** wrote the reference design. The large-scale changes chapter of *Software Engineering at Google* (2020) describes **Rosie**, which splits a large change into shards along project and ownership boundaries, each with its own test, review and submit pipeline ([Wright, 2020](https://abseil.io/resources/swe-book/html/ch22.html)). An owners-detection service picks reviewers and adds others if an owner is unresponsive. Most shards go to **global approvers**, who auto-approve expected patterns with tooling and look by hand only at anomalies. Rosie caps outstanding shards and runs at low priority to protect the shared test infrastructure, Google's version of Fox's Sunday schedule. At its peak the `scoped_ptr` to `std::unique_ptr` migration committed more than 700 changes a day. Shepherd's per-target PRs follow the same pattern; the global-approver model is the main piece Uber's public record does not describe.\n\n**Spotify** reached the same architecture from the other direction. Its **Fleet Management** system runs containerized source-to-source transformations that open PRs across thousands of repositories, and since mid-2024 about half of Spotify's PRs have come from it ([Spotify, 2025](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1)). Spotify then added **Honk**, a background coding agent, to replace hand-written transformation scripts. One Maven updater script had grown past 20,000 lines. Spotify reported more than 1,500 merged agent PRs and kept the targeting, PR, review and merge steps unchanged: the same move as Uber's agentic Shepherd, keep the delivery platform and swap the engine. InfoQ reported in October 2026 that Fleet Management had merged more than 2.5 million automated maintenance PRs, most automatically after safety checks, and that one automated dependency upgrade passed every check and failed in production; Spotify then moved automated changes into owners' working hours ([InfoQ, 2026](https://infoq.com/news/2026/10/spotify-ai-quality-controls)). Spotify auto-merges at a scale Uber has not described, and has published the failure that comes with it.\n\n## If You Are Not Uber\n\nA company of 200 engineers does not need Shepherd. It needs the three properties that make Shepherd work: **changes delivered per owned unit, a gate that builds and tests each unit, and a tracker that shows what is left.** Most of this can be assembled from open-source tools.\n\n| Company size | Minimum viable version | Buy, build or open source | Do not do yet |\n| --- | --- | --- | --- |\n| ≈50 engineers | A dependency-update bot. One person runs each migration with OpenRewrite (JVM) or a codemod tool, opening one PR per repo or package. A spreadsheet or issue as the campaign tracker. A scheduled agent loop for one maintenance task, such as stale flags or dead code, reviewed by its owner. | Open source: OpenRewrite, Renovate or Dependabot, polyglot-piranha; a coding agent in CI on a schedule | A campaign platform; opt-out maintenance |\n| ≈500 engineers | Ownership metadata that a script can read. A campaign runner: a policy file, apply per package, build and test, skip on failure, open PRs routed to owners, and a dashboard of open, merged and skipped. Two or three opt-in maintenance skills with merge-rate and revert-rate tracking. Tag PRs by type to find the next skill. | Build the runner as a thin layer over your build tool and code host; consider commercial large-scale-change platforms if most code is on the JVM | Agentic campaigns for the bulk of mechanical migrations; opt-out before the merge rate is known |\n| ≈5,000 engineers | A Shepherd-like platform with campaign owners and policy files, a deterministic engine and an agentic engine side by side, CI throttling or off-peak scheduling, a per-engineer cap on maintenance PRs, a skills repository with a quality gate, and opt-out for proven skills. Mine incident reviews and maintenance PRs for new skills on a regular cadence. | Build the platform; buy or open-source the engines | Auto-merge for agentic changes without rollback capacity and an awake owner |\n\nSequencing:\n\n1. **Fix ownership before automation.** If a script cannot answer \"who owns this directory?\", every generated PR becomes an orphan.\n2. **Make the per-unit gate cheap.** A campaign needs to build and test one module in isolation. A monorepo with a graph-aware build tool makes this easy. A polyrepo needs a uniform CI entry point in every repo.\n3. **Run one deterministic campaign end to end** before writing a platform, with a precondition step that skips and reports what the recipe cannot handle. Track open, merged, skipped and reverted.\n4. **Add an agent for the skipped tail and for failure debugging**, not for the bulk.\n5. **Turn one recurring maintenance task into an opt-in weekly loop**, measure its merge, revert and drop rates before adding a second, and cap how many automated PRs an engineer receives per week.\n\nWhat *not* to copy: agentic bulk migration (Uber reports it failed), opt-out before a skill has earned it, and Sunday scheduling if your automated PRs auto-merge.\n\n![A conveyor where a recipe press converts thousands of uniform modules while a sorting gate diverts odd modules to an agent at a side bench, each finished module getting its own PR.](assets/images/17-shepherd-and-fox/deterministic-bulk-agentic-tail.jpeg)\n**Figure 4:** *Deterministic recipes do the bulk and agents take the long tail: Uber's JUnit migration moved 75,000+ test classes through 5,000+ diffs with OpenRewrite after a generative-AI bulk attempt failed.*\n\n## Failure Modes\n\n- **PR spam.** A campaign or loop that generates more PRs than owners can review becomes noise, and owners learn to close them unread. The Monday cap in the talk summary exists for this. Turning a skill to opt-out before its merge rate is known spreads the noise to every queue at once.\n- **The unfunded tail.** The deterministic bulk lands in weeks, and the last 5% of modules, the ones with unusual test utilities or no active owner, stay unmigrated for years. Preconditions make the tail visible. They do not make it go away. A campaign needs an owner with a mandate to close it.\n- **Passing tests, changed behavior.** A change that builds and passes every test can still break production, as Spotify reported in 2026. Per-target gates are only as strong as the tests behind each target. Agentic changes such as context-propagation fixes need runtime evidence (see [Slate: Letting Agents Test Their Own Changes End to End](slate.html) and [Capri: Capture, Replay and the Combinatorial Test Problem](capri.html)), not only a green build.\n- **Agentic churn without value.** A \"performance analysis\" skill that proposes speculative micro-optimizations every week creates review load with no measurable effect. Uber's August 2026 framing, cost per cleanup paired with revert rate, is the right guard. A skill that cannot show value should be retired.\n- **Skill rot.** A skill written against last year's framework keeps generating outdated PRs. Skills need owners and evals like any other code ([Skills as a Product: The Agent Skills Monorepo](skills-monorepo.html)).\n- **CI pressure moved, not removed.** Off-peak scheduling helps only if the off-peak window has enough capacity. A growing set of loops can fill Sunday, and their reruns spill into Monday. Rosie's caps on outstanding shards are the general answer.\n- **Owners stop knowing their code.** If cleanup, upgrades and refactors are all generated and approved quickly, teams lose track of how their code changed. Reviewers of maintenance PRs should be the people who will be paged.\n\n## What the Record Does Not Say\n\n- No Uber post describes Shepherd's architecture: how campaigns are stored, how PRs are routed, how the tracker works, or how agentic campaigns are gated. The JUnit post covers one deterministic campaign.\n- The name Fox, its list of skills, its enrollment numbers and its merge or revert rates are not public. Its match with the talk's Sunday maintenance loop is this book's reading, not Uber's statement.\n- It is not public whether agentic Shepherd campaigns use the same build-and-test gate and skip-on-failure behavior as the JUnit campaign.\n- The size of the Monday cap, and whether it applies per engineer, per team or per service, is not described.\n- Uber has not said who reviewed the 5,000+ JUnit diffs: owning teams, a central team or a global-approver-style process.\n- The basis of the talk's \"250+ automated migrations\" and \"~9 million lines\" (deterministic, agentic or both; over what period) is not stated.\n- The criteria for moving a Fox skill from opt-in to opt-out are not described.\n\n## Questions to Ask\n\n1. For our last three cross-cutting changes, how long did the slowest 5% of modules take, and why?\n2. Can a script determine the owner of every module, package or repository we have? What fraction has no owner?\n3. Can we build and test one module in isolation with a single command that is the same everywhere?\n4. Which of our planned migrations are rule-expressible, and which genuinely need an agent? Are we using an agent where a recipe would do?\n5. Who is the named owner of each running migration, and where can anyone see its open, merged and skipped counts?\n6. For each automated maintenance loop, what are its merge rate, revert rate and cost per merged PR?\n7. How many automated PRs does one engineer receive per week, and what is the cap?\n8. If an automated change merges and breaks production, who is awake, and how fast can it be rolled back?\n9. What would a skill need to show before we turn it on for every service by default?\n\nShepherd and Fox keep the code healthy before anything breaks. The next chapter, [From Bug Report to Fix: Wisdom, DebugAssist and the Closed Loop](wisdom-and-debug-assist.html), picks up when something does: an employee reports a bug from a beta app, an agent finds the root cause, and Minion opens the fix, which flows back through the same review and maintenance machinery described in this chapter and the previous one.\n\n## Sources and Evidence\n\n**The source episode**\n\n- [Uber's AI infra, from the inside](https://newsletter.pragmaticengineer.com/p/ubers-ai-infra-from-the-inside), *The Pragmatic Engineer* podcast, Gergely Orosz with Uday Kiran Medisetty, 2026: Shepherd's deterministic and agentic campaigns, YAML policies and campaign owners, the context-propagation example; Fox enrollment, Sunday PRs, opt-in to opt-out, the managed agentic loop, mining maintenance PRs for skills.\n\n**Uber engineering sources**\n\n- [How Uber Executed a JUnit Migration at Massive Scale](https://www.uber.com/blog/junit-migration/), Uber Engineering (Anshuman Mishra, Kaushik Vejju), 2026: Shepherd by name, OpenRewrite recipes, the Bazel aspect, preconditions, per-target gate, the counts of classes, lines and diffs, the failed generative-AI attempt.\n- [Introducing Piranha: An Open Source Tool to Automatically Delete Stale Code](https://www.uber.com/blog/piranha/), Uber Engineering (Sridharan, Barik, Clapp), 2020: weekly stale-flag cleanup diffs assigned to flag authors, ~2,000 flags removed.\n- [Piranha: Reducing Feature Flag Debt at Uber](https://2020.icse-conferences.org/details/icse-2020-Software-Engineering-in-Practice/16/Piranha-Reducing-Feature-Flag-Debt-at-Uber), Ramanathan, Clapp, Barik, Sridharan, ICSE-SEIP 2020: 1,381 flags, about two-thirds of diffs merged unmodified.\n- [Automated Refactoring at Scale](https://www.sonarsource.com/blog/automated-refactoring-at-scale/), Sonar / Gitar, 2024: PolyglotPiranha use at Uber, nearly 5,000 PRs (a source close to Uber).\n- [Running a Software Factory Efficiently at Uber Scale](https://www.uber.com/us/en/blog/efficient-software-factory/), Uber Engineering (Uday Kiran Medisetty), 2026: managed agents for maintenance and self-healing CI with human review; cost per cleanup paired with revert rate.\n- [Agentic SDLC at Uber: Building Blocks for Uber's Software Factory](https://ai.engineer/talks/17-YSUHo6Lk-agentic-sdlc-at-uber-building-blocks-ubers), AI Engineer World's Fair talk (Medisetty, Huda), 2026: 250+ automated migrations; scheduled maintenance skills.\n- [How Uber built an AI software factory](https://newsletter.port.io/p/how-uber-built-a-software-factory), Port (Zohar Einy), 2026: third-party summary of the talk; Sunday maintenance loop, Monday diff cap, one place to set up loops, monthly incident-review mining.\n- [Slashing CI Costs at Uber](https://www.uber.com/us/en/blog/slashing-ci-costs-at-uber/), Uber Engineering (Lin, Juloori, Williams), 2025: six monorepos, seven languages, 4,500+ engineers on SubmitQueue.\n\n**Industry and research sources**\n\n- [Software Engineering at Google, Chapter 22: Large-Scale Changes](https://abseil.io/resources/swe-book/html/ch22.html), Hyrum Wright, O'Reilly, 2020: LSC definition, Rosie sharding by ownership, global approvers, throttling, `scoped_ptr` scale.\n- [OpenRewrite documentation](https://docs.openrewrite.org/), Moderne (current): recipes over lossless semantic trees.\n- [1,500+ PRs Later: Spotify's Journey with Our Background Coding Agent (Part 1)](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1), Spotify Engineering (Max Charas, Marc Bruggmann), 2025: Fleet Management share of PRs, Honk replacing transformation scripts.\n- [Spotify's AI quality controls](https://infoq.com/news/2026/10/spotify-ai-quality-controls), InfoQ (Leela Kumili), 2026: 2.5 million automated maintenance PRs, auto-merge, a production failure and working-hours scheduling.\n- [AI Copilot Code Quality: 2025 Look Back at 12 Months of Data](https://www.gitclear.com/ai_assistant_code_quality_2025_research), GitClear, 2025: rising duplication and falling refactoring in changed lines.\n\nStatements about Uber's AI-era systems are Uber's own account unless another source is cited; recommendations and labeled inferences are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

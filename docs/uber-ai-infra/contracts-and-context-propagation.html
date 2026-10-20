@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Hidden Foundations: Typed Contracts, Ownership Metadata and Trace Baggage</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">RETROFITTED: How Uber Built AI-Native Engineering on a Decade of Developer Platforms</a><span class="nav-right"><a class="nav-prev" href="devpods.html" title="DevPods: Cloud Workspaces Built for Engineers, Ready for Agents">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="model-gateway.html" title="One Door for Every Model: The Model Gateway and AI Guard">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part I — FOUNDATIONS: The Decade Before AI</p>
+        <h1>The Hidden Foundations: Typed Contracts, Ownership Metadata and Trace Baggage</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-20  ·  24 min read · <a class="spec-link" href="contracts-and-context-propagation.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/04-contracts-and-context-propagation/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/04-contracts-and-context-propagation/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">RETROFITTED: How Uber Built AI-Native Engineering on a Decade of Developer Platforms</a><span class="nav-right"><a class="nav-prev" href="devpods.html" title="DevPods: Cloud Workspaces Built for Engineers, Ready for Agents">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="model-gateway.html" title="One Door for Every Model: The Model Gateway and AI Guard">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "The Hidden Foundations: Typed Contracts, Ownership Metadata and Trace Baggage", "date": "2026-10-20", "author": "Željko Obrenović", "excerpt": "Which invisible pieces of Uber's infrastructure turned out to be load-bearing for AI? Five unglamorous ones: an interface-definition registry, an ownership graph, trace baggage that every service propagates, standardized language frameworks, and a single Edge Gateway. Each was built for engineers years earlier, and each became the substrate of a later AI system.", "permalink": "contracts-and-context-propagation", "timetoread": "24 min read", "icon": "assets/icons/04-contracts-and-context-propagation.png", "logo": "assets/images/04-contracts-and-context-propagation/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Take apart five pre-AI foundations at Uber (the IDL registry, uOwn ownership data, Jaeger trace baggage, standardized language frameworks and the Edge Gateway) and see which AI-era system each one made cheap: the MCP Gateway, the context graph, Slate, Capri and agent debugging.\n\n> **WHY IT MATTERS:** These foundations rarely get a budget line, because their value is spread across every team. They are also the hardest to retrofit: each needs every service to comply, and that takes years. A leader who wants agents to call, test and debug services needs to know which of these properties the estate already has.\n\n> **KEY POINTS:**\n>\n> * **Machine-readable metadata, kept for engineers, is what agents run on.** Typed contracts became tool definitions, ownership records became routing and approval, and trace baggage became test isolation. Uber did not design any of them for AI; it designed them so thousands of services could be operated by thousands of engineers.\n> * **The value is in coverage, not in the technology.** Jaeger, Thrift and Protobuf are open source. What made them load-bearing at Uber was that nearly every service used them, which took years of retrofitting and, per Medisetty, is still being finished by AI-driven change campaigns.\n> * **Copy the properties, in order.** Typed contracts in one registry, ownership for every deployable, context propagated through every hop, one framework that carries cross-cutting behavior, and one front door. Each is useful to humans on day one, so none has to wait for an AI business case.\n\n> **BUILT ON:** Thrift and Protobuf interface definitions (from 2016 or earlier), uOwn (2015 onward), Jaeger tracing (2015–2016, open source since 2017), Uber's Go and Java service frameworks such as Fx, and the Edge Gateway (2020), on top of the monorepos in [From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html).\n\n<br>\nSome infrastructure is visible: a build system, a deploy pipeline, a workspace like the DevPods of [DevPods: Cloud Workspaces Built for Engineers, Ready for Agents](devpods.html). Other infrastructure is visible only when it is missing. Nobody praises the fact that every service has a typed interface definition in one place, that every deployable has an owner on record, or that a header set at the edge survives forty hops. **These properties are what let an agent act on a system it has never seen**: find the right API, call it with the right schema, know whom to notify, and send a test request to a branch build without touching production users.\n\nIn the October 2026 Pragmatic Engineer episode, Uber Distinguished Engineer Uday Kiran Medisetty and host Gergely Orosz kept returning to this point. The MCP Gateway was quick to build \"because we already had good IDL registry across all of our services.\" Slate could route test traffic because \"we had tracing built out and because it's like propagated across the stack.\" Capri could capture production traffic \"with just one middleware because now we have standardized language frameworks across all the services.\" The show notes summarize: \"Uber's MCP Gateway was fast to build, thanks to existing Thrift and Protobuf registries. Jaeger tracing made Slate routing and Context graph easier.\"\n\nThis chapter owns those foundations. It explains what each one is, how Uber built it as far as the public record shows, what it cost, and which AI system it later carried. The AI systems themselves belong to Part II and Part III: [The MCP Gateway: Every Internal Service One Tool Call Away](mcp-gateway.html), [The Context Graph and Cortana: Grounding Agents in the Company](context-graph.html), [Slate: Letting Agents Test Their Own Changes End to End](slate.html) and [Capri: Capture, Replay and the Combinatorial Test Problem](capri.html).\n\n## The Problem Uber Had: Thousands of Services, Thousands of Engineers\n\nUber's service count grew from a two-service core in 2014 to more than 2,000 microservices by early 2017, and its own 2025–2026 figures range from about 4,000 to \"over 6,000 microservices,\" depending on what is counted (see [From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html)). Uber's 2020 post on its domain-oriented microservice architecture gives a sense of what that meant for the people operating it: one root-cause investigation crossed about **50 services owned by 12 teams**.\n\nAt that scale, four questions come up many times a day, and each needs a machine-readable answer:\n\n| Question | Who asks it | What answers it at Uber |\n| --- | --- | --- |\n| What does this service accept and return? | Callers, client generators, the gateway, now agents | **Thrift or Protobuf IDLs in one registry** |\n| Who owns this service, and who is on call? | Incident responders, reviewers, migration owners, now agents | **uOwn** |\n| What happened to this request, and can I steer it? | Debuggers, testers, routing infrastructure | **Jaeger trace context and baggage** |\n| How do I add behavior to every service at once? | Platform teams | **Standardized language frameworks** |\n\nA fifth piece, the **Edge Gateway**, sits in front of all of them: one entry point where external requests are authenticated, tagged and routed. Each of these existed for engineers years before an agent called anything. Together they turn a large distributed system into something a program can navigate.\n\n![Cutaway of a city street of services with five underground utility conduits: contracts, ownership, baggage, frameworks and one edge gateway.](assets/images/04-contracts-and-context-propagation/hidden-utilities-under-the-estate.jpeg)\n**Figure 1:** *Five unglamorous foundations run under every service like utilities; they let an agent act on a system it has never seen.*\n\n## Foundation 1: Typed Contracts in One IDL Registry\n\nAn **interface definition language (IDL)** file declares a service's methods and the types of their requests and responses; code generators turn it into clients and servers. An **IDL registry** is the single place where every service's IDL can be found.\n\n**What the record shows.** Uber's July 2016 post on its tech stack names **Thrift** as the company's IDL. In the episode, Medisetty said Uber started with Thrift, later added Protobuf, and \"all of the new services in the last few years, they're all protobuf\"; older services usually switch when they are rewritten. Orosz added the framing: Uber services expose \"Thrift or Protocol Buffers as strong contracts.\" Uber's May 2021 post on its API gateway shows how far the contracts reach: gateway APIs are defined as YAML plus Thrift IDL stored in git, code is generated with the open-source Zanzibar library, and a CI job blocks backward-incompatible schema changes for mobile clients.\n\n**What it later carried.** The MCP Gateway. Medisetty described it in the episode: \"since we have all of the IDLs in one single registry, we could use that registry to generate a default MCP spec\" for any service, including request and response schemas and descriptions. Uber's October 2026 post \"Designing MCP Gateway\" gives the mechanism: an **AutoCrawler**, a Cadence workflow triggered on a schedule, \"continuously scans Uber's IDL registry for APIs,\" parses the Protobuf or Thrift files to \"extract method names, request and response schemas, and documentation comments,\" and uses an LLM to write \"agent-friendly MCP tool descriptions.\" The post reports more than 800 MCP servers and 5,000 tools. The full design belongs to [The MCP Gateway: Every Internal Service One Tool Call Away](mcp-gateway.html).\n\n**Why it was cheap.** The hard parts of turning an API into a tool are knowing the API exists, knowing its exact schema, and knowing it will not change shape silently. The registry answered the first two; Uber's compatibility checks answered the third. What remained was translation and description writing, which Medisetty said fell to \"the same team that works on our API Gateway,\" already \"in the business of building API Gateway\" and protocol transformations.\n\n**What it did not solve.** Medisetty also said some generated tools were **3,000–4,000 tokens** long, which is why Uber added LLM-optimized descriptions and later projected tools as command-line calls. A contract describes structure; it says little about *when* to call an endpoint. Doc comments in IDL files, written for humans over a decade, became the raw material for tool descriptions. Their quality now affects how well agents choose tools.\n\n## Foundation 2: Ownership Metadata (uOwn)\n\n**What the record shows.** In the episode, Medisetty listed **uOwn** among the systems Uber had to build because nothing on the market did it in 2015: a system \"that will enable anyone in the company to identify who owns a specific asset,\" used, as Orosz recalled, during outages to find the owning team and who is on call. No public Uber blog post, paper or talk about uOwn was found for this book, so its design is Uber's own account only.\n\nIndirect evidence shows ownership data is assumed platform-wide. Uber's 2025 post on controlling monorepo rollouts and its NSDI '26 failover paper both work with per-service tiers (T0–T5 criticality). The October 2026 MCP Gateway post calls its registry \"a single source of truth for discovery, ownership, and enablement,\" and requires that each tool description change \"must be approved by server owners.\"\n\n**What it later carried.** Three AI-era systems lean on knowing who owns what:\n\n- **Shepherd**, Uber's large-scale change platform, \"knows what are the unique modules owned by different teams\" and opens one pull request per module, routed to its owners, according to Medisetty. Its agentic campaigns depend on the same routing ([Shepherd and Fox: From Migration Campaigns to Self-Improving Codebases](shepherd-and-fox.html)).\n- **The context graph** has a node for every employee and edges to assets, PRs, on-call events and incidents, per the episode. Ownership is what links a person to a service ([The Context Graph and Cortana: Grounding Agents in the Company](context-graph.html)).\n- **MCP Gateway enablement**: every auto-generated server starts disabled, and owners review and enable it (Uber blog, Oct 2026).\n\n> **INFERENCE, NOT DOCUMENTED:** The record does not say that the MCP registry, Shepherd or the context graph read ownership from uOwn directly. Given that uOwn is described as the company's ownership system, it is the plausible source, but the integration is not described.\n\n**Why it matters more with agents.** A person who opens a pull request in the wrong place gets redirected by a colleague. An agent that opens hundreds of pull requests needs ownership data to route each one, to know whose approval enables a tool, and to tell an on-call engineer which team's change broke a service. **Ownership data that is 90% accurate is fine for people and expensive for agents**, because the 10% becomes misrouted work at machine speed.\n\n## Foundation 3: Trace Context and Baggage\n\n**Trace context** is the trace and span identifiers that let a tracing system stitch one request's hops into a tree. **Baggage** is arbitrary key–value data carried alongside that context through every hop of a request. Trace context records what happened; baggage lets infrastructure change what happens.\n\n**What the record shows.** Uber's February 2017 post \"Evolving Distributed Tracing at Uber Engineering\" (Yuri Shkuro) dates the work: a two-engineer tracing team in New York took on distributed tracing in 2015; the first tracer, Merckx, worked only inside the Python monolith; Uber's RPC protocol TChannel carried trace fields from 2015; and **Jaeger** ran in hundreds of services by 2016, with clients in Go, Java, Node.js and Python. Jaeger was open-sourced in April 2017, became a Cloud Native Computing Foundation project that September and graduated in October 2019. (In the episode Medisetty placed Jaeger in \"maybe 2017–18\"; the documented dates are earlier.)\n\nThe link from tracing to routing is documented in two later posts:\n\n- Uber's March 2020 post on multitenancy (Amit Gud) describes **tenancy context**, attached \"as it enters an edge gateway,\" kept \"for the life of the request,\" and propagated by every service; it notes that propagation \"can be achieved with open source tools like OpenTracing and Jaeger.\" A `services_under_test` field lets routing send test traffic to a test build. The post rejects parallel staging stacks because of hardware cost, drift and unreliable results.\n- Uber's October 2022 post on **SLATE** (Short-Lived Application Testing Environment) gives the concrete mechanism: test tenancy travels as Jaeger baggage under the key `request-tenancy`; the **Edge Gateway** looks up the environment's routing information and injects a `routing-overrides` key into the baggage; a per-host routing agent then sends the request to the service under test instead of production. \"Services need no routing logic of their own.\" In the episode Medisetty describes the same step at the mesh level: as the request moves through the service mesh, the mesh \"knows this baggage\" and routes it to the Slate environment. Uber's October 2026 MCP Gateway post names that mesh's sidecar, **Muttley**, \"Uber's service mesh sidecar that runs alongside all back-end services\"; no source says whether Muttley or the 2022 host routing agent acts on Slate's overrides today.\n\nUber's August 2024 post on its backend integration testing strategy (BITS) says routing overrides now ride **OpenTelemetry** baggage, which suggests a migration from Jaeger clients to OpenTelemetry. The same post reports that every test is force-sampled with Jaeger and that the resulting trace index maps which services each test covers.\n\n"}, {"type": "mermaid", "content": "sequenceDiagram\n    participant Dev as Engineer or agent\n    participant Edge as Edge Gateway\n    participant A as Service A production\n    participant Agent as Host routing agent\n    participant B as Service B branch build\n    Dev->>Edge: request from a test account pinned to a Slate env\n    Edge->>Edge: look up routing info for the env\n    Edge->>A: request with baggage request-tenancy and routing-overrides\n    A->>Agent: call to Service B, baggage propagated by framework\n    Agent->>B: override matches, route to service under test\n    B-->>A: response\n    A-->>Edge: response\n    Edge-->>Dev: response"}, {"type": "markdown", "content": "**Figure 2:** *Routing one test request to a branch build inside production, as Uber's 2022 SLATE post describes it. Service A has no routing code; it only has to propagate the baggage it received. One service that drops the baggage breaks routing for every service behind it.*\n\n**What it later carried.** **Slate** for agents: Medisetty described agents creating Slate environments through MCP or the command line, deploying a branch and testing it end to end, with before-and-after reports attached to pull requests ([Slate: Letting Agents Test Their Own Changes End to End](slate.html)). The show notes also credit Jaeger with making the context graph easier, though the episode does not explain how.\n\n**Why it was expensive.** Baggage routing works only if **every** service on the path propagates the context, including through queues and asynchronous work. Medisetty was explicit: \"This thing took years to make sure that all existing services were retrofitted with this and all new services were built with this in mind.\" The work is not finished. He described an AI-based Shepherd campaign to \"fix context propagation across all the services so that tracing works better,\" with prompts and skills an agent runs across every module ([Shepherd and Fox: From Migration Campaigns to Self-Improving Codebases](shepherd-and-fox.html)). That is a neat loop: **AI is now used to repair the foundation that AI depends on**.\n\n## Foundation 4: Standardized Language Frameworks\n\nA **standardized language framework** here means the shared libraries every service in a language starts from: the server, the RPC clients, configuration, logging, metrics, tracing and middleware hooks. When all services use it, adding behavior to the framework adds it to the fleet.\n\n**What the record shows.** Uber's open-source Go framework **Fx** describes itself in its README as \"the backbone of nearly all Go services at Uber.\" Uber's 2020 Edge Gateway post says the gateway is built on Glue, an internal framework on top of Fx. The episode says Uber standardized on Go and Java for backend services around 2018–2019; no single Uber post declares that policy, but the Go and Java monorepos are where the platform investment goes ([From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html)).\n\n**What it later carried.** **Capri**, Uber's capture-and-replay system. Medisetty said Uber can \"capture real production traffic with just one middleware because now we have standardized language frameworks,\" recording inbound requests and every downstream request and response ([Capri: Capture, Replay and the Combinatorial Test Problem](capri.html)). The framework is also, plausibly, where baggage propagation is automated, so individual services do not hand-carry headers.\n\nThe contrast with Uber's own earlier writing is instructive. Uber's June 2022 post on **Shadower**, a load-testing tool, explained why Uber did *not* use a shared in-process library for traffic shadowing at the time: filtering in production is complex, and every service pays the CPU and memory cost. It captured traffic off the wire with eBPF instead. Capri, as described in 2026, takes the in-process middleware route.\n\n> **INFERENCE, NOT DOCUMENTED:** The likely enabler of that reversal is framework coverage. Once nearly every service runs the same framework, one well-tested middleware is cheaper to maintain than packet capture that has to reassemble many protocols, and it can see decoded requests and downstream calls directly.\n\n**Why it matters more with agents.** Every cross-cutting capability an agent needs (capture, replay, tagging, routing, telemetry) has to be installed in every service. With one framework per language, that is one change and one rollout; with a dozen ad-hoc stacks, it is a dozen projects that never finish.\n\n## Foundation 5: The Edge Gateway\n\n**What the record shows.** Uber's August 2020 post \"Designing Edge Gateway, Uber's API Lifecycle Management Platform,\" co-written by Medisetty with Pavel Astakhov and Madan Thangavelu, describes three generations of Uber's mobile front door. The first (2014) was the dispatch and API pair, routing on a `messageType` field. The second, **RTAPI** (Real-Time API, from 2015), was one of Uber's largest Node.js applications: 800,000 requests per second at peak, about a million lines of code, 400+ downstream services owned by 100+ teams, and commits from 40% of engineering. It became a bottleneck because business logic leaked into it. The third, the **Edge Gateway**, is a Go service with no business logic at the edge, configured through a UI (authentication, request transforms, header propagation, rate limiting, load shedding) and adopting gRPC; the migration took about two years. Medisetty joined Uber in May 2015 on the RTAPI team, so this is his own history.\n\nIn the episode he described the gateway as of 2026: it supports REST, gRPC, webhooks and GraphQL; \"all APIs go through one single entry point where we can build a whole bunch of tooling around that on monitoring, on alerting\"; it has its own capture-and-replay that uses Capri behind the scenes; and Uber automatically tags \"which is a required dependency, which is an optional dependency,\" metadata that helps \"both engineers to debug faster and also agents to debug faster.\" Webhooks, GraphQL, the Capri-based replay and the dependency tags are podcast-only.\n\n**What it carried.** Three roles: the place where test tenancy and routing overrides enter the baggage (2022 SLATE post); the place where capture and replay can see every external request (episode); and a source of dependency metadata for diagnosing alerts (episode), which feeds the debugging work in [From Bug Report to Fix: Wisdom, DebugAssist and the Closed Loop](wisdom-and-debug-assist.html). The NSDI '26 paper on Uber's failover architecture, which Medisetty co-authored, adds documented context for the dependency tags: Uber hardened more than **4,000 unsafe \"fail-close\" dependencies** while cutting failover spare capacity from 2× to 1.3×. Knowing which dependencies are required and which are optional is the same knowledge, put to a different use.\n\n## How the Foundations Map to AI Systems\n\n"}, {"type": "mermaid", "content": "flowchart LR\n    IDL[\"IDL registry: Thrift and Protobuf\"] --> MCP[\"MCP Gateway\"]\n    OWN[\"uOwn ownership\"] --> MCP\n    OWN --> SH[\"Shepherd campaigns\"]\n    OWN --> CG[\"Context graph\"]\n    JG[\"Jaeger trace context and baggage\"] --> SL[\"Slate\"]\n    JG --> CG\n    FW[\"Standardized language frameworks\"] --> CA[\"Capri capture and replay\"]\n    FW --> JG\n    EG[\"Edge Gateway\"] --> SL\n    EG --> CA\n    EG --> DBG[\"Agent debugging context\"]\n    SH -->|\"agentic campaign fixes propagation\"| JG"}, {"type": "markdown", "content": "**Figure 3:** *Each AI-era system draws on one or more pre-AI foundations. The IDL-to-MCP, baggage-to-Slate, framework-to-Capri and Edge-Gateway links are described by Uber; the uOwn links to MCP Gateway, Shepherd and the context graph are the author's inference from the episode. The arrow back into Jaeger is the AI-driven repair campaign Medisetty described.*\n\n| Foundation | Built for | Era | AI system it carries | Evidence for the link |\n| --- | --- | --- | --- | --- |\n| IDL registry | Code generation, compatibility, gateway configuration | 2016 or earlier (Thrift); Protobuf later | MCP Gateway | Uber blog, Oct 2026; podcast |\n| uOwn | Incidents and on-call lookup | From 2015 (podcast) | Shepherd routing, context graph, tool enablement | Podcast; link inferred |\n| Jaeger and baggage | Debugging latency and failures; test tenancy | 2015–2016; open source 2017; baggage routing documented 2020–2022 | Slate for agents; context graph | Uber blogs 2017, 2020, 2022, 2024; podcast |\n| Language frameworks | Consistency across services; platform rollout | Fx open source (README: nearly all Go services) | Capri; plausibly automatic propagation | Fx README; podcast |\n| Edge Gateway | One front door for mobile; API lifecycle | 2020 (third generation) | Slate routing overrides; capture and replay; debugging metadata | Uber blogs 2020, 2022; podcast |\n\n## Design Choices and Trade-offs\n\n| Choice | Option A | Option B | When A is right | When B is right |\n| --- | --- | --- | --- | --- |\n| **Contract style** | IDL-first (Thrift, Protobuf), code generated | Code-first, schemas inferred or written afterward (often OpenAPI) | Many services and languages; compatibility checks; machine consumers including agents | Few services; public HTTP APIs where OpenAPI is the norm |\n| **Where contracts live** | One registry (or monorepo path) for all IDLs | Each repository holds its own | You want discovery, crawling and compatibility checks fleet-wide | Small estates where search is enough |\n| **Test isolation** | Route test requests inside a shared environment by propagated context | Separate staging stacks per team or per developer | Large estates where full copies drift and cost too much (Uber's 2020 argument) | Small estates, strict data isolation, or no propagation coverage |\n| **Who acts on routing** | Infrastructure (mesh sidecar, host agent, gateway) | Each service's own code | Always, if you can; services stay unaware | Only as a stopgap |\n| **Cross-cutting behavior** | One mandated framework per language | Libraries teams may adopt | You need fleet-wide capture, tracing or policy | Early-stage companies still choosing their stack |\n| **Traffic capture** | In-process middleware | Packet capture off the wire | High framework coverage; need for decoded payloads and downstream calls | Heterogeneous services; no shared framework (Uber's 2022 Shadower argument) |\n| **Front door** | One edge gateway for all external traffic | Per-domain or per-product gateways | You want one place for tenancy tagging, capture and policy | Domains with very different protocols or ownership |\n\nThe common thread: **each option A is a centralizing bet that pays off only with near-total coverage**. A registry with half the services, baggage that half the services propagate, or a framework half the services use gives agents an inconsistent world. The estate is navigable only to the extent the property is universal.\n\n![A grid of service tiles, mostly covered, where an agent's path stops at the first uncovered tile.](assets/images/04-contracts-and-context-propagation/coverage-gaps-block-agents.jpeg)\n**Figure 4:** *Each centralizing foundation pays off only with near-total coverage; agents meet the gaps first.*\n\n## Elsewhere in the Industry\n\n**Lyft (2021–2022).** Lyft's developer-infrastructure team replaced per-developer environments with **staging overrides**: branch builds deployed into shared staging without registering in service discovery, with override metadata carried as OpenTracing baggage and a modified Envoy filter rerouting matching requests (as summarized by InfoQ in March 2022). The mechanism is Uber's; the difference is location. Lyft isolates inside **staging**, Uber inside **production** with production dependencies by default.\n\n**Signadot and the standards (2023–2024).** Signadot, a vendor of Kubernetes sandboxes, routes requests with a key carried in OpenTelemetry `baggage` and `tracestate` headers; its documentation lists `uberctx-sd-routing-key`, the Jaeger-style header, as the legacy default, which shows how Uber's tracing conventions spread into the industry's tools. Its docs state the same precondition Uber learned: every service on the path must propagate the headers. The W3C **Baggage** specification, a Candidate Recommendation since May 2024, standardizes the `baggage` header with minimum limits of 64 members and 8,192 bytes, so a company starting today does not need Uber's proprietary headers.\n\n**Agents and contracts.** The Model Context Protocol defines tools with JSON Schema inputs, which is close to what an IDL already holds. Any company with a schema registry can generate tool definitions the way Uber's AutoCrawler does; the reverse, writing schemas for undocumented endpoints so agents can call them, is far harder. Spotify's 2025 posts on its background coding agent make a related point from the other side: it keeps the agent's tool set small, because each added tool makes behavior less predictable. Generated tools are cheap; well-described ones are not.\n\n## If You Are Not Uber\n\nThese foundations are the part of Uber's story that copies best, because each is useful to people today and none needs a large AI budget. They are also the part that takes longest, so start now.\n\n**Order matters.** Ownership first (it is cheap and everything else routes through it). Typed contracts second. Context propagation third, through a framework or auto-instrumentation rather than by hand. One front door, where you have a choice, fourth.\n\n| Company size | Minimum viable version | Buy, build or open source | What not to copy |\n| --- | --- | --- | --- |\n| **≈50 engineers** | An owner and on-call rotation for every deployable, in a file next to the code; OpenAPI or Protobuf for every internal API in the repository; OpenTelemetry auto-instrumentation | Open source (OpenTelemetry, Protobuf or OpenAPI tooling); a hosted catalog if you want a UI | A custom ownership system; baggage-routed testing in production; a home-grown gateway |\n| **≈500 engineers** | A service catalog with owners, tiers and links to schemas; schema compatibility checks in CI; W3C trace context and baggage propagated by a shared framework; a sandbox tool that routes on baggage for the most-tested paths | Open source catalog (for example Backstage) or a vendor; vendor sandbox routing; one internal framework template per language | Mandating one framework before you have two languages' worth of services; routing in production before propagation coverage is measured |\n| **≈5,000 engineers** | One IDL registry crawled by tools; ownership as a graph (people, teams, services, data); measured propagation coverage with automated repair; frameworks that carry capture, tracing and policy; one edge layer that sets tenancy | Build where the integration is the value (registry crawling, ownership graph); buy or adopt open source for tracing and mesh | Treating coverage as done; letting the edge accept tenancy or routing baggage from untrusted clients |\n\n**Measure coverage, not adoption.** For each foundation, track the share of services that comply: services with a registered schema, with a valid owner, that propagate baggage end to end (a synthetic request with a marker key, checked at the leaves), and that run the standard framework. Agents will hit the gaps first.\n\n**Where Uber's path does not hold.** Uber's foundations came from building almost everything in-house at a time when vendors could not meet its scale ([Build What the Market Cannot Yet Sell: Uber's Pre-AI Platform Bets](build-what-does-not-exist.html)). In 2026 OpenTelemetry, schema registries, service catalogs and sandbox routers are available off the shelf. What cannot be bought is coverage: the work of getting every team to adopt them.\n\n## Failure Modes\n\n- **Baggage that leaks in from outside.** If the edge accepts routing or tenancy baggage from external clients, anyone can steer requests toward test builds or mark traffic as test traffic. Uber's design sets tenancy at the edge; an imitator must also **strip** inbound baggage it did not set.\n- **The silent drop.** One service, queue consumer or thread pool loses the context, and every request behind it routes to production. Tests pass against the wrong build. Coverage checks catch this; code review does not.\n- **Baggage bloat.** Teams discover baggage and start carrying business data in it. Headers grow, every hop pays, and the W3C limits are hit. Keep baggage for infrastructure keys.\n- **Stale ownership at machine speed.** An agent campaign opens hundreds of pull requests routed to teams that no longer own the code; reviews stall and the campaign is blamed. Ownership accuracy needs its own metric before agent campaigns scale.\n- **Contracts without meaning.** Auto-generated tools from IDLs with empty or misleading doc comments produce agents that call the wrong endpoint with valid arguments. Medisetty's 3,000–4,000-token tool descriptions show the opposite failure: too much text. Both need curation and owner review, which Uber's October 2026 post builds in.\n- **Framework exceptions.** A few critical services run outside the standard framework \"for performance.\" They become the gap where capture, routing and telemetry do not work, and usually the place agents most need to test.\n- **Two gateways, two truths.** An edge gateway and an MCP gateway with separate authentication, rate limits and redaction rules drift apart. Uber had the same team build both, which reduces that risk.\n\n## What the Record Does Not Say\n\n- **uOwn's design**: data model, how ownership is kept current, and whether it is the source for the MCP registry, Shepherd and the context graph.\n- **The IDL registry itself**: whether it is a service, a monorepo path or both, and how compatibility checks work outside the API gateway.\n- **Propagation coverage**: what share of services propagate baggage end to end today, and how many the AI-driven Shepherd campaign has fixed.\n- **The Jaeger-to-OpenTelemetry migration**: the 2024 BITS post implies one; its extent is not described.\n- **The Java framework**: Fx is documented for Go; the Java equivalent is not named publicly.\n- **Edge Gateway's 2026 features**: webhooks, GraphQL, Capri-based replay and the required-versus-optional dependency tags are podcast-only, and how the tags are computed is not described.\n- **How Jaeger made the context graph easier**: the show notes say it did; neither the episode nor any written source explains how.\n\n## Questions to Ask\n\n1. What share of our services has a machine-readable contract in one place an agent could crawl?\n2. What share of our deployables has a current owner and on-call rotation, and how would we know if it were wrong?\n3. If we send a request with a marker baggage key through our most important flow, does every hop receive it, including queues and background jobs?\n4. Where does trace context enter our system, and do we strip context we did not set?\n5. Which cross-cutting behaviors (tracing, capture, policy, tenancy) can we add to every service with one change, and which need every team to act?\n6. Are our IDL or OpenAPI doc comments good enough to become tool descriptions an agent would choose correctly from?\n7. Could we tell, for any service, which of its dependencies are required and which are optional?\n8. Which of these foundations would we fund for humans alone, and which are we only considering because of AI?\n\n## From Foundations to Gateways\n\nPart I has covered the decade before AI: the in-house platforms ([Build What the Market Cannot Yet Sell: Uber's Pre-AI Platform Bets](build-what-does-not-exist.html)), the monorepos and one build ([From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html)), the DevPods ([DevPods: Cloud Workspaces Built for Engineers, Ready for Agents](devpods.html)) and, in this chapter, the contracts, ownership data and propagated context underneath them. Part II turns to what Uber built on top, starting with the first AI-era decision it made in late 2023: send every model request in the company through one door. That is [One Door for Every Model: The Model Gateway and AI Guard](model-gateway.html).\n\n## Sources and Evidence\n\n### The source episode\n\n- [Uber's AI infra, from the inside](https://newsletter.pragmaticengineer.com/p/ubers-ai-infra-from-the-inside) — *The Pragmatic Engineer* podcast, Gergely Orosz with Uday Kiran Medisetty, 2026. IDL registry and MCP generation, uOwn, Jaeger baggage and the years of retrofitting, standardized frameworks and Capri, Edge Gateway endpoint types and dependency tags, the AI Shepherd propagation campaign; show notes for the foundation-to-AI mapping.\n\n### Uber engineering sources\n\n- [Designing MCP Gateway: Uber's MCP Management Platform](https://www.uber.com/blog/designing-mcp-gateway/) — Uber blog, Srivastava, Mehndiratta and Gill, 2026. AutoCrawler over the IDL registry, LLM-written descriptions, ownership and enablement, Muttley, scale.\n- [Evolving Distributed Tracing at Uber Engineering](https://www.uber.com/blog/distributed-tracing/) — Uber blog, Yuri Shkuro, 2017. Jaeger history, Merckx, TChannel, open-sourcing.\n- [Why We Leverage Multi-tenancy in Uber's Microservice Architecture](https://www.uber.com/blog/multitenancy-microservice-architecture/) — Uber blog, Amit Gud, 2020. Tenancy context at the edge, propagation, `services_under_test`, the case against parallel staging.\n- [Simplifying Developer Testing Through SLATE](https://www.uber.com/blog/simplifying-developer-testing-through-slate) — Uber blog, Srivastava, Srivastava and Rathi, 2022. `request-tenancy` baggage, Edge Gateway routing overrides, host routing agent.\n- [Shifting E2E Testing Left at Uber](https://www.uber.com/blog/shifting-e2e-testing-left) — Uber blog, 2024. OpenTelemetry baggage for routing overrides; Jaeger-sampled test index.\n- [Designing Edge Gateway, Uber's API Lifecycle Management Platform](https://www.uber.com/blog/gatewayuberapi/) — Uber blog, Astakhov, Thangavelu and Medisetty, 2020. Three gateway generations, RTAPI numbers, Glue and Fx.\n- [The Architecture of Uber's API gateway](https://www.uber.com/blog/architecture-api-gateway/) — Uber blog, Thangavelu, Parwal and Patali, 2021. YAML plus Thrift IDL, Zanzibar code generation, compatibility checks.\n- [The Uber Engineering Tech Stack, Part I: The Foundation](https://www.uber.com/blog/tech-stack-part-one-foundation/) — Uber blog, Lucie Lozinski, 2016. Thrift as Uber's IDL.\n- [Introducing Domain-Oriented Microservice Architecture](https://www.uber.com/blog/microservice-architecture/) — Uber blog, Adam Gluck, 2020. 50 services and 12 teams in one investigation.\n- [Introducing Shadower: A Minimalistic Load Testing Tool](https://www.uber.com/rs/en/blog/introducing-shadower-a-minimalistic-load-testing-tool/) — Uber blog, Cristian Velazquez, 2022. The 2022 argument against in-process capture.\n- [uber-go/fx](https://github.com/uber-go/fx) — Uber open source, README (current). Fx as \"the backbone of nearly all Go services at Uber.\"\n- [Uber's Failover Architecture](https://www.cs.ubc.ca/~bestchai/papers/nsdi26-ufa2.pdf) — USENIX NSDI '26, Bansal et al. with Medisetty, 2026. 4,000+ fail-close dependencies hardened; service tiers.\n- [Controlling the Rollout of Large-Scale Monorepo Changes](https://www.uber.com/blog/controlling-the-rollout-of-large-scale-monorepo-changes/) — Uber blog, Lorincz, Alvarez and Vestergaard, 2025. Tiered per-service metadata used platform-wide.\n\n### Industry and research sources\n\n- [Scaling and Automating Microservice Testing at Lyft](https://www.infoq.com/news/2022/03/scaling-testing-acceptance-lyft/) — InfoQ, Vasco Veloso, 2022. Lyft staging overrides with OpenTracing baggage and Envoy.\n- [Set up Header Propagation](https://signadot.com/docs/guides/set-up-context-propagation) — Signadot documentation (current). Baggage routing keys, legacy `uberctx-` header, propagation requirement.\n- [W3C Propagation format for distributed context: Baggage](https://www.w3.org/TR/baggage/) — W3C Candidate Recommendation Snapshot, 2024. The `baggage` header and its limits.\n- [Background Coding Agents: Context Engineering (Honk, Part 2)](https://engineering.atspotify.com/2025/11/context-engineering-background-coding-agents-part-2) — Spotify Engineering, Charas and Bruggmann, 2025. A deliberately small agent tool set.\n\nStatements about Uber's AI-era systems are Uber's own account unless another source is cited; recommendations and labeled inferences are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

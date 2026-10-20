@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Minion: Background Coding Agents on the Mega DevPod</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">RETROFITTED: How Uber Built AI-Native Engineering on a Decade of Developer Platforms</a><span class="nav-right"><a class="nav-prev" href="plans-as-source-of-truth.html" title="Plans Before Prompts: PRDs, ERDs and the Design-Doc Hub">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="inner-loop-and-self-healing-ci.html" title="Shift Left or Drown: Inner-Loop Validation and Self-Healing CI">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part III — LIFECYCLE: The Feature Path, Rewired</p>
+        <h1>Minion: Background Coding Agents on the Mega DevPod</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-20  ·  24 min read · <a class="spec-link" href="minion.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/12-minion/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/12-minion/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">RETROFITTED: How Uber Built AI-Native Engineering on a Decade of Developer Platforms</a><span class="nav-right"><a class="nav-prev" href="plans-as-source-of-truth.html" title="Plans Before Prompts: PRDs, ERDs and the Design-Doc Hub">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="inner-loop-and-self-healing-ci.html" title="Shift Left or Drown: Inner-Loop Validation and Self-Healing CI">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Minion: Background Coding Agents on the Mega DevPod", "date": "2026-10-20", "author": "Željko Obrenović", "excerpt": "What does it take for around 15% of production PRs to come from a background agent? At Uber, a cloud workspace that already holds every repository and builds any module the same way, entry points where work is already discussed (the web and Slack), a separate spend tier, and a growing set of self-validation tools that decide which tasks the agent can be trusted with.", "permalink": "minion", "timetoread": "24 min read", "icon": "assets/icons/12-minion.png", "logo": "assets/images/12-minion/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Follow a task from a Slack thread or a web form into Minion, Uber's background coding agent, through the mega DevPod it runs on and the validation it does before stopping at a draft PR. Reconcile the different public numbers for Minion's share of PRs, and decide what minimum version of a background agent your organization can run, and on what foundations.\n\n> **WHY IT MATTERS:** A background agent turns engineer attention, not engineer typing, into the scarce resource. Whether it helps or floods review and CI depends on what it runs on, which tasks it is given, and how it proves its work, and those are platform decisions an engineering leader owns.\n\n> **KEY POINTS:**\n>\n> * **Minion is mostly reused infrastructure.** It runs on a DevPod flavor that holds all repositories, starts in seconds from warm pools and pre-built images, builds any module with one Bazel command, and inherits the harness, tools and skills of the interactive setup; Orosz's verdict was that Uber \"got to reuse almost all of this infra.\"\n> * **The share of PRs is a definition, not a number.** \"About 10%\" (CEO, May 2026), \"11% of merged PRs\" (May 2026), \"around 15% of production PRs\" (podcast, October 2026) and \"70%+ attributed to agents\" (August 2026) measure different things; quote the definition with the figure.\n> * **Validation tools, not model quality, set Minion's scope.** It began with maintenance and expands only \"as we are adding more and more tools… where Minion can self-validate its work\"; it stops at a draft PR with a table of the checks it ran, so trust is earned task class by task class.\n\n> **BUILT ON:** [DevPods: Cloud Workspaces Built for Engineers, Ready for Agents](devpods.html) and the mega DevPod, the per-language monorepos and one Bazel build contract from [From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html), Slack and web entry points, [AIFX: Making the Coding Harness Swappable](aifx-harness-layer.html), [The MCP Gateway: Every Internal Service One Tool Call Away](mcp-gateway.html) and [Skills as a Product: The Agent Skills Monorepo](skills-monorepo.html) for tools, the separate background tier from [Spend Tiers, Not Spend Caps: Governing Token Costs](token-spend-governance.html), and [Slate: Letting Agents Test Their Own Changes End to End](slate.html) for end-to-end checks.\n\n<br>\nEvery coding agent can open a pull request (PR). The hard part of a **background agent** (one that runs unattended in a cloud workspace while the engineer does something else) is everything around the PR: where the agent's code and tools come from, how it learns to build and test a module it has never seen, what it checks before asking for a human's time, and who pays for the tokens. Uber's answer is **Minion**, built in 2025, now in its second major iteration, and, according to Medisetty in the October 2026 *Pragmatic Engineer* episode, the path for **\"around 15% of all of the production PRs.\"**\n\nThe figure is striking, but the more useful lesson is in how Medisetty described Minion's growth: it started with maintenance tasks, and its scope grows as Uber adds tools that let it **self-validate** its work in web, mobile and backend code. **The agent's remit is bounded by the verification around it, not by what the model can write.**\n\nThis chapter covers what Minion is, as far as the public record shows; what it stands on; the numbers and their definitions; and what a company that is not Uber should build first. Planning, the input to Minion, is owned by [Plans Before Prompts: PRDs, ERDs and the Design-Doc Hub](plans-as-source-of-truth.html); the validation loop and CI economics it depends on are owned by [Shift Left or Drown: Inner-Loop Validation and Self-Healing CI](inner-loop-and-self-healing-ci.html).\n\n## The Problem Uber Had: Toil That Interrupts Focus\n\nUber's public framing of Minion is about attention. Uber engineer Nikhil Ramakrishnan described Minion at the Background Agents Summit ([session page](https://background-agents.com/summit/sessions/nikhil-ramakrishnan/), 7 May 2026) as a platform \"aimed at backgrounding toil tasks\", such as validation-heavy fixes, cleanup work and other interruptions, with the goal to \"protect engineering focus, not just generate more diffs.\"\n\nMedisetty's podcast account names the same category. Some PRs engineers want to make interactively, steering an agent in their own session. For others, \"the task that I have really good spec or I want to do minimal steering, I can hand off that to a Minion.\" Early on, \"mostly maintenance kind of tasks used to be offloaded.\" Medisetty also described the on-call case: in a support channel, someone reports a bug, the on-call engineer asks Minion what the issue is, Minion comes back with a root cause, and if the fix is simple, it is fixed there, with \"no … loop of like adding it to backlog.\"\n\nThe scale makes the problem specific. Uber runs six major monorepos in seven languages, and more than 4,500 engineers land changes through its merge queue (\"Slashing CI Costs at Uber\", [Uber Blog](https://www.uber.com/us/en/blog/slashing-ci-costs-at-uber/), 23 June 2025). A dependency bump, a noisy-log cleanup or a small bug fix is cheap for one service and enormous across thousands. **Toil at Uber is a fleet problem**, which is why the systems in this book that address it at fleet scale, [Shepherd and Fox: From Migration Campaigns to Self-Improving Codebases](shepherd-and-fox.html), sit next to Minion rather than inside it.\n\n## What Uber Built: Minion as Described\n\n### Entry Points and Modes\n\nAccording to Medisetty, Minion is used from the **web** and from **Slack**. In either, an engineer can run it in **plan mode** (the agent proposes a plan, the engineer reviews it, then the agent executes \"behind the scenes\") or give a prompt once and let it execute, \"if it's like a simple simple prompt.\" In Slack, \"@Minion\" shows status and accepts steering in the thread, so \"you don't need to go to the web.\" Medisetty's example of the Slack path: an engineer iterates on a design in a thread with the engineering manager and the product manager, gets alignment, and then writes \"@Minion follow this thread. And can you create a PR?\" Minion \"will take that Slack thread context and then create a PR.\"\n\nA third entry point is another agent. In the episode, Medisetty described **DebugAssist**, Uber's managed root-cause agent, handing off to Minion: once an engineer judges DebugAssist's root-cause analysis (RCA) to be right, they ask Minion to create the PR, and Minion attaches it to the Jira task that already holds the RCA. A September 2026 conference abstract describes a variant in which DebugAssist opens PRs itself. [From Bug Report to Fix: Wisdom, DebugAssist and the Closed Loop](wisdom-and-debug-assist.html) owns that loop; for Minion, the point is that a reviewed analysis can serve as the spec just as an approved plan or a Slack thread does.\n\nSecondary summaries of Uber talks also list GitHub PR and code-review interfaces as entry points; no Uber-authored page states this, so this chapter does not rely on it. The *Pragmatic Engineer*'s March 2026 deep dive described Minion as \"an internal background agent platform with monorepo access and optimized defaults\" ([*Pragmatic Engineer*](https://newsletter.pragmaticengineer.com/p/how-uber-uses-ai-for-development), 10 March 2026), and reported the observation of Ty Smith, an Uber principal engineer, that engineers often start several background agents while waiting on a prompt: \"Might as well kick off another background agent.\"\n\n### Where It Runs: The Mega DevPod\n\nMinion runs on the **mega DevPod**, the DevPod flavor that contains every repository (see [DevPods: Cloud Workspaces Built for Engineers, Ready for Agents](devpods.html), which owns the term). Medisetty said in the episode that \"for Minion, there is a devpod flavor that has all of the repositories, and optimized for Minion usage,\" and that the mega DevPod lets \"my agents create PRs across the repositories.\" With it, Minion \"can work across repositories and generate one PR or multiple PRs across repositories based on the plan and spec.\"\n\nThe AI Engineer World's Fair 2026 talk by Medisetty and Adam Huda ([AI Engineer](https://ai.engineer/talks/17-YSUHo6Lk-agentic-sdlc-at-uber-building-blocks-ubers)) adds the mechanics of fast start: Uber keeps **pre-provisioned Kubernetes \"balloon pods\"** ready, with repository snapshots and search indexes already built, so agents \"can begin working within seconds.\" The podcast describes the same thing from the interactive side: DevPods run on Kubernetes clusters across multiple clouds, \"everything is warmed up,\" and a new pod is cloned from a pre-built image with repositories and build caches already present.\n\nInside the pod, the agent faces the same build contract as an engineer. \"It's one single way to build any module,\" Medisetty said, and because builds and tests are standardized on Bazel across repositories, top-level `CLAUDE.md` and `AGENTS.md` files can tell any agent how to build and test any module, so \"most teams will get like really good value out of the bat\" without per-module setup. [From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html) owns that contract.\n\n"}, {"type": "mermaid", "content": "flowchart LR\n    subgraph ENTRY[\"Entry points\"]\n        WEB[\"Minion web UI\"]\n        SL[\"Slack: @Minion follow this thread\"]\n        PLAN[\"Approved plan: Ready for Minion\"]\n    end\n    subgraph POD[\"Mega DevPod from a warm pool\"]\n        REPO[\"All repositories, snapshots, search indexes\"]\n        BUILD[\"One Bazel build and test contract\"]\n        H[\"Harness via AIFX with skills\"]\n    end\n    TOOLS[\"MCP Gateway tools and CLIs\"]\n    VAL[\"Self-validation: static checks, simulator, staging, Slate\"]\n    PR[\"Draft PR with table of checks and screenshots\"]\n    CI[\"Shared CI and SubmitQueue\"]\n    REV[\"Human review in Code Inbox\"]\n    WEB --> POD\n    SL --> POD\n    PLAN --> POD\n    H --> TOOLS\n    POD --> VAL\n    VAL --> PR\n    PR --> CI\n    PR --> REV"}, {"type": "markdown", "content": "**Figure 1:** *Minion as described in the podcast and the 2026 talk: entry points where work is already discussed, a mega DevPod that holds every repository and one build contract, shared tools and skills, self-validation, and a draft PR with evidence before shared CI and human review. How the harness inside the pod is wired to AIFX is an inference from the interactive setup.*\n\n### What It Does Before Asking for a Human\n\nThe 2026 talk is the clearest public source on Minion's stopping point. In the demo, Minion **\"stop[s] at just creating a draft PR\"** and is \"not gonna push it to CI yet.\" The reason given is CI cost: pushing straight to CI suits toil work, but end-to-end features need validation first, to limit extra CI load. Autonomous PRs carry **a table of the checks performed, including screenshots**; the talk page's summary notes that this makes the work inspectable but does not guarantee correctness.\n\nThe validation steps shown in the talk are static-analysis detection and repair, launching the app in a simulator with a skill and capturing a screenshot, comparing the screenshot \"with the Figma specification\", and starting the backend in staging to check frontend and backend integration. In the podcast, Medisetty described the same capability more generally: Uber hooked in \"visual validation where I can spin up emulator and test it … spin up like a web and test it … spin up like a staging environment,\" and \"now Minion or even my interactive harnesses, these agents … have the skills for this.\" [Shift Left or Drown: Inner-Loop Validation and Self-Healing CI](inner-loop-and-self-healing-ci.html) owns these checks and the `aifx validate` command; [Slate: Letting Agents Test Their Own Changes End to End](slate.html) owns the personal staging environments.\n\n"}, {"type": "mermaid", "content": "sequenceDiagram\n    participant E as Engineer\n    participant S as Slack thread\n    participant M as Minion\n    participant D as Mega DevPod\n    participant V as Validation tools\n    participant R as Code Inbox\n    E->>S: Iterate on the design with EM and PM\n    E->>S: @Minion follow this thread and create a PR\n    S->>M: Thread context as the spec\n    M->>D: Claim warm pod with all repositories\n    M->>D: Edit code across one or more repositories\n    M->>V: Static checks, build, simulator or staging\n    V-->>M: Failures to fix and evidence to attach\n    M->>R: Draft PR with checks table and screenshots\n    M-->>S: Status and link in the thread\n    E->>R: Review, steer or take over"}, {"type": "markdown", "content": "**Figure 2:** *The Slack path Medisetty described: the discussion is the spec, the agent claims a warm mega DevPod, validates its own work, and returns a draft PR with evidence. The ordering of validation steps is taken from the 2026 talk's demo, not from a documented Minion workflow.*\n\n### Spend: A Separate Tier\n\nMedisetty said that interactive harnesses share a spend tier and that \"for some of our background coding agents, we have a separate independent tier.\" Uber's August 2026 blog post, \"Running a Software Factory Efficiently at Uber Scale\" ([Uber Blog](https://www.uber.com/us/en/blog/efficient-software-factory/), 27 August 2026), describes \"separate tiers for managed agents\", tracked by outcome (cost per merged PR, cost per review, cost per cleanup) alongside quality signals such as revert rate. [Spend Tiers, Not Spend Caps: Governing Token Costs](token-spend-governance.html) owns the tier design; the point here is that **a background agent has a different cost profile from an interactive session**, because nobody is watching it spend.\n\n### Iterations and Lineage\n\nMedisetty said Uber did \"multiple iterations\" and calls the current one Minion v2; the details of v1 and v2 are not public. Ramakrishnan's summit session traces the lineage as an early **container prototype → DevPod → Minion**. Orosz, in the episode's closing, put the lineage plainly: Uber built DevPods in 2017 (the date as the episode gives it; Uber's own blog places the DevPod work after the 2017–2018 monorepo move) and \"got to reuse almost all of this infra in building out their cloud agents called Minions.\"\n\n### The Numbers, With Their Definitions\n\nUber's public figures for agent PRs differ because they count different things at different times. Read them as a series, not a contradiction.\n\n| Figure | What it counts | Source and date |\n| --- | --- | --- |\n| \"About 10%\" | Committed code built by autonomous agents | Uber CEO Dara Khosrowshahi on an earnings call, as reported by Fortune, May 2026 |\n| 11% | PRs opened by agents | *Pragmatic Engineer*, 10 March 2026 |\n| 11% | Merged PRs, behind Minion | Background Agents Summit, Ramakrishnan, 7 May 2026 |\n| ~1,800 a week; 95% of engineers | Code changes produced by Minion; share of engineers who use it | AAIF write-up of an Uber MCP Dev Summit talk ([AAIF](https://aaif.io/blog/how-uber-runs-60000-ai-agent-tasks-per-week-with-mcp), 14 May 2026) |\n| \"Around 15%\" | Production PRs that \"go through Minion\" | Podcast, Medisetty, October 2026 |\n| \"70%+\" | PRs attributed to local or cloud agents (any agent involvement) | Uber blog, 27 August 2026; AI Engineer talk |\n\nThe first three rows and the podcast figure count **authorship by an autonomous agent** (the AAIF row counts volume and adoption, not share); the last row counts **any agent involvement**, including an engineer's interactive session. Do not compare 15% with 70%. Even within the first group, no public source says how a Minion PR is counted once a human edits it, or whether \"production PRs\" excludes test and documentation changes. The trend, from about 10–11% in spring 2026 to around 15% in October, is consistent across Uber's own accounts; the exact level depends on a definition Uber has not published.\n\n![Two measuring instruments over one stack of pull requests: a narrow slice authored by an autonomous agent versus a wide band with any agent involvement.](assets/images/12-minion/agent-pr-share-definitions.jpeg)\n**Figure 3:** *The share of PRs is a definition, not a number: around 15% of production PRs go through Minion (podcast, October 2026), while 70%+ of PRs are attributed to any agent involvement (Uber blog, August 2026).*\n\n## The Foundation Underneath\n\nMinion is the clearest case in this book for the thesis of [The Harness Is the Easy Part: Why Uber's AI Tooling Took a Decade and a Year](the-harness-is-the-easy-part.html). The agent loop itself is commodity: Uber's harnesses are Claude Code, Codex and OpenCode, wrapped by [AIFX: Making the Coding Harness Swappable](aifx-harness-layer.html). What Uber did not have to build in 2025 is the list below.\n\n| What a background agent needs | What Uber already had | Built or documented | Without it |\n| --- | --- | --- | --- |\n| An isolated, disposable workspace per task | DevPods on Kubernetes, outside production | DevPod blog, Dec 2022; podcast | Agents on shared machines or laptops; no parallelism; credential sprawl |\n| Start in seconds, not minutes | Warm pools, pre-built images, build caches, balloon pods | Podcast; 2026 talk | Every task pays a clone-and-build tax; agents get used only for big jobs |\n| Every repository in one place | The mega DevPod over per-language monorepos | Monorepos 2017–18; mega DevPod in the AI era | Cross-repo changes become multi-agent coordination problems |\n| One way to build and test any module | Bazel across repositories; top-level `AGENTS.md` and `CLAUDE.md` | Go monorepo on Bazel, 2020 blog; podcast | Each module needs its own agent instructions, which nobody writes |\n| Tools to read the company | MCP Gateway generated from the IDL registry; skills monorepo | MCP Gateway blog, Oct 2026; podcast | Agents guess at service contracts and internal APIs |\n| A way to test end to end | Slate and its trace-baggage routing | Slate blog, 2022 | Agents can change code but not prove it works |\n| A queue that keeps main green | SubmitQueue | EuroSys 2019; 2025 CI blog | Agent PRs break main faster than humans can fix it |\n| A place where humans review | Code Inbox | PE, Mar 2026; podcast | Agent PRs land in a list nobody triages |\n\nThree of these foundations deserve a sentence each.\n\n**The mega DevPod is a monorepo decision paying off twice.** Because Uber had already consolidated thousands of micro-repositories into a handful of per-language monorepos (see [From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html)), \"all repositories\" is a set small enough to snapshot into one pod image. A company with three thousand repositories cannot give an agent \"everything\" this way.\n\n**The build contract replaces per-repository agent instructions.** Medisetty's remark that top-level `CLAUDE.md` and `AGENTS.md` files work \"out of the bat\" because builds and tests are standardized is the least glamorous and most transferable lesson in the chapter. **An agent's competence in an unfamiliar module is roughly the competence of a new hire with the same instructions.**\n\n**Isolation was solved for humans first.** DevPods already ran outside production on their own clusters, with their own images. An agent inherits that isolation boundary; it does not need a new one.\n\n## Design Choices and Trade-offs\n\n| Choice | Option A | Option B | When A is right | When B is right |\n| --- | --- | --- | --- | --- |\n| Hosting | Build on your own cloud workspaces (Uber) | Vendor-hosted agent: GitHub Copilot coding agent, Codex Cloud | You already run cloud dev environments, a monorepo and internal tools the vendor cannot reach | You live on GitHub or a similar platform, your build runs in its CI, and your tools are reachable from it |\n| Workspace scope | Mega workspace with all repositories | Per-repository clone per task | Cross-repo changes are common and the repo set is small enough to snapshot | Many small repositories; most tasks touch one |\n| Start time | Warm pools, pre-built images | Cold start per task | High task volume and short tasks | Low volume; long tasks amortize the start |\n| Stopping point | Draft PR after local validation (Uber's demo) | Push to CI and iterate on CI results | CI is expensive or overloaded; validation can run in the workspace | CI is cheap, fast and the only place real tests can run |\n| CI rounds | Capped (Stripe: at most two) | Unbounded self-healing | Shared CI is a constrained resource | CI is elastic and failures are mostly flaky tests |\n| Entry point | Where work is discussed: Slack, web, plans | Ticket assignment only | Small fixes and on-call bugs that never become tickets | Planned work with clear tickets and auditing needs |\n| Interaction | Plan mode, then execute | One-shot | The task needs decomposition or touches several repositories | The task is small and well specified |\n| Spend | Separate tier for background agents | Shared tier with interactive use | Background usage scales without a human watching | Usage is low and attribution per person is enough |\n\nThe decision most organizations get wrong is the first. **A vendor-hosted background agent is the right default for most companies**, because it comes with an isolated workspace, a draft-PR flow and branch protections. GitHub's coding agent, for example, works in the background on GitHub Actions, commits to a draft PR, can push only to branches it creates, and needs human approval before CI/CD workflows run ([GitHub Blog](https://github.blog/news-insights/product-news/github-copilot-meet-the-new-coding-agent/), 19 May 2025). OpenAI's Codex Cloud runs delegated tasks in remote workspaces that keep going while the user's machine sleeps ([OpenAI](https://learn.chatgpt.com/docs/cloud)). Uber built its own because its workspaces, monorepos, internal tools and spend controls already existed and no vendor environment could reach all of them. That reasoning only transfers if the same is true for you.\n\n## Elsewhere in the Industry\n\n**Stripe's Minions.** The closest peer, with the same name. Stripe's one-shot agents run on a fork of Block's goose, start most often from a Slack thread, and run on devboxes that are \"pre-warmed so one can be spun up in 10 seconds, with Stripe code and services pre-loaded\" ([Stripe](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents), 9 February 2026). Lints run locally on each push, in under five seconds, before CI; and \"since CI runs cost tokens, compute, and time, we only have at most two rounds of CI.\" More than a thousand PRs merged each week are \"completely minion-produced\", all human-reviewed. Part 2 ([Stripe](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2), 19 February 2026) describes \"blueprints\", code-defined state machines that mix deterministic steps such as linting with agent steps such as implementation. The similarities to Uber are the warm workspaces, Slack as the main entry point and CI as a constrained resource. The difference visible in the public record is that Stripe documents a hard cap on CI rounds, while Uber documents a stop at a draft PR before CI plus a self-healing CI capability.\n\n**Spotify's Honk.** Spotify's background coding agent replaced hand-written migration scripts in its Fleet Management system with prompts, and had produced more than 1,500 merged PRs by November 2025, with 60–90% time savings on migrations ([Spotify Engineering](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1), 6 November 2025). Its third post describes deterministic verifiers (format, build, test) before a PR, then an LLM judge that compares the diff with the prompt to catch out-of-scope changes, with the agent tightly sandboxed ([Spotify Engineering](https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3), 9 December 2025). Spotify started from fleet-wide migrations, the work Uber assigns to [Shepherd and Fox: From Migration Campaigns to Self-Improving Codebases](shepherd-and-fox.html), rather than from ad hoc tasks.\n\n**GitHub Copilot coding agent and Codex Cloud.** Both are the vendor-hosted form of the same idea, described above. Their guardrails (agent-only branches, draft PRs, human approval before workflows run) are a useful checklist for anyone building their own.\n\n## If You Are Not Uber\n\n**The minimum viable background agent** is a vendor-hosted or self-hosted agent that works in an isolated workspace, can build and test the code it changes with one documented command, opens a draft PR with evidence of what it ran, and draws on a budget that someone watches. Everything Uber has beyond that, the mega DevPod, balloon pods, Slack steering, plan mode, Slate, is an accelerator.\n\n**Prerequisites, in order of importance:**\n\n1. **A documented, one-command build and test** for every repository the agent will touch, written in an `AGENTS.md` or equivalent. If a new hire cannot build a module from its README in an hour, an agent will not either.\n2. **An isolated workspace** that is not an engineer's laptop and cannot reach production credentials.\n3. **A merge gate that protects main**: required CI, branch protection, and a merge queue if you have more than a few dozen engineers.\n4. **A task class the agent can verify.** Start where tests already exist and are trusted: dependency bumps, lint debt, flaky-test fixes, small bugs with reproducing tests.\n5. **A spend owner and a background budget**, separate from interactive use.\n\n| Company size | Minimum version | Buy, build or open source | What to skip |\n| --- | --- | --- | --- |\n| **≈50 engineers** | A vendor-hosted agent (GitHub Copilot coding agent, Codex Cloud, Claude Code in CI or similar) assigned to issues labelled for it; draft PRs only; one budget | Buy | Self-hosted workspaces; Slack bots; plan mode as a separate product |\n| **≈500 engineers** | The same agent triggered from issues and from a Slack integration; per-repository `AGENTS.md` with the build contract; a short list of approved task classes; a weekly review of agent-PR acceptance and revert rates | Buy the agent; build the Slack trigger and the task-class policy; reuse cloud dev environments if you have them | A mega workspace (unless you have a monorepo); custom harnesses |\n| **≈5,000 engineers** | Self-hosted agents on your own cloud workspaces with warm pools; a workspace image with all monorepos; internal tools through a gateway; separate background tier; evidence table on every PR; per-task-class expansion as validation tools arrive | Build the platform on open harnesses (Uber uses Claude Code, Codex, OpenCode through a wrapper); buy models through a gateway | Expanding task classes ahead of the validation tools that make them checkable |\n\n**Sequencing that works:** build contract → isolated workspace → draft-PR-only agent on one task class → evidence on every PR → measure acceptance and revert rate → add a validation tool → add the next task class. Uber's own sequence, maintenance first and expansion \"as we are adding more and more tools\", follows this shape.\n\n![Fenced fields on a map: an agent works in the maintenance field first, and new fields for web, mobile and backend open only when a checking tool stands at their gate.](assets/images/12-minion/minion-scope-grows-with-validation.jpeg)\n**Figure 4:** *Validation tools, not model quality, set Minion's scope: it began with maintenance and grows as tools that let it check its own work arrive, one task class at a time.*\n\n**What not to copy:**\n\n- **Do not copy the 15%.** It is an outcome of Uber's foundations, not a target. A team that sets \"X% of PRs from agents\" as a goal will get PRs; it will not necessarily get value. [From Diff Velocity to Feature Velocity: Measuring Productivity When PRs Are Cheap](feature-velocity.html) explains why Uber itself moved away from PR counts.\n- **Do not build the mega DevPod without the monorepos.** \"All repositories in one pod\" is a consequence of having consolidated repositories; with thousands of repositories, a per-task clone of the few the task needs is cheaper.\n- **Do not let the agent push straight to shared CI at volume.** Uber's draft-PR stop and Stripe's two-round cap exist because CI is the first shared system background agents saturate. See [Shift Left or Drown: Inner-Loop Validation and Self-Healing CI](inner-loop-and-self-healing-ci.html).\n\n## Failure Modes\n\n- **The review flood.** A background agent's output rises faster than review capacity. Without triage, agent PRs wait, go stale and are closed, and the measured \"share of PRs\" rises while merged value does not. Uber's answer is [Code Inbox: Spending Human Review Where the Risk Is](code-review-signals.html); the imitator's minimum is a cap on open agent PRs per team.\n- **CI saturation.** Each agent run that pushes to CI and retries consumes shared capacity. Uber declared an internal CI \"code red\" in 2026 after CI jobs \"doubled or more than doubled\" year over year, a rise Medisetty linked to the \"influx of PRs\".\n- **Plausible but unverified PRs.** The agent produces a clean diff with a passing build that does the wrong thing, because nothing it could run checked behaviour. The evidence table helps reviewers only if the checks it lists actually exercise the change.\n- **Cross-repo blast radius.** A workspace with every repository makes it easy for an agent to \"fix\" a caller in another team's code. Ownership routing and scope checks (Spotify's LLM judge is one example) keep cross-repo PRs from becoming unreviewed changes to other teams' systems.\n- **Thread context as an unreviewed spec.** \"Follow this thread\" executes whatever the thread concluded, including the half-agreed parts. The PR should quote the decision it implemented, so the reviewer can check the agent read the thread the way the humans meant it.\n- **Workspace drift.** Pre-built images and snapshots go stale; agents then spend their first minutes rebuilding, or work against old dependencies. Image freshness becomes an operational metric.\n- **Unwatched spend.** A background agent stuck in a retry loop spends money with nobody watching. A separate tier with alerts, as Uber describes, is the cheap fix.\n- **Counting the wrong thing.** Reporting \"agent PRs\" without a definition invites the 15% versus 70% confusion inside your own organization.\n\n## What the Record Does Not Say\n\n- Minion's architecture beyond the workspace: which harness or harnesses it runs, how plans are represented, how it decides between one PR and several.\n- What changed between Minion v1 and v2, and what plan mode looks like in practice.\n- The definition of \"production PRs\" behind the 15% figure, and how human edits to a Minion PR are counted.\n- Acceptance, revert and incident rates for Minion PRs, by task class.\n- Which task classes Minion is currently trusted with, and the criteria for adding one.\n- Cost per merged Minion PR, although Uber says it tracks cost per outcome for managed agents.\n- How Minion's access to repositories and tools is scoped, and whether its identity is the requesting engineer's or its own.\n\n## Questions to Ask\n\n1. Can an engineer who has never seen a given repository build and test it with one documented command? Would an agent find that command?\n2. Where will background agents run, and what can that environment reach? What can it not reach?\n3. How long does it take from \"start a task\" to \"agent is editing code\"? What would warm pools or pre-built images save at your volume?\n4. Which single task class would you trust an agent with first, and what existing tests make that class verifiable?\n5. Will the agent stop at a draft PR, push to CI, or both? How many CI rounds may it spend?\n6. What evidence must every agent PR carry for a reviewer to trust it faster than a human's PR?\n7. Who owns the background-agent budget, and what alert fires when one run spends too much?\n8. How will you define and report \"agent PRs\", and what acceptance and revert rate would make you add the next task class?\n9. Where is work already discussed in your organization, and could an agent be started from there?\n\nMinion's draft PR is the beginning of a second problem: every agent PR is CI load, and the load arrives faster than CI capacity grows. [Shift Left or Drown: Inner-Loop Validation and Self-Healing CI](inner-loop-and-self-healing-ci.html) follows Uber's response, from moving simple checks into `aifx validate` to self-healing CI and the 2026 \"code red\".\n\n## Sources and Evidence\n\n**The source episode**\n\n- [Uber's AI infra, from the inside](https://newsletter.pragmaticengineer.com/p/ubers-ai-infra-from-the-inside), *The Pragmatic Engineer* podcast, Gergely Orosz with Uday Kiran Medisetty, 2026 (14 October); show notes and auto-generated transcript. Supports Minion's entry points, modes, Slack steering, on-call use, the mega DevPod, the 15% figure, the maintenance-first scope, the separate spend tier and Orosz's reuse verdict.\n\n**Uber engineering sources**\n\n- [Agentic SDLC at Uber: Building Blocks for Uber's Software Factory](https://ai.engineer/talks/17-YSUHo6Lk-agentic-sdlc-at-uber-building-blocks-ubers), AI Engineer World's Fair talk, Uday Kiran Medisetty and Adam Huda, 2026. Supports balloon pods, the draft-PR stop and its CI rationale, the checks table and the validation steps.\n- [Inside Uber's agent-ready platform behind 11% of merged PRs](https://background-agents.com/summit/sessions/nikhil-ramakrishnan/), Background Agents Summit, Nikhil Ramakrishnan, 2026 (7 May). Supports the 11% of merged PRs, the toil framing and the container-to-DevPod-to-Minion lineage.\n- [Running a Software Factory Efficiently at Uber Scale](https://www.uber.com/us/en/blog/efficient-software-factory/), Uber Blog, Uday Kiran Medisetty, 2026 (27 August). Supports separate tiers and outcome-based costs for managed agents and the 70%+ agent-attribution figure.\n- [How Uber uses AI for development: inside look](https://newsletter.pragmaticengineer.com/p/how-uber-uses-ai-for-development), *The Pragmatic Engineer*, Gergely Orosz, 2026 (10 March). Supports 11% of PRs opened by agents and Minion's description.\n- [How Uber Runs 60,000 AI Agent Tasks Per Week With MCP](https://aaif.io/blog/how-uber-runs-60000-ai-agent-tasks-per-week-with-mcp), Agentic AI Foundation, 2026 (14 May). Supports ~1,800 Minion code changes a week and use by 95% of engineers.\n- [Slashing CI Costs at Uber](https://www.uber.com/us/en/blog/slashing-ci-costs-at-uber/), Uber Blog, Zhongpeng Lin, Dhruva Juloori and Matthew Williams, 2025. Supports the six monorepos and 4,500+ engineers on SubmitQueue.\n- [MCP-Powered Crash Investigation: How 11 MCP Servers Help an AI Agent Debug Production Issues at Uber](https://agntconmcpconjapan26.sched.com/2026-09-11/list/descriptions/type/MCPCon), MCPCon Japan talk abstract, Kriti Dangi, 2026 (11 September). Supports the DebugAssist variant that opens PRs itself.\n- [Uber's COO says it's getting harder to justify AI spend](https://www.fortune.com/2026/05/26/uber-coo-ai-spending-tokens-claude-code/), Fortune, Jake Angelo, 2026 (26 May). Supports the CEO's \"about 10%\" figure as reported.\n\n**Industry and research sources**\n\n- [Minions: Stripe's one-shot, end-to-end coding agents](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) and [Part 2](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2), Stripe Dev Blog, Alistair Gray, 2026. Support Slack starts, 10-second devboxes, local lints, the two-CI-round cap, blueprints and weekly volume.\n- [1,500+ PRs Later: Spotify's Journey with Our Background Coding Agent](https://engineering.atspotify.com/2025/11/spotifys-background-coding-agent-part-1) and [Predictable Results Through Strong Feedback Loops](https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3), Spotify Engineering, Max Charas and Marc Bruggmann, 2025. Support Honk's volume, verifiers and LLM judge.\n- [GitHub Copilot: Meet the new coding agent](https://github.blog/news-insights/product-news/github-copilot-meet-the-new-coding-agent/), GitHub Blog, Thomas Dohmke, 2025. Supports the vendor-hosted draft-PR model and its guardrails.\n- [Codex Cloud](https://learn.chatgpt.com/docs/cloud), OpenAI documentation, current as of October 2026. Supports remote delegated tasks as a vendor option.\n\nStatements about Uber's AI-era systems are Uber's own account unless another source is cited; recommendations and labeled inferences are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>From Diff Velocity to Feature Velocity: Measuring Productivity When PRs Are Cheap</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">RETROFITTED: How Uber Built AI-Native Engineering on a Decade of Developer Platforms</a><span class="nav-right"><a class="nav-prev" href="wisdom-and-debug-assist.html" title="From Bug Report to Fix: Wisdom, DebugAssist and the Closed Loop">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="the-engineer-as-context-builder.html" title="The Engineer as Context Builder: Specs, Parallel Sessions and Verification">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part IV — PRACTICE: Measuring and Leading</p>
+        <h1>From Diff Velocity to Feature Velocity: Measuring Productivity When PRs Are Cheap</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-20  ·  24 min read · <a class="spec-link" href="feature-velocity.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/19-feature-velocity/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/19-feature-velocity/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">RETROFITTED: How Uber Built AI-Native Engineering on a Decade of Developer Platforms</a><span class="nav-right"><a class="nav-prev" href="wisdom-and-debug-assist.html" title="From Bug Report to Fix: Wisdom, DebugAssist and the Closed Loop">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="the-engineer-as-context-builder.html" title="The Engineer as Context Builder: Specs, Parallel Sessions and Verification">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "From Diff Velocity to Feature Velocity: Measuring Productivity When PRs Are Cheap", "date": "2026-10-20", "author": "Željko Obrenović", "excerpt": "What should an engineering organization measure when agents can open hundreds of pull requests a day? Uber's answer is to stop counting diffs and start measuring how fast features reach users, by tagging every PR by type and complexity and reconstructing each feature's path from product spec to rollout.", "permalink": "feature-velocity", "timetoread": "24 min read", "icon": "assets/icons/19-feature-velocity.png", "logo": "assets/images/19-feature-velocity/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** See why Uber's pre-AI productivity metrics stopped working once agents started writing code, and follow the replacement it described: PR tagging by type and complexity, a feature-level cycle time reconstructed from planning documents, and a search for the slowest phase of the feature path.\n\n> **WHY IT MATTERS:** Every AI tooling budget eventually meets the question \"what did we get for it?\" A PR count answers that question badly, and at agent volumes it starts to measure the agents. An organization that cannot measure features cannot tell an AI investment that ships product from one that only produces diffs.\n\n> **KEY POINTS:**\n>\n> * **Diff counts measure activity, and agents make activity cheap.** When a background agent can open a PR from a Slack thread and a weekly maintenance loop opens PRs on its own, diffs per engineer measure the agents, not the value delivered. Uber says it moved its North Star from diff velocity to **feature velocity**.\n> * **The first instrument is a PR mix, the second is a feature clock.** Uber tags every PR by type (feature, bug fix, maintenance, testing, documentation) and complexity and watches the mix shift. It then reconstructs the link from product spec to engineering design to task to PR, filling missing links with AI clustering, to compute a **P50 feature time** per complexity class per half.\n> * **The point of the feature clock is to find the next bottleneck, not to rank people.** A feature-level timeline shows whether time goes into the product document, the code, the review, the launch or the rollout. That is where the next platform investment should go, and it is useless as a performance score for individuals.\n\n> **BUILT ON:** a decade of engineering-metrics practice (the 2017 Eng Metrics Dashboard, regular developer-experience surveys), the planning and design-doc hub that holds PRDs and ERDs with Jira and Linear links ([Plans Before Prompts: PRDs, ERDs and the Design-Doc Hub](plans-as-source-of-truth.html)), the context graph that joins people, PRs and documents ([The Context Graph and Cortana: Grounding Agents in the Company](context-graph.html)), and the uniform PR flow through one review and CI path ([From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html), [Code Inbox: Spending Human Review Where the Risk Is](code-review-signals.html))\n\n<br>\nFor most of the last decade the cheapest signal of engineering output was the diff. It was countable, it was attributable to a person and a team, and it correlated, loosely, with work getting done. Uber, like many companies, used it: an engineering-metrics dashboard showing diff counts existed from around 2017, and by 2020 leadership was looking at weekly diffs per engineer.\n\nAgents broke that correlation. In the October 2026 Pragmatic Engineer episode, Uday Kiran Medisetty, an Uber Distinguished Engineer, said about 15% of Uber's production PRs now go through Minion, its background coding agent; an Uber blog post from August 2026 says more than 70% of PRs are \"attributed to local or cloud agents\". When a PR can come from a Slack mention, a Sunday maintenance loop or a migration campaign, **the diff stops being a unit of human effort**. It becomes a unit of machine output, and machine output is something you buy with tokens.\n\nMedisetty's framing of the replacement was short: Uber is \"internally talking about not necessarily just diff velocity, but feature velocity.\" This chapter takes that phrase apart. It covers what Uber measured before AI and why it broke, the two instruments Uber described (a PR mix and a feature clock), what they depend on, and what a company without Uber's planning data should do instead. It does not cover token cost per se, which [Spend Tiers, Not Spend Caps: Governing Token Costs](token-spend-governance.html) owns, or the changing shape of the engineer's day, which [The Engineer as Context Builder: Specs, Parallel Sessions and Verification](the-engineer-as-context-builder.html) owns.\n\n## The Problem Uber Had: Metrics Built for Expensive Diffs\n\n### What Uber measured before AI\n\nMedisetty listed the pre-AI set in the episode: code throughput (which he called the easy ones), developer-experience surveys every few months, net promoter score (NPS) and sentiment across dimensions, and code-quality measures such as incidents per diff and code coverage. That list is broader than diff counting, and the public record fills in its history.\n\n| Instrument | What the record shows | Source |\n| --- | --- | --- |\n| **Eng Metrics Dashboard** | A first version around 2017 showed org-level diff counts to directors and above; by 2020 leadership looked at weekly diffs per engineer; one org encouraged 4–5 diffs per engineer per week; the CEO showed the dashboard (diff counts and focus time) at an all-hands in August 2022 | Pragmatic Engineer, 2022 |\n| **Diffs per engineer as a manager signal** | Gergely Orosz, the host and a former Uber manager, recalled that managers looked at diffs per engineer until he left in 2020, mainly to notice someone who had not contributed for weeks or who did many reviews | Episode, host's recollection |\n| **Developer surveys and NPS** | Uber's developer tooling NPS rose from −50 to +8 over the developer-experience program, per Gautam Korlam | Pragmatic Engineer, 2025 |\n| **Quality per change** | Incidents per diff and coverage, alongside throughput | Episode |\n\nThese are reasonable metrics for a world where a diff costs an engineer hours. In that world, diff count is a noisy proxy for effort, effort is a noisy proxy for output, and surveys catch what the counts miss. The proxies hold because the cost of a diff is roughly constant and is paid by a person.\n\n### Why the diff stopped meaning anything\n\nThree changes broke the proxy chain at once, and Uber's own numbers show all three.\n\n1. **Volume became cheap.** An Uber talk at AI Engineer World's Fair 2026 said lines of code per engineer roughly doubled year over year. Medisetty said PR volume rose year over year and CI jobs \"doubled or more than doubled\" in twelve months, enough to trigger an internal CI \"code red\" ([Shift Left or Drown: Inner-Loop Validation and Self-Healing CI](inner-loop-and-self-healing-ci.html)).\n2. **Authorship blurred.** Uber's public figures for the agent share of work range from about 10% of committed code (the CEO on an earnings call, reported by Fortune in May 2026) through 11% of merged PRs (an Uber talk, May 2026) and about 15% of production PRs through Minion (episode, October 2026) to more than 70% \"attributed to agents\" (Uber blog, August 2026). These are not contradictions. They count different things: autonomous authorship versus any agent involvement. Either way, a per-engineer diff count now includes work the engineer delegated, steered or merely approved.\n3. **The mix changed.** Background agents, the Shepherd migration platform and the Fox maintenance loop ([Minion: Background Coding Agents on the Mega DevPod](minion.html), [Shepherd and Fox: From Migration Campaigns to Self-Improving Codebases](shepherd-and-fox.html)) produce large numbers of small, low-risk PRs. One Uber migration alone, JUnit 4 to JUnit 5, went through more than 5,000 diffs in about four months (Uber blog, April 2026). Those diffs are valuable maintenance, but they say nothing about how fast Uber ships features to riders, eaters and earners.\n\nMedisetty put the consequence plainly: \"You can create 100 diffs, but if they are not all feature diffs, then maybe it's not necessarily increasing the value that we can provide to the users.\"\n\n![Illustration: robots and maintenance loops spin a fast diff counter, a chute sorts PRs by type, and only a few assembled features reach users.](assets/images/19-feature-velocity/diff-counter-versus-features-shipped.jpeg)\n**Figure 1:** *Diff counts measure activity, and agents make activity cheap; Uber's answer was to tag every PR by type and complexity and to make feature velocity, not diff velocity, the North Star.*\n\nThere is a fourth, organizational problem. Uber spent heavily on AI tooling in 2026: press reports in May said it used its whole 2026 AI-tools budget within about four months, and its chief operating officer, Andrew Macdonald, said of the link between AI spend and consumer features, \"That link is not there yet\" (Fortune, May 2026). **A spend line that grows faster than any output measure leadership trusts is a budget that gets cut.** Feature velocity is, among other things, Uber's attempt to give that link a number.\n\n## What Uber Built: Two Instruments and a Search for Bottlenecks\n\nThe episode and a 2026 talk by two Uber engineers at DX Annual (Ty Smith and Abhishek Tibrewal, April 2026; recapped by DX in June 2026) together describe a measurement approach in layers. The DX talk confirms the direction and the vocabulary; the mechanics of the feature clock come only from the episode.\n\n"}, {"type": "mermaid", "content": "flowchart LR\n    A[\"Adoption: who uses AI tools\"] --> B[\"Engagement: how they use them\"]\n    B --> C[\"Causal impact: did AI cause the change\"]\n    C --> D[\"Agentic value: features delivered\"]\n    D --> E[\"North Star: feature velocity\"]\n    E --> F[\"Supporting: flow efficiency, quality, capability expansion\"]\n    X[\"Tried and dropped: developer-years saved\"] -.->|\"replacement anxiety, constant recalibration\"| C"}, {"type": "markdown", "content": "\n**Figure 2:** *The phases of Uber's AI-impact measurement as described at DX Annual 2026: from adoption to feature velocity, with \"developer-years saved\" tried and dropped along the way.*\n\n### The road there: adoption, causality and a metric that failed\n\nThe DX recap describes a sequence that most companies will recognize. Uber started with qualitative work (surveys, interviews, experience sampling) before telemetry existed, and found that **behavioral questions (\"what did you do\") were more useful than perception questions (\"was AI helpful\")**. It then measured adoption and engagement from behavior rather than demographics; role, tenure and organization offered little signal, while behavior revealed an early group of power users with outsized results. It then hit the classic confound: the most productive engineers adopt new tools first, so heavy AI use correlating with high output proves nothing, and Uber turned to causal methods.\n\nThe instructive failure is **developer-years saved**. The speakers said it \"sounded compelling but failed as an ROI metric\": it created anxiety about replacement, needed constant recalibration, and did not answer the business questions leadership was actually asking. Uber kept time saved as context, not as the outcome. The same logic underlies uReview's published claim of about 39 developer-years saved per year (Uber blog, 2025), which assumes ten minutes saved per commit: a defensible estimate, but an estimate built on an assumption, not a measured outcome.\n\nThe recap's summary line is the chapter's thesis in six words: **\"PRs measure activity, features measure value.\"** The talk named feature velocity as the new North Star, supported by flow efficiency, quality and \"capability expansion\" (the new kinds of work AI makes possible). The recap does not say how those supporting metrics are computed.\n\n### Instrument one: the PR mix\n\nMedisetty described tagging \"all of our PRs\" in two dimensions: a **type** (feature, bug fix, maintenance, testing, documentation) and a **complexity level**. The DX talk independently confirms classification by type and complexity. The podcast adds the trend: the share of feature PRs is going up and the share of maintenance PRs is going down, which Medisetty read as a sign that Uber is moving in the right direction.\n\nUber has not described how the tags are assigned. At Uber's volume (uReview alone covered tens of thousands of diffs in 2025), hand-tagging is implausible.\n\n> **INFERENCE, NOT DOCUMENTED:** The tags are most plausibly assigned by a model reading the PR title, description, diff and linked task, with deterministic overrides for known sources (a Shepherd campaign PR is maintenance by construction; a PR that only touches test files is testing). Complexity could come from diff size, number of modules and services touched, and the complexity field of the linked design document. Uber has not published the classifier, its accuracy or how disagreements are handled.\n\nThe PR mix is valuable because it is cheap, it works on every PR, and it does not depend on planning data. Its weakness is that it is a ratio. A rising feature share can mean more feature work, or the same feature work with maintenance moved elsewhere. Medisetty also said Fox analyzes maintenance-category PRs to decide which classes of work to automate next ([Shepherd and Fox: From Migration Campaigns to Self-Improving Codebases](shepherd-and-fox.html)); as that automation succeeds, maintenance PRs either disappear (the debt is gone) or move to bot authors. **Whether bot-authored maintenance PRs count in the mix changes what the trend means**, and Uber has not said which way it counts them.\n\n### Instrument two: the feature clock\n\nThe second instrument is the one that justifies the name. Medisetty described it in three steps.\n\n1. **Trace each feature.** Uber's planning and design-doc tool holds product requirements documents (PRDs), engineering requirements or design documents (ERDs), launch reviews, experiment reviews and production-readiness reviews, each with status, owners, approvals and a Jira or Linear link ([Plans Before Prompts: PRDs, ERDs and the Design-Doc Hub](plans-as-source-of-truth.html)). In principle that gives a chain: PRD → ERD → tasks → PRs → launch.\n2. **Repair the trace with AI.** In practice, he said, the tracing from product design doc to engineering design doc to task is often incomplete. Uber uses AI to cluster these artifacts automatically and tag the missing links, so that a PR with no task link, or a task with no design doc, can still be assigned to a feature.\n3. **Compute and slice.** With the chains rebuilt, Uber computes the **P50 feature time** for each complexity class for every half over the last two to three years, and breaks it down by phase to ask whether the bottleneck sits in the PRD phase, the launch phase or the rollout phase.\n\n"}, {"type": "mermaid", "content": "flowchart LR\n    PRD[\"PRD: product requirements\"] --> ERD[\"ERD: engineering design\"]\n    ERD --> T[\"Jira or Linear tasks\"]\n    T --> PR[\"PRs tagged by type and complexity\"]\n    PR --> L[\"Launch and experiment review\"]\n    L --> R[\"Rollout across cities\"]\n    AI[\"AI clustering\"] -.->|\"fills missing links\"| ERD\n    AI -.->|\"fills missing links\"| T\n    AI -.->|\"assigns orphan PRs\"| PR\n    R --> M[\"P50 feature time per complexity class per half\"]\n    M --> B[\"Phase breakdown: where does the time go\"]"}, {"type": "markdown", "content": "\n**Figure 3:** *The feature clock as Medisetty described it: planning artifacts and PRs are joined into one chain per feature, AI clustering repairs missing links, and the result is a median feature time per complexity class that can be split by phase.*\n\nThe phase breakdown is what makes this more than a dashboard. Medisetty framed the whole AI program as a bottleneck hunt, constantly finding the next bottleneck and removing it, because \"ultimately our goal is to maximize the number of features that we can ship.\" A diff count can only say that code is being written faster. A feature clock split by phase can say that code is no longer the slow part. If agents halve the time from ERD to merged PR while the time from PRD approval to ERD approval and from launch review to full rollout stays the same, the median feature time barely moves, and the clock tells you where to look next.\n\n![Pipeline illustration of a feature's phases, with a wide agent-assisted coding segment and an amber bottleneck further downstream under a magnifying glass.](assets/images/19-feature-velocity/feature-path-bottleneck-hunt.jpeg)\n**Figure 4:** *A diff count can only say that code is written faster; a feature clock split by phase can show where the time now goes, which is where the next platform investment belongs, not a score for ranking individuals.*\n\nThat has a direct consequence for a company like Uber. Rollout is not a single deploy: features ship through experiments, per city and per country ([Build What the Market Cannot Yet Sell: Uber's Pre-AI Platform Bets](build-what-does-not-exist.html)), with multi-sided marketplace effects. Medisetty stressed elsewhere in the episode that product and country heterogeneity and operations in the physical world make planning matter more ([Plans Before Prompts: PRDs, ERDs and the Design-Doc Hub](plans-as-source-of-truth.html)). It is plausible that in such a business the planning and rollout phases dominate feature time once coding speeds up. The feature clock is the instrument that would show it.\n\n### Capability overhang: why the target keeps moving\n\nMedisetty also used the term **capability overhang**: \"there's so many things that we could leverage the latest models for, but we don't have the sufficient orchestrating capabilities or the harnesses or the tools around that.\" The term circulates in AI discussion for latent model ability that current tooling does not elicit. In measurement terms it means the bottleneck is often not the model but the system around it, and the next investment is a harness, a tool or a validation loop, not a model upgrade. That is the feature clock's job: to say which.\n\n### Cost as a companion metric\n\nUber's August 2026 blog post, written by Medisetty, adds the cost side. For managed agents it tracks **outcome-based costs**, naming \"cost per merged PR\", \"cost per review\", \"cost per alert\" and \"cost per cleanup\", and pairs each with a quality signal (revert rate, F1 score for review, mean time to recovery) and a volume signal (diffs landed, reviews posted, alerts triaged). It does not give values. The structure matters more than the numbers: **every cost metric is paired with a quality metric and a volume metric**, so a cheaper agent that produces worse PRs shows up as a regression rather than a saving. Spend tiers and the cost dashboards belong to [Spend Tiers, Not Spend Caps: Governing Token Costs](token-spend-governance.html).\n\n## The Foundation Underneath\n\nThe feature clock looks like an analytics project. It is really a data-quality project, and almost all of the data comes from pre-AI investments.\n\n| Input the feature clock needs | Where it comes from at Uber | Why it would be hard without it |\n| --- | --- | --- |\n| A canonical record of each feature's plan | The planning and design-doc hub: PRDs, ERDs, launch, experiment and readiness reviews in one place, with status and approvals ([Plans Before Prompts: PRDs, ERDs and the Design-Doc Hub](plans-as-source-of-truth.html)) | Without one home for plans, there is no \"start\" timestamp and no unit called a feature |\n| Links from plans to execution | Jira and Linear links on each document | Tasks and PRs float free of the feature they serve |\n| Joins across people, PRs, documents and launches | The context graph, which already holds PRs, design docs, features and config changes as nodes ([The Context Graph and Cortana: Grounding Agents in the Company](context-graph.html)) | Every join is a bespoke data pipeline |\n| One PR path with comparable timestamps | Per-language monorepos, one build and one review flow ([From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html)); Code Inbox ([Code Inbox: Spending Human Review Where the Risk Is](code-review-signals.html)) | Cycle times from many repos and tools are not comparable |\n| Rollout and experiment events | Plausibly the Morpheus experimentation platform and per-city rollout infrastructure; Uber has not said which rollout data the clock uses ([Build What the Market Cannot Yet Sell: Uber's Pre-AI Platform Bets](build-what-does-not-exist.html)) | \"Done\" means \"merged\", which is the wrong end point |\n| A measurement culture | The Eng Metrics Dashboard from about 2017, regular developer surveys, developer NPS | No baseline to compare against, and no trust in the numbers |\n\nMedisetty named the design-doc hub, its Jira and Linear links and the graph that receives its data; the other rows are a plausible reading of what such a clock needs, not a documented architecture. The last row is easy to underrate. Uber has been working with engineering metrics for most of a decade, including a 2022 all-hands at which the CEO showed diff counts, which *The Pragmatic Engineer* covered in detail at the time. That history is why it could say, as the DX talk did, that \"teams should expect their metrics to break\", and replace one without a crisis.\n\nThe context graph row is where the AI era loops back on itself. Uber built the graph so agents could ground themselves in the company's systems in fewer turns. The same graph, with PRs, design docs and features as nodes, is the substrate that makes a feature-level join feasible. **The infrastructure that makes agents effective is also the infrastructure that makes their effect measurable.**\n\n## Design Choices and Trade-offs\n\n| Choice | Alternative | When Uber's choice is right | When the alternative is right |\n| --- | --- | --- | --- |\n| **Feature velocity as North Star** | DORA delivery metrics (deployment frequency, lead time for changes, change failure rate, recovery time) | When the question is product value and features are traceable units | When features are not well defined (platform teams, infrastructure) or the immediate problem is delivery stability |\n| **PR mix by type and complexity** | Raw PR or line counts | Always, once agents author a meaningful share of PRs | Never as the main metric; raw counts remain useful for capacity planning (CI, review load) |\n| **AI-reconstructed traces** | Mandating links at creation time (every PR must cite a task, every task a design doc) | When historical data matters and enforcement would slow people down | When starting fresh: enforcing links is cheaper than repairing them, and more accurate |\n| **Median (P50) per complexity class** | Mean, or P90 | P50 resists outliers and per-class comparison avoids mix effects | P90 when the problem is the long tail of stuck features |\n| **Per half, two to three years back** | Weekly or monthly dashboards | Feature times are long; halves smooth noise and match planning cycles | Faster cadence only for leading indicators (review latency, CI wait) |\n| **Outcome cost (cost per merged PR) paired with quality** | Token spend per engineer | For managed agents with a clear unit of output | Per-engineer spend for interactive tools where the output is diffuse |\n| **Dropping developer-years saved** | Reporting time saved as ROI | Always as an outcome metric | As one input to a business case, labeled as an estimate |\n\nTwo of these deserve a comment. First, feature velocity is **not a replacement for DORA's delivery metrics**; it sits above them. DORA's 2025 report found AI adoption now correlates positively with throughput but still negatively with delivery stability. A company that measures only feature velocity can ship features faster while incidents rise. Uber's pairing of cost with revert rate and mean time to recovery is the right instinct: put a stability metric next to every speed metric.\n\nSecond, **trace repair by AI is a tool for history, not a substitute for discipline**. It lets Uber compute two to three years of feature times without asking anyone to relabel old work. Going forward, a system that requires the link when the PR is opened, with the agent filling it in from the session's context, produces better data than one that guesses afterward.\n\n## Elsewhere in the Industry\n\n**SPACE and DevEx: frameworks that already rejected single metrics.** The SPACE framework (Forsgren, Storey and colleagues, *ACM Queue*, 2021) argued that developer productivity cannot be captured by one metric and needs several dimensions; the commonly cited five are satisfaction, performance, activity, communication and efficiency. The DevEx framework (Noda, Storey, Forsgren and Greiler, 2023) centered developer experience on feedback loops, cognitive load and flow state. Uber's shift is consistent with both: the PR count is SPACE's \"activity\" dimension, and the papers warned against reading it alone. **What agents change is not the theory but the cost of ignoring it.** A pre-AI organization that over-weighted activity got distorted incentives; an AI-era one that does so gets a dashboard that rises with token spend.\n\n**DX Core 4: the practical synthesis.** The DX Core 4 (Noda, Tacho, Storey and Greiler; DX, current page) groups metrics into speed, effectiveness, quality and business impact, and positions itself as a unification of DORA, SPACE and DevEx. Uber's set maps onto it closely: feature velocity is speed tied to business impact, flow efficiency is effectiveness, and revert rate and incidents per diff are quality. It is the nearest thing to an off-the-shelf version of what Uber built.\n\n**METR: why self-reports and diff counts both mislead.** METR's randomized trial (July 2025) found that 16 experienced open-source developers, working on 246 real issues, took 19% longer when AI was allowed, while expecting a 24% speedup beforehand and still believing in a 20% one afterwards. Its February 2026 update reported that a larger follow-up (57 developers, 800+ tasks) was too compromised by selection effects to trust: developers increasingly refused to work without AI, withheld tasks they did not want to do by hand, and could not track time reliably while agents ran in parallel. The point estimates had moved toward speedups (18% less time for returning developers, 4% for new ones), with confidence intervals that included no effect; METR now marks the 2025 results as out of date. **The lesson for measurement is twofold: perceived speedup is not evidence, and controlled experiments get harder as AI becomes the default.** That pushes organizations toward outcome measures in their own data, which is where Uber went.\n\n**Faros AI and Meta: what rising volume does downstream.** Faros AI's 2025 telemetry from more than 10,000 engineers found that with high AI adoption, PR review time rose 91% and average PR size rose 154% (correlational). Meta's RADAR paper (arXiv, 2026) reported lines per human-landed diff up about 106% year over year and per-developer diff volume up 51%, with agentic AI behind more than 80% of that growth. Both describe the same symptom as Uber's CI code red: output metrics rise and the cost lands in review and CI. Both make the case for measuring at the feature level, where review and CI time are part of the clock rather than invisible.\n\n## If You Are Not Uber\n\nYou almost certainly do not have a decade of design docs in one tool, linked to tasks, linked to PRs, joined in a graph. You do not need all of it to get most of the value.\n\n**The minimum viable version** is three things: a PR type tag, a feature identifier on PRs and a stability metric next to each speed metric.\n\n1. **Tag PR type and complexity.** Use a small model in CI to classify each PR into four or five types and three complexity levels, with deterministic rules first (bot author, test-only change, docs-only change, dependency bump). Spot-check a sample each month. This is a week of work.\n2. **Require a feature or epic key on every PR going forward**, and let agents fill it in from the task they were given. Do not try to repair history until the forward data works.\n3. **Pick a start and an end for a feature** that your organization agrees on. \"Spec approved\" to \"100% rolled out\" is the useful span; \"first commit\" to \"merged\" is the misleading one.\n4. **Report P50 feature time per complexity class per quarter**, with change failure rate and incidents next to it.\n\n| Company size | Measure this | Data you need | Buy, build or skip |\n| --- | --- | --- | --- |\n| **≈50 engineers** | PR type mix monthly; a hand-maintained list of shipped features with start and end dates; incidents | Git host, issue tracker, a spreadsheet | Skip platforms; a quarterly review of 20 features by hand beats any dashboard |\n| **≈500 engineers** | PR type and complexity tags; feature key on PRs; P50 feature time per class per quarter; DORA stability metrics; developer survey twice a year | Issue tracker epics as features; CI classifier; survey tool | Buy a developer-productivity platform (DX, LinearB, Faros, Jellyfish or similar) for the joins; build only the classifier |\n| **≈5,000 engineers** | All of the above plus phase breakdown (plan, build, review, launch, rollout), outcome cost per managed agent, causal studies of tool rollouts | Design-doc system as the source of features; rollout and experiment events; a graph or warehouse joining them | Build the trace and phase model on your own warehouse or graph; buy survey and benchmarking |\n\n**Prerequisites that matter more than the dashboard:**\n\n- **A definition of \"feature\" that product and engineering share.** If planning documents do not exist for most features, the feature clock measures your documentation habits.\n- **Rollout data.** If \"done\" means merged, you will discover that coding got faster and conclude that features did too.\n- **An agreement on what the metric is for.** Uber framed it as a bottleneck hunt; that framing is what keeps it honest.\n\n**What not to copy:**\n\n- **Do not publish per-engineer feature counts.** Feature velocity is an organizational metric. Applied to individuals, it rewards splitting features, avoiding hard ones and gaming tags.\n- **Do not use developer-years saved as ROI.** Uber tried it and dropped it, for reasons that apply everywhere.\n- **Do not treat \"feature share up, maintenance share down\" as success on its own.** Check whether maintenance moved to bots, whether incident rates held, and whether the debt is actually shrinking.\n- **Do not build AI trace repair before you have tried enforcement.** It solves Uber's history problem, which you may not have.\n\nThe rule I would use: **measure the feature path end to end before you buy the next agent.** If coding is already not the slowest phase, a faster coding agent will not move the number that matters.\n\n## Failure Modes\n\n- **Goodhart on the tags.** Once feature share is a target, PRs get labeled \"feature\". A classifier that relies on author-written descriptions is easy to steer. Use the diff and the linked spec, and audit samples.\n- **The mix illusion.** Feature share rises because maintenance moved to a bot account excluded from the denominator, or because large features were split into many feature PRs. Report absolute counts next to ratios.\n- **Measuring the documented minority.** If only well-run teams write PRDs and ERDs, the feature clock covers them and not the rest. AI clustering fills gaps, but its accuracy is unpublished; measure coverage (share of merged PRs assigned to a feature) and report it with the metric.\n- **Complexity drift.** If the complexity classifier drifts, or teams learn that \"high complexity\" buys time, per-class medians become incomparable across halves. Freeze the rubric, version it and re-score history when it changes.\n- **Speed without stability.** Feature time falls while change failure rate rises, as DORA 2025 found across the industry. Without a paired stability metric, the program looks successful until the incident review.\n- **A bottleneck the metric cannot see.** Work that never becomes a feature (platform work, reliability, security) disappears from the North Star. Platform teams need their own outcome measures, or they will be starved.\n- **Using the clock to rank teams.** Teams with physical-world launches, regulatory reviews or multi-country rollouts will always look slower. Compare a team with its own history, not with its neighbors.\n\n## What the Record Does Not Say\n\n- **How PRs are classified.** Uber has not described the classifier, the complexity rubric, its accuracy or who resolves disputes.\n- **How bot-authored PRs are counted** in the type mix, and whether Minion PRs initiated by a human count as that human's.\n- **Any feature-time numbers.** The episode describes P50 feature time per class per half but gives no values, no trend and no phase breakdown. The DX recap gives no numbers either.\n- **The accuracy of AI trace repair**: what share of PRs it assigns to features, and how often a human would disagree.\n- **How \"flow efficiency\", \"quality\" and \"capability expansion\" are computed**, beyond their names in the DX talk.\n- **Whether feature velocity informs budgets or headcount**, or is used only to direct platform investment.\n- **Which phase turned out to be the bottleneck.** Medisetty named PRD, launch and rollout as candidates; Uber has not said what it found.\n\n## Questions to Ask\n\n1. What share of our merged PRs today are authored or substantially written by agents, and do our productivity dashboards distinguish them?\n2. If our PR count doubled next quarter, which of our current metrics would improve without anything getting better for users?\n3. Do product and engineering agree on what a \"feature\" is and where it starts and ends? Is there a system of record for it?\n4. What fraction of merged PRs could we assign to a feature today? What would it take to reach 90% going forward?\n5. Which phase of our feature path is slowest: planning, building, review, launch or rollout? How do we know?\n6. What stability metric sits next to each speed metric we report?\n7. Are we reporting time saved or developer-years saved as ROI? What decision would change if that number were wrong by half?\n8. Who is allowed to see per-person versions of these metrics, and what are they used for?\n9. If maintenance PRs move to bots, how will we know whether technical debt is going down or just changing authors?\n\nThe feature clock tells an organization where the time goes. It does not say what the engineers in the middle of it now do all day. Medisetty's answer to that, that the job has become building the context, specs and verification that let agents produce reliable work, is the subject of [The Engineer as Context Builder: Specs, Parallel Sessions and Verification](the-engineer-as-context-builder.html).\n\n## Sources and Evidence\n\n### The source episode\n\n- [Uber's AI infra, from the inside](https://newsletter.pragmaticengineer.com/p/ubers-ai-infra-from-the-inside) — *The Pragmatic Engineer* podcast, Gergely Orosz with Uday Kiran Medisetty, 2026. Pre-AI metrics, diff to feature velocity, PR tagging by type and complexity, feature and maintenance share trends, AI trace repair, P50 feature time per half, bottleneck phases, capability overhang, ~15% of production PRs via Minion, CI jobs doubling; show notes summarize the PR tagging.\n\n### Uber engineering sources\n\n- [Running a Software Factory Efficiently at Uber Scale](https://www.uber.com/us/en/blog/efficient-software-factory/) — Uber blog, Uday Kiran Medisetty, 2026. More than 70% of PRs attributed to agents; outcome-based cost metrics paired with quality and volume signals.\n- [Uber's Journey of Measuring AI Impact on Developer Productivity](https://getdx.com/dxannual/2026/sessions/measuring-ai-impact/) — DX Annual talk, Ty Smith and Abhishek Tibrewal (Uber), 2026; recap: [Uber's journey of measuring AI impact](https://newsletter.getdx.com/p/ubers-journey-of-measuring-ai-impact), DX, 2026. Measurement phases, developer-years saved dropped, feature velocity as North Star, PR classification by type and complexity.\n- [Inside Uber's agent-ready platform behind 11% of merged PRs](https://background-agents.com/summit/sessions/nikhil-ramakrishnan/) — Background Agents Summit, Nikhil Ramakrishnan (Uber), 2026. 11% of merged PRs from agents.\n- [Agentic SDLC at Uber: Building Blocks for Uber's Software Factory](https://ai.engineer/talks/17-YSUHo6Lk-agentic-sdlc-at-uber-building-blocks-ubers) — AI Engineer World's Fair talk, Medisetty and Adam Huda, 2026. Lines of code per engineer roughly doubled year over year.\n- [How Uber Executed A JUnit Migration at Massive Scale](https://www.uber.com/blog/junit-migration/) — Uber blog, Anshuman Mishra and Kaushik Vejju, 2026. 5,000+ diffs in about four months as an example of maintenance volume.\n- [uReview: Scalable, Trustworthy GenAI for Code Review at Uber](https://www.uber.com/blog/ureview/) — Uber blog, 2025. Time-saved estimate built on a per-commit assumption.\n- [How Uber is Measuring Engineering Productivity](https://newsletter.pragmaticengineer.com/p/uber-eng-productivity) — *The Pragmatic Engineer*, Gergely Orosz, 2022. Eng Metrics Dashboard history and diff-count norms (system may have changed since).\n- [Developer Experience at Uber with Gautam Korlam](https://newsletter.pragmaticengineer.com/p/developer-experience-at-uber) — *The Pragmatic Engineer*, 2025. Developer tooling NPS from −50 to +8.\n- [Uber's COO says it's getting harder to justify AI spend](https://www.fortune.com/2026/05/26/uber-coo-ai-spending-tokens-claude-code/) — Fortune, Jake Angelo, 2026. AI-tools budget exhausted in about four months; \"That link is not there yet.\"\n\n### Industry and research sources\n\n- [The SPACE of Developer Productivity](https://www.microsoft.com/en-us/research/publication/the-space-of-developer-productivity-theres-more-to-it-than-you-think/) — Forsgren, Storey, Maddila, Zimmermann, Houck and Butler, *ACM Queue*, 2021. Productivity needs several dimensions.\n- [DevEx: What Actually Drives Productivity](https://getdx.com/research/devex-what-actually-drives-productivity/) — Noda, Storey, Forsgren and Greiler, 2023. Feedback loops, cognitive load and flow.\n- [Measuring developer productivity with the DX Core 4](https://getdx.com/research/measuring-developer-productivity-with-the-dx-core-4/) — Noda, Tacho, Storey and Greiler, DX, 2026 (page date). Speed, effectiveness, quality and business impact.\n- [Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/) — METR, 2025. 16 developers, 246 issues; 19% slower with AI, believed 20% faster (page now marked out of date).\n- [We are Changing our Developer Productivity Experiment Design](https://metr.org/blog/2026-02-24-uplift-update/) — METR, 2026. 57 developers, 800+ tasks; point estimates −18% and −4% time with confidence intervals spanning zero; selection effects and unreliable time tracking with parallel agents.\n- [Announcing the 2025 DORA Report](https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report) — Google Cloud, Nathen Harvey and Derek DeBellis, 2025. AI correlates with throughput and still negatively with stability.\n- [The AI Productivity Paradox Report 2025](https://www.faros.ai/blog/ai-software-engineering) — Faros AI, 2025. Review time +91% and PR size +154% with high AI adoption.\n- [Automating Low-Risk Code Review at Meta (RADAR)](https://arxiv.org/abs/2605.30208) — Adams et al., arXiv, 2026. Lines per human-landed diff and per-developer diff volume growth driven by agentic AI.\n\nStatements about Uber's AI-era systems are Uber's own account unless another source is cited; recommendations and labeled inferences are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

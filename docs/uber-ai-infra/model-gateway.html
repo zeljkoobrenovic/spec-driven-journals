@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>One Door for Every Model: The Model Gateway and AI Guard</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">RETROFITTED: How Uber Built AI-Native Engineering on a Decade of Developer Platforms</a><span class="nav-right"><a class="nav-prev" href="contracts-and-context-propagation.html" title="The Hidden Foundations: Typed Contracts, Ownership Metadata and Trace Baggage">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="aifx-harness-layer.html" title="AIFX: Making the Coding Harness Swappable">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part II — GATEWAYS: Agnostic Building Blocks</p>
+        <h1>One Door for Every Model: The Model Gateway and AI Guard</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-20  ·  24 min read · <a class="spec-link" href="model-gateway.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/05-model-gateway/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/05-model-gateway/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">RETROFITTED: How Uber Built AI-Native Engineering on a Decade of Developer Platforms</a><span class="nav-right"><a class="nav-prev" href="contracts-and-context-propagation.html" title="The Hidden Foundations: Typed Contracts, Ownership Metadata and Trace Baggage">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="aifx-harness-layer.html" title="AIFX: Making the Coding Harness Swappable">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "One Door for Every Model: The Model Gateway and AI Guard", "date": "2026-10-20", "author": "Željko Obrenović", "excerpt": "Why would a company route every model request it makes through one internal gateway? Because a single door is the only place where model choice, security policy, attribution and cost can be handled once for everyone, and Uber's Model Gateway shows how much later AI infrastructure grows out of that one decision.", "permalink": "model-gateway", "timetoread": "24 min read", "icon": "assets/icons/05-model-gateway.png", "logo": "assets/images/05-model-gateway/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Follow Uber's Model Gateway from its 2023 origin on the Michelangelo ML platform to its 2026 role as the path for every model request at Uber. You will see what AI Guard does on that path, and why per-project attribution turned out to matter more than the API shape.\n\n> **WHY IT MATTERS:** Model gateways are now a standard part of AI architecture. Building one is easy; the hard decisions are about who may bypass it, what runs inline, and how much latency and failure coupling the organization will accept for consistent policy.\n\n> **KEY POINTS:**\n>\n> * **The gateway is a policy decision, not an API adapter.** OpenAI- and Anthropic-compatible endpoints make switching vendors cheap. What gives Uber's gateway its value is the rule, as Medisetty described it, that no model request bypasses it, so security, attribution, audit and spend controls apply everywhere at once.\n> * **Identity comes from the ML platform, not from the gateway.** Teams call the gateway with a Michelangelo project ID and a caller token. Michelangelo has given Uber a registry of AI projects with owners since 2016–2017, and that registry is what makes per-project and per-user attribution, budgets and security review possible.\n> * **Inline guardrails turn the gateway into a hot path you must engineer for.** AI Guard runs a set of specialized safety and policy models on every request and response, under a latency budget Uber has put at under 100 ms. That buys one security baseline, at the price of latency, failure coupling and a single point of failure, all of which need explicit design.\n\n> **BUILT ON:** Michelangelo, Uber's ML platform (2016–), with its project model, serving stack and GenAI layer; the build-it-in-house platform habit of [Build What the Market Cannot Yet Sell: Uber's Pre-AI Platform Bets](build-what-does-not-exist.html); the security review and data-handling standards Uber's Engineering Security team already applied to services.\n\n<br>\nEvery company that adopts large language models (LLMs) meets the same problem within a few months. One team calls OpenAI with a key in an environment variable, another uses a cloud provider's SDK, a third runs an open-weight model on its own GPUs. Each has its own logging, or none. When the security team asks which prompts contained customer data, nobody can answer. When finance asks what the company spends on models, the answer is a pile of vendor invoices that maps to no team.\n\nUber's answer, started in late 2023 and still in place as of October 2026, is the **Model Gateway**: one internal service through which, according to Uday Kiran Medisetty, Uber Distinguished Engineer, \"every model request at Uber goes\". It speaks the OpenAI- and Anthropic-compatible APIs, hides closed and open-weight models from every vendor behind them, and carries a stack of middleware. The first and most important piece is **AI Guard**, the security team's inline content and policy check.\n\nThis chapter is the first of Part II, the \"agnostic building blocks\" Medisetty described in the October 2026 Pragmatic Engineer episode. It explains why the gateway exists, how it works as far as the public record shows, what it stands on, and what a company that is not Uber should copy. The next two chapters apply the same idea to coding harnesses ([AIFX: Making the Coding Harness Swappable](aifx-harness-layer.html)) and to tools ([The MCP Gateway: Every Internal Service One Tool Call Away](mcp-gateway.html)). **The pattern repeats: put one door in front of something that changes quickly, and make the door the place where policy lives.**\n\n## The Problem Uber Had: Many Teams, Many Vendors, No Single Point of Control\n\nIn the episode, Medisetty described the starting position plainly. When ChatGPT and the GPT models launched, many internal teams wanted to use them for different use cases, and the platform team wanted to make that easy. (He first said \"late 2013, early 2014\"; Orosz checked, and Medisetty corrected it to late 2023 and early 2024.) Uber already had the documented scale problems that make ad-hoc vendor access dangerous:\n\n- **Sensitive data everywhere.** Uber's systems carry rider and earner names, phone numbers, locations and payment details in dozens of countries. Sending any of it to an external model provider is a data-handling decision, not a coding one.\n- **Many consumers at once.** Uber's 2024 GenAI Gateway post counted more than 60 LLM use cases across about 30 customer teams within the gateway's first year or so. The October 2024 Genie post describes an on-call copilot, launched in September 2023, answering about 45,000 questions a month in Slack. Each of these would otherwise have built its own integration.\n- **A market that changed every quarter.** The model that was best in 2023 was not the best in 2024, and the 2026 models differ again. Medisetty framed the whole AI foundations program around that fact: because models and harnesses change so quickly, Uber wanted building blocks that are harness- and model-agnostic.\n\nThe show notes for the episode, written by host Gergely Orosz, put the decision even more sharply: in 2023 Uber's platform team decided that \"everything built with AI needs to be model- and harness-agnostic.\" The Model Gateway was the first building block to follow from it.\n\nThe **model-agnostic principle**, as this book uses the term, is that no product or tool at Uber should depend on a particular model vendor's API, keys or SDK. Applications name a model; the platform decides how that model is reached, under which policy, and at whose cost. That principle is cheap to state and expensive to enforce, and the gateway is the enforcement point.\n\n![Before-and-after illustration: many teams reaching model vendors through separate side doors, versus every request passing through one checked door.](assets/images/05-model-gateway/many-doors-versus-one-door.jpeg)\n**Figure 1:** *The gateway's value is the rule that no model request bypasses it, which turns scattered vendor keys into one door where security, attribution and cost are handled once.*\n\n## What Uber Built: One API, One Identity Model, One Middleware Stack\n\n### The Lineage: Four Names for One System\n\nThe same system appears under four names in Uber's public record, and a reader comparing sources should treat them as one lineage:\n\n| Name | Where it appears | Date |\n| --- | --- | --- |\n| Michelangelo Gateway | Genie on-call copilot post | Oct 2024 (describing usage since Sept 2023) |\n| GenAI Gateway | \"Navigating the LLM Landscape\" post | Jul 2024 |\n| AI Gateway | \"Solving the Identity Crisis for AI Agents\" post | May 2026 |\n| Model Gateway | AI Engineer World's Fair 2026 talk; the October 2026 episode | 2026 |\n\nMedisetty dates the start to late 2023, when the first wave of LLMs launched. No written source gives a build date, but the Genie post's statement that the September 2023 copilot logged usage \"through Michelangelo Gateway\" is consistent with a gateway in production by late 2023.\n\n### The 2024 Documented Design\n\nThe best documented version is the one in [Uber's July 2024 engineering post](https://www.uber.com/blog/genai-gateway/) by Tse-Chi Wang and Roopansh Bansal. Because it is more than two years old, parts of it have certainly changed, but its core choices are still visible in the 2026 descriptions.\n\n- **A Go service that mirrors the OpenAI API.** The authors call this \"a pivotal design decision\": any team can use an OpenAI-style client, and the gateway translates for other vendors. In 2024 those were OpenAI, Google's Vertex AI (Uber open-sourced its [`go-vertex-ai`](https://github.com/uber/go-vertex-ai) client library) and models Uber hosted itself, such as Llama 2.\n- **PII redaction with un-redaction.** Before a request goes to an external vendor, a redactor replaces personally identifiable information (PII) with numbered placeholders such as `ANONYMIZED_NAME_0`, keeps the mapping, and restores the original values in the vendor's response before returning it. The post admits the redactor adds latency and can reduce answer quality, without giving figures.\n- **Security review before access.** Uber's Engineering Security team reviewed each use case against the company's data-handling standard before granting gateway access.\n- **Audit logs for three audiences.** The same logs served cost attribution, security audits and quality evaluation.\n- **Scale in 2024:** about 16 million queries a month at a peak of 25 queries per second.\n\n### The 2026 System as Medisetty Described It\n\nIn the October 2026 episode, Medisetty described the gateway from a team's point of view. A team creates a GenAI project on Michelangelo, then \"they create a client, they give their project ID, which they initialized in Michelangelo. And then the caller token, and that's all.\" Behind that one call:\n\n1. **One OpenAI-compatible and Anthropic-compatible API**, with every vendor's models, open-weight and closed-weight, behind it. Anthropic compatibility, absent from the 2024 post, is confirmed in the 2026 AI Engineer talk by Medisetty and Adam Huda.\n2. **AI Guard**, described below, on every request and response.\n3. **Per-user and per-caller attribution**, possible because every project is tracked in the gateway.\n4. **Spend limits per project and per user**, added during 2026, which [Spend Tiers, Not Spend Caps: Governing Token Costs](token-spend-governance.html) turns into the spend-tier system.\n5. **Audit logging and session traces.**\n6. **Billing and cache-hit-rate tracking**, which matter more as prompt caching becomes the main cost lever.\n7. **A future entry point for model routing.** Medisetty described routing as something the gateway is well placed for, not as a finished feature.\n\nThe 2026 AI Engineer talk adds numbers the episode does not give: an identity step using SPIFFE/SPIRE workload identity, a data anonymizer that redacts more than 20 PII types, \"5 specialized safety/policy models\", all middleware finishing in under 100 ms, more than 800 internal projects, and more than 100 million model requests a day. A vendor-published summary of the talk (Port, August 2026) repeats those figures. Taken together with the 2024 post, **daily volume grew roughly two hundredfold in two years** (from about half a million queries a day to more than 100 million), though the two sources may not count requests the same way.\n\n"}, {"type": "mermaid", "content": "flowchart LR\n    A[\"Product service or agent\"] -->|\"project ID plus caller token\"| G[\"Model Gateway\"]\n    H[\"Coding harness via AIFX\"] -->|\"OpenAI or Anthropic API\"| G\n    G --> I[\"Identity and project lookup in Michelangelo\"]\n    I --> R[\"PII redaction\"]\n    R --> AG[\"AI Guard request checks\"]\n    AG --> V1[\"Closed-weight vendor models\"]\n    AG --> V2[\"Open-weight models hosted by Uber\"]\n    V1 --> AG2[\"AI Guard response checks\"]\n    V2 --> AG2\n    AG2 --> U[\"Un-redaction\"]\n    U -->|\"response\"| A\n    G -.-> L[\"Attribution, spend limits, audit logs, session traces, cache-hit tracking\"]"}, {"type": "markdown", "content": "**Figure 2:** *The request path as Uber's sources describe it. Every caller presents a Michelangelo project identity; redaction and AI Guard wrap the vendor call in both directions; attribution and audit hang off the same path. The exact order of steps inside the gateway is not documented — this ordering follows the 2024 post and the 2026 talk.*\n\n### AI Guard\n\n**AI Guard** is the inline safety and policy layer of the gateway. Medisetty described it as the first middleware added to the gateway, run by the security team to make sure no sensitive content is sent back to the user. It consists of \"five different sets of fine-tuned models\" covering content, safety policy and communications policy, and it \"runs on every request and every response with strict latency guardrails.\" The show notes add that AI Guard also measures latency and flags overly slow models or queries.\n\nWritten sources confirm the role and fill in the threat list. Uber's [May 2026 agent identity post](https://www.uber.com/us/en/blog/solving-the-agent-identity-crisis/) says the AI Gateway mediates outbound calls to OpenAI and Anthropic, with AI Guard handling **prompt injection, jailbreaks and PII redaction**. The 2026 talk gives the \"5 specialized safety/policy models\" and the under-100 ms middleware budget. An RSA Conference 2026 session titled \"AI Guard: Securing LLMs, Agents and AI Applications at Uber Scale\" (speaker Junyan Guo) lists latency hardening, failure coupling, shadow-mode rollout and parallel execution of guard models across CPU and GPU among its topics; only the abstract was visible to the research behind this book, so treat those details as the session's agenda, not as a documented design. The word \"fine-tuned\" appears only in the episode.\n\nThe design point that matters is in Medisetty's last sentence on the topic: \"This helped a lot to make sure that all of our projects have the same standard baselines.\" **A guard that runs in the gateway is a baseline nobody can forget to install.** The alternative, a guard library each product team adds to its own code, gives the security team no way to know whether it is present, which version runs, or whether a new model has been added without it.\n\n![Illustration of five guard checks built into one doorway between an engineer's desk and a model server, checking every request on the way in and every response on the way back, with a stopwatch for the time budget.](assets/images/05-model-gateway/ai-guard-baseline-nobody-forgets.jpeg)\n**Figure 3:** *A guard that runs in the gateway is a baseline nobody can forget to install: AI Guard checks every request and every response, inside a middleware budget Uber has put at under 100 ms.*\n\n> **INFERENCE, NOT DOCUMENTED:** Running five classifiers on both the request and the response under 100 ms almost certainly means running them in parallel, on small models served close to the gateway, with a policy for what happens when a classifier times out (fail open or fail closed, perhaps differently per project risk class). The RSAC agenda's mention of \"parallel rail execution\" and \"failure coupling\" fits that reading, but Uber has not described its timeout policy.\n\n## The Foundation Underneath: Why Michelangelo Made This a Product, Not a Proxy\n\nA gateway that forwards HTTP requests can be built in a week. Uber's took longer and does more because it was built, in Medisetty's words, as \"a Michelangelo GenAI product\" on an ML platform that already existed. Three Michelangelo assets do most of the work.\n\n**1. A registry of AI projects with owners.** Michelangelo was introduced publicly in [September 2017](https://www.uber.com/blog/michelangelo-machine-learning-platform/) as Uber's end-to-end ML platform. By the [May 2024 \"From Predictive to Generative\" post](https://www.uber.com/blog/from-predictive-to-generative-ai/) it had about 400 active ML projects and more than 5,000 production models. Every model at Uber already belonged to a Michelangelo project with an owning team. When the gateway asked callers for their Michelangelo project ID, it inherited that ownership model whole. Per-project attribution, per-project budgets and per-project security review need nothing new: the project is already the unit of ownership, and [Build What the Market Cannot Yet Sell: Uber's Pre-AI Platform Bets](build-what-does-not-exist.html) shows how much of Uber's later AI work rests on that kind of ownership metadata.\n\n**2. A serving stack for models Uber runs itself.** Putting open-weight and closed-weight models behind one gateway works only if someone serves the open-weight models. Michelangelo's GenAI layer, per the 2024 post, included a model catalog, an LLM evaluation framework, a prompt engineering toolkit with versioned templates under code review, and Ray-based fine-tuning. The gateway could therefore route to Uber-hosted Llama models in 2024 and to open-weight models in 2026 without a separate infrastructure project. Without that, \"model-agnostic\" would mean \"vendor-agnostic among API vendors\".\n\n**3. An existing governance channel.** The 2024 post's per-use-case security review against the data-handling standard is not an AI invention; it is how Uber's security team already reviewed services. The gateway gave that review a single technical enforcement point.\n\nMichelangelo's core was [open-sourced on 20 May 2026](https://michelangelo-ai.org/blog/open-source-launch/) (Apache-2.0, in beta); Medisetty noted that the GenAI and agentic components Uber is building are not yet in the open-source version.\n\n| Gateway capability | Pre-AI foundation it reuses | What it would cost without it |\n| --- | --- | --- |\n| Per-project attribution and budgets | Michelangelo project registry with owners | A new registry of \"AI apps\" that drifts from the real ownership graph |\n| Open-weight models behind the same API | Michelangelo model serving, GPU fleet, fine-tuning | A separate inference platform before the first open model can be offered |\n| Security review per use case | Engineering Security's data-handling standard and review process | A new approval process with no enforcement point |\n| Session traces and audit logs | Uber's existing logging and observability infrastructure | A separate logging pipeline for AI traffic |\n| Workload identity for callers (2026) | SPIFFE/SPIRE workload identity, which Uber's 2026 agent identity post also uses for agents (the sources do not say when Uber adopted it) | Long-lived API keys copied into services |\n\n## Design Choices and Trade-offs\n\nEvery company building a model gateway faces the same set of choices. Uber's choices are visible in the record; the alternatives are where a smaller company may reasonably differ.\n\n| Decision | Uber's choice (as described) | Alternative | When the alternative is right |\n| --- | --- | --- | --- |\n| Access path | **All** model requests through the gateway, no exceptions | Gateway for production apps; direct vendor access for experiments | Fewer than ~100 engineers, no regulated data, and a security team that can audit vendor keys directly |\n| API shape | Mirror OpenAI and Anthropic APIs | Uber-defined canonical API | When you need strong abstraction over provider differences and can afford maintaining client SDKs |\n| Guardrails | Inline on every request and response | Asynchronous scanning of logs after the fact | Low-risk internal use where blocking matters less than detection, or latency budgets are tight |\n| Identity | Michelangelo project + caller token; workload identity in 2026 | Per-team vendor API keys | Never at scale; acceptable for a pilot |\n| Model hosting | Closed vendors and Uber-hosted open-weight models | Vendor APIs only | When no team can operate GPU inference, or volumes do not justify it |\n| Build vs buy | Built on the in-house ML platform | LiteLLM, Kong, Cloudflare or a cloud provider's gateway | Almost always, unless you already run an ML platform with a project model |\n\nThe trade-off that deserves the most attention is the one the episode does not dwell on: **a mandatory gateway is a single point of failure.** If every model request goes through one service, an outage of that service is an outage of every AI feature, every coding agent and every internal assistant at the same moment. The RSAC session's \"failure coupling\" topic suggests Uber treats this as a real engineering concern. The usual mitigations are the ones any tier-0 service uses: multiple regions, independent deployment of the guard models from the routing path, per-tenant rate limits so one runaway agent cannot starve others, and a documented decision about what each guard does when it is slow.\n\n![Illustration of a jammed single gateway pausing every dependent AI feature, and the same gateway reinforced with regions, separate guard deployment and per-tenant rate limits.](assets/images/05-model-gateway/single-door-single-point-of-failure.jpeg)\n**Figure 4:** *A mandatory gateway is a single point of failure: an outage stops every AI feature at once, so it needs tier-0 treatment with multiple regions, independent guard deployment, per-tenant rate limits and a decided timeout policy.*\n\nThe second trade-off is the **lowest-common-denominator problem.** An OpenAI-compatible API is a translation layer, and every vendor ships features (extended thinking controls, prompt-caching parameters, new tool-use formats) before any compatible layer supports them. Offering both OpenAI- and Anthropic-compatible endpoints, as Uber does in 2026, is a practical answer: the two dominant client shapes cover most callers, and features specific to one vendor reach that vendor's callers without waiting for a canonical abstraction. The cost is that the gateway team has to track two moving API surfaces.\n\n"}, {"type": "mermaid", "content": "flowchart TB\n    D[\"Model-agnostic principle, 2023\"] --> MG[\"Model Gateway\"]\n    MG --> AG[\"AI Guard baseline\"]\n    MG --> AT[\"Per-project and per-user attribution\"]\n    AT --> ST[\"Spend tiers\"]\n    AT --> CC[\"Cost visibility in harness status lines\"]\n    MG --> AU[\"Audit logs and session traces\"]\n    AU --> TA[\"Trace analysis for skills and grounding\"]\n    MG --> RT[\"Model routing, positioned as a future step\"]\n    MG --> HA[\"Harness-agnostic layer AIFX\"]"}, {"type": "markdown", "content": "**Figure 5:** *What the single door made possible later. Spend tiers, cost feedback, trace analysis and harness portability all assume one place where every model request is identified and recorded. Routing is shown as Medisetty described it: a direction, not a shipped feature.*\n\n## Elsewhere in the Industry\n\nModel gateways are no longer an Uber peculiarity; they are a product category.\n\n- **LiteLLM.** Thoughtworks' Technology Radar has placed LiteLLM in **Trial** since October 2024; the [April 2026 entry](https://www.thoughtworks.com/en-us/radar/languages-and-frameworks/litellm) calls it a \"sensible default\" for request tracing, access control and guardrails, while warning that provider-specific features bring coupling back and that its `drop_params` option can silently discard parameters. The [LiteLLM proxy](https://docs.litellm.ai/docs/simple_proxy) exposes one OpenAI-compatible endpoint for more than 100 providers, issues virtual keys with per-key model lists, budgets and rate limits, and records the cost of every request. That is most of Uber's 2024 feature list as open source.\n- **Managed gateways.** [Cloudflare AI Gateway](https://developers.cloudflare.com/ai-gateway/) offers logging, caching, rate limiting and fallback routing across providers. [Kong AI Gateway](https://developer.konghq.com/ai-gateway/) adds token-based rate limits, per-request cost and the ability to publish existing APIs as MCP tools — a sign that the model gateway and the tool gateway of [The MCP Gateway: Every Internal Service One Tool Call Away](mcp-gateway.html) are converging into one control point.\n- **The difference.** None of these products knows who owns a project, which data classification a use case was approved for, or which team should pay. Uber's gateway is valuable less for its proxying than for being joined to Michelangelo's project registry and the security team's approval records. A company that buys a gateway still has to supply that metadata itself.\n\n## If You Are Not Uber\n\nThe minimum viable version is small. **One endpoint, one identity per calling application, one log, and a written rule that nothing calls a model vendor directly.** Everything else can follow.\n\n**Prerequisites.** You need an owner for each calling application (even a spreadsheet), a data-classification rule that says what may leave the company, and a security team willing to enforce \"no direct vendor keys\" by revoking them.\n\n**Sequencing.**\n\n1. Stand up an open-source or managed gateway with OpenAI- and Anthropic-compatible endpoints. Issue one virtual key per application or team, never per person.\n2. Revoke direct vendor keys in production. Keep a short, time-boxed sandbox exception for experiments.\n3. Turn on request logging with attribution to the owning team, and send a monthly cost report per team.\n4. Add PII redaction for the data classes your policy names; measure its latency and quality cost on real traffic before making it mandatory.\n5. Add inline guard models (prompt-injection and content classifiers) in shadow mode first, measuring flagged rates and latency, then enforce.\n6. Only then consider model routing, caching policy and self-hosted open-weight models.\n\n| Company size | What to run | What to skip |\n| --- | --- | --- |\n| ≈50 engineers | A managed gateway or LiteLLM; one key per app; logs and a cost dashboard | Self-hosted models, custom guard models, an internal \"AI project\" registry |\n| ≈500 engineers | Self-hosted LiteLLM or Kong; keys tied to service ownership; PII redaction; one or two guard classifiers in shadow, then enforced; per-team budgets | Building your own gateway service; fine-tuning guard models |\n| ≈5,000 engineers | A gateway joined to your ML platform or service catalog for identity; workload identity instead of keys; a guard model set owned by security with a latency SLO; multi-region deployment; hosted open-weight models where volume justifies | Mirroring every vendor feature in a canonical API |\n\n**What not to copy.** Do not copy the five-model guard stack before you have measured what your traffic needs; a single prompt-injection classifier plus redaction covers most of the risk for internal tools. Do not build a gateway on top of an ML platform you do not have. And do not make the gateway mandatory before it is as reliable as the vendor it fronts: engineers will route around a gateway that is slower or less available than the API behind it.\n\n## Failure Modes\n\n- **The bypass.** One team keeps a direct vendor key \"for latency\" or \"for a new feature the gateway does not support yet\". The bypass becomes the path for the most sensitive traffic, because that is where the newest features are used. The remedy is organizational (key revocation, procurement controls) as much as technical.\n- **The gateway outage that takes everything down.** When the gateway is mandatory, its availability is the availability of every AI feature and every coding agent. Imitators often run the gateway as an ordinary service with ordinary on-call; it needs tier-0 treatment.\n- **Guardrails that quietly degrade quality.** The 2024 post admits that redaction can reduce answer quality. A guard that blocks or rewrites too much pushes users to bypass it. Track the flagged rate and the false-positive rate per guard, and review them with the teams affected.\n- **Latency stacking.** Each middleware adds a few milliseconds; five classifiers in sequence, on both directions, add many. Without an explicit budget (Uber's is reported as under 100 ms for the whole stack), latency grows one well-intended check at a time.\n- **Attribution without ownership.** Per-key cost reports are useless if keys map to people who left or to a shared \"platform\" account. Attribution only works when it is joined to a maintained ownership record.\n- **Compatibility drift.** A compatible API that lags vendor releases by months turns the gateway into the reason engineers cannot use the latest model capabilities.\n\n## What the Record Does Not Say\n\n- Whether AI Guard fails open or fails closed when a guard model times out, and whether that differs by project risk.\n- What the five guard models are, how they were trained, and what the \"fine-tuned\" in the episode refers to (no written source uses the word).\n- How Uber handles provider outages: whether the gateway fails over across vendors automatically, and whether callers opt in.\n- Whether caching (semantic or exact-match) happens in the gateway, or only vendor prompt caching is tracked.\n- How the gateway's own availability is engineered: regions, deployment independence of middleware, rate limits between tenants.\n- When model routing will move from \"good entry point\" to production, and on what signal (cost, benchmark score on Uber's internal SWE benchmark, latency).\n- How the 2024 per-use-case security review scales to more than 800 projects; whether it is still manual.\n\n## Questions to Ask\n\n1. Is there any path in our company by which code reaches a model vendor without passing a control point we own? Who holds those keys?\n2. What is the unit of attribution for model spend — person, team, application, project — and is it joined to an ownership record someone maintains?\n3. What does our gateway do when a guard check is slow or down, and who decided that?\n4. What latency budget have we set for everything that runs inline, and who has to approve adding to it?\n5. Which vendor features do our callers need that the compatible API does not expose, and how long do they wait?\n6. Would a gateway outage be a tier-0 incident for us? Is the gateway run like one?\n7. Do we need self-hosted models at all, or is \"vendor-agnostic among API vendors\" enough for the next two years?\n8. Could we answer the security team's question \"which prompts contained customer data last month\" today?\n\nThe Model Gateway gave Uber one door for models. The next problem was that engineers do not call models directly: they use coding harnesses such as Claude Code, Codex and OpenCode, each with its own settings, plugins and tool configuration. [AIFX: Making the Coding Harness Swappable](aifx-harness-layer.html) describes how Uber applied the same single-door idea to the harness itself.\n\n## Sources and Evidence\n\n**The source episode**\n\n- [Uber's AI infra, from the inside](https://newsletter.pragmaticengineer.com/p/ubers-ai-infra-from-the-inside), *The Pragmatic Engineer* podcast, Gergely Orosz with Uday Kiran Medisetty, 2026 (14 October) — the Model Gateway's origin, Michelangelo project ID and caller token, AI Guard, attribution, spend limits, audit logs and routing as a future step; the show notes' \"model- and harness-agnostic\" decision and AI Guard latency flagging.\n\n**Uber engineering sources**\n\n- [Navigating the LLM Landscape: Uber's Innovation with GenAI Gateway](https://www.uber.com/blog/genai-gateway/), Tse-Chi Wang and Roopansh Bansal, Uber Blog, 2024 — Go service, OpenAI-compatible API, vendors, PII redaction and un-redaction, security review, audit logs, 2024 scale.\n- [Genie: Uber's Gen AI On-Call Copilot](https://www.uber.com/blog/genie-ubers-gen-ai-on-call-copilot/), Nicholas Marcott, Eduards Sidorovics and Paarth Chothani, Uber Blog, 2024 — usage logged through \"Michelangelo Gateway\" since September 2023.\n- [Meet Michelangelo: Uber's Machine Learning Platform](https://www.uber.com/blog/michelangelo-machine-learning-platform/), Mike Del Balso and Jeremy Hermann, Uber Blog, 2017 — the ML platform the gateway is built on.\n- [From Predictive to Generative – How Michelangelo Accelerates Uber's AI Journey](https://www.uber.com/blog/from-predictive-to-generative-ai/), Kai Wang, Joseph Wang and Min Cai, Uber Blog, 2024 — Michelangelo scale and its GenAI layer.\n- [Michelangelo is Now Open Source](https://michelangelo-ai.org/blog/open-source-launch/), the Michelangelo team, 2026 — the May 2026 open-source release.\n- [Solving the Identity Crisis for AI Agents](https://www.uber.com/us/en/blog/solving-the-agent-identity-crisis/), Matt Mathew, Prasad Borole and Meng Huang, Uber Blog, 2026 — the AI Gateway and AI Guard's prompt-injection, jailbreak and PII roles.\n- [Agentic SDLC at Uber: Building Blocks for Uber's Software Factory](https://ai.engineer/talks/17-YSUHo6Lk-agentic-sdlc-at-uber-building-blocks-ubers), Uday Kiran Medisetty and Adam Huda, AI Engineer World's Fair, 2026 — Anthropic compatibility, SPIRE identity, 20+ PII types, five safety and policy models, under-100 ms middleware, 800+ projects, 100M+ requests a day.\n- [How Uber built an AI software factory for agentic coding](https://newsletter.port.io/p/how-uber-built-a-software-factory), Zohar Einy, Port newsletter, 2026 — vendor-published summary of the talk, repeating its figures.\n- AI Guard: Securing LLMs, Agents and AI Applications at Uber Scale, Junyan Guo, RSA Conference, 2026 — session topics only; the page could not be fetched in full.\n\n**Industry and research sources**\n\n- [LiteLLM](https://www.thoughtworks.com/en-us/radar/languages-and-frameworks/litellm), Thoughtworks Technology Radar, 2026 (Vol. 34) — gateways as a \"sensible default\" and the limits of the abstraction.\n- [LiteLLM AI Gateway documentation](https://docs.litellm.ai/docs/simple_proxy), BerriAI, current as of 2026 — virtual keys, budgets, per-request cost.\n- [Cloudflare AI Gateway documentation](https://developers.cloudflare.com/ai-gateway/), Cloudflare, current as of 2026 — the managed-service form of the pattern.\n- [Kong AI Gateway documentation](https://developer.konghq.com/ai-gateway/), Kong, current as of 2026 — token rate limits, cost and MCP publication in one gateway.\n\nStatements about Uber's AI-era systems are Uber's own account unless another source is cited; recommendations and labeled inferences are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

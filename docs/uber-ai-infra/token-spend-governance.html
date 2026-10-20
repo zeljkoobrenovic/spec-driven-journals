@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Spend Tiers, Not Spend Caps: Governing Token Costs</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">RETROFITTED: How Uber Built AI-Native Engineering on a Decade of Developer Platforms</a><span class="nav-right"><a class="nav-prev" href="context-graph.html" title="The Context Graph and Cortana: Grounding Agents in the Company">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="plans-as-source-of-truth.html" title="Plans Before Prompts: PRDs, ERDs and the Design-Doc Hub">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part II — GATEWAYS: Agnostic Building Blocks</p>
+        <h1>Spend Tiers, Not Spend Caps: Governing Token Costs</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-20  ·  22 min read · <a class="spec-link" href="token-spend-governance.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/10-token-spend-governance/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/10-token-spend-governance/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">RETROFITTED: How Uber Built AI-Native Engineering on a Decade of Developer Platforms</a><span class="nav-right"><a class="nav-prev" href="context-graph.html" title="The Context Graph and Cortana: Grounding Agents in the Company">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="plans-as-source-of-truth.html" title="Plans Before Prompts: PRDs, ERDs and the Design-Doc Hub">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Spend Tiers, Not Spend Caps: Governing Token Costs", "date": "2026-10-20", "author": "Željko Obrenović", "excerpt": "How do you keep AI spend responsible without rationing a productivity tool? Uber gives every engineer a spend tier, lets them move up with a short manager conversation, makes cost visible in every session, and cuts the cost of each session with defaults and coaching, so that spend stayed roughly flat while usage grew several times over.", "permalink": "token-spend-governance", "timetoread": "22 min read", "icon": "assets/icons/10-token-spend-governance.png", "logo": "assets/images/10-token-spend-governance/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** See how Uber governs token spend: spend tiers with manager approval, a separate tier for background agents, cost shown in every session, a CostCheck tool with personalized tips, and defaults that cut cost per session. You will also see the 2026 budget pressure behind the system and the published results.\n\n> **WHY IT MATTERS:** Token costs are now an engineering budget line that grows with adoption, and the two obvious responses both fail. Hard caps ration the tool you are trying to adopt. No limits produce budget overruns that end in a blunt cap anyway. Leaders need a third option that keeps spend tied to value.\n\n> **KEY POINTS:**\n>\n> * **Tiers with a conversation, not caps with a wall.** Engineers start in a default tier and move up with \"a simple manager approval\", a short conversation about ROI with minimal paperwork. Background coding agents have their own separate tier. The show notes put it this way: \"for the right type of work, there is no spend limit.\"\n> * **Most of the saving comes from making each session cheaper, not from refusing sessions.** Cost is visible in the status line and across harnesses. Slack nudges arrive at 50%, 80% and 100% of expected spend. CostCheck coaches on context hygiene and model sizing. Defaults cover compaction, reasoning effort, cache lifetime and cheaper subagent models, and the CLI projection removes tool schemas from context.\n> * **The results are Uber's figures, and they came after a budget crisis.** Press reports in May 2026 said Uber had used up its 2026 AI-tools budget in about four months. Uber's August 2026 blog reports cost per session down 52% from the June peak, cost per 1,000 requests down about 34%, and total spend roughly stable since April while weekly agentic requests grew 9.4×. The show notes' \"about 50%\" reduction is a framing of these figures, not a separate measurement.\n\n> **BUILT ON:** the Model Gateway, which sees and attributes every model request ([One Door for Every Model: The Model Gateway and AI Guard](model-gateway.html)); AIFX and its status line in every harness ([AIFX: Making the Coding Harness Swappable](aifx-harness-layer.html)); the MCP Gateway's CLI projection ([The MCP Gateway: Every Internal Service One Tool Call Away](mcp-gateway.html)); the skills monorepo for coaching that ships as a skill ([Skills as a Product: The Agent Skills Monorepo](skills-monorepo.html)); and ownership and reporting lines that make \"ask your manager\" a working approval path ([Build What the Market Cannot Yet Sell: Uber's Pre-AI Platform Bets](build-what-does-not-exist.html)).\n\n<br>\nToken spend at a company that has adopted coding agents behaves like cloud spend did in 2015: it grows with usage, it is billed by the unit, it varies by orders of magnitude between users, and nobody notices it until finance does. Unlike cloud spend, it is attached to individual engineers making many small choices an hour: which model, how long a session, whether to clear the context, how many subagents to start.\n\nUber went through the crisis version of this in 2026. In May, press reports said the company had used up its full-year AI coding-tools budget in about four months. By August, Uber's engineering blog reported spend roughly flat while usage kept growing several times over. In the October 2026 Pragmatic Engineer episode, Medisetty described the governance model in between: **spend tiers, manager approval to move up, separate tiers for background agents, visibility everywhere, and coaching**. \"We don't want to restrict engineers,\" he said, but \"we also want to make sure there's a responsible use.\"\n\n![Three-panel illustration: an engineer stopped by a wall, coins overflowing a basin, and a staircase of spend tiers with a manager's gate at each step plus a separate lane for background agents.](assets/images/10-token-spend-governance/wall-flood-or-staircase.jpeg)\n**Figure 1:** *Hard caps ration the tool and no limits end in a blunt cap anyway; Uber's third option is tiers with a conversation, where a simple manager approval moves an engineer up and background agents draw on their own separate tier.*\n\nThis chapter owns two terms. A **spend tier** is a per-engineer spending allowance for a period, one of several levels, that the engineer can move up with a lightweight approval rather than a fixed cap. **CostCheck** is the episode's name for Uber's cost-coaching tool, which analyzes an engineer's sessions and gives personalized tips; Uber's August 2026 blog calls it a \"cost check skill\" and describes a related cost dashboard.\n\n## The Problem Uber Had: Spend That Grows Faster Than Anyone Can Explain\n\n### The 2026 Budget Pressure\n\nThe public record of Uber's 2026 AI spending comes from Uber and from the press, and the two should be kept apart.\n\n- **The budget.** Fortune reported on 26 May 2026 (\"[Uber's COO says it's getting harder to justify the company's AI spend](https://www.fortune.com/2026/05/26/uber-coo-ai-spending-tokens-claude-code/)\") that, according to reports, Uber had exhausted its entire 2026 AI coding-tools budget in four months. The same article said Uber had encouraged adoption with an internal leaderboard ranking teams by total AI tool usage. COO Andrew Macdonald said the link between that usage and consumer-facing features was \"not there yet\" and that \"that trade becomes harder to justify.\"\n- **A cap.** Bloomberg reported on 2 June 2026 (\"[Uber Caps Usage of AI Tools Like Claude Code to Manage Costs](https://news.bgov.com/artificial-intelligence/uber-caps-usage-of-ai-tools-like-claude-code-to-cut-costs-1)\", Natalie Lung) that Uber had capped spending at **$1,500 per employee per month per agentic coding tool**, with spend on one tool not counting against another.\n- **The growth.** Pragmatic Engineer's March 2026 inside look (\"[How Uber uses AI for development](https://newsletter.pragmaticengineer.com/p/how-uber-uses-ai-for-development)\", 10 March 2026) reported AI costs up six-fold since 2024, with Claude Code usage rising from 32% to 63% between December 2025 and February 2026 (the visible part of the article does not define the base).\n- **The governance.** Uber's own blog, \"[Running a Software Factory Efficiently at Uber Scale](https://www.uber.com/us/en/blog/efficient-software-factory/)\" (27 August 2026, by Medisetty), describes **one shared tier across all interactive harnesses**, not per-tool budgets, plus separate tiers for managed agents.\n\nThe per-tool cap in June and the shared tier in August are different policies. A plausible reading is that Uber changed the policy between the two reports. No source says so, and the June report is secondhand. The episode, recorded later, matches the August blog.\n\n"}, {"type": "mermaid", "content": "flowchart LR\n    A[\"Dec 2025 to Feb 2026: Claude Code use 32 to 63 percent\"] --> B[\"Mar 2026: AI costs reported 6x since 2024\"]\n    B --> C[\"Apr 2026: total spend levels off, per Uber\"]\n    C --> D[\"May 2026: press reports budget used in four months\"]\n    D --> E[\"Jun 2026: Bloomberg reports per-tool monthly cap; cost per session peaks\"]\n    E --> F[\"Aug 2026: Uber blog, shared tier, cost per session down 52 percent\"]\n    F --> G[\"Oct 2026: episode describes tiers, approvals, CostCheck\"]"}, {"type": "markdown", "content": "\n**Figure 2:** *Uber's 2026 spend story from public sources. Press reports and Uber's own figures are mixed here only to show the order of events; each is cited separately in the text.*\n\n### Why the Cost Grows\n\nThe August 2026 blog gives the cost as a product of six factors:\n\n**cost = users × sessions per user × turns per session × requests per turn × tokens per request × price per token**\n\nUber wants the first two factors to grow; that is adoption. Agentic work drives the middle three up on its own: longer sessions, more tool calls per turn, subagents that each send their own requests, and contexts that grow with every tool result. Between February and August 2026, Uber reports, weekly active users of agentic tools grew 7× and weekly agentic requests grew 9.4×. With price per token held constant, spend would have grown at least as fast as requests. It did not, and the rest of this chapter explains why.\n\n## What Uber Built\n\nEverything in this section is Uber's account. Where the episode and the August 2026 blog both describe something, both are cited; where only one does, the text says which.\n\n### Spend Tiers and the Approval Path\n\n- **Default tier.** Every engineer starts in a default tier, one of many levels.\n- **Moving up.** Close to the limit, an engineer requests the next tier and needs \"a simple manager approval\": a conversation about the project's ROI and how the money is being spent, with the minimum paperwork Uber can manage. The blog adds that approvals have \"quick propagation\". The show notes describe the manager signing off on more spend \"in that month\", so the period is monthly.\n- **No ceiling for the right work.** If the spend goes to the right project, Medisetty said, engineers should be able to spend whatever they need, because the aim is to maximize the gain. The show notes summarize: \"for the right type of work, there is no spend limit.\"\n- **Separate tiers for agent types.** Interactive harnesses share a spend tier; background coding agents have a separate, independent one. The blog says one shared tier covers all interactive harnesses, and managed agents get separate tiers. A Minion run ([Minion: Background Coding Agents on the Mega DevPod](minion.html)) does not draw down the engineer's interactive allowance.\n\n"}, {"type": "mermaid", "content": "flowchart TB\n    A[\"Engineer works in any harness\"] --> B[\"Spend counted against one interactive tier\"]\n    B --> C{\"Near the tier limit?\"}\n    C -->|\"no\"| A\n    C -->|\"yes\"| D[\"Slack nudges at 50, 80 and 100 percent\"]\n    D --> E[\"Request next tier\"]\n    E --> F[\"Manager conversation about ROI\"]\n    F -->|\"approved\"| G[\"Next tier, propagated quickly\"]\n    G --> A\n    F -->|\"not now\"| H[\"Coaching: CostCheck tips, model sizing, context hygiene\"]\n    H --> A\n    I[\"Background agents such as Minion\"] --> J[\"Separate managed-agent tier\"]"}, {"type": "markdown", "content": "\n**Figure 3:** *The tier path as described by Uber. The \"not now\" branch is this book's reading of what a manager conversation can end in; Uber describes approvals and coaching, not refusals.*\n\n### Visibility Everywhere\n\n- **In the session.** AIFX adds a status line to every harness that can \"give tips\" and track spend \"across harnesses, within that harness, in that session\" ([AIFX: Making the Coding Harness Swappable](aifx-harness-layer.html)). The blog: \"Running session cost is always visible in the terminal.\"\n- **Across tools.** Engineers see, in any of the tools, what they spend within one harness and across all of them. This works because every model request passes through the Model Gateway, which attributes it to a user and a project ([One Door for Every Model: The Model Gateway and AI Guard](model-gateway.html)).\n- **Before the limit.** The blog describes Slack nudges at 50%, 80% and 100% of expected spend.\n\n### CostCheck and the Session Dashboard\n\nMedisetty described \"a plugin called cost check that will run across all of your sessions and give you personalized tips based on your usage\": how much you are spending on which project, and what to change. He credited it with \"real-time coaching\" on context hygiene and model sizing, and with creating \"a good conversation between managers and engineers\".\n\nThe August 2026 blog describes the same capability in more detail, as a cost-check skill for on-demand breakdowns and a session-analysis dashboard that needs no setup or opt-in. The dashboard analyzes session traces across local and cloud sandboxes and all harnesses and flags **16 anti-patterns**, each with its financial impact and a fix. The blog's examples:\n\n| Anti-pattern (Uber blog, Aug 2026) | Why it costs money |\n| --- | --- |\n| Simple multi-turn sessions run on the most capable model when a cheaper one would do | Price per token several times higher for no gain |\n| Large MCP payloads (e.g. 40 KB responses) that stay in context | Billed again on every later turn |\n| Resuming after a long break | Prompt cache has expired; the whole prefix is rebuilt at full price |\n| 100,000 tokens of instructions and tool definitions loaded before any input | A fixed tax on every session |\n\nThe blog's sample dashboard shows $4,162.07 of spend over 433 sessions (about $9.60 per session), a 95% cache hit rate, $1,097.82 of cache-miss cost and $1,213.87 of savings.\n\n### Defaults That Change the Bill Without Asking Anyone\n\nThe blog lists defaults set centrally, which AIFX can push to every harness because settings are managed ([AIFX: Making the Coding Harness Swappable](aifx-harness-layer.html)):\n\n- **Compaction at 400,000 tokens**, even on models with a 1-million-token context.\n- **Reasoning effort Medium** by default, because output tokens cost several times more than input tokens.\n- **One-hour prompt-cache lifetime for interactive sessions**, up from five minutes; subagents stay at five minutes.\n- **Subagents on a cheaper model by default**, with manual overrides. The blog calls this \"the most impactful lever\".\n- **Model choice by benchmark.** Each managed agent gets a benchmark built from its real work, and Uber's internal SWE benchmark uses thousands of real PRs to compare frontier and open-weight models. Agents move to whichever model is Pareto-optimal on quality and cost.\n\n## A Worked Example: Why the Cache Lifetime Differs for Humans and Subagents\n\nThe cache default shows how much engineering hides in one setting. The blog gives the pricing it works with: a cache read costs 0.1× the input price, a five-minute cache write 1.25×, a one-hour write 2×. The arithmetic below is mine; the multipliers are Uber's.\n\nTake an interactive session whose context has grown to 200,000 tokens. Call the price of one input token *p*.\n\n| Event | Five-minute cache | One-hour cache |\n| --- | --- | --- |\n| Engineer is in a 20-minute meeting, then resumes | Cache expired: the 200,000-token prefix is written again at 1.25×, **250,000 p** | Cache warm: the prefix is read at 0.1×, **20,000 p** |\n| Cost of writing new context into the cache | 1.25× per new token | 2× per new token, a 0.75× premium |\n\nOne resume after a break saves 230,000 *p*. The premium on new content is 0.75 *p* per token, so the one-hour lifetime pays for itself as long as the engineer adds fewer than about 300,000 new tokens of context between breaks. Engineers take breaks constantly: meetings, reviews, lunch, switching to another session. For them the longer lifetime is a large saving.\n\nA subagent never takes a meeting. It runs from start to finish in minutes, then its context is discarded. For it, the longer lifetime is only the premium, with nothing to recover. That is why Uber kept subagents at five minutes. **The same setting is right for one kind of session and wrong for the other**, and only a central team that sees both kinds of trace can set it correctly for everyone.\n\n![Two-lane timeline: an interactive session with breaks covered by a one-hour warm cache, and a short subagent run with a five-minute cache.](assets/images/10-token-spend-governance/cache-lifetime-human-versus-subagent.jpeg)\n**Figure 4:** *The same setting is right for one kind of session and wrong for the other: interactive sessions pause and resume, so Uber gives them a one-hour cache, while subagents finish in minutes and stay at five.*\n\nThe same reasoning maps the other levers in the cost equation to systems in this book:\n\n| Factor | Uber's lever | Owning chapter |\n| --- | --- | --- |\n| Turns per session | Grounding via the context graph cuts discovery turns | [The Context Graph and Cortana: Grounding Agents in the Company](context-graph.html) |\n| Requests per turn | Subagents on cheaper models; code mode turns N tool calls into one script | [The MCP Gateway: Every Internal Service One Tool Call Away](mcp-gateway.html) |\n| Tokens per request | CLI projection removes 50,000–70,000 tokens of tool schemas; skills rewritten to the CLI pattern; compaction at 400K; CostCheck coaching on context hygiene | [The MCP Gateway: Every Internal Service One Tool Call Away](mcp-gateway.html), [Skills as a Product: The Agent Skills Monorepo](skills-monorepo.html) |\n| Price per token | Model sizing by benchmark; Medium reasoning effort; cache lifetime | [One Door for Every Model: The Model Gateway and AI Guard](model-gateway.html) |\n| Users and sessions per user | Not a target: Uber wants adoption to grow | this chapter |\n\n## The Results\n\nThe August 2026 blog reports, for February to August 2026:\n\n- **Cost per 1,000 model requests down almost 34% from its peak**, February to July, with the model held constant.\n- **Cost per session down 52% from its June peak** (the data starts at the end of May).\n- **Total AI spend \"relatively stable since April\"**, while weekly active users grew 7× and weekly agentic requests grew 9.4×.\n\nThe October episode's show notes say Uber \"has reduced token costs by about 50% the last few months, as we previously covered\". No Uber source gives a single fleet-wide 50% figure; the closest is the 52% drop in cost per session. The AI Engineer World's Fair 2026 talk by Medisetty and Adam Huda cites more than 40% fleet-wide savings tied to the MCP and code-mode work. Read the \"about 50%\" as the episode's summary of these results, and quote the specific metric when precision matters.\n\nTwo caveats belong next to the numbers. First, **\"cost per session\" is a ratio Uber chose**, and it falls if sessions get shorter even when work does not get cheaper. Uber also reports cost per 1,000 requests, which is less sensitive to that, and it fell less (34%). Second, **flat total spend is the outcome the governance was meant to produce**, and it says nothing yet about value. The COO's May remark that the link to consumer features was \"not there yet\" is the question the measurement chapter takes up ([From Diff Velocity to Feature Velocity: Measuring Productivity When PRs Are Cheap](feature-velocity.html)).\n\n## The Foundation Underneath\n\nSpend governance looks like policy. At Uber it is mostly plumbing that existed for other reasons.\n\n| Pre-existing piece | What spend governance needs from it | Without it |\n| --- | --- | --- |\n| **Model Gateway** (built from late 2023; [One Door for Every Model: The Model Gateway and AI Guard](model-gateway.html)) | Every model request attributed to a user and a project, with audit logs, session traces, billing and cache-hit tracking. Spend limits per project and user were added in 2026, per the episode. | Each vendor's console shows its own slice; nobody sees one engineer's total across tools |\n| **Michelangelo project IDs** ([One Door for Every Model: The Model Gateway and AI Guard](model-gateway.html)) | Teams create a gateway client with a project ID, so spend can be charged to a project, not only a person | \"Who is spending\" without \"on what\" |\n| **AIFX managed settings and status line** ([AIFX: Making the Coding Harness Swappable](aifx-harness-layer.html)) | One place to set compaction, effort and cache defaults for every harness, and to show cost in every session | Defaults set per harness, per laptop, inconsistently |\n| **MCP Gateway CLI projection** ([The MCP Gateway: Every Internal Service One Tool Call Away](mcp-gateway.html)) | Removes tool schemas from context for every agent at once | Each team trims its own MCP setup, or does not |\n| **Skills monorepo** ([Skills as a Product: The Agent Skills Monorepo](skills-monorepo.html)) | CostCheck ships as a skill to everyone; skills rewritten to the cheaper CLI pattern in one change | Coaching as a wiki page nobody reads |\n| **Ownership and reporting lines** ([Build What the Market Cannot Yet Sell: Uber's Pre-AI Platform Bets](build-what-does-not-exist.html)) | Every engineer has a known manager who can approve the next tier, and every project has an owner | Approvals routed to a central budget team that cannot judge ROI |\n\nThe first row carries most of the weight. **A company that cannot attribute every model request to a person and a project cannot run tiers**, because it cannot tell an engineer how close they are to one. Uber decided in 2023 that all model traffic would pass through one gateway, for model-agnosticism and safety; the attribution data for spend governance came with it.\n\n## Design Choices and Trade-offs\n\n| Approach | How it works | Strengths | Weaknesses | When it is right |\n| --- | --- | --- | --- | --- |\n| **No limit, central budget** | Everyone uses what they want; finance watches the total | Maximum adoption; no friction | Overruns; no signal of who spends or why; ends in an emergency cap | Short pilots with a fixed group |\n| **Hard cap per user** | A ceiling; work stops at the limit | Predictable spend | Rations the tool; heaviest users are often the most productive; pushes people to cheaper, worse models | Contractors, or tools with low value per token |\n| **Per-tool caps** (as Bloomberg reported for Uber in June 2026) | Separate ceiling per vendor tool | Easy to enforce with vendor consoles | Encourages tool-hopping to reset the limit; no total picture | When there is no gateway and each vendor bills separately |\n| **Spend tiers with manager approval** (Uber, as described in Aug and Oct 2026) | Default allowance; move up through a short ROI conversation | Spend tied to a person who knows the work; little paperwork; no wall | Needs attribution across tools; managers need context to judge; can become a rubber stamp | Several hundred engineers or more, with a gateway |\n| **Chargeback to teams** | Spend billed to each team's budget | Teams own the trade-off | Slow feedback; discourages experiments; engineers do not see cost per session | Mature FinOps practice; complements tiers |\n| **Separate tiers for agent types** (Uber) | Interactive and background agents have independent allowances | A large background run does not lock an engineer out of interactive work | Two allowances to explain and monitor | Once background agents run at volume ([Minion: Background Coding Agents on the Mega DevPod](minion.html)) |\n\nTwo choices inside Uber's design deserve a second look.\n\n**One shared tier across interactive harnesses.** Uber supports Claude Code, Codex and OpenCode. A per-tool budget would let an engineer switch harness to reset a limit, and would make the harness choice a budget question instead of a fit question. One shared tier matches the harness-agnostic principle ([AIFX: Making the Coding Harness Swappable](aifx-harness-layer.html)): the tool is the engineer's choice, the spend is one number.\n\n**Approval by the manager, not by a budget office.** The manager knows the project and can judge whether a week of heavy agent use on a migration is worth it. The cost is variance: managers judge differently, and Uber has not said how it calibrates them. The rule I would use: managers approve, a central team publishes the distribution of spend by role and project so that outliers in either direction are visible.\n\n## Elsewhere in the Industry\n\n**FinOps Foundation (February 2026).** The [FinOps for AI overview](https://www.finops.org/wg/finops-for-ai-overview/) (last updated 17 February 2026) notes that token billing makes AI costs harder to track because billed tokens can differ sharply from what the user typed, and proposes unit metrics such as cost per token and cost per call alongside value measures. Uber's cost-per-session and cost-per-1,000-requests metrics are such units. What FinOps adds is the discipline of pairing each unit cost with a value measure, which Uber's published results do not yet do.\n\n**Vendor controls.** Anthropic's [Claude Code cost documentation](https://code.claude.com/docs/en/costs) (as fetched in October 2026) reports an average across enterprise deployments of about **$13 per developer per active day and $150–250 per developer per month**, with 90% of users below $30 per active day. It offers workspace spend limits, per-member limits on Teams and Enterprise plans, OpenTelemetry export of per-user cost, and LLM gateways such as LiteLLM for attribution on cloud providers. Set against that average, the $1,500 monthly per-tool cap reported by Bloomberg sits six to ten times above a typical developer's spend: a ceiling for the heaviest users, not a ration for everyone. The documentation's cost advice (clear between tasks, match the model to the job, prefer CLIs to MCP servers, move workflow instructions into skills, put subagents on smaller models) overlaps almost entirely with Uber's defaults and CostCheck tips.\n\n**Gateways with budgets.** [LiteLLM](https://docs.litellm.ai/docs/simple_proxy) issues virtual keys with per-key budgets and records the cost of each request; [Kong AI Gateway](https://developer.konghq.com/ai-gateway/) calculates cost per request and enforces spend limits. These are the off-the-shelf form of the attribution layer Uber built into its Model Gateway.\n\n## If You Are Not Uber\n\nThe minimum viable version is **attribution plus visibility**: know what each engineer spends across tools, and show it to them while they work. Tiers come after that, not before.\n\n| Company size | What to build | What to skip for now |\n| --- | --- | --- |\n| **≈50 engineers** | One vendor plan or one gateway key per person. A monthly report of spend per person. Turn on the harness's cost display. Write down three habits: clear between tasks, use the smaller model by default, keep instruction files short. | Tiers and approvals. At this size, talk to the two heaviest users. |\n| **≈500 engineers** | An LLM gateway (LiteLLM or a vendor) so spend is attributed across tools. A default allowance and one higher tier, approved by managers in a form that takes a minute. Status-line cost display pushed through managed settings. A separate allowance for any background agent. Central defaults: compaction threshold, default model, subagent model. | A full anti-pattern dashboard. Start with the top three causes your logs show. |\n| **≈5,000 engineers** | Uber's shape: all model traffic through one gateway with user and project attribution; several tiers with manager approval; separate tiers per agent type; nudges before limits; a cost-coaching tool that reads session traces; centrally tuned defaults by session type; model choice by internal benchmark; a published distribution of spend by role. Pair cost metrics with a value measure. | Leaderboards of usage. They reward spend, not outcomes. |\n\n**Prerequisites:**\n\n1. **Attribution across tools.** A gateway or vendor reporting that gives one number per engineer per period ([One Door for Every Model: The Model Gateway and AI Guard](model-gateway.html)).\n2. **A place to set defaults.** Managed settings in your harnesses, or a wrapper like AIFX ([AIFX: Making the Coding Harness Swappable](aifx-harness-layer.html)).\n3. **Session traces.** Coaching needs to see what happened in a session; aggregates per user are not enough.\n\n**What not to copy.** Do not copy the tiers without the visibility; an engineer who learns about a tier only when they hit it experiences it as a cap. Do not run adoption leaderboards: Fortune reported that Uber ranked teams by total AI usage before its budget ran out, and a leaderboard of spend is an incentive to spend. And do not report a falling cost per session as a win without checking that sessions still finish the work.\n\n## Failure Modes\n\n- **The leaderboard spiral.** Ranking teams by usage to drive adoption, then discovering the budget is gone. The incentive measured activity, so it produced activity.\n- **Caps that push work to worse models.** An engineer near a hard limit switches to a cheaper model for a hard task, gets a worse result, and spends more turns fixing it.\n- **Approval theater.** Tier requests approved by default, with no conversation. The tiers become paperwork without the ROI discussion that justified them.\n- **Invisible background spend.** Background agents run on a shared service account, so their cost appears as one large line nobody owns. Uber's separate tier is attributed; an imitator's often is not.\n- **Goodhart on cost per session.** Teams split sessions or clear context aggressively to improve the metric, losing continuity and redoing work.\n- **One default for every session type.** A cache lifetime, compaction threshold or model chosen for interactive work applied to subagents, or the reverse. The worked example above shows how the same setting saves money in one place and wastes it in another.\n- **Savings that hide quality loss.** Moving a managed agent to a cheaper model cuts cost; without the benchmark Uber uses, nobody sees the drop in correctness until review catches it ([Code Inbox: Spending Human Review Where the Risk Is](code-review-signals.html)).\n\n## What the Record Does Not Say\n\n- **The tier amounts**, how many tiers exist, and what share of engineers sit above the default.\n- **How often managers approve or decline** tier requests, and whether any guidance helps them judge ROI.\n- **Whether the per-tool cap Bloomberg reported in June 2026 was replaced** by the shared tier the August blog describes, and when.\n- **Total AI spend in dollars** and the 2026 budget figure.\n- **How background-agent tiers are sized** and who owns them: the engineer who started the run, the team, or the platform.\n- **Whether CostCheck tips change behavior**, measured as a before-and-after on the engineers who received them.\n- **How cost is paired with value.** Uber publishes cost per session and per request; it has not published cost per merged feature or any similar value-linked unit, though [From Diff Velocity to Feature Velocity: Measuring Productivity When PRs Are Cheap](feature-velocity.html) describes the measure it is moving toward.\n\n## Questions to Ask\n\n1. Can we state, today, what one engineer spent on AI last month across every tool they use?\n2. Where does an engineer see their spend while they work, and how early do they learn they are approaching a limit?\n3. If an engineer needs five times the normal spend for a migration this month, how long does it take them to get approval, and who decides?\n4. Are background agents' costs attributed to a person or project, or pooled where nobody owns them?\n5. Which three anti-patterns cause most of our waste, and do we know from traces or from guesses?\n6. Which defaults (model, reasoning effort, compaction, cache lifetime, subagent model) do we set centrally, and are they different for interactive and automated sessions?\n7. Do we reward usage anywhere: dashboards, leaderboards, adoption targets?\n8. What value measure will we put next to cost per session, so that falling cost cannot hide falling output?\n\nThis chapter closes Part II. The gateways, harness layer, skills, context graph and spend governance are the agnostic building blocks; none of them ships a feature. Part III follows a feature through its lifecycle on top of them, starting where the work starts: the plan. [Plans Before Prompts: PRDs, ERDs and the Design-Doc Hub](plans-as-source-of-truth.html) covers the design-doc hub and why the spec becomes the hand-off to agents.\n\n## Sources and Evidence\n\n**The source episode**\n\n- [Uber's AI infra, from the inside](https://newsletter.pragmaticengineer.com/p/ubers-ai-infra-from-the-inside), *The Pragmatic Engineer* podcast, Gergely Orosz with Uday Kiran Medisetty, 14 October 2026 — spend tiers, manager approval, minimal paperwork, separate tiers for background agents, spend visibility across harnesses, the CostCheck plugin; show notes for \"no spend limit\" for the right work, monthly sign-off and the \"about 50%\" framing.\n\n**Uber engineering sources**\n\n- [Running a Software Factory Efficiently at Uber Scale](https://www.uber.com/us/en/blog/efficient-software-factory/), Uber blog, Uday Kiran Medisetty, 27 August 2026 — the cost equation, one shared interactive tier, managed-agent tiers, manager sign-off, Slack nudges, status-line cost, the cost-check skill and dashboard with 16 anti-patterns, defaults (compaction, effort, cache lifetime and pricing, subagent models), benchmarks, and the results (−34%, −52%, flat spend, 7× users, 9.4× requests).\n- [Agentic SDLC at Uber: Building Blocks for Uber's Software Factory](https://ai.engineer/talks/17-YSUHo6Lk-agentic-sdlc-at-uber-building-blocks-ubers), AI Engineer World's Fair 2026 talk, Uday Kiran Medisetty and Adam Huda, 2026 — more than 40% fleet-wide savings attributed to the MCP and code-mode work.\n- [How Uber uses AI for development: inside look](https://newsletter.pragmaticengineer.com/p/how-uber-uses-ai-for-development), *The Pragmatic Engineer*, Gergely Orosz, 10 March 2026 — AI costs up 6× since 2024; Claude Code adoption figures.\n\n**Industry and press sources**\n\n- [Uber's COO says it's getting harder to justify the company's AI spend](https://www.fortune.com/2026/05/26/uber-coo-ai-spending-tokens-claude-code/), Fortune, Jake Angelo, 26 May 2026 — reports of the budget used in four months, the usage leaderboard, the COO's remarks.\n- [Uber Caps Usage of AI Tools Like Claude Code to Manage Costs](https://news.bgov.com/artificial-intelligence/uber-caps-usage-of-ai-tools-like-claude-code-to-cut-costs-1), Bloomberg, Natalie Lung, 2 June 2026 — the reported $1,500 per employee per month per-tool cap.\n- [FinOps for AI Overview](https://www.finops.org/wg/finops-for-ai-overview/), FinOps Foundation, updated 17 February 2026 — token-based unit economics.\n- [Manage costs effectively](https://code.claude.com/docs/en/costs), Claude Code documentation, current as of October 2026 — average enterprise cost per developer, organization spend controls, cost-reduction practices.\n- [LiteLLM AI Gateway](https://docs.litellm.ai/docs/simple_proxy), LiteLLM documentation, current as of October 2026 — virtual keys with budgets and per-request cost.\n- [Kong AI Gateway](https://developer.konghq.com/ai-gateway/), Kong documentation, current as of October 2026 — per-request cost and spend limits.\n\nStatements about Uber's AI-era systems are Uber's own account unless another source is cited; recommendations and labeled inferences are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

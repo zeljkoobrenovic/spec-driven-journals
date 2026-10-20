@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Skills as a Product: The Agent Skills Monorepo</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">RETROFITTED: How Uber Built AI-Native Engineering on a Decade of Developer Platforms</a><span class="nav-right"><a class="nav-prev" href="mcp-gateway.html" title="The MCP Gateway: Every Internal Service One Tool Call Away">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="context-graph.html" title="The Context Graph and Cortana: Grounding Agents in the Company">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part II — GATEWAYS: Agnostic Building Blocks</p>
+        <h1>Skills as a Product: The Agent Skills Monorepo</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-20  ·  21 min read · <a class="spec-link" href="skills-monorepo.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/08-skills-monorepo/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/08-skills-monorepo/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">RETROFITTED: How Uber Built AI-Native Engineering on a Decade of Developer Platforms</a><span class="nav-right"><a class="nav-prev" href="mcp-gateway.html" title="The MCP Gateway: Every Internal Service One Tool Call Away">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="context-graph.html" title="The Context Graph and Cortana: Grounding Agents in the Company">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Skills as a Product: The Agent Skills Monorepo", "date": "2026-10-20", "author": "Željko Obrenović", "excerpt": "Why is a company's skills repository harder than a folder of markdown files? Because once thousands of engineers depend on skills every day, a skill is shared code: it needs distribution, a quality gate, a common way to reach tools, and a loop that improves it after release. Uber put that in one monorepo and is still building the improvement loop.", "permalink": "skills-monorepo", "timetoread": "21 min read", "icon": "assets/icons/08-skills-monorepo.png", "logo": "assets/images/08-skills-monorepo/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** See how Uber organizes agent skills: core and team skills in one monorepo, one quality gate, portable across harnesses, auto-installed for everyone, and reaching tools through one gateway. Then follow the one mass rewrite that shows why the single repository matters, and the improvement loop Uber says it has not finished.\n\n> **WHY IT MATTERS:** Skills are becoming the main way an organization passes its know-how to agents. Without an owner they turn into prompt sprawl: duplicated, stale, and expensive in tokens. An engineering leader has to decide who owns them, how they ship, and how anyone knows whether they work.\n\n> **KEY POINTS:**\n>\n> * **A skill is easy to write and hard to make good.** Medisetty's own words: a V0 is \"very easy\", making it good \"across all kinds of use cases\" is \"very hard\". The work after the first draft is distribution, review, measurement and improvement, and that work needs a platform.\n> * **One repository makes the whole skill set changeable at once.** When Uber projected every MCP tool as a CLI, a couple of engineers using AI rewrote all the skills in the repository to the CLI pattern. Skills scattered across team repos and laptops cannot be changed that way. The monorepo, the single quality gate, AIFX portability and the auto-installed marketplace are what make skills a product.\n> * **The quality loop is the unsolved part, and Uber says so.** Uber reports about 30,000 skill executions a day (the episode; the August 2026 Uber blog says 30K+ a day across 3,600+ skills). A tool that gives tips on improving a skill exists; turning harness traces into improvement patches was still in flight in October 2026.\n\n> **BUILT ON:** the per-language monorepos and their review and ownership habits ([From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html)), the MCP Gateway and its CLI projection ([The MCP Gateway: Every Internal Service One Tool Call Away](mcp-gateway.html)), AIFX as the distribution channel into every harness ([AIFX: Making the Coding Harness Swappable](aifx-harness-layer.html)), DevPods with tools pre-installed ([DevPods: Cloud Workspaces Built for Engineers, Ready for Agents](devpods.html)), and Model Gateway session traces ([One Door for Every Model: The Model Gateway and AI Guard](model-gateway.html)).\n\n<br>\nEvery company that adopts coding agents grows skills, whether it plans to or not. An engineer writes down how to run the payments integration tests, a team writes a markdown file on how to roll out a config change, someone else copies it and edits it for their service. Six months later there are dozens of near-duplicates in personal folders and team repos, each naming its own tools, none reviewed, and nobody knows which ones agents actually load or whether they help.\n\nUber's answer, as Medisetty described it in the October 2026 Pragmatic Engineer episode, was to treat skills the way Uber treats code: **one monorepo, one quality gate, one distribution mechanism, one way to reach tools**. Orosz pushed back on the idea. A startup would think a skills repository is \"just a repo\" with \"a bunch of skill folders and that's kind of it\". Medisetty agreed that a first version is trivial, and argued that **the hard part is everything after the first version**.\n\nThis chapter covers what Uber built, why the single repository paid off in one concrete rewrite, and the **skill quality loop**: the cycle of gating, distributing, observing and improving skills that Uber has started and not finished. The term \"skill\" here means an agent skill in the sense of the Agent Skills format: a folder with a `SKILL.md` file of instructions, plus optional scripts and reference files, that a harness loads when a task matches the skill's description. A **harness** is the agent program the engineer runs, such as Claude Code, Codex or OpenCode ([AIFX: Making the Coding Harness Swappable](aifx-harness-layer.html) owns the term).\n\n## The Problem Uber Had: Skills Sprawl Faster Than Anyone Can Review Them\n\nMedisetty said Uber \"jumped onto\" skills \"earlier this year\", which in an October 2026 conversation means early 2026. By then Uber already had its harness layer, AIFX, and its MCP Gateway (see [AIFX: Making the Coding Harness Swappable](aifx-harness-layer.html) and [The MCP Gateway: Every Internal Service One Tool Call Away](mcp-gateway.html)). Skills were the next layer: the place where know-how about Uber's systems lives, as opposed to the tools that act on them.\n\nFour forces make skills messy in a company of Uber's size. None of them is specific to Uber.\n\n| Force | What goes wrong without a platform |\n| --- | --- |\n| **Many authors** | Every team writes its own skills. Without a shared place, the same procedure (\"how to deploy to staging\", \"how to query the trips tables\") exists in several versions that drift apart. |\n| **Several harnesses** | Uber supports Claude Code, Codex and OpenCode. A skill installed in one harness's folder is invisible in another, so engineers who switch lose their setup or keep copies. |\n| **Tool references** | A skill that says \"use MCP server X\" pulls that server's tool definitions into the agent's context. Each skill choosing its own servers multiplies the context load. |\n| **No feedback** | A skill that misleads the agent rarely fails loudly. The agent takes more turns, uses more tokens or produces a worse result, and nobody connects the cost to the skill. |\n\n![Before-and-after illustration: duplicated skill notes scattered across desks versus one curated skills library with a single quality gate delivering to every harness.](assets/images/08-skills-monorepo/skill-sprawl-versus-curated-library.jpeg)\n**Figure 1:** *Without an owner, skills become prompt sprawl, duplicated, unreviewed and expensive in tokens; Uber treats them like code, with one monorepo, one quality gate and one distribution path into every harness.*\n\nThe Thoughtworks Technology Radar named the first force as a pattern to avoid. Its April 2026 blip \"[Curated shared instructions for software teams](https://www.thoughtworks.com/radar/techniques/curated-shared-instructions-for-software-teams)\" (ring Adopt) calls it an emerging anti-pattern for each developer to write prompts from scratch, and recommends maintaining AI guidance as a curated, shared engineering resource. The same radar volume lists \"agent instruction bloat\" under Caution. Uber's skills monorepo is one large-scale answer to both.\n\n## What Uber Built\n\nMedisetty described the system in a few sentences; the account below stays close to them. Unless marked, everything in this section is Uber's own account from the episode.\n\n- **One skills monorepo.** \"Since we already have this notion of monorepos, we created a skill monorepo in some sense.\" It holds **core skills** built by central platform teams and **team-specific skills** that individual teams build.\n- **Plugins and skills together.** Asked by Orosz whether these are the skill folders and plugins used in Claude Code, Medisetty said yes: plugins and skills usable across all the harnesses.\n- **One quality gate** that runs across all skills. Uber has not said what the gate checks.\n- **Portable across harnesses through AIFX.** Engineers install skills with the same AIFX tooling as everything else, and one `plugin add` updates every harness, including those not in use ([AIFX: Making the Coding Harness Swappable](aifx-harness-layer.html)).\n- **One way to reach tools.** All skills use tools from the MCP Gateway, so every skill reaches every tool through one standard mechanism.\n- **An auto-installed marketplace.** Uber installs the skill marketplace for everyone. That removes a configuration step, makes discovery easy, and gave Uber one place to build evaluation and discoverability pipelines.\n- **Personas with default skills**, distributed through AIFX ([AIFX: Making the Coding Harness Swappable](aifx-harness-layer.html) covers personas).\n- **Improvement tooling, partly in flight.** A tool where an engineer selects a skill and gets tips on improving it was being built. The next step, \"in flight\", is to collect traces from the harnesses and generate improvement patches for skills.\n- **Not everything is in the monorepo.** Some teams still keep their own repositories, but the majority of skills go through it.\n\n"}, {"type": "mermaid", "content": "flowchart LR\n    A[\"Platform teams\"] -->|\"core skills\"| R[\"Skills monorepo\"]\n    B[\"Product teams\"] -->|\"team skills\"| R\n    R --> G[\"One quality gate\"]\n    G --> M[\"Skill marketplace, auto-installed\"]\n    M -->|\"AIFX plugin add\"| H1[\"Claude Code\"]\n    M -->|\"AIFX plugin add\"| H2[\"Codex\"]\n    M -->|\"AIFX plugin add\"| H3[\"OpenCode\"]\n    H1 --> T[\"MCP Gateway tools, as MCP or CLI\"]\n    H2 --> T\n    H3 --> T\n    H1 -.->|\"harness traces, in flight\"| P[\"Improvement patches\"]\n    P -.-> R"}, {"type": "markdown", "content": "\n**Figure 2:** *Uber's skills path as described in the episode: many authors, one repository, one gate, one marketplace installed into every harness, one tool layer. The dashed trace-to-patch loop was in flight as of October 2026.*\n\n### The Numbers, by Source\n\nUsage figures appear in three Uber sources. They are snapshots from different months, so they should be read as a trend, not reconciled into one number.\n\n| Source | Skills | Executions | Notes |\n| --- | --- | --- | --- |\n| \"Agentic SDLC at Uber\" talk, AI Engineer World's Fair 2026 (Medisetty and Adam Huda) | 2,500 | 20,000+ per day | Describes a managed skills marketplace with core and domain skills, lint and automated review, persona-based defaults, feedback loops |\n| \"[Running a Software Factory Efficiently at Uber Scale](https://www.uber.com/us/en/blog/efficient-software-factory/)\", Uber blog, 27 August 2026 | 3,600+ | 30K+ per day | Adds 25+ pre-built code-mode skills and \"Continuous Skill Optimization\" in progress |\n| The October 2026 episode | not given | \"around probably 30,000 skill executions per day\" in \"the last few weeks\" | Uber's own account, spoken |\n\nThe written sources describe a **marketplace** or **registry**. The **monorepo** as the storage layout is in the episode only. A May 2026 MCP Dev Summit talk by Uber engineers, as written up by the [Agentic AI Foundation](https://aaif.io/blog/how-uber-runs-60000-ai-agent-tasks-per-week-with-mcp) (14 May 2026), listed a Skills Registry with output evaluation and A/B tests of skill versions on its roadmap.\n\nThirty thousand executions a day across several thousand engineers means skills are not an experiment at Uber. Each engineer who uses agents triggers several skills per working day. At that volume a skill that wastes 10,000 tokens per execution costs real money, which links this chapter to [Spend Tiers, Not Spend Caps: Governing Token Costs](token-spend-governance.html).\n\n## A Worked Example: The CLI Rewrite\n\nThe clearest evidence for the monorepo is one event Medisetty described. In 2026 Uber **projected every MCP tool as a CLI**, so an agent can call any internal or vendor tool as a shell command instead of loading the tool's schema into its context ([The MCP Gateway: Every Internal Service One Tool Call Away](mcp-gateway.html) owns the CLI projection). After that change, \"just a couple of engineers using AI, they updated all of the skills in this repository to use the CLI pattern because it's more token efficient.\"\n\nThe reason was context load. In Medisetty's example, if every skill declares the MCP servers it needs, installing two plugins can put \"six MCPs across these two always in my context\". The Uber blog of August 2026 gives the scale of that cost:\n\n- An agent with more than 100 MCP tools loaded carries roughly **50,000–70,000 tokens of tool schemas**, re-sent on every turn.\n- One SaaS workspace suite alone ships **49 tools at about 22,000 tokens** of schema. Messaging and project-tracking servers ship 34 and 46 tools.\n- With all 1,000+ internal MCP tools exposed as CLI commands, the schemas leave the context. Code mode cut tokens per SQL query by 55–71% in Uber's measurements.\n\nA rough illustration (the arithmetic is mine; the inputs are Uber's published figures): an engineer whose two plugins pull in the workspace suite plus the messaging and project-tracking servers carries 129 tool schemas. If the other two are as dense as the workspace suite (about 450 tokens per tool), that is roughly 55,000–60,000 tokens before the engineer types anything. Prompt caching makes later turns cheaper, but the schemas still fill the context and are rebuilt at a premium every time the cache expires. Some harnesses now defer tool definitions until a tool is used, which softens this; the CLI pattern removes it.\n\nThe point for this chapter is not the token count. It is that **the change was possible as one coordinated edit**. Because the majority of skills lived in one repository with one gate, two engineers could find every skill that named an MCP server, rewrite it, run the gate and ship the result through the marketplace to every harness. In a world of skills spread across team repos and personal folders, the same change would have been a campaign of hundreds of requests to owners, and many skills would never have been updated.\n\n![Comparison illustration: two engineers with an AI helper retagging every skill on one shelf, versus a slow campaign across many scattered buildings.](assets/images/08-skills-monorepo/one-coordinated-edit.jpeg)\n**Figure 3:** *When every MCP tool became a CLI, a couple of engineers using AI rewrote all the skills in the repository to the CLI pattern; skills scattered across team repos and laptops would have needed a campaign instead.*\n\nThis is the same argument Uber made for its code monorepos in 2017–18: large-scale changes become tractable when the code is in one place with one build ([From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html)). [Shepherd and Fox: From Migration Campaigns to Self-Improving Codebases](shepherd-and-fox.html) covers how Uber runs such changes on its code; the skills rewrite was a small version of the same move applied to agent instructions.\n\n## Why the Format Makes a Central Repository Matter\n\nThe Agent Skills format explains several of Uber's choices. Anthropic introduced skills in October 2025 (\"[Equipping agents for the real world with Agent Skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)\", 16 October 2025) and released the format as an open standard at [agentskills.io](https://agentskills.io/), which lists Claude Code, Codex, OpenCode, Cursor, Gemini CLI and GitHub Copilot among supporting agents. Three properties of the format matter here.\n\n1. **Progressive disclosure.** At startup the agent sees only each skill's name and description (Anthropic's documentation puts this at roughly 100 tokens per skill). It loads the body, under about 5,000 tokens, only when a task matches, and bundled files and scripts only as needed. So a large catalog is affordable, but every installed skill still costs a little, every session.\n2. **The description is the router.** Whether a skill activates depends on its description. Two skills with overlapping descriptions compete; a vague description never fires or fires on the wrong task. With thousands of skills from hundreds of authors, **activation quality becomes a catalog-level property**, not a property of any one skill. Someone has to look at the whole set.\n3. **Portability is real but shallow.** The `SKILL.md` format travels across harnesses, but the install location, plugin manifests and settings differ per harness. That gap is what AIFX fills at Uber: one `plugin add` writes the right configuration into every harness.\n\nThese properties are why an auto-installed marketplace is a reasonable default at Uber's scale and a questionable one without a gate. If everyone gets every skill, the catalog's descriptions are everyone's context. A plausible reading, not a documented description, is that Uber's single quality gate exists partly to protect that shared surface.\n\n> **INFERENCE, NOT DOCUMENTED:** Uber has not said what its quality gate checks. A gate for a shared, auto-installed catalog would plausibly check the format (valid `name` and `description`, size limits), forbid direct MCP server declarations once the CLI pattern became the standard, flag descriptions that overlap existing skills, and run any evals the skill ships with. The AI Engineer talk mentions \"lint and automated review\" for managed skills, which fits the first two.\n\n## The Foundation Underneath\n\nThe book's thesis is that the harness is the easy part ([The Harness Is the Easy Part: Why Uber's AI Tooling Took a Decade and a Year](the-harness-is-the-easy-part.html)). For skills the dependency map is short and direct.\n\n| Pre-existing piece | What the skills platform reuses | What it would cost without it |\n| --- | --- | --- |\n| **Monorepo practice** (2017–18, per language; [From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html)) | The idea that shared code lives in one place, with owners, code review, CI and the ability to change everything at once | Skills scattered across repos, with no single place to gate, search or rewrite them |\n| **Standard build and test contract** ([From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html)) | Skills can say \"build with X, test with Y\" once for a whole language, because Uber has one way to build any module | Skills full of per-service exceptions that rot quickly |\n| **MCP Gateway and CLI projection** ([The MCP Gateway: Every Internal Service One Tool Call Away](mcp-gateway.html)) | One mechanism for every skill to reach every internal and vendor tool, with the user's permissions | Each skill bundling its own tool setup, credentials and servers |\n| **AIFX** ([AIFX: Making the Coding Harness Swappable](aifx-harness-layer.html)) | Distribution into Claude Code, Codex and OpenCode with one command; personas with default skills | Per-harness install instructions; engineers losing skills when they switch harness |\n| **DevPods** ([DevPods: Cloud Workspaces Built for Engineers, Ready for Agents](devpods.html)) | AI tools pre-installed in cloud workspaces, so the marketplace is present wherever agents run, including background agents such as [Minion: Background Coding Agents on the Mega DevPod](minion.html) | Skills that work on one laptop and not in the agent's environment |\n| **Model Gateway session traces** ([One Door for Every Model: The Model Gateway and AI Guard](model-gateway.html)) | Every model request is logged with session traces, which is the raw material for trace-driven skill improvement | No way to see what a skill did across thousands of sessions |\n\nThe last row is the one most imitators miss. **Improving skills from traces requires that the traces exist and are attributable** to a user, a session and, ideally, the skills that were active. Uber routes every model request through one gateway that already records session traces ([One Door for Every Model: The Model Gateway and AI Guard](model-gateway.html)). A company whose agents call vendors directly from laptops has no comparable data set, and its skill quality loop stops at \"ask people if the skill helped\".\n\n## The Skill Quality Loop\n\nThe **skill quality loop** is this book's name for the cycle a skills platform has to run after a skill's first version: gate, distribute, observe, improve, evaluate, repeat. Medisetty framed the need plainly: \"When you first build a skill, they might not be perfect and you need some mechanism to continuously improve that.\" He also said there is \"a lot of discussion around the skill quality, skill evals\".\n\n"}, {"type": "mermaid", "content": "stateDiagram-v2\n    state \"Author writes V0\" as Author\n    state \"Quality gate\" as Gate\n    state \"Marketplace, all harnesses\" as Ship\n    state \"Executions produce traces\" as Observe\n    state \"Tips and improvement patches\" as Improve\n    state \"Evals on new version\" as Eval\n    [*] --> Author\n    Author --> Gate\n    Gate --> Ship\n    Ship --> Observe\n    Observe --> Improve\n    Improve --> Eval\n    Eval --> Gate"}, {"type": "markdown", "content": "\n**Figure 4:** *The skill quality loop. Uber describes the gate, the marketplace and a tips tool as built; trace-driven patches and evals as in flight. The ordering is this book's reading of the episode, not a documented pipeline.*\n\nEach stage has a different evidence level.\n\n| Stage | What Uber has said | Evidence |\n| --- | --- | --- |\n| **Gate** | \"One single quality gate\" across all skills | Episode; the AI Engineer talk mentions lint and automated review |\n| **Distribute** | Auto-installed marketplace; AIFX `plugin add` updates every harness; personas with defaults | Episode; persona-based defaults also in the talk |\n| **Observe** | Session traces exist in the Model Gateway; a session-analysis dashboard flags 16 cost anti-patterns | Episode; Uber blog, August 2026 |\n| **Improve** | A tool that gives an engineer tips on improving a chosen skill; trace-driven improvement patches \"in flight\" | Episode; the August 2026 blog calls the effort \"Continuous Skill Optimization\": recording skill \"papercuts\" and generating updates from traces |\n| **Evaluate** | \"Eval pipelines\" built around the marketplace; skill evals under discussion | Episode; A/B testing of skill versions on the May 2026 roadmap |\n\nRead together, the sources describe a loop whose front half (author, gate, ship) is in production and whose back half (observe, improve, evaluate) was being built in 2026. That matches Medisetty's framing. It is also the honest state of the industry: as of October 2026, I know of no public, detailed account from any company of a skill evaluation pipeline running at this scale.\n\nWhy the back half is hard:\n\n- **Attribution.** A session can activate several skills. If the session goes badly, which skill was at fault? Traces have to record which skills loaded and what the agent did after each one.\n- **Ground truth.** A skill for \"query the trips tables\" can be judged against known-correct queries. A skill for \"write a good design doc\" has no single right answer, so its evals are rubric-based and noisier.\n- **Ownership.** A patch generated from traces has to go to someone who can accept it. Core skills have platform owners; team skills have team owners who may not watch a queue of machine-written patches. That is the same problem Uber solves for code with owner routing ([Shepherd and Fox: From Migration Campaigns to Self-Improving Codebases](shepherd-and-fox.html)).\n- **Regression across harnesses.** A skill tuned on Claude Code traces may behave differently in Codex. Portability makes distribution easy and evaluation harder.\n\n## Design Choices and Trade-offs\n\n| Choice | Uber's choice (as described) | Alternative | When the alternative is right |\n| --- | --- | --- | --- |\n| **Where skills live** | One monorepo for most skills; some teams keep their own repos | Per-team repos aggregated by a registry | When teams already have strong repo ownership and you cannot staff a central gate; accept slower catalog-wide changes |\n| **Who reviews** | One quality gate for all skills | Self-serve publishing with post-hoc review | Early, under a few hundred engineers, when speed of experimentation matters more than catalog hygiene |\n| **Install default** | Auto-installed marketplace for everyone, plus persona defaults | Opt-in install per engineer | When the catalog is ungated or descriptions overlap; opt-in keeps context small and failures local |\n| **Tool access from skills** | Through the MCP Gateway, now the CLI pattern | Each skill declares its own MCP servers | Only for a handful of tools with no CLI equivalent; otherwise schema load grows with every install |\n| **Harness coupling** | Portable across harnesses via AIFX | Optimize for one harness | When the company has standardized on one harness and expects to stay; you gain harness-specific features, lose switching freedom |\n| **Improvement** | Tips tool now, trace-driven patches in flight | Manual feedback (surveys, issues) | Small catalogs, where owners can read every complaint; it does not scale past a few hundred skills |\n\nThe design choice I would watch most closely is the **auto-installed marketplace**. It is what makes 30,000 executions a day possible: nobody has to find or install anything. It is also what turns every skill's description into shared context for every engineer. Uber pairs it with a gate and with persona defaults; an imitator who copies auto-install without the gate gets agent instruction bloat at company scale.\n\n## Elsewhere in the Industry\n\n**Anthropic's own guidance (October 2025 onward).** The [Agent Skills documentation](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) and the open standard at agentskills.io define the unit Uber's monorepo holds. The [Claude Code cost documentation](https://code.claude.com/docs/en/costs) (as fetched in October 2026) recommends moving specialized workflow instructions out of `CLAUDE.md` into skills so they load on demand, and keeping `CLAUDE.md` under about 200 lines. That is the per-repository version of the same idea: always-on context should be small, and the long tail should load only when needed.\n\n**AGENTS.md and per-repository instructions.** [AGENTS.md](https://agents.md/), stewarded by the Agentic AI Foundation, is the per-repository instruction file that sits under a central skills catalog: the nearest file in the tree wins. Uber's standardized builds mean its top-level agent instruction files work out of the box ([From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html)); skills carry what does not belong in any one repository.\n\n**Thoughtworks Technology Radar, Vol. 34 (April 2026).** Besides \"curated shared instructions\" (Adopt) and \"agent instruction bloat\" (Caution), the radar places \"Agent Skills\" and \"progressive context disclosure\" in Trial. The radar's view matches Uber's: curate centrally, keep the default context small.\n\n**Spotify's background agent (November 2025).** Spotify's Honk team wrote that a deliberately small toolset made its agent more predictable, because every added tool makes behavior less predictable (\"[Background Coding Agents: Context Engineering](https://engineering.atspotify.com/2025/11/context-engineering-background-coding-agents-part-2)\", 24 November 2025). That is a counterweight to auto-installing a large catalog: for a narrow, unattended agent, fewer skills may be better than more.\n\n## If You Are Not Uber\n\nThe minimum viable version is small: **one shared repository of skills, a reviewer, and a way to install them into the harnesses your engineers use.** Everything else is earned by volume.\n\n| Company size | What to build | What to skip for now |\n| --- | --- | --- |\n| **≈50 engineers** | One `skills/` directory in an existing repo (or a dedicated small repo) in the Agent Skills format. Code review like any other code. A one-line install script per harness. A short list of 10–20 skills for the workflows you run weekly: build, test, deploy, query the main database, open a PR in house style. | Marketplaces, personas, evals. Ask in a channel whether skills help. |\n| **≈500 engineers** | A dedicated skills repository with CODEOWNERS for core and team skills. A CI gate: format lint, description length, no direct MCP server declarations if you have a CLI or gateway alternative, and a duplicate-description check. Opt-in install with a curated default bundle per role. Basic usage telemetry: which skills load, how often. | Trace-driven patch generation. Auto-install of the whole catalog. |\n| **≈5,000 engineers** | Uber's shape: one repository for most skills, a single gate, a harness-agnostic installer, persona defaults, a marketplace, a central tool layer that skills reference, and session traces tied to skills. Staff a small team that owns the catalog as a product, with usage and cost dashboards per skill. Start the eval pipeline with the 20 most-executed skills. | Trying to evaluate every skill at once. Start where volume is. |\n\n**Prerequisites**, in order of importance:\n\n1. **A tool layer skills can point at.** If every skill has to explain how to authenticate to a service, skills become configuration documents. A gateway or a set of well-documented CLIs comes first ([The MCP Gateway: Every Internal Service One Tool Call Away](mcp-gateway.html)).\n2. **Standard build and test commands.** Skills that encode per-service exceptions do not survive. If your repositories cannot be built one way, fix that before writing many skills ([From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html)).\n3. **Traces you can attribute.** If you want to improve skills from evidence, route model traffic through something that logs sessions ([One Door for Every Model: The Model Gateway and AI Guard](model-gateway.html)). Without it, stop at stage three of the loop.\n\n**Buy, build or open source.** The format is open and the storage is a git repository, so there is nothing to buy for the first two size bands. Harness vendors increasingly ship plugin marketplaces and managed settings; use them if you have one harness. Build a harness-agnostic installer only if you deliberately support several harnesses, as Uber does ([AIFX: Making the Coding Harness Swappable](aifx-harness-layer.html)).\n\n**What not to copy.** Do not copy the auto-installed marketplace before you have a gate. Do not copy the monorepo for skills if your code is not in monorepos and your teams do not work that way; a registry that indexes skills in team repos gets most of the discoverability with less friction. And do not count executions as success. Thirty thousand executions a day says skills are used, not that they help.\n\n## Failure Modes\n\n- **Prompt sprawl with a nicer folder.** A shared repository without review becomes a place to dump personal prompts. Descriptions overlap, the wrong skill fires, and the catalog's always-on cost grows with every merge.\n- **Context bloat from skills that declare tools.** The failure Uber fixed with the CLI rewrite. Each skill that names its own MCP servers adds schema tokens to every session where it is installed.\n- **Stale skills that still activate.** A skill written for last year's deploy tool keeps matching deployment tasks. Without usage and outcome data, nobody notices until an agent follows it and fails.\n- **Execution counts as the success metric.** High counts reward broad descriptions that fire often. The measure that matters is whether sessions that load the skill finish with fewer turns, fewer tokens and better outcomes than sessions that do not.\n- **Central bottleneck.** A single gate staffed by two people becomes a queue. Teams route around it by keeping their own repositories; Uber already notes that some teams do. That is acceptable if those repositories are visible to the catalog, and a problem if they are not.\n- **Harness-specific breakage.** A skill tested in one harness fails in another because of different tool-calling behavior or install paths. Portability without cross-harness evals moves the failure from install time to run time.\n- **Machine-written patches nobody owns.** Trace-driven improvement generates patches; if owners do not review them, they either pile up or get merged unread. The second is worse.\n\n## What the Record Does Not Say\n\n- **What the quality gate checks**, who runs it, and how long a new skill takes to pass it.\n- **How skills are organized in the monorepo**: by team, by domain, by persona; and how team skills differ from core skills in review.\n- **How many skills are installed by default** for a typical engineer, and how Uber keeps the default set's description load in check.\n- **Which skills account for most executions**, and whether Uber measures outcomes per skill rather than counts.\n- **How the planned evals work**: offline test sets, LLM judges, A/B tests between skill versions (the May 2026 roadmap mentions A/B tests), or human ratings.\n- **Whether trace-driven improvement patches have shipped**, and whether they go to owners for review.\n- **How skill versions interact with harness versions**, and whether a skill can be pinned for a background agent such as [Minion: Background Coding Agents on the Mega DevPod](minion.html) while it changes for interactive use.\n\n## Questions to Ask\n\n1. Where do our agent skills live today, and could we find every skill that references a given tool in under an hour?\n2. Who reviews a new skill before it reaches other engineers, and what does the review check?\n3. How many tokens of skill descriptions and tool schemas does a fresh session in our default setup carry before the engineer types anything?\n4. Do our skills reach tools through one layer, or does each skill bring its own server, credentials and setup?\n5. If we switched harness tomorrow, which skills would still work, and who would move the rest?\n6. Can we tell, from logs, which skills were active in a session that went badly?\n7. Which ten skills run most often, and do we have any evidence they make sessions shorter, cheaper or more correct?\n8. Who owns a skill after its author changes teams?\n9. Are we measuring skill executions as if they were adoption, or outcomes as if they were value?\n\nThe skills monorepo answers how an agent learns Uber's procedures. It does not answer how an agent finds out which service, table, owner or design doc a question is about in the first place. Medisetty called the answer to that question his favorite system: the context graph, and the assistant built on it. [The Context Graph and Cortana: Grounding Agents in the Company](context-graph.html) covers both.\n\n## Sources and Evidence\n\n**The source episode**\n\n- [Uber's AI infra, from the inside](https://newsletter.pragmaticengineer.com/p/ubers-ai-infra-from-the-inside), *The Pragmatic Engineer* podcast, Gergely Orosz with Uday Kiran Medisetty, 14 October 2026 — the skills monorepo, core and team skills, the single quality gate, AIFX portability, the auto-installed marketplace, the CLI rewrite, ~30,000 executions a day, the tips tool and trace-driven patches in flight; show notes for the AIFX framing.\n\n**Uber engineering sources**\n\n- [Running a Software Factory Efficiently at Uber Scale](https://www.uber.com/us/en/blog/efficient-software-factory/), Uber blog, Uday Kiran Medisetty, 27 August 2026 — 3,600+ skills, 30K+ executions a day, 25+ code-mode skills, Continuous Skill Optimization, MCP schema token costs, CLI exposure of 1,000+ tools, code-mode token savings.\n- [Agentic SDLC at Uber: Building Blocks for Uber's Software Factory](https://ai.engineer/talks/17-YSUHo6Lk-agentic-sdlc-at-uber-building-blocks-ubers), AI Engineer World's Fair 2026 talk, Uday Kiran Medisetty and Adam Huda, 2026 — 2,500 skills and 20K+ executions a day (earlier snapshot), managed marketplace, lint and automated review, persona-based defaults.\n- [How Uber Runs 60,000 AI Agent Tasks Per Week With MCP](https://aaif.io/blog/how-uber-runs-60000-ai-agent-tasks-per-week-with-mcp), Agentic AI Foundation write-up of an MCP Dev Summit talk by Uber engineers, 14 May 2026 — Skills Registry with evaluation and A/B tests on the roadmap.\n\n**Industry and research sources**\n\n- [Equipping agents for the real world with Agent Skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills), Anthropic Engineering, 16 October 2025 — the skill format and progressive disclosure.\n- [Agent Skills overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview), Anthropic documentation, current as of October 2026 — metadata and body token budgets.\n- [Agent Skills open standard](https://agentskills.io/), agentskills.io, current as of October 2026 — portability across harnesses.\n- [Manage costs effectively](https://code.claude.com/docs/en/costs), Claude Code documentation, current as of October 2026 — moving workflow instructions from CLAUDE.md into on-demand skills; CLI tools as more context-efficient than MCP servers.\n- [AGENTS.md](https://agents.md/), Agentic AI Foundation, current as of October 2026 — per-repository agent instructions.\n- [Curated shared instructions for software teams](https://www.thoughtworks.com/radar/techniques/curated-shared-instructions-for-software-teams), Thoughtworks Technology Radar Vol. 34, April 2026 — the anti-pattern of per-developer prompts; curated shared guidance.\n- [Background Coding Agents: Context Engineering (Honk, Part 2)](https://engineering.atspotify.com/2025/11/context-engineering-background-coding-agents-part-2), Spotify Engineering, 24 November 2025 — small toolsets for predictable agents.\n\nStatements about Uber's AI-era systems are Uber's own account unless another source is cited; recommendations and labeled inferences are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

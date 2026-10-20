@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Slate: Letting Agents Test Their Own Changes End to End</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">RETROFITTED: How Uber Built AI-Native Engineering on a Decade of Developer Platforms</a><span class="nav-right"><a class="nav-prev" href="inner-loop-and-self-healing-ci.html" title="Shift Left or Drown: Inner-Loop Validation and Self-Healing CI">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="capri.html" title="Capri: Capture, Replay and the Combinatorial Test Problem">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part III — LIFECYCLE: The Feature Path, Rewired</p>
+        <h1>Slate: Letting Agents Test Their Own Changes End to End</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-20  ·  22 min read · <a class="spec-link" href="slate.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/14-slate/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/14-slate/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">RETROFITTED: How Uber Built AI-Native Engineering on a Decade of Developer Platforms</a><span class="nav-right"><a class="nav-prev" href="inner-loop-and-self-healing-ci.html" title="Shift Left or Drown: Inner-Loop Validation and Self-Healing CI">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="capri.html" title="Capri: Capture, Replay and the Combinatorial Test Problem">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "Slate: Letting Agents Test Their Own Changes End to End", "date": "2026-10-20", "author": "Željko Obrenović", "excerpt": "How can a coding agent verify a change that touches two or three of Uber's thousands of services without a full copy of the stack? Uber's answer is Slate, a short-lived personal environment that routes only pinned test accounts to a branch build through trace baggage, now driven by agents that A/B test main against their branch and attach the evidence to the PR.", "permalink": "slate", "timetoread": "22 min read", "icon": "assets/icons/14-slate.png", "logo": "assets/images/14-slate/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Follow one change from an agent's branch into a short-lived Slate environment, through the trace-baggage routing that makes it reachable only by pinned test accounts, and back into the pull request as a before/after report with screenshots and videos.\n\n> **WHY IT MATTERS:** An agent that cannot run its change end to end produces code that a human must test by hand, so the review queue absorbs the cost of every PR the agent writes. Self-verification is what turns agent output into evidence, and at microservice scale it depends on infrastructure most companies have not built.\n\n> **KEY POINTS:**\n>\n> * **Slate is request isolation, not environment cloning.** A Slate environment holds only the services under test. Everything else is the shared fleet, and only requests that carry the right tenancy in their trace baggage reach the branch build. That is why it scales to thousands of services when per-developer stacks do not.\n> * **The hard part took years and was done for humans.** Uber's 2022 description of Slate rests on Jaeger baggage propagated by every service, an Edge Gateway that injects routing overrides, a per-host routing agent and a test-accounts service. Medisetty says the agent version was largely a matter of teaching agents to use it.\n> * **For agents, the value is the comparison, not the deploy.** In the October 2026 episode, the agent deploys its branch, runs an agent browser against main and against the branch, and attaches a before/after report with screenshots and videos to the PR. The reviewer gets evidence instead of a claim.\n\n> **BUILT ON:** Jaeger tracing and baggage propagation retrofitted across the fleet, the Edge Gateway and service-mesh routing ([The Hidden Foundations: Typed Contracts, Ownership Metadata and Trace Baggage](contracts-and-context-propagation.html)), the test-accounts service, multitenancy design (2020) and BITS test sandboxes (2024), the per-language monorepos and Bazel builds ([From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html)), and the MCP Gateway's CLI projection ([The MCP Gateway: Every Internal Service One Tool Call Away](mcp-gateway.html)).\n\n<br>\nPicture a change that touches three of Uber's services: a pricing service, the trip-state service that consumes its output, and the presentation layer that renders the fare on the rider app. Unit tests pass in each repository module. The question every reviewer asks is the one unit tests cannot answer: **does the feature work when a real rider opens the app?** For a human engineer that question used to mean manual \"sanity testing\". For a background agent opening hundreds of PRs a week, it means either the agent can answer the question itself or a human has to answer it for every PR.\n\nUber's answer is **Slate**: a short-lived environment, created per developer or per agent task, that deploys a branch of one or more services and routes only that developer's pinned test accounts to it. Medisetty described it in the October 2026 Pragmatic Engineer episode as the tool engineers used for sanity testing before agents, which Uber then taught agents to use: *\"now we can just give it to agents and they can actually test their own changes end to end in a safe way.\"*\n\nThis chapter explains what Slate is, as documented in Uber's 2022 engineering post and as described in the episode; why it could not have been built in a year; how the agent workflow on top of it works; and what a company without Uber's tracing estate can do instead. Slate is the first of two verification systems in Part III. The next chapter, [Capri: Capture, Replay and the Combinatorial Test Problem](capri.html), covers the problem Slate cannot solve alone: testing against every live combination of product, city and payment type. The inner-loop checks that run before either of them, such as `aifx validate`, belong to [Shift Left or Drown: Inner-Loop Validation and Self-Healing CI](inner-loop-and-self-healing-ci.html).\n\n## The Problem: End-to-End Testing Against Thousands of Services\n\nUber runs several thousand services, though the count depends on what is counted ([From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html) tells the consolidation story). Most user-facing features cross several of them. Orosz made the point in the episode: with that many services, running even a one-service change end to end is difficult, which is why Slate took years to build.\n\nThere are three conventional answers, and Uber's public record explains why it rejected each.\n\n| Approach | How it works | Why it breaks at Uber's scale |\n| --- | --- | --- |\n| **Shared staging** | One pre-production copy of the stack; changes deploy there in turn | Contention between teams; the staging copy drifts from production; one broken deploy blocks everyone |\n| **Per-developer full stacks** | Each developer gets a copy of every dependency | Hardware cost grows with developers times services; startup is slow; the copies drift too |\n| **Test in production with request isolation** | Deploy only the changed services next to production and route marked requests to them | Requires every service to propagate a routing marker and the platform to honor it; data isolation needs care |\n\nUber's 2020 multitenancy post, by Amit Gud, argued against **parallel staging stacks** on cost, drift, unreliable results and bad capacity estimates, and in favor of testing in production with test builds running alongside production ([Uber, 2020](https://www.uber.com/blog/multitenancy-microservice-architecture/)). Slate is the developer-facing product of that third approach.\n\nAgents sharpen the problem in two ways. First, volume: Nikhil Ramakrishnan of Uber reported at the Background Agents Summit (7 May 2026) that about 11% of merged PRs came from autonomous agents, and Medisetty put Minion's share at about 15% of production PRs in October 2026 ([Minion: Background Coding Agents on the Mega DevPod](minion.html) reconciles the definitions). Each of those PRs either arrives with end-to-end evidence or adds manual testing to someone's queue. Second, cost of being wrong: Medisetty described Uber's posture on review as erring on the safe side, because an incident at Uber is expensive ([Code Inbox: Spending Human Review Where the Risk Is](code-review-signals.html)). A verification step an agent can run on its own is how volume and caution coexist.\n\n## What Uber Built: Slate as Documented and as Described\n\n### The Documented System (2022)\n\nUber's engineering post \"Simplifying Developer Testing Through SLATE\", published 20 October 2022 by Ankit Srivastava, Alok Srivastava and Rohan Rathi, is the primary written source ([Uber, 2022](https://www.uber.com/blog/simplifying-developer-testing-through-slate)). It is four years old as of October 2026, so details may have changed. It describes:\n\n- **SLATE** stands for **Short-Lived Application Testing Environment**: an on-demand, ephemeral environment *inside production*. Services deployed into it are **services under test (SUTs)**.\n- A developer can hold several SLATE environments at once and deploy into them from git branches or refs. Each environment holds one version and one instance of a given service; a new deployment replaces the old.\n- The **default time to live is two days**. On expiry, deployments are terminated and resources freed.\n- **Tenancy travels as Jaeger baggage** under the key `request-tenancy`, with a value such as `uber/test/slate/SLATE1`. Requests have production tenancy by default.\n- When a SUT is deployed, a mapping from tenancy to routing information is written to a configuration cache. The **Edge Gateway** looks up the mapping and injects a `routing-overrides` entry into the request baggage. A **host-routing-agent** on each host reads the override and sends the request to the SUT instead of the production instance. The post says services need no routing logic of their own.\n- **Test users** come from a test-accounts service that creates test riders, drivers and profiles; trips and orders they create are test entities too. Developers *associate test users with an environment*, and only those users' requests reach the SUTs. This is the public form of what Medisetty calls pinning test-account UUIDs.\n- SUTs call **production instances of their dependencies** by default. Services that need stronger isolation declare isolated resources in a `slate.yaml` file.\n\nThe post is also candid about limits, which matter for anyone copying the design. SUTs use production datastores, so \"extra care is needed\" to keep test riders from matching real drivers. Routing can break for **asynchronous flows**, because tenancy is not injected into events automatically; the mitigation is to carry baggage in the event payload. Production Kafka consumers that are not under test receive both production and test messages and must handle both. Cadence task lists had to be made configurable so a SUT would not pull production work. And if the routing mapping is missing, **requests fall back to production instances**.\n\nUber's 2024 post on BITS (Backend Integration Testing Strategy) calls SLATE \"a sister project built on BITS primitives\" for manual sanity testing, and adds the infrastructure-isolation pieces that sit underneath both: a Kafka consumer proxy that routes messages to sandboxes, sandbox-scoped Cadence workflows, tagged metrics and logs, and sandbox identities through SPIFFE/SPIRE. It also says routing overrides now ride **OpenTelemetry** baggage, which suggests a migration from Jaeger clients since 2022 ([Uber, 2024](https://www.uber.com/blog/shifting-e2e-testing-left)).\n\n"}, {"type": "mermaid", "content": "flowchart LR\n    A[\"Test rider in mobile app\"] -->|\"request with test tenancy\"| B[\"Edge Gateway\"]\n    C[\"Slate environment created\"] -->|\"tenancy to routing mapping\"| D[\"Config cache\"]\n    D -->|\"lookup\"| B\n    B -->|\"injects routing-overrides into baggage\"| E[\"Service A, production\"]\n    E -->|\"baggage propagated\"| F[\"Host routing agent\"]\n    F -->|\"override matches\"| G[\"Service B under test, branch build\"]\n    F -->|\"no override\"| H[\"Service B, production\"]\n    G -->|\"baggage propagated\"| I[\"Service C, production\"]"}, {"type": "markdown", "content": "**Figure 1:** *Request-level routing as Uber's 2022 post describes it. Only the services under test are deployed; every other hop is the shared fleet. The test request finds the branch build because every service propagates the baggage that the Edge Gateway enriched.*\n\n### The System as Described in the Episode (2026)\n\nMedisetty's account in the episode matches the 2022 design and adds the agent layer:\n\n- You create your own instance that deploys your branch and route your test account to it; \"the rest of the upstream and downstream goes to the other staging setups.\" **The two sources disagree on the default dependencies:** the 2022 post says SUTs call *production* instances of their dependencies; the episode says *staging*. Uber has not said publicly whether the default changed, or whether \"staging\" here is loose speech for the shared fleet. This chapter says \"the shared fleet\" where the difference does not matter and names both where it does.\n- Tests can span **two or three services under test** at once; the request reaches each SUT as it crosses the call graph.\n- The Slate UI lists the environment's services and their git SHAs, lets you **pin test-account UUIDs** to the instance, and shows the time left before expiry (the episode's screen shows entries such as \"2 days left\" and \"19 hours left\", consistent with the documented two-day default).\n- The agent drives Slate through the CLI pattern the MCP Gateway projects ([The MCP Gateway: Every Internal Service One Tool Call Away](mcp-gateway.html)): the demo shows commands along the lines of `slate mcp create`, naming a new environment, then deploying a service to it.\n- The agent then **A/B tests**: it ran an agent browser in the Slate environment against main and against the branch, and generated a report showing before and after, with no regressions. Screenshots and videos are attached to the PR.\n- The same pattern exists for **iOS, Android, web and backend APIs**.\n\nTwo written 2026 sources sit beside this account. Uber's August 2026 post \"Running a Software Factory Efficiently at Uber Scale\", by Medisetty, mentions \"completing E2E PRs with visual validation\" among agent tasks but does not name Slate ([Uber, 2026](https://www.uber.com/us/en/blog/efficient-software-factory/)). The AI Engineer World's Fair 2026 talk by Medisetty and Adam Huda describes autonomous PRs carrying a table of every check run, plus screenshots ([AI Engineer, 2026](https://ai.engineer/talks/17-YSUHo6Lk-agentic-sdlc-at-uber-building-blocks-ubers)). The agent-facing Slate commands and the browser A/B are **Uber's own account in the episode**; no written Uber source describes them yet.\n\n"}, {"type": "mermaid", "content": "sequenceDiagram\n    participant Ag as Agent on DevPod\n    participant Sl as Slate CLI\n    participant Env as Slate environment\n    participant Br as Agent browser\n    participant PR as Pull request\n    Ag->>Sl: create environment\n    Ag->>Sl: deploy branch of service under test\n    Sl->>Env: branch build running, test account pinned\n    Ag->>Br: run scenario against main\n    Br-->>Ag: baseline screenshots and responses\n    Ag->>Br: run same scenario against branch\n    Br-->>Ag: candidate screenshots and responses\n    Ag->>Ag: compare, fix and redeploy if regression\n    Ag->>PR: attach before and after report, screenshots, videos"}, {"type": "markdown", "content": "**Figure 2:** *The agent self-verification loop as Medisetty described it. The comparison between main and branch is the step that turns a deploy into evidence; the redeploy loop on regression is implied by the episode rather than shown step by step.*\n\n### Before Slate: Deputy and Cerberus\n\nMedisetty named two older tools that Slate made unnecessary: **Deputy**, which routed a production request to a testing instance, and **Cerberus**, which routed from a local testing instance back to staging servers. Neither appears in any public Uber source. Orosz, who worked at Uber from 2016 to 2020, remembered them as tools for \"some level of production data replay\" that were hard to use. The guest describes them as routing tools and the host as replay tools; this book follows the guest's description, and notes that the replay side of that lineage continues in [Capri: Capture, Replay and the Combinatorial Test Problem](capri.html).\n\n## The Foundation Underneath\n\nThe episode's most quoted exchange about Slate is about what it stands on. Medisetty explained the routing: every service has Jaeger spans, a parent span where the call originates and a child span at each hop, and any baggage added to the trace propagates across the call stack. When you pin from the Slate web interface, the platform adds which services are under test and which account to route, and the service mesh reads that baggage as the request moves through it. Then the line that matters for the book's thesis: *\"This thing took years to make sure that all existing services were retrofitted with this and all new services were built with this in mind.\"*\n\nOne correction to the episode's dating. Medisetty placed Jaeger's construction \"back in maybe 2017–18\". Uber's 2017 post by Yuri Shkuro dates the work to 2015–2016, with internal adoption in 2016, and Jaeger was open-sourced in April 2017 ([Uber, 2017](https://www.uber.com/blog/distributed-tracing/)). The 2017 post does not discuss baggage-based routing; that link appears in the 2020 multitenancy post and the 2022 Slate post. [The Hidden Foundations: Typed Contracts, Ownership Metadata and Trace Baggage](contracts-and-context-propagation.html) owns the full history.\n\n| Foundation | What Slate needs from it | Public evidence | What breaks without it |\n| --- | --- | --- | --- |\n| **Trace baggage propagated by every service** | The routing marker survives every hop | Jaeger (2016–17); multitenancy (2020); OTel baggage in BITS (2024) | The test request reaches the first service and is lost after the first hop that drops headers |\n| **Edge Gateway** | One entry point that looks up and injects routing overrides | 2020 Edge Gateway post (co-authored by Medisetty); 2022 Slate post | Every client would need to know the routing map |\n| **Mesh-level routing** (host-routing-agent) | Services stay unaware of test routing | 2022 Slate post | Each service team writes routing code, and some get it wrong |\n| **Test-accounts service** | Isolation by identity: only test users reach SUTs | 2022 Slate post | Real users could land on a branch build |\n| **Tenancy-aware Kafka, Cadence, metrics** | Asynchronous and observability paths respect test tenancy | BITS (2024) | Test events consumed by production; test metrics pollute dashboards |\n| **Standard builds and deploys** | Any branch of any service deploys the same way | [From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html) | Each service needs its own Slate integration |\n| **MCP Gateway CLI projection** | Agents call Slate like any other tool | Oct 2026 MCP Gateway post; podcast | Agents need a bespoke integration per tool |\n\nThe pattern is the book's thesis in miniature ([The Harness Is the Easy Part: Why Uber's AI Tooling Took a Decade and a Year](the-harness-is-the-easy-part.html)). The agent-facing piece, teaching an agent to call create, deploy and pin through a CLI and to drive a browser, is a few skills on top of the MCP Gateway. The routing estate underneath is years of retrofitting, and a background agent like [Minion: Background Coding Agents on the Mega DevPod](minion.html) is useless at end-to-end verification without it. Medisetty said as much: \"if we did not have a system like Slate, it would have been really hard for agents to self-validate.\"\n\n![Cross-section of a building with a thin roof of agent skills resting on deep foundation layers for trace baggage, routing and test accounts.](assets/images/14-slate/slate-thin-skill-deep-routing.jpeg)\n**Figure 3:** *Teaching agents to use Slate was a few skills on top of the MCP Gateway; the routing estate underneath took years of retrofitting every service.*\n\n> **INFERENCE, NOT DOCUMENTED:** The agent's Slate skill probably wraps a small number of operations the 2022 post already exposes to humans (create environment, deploy ref, associate test user, query status, extend or delete), plus a test-account creation call. If so, most of the agent-specific work lies in the browser automation, the comparison report and attaching evidence to the PR, not in Slate itself. Uber has not described the skill's contents.\n\n## Self-Verification as a Design Problem\n\nThe interesting engineering in the agent version is not the deploy; it is what the agent compares and what it hands the reviewer. Three choices stand out.\n\n**Compare against main, not against an expectation.** The agent runs the same scenario on main and on its branch. That separates regressions the change caused from behavior that was already broken or flaky. Uber's BITS post describes the same move at the CI level: **placebo runs** execute each test against a sandbox built from the latest main, giving a truth table of \"production broke\", \"the test broke\" or \"a real defect\", and tests that fall below a 90% placebo pass rate are quarantined ([Uber, 2024](https://www.uber.com/blog/shifting-e2e-testing-left)). An agent that only checks its branch would mistake pre-existing failures for its own and burn tokens fixing them.\n\n**Hand the reviewer artifacts, not assertions.** A line saying \"tested end to end, all good\" is cheap for an agent to write and worthless to a reviewer. Screenshots and videos of the before and after states are expensive to fake and fast to check. This is what makes Slate a review-load tool as much as a testing tool: [Code Inbox: Spending Human Review Where the Risk Is](code-review-signals.html) describes how Code Inbox puts the screenshots and videos next to the AI review and the risk score, so the reviewer decides from evidence.\n\n**Keep the environment short-lived and per task.** A two-day default lifetime fits an agent task better than a human one. Agents create many environments in parallel; expiry is the garbage collector. The UI's \"19 hours left\" is also a cost control.\n\n| Design choice | Uber's choice | Alternative | When the alternative is right |\n| --- | --- | --- | --- |\n| Where the branch build runs | Next to production, request-isolated | Shared staging with request isolation (Lyft) | When production data isolation is too risky, or regulation forbids test traffic in production |\n| What isolates the test | Test accounts plus tenancy baggage | Separate datastore per environment | When writes cannot be confined by entity, as with shared ledgers |\n| Dependencies of the SUT | Shared fleet by default (production in the 2022 post, \"other staging setups\" in the episode); opt-in isolation in `slate.yaml` | Mock every dependency | When dependencies are third-party, costly or non-idempotent |\n| How the agent verifies | Browser A/B, main vs branch, with artifacts | Agent writes and runs new E2E tests | When the behavior must be guarded permanently in CI, not checked once |\n| How the agent drives it | CLI projected from MCP, plus skills | Direct MCP tools | When the tool surface is tiny and context cost does not matter ([The MCP Gateway: Every Internal Service One Tool Call Away](mcp-gateway.html)) |\n| Lifetime | Short-lived, default two days | Long-lived personal environments | When startup is slow and environments are scarce, which is the problem to fix first |\n\nOne further trade-off is easy to miss. **A one-off browser A/B is verification, not regression protection.** It tells the reviewer this change did not break the scenario the agent chose to run. It does not add a test that guards the behavior next month, and it covers only the scenarios the agent thought of. That gap is exactly what Capri's live combination set is for.\n\n## Elsewhere in the Industry\n\n**Lyft staging overrides (2021).** Lyft's developer infrastructure team replaced per-developer \"Onebox\" environments with *offloaded deployments*: instances in shared staging that are not registered in service discovery, created from PRs by a GitHub bot. Override metadata is encoded in OpenTracing baggage and carried end to end, and a modified Envoy HTTP filter reroutes matching requests to the offloaded instance ([InfoQ, 2022](https://www.infoq.com/news/2022/03/scaling-testing-acceptance-lyft/), summarizing Lyft's post, which returned an error when fetched). The mechanism is nearly the same as Slate's. The difference is the substrate: **Lyft isolates within staging; Uber's 2022 design isolates within production**, with production dependencies by default (the episode's \"other staging setups\" may mean that has changed).\n\n**Signadot (current).** Signadot sells the same pattern as a product. A sandbox forks only the changed services in a shared Kubernetes cluster; a routing key in the OpenTelemetry `baggage` and `tracestate` headers sends marked requests to them, and every service on the path must propagate the header ([Signadot docs](https://www.signadot.com/docs/concepts/sandbox)). Its legacy default header, `uberctx-sd-routing-key`, uses the Jaeger baggage prefix, a small sign of how far Uber's tracing conventions travelled.\n\n**Spotify Honk (2025).** Spotify's background coding agent runs deterministic verifiers (format, build, test) before it opens a PR, then an LLM judge compares the diff against the original prompt to catch out-of-scope changes ([Spotify, 2025](https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3)). Spotify's verification is about the diff; Uber's Slate step is about the running system. A mature setup needs both.\n\nBrowser automation for agents is now commodity. Microsoft's open-source Playwright MCP server, for example, lets an agent drive a browser through the page's accessibility tree rather than pixels ([GitHub](https://github.com/microsoft/playwright-mcp)). The scarce part is not the browser; it is a place to point it where the branch build is reachable with realistic data.\n\n## If You Are Not Uber\n\nMost companies do not have trace baggage propagated through every service, and building it is the long pole. The good news is that the pattern degrades gracefully: you can get value from request-level isolation long before every service propagates context.\n\n**The minimum viable version** is a per-PR preview environment for the one or two services an agent changes most, plus a test-account convention and a header-based routing rule at your ingress or mesh. For a web front end, preview deployments per branch (a standard feature of most front-end hosting platforms) plus browser automation already give you the main-versus-branch comparison. For backends, start with the services on your most common change paths.\n\n**Prerequisites, in order:**\n\n1. **Context propagation on the paths you care about.** Adopt OpenTelemetry baggage and make propagation part of your standard service framework, so new services get it by default. Measure propagation coverage; a single service that drops headers silently sends test traffic to production.\n2. **Test identities.** A way to create test users, merchants or accounts that the system treats as test entities end to end, including in analytics and billing.\n3. **A routing point you control.** An API gateway, an Envoy or Istio mesh, or a sidecar that can read the header and pick a destination.\n4. **One-command deploy of a branch.** If deploying a branch of a service takes a ticket, no agent will use it.\n5. **An agent interface.** A CLI or MCP tool with create, deploy, pin, status and delete, plus a skill that tells the agent how to compare main against branch and what evidence to attach.\n\n| Company size | What to build | Buy or open-source options | What not to copy yet |\n| --- | --- | --- | --- |\n| **≈50 engineers** | Per-PR preview environments for the web app and the one main API; a seeded test account; agent runs a browser script on preview vs production-like baseline and posts screenshots | Front-end host preview deployments; Docker Compose stacks for the backend; Playwright | Request-level routing inside production; you likely have few enough services to spin up a full stack |\n| **≈500 engineers** | Header-based request isolation in staging (the Lyft pattern) for the 20–50 services on common change paths; OTel baggage in the standard framework; agent CLI with create, deploy, delete | Signadot or similar; Istio or Envoy routing rules; OpenTelemetry SDKs | Testing in production; first prove propagation coverage and asynchronous isolation in staging |\n| **≈5,000 engineers** | Production request isolation with test tenancy, tenancy-aware queues and workflows, propagation coverage dashboards, per-task environments with expiry; agent A/B with artifacts attached to PRs | Build on OTel; buy where a vendor covers your mesh; expect to build the tenancy model yourself | Agent self-verification before propagation is near-universal on the paths agents touch |\n\n**Sequencing.** Give humans the environment first and agents second. Uber's order was the same: Slate was a human sanity-testing tool for years before agents used it. A human-facing tool gets bug reports from people who know when it lies; an agent will happily report success against a request that silently fell back to production.\n\n**What not to copy.** Do not copy testing in production unless you have Uber's data-isolation discipline: test entities everywhere, tenancy-aware queues and workflows, and a fallback policy that fails closed rather than to production. Do not let agents attach \"tested\" claims without artifacts. And do not treat the agent's one-off A/B as a substitute for a regression test that stays in CI.\n\n## Failure Modes\n\n- **Silent fallback to production.** Uber's 2022 post says that if the routing mapping is missing, requests fall back to production instances. For a human, that shows up as \"my change does nothing\". For an agent comparing main and branch, it shows up as **no difference, which looks like no regression**. The verification passes because it never ran. Fix it by making the agent confirm that the request actually reached the SUT, for example by checking the SUT's logs or a response header, before trusting the comparison.\n- **Propagation gaps.** One service, queue or batch job that drops baggage breaks routing for everything downstream. Medisetty's mention of an agentic Shepherd campaign to fix context propagation across all services so that tracing works better ([Shepherd and Fox: From Migration Campaigns to Self-Improving Codebases](shepherd-and-fox.html)) suggests that coverage is still being hardened even at Uber.\n- **Test data leaking into the real world.** With production datastores, as in the 2022 design, a test rider can match a real driver unless the matching logic respects test entities. Agents raise the rate of test traffic and therefore the rate of such leaks.\n- **Scenario selection bias.** The agent tests the path it thought of. A change that breaks a different product line or city passes the A/B. This is the combinatorial problem [Capri: Capture, Replay and the Combinatorial Test Problem](capri.html) exists to solve.\n- **Environment sprawl and cost.** Agents create environments in parallel and do not clean up after themselves unless forced. Expiry is mandatory; quotas per agent tier are sensible ([Spend Tiers, Not Spend Caps: Governing Token Costs](token-spend-governance.html) covers the spend side).\n- **Evidence fatigue.** If every PR carries ten screenshots and two videos, reviewers stop looking. The report should lead with the difference, not the full gallery.\n- **Flaky baselines.** If main is flaky, every comparison is noisy. Without something like BITS placebo runs, agents chase noise.\n\n![A tagged test request misses its signpost and reaches production, so the agent compares two identical screenshots and wrongly concludes there is no regression.](assets/images/14-slate/slate-silent-fallback.jpeg)\n**Figure 4:** *If the routing mapping is missing, requests fall back to production; for an agent comparing main and branch, no difference looks like no regression, so it must first confirm the request reached the service under test.*\n\n## What the Record Does Not Say\n\n- How many Slate environments agents create per day, and what share of Minion PRs carry Slate evidence. Uber has published no figure.\n- Whether Slate environments created by agents run under the agent's identity or the requesting engineer's, and what permissions they carry.\n- Whether the default dependency mode is still production, as in the 2022 post, or staging, as Medisetty's wording in the episode suggests.\n- How the agent decides which scenarios to run in the browser, and whether those scenarios come from the PR description, the spec ([Plans Before Prompts: PRDs, ERDs and the Design-Doc Hub](plans-as-source-of-truth.html)) or a skill.\n- How the agent detects silent fallback to production, if it does.\n- How mobile verification works for agents in practice: emulators, device farms, or both. The episode says the same flow exists for iOS and Android without detail; [Shift Left or Drown: Inner-Loop Validation and Self-Healing CI](inner-loop-and-self-healing-ci.html) covers what is known about visual validation.\n- How the migration from Jaeger clients to OpenTelemetry baggage was handled, and whether both formats are still honored.\n\n## Questions to Ask\n\n1. What share of our services propagate context headers end to end, and how would we know if one stopped?\n2. If our agents opened a PR today, where would they run the change against real dependencies, and who would notice if the request never reached the new code?\n3. Do we have test identities that every system, including billing and analytics, treats as test entities?\n4. Does our routing fail closed (error) or open (production) when a test override cannot be resolved?\n5. Which asynchronous paths (queues, workflows, scheduled jobs) lose test tenancy today?\n6. What evidence must an agent attach before a PR enters human review, and does our review tool show it next to the diff?\n7. Would we rather isolate in staging or in production, and what data-isolation work would production require?\n8. Do agents compare against a baseline from main, or only check their own branch?\n9. How long do agent environments live, and who pays for the ones nobody deletes?\n\nSlate answers the question \"does my change work for this test account in this scenario?\" It cannot answer \"does my change work for every combination of product, city and payment type that production is serving right now?\" That is a different problem, and Uber's answer to it, capturing live traffic and replaying it by dimension, is the subject of [Capri: Capture, Replay and the Combinatorial Test Problem](capri.html).\n\n## Sources and Evidence\n\n### The source episode\n\n- [Uber's AI infra, from the inside](https://newsletter.pragmaticengineer.com/p/ubers-ai-infra-from-the-inside) — *The Pragmatic Engineer* podcast, Gergely Orosz with Uday Kiran Medisetty, 2026. Slate's agent workflow (CLI creation, test-account pinning, browser A/B, PR artifacts), Deputy and Cerberus, the Jaeger and mesh routing explanation, and the \"took years\" retrofit.\n\n### Uber engineering sources\n\n- [Simplifying Developer Testing Through SLATE](https://www.uber.com/blog/simplifying-developer-testing-through-slate) — Ankit Srivastava, Alok Srivastava, Rohan Rathi, Uber, 2022. The acronym, two-day default lifetime, `request-tenancy` baggage, Edge Gateway routing overrides, host-routing-agent, test users, `slate.yaml`, and the documented limitations.\n- [Shifting E2E Testing Left at Uber](https://www.uber.com/blog/shifting-e2e-testing-left) — Uber, 2024. BITS sandboxes, OpenTelemetry baggage, tenancy-aware Kafka and Cadence, placebo runs, 1,000+ services, 71% fewer incidents per 1,000 diffs in 2023.\n- [Why We Leverage Multi-tenancy in Uber's Microservice Architecture](https://www.uber.com/blog/multitenancy-microservice-architecture/) — Amit Gud, Uber, 2020. The case against parallel staging stacks and for testing in production with tenancy.\n- [Evolving Distributed Tracing at Uber Engineering](https://www.uber.com/blog/distributed-tracing/) — Yuri Shkuro, Uber, 2017. Jaeger's 2015–16 origin and 2017 open-sourcing.\n- [Designing Edge Gateway, Uber's API Lifecycle Management Platform](https://www.uber.com/blog/gatewayuberapi/) — Pavel Astakhov, Madan Thangavelu, Uday Kiran Medisetty, Uber, 2020. The single entry point that injects Slate's routing overrides.\n- [Designing MCP Gateway: Uber's MCP Management Platform](https://www.uber.com/gb/en/blog/designing-mcp-gateway/) — Uber, 2026. The gateway and `aifx` CLI pattern through which agents call internal tools.\n- [Running a Software Factory Efficiently at Uber Scale](https://www.uber.com/us/en/blog/efficient-software-factory/) — Uday Kiran Medisetty, Uber, 2026. \"Completing E2E PRs with visual validation\" as an agent task.\n- [Inside Uber's agent-ready platform behind 11% of merged PRs](https://background-agents.com/summit/sessions/nikhil-ramakrishnan/) — Nikhil Ramakrishnan, Background Agents Summit, 2026. The spring 2026 share of merged PRs from autonomous agents.\n- [Agentic SDLC at Uber: Building Blocks for Uber's Software Factory](https://ai.engineer/talks/17-YSUHo6Lk-agentic-sdlc-at-uber-building-blocks-ubers) — Uday Kiran Medisetty and Adam Huda, AI Engineer World's Fair, 2026. Autonomous PRs carrying a table of checks and screenshots.\n\n### Industry and research sources\n\n- [Scaling and Automating Microservice Testing at Lyft](https://www.infoq.com/news/2022/03/scaling-testing-acceptance-lyft/) — Vasco Veloso, InfoQ, 2022. Lyft's staging overrides with OpenTracing baggage and Envoy.\n- [Sandboxes Concepts Guide](https://www.signadot.com/docs/concepts/sandbox) — Signadot documentation (current as of 2026). Commercial request-level sandboxes and the propagation requirement.\n- [Background Coding Agents: Predictable Results Through Strong Feedback Loops](https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3) — Max Charas and Marc Bruggmann, Spotify Engineering, 2025. Deterministic verifiers plus an LLM judge before a PR opens.\n- [Playwright MCP](https://github.com/microsoft/playwright-mcp) — Microsoft, open source (current as of 2026). Browser automation for agents through the accessibility tree.\n\nStatements about Uber's AI-era systems are Uber's own account unless another source is cited; recommendations and labeled inferences are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AIFX: Making the Coding Harness Swappable</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">RETROFITTED: How Uber Built AI-Native Engineering on a Decade of Developer Platforms</a><span class="nav-right"><a class="nav-prev" href="model-gateway.html" title="One Door for Every Model: The Model Gateway and AI Guard">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="mcp-gateway.html" title="The MCP Gateway: Every Internal Service One Tool Call Away">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part II — GATEWAYS: Agnostic Building Blocks</p>
+        <h1>AIFX: Making the Coding Harness Swappable</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-20  ·  22 min read · <a class="spec-link" href="aifx-harness-layer.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/06-aifx-harness-layer/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/06-aifx-harness-layer/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">RETROFITTED: How Uber Built AI-Native Engineering on a Decade of Developer Platforms</a><span class="nav-right"><a class="nav-prev" href="model-gateway.html" title="One Door for Every Model: The Model Gateway and AI Guard">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="mcp-gateway.html" title="The MCP Gateway: Every Internal Service One Tool Call Away">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "AIFX: Making the Coding Harness Swappable", "date": "2026-10-20", "author": "Željko Obrenović", "excerpt": "How do you let thousands of engineers switch between Claude Code, Codex and OpenCode without each switch costing them their settings, skills and tools? Uber's answer is AIFX, a thin layer that owns configuration, distribution and feedback on behalf of every harness, on the assumption that the harness itself will keep changing.", "permalink": "aifx-harness-layer", "timetoread": "22 min read", "icon": "assets/icons/06-aifx-harness-layer.png", "logo": "assets/images/06-aifx-harness-layer/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** See how Uber's AIFX layer sits above Claude Code, Codex and OpenCode: personas with default plugins and skills, centrally managed and per-user synced settings, one install command for every harness, and a status line that carries tips and spend. You will also see what AIFX owns and what it deliberately leaves to the harness.\n\n> **WHY IT MATTERS:** Coding harnesses have changed faster than any other part of the AI stack. In early 2026, according to a March 2026 Pragmatic Engineer report, one harness doubled its share of Uber's engineers in two months. An organization that configures each harness separately pays a migration tax every time engineers move, and it loses control of what tools and policies those engineers run.\n\n> **KEY POINTS:**\n>\n> * **Harness churn is a design assumption, not a risk to be managed away.** Uber went from enabling Cursor in early 2025 to supporting Claude Code, Codex and OpenCode in 2026. AIFX (AI Foundations), as Medisetty described it, makes the harness a replaceable client by owning everything engineers would otherwise lose in a switch: settings, skills, plugins and tool configuration.\n> * **AIFX owns distribution, identity and feedback, not the agent loop.** One `plugin add` updates every harness, whether or not it is in use. Personas install default skills. Central settings reach every user, per-user settings follow them between laptop and DevPods, and the status line shows tips and spend. The harness keeps its own model loop and user interface.\n> * **The layer only works because the layers under it are already standard.** AIFX can stay thin because the [One Door for Every Model: The Model Gateway and AI Guard](model-gateway.html) handles models, the [The MCP Gateway: Every Internal Service One Tool Call Away](mcp-gateway.html) handles tools, the [Skills as a Product: The Agent Skills Monorepo](skills-monorepo.html) handles skills and DevPods arrive with every harness pre-installed. A company without those layers that copies AIFX gets only a configuration-sync script.\n\n> **BUILT ON:** [DevPods: Cloud Workspaces Built for Engineers, Ready for Agents](devpods.html) (pre-built images with every harness installed), the [One Door for Every Model: The Model Gateway and AI Guard](model-gateway.html) (one model endpoint and per-user attribution), the [The MCP Gateway: Every Internal Service One Tool Call Away](mcp-gateway.html) (one tool catalog), the per-language monorepos and standard build commands of [From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html), and Uber's habit of shipping internal command-line tools to every engineer.\n\n<br>\nA **coding harness** is the program that wraps a model in an agent loop for software work: it reads files, runs commands, calls tools, holds the session and decides when to ask the human. Claude Code, Codex and OpenCode are harnesses; so are Cursor's agent mode and GitHub Copilot's agent. Each one has its own settings file, its own plugin and skill locations, its own way to register Model Context Protocol (MCP) servers, its own permission model and its own update cycle.\n\nFor an individual engineer, that is a minor nuisance. For a company with several thousand engineers, it is a governance and productivity problem. **Every harness switch resets an engineer's setup to zero**, and every new harness is a new place where security settings, tool access and cost controls must be configured again. In the October 2026 Pragmatic Engineer episode, Uday Kiran Medisetty, Uber Distinguished Engineer, described the question Uber asked after building its Model Gateway: \"how do we make it easy for engineers to switch across harnesses? If I'm using Claude Code, then if I switch to Codex then I need to carry forward all of my settings, all the skills, all the tools, all the plugins.\"\n\nUber's answer is **AIFX**, short for AI Foundations: an internal layer that wraps every supported harness. This chapter explains what AIFX does as far as the public record shows, why harness churn makes it worth building, what it depends on, and how a smaller company can get most of the benefit with much less.\n\n## The Problem Uber Had: Engineers Kept Moving, and Configuration Did Not\n\nThe evidence that harnesses churn comes from Uber's own numbers. In a March 2026 Pragmatic Engineer article based on a talk by Uber's Ty Smith and Anshu Chada, Gergely Orosz reported that **Claude Code usage among Uber engineers rose from 32% in December 2025 to 63% in February 2026**, while Cursor and IntelliJ usage plateaued. In the October episode, Medisetty traced the AI tooling back to early 2025, when \"Cursor kind of picked up\" and Uber enabled it. By the time of the episode, the show notes list Claude Code, Codex and OpenCode as the supported harnesses.\n\nThree costs follow from that churn, and each falls on a different group:\n\n| Who pays | The cost of a harness switch without a common layer |\n| --- | --- |\n| The engineer | Re-creating settings, re-installing skills and plugins, re-registering MCP servers, re-learning where the cost counter is |\n| The platform team | Shipping each new skill, plugin and tool in N formats; supporting N installation paths; debugging N configuration bugs |\n| Security and finance | Re-applying permission policies, tool allowlists and spend controls in each harness's own configuration format, and auditing whether they were applied |\n\n![Before-and-after illustration: an engineer switching harness facing an empty workbench, versus carrying the same setup to every harness.](assets/images/06-aifx-harness-layer/harness-switch-resets-to-zero.jpeg)\n**Figure 1:** *Without a common layer every harness switch resets an engineer's setup to zero; AIFX makes the harness a replaceable client by owning the settings, skills, plugins and tool configuration that would otherwise be lost.*\n\nThe second cost grows with the size of the shared catalog. As of August 2026, Uber's engineering blog counted more than 3,600 agent skills and more than 30,000 skill executions a day; the October 2026 MCP Gateway post counted more than 800 MCP servers and more than 5,000 tools. **A shared catalog of that size cannot be maintained per harness.** It needs one distribution channel that writes into every harness's format.\n\n## What Uber Built: A Wrapper That Owns Configuration, Distribution and Feedback\n\n### What the Episode Describes\n\nMedisetty's description of AIFX in the episode covers six behaviors:\n\n1. **One wrapper over every harness.** \"We internally wrap all of the harnesses with a wrapper called AIFX, AI Foundations. And this is pre-installed on DevPods or you can install on your local machine.\"\n2. **Personas.** Each persona comes with default plugins and skills, so an engineer does not have to install them. A **persona** is a named role profile that decides what an engineer gets by default. The episode does not list Uber's personas; role-based examples such as backend, mobile or data are the author's guess.\n3. **Centrally managed settings**: one set of settings the platform team manages and propagates to all users.\n4. **Per-user settings that follow the user**, synced across all of an engineer's environments: the laptop and any number of DevPods.\n5. **One install path for every harness.** Describing the skills monorepo, Medisetty said that \"if you do plugin add that skill, it will update the configurations across all of the harnesses, whether you are at that point using that harness or not.\" The same applies to tools: through AIFX, internal and external MCP tools install the same way.\n6. **A status line with tips and spend.** \"There's a status line where we can give tips, where we can have tracking of your spend across harnesses, within that harness, in that session.\"\n\nHe summarized the effect as one entry point for switching harnesses and tools, with all of it arriving without any explicit setup by the engineer. AIFX also hosts `aifx validate`, the single command that runs inner-loop checks before an agent opens a pull request; that command and the CI \"code red\" behind it belong to [Shift Left or Drown: Inner-Loop Validation and Self-Healing CI](inner-loop-and-self-healing-ci.html).\n\n### What Written Sources Confirm\n\nAIFX is not a podcast-only name, but the written record describes a narrower tool than the episode does:\n\n- The [March 2026 Pragmatic Engineer article](https://newsletter.pragmaticengineer.com/p/how-uber-uses-ai-for-development) describes the **AIFX CLI** as provisioning AI clients, discovering MCP servers, running background tasks and updating tools.\n- The Agentic AI Foundation's [May 2026 write-up](https://aaif.io/blog/how-uber-runs-60000-ai-agent-tasks-per-week-with-mcp) of Uber's MCP Dev Summit talk says coding agents (Claude Code, Cursor, Minions) add MCP servers through the AIFX CLI.\n- Uber's [October 2026 MCP Gateway post](https://www.uber.com/blog/designing-mcp-gateway/) names `aifx` as \"Uber's CLI\" and documents `aifx mcp list`, `aifx mcp search` and `aifx mcp call`, the \"Code Mode\" path that the post calls \"the company default for MCP tool use in coding agents.\"\n- Uber's [August 2026 \"Running a Software Factory Efficiently\" post](https://www.uber.com/us/en/blog/efficient-software-factory/) confirms a live cost counter in the harness status line, without naming the component that draws it.\n- The AI Engineer World's Fair 2026 talk describes managed skills that ship with **persona-based defaults** — close to the episode's personas, but described for the skills marketplace rather than for AIFX.\n- \"AI Foundations\" is a real Uber team name: engineers with \"AI Foundations\" in their titles co-authored the 2025 uReview post and spoke at the May 2026 Background Agents Summit.\n\nThe parts that are **Uber's own account only**, from the episode, are AIFX as a wrapper over several harnesses, settings sync across environments, personas as an AIFX concept and the cross-harness `plugin add`. None contradicts the written record; they are simply not yet written down elsewhere.\n\n"}, {"type": "mermaid", "content": "flowchart TB\n    P[\"Persona and central settings\"] --> AX[\"AIFX layer\"]\n    U[\"Per-user synced settings\"] --> AX\n    SK[\"Skills and plugins from the skills monorepo\"] --> AX\n    MC[\"Tool catalog from the MCP Gateway\"] --> AX\n    AX -->|\"writes native config\"| CC[\"Claude Code\"]\n    AX -->|\"writes native config\"| CX[\"Codex\"]\n    AX -->|\"writes native config\"| OC[\"OpenCode\"]\n    CC --> MG[\"Model Gateway\"]\n    CX --> MG\n    OC --> MG\n    MG -.->|\"spend and session data\"| SL[\"Status line tips and spend\"]\n    SL -.-> CC\n    SL -.-> CX\n    SL -.-> OC"}, {"type": "markdown", "content": "**Figure 2:** *AIFX as described in the episode: one layer takes personas, central and per-user settings, skills and tools, and writes them into each harness's native configuration, while spend data from the Model Gateway returns to every harness's status line. The arrow labeled \"writes native config\" is the author's reading of how a wrapper would work; Uber has not described the mechanism.*\n\n### What AIFX Owns, and What It Leaves Alone\n\nThe most useful way to read AIFX is as a division of responsibilities. The harness vendors compete on the agent loop: planning, tool selection, context management, the interface. AIFX does not try to replace any of that. It owns the things a company must control and a vendor cannot know.\n\n| Concern | Owned by AIFX (as described) | Left to the harness |\n| --- | --- | --- |\n| Which skills and plugins an engineer has | Persona defaults, one install for all harnesses | Loading and invoking them during a session |\n| Which tools are reachable | Registration of internal and vendor MCP tools; the `aifx mcp` CLI path | Choosing which tool to call |\n| Organization-wide settings | Central settings pushed to everyone | Interpreting them |\n| Personal preferences | Sync across laptop and DevPods | Applying them |\n| Cost feedback | Status-line spend and tips across harnesses | — |\n| Pre-PR checks | `aifx validate` | Deciding when to run it, guided by skills and instructions |\n| Model access | (Delegated to the Model Gateway) | Model choice within what the gateway allows |\n| The agent loop, interface and context management | — | Entirely |\n\n> **INFERENCE, NOT DOCUMENTED:** Each of the three harnesses already has an administrator-level configuration mechanism (see \"Elsewhere in the industry\" below). A plausible reading — not a documented description — is that AIFX renders one internal configuration into each harness's native files and managed-settings channels, rather than intercepting the harness at runtime. That would explain how `plugin add` can update a harness \"whether you are at that point using that harness or not\": it edits that harness's configuration on disk. Uber has not said whether AIFX launches harnesses itself or only configures them.\n\n### The Status Line as a Feedback Channel\n\nEvery harness session shows, in the same place, what the session has cost, what the engineer has spent across harnesses, and a tip. The August 2026 blog adds Slack nudges at 50%, 80% and 100% of expected spend and a cost-check skill that breaks spend down on demand; [Spend Tiers, Not Spend Caps: Governing Token Costs](token-spend-governance.html) covers that system. What matters for this chapter is that **the feedback reaches the engineer inside whichever harness they use**, because AIFX, not the harness vendor, draws it. A company that relies on each vendor's own usage display gets three different displays measuring three different things.\n\nThe same August post lists defaults that are exactly the kind of central settings such a layer distributes: automatic compaction at 400,000 tokens even on 1-million-token models, reasoning effort set to Medium, and a one-hour prompt-cache lifetime for interactive sessions (subagents keep five minutes). The post does not say which component sets them; the link to AIFX is an inference.\n\n"}, {"type": "mermaid", "content": "sequenceDiagram\n    participant Eng as Engineer\n    participant AX as AIFX\n    participant SR as Skills monorepo\n    participant CC as Claude Code config\n    participant CX as Codex config\n    participant OC as OpenCode config\n    Eng->>AX: plugin add a team skill\n    AX->>SR: fetch the skill and its tool needs\n    AX->>CC: install skill and tool entries\n    AX->>CX: install skill and tool entries\n    AX->>OC: install skill and tool entries\n    Note over Eng,OC: Weeks later the engineer switches harness\n    Eng->>CX: start a Codex session on a DevPod\n    CX-->>Eng: same skills, same tools, same settings, spend in the status line"}, {"type": "markdown", "content": "**Figure 3:** *Why a switch costs nothing. One install writes into every supported harness, including those not in use, so the later switch finds the setup already in place. The behavior is Medisetty's account; the per-harness write steps are the author's reading of how it is achieved.*\n\n## The Foundation Underneath: Why the Wrapper Can Stay Thin\n\nAIFX looks like the most \"AI-native\" piece of Uber's stack. It is actually the piece most dependent on what was there before. Remove any of the layers below and AIFX either becomes much larger or stops making sense.\n\n**DevPods make \"pre-installed\" true.** Medisetty said that a new DevPod already has Claude Code, Codex and OpenCode installed. DevPods (described in [DevPods: Cloud Workspaces Built for Engineers, Ready for Agents](devpods.html)) are cloud development environments started from pre-built images, one flavor per monorepo. Putting AIFX and every harness into the image means a new environment arrives fully configured, and per-user settings sync is what makes a fresh DevPod feel like the engineer's own. Without managed environments, \"pre-installed\" becomes a laptop provisioning project per operating system.\n\n**Standard builds make shared defaults meaningful.** A persona's default skills can assume one way to build and test each monorepo, because Uber has one ([From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html)). Medisetty made the same point about agent instruction files: with standard builds, a top-level AGENTS.md or CLAUDE.md works out of the box. A persona default that has to branch on fifteen build systems is not a default.\n\n**The gateways make the harness interchangeable.** If each harness talked to model vendors with its own keys and to tools through its own MCP configuration, switching harness would mean switching security policy. Because every model call goes through the [One Door for Every Model: The Model Gateway and AI Guard](model-gateway.html) and every tool call can go through the [The MCP Gateway: Every Internal Service One Tool Call Away](mcp-gateway.html), the harness becomes a client of two company-owned services. The episode's sequence is explicit: model portability first, then, on the same journey, harness portability.\n\n**A shared skills format makes portability cheap.** The Agent Skills format — a folder with a `SKILL.md` file, originated by Anthropic and released as an [open standard](https://agentskills.io/) — is supported by Claude Code, Codex, OpenCode and many other clients. The [Skills as a Product: The Agent Skills Monorepo](skills-monorepo.html) can therefore keep one copy of each skill; AIFX installs it into each harness's skill location. Before the standard, cross-harness skills would have needed per-harness translation.\n\n| AIFX capability | Foundation it rests on | Without it |\n| --- | --- | --- |\n| Pre-installed everywhere | DevPods with pre-built images | Per-laptop installers and support tickets |\n| Persona defaults that work | Standard build and test commands per monorepo | Defaults that break on half the repositories |\n| Harness switch keeps policy | Model Gateway and MCP Gateway as the only paths to models and tools | Security and spend policy re-implemented per harness |\n| One copy of each skill | Agent Skills standard plus one skills monorepo | Skills duplicated and diverging per harness |\n| Spend in the status line | Per-user attribution in the Model Gateway | Each vendor's own usage display, incomparable |\n\n![Cross-section illustration of a thin AIFX roof over three harness rooms, resting on a deep foundation of DevPods, standard builds, two gateways and a skills library.](assets/images/06-aifx-harness-layer/thin-roof-deep-foundation.jpeg)\n**Figure 4:** *AIFX can stay thin because the layers under it are already standard; a company that copies the wrapper without the DevPods, the two gateways, one skills repository and standard builds gets only a configuration-sync script.*\n\n## Design Choices and Trade-offs\n\n| Decision | Uber's choice (as described) | Alternative | When the alternative is right |\n| --- | --- | --- | --- |\n| Number of supported harnesses | Several (Claude Code, Codex, OpenCode) | Standardize on one harness | Below a few hundred engineers, or when one vendor's enterprise controls cover your needs |\n| Where configuration lives | One internal source rendered into every harness | Each harness configured by its own admin console | When you support only one harness |\n| Defaults | Personas install skills and plugins automatically | Opt-in catalog only | When the catalog is small or quality is uneven |\n| Settings scope | Central settings plus per-user sync across environments | Central only; personal settings stay local | When engineers work on one machine |\n| Tool access from harnesses | Through the gateway and the `aifx mcp` CLI | Each harness registers MCP servers directly | Small tool catalogs where context load is not an issue |\n| Build vs adopt | Built in-house | Vendor enterprise controls, dotfile managers, MDM | Almost always for smaller companies |\n\nThe central trade-off is **choice versus support cost.** Supporting three harnesses triples the testing surface for every skill, plugin and setting. Uber accepts that cost because, at its size, forcing everyone onto one harness would mean a mass migration each time the best harness changed — and the December-to-February numbers show how quickly that can happen. A company of 200 engineers can simply pick one harness and switch everyone when needed; the switch costs a week, not a quarter.\n\nThe second trade-off is **defaults versus context load.** Every default skill or tool a persona installs costs context in every session. Medisetty described the result in the skills discussion: before the rewrite to the command-line pattern, installing two plugins could keep six MCP servers permanently in the agent's context. Personas make defaults easy to add and therefore easy to overdo. Thoughtworks' Technology Radar placed \"agent instruction bloat\" under **Caution** in April 2026 for this reason.\n\nThe third is **wrapping versus lagging.** A layer that writes harness configuration must keep up with every harness release. When a vendor changes its settings schema or adds a feature, AIFX users may lag behind direct users. Writing into each harness's native mechanisms, rather than replacing them, keeps that lag small.\n\n## Elsewhere in the Industry\n\nEvery major harness now ships its own administrator controls. The controls are similar in intent and different in every detail, which is the strongest argument for a layer like AIFX at large scale and the strongest argument for picking one harness at small scale.\n\n- **Claude Code** reads [settings in a fixed precedence](https://code.claude.com/docs/en/settings): managed settings (a `managed-settings.json` file, device management, or the claude.ai admin console) override command-line flags, which override local project, shared project and user settings, in that order.\n- **Codex** separates [enforced requirements from managed defaults](https://learn.chatgpt.com/docs/enterprise/managed-configuration): a `requirements.toml` holds \"admin-enforced constraints that users can't override\" — approval policy, sandbox mode, managed hooks, allowed plugin marketplaces and an allowlist of MCP servers that must match on both name and identity — while managed `config.toml` defaults can be changed by the user.\n- **OpenCode** layers [configuration](https://opencode.ai/docs/config/) from a remote organization config at a `.well-known/opencode` endpoint, through global and project files, to managed files and device-management profiles that its documentation says override everything.\n- **Shared formats are reducing the problem from below.** The Agent Skills standard and [AGENTS.md](https://agents.md/) — \"a README for agents,\" now stewarded by the Agentic AI Foundation and used by more than 60,000 open-source projects — mean that instructions and skills increasingly work in every harness unchanged. Thoughtworks' Radar put \"[curated shared instructions for software teams](https://www.thoughtworks.com/radar/techniques/curated-shared-instructions-for-software-teams)\" in **Adopt** in April 2026, recommending that CLAUDE.md or AGENTS.md files live in service templates.\n\nUber's AIFX sits on top of all three mechanisms. Most companies will rely on one of them directly.\n\n## If You Are Not Uber\n\nThe minimum viable version of AIFX is not a wrapper. **It is one repository of agent configuration, owned by a platform team, that is rendered into whichever harnesses you allow, plus a rule that tools and models are reached only through company-owned endpoints.**\n\n**Prerequisites.** You need a model gateway (or at least one company-controlled model endpoint), a decision on which harnesses you support, and a managed way to put files on engineers' machines or cloud environments (device management, a dotfile tool or a cloud development environment image).\n\n**Sequencing.**\n\n1. **Pick one harness first.** Configure it through its own managed-settings mechanism: model endpoint, permission defaults, MCP allowlist.\n2. **Put shared instructions and skills in one repository**, in the open Agent Skills and AGENTS.md formats, so they are portable from day one.\n3. **Add a cost display** using your gateway's attribution data, inside the harness's status line if it supports one.\n4. **When a second harness becomes popular**, write a small generator that renders your one configuration repository into the second harness's managed format. That generator is your AIFX v0.\n5. **Only at several hundred engineers or more**, add personas (role-based default bundles) and per-user settings sync across environments.\n\n| Company size | What to run | What to skip |\n| --- | --- | --- |\n| ≈50 engineers | One harness, its managed settings, a shared AGENTS.md and a short list of shared skills in a repository | A wrapper; personas; settings sync |\n| ≈500 engineers | One or two harnesses; a configuration repository rendered into each harness's managed format; a central MCP allowlist; a cost display | Supporting every new harness the week it ships |\n| ≈5,000 engineers | An AIFX-style layer: persona defaults, central and per-user settings across laptops and cloud environments, one install command for skills and tools, status-line spend, pre-PR validation behind one command | Replacing the harness's own agent loop or interface |\n\n**What not to copy.** Do not build a harness of your own to avoid vendor churn; the vendors' agent loops improve faster than an internal team can follow. Do not install every skill by default; measure context load per persona. And do not let the wrapper become the place where an engineer cannot see or override what is configured — a layer that silently changes harness behavior is a layer engineers will route around.\n\n## Failure Modes\n\n- **The lowest-common-denominator harness.** If AIFX supports only features all harnesses share, engineers lose each harness's best features and switch to using it directly. The layer should configure, not restrict.\n- **Default bloat.** Personas accumulate skills and tools that each made sense once. Context load grows, sessions get slower and more expensive, and nobody owns removal. Every persona needs an owner and a context budget.\n- **Silent configuration drift.** An engineer edits a harness's settings by hand; the next sync overwrites it, or does not. Without clear precedence (company over user, or the reverse, per key), sync becomes a source of mysterious behavior.\n- **Lag behind vendor releases.** A new harness version changes its configuration schema; AIFX writes the old one. Pin harness versions in managed environments and test configuration rendering in CI.\n- **One more single point of failure.** If AIFX must run before any harness starts, an AIFX bug blocks every engineer. Rendering configuration ahead of time, rather than intercepting each launch, limits the blast radius.\n- **Shadow harnesses.** An engineer installs a new harness that AIFX does not support yet and points it at a personal vendor key. The model gateway's no-bypass rule is what closes this hole, not AIFX itself.\n\n## What the Record Does Not Say\n\n- Whether AIFX launches the harness (a process wrapper) or only writes its configuration — the mechanism behind \"wrap all of the harnesses\".\n- Which personas exist, who owns them, and how many skills and tools each installs by default.\n- How settings conflicts are resolved between central and per-user values, and where synced settings are stored.\n- How quickly AIFX adds support for a new harness or a new harness version, and whether Cursor, which Uber enabled in 2025, is still supported through it.\n- Whether AIFX enforces anything (for example, refusing to start a harness without the gateway endpoint) or only configures.\n- Usage numbers for AIFX itself: how many engineers run harnesses through it, and how many switch harnesses each month.\n\n## Questions to Ask\n\n1. How many coding harnesses are in use in our company today, including ones nobody approved? Who decides which are supported?\n2. If our most popular harness lost its lead next quarter, what would a company-wide switch cost us, and who would do the work?\n3. Where does our shared agent configuration live today — instructions, skills, MCP servers, permission defaults — and is it in a format more than one harness can read?\n4. Which settings must the company enforce, and which must an engineer be able to override? Have we written that down per key?\n5. Does every harness reach models and tools only through endpoints we own?\n6. Can an engineer see, inside the harness they use, what their session costs?\n7. Who owns each default skill or tool we install for everyone, and when did someone last remove one?\n8. What would break if our configuration layer were down for a day?\n\nAIFX makes the harness replaceable by owning what surrounds it. The most important thing it distributes is access to tools: thousands of internal services and vendor systems, which agents reach through a single gateway. [The MCP Gateway: Every Internal Service One Tool Call Away](mcp-gateway.html) describes how Uber built that gateway on the IDL registry it already had.\n\n## Sources and Evidence\n\n**The source episode**\n\n- [Uber's AI infra, from the inside](https://newsletter.pragmaticengineer.com/p/ubers-ai-infra-from-the-inside), *The Pragmatic Engineer* podcast, Gergely Orosz with Uday Kiran Medisetty, 2026 (14 October) — AIFX as a wrapper over Claude Code, Codex and OpenCode; personas; central and synced settings; cross-harness `plugin add`; status line; harnesses pre-installed on DevPods; the show notes' \"switch harnesses without losing settings\".\n\n**Uber engineering sources**\n\n- [How Uber uses AI for development: inside look](https://newsletter.pragmaticengineer.com/p/how-uber-uses-ai-for-development), Gergely Orosz (from a talk by Ty Smith and Anshu Chada), The Pragmatic Engineer, 2026 — the AIFX CLI's functions; Claude Code usage rising from 32% to 63% between December 2025 and February 2026.\n- [Designing MCP Gateway: Uber's MCP Management Platform](https://www.uber.com/blog/designing-mcp-gateway/), Alok Srivastava, Deepanshu Mehndiratta and Gaurav Gill, Uber Blog, 2026 — `aifx` as Uber's CLI and the `aifx mcp` commands as the default for coding agents.\n- [Running a Software Factory Efficiently at Uber Scale](https://www.uber.com/us/en/blog/efficient-software-factory/), Uday Kiran Medisetty, Uber Blog, 2026 — status-line cost counter, managed defaults for compaction, reasoning effort and cache lifetime, skill counts.\n- [How Uber Runs 60,000 AI Agent Tasks Per Week With MCP](https://aaif.io/blog/how-uber-runs-60000-ai-agent-tasks-per-week-with-mcp), Agentic AI Foundation (talk by Meghana Somasundara and Rush Tehrani), 2026 — coding agents add MCP servers through the AIFX CLI.\n- [Agentic SDLC at Uber: Building Blocks for Uber's Software Factory](https://ai.engineer/talks/17-YSUHo6Lk-agentic-sdlc-at-uber-building-blocks-ubers), Uday Kiran Medisetty and Adam Huda, AI Engineer World's Fair, 2026 — managed skills with persona-based defaults.\n\n**Industry and research sources**\n\n- [Settings files and precedence](https://code.claude.com/docs/en/settings), Anthropic, Claude Code documentation, current as of 2026 — Claude Code's managed, project and user settings precedence.\n- [Managed configuration](https://learn.chatgpt.com/docs/enterprise/managed-configuration), OpenAI, Codex documentation, current as of 2026 — enforced requirements, managed defaults and MCP allowlists.\n- [Config](https://opencode.ai/docs/config/), OpenCode documentation, current as of 2026 — remote organization config and managed configuration layers.\n- [Agent Skills](https://agentskills.io/), agentskills.io (originated by Anthropic), current as of 2026 — the portable skills format.\n- [AGENTS.md](https://agents.md/), Agentic AI Foundation, current as of 2026 — the portable instructions file.\n- [Curated shared instructions for software teams](https://www.thoughtworks.com/radar/techniques/curated-shared-instructions-for-software-teams), Thoughtworks Technology Radar, 2026 (Vol. 34) — shared, owned agent guidance as an Adopt-ring practice; the same volume lists agent instruction bloat under Caution.\n\nStatements about Uber's AI-era systems are Uber's own account unless another source is cited; recommendations and labeled inferences are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

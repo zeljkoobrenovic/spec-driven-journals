@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Context Graph and Cortana: Grounding Agents in the Company</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">RETROFITTED: How Uber Built AI-Native Engineering on a Decade of Developer Platforms</a><span class="nav-right"><a class="nav-prev" href="skills-monorepo.html" title="Skills as a Product: The Agent Skills Monorepo">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="token-spend-governance.html" title="Spend Tiers, Not Spend Caps: Governing Token Costs">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part II — GATEWAYS: Agnostic Building Blocks</p>
+        <h1>The Context Graph and Cortana: Grounding Agents in the Company</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-20  ·  22 min read · <a class="spec-link" href="context-graph.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/09-context-graph/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/09-context-graph/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">RETROFITTED: How Uber Built AI-Native Engineering on a Decade of Developer Platforms</a><span class="nav-right"><a class="nav-prev" href="skills-monorepo.html" title="Skills as a Product: The Agent Skills Monorepo">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="token-spend-governance.html" title="Spend Tiers, Not Spend Caps: Governing Token Costs">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "The Context Graph and Cortana: Grounding Agents in the Company", "date": "2026-10-20", "author": "Željko Obrenović", "excerpt": "How do you cut the number of turns an agent spends finding out which services, owners, tables and documents a question is about? Uber joined the metadata its siloed systems already held into one live graph that agents query first, and reports that answers got better, cheaper and faster, while saying it is still early.", "permalink": "context-graph", "timetoread": "22 min read", "icon": "assets/icons/09-context-graph.png", "logo": "assets/images/09-context-graph/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Follow the path from Cortana, an internal assistant one engineer built in December 2025, to the context graph Uber built after reading Cortana's traces. You will see what the graph holds, how agents navigate it, why it depends on metadata Uber has collected for a decade, and what a smaller company can build first.\n\n> **WHY IT MATTERS:** Most of an agent's wasted turns are not spent writing code but finding out where things are and who owns them. A leader who reduces those **grounding turns** gets better answers and lower cost from every agent at once, without changing the model or the harness.\n\n> **KEY POINTS:**\n>\n> * **Grounding is a measurable tax, and traces reveal it.** Uber saw in Cortana's traces that models spent many turns locating the right systems, because ownership, tasks, on-call, incidents and data lived in separate tools. The fix was not a better prompt; it was a different first step.\n> * **The graph joins metadata Uber already had.** People, services, PRs, design docs, features, on-call events, config changes, incidents, tables and queries, linked live and queried by agents in Cypher much as they navigate a file system with bash. The episode cites 100+ node and 130+ edge types; Uber's August 2026 blog cites 86 node types, 117 edge types, 24M nodes and 80M edges from 30+ systems.\n> * **The gain is real but early, and permissions are part of the design.** Uber's blog shows one grounded query answered correctly in 38 seconds against 20 minutes 9 seconds and a wrong answer without the graph. Medisetty says quality is up and cost and latency down \"in a whole bunch of categories of questions\", and that existing user permissions carry forward.\n\n> **BUILT ON:** uOwn ownership metadata ([Build What the Market Cannot Yet Sell: Uber's Pre-AI Platform Bets](build-what-does-not-exist.html)), the IDL registry and Jaeger tracing ([The Hidden Foundations: Typed Contracts, Ownership Metadata and Trace Baggage](contracts-and-context-propagation.html)), the design-doc hub ([Plans Before Prompts: PRDs, ERDs and the Design-Doc Hub](plans-as-source-of-truth.html)), Uber's data-catalog tradition (Databook, 2016 onward), the production graph platform team, and the MCP Gateway for tool access ([The MCP Gateway: Every Internal Service One Tool Call Away](mcp-gateway.html)).\n\n<br>\nAsk a coding agent at a large company a simple question, \"how many mobility trips worldwide used cash last month?\", and watch what it does. It searches the code for \"cash\". It opens a service that mentions payment types. It looks for a schema. It guesses a table, finds the guess is a staging copy, asks for permissions it does not have, and eventually returns an answer that may or may not use the table analysts actually trust. **Most of those turns are spent on grounding**: working out which systems, data and people the question is about before any real work starts.\n\nUber's account of this problem, given by Medisetty in the October 2026 Pragmatic Engineer episode, is specific. Uber read the traces of its internal assistant, saw the grounding turns, and built a **context graph**: a live graph of the company's engineering metadata that agents query first. Medisetty called it his favorite of the systems he showed.\n\nThis chapter defines two terms it owns. **Grounding turns** are the model turns an agent spends discovering which domain, services, data, documents and owners a task concerns, before it can act on the task. A **context graph**, in Uber's usage, is a graph of nodes (people, assets, artifacts, events) and typed edges between them, kept current from the systems of record, and exposed to agents as their default first step. The term has a slightly different meaning in the industry; the comparison section returns to that.\n\n## The Problem Uber Had: Answers Scattered Across Siloed Systems\n\n### Cortana, December 2025\n\nThe backstory, in Medisetty's telling: \"back in December\" (2025), one engineer built an AI assistant, **Cortana**, that anyone could reach on the web or in Slack and ask \"any question from any code base\". It searched across all of Uber's repositories and answered. The AI Engineer World's Fair 2026 talk by Medisetty and Adam Huda confirms Cortana as an internal assistant in Slack, CLI and web and gives a mid-2026 snapshot: 300 personas created in the prior month and more than 20,000 sessions a day.\n\nPeople used it for much more than code questions. Medisetty listed research, \"how to run this query\", \"what is the data source for this\", \"who owns this\", \"can you do RCA for this\": a broad set of software engineering tasks. That variety was the useful signal. Most of those questions are not answered by code. They are answered by ownership records, task trackers, on-call dashboards, design docs and data catalogs.\n\n### What the Traces Showed\n\n\"When we're looking at some of these traces, it was clearly obvious that we could optimize the number of turns it takes for the models to get grounding, because we have so many systems.\" Medisetty named the silos: the engineer \"has to go into the task management platform\", \"to our on-call dashboard\", to the ownership dashboard (uOwn, see [Build What the Market Cannot Yet Sell: Uber's Pre-AI Platform Bets](build-what-does-not-exist.html)). An agent with tools for each of those systems can reach them, but it has to discover which ones matter for this question, call each, and stitch the answers together. Each step is a turn, and each turn re-sends the growing context.\n\n![Illustration of an agent walking a long numbered path between separate systems before reaching its actual task.](assets/images/09-context-graph/grounding-turns-door-to-door.jpeg)\n**Figure 1:** *Cortana's traces showed models spending many turns just locating the right systems, because ownership, tasks, on-call, incidents and data lived in separate tools; since agent cost scales with turns, every grounding turn is a tax.*\n\nThis is the core economic argument for the graph. Agent cost scales with turns: Uber's own August 2026 cost equation multiplies users, sessions, **turns per session**, requests per turn, tokens per request and price per token ([Spend Tiers, Not Spend Caps: Governing Token Costs](token-spend-governance.html) works through it). A change that removes five discovery turns from a common class of question reduces cost, latency and the chance of a wrong path at the same time.\n\n## What Uber Built\n\n### The Graph\n\nEverything in this subsection is Uber's account from the episode unless another source is named.\n\n- **Nodes for people and for everything they touch.** Every employee has a node. Every PR an engineer creates is a node, linked to its author. The schema visualization Medisetty showed linked a person to the assets they manage, design docs they wrote, product features they work on, on-call events they handled, configuration changes and incidents they managed.\n- **Data assets too.** Tables, columns and queries are nodes, including who wrote which queries and which are the \"blessed\" ones.\n- **Densely connected.** In Medisetty's words, any node has relationships to all other nodes (meaning, in practice, to other node types through typed edges).\n- **Live.** Medisetty called the graph \"live\"; Uber has not described how it is kept current.\n- **Built with the graph platform team.** The team that runs Uber's production graph, \"with billions of nodes\", helped build it. The context graph is \"much smaller\", so scale was \"not a challenge for them anymore\". Medisetty drew the parallel to the API Edge Gateway team building the MCP Gateway ([The MCP Gateway: Every Internal Service One Tool Call Away](mcp-gateway.html)): an existing platform team with the right skills took on the AI-era version.\n- **Fed by the planning tool.** Design documents, launch reviews, experiment reviews and production-readiness reviews \"also go into the graph\" ([Plans Before Prompts: PRDs, ERDs and the Design-Doc Hub](plans-as-source-of-truth.html)).\n\nThe sizes differ by source, and the differences are worth keeping rather than averaging:\n\n| Source | Types | Size | Systems |\n| --- | --- | --- | --- |\n| The October 2026 episode | \"100 plus node types and 130 plus edge types\" | not given | not given |\n| [Running a Software Factory Efficiently at Uber Scale](https://www.uber.com/us/en/blog/efficient-software-factory/), Uber blog, 27 August 2026 | 86 node types, 117 edge types | 24 million nodes, 80 million edges | 30+ internal systems: services, teams, incident logs, PRs, design docs, deployments, datasets, historical table-usage queries |\n| Agentic SDLC talk, AI Engineer World's Fair 2026 | 150 node and edge types combined | about 40 million entries | replacing lookups across 20–30 systems |\n\nThe written blog is the citable figure. The episode's larger type counts, spoken two months later, are consistent with a schema that is still growing; Uber has not said so. The talk's \"150 types\" plausibly counts both kinds together.\n\n### How Agents Use It\n\nThe graph is Cortana's **default grounding**. \"If you ask any question, it will first use this to navigate: what is this person asking about? Once you get grounded into, oh, this is about this domain, this set of services, then it can go deep and read other documents.\" The graph does not replace documents, code or dashboards. It tells the agent which ones to open.\n\nAgents navigate the graph with **Cypher**, the graph query language that originated with Neo4j and strongly shaped the ISO GQL standard. Medisetty's observation is the most transferable idea in the chapter: \"It's much harder for us to manually write all of these Cypher queries, but agents are really good at navigating the graph, like how they're really good at navigating a file system with bash.\" Agents are already good at exploratory navigation over a structure they can inspect: list, look, follow a link, list again. A graph with a readable schema gives them the same pattern over company metadata. The August 2026 blog adds that any agent can query the graph in natural language, which suggests a translation layer in front of Cypher; Uber has not described it.\n\nCortana itself \"plugs\" the graph together with tools and skills ([Skills as a Product: The Agent Skills Monorepo](skills-monorepo.html)) and is available in Slack, web and CLI. Medisetty's examples of what that enables:\n\n- **Self-service across org silos.** \"Even someone in Ops in some country\" can ask how something is built, where it lives, who works on it and what its history is, and Cortana draws on the graph and the company's documents. People can also \"execute any skill anyone has built\".\n- **A 360° health report.** Asked about a service's health, it can look at dependencies and storage systems, run the queries and return a full health report for that asset.\n\n"}, {"type": "mermaid", "content": "sequenceDiagram\n    participant U as Engineer\n    participant C as Cortana\n    participant G as ContextGraph\n    participant T as ToolsViaGateway\n    U->>C: How many mobility trips used cash\n    C->>G: Which tables and columns cover trips and payment type\n    G-->>C: Candidate tables, owners, recent queries by analysts\n    C->>G: Which queries are blessed and recent\n    G-->>C: Blessed query and its author team\n    C->>T: Run the adapted query with the user permissions\n    T-->>C: Result rows\n    C-->>U: Answer with tables and query cited"}, {"type": "markdown", "content": "\n**Figure 2:** *The grounding-first pattern, using Medisetty's cash-trips example. The graph answers \"where\" and \"who\" in a few cheap queries; tools are called only once the agent knows what to call. The step boundaries are this book's reading of the example.*\n\n### The Worked Example: Cash Trips\n\nMedisetty's example is worth slowing down for, because it shows which edges do the work. The question: how many mobility trips around the world use the cash payment type?\n\n1. **Find the tables.** The agent first needs to learn which tables and columns exist. Without the graph, that means searching a data catalog, or worse, code. With it, table and column nodes are linked to the domain.\n2. **Find the people who already did this.** Have others written such queries, and are they from a science team, perhaps mobility science? This is the edge most catalogs do not have: **query nodes linked to their authors and to the tables they read**. It turns organizational knowledge, which team knows this data, into something an agent can traverse.\n3. **Use recent work.** The agent can check which related queries ran in the last 30 days and which tables they used. Recency matters: a query from last month on the current table beats one from 2022 on a deprecated one.\n4. **Converge on the blessed query.** From there it reaches the \"blessed\" queries Uber maintains. The answer comes from a query someone accountable has endorsed, not from the agent's first guess.\n\nThe August 2026 blog gives a measured case of the same shape. With the same prompt and model, the graph-grounded agent answered in **38 seconds and was correct**: it found a table used by more than 50 analysts through usage history. Without the graph it took **20 minutes 9 seconds and was wrong**: it read service code, spawned two subagents, hit three errors and concluded the dataset could not be queried. The blog's summary line is the best one-sentence case for the system: \"An ungrounded agent fails slowly rather than cheaply.\"\n\n![Split illustration: an agent with a city-map graph takes a short route to a correct answer, while an agent without it wanders a long route to a wrong one.](assets/images/09-context-graph/city-map-versus-wandering.jpeg)\n**Figure 3:** *In Uber's August 2026 blog example, the graph-grounded agent answered in 38 seconds and was correct, while the same prompt and model without the graph took 20 minutes 9 seconds and was wrong; it is one chosen query, not a benchmark.*\n\nThat example is one query, chosen by Uber to illustrate the point. Medisetty's broader claim, that \"in a whole bunch of categories of questions, the quality goes up, the cost goes down, the latency goes down\", is Uber's own account with no published method or numbers behind it, and he added \"we are still early\".\n\n### Permissions\n\nThe episode states one design rule: \"We carry forward all of the existing user permissions, so then I'm only able to access the stuff that I had access to.\" Orosz connected it to Uber's older practice of **break glass**: requesting temporary access to a system you do not normally have, through an approval flow that goes through a manager or director.\n\nUber has not described how the graph enforces permissions. A related public mechanism is Uber's May 2026 post on agent identity, \"[Solving the Identity Crisis for AI Agents](https://www.uber.com/us/en/blog/solving-the-agent-identity-crisis/)\" (21 May 2026). It describes tokens that carry an **actor chain** (for example a user, then an on-call agent, then an investigation agent), are scoped to one audience and one hop, and are short-lived, based on OAuth 2.0 Token Exchange (RFC 8693). The MCP Gateway relays the user's token to downstream tools ([The MCP Gateway: Every Internal Service One Tool Call Away](mcp-gateway.html)). Neither source says this is how the context graph or Cortana enforce access.\n\n> **INFERENCE, NOT DOCUMENTED:** A graph that links every employee to their PRs, incidents and design docs has two permission problems, not one. The first is node-level: a user should not read a node they cannot read in the source system. The second is aggregation: edges can reveal things no single source exposes (who worked on which unannounced feature, who handled which security incident). A plausible design checks node visibility against the source system's access rules at query time, using the user's identity from the actor chain, and treats some edge types as sensitive in their own right. Uber has not said whether it does either.\n\n## The Foundation Underneath\n\nMedisetty did not present the graph as a data-collection project. He presented it as a join: the systems already existed, siloed, and the graph linked them. That is the book's thesis in its purest form ([The Harness Is the Easy Part: Why Uber's AI Tooling Took a Decade and a Year](the-harness-is-the-easy-part.html)). The show notes make the link directly: \"Jaeger tracing made Slate routing and Context graph easier.\"\n\n"}, {"type": "mermaid", "content": "flowchart LR\n    A[\"uOwn: who owns each service and asset\"] --> G[\"Context graph\"]\n    B[\"Code review and monorepos: PRs and authors\"] --> G\n    C[\"Design-doc hub: PRDs, ERDs, reviews\"] --> G\n    D[\"Incident and on-call tooling\"] --> G\n    E[\"Config change history\"] --> G\n    F[\"Data catalog and query history\"] --> G\n    H[\"IDL registry and Jaeger traces: service dependencies\"] -.->|\"inferred source\"| G\n    G --> I[\"Cortana in Slack, web, CLI\"]\n    G --> J[\"Coding and managed agents\"]"}, {"type": "markdown", "content": "\n**Figure 4:** *The context graph as a join over pre-AI systems of record. Sources follow the episode and the August 2026 blog's list; the dashed edge from the IDL registry and traces is an inference from the show notes' Jaeger remark, not a documented feed.*\n\n| Pre-existing piece | What the graph gets from it | Evidence |\n| --- | --- | --- |\n| **uOwn** ownership ([Build What the Market Cannot Yet Sell: Uber's Pre-AI Platform Bets](build-what-does-not-exist.html)) | Person-to-asset and team-to-service edges, the backbone of \"who owns this\" | Episode (uOwn); blog lists services and teams as sources |\n| **Monorepos and code review** ([From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html)) | PR nodes with authors, reviewers and touched modules | Episode; blog lists PRs |\n| **Design-doc hub** ([Plans Before Prompts: PRDs, ERDs and the Design-Doc Hub](plans-as-source-of-truth.html)) | Design-doc, launch-review and readiness-review nodes, with owners and status | Episode; blog lists design docs |\n| **Incident and on-call tooling** (in-house since the 2010s) | Incident and on-call event nodes linked to services and responders | Episode; blog lists incident logs |\n| **Deployment and config systems** | Config-change and deployment nodes, which make \"what changed before this incident\" a traversal | Episode (config changes); blog lists deployments |\n| **Data catalog and query logs** | Table, column and query nodes; usage history that identifies the blessed tables | Episode (tables, queries); blog lists datasets and historical table-usage queries |\n| **IDL registry and Jaeger** ([The Hidden Foundations: Typed Contracts, Ownership Metadata and Trace Baggage](contracts-and-context-propagation.html)) | Service-to-service dependency edges, plausibly from call graphs | Show notes' Jaeger remark; mechanism not described |\n| **Graph platform team** | Operational experience running a graph with billions of nodes | Episode |\n\nUber's data-catalog history is a documented precedent for the data half of the graph. In \"[Turning Metadata Into Insights with Databook](https://www.uber.com/blog/metadata-insights-databook/)\" (Uber blog, 10 November 2020), Uber described Databook, first launched in 2016 and rebuilt around 2019, as a metadata platform for datasets, Hive tables, dashboards, metrics, pipelines and ML features. Its entities were linked in what the post called a knowledge graph, with lineage edges (which pipelines load which tables, which metrics come from which tables, which dashboards show them), team ownership, and collection by both crawlers (pull) and Kafka events (push). The post is six years old and the system may have changed. The episode does not name Databook as a source of the context graph, but the pattern, typed entities with owner and lineage edges collected from many systems, is the same one applied to a wider set of things.\n\nThe dependency runs in a clear direction. **A company that does not know who owns each service cannot build a graph that answers \"who owns this\"**, whatever graph database it buys. The graph's value is the quality of the joins, and the joins are only as good as the identifiers the source systems share: one ID per service, one ID per person, one ID per table, used consistently across the code-review tool, the incident tool and the ownership registry. Uber's decade of building those systems in-house, often because no vendor existed ([Build What the Market Cannot Yet Sell: Uber's Pre-AI Platform Bets](build-what-does-not-exist.html)), gave it consistent identifiers almost by accident.\n\n## Design Choices and Trade-offs\n\nUber chose a graph queried by agents. The table compares it with the alternatives a reader is likely to consider.\n\n| Approach | How grounding works | Strengths | Weaknesses | When it is right |\n| --- | --- | --- | --- | --- |\n| **Agentic search with tools** (no graph) | The agent calls each system's API or MCP tool and searches | Nothing to build beyond tools; always current | Many turns per question; the agent must know which systems exist; wrong paths are expensive | Small companies with few systems, or narrow agents with a known scope |\n| **Vector retrieval over documents** (RAG) | Embed documents; retrieve similar chunks | Good for prose questions (\"how do I…\"); cheap per query | Weak on relationships (\"who changed config for the service that had this incident\"); stale embeddings | Policy and documentation questions; Uber's 2024 Genie on-call copilot used this |\n| **Developer portal catalog** (e.g. Backstage) | Curated entities and relations, browsed by humans, exposable as a tool | Ownership and system boundaries in one place; mature open source | Usually services and teams only, not PRs, queries or incidents; updated by humans via YAML | The first step for most companies; the seed of a graph |\n| **Context graph** (Uber's choice) | A live, typed graph across many systems, queried first | Few turns for relationship questions; recent work and blessed artifacts visible | Ingestion pipelines per source; freshness; permission and aggregation risk; schema governance | Many siloed systems, many agents, high question volume |\n| **Federated query** over source systems | A query layer fans out to sources at question time, no stored graph | No copy of data; permissions stay at the source | Slow multi-source joins; each source's API limits | When copying metadata is not allowed or sources change too fast to sync |\n\nTwo further choices sit inside Uber's design:\n\n- **Cypher versus fixed tools.** Uber lets agents write graph queries. The alternative is a fixed set of tools (\"get owners of service X\", \"get recent incidents for X\"). Fixed tools are safer and easier to permission; free queries are more flexible and, Medisetty argues, agents are good at writing them. A mixed approach, a query tool with schema documentation plus a handful of common, pre-built traversals, is a reasonable middle.\n- **Default grounding versus on-demand.** Cortana consults the graph first on every question. That costs a few cheap queries on questions that did not need them, and saves many expensive turns on those that did. The August 2026 blog lists extending graph queries to more autonomous agents as future work, so for managed and background agents the default was still being rolled out.\n\n## Elsewhere in the Industry\n\n**Thoughtworks, \"Context graph\" (Assess, April 2026).** The [Technology Radar blip](https://www.thoughtworks.com/radar/techniques/context-graph) uses the same term with a narrower meaning: a graph of the **reasoning behind decisions** (rules, exceptions, prior cases, evidence, outcomes) that AI systems can query, with timestamped relationships so outdated facts are marked invalid rather than overwritten. Uber's graph is mostly about assets and artifacts, not decisions, though design docs and incidents carry some decision history. The timestamping idea is directly relevant to Uber's design: a graph that says who owned a service last year as well as who owns it now can answer \"who changed this, and were they the owner at the time\".\n\n**Backstage Software Catalog (Spotify, open source).** The [Backstage catalog](https://backstage.io/docs/features/software-catalog/) is the most widely adopted public version of the backbone: \"a centralized system that keeps track of ownership and metadata for all the software in your ecosystem\", described by YAML files kept next to the code and updated through normal git review. It covers the uOwn half of Uber's graph. It does not, by default, hold PRs, incidents, config changes or query history; those are the edges that made Uber's cash-trips example work.\n\n**Anthropic, context engineering (September 2025).** \"[Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)\" (29 September 2025) argues that an agent's attention budget is finite, that context should be small and high-signal, and recommends just-in-time retrieval through lightweight identifiers rather than loading everything up front. The context graph is an organization-wide implementation of that advice: the agent holds a few node IDs and traverses only what the question needs. [The Engineer as Context Builder: Specs, Parallel Sessions and Verification](the-engineer-as-context-builder.html) covers the engineer's side of context engineering.\n\n**Uber's own earlier RAG systems.** Uber's [Genie on-call copilot](https://www.uber.com/blog/genie-ubers-gen-ai-on-call-copilot/) (Uber blog, 10 October 2024) answered questions in Slack support channels by retrieval over Engwiki, internal Stack Overflow and requirement documents. Genie shows the earlier generation of the same goal: answer engineers' questions from company knowledge. The context graph adds the relationships that retrieval over text does not capture.\n\n## If You Are Not Uber\n\nYou do not need 24 million nodes. You need to **measure grounding turns, then join the three or four systems that cause most of them.**\n\n| Company size | What to build | What to skip for now |\n| --- | --- | --- |\n| **≈50 engineers** | A service catalog file per repository (owner, on-call, dependencies, data stores) and an `AGENTS.md` that points to it. An agent tool or CLI that answers \"who owns X\" and \"what does X depend on\" from those files. | A graph database. Grep over YAML is enough at this size. |\n| **≈500 engineers** | A developer portal catalog (Backstage or a vendor) with ownership and dependencies, exposed to agents as a tool. Add two edge types from systems you already run: PR to service (from your code host) and incident to service (from your incident tool). Measure turns on 20 common questions before and after. | Free-form graph queries by agents. Offer fixed traversals first. |\n| **≈5,000 engineers** | Uber's shape: a graph store run by a team with graph experience; ingestion from the systems of record with shared identifiers; data-catalog and query-history edges; permission checks at query time; a schema agents can read; grounding-first in your main assistant, then in managed agents. Track turns, latency, cost and correctness per question category. | Modeling everything at once. Start with the categories your traces show are expensive. |\n\n**Prerequisites:**\n\n1. **Consistent identifiers.** One ID per service, team, person and table, used by your code host, incident tool, ownership registry and data catalog. Without this, ingestion is entity resolution, and the graph is wrong in ways agents cannot detect.\n2. **An ownership registry people trust.** If \"who owns this service\" is answered by asking around, fix that first; it is the most-traversed edge.\n3. **Traces of your agents.** You need to see where turns are spent before you know which edges to build. Route traffic through a gateway that logs sessions ([One Door for Every Model: The Model Gateway and AI Guard](model-gateway.html)).\n\n**Buy, build or open source.** The catalog backbone is open source (Backstage) or bought (several developer-portal vendors). Graph stores are commodity: Neo4j and other property-graph databases speak Cypher or GQL, and some relational setups suffice for a few million edges. What you cannot buy is the ingestion from your own systems and the shared identifiers; that is where the work is.\n\n**What not to copy.** Do not build the graph before you have measured grounding turns; you will model the wrong things. Do not let agents write arbitrary queries over people data before you have solved the aggregation question. And do not treat the graph as a replacement for fixing your documentation: the graph tells the agent which design doc to read, and a bad design doc is still bad.\n\n## Failure Modes\n\n- **Stale edges.** A service changed owner last month; the graph still says the old team. Agents route questions and patches to the wrong people, confidently. Freshness per source is the most important operational metric, and Uber has not published how it handles it.\n- **Identifier mismatch.** The incident tool calls the service `payments-api`, the ownership registry calls it `payments_api_v2`. The graph shows no incidents for a service that has many.\n- **Aggregation leaks.** Each source enforces its own access rules, but edges combine them. A person who cannot read an incident might still learn, from the graph, which team handled it and when.\n- **The blessed-query trap.** Usage history identifies popular tables, and popularity is not correctness. A widely used table with a known bias becomes the agent's default answer.\n- **Schema sprawl.** If the gap between the August blog's 86 node types and the episode's \"100 plus\" is growth, the schema gained a sixth more types in two months. Without governance, node types multiply, near-duplicates appear (an \"asset\" and a \"service\" for the same thing), and the schema becomes harder for agents to navigate, not easier.\n- **Query cost and runaway traversals.** Agents writing graph queries can write expensive ones. A traversal from a person node through all PRs to all touched services to all incidents can explode.\n- **Measuring with anecdotes.** One 38-second-versus-20-minute example is persuasive and is not an evaluation. Without a fixed question set per category, it is impossible to know whether the graph helped overall or only on the questions people remember.\n\n## What the Record Does Not Say\n\n- **How the graph is ingested and kept current**: batch, streaming, or both; per-source freshness; how deletions propagate.\n- **Which store it runs on**, and whether it is the production graph platform's technology or a separate one.\n- **How permissions are enforced** at node and edge level, and whether break-glass access applies to graph queries.\n- **How natural-language questions become Cypher**, and whether agents see the raw schema.\n- **How \"blessed\" queries are defined** and who maintains them.\n- **How the quality, cost and latency gains were measured**, on which question categories, and by how much, beyond the single published example.\n- **Whether Minion and other managed agents use the graph by default** as of October 2026; the August blog lists that as future work.\n- **Why the type counts differ** between the blog (86 and 117) and the episode (100+ and 130+): growth, a different counting rule, or both.\n\n## Questions to Ask\n\n1. On our ten most common agent questions, how many turns does an agent spend before it touches the thing the question is actually about?\n2. Can an agent answer \"who owns this service and who is on call now\" in one tool call?\n3. Do our code host, incident tool, ownership registry and data catalog use the same identifier for the same service?\n4. Which relationship would remove the most grounding turns if agents could traverse it: PR to service, incident to config change, query to table, design doc to feature?\n5. How fresh is our ownership data, and how would we know if it were wrong?\n6. What can a user learn from combined metadata that no single source system would show them?\n7. Should agents write their own graph queries, or should we offer a fixed set of traversals first?\n8. What question set will we use to show the graph made answers better, not only faster?\n\nThe context graph cuts the turns an agent needs; the skills and gateways of the previous chapters cut the tokens each turn carries. Both matter because every turn and every token is billed. [Spend Tiers, Not Spend Caps: Governing Token Costs](token-spend-governance.html) covers how Uber keeps that bill responsible without rationing the tools.\n\n## Sources and Evidence\n\n**The source episode**\n\n- [Uber's AI infra, from the inside](https://newsletter.pragmaticengineer.com/p/ubers-ai-infra-from-the-inside), *The Pragmatic Engineer* podcast, Gergely Orosz with Uday Kiran Medisetty, 14 October 2026 — Cortana's origin, the trace finding, the graph's node and edge types, Cypher navigation, the cash-trips example, the graph platform team, permissions and break glass, the 360° health report; show notes for the Jaeger remark.\n\n**Uber engineering sources**\n\n- [Running a Software Factory Efficiently at Uber Scale](https://www.uber.com/us/en/blog/efficient-software-factory/), Uber blog, Uday Kiran Medisetty, 27 August 2026 — 24M nodes, 80M edges, 86 node and 117 edge types, 30+ source systems, the 38-second versus 20-minute example, natural-language access, the cost equation.\n- [Agentic SDLC at Uber: Building Blocks for Uber's Software Factory](https://ai.engineer/talks/17-YSUHo6Lk-agentic-sdlc-at-uber-building-blocks-ubers), AI Engineer World's Fair 2026 talk, Uday Kiran Medisetty and Adam Huda, 2026 — about 40M entries and 150 node and edge types; Cortana in Slack, CLI and web with 20,000+ sessions a day.\n- [Solving the Identity Crisis for AI Agents](https://www.uber.com/us/en/blog/solving-the-agent-identity-crisis/), Uber blog, Matt Mathew, Prasad Borole and Meng Huang, 21 May 2026 — actor-chain tokens and token exchange, the public mechanism closest to \"carrying forward user permissions\".\n- [Turning Metadata Into Insights with Databook](https://www.uber.com/blog/metadata-insights-databook/), Uber blog, Sunheng Taing and Atul Gupte, 10 November 2020 — Uber's data-asset knowledge graph with ownership and lineage, a documented precedent.\n- [Genie: Uber's Gen AI On-Call Copilot](https://www.uber.com/blog/genie-ubers-gen-ai-on-call-copilot/), Uber blog, 10 October 2024 — the earlier retrieval-based assistant for engineering questions.\n\n**Industry and research sources**\n\n- [Context graph](https://www.thoughtworks.com/radar/techniques/context-graph), Thoughtworks Technology Radar Vol. 34, April 2026 — the industry definition and timestamped relationships.\n- [Backstage Software Catalog](https://backstage.io/docs/features/software-catalog/), Backstage documentation, current as of October 2026 — the open-source ownership-and-metadata catalog.\n- [Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents), Anthropic Engineering, 29 September 2025 — finite attention budget and just-in-time retrieval.\n\nStatements about Uber's AI-era systems are Uber's own account unless another source is cited; recommendations and labeled inferences are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>

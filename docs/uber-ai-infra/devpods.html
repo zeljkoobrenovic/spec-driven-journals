@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DevPods: Cloud Workspaces Built for Engineers, Ready for Agents</title>
+    <link rel="stylesheet" href="site.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-129891352-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-129891352-1');
+</script>
+    <style>
+        body {
+            line-height: 1.65;
+        }
+
+        main {
+            padding-top: 32px;
+        }
+
+        nav.post-nav {
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        nav.post-nav a {
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        nav.post-nav a:hover {
+            color: var(--accent);
+        }
+
+        nav.post-nav .nav-right {
+            margin-left: auto;
+            display: inline-flex;
+            gap: 4px;
+            align-items: baseline;
+        }
+
+        nav.post-nav .nav-sep {
+            color: var(--muted);
+        }
+
+        footer nav.post-nav {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+
+        header.post {
+            margin-bottom: 32px;
+        }
+
+        header.post .section {
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0 0 -6px;
+        }
+
+        header.post .section a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header.post .section a:hover {
+            color: var(--accent);
+        }
+
+        header.post .section .post-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        header.post .section .post-status .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        header.post .logo {
+            display: block;
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid lightgrey;
+
+        }
+
+        header.post .logo-credit {
+            color: var(--muted);
+            font-size: 12px;
+            margin: -4px 0 24px;
+            text-align: right;
+        }
+
+        header.post h1 {
+            font-size: 52px;
+            line-height: 1.2;
+            margin: 0 0 2px;
+            padding: 0;
+            letter-spacing: -0.01em;
+            font-weight: normal;
+        }
+
+        header.post .byline {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        header.post .byline .spec-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        header.post .byline .spec-link:hover {
+            text-decoration: underline;
+        }
+
+        header.post .byline .spec-link-drifted {
+            color: #b8650f;
+        }
+
+        header.post .byline .spec-link-superseded {
+            color: var(--muted);
+        }
+
+        header.post .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 10px 0 10px;
+        }
+
+        header.post .tags .tag {
+            font-size: 14px;
+            padding: 1px 8px;
+            border: 1px solid deepskyblue;
+            color: blue;
+            border-radius: 999px;
+            background-color: var(--tag-bg);
+        }
+
+        nav.modality-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 1px solid var(--rule);
+            margin: 0 0 28px;
+            flex-wrap: wrap;
+        }
+
+        nav.modality-tabs button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            letter-spacing: 0.02em;
+        }
+
+        nav.modality-tabs button:hover {
+            color: var(--accent);
+        }
+
+        nav.modality-tabs button.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        #content .pane[hidden] {
+            display: none;
+        }
+
+        #content .pane:focus {
+            outline: none;
+        }
+
+        #content .pane:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 6px;
+        }
+
+        article h2 {
+            font-size: 26px;
+            margin: 40px 0 12px;
+            letter-spacing: -0.01em;
+        }
+
+        article h3 {
+            font-size: 20px;
+            margin: 28px 0 8px;
+        }
+
+        article h4 {
+            font-size: 17px;
+            margin: 20px 0 6px;
+        }
+
+        article p {
+            margin: 0 0 16px;
+        }
+
+        article a {
+            color: var(--accent);
+        }
+
+        article a.image-link {
+            display: inline-block;
+            line-height: 0;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        article a.image-link img {
+            display: block;
+        }
+
+        article ul, article ol {
+            padding-left: 24px;
+            margin: 0 0 16px;
+        }
+
+        article li {
+            margin-bottom: 6px;
+        }
+
+        article ul.task-list {
+            list-style: none;
+            padding-left: 4px;
+        }
+
+        article ul.task-list li.task > input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--accent);
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid var(--rule);
+            margin: 32px 0;
+        }
+
+        article blockquote {
+            margin: 16px 0;
+            padding: 12px 18px;
+            background: var(--quote-bg);
+            border-left: 3px solid var(--accent);
+            color: #333;
+        }
+
+        article blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        article code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+
+        article pre {
+            background: var(--code-bg);
+            padding: 14px 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        article pre code {
+            background: none;
+            padding: 0;
+        }
+
+        article .table-wrap {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        article table {
+            border-collapse: collapse;
+            margin: 16px 0;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        article .table-wrap table {
+            margin: 0;
+        }
+
+        /* Wide tables scroll on narrow screens instead of crushing their columns.
+           A table wrapped in <div class="table-compact"> opts out: it has few,
+           short columns and wraps its cells to fit the screen instead. */
+        @media (max-width: 640px) {
+            article .table-wrap table {
+                min-width: 560px;
+            }
+            article .table-compact .table-wrap table {
+                min-width: 0;
+            }
+        }
+
+        /* Tables that actually overflow get a visible cue and keyboard focus
+           (markScrollableTables() sets the class and attributes). */
+        article .table-wrap.is-scrollable::before {
+            content: "Scroll sideways to see the whole table";
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        article .table-wrap.is-scrollable:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        article th, article td {
+            border: 1px solid var(--rule);
+            padding: 8px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        article th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+
+        /* GFM column alignment from the separator row. Right-aligned columns
+           hold numbers; their cells never wrap, so a sign, a currency symbol
+           and its amount stay on one line while label columns still wrap. */
+        article th.num, article td.num {
+            text-align: right;
+        }
+
+        article td.num {
+            white-space: nowrap;
+        }
+
+        article th.center, article td.center {
+            text-align: center;
+        }
+
+        article .mermaid {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        article .force-graph {
+            margin: 24px 0;
+            border: 1px solid var(--rule);
+            border-radius: 6px;
+            background: #fff;
+            height: 480px;
+            overflow: hidden;
+        }
+
+        article .bubble-chart {
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        article .bubble-chart svg {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <nav class="post-nav"><a class="nav-back" href="index.html">RETROFITTED: How Uber Built AI-Native Engineering on a Decade of Developer Platforms</a><span class="nav-right"><a class="nav-prev" href="monorepos-and-one-build.html" title="From Two Services to One Build Command: Microservices, Monorepos and Bazel">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="contracts-and-context-propagation.html" title="The Hidden Foundations: Typed Contracts, Ownership Metadata and Trace Baggage">Next →</a></span></nav>
+    <header class="post" id="post-header">
+        <p class="section">Part I — FOUNDATIONS: The Decade Before AI</p>
+        <h1>DevPods: Cloud Workspaces Built for Engineers, Ready for Agents</h1>
+        <p class="byline">Željko Obrenović  ·  2026-10-20  ·  22 min read · <a class="spec-link" href="devpods.spec.html">View spec</a></p>
+        <div class="tags" id="tags"></div>
+        <a href="assets/images/03-devpods/logo.jpeg" target="_blank" rel="noopener noreferrer" aria-label="Open header illustration at full size"><img class="logo" src="assets/images/03-devpods/logo.jpeg" alt=""></a>
+        <p class="logo-credit">Image generated by Google Gemini (gemini-3-pro-image-preview)</p>
+    </header>
+    <nav class="modality-tabs" id="modality-tabs" hidden role="tablist" aria-label="Reading formats"></nav>
+    <div id="content"></div>
+    <footer>
+        <nav class="post-nav"><a class="nav-back" href="index.html">RETROFITTED: How Uber Built AI-Native Engineering on a Decade of Developer Platforms</a><span class="nav-right"><a class="nav-prev" href="monorepos-and-one-build.html" title="From Two Services to One Build Command: Microservices, Monorepos and Bazel">← Previous</a><span class="nav-sep">&nbsp;|&nbsp;</span><a class="nav-next" href="contracts-and-context-propagation.html" title="The Hidden Foundations: Typed Contracts, Ownership Metadata and Trace Baggage">Next →</a></span></nav>
+    </footer>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script id="data" type="application/json">{"meta": {"title": "DevPods: Cloud Workspaces Built for Engineers, Ready for Agents", "date": "2026-10-20", "author": "Željko Obrenović", "excerpt": "What does a cloud development environment give a coding agent that a laptop cannot? Uber's DevPods show the answer: a standard, pre-warmed, disposable workspace that already holds the code, the build cache and the tools, so the same box that made monorepos usable for engineers became the place where background agents like Minion run.", "permalink": "devpods", "timetoread": "22 min read", "icon": "assets/icons/03-devpods.png", "logo": "assets/images/03-devpods/logo.jpeg", "logo_credit": "Image generated by Google Gemini (gemini-3-pro-image-preview)"}, "tags": [], "modalities": [{"key": "index", "label": "Article", "meta": {}, "blocks": [{"type": "markdown", "content": "> **IN THIS CHAPTER, YOU WILL:** Trace Uber's DevPods from a fix for monorepo-scale laptop pain to the workspace layer under its AI agents. You will see how flavors, warm pools, pre-built images and the \"mega DevPod\" work as far as the public record shows, and what a smaller company needs before a cloud workspace pays off.\n\n> **WHY IT MATTERS:** A background coding agent is only as good as the environment it wakes up in. If an engineer needs a day to get a working build, an agent will not get one at all; the workspace is where the \"AI-ready\" claim becomes true or false.\n\n> **KEY POINTS:**\n>\n> * **DevPods were built to solve a human problem, not an AI one.** Uber moved to per-language monorepos in 2017–2018, and the code, build artifacts and setup outgrew laptops. Cloud workspaces with build caches and build/test service levels were the answer; agents arrived later and found the environment ready.\n> * **What an agent needs from a workspace is what DevPods already standardized.** A known image, a warm cache, a single build command, isolation, parallelism and seconds-to-start. Uber added two things for the AI era: AI harnesses pre-installed in every pod and a \"mega DevPod\" holding every repository, so Minion can make cross-repository changes.\n> * **The workspace is a multiplier, not a foundation on its own.** A cloud box over an inconsistent build is a faster way to fail. For most companies the order is standard build first, scripted environment second, managed cloud workspace third, and a vendor sandbox is often enough for the agent tier.\n\n> **BUILT ON:** The per-language monorepos and Bazel ([From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html)), Uber's Kubernetes compute platform, the standard build contract that makes one top-level `AGENTS.md`/`CLAUDE.md` work, and the AIFX harness layer ([AIFX: Making the Coding Harness Swappable](aifx-harness-layer.html)) installed in every pod.\n\n<br>\nAsk an engineer who has set up a large codebase on a new laptop how long it took, and the answer is rarely \"an hour\". Toolchains, credentials, generated code, a cold build cache, a monorepo that takes twenty minutes to clone: each costs time, and each fails in its own way. Engineers absorb that cost once per laptop and then forget it. **A coding agent pays it on every task**, because each task wants a fresh, clean workspace, and it has no patience or tacit knowledge to fall back on when step seven of the setup guide is out of date.\n\n![An engineer climbs a setup staircase once while an agent faces the same staircase repeatedly, once per task.](assets/images/03-devpods/setup-cost-every-task.jpeg)\n**Figure 1:** *An engineer absorbs setup cost once per laptop; a coding agent pays it on every task unless the workspace is ready before it asks.*\n\nUber solved the human version of this problem years before agents existed. Its **DevPods** are cloud development environments: containers on Kubernetes, one \"flavor\" per monorepo, started from a pre-built image that already holds the repository and its build caches. In the October 2026 Pragmatic Engineer episode, Uber Distinguished Engineer Uday Kiran Medisetty told host Gergely Orosz that when the AI era arrived, \"even the agents need the similar workspaces and cloud boxes. And we are able to kind of latch on to that.\" Minion, Uber's background coding agent, runs on a DevPod; so does every interactive Claude Code, Codex or OpenCode session an engineer starts in the cloud.\n\nThis chapter explains what DevPods are, why they exist, what changed when agents became their users, and what a company without Uber's platform budget should copy. It is the third chapter of Part I: [Build What the Market Cannot Yet Sell: Uber's Pre-AI Platform Bets](build-what-does-not-exist.html) covers why Uber built so much in-house, [From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html) covers the monorepos and the standard build that DevPods depend on, and [The Hidden Foundations: Typed Contracts, Ownership Metadata and Trace Baggage](contracts-and-context-propagation.html) covers the less visible foundations (typed contracts, ownership data and trace baggage) that make an agent's work inside the workspace verifiable.\n\n## The Problem Uber Had: Monorepos That Outgrew the Laptop\n\nUber's 2022 engineering post on DevPods starts from the state of its code in 2017: \"thousands of repositories with 10+ programming languages, 4000+ services, 500+ Web Apps, 9+ build tools and 6+ configuration tools.\" Medisetty described the same period in the episode: every service had its own repository, there were \"at least two, three build systems, two, three testing systems\", and a central team that wanted to upgrade a library had to visit every repository. Around 2017–2018 Uber moved to **one monorepo per language** (Go, Java, iOS, Android and others), still deploying microservices, but from shared repositories with one build system, Bazel. The details of that move belong to [From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html).\n\nThe monorepos fixed dependency management and then created a new problem. The 2022 post says the local edit–build–run loop got slower: larger builds, several gigabytes of artifacts, and a setup that was hard to reproduce remotely. The largest monorepo held **over 70 million lines of code** by 2022. In the episode, Medisetty put it simply: once the repositories were big enough, \"it was pretty hard to run the build and… getting all of those systems set up on your local laptop.\"\n\nThree costs made the laptop the wrong unit of development at that scale:\n\n| Cost | What it looked like on a laptop | Why it grows with the monorepo |\n| --- | --- | --- |\n| **Setup** | Install toolchains, generate code, configure credentials, warm the cache | Every new tool, language or code generator adds a step; drift between laptops makes failures personal |\n| **Build and test time** | Cold Bazel builds, gigabytes of artifacts, a CPU shared with the IDE and video calls | Build graphs grow with the code; a laptop does not |\n| **Variance** | \"Works on my machine\"; different OS from production; no service level the platform team can promise | The platform team cannot set a build-time target on hardware it does not control |\n\nThe third row matters most for this book. Medisetty said the cloud boxes let Uber \"have really good SLAs on your build time, on your test time.\" A **service level on the inner loop** is only possible when the platform team owns the machine. That ownership is what later made the same environment usable by agents, which need predictability more than people do.\n\n## What Uber Built: DevPods, Flavors and the Mega DevPod\n\n### The DevPod as documented in 2022\n\nThe fullest public description is the December 2022 Uber engineering post \"Devpod: Improving Developer Productivity at Uber with Remote Development\" (Strukčinskas, Badem and Jokubauskas). It is nearly four years old as of October 2026, so details may have changed. It describes:\n\n- **Containers on Kubernetes with persistent volumes**, so work survives restarts. A custom resource definition and a small **Devpod Operator** translate a request for a DevPod into standard Kubernetes resources, so there is no separate metadata database to keep in sync.\n- **Idle cost control** through volume snapshots: the operator reacts to VolumeSnapshotContents and PersistentVolumeClaims, deletes the containers of inactive environments and moves the disks of shut-down ones to cheaper storage.\n- **Images based on Debian**, to match Uber's production operating system, published on update channels (stable by default, release candidate, nightly, or pinned).\n- **Clusters outside the production data centers**, in five regions (Oregon, Virginia, the Netherlands, Mumbai and São Paulo) so engineers in Europe and Asia-Pacific get low latency.\n- **Up to 48 cores and 96 GB of RAM** per environment, with experiments above 90 cores.\n- **Six flavors** (Docker images): Go, Java, Android, Web, ML and Base. A **flavor** is a DevPod image prepared for one monorepo or kind of work, with its toolchain and caches.\n- **IDE choice**: VS Code (remote or in the browser), JetBrains Gateway over SSH, or vim and emacs in a terminal.\n\nThe post's numbers show what the move bought. Go builds were **2.5× faster at p95** for long builds and **1.8× faster at p75** than on laptops. `git status` stayed **under 4 seconds at p95** on the 70-million-line monorepo. More than **60% of Uber's software engineers** had adopted DevPods by November 2022. Provisioning took **2–3 minutes**, and the stated goal was **under 3 seconds through pre-provisioned pools**. Availability was capped at the cloud provider's 99.5%.\n\n### The DevPod as described in 2026\n\nThe episode picks up where the 2022 post left off, and it suggests the provisioning goal was met. Medisetty showed his own list of DevPods in the web interface and described creating one \"within a matter of seconds.\" When Orosz guessed that the speed came from keeping things warm, Medisetty confirmed it: the DevPods run on Kubernetes clusters \"on separate multiple clouds,\" \"everything is warmed up,\" and a new DevPod is cloned \"from the pre-built image\" with \"build caches, everything, repositories, everything, already cloned.\" Medisetty and Adam Huda's AI Engineer World's Fair 2026 talk, \"Agentic SDLC at Uber,\" adds a name for the warm capacity: Uber keeps pre-provisioned Kubernetes **\"balloon pods\"** ready for allocation, with repository snapshots and search indexes already present.\n\nTwo further changes are AI-era additions, both from the episode:\n\n1. **AI tools installed by default.** \"You don't have to go through even installing\" Claude Code, Codex or OpenCode; \"they're all there in the DevPod.\" The harnesses are wrapped by AIFX, Uber's harness layer, so settings, skills and plugins follow the user between a laptop and any DevPod ([AIFX: Making the Coding Harness Swappable](aifx-harness-layer.html)). Medisetty said this made it easy \"even for non-engineers in the company to create a DevPod and start playing with\" coding agents.\n2. **The mega DevPod.** \"We also created like now a mega dev pod with all of the repositories… because then I can have my agents create PRs across the repositories.\" Later in the episode he described \"a devpod flavor that has all of the repositories, and optimized for minion usage.\" The AI Engineer talk describes the same change as per-language DevPods giving way to \"a mega DevPod\" that \"brings all repositories into one environment for autonomous coding.\"\n\n"}, {"type": "mermaid", "content": "flowchart LR\n    U[\"Engineer, Minion or non-engineer\"] -->|\"request a DevPod of a flavor\"| W[\"DevPod web, CLI or agent platform\"]\n    W --> OP[\"Devpod Operator on Kubernetes\"]\n    POOL[\"Warm pool of pre-provisioned pods\"] --> OP\n    IMG[\"Pre-built flavor image\"] --> OP\n    SNAP[\"Repository snapshot, build cache, search index\"] --> OP\n    OP --> POD[\"Running DevPod\"]\n    POD --> H[\"Harnesses via AIFX: Claude Code, Codex, OpenCode\"]\n    POD --> B[\"One build and test command: Bazel\"]\n    POD -->|\"idle\"| S[\"Snapshot to cheaper storage\"]"}, {"type": "markdown", "content": "**Figure 2:** *A DevPod is assembled from parts that already exist before anyone asks for it: a warm pod, a pre-built image and a snapshot of the code and caches. The request only binds them. The operator and snapshot behaviour are from Uber's 2022 post; the warm pool and pre-installed harnesses are from the 2026 episode and AI Engineer talk; how the parts are wired in 2026 is not documented.*\n\n### A short timeline\n\n| When | State | Source |\n| --- | --- | --- |\n| 2017 | Thousands of repositories, 9+ build tools; the \"before\" picture | Uber blog, Dec 2022 |\n| 2017–2018 | Move to per-language monorepos on Bazel | Podcast, Oct 2026; Uber blog (Go monorepo), May 2020 |\n| 2017 (per the episode) | DevPods \"being developed\", in Orosz's recollection; the show notes say Uber \"created\" them in 2017 | Podcast and show notes, Oct 2026 |\n| Nov 2022 | 60%+ of engineers on DevPods; six flavors; provisioning 2–3 min, goal under 3 s | Uber blog, Dec 2022 |\n| 2025 | Minion, the background coding agent, built on DevPods | Show notes, Oct 2026 |\n| 2026 | Seconds to start from warm pools; harnesses pre-installed; mega DevPod for Minion | Podcast, Oct 2026; AI Engineer talk, 2026 |\n\nThe dates need a caveat. The 2022 post uses 2017 as the problem baseline and implies that DevPods followed the monorepo move. No public source found for this book dates the first DevPod to 2017. The safest reading is that **DevPods grew out of the 2017–2018 monorepo move (the episode dates them to 2017) and were mainstream by 2022**.\n\n### What changes when the user is an agent\n\nA human uses one or two DevPods for days. An agent platform may want hundreds of them for minutes each. The episode and the AI Engineer talk describe three adjustments, and each one turns a convenience into a requirement:\n\n- **Start time moves from \"nice\" to \"load-bearing\".** A two-minute provisioning time is tolerable once a day. For an agent that starts a task from a Slack message, two minutes per task dominates the wait and invites shortcuts, such as reusing a dirty workspace. Warm pools and snapshots are what make **one task, one fresh workspace** affordable.\n- **Scope moves from one repository to all of them.** An engineer chooses a flavor because they know which monorepo they work in. An agent following a Slack thread may need to change a Go service, its Java client and a web screen. The **mega DevPod** removes the choice: every repository, every toolchain, and the context to search across them. Medisetty said Minion \"can work across repositories and generate one PR or multiple PRs across repositories based on the plan and spec.\" Minion's design belongs to [Minion: Background Coding Agents on the Mega DevPod](minion.html).\n- **Instructions move from people to files.** Because the build and test commands are the same in every module, Medisetty said Uber could write one `AGENTS.md` and one `CLAUDE.md` \"at the top folder\": \"Once we set up the top level files, most teams will get like really good value out of the bat. They don't have to like really go into per module setup.\" The workspace makes those files true: the commands they describe are installed and warm.\n\n"}, {"type": "mermaid", "content": "flowchart TB\n    subgraph Interactive[\"Interactive DevPods\"]\n        F1[\"Go flavor\"]\n        F2[\"Java flavor\"]\n        F3[\"Android, Web, ML, Base flavors\"]\n    end\n    subgraph Agent[\"Agent DevPods\"]\n        M[\"Mega DevPod: all repositories\"]\n    end\n    E[\"Engineer in IDE or harness\"] --> F1\n    E --> F2\n    N[\"Non-engineer trying a coding agent\"] --> F3\n    S[\"Slack or web request\"] --> MIN[\"Minion\"]\n    MIN --> M\n    M -->|\"one or many PRs\"| PR[\"Pull requests across repositories\"]\n    F1 --> PR\n    F2 --> PR"}, {"type": "markdown", "content": "**Figure 3:** *One workspace system, three kinds of user. People pick a flavor matched to their monorepo; Minion gets a flavor holding every repository so one plan can produce pull requests across repositories. The grouping is the author's reading of the episode, not an Uber diagram.*\n\n## The Foundation Underneath\n\nThe episode's show notes compress the history into one line: \"Minion – built in 2025 – is powered by DevPods, which Uber created in 2017.\" That sentence hides a stack of dependencies. A DevPod is fast and useful only because of what sits beneath it, and the same is true of an agent running inside one.\n\n| Foundation | What DevPods take from it | What breaks without it |\n| --- | --- | --- |\n| **Per-language monorepos** ([From Two Services to One Build Command: Microservices, Monorepos and Bazel](monorepos-and-one-build.html)) | A small number of repositories to snapshot, cache and pre-clone; a mega DevPod is feasible because \"all repositories\" is a short list | With thousands of repositories, \"clone everything\" is neither fast nor meaningful |\n| **Bazel and the standard build contract** | One build and test command per module; hermetic, cacheable outputs that can be pre-warmed into an image | A warm cache is useless if every module builds differently; agents need per-module instructions |\n| **Kubernetes compute platform** | Scheduling, persistent volumes, snapshots, operators; Uber completed its own move from Mesos to Kubernetes in 2024 (Uber blog, Apr 2025) | A bespoke VM fleet for developer boxes, run by a team that also has to build the developer experience |\n| **Ownership and access control** ([The Hidden Foundations: Typed Contracts, Ownership Metadata and Trace Baggage](contracts-and-context-propagation.html)) | Which credentials a pod carries, what the user (or the agent acting for a user) may read and change | Agents get either too much access or none |\n| **AIFX** ([AIFX: Making the Coding Harness Swappable](aifx-harness-layer.html)) | Harnesses, plugins, skills and settings that arrive pre-configured in every pod | Each pod is a fresh install; settings drift between laptop and cloud |\n| **The platform organization** | A developer-platform team with a mandate since Uber's 2014 \"Programs & Platforms\" split (Pragmatic Engineer, Sep 2021) | Nobody owns the inner loop as a product |\n\nThe second row is the one most often skipped by imitators. A DevPod pre-loads a build cache; that cache is only valid if builds are **deterministic and shared**. Bazel provides this, which is why the 2022 post's 2.5× speedup on Go builds is plausible: the pod is not only a bigger machine, it starts with the work already done. A company whose builds are not cacheable gets a bigger machine and a cold start.\n\n![A rack of pre-warmed workspace pods dispatched one per agent task, with used pods archived and a cluttered reused pod crossed out.](assets/images/03-devpods/warm-pool-fresh-workspace.jpeg)\n**Figure 4:** *A warm pool of pre-built workspaces with code, caches and tools already present makes one fresh workspace per agent task affordable.*\n\nThe cost of building all this was large and spread over years. Uber's 2022 post lists an operator, snapshotting, five regions, update channels, IDE integrations and cost controls, all before agents. The AI-era additions were small by comparison: pre-install the harnesses, add a flavor with every repository, and keep enough warm capacity to start in seconds. That gap between a decade of platform work and a year of AI work is the book's thesis, set out in [The Harness Is the Easy Part: Why Uber's AI Tooling Took a Decade and a Year](the-harness-is-the-easy-part.html).\n\n## What an Agent Needs From a Workspace\n\nStated as properties rather than products, the list below is what DevPods give agents that a laptop cannot. It is also the checklist I would use to judge any agent sandbox, bought or built.\n\n| Property | Why the agent needs it | Laptop | DevPod (as described) |\n| --- | --- | --- | --- |\n| **Known, reproducible image** | The agent cannot debug its own toolchain; a failure must mean the code, not the machine | Drifts per person | Pre-built flavor images on update channels |\n| **Warm state** | Cold clones and builds burn minutes and tokens before work begins | Warm only for the owner's current branch | Snapshots with repositories, build caches and search indexes |\n| **Seconds to start** | One fresh workspace per task keeps runs independent | Not applicable | Warm pools (\"balloon pods\") |\n| **Parallelism** | One engineer may run several agent sessions; a platform runs many | One machine | \"You can have any number of them\" (episode) |\n| **Isolation** | A misbehaving agent must not damage the user's machine or other runs | Shares the user's machine, files and credentials | Separate containers on separate clusters |\n| **Long runs while the user is away** | Background agents work while the laptop sleeps | Stops when the lid closes | Runs in the cloud |\n| **Full code reach** | Cross-repository changes need every repository and a way to search it | Usually one or two repositories cloned | Mega DevPod |\n| **Same commands as humans** | Instructions in `AGENTS.md` work only if the environment matches | Varies | One build and test command per module |\n| **Platform-owned service levels** | Build and test time can be targeted, measured and improved | No | Build and test SLAs (episode) |\n| **Cost control** | Idle agent workspaces are pure waste | Sunk cost | Snapshot and delete idle pods |\n\nTwo properties are missing from the table because the public record does not describe them: **network egress policy** for agent pods and **credential scoping** for an agent acting on behalf of a user. Uber's May 2026 post \"Solving the Identity Crisis for AI Agents\" describes tokens carrying an actor chain (user, then agent) and short-lived, audience-scoped exchanges; how that applies inside a DevPod has not been described. Both are properties a reader's own design must decide explicitly.\n\n## Design Choices and Trade-offs\n\n| Choice | Option A | Option B | When A is right | When B is right |\n| --- | --- | --- | --- | --- |\n| **Where development runs** | Laptop with a scripted setup | Cloud workspace | Small repositories, cold builds under a few minutes, few languages | Large monorepos, long builds, many new joiners, background agents |\n| **Workspace scope** | Per-repository flavors | One \"mega\" workspace with everything | Humans who work in one area; smaller images; faster snapshots | Agents making cross-repository changes; questions that span codebases |\n| **Lifetime** | Persistent, per person | Ephemeral, per task | Interactive work with state worth keeping | Agent runs; reproducibility; clean blast radius |\n| **Start-up model** | Provision on request | Warm pool of pre-built pods | Low volume; cost matters more than latency | High volume of short agent tasks; interactive \"seconds to start\" |\n| **Build or buy** | Build on your own Kubernetes | Buy a managed CDE or agent sandbox | You already run a large Kubernetes platform and need deep integration with internal build caches, identity and networks | You have no platform team for it; your code and build fit a vendor's model |\n| **Network placement** | Inside the corporate network, near internal services | Isolated, with brokered access | Agents and humans must call internal services and staging | Untrusted or experimental agents; regulatory isolation |\n\nThe mega DevPod is a trade-off, not an upgrade. A workspace with every repository is larger to snapshot and slower to refresh, and it gives an agent a wider area it can change. Uber's answer, as described, is to keep per-language flavors for people and use the mega flavor for Minion, where cross-repository reach is the point. A plausible reading — not a documented description — is that the mega DevPod depends heavily on snapshotting and pre-built search indexes, because cloning and indexing every repository per task would defeat the seconds-to-start goal.\n\n## Elsewhere in the Industry\n\n**GitHub (2021).** In August 2021 GitHub wrote that its own engineers had moved to Codespaces, its cloud development environment product. Bootstrapping a codespace for the github.com repository, almost 13 GB on disk, took upwards of 45 minutes. A shallow clone, a nightly pre-built image and pools of pre-built codespaces brought it down to about **10 seconds**. The path is the same as Uber's: the cost was setup time, and the fix was doing the setup before anyone asked for a workspace.\n\n**Stripe (2026).** Stripe's February 2026 posts on \"Minions\", its one-shot coding agents, describe each run starting on an isolated, pre-warmed **devbox**, ready in about 10 seconds; the devboxes are AWS EC2 instances kept warm in a pool. More than a thousand minion-produced pull requests are merged each week, and humans review all of them. The shape matches Uber's: a pre-warmed, isolated workspace per run, with the agent's speed bounded by how quickly that workspace is ready. One difference: Stripe's devboxes are virtual machines, Uber's DevPods are containers.\n\n**Gitpod, now Ona (2025).** In September 2025 Gitpod, one of the best-known cloud development environment vendors, renamed itself **Ona** and repositioned as a platform for software engineering agents, with sandboxed environments, agents and guardrails as its three parts (The Register and InfoQ, Sep 2025). The vendor market followed the same arc as Uber's internal platform: the workspace was built for people and found its second customer in agents.\n\nThe vendor-hosted agents (GitHub's Copilot coding agent on GitHub Actions, May 2025; OpenAI's Codex Cloud) supply a workspace too, but it is generic: a fresh runner that knows only what the repository's own setup configuration tells it. Spotify's December 2025 post on its background coding agent, Honk, makes the opposite point: its agent runs in a deliberately limited sandbox with few binaries and minimal access to other systems, which the authors tie to predictability and security. Thoughtworks put \"sandboxed execution for coding agents\" in the Trial ring of its April 2026 Technology Radar. The industry agrees that agents need a workspace; it does not yet agree on **how much of the company should be reachable from it**.\n\n## If You Are Not Uber\n\nThe question is not \"should we build DevPods?\" It is \"what is the cheapest way to give people and agents a reproducible, warm workspace?\" For most companies the answer is cheaper than Uber's.\n\n**Prerequisites, in order.** (1) A build that works from a clean checkout with one documented command per module. (2) A scripted environment, such as a dev container definition or a Nix or Docker setup, that brings a clean machine to a working build without human steps. (3) A cacheable build, so pre-warming is worth anything. Without the first two, a cloud workspace only moves a broken setup somewhere else.\n\n| Company size | Minimum viable version | Buy, build or open source | What not to copy |\n| --- | --- | --- | --- |\n| **≈50 engineers** | A dev container definition in each repository, used on laptops and by a vendor agent's runner; one `AGENTS.md` with the build and test commands | Buy: a hosted CDE or the agent vendor's sandbox; open-source dev container tooling | A Kubernetes operator, regions, flavors; a \"mega\" workspace when you have a few repositories that fit on a laptop |\n| **≈500 engineers** | A managed CDE for the largest repositories, with prebuilds on a nightly image and a shared remote build cache; agents run in the same images | Buy a CDE (hosted or self-hosted); build the image pipeline and cache yourself | Building your own CDE control plane; per-person persistent pods for agents |\n| **≈5,000 engineers** | A platform-owned workspace service: flavors per monorepo, warm pools, snapshots, idle cost control, build and test service levels, and an agent flavor with wider repository reach | Build on your Kubernetes platform if you already run one well; otherwise a self-hosted CDE vendor with deep customization | Opening every repository and every internal service to every agent by default |\n\n**Sequencing.** Measure first: time from a clean machine to a green build, and p50/p95 build time for the largest repository. If the first is under an hour and the second under a few minutes, laptops plus a vendor sandbox for agents are probably enough. If not, fix the build before buying workspaces. Then give agents the same image people use, so instructions and results transfer.\n\n**Where Uber's choice does not hold.** Uber built DevPods because no vendor met its scale, network and security constraints, the pattern [Build What the Market Cannot Yet Sell: Uber's Pre-AI Platform Bets](build-what-does-not-exist.html) describes. In 2026 the vendor market is mature, and most companies' repositories fit a vendor's model. Building is right only when the workspace must sit deep inside internal networks, identity and build caches that a vendor cannot reach.\n\n## Failure Modes\n\n- **The fast box on a slow build.** A company buys cloud workspaces before making builds cacheable. Workspaces start in seconds and then spend ten minutes building. Agents time out or burn tokens waiting.\n- **Image rot.** The pre-built image drifts from what CI runs. The agent's checks pass in the workspace and fail in CI, and the agent cannot tell why. The fix is one image pipeline feeding both, which the 2022 post's update channels hint at.\n- **The pet workspace.** Agent runs reuse long-lived workspaces to save start-up time. State from one task leaks into the next; results stop being reproducible. Warm pools exist to avoid this.\n- **The skeleton key.** A mega workspace with every repository also carries every credential the user has. An agent following a prompt-injected instruction can change code far outside its task. The answer is scoped credentials and policy on what an agent may push, not a smaller clone.\n- **Idle spend.** Workspaces are cheap individually and expensive as a fleet; agent workspaces left running after a task are pure waste. Uber's snapshot-and-delete approach (2022) and its spend tiers for background agents ([Spend Tiers, Not Spend Caps: Governing Token Costs](token-spend-governance.html)) address different halves of this.\n- **Cloud availability as a development outage.** The 2022 post notes a 99.5% availability cap from the cloud provider. When the workspace platform fails, both engineers and agents stop. A laptop fallback path is worth keeping.\n\n## What the Record Does Not Say\n\n- **When DevPods started.** The episode and show notes say 2017; Uber's 2022 post uses 2017 as the \"before\" state. No public source gives a launch date.\n- **Current scale.** The last public adoption figure is \"over 60%\" of engineers in November 2022. How many DevPods run at once, and how many of them are agents, is not public.\n- **How the mega DevPod is built.** Its size, how it stays fresh, whether it uses sparse checkouts or virtual file systems, and how long a snapshot takes to refresh are not described.\n- **Which clouds.** Medisetty said \"separate multiple clouds\"; Uber's compute runs on its own data centers, Oracle Cloud and Google Cloud (Uber blog, Apr 2025), but the DevPod clusters' providers are not named.\n- **Security model for agent pods.** Network egress, credential scoping and audit for an agent inside a DevPod are not described, beyond the general agent-identity design in the May 2026 post.\n- **Cost.** Neither the per-pod cost nor the cost of warm capacity is public.\n\n## Questions to Ask\n\n1. How long does it take, from a clean machine, to get a green build and test run of our largest repository? Who owns that number?\n2. Can an agent run our build and tests from a fresh checkout using only what is written in one instruction file?\n3. Is our build cacheable and shared, so that pre-warming a workspace saves real time?\n4. Do agents run in the same image as our CI and our engineers? If not, which one is the truth?\n5. Does each agent task get a fresh workspace? If not, what state leaks between tasks?\n6. Which repositories and which credentials does an agent workspace need, and which does it have?\n7. What is the start-up time of an agent workspace, and what share of a typical agent run does it consume?\n8. Who pays for idle workspaces, and what deletes them?\n9. Would a vendor's sandbox meet our network and identity needs, and what would we have to build around it?\n\n## From Workspaces to Contracts\n\nA DevPod gives an agent a place to work: the code, the tools and a warm build. It does not tell the agent which service owns a field, who to ask about a failing test, or how to send one test request to a branch build among thousands of production services. Those answers come from foundations that are even less visible than the workspace: the typed interface definitions, the ownership graph, the trace baggage and the standardized frameworks that [The Hidden Foundations: Typed Contracts, Ownership Metadata and Trace Baggage](contracts-and-context-propagation.html) covers next.\n\n## Sources and Evidence\n\n### The source episode\n\n- [Uber's AI infra, from the inside](https://newsletter.pragmaticengineer.com/p/ubers-ai-infra-from-the-inside) — *The Pragmatic Engineer* podcast, Gergely Orosz with Uday Kiran Medisetty, 2026. DevPod backstory, flavors, warm pools, multiple clouds, pre-installed harnesses, mega DevPod and the Minion flavor; show notes for the \"created in 2017\" framing.\n\n### Uber engineering sources\n\n- [Devpod: Improving Developer Productivity at Uber with Remote Development](https://www.uber.com/blog/devpod-improving-developer-productivity-at-uber/) — Uber blog, Strukčinskas, Badem and Jokubauskas, 2022. Architecture, flavors, regions, performance, adoption, provisioning goal.\n- [Agentic SDLC at Uber: Building Blocks for Uber's Software Factory](https://ai.engineer/talks/17-YSUHo6Lk-agentic-sdlc-at-uber-building-blocks-ubers) — AI Engineer World's Fair talk, Medisetty and Adam Huda, 2026. Mega DevPod, balloon pods, snapshots and search indexes, Minion stopping at a draft PR.\n- [Building Uber's Go Monorepo with Bazel](https://www.uber.com/blog/go-monorepo-bazel/) — Uber blog, Zhongpeng Lin, 2020. Timing of the Go monorepo move.\n- [Migrating Uber's Compute Platform to Kubernetes: A Technical Journey](https://www.uber.com/blog/migrating-ubers-compute-platform-to-kubernetes-a-technical-journey/) — Uber blog, Bhave and Krishnan, 2025. Kubernetes as Uber's compute platform; Oracle Cloud and Google Cloud.\n- [Solving the Identity Crisis for AI Agents](https://www.uber.com/us/en/blog/solving-the-agent-identity-crisis/) — Uber blog, Mathew, Borole and Huang, 2026. Actor-chain tokens for agents acting for users.\n- [The Platform and Program Split at Uber](https://newsletter.pragmaticengineer.com/p/program-platform-split-uber) — *The Pragmatic Engineer*, Gergely Orosz, 2021. The 2014 origin of Uber's platform organization.\n\n### Industry and research sources\n\n- [GitHub's Engineering Team has moved to Codespaces](https://github.blog/2021-08-11-githubs-engineering-team-moved-codespaces/) — The GitHub Blog, 2021. 45-minute bootstrap reduced to about 10 seconds with prebuilds.\n- [Minions: Stripe's one-shot, end-to-end coding agents](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents) and [Part 2](https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2) — Stripe Dev Blog, Alistair Gray, 2026. Pre-warmed devboxes in about 10 seconds; EC2 warm pool; human review of all PRs.\n- [Gitpod reinvents itself as Ona in pivot to AI agent platform](https://www.theregister.com/2025/09/03/gitpod_rebrands_as_ona/) — The Register, 2025; and [InfoQ coverage](https://www.infoq.com/news/2025/09/gitpod-ona), 2025. The CDE vendor market turning to agents.\n- [GitHub Copilot: Meet the new coding agent](https://github.blog/news-insights/product-news/github-copilot-meet-the-new-coding-agent/) — The GitHub Blog, Thomas Dohmke, 2025. Vendor-hosted agent workspace on GitHub Actions.\n- [Background Coding Agents: Predictable Results Through Strong Feedback Loops (Honk, Part 3)](https://engineering.atspotify.com/2025/12/feedback-loops-background-coding-agents-part-3) — Spotify Engineering, Charas and Bruggmann, 2025. Limited sandbox for predictability and security.\n- [Sandboxed execution for coding agents](https://www.thoughtworks.com/radar/techniques/sandboxed-execution-for-coding-agents) — Thoughtworks Technology Radar, Vol. 34, 2026. Sandboxing as a baseline; ephemeral versus persistent trade-offs.\n\nStatements about Uber's AI-era systems are Uber's own account unless another source is cited; recommendations and labeled inferences are the author's judgement.\n"}]}]}</script>
+<script>
+    (function () {
+        const data = JSON.parse(document.getElementById('data').textContent);
+        const root = document.getElementById('content');
+
+        const postId = (data.meta && data.meta.id) ? String(data.meta.id) : '';
+        const postStatusRaw = (data.meta && data.meta.status) ? String(data.meta.status) : '';
+        if (postId || postStatusRaw) {
+            const header = document.getElementById('post-header');
+            let sectionEl = header.querySelector('p.section');
+            if (!sectionEl) {
+                sectionEl = document.createElement('p');
+                sectionEl.className = 'section';
+                header.insertBefore(sectionEl, header.firstChild);
+            }
+            // Status pill goes first, then a " / " separator before the existing
+            // content (section name and/or id).
+            if (postStatusRaw) {
+                const parts = postStatusRaw.split(':');
+                const statusName = parts[0].trim();
+                const statusColor = (parts[1] || '').trim();
+                const wrap = document.createElement('span');
+                wrap.className = 'post-status';
+                const dot = document.createElement('span');
+                dot.className = 'status-dot';
+                if (statusColor) dot.style.background = statusColor;
+                wrap.appendChild(dot);
+                wrap.appendChild(document.createTextNode(statusName));
+                if (sectionEl.firstChild) {
+                    sectionEl.insertBefore(document.createTextNode(' • '), sectionEl.firstChild);
+                    sectionEl.insertBefore(wrap, sectionEl.firstChild);
+                } else {
+                    sectionEl.appendChild(wrap);
+                }
+            }
+            if (postId) {
+                if (sectionEl.firstChild) sectionEl.appendChild(document.createTextNode(' • '));
+                sectionEl.appendChild(document.createTextNode(postId));
+            }
+        }
+
+        const tagsHost = document.getElementById('tags');
+        (data.tags || []).forEach(function (t) {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.textContent = t;
+            tagsHost.appendChild(span);
+        });
+
+        // Minimal markdown renderer. Supports: ATX headings, paragraphs, blockquotes,
+        // unordered/ordered lists, fenced code, inline code, bold/italic/strikethrough, links, images, hr.
+        // Sufficient for the posts in this repo; replace with a fuller parser if needed.
+        function renderMarkdown(src) {
+            const lines = src.replace(/\r\n/g, '\n').split('\n');
+            const out = [];
+            let i = 0;
+
+            const bullet = /^(\s*)([-*])\s+(.*)$/;
+            const ordered = /^(\s*)(\d+)\.\s+(.*)$/;
+            const tableRow = /^\s*\|(.+)\|\s*$/;
+            const tableSep = /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/;
+
+            function splitRow(s) {
+                let t = s.trim();
+                if (t.startsWith('|')) t = t.slice(1);
+                if (t.endsWith('|')) t = t.slice(0, -1);
+                return t.split('|').map(c => c.trim());
+            }
+
+            function inline(s) {
+                // Posts are trusted content, so raw HTML passes through unescaped
+                // (some posts embed inline <blockquote>, <div>, etc.).
+                // Stray ampersands still get fixed up.
+                s = s.replace(/&(?![a-zA-Z]+;|#\d+;)/g, '&amp;');
+                s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<a class="image-link" href="$2" target="_blank" rel="noopener noreferrer"><img alt="$1" src="$2"></a>');
+                s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+                s = s.replace(/`([^`]+)`/g, function (_, c) {
+                    return '<code>' + c.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+                });
+                // Bold/italic, including nested combinations: ***x***,
+                // **a *b*** / ***a* b** (shared delimiters), and **a *b* c**.
+                s = s.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+                s = s.replace(/\*\*([^*\n]+)\*([^*\n]+)\*\*\*/g, '<strong>$1<em>$2</em></strong>');
+                s = s.replace(/\*\*\*([^*\n]+)\*([^*\n]+)\*\*/g, '<strong><em>$1</em>$2</strong>');
+                s = s.replace(/\*\*((?:[^*\n]|\*(?!\*)[^*\n]+\*(?!\*))+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+                s = s.replace(/~~([^~\n]+)~~/g, '<del>$1</del>');
+                s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+                return s;
+            }
+
+            while (i < lines.length) {
+                const line = lines[i];
+                if (!line.trim()) {
+                    i++;
+                    continue;
+                }
+
+                const fence = line.match(/^```(\w*)\s*$/);
+                if (fence) {
+                    i++;
+                    const buf = [];
+                    while (i < lines.length && !/^```\s*$/.test(lines[i])) {
+                        buf.push(lines[i]);
+                        i++;
+                    }
+                    i++;
+                    const escaped = buf.join('\n').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const cls = fence[1] ? ' class="lang-' + fence[1] + '"' : '';
+                    out.push('<pre><code' + cls + '>' + escaped + '</code></pre>');
+                    continue;
+                }
+
+                const h = line.match(/^(#{1,6})\s+(.*)$/);
+                if (h) {
+                    out.push('<h' + h[1].length + '>' + inline(h[2]) + '</h' + h[1].length + '>');
+                    i++;
+                    continue;
+                }
+
+                if (/^\s*(?:-\s*){3,}\s*$/.test(line) || /^\s*\*{3,}\s*$/.test(line)) {
+                    out.push('<hr>');
+                    i++;
+                    continue;
+                }
+
+                if (/^>\s?/.test(line)) {
+                    const buf = [];
+                    while (i < lines.length && /^>\s?/.test(lines[i])) {
+                        buf.push(lines[i].replace(/^>\s?/, ''));
+                        i++;
+                    }
+                    out.push('<blockquote>' + renderMarkdown(buf.join('\n')) + '</blockquote>');
+                    continue;
+                }
+
+                if (tableRow.test(line) && i + 1 < lines.length && tableSep.test(lines[i + 1])) {
+                    const headers = splitRow(line);
+                    const aligns = splitRow(lines[i + 1]).map(function (c) {
+                        c = c.trim();
+                        const left = c.startsWith(':'), right = c.endsWith(':');
+                        return left && right ? 'center' : right ? 'num' : '';
+                    });
+                    const cellOpen = function (tag, idx) {
+                        return aligns[idx] ? '<' + tag + ' class="' + aligns[idx] + '">' : '<' + tag + '>';
+                    };
+                    i += 2;
+                    const rows = [];
+                    while (i < lines.length && tableRow.test(lines[i])) {
+                        rows.push(splitRow(lines[i]));
+                        i++;
+                    }
+                    let html = '<div class="table-wrap"><table><thead><tr>';
+                    headers.forEach((h, idx) => {
+                        html += cellOpen('th', idx) + inline(h) + '</th>';
+                    });
+                    html += '</tr></thead><tbody>';
+                    rows.forEach(r => {
+                        html += '<tr>';
+                        r.forEach((c, idx) => {
+                            html += cellOpen('td', idx) + inline(c) + '</td>';
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</tbody></table></div>';
+                    out.push(html);
+                    continue;
+                }
+
+                if (bullet.test(line) || ordered.test(line)) {
+                    // Indent of the first bullet defines this list's base level.
+                    // Deeper-indented bullets become nested lists (rendered by
+                    // recursing into renderMarkdown). Same-or-less indent at a
+                    // bullet starts a sibling item (or ends the list).
+                    const firstMatch = line.match(bullet) || line.match(ordered);
+                    const baseIndent = firstMatch[1].length;
+                    const isOrdered = ordered.test(line);
+                    const items = [];
+                    let hasTask = false;
+                    while (i < lines.length) {
+                        const cur = lines[i];
+                        if (!cur.trim()) {
+                            // blank line breaks the list (matches CommonMark-ish behaviour)
+                            i++;
+                            break;
+                        }
+                        const mBul = cur.match(bullet);
+                        const mOrd = cur.match(ordered);
+                        const m = mBul || mOrd;
+                        if (!m) break;
+                        if (m[1].length < baseIndent) break;
+                        if (m[1].length > baseIndent) break; // shouldn't happen at top of loop
+                        // Same-type check: switching between -/* and 1. closes the list
+                        if (isOrdered !== !!mOrd) break;
+
+                        const itemBuf = [m[3]];
+                        const nestedBuf = [];
+                        i++;
+                        while (i < lines.length) {
+                            const nxt = lines[i];
+                            if (!nxt.trim()) break;
+                            const nBul = nxt.match(bullet);
+                            const nOrd = nxt.match(ordered);
+                            const nm = nBul || nOrd;
+                            if (nm) {
+                                if (nm[1].length > baseIndent) {
+                                    // nested list line — dedent and stash
+                                    nestedBuf.push(nxt.slice(baseIndent + 2));
+                                    i++;
+                                    continue;
+                                }
+                                // sibling or end of list
+                                break;
+                            }
+                            // Plain continuation text
+                            if (nestedBuf.length) {
+                                // continuation inside the nested block
+                                nestedBuf.push(nxt.slice(baseIndent + 2));
+                            } else {
+                                itemBuf.push(nxt.trim());
+                            }
+                            i++;
+                        }
+
+                        // GitHub-style task items: "- [ ] text" / "- [x] text"
+                        // render as (clickable, unpersisted) checkboxes.
+                        const itemText = itemBuf.join('\n');
+                        const task = !isOrdered && itemText.match(/^\[( |x|X)\]\s+/);
+                        let liHtml = inline(task ? itemText.slice(task[0].length) : itemText);
+                        if (task) {
+                            hasTask = true;
+                            liHtml = '<input type="checkbox"' + (task[1] === ' ' ? '' : ' checked') + '>' + liHtml;
+                        }
+                        if (nestedBuf.length) {
+                            liHtml += renderMarkdown(nestedBuf.join('\n'));
+                        }
+                        items.push(task ? '<li class="task">' + liHtml + '</li>' : '<li>' + liHtml + '</li>');
+                    }
+                    out.push((isOrdered ? '<ol>' : (hasTask ? '<ul class="task-list">' : '<ul>')) + items.join('') + (isOrdered ? '</ol>' : '</ul>'));
+                    continue;
+                }
+
+                const buf = [line];
+                i++;
+                while (i < lines.length && lines[i].trim() && !/^#{1,6}\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !bullet.test(lines[i]) && !ordered.test(lines[i]) && !/^```/.test(lines[i]) && !tableRow.test(lines[i])) {
+                    buf.push(lines[i]);
+                    i++;
+                }
+                out.push('<p>' + inline(buf.join(' ')) + '</p>');
+            }
+            return out.join('\n');
+        }
+
+        // Block dispatcher. New block types plug in here.
+        const renderers = {
+            markdown: function (block) {
+                const div = document.createElement('div');
+                div.innerHTML = renderMarkdown(block.content);
+                return div;
+            },
+            mermaid: function (block) {
+                // Mermaid scans elements with class "mermaid" whose textContent
+                // is the diagram source. We collect these nodes and run
+                // mermaid.run() once after all blocks are in the DOM.
+                const div = document.createElement('div');
+                div.className = 'mermaid';
+                div.textContent = block.content;
+                return div;
+            },
+            'force-graph': function (block) {
+                // build.py emits parsed JSON: {nodes:[{id,size}], links:[{source,target}]}.
+                // We instantiate force-graph after the container is in the DOM
+                // so it can measure its own width.
+                const div = document.createElement('div');
+                div.className = 'force-graph';
+                const data = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.ForceGraph) return;
+                    const maxSize = data.nodes.reduce((m, n) => Math.max(m, n.size || 1), 1);
+                    window.ForceGraph()(div)
+                        .graphData(data)
+                        .width(div.clientWidth)
+                        .height(div.clientHeight)
+                        .nodeRelSize(4)
+                        .nodeVal(n => Math.max(20 * (n.size || 1) / maxSize, 0.001))
+                        .nodeLabel(n => n.id + ' (' + (n.size || 1) + ')')
+                        .nodeColor(() => 'rgba(135, 206, 235, 0.7)')
+                        .linkColor(() => 'rgba(60, 60, 60, 0.4)')
+                        .linkDirectionalArrowLength(4)
+                        .linkDirectionalArrowRelPos(1)
+                        .linkWidth(1);
+                });
+                return div;
+            },
+            'bubble-chart': function (block) {
+                // build.py emits {nodes:[{name,size}]}. Renders a D3 circle-pack
+                // SVG (same shape as the obren.io reference, just inline).
+                const wrap = document.createElement('div');
+                wrap.className = 'bubble-chart';
+                const payload = JSON.parse(block.content);
+                requestAnimationFrame(function () {
+                    if (!window.d3) return;
+                    const diameter = 480;
+                    const fill = '#c0deed';
+                    const textColor = '#111111';
+                    const fontSize = 12;
+
+                    const svg = window.d3.select(wrap).append('svg')
+                        .attr('viewBox', '0 0 ' + diameter + ' ' + diameter)
+                        .attr('width', diameter)
+                        .attr('height', diameter);
+
+                    const root = window.d3.hierarchy({children: payload.nodes})
+                        .sum(d => d.size || 0)
+                        .sort((a, b) => b.value - a.value);
+
+                    window.d3.pack().size([diameter, diameter]).padding(2)(root);
+
+                    const node = svg.selectAll('g')
+                        .data(root.leaves())
+                        .enter().append('g')
+                        .attr('transform', d => 'translate(' + d.x + ',' + d.y + ')');
+
+                    node.append('title').text(d => d.data.name + ': ' + d.value);
+                    node.append('circle').attr('r', d => d.r).style('fill', fill);
+                    node.append('text')
+                        .attr('dy', '.3em')
+                        .style('text-anchor', 'middle')
+                        .style('fill', textColor)
+                        .style('font-size', fontSize + 'px')
+                        .text(d => d.data.name.substring(0, Math.max(0, Math.floor(d.r / 3))));
+                });
+                return wrap;
+            }
+        };
+
+        // Render one modality's blocks into a host element. Mermaid runs
+        // scoped to just the nodes created here, so lazily rendered tabs get
+        // their diagrams on first activation.
+        let mermaidInitialized = false;
+        function renderBlocksInto(blocks, host) {
+            const mermaidNodes = [];
+            blocks.forEach(function (block) {
+                const r = renderers[block.type];
+                if (!r) {
+                    const pre = document.createElement('pre');
+                    pre.textContent = '[unknown block type: ' + block.type + ']';
+                    host.appendChild(pre);
+                    return;
+                }
+                const node = r(block);
+                if (node instanceof Node) {
+                    host.appendChild(node);
+                    if (block.type === 'mermaid') mermaidNodes.push(node);
+                }
+            });
+            if (mermaidNodes.length && window.mermaid) {
+                if (!mermaidInitialized) {
+                    window.mermaid.initialize({startOnLoad: false, theme: 'default'});
+                    mermaidInitialized = true;
+                }
+                window.mermaid.run({nodes: mermaidNodes});
+            }
+            markScrollableTables(host);
+        }
+
+        // A table wider than its wrapper scrolls sideways. Mark those wrappers
+        // so the CSS can show a cue, and make them focusable so keyboard users
+        // can reach and scroll them. Hidden panes measure 0 and are re-marked
+        // when activated or when the window is resized.
+        function markScrollableTables(host) {
+            host.querySelectorAll('.table-wrap').forEach(function (wrap) {
+                const scrolls = wrap.scrollWidth > wrap.clientWidth + 1;
+                wrap.classList.toggle('is-scrollable', scrolls);
+                if (scrolls) {
+                    wrap.setAttribute('tabindex', '0');
+                    wrap.setAttribute('role', 'region');
+                    wrap.setAttribute('aria-label', 'Table that scrolls sideways');
+                } else {
+                    wrap.removeAttribute('tabindex');
+                    wrap.removeAttribute('role');
+                    wrap.removeAttribute('aria-label');
+                }
+            });
+        }
+
+        // Modality tabs. One <article class="pane"> per modality; panes are
+        // rendered lazily on first activation (force-graph / D3 / mermaid
+        // need a visible, measurable container). With a single modality the
+        // tab bar stays hidden and the page looks exactly like before.
+        const mods = data.modalities;
+        const tabBar = document.getElementById('modality-tabs');
+        const panes = {};
+        const tabButtons = {};
+        const renderedPanes = {};
+
+        // With several modalities each pane is a tabpanel labelled by its
+        // tab (W3C APG tabs pattern); tabindex=0 lets keyboard users move
+        // from the tab list straight into the active content.
+        mods.forEach(function (m) {
+            const pane = document.createElement('article');
+            pane.className = 'pane';
+            pane.dataset.key = m.key;
+            pane.hidden = true;
+            if (mods.length > 1) {
+                pane.id = 'pane-' + m.key;
+                pane.setAttribute('role', 'tabpanel');
+                pane.setAttribute('aria-labelledby', 'tab-' + m.key);
+                pane.setAttribute('tabindex', '0');
+            }
+            root.appendChild(pane);
+            panes[m.key] = pane;
+        });
+
+        const defaultKey = mods.some(m => m.key === 'index') ? 'index' : mods[0].key;
+
+        function activate(key, updateHash) {
+            mods.forEach(function (m) {
+                const isActive = m.key === key;
+                panes[m.key].hidden = !isActive;
+                if (tabButtons[m.key]) {
+                    tabButtons[m.key].classList.toggle('active', isActive);
+                    tabButtons[m.key].setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    // Roving tabindex: only the selected tab is in the Tab
+                    // order; the arrow keys move between tabs.
+                    tabButtons[m.key].setAttribute('tabindex', isActive ? '0' : '-1');
+                }
+            });
+            // Unhide first, then render: the chart libraries measure widths.
+            if (!renderedPanes[key]) {
+                renderBlocksInto(mods.find(m => m.key === key).blocks, panes[key]);
+                renderedPanes[key] = true;
+            } else {
+                markScrollableTables(panes[key]);
+            }
+            if (updateHash) {
+                history.replaceState(null, '',
+                    key === defaultKey ? location.pathname + location.search : '#' + key);
+            }
+        }
+
+        if (mods.length > 1) {
+            mods.forEach(function (m) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = m.label;
+                btn.id = 'tab-' + m.key;
+                btn.dataset.key = m.key;
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-controls', 'pane-' + m.key);
+                btn.addEventListener('click', function () { activate(m.key, true); });
+                tabBar.appendChild(btn);
+                tabButtons[m.key] = btn;
+            });
+            // Keyboard support per the W3C APG tabs pattern (automatic
+            // activation): Left/Right move between tabs and wrap, Home/End
+            // jump to the first/last tab, and the focused tab is selected.
+            tabBar.addEventListener('keydown', function (ev) {
+                const keys = mods.map(function (m) { return m.key; });
+                const focused = document.activeElement;
+                const current = focused && focused.dataset ? keys.indexOf(focused.dataset.key) : -1;
+                if (current < 0) return;
+                let next = null;
+                if (ev.key === 'ArrowRight') next = (current + 1) % keys.length;
+                else if (ev.key === 'ArrowLeft') next = (current - 1 + keys.length) % keys.length;
+                else if (ev.key === 'Home') next = 0;
+                else if (ev.key === 'End') next = keys.length - 1;
+                if (next === null) return;
+                ev.preventDefault();
+                activate(keys[next], true);
+                tabButtons[keys[next]].focus();
+            });
+            tabBar.hidden = false;
+        }
+
+        // The hash selects a tab only when it matches a modality key, so
+        // existing anchors keep working.
+        const initialHash = location.hash.slice(1);
+        activate(mods.some(m => m.key === initialHash) ? initialHash : defaultKey, false);
+        window.addEventListener('hashchange', function () {
+            const k = location.hash.slice(1);
+            if (mods.some(m => m.key === k)) activate(k, false);
+        });
+        window.addEventListener('resize', function () { markScrollableTables(root); });
+    })();
+</script>
+</body>
+</html>
