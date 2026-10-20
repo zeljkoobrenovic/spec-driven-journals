@@ -21,7 +21,7 @@
 > * **The Unwatched Model** — Price ratings decide what a buyer sees as a good deal and, where they feed ranking, which car a buyer sees first, so they make consequential decisions about exposure.
 > * **Entitlement Spaghetti** — Autotrader's "stock lever" shows paid stock counts flowing straight into revenue, so a disagreement between the feed importer and billing becomes a dealer dispute.
 
-Real-estate portals are the usual reference for vertical marketplaces, but automotive marketplaces are the clearest about their architecture, because they have to be. **A car carries a machine-readable identity, most cars are listed by professional dealers through software, and the dealer who supplies the stock is also the customer who pays.** So the leaders publish integration contracts in detail for the vendors who upload on dealers' behalf, and the listed ones report the levers of their revenue to investors. Read together, those documents describe a listing system more precisely than most conference talks.
+This last case of Part IX tests the book's patterns in the vertical whose marketplaces are the clearest about their architecture, because they have to be. **A car carries a machine-readable identity, most cars are listed by professional dealers through software, and the dealer who supplies the stock is also the customer who pays.** So the leaders publish integration contracts in detail for the vendors who upload on dealers' behalf, and the listed ones report the levers of their revenue to investors. Read together, those documents describe a listing system more precisely than most conference talks. Where [Zillow, Rightmove, Idealista and REA: What Property Portals Teach](#case-property-portals) showed supply licensed from agents, this case shows supply written by dealer software, and it tests the feed contracts of [Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion), the change feeds of [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings) and the model governance of [Models in Production: ML Platforms and Use Cases](#ml-platform) against public documents.
 
 This chapter reads that record for four companies. **mobile.de** (Germany) documents its dealer write path, its price rating and its change feed in public API manuals. **Autotrader UK** discloses its unit economics, its data platform and the friction caused by its move into online reservations. **AutoScout24** (pan-European) documents its engineering platform. **CarGurus** (United States and international) builds its proposition around price transparency, and its 2025 annual report records the wind-down of a wholesale business that held price risk. **OLX Autos** appears briefly, as the group that went furthest toward owning cars and then exited.
 
@@ -32,7 +32,7 @@ The chapter asks three questions of each: *what does the public contract reveal,
 
 Part IX cases follow stricter rules than the chapters in Parts I–VIII (see [Part IX — PRACTICE: How Others Built It](#part-9)). A **documented fact** carries its source and publication year in the sentence. **The author's interpretation** is marked "my reading" or sits in the Chief Architect's view. A **reference-architecture inference** appears in a callout labeled `INFERENCE, NOT DOCUMENTED`.
 
-The evidence is uneven, and the unevenness is itself instructive.
+The evidence is uneven: each company documents a different layer.
 
 | Company | Strongest public evidence | Weakest |
 | --- | --- | --- |
@@ -44,7 +44,7 @@ The evidence is uneven, and the unevenness is itself instructive.
 
 The API manuals carry no publication dates. They describe the contract as of the day they were read (19 October 2026), not when it was designed. Ownership facts are volatile and stated "as of" a date.
 
-Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)), appears only in the final comparison. Its automotive brand, Motorvane, is a composite of industry patterns and is not a disguised description of any company in this chapter.
+Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)), appears only in the final comparison. Its automotive brand, Motorvane, is a composite of industry patterns and is not a disguised description of any company in this chapter.
 
 {id: case-automotive--timeline-automotive-marketplaces-in-dated-events}
 ## Timeline: Automotive Marketplaces in Dated Events
@@ -76,14 +76,14 @@ The chronology below draws on the cited releases, filings and reports. Ownership
 
 The four marketplaces and the contrast case sit at different points on a single line: how far the marketplace reaches into the transaction.
 
-![Where each case sits on the transaction ladder, as of 2026. The documented retreats are all from the last step, where the marketplace takes price risk on the car itself.](listing-systems-architecture/diagrams/d32998d7c60db668.png)
+![Diagram: Where each case sits on the transaction ladder, as of 2026](listing-systems-architecture/posts/51-case-automotive/assets/images/51-case-automotive/fig01-where-each-case-sits-transaction-ladder.jpeg)
 
 **Figure 1:** *Where each case sits on the transaction ladder, as of 2026. The documented retreats are all from the last step, where the marketplace takes price risk on the car itself.*
 
 {id: case-automotive--why-automotive-behaves-differently}
 ## Why Automotive Behaves Differently
 
-[Same Platform, Different Physics: General, Real Estate, Automotive and Jobs](#vertical-requirements) develops the automotive profile in full. Four properties matter for reading this case.
+Four properties of the automotive profile, which [Same Platform, Different Physics: How Listing Verticals Differ](#vertical-requirements) develops in full, matter for reading this case.
 
 | Property | What it means for the architecture | Where the case shows it |
 | --- | --- | --- |
@@ -102,9 +102,9 @@ The four marketplaces and the contrast case sit at different points on a single 
 
 mobile.de was founded in 1996, bought by eBay in 2004 and became part of Adevinta when Adevinta completed its purchase of eBay Classifieds Group on 25 June 2021. In Adevinta's last public annual report, for 2023, the mobile.de segment earned €432 million, of which €408 million was classifieds revenue, €24 million advertising and essentially no transactional revenue. Its newsroom reported more than 1.6 million listed vehicles and more than 140 million visits a month as 2025 averages (release of 25 August 2026). **Ownership as of October 2026 is not fully clear from public sources.** In October 2025 the financial press reported an IPO-or-sale process. In August 2026 mobile.de still called itself an Adevinta subsidiary. On 8 October 2026 the Bundeskartellamt named "Oak Germany Buyer GmbH" as the parent of mobile.de GmbH when it cleared the Carwow acquisition. No completed sale or listing was found.
 
-That clearance decision also records the competitive setting in the regulator's words: mobile.de has a "starke Marktposition" in used-car brokerage, AutoScout24 is a "starker Wettbewerber", consumers and dealers "häufig mehrere Plattformen parallel" use several platforms at once, and many platforms offer dealers "Datenexport zu anderen Plattformen". **In a dealer-fed vertical, inventory is not exclusive.** The same car is on several marketplaces, so differentiation has to come from audience, data products and workflow, not from supply lock-in.
+**In a dealer-fed vertical, inventory is not exclusive.** The same clearance decision records this in the regulator's words: mobile.de has a "starke Marktposition" in used-car brokerage, AutoScout24 is a "starker Wettbewerber", consumers and dealers "häufig mehrere Plattformen parallel" use several platforms at once, and many platforms offer dealers "Datenexport zu anderen Plattformen". The same car is on several marketplaces, so differentiation has to come from audience, data products and workflow, not from supply lock-in.
 
-No mobile.de engineering blog was found. The architectural evidence is the integration documentation, which is unusually complete.
+No mobile.de engineering blog was found, so the architectural evidence is the integration documentation, which is unusually complete.
 
 {id: case-automotive--the-write-path-the-seller-api}
 ### The write path: the Seller API
@@ -118,7 +118,7 @@ The Seller API manual (undated, read October 2026) defines who may write and how
 - **Bulk upload exists alongside the REST API.** The XML upload interface identifies each vehicle by the dealer's `seller-inventory-key` and requires TSPs to name the dealer's `customerNumber` on every ad.
 - **The resource list is a product map**: price ratings, statistics, dealer ratings, leasing rates, multi-location sellers and battery-health certificates for electric vehicles.
 
-[Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion) and [Private Sellers, Dealers and Agencies: Modeling Who Lists](#sellers-and-accounts) use these details as evidence. What the case adds is the combination: **mobile.de treats the integration vendor as an accountable party, makes retries safe, and pushes ordering responsibility onto the client in writing.** Every one of those choices removes a class of Feed Roulette incident.
+**Taken together, mobile.de treats the integration vendor as an accountable party, makes retries safe, and pushes ordering responsibility onto the client in writing.** Each of those choices removes a class of Feed Roulette incident. [Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion) and [Private Sellers, Dealers and Agencies: Modeling Who Lists](#sellers-and-accounts) use the individual details as evidence.
 
 {id: case-automotive--the-price-rating-as-an-api-resource}
 ### The price rating as an API resource
@@ -138,11 +138,11 @@ Two further interfaces let others consume mobile.de's inventory. The Search API 
 
 **Ad Stream** is a change feed. Its manual (undated, read October 2026) specifies a WebSocket interface with two event types, `AD_CREATE_OR_UPDATE` and `AD_DELETE`, delivered after a delay that depends on the client's contract. It allows "one connection per user"; a new connection closes the old one. With `catchup=true`, a reconnecting client first receives the events it missed, and "the historical events are kept for 24 hours." A test endpoint delivers "only 10% of all events" with 60 seconds of extra delay.
 
-The 24-hour replay window is a useful public benchmark. It tells consumers how long they may be disconnected before they need a full resynchronization, which is the contract question [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings) asks of every listing stream.
+The 24-hour replay window is a public benchmark: it tells consumers how long they may be disconnected before they need a full resynchronization, which is the contract question [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings) asks of every listing stream.
 
 > **INFERENCE, NOT DOCUMENTED:** The external contracts imply an internal design: a log of listing state changes that feeds Ad Stream (and plausibly search indexing), a price-rating service invoked synchronously for previews and asynchronously when images or market data change, and per-ad serialization of writes. A plausible reference flow — not a description of mobile.de's systems — is shown in Figure 3. mobile.de has not published how these components are built.
 
-![A plausible reference flow consistent with mobile.de's public API documentation — not a description of its internal systems. Retries are safe, the rating is recomputed when photos arrive, and downstream consumers read a delayed change feed with a 24-hour replay window.](listing-systems-architecture/diagrams/4fc8ec49526899ce.png)
+![Diagram: A plausible reference flow consistent with mobile.de's public API documentation — not a description of its internal systems](listing-systems-architecture/posts/51-case-automotive/assets/images/51-case-automotive/fig03-plausible-reference-flow-consistent-mobile-de.jpeg)
 
 **Figure 3:** *A plausible reference flow consistent with mobile.de's public API documentation — not a description of its internal systems. Retries are safe, the rating is recomputed when photos arrive, and downstream consumers read a delayed change feed with a 24-hour replay window.*
 
@@ -185,7 +185,7 @@ The arithmetic closes: £2,995 × 13,942 forecourts × 12 months ≈ £501 milli
 
 The results state that Autotrader's data is "integrated with over 220 technology partners" and that calls on its technology and data services averaged **155 million a month** (91 million the year before). The developer portal (undated, release notes into 2026) lists the APIs behind that figure: vehicle lookup and checks, a **taxonomy** that descends from vehicle types through makes, models and generations to derivatives, stock management across advertising channels, images, search for third-party sites, current, future and historic valuations, vehicle metrics including a "Retail Rating", and the deal, message, part-exchange, delivery and call objects behind its online deal product.
 
-Three details are worth an architect's attention.
+Three details show how the contract is run.
 
 - **Policy is encoded as validation.** Documented error responses include a price rejected for "not meeting minimum price of 75" and "This vehicle has been classified as a category A/B vehicle by the DVLA. These are not permitted for sale on Autotrader."
 - **Breaking changes have a notice period.** Breaking changes are announced at least 30 days ahead, and the policy lists what counts as breaking (removing a property, adding mandatory parameters, new validation errors) and what does not (adding properties or endpoints), which clients must tolerate without notice.
@@ -193,10 +193,10 @@ Three details are worth an architect's attention.
 
 **My reading** is that 155 million calls a month from 220 partners make Autotrader's data a B2B platform, not a by-product of the consumer site; its change policy is the contract [Attributes Without Chaos: Schemas, Dictionaries and Validation](#attribute-schemas) recommends for any schema partners depend on.
 
-{id: case-automotive--the-platform-dated}
-### The platform, dated
+{id: case-automotive--the-platform-from-2019-to-2026}
+### The platform from 2019 to 2026
 
-The engineering evidence spans seven years. Istio's case study, from about 2019, describes Google Kubernetes Engine with the Istio service mesh, about 400 microservices and 200–250 deployments a day. The 2026 results say only that the company has "transitioned fully to a modern cloud-based delivery and data platform based largely on open-source technologies", now with "an AI platform built using the same principles". An August 2026 engineering post describes streaming personalization: Snowplow events in Google Cloud Storage scored by Python models in Spark Structured Streaming, with visitor profiles written to Kafka.
+The engineering evidence spans seven years and grows thinner toward the present. Istio's case study, from about 2019, describes Google Kubernetes Engine with the Istio service mesh, about 400 microservices and 200–250 deployments a day. The 2026 results say only that the company has "transitioned fully to a modern cloud-based delivery and data platform based largely on open-source technologies", now with "an AI platform built using the same principles". An August 2026 engineering post describes streaming personalization: Snowplow events in Google Cloud Storage scored by Python models in Spark Structured Streaming, with visitor profiles written to Kafka.
 
 The results also claim "more than 50 proprietary AI and machine learning models" and argue that general-purpose language models cannot match them because "publicly available vehicle listings represent only a small part of the required data". That is an incumbent's defensibility claim, not a neutral finding. The products it describes are concrete: Co-Driver, which writes descriptions and orders images and "anecdotally" cuts listing time from 28 to 5 minutes; "specification adjusted valuations underpinning our price flags"; Buying Signals, a lead-intent model whose high-intent leads "convert at twice the average rate"; and a ChatGPT app integration via the Model Context Protocol (see [AI Across the Listing Lifecycle](#ai-in-listing-systems)).
 
@@ -205,11 +205,11 @@ The results also claim "more than 50 proprietary AI and machine learning models"
 
 Deal Builder lets a buyer start a deal online: part-exchange, finance, delivery and a reservation. By March 2026 more than 6,700 retailers were on it (2,000 a year earlier), with 175,000 vehicles live and 137,000 deals with a full reservation in the year, which Autotrader calls "the very best enquiries in terms of conversion to sale".
 
-The same results describe the cost. Retailer numbers "softened", reflecting trading conditions "and concerns with the speed and nature of our Deal Builder product roll-out". Average forecourts were 236 (1.7%) lower in the second half. The stock lever turned more negative as retailers cut advertised stock from November 2025. Employee engagement fell from 91% to 72%. Autotrader's response was "pausing auto-rollout; holding open listening sessions; establishing customer advisory groups; and introducing 'request a reservation'". Trade press reported in December 2025 that the option lets a buyer ask for a reservation without paying the £99 fee.
+The same results describe what the rollout cost. Retailer numbers "softened", reflecting trading conditions "and concerns with the speed and nature of our Deal Builder product roll-out". Average forecourts were 236 (1.7%) lower in the second half. The stock lever turned more negative as retailers cut advertised stock from November 2025. Employee engagement fell from 91% to 72%. Autotrader's response was "pausing auto-rollout; holding open listening sessions; establishing customer advisory groups; and introducing 'request a reservation'". Trade press reported in December 2025 that the option lets a buyer ask for a reservation without paying the £99 fee.
 
 **My reading** is that Deal Builder put a platform-controlled state, "reserved", on inventory the dealer owns and manages in its own systems, which changes who decides that a car is off the market and which lead gets it. The documented response amounts to making the state opt-in and dealer-controlled. [The Listing Aggregate: Identity, Lifecycle and Invariants](#listing-aggregate) states the general rule: **who may trigger a transition is part of the business model.**
 
-![A reference state model for reservations on dealer stock — not Autotrader's design. The paid, platform-set path exists only where the dealer opted in; otherwise a reservation is a request the dealer accepts, and every reserved state can lapse back to active.](listing-systems-architecture/diagrams/3e394176d43d9c91.png)
+![Diagram: A reference state model for reservations on dealer stock — not Autotrader's design](listing-systems-architecture/posts/51-case-automotive/assets/images/51-case-automotive/fig05-reference-state-model-reservations-dealer-stock.jpeg)
 
 **Figure 5:** *A reference state model for reservations on dealer stock — not Autotrader's design. The paid, platform-set path exists only where the dealer opted in; otherwise a reservation is a request the dealer accepts, and every reserved state can lapse back to active.*
 
@@ -238,9 +238,9 @@ CarGurus also records the retreat that bounds the case. It acquired 51% of CarOf
 {id: case-automotive--olx-autos-the-contrast}
 ## OLX Autos: The Contrast
 
-OLX Group went furthest. After taking control of Frontier Car Group in 2019, it built OLX Autos as a "buy, recondition, sell" business in Latin America and Asia. Prosus reported OLX Autos revenue of $1.6 billion for its fiscal 2022, up 158% and "just over half" of its classifieds revenue, with about 175,000 cars transacted. On 2 March 2023 it announced that it would seek to exit, saying that "higher cost of capital, high inflation and a reversal of pandemic trends" had led to "a significant and persistent slowdown in the second-hand car market", after first-half trading losses of $206 million (Fin24, 2023). By 31 March 2025 all OLX Autos operations had been "disposed of, classified as held for sale or closed" (Prosus results, 2025). [OLX Group: Regional Platforms, Verticalization and Retreat](#case-olx) covers the group story.
+OLX Group went furthest toward owning cars, and then exited. After taking control of Frontier Car Group in 2019, it built OLX Autos as a "buy, recondition, sell" business in Latin America and Asia. Prosus reported OLX Autos revenue of $1.6 billion for its fiscal 2022, up 158% and "just over half" of its classifieds revenue, with about 175,000 cars transacted. On 2 March 2023 it announced that it would seek to exit, saying that "higher cost of capital, high inflation and a reversal of pandemic trends" had led to "a significant and persistent slowdown in the second-hand car market", after first-half trading losses of $206 million (Fin24, 2023). By 31 March 2025 all OLX Autos operations had been "disposed of, classified as held for sale or closed" (Prosus results, 2025). [OLX Group: Regional Platforms, Verticalization and Retreat](#case-olx) covers the group story.
 
-The lesson is narrow and important. **A business that owns cars is a retailer with an e-commerce front end**, needing inspection, reconditioning, logistics, pricing authority over its own stock and a finance book; a marketplace can only approximate condition and influence price. The platform built for one does not carry the other.
+**A business that owns cars is a retailer with an e-commerce front end**, needing inspection, reconditioning, logistics, pricing authority over its own stock and a finance book; a marketplace can only approximate condition and influence price. The platform built for one does not carry the other.
 
 {id: case-automotive--across-the-cases-price-evaluation-as-a-control-loop}
 ## Across the Cases: Price Evaluation as a Control Loop
@@ -256,7 +256,7 @@ Three of the four companies publish enough to compare their price products direc
 | Link to ordering | Search position responds to price (2026 release) | Deals sorted by the algorithm, "not how much a dealer pays" | Not documented |
 | Source and date | Seller API manual, n.d.; newsroom, 2026 | 10-K, 2026; help center, 2026 | FY26 results, 2026; developer portal, n.d. |
 
-![The loop the public record implies. Once a rating feeds ordering and dealer tools, dealers price toward band boundaries, and the distribution of prices the model learns from shifts. The model is measuring a market it is helping to set.](listing-systems-architecture/diagrams/4c513dd757d3327b.png)
+![Diagram: The loop the public record implies](listing-systems-architecture/posts/51-case-automotive/assets/images/51-case-automotive/fig06-loop-public-record-implies-once-rating.jpeg)
 
 **Figure 6:** *The loop the public record implies. Once a rating feeds ordering and dealer tools, dealers price toward band boundaries, and the distribution of prices the model learns from shifts. The model is measuring a market it is helping to set.*
 
@@ -265,7 +265,7 @@ Three of the four companies publish enough to compare their price products direc
 **My reading** is that the loop needs four things: **bands rather than point estimates**, which survive model error and give dealers an actionable boundary; **an explicit no-rating state** for unusual cars; **monitoring for clustering at band boundaries**, the first sign that dealers price to the model rather than to the car; and **a declared list of every consumer of the rating**, because an inform-only label becomes an exposure model the day ranking reads it.
 
 {id: case-automotive--trade-offs-the-case-illustrates}
-## Trade-Offs the Case Illustrates
+## Trade-offs the Case Illustrates
 
 | Option | What the record shows | When it is right | When it fails |
 | --- | --- | --- | --- |
@@ -279,12 +279,12 @@ Three of the four companies publish enough to compare their price products direc
 
 The rows are not a maturity ladder. **The leading automotive marketplaces moved deeper into data and workflow, and stepped back from price risk.**
 
-{id: case-automotive--vertical-differences-how-the-lessons-transfer}
-## Vertical Differences: How the Lessons Transfer
+{id: case-automotive--vertical-differences-in-the-record}
+## Vertical Differences in the Record
 
 | Lesson from automotive | Real estate | General classifieds | Jobs |
 | --- | --- | --- | --- |
-| Identity decoded from authoritative data | Partly: cadastral and address registers, energy certificates; no VIN-strength identifier for a listing, so entity resolution does the work ([One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution)) | Weak: user-typed, image similarity | Probabilistic: titles mapped to occupation taxonomies |
+| Identity decoded from authoritative data | Partly: cadastral and address registers, energy certificates; no VIN-strength identifier for a listing, so entity resolution does the work ([One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution)) | Weak: user-typed, image similarity | Probabilistic: titles mapped to occupation taxonomies |
 | Vendor-mediated writes with contracts | Strong: agency software vendors and portal feed formats | Weak: mostly app forms; pro feeds for a minority | Strong: applicant-tracking systems and career-site feeds |
 | Price rating as a control loop | Valuations and price estimates; loop risk where they feed ranking or seller leads | Price suggestions at listing time; weaker loop | Salary estimates; transparency rules apply |
 | Billing tied to stock | Agency subscriptions and per-listing depth products | Per-item paid visibility | Per-job packages or pay per click or application |
@@ -303,7 +303,7 @@ The rows are not a maturity ladder. **The leading automotive marketplaces moved 
 {id: case-automotive--where-the-public-evidence-stops}
 ## Where the Public Evidence Stops
 
-The following questions matter to an architect and are not answered by any public source found for this book. The chapter does not fill them with inference.
+No public source found for this book answers the questions below, and the chapter does not fill them with inference.
 
 | Question | What is public | What is not |
 | --- | --- | --- |
@@ -320,7 +320,7 @@ The following questions matter to an architect and are not answered by any publi
 {id: case-automotive--the-chief-architect-s-view}
 ## The Chief Architect's View
 
-What I take from the automotive leaders is a set of decision rules, each conditioned on the evidence.
+What I take from the automotive leaders is six decision rules, each tied to the evidence above.
 
 **Write the dealer contract before the importer.** mobile.de's manual reads like a list of incidents someone decided never to repeat. I would publish the same commitments for any professional supply channel — accountable integrators, idempotent creates, one writer per listing, stable error keys, a notice period for breaking changes — and treat vendor certification as a release gate.
 
@@ -346,7 +346,7 @@ The book's patterns, as the automotive record tests them:
 | Publish listing changes as a contract with retention ([Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings)) | Ad Stream with 24-hour catch-up; Stock Notifications parity with the Stock API | Supported |
 | Price and quality models are exposure models once ranking reads them ([Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking), [Models in Production: ML Platforms and Use Cases](#ml-platform)) | mobile.de Preis-Planer links price to search position; CarGurus sorts by deal quality | Supported, with the loop visible in public |
 | Billing derives from entitlement and inventory state ([Packages, Bumps and Quotas: Products, Pricing and Entitlements](#products-and-entitlements)) | Autotrader's stock lever; CarGurus pricing by inventory size | Supported |
-| The endpoint is a business decision ([Classifieds, Lead Generation and Transactions: A Marketplace Taxonomy](#marketplace-taxonomy)) | Deal Builder friction; CarOffer and OLX Autos retreats | Strongly supported |
+| The endpoint is a business decision ([Classifieds, Leads, Transactions and Managed Models: A Marketplace Taxonomy](#marketplace-taxonomy)) | Deal Builder friction; CarOffer and OLX Autos retreats | Strongly supported |
 
 Now Veldmark, the fictional group, as of its 2027 decisions in the scenario. Motorvane earns €360 million, 91% of its 1.45 million listings come from 21,400 dealers, and 88% of those arrive through DMS feeds — the same physics as mobile.de's.
 

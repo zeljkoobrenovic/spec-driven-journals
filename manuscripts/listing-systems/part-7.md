@@ -41,21 +41,21 @@ The argument of this part is that **a shared platform earns trust through contra
 | [Testing a Two-Sided Market: Experimentation Platforms](#experimentation) | How do you run trustworthy experiments when buyers and sellers affect each other? | A winning price or ranking test disappoints once it ships to everyone. |
 | [Models in Production: ML Platforms and Use Cases](#ml-platform) | Which models matter, and what platform runs them responsibly? | Nobody can list your production models, or an estimate is about to drive offers. |
 | [One Platform, Many Marketplaces: Multi-Country and Multi-Brand Architecture](#multi-country-platforms) | How do you share a platform across countries and brands without one product? | Every rule is built once per country, or teams route around the platform. |
-| [Sunday Night Peaks: Reliability, Performance and Cost](#reliability-and-scale) | How do you keep a listing platform fast, available and affordable at scale? | Search fails at the weekly peak, or nobody knows the cost of a search. |
+| [Sunday Evening Peaks: Reliability, Performance and Cost](#reliability-and-scale) | How do you keep a listing platform fast, available and affordable at scale? | Search fails at the weekly peak, or nobody knows the cost of a search. |
 
 {id: part-7--how-this-part-connects}
 ## How this part connects
 
-[Part VI — MONEY: Conversion and Monetization](#part-6) assumed this layer for paid effects, leads, contact counts and pricing tests. The lifecycle from [Part II — LISTING: Modeling the Thing Being Sold](#part-2) becomes the event contract, discovery in [Part IV — DISCOVERY: Matching Intent to Inventory](#part-4) reads the stream, and trust decisions in [Part V — TRUST: Keeping the Marketplace Safe](#part-5) must propagate to every copy. [Part VIII — LEADERSHIP: The Chief Architect's Agenda](#part-8) takes the platform to the Chief Architect's agenda: consolidating acquired stacks onto it, organizing teams around it and retiring the monolith while it runs.
+Every earlier part rests on this layer. [Part VI — MONEY: Conversion and Monetization](#part-6) assumed it for paid effects, leads, contact counts and pricing tests. The lifecycle from [Part II — LISTING: Modeling the Thing Being Sold](#part-2) becomes the event contract, discovery in [Part IV — DISCOVERY: Matching Intent to Inventory](#part-4) reads the stream, and trust decisions in [Part V — TRUST: Keeping the Marketplace Safe](#part-5) must propagate to every copy. [Part VIII — LEADERSHIP: The Chief Architect's Agenda](#part-8) takes the platform to the Chief Architect's agenda: consolidating acquired stacks onto it, organizing teams around it and retiring the monolith while it runs.
 
 {id: part-7--the-veldmark-thread}
 ## The Veldmark thread
 
-Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)), starts 2027 with four messaging technologies, three warehouses, 146 production models on four training stacks and a PHP monolith full of country branches. On Sunday 17 January 2027 a TV campaign and a scheduled reindex browned out Tradeyard NL search for 48 minutes. Ingrid Halvorsen's team, with Sven Lindqvist, Priya Raman and Yara Mendes, decides:
+Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)), starts 2027 with four messaging technologies, three warehouses, 146 production models on four training stacks and a PHP monolith full of country branches. On Sunday 17 January 2027 a TV campaign and a scheduled reindex browned out Tradeyard NL search for 48 minutes. Ingrid Halvorsen's team, with Sven Lindqvist, Priya Raman and Yara Mendes, decides:
 
 - **journey service level objectives** with error budgets and a search degradation ladder (April 2027);
 - **server-rendered pages and event-driven sitemaps** for Tradeyard's 40 million indexed URLs (May 2027), and **Tenancy model v1**: ten brand × country tenants (9 June 2027);
 - **Experimentation standard v1** (30 June 2027), after a bump-price test that looked like a win, and **Listing event contract v1** on Kafka (Confluent Cloud), live on 1 July 2027;
-- an **Iceberg-based data platform** with tracking plan v1 (September 2027), a **group retention schedule** and copy register (October 2027), and a **group model registry** mandatory for every production model (9 November 2027).
+- an **Iceberg-based data platform** with tracking plan v1 (September 2027), a **group retention schedule** and the consumer registry extended to every listing copy (October 2027), and a **group model registry** mandatory for every production model (9 November 2027).
 
 By the end of Part VII you should be able to say, for any listing fact, where it is true, which copies hold it and how you would rebuild or erase them. Begin with [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings).

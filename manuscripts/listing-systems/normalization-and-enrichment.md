@@ -3,7 +3,7 @@
 
 ![From Raw Supply to Usable Listings: Normalization and Enrichment — logo](listing-systems-architecture/posts/14-normalization-and-enrichment/assets/images/14-normalization-and-enrichment/logo.jpeg)
 
-> **IN THIS CHAPTER, YOU WILL:** Learn the difference between normalizing a value and enriching a listing, follow a dealer's Volkswagen Golf from a raw DMS record to a listing with 31 decoded attributes and a market-value rating, and design an enrichment pipeline whose steps are idempotent, versioned and replayable. You will see how attribute provenance settles conflicts between the seller, a registry and a model, how quality scores and human correction loops work, and what ML enrichment really costs at marketplace scale.
+> **IN THIS CHAPTER, YOU WILL:** Learn the difference between normalizing a value and enriching a listing, follow a dealer's Volkswagen Golf from a raw DMS record to a listing with 31 decoded attributes and a market-value rating, and design an enrichment pipeline whose steps are idempotent, versioned and replayable. You will see how attribute provenance settles conflicts between the seller, a registry and a model, how quality scores and human correction loops work, and what ML enrichment costs at marketplace scale.
 
 > **WHY THE BUSINESS CARES:** Buyers find listings through filters, and filters only work on values that are present and consistent. Every listing whose mileage, frame size or energy class is missing or malformed is invisible to the buyers filtering for it, and every wrong derived value, such as a car rated against the wrong engine, is a complaint from a paying professional.
 
@@ -21,11 +21,11 @@
 > * **The Unwatched Model** — Extraction and classification models write values into millions of listings with no evaluation gate, no monitoring and no owner, and their errors become the catalog.
 > * **Index-as-Database** — Enrichment results written only into the search index cannot be rebuilt, audited or corrected, so the index quietly becomes the only place those facts exist.
 
-A listing accepted at the boundary is not yet a usable listing. A dealer management system (DMS) writes "48.000 km" with a German thousands separator, a Portuguese private seller types "bicicleta de cidade 28''" into the title and nothing into the attributes, a French agency's software sends an address without coordinates, and a feed describes a car by its vehicle identification number (VIN) and little else. **Search, ranking, alerts, trust rules and analytics all need the same fact in the same form**, and none of them should have to parse a seller's text to get it.
+A listing accepted at the boundary of [Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion) is not yet a usable listing. This chapter is the next link in Part III's supply chain: the step that records where every value came from. A dealer management system (DMS) writes "48.000 km" with a German thousands separator, a Portuguese private seller types "bicicleta de cidade 28''" into the title and nothing into the attributes, a French agency's software sends an address without coordinates, and a feed describes a car by its vehicle identification number (VIN) and little else. **Search, ranking, alerts, trust rules and analytics all need the same fact in the same form**, and none of them should have to parse a seller's text to get it.
 
 This chapter owns three terms. **Normalization** turns a received value into the canonical representation the attribute dictionary defines, without changing what it means. **Enrichment** adds facts the seller did not state, derived from reference data, registries, models or other listings. **Attribute provenance** is the record, per value, of where it came from, when, by which process and version, and with what confidence.
 
-The neighbors own the rest. [Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion) owns the channels and contracts that deliver records; [Attributes Without Chaos: Schemas, Dictionaries and Validation](#attribute-schemas) owns the dictionary and compiled category schemas that define the canonical forms; [Where Is It? Location, Geocoding and Privacy](#location-and-geo) owns geocoding and location precision; [Photos Sell: Media Pipelines for Listings](#media-pipeline) owns image processing; [One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution) owns duplicates and canonical entities; [Models in Production: ML Platforms and Use Cases](#ml-platform) owns training, serving and model governance. This chapter owns the pipeline that applies all of these to a listing, and the provenance that makes the result trustworthy. Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)), supplies the worked examples.
+The neighbors own the rest. [Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion) owns the channels and contracts that deliver records; [Attributes Without Chaos: Schemas, Dictionaries and Validation](#attribute-schemas) owns the dictionary and compiled category schemas that define the canonical forms; [Where Is It? Location, Geocoding and Privacy](#location-and-geo) owns geocoding and location precision; [Photos Sell: Media Pipelines for Listings](#media-pipeline) owns image processing; [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution) owns duplicates and canonical entities; [Models in Production: ML Platforms and Use Cases](#ml-platform) owns training, serving and model governance. This chapter owns the pipeline that applies all of these to a listing, and the provenance that makes the result trustworthy. [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution) compares the canonical values it produces, and the search of [Part IV — DISCOVERY: Matching Intent to Inventory](#part-4) filters on them. Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)), supplies the worked examples.
 
 {id: normalization-and-enrichment--setting-the-scene-at-veldmark-which-of-these-values-did-anybody-say}
 ## Setting the Scene at Veldmark: Which of These Values Did Anybody Say?
@@ -80,7 +80,7 @@ status:           resolved, consistent with derivative
 observed_at:      2027-04-14T17:01:12+02:00
 ```
 
-The **source classes** are few and should be a closed vocabulary across the group:
+There are seven **source classes**, and they should be a closed vocabulary across the group:
 
 | Source class | Meaning | Typical examples | Default trust |
 | --- | --- | --- | --- |
@@ -94,10 +94,10 @@ The **source classes** are few and should be a closed vocabulary across the grou
 
 The listing aggregate holds attribute values with provenance (see [The Listing Aggregate: Identity, Lifecycle and Invariants](#listing-aggregate)); the dictionary in [Attributes Without Chaos: Schemas, Dictionaries and Validation](#attribute-schemas) says, per attribute, which source classes are allowed and how conflicts resolve. This chapter's pipeline produces the records.
 
-{id: normalization-and-enrichment--normalization-the-unglamorous-steps-that-decide-data-quality}
-## Normalization: The Unglamorous Steps That Decide Data Quality
+{id: normalization-and-enrichment--normalization-ten-deterministic-steps}
+## Normalization: Ten Deterministic Steps
 
-Normalization is mostly a long list of small, deterministic rules. The list below is the one I would expect any listing platform operating in several European countries to need.
+Normalization is a list of small, deterministic rules. I would expect any listing platform operating in several European countries to need the ten below.
 
 | Step | What goes wrong without it | Rule |
 | --- | --- | --- |
@@ -117,7 +117,7 @@ Three design rules apply to every step. **Normalizers are versioned code with te
 {id: normalization-and-enrichment--enrichment-facts-nobody-typed}
 ## Enrichment: Facts Nobody Typed
 
-Enrichment adds value in four ways: it fills attributes sellers did not provide, it adds facts sellers cannot know, it adds platform-computed signals, and it prepares the listing for other languages and systems.
+Enrichment does four things: it fills attributes sellers did not provide, it adds facts sellers cannot know, it adds platform-computed signals, and it prepares the listing for other languages and systems.
 
 | Enrichment | Typical inputs | Output | Typical source class | Owner of the capability |
 | --- | --- | --- | --- | --- |
@@ -135,16 +135,16 @@ Enrichment adds value in four ways: it fills attributes sellers did not provide,
 {id: normalization-and-enrichment--registry-decoding-when-the-truth-exists-elsewhere}
 ### Registry decoding: when the truth exists elsewhere
 
-For assets with registries, enrichment beats extraction. In the US, NHTSA's vPIC service decodes VINs, supports batches of up to 50 VINs, accepts partial VINs with `*` for unknown characters, and publishes standalone databases for download, so a marketplace can run decoding in-house rather than depend on a public endpoint ([NHTSA vPIC API](https://vpic.nhtsa.dot.gov/api/), n.d.). European marketplaces typically license specification data from commercial providers; mobile.de's Seller-API carries German type-approval codes `hsn` and `tsn` and a `schwackeCode`, a make-and-model classification "given by Eurotax/Schwacke" ([mobile.de Seller-API manual](https://services.mobile.de/manual/seller-api.html), n.d.). Autotrader UK's developer platform exposes a taxonomy of vehicle types, makes, models, generations and derivatives, and keys valuation calls on a derivative ID plus first registration date and mileage ([Autotrader developer portal](https://developers.autotrader.co.uk/), n.d.).
+Where a registry exists, decoding beats extraction from text. In the US, NHTSA's vPIC service decodes VINs, supports batches of up to 50 VINs, accepts partial VINs with `*` for unknown characters, and publishes standalone databases for download, so a marketplace can run decoding in-house rather than depend on a public endpoint ([NHTSA vPIC API](https://vpic.nhtsa.dot.gov/api/), n.d.). European marketplaces typically license specification data from commercial providers; mobile.de's Seller-API carries German type-approval codes `hsn` and `tsn` and a `schwackeCode`, a make-and-model classification "given by Eurotax/Schwacke" ([mobile.de Seller-API manual](https://services.mobile.de/manual/seller-api.html), n.d.). Autotrader UK's developer platform exposes a taxonomy of vehicle types, makes, models, generations and derivatives, and keys valuation calls on a derivative ID plus first registration date and mileage ([Autotrader developer portal](https://developers.autotrader.co.uk/), n.d.).
 
-Two lessons follow. Decoders return **families as well as exact answers**: an engine sold in more than one power output may decode to a set of candidates, and the dealer's statement resolves it. And decoded data **changes with the supplier's releases**, so each decoded value must record the decoder and data version that produced it, or a correction from the supplier cannot be applied without trampling dealer edits.
+Decoders teach the pipeline two lessons. They return **families as well as exact answers**: an engine sold in more than one power output may decode to a set of candidates, and the dealer's statement resolves it. And decoded data **changes with the supplier's releases**, so each decoded value must record the decoder and data version that produced it, or a correction from the supplier cannot be applied without trampling dealer edits.
 
 Real estate has registries too, though fewer of them are identifiers for units. France publishes its transaction register, *Demandes de valeurs foncières* (DVF), as open data from the tax administration, covering the last five years and updated twice a year, in April and October ([data.gouv.fr](https://www.data.gouv.fr/fr/datasets/demandes-de-valeurs-foncieres/), last updated 2026). ADEME, the French environment agency, publishes the energy-performance diagnostics (DPE) of existing dwellings made since July 2021 as an open dataset with an API, updated weekly, about 15.8 million records as of October 2026, and warns that the data is raw diagnostician input that ADEME does not correct ([ADEME open data](https://data.ademe.fr/datasets/dpe03existant), 2026). That last warning is the general point about registries: **authoritative does not mean clean**, and the provenance record should say which register and which extract a value came from.
 
 {id: normalization-and-enrichment--model-based-enrichment-the-public-evidence}
 ### Model-based enrichment: the public evidence
 
-Marketplaces have published more about model-based enrichment since 2023 than about almost any other part of their listing systems, and the evidence points in a consistent direction.
+Marketplaces have published more about model-based enrichment since 2023 than about almost any other part of their listing systems, and the evidence points one way: **use models to propose values against a schema that is passed in, validate the output structurally, gate releases on measured precision, and keep the big model offline and the small model online.**
 
 - **Mercari, title suggestions (2023).** Mercari described an offline step in which GPT-4 extracted the attributes of effective titles, and an online step in which GPT-3.5 Turbo detected those attributes in new listings and suggested titles. Malformed outputs (varied casing, apologetic refusals, extra lines) grew with volume during rollout and required pre- and post-processing; Japanese text could cost more than twice the tokens of English ([Mercari Engineering](https://engineering.mercari.com/en/blog/entry/20231219-leveraging-llms-in-production-looking-back-going-forward/), 2023).
 - **Mercari, dynamic attributes (2024).** Because required attributes vary by category and change over time, Mercari supplied the attribute keys *at request time* to a fine-tuned 2-billion-parameter model (gemma-2b-it, QLoRA-tuned, quantized to 4 bits), about 95% smaller than the base model, slightly better than gpt-3.5-turbo-0125 on BLEU, and estimated at more than 14 times cheaper; fine-tuning gave more control over hallucination than prompting alone ([Mercari Engineering](https://engineering.mercari.com/en/blog/entry/20240913-fine-tuning-an-llm-to-extract-dynamically-specified-attributes/), 2024).
@@ -154,12 +154,10 @@ Marketplaces have published more about model-based enrichment since 2023 than ab
 - **mobile.de, ordering of enrichments (n.d.).** mobile.de's price rating uses images: "If images are uploaded later … the price rating will be recalculated including the image data", and the documentation recommends uploading images first ([mobile.de Seller-API manual](https://services.mobile.de/manual/seller-api.html), n.d.). Enrichers depend on each other, and the pipeline must re-run downstream enrichers when an upstream input arrives late.
 - **Google, receiver-side classification (n.d.).** Google Merchant Center now assigns a product category to every product automatically, and the merchant-supplied category is an override used in a few cases ([Google Merchant Center](https://support.google.com/merchants/answer/6324436), n.d.). Large receivers of supply increasingly classify items themselves rather than trust the sender.
 
-The pattern across them: **use models to propose values against a schema that is passed in, validate the output structurally, gate releases on measured precision, and keep the big model offline and the small model online.**
-
 {id: normalization-and-enrichment--architecture-a-replayable-pipeline-that-writes-back}
 ## Architecture: A Replayable Pipeline That Writes Back
 
-![The enrichment pipeline as a loop around the listing service. Enrichers read listing events and versioned reference data, and write results back as commands with provenance; read models such as the search index are rebuilt from the listing, never written directly. Suggestions go to sellers, and their decisions become labels.](listing-systems-architecture/diagrams/ebe49f66ca5187ef.png)
+![Diagram: The enrichment pipeline as a loop around the listing service](listing-systems-architecture/posts/14-normalization-and-enrichment/assets/images/14-normalization-and-enrichment/fig02-enrichment-pipeline-loop-around-listing-service.jpeg)
 
 **Figure 2:** *The enrichment pipeline as a loop around the listing service. Enrichers read listing events and versioned reference data, and write results back as commands with provenance; read models such as the search index are rebuilt from the listing, never written directly. Suggestions go to sellers, and their decisions become labels.*
 
@@ -193,7 +191,7 @@ The blocking set must fit inside the publication budget owned by [From Submitted
 
 An enricher changes for three reasons: its code or model changes, its reference data changes (a decoder release, a new alias table, a boundary reform), or the schema it fills changes (a new attribute, a category split). Each change raises a question that most pipelines answer by accident: **which existing listings should be re-processed, in what order, and with what protection?**
 
-![Releasing an enricher like a schema migration. A new version is shadow-tested against labels, backfilled by priority through the same write path, and monitored for unexpected churn; because every value records the version that produced it, a bad release can be rolled back value by value.](listing-systems-architecture/diagrams/1a70787aff6ed4a2.png)
+![Diagram: Releasing an enricher like a schema migration](listing-systems-architecture/posts/14-normalization-and-enrichment/assets/images/14-normalization-and-enrichment/fig03-releasing-enricher-like-schema-migration-new.jpeg)
 
 **Figure 3:** *Releasing an enricher like a schema migration. A new version is shadow-tested against labels, backfilled by priority through the same write path, and monitored for unexpected churn; because every value records the version that produced it, a bad release can be rolled back value by value.*
 
@@ -248,7 +246,7 @@ The Golf's record arrived in Ruhrblick's 17:00 snapshot on 14 April 2027 and was
 
 Before enrichment the listing met all 14 required attributes of the used-car schema and 9 of 26 recommended ones; afterwards it met 23 of 26. The search filters for body type, transmission and fuel, used by most Motorvane buyers, now include it; before decoding, a buyer filtering on "automatic" or "manual" would never have seen it.
 
-The power value shows why provenance is not a luxury. The decoder could not tell the two power outputs of the 1.5 TSI apart from the VIN, and an earlier version of Motorvane's pipeline had taken the first candidate. The valuation model then compared some cars with the wrong derivative, and dealers saw ratings that did not match their cars. With both values stored and a policy that the dealer's statement wins when it is consistent with the decoded family, the rating reads the right derivative, and when the supplier publishes a more precise decode, the pipeline can update the cars where no dealer value exists and leave the rest alone.
+The power value shows the failure that provenance prevents. The decoder could not tell the two power outputs of the 1.5 TSI apart from the VIN, and an earlier version of Motorvane's pipeline had taken the first candidate. The valuation model then compared some cars with the wrong derivative, and dealers saw ratings that did not match their cars. With both values stored and a policy that the dealer's statement wins when it is consistent with the decoded family, the rating reads the right derivative, and when the supplier publishes a more precise decode, the pipeline can update the cars where no dealer value exists and leave the rest alone.
 
 ![A car with colour-coded source tags on each value; the dealer's 96 kW statement resolves a conflict between two decoder candidates of 96 and 110 kW, with the other candidate kept.](listing-systems-architecture/posts/14-normalization-and-enrichment/assets/images/14-normalization-and-enrichment/golf-power-provenance.jpeg)
 
@@ -269,7 +267,7 @@ Frame-size coverage on live bike listings rose from **23% to 71%**; sellers acce
 {id: normalization-and-enrichment--hearthly-the-lyon-apartment-s-disclosures}
 ### Hearthly: the Lyon apartment's disclosures
 
-The **68 m² three-room flat in Lyon 7e, offered at €389,000 with energy class D**, arrived in May 2027 from three agencies through two software vendors and Keybridge. Enrichment did three things before [One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution) clustered the three listings into one property. It normalized the three addresses against the Base Adresse Nationale, which produced one address for all three despite two spellings of the street. It assigned area IDs and grid cells for the district. And it **verified, rather than derived**, the energy class: the DPE class is a legally required disclosure that the advertiser must state, so enrichment compares the stated class with the energy-certificate register where a certificate number is supplied, and flags a mismatch to the agency rather than replacing the value. Valuo, Hearthly's valuation model, estimated **€372,000–€401,000**; it trains on DVF transaction prices, not on asking prices (see [Models in Production: ML Platforms and Use Cases](#ml-platform)).
+The **68 m² three-room flat in Lyon 7e, offered at €389,000 with energy class D**, arrived in May 2027 from three agencies through two software vendors and Keybridge. Enrichment did three things before [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution) clustered the three listings into one property. It normalized the three addresses against the Base Adresse Nationale, which produced one address for all three despite two spellings of the street. It assigned area IDs and grid cells for the district. And it **verified, rather than derived**, the energy class: the DPE class is a legally required disclosure that the advertiser must state, so enrichment compares the stated class with the energy-certificate register where a certificate number is supplied, and flags a mismatch to the agency rather than replacing the value. Valuo, Hearthly's valuation model, estimated **€372,000–€401,000**; it trains on DVF transaction prices, not on asking prices (see [Models in Production: ML Platforms and Use Cases](#ml-platform)).
 
 The rule generalizes: **enrichment may fill attributes that serve discovery, but must not invent values that the law requires the advertiser to state.** Energy class, fees and other mandated disclosures are verified, flagged and reported back; they are never silently supplied by the platform (see [Rules of the Marketplace: DSA, DAC7 and Vertical Regulation](#marketplace-regulation)).
 
@@ -281,7 +279,7 @@ Tradeyard Belgium serves Dutch- and French-speaking buyers on one marketplace. M
 {id: normalization-and-enrichment--the-cost-of-enrichment-at-scale}
 ## The Cost of Enrichment at Scale
 
-It is tempting to estimate enrichment cost as calls times price per call. At classifieds volume that number is usually the smallest one on the bill. A rough Veldmark model, with all prices illustrative rather than any provider's quotes:
+At classifieds volume, calls times price per call is usually the smallest number on the enrichment bill. A rough Veldmark model, with all prices illustrative rather than any provider's quotes:
 
 | Cost driver | Volume | Rough cost | Comment |
 | --- | --- | --- | --- |
@@ -318,7 +316,7 @@ Three conclusions follow. **Per-call model cost is rarely the constraint** once 
 | Biggest model risk | Wrong category hides the listing | Wrong unit match inside a building; biased valuations | Wrong derivative drives a wrong price rating | Wrong occupation code hides the job from matching |
 | Seller presence for confirmation | High at insertion | Low: agency software sends and leaves | Low: DMS sends nightly | Medium |
 
-The last row shapes the design. In general classifieds the seller is in the insertion flow, so suggestions work. In feed-driven verticals nobody is there to confirm a suggestion, so either the value is applied with derived provenance and shown as such, or it is reported back to the partner as a recommended improvement in the run report.
+The last row, seller presence, decides whether suggestions can work. In general classifieds the seller is in the insertion flow, so suggestions work. In feed-driven verticals nobody is there to confirm a suggestion, so either the value is applied with derived provenance and shown as such, or it is reported back to the partner as a recommended improvement in the run report.
 
 {id: normalization-and-enrichment--failure-modes}
 ## Failure Modes
@@ -329,7 +327,7 @@ The last row shapes the design. In general classifieds the seller is in the inse
 
 **Enrichment only in the index.** Category predictions, extracted attributes or quality scores written directly into search documents vanish at the next reindex, cannot be shown to sellers, and cannot be audited. This is Index-as-Database arriving through the side door.
 
-**Silent misparses.** A thousands separator read as a decimal point turns 48,000 km into 48 km, and a plausibility rule that does not exist lets the car rank as nearly new. Every numeric normalizer needs a plausibility check from the dictionary.
+**Silent misparses.** A thousands separator read as a decimal point turns 48,000 km into 48 km, and, without a plausibility rule, the car ranks as nearly new. Every numeric normalizer needs a plausibility check from the dictionary.
 
 **Models without gates.** An extraction model released without a labeled sample, a precision threshold and churn monitoring writes its error rate into millions of listings. That is The Unwatched Model, and the remedy is the release process in Figure 3 plus a named owner.
 
@@ -370,7 +368,10 @@ What to watch: coverage of filterable attributes per category and country; the s
 9. What did the last backfill cost in compute and reviewer time, and how many are planned this quarter?
 10. Which enrichers are shared across brands, which are local, and is that line drawn by domain meaning or by history?
 
-A normalized, enriched listing can now be compared with other listings, which is what makes the next problem visible: several of them describe the same flat or the same car. [One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution) takes the canonical addresses, decoded VINs and image hashes produced here and asks when several listings are one thing, and what each side of the market should see when they are.
+{id: normalization-and-enrichment--from-clean-records-to-duplicates}
+## From Clean Records to Duplicates
+
+A normalized, enriched listing can now be compared with other listings, which is what makes the next problem visible: several of them describe the same flat or the same car. [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution) takes the canonical addresses, decoded VINs and image hashes produced here and asks when several listings are one thing, and what each side of the market should see when they are.
 
 {id: normalization-and-enrichment--sources-and-evidence}
 ## Sources and Evidence

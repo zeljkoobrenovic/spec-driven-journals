@@ -25,7 +25,7 @@ A listing marketplace is a machine for getting strangers to trust each other eno
 
 This chapter is about catching the setup. It owns three terms. A **fraud signal** is an observable property of an item, actor, session or relationship that changes the probability of fraud. A **risk score** is a calibrated estimate of that probability for a specific action, such as publishing a listing, sending a message, logging in or releasing a payout. **Step-up friction** is an additional check imposed in proportion to risk, which genuine users pass easily and fraudsters do not.
 
-The machinery that turns scores into decisions, enforcement and appeals belongs to [Trust and Safety as a Platform](#trust-and-safety-architecture). Identity levels and verification methods belong to [Who Is on the Other Side? Identity and Verification](#identity-and-verification). Payment-side fraud in transactional flows (chargebacks, payout holds) is covered in [Beyond the Contact: Payments, Shipping and Buyer Protection](#transactions-and-payments). The running example is Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)).
+This chapter supplies the scores that Part V's shared trust platform acts on. [Trust and Safety as a Platform](#trust-and-safety-architecture) built the decision service that turns a score into enforcement and appeals; fraud scoring is how that service catches fraudsters who exploit the speed Part IV gave new listings. The strongest frictions it recommends are identity checks, which [Who Is on the Other Side? Identity and Verification](#identity-and-verification) designs next. Payment-side fraud in transactional flows (chargebacks, payout holds) is covered in [Beyond the Contact: Payments, Shipping and Buyer Protection](#transactions-and-payments). The running example is Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)).
 
 {id: fraud-prevention--setting-the-scene-at-veldmark-the-barcelona-fake-rental-ring}
 ## Setting the Scene at Veldmark: The Barcelona Fake-Rental Ring
@@ -34,10 +34,10 @@ On Thursday **1 July 2027**, a new account on Hearthly Spain published a rental 
 
 By the time the listings came down on Tuesday **13 July**, **63 people** had reported losses totaling about **€71,000**, roughly €1,130 each, in most cases one month's advertised rent paid as a "deposit". The listings had received about 4,700 contacts.
 
-The ledger records that the ring was detected through **perceptual-hash matches** against existing listings plus **price anomalies**. That is true, and it is the uncomfortable part. A perceptual hash is a fingerprint of an image that survives resizing and recompression ([Photos Sell: Media Pipelines for Listings](#media-pipeline) owns the capability). Hearthly Spain's hash index matched the first stolen photos on 1 July, within minutes of upload. Its rent-anomaly check flagged most of the listings as well. The signals existed from the first day. What failed was everything between the signals and a decision.
+The detectors did not miss the ring, and that is the uncomfortable part. The ledger records that it was detected through **perceptual-hash matches** against existing listings plus **price anomalies**. A perceptual hash is a fingerprint of an image that survives resizing and recompression ([Photos Sell: Media Pipelines for Listings](#media-pipeline) owns the capability). Hearthly Spain's hash index matched the first stolen photos on 1 July, within minutes of upload. Its rent-anomaly check flagged most of the listings as well. The signals existed from the first day. What failed was everything between the signals and a decision.
 
 - **Each signal went to a different place.** The photo match created a "possible duplicate" item in the general moderation queue. The rent anomaly created a separate, low-priority "price check" item. No component combined them.
-- **Reviewers saw listings, not actors.** A reviewer looking at one listing whose photos matched an agency's listing saw something that looked like a second agency marketing the same flat, which is common in real estate ([One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution)). Eleven of the first photo-match items were closed as legitimate duplicates.
+- **Reviewers saw listings, not actors.** A reviewer looking at one listing whose photos matched an agency's listing saw something that looked like a second agency marketing the same flat, which is common in real estate ([One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution)). Eleven of the first photo-match items were closed as legitimate duplicates.
 - **Nobody linked the accounts.** The 26 accounts used five devices and four Spanish bank accounts, which turned out to belong to recruited money mules. Hearthly Spain's stack had no identity graph, and none of the accounts had been asked to prove more than an e-mail address ([Who Is on the Other Side? Identity and Verification](#identity-and-verification)). Each account looked new and unremarkable.
 - **The first victim report, on Friday 9 July, was routed to support** as a dispute between a tenant and a landlord.
 
@@ -55,9 +55,9 @@ Ingrid Halvorsen, the Group Chief Architect, asked Aisha Rahman, the Group Head 
 {id: fraud-prevention--why-classifieds-differ}
 ### Why classifieds differ
 
-Most classifieds platforms are lead-generation businesses: buyer and seller meet on the platform, but the money often moves elsewhere ([Classifieds, Lead Generation and Transactions: A Marketplace Taxonomy](#marketplace-taxonomy) covers the business models). The platform sees the listing and the conversation. It often does not see the payment and cannot reverse it. The dominant fraud is therefore **authorized push payment (APP) fraud**: the victim willingly sends money, usually by bank transfer, to someone who is not who they claim to be.
+Most classifieds platforms are lead-generation businesses: buyer and seller meet on the platform, but the money often moves elsewhere ([Classifieds, Leads, Transactions and Managed Models: A Marketplace Taxonomy](#marketplace-taxonomy) covers the business models). The platform sees the listing and the conversation. It often does not see the payment and cannot reverse it. The dominant fraud is therefore **authorized push payment (APP) fraud**: the victim willingly sends money, usually by bank transfer, to someone who is not who they claim to be.
 
-UK Finance publishes the most detailed public series on this. Its 2026 annual fraud report, covering 2025, counts **175,809 purchase-scam cases** in the UK with losses of **£118.1 million**. Purchase scams were **71% of all APP scam cases** and had the lowest average value of the APP types, **£671**. It describes the typical pattern bluntly: although "many online platforms offer secure payment options, the criminal will persuade their victim to pay via a bank transfer instead". **78% of purchase-scam losses were returned to victims**, which reflects the UK's mandatory reimbursement regime from October 2024 and explains why banks now ask the government to "mandate seller verification and secure payment protections on online marketplaces" ([UK Finance, 2026](https://www.ukfinance.org.uk/system/files/2026-06/UK%20Finance%20Fraud%20Report%202026.pdf)). As of October 2026 that is a lobbying position, not law.
+Purchase scams, the typical classifieds fraud, are the most common kind of APP fraud in UK Finance's data, the most detailed public series. Its 2026 annual fraud report, covering 2025, counts **175,809 purchase-scam cases** in the UK with losses of **£118.1 million**. Purchase scams were **71% of all APP scam cases** and had the lowest average value of the APP types, **£671**. It describes the typical pattern: although "many online platforms offer secure payment options, the criminal will persuade their victim to pay via a bank transfer instead". **78% of purchase-scam losses were returned to victims**, which reflects the UK's mandatory reimbursement regime from October 2024 and explains why banks now ask the government to "mandate seller verification and secure payment protections on online marketplaces" ([UK Finance, 2026](https://www.ukfinance.org.uk/system/files/2026-06/UK%20Finance%20Fraud%20Report%202026.pdf)). As of October 2026 that is a lobbying position, not law.
 
 The architectural consequence is that a classifieds platform's controls are mostly **pre-payment**: who can list, what can be listed, what can be said and linked in messages, and how strongly buyers are steered towards a protected in-platform payment where one exists.
 
@@ -108,9 +108,9 @@ The Barcelona ring illustrates both. Its prices were about 35% below market, whi
 
 Image reuse is the strongest single signal against fake rentals and cloned listings, and the best public classifieds design for it is still a 2019 conference talk. At PyCon DE 2019, Alexey Grigorev described OLX's duplicate-listing detection for fraud. Candidates were generated by category, city, seller, IP or device and image hashes. A pairwise classifier, trained on human-labeled pairs, compared price difference, location distance, title similarity and image similarity. Images were matched with hashes and then neural embeddings indexed for approximate search in Elasticsearch, at a target of about ten million listings a day. The talk also noted that cropping, rotation and flipping defeat simple hashes ([PyCon DE, 2019](https://pycon.de/archive/2019/talks/fighting-fraud-finding-duplicates-at-scale/)). The system is seven years old and certainly replaced, but the shape is sound.
 
-Meta's open-source PDQ perceptual hash documents its own limits: a suggested match threshold, a quality score below which hashes should be discarded, and no guaranteed invariance to rotation or flips ([Meta ThreatExchange, n.d.](https://github.com/facebook/ThreatExchange/tree/main/pdq)). In practice a platform needs both a hash for cheap exact and near-exact matches and an embedding for crops and edits.
+A platform needs both a hash for cheap exact and near-exact matches and an embedding for crops and edits. Meta's open-source PDQ perceptual hash documents its own limits: a suggested match threshold, a quality score below which hashes should be discarded, and no guaranteed invariance to rotation or flips ([Meta ThreatExchange, n.d.](https://github.com/facebook/ThreatExchange/tree/main/pdq)).
 
-The design lesson from Barcelona is not about the detector. It is about the policy. **"Same photos" means opposite things depending on who posted them.** Same seller, same photos is a repost: a spam or ranking problem. Different seller, same photos is either a legitimate multi-agency listing or a stolen one, and the evidence that separates them is the relationship between the sellers: same agency network, same software vendor feed, verified agency accounts, or a new private account with a foreign phone number. The [One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution) chapter makes the same point from the clustering side. A photo match between unrelated sellers must go to fraud scoring with the seller context attached, never to a deduplication queue on its own.
+The design lesson from Barcelona is about the policy, not the detector. **"Same photos" means opposite things depending on who posted them.** Same seller, same photos is a repost: a spam or ranking problem. Different seller, same photos is either a legitimate multi-agency listing or a stolen one, and the evidence that separates them is the relationship between the sellers: same agency network, same software vendor feed, verified agency accounts, or a new private account with a foreign phone number. The [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution) chapter makes the same point from the clustering side. A photo match between unrelated sellers must go to fraud scoring with the seller context attached, never to a deduplication queue on its own.
 
 {id: fraud-prevention--architecture-the-risk-scoring-service}
 ## Architecture: The Risk Scoring Service
@@ -119,7 +119,7 @@ A **risk scoring service** answers one question for many callers: *how risky is 
 
 The design below is a **reference-architecture inference**, built from public adjacent systems (Meta's Sigma rule engine, Stripe Radar's documented rule operations, Uber's 2017 description of a shared feature store, Mercari's 2026 risk-based authentication) and from the evidence above. No classifieds company has published a fraud-scoring architecture in this form.
 
-![The risk scoring service. The real-time path reads precomputed features and evaluates rules and models within the caller's latency budget; streaming and batch jobs keep the features, the identity graph and the image index current; decisions and their outcomes return as labels.](listing-systems-architecture/diagrams/6cab74a7d1314424.png)
+![Diagram: The risk scoring service](listing-systems-architecture/posts/25-fraud-prevention/assets/images/25-fraud-prevention/fig02-risk-scoring-service-real-time-path.jpeg)
 
 **Figure 2:** *The risk scoring service. The real-time path reads precomputed features and evaluates rules and models within the caller's latency budget; streaming and batch jobs keep the features, the identity graph and the image index current; decisions and their outcomes return as labels.*
 
@@ -213,12 +213,12 @@ Tradeyard's shared T&S platform introduced a friction in December 2027: a new ac
 
 The weekly cost is (2,000 − fraud stopped) × €180 + genuine lost × €25. The lowest cost is at 0.5, not at the most aggressive threshold and not at the most permissive. Three things matter more than the specific numbers. The **cost of a lost genuine user is a business input**, and the marketplace general manager, not the fraud team, should own it. The 8% abandonment rate is **measured by experiment**, not guessed, because friction design (one tap versus a form) changes it several-fold. And the threshold is **revisited when fraud adapts**: if fraudsters start buying verified phone numbers, the "fraud stopped" column shrinks and the optimum moves.
 
-{id: fraud-prevention--messaging-based-scams}
-## Messaging-Based Scams
+{id: fraud-prevention--fraud-controls-in-messaging}
+## Fraud Controls in Messaging
 
-Most classifieds scams close in the conversation. Payment-link phishing, deposit requests, fake courier offers and moves to other messaging apps all happen there. [From Interest to Contact: Messaging and Lead Management](#messaging-and-leads) owns the conversation model and its storage. This section covers the fraud controls inside it.
+Most classifieds scams close in the conversation, so the controls have to act before a message is delivered. Payment-link phishing, deposit requests, fake courier offers and moves to other messaging apps all happen there. [From Interest to Contact: Messaging and Lead Management](#messaging-and-leads) owns the conversation model and its storage; this section covers the fraud controls inside it.
 
-Tradeyard is the group's clearest case. Its users sent about 11 million messages a day in 2026, and NL and BE users filed about **41,000 reports of payment-link phishing** that year. On Sunday 7 March 2027, a fake Safe Deal payment link reached Femke, who was selling a €240 city bike in Rotterdam, because its domain had been registered that day and no rule looked at domain age. The account was suspended seven minutes after Femke reported it, and a new rule then withheld 37 similar messages to other sellers. Seven minutes was fast. The point is that the message should never have been delivered.
+Tradeyard shows the cost of scanning too late. Its users sent about 11 million messages a day in 2026, and NL and BE users filed about **41,000 reports of payment-link phishing** that year. On Sunday 7 March 2027, a fake Safe Deal payment link reached Femke, who was selling a €240 city bike in Rotterdam, because its domain had been registered that day and no rule looked at domain age. The account was suspended seven minutes after Femke reported it, and a new rule then withheld 37 similar messages to other sellers. Seven minutes was fast, but the message should never have been delivered.
 
 A reference design for message-level fraud controls:
 
@@ -229,7 +229,7 @@ A reference design for message-level fraud controls:
 5. **Score the conversation, not only the message.** A sequence of "courier", "safe payment", "deposit" and a link is a pattern no single message shows.
 6. **Mask or delay off-platform contact details** for new and unverified accounts, so the scam cannot leave the platform before the platform has had a chance to see it.
 
-![The 7 March 2027 phishing message as it would be handled by the target design. The message is scored before delivery; the domain-age and brand check is decisive; the decision service withholds the message, restricts the sender and opens a case for linked accounts.](listing-systems-architecture/diagrams/42c6778ffe66923e.png)
+![Diagram: The 7 March 2027 phishing message as it would be handled by the target design](listing-systems-architecture/posts/25-fraud-prevention/assets/images/25-fraud-prevention/fig04-7-march-2027-phishing-message-it.jpeg)
 
 **Figure 4:** *The 7 March 2027 phishing message as it would be handled by the target design. The message is scored before delivery; the domain-age and brand check is decisive; the decision service withholds the message, restricts the sender and opens a case for linked accounts.*
 
@@ -250,7 +250,7 @@ A fraud model is only as current as its labels, and fraud labels are **late, bia
 | Appeal reversals | Confirmed false positives | Days to weeks | Undercounts: most wrongly blocked users do not appeal |
 | Random-sample review | Unbiased prevalence and recall | Days | Small samples for rare fraud types |
 
-![The fraud feedback loop. Labels arrive from several sources with different delays and biases; the random sample corrects selection bias; new models and rules run in shadow mode before they score live traffic, and rule metrics retire rules that have rotted.](listing-systems-architecture/diagrams/a11108b5d810c0d9.png)
+![Diagram: The fraud feedback loop](listing-systems-architecture/posts/25-fraud-prevention/assets/images/25-fraud-prevention/fig05-fraud-feedback-loop-labels-arrive-several.jpeg)
 
 **Figure 5:** *The fraud feedback loop. Labels arrive from several sources with different delays and biases; the random sample corrects selection bias; new models and rules run in shadow mode before they score live traffic, and rule metrics retire rules that have rotted.*
 
@@ -374,7 +374,7 @@ The decisions I would put on the architecture agenda:
 
 Three numbers belong on the group dashboard: **sampled prevalence of fraudulent listings by brand**, **time from first fraudulent listing to cluster takedown** for confirmed rings, and **fraud losses reported by victims per million contacts**. The second is the one Barcelona exposed: about twelve and a half days, when the signals were there on day one. Under the target design, the number to aim for is hours.
 
-The long-term consideration is that fraud and trust will increasingly be **AI against AI**. Generative tools make fake listings, fake documents and convincing messages cheap, and they make fraud scripts easy to translate into every market's language. The same tools make detectors faster to build and policies faster to change. [AI Across the Listing Lifecycle](#ai-in-listing-systems) covers the broader shift. The architectural defense does not change: a platform that combines signals, scores actors, applies friction in proportion and learns from labels within days will absorb new attack tools. A platform that relies on any single detector, however capable, will not.
+In the long term, fraud and trust will increasingly be **AI against AI**. Generative tools make fake listings, fake documents and convincing messages cheap, and they make fraud scripts easy to translate into every market's language. The same tools make detectors faster to build and policies faster to change. [AI Across the Listing Lifecycle](#ai-in-listing-systems) covers the broader shift. The architectural defense does not change: a platform that combines signals, scores actors, applies friction in proportion and learns from labels within days will absorb new attack tools. A platform that relies on any single detector, however capable, will not.
 
 {id: fraud-prevention--questions-to-ask}
 ## Questions to Ask
@@ -398,7 +398,8 @@ Fraud prevention keeps coming back to one question: who is on the other side? A 
 {id: fraud-prevention--sources-and-evidence}
 ## Sources and Evidence
 
-**Company engineering and investor sources**
+{id: fraud-prevention--company-engineering-and-investor-sources}
+### Company engineering and investor sources
 
 - [We fight online fraud with the power of AI](https://www.olxgroup.com/?p=4590) — OLX Group, 2026. Chat image fraud about 30% of Polish fraud cases; QR-code phishing detection with 80% precision; blocking before delivery.
 - [OLX blocks scammers using advanced algorithms](https://www.itweb.co.za/article/olx-blocks-scammers-using-advanced-algorithms/nWJadvb8APOMbjO1) — ITWeb, 2018. Warn-in-context on payment keywords and off-platform moves (OLX South Africa).
@@ -410,13 +411,15 @@ Fraud prevention keeps coming back to one question: who is on the other side? A 
 - [Cracking down on organized crime behind scam centers](https://about.fb.com/news/2024/11/cracking-down-organized-crime-scam-centers/) — Meta, 2024. Scale of organized scam operations.
 - [Fraud prevention rules (Radar)](https://docs.stripe.com/radar/rules) — Stripe, n.d. (current documentation). Backtesting, shadow mode, rollout, audit trail, rule metrics.
 
-**Standards, regulation and documentation**
+{id: fraud-prevention--standards-regulation-and-documentation}
+### Standards, regulation and documentation
 
 - [PDQ perceptual hash](https://github.com/facebook/ThreatExchange/tree/main/pdq) — Meta ThreatExchange, n.d. Match thresholds, quality score, invariance limits.
 - [Are you VoP to go? Prepare for Verification of Payee by October 2025](https://www.mccannfitzgerald.com/knowledge/financial-services-regulation/are-you-vop-to-go-prepare-for-verification-of-payee-by-october-2025) — McCann FitzGerald, 2025. Verification of Payee obligation for euro-area payment service providers from 9 October 2025.
 - [Fraudulent advertising and account integrity: expert insights on best practice](https://www.ofcom.org.uk/siteassets/resources/documents/research-and-data/online-advertising/fraudulent-advertising-and-account-integrity_expert-insights-on-best-practice.pdf) — Integrity Institute for Ofcom, 2026. Signals, friction between account creation and reach, enforcement ladder.
 
-**Research and practitioner sources**
+{id: fraud-prevention--research-and-practitioner-sources}
+### Research and practitioner sources
 
 - [Annual Fraud Report 2026](https://www.ukfinance.org.uk/system/files/2026-06/UK%20Finance%20Fraud%20Report%202026.pdf) — UK Finance, 2026. Purchase-scam cases, losses, share of APP fraud, reimbursement, policy asks.
 - [Scam ads slipping through the net too easily on second-hand marketplaces](https://www.which.co.uk/policy-and-insight/article/scam-ads-slipping-through-the-net-too-easily-on-second-hand-marketplaces-which-warns-aqyF66m1TlU1) — Which?, 2024. Undercover test: edited scam ads passing review; evasion by changing devices and identities.

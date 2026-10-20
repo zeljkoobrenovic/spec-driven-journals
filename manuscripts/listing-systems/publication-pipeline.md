@@ -21,30 +21,28 @@
 > * **Moderation as an Afterthought** — a moderation queue added serially in front of the indexer makes every listing wait for the slowest check, instead of tiering checks by risk.
 > * **Index-as-Database** — "published" is defined as "present in Solr", so nobody can tell whether a listing missing from search was never approved, failed to index or was removed.
 
-A seller presses "publish". A few seconds or a few minutes later, a buyer can find the listing in search, receive it in an alert, open its page from a search engine, or see it as a recommendation. Between those two moments the listing passes through a dozen systems owned by half a dozen teams. Each of them adds latency, each can fail, and each holds a copy that must later be removed. **The publication pipeline is the path that turns an accepted listing into visible supply, and back again.**
+**The publication pipeline is the path that turns an accepted listing into visible supply, and back again.** It is the last link in Part III's supply chain: [Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion), [From Raw Supply to Usable Listings: Normalization and Enrichment](#normalization-and-enrichment) and [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution) bring a record in, clean it and match it, but none of that reaches a buyer until the listing appears in search, an alert, a search-engine result or a recommendation. On the way the listing passes through a dozen systems owned by half a dozen teams. Each adds latency, each can fail, and each holds a copy that must later be removed. Part I's time to first contact sets the publication budget, and its ghost rates set the removal guarantee; the search, alerts and recommendations of [Part IV — DISCOVERY: Matching Intent to Inventory](#part-4) are only as fresh as this pipeline makes them.
 
 This chapter owns three terms. The **publication pipeline** is the sequence of stages, synchronous and asynchronous, between a seller's (or feed's) submission and the listing's visibility on every surface, and the reverse sequence for removal. A **freshness SLA** (service-level agreement) is the target, per vertical and per channel, for how quickly a change becomes visible and how quickly an ended listing disappears. **Unpublish propagation** is the mechanism that carries the end of a listing, whether sold, expired, withdrawn or taken down, to every system that holds a copy, with evidence that each one did.
 
 Neighboring chapters own the parts. [The Listing Aggregate: Identity, Lifecycle and Invariants](#listing-aggregate) owns the lifecycle states and the events each transition emits. [Trust and Safety as a Platform](#trust-and-safety-architecture) owns the moderation gate inside this pipeline and the enforcement decisions that trigger takedowns. [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings) owns the event contract, the outbox and the per-event-family objectives. [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture) owns indexing and its share of the budget. [Tell Me When It Appears: Saved Searches and Alerts](#saved-searches-and-alerts) owns matching and fan-out. This chapter owns the whole path, the budget that ties the stages together and the measurement that proves it works.
 
-{id: publication-pipeline--setting-the-scene-where-did-six-minutes-go}
-## Setting the Scene: Where Did Six Minutes Go?
+{id: publication-pipeline--setting-the-scene-at-veldmark-where-did-six-minutes-go}
+## Setting the Scene at Veldmark: Where Did Six Minutes Go?
 
-On Sunday **7 March 2027** at **19:42 CET**, Femke, a private seller in Rotterdam, publishes a used city bike for **€240** on Tradeyard Netherlands. Tradeyard is the general classifieds brand of Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)). Automated moderation clears the listing at **19:44**. It becomes searchable at **19:48**. It matches **312** saved searches, the first buyer writes at **19:55**, and fourteen conversations follow within 24 hours. The bike sells on Monday for **€225** through Tradeyard Safe Deal. Tradeyard marks it sold at **18:10** and removes it from search at **18:11**. On Tuesday at 07:00, it appears in **214** alert digests, which were assembled at 17:30 on Monday from a database replica snapshot and never re-checked.
+On Sunday **7 March 2027** at **19:42 CET**, Femke, a private seller in Rotterdam, publishes a used city bike for **€240** on Tradeyard Netherlands. Tradeyard is the general classifieds brand of Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)). Automated moderation clears the listing at **19:44**. It becomes searchable at **19:48**. It matches **312** saved searches, the first buyer writes at **19:55**, and fourteen conversations follow within 24 hours. The bike sells on Monday for **€225** through Tradeyard Safe Deal. Tradeyard marks it sold at **18:10** and removes it from search at **18:11**. On Tuesday at 07:00, it appears in **214** alert digests, which were assembled at 17:30 on Monday from a database replica snapshot and never re-checked.
 
 Ingrid Halvorsen, Veldmark's Group Chief Architect, puts the timeline on a slide in her first month. Six minutes from submit to searchable is Tradeyard's **p95** (the time within which 95% of listings become searchable). Common Ground, Veldmark's €140 million platform program, has set a target of **90 seconds** p95 by the end of 2028. Daan Visser, who owns Yardstick, Tradeyard's PHP monolith, explains where the time goes: a moderation consumer that pulls listings from RabbitMQ in batches, a batch indexer that collects changes and pushes them to Solr on a timer, and Solr commits that make new documents visible on another timer.
 
 Ingrid's first question is not how to make each stage faster. It is *which listings the six minutes describes*. The answer changes the problem. Tradeyard's dashboard measured only listings that the automated gate cleared. **94%** of new listings are cleared that way; the other **6%**, about **138,000 a week**, go to human review and become visible after minutes or hours. Nobody had a number for them. Her second question is about the other direction: *how long does it take for a sold listing to disappear from everything, not just from search?* Nobody had that number either.
 
-This chapter is the design that came out of those two questions.
+{id: publication-pipeline--concepts-stages-clocks-and-moderation-modes}
+## Concepts: Stages, Clocks and Moderation Modes
 
-{id: publication-pipeline--concepts-stages-paths-and-clocks}
-## Concepts: Stages, Paths and Clocks
+{id: publication-pipeline--eight-stages-from-submission-to-full-visibility}
+### Eight stages from submission to full visibility
 
-{id: publication-pipeline--the-stages}
-### The stages
-
-A listing typically passes through eight stages between submission and full visibility. The order below is logical; the architecture section decides which run in sequence and which in parallel.
+A listing passes through eight stages between submission and full visibility. The order below is logical; the architecture section decides which run in sequence and which in parallel.
 
 | Stage | What it decides or produces | Typical owner | Sync or async |
 | --- | --- | --- | --- |
@@ -52,7 +50,7 @@ A listing typically passes through eight stages between submission and full visi
 | 2. Media readiness | Are the required images uploaded, scanned and resized, and are the derivatives available? | Media pipeline ([Photos Sell: Media Pipelines for Listings](#media-pipeline)) | Usually started before submission; checked synchronously |
 | 3. Risk gate | Allow, hold for review, or reject, based on rules, block lists and a light model | Trust and safety | Synchronous, a few hundred milliseconds |
 | 4. Entitlement and pricing check | May this seller publish here: listing slots, insertion fees, quota? | Monetization ([Packages, Bumps and Quotas: Products, Pricing and Entitlements](#products-and-entitlements)) | Synchronous |
-| 5. Enrichment | Category prediction, attribute extraction, geocoding precision, duplicate checks | Supply and data ([From Raw Supply to Usable Listings: Normalization and Enrichment](#normalization-and-enrichment), [One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution)) | Mostly asynchronous |
+| 5. Enrichment | Category prediction, attribute extraction, geocoding precision, duplicate checks | Supply and data ([From Raw Supply to Usable Listings: Normalization and Enrichment](#normalization-and-enrichment), [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution)) | Mostly asynchronous |
 | 6. Asynchronous risk checks | Image models, duplicate and stolen-photo search, price anomaly, account graph | Trust and safety | Asynchronous; may gate visibility for high-risk tiers |
 | 7. Indexing and cache invalidation | Search document built, index refreshed, cached result pages and counts updated | Search platform | Asynchronous |
 | 8. Notification and distribution | Saved-search matching, alerts, sitemaps, recommendations, partner syndication | Discovery, SEO, partnerships | Asynchronous |
@@ -72,16 +70,18 @@ For private sellers who use the marketplace's own app, the two are nearly the sa
 {id: publication-pipeline--pre-moderation-and-post-moderation}
 ### Pre-moderation and post-moderation
 
-**Pre-moderation** checks a listing before it is visible; **post-moderation** publishes first and checks afterwards. Large classifieds platforms commonly run both at once, choosing per listing by category risk, seller trust and the gate's risk score. [Trust and Safety as a Platform](#trust-and-safety-architecture) owns the moderation spectrum and its legal context. For this chapter, the point is structural: **the moderation mode decides which stages sit on the critical path to visibility.** A verified dealer's car can go live on the gate's verdict, with image and duplicate checks running afterwards. A new account's first rental listing in a city with a known fake-rental problem should wait for those checks. The pipeline must support both paths with the same components, and the SLA must report them separately.
+**Pre-moderation** checks a listing before it is visible; **post-moderation** publishes first and checks afterwards. Large classifieds platforms commonly run both at once, choosing per listing by category risk, seller trust and the gate's risk score. [Trust and Safety as a Platform](#trust-and-safety-architecture) owns the moderation spectrum and its legal context. Here the point is structural: **the moderation mode decides which stages sit on the critical path to visibility.** A verified dealer's car can go live on the gate's verdict, with image and duplicate checks running afterwards. A new account's first rental listing in a city with a known fake-rental problem should wait for those checks. The pipeline must support both paths with the same components, and the SLA must report them separately.
 
-Two public cases show what is at stake. In December 2015 a Paris court found leboncoin guilty of misleading commercial practices because it claimed every ad passed a validation process when not all were reviewed before going live, while confirming that, as a hosting provider, it had no duty to check every ad in advance ([Clubic, 2015](https://www.clubic.com/leboncoin/actualite-789848-leboncoin-condamnation.html)). The pipeline's actual mode must match what the marketplace tells users. In a December 2024 undercover test by the UK consumer organization Which?, Gumtree blocked a first scam-style ad, but edited versions passed review "in minutes" ([Which?, 2024](https://www.which.co.uk/policy-and-insight/article/scam-ads-slipping-through-the-net-too-easily-on-second-hand-marketplaces-which-warns-aqyF66m1TlU1)). **A material edit is a new submission**: changes to price, payment terms, contact details, photos or category must re-enter the gate, not bypass it on the way to the indexer.
+The pipeline's actual mode must match what the marketplace tells users. In December 2015 a Paris court found leboncoin guilty of misleading commercial practices because it claimed every ad passed a validation process when not all were reviewed before going live, while confirming that, as a hosting provider, it had no duty to check every ad in advance ([Clubic, 2015](https://www.clubic.com/leboncoin/actualite-789848-leboncoin-condamnation.html)).
+
+**A material edit is a new submission**: changes to price, payment terms, contact details, photos or category must re-enter the gate, not bypass it on the way to the indexer. In a December 2024 undercover test by the UK consumer organization Which?, Gumtree blocked a first scam-style ad, but edited versions passed review "in minutes" ([Which?, 2024](https://www.which.co.uk/policy-and-insight/article/scam-ads-slipping-through-the-net-too-easily-on-second-hand-marketplaces-which-warns-aqyF66m1TlU1)).
 
 {id: publication-pipeline--architecture-a-decision-path-and-a-propagation-path}
 ## Architecture: A Decision Path and a Propagation Path
 
 The reference architecture below is Veldmark's target design and an inference from public building blocks; no classifieds operator has published its complete publication pipeline.
 
-![The decision path (left) ends when the listing context records the decision and publishes one event; the propagation path (right) fans that event out to every consumer, each of which reports to a freshness monitor. The human-review path rejoins at the same publication step, so a held listing propagates exactly like an automatically cleared one.](listing-systems-architecture/diagrams/7aae5603db94b0b3.png)
+![Diagram: The decision path (left) ends when the listing context records the decision and publishes one event](listing-systems-architecture/posts/16-publication-pipeline/assets/images/16-publication-pipeline/fig01-decision-path-left-ends-when-listing.jpeg)
 
 **Figure 1:** *The decision path (left) ends when the listing context records the decision and publishes one event; the propagation path (right) fans that event out to every consumer, each of which reports to a freshness monitor. The human-review path rejoins at the same publication step, so a held listing propagates exactly like an automatically cleared one.*
 
@@ -97,16 +97,16 @@ The synchronous path runs while the seller waits. Its job is to give a definite 
 
 Then the listing context writes the listing and its event in one transaction, using the transactional outbox (see [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings)), and returns. **Everything after the write is propagation.** The seller sees "your listing is being published" with a promise the platform can keep, such as "usually within two minutes".
 
-What does not belong on the synchronous path is equally important. Indexing, alert matching, sitemap updates, recommendation refreshes and partner syndication must never be called from the request. Each of them can be slow or down, and none of them decides whether the listing may exist.
+Indexing, alert matching, sitemap updates, recommendation refreshes and partner syndication must never be called from the request. Each of them can be slow or down, and none of them decides whether the listing may exist.
 
 {id: publication-pipeline--the-asynchronous-path-one-event-many-consumers}
 ### The asynchronous path: one event, many consumers
 
-The asynchronous path begins with the listing event. Two designs are common, and the difference matters.
+The asynchronous path begins with the listing event, and it should fan that event out rather than pass the listing from stage to stage.
 
 In the **sequential design**, each stage calls the next: the moderation worker calls the enrichment worker, which calls the indexer, which calls the alert service. Latency is the sum of all stages, a slow stage blocks everything behind it, and adding a consumer means changing the stage before it. Yardstick's pipeline was a version of this, with timers instead of calls.
 
-In the **fan-out design**, the listing context publishes `ListingPublished` once, and every consumer subscribes. Indexing, alerts, SEO and recommendations run in parallel. Latency to each surface is the decision time plus that consumer's own processing. A new consumer subscribes without touching anyone else. This is the design to aim for.
+In the **fan-out design**, the listing context publishes `ListingPublished` once, and every consumer subscribes. Indexing, alerts, SEO and recommendations run in parallel. Latency to each surface is the decision time plus that consumer's own processing. A new consumer subscribes without touching anyone else.
 
 Asynchronous checks that may still change the decision, such as image models, duplicate search and price-anomaly scoring, sit between `ListingSubmitted` and `ListingPublished` for the risk tiers that require them, and *after* `ListingPublished` for the tiers that go live on the gate. In the second case they can still demote, hold or remove a live listing, through the enforcement path of [Trust and Safety as a Platform](#trust-and-safety-architecture).
 
@@ -119,16 +119,16 @@ Fan-out is only safe if every consumer applies events correctly when they arrive
 - **Version-gated apply.** Every event carries the listing's aggregate version; a consumer applies an event only if its version is higher than the one it holds, and ignores it otherwise. Vinted's 2021 indexing pipeline used the Kafka offset as the Elasticsearch document version with external versioning for the same reason, and documented that increasing topic partitions broke the ordering assumption ([Vinted Engineering, 2021](https://vinted.engineering/2021/01/12/elasticsearch-indexing-pipeline/)).
 - **Tombstones, not deletions.** When a listing ends, consumers record the end with its version rather than simply deleting their copy. Otherwise a late `ListingUpdated` for an older version finds no record, treats the listing as new, and recreates it.
 
-The failure these rules prevent has a name in many teams: the **zombie listing**. A reindex job or a replayed backlog writes a listing's old "active" state after its "sold" state has been applied, and the sold listing comes back to life in search. It is the most common way that a backfill creates Ghost Inventory, and it is invisible unless something compares every copy with the system of record.
+These rules prevent the **zombie listing**, as many teams call it. A reindex job or a replayed backlog writes a listing's old "active" state after its "sold" state has been applied, and the sold listing comes back to life in search. It is the most common way that a backfill creates Ghost Inventory, and it is invisible unless something compares every copy with the system of record.
 
-![Why consumers keep tombstones and gate on versions. Without the tombstone, the backfill's version 3 would find no document and recreate the sold listing; with it, the stale write is ignored.](listing-systems-architecture/diagrams/c4aab5286a532d4d.png)
+![Diagram: Why consumers keep tombstones and gate on versions](listing-systems-architecture/posts/16-publication-pipeline/assets/images/16-publication-pipeline/fig02-why-consumers-keep-tombstones-gate-versions.jpeg)
 
 **Figure 2:** *Why consumers keep tombstones and gate on versions. Without the tombstone, the backfill's version 3 would find no document and recreate the sold listing; with it, the stale write is ignored.*
 
 {id: publication-pipeline--expiry-and-renewal}
 ### Expiry and renewal
 
-Not every end is an event a seller triggers. Listings expire when their lifetime elapses, and professional listings expire when a feed stops confirming them. The **lifecycle scheduler** that drives these transitions is part of the pipeline, and it has its own failure modes.
+The **lifecycle scheduler**, which ends the listings no seller ends, is part of the pipeline and has its own failure modes. Listings expire when their lifetime elapses, and professional listings expire when a feed stops confirming them.
 
 - **Batch expiry at midnight** creates a removal storm: hundreds of thousands of `ListingExpired` events at once, competing with live traffic for the indexer and the alert matcher. Spread expiry times across the day, or rate-limit the scheduler's output.
 - **A scheduler that falls behind** after an outage leaves listings live past their expiry, and nothing alerts on a transition that did not happen. Monitor the backlog of overdue transitions as a first-class metric.
@@ -139,7 +139,7 @@ Downstream channels enforce expiry whether the marketplace does or not. Google M
 {id: publication-pipeline--unpublish-propagation}
 ## Unpublish Propagation
 
-Removal is the mirror image of publication, with two differences. It touches more systems, because a listing that has been live for a week has been copied into places a new listing has not yet reached: digests, recommendation candidate stores, partner feeds, ad audiences, cached pages. And its failures are worse. A new listing that becomes visible two minutes late costs a little liquidity. A fraudulent listing that stays visible after a takedown sends buyers to a scammer under the marketplace's own brand.
+Removal is the mirror image of publication, but it touches more systems and its failures cost more. It touches more systems because a listing that has been live for a week has been copied into places a new listing has not yet reached: digests, recommendation candidate stores, partner feeds, ad audiences, cached pages. A new listing that becomes visible two minutes late costs a little liquidity. A fraudulent listing that stays visible after a takedown sends buyers to a scammer under the marketplace's own brand.
 
 {id: publication-pipeline--every-copy-registered}
 ### Every copy, registered
@@ -164,17 +164,17 @@ The first requirement is a **consumer registry**: a list of every system that ho
 
 The objectives in the table are the targets Veldmark set in 2027; the search and event figures follow [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture) and [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings). How each consumer renders an ended listing, for example a "sold" page with related listings versus a 410 response for a fraud takedown, is decided by [Found by Google: Web, App and SEO Architecture for Listings](#web-and-seo-architecture) from the reason the listing ended. The pipeline's job is to carry that reason.
 
-{id: publication-pipeline--late-binding-at-send-time}
-### Late binding at send time
+{id: publication-pipeline--re-check-at-send-time}
+### Re-check at send time
 
-Some consumers assemble work in advance. A digest built at 17:30 and sent at 07:00, a recommendation batch computed overnight, a marketing e-mail scheduled for the morning: each holds a list of listings that may have ended in between. Subscribing to removal events and purging assembled lists is necessary but not enough, because a purge can fail or arrive late. **The robust rule is to re-check each listing's current state immediately before sending**, through the listing read API or a compacted state topic. Femke's bike was in 214 Tuesday digests because the digest service did neither. The re-check costs one batched lookup per digest; the alternative costs the trust of 214 buyers.
+**Consumers that assemble work in advance must re-check each listing's current state immediately before sending**, through the listing read API or a compacted state topic. A digest built at 17:30 and sent at 07:00, a recommendation batch computed overnight, a marketing e-mail scheduled for the morning: each holds a list of listings that may have ended in between. Subscribing to removal events and purging assembled lists is necessary but not enough, because a purge can fail or arrive late. Femke's bike was in 214 Tuesday digests because the digest service did neither. The re-check costs one batched lookup per digest; the alternative costs the trust of 214 buyers.
 
 {id: publication-pipeline--takedowns-ride-the-same-rails-faster}
 ### Takedowns ride the same rails, faster
 
-A takedown for fraud or policy violation is an enforcement decision, owned by trust and safety. Its propagation should not be a separate mechanism. The decision service emits its decision, the listing context applies it and emits the resulting listing event, and every registered consumer removes the listing exactly as it would for a sale, on a **priority lane** with a tighter objective (see [Trust and Safety as a Platform](#trust-and-safety-architecture)). Two separate removal mechanisms, one for sales and one for takedowns, guarantee that one of them falls behind the consumer registry. The only differences for takedowns are priority, the 410 page rather than a "sold" page, the removal of pending messages, and the statement of reasons the Digital Services Act requires for the restriction ([Rules of the Marketplace: DSA, DAC7 and Vertical Regulation](#marketplace-regulation)).
+A takedown for fraud or policy violation is an enforcement decision owned by trust and safety, but its propagation should not be a separate mechanism. The decision service emits its decision, the listing context applies it and emits the resulting listing event, and every registered consumer removes the listing exactly as it would for a sale, on a **priority lane** with a tighter objective (see [Trust and Safety as a Platform](#trust-and-safety-architecture)). Two separate removal mechanisms, one for sales and one for takedowns, guarantee that one of them falls behind the consumer registry. The only differences for takedowns are priority, the 410 page rather than a "sold" page, the removal of pending messages, and the statement of reasons the Digital Services Act requires for the restriction ([Rules of the Marketplace: DSA, DAC7 and Vertical Regulation](#marketplace-regulation)).
 
-![Four causes, one removal path. Sales, expiry, takedowns and feed reconciliation all end in the listing context, which emits one removal event; each registered consumer acknowledges with the version it applied, and the propagation monitor alerts on any consumer that misses its objective.](listing-systems-architecture/diagrams/bca89843bde25456.png)
+![Diagram: Four causes, one removal path](listing-systems-architecture/posts/16-publication-pipeline/assets/images/16-publication-pipeline/fig04-four-causes-one-removal-path-sales.jpeg)
 
 **Figure 4:** *Four causes, one removal path. Sales, expiry, takedowns and feed reconciliation all end in the listing context, which emits one removal event; each registered consumer acknowledges with the version it applied, and the propagation monitor alerts on any consumer that misses its objective.*
 
@@ -192,12 +192,12 @@ A pipeline that spans eight teams needs measurement that no single team can game
 {id: publication-pipeline--in-practice-how-others-got-faster-and-tradeyard-s-budget}
 ## In Practice: How Others Got Faster, and Tradeyard's Budget
 
-{id: publication-pipeline--documented-examples}
-### Documented examples
+{id: publication-pipeline--shape-first-engine-second}
+### Shape first, engine second
 
-The best public record of a classifieds-scale freshness program is Vinted's. In 2023, its engineers described moving item indexing from Sidekiq delta jobs, under which item visibility could take up to about seven minutes, to change data capture feeding Apache Flink jobs that build read models in Redis, from which search documents are assembled; visibility fell to about one minute ([Vinted Engineering, 2023](https://vinted.engineering/2023/09/25/search-indexing-pipeline/)). In 2024, after moving search to Vespa, they reported a 5-second visibility interval and a p99 of 4.64 seconds to index a single item after upload ([Vinted Engineering, 2024](https://vinted.engineering/2024/09/05/goodbye-elasticsearch-hello-vespa/)). Two lessons transfer. The first improvement came from **changing the pipeline's shape**, from timed batches to event-driven streams, not from tuning the engine. And the second came from the engine's own visibility model, which is why the engine's refresh semantics belong in the budget.
+The best public record of a classifieds-scale freshness program is Vinted's. In 2023, its engineers described moving item indexing from Sidekiq delta jobs, under which item visibility could take up to about seven minutes, to change data capture feeding Apache Flink jobs that build read models in Redis, from which search documents are assembled; visibility fell to about one minute ([Vinted Engineering, 2023](https://vinted.engineering/2023/09/25/search-indexing-pipeline/)). In 2024, after moving search to Vespa, they reported a 5-second visibility interval and a p99 of 4.64 seconds to index a single item after upload ([Vinted Engineering, 2024](https://vinted.engineering/2024/09/05/goodbye-elasticsearch-hello-vespa/)). Two lessons transfer. The first improvement came from **changing the pipeline's shape**, from timed batches to event-driven streams, not from tuning the engine. The second came from the engine's own visibility model, which is why the engine's refresh semantics belong in the budget.
 
-Those semantics are documented. In Elasticsearch, a refresh makes buffered documents searchable by writing a new segment; the default is every second, but only for indices that received a search request in the last 30 seconds, and a refresh is "much lighter" than a full commit ([Elastic, n.d.](https://www.elastic.co/docs/manage-data/data-store/near-real-time-search)). In Solr 8, documents become visible through a soft commit or a hard commit that opens a new searcher; soft commits give faster visibility without guaranteeing durability ([Apache Solr Reference Guide 8.11, n.d.](https://solr.apache.org/guide/8_11/updatehandlers-in-solrconfig.html)). When Solr opens a new searcher, the old one keeps serving while the new one auto-warms its caches from the old one's contents ([Apache Solr Reference Guide 8.11, n.d.](https://solr.apache.org/guide/8_11/query-settings-in-solrconfig.html)). That warming cost is why teams running Solr commonly set soft-commit intervals in tens of seconds rather than one second, and why commit frequency is a capacity decision as much as a freshness one.
+Each engine documents when new documents become visible, and at what cost. In Elasticsearch, a refresh makes buffered documents searchable by writing a new segment; the default is every second, but only for indices that received a search request in the last 30 seconds, and a refresh is "much lighter" than a full commit ([Elastic, n.d.](https://www.elastic.co/docs/manage-data/data-store/near-real-time-search)). In Solr 8, documents become visible through a soft commit or a hard commit that opens a new searcher; soft commits give faster visibility without guaranteeing durability ([Apache Solr Reference Guide 8.11, n.d.](https://solr.apache.org/guide/8_11/updatehandlers-in-solrconfig.html)). When Solr opens a new searcher, the old one keeps serving while the new one auto-warms its caches from the old one's contents ([Apache Solr Reference Guide 8.11, n.d.](https://solr.apache.org/guide/8_11/query-settings-in-solrconfig.html)). That warming cost is why teams running Solr commonly set soft-commit intervals in tens of seconds rather than one second, and why commit frequency is a capacity decision as much as a freshness one.
 
 {id: publication-pipeline--tradeyard-s-baseline}
 ### Tradeyard's baseline
@@ -224,7 +224,7 @@ Three findings came out of the reconstruction. **Every timer stacks.** A 60-seco
 {id: publication-pipeline--the-90-second-budget}
 ### The 90-second budget
 
-The Common Ground target is a p95 of 90 seconds by the end of 2028. Ingrid had it written down as a contract with three parts, which Veldmark records in a publication-pipeline SLA card (a template is in the [Field Kit: Templates for the Marketplace Architect](#toolkit)):
+Ingrid's team wrote the Common Ground target, a p95 of 90 seconds by the end of 2028, as a contract with three parts, recorded in a publication-pipeline SLA card (a template is in the [Field Kit: Templates for the Marketplace Architect](#toolkit)):
 
 - **Coverage.** The 90-second target applies to listings cleared by the automated gate, which was 94% of Tradeyard's new listings in 2026. Listings held for human review have their own objective: p90 under 30 minutes from submission to decision during staffed hours. The share of listings held is published next to both numbers, so that the fast path cannot be met by holding more listings.
 - **Clock.** Platform latency, from receipt of the submission to visible in search, for listings submitted through Tradeyard's own apps and web. Professional feeds have their own SLA, measured from receipt of the feed record.
@@ -262,7 +262,7 @@ A group does not need one SLA. It needs one SLA *format*, with values per vertic
 | Moderation path | Risk-tiered; most listings on the gate | Gate for known dealers; private sellers tiered | Gate for agencies; private landlords and rentals in high-risk cities wait for image checks | Gate; scam-heavy job categories wait |
 | Special constraint | Peak load on Sunday evenings at Tradeyard | Bulk price changes from dealers | Embargo and visibility rules from source licenses | Search engines penalize expired postings |
 
-The real-estate column hides one subtlety: **a listing that waits for a duplicate check before going live** is slower, but it lets entity resolution attach the listing to an existing property cluster before buyers see it (see [One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution)). Hearthly accepted a slower insertion objective for that reason. For rentals in cities with known fake-rental activity, the image and duplicate checks are pre-publication; the Barcelona ring of July 2027, which used photos stolen from real listings, is the case behind that rule ([Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention)).
+In real estate, **a listing that waits for a duplicate check before going live** is slower, but it lets entity resolution attach the listing to an existing property cluster before buyers see it (see [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution)). Hearthly accepted a slower insertion objective for that reason. For rentals in cities with known fake-rental activity, the image and duplicate checks are pre-publication; the Barcelona ring of July 2027, which used photos stolen from real listings, is the case behind that rule ([Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention)).
 
 {id: publication-pipeline--trade-offs}
 ## Trade-offs
@@ -302,7 +302,7 @@ The trade-off that decides the others is **where "published" is defined**. If it
 {id: publication-pipeline--the-chief-architect-s-view}
 ## The Chief Architect's View
 
-**One owner for the whole path.** The publication pipeline crosses listings, media, trust and safety, monetization, search, discovery and SEO. Each stage has an owner; the path needs one too. At Veldmark it is the listing platform team under Yara Mendes's platform engineering organization, which owns the SLA card, the budget, the consumer registry and the freshness monitor. It does not own the stages. It owns the numbers that show whether the stages add up.
+**One owner for the whole path.** Each stage has an owner; the path needs one too. At Veldmark it is the listing platform team under Yara Mendes's platform engineering organization, which owns the SLA card, the budget, the consumer registry and the freshness monitor. It does not own the stages. It owns the numbers that show whether the stages add up.
 
 **The SLA card as a decision record.** Coverage, clock, insertion objective, review objective, removal objectives per consumer, and the stage budget are written on one card per brand and channel, decided at the architecture advice forum, and changed only through it. When a team wants to add a pre-publication check, the question is which stage's budget pays for it. When product wants to promise sellers "live in one minute", the card shows what that would cost.
 
@@ -312,8 +312,8 @@ The trade-off that decides the others is **where "published" is defined**. If it
 
 **What to watch.** Insertion latency per brand, channel and moderation path; the share of listings held; review-path latency; removal latency per consumer and the worst consumer; the overdue-transition backlog; copy-reconciliation mismatches per day; and synthetic-canary results at the Sunday-evening peak. A number that improves while the held share rises is not an improvement.
 
-{id: publication-pipeline--questions-to-ask-in-a-design-review}
-## Questions to Ask in a Design Review
+{id: publication-pipeline--questions-to-ask}
+## Questions to Ask
 
 1. Which stages are on the synchronous path, and could any of them move out without changing the publication decision?
 2. Which listings does our freshness SLA cover, which clock does it measure, and what is the objective for listings held for review?

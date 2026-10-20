@@ -20,7 +20,7 @@
 > * **Index-as-Database** — a search migration is where a group learns whether its index can be rebuilt from anything other than itself; if it cannot, the migration has to build that source first.
 > * **Ghost Inventory** — while two systems run side by side, every removal must reach both, and every copy that listens to only one of them keeps serving listings that are gone.
 
-Every successful marketplace eventually runs on a system it would not build today. The monolith that launched the site in 2006 still holds the listing table, renders the pages that search engines index, runs the jobs that send alerts and bills the bumps. It is also the reason a fraud rule takes three days to reach another country and why 140 engineers wait for the same deploy. **Modernization is not optional for such a marketplace; the only choice is how much liquidity it puts at risk.**
+Part VIII's agenda turns here from decisions to code. [After the Deal: Consolidating Platforms After Acquisitions](#platform-consolidation) chose what Veldmark shares and [Who Owns What: Organizing Marketplace Engineering](#organizing-marketplace-engineering) gave each capability an owner, but Tradeyard's teams still ship through Yardstick, the monolith that launched the site in 2006. It still holds the listing table, renders the pages that search engines index, runs the jobs that send alerts and bills the bumps. It is also the reason a fraud rule takes three days to reach another country and why 140 engineers wait for the same deploy. **Modernization is not optional for such a marketplace; the only choice is how much liquidity it puts at risk.**
 
 The industry has a settled answer to the first-order question. Martin Fowler's **strangler fig** describes gradual replacement that "begins with small additions, often new features", and argues that "the reduced risk and earlier value from the gradual approach outweigh its costs" ([Fowler, page dated 2024](https://martinfowler.com/bliki/StranglerFigApplication.html)). The hard questions are the second-order ones: which slice first, how to run two systems on one dataset, how to know a new search engine is good enough, how to keep 40 million URLs from breaking, and when to stop being able to go back.
 
@@ -28,12 +28,12 @@ The industry has a settled answer to the first-order question. Martin Fowler's *
 
 **Figure 1:** *Modernization by strangler: new components grow around the monolith one slice at a time while the marketplace keeps trading, and the old path stays warm until each new slice has proven itself.*
 
-This chapter owns three terms. A **migration stage gate** is a decision point in moving one slice of a system, with measured exit criteria and a defined rollback, that must be passed before more traffic or responsibility moves. **Relevance parity** is the condition that a new search path produces outcomes for buyers and sellers that are not worse than the old path's, within agreed tolerances, measured on real queries; it is not identical results. **URL migration** is the controlled change of public URLs, or the deliberate decision not to change them, with mappings, redirects, sitemaps and monitoring that preserve search-engine signals. The event mechanisms this chapter uses belong to [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings), the search platform to [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture), and the URL and redirect services to [Found by Google: Web, App and SEO Architecture for Listings](#web-and-seo-architecture).
+This chapter owns three terms. A **migration stage gate** is a decision point in moving one slice of a system, with measured exit criteria and a defined rollback, that must be passed before more traffic or responsibility moves. **Relevance parity** is the condition that a new search path produces outcomes for buyers and sellers that are not worse than the old path's, within agreed tolerances, measured on real queries; it is not identical results. **URL migration** is the controlled change of public URLs, or the deliberate decision not to change them, with mappings, redirects, sitemaps and monitoring that preserve search-engine signals. The event mechanisms this chapter uses belong to [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings), the search platform to [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture), and the URL and redirect services to [Found by Google: Web, App and SEO Architecture for Listings](#web-and-seo-architecture). Earlier chapters already assume the plan's dates, such as the alert cut-over in [Tell Me When It Appears: Saved Searches and Alerts](#saved-searches-and-alerts), and [Built to Be Replaced: Evolving a Marketplace Platform Over a Decade](#long-term-evolution) asks how the platform that replaces Yardstick avoids becoming another one.
 
-{id: modernization-and-migration--setting-the-scene-yardstick-in-2027}
-## Setting the Scene: Yardstick in 2027
+{id: modernization-and-migration--setting-the-scene-at-veldmark-yardstick-in-2027}
+## Setting the Scene at Veldmark: Yardstick in 2027
 
-Yardstick is the core of Tradeyard, the horizontal classifieds brand of Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)). It is a PHP monolith written from 2006 onwards, running on MySQL in a co-located data center in Amsterdam. Since 2019 about 40 microservices have grown around it on AWS, but Yardstick still owns the listing table, insertion, most page rendering, alerts, the pro-seller tools, the admin back office and the integration with Tradeyard Safe Deal. It serves Tradeyard's 13.2 million live listings in four countries, about 2.3 million new listings a week and 31 million monthly users.
+Yardstick is the core of Tradeyard, the horizontal classifieds brand of Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)). It is a PHP monolith written from 2006 onwards, running on MySQL in a co-located data center in Amsterdam. Since 2019 about 40 microservices have grown around it on AWS, but Yardstick still owns the listing table, insertion, most page rendering, alerts, the pro-seller tools, the admin back office and the integration with Tradeyard Safe Deal. It serves Tradeyard's 13.2 million live listings in four countries, about 2.3 million new listings a week and 31 million monthly users.
 
 In July 2027 Daan Visser, Tradeyard's engineering director, who owns Yardstick, and Ingrid Halvorsen, the Group Chief Architect, set up the **Yardstick Exit** enabling team to produce the retirement plan. Its inventory, presented to the architecture advice forum in September 2027, is the starting point for everything that follows.
 
@@ -102,7 +102,7 @@ Shadow traffic has a well-known weakness in listings: the data changes underneat
 
 A slice moves through five gates. The names are Veldmark's; the shape is general.
 
-![The five stage gates for one migration slice. Rollback is a normal transition until G3; the move to G4 is the recorded decision that the old path will no longer be kept current.](listing-systems-architecture/diagrams/189dee52316119fc.png)
+![Diagram: The five stage gates for one migration slice](listing-systems-architecture/posts/43-modernization-and-migration/assets/images/43-modernization-and-migration/fig02-five-stage-gates-one-migration-slice.jpeg)
 
 **Figure 2:** *The five stage gates for one migration slice. Rollback is a normal transition until G3; the move to G4 is the recorded decision that the old path will no longer be kept current.*
 
@@ -124,7 +124,7 @@ Two rules make the gates useful. **Exit criteria are numbers agreed before the g
 
 Figure 3 shows the transitional architecture for Tradeyard in mid-2028, after the insertion flow has moved and before search has. It generalizes to any listing monolith.
 
-![Tradeyard's transitional architecture in mid-2028. Three seams — edge routes, BFF routing and the event stream — decide which system serves what. The new listing service is the system of record for listings it created; the Legacy Mimic writer keeps Yardstick's table current so that modules still in the monolith keep working and rollback stays possible.](listing-systems-architecture/diagrams/bc056cc02a9fec95.png)
+![Diagram: Tradeyard's transitional architecture in mid-2028](listing-systems-architecture/posts/43-modernization-and-migration/assets/images/43-modernization-and-migration/fig03-tradeyard-s-transitional-architecture-mid-2028.jpeg)
 
 **Figure 3:** *Tradeyard's transitional architecture in mid-2028. Three seams — edge routes, BFF routing and the event stream — decide which system serves what. The new listing service is the system of record for listings it created; the Legacy Mimic writer keeps Yardstick's table current so that modules still in the monolith keep working and rollback stays possible.*
 
@@ -141,7 +141,7 @@ Four principles follow from it.
 {id: modernization-and-migration--data-migration-listings-and-accounts}
 ### Data migration: listings and accounts
 
-Listings and accounts are migrated differently because they behave differently.
+Listings and accounts are migrated differently because listings are short-lived and accounts are not.
 
 **Listings** are short-lived. Most Tradeyard listings live days or weeks, so the cheapest migration for most of them is no migration at all: new listings are created in the new service from the cut-over date of their cohort, and existing listings stay in Yardstick until they end. Only long-lived listings (pro sellers' stock, listings renewed many times) and the archive need a bulk move. A backfill reads Yardstick's tables through Relay's snapshot mode, writes into the new service, and publishes on the backfill topic, so that downstream copies are corrected rather than duplicated (see [System of Record and Read Models: Listing Data Management](#listing-data-management)).
 
@@ -169,7 +169,9 @@ Relevance parity is therefore measured in layers:
 
 The last row is the definition that matters. The question is not "are the results the same?" but "do buyers find and contact sellers at least as well?" — in classifieds, contacts are the observable success signal, as [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking) argues. Ranking experiments in two-sided markets have interference problems that [Testing a Two-Sided Market: Experimentation Platforms](#experimentation) covers; for an engine swap, user-level randomization is usually adequate because the engine does not change sellers' incentives.
 
-Two documented migrations show the sequence. Marktplaats replaced eBay's Voyager search engine with Elasticsearch in 2015: new services behind the same interfaces, several hundred reused integration and acceptance tests, recorded-query replay, then a ramp of 1% of traffic on a Friday, 50% by the end of the following week and then 100%, with Voyager kept warm. It took two to three developers about three months with zero downtime, and many test failures came from "hidden functionality in other parts of the system that we couldn't detect in the code of the legacy services" (2015 post, republished 2017). Vinted moved from six Elasticsearch clusters to one Vespa deployment between May 2023 and April 2024, using shadow traffic first and then A/B tests of relevance, and reports search latency improved 2.5 times and change-to-visible time down from 300 seconds to 5 ([Vinted Engineering, 2024](https://vinted.engineering/2024/09/05/goodbye-elasticsearch-hello-vespa/)). Vinted's earlier rebuild of its indexing pipeline, from delta jobs to CDC-fed Flink read models, had already cut item visibility latency from up to seven minutes to about one ([Vinted Engineering, 2023](https://vinted.engineering/2023/09/25/search-indexing-pipeline/)): **the indexing path was modernized before the engine**, which is the order Veldmark follows.
+Two documented migrations show the sequence. Marktplaats replaced eBay's Voyager search engine with Elasticsearch in 2015: new services behind the same interfaces, several hundred reused integration and acceptance tests, recorded-query replay, then a ramp of 1% of traffic on a Friday, 50% by the end of the following week and then 100%, with Voyager kept warm. It took two to three developers about three months with zero downtime, and many test failures came from "hidden functionality in other parts of the system that we couldn't detect in the code of the legacy services" (2015 post, republished 2017).
+
+At Vinted, **the indexing path was modernized before the engine**, which is the order Veldmark follows. Its rebuild of the indexing pipeline, from delta jobs to CDC-fed Flink read models, cut item visibility latency from up to seven minutes to about one ([Vinted Engineering, 2023](https://vinted.engineering/2023/09/25/search-indexing-pipeline/)). Vinted then moved from six Elasticsearch clusters to one Vespa deployment between May 2023 and April 2024, using shadow traffic first and then A/B tests of relevance, and reports search latency improved 2.5 times and change-to-visible time down from 300 seconds to 5 ([Vinted Engineering, 2024](https://vinted.engineering/2024/09/05/goodbye-elasticsearch-hello-vespa/)).
 
 {id: modernization-and-migration--url-migration-the-inventory-you-cannot-see}
 ### URL migration: the inventory you cannot see
@@ -293,7 +295,9 @@ The overlap line shows why identical results are the wrong target: fewer than th
 {id: modernization-and-migration--urls-the-decision-not-to-change-them}
 ### URLs: the decision not to change them
 
-Tradeyard's listing URLs carry the numeric listing identifier. The new listing service issues group listing identifiers (`vm:tradeyard:<country>:<id>`) whose local part continues Yardstick's numeric sequence from a reserved block, so a listing created in the new service has a URL of exactly the same shape as one created in Yardstick. No listing URL changed in 2028. Landing pages had already moved to the URL and canonical service in 2027, and the legacy search URLs that Yardstick generated before then are permanent redirects in the redirect registry, which Veldmark keeps without an end date. During each wave the SEO team watches four numbers per page type and country: indexed pages, crawl errors, organic sessions and organic contacts. In the insertion ramp none moved outside normal weekly variation.
+No listing URL changed in 2028. Tradeyard's listing URLs carry the numeric listing identifier, and the new listing service issues group listing identifiers (`vm:tradeyard:<country>:<id>`) whose local part continues Yardstick's numeric sequence from a reserved block, so a listing created in the new service has a URL of exactly the same shape as one created in Yardstick. Landing pages had already moved to the URL and canonical service in 2027, and the legacy search URLs that Yardstick generated before then are permanent redirects in the redirect registry, which Veldmark keeps without an end date.
+
+During each wave the SEO team watches four numbers per page type and country: indexed pages, crawl errors, organic sessions and organic contacts. In the insertion ramp none moved outside normal weekly variation.
 
 {id: modernization-and-migration--progress-end-of-2028}
 ### Progress, end of 2028
@@ -349,7 +353,7 @@ The professional verticals have one advantage: cohorts are natural. Moving a sof
 - **Parity by spreadsheet.** Parity is asserted by a checklist of features, not measured on outcomes. The new flow has every button and publishes fewer listings.
 - **Transitional components that become permanent.** The relay, the mimic writer and the CDC connectors outlive the migration because nobody owns their removal. Give each an end date and a line on the progress dashboard.
 - **The unrehearsed rollback.** The switch exists but has never been used with real data. When it is needed, the old system is missing the last day's listings.
-- **The forgotten consumer.** A partner feed, a finance export or a moderator's report reads the old database. It breaks on the day the table stops being updated. A copy register and a consumer registry find these before the cut-over.
+- **The forgotten consumer.** A partner feed, a finance export or a moderator's report reads the old database. It breaks on the day the table stops being updated. The consumer registry finds these before the cut-over.
 
 {id: modernization-and-migration--the-chief-architect-s-view}
 ## The Chief Architect's View
@@ -379,6 +383,9 @@ The professional verticals have one advantage: cohorts are natural. Moving a sof
 8. Which URLs, status codes or rendering modes change, and where are the redirects and the monitoring?
 9. When was rollback last rehearsed with real data, and what is the point of no return?
 10. Which consumers still read the legacy database, and which transitional components have no end date?
+
+{id: modernization-and-migration--from-migration-to-ai}
+## From Migration to AI
 
 Yardstick's retirement is a 2029 event; the platform that replaces it will itself be replaced, in parts, during the next decade. Before that question, the next chapter, [AI Across the Listing Lifecycle](#ai-in-listing-systems), looks at the technology shift most likely to reshape listing creation, search and moderation on the new platform, and at the architecture that keeps it under control.
 

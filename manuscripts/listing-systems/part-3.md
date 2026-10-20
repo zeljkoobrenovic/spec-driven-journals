@@ -23,7 +23,7 @@
 
 [Part II — LISTING: Modeling the Thing Being Sold](#part-2) modeled the listing: a small aggregate referencing governed categories, attributes, media, places and accounts. This part puts that model under load. **Supply arrives through many doors, at different rhythms, from systems the marketplace does not control**, and each door tends to grow its own idea of what a listing is.
 
-The argument is that supply is **one chain, not five features**. A record enters through a channel under a contract, is normalized and enriched with recorded provenance, is recognized when it describes something already known, and is published and later unpublished within a stated freshness target. The professionals who supply most of the value then judge the result with their own systems.
+The argument is that supply is **one chain, not five features**. A record enters through a channel under a contract, is normalized and enriched with recorded provenance, is recognized when it describes something already known, and is published and later unpublished within a stated freshness target. The professionals who supply most of the inventory then check the result against their own systems.
 
 ![A single conveyor carries listings from phone, dealer system and agency doors through contract, provenance, matching and publication stations, with a return path for removal.](listing-systems-architecture/posts/part-3-intro/assets/images/part-3-intro/supply-as-one-chain.jpeg)
 
@@ -36,19 +36,19 @@ The argument is that supply is **one chain, not five features**. A record enters
 | --- | --- | --- |
 | [Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion) | How should a marketplace accept supply from private sellers, professionals and partners at scale? | A partner's bad file can unpublish thousands of listings overnight. |
 | [From Raw Supply to Usable Listings: Normalization and Enrichment](#normalization-and-enrichment) | How do you turn heterogeneous input into consistent, enriched listings? | Nobody can tell which values a seller typed and which a model inferred. |
-| [One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution) | How do you recognize that several listings describe the same thing, and what do you do about it? | One flat appears three times, or reposts crowd out new supply. |
+| [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution) | How do you recognize that several listings describe the same thing, and what do you do about it? | One flat appears three times, or reposts crowd out new supply. |
 | [From Submitted to Searchable: The Publication Pipeline](#publication-pipeline) | What happens between "publish" and searchable, and how fast must it be? | Publication takes minutes, or sold items still appear in alerts. |
 | [Serving the Pros: Dealer, Agent and Merchant Tooling](#professional-seller-tooling) | What do professional sellers need, and how should that tooling be built? | Dealers dispute your lead counts, or the group sells software to professionals. |
 
 {id: part-3--how-this-part-connects}
 ## How this part connects
 
-This part consumes Part II's contracts. Ingestion validates against the compiled [Attributes Without Chaos: Schemas, Dictionaries and Validation](#attribute-schemas), writes commands to the [The Listing Aggregate: Identity, Lifecycle and Invariants](#listing-aggregate) and attaches records to [Private Sellers, Dealers and Agencies: Modeling Who Lists](#sellers-and-accounts). The liquidity metrics of [Part I — MARKETPLACE: The Business Behind the Listings](#part-1) set its targets: time to first contact sets the publication budget, and ghost rates set the removal guarantee. [Part IV — DISCOVERY: Matching Intent to Inventory](#part-4) then reads the result. Search, alerts and recommendations are only as fresh, deduplicated and trustworthy as the supply this part delivers, and trust and safety ([Part V — TRUST: Keeping the Marketplace Safe](#part-5)) owns the moderation gate placed inside the publication pipeline.
+This part consumes Part II's contracts. Ingestion validates against the compiled [Attributes Without Chaos: Schemas, Dictionaries and Validation](#attribute-schemas), writes commands to the [The Listing Aggregate: Identity, Lifecycle and Invariants](#listing-aggregate) and attaches records to [Private Sellers, Dealers and Agencies: Modeling Who Lists](#sellers-and-accounts). The liquidity metrics of [Part I — MARKETPLACE: The Business Behind the Listings](#part-1) set its targets: time to first contact sets the publication budget, and ghost rates set the removal guarantee. [Part IV — DISCOVERY: Matching Intent to Inventory](#part-4) then reads the result: search, alerts and recommendations are only as fresh, deduplicated and trustworthy as the supply this part delivers. Trust and safety ([Part V — TRUST: Keeping the Marketplace Safe](#part-5)) owns the moderation gate inside the publication pipeline.
 
 {id: part-3--the-veldmark-thread}
 ## The Veldmark thread
 
-At Veldmark, the fictional marketplace group this book follows, supply problems arrive as incidents before they arrive as designs. In this part Ingrid Halvorsen's team:
+At Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)), supply problems arrive as incidents before they arrive as designs. In this part Ingrid Halvorsen's team:
 
 - Responds to the **8 March 2027** Motorvane incident, in which truncated snapshot files unpublished **38,400** listings, by adopting **Supply Contract v1** in September 2027: one envelope, one error catalog, mandatory mass-change guards and brand-local adapters.
 - Traces the **Essen Volkswagen Golf**'s 31 decoded attributes value by value, and gives every value a recorded source.

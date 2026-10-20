@@ -21,16 +21,16 @@
 > * **Paid-Rank Drift** — when paid effects are not explicit, capped fields, every new product adds another unbounded multiplier to ranking.
 > * **The Acquisition Archipelago** — four acquired brands with four catalogs, four ways of counting slots and four billing integrations pay four times for one capability and still cannot sell a cross-brand package.
 
-[How Listing Marketplaces Make Money](#monetization-models) showed that every revenue model needs the same commercial core: something that defines what can be sold, something that prices it, something that records what a seller holds, and something that bills for it. This chapter designs that core. It is the least glamorous part of a marketplace and one of the most consequential. **A seller who paid for a "Top listing" and never appeared on top, or a dealer billed for cars the platform refused to publish, is a customer the marketplace has wronged.** At scale, these wrongs are rarely bad intent. They come from architecture: the same commercial fact counted in several places, by several teams, with several definitions.
+[How Listing Marketplaces Make Money](#monetization-models) showed that every revenue model needs the same commercial core: something that defines what can be sold, something that prices it, something that records what a seller holds, and something that bills for it. This chapter designs that core, and with it Part VI's test for every paid product: proof that what was sold was delivered. **A seller who paid for a "Top listing" and never appeared on top, or a dealer billed for cars the platform refused to publish, is a customer the marketplace has wronged.** At scale, these wrongs are rarely bad intent. They come from architecture: the same commercial fact counted in several places, by several teams, with several definitions. The effects this core produces are what [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking) blends into the result order, and what [Selling Attention: Display, Native and Retail-Media Advertising](#advertising-platforms) must share with sponsored listings.
 
 The chapter owns four terms. A **product catalog** is the versioned definition of everything sellable: products, packages, add-ons, and the effects each one grants. A **pricing engine** computes the price of a catalog item for a specific buyer, context and date. An **entitlement** is a right, held by an account or a listing for a period, to receive a defined effect, such as "may publish up to 150 vehicles" or "appears in a top slot until Sunday 23:59". A **quota** is a countable entitlement: slots, boosts, leads, credits.
 
 No marketplace whose sources this book uses has published its catalog, pricing or entitlement architecture in detail. The design here is therefore a **reference-architecture inference**, anchored to published product behavior: Rightmove's commitments plus extras, Autotrader's annual price event and stock lever, OLX's boosts per package, CarGurus' capped free tier, Vinted's fee on every card. It also draws on public documentation from billing vendors. It is not a description of any company's systems.
 
-{id: products-and-entitlements--setting-the-scene-thirteen-cars-and-117}
-## Setting the Scene: Thirteen Cars and €117
+{id: products-and-entitlements--setting-the-scene-at-veldmark-thirteen-cars-and-117}
+## Setting the Scene at Veldmark: Thirteen Cars and €117
 
-It is late September 2027 at Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)). Autohaus Ruhrblick, the Essen dealer whose Volkswagen Golf sold in April, disputes its August invoice from Motorvane. The dealer is on Motorvane's "Pro 150" package: **150 listing slots for €1,450 a month**, with any car above 150 billed at **€9 per car per month** as overage. In August, the dealer management system (DMS) feed delivered **163** cars. The invoice charged overage for 13 cars, **€117**. The dealer's sales manager checked Motorvane's own site. Only 150 Ruhrblick cars were live. The 13 extra cars had never been published.
+It is late September 2027 at Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)). Autohaus Ruhrblick, the Essen dealer whose Volkswagen Golf sold in April, disputes its August invoice from Motorvane. The dealer is on Motorvane's "Pro 150" package: **150 listing slots for €1,450 a month**, with any car above 150 billed at **€9 per car per month** as overage. In August, the dealer management system (DMS) feed delivered **163** cars. The invoice charged overage for 13 cars, **€117**. The dealer's sales manager checked Motorvane's own site. Only 150 Ruhrblick cars were live. The 13 extra cars had never been published.
 
 Felix Brandt, Motorvane's CTO, has the case traced. It turns out to be structural, not a one-off. Motorvane counts a dealer's listings in two places. The **feed importer** enforces the package quota at import time and silently skips cars above the limit. The **billing export**, a monthly job written years earlier for finance, counts the cars *in the feed file*. Each counter is correct by its own definition. Together they bill dealers for cars the platform refused to show. An audit over the previous 14 months finds **1,140 dealers** overbilled by a total of about **€212,000**. Motorvane credits every one of them, and the account managers spend October apologizing.
 
@@ -45,7 +45,7 @@ Ingrid's framing for the forum: *the Ruhrblick invoice and the price-event estim
 {id: products-and-entitlements--concepts-four-things-that-must-stay-apart}
 ## Concepts: Four Things That Must Stay Apart
 
-The core design decision of this chapter is a separation of concerns that most marketplaces arrive at only after the spaghetti:
+The chapter's core decision is to keep four concerns apart, a separation most marketplaces reach only after the spaghetti:
 
 | Concern | Question it answers | Changes when | Owner | Must not contain |
 | --- | --- | --- | --- | --- |
@@ -56,10 +56,12 @@ The core design decision of this chapter is a separation of concerns that most m
 
 A fifth element connects them: **delivery evidence**, the record of what the platform actually did, such as listings published under a slot, impressions in a paid position, boosts executed or leads routed. Delivery evidence belongs to none of the four. It is emitted by the systems that deliver value and consumed by the ledger, billing and reporting.
 
+The subsections below define the first three concerns. Billing is a finance system this chapter connects to rather than designs; its interface is in "Metering, billing and revenue recognition" under Architecture.
+
 {id: products-and-entitlements--the-catalog-products-packages-and-effects}
 ### The catalog: products, packages and effects
 
-A catalog has a small number of object types. The names vary; the shape recurs.
+A catalog has five object types. The names vary between marketplaces; the shape recurs.
 
 - **Product.** One sellable thing with a defined effect: "Bump", "Top listing (7 days)", "Highlight", "Extra slot", "Lead allowance +50".
 - **Package.** A bundle of products and quotas sold as one item, usually on a contract: "Pro 150" = 150 slots + 20 boosts per month + statistics + Co-Driver-style tooling. Autotrader's "package staircase" and Rightmove's package tiers are packages in this sense ([How Listing Marketplaces Make Money](#monetization-models) gives the evidence).
@@ -96,12 +98,12 @@ Two design rules follow. First, **prices are effective-dated price lists, not ed
 
 An entitlement has a **holder** (an account, a branch, or a listing), a **product version**, a **validity window**, an optional **quantity**, and a **source**: the order, contract or promotion that created it. A quota is an entitlement with a quantity that consumption reduces. An **effect** is the projection of active entitlements that an enforcement point needs: "account 88412 may hold 150 active vehicle listings and currently holds 150", or "listing 5531 is top-eligible in category 'city bikes', Rotterdam, until 14 March 23:59".
 
-The distinction between entitlement and effect is the one that keeps the hot paths fast. Ranking does not need to know that a top position came from a promotion or a contract. It needs a boolean, a category, a window and a cap. **Enforcement points read effects. Only the entitlement service reads entitlements.**
+Separating entitlement from effect keeps the hot paths fast. Ranking does not need to know that a top position came from a promotion or a contract. It needs a boolean, a category, a window and a cap. **Enforcement points read effects. Only the entitlement service reads entitlements.**
 
 {id: products-and-entitlements--architecture-the-commercial-core}
 ## Architecture: The Commercial Core
 
-![The commercial core as five stages. Catalog and price lists define, the pricing engine and the two selling paths sell, the entitlement ledger holds, the delivery systems deliver, and metering and billing settle. Delivery evidence flows back into the ledger and billing so that the invoice is computed from what happened, not from what was ordered. Reference architecture, not a description of any company.](listing-systems-architecture/diagrams/ab049bfae9b0667e.png)
+![Diagram: The commercial core as five stages](listing-systems-architecture/posts/31-products-and-entitlements/assets/images/31-products-and-entitlements/fig02-commercial-core-five-stages-catalog-price.jpeg)
 
 **Figure 2:** *The commercial core as five stages. Catalog and price lists define, the pricing engine and the two selling paths sell, the entitlement ledger holds, the delivery systems deliver, and metering and billing settle. Delivery evidence flows back into the ledger and billing so that the invoice is computed from what happened, not from what was ordered. Reference architecture, not a description of any company.*
 
@@ -130,24 +132,24 @@ The ledger is **append-only**. Every change is an entry, never an update of a co
 | `Revoke` / `Refund` | Moderation removal; cancellation; dispute | Bump revoked, refund issued | Case or order ID |
 | `Adjust` | Make-good, goodwill, correction | +3 days of top listing after under-delivery | Reconciliation run ID + line |
 
-The current balance of any entitlement is the sum of its entries. Snapshots and read models make that fast, but the entries are the truth. Three properties follow:
-
 ![An entitlement ledger shown as a ticket book: grants add tickets, consumption tears one off, release returns one, each action appended to a journal strip.](listing-systems-architecture/posts/31-products-and-entitlements/assets/images/31-products-and-entitlements/entitlement-ticket-book.jpeg)
 
 **Figure 3:** *The entitlement ledger works like a ticket book with a journal: every grant, consumption and release is a new entry, and what a seller holds is the sum of entries, never a counter that someone overwrites.*
+
+The current balance of any entitlement is the sum of its entries. Snapshots and read models make that fast, but the entries are the truth. Three properties follow:
 
 1. **Idempotency.** Every producer supplies a key derived from its own business event. A scheduler that retries a boost after a timeout produces the same key, and the ledger records it once. Stripe's API documentation states the general principle: an idempotency key lets a client "safely repeat the request without risk of creating a second object or performing the update twice" ([Stripe, n.d.](https://docs.stripe.com/api/idempotent_requests)). In a ledger, the same rule turns a revenue leak (the boost executed twice) and a trust problem (the boost never executed) into detectable states.
 2. **Explainability.** "Why can't I publish my 151st car?" has an answer: the grants, consumptions and releases for that account, each traceable to a business event.
 3. **Reconciliation.** Billing and the ledger can be compared entry by entry. The Ruhrblick invoice would have been computed from `Consume` and `PublishRefused` entries, not from a count of a feed file.
 
-![The lifecycle of an entitlement. Every transition is a ledger entry caused by a business event. Suspended and Revoked are the transitions most often forgotten, and they are where moderation, payments and monetization must agree.](listing-systems-architecture/diagrams/75fdcef050f041f7.png)
+![Diagram: The lifecycle of an entitlement](listing-systems-architecture/posts/31-products-and-entitlements/assets/images/31-products-and-entitlements/fig04-lifecycle-entitlement-every-transition-ledger-entry.jpeg)
 
 **Figure 4:** *The lifecycle of an entitlement. Every transition is a ledger entry caused by a business event. Suspended and Revoked are the transitions most often forgotten, and they are where moderation, payments and monetization must agree.*
 
 {id: products-and-entitlements--effects-projecting-entitlements-onto-the-hot-paths}
 ### Effects: projecting entitlements onto the hot paths
 
-Enforcement points need answers in milliseconds, on paths with very different volumes. At Veldmark's Sunday peak of **31,000 queries per second**, a ranking stage that re-ranks, say, 400 candidates per query (an illustrative figure) would need more than **12 million** entitlement answers per second if it asked the ledger live. No ledger should serve that. The answer is to **project effects onto the read models that the hot paths already use**, through events.
+Enforcement points need answers in milliseconds, so the design **projects effects onto the read models that the hot paths already use**, through events. At Veldmark's Sunday peak of **31,000 queries per second**, a ranking stage that re-ranks, say, 400 candidates per query (an illustrative figure) would need more than **12 million** entitlement answers per second if it asked the ledger live. No ledger should serve that.
 
 The **effect projector** consumes ledger events and publishes effect changes. In Veldmark's design these are `ListingPaidEffectChanged` for per-listing effects and `AccountQuotaChanged` for account quotas, carried on the group event backbone ([Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings)). Per-listing effects become explicit fields on the listing document in the search index:
 
@@ -160,9 +162,11 @@ The **effect projector** consumes ledger events and publishes effect changes. In
 | `paid.label` | "Top" | Rendering and disclosure: the paid label |
 | `paid.product_version` | top-listing-7d@v4 | Delivery reporting; disclosure; audits |
 
-[Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking) owns how these fields are used. Its group standard is that relevance models never read them as features, that a relevance floor applies to reserved slots, and that ranking logs every paid impression. This chapter owns producing the fields correctly and removing them promptly. **A paid effect that outlives its listing is Ghost Inventory with a price tag.** If a sold bike keeps its top slot because the `ListingSold` event reached search but not the effect projector, a buyer sees a sold item in a paid position. The fix is that the projector consumes listing lifecycle events too, and that sold, removed or blocked listings carry no paid fields, whatever the ledger says about remaining days.
+[Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking) owns how these fields are used. Its group standard is that relevance models never read them as features, that a relevance floor applies to reserved slots, and that ranking logs every paid impression. This chapter owns producing the fields correctly and removing them promptly.
 
-Two consistency rules complete the picture. **Effects tolerate bounded staleness; the ledger does not.** A top-listing effect that appears 20 seconds after payment is acceptable. A slot granted twice is not. And **the index is never the record**: if the search index is rebuilt ([Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture)), effects are re-projected from the ledger, never copied from the old index. That rule is what keeps the paid fields from drifting into Index-as-Database.
+**A paid effect that outlives its listing is Ghost Inventory with a price tag.** If a sold bike keeps its top slot because the `ListingSold` event reached search but not the effect projector, a buyer sees a sold item in a paid position. The fix is that the projector consumes listing lifecycle events too, and that sold, removed or blocked listings carry no paid fields, whatever the ledger says about remaining days.
+
+Two consistency rules apply to every effect. **Effects tolerate bounded staleness; the ledger does not.** A top-listing effect that appears 20 seconds after payment is acceptable. A slot granted twice is not. And **the index is never the record**: if the search index is rebuilt ([Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture)), effects are re-projected from the ledger, never copied from the old index. That rule is what keeps the paid fields from drifting into Index-as-Database.
 
 {id: products-and-entitlements--enforcement-points}
 ### Enforcement points
@@ -191,7 +195,7 @@ Feeds break naive quota designs. A DMS export contains the dealer's whole stock,
 | Publish all, bill overage | Every car goes live; overage is metered and billed | Liquidity; revenue | Surprise invoices unless the dealer consented to overage |
 | Publish all, prompt to upgrade | Publish, then prompt, then enforce after a grace period | Upselling | Grace-period rules become a second, implicit contract |
 
-Any of these can be right. Three things are not optional. The policy must be **a term of the contract stored with the entitlement**, not a behavior of the importer. Every refused car must produce a `PublishRefused` entry and appear in the **feed report back to the dealer**, as the feed contract in [Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion) requires. And billing must count **published listings, from the ledger**, never rows in a file.
+Any of the four can be right, but three rules are not optional. The policy must be **a term of the contract stored with the entitlement**, not a behavior of the importer. Every refused car must produce a `PublishRefused` entry and appear in the **feed report back to the dealer**, as the feed contract in [Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion) requires. And billing must count **published listings, from the ledger**, never rows in a file.
 
 {id: products-and-entitlements--metering-billing-and-revenue-recognition}
 ### Metering, billing and revenue recognition
@@ -209,13 +213,13 @@ RECONCILED's [Never Update, Only Append: Designing Custom Ledgers](https://zeljk
 {id: products-and-entitlements--sold-versus-delivered}
 ### Sold versus delivered
 
-The last component closes the loop. A daily **delivery reconciliation** compares three numbers for each paid product and holder: what was **granted** (ledger), what was **delivered** (delivery evidence: slots used, paid impressions, boosts executed, leads routed), and what was **billed** (invoice lines).
+A daily **delivery reconciliation** closes the loop. It compares three numbers for each paid product and holder: what was **granted** (ledger), what was **delivered** (delivery evidence: slots used, paid impressions, boosts executed, leads routed), and what was **billed** (invoice lines).
 
-![A top listing from quote to make-good. The quote records the versions that produced the price, the grant is idempotent, effects reach ranking by event, and delivery evidence comes back from ranking. When reconciliation finds a shortfall, the remedy is a ledger entry, not a manual credit.](listing-systems-architecture/diagrams/6e3391912c659542.png)
+![Diagram: A top listing from quote to make-good](listing-systems-architecture/posts/31-products-and-entitlements/assets/images/31-products-and-entitlements/fig05-top-listing-quote-make-good-quote.jpeg)
 
 **Figure 5:** *A top listing from quote to make-good. The quote records the versions that produced the price, the grant is idempotent, effects reach ranking by event, and delivery evidence comes back from ranking. When reconciliation finds a shortfall, the remedy is a ledger entry, not a manual credit.*
 
-The ranking decision of June 2027 that [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking) describes repositioned Tradeyard's top listing as **seven days of guaranteed prominence in relevant searches, with an automatic extension when delivery falls short**. That product promise is only keepable with this loop. Reconciliation also produces two other outputs:
+Only this loop can keep the promise of Tradeyard's top listing. The ranking decision of June 2027 that [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking) describes repositioned Tradeyard's top listing as **seven days of guaranteed prominence in relevant searches, with an automatic extension when delivery falls short**. Reconciliation also produces two other outputs:
 
 - **The seller-facing delivery report**: "Your top listing appeared 1,840 times in top slots for 'stadsfiets Rotterdam' and related searches." This is the answer to *did I get what I paid for?*, and the input to the ROI reporting that [Serving the Pros: Dealer, Agent and Merchant Tooling](#professional-seller-tooling) presents.
 - **Disclosure evidence.** EU rules require paid ranking to be disclosed to consumers (Directive (EU) 2019/2161, Annex I point 11a) and the effect of remuneration on ranking to be described to business users (Regulation (EU) 2019/1150, Article 5). The DSA adds advertising transparency for online platforms ([Rules of the Marketplace: DSA, DAC7 and Vertical Regulation](#marketplace-regulation) owns all three). A `paid.label` field that travels from the catalog to the rendered card, and a log that shows which paid effects shaped which results, are how an architecture meets these duties by construction.
@@ -243,8 +247,8 @@ That gap shapes the build-or-buy decision. I would buy invoicing, tax, dunning a
 {id: products-and-entitlements--veldmark-worked-example-one-catalog-for-four-brands}
 ## Veldmark Worked Example: One Catalog for Four Brands
 
-{id: products-and-entitlements--the-forum-s-design}
-### The forum's design
+{id: products-and-entitlements--the-architecture-advice-forum-s-design}
+### The architecture advice forum's design
 
 After the Ruhrblick audit, the architecture advice forum agrees a design in October 2027. Yara Mendes, Head of Platform Engineering, owns the platform team that builds it. Its core is the group entitlement service, nicknamed **Tally**. The decisions:
 
@@ -269,12 +273,12 @@ After the Ruhrblick audit, the architecture advice forum agrees a design in Octo
 {id: products-and-entitlements--replaying-the-ruhrblick-month}
 ### Replaying the Ruhrblick month
 
-Under the new design, Ruhrblick's August would read differently. The feed delivers 163 cars. The contract stored with the entitlement says *dealer priority, then newest first, no overage without consent*. Tally records 150 `Consume` entries and 13 `PublishRefused` entries. The feed report shows the dealer which 13 cars waited and why. The dealer management system can then mark priority cars in the next feed. Billing reads 150 published cars and bills €1,450, with no overage line. If Ruhrblick had consented to overage, the 13 cars would have gone live, Tally would have recorded 163 consumptions, and the invoice would have shown €117 that the dealer could reconcile car by car against its own stock list.
+Under Tally, Ruhrblick's August invoice would carry no overage line. The feed delivers 163 cars. The contract stored with the entitlement says *dealer priority, then newest first, no overage without consent*. Tally records 150 `Consume` entries and 13 `PublishRefused` entries. The feed report shows the dealer which 13 cars waited and why. The dealer management system can then mark priority cars in the next feed. Billing reads 150 published cars and bills €1,450, with no overage line. If Ruhrblick had consented to overage, the 13 cars would have gone live, Tally would have recorded 163 consumptions, and the invoice would have shown €117 that the dealer could reconcile car by car against its own stock list.
 
 {id: products-and-entitlements--replaying-a-price-event}
 ### Replaying a price event
 
-The 1 January 2028 price event becomes a catalog and price-list release. Tradeyard publishes new VAS price lists for four countries, effective at 00:00 local time. Motorvane publishes package versions `pro-150@v5` and friends, plus a contract migration plan that moves each dealer to the new version at their next renewal date, not on 1 January. That is a commercial choice the data model now allows. Hearthly adds a tier. Each release is reviewed in a pull request, dry-run against last month's orders to show its revenue and invoice effects per customer, and can be deactivated version by version. The estimate drops from engineering weeks to configuration days for every brand whose products have migrated. That is the honest catch. Tradeyard's VAS products move into Tally only when the insertion flow leaves Yardstick in **Q2 2028**, so the January 2028 event still runs through Yardstick for Tradeyard, one last time.
+The 1 January 2028 price event becomes a catalog and price-list release. Tradeyard publishes new VAS price lists for four countries, effective at 00:00 local time. Motorvane publishes `pro-150@v5` and its other package versions, plus a contract migration plan that moves each dealer to the new version at their next renewal date, not on 1 January. That is a commercial choice the data model now allows. Hearthly adds a tier. Each release is reviewed in a pull request, dry-run against last month's orders to show its revenue and invoice effects per customer, and can be deactivated version by version. The estimate drops from engineering weeks to configuration days for every brand whose products have migrated, and that condition is the catch: Tradeyard's VAS products move into Tally only when the insertion flow leaves Yardstick in **Q2 2028**, so the January 2028 event still runs through Yardstick for Tradeyard, one last time.
 
 {id: products-and-entitlements--migration-order}
 ### Migration order
@@ -308,7 +312,7 @@ The forum chooses the order by where the pain is. **Motorvane first (Q1 2028)**:
 | Hardest problem | Volume of small purchases; refunds on moderation | Hierarchies: slot pools across branches, network-level contracts | Feeds against quotas; stock-level elasticity | Duration and reposting rules; credits shared across recruiters |
 | Delivery evidence that matters | Paid impressions and position | Leads per listing and branch; campaign impressions | Leads per car; paid stock versus known stock | Applications per posting |
 
-Real estate's hierarchy problem deserves a sentence. Agence Rhône Habitat's 14 branches may buy one network contract with a pooled quota, branch-level sub-allocations and one invoice. Others buy per branch. The ledger must let a grant be held at network level and consumed at branch level, and must let [Private Sellers, Dealers and Agencies: Modeling Who Lists](#sellers-and-accounts)' organization hierarchy change, for example when a branch leaves the network, without rewriting history.
+Real estate's hardest problem is hierarchy. Agence Rhône Habitat's 14 branches may buy one network contract with a pooled quota, branch-level sub-allocations and one invoice. Others buy per branch. The ledger must let a grant be held at network level and consumed at branch level, and must let [Private Sellers, Dealers and Agencies: Modeling Who Lists](#sellers-and-accounts)' organization hierarchy change, for example when a branch leaves the network, without rewriting history.
 
 {id: products-and-entitlements--failure-modes}
 ## Failure Modes

@@ -25,10 +25,10 @@ Listing marketplaces are, measured in bytes, image businesses. A text listing is
 
 The media pipeline is the set of systems that accepts photos, videos, floor plans and documents, makes them safe, understands them, stores them and serves them. In most marketplaces it grew in stages: an upload endpoint, a resizing job, a CDN in front, then classifiers and duplicate detection bolted on as fraud and quality problems appeared. Each stage was reasonable. Together they often produce a system that stores far more than it needs, serves formats a decade old, and checks for stolen photos too late to stop the fraud that uses them.
 
-This chapter designs the pipeline as one system with one contract. It builds on the attribute contract in [Attributes Without Chaos: Schemas, Dictionaries and Validation](#attribute-schemas), hands moderation policy to [Trust and Safety as a Platform](#trust-and-safety-architecture) and duplicate clustering to [One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution), and follows Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)), through Hearthly's media bill and the fake-rental ring that its image checks caught too late.
+Part II models the listing as a small aggregate that references governed subdomains by ID, and media is the largest of them. This chapter designs its pipeline as one system with one contract: media IDs, sanitized masters and a `MediaReady` event that feeds, trust and safety, ranking and image models all depend on. It builds on the listing aggregate in [The Listing Aggregate: Identity, Lifecycle and Invariants](#listing-aggregate) and the attribute contract in [Attributes Without Chaos: Schemas, Dictionaries and Validation](#attribute-schemas), hands moderation policy to [Trust and Safety as a Platform](#trust-and-safety-architecture) and duplicate clustering to [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution), and follows Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)), through Hearthly's media bill and the fake-rental ring that its image checks caught too late.
 
-{id: media-pipeline--setting-the-scene-1-8-billion-images-and-a-fake-rental-ring}
-## Setting the Scene: 1.8 Billion Images and a Fake-Rental Ring
+{id: media-pipeline--setting-the-scene-at-veldmark-1-8-billion-images-and-a-fake-rental-ring}
+## Setting the Scene at Veldmark: 1.8 Billion Images and a Fake-Rental Ring
 
 It is September 2027. Julien Marchand, Hearthly's CTO, brings two documents to Ingrid Halvorsen, the Group Chief Architect.
 
@@ -47,7 +47,7 @@ Ingrid's question to the architecture advice forum is the chapter's question: **
 {id: media-pipeline--concepts-assets-masters-derivatives-and-hashes}
 ## Concepts: Assets, Masters, Derivatives and Hashes
 
-The vocabulary matters, because several of the costly mistakes in media systems come from treating different things as one.
+Several costly mistakes in media systems come from treating different things as one.
 
 - A **media asset** is one piece of listing media: a photo, a video, a floor plan, a 3D tour reference or a document such as an energy certificate or a CV. It has an identity, an owner, a type, a moderation state, rights metadata and a retention class, independent of any URL.
 - The **original** is the file as received. The **master** is the sanitized version the platform keeps: re-encoded, orientation applied, metadata stripped. I recommend storing the master and, in most cases, not keeping the original at all.
@@ -57,24 +57,24 @@ The vocabulary matters, because several of the costly mistakes in media systems 
 - A **perceptual hash** is a short fingerprint computed from an image's visual content, so that re-compressed, resized or lightly edited copies produce similar fingerprints. Two images are compared by the Hamming distance between their hashes: the number of differing bits. Meta's PDQ, open-sourced in 2019, is the most widely used public algorithm for this ([Meta, open-source photo and video matching](https://about.fb.com/news/2019/08/open-source-photo-video-matching/), 2019).
 - The **media pipeline** is the end-to-end system: upload or fetch, validation, sanitization, hashing, classification and moderation, master storage, derivative delivery, lifecycle and deletion.
 
-The most important design rule follows from these definitions. **A listing stores media IDs and an order, never URLs.** If listings hold URLs, every CDN change, domain change, format change or watermark change becomes a migration of millions of listing records, and deleting a photo means finding every place a URL was copied. If listings hold IDs, those are media-service operations. The same rule appears in reference designs and in public partner APIs: mobile.de's Seller-API has clients pre-upload images, receive references, and then reference those in the ad ([mobile.de Seller-API](https://services.mobile.de/manual/seller-api.html), n.d.).
+**A listing stores media IDs and an order, never URLs.** This is the most important design rule. If listings hold URLs, every CDN change, domain change, format change or watermark change becomes a migration of millions of listing records, and deleting a photo means finding every place a URL was copied. If listings hold IDs, those are media-service operations. The same rule appears in reference designs and in public partner APIs: mobile.de's Seller-API has clients pre-upload images, receive references, and then reference those in the ad ([mobile.de Seller-API](https://services.mobile.de/manual/seller-api.html), n.d.).
 
 {id: media-pipeline--architecture-the-upload-to-edge-pipeline}
 ## Architecture: The Upload-to-Edge Pipeline
 
 Media arrives through three doors, and the pipeline behind them should be one.
 
-**Mobile and web uploads** from private sellers and professionals. The common pattern is that the client asks the media service for a short-lived, pre-signed upload URL to object storage, uploads directly, and receives a media ID; the upload completes asynchronously, and the media service processes the file when storage reports it. This keeps large files away from application servers and lets uploads resume on poor mobile connections. Resumable uploads have their own traps: OLX described in 2026 how users with several browser tabs open each tried to resume the same large upload, duplicating objects in storage, and how it used the Web Locks API so that only one tab proceeds ([OLX Engineering, Web Locks API](https://tech.olx.com/handling-concurrency-on-the-web-with-web-locks-api-163b7e07eddd), 2026). Server-side content addressing is the backstop: a duplicate upload costs bandwidth, not storage.
+**Mobile and web uploads** from private sellers and professionals. In the common pattern, the client asks the media service for a short-lived, pre-signed upload URL to object storage, uploads directly, and receives a media ID. The upload completes asynchronously, and the media service processes the file when storage reports it. This keeps large files away from application servers and lets uploads resume on poor mobile connections. Resumable uploads have their own traps: OLX described in 2026 how users with several browser tabs open each tried to resume the same large upload, duplicating objects in storage, and how it used the Web Locks API so that only one tab proceeds ([OLX Engineering, Web Locks API](https://tech.olx.com/handling-concurrency-on-the-web-with-web-locks-api-163b7e07eddd), 2026). Server-side content addressing is the backstop: a duplicate upload costs bandwidth, not storage.
 
 **Partner feeds** from dealer management systems and real-estate software. Some standards bundle media with the data; OpenImmo's XML exchange typically ships images zipped with the XML file over FTP ([OpenImmo](https://www.openimmo.de/), n.d.). Others have the portal pull media by URL. Rightmove's Real Time Datafeed accepts up to 999 media items per property and 20 MB per image, deletes an image when its URL is removed from an update, and, when the sender supplies a media update date, "will not re-retrieve images on the same URLs if they have the same media update date", which the specification says "relieves pressure on the client's image servers" ([Rightmove Real Time Datafeed specification v1.4.1](https://media.rightmove.co.uk/ps/pdf/guides/adf/Rightmove_Real_Time_Datafeed_Specification.pdf), 2023). That one field is the difference between a feed that fetches changed images and one that fetches everything every time. Hearthly's re-download problem is the cost of not requiring it, or of not using HTTP conditional requests and content hashes when the sender does not provide it.
 
 **Back-office and generated media**: moderator edits, virtual staging, AI-generated listing videos, floor plans redrawn by a vendor. These enter through the same API with their provenance recorded.
 
-![One pipeline behind three doors. Files land in quarantine, are gated, re-encoded and hashed before anything else sees them, and reach buyers only as derivatives generated by the image service from a sanitized master. The hash index and classifiers feed the trust decision that the publication pipeline waits for.](listing-systems-architecture/diagrams/46f97fc4363199bf.png)
+![Diagram: One pipeline behind three doors](listing-systems-architecture/posts/10-media-pipeline/assets/images/10-media-pipeline/fig02-one-pipeline-behind-three-doors-files.jpeg)
 
 **Figure 2:** *One pipeline behind three doors. Files land in quarantine, are gated, re-encoded and hashed before anything else sees them, and reach buyers only as derivatives generated by the image service from a sanitized master. The hash index and classifiers feed the trust decision that the publication pipeline waits for.*
 
-The stages, what each does, and what evidence supports it:
+The stages, and the evidence behind each:
 
 | Stage | What happens | Blocks publication? | Notes and evidence |
 | --- | --- | --- | --- |
@@ -88,12 +88,12 @@ The stages, what each does, and what evidence supports it:
 | 8. Deliver | Image service generates derivatives; CDN caches them | — | Immutable, content-addressed URLs |
 | 9. Delete | Purge derivatives from CDN, delete master by retention class, keep hashes by policy | — | Retention classes below |
 
-Two lessons from public incidents shape the gate and the document path. In a 2025 post, Adevinta's InfoJobs team described its shared media service, YAMS, returning HTTP 500 errors for PDFs produced by a regional public employment service; each failing file was two complete PDFs joined together, with a duplicate header and stale cross-reference offsets, and the failures had been classified as internal faults instead of file-format errors ([Adevinta Tech Blog, "Engineers to the rescue"](https://medium.com/adevinta-tech-blog/engineers-to-the-rescue-when-your-public-employment-service-makes-it-impossible-to-apply-for-jobs-b2ad6f5c29e6), 2025). The general rule: **a malformed file is a client error with an actionable message**, and where the source is a third party the seller cannot control, the pipeline should offer repair. Second, the document path is not an afterthought in jobs and real estate. CVs, energy certificates and battery-health certificates for electric cars, which mobile.de accepts as PDF, JPEG or PNG up to 10 MB, are media assets with personal data and their own retention rules ([mobile.de Seller-API](https://services.mobile.de/manual/seller-api.html), n.d.).
+Two public lessons shape the gate and the document path. First, in a 2025 post, Adevinta's InfoJobs team described its shared media service, YAMS, returning HTTP 500 errors for PDFs produced by a regional public employment service; each failing file was two complete PDFs joined together, with a duplicate header and stale cross-reference offsets, and the failures had been classified as internal faults instead of file-format errors ([Adevinta Tech Blog, "Engineers to the rescue"](https://medium.com/adevinta-tech-blog/engineers-to-the-rescue-when-your-public-employment-service-makes-it-impossible-to-apply-for-jobs-b2ad6f5c29e6), 2025). The general rule: **a malformed file is a client error with an actionable message**, and where the source is a third party the seller cannot control, the pipeline should offer repair. Second, in jobs and real estate the document path carries personal data. CVs, energy certificates and battery-health certificates for electric cars, which mobile.de accepts as PDF, JPEG or PNG up to 10 MB, are media assets with personal data and their own retention rules ([mobile.de Seller-API](https://services.mobile.de/manual/seller-api.html), n.d.).
 
 {id: media-pipeline--what-blocks-publication-and-what-does-not}
 ### What blocks publication, and what does not
 
-The pipeline's timing is a product decision. If every check is synchronous, a seller with twenty photos waits; if every check is asynchronous, stolen photos go live. The split I use:
+Which checks block publication is a product decision. If every check is synchronous, a seller with twenty photos waits; if every check is asynchronous, stolen photos go live. The split I use:
 
 - **Synchronous with the upload** (seconds): gate, sanitize, exact hash, a fast perceptual-hash lookup against the hash index, and a fast prohibited-content classifier. These are cheap and decisive.
 - **Before the listing becomes searchable** (within the publication budget): the full trust decision for listings in high-risk segments (rentals, high-value vehicles, new accounts), combining hash matches with price anomalies and account signals. [From Submitted to Searchable: The Publication Pipeline](#publication-pipeline) owns the budget; Veldmark's target for Tradeyard is 90 seconds at p95.
@@ -106,7 +106,7 @@ The Barcelona ring sat in the second row's gap: the comparison ran within minute
 
 A listing photo carries more personal data than its seller realizes, and the platform is the one accountable for publishing it.
 
-**Metadata.** EXIF GPS tags can record latitude, longitude, altitude, timestamp and the direction the camera faced ([ExifTool GPS tags](https://exiftool.org/TagNames/GPS.html), n.d.). A private seller who photographs a bike in their hallway publishes their home's coordinates unless the pipeline strips them. When Femke listed her **€240** city bike on Tradeyard NL on **Sunday 7 March 2027**, her phone embedded the coordinates of her Rotterdam home in all six photos. Tradeyard strips EXIF before generating derivatives, so buyers never saw them, but its image service kept the unmodified originals, with GPS intact, for the lifetime of the account. That is a breach waiting for a misconfigured bucket. Stripping must happen before the master is written, and the raw original should not be kept unless a documented purpose requires it, with restricted access and a short retention. Location privacy for the listing itself, the approximate pin, is [Where Is It? Location, Geocoding and Privacy](#location-and-geo)'s subject; the photo is a second path to the same data.
+**Metadata.** EXIF GPS tags can record latitude, longitude, altitude, timestamp and the direction the camera faced ([ExifTool GPS tags](https://exiftool.org/TagNames/GPS.html), n.d.). A private seller who photographs a bike in their hallway publishes their home's coordinates unless the pipeline strips them. When Femke listed her **€240** city bike on Tradeyard NL on **Sunday 7 March 2027**, her phone embedded the coordinates of her Rotterdam home in all six photos. Tradeyard strips EXIF before generating derivatives, so buyers never saw them, but its image service kept the unmodified originals, with GPS intact, for the lifetime of the account. One misconfigured bucket would expose them. Stripping must happen before the master is written, and the raw original should not be kept unless a documented purpose requires it, with restricted access and a short retention. Location privacy for the listing itself, the approximate pin, is [Where Is It? Location, Geocoding and Privacy](#location-and-geo)'s subject; the photo is a second path to the same data.
 
 ![A bike photo with a hidden map pin to the seller's home passes through a sanitizer that removes the location before the clean master is stored.](listing-systems-architecture/posts/10-media-pipeline/assets/images/10-media-pipeline/photo-carries-home-location.jpeg)
 
@@ -114,14 +114,14 @@ A listing photo carries more personal data than its seller realizes, and the pla
 
 **Content.** Photos show faces (sellers, tenants, children), number plates, documents on desks, family photos on walls and the layout of an occupied home. A common practice is to detect and blur number plates and faces in vehicle and property photos, at least for private sellers, and to flag interiors of occupied rentals for tenant consent. The detection is a classifier; the policy, including when blurring is mandatory, belongs to the data protection lead.
 
-**Generated and edited images.** Virtual staging, sky replacement and AI-generated listing videos are spreading. Article 50 of the EU AI Act, which applies from **2 August 2026** under the regulation as adopted in 2024 (check for later amendments to its timeline), requires providers of systems that generate synthetic images to mark outputs in a machine-readable way, and deployers of systems that generate or manipulate images resembling existing places or objects in a way that could falsely appear authentic to disclose it ([EU AI Act, Article 50](https://artificialintelligenceact.eu/article/50/), 2024). Whether a virtually staged room falls under the deployer duty is a question for counsel; the architectural consequence is clear regardless. **Provenance is a media attribute**: the pipeline must record whether an image is a photograph, an edited photograph or generated, and the listing must be able to display that.
+**Generated and edited images.** Virtual staging, sky replacement and AI-generated listing videos bring marking and disclosure duties. Article 50 of the EU AI Act, which applies from **2 August 2026** under the regulation as adopted in 2024 (check for later amendments to its timeline), requires providers of systems that generate synthetic images to mark outputs in a machine-readable way, and deployers of systems that generate or manipulate images resembling existing places or objects in a way that could falsely appear authentic to disclose it ([EU AI Act, Article 50](https://artificialintelligenceact.eu/article/50/), 2024). Whether a virtually staged room falls under the deployer duty is a question for counsel; the architectural consequence holds either way. **Provenance is a media attribute**: the pipeline must record whether an image is a photograph, an edited photograph or generated, and the listing must be able to display that.
 
 **Deletion.** When a listing is removed for fraud, sold or deleted by the seller, its derivatives must stop being served. That means purging CDN caches, not only deleting the master: a content-addressed URL cached for a year at the edge outlives a deleted object for exactly that year. This is the media form of **Ghost Inventory**, and it is also a privacy failure when the seller exercised a right to erasure. Retention of hashes after deletion is a separate decision, covered below.
 
 {id: media-pipeline--derivatives-formats-and-the-cdn}
 ## Derivatives, Formats and the CDN
 
-The question "store renditions or generate them?" decides a large part of the media bill.
+Whether to store renditions or generate them decides a large part of the media bill.
 
 **Pre-generated renditions** are computed at upload in a fixed set of sizes and formats and stored beside the master. They are simple to serve and need no compute at request time. Their costs grow with every image ever stored, they lock in the formats chosen at the time, and adding a new size or format means reprocessing the entire archive.
 
@@ -148,7 +148,7 @@ Most stored listing images are never viewed again after their listing ends. Clou
 
 The minimum durations matter for media more than for most data. An image deleted from Archive after two months is billed for twelve. The lifecycle policy must therefore follow the **listing's** lifecycle, which only the platform knows, rather than access patterns alone.
 
-![A media asset's lifecycle follows its listing. Dormant media stays in warm storage for relisting and disputes; archived media moves to a cold class; deletion purges derivatives from the CDN and removes the master, while hashes may be kept under their own documented retention.](listing-systems-architecture/diagrams/edacb23651499ca6.png)
+![Diagram: A media asset's lifecycle follows its listing](listing-systems-architecture/posts/10-media-pipeline/assets/images/10-media-pipeline/fig05-media-asset-s-lifecycle-follows-listing.jpeg)
 
 **Figure 5:** *A media asset's lifecycle follows its listing. Dormant media stays in warm storage for relisting and disputes; archived media moves to a cold class; deletion purges derivatives from the CDN and removes the master, while hashes may be kept under their own documented retention.*
 
@@ -179,18 +179,18 @@ The layered design that public evidence supports has four levels.
 3. **Embedding similarity** from an image model, with approximate nearest-neighbor search, for copies that have been cropped, watermarked, color-shifted or deliberately perturbed. OLX has published work on detecting image duplicates with perceptual hashes on Elasticsearch, and on a triplet-loss network trained to catch fraudsters who augment images to evade hashing; those posts could not be accessed directly for this book and are known through search summaries (OLX Engineering, n.d.).
 4. **Human review** for the gray zone between thresholds.
 
-![Layered duplicate detection. Cheap checks run first; the same match leads to different actions depending on who the sellers are and which segment the listing is in. A copied photo is a fraud signal for a new account's rental and a clustering feature for three agencies selling the same flat.](listing-systems-architecture/diagrams/3f2e655bbddb984c.png)
+![Diagram: Layered duplicate detection](listing-systems-architecture/posts/10-media-pipeline/assets/images/10-media-pipeline/fig06-layered-duplicate-detection-cheap-checks-run.jpeg)
 
 **Figure 6:** *Layered duplicate detection. Cheap checks run first; the same match leads to different actions depending on who the sellers are and which segment the listing is in. A copied photo is a fraud signal for a new account's rental and a clustering feature for three agencies selling the same flat.*
 
 The allowlist in Figure 6 is not optional. Manufacturer press images in new-car listings, developer renderings in new-build real estate and catalog photos in recommerce legitimately appear on thousands of listings. Without an allowlist, the detector floods moderators and is switched off.
 
-The hash index is also the clearest case for **sharing across brands**. A photo stolen from a Hearthly France listing and reused on Hearthly.es, or a car photo moved from Motorvane to Tradeyard Poland's car section, is invisible to a per-brand index. The index is small (a PDQ hash is a few dozen bytes) and the matching service is generic, while the decisions stay with each brand's trust rules. The Lyon apartment shows the other side: when **three agencies** listed the same 68 m² flat in **May 2027**, two of them used the same set of photographer's images, and the perceptual-hash matches were among the strongest signals [One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution) used to cluster the listings into one canonical property. The same signal that blocks a scam supports a legitimate merge, which is why the hashing service reports matches and leaves the decision to the consumer.
+The hash index is also the clearest case for **sharing across brands**. A photo stolen from a Hearthly France listing and reused on Hearthly.es, or a car photo moved from Motorvane to Tradeyard Poland's car section, is invisible to a per-brand index. The index is small (a PDQ hash is a few dozen bytes) and the matching service is generic, while the decisions stay with each brand's trust rules. The Lyon apartment shows the other side: when **three agencies** listed the same 68 m² flat in **May 2027**, two of them used the same set of photographer's images, and the perceptual-hash matches were among the strongest signals [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution) used to cluster the listings into one canonical property. The same signal that blocks a scam supports a legitimate merge, which is why the hashing service reports matches and leaves the decision to the consumer.
 
 {id: media-pipeline--understanding-images-quality-order-text-and-content}
 ## Understanding Images: Quality, Order, Text and Content
 
-Beyond safety, image models change how listings perform.
+Beyond safety, image models score quality, order galleries, read text in photos and fill attributes, and each changes how a listing performs.
 
 **Quality scoring** predicts whether a photo is sharp, well exposed and appealing. Google's NIMA model, published in 2017, predicts a distribution of human ratings for technical and aesthetic quality and is the standard public reference for such scores ([Google Research, "Introducing NIMA"](https://research.google/blog/introducing-nima-neural-image-assessment/), 2017). OLX described in 2020 seller recommendations based on photo count, blur and darkness ([OLX, "Data Science at OLX"](https://tech.olx.com/data-science-at-olx-7c7406d1713f), 2020). Quality scores feed ranking features, seller nudges and cover-photo selection; [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking) decides how much weight they deserve.
 
@@ -198,12 +198,12 @@ Beyond safety, image models change how listings perform.
 
 **Text in images** is both a moderation signal and a search signal. Adevinta's 2023 engineering post on its OCR service described detecting insults, hidden messages, URLs, e-mail addresses and phone numbers in ad images, with volume growing from more than 100 million to 330 million requests a month, accuracy on an internal benchmark rising from 0.4 to 0.8 after a move to PaddleOCR models, and a cost about twelve times lower than an external OCR API ([Adevinta Tech Blog, "Text in Image 2.0"](https://adevinta.com/techblog/text-in-image-2-0-improving-ocr-service-with-paddleocr/), 2023). Phone numbers written on a photo are the classic way to route buyers off-platform, the first step of many scams described in [From Interest to Contact: Messaging and Lead Management](#messaging-and-leads).
 
-**Content and attribute signals.** Classifiers detect prohibited items, nudity and weapons, predict categories and fill attributes. Adevinta described in 2023 a shared team running a text detector, a car classifier, a background remover and an image classifier for its marketplaces on shared GPU serving ([Adevinta Tech Blog, GPU serving](https://adevinta.com/techblog/how-we-joined-forces-to-enable-gpu-serving-for-our-ai-solutions/), 2023). mobile.de's documentation shows images feeding valuation itself: its price rating is recalculated "including the image data" when images arrive after the ad, and mobile.de recommends uploading images first ([mobile.de Seller-API](https://services.mobile.de/manual/seller-api.html), n.d.). The design implication is that a `MediaReady` event must reach the models that depend on images, and listing-level outputs must be recomputed when it does. [Models in Production: ML Platforms and Use Cases](#ml-platform) owns the serving infrastructure.
+**Content and attribute signals.** Classifiers detect prohibited items, nudity and weapons, predict categories and fill attributes. Adevinta described in 2023 a shared team running a text detector, a car classifier, a background remover and an image classifier for its marketplaces on shared GPU serving ([Adevinta Tech Blog, GPU serving](https://adevinta.com/techblog/how-we-joined-forces-to-enable-gpu-serving-for-our-ai-solutions/), 2023). mobile.de's documentation shows images feeding valuation itself: its price rating is recalculated "including the image data" when images arrive after the ad, and mobile.de recommends uploading images first ([mobile.de Seller-API](https://services.mobile.de/manual/seller-api.html), n.d.). So a `MediaReady` event must reach the models that depend on images, and listing-level outputs must be recomputed when it does. [Models in Production: ML Platforms and Use Cases](#ml-platform) owns the serving infrastructure.
 
 {id: media-pipeline--video-3d-tours-and-floor-plans}
 ## Video, 3D Tours and Floor Plans
 
-Richer media is growing fastest in real estate and automotive, and it behaves differently from photos.
+Richer media shows up mostly in real estate and automotive in the public record, and it behaves differently from photos.
 
 - **Video** needs transcoding to adaptive streaming formats (HLS or DASH), poster frames, frame and audio moderation, and much more storage and egress per asset. Meta's catalog format accepts up to 20 video URLs per item ([Meta catalog product fields](https://developers.facebook.com/docs/marketing-api/catalog/reference), n.d.). An OLX news item from February 2026 describes AI-powered listing videos; its content was not accessible for this book.
 - **3D tours and panoramas** are usually produced and hosted by specialist providers and embedded. CoStar's FY2025 annual report records the completion of its acquisition of Matterport, a 3D-capture company, on 28 February 2025 ([CoStar Group FY2025 Form 10-K](https://www.sec.gov/Archives/edgar/data/1057352/000105735226000020/csgp-20251231.htm), 2026), and Zillow's FY2025 annual report describes its Showcase tier with interactive floor plans and 3D touring ([Zillow Group FY2025 Form 10-K](https://www.sec.gov/Archives/edgar/data/1617640/000161764026000015/z-20251231.htm), 2026). mobile.de's Seller-API lists interior and exterior "Auto Panorama" images among its resources. For most marketplaces, a tour is an external media object with its own lifecycle, consent and moderation, referenced by the listing like any other asset.
@@ -242,9 +242,9 @@ The cost effect, as planned for the end of 2028:
 | Processing and feed fetching | €0.8M | €0.6M | Fewer re-downloads; on-demand compute partly offsets |
 | **Total media run cost** | **€6.2M** | **€3.6M** | About **€2.6M a year** toward Common Ground's €38M run-cost target |
 
-The processing line falls less than one might expect, because on-demand derivative generation costs compute that pre-generation did not. That is the honest trade: Hearthly pays a little more compute per request to stop paying storage for nine renditions of 1.8 billion images forever.
+The processing line falls least, because on-demand derivative generation costs compute that pre-generation did not. That is the honest trade: Hearthly pays a little more compute per request to stop paying storage for nine renditions of 1.8 billion images forever.
 
-The privacy finding from Tradeyard is folded in: from the November 2027 decision, no brand stores raw originals with metadata. Tradeyard's existing originals are being rewritten as sanitized masters, a backfill over about 2.9 billion images that runs into 2028.
+The plan also closes Tradeyard's privacy finding: from the November 2027 decision, no brand stores raw originals with metadata. Tradeyard's existing originals are being rewritten as sanitized masters, a backfill over about 2.9 billion images that runs into 2028.
 
 {id: media-pipeline--trade-offs}
 ## Trade-offs
@@ -273,7 +273,7 @@ The **hash index scope** row needs one qualification at Veldmark. Keybridge, the
 | Image models | Category and attribute hints, prohibited items | Room type, quality, floor-plan extraction | Angle, damage, odometer reading | Document parsing | Category, brand, condition |
 | Legitimate duplicates | Rare | Common (multi-agency listings) | Some (manufacturer images, same dealer group) | Common (agencies reposting the same job) | Catalog photos |
 
-The jobs column is the reminder that a shared media service must handle documents, not only images, as Adevinta's InfoJobs case showed. [Same Platform, Different Physics: General, Real Estate, Automotive and Jobs](#vertical-requirements) has the wider comparison.
+The jobs column is the reminder that a shared media service must handle documents, not only images, as Adevinta's InfoJobs case showed. [Same Platform, Different Physics: How Listing Verticals Differ](#vertical-requirements) has the wider comparison.
 
 {id: media-pipeline--failure-modes}
 ## Failure Modes
@@ -299,7 +299,7 @@ Media is one of the easiest capabilities to share in a marketplace group and one
 
 **Watch five numbers.** **Stored bytes per live listing** (it should be flat, not rising); **bytes delivered per gallery view**; **CDN cache hit ratio**; **time from upload to `MediaReady`** at p95; and **share of image matches against unrelated sellers that reach a decision before the listing is contactable**. The last one is the number the Barcelona review was really about.
 
-**Plan for generated media.** Within a few years a meaningful share of listing images will be edited or generated: staged rooms, cleaned backgrounds, generated videos from photos. The pipeline must record provenance per asset, carry it to the listing page and to outbound feeds, and keep the original photograph where a buyer might reasonably need to see it. [AI Across the Listing Lifecycle](#ai-in-listing-systems) takes up the product side.
+**Plan for generated media.** Edited and generated listing images are already arriving: staged rooms, cleaned backgrounds, videos generated from photos. The pipeline must record provenance per asset, carry it to the listing page and to outbound feeds, and keep the original photograph where a buyer might reasonably need to see it. [AI Across the Listing Lifecycle](#ai-in-listing-systems) takes up the product side.
 
 **Keep neutrality boundaries in the media layer too.** Shared fraud infrastructure is a strong case for sharing, but where a group has committed to separation, as Veldmark has for Keybridge, the boundary must be enforced in the hash index and the classifiers, not only in ranking.
 
@@ -316,6 +316,9 @@ Media is one of the easiest capabilities to share in a marketplace group and one
 8. When a listing is removed, how long do its images remain reachable on the CDN?
 9. Which models depend on images, and are they recomputed when media arrives or changes?
 10. How does the platform record and display whether an image is a photograph, an edited photograph or generated?
+
+{id: media-pipeline--from-pictures-to-place}
+## From Pictures to Place
 
 Photos show what an item is; the listing also has to say where it is. Location drives search, maps, trust signals and privacy risks of its own, and photos are only one way to leak it. [Where Is It? Location, Geocoding and Privacy](#location-and-geo) takes up geocoding, precision and the privacy of a seller's address.
 

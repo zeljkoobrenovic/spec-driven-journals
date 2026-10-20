@@ -25,12 +25,12 @@ A listing is written by one party and read by many. The seller or a dealer's fee
 
 Most marketplaces start with the cheapest answers: downstream systems poll the listing database, read a replica, receive a nightly dump, or get a message that the application sends after it commits — when it remembers to. Each answer works until the number of readers grows. Then removals arrive late, a reindex takes a weekend, and nobody can say which copy of a listing is right. **An event-driven listing architecture replaces many private integrations with one published stream**, owned by the listing's system of record and designed as carefully as an external API.
 
-This chapter owns the **listing event**, the **transactional outbox** and **schema evolution** for listing events. It builds on the lifecycle and invariants in [The Listing Aggregate: Identity, Lifecycle and Invariants](#listing-aggregate) and the stages in [From Submitted to Searchable: The Publication Pipeline](#publication-pipeline). Where the copies live, how consistent they must be, and how erasure reaches them belong to [System of Record and Read Models: Listing Data Management](#listing-data-management). How behavioral tracking events reach the data platform belongs to [Data Platform for Marketplaces: Events, Lakehouse and Data Products](#data-platform).
+This chapter opens [Part VII — PLATFORM: The Distributed System Underneath](#part-7), whose argument is that a shared platform earns trust through contracts, not mandates. The listing event is the first of those contracts and the one the rest of the part reads from. It turns the lifecycle and invariants of [The Listing Aggregate: Identity, Lifecycle and Invariants](#listing-aggregate) and the stages of [From Submitted to Searchable: The Publication Pipeline](#publication-pipeline) into a published stream, the stream that search, alerts and trust and safety in Parts IV and V already assumed. The chapter owns the **listing event**, the **transactional outbox** and **schema evolution** for listing events. Where the copies live, how consistent they must be, and how erasure reaches them belong to the next chapter, [System of Record and Read Models: Listing Data Management](#listing-data-management). How behavioral tracking events reach the data platform belongs to [Data Platform for Marketplaces: Events, Lakehouse and Data Products](#data-platform).
 
-{id: event-driven-listings--setting-the-scene-the-digest-that-did-not-know-the-bike-was-sold}
-## Setting the Scene: The Digest That Did Not Know the Bike Was Sold
+{id: event-driven-listings--setting-the-scene-at-veldmark-the-digest-that-did-not-know-the-bike-was-sold}
+## Setting the Scene at Veldmark: The Digest That Did Not Know the Bike Was Sold
 
-On Tuesday 9 March 2027, Ingrid Halvorsen, Veldmark's Group Chief Architect (Veldmark is the fictional marketplace group this book follows; see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)), reads an incident note from Tradeyard Netherlands. Femke's €240 Rotterdam city bike, listed on Sunday evening, sold on Monday for €225 through Safe Deal. Tradeyard marked it sold at **18:10** and Solr removed it from search at **18:11**. Yet the next morning's alert digest e-mail still featured the bike to people with matching saved searches. Three of them messaged Femke to ask whether it was still available.
+On Tuesday 9 March 2027, Ingrid Halvorsen, Veldmark's Group Chief Architect (Veldmark is the fictional marketplace group this book follows; see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)), reads an incident note from Tradeyard Netherlands. Femke's €240 Rotterdam city bike, listed on Sunday evening, sold on Monday for €225 through Safe Deal. Tradeyard marked it sold at **18:10** and Solr removed it from search at **18:11**. Yet the next morning's alert digest e-mail still featured the bike to people with matching saved searches. Three of them messaged Femke to ask whether it was still available.
 
 Sven Lindqvist, principal engineer for the group event platform, traces the path. Tradeyard's alert digest job assembled its candidate list on Monday afternoon from a read replica of Yardstick's MySQL database, the PHP monolith at the heart of Tradeyard. It stored the list and sent it at 07:00 on Tuesday. Nothing told the digest that the bike had sold in between. The search indexer heard about the sale because Yardstick sends a RabbitMQ message after the sold flag is committed, but the digest job was never subscribed to that message, and nobody had a list of who was.
 
@@ -40,7 +40,7 @@ Sven's inventory of Tradeyard NL alone finds **eleven** downstream readers of li
 
 **Figure 1:** *Before the contract, Tradeyard NL alone had eleven readers of listing changes on five different mechanisms, and nobody had the list, so the digest never heard that the bike had sold.*
 
-Ingrid's question to the architecture advice forum is the chapter's question: **how should listing changes flow to search, trust, alerts, analytics and partners, across four brands, so that every reader sees every change once, in order, and in time?** The Common Ground program's answer, live on 1 July 2027, is the group event backbone on Kafka (Confluent Cloud on AWS) and the **Listing event contract v1**. The rest of the chapter explains what that contract contains and why.
+Ingrid's question to the architecture advice forum is the chapter's question: **how should listing changes flow to search, trust, alerts, analytics and partners, across four brands, so that every reader sees every change once, in order, and in time?** The Common Ground program's answer, live on 1 July 2027, is the group event backbone on Kafka (Confluent Cloud on AWS) and the **Listing event contract v1**.
 
 {id: event-driven-listings--concepts-what-a-listing-event-is}
 ## Concepts: What a Listing Event Is
@@ -58,7 +58,7 @@ Three things are often called "events", and the difference matters for ownership
 
 A **listing event**, in this book, is a domain event about one listing aggregate, emitted by the listing's owning context whenever the aggregate passes an invariant-preserving transition: submitted, published, updated, price changed, paused, reserved, sold, expired, removed. The aggregate and its transitions are defined in [The Listing Aggregate: Identity, Lifecycle and Invariants](#listing-aggregate); this chapter treats the event as the **published language** of that aggregate (the term [Bounded Contexts for Marketplaces: Where One Listing Becomes Many Models](#bounded-contexts) owns): the vocabulary other contexts use to learn about listings without knowing how the listing context stores them.
 
-Change data capture is a mechanism, not a contract. It is often the right way to *get* events out of a legacy system, as we will see, but a raw table change exposes the producer's schema to every consumer. Renaming a column in Yardstick should be Daan Visser's team's business; if eleven consumers parse the binlog of the `ads` table, it is everybody's.
+Change data capture is a mechanism, not a contract. It is often the right way to *get* events out of a legacy system, but a raw table change exposes the producer's schema to every consumer. Renaming a column in Yardstick should be Daan Visser's team's business; if eleven consumers parse the binlog of the `ads` table, it is everybody's.
 
 {id: event-driven-listings--notification-state-transfer-sourcing}
 ### Notification, state transfer, sourcing
@@ -69,7 +69,7 @@ Martin Fowler's 2017 essay ["What do you mean by 'Event-Driven'?"](https://marti
 - **Event-carried state transfer.** The event carries the state consumers need, so they can maintain their own copy without calling back. The cost, in Fowler's words, is that "there's lots of data schlepped around and lots of copies".
 - **Event sourcing.** The events *are* the system of record and the current state is derived from them. For listings, this is rarely worth its cost; the listing context usually keeps a relational record and publishes events from it.
 
-For listing marketplaces the choice is not close. A popular listing change has many readers at the same moment — a price cut fans out to search, alerts, valuation and analytics within seconds — and a callback storm on the listing service at the Sunday-evening peak is exactly the load nobody wants. **Listing events should carry state.** The real design question is *which* state, which the contract section answers.
+**Listing events should carry state.** A popular listing change has many readers at the same moment — a price cut fans out to search, alerts, valuation and analytics within seconds — and a callback storm on the listing service at the Sunday-evening peak is exactly the load nobody wants. The real design question is *which* state, which the envelope section answers.
 
 {id: event-driven-listings--ordering-delivery-and-idempotency}
 ### Ordering, delivery and idempotency
@@ -94,7 +94,7 @@ The architecture has five parts, and each has one owner.
 4. **The schema registry** stores every version of the event schema and rejects incompatible changes at publish time.
 5. **Consumers** — search indexer, alert matcher, trust-and-safety scoring, sitemap generator, warehouse loader, partner syndication, pro-seller statistics — each own their read model and their consumer offsets.
 
-![One producer, one contract, many consumers. The outbox makes publication part of the write; the domain-event topic carries changes; the compacted state topic lets any consumer, including one built next year, start from the current state without asking the producer for a dump.](listing-systems-architecture/diagrams/c986c715770e7cd2.png)
+![Diagram: One producer, one contract, many consumers](listing-systems-architecture/posts/33-event-driven-listings/assets/images/33-event-driven-listings/fig02-one-producer-one-contract-many-consumers.jpeg)
 
 **Figure 2:** *One producer, one contract, many consumers. The outbox makes publication part of the write; the domain-event topic carries changes; the compacted state topic lets any consumer, including one built next year, start from the current state without asking the producer for a dump.*
 
@@ -118,7 +118,7 @@ The cost is a write-path change in every producer, and an extra table to clean u
 
 A monolith like Yardstick cannot be given an outbox in a week; its write paths are scattered across controllers, cron jobs and admin tools. **Table-level change data capture** reads the database's transaction log and turns every row change into an event without touching application code. In a 2025 Adevinta engineering post, Kleinanzeigen's search team described using Debezium on existing Kafka Connect clusters to stream MySQL changes, joining them into a denormalized per-user object published to a compacted topic, at up to 50,000 messages per second during full re-consumption; the authors found Debezium powerful but harder to troubleshoot because issues "often arise at the infrastructure level rather than in the application code" ([Adevinta Tech Blog](https://adevinta.com/techblog/make-data-migration-easy-with-debezium-and-apache-kafka/), 2025).
 
-Raw CDC events are not domain events. The pattern that keeps them from leaking is a **translation layer** — an anti-corruption layer, in domain-driven design terms — that consumes the raw change stream, joins what it needs, infers the business transition and emits the contract event. The rule I use: **CDC is allowed as a source, never as a contract.** Only the translator reads the monolith's tables; everyone else reads the translator's output. When the write path moves out of the monolith, the new service publishes the same contract through its own outbox, and consumers do not notice the switch. This is the sequence the platform brief describes as stages rather than alternatives, and [Changing the Engine in Flight: Modernizing a Live Marketplace](#modernization-and-migration) uses it for Yardstick's strangler plan.
+Raw CDC events are not domain events. The pattern that keeps them from leaking is a **translation layer** — an anti-corruption layer, in domain-driven design terms — that consumes the raw change stream, joins what it needs, infers the business transition and emits the contract event. The rule I use: **CDC is allowed as a source, never as a contract.** Only the translator reads the monolith's tables; everyone else reads the translator's output. When the write path moves out of the monolith, the new service publishes the same contract through its own outbox, and consumers do not notice the switch. CDC and outbox are therefore stages, not alternatives, and [Changing the Engine in Flight: Modernizing a Live Marketplace](#modernization-and-migration) uses this sequence for Yardstick's strangler plan.
 
 | Mechanism | What it guarantees | What it costs | When it is right |
 | --- | --- | --- | --- |
@@ -151,12 +151,12 @@ Two choices in the envelope deserve justification.
 
 **Both delta and state.** A `PriceChanged` event carries the old and new price in `change` and the full public listing state in `state`. The alert matcher needs the delta to decide whether a price-drop alert fires; the search indexer needs the state and can ignore the delta. Carrying both makes the event larger — about 4 KB on average at Veldmark, without media, which reference image IDs only — but it means a consumer that missed `ListingUpdated` version 7 is repaired by `PriceChanged` version 8. **Self-healing beats perfect delivery.**
 
-**Public state only.** The `state` block contains what a buyer can see plus the attributes search and trust need. It does not contain the seller's phone number, e-mail, exact address of a private seller, or internal performance data. The generic real-estate domain model this book draws on draws the same line for its listing entity: "public fields can be published; draft, owner, and performance data remain internal and role-controlled". Keeping personal data out of the stream shrinks the erasure problem that [System of Record and Read Models: Listing Data Management](#listing-data-management) has to solve. Consumers that need contact data fetch it through an access-controlled API at the moment of use.
+**Public state only.** The `state` block contains what a buyer can see plus the attributes search and trust need. It does not contain the seller's phone number, e-mail, exact address of a private seller, or internal performance data. The generic real-estate domain model this book uses draws the same line for its listing entity: "public fields can be published; draft, owner, and performance data remain internal and role-controlled". Keeping personal data out of the stream shrinks the erasure problem that [System of Record and Read Models: Listing Data Management](#listing-data-management) has to solve. Consumers that need contact data fetch it through an access-controlled API at the moment of use.
 
 {id: event-driven-listings--the-event-catalog}
 ### The event catalog
 
-Contract v1 defines twelve listing event types. The list is short on purpose; every new type is a cost for every consumer.
+Contract v1 defines thirteen listing event types; pause and resume share a row below. The list is short on purpose; every new type is a cost for every consumer.
 
 | Event type | Emitted when | Main consumers |
 | --- | --- | --- |
@@ -173,7 +173,7 @@ Contract v1 defines twelve listing event types. The list is short on purpose; ev
 | `ListingRemoved` | Seller deletes, or the platform removes for policy or fraud | Search removal, alerts, SEO page status, transparency reporting |
 | `ListingErased` | Personal data purged after retention or an erasure request | Every consumer holding a copy (see [System of Record and Read Models: Listing Data Management](#listing-data-management)) |
 
-Two exclusions are deliberate. **Bumps are not lifecycle transitions**: a bump changes a ranking timestamp, not the state of the listing, and the data brief's evidence — mobile.de's API separates `renewalDate` from `creationDate` ([mobile.de Seller-API](https://services.mobile.de/docs/seller-api.html), n.d.) — supports modeling it as a `VisibilityChanged` event that leaves `created_at` untouched. And **views, clicks and contacts are not listing events**: they are behavioral tracking events with their own taxonomy, volume and consent rules, owned by [Data Platform for Marketplaces: Events, Lakehouse and Data Products](#data-platform). Mixing the two would put billions of tracking events on the stream that removals depend on.
+Two exclusions are deliberate. **Bumps are not lifecycle transitions**: a bump changes a ranking timestamp, not the state of the listing. It is a `VisibilityChanged` event that leaves `created_at` untouched, as mobile.de's API separates `renewalDate` from `creationDate` ([mobile.de Seller-API](https://services.mobile.de/docs/seller-api.html), n.d.). And **views, clicks and contacts are not listing events**: they are behavioral tracking events with their own taxonomy, volume and consent rules, owned by [Data Platform for Marketplaces: Events, Lakehouse and Data Products](#data-platform). Mixing the two would put billions of tracking events on the stream that removals depend on.
 
 {id: event-driven-listings--topics-and-retention}
 ### Topics and retention
@@ -185,8 +185,8 @@ Veldmark runs two topics for the contract, both partitioned by listing ID.
 
 Closed listings stay on the state topic in their final state (sold, expired, removed) for 30 days, so consumers learn about the closure, and are then tombstoned. Erased listings are tombstoned immediately. A consumer that is offline longer than the tombstone retention can miss a deletion — which is why the state topic is not a substitute for periodic reconciliation, discussed under failure modes.
 
-{id: event-driven-listings--in-practice-how-it-works-at-scale}
-## In Practice: How It Works at Scale
+{id: event-driven-listings--in-practice-public-evidence-and-contract-v1}
+## In Practice: Public Evidence and Contract v1
 
 {id: event-driven-listings--what-classifieds-companies-have-documented}
 ### What classifieds companies have documented
@@ -214,7 +214,7 @@ Sven Lindqvist's team designs the contract between March and June 2027, with one
 | Hearthly | Go listing service on Google Cloud | Outbox to Google Pub/Sub, then a bridge to Confluent Cloud that preserves the listing key | Direct publication if Hearthly moves to AWS |
 | Keybridge | Not a marketplace; a SaaS publishing agency listings to many portals | Publishes to Hearthly through the same feed interface as any software vendor; **does not consume** Hearthly listing events | Unchanged: the March 2027 neutrality decision applies |
 
-The Keybridge line matters. Because Keybridge sends listings to Hearthly's competitors, giving it a subscription to Hearthly's listing stream would undermine the neutrality commitment Veldmark made to agencies in March 2027. The event backbone has access control per topic, and the architecture decision record says so explicitly.
+Keybridge gets no subscription to Hearthly's listing stream. Keybridge sends listings to Hearthly's competitors, so a subscription would undermine the neutrality commitment Veldmark made to agencies in March 2027. The event backbone has access control per topic, and the architecture decision record says so explicitly.
 
 **Feed noise is suppressed at the source.** About 88% of Motorvane's dealer listings arrive through dealer management system (DMS) feeds, many of them daily full snapshots. In 2027 that is about **1.16 million** listings re-sent every day, of which about 91% are unchanged; only about 100,000 records a day carry a real change. Motorvane's ingestion computes a content hash per listing and emits nothing when it matches the last accepted version; the ingestion chapter, [Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion), owns the mechanism. Without the hash, the stream would carry about a million no-op `ListingUpdated` events a day and every consumer would pay for them.
 
@@ -229,7 +229,7 @@ At go-live on **1 July 2027**, the contract has 23 registered consumer groups. B
 
 The Rotterdam bike is a March 2027 story, before the contract existed. Sven's team uses it as the acceptance test for v1: replay Femke's listing through the new design and check that every consumer would have behaved correctly.
 
-![The bike's sale as a single event with three consumers. The digest is fixed twice over: it removes the bike when `ListingSold` arrives, and it re-checks listing state at send time, because a derived artifact that lives for thirteen hours must not trust a snapshot.](listing-systems-architecture/diagrams/73f22daa0998da88.png)
+![Diagram: The bike's sale as a single event with three consumers](listing-systems-architecture/posts/33-event-driven-listings/assets/images/33-event-driven-listings/fig03-bike-s-sale-single-event-three.jpeg)
 
 **Figure 3:** *The bike's sale as a single event with three consumers. The digest is fixed twice over: it removes the bike when `ListingSold` arrives, and it re-checks listing state at send time, because a derived artifact that lives for thirteen hours must not trust a snapshot.*
 
@@ -257,7 +257,7 @@ A listing event schema lives for years and has consumers its producers have neve
 
 Confluent Schema Registry enforces compatibility between schema versions. BACKWARD — the default — means consumers using the new schema can read data written with the previous one, and it is checked only against the latest version; the transitive variants check against all previous versions; FORWARD means old consumers can read new data; FULL means both ([Confluent documentation](https://docs.confluent.io/platform/current/schema-registry/fundamentals/schema-evolution.html), n.d.). For Protobuf, the documentation recommends BACKWARD_TRANSITIVE because adding new message types breaks forward compatibility.
 
-For a multi-brand listing stream, consumers and producers upgrade on independent schedules, and consumers replay old events. That argues for **full transitive** compatibility: any consumer, on any schema version, can read any event on the topic. In practice, full compatibility in Avro allows adding and removing **optional fields with defaults** and little else. That constraint is the point.
+A multi-brand listing stream needs **full transitive** compatibility, because consumers and producers upgrade on independent schedules and consumers replay old events. Under it, any consumer, on any schema version, can read any event on the topic. In practice, full compatibility in Avro allows adding and removing **optional fields with defaults** and little else. That constraint is the point.
 
 {id: event-driven-listings--the-rules-veldmark-publishes}
 ### The rules Veldmark publishes
@@ -271,7 +271,7 @@ For a multi-brand listing stream, consumers and producers upgrade on independent
 | Change a field's meaning or unit | **Never** in place | A new field with a new name; meaning changes are the breaks that registries cannot detect |
 | Remove a required field, change a type | No | New major version |
 
-The fifth row is the one that bites. A registry checks syntax, not semantics. If Hearthly starts sending `surface_m2` as habitable surface instead of total surface, every compatibility check passes and every valuation is wrong. **Semantic changes need human review**, and Veldmark routes every schema change on the contract through the architecture advice forum's event-catalog review, which takes one week.
+The fifth row, a change of meaning, is the dangerous one, because a registry checks syntax, not semantics. If Hearthly starts sending `surface_m2` as habitable surface instead of total surface, every compatibility check passes and every valuation is wrong. **Semantic changes need human review**, and Veldmark routes every schema change on the contract through the architecture advice forum's event-catalog review, which takes one week.
 
 {id: event-driven-listings--breaking-changes-v2-by-parallel-run}
 ### Breaking changes: v2 by parallel run
@@ -296,7 +296,9 @@ Three replay sources exist, and they serve different purposes.
 | Compacted state topic from the beginning | Bootstrapping a new consumer; rebuilding a read model | Latest state only; no history of intermediate changes |
 | **Backfill from the system of record** | Corrections after a data fix; re-publishing after a schema addition | Load on the producer; must not starve live traffic |
 
-Backfills are where designs fail. If a correction of 300,000 listings is published into the same partitions as live changes, the alert matcher may process a backfilled `ListingUpdated` after a live `ListingSold` and resurrect a sold listing. Version-gated apply prevents that: the backfilled event carries the listing's *current* version, which is not newer than the `ListingSold` the consumer already applied, so it is ignored. Vinted documented merging batch reindex events with organic changes on one topic ([Vinted Engineering](https://vinted.engineering/2023/09/25/search-indexing-pipeline/), 2023); the post does not say how stale batch events are kept from overwriting newer state, and my inference is that any design of this kind needs a version or timestamp comparison in the consumer to be safe.
+Backfills are where designs fail, because a backfilled event can overwrite a newer live one. If a correction of 300,000 listings is published into the same partitions as live changes, the alert matcher may process a backfilled `ListingUpdated` after a live `ListingSold` and resurrect a sold listing. Version-gated apply prevents that: the backfilled event carries the listing's *current* version, which is not newer than the `ListingSold` the consumer already applied, so it is ignored.
+
+Vinted documented merging batch reindex events with organic changes on one topic ([Vinted Engineering](https://vinted.engineering/2023/09/25/search-indexing-pipeline/), 2023); the post does not say how stale batch events are kept from overwriting newer state, and my inference is that any design of this kind needs a version or timestamp comparison in the consumer to be safe.
 
 ![A conveyor of listing events reaches a version gate in front of a consumer that stores v9 Sold; a duplicate v9 and a backfilled v7 bounce off the gate.](listing-systems-architecture/posts/33-event-driven-listings/assets/images/33-event-driven-listings/version-gated-apply.jpeg)
 
@@ -314,7 +316,7 @@ Two rules handle this. First, **because events carry full state, skipping one is
 {id: event-driven-listings--removals-are-a-separate-service-level}
 ### Removals are a separate service level
 
-Not all events are equal. A new listing that becomes searchable in two minutes instead of ninety seconds is a small loss; a scam listing removed at 20:26 that stays searchable until 21:00 is a real one. Veldmark sets separate objectives per event family: publication events p95 under two seconds to topic; **removal events (`ListingSold`, `ListingRemoved`, `ListingErased`) p99 under five seconds to topic and under thirty seconds to search deletion**, alarmed per consumer. The search index's removal latency is measured end to end by a synthetic listing that is created and removed every minute in each tenant.
+Removal events need a tighter service level than publication events, because a late removal costs more than a late publication. A new listing that becomes searchable in two minutes instead of ninety seconds is a small loss; a scam listing removed at 20:26 that stays searchable until 21:00 is a real one. Veldmark sets separate objectives per event family: publication events p95 under two seconds to topic; **removal events (`ListingSold`, `ListingRemoved`, `ListingErased`) p99 under five seconds to topic and under thirty seconds to search deletion**, alarmed per consumer. The search index's removal latency is measured end to end by a synthetic listing that is created and removed every minute in each tenant.
 
 {id: event-driven-listings--trade-offs-choosing-the-shape-of-the-stream}
 ## Trade-offs: Choosing the Shape of the Stream
@@ -329,7 +331,7 @@ Not all events are equal. A new listing that becomes searchable in two minutes i
 | Schema format | JSON Schema | **Avro or Protobuf with registry** | Partner-facing payloads, human readability, external webhooks | Internal, high-volume, long-lived contract with enforced compatibility |
 | Broker | One group broker | One per brand, bridged | Group shares platforms (Common Ground's premise) | Brands are run as separate businesses, likely to be sold, or on different clouds for a long time |
 
-Two of these deserve a note. **Typed events versus one generic event** is often argued as purity against pragmatism. The deciding test is whether consumers need to know *why* the listing changed. Search does not; alerts, trust and safety, regulatory reporting and analytics do. A generic event with a `cause` field and a changed-keys list is a reasonable first step; typed events are where the contract ends up.
+Two of these deserve a note. **Typed events versus one generic event** turns on whether consumers need to know *why* the listing changed. Search does not; alerts, trust and safety, regulatory reporting and analytics do. A generic event with a `cause` field and a changed-keys list is a reasonable first step; typed events are where the contract ends up.
 
 **One broker versus bridged brokers** is a portfolio decision as much as a technical one. Veldmark chose one backbone because Common Ground's principle is to share platforms beneath the brands. Hearthly's bridge from Pub/Sub is the documented exception, with a review date when Hearthly's cloud choice is revisited after 2028. A group that expects to sell a brand should think twice before entangling its events with the rest, which [After the Deal: Consolidating Platforms After Acquisitions](#platform-consolidation) discusses.
 
@@ -341,10 +343,12 @@ Two of these deserve a note. **Typed events versus one generic event** is often 
 | Dominant source of events | Private sellers' edits and short lifetimes; many sold events | Feeds from software vendors; long lifetimes; frequent price changes | DMS full-snapshot feeds; many no-op updates without hashing | Employer and applicant-tracking feeds; hard expiry dates |
 | Volume per live listing | High: listings live days to weeks | Moderate | Low per listing after hash suppression, spiky after feed runs | Low |
 | Event that matters most | `ListingSold` and `ListingRemoved` (ghosts and scams) | `PriceChanged` and the cluster event from entity resolution | `PriceChanged` and the feed-driven removal | `ListingExpired`; search engines penalize stale job postings |
-| Extra event types often needed | Reservation and transaction events (Safe Deal) | `PropertyClustered` from [One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution); mandate or exclusivity changes | Vehicle-identity events (VIN decoded, history checked) | Application events, owned by a separate context |
+| Extra event types often needed | Reservation and transaction events (Safe Deal) | `PropertyClustered` from [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution); mandate or exclusivity changes | Vehicle-identity events (VIN decoded, history checked) | Application events, owned by a separate context |
 | Main consumers beyond search | Alerts, trust and safety | Valuation model, agency statistics, duplicate cluster views | Market-value model, dealer statistics, financing partners | Search engine job indexing, applicant notifications |
 
-The jobs column has a sharp external constraint. Google's structured-data guidance for job postings says expired jobs must be removed by setting `validThrough` in the past, returning 404 or 410, or removing the markup, and that "failure to take timely action on expired jobs may result in a manual action" ([Google Search Central](https://developers.google.com/search/docs/appearance/structured-data/job-posting), updated 2026). For a jobs board, the latency from `ListingExpired` to the page change is an SEO risk, not a nicety. In real estate, the entity-resolution cluster is itself a stream: when three agencies list the Lyon apartment, consumers need both the three listing events and the event that says they describe one property.
+For a jobs board, the latency from `ListingExpired` to the page change is an SEO risk, not a nicety. Google's structured-data guidance for job postings says expired jobs must be removed by setting `validThrough` in the past, returning 404 or 410, or removing the markup, and that "failure to take timely action on expired jobs may result in a manual action" ([Google Search Central](https://developers.google.com/search/docs/appearance/structured-data/job-posting), updated 2026).
+
+In real estate, the entity-resolution cluster is itself a stream: when three agencies list the Lyon apartment, consumers need both the three listing events and the event that says they describe one property.
 
 {id: event-driven-listings--failure-modes}
 ## Failure Modes
@@ -387,6 +391,9 @@ At group scale the listing event contract is one of a handful of artifacts that 
 8. What is the end-to-end latency from "seller marks sold" to "listing gone from search, alerts and partner feeds", and is it measured continuously?
 9. Which personal data fields are on the stream, and how would an erasure reach every retained copy of them?
 10. Which artifacts are computed from listing data and delivered hours later, and do they re-check availability at delivery?
+
+{id: event-driven-listings--from-events-to-copies}
+## From Events to Copies
 
 The event stream moves changes; it does not decide where the resulting copies live, how stale each may be, or how a seller's erasure request reaches all seven of them. [System of Record and Read Models: Listing Data Management](#listing-data-management) takes up those questions with the same bike, now held in seven places at once.
 

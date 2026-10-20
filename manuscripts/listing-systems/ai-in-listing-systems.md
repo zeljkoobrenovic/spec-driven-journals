@@ -29,7 +29,7 @@ The same property makes it dangerous. A language model asked to fill attributes 
 
 **Figure 1:** *The model proposes and the platform decides: every AI output is a proposal checked against the taxonomy, the attribute schema and the trust rules before it becomes listing data.*
 
-The chapter builds on [Models in Production: ML Platforms and Use Cases](#ml-platform), which owns model governance, decision tiers and the platform for predictive models; this chapter adds what generative models and agents change. It summarizes and links to the chapters that own LLM-based enrichment ([From Raw Supply to Usable Listings: Normalization and Enrichment](#normalization-and-enrichment)), natural-language search ([What Did They Mean? Query Understanding and Autocomplete](#query-understanding)), moderation ([Trust and Safety as a Platform](#trust-and-safety-architecture)) and SEO for AI answer engines ([Found by Google: Web, App and SEO Architecture for Listings](#web-and-seo-architecture)). The worked example belongs to Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)).
+The chapter builds on two earlier designs: [Models in Production: ML Platforms and Use Cases](#ml-platform), which owns model governance, decision tiers and the platform for predictive models, and the taxonomy and attribute schemas of Part II ([Category Trees That Can Change: Designing Marketplace Taxonomies](#categories-and-taxonomies), [Attributes Without Chaos: Schemas, Dictionaries and Validation](#attribute-schemas)), which AI output compiles into. It adds what generative models and agents change, and links to the chapters that own LLM-based enrichment ([From Raw Supply to Usable Listings: Normalization and Enrichment](#normalization-and-enrichment)), natural-language search ([What Did They Mean? Query Understanding and Autocomplete](#query-understanding)), moderation ([Trust and Safety as a Platform](#trust-and-safety-architecture)) and SEO for AI answer engines ([Found by Google: Web, App and SEO Architecture for Listings](#web-and-seo-architecture)). The next chapter, [Built to Be Replaced: Evolving a Marketplace Platform Over a Decade](#long-term-evolution), treats AI as one of the stressors the platform must absorb over a decade. The worked example belongs to Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)).
 
 {id: ai-in-listing-systems--setting-the-scene-at-veldmark-six-ai-requests-in-one-quarter}
 ## Setting the Scene at Veldmark: Six AI Requests in One Quarter
@@ -45,14 +45,14 @@ By **November 2027**, Noor Hassan, Veldmark's Group Chief Product Officer, has s
 
 Aisha Rahman, Group Head of Trust & Safety, asks what happens when fraudsters use the listing assistant. Lucía Ortega, the Group Data Protection Officer and regulatory lead, asks which of the six fall under the EU AI Act. Tomasz Wiśniewski, head of the group search platform, asks who pays for an external assistant's queries at the Sunday-evening peak of 31,000 queries per second. Ingrid Halvorsen, the Group Chief Architect, asks a fourth question of each proposal: **what structured thing does the model produce, and what checks it?** The answer to that question decides the architecture, and it turns out to be the same for all six.
 
-{id: ai-in-listing-systems--concepts}
-## Concepts
+{id: ai-in-listing-systems--concepts-generative-ai-agents-and-autonomy}
+## Concepts: Generative AI, Agents and Autonomy
 
 - **Generative AI** — models that produce text, images, structured output or actions from prompts, typically large language models (LLMs) and vision-language models. Predictive models that score or classify are covered in [Models in Production: ML Platforms and Use Cases](#ml-platform); generative models reuse that platform for registration, logging and monitoring.
 - **AI listing assistant** — a feature in the insertion flow that proposes listing content (category, attributes, title, description, price) from photos, voice or short text, for the seller to accept, edit or reject.
 - **Structured-output compiler** — the pattern in which a model translates unstructured input into a structure the marketplace already has: an attribute set, a filter query, a policy label. The structure is validated deterministically before use. It is the central pattern of this chapter.
 - **Agentic search** — search in which a model plans steps and calls tools (keyword or vector search, filters, comparisons, external lookups) over several turns, rather than returning one ranked list for one query.
-- **Agent-to-marketplace interface** — an interface through which external AI agents call the marketplace's capabilities as tools. The Model Context Protocol (MCP), which Anthropic introduced in November 2024 as an open standard for connecting AI assistants to data sources ([Anthropic, 2024](https://www.anthropic.com/news/model-context-protocol)) and donated to the Agentic AI Foundation under the Linux Foundation in December 2025 ([Anthropic, 2025](https://www.anthropic.com/news/donating-the-model-context-protocol-and-establishing-of-the-agentic-ai-foundation)), is the most widely used such protocol as of 2026.
+- **Agent-to-marketplace interface** — an interface through which external AI agents call the marketplace's capabilities as tools. The most widely used such protocol as of 2026 is the Model Context Protocol (MCP). Anthropic introduced it in November 2024 as an open standard for connecting AI assistants to data sources ([Anthropic, 2024](https://www.anthropic.com/news/model-context-protocol)) and donated it to the Agentic AI Foundation under the Linux Foundation in December 2025 ([Anthropic, 2025](https://www.anthropic.com/news/donating-the-model-context-protocol-and-establishing-of-the-agentic-ai-foundation)).
 - **Autonomy level** — how far an AI feature acts without a person: it *suggests*, *drafts* for confirmation, *acts with confirmation*, or *acts autonomously*.
 - **AI governance for marketplaces** — the register, rules and controls that decide which AI uses may run, at what autonomy, with which data, evaluated how, at what cost, and with whom accountable.
 
@@ -71,7 +71,7 @@ The rule I use for listing systems: **anything that changes what buyers see abou
 {id: ai-in-listing-systems--where-ai-has-shipped-the-lifecycle-in-public-evidence}
 ## Where AI Has Shipped: The Lifecycle in Public Evidence
 
-The documented record from 2023 to 2026 is uneven but clear in direction. Most entries are company announcements rather than engineering accounts; where a source is trade press or a third-party summary, it is labeled.
+Between 2023 and 2026, marketplaces shipped AI at every stage of the listing lifecycle. Most entries are company announcements rather than engineering accounts; where a source is trade press or a third-party summary, it is labeled.
 
 | Lifecycle stage | Documented example | Date | What it shows |
 | --- | --- | --- | --- |
@@ -88,13 +88,13 @@ The documented record from 2023 to 2026 is uneven but clear in direction. Most e
 | Pro copilots | OLX AutoIQ for Otomoto dealers: listing creation, lead dashboard, follow-up and pricing recommendations, descriptions in the dealer's tone; dealers publish "up to 36% faster" ([OLX Group, 2026](https://www.olxgroup.com/news/olx-launches-agentic-ai-products-to-transform-property-search-and-car-sales-at-claim-ai-in-lisbon/)) | February 2026 | Copilots sit on pro tooling, not on buyer surfaces |
 | SEO | Adevinta's SEO team used AI to classify keywords, generate related searches and write meta titles and descriptions ([Adevinta Tech Blog, 2023](https://adevinta.com/techblog/how-we-attract-users-with-seo-from-ten-blue-links-to-ai-generated-answers/)) | June 2023 | Predates Google's AI answers; do not extrapolate |
 
-Three patterns run through the table. **Every implementation keeps the structured system of record**: the filters, the category tree, the index and the ranking model remain, and the model translates into them. **Rollouts are staged by structure**: text help first, photos second, high-structure verticals such as vehicles last. And **the most significant 2026 move is distribution, not modeling**: marketplaces now publish their search into assistants they do not control, which reverses the long-held assumption that discovery happens on the marketplace's own surfaces.
+Three patterns run through the table. **Every implementation keeps the structured system of record**: the filters, the category tree, the index and the ranking model remain, and the model translates into them. **Rollouts are staged by structure**: text help first, photos second, high-structure verticals such as vehicles last. And **the biggest 2026 change is distribution, not modeling**: marketplaces now publish their search into assistants they do not control, which reverses the long-held assumption that discovery happens on the marketplace's own surfaces.
 
 {id: ai-in-listing-systems--architecture-the-control-layer-between-models-and-listings}
 ## Architecture: The Control Layer Between Models and Listings
 
-{id: ai-in-listing-systems--components}
-### Components
+{id: ai-in-listing-systems--four-components-the-ml-platform-lacks}
+### Four components the ML platform lacks
 
 An AI feature in a listing system has four parts that the predictive-ML platform does not already provide, plus the guardrails that sit around them.
 
@@ -105,7 +105,7 @@ An AI feature in a listing system has four parts that the predictive-ML platform
 
 Around them sit **validators**: deterministic checks that an output conforms to the attribute dictionary, the filter schema or the policy taxonomy, and **guardrails** that block outputs containing contact details, payment instructions, prohibited items or unsupported claims.
 
-![Models never write to systems of record directly: every output passes a deterministic validator and a guardrail, and reaches listings, search or catalog only through the same tools and contracts that the rest of the platform uses.](listing-systems-architecture/diagrams/0fe806217fb812fb.png)
+![Diagram: Models never write to systems of record directly](listing-systems-architecture/posts/44-ai-in-listing-systems/assets/images/44-ai-in-listing-systems/fig02-models-never-write-systems-record-directly.jpeg)
 
 **Figure 2:** *Models never write to systems of record directly: every output passes a deterministic validator and a guardrail, and reaches listings, search or catalog only through the same tools and contracts that the rest of the platform uses.*
 
@@ -132,14 +132,12 @@ The documented trajectory matches the table: leboncoin moved guardrails from pro
 {id: ai-in-listing-systems--veldmark-worked-example-the-photo-to-listing-assistant}
 ## Veldmark Worked Example: The Photo-to-Listing Assistant
 
-{id: ai-in-listing-systems--the-design}
-### The design
+{id: ai-in-listing-systems--five-steps-before-the-seller-confirms}
+### Five steps before the seller confirms
 
 Tradeyard's assistant was approved for a pilot on **Monday 15 November 2027**: Tradeyard Netherlands, iOS first, goods categories only, excluding vehicles, property, jobs and services, for 5% of private sellers. The exclusions follow the documented sequence at eBay and Kleinanzeigen and Tradeyard's own constraint: vehicles need decoded vehicle data, not photos, and property needs addresses and mandatory disclosures.
 
 It depends on two Common Ground capabilities that went live just before it: the **group taxonomy and attribute service** (October 2027), which publishes the category tree and each category's attribute schema as machine-readable reference data, and the **shared trust-and-safety platform** for Tradeyard Netherlands and Belgium (November 2027). Without the first, the model would have nothing to compile into; without the second, nothing would check what it produced.
-
-The flow has five steps.
 
 1. **Screen the photos before generating anything.** Perceptual hashes are compared against live listings and known scam images, and an image classifier checks for prohibited items. A match stops the assistant: the seller continues manually and the listing is flagged for review. The assistant never makes a stolen photo easier to list.
 2. **Propose a category** from the photos with a vision-language model, constrained to the current leaf categories returned by the taxonomy service. The model ranks candidates; it cannot invent a category.
@@ -149,12 +147,12 @@ The flow has five steps.
 
 The seller sees all five as an editable form and must confirm before publishing. The published listing carries a small label, "Description drafted with AI and checked by the seller", and per-field provenance.
 
-![The language model ranks categories from an allowed list, fills a schema it is given, and writes prose last; the price comes from a registered predictive model and the photos are screened before any generation starts.](listing-systems-architecture/diagrams/723ebf69ab20c5ac.png)
+![Diagram: The language model ranks categories from an allowed list, fills a schema it is given, and writes prose last](listing-systems-architecture/posts/44-ai-in-listing-systems/assets/images/44-ai-in-listing-systems/fig03-language-model-ranks-categories-allowed-list.jpeg)
 
 **Figure 3:** *The language model ranks categories from an allowed list, fills a schema it is given, and writes prose last; the price comes from a registered predictive model and the photos are screened before any generation starts.*
 
-{id: ai-in-listing-systems--one-listing}
-### One listing
+{id: ai-in-listing-systems--one-listing-a-utrecht-cargo-bike}
+### One listing: a Utrecht cargo bike
 
 On **Monday 6 December 2027 at 19:05 CET**, a private seller in Utrecht photographs his electric cargo bike four times. The trust check finds no hash matches. The assistant proposes **Bikes › Cargo**, one of the canonical leaves of the bikes split released on 1 November 2027, with a confidence of 0.94. For the schema it fills seven of nine attributes: brand (read from the frame decal), electric assist (yes), box position (front), number of wheels (two), color, frame size and condition (good). It returns `unknown` for battery capacity and model year, which the photos do not show; the seller adds the year. The price-hint model proposes **€1,450–€1,700** for the attributes and Utrecht; the seller sets **€1,600**. He publishes at 19:07, **2 minutes 10 seconds** after the first photo, and the listing enters the standard moderation pipeline like any other.
 
@@ -180,12 +178,12 @@ Two findings change the design. First, **assisted listings fill more attributes*
 
 **Figure 4:** *Assisted listings filled more attributes only because values were constrained to the dictionary; a prototype that let the model write free-text attributes produced 1,100 distinct colors in two weeks.*
 
-At full rollout across Tradeyard's four countries, the gateway forecast is about **€230,000 a year** in model calls, before evaluation and platform costs. Compared with the conversion gain on the insertion funnel, the cost is not the constraint; **evaluation in four languages across the group tree's 1,640 leaf categories is**. The forum approves the extension to 25% of Netherlands sellers and Belgium on both iOS and Android from **Monday 24 January 2028**, with Poland and Portugal once Polish and Portuguese evaluation sets exist, and keeps the category exclusions.
+At full rollout, model cost is not the constraint: the gateway forecasts about **€230,000 a year** in model calls across Tradeyard's four countries, before evaluation and platform costs, which is small against the conversion gain on the insertion funnel. The constraint is **evaluation in four languages across the group tree's 1,640 leaf categories**. The forum approves the extension to 25% of Netherlands sellers and Belgium on both iOS and Android from **Monday 24 January 2028**, with Poland and Portugal once Polish and Portuguese evaluation sets exist, and keeps the category exclusions.
 
 {id: ai-in-listing-systems--what-fraudsters-did-with-it}
 ### What fraudsters did with it
 
-Aisha's team tracked accounts later removed for fraud. They had used the assistant at the same rate as everyone else, and their assisted listings were as polished as anyone's. That is the point: **an assistant that writes good descriptions removes a weak scam signal** (bad spelling, generic text), so the trust model must rely less on text quality and more on account, device, image and price signals (see [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention)). The photo screen in step 1 blocked 2,300 attempts to list with photos matching existing listings during the pilot. It cannot catch what the Barcelona ring would do next: generated photos of apartments that exist nowhere, which have no hash to match. For generated imagery the defense is behavioral and economic (new accounts, below-market prices, requests for payment outside the platform), not visual.
+Fraudsters used the assistant like everyone else, and **an assistant that writes good descriptions removes a weak scam signal** (bad spelling, generic text). Aisha's team tracked accounts later removed for fraud: they had used the assistant at the same rate as other sellers, and their assisted listings were as polished as anyone's. The trust model must therefore rely less on text quality and more on account, device, image and price signals (see [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention)). The photo screen in step 1 blocked 2,300 attempts to list with photos matching existing listings during the pilot. It cannot catch what the Barcelona ring would do next: generated photos of apartments that exist nowhere, which have no hash to match. For generated imagery the defense is behavioral and economic (new accounts, below-market prices, requests for payment outside the platform), not visual.
 
 ![Two equally polished listing cards; text quality no longer separates them, but account, device, image and price signal lamps light up for the fraudulent one.](listing-systems-architecture/posts/44-ai-in-listing-systems/assets/images/44-ai-in-listing-systems/polished-scams-new-signals.jpeg)
 
@@ -194,10 +192,12 @@ Aisha's team tracked accounts later removed for fraud. They had used the assista
 {id: ai-in-listing-systems--search-agents-and-the-new-channel}
 ## Search, Agents and the New Channel
 
-{id: ai-in-listing-systems--conversational-search-as-a-filter-compiler}
-### Conversational search as a filter compiler
+{id: ai-in-listing-systems--conversational-search-as-a-query-compiler}
+### Conversational search as a query compiler
 
-Hearthly's conversational search follows the coches.net and leboncoin pattern: the model translates a sentence into Hearthly's existing filter schema, the filters are validated against the schema and shown to the user, and the normal search runs. The user can edit any filter, so the search stays explainable and the result set is the index's, not the model's. Natural-language input is useful mainly where filters are many and vocabulary is vague: "quiet", "bright" and "near a good school" have no filter, and the honest answer is to say so rather than to pretend. **A conversational layer that cannot say "we have no filter for that" will invent one.** The design and evaluation of query understanding belong to [What Did They Mean? Query Understanding and Autocomplete](#query-understanding); the point here is architectural: the compiler pattern keeps cost low (one short call per query, cacheable by normalized output) and keeps the LLM off the hot path for the majority of keyword queries.
+Hearthly's conversational search follows the coches.net and leboncoin pattern: the model translates a sentence into Hearthly's existing filter schema, the filters are validated against the schema and shown to the user, and the normal search runs. The user can edit any filter, so the search stays explainable and the result set is the index's, not the model's. The compiler pattern also keeps cost low (one short call per query, cacheable by normalized output) and keeps the LLM off the hot path for the majority of keyword queries. The design and evaluation of query understanding belong to [What Did They Mean? Query Understanding and Autocomplete](#query-understanding).
+
+Natural-language input is useful mainly where filters are many and vocabulary is vague. "Quiet", "bright" and "near a good school" have no filter, and the honest answer is to say so. **A conversational layer that cannot say "we have no filter for that" will invent one.**
 
 Agentic search, in which the model plans several steps and calls tools, costs an order of magnitude more latency. OLX's account puts it at 5–10 seconds against 300–500 ms for classic search, and records that a blank chat interface failed and was replaced by the familiar search page with AI built in. My judgement for Veldmark: **agentic flows belong in high-consideration journeys** (a home, a car) where buyers spend weeks, not in the default search of a general classifieds site where they spend seconds.
 
@@ -206,7 +206,7 @@ Agentic search, in which the model plans several steps and calls tools, costs an
 
 When an external assistant calls the marketplace, search becomes an API product with its own contract. ImmoScout24's account of its ChatGPT app shows that the mechanics differ from web releases: the assistant platform caches tool descriptors, so a deploy can break references that the platform still holds. Rightmove's FY2025 results, published in February 2026, described conversational search going live and an app submitted to the ChatGPT ecosystem ([Rightmove plc, 2026](https://plc.rightmove.co.uk/content/uploads/2026/02/Rightmove-RNS-27.02.26.pdf)). In both cases the assistant does not get the website; it gets **tools**: search with a structured filter schema, listing summaries, and links back.
 
-![An external assistant gets tools, not pages: authenticated, rate-limited search over the same index, public fields only, and tracked links that bring contacts back to the marketplace and attribute them to the channel.](listing-systems-architecture/diagrams/9531303ea5e84534.png)
+![Diagram: An external assistant gets tools, not pages](listing-systems-architecture/posts/44-ai-in-listing-systems/assets/images/44-ai-in-listing-systems/fig06-external-assistant-gets-tools-not-pages.jpeg)
 
 **Figure 6:** *An external assistant gets tools, not pages: authenticated, rate-limited search over the same index, public fields only, and tracked links that bring contacts back to the marketplace and attribute them to the channel.*
 
@@ -217,7 +217,7 @@ The decisions Veldmark records for the channel in its **February 2028** decision
 | Which brands first | Hearthly France and Motorvane Germany | High-consideration journeys where conversational shortlists help; Tradeyard's buyers mostly browse |
 | What the tool returns | Public listing fields, price, location at the listing's published precision, a tracked link | Contact happens on Veldmark's surfaces, where messaging safety runs (see [From Interest to Contact: Messaging and Lead Management](#messaging-and-leads)) |
 | Contact through the assistant | Not offered | Moving contact off-platform recreates the Scam Inbox outside Veldmark's controls |
-| Quotas | Per partner, with lower limits during Sunday 20:00–22:00 CET | Agent traffic must not compete with the peak (see [Sunday Night Peaks: Reliability, Performance and Cost](#reliability-and-scale)) |
+| Quotas | Per partner, with lower limits during Sunday 20:00–22:00 CET | Agent traffic must not compete with the peak (see [Sunday Evening Peaks: Reliability, Performance and Cost](#reliability-and-scale)) |
 | Attribution | Leads from assistant links tagged by channel and partner | Pros pay for leads and will ask where they came from |
 | Ranking | The same organic ranking as on site; paid placements labeled as such | Ranking transparency duties do not disappear in another company's interface (see [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking)) |
 | Data use by the partner | Contract forbids training on returned listings and caching beyond a short window | Listings, photos and descriptions are the sellers' and agencies' content as well as Veldmark's asset |
@@ -227,9 +227,9 @@ The decisions Veldmark records for the channel in its **February 2028** decision
 
 The other half of the channel is involuntary. AI companies crawl listing sites to train models and to answer questions about inventory, prices and neighborhoods. For a listing marketplace, its inventory is its product, and a crawler that copies it delivers no traffic in return.
 
-The architecture has three levers. **Technical**: robots directives per crawler, bot management at the CDN, and rate limits by behavior rather than by user agent, since user agents lie; on 1 July 2025 Cloudflare began blocking AI crawlers by default for new domains and announced a pay-per-crawl model in beta ([Cloudflare, 2025](https://www.cloudflare.com/press/press-releases/2025/cloudflare-just-changed-how-ai-crawlers-scrape-the-internet-at-large/)), which shows the infrastructure market moving the same way. **Legal**: in the EU, the text-and-data-mining exception for commercial use applies only where rights holders have not reserved their rights in a machine-readable way, and the AI Act obliges general-purpose AI model providers to have a policy that identifies and respects such reservations under Article 4(3) of Directive (EU) 2019/790 ([AI Act, Article 53](https://artificialintelligenceact.eu/article/53/)). A machine-readable reservation in robots directives and terms is therefore worth publishing; how strongly listings data is protected by database rights depends on the case and is a question for counsel. **Commercial**: licensed feeds or APIs for answer engines and partners who want the data, with attribution and freshness terms.
+The architecture has three levers. **Technical**: robots directives per crawler, bot management at the CDN, and rate limits by behavior rather than by user agent, since user agents lie. On 1 July 2025 Cloudflare began blocking AI crawlers by default for new domains and announced a pay-per-crawl model in beta ([Cloudflare, 2025](https://www.cloudflare.com/press/press-releases/2025/cloudflare-just-changed-how-ai-crawlers-scrape-the-internet-at-large/)), which shows the infrastructure market moving the same way. **Legal**: in the EU, the text-and-data-mining exception for commercial use applies only where rights holders have not reserved their rights in a machine-readable way, and the AI Act obliges general-purpose AI model providers to have a policy that identifies and respects such reservations under Article 4(3) of Directive (EU) 2019/790 ([AI Act, Article 53](https://artificialintelligenceact.eu/article/53/)). A machine-readable reservation in robots directives and terms is therefore worth publishing; how strongly listings data is protected by database rights depends on the case and is a question for counsel. **Commercial**: licensed feeds or APIs for answer engines and partners who want the data, with attribution and freshness terms.
 
-The tension is real: the search engines that bring 46% of Tradeyard's web sessions also build AI answers, and blocking the crawler that feeds answers may also cost classic search traffic. The decision belongs to the brand's GM with the SEO and legal leads, and it should be revisited each quarter; the architecture's job is to make each lever a configuration, not a project (see [Found by Google: Web, App and SEO Architecture for Listings](#web-and-seo-architecture)).
+Crawler policy trades data protection against search traffic: the search engines that bring 46% of Tradeyard's web sessions also build AI answers, so blocking the crawler that feeds those answers may also cost classic search traffic. The decision belongs to the brand's GM with the SEO and legal leads, and it should be revisited each quarter; the architecture's job is to make each lever a configuration, not a project (see [Found by Google: Web, App and SEO Architecture for Listings](#web-and-seo-architecture)).
 
 {id: ai-in-listing-systems--ai-in-trust-and-safety}
 ## AI in Trust and Safety
@@ -252,8 +252,8 @@ OLX's chat-image model (2026) shows a well-scoped gate-tier use: one fraud vecto
 {id: ai-in-listing-systems--cost-and-evaluation}
 ## Cost and Evaluation
 
-{id: ai-in-listing-systems--cost}
-### Cost
+{id: ai-in-listing-systems--cost-per-outcome}
+### Cost per outcome
 
 Generative AI cost is per call, which makes it visible in a way predictive ML rarely is. The public numbers are few and old by model-pricing standards.
 
@@ -263,10 +263,10 @@ Generative AI cost is per call, which makes it visible in a way predictive ML ra
 | OLX job-role extraction | ~4,000 calls a day | "approximately 15K per month", currency unstated | 2024 | Prompted evaluation of self-hosted models |
 | Veldmark photo-to-listing (illustration) | ~154,000 listings in the pilot | €0.0062 per assisted listing | 2027–2028 | Forecast €230,000 a year at four-country rollout |
 
-The lesson is not the figures, which fall as model prices fall, but the unit: **cost per outcome**, such as cost per published listing, per successful search or per qualified lead. The AI gateway should report it per feature and per brand, with a budget and an alert, so that a prompt change that triples tokens is noticed the same day.
+The unit matters more than the figures, which fall as model prices fall: **cost per outcome**, such as cost per published listing, per successful search or per qualified lead. The AI gateway should report it per feature and per brand, with a budget and an alert, so that a prompt change that triples tokens is noticed the same day.
 
-{id: ai-in-listing-systems--evaluation}
-### Evaluation
+{id: ai-in-listing-systems--evaluation-before-and-after-launch}
+### Evaluation before and after launch
 
 | Stage | What it checks | Listing example |
 | --- | --- | --- |
@@ -277,31 +277,6 @@ The lesson is not the figures, which fall as model prices fall, but the unit: **
 | Sampled production audit | Drift in real traffic | Weekly human review of assisted listings and conversational queries |
 
 Faithfulness, whether the output is supported by the input, deserves its own metric, separate from fluency; OLX's reporting of 98% for style and 89% for faithfulness shows why. **Fluent and wrong is the characteristic failure of generative models**, and it is invisible to usage metrics.
-
-{id: ai-in-listing-systems--trade-offs}
-## Trade-offs
-
-| Decision | Option A | Option B | When A is right | When B is right |
-| --- | --- | --- | --- | --- |
-| Where AI writes | Into a draft the user confirms | Directly into the listing | Almost always for seller-owned content | Internal metadata the seller never sees, such as search keywords, with provenance |
-| Output form | Constrained to schema and enumerations | Free text | Anything searchable, filterable or used by trust rules | Descriptions only, behind guardrails |
-| Search interface | Filter compiler over existing search | Agentic multi-step assistant | Default search; latency-sensitive journeys | High-consideration journeys with long sessions |
-| External channel | Own surfaces only | Tools for external assistants | Brands whose buyers browse and whose SEO is strong | Verticals where buyers ask assistants for shortlists |
-| Model hosting | Provider API | Self-hosted or distilled | Learning a new task; low or variable volume | Stable, high-volume tasks with labels |
-| Crawler policy | Allow and license | Block and reserve rights | Partners that bring traffic or pay | Crawlers that copy inventory without return |
-| Moderation | LLM in gray zone | LLM on all traffic | Large platforms with millions of decisions a week | Small markets where volume is low and policy changes fast |
-
-{id: ai-in-listing-systems--vertical-differences}
-## Vertical Differences
-
-| Dimension | General classifieds | Real estate | Automotive | Jobs |
-| --- | --- | --- | --- | --- |
-| Listing assistant value | Highest: private sellers, sparse attributes, many categories | Moderate: agents list via feeds; value is in descriptions and disclosures | Low from photos; vehicle data comes from VIN decoding and DMS feeds | Moderate: structuring job ads; risky when applied to candidates |
-| Main AI risk in creation | Unsupported condition claims; prohibited items | Wrong mandatory disclosures (energy class, fees) | Wrong specification or history claims | Discriminatory wording |
-| Conversational search fit | Low for browsing; useful for vague goods queries | High: many filters, vague preferences | High: many filters, comparisons | Moderate |
-| External agent channel | Weak fit | Strong fit (documented: ImmoScout24, OLX CompassGPT) | Strong fit (documented: OLX AutoGPT) | Emerging |
-| Copilots | Pro sellers in some categories | Agency CRM, listing descriptions | Dealer lead replies and pricing | Recruiter tools |
-| AI Act exposure | Article 50 transparency | Article 50; credit-adjacent valuation uses to review | Article 50; finance referrals to review | **High-risk** for candidate selection and job-ad targeting (Annex III point 4) |
 
 {id: ai-in-listing-systems--regulation-the-eu-ai-act-for-marketplaces}
 ## Regulation: The EU AI Act for Marketplaces
@@ -321,6 +296,31 @@ Annex III point 4(a) lists AI systems "intended to be used for the recruitment o
 Article 50's marking duty applies to providers of systems that generate synthetic text, images, audio or video, with an exception for systems that only assist standard editing or do not substantially alter the input ([AI Act, Article 50](https://artificialintelligenceact.eu/article/50/)). Whether a marketplace that builds a listing assistant on a third-party model is a provider of that system, and whether a seller-confirmed description falls under the exception, are questions for counsel. Veldmark's architectural answer is not to depend on the answer: assisted descriptions and AI-edited images carry machine-readable provenance metadata and a visible label from launch, and every conversational surface says it is an AI assistant.
 
 The AI Act sits alongside the rules this book covers elsewhere: the DSA's limits on automated complaint handling and its statements of reasons, the P2B Regulation's ranking transparency, consumer law on misleading claims, and the GDPR for prompts and conversations that contain personal data (see [Rules of the Marketplace: DSA, DAC7 and Vertical Regulation](#marketplace-regulation)).
+
+{id: ai-in-listing-systems--trade-offs}
+## Trade-offs
+
+| Decision | Option A | Option B | When A is right | When B is right |
+| --- | --- | --- | --- | --- |
+| Where AI writes | Into a draft the user confirms | Directly into the listing | Almost always for seller-owned content | Internal metadata the seller never sees, such as search keywords, with provenance |
+| Output form | Constrained to schema and enumerations | Free text | Anything searchable, filterable or used by trust rules | Descriptions only, behind guardrails |
+| Search interface | Query compiler over existing search | Agentic multi-step assistant | Default search; latency-sensitive journeys | High-consideration journeys with long sessions |
+| External channel | Own surfaces only | Tools for external assistants | Brands whose buyers browse and whose SEO is strong | Verticals where buyers ask assistants for shortlists |
+| Model hosting | Provider API | Self-hosted or distilled | Learning a new task; low or variable volume | Stable, high-volume tasks with labels |
+| Crawler policy | Allow and license | Block and reserve rights | Partners that bring traffic or pay | Crawlers that copy inventory without return |
+| Moderation | LLM in gray zone | LLM on all traffic | Large platforms with millions of decisions a week | Small markets where volume is low and policy changes fast |
+
+{id: ai-in-listing-systems--vertical-differences}
+## Vertical Differences
+
+| Dimension | General classifieds | Real estate | Automotive | Jobs |
+| --- | --- | --- | --- | --- |
+| Listing assistant value | Highest: private sellers, sparse attributes, many categories | Moderate: agents list via feeds; value is in descriptions and disclosures | Low from photos; vehicle data comes from VIN decoding and DMS feeds | Moderate: structuring job ads; risky when applied to candidates |
+| Main AI risk in creation | Unsupported condition claims; prohibited items | Wrong mandatory disclosures (energy class, fees) | Wrong specification or history claims | Discriminatory wording |
+| Conversational search fit | Low for browsing; useful for vague goods queries | High: many filters, vague preferences | High: many filters, comparisons | Moderate |
+| External agent channel | Weak fit | Strong fit (documented: ImmoScout24, OLX CompassGPT) | Strong fit (documented: OLX AutoGPT) | Emerging |
+| Copilots | Pro sellers in some categories | Agency CRM, listing descriptions | Dealer lead replies and pricing | Recruiter tools |
+| AI Act exposure | Article 50 transparency | Article 50; credit-adjacent valuation uses to review | Article 50; finance referrals to review | **High-risk** for candidate selection and job-ad targeting (Annex III point 4) |
 
 {id: ai-in-listing-systems--failure-modes}
 ## Failure Modes

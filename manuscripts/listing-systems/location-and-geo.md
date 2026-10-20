@@ -21,14 +21,14 @@
 > * **The Country Fork** — every country builds its own address model, geocoder integration and privacy rule, so a cross-border search, a group map tile or a privacy fix has to be built four times.
 > * **The Duplicate Echo** — when locations are imprecise or inconsistent, the same property listed by three agencies cannot be grouped, because location is the first key every duplicate detector relies on.
 
-Every listing marketplace answers "where is it?" millions of times a day, and most answer it badly in ways nobody notices until something breaks. A buyer searching "within 10 km of Utrecht" gets a city bike that is 14 km away, because the seller's postcode was resolved to the centroid of a different municipality. A landing page for "apartments in Lyon" leaves out flats in Villeurbanne, which buyers think of as Lyon but which is a separate commune. A private seller's home address can be worked out from distances in the app. None of these is a search-ranking problem. Each comes from how location was modeled.
+A marketplace answers "where is it?" millions of times a day, and its wrong answers look like search bugs. A buyer searching "within 10 km of Utrecht" gets a city bike that is 14 km away, because the seller's postcode was resolved to the centroid of a different municipality. A landing page for "apartments in Lyon" leaves out flats in Villeurbanne, which buyers think of as Lyon but which is a separate commune. A private seller's home address can be worked out from distances in the app. None of these is a search-ranking problem. Each comes from how location was modeled.
 
-This chapter treats location as a domain of its own inside the listing. **Location is not an attribute but a small subsystem**: country-specific address capture, geocoding, a gazetteer of places, geo indexes, a precision policy and a set of quality and fraud signals. It feeds search ([Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture)), map discovery ([Searching by Place: Map, Polygon and Commute Search](#map-search)), alerts ([Tell Me When It Appears: Saved Searches and Alerts](#saved-searches-and-alerts)), duplicate detection ([One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution)), fraud detection ([Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention)) and SEO landing pages ([Found by Google: Web, App and SEO Architecture for Listings](#web-and-seo-architecture)). It is also one of the few listing fields that is personal data almost every time a private seller is involved.
+Part II models the listing as a small aggregate that references governed subdomains by ID ([The Listing Aggregate: Identity, Lifecycle and Invariants](#listing-aggregate)). Location is the subdomain whose model decides whether a private seller's home stays private. **Location is not an attribute but a small subsystem**: country-specific address capture, geocoding, a gazetteer of places, geo indexes, a precision policy and a set of quality and fraud signals. Its gazetteer is reference data governed like the category tree in [Category Trees That Can Change: Designing Marketplace Taxonomies](#categories-and-taxonomies), and it relies on [Photos Sell: Media Pipelines for Listings](#media-pipeline) to strip coordinates from photos. Later chapters build on it: it feeds search ([Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture)), map discovery ([Searching by Place: Map, Polygon and Commute Search](#map-search)), alerts ([Tell Me When It Appears: Saved Searches and Alerts](#saved-searches-and-alerts)), duplicate detection ([One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution)), fraud detection ([Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention)) and SEO landing pages ([Found by Google: Web, App and SEO Architecture for Listings](#web-and-seo-architecture)). It is also one of the few listing fields that is personal data almost every time a private seller is involved.
 
-The chapter uses Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)), as its running example. Veldmark runs four brands in eight countries with four different ideas of what a location is.
+The chapter uses Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)), as its running example. Veldmark runs four brands in eight countries, and its listing brands hold five different ideas of what a location is.
 
-{id: location-and-geo--setting-the-scene-at-veldmark-four-answers-to-where-is-it}
-## Setting the Scene at Veldmark: Four Answers to "Where Is It?"
+{id: location-and-geo--setting-the-scene-at-veldmark-five-answers-to-where-is-it}
+## Setting the Scene at Veldmark: Five Answers to "Where Is It?"
 
 In late March 2027, Lucía Ortega, Veldmark's Group Data Protection Officer, brings Ingrid Halvorsen, the new Group Chief Architect, a complaint from a Tradeyard Netherlands seller. A man had turned up at her door in Rotterdam about a sofa she had listed. She had never given him her address. Tradeyard showed only "3014 Rotterdam" on the listing page, so how had he found her?
 
@@ -38,7 +38,7 @@ Daan Visser's team reconstructs it in two days. The Tradeyard app sorted results
 
 **Figure 1:** *The page showed a district, but distances to one decimal place from a postcode centroid let three searches intersect at the seller's front door.*
 
-Ingrid asks each brand how it handles location. The answers make the Common Ground problem visible:
+Ingrid asks each brand how it handles location. The answers show why Common Ground needs one location model:
 
 | Brand | What is captured | What is stored | What is shown publicly | Geocoder |
 | --- | --- | --- | --- | --- |
@@ -99,9 +99,9 @@ A **gazetteer** is a reference dataset of named places (countries, regions, muni
 - **OpenStreetMap's `admin_level`** runs from 2 to 10. Level 2 "is almost always a de-facto independent country", but higher levels "vary in meaning between countries": a city can sit anywhere from level 4 (Berlin) to level 10 ([OpenStreetMap Wiki](https://wiki.openstreetmap.org/wiki/Key:admin_level), n.d.). A marketplace cannot use the levels as a cross-country hierarchy without a mapping per country.
 - **Who's On First** gives each place a stable 64-bit ID and placetypes from continent down to neighbourhood, macrohood and microhood. It supports **multiple hierarchies** for places with more than one parent, and it advises querying by ID, never by name ([Who's On First](https://whosonfirst.org/docs/placetypes/), n.d.).
 
-Marketplaces need both properties. A place can have several parents: Lyon's 7th arrondissement is in the commune of Lyon, in the Métropole de Lyon and in the Rhône department. And buyers use names that do not match any administrative unit ("Randstad", "Costa del Sol", "Eixample"). The gazetteer therefore holds two kinds of place: **administrative places** imported from official sources, and **marketplace places** curated by the marketplace for how buyers search, each with a geometry and links to the administrative places it overlaps.
+Marketplaces need both multiple parents and places no administration defines. A place can have several parents: Lyon's 7th arrondissement is in the commune of Lyon, in the Métropole de Lyon and in the Rhône department. And buyers use names that do not match any administrative unit ("Randstad", "Costa del Sol", "Eixample"). The gazetteer therefore holds two kinds of place: **administrative places** imported from official sources, and **marketplace places** curated by the marketplace for how buyers search, each with a geometry and links to the administrative places it overlaps.
 
-The rule that follows is the most important one in this section. **Listings reference places by ID, and every listing carries the IDs of all its ancestors.** "All listings in Rotterdam" then becomes a term filter on a place ID, not a polygon query, and renaming a place changes no listing.
+**Listings reference places by ID, and every listing carries the IDs of all its ancestors.** "All listings in Rotterdam" then becomes a term filter on a place ID, not a polygon query, and renaming a place changes no listing.
 
 {id: location-and-geo--location-precision}
 ### Location precision
@@ -129,7 +129,7 @@ A **geo index** is a data structure that makes spatial queries cheap: "points wi
 - **H3.** Uber's hexagonal hierarchical grid, published in 2018, has 16 resolutions, each about one-seventh the area of the one above. Hexagons were chosen because a hexagon's center is the same distance from all six neighbors ([Uber, 2018](https://www.uber.com/blog/h3/)). Children are only approximately contained in their parents. Average cells range from 36.13 km² at resolution 6 to 0.105 km² at resolution 9 ([H3 documentation](https://h3geo.org/docs/core-library/restable/), n.d.).
 - **S2.** Google's library projects a cube onto the sphere and orders cells along a Hilbert curve. It has levels 0 to 30 and 64-bit cell IDs that preserve locality, and a region coverer approximates any shape with a small set of cells ([S2 Geometry](https://s2geometry.io/devguide/s2cell_hierarchy), n.d.). Airbnb's 2026 paper on embedding-based retrieval uses S2 cells as a listing-location feature ([Airbnb, 2026](https://arxiv.org/html/2601.06873v1)).
 
-These are complementary. The trade-offs section below compares them; the short version is that **the engine's native types serve queries, H3 serves aggregation and privacy, and S2 or geohash serve key-value lookups.**
+The four are complementary: **the engine's native types serve queries, H3 serves aggregation and privacy, and S2 or geohash serve key-value lookups.** The trade-offs section compares them job by job.
 
 {id: location-and-geo--architecture-three-representations-and-the-services-behind-them}
 ## Architecture: Three Representations and the Services Behind Them
@@ -147,12 +147,12 @@ Inside the listing aggregate ([The Listing Aggregate: Identity, Lifecycle and In
 
 Each part can be recomputed from the one above it: the public point from the precise point and the policy, the place references from the public or precise point and the gazetteer. That is what makes policy changes and boundary reforms backfills rather than migrations.
 
-The real-estate Productscape domain model behind this book's research classifies its geo reference data as internal and non-personal, but the listing that carries a private owner's location as "possible-personal". Its general-listings model treats the listing as non-personal, which the model's own review notes is wrong for private sellers, whose listings routinely embed location and contact data (see the research digest). The GDPR is explicit that **location data is one of the identifiers that make a person identifiable** ([GDPR Art. 4(1)](https://gdpr-info.eu/art-4-gdpr/), unofficial reproduction). A private seller's precise listing location is personal data. The gazetteer is not.
+A private seller's precise listing location is personal data; the gazetteer is not. The GDPR is explicit that **location data is one of the identifiers that make a person identifiable** ([GDPR Art. 4(1)](https://gdpr-info.eu/art-4-gdpr/), unofficial reproduction). The real-estate Productscape domain model behind this book's research classifies its geo reference data as internal and non-personal, but the listing that carries a private owner's location as "possible-personal". Its general-listings model treats the listing as non-personal, which the model's own review notes is wrong for private sellers, whose listings routinely embed location and contact data (see the research digest).
 
 {id: location-and-geo--components}
 ### Components
 
-![Location enters as text and leaves as two different products. Everything to the right of the precision policy engine sees only what the policy allows, while duplicate detection and fraud models read the restricted store through an audited path.](listing-systems-architecture/diagrams/42ea9a9f49008d19.png)
+![Diagram: Location enters as text and leaves as two different products](listing-systems-architecture/posts/11-location-and-geo/assets/images/11-location-and-geo/fig02-location-enters-text-leaves-two-different.jpeg)
 
 **Figure 2:** *Location enters as text and leaves as two different products. Everything to the right of the precision policy engine sees only what the policy allows, while duplicate detection and fraud models read the restricted store through an audited path.*
 
@@ -168,7 +168,7 @@ The components and their responsibilities:
 {id: location-and-geo--deriving-the-public-point}
 ### Deriving the public point
 
-The precision policy produces a public point, and how it does so matters more than people expect. There are two sound methods:
+The precision policy can derive the public point in two sound ways:
 
 - **Snap to a cell.** Replace the precise point with the center of the H3 cell containing it, at a resolution chosen for the display level. At resolution 7 the average cell has an edge of 1.41 km; at resolution 8, 0.53 km ([H3 documentation](https://h3geo.org/docs/core-library/restable/), n.d.). Every listing in the same cell gets the same public point, which is honest and simple, but in sparse rural areas a cell may contain a single house.
 - **Seeded offset.** Move the point by a random distance and bearing within a radius, using a seed derived from the listing ID. **The offset must be deterministic.** If it is drawn again on every render, every edit or every relisting, an attacker who collects enough versions can average them back to the true point.
@@ -186,16 +186,16 @@ The best-documented public example of display obfuscation is Airbnb's. By defaul
 
 Distances leak locations, as the Rotterdam case showed. A distance from a searcher's chosen point to a listing's precise point, shown with enough precision, turns every search into a measurement, and three measurements locate the seller. **Distances shown to users, and distance sorting, must be computed from the public point**, and displayed values should be rounded to the precision of the public location (whole kilometers for district-level listings). Radius filters can still use the public point; the fuzziness at the edge of the circle is the same size as the fuzziness of the location, which is acceptable.
 
-Internal consumers are different. Duplicate detection for real estate needs the precise point, since two listings of the same flat should agree within meters ([One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution) uses H3 resolution 9 cells as a blocking key). Fraud models need it to compare a listing's location with the account's history. These reads go to the restricted store and are logged.
+Internal consumers are different. Duplicate detection for real estate needs the precise point, since two listings of the same flat should agree within meters ([One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution) uses H3 resolution 9 cells as a blocking key). Fraud models need it to compare a listing's location with the account's history. These reads go to the restricted store and are logged.
 
-![One precise point, many audiences. Public consumers see a derived point and place references; only internal models with a documented purpose read the precise point, and every distance a buyer sees comes from the public side.](listing-systems-architecture/diagrams/b4644cce81cc02a1.png)
+![Diagram: One precise point, many audiences](listing-systems-architecture/posts/11-location-and-geo/assets/images/11-location-and-geo/fig04-one-precise-point-many-audiences-public.jpeg)
 
 **Figure 4:** *One precise point, many audiences. Public consumers see a derived point and place references; only internal models with a documented purpose read the precise point, and every distance a buyer sees comes from the public side.*
 
 {id: location-and-geo--location-in-the-listing-event-and-the-search-document}
 ### Location in the listing event and the search document
 
-The listing event contract ([Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings)) carries the public part and the place references, not the precise part. Consumers that need the precise point — duplicate detection, fraud scoring, valuation — call the restricted store with their own credentials. This choice has a cost: those consumers make an extra call. But it means the event stream, the data lake and every downstream copy stay free of precise private locations. That matters, because [System of Record and Read Models: Listing Data Management](#listing-data-management) found seven copies of Femke's bike listing alone, and erasing a precise point from seven copies is much harder than never having written it there.
+The listing event contract ([Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings)) carries the public part and the place references, not the precise part. Consumers that need the precise point — duplicate detection, fraud scoring, valuation — call the restricted store with their own credentials. The cost is an extra call for those consumers. The gain is that the event stream, the data lake and every downstream copy stay free of precise private locations. That matters, because [System of Record and Read Models: Listing Data Management](#listing-data-management) found seven copies of Femke's bike listing alone, and erasing a precise point from seven copies is much harder than never having written it there.
 
 The search document ([Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture)) then holds:
 
@@ -209,7 +209,7 @@ For real estate, the search document may also hold a precise `geo_point` that is
 {id: location-and-geo--radius-polygon-and-place-getting-the-semantics-right}
 ## Radius, Polygon and Place: Getting the Semantics Right
 
-Location queries look simple and hide several decisions that each produce visible bugs if left implicit.
+Each kind of location query hides a decision that produces a visible bug if left implicit.
 
 **"Within 10 km of Utrecht" — from where?** The radius has to start from a point. If the buyer typed a city, the choice is between the city's centroid, its main station, or a population-weighted center. For a small town the choice makes little difference. For Rotterdam it matters: the municipality includes Hoek van Holland on the coast, about 30 km from the city center, so the geometric centroid of the municipality can fall somewhere unhelpful. Veldmark's gazetteer stores an explicit **reference point** for every place used as a search origin, curated for the largest cities and computed for the rest.
 
@@ -283,10 +283,10 @@ The three-room, 68 m² flat in Lyon 7e arrives in May 2027 from three agencies t
 2. **Geocode.** The French national address base gives a rooftop point for the building and a stable address identifier. All three listings resolve to the same building within a few meters.
 3. **Place references.** Lyon 7e arrondissement, commune of Lyon, Métropole de Lyon, Rhône, Auvergne-Rhône-Alpes, France, plus Hearthly's curated places that contain the point.
 4. **Precision.** Each agency chooses its display level in its account settings ([Private Sellers, Dealers and Agencies: Modeling Who Lists](#sellers-and-accounts)). Agence Rhône Habitat shows the street without a house number (P4); the other two show the arrondissement (P3). The listing page for the clustered property uses the coarsest choice among the agencies whose listings are shown together, so one agency's discretion is not overridden by another's openness.
-5. **Duplicate detection.** [One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution) reads the precise points from the restricted store, blocks on H3 resolution-9 cells and address identifier, and clusters the three listings into one canonical property.
+5. **Duplicate detection.** [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution) reads the precise points from the restricted store, blocks on H3 resolution-9 cells and address identifier, and clusters the three listings into one canonical property.
 6. **Valuation.** Valuo uses the precise point and the property's attributes to estimate €372,000 to €401,000, drawing on geolocated public transaction data for comparables.
 
-Why let agencies hide the street? Partly privacy: the owner may still live there. Partly business: an agency that publishes the exact address invites buyers to approach the owner directly, bypassing the agency. Whatever the reason, the portal's job is to honor the choice consistently, including in the map, the structured data and the alert e-mail.
+Agencies hide the street for privacy and for business. The owner may still live there, and an agency that publishes the exact address invites buyers to approach the owner directly, bypassing the agency. Whatever the reason, the portal's job is to honor the choice consistently, including in the map, the structured data and the alert e-mail.
 
 {id: location-and-geo--the-barcelona-fake-rental-ring}
 ### The Barcelona fake-rental ring
@@ -296,7 +296,7 @@ In July 2027, 26 accounts post 180 fake rental listings in Eixample with photos 
 - **Price anomaly is a location feature.** "35% below market" means below the median asking rent for comparable flats in the same small area. Hearthly computes that median per H3 resolution-8 cell (average area 0.737 km²) and property type. Without a consistent grid, "the market" would be the whole of Barcelona, and the anomaly would disappear in the average.
 - **Stolen photos come with a location.** Many of the stolen photos belonged to listings in other districts. A perceptual-hash match between two listings whose precise points are kilometers apart is a much stronger fraud signal than a match between two listings in the same building, which may be the legitimate case of two agencies listing the same flat.
 
-After the incident, Aisha Rahman's team adds two more location signals for new accounts: a listing location far from every location the account has shown in its device and network history, and a burst of listings concentrated in one high-demand district. Neither signal is decisive on its own. Location signals are cheap, and in combination they are effective.
+After the incident, Aisha Rahman's team adds two more location signals for new accounts: a listing location far from every location the account has shown in its device and network history, and a burst of listings concentrated in one high-demand district. Neither signal is decisive alone, but both are cheap and work well in combination.
 
 {id: location-and-geo--location-quality-measured}
 ### Location quality, measured
@@ -311,7 +311,7 @@ Ingrid's team defines a small set of location quality metrics per brand and coun
 | Place drift | Listings whose stored place IDs disagree with the current gazetteer version | 0 after the January backfill | 4,800 pending a commune merger update |
 | Precise-point exposure | Precise points found in any public payload by the weekly scan | 0 (target) | 0 (target) |
 
-These figures are Veldmark's illustrative baselines. The coordinate-defect row deserves a word: GeoJSON and WKT order coordinates as longitude, latitude, while most people say "latitude, longitude", so swapped coordinates are a perennial bug ([Elastic documentation](https://www.elastic.co/docs/reference/elasticsearch/mapping-reference/geo-shape), n.d.). A Lisbon listing with swapped coordinates lands in the Indian Ocean. The quality check is trivial; the damage when nobody runs it is not.
+These figures are Veldmark's illustrative baselines. Swapped coordinates are a perennial bug because GeoJSON and WKT order coordinates as longitude, latitude, while most people say "latitude, longitude" ([Elastic documentation](https://www.elastic.co/docs/reference/elasticsearch/mapping-reference/geo-shape), n.d.). A Lisbon listing with swapped coordinates lands in the Indian Ocean. The quality check is trivial; the damage when nobody runs it is not.
 
 {id: location-and-geo--trade-offs}
 ## Trade-offs
@@ -324,7 +324,7 @@ These figures are Veldmark's illustrative baselines. The coordinate-defect row d
 | **Single point per listing** | One latitude-longitude field, read by everyone | Simple; fast to build | Privacy depends on every consumer blurring correctly; no audit; licence unclear | A prototype, or a vertical where every listing is a business at a public address |
 | **Precise plus public point** | Restricted precise point; derived public point | Privacy enforced once; distances safe | No place hierarchy, so "in Rotterdam" needs polygons | Small single-country marketplaces |
 | **Three representations** | Precise, public, and place references with ancestors | Privacy, consistent filters, cheap landing pages, backfillable | A gazetteer to run and govern; more fields per event | Multi-country groups and any marketplace with SEO landing pages |
-| **Property-first** (real estate) | Location belongs to a persistent property entity; listings reference it | Location agreed once for every listing of a property; supports valuation and history | Requires entity resolution and a property store | Real-estate portals at scale ([One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution)) |
+| **Property-first** (real estate) | Location belongs to a persistent property entity; listings reference it | Location agreed once for every listing of a property; supports valuation and history | Requires entity resolution and a property store | Real-estate portals at scale ([One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution)) |
 
 {id: location-and-geo--which-geo-index-for-which-job}
 ### Which geo index for which job
@@ -363,7 +363,7 @@ The last row is a classic mistake: a "privacy circle" centered on the real addre
 | Regulatory angle | GDPR for private sellers | GDPR; mandatory disclosures linked to the property, such as France's energy class | Trader address display for dealers ([Rules of the Marketplace: DSA, DAC7 and Vertical Regulation](#marketplace-regulation)) | Equality law on job ads; remote-work tax questions |
 | Shipping | Changes radius semantics for shipped goods | Not applicable | Occasional delivery services | Not applicable |
 
-Real estate is the vertical where location carries the most weight. The property outlives every listing of it, so its location is resolved once against the property, not per listing ([Same Platform, Different Physics: General, Real Estate, Automotive and Jobs](#vertical-requirements)). General classifieds is the vertical where location is most often personal data. Automotive sits in between: dealer addresses are public business information, and the car's identity comes from the VIN, not from where it stands.
+Real estate is the vertical where location carries the most weight. The property outlives every listing of it, so its location is resolved once against the property, not per listing ([Same Platform, Different Physics: How Listing Verticals Differ](#vertical-requirements)). General classifieds is the vertical where location is most often personal data. Automotive sits in between: dealer addresses are public business information, and the car's identity comes from the VIN, not from where it stands.
 
 {id: location-and-geo--failure-modes}
 ## Failure Modes
@@ -381,7 +381,7 @@ Real estate is the vertical where location carries the most weight. The property
 {id: location-and-geo--the-chief-architect-s-view}
 ## The Chief Architect's View
 
-Location sits in an awkward place in most organizations. Search teams treat it as an index field, product teams as a form field, legal teams as a privacy question, and finance as a line on a provider invoice. At group scale it needs one owner and a few explicit decisions.
+In most organizations nobody owns location end to end. Search teams treat it as an index field, product teams as a form field, legal teams as a privacy question, and finance as a line on a provider invoice. At group scale it needs one owner and four explicit decisions.
 
 **Decision 1: one gazetteer and geocoding gateway for the group.** Place IDs are shared language across search, alerts, landing pages, ads targeting, analytics and fraud. If each brand keeps its own, the group cannot aggregate, cannot run cross-border search and pays for several provider contracts. Veldmark's decision record, approved at the architecture advice forum in May 2027, puts a **Veldmark Place** service (gazetteer, geocoding gateway, place resolver and precision policy engine) inside the Common Ground taxonomy and attribute platform, under Yara Mendes's platform engineering organization. It goes live for Tradeyard alongside the taxonomy service in October 2027, with Hearthly and Motorvane following in 2028.
 
@@ -389,11 +389,11 @@ Location sits in an awkward place in most organizations. Search teams treat it a
 
 **Decision 3: providers are chosen per country and use, behind the gateway.** National open registers where they exist; one commercial provider with storage rights for the rest; a self-hosted open geocoder for bulk work. The gateway's licence register is reviewed when contracts renew and during every acquisition's due diligence. When Veldmark bought Casavista in 2025, nobody asked what its coordinates were licensed for; the next deal team will.
 
-**Decision 4: location quality is a published metric.** The match-level mix, coordinate defects, place drift and precise-point exposure are reported weekly per brand and country, next to the publication-time and duplicate-rate metrics in [From Submitted to Searchable: The Publication Pipeline](#publication-pipeline) and [One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution). Precise-point exposure has a target of zero and is treated as a privacy incident when it is not.
+**Decision 4: location quality is a published metric.** The match-level mix, coordinate defects, place drift and precise-point exposure are reported weekly per brand and country, next to the publication-time and duplicate-rate metrics in [From Submitted to Searchable: The Publication Pipeline](#publication-pipeline) and [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution). Precise-point exposure has a target of zero and is treated as a privacy incident when it is not.
 
 What to watch over the long term: open address registers improving in more countries, which can retire commercial contracts; the share of shipped transactions, which changes what location means for general goods; regulators' interest in how platforms protect private sellers' locations; and AI search agents that scrape listing pages and analytics endpoints at scale, which make every leaked coordinate easier to harvest ([AI Across the Listing Lifecycle](#ai-in-listing-systems)).
 
-The condition under which this design is too much: a single-country marketplace where nearly every listing comes from businesses at public addresses can live with a precise point and a place hierarchy, and skip the policy engine. The moment private sellers appear, it cannot.
+The design is too much for a single-country marketplace where nearly every listing comes from businesses at public addresses: it can live with a precise point and a place hierarchy, and skip the policy engine. The moment private sellers appear, it cannot.
 
 {id: location-and-geo--questions-to-ask}
 ## Questions to Ask
@@ -408,6 +408,9 @@ The condition under which this design is too much: a single-country marketplace 
 8. Do we store the geocoder's match level and confidence, and do low-precision listings stay out of fine-grained price statistics?
 9. Could a buyer search across our country sites near a border today, and if not, is that a product decision or an accident of the data model?
 10. What is our weekly figure for coordinate defects, and who looks at it?
+
+{id: location-and-geo--from-place-to-seller}
+## From Place to Seller
 
 Location tells the marketplace where a listing is; it does not say who is selling it. That question — private sellers, dealers, agencies with fourteen branches, and the accounts, roles and integrations behind them — is the subject of [Private Sellers, Dealers and Agencies: Modeling Who Lists](#sellers-and-accounts).
 

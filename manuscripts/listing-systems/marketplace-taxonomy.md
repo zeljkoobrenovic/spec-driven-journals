@@ -1,7 +1,7 @@
 {id: marketplace-taxonomy}
-# 1. Classifieds, Lead Generation and Transactions: A Marketplace Taxonomy
+# 1. Classifieds, Leads, Transactions and Managed Models: A Marketplace Taxonomy
 
-![Classifieds, Lead Generation and Transactions: A Marketplace Taxonomy — logo](listing-systems-architecture/posts/01-marketplace-taxonomy/assets/images/01-marketplace-taxonomy/logo.jpeg)
+![Classifieds, Leads, Transactions and Managed Models: A Marketplace Taxonomy — logo](listing-systems-architecture/posts/01-marketplace-taxonomy/assets/images/01-marketplace-taxonomy/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Classify a marketplace along six independent axes, starting with the one that matters most: where the platform's job ends. You will see what each answer adds to the architecture (identity depth, payments, trust, search, monetization and data) and how documented marketplaces moved between models, sometimes successfully and sometimes at great cost.
 
@@ -23,14 +23,14 @@
 
 Ask five people in a marketplace group what kind of business it runs, and you usually get five answers that are each partly right. The general manager says "classifieds". The product director says "we are becoming transactional". The sales director says "we sell dealer subscriptions". The finance team says "most of our money is advertising and visibility". The trust and safety lead says "we are a messaging platform with listings attached". **Each answer describes a different end point of the marketplace's job**, and each one implies a different architecture.
 
-This chapter gives that conversation a shared vocabulary. It defines the main marketplace models (classifieds, lead-generation portals, transactional marketplaces and managed marketplaces), the axes along which they vary, and what each one asks of the systems underneath. It owns the terms *classifieds*, *lead-generation marketplace*, *transactional marketplace* and *horizontal* versus *vertical*. It does not cover how liquidity is measured, which belongs to [Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics](#liquidity-and-network-effects), how the industry arrived at today's portfolios, which belongs to [From Newspaper Columns to Portfolios: How the Classifieds Industry Evolved](#industry-evolution), or the detailed differences between verticals, which belong to [Same Platform, Different Physics: General, Real Estate, Automotive and Jobs](#vertical-requirements).
+This chapter gives that conversation a shared vocabulary, and opens Part I because every later boundary in the book depends on it. It defines four marketplace models (classifieds, lead-generation portals, transactional marketplaces and managed marketplaces), the axes along which they vary, and what each one asks of the systems underneath. It owns the terms *classifieds*, *lead-generation marketplace*, *transactional marketplace* and *horizontal* versus *vertical*, and it introduces the *marketplace profile* that later chapters build on: [Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics](#liquidity-and-network-effects) measures how well each profile's job is done, [Map What the Marketplace Does Before What Runs It](#business-capabilities) and [Bounded Contexts for Marketplaces: Where One Listing Becomes Many Models](#bounded-contexts) map what each one needs, and [One Platform, Many Marketplaces: Multi-Country and Multi-Brand Architecture](#multi-country-platforms) makes the profile a configuration scope. The running example is Veldmark's four brands from [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark). How the industry arrived at today's portfolios belongs to [From Newspaper Columns to Portfolios: How the Classifieds Industry Evolved](#industry-evolution), and the detailed differences between verticals to [Same Platform, Different Physics: How Listing Verticals Differ](#vertical-requirements).
 
-The argument is simple. **The model is an architecture decision, not a pricing decision.** Moving the endpoint by one step, from contact to lead or from lead to payment, adds new bounded contexts, new data with new retention rules, new identity requirements, new regulators and new failure modes. The decision therefore needs to be explicit, recorded per country and category, and revisable, because the documented record shows marketplaces moving in both directions.
+**The model is an architecture decision, not a pricing decision.** Moving the endpoint by one step, from contact to lead or from lead to payment, adds new bounded contexts, new data with new retention rules, new identity requirements, new regulators and new failure modes. The decision therefore needs to be explicit, recorded per country and category, and revisable, because the documented record shows marketplaces moving in both directions.
 
 {id: marketplace-taxonomy--setting-the-scene-at-veldmark-one-group-four-models}
 ## Setting the Scene at Veldmark: One Group, Four Models
 
-Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)), approved its Common Ground program in January 2027: €140 million over four years to build shared platform capabilities beneath four brands. Ingrid Halvorsen joined as Group Chief Architect in February. In her second week, Noor Hassan, the Group Chief Product Officer, brought her a slide titled "One listing service, one checkout, four brands". The proposal was straightforward. Tradeyard Safe Deal, the in-platform payment and shipping product, had processed **11.6 million** transactions and about **€1.02 billion** of gross merchandise value (GMV) in 2026, earning about €75 million in buyer fees and shipping-label margin, a take rate of about 7%. Why not extend it to Motorvane's cars and Hearthly's apartments and build a single listing and order platform for the whole group?
+Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)), approved its Common Ground program in January 2027: €140 million over four years to build shared platform capabilities beneath four brands. Ingrid Halvorsen joined as Group Chief Architect in February. In her second week, Noor Hassan, the Group Chief Product Officer, brought her a slide titled "One listing service, one checkout, four brands". Tradeyard Safe Deal, the in-platform payment and shipping product, had processed **11.6 million** transactions and about **€1.02 billion** of gross merchandise value (GMV) in 2026, earning about €75 million in buyer fees and shipping-label margin, a take rate of about 7%. Why not extend it to Motorvane's cars and Hearthly's apartments and build a single listing and order platform for the whole group?
 
 Ingrid did not argue with the slide. She asked Mateus Carvalho, the Group CTO, for one afternoon with the brand leaders and put a grid on the wall: brands and countries down the side, five questions across the top.
 
@@ -49,7 +49,7 @@ Ingrid's conclusion, recorded in the first decision record of her tenure, was no
 {id: marketplace-taxonomy--where-the-marketplace-ends-four-models}
 ## Where the Marketplace Ends: Four Models
 
-A **listing marketplace** is an intermediary that publishes offers from many suppliers and helps buyers find them. Everything in this book is about listing marketplaces, but they differ fundamentally in how far along the buyer's journey the platform takes responsibility. The clearest way to classify them is by **endpoint**: the last step of the transaction for which the platform takes responsibility.
+A **listing marketplace** is an intermediary that publishes offers from many suppliers and helps buyers find them. Listing marketplaces differ most in how far along the buyer's journey the platform's responsibility reaches, so this book classifies them first by **endpoint**: the last step of the transaction for which the platform takes responsibility.
 
 {id: marketplace-taxonomy--classifieds}
 ### Classifieds
@@ -61,9 +61,9 @@ Because the platform never sees the money, classifieds monetize **visibility and
 {id: marketplace-taxonomy--lead-generation-marketplaces}
 ### Lead-generation marketplaces
 
-A **lead-generation marketplace** (or lead-generation portal) ends when a qualified enquiry is delivered to a professional: a dealer, an estate agent, an employer. The difference from classifieds is not technical at first sight, since both deliver contacts. It is commercial and therefore architectural. The professional pays because the lead has value, so the platform must **qualify, count, route and attribute leads**, and prove their value at renewal time.
+A **lead-generation marketplace** (or lead-generation portal) ends when a qualified enquiry is delivered to a professional: a dealer, an estate agent, an employer. Both models deliver contacts, so the difference looks commercial rather than technical. But the professional pays because the lead has value, so the platform must **qualify, count, route and attribute leads**, and prove their value at renewal time.
 
-The documented pricing mechanics show how far this can go:
+The documented models differ in how professionals pay and who receives the lead:
 
 - **Subscriptions priced on value delivered.** Rightmove's revenue is per-advertiser subscriptions plus products: average revenue per advertiser (ARPA) was £1,621 a month in 2025 ([Rightmove full-year results, 2026](https://plc.rightmove.co.uk/content/uploads/2026/02/Rightmove-RNS-27.02.26.pdf)). Autotrader reports average revenue per retailer forecourt (ARPR) of £2,995 a month for the year to March 2026 ([Autotrader FY26 results, 2026](https://plc.autotrader.co.uk/media/usjleen0/full-year-press-release-fy26.pdf)).
 - **Share of voice.** Zillow's market-based Premier Agent pricing distributes connections "in proportion to their share of voice, or a Premier Agent partner's share of total advertising purchased in a particular zip code" ([Zillow 10-K for 2025, filed 2026](https://www.sec.gov/Archives/edgar/data/1617640/000161764026000015/z-20251231.htm)).
@@ -82,7 +82,7 @@ Vinted is the clearest example of a marketplace built transactional from the sta
 {id: marketplace-taxonomy--managed-marketplaces}
 ### Managed marketplaces
 
-A **managed marketplace** goes one step further: the platform takes inventory, quality or outcome risk itself. It buys and resells, guarantees the result, or curates supply so tightly that it acts as a retailer. Autotrader's Autorama leasing business is a documented example inside a classifieds group: about 1,350 vehicles were "temporarily taken on balance sheet" in the year to March 2026 ([Autotrader FY26 results](https://plc.autotrader.co.uk/media/usjleen0/full-year-press-release-fy26.pdf)). iBuying, in which the portal buys homes directly from sellers, is the best-known example from real estate, and its documented failure is discussed below.
+A **managed marketplace** goes one step further: the platform takes inventory, quality or outcome risk itself. It buys and resells, guarantees the result, or curates supply so tightly that it acts as a retailer. Autotrader's Autorama leasing business is a documented example inside a classifieds group: about 1,350 vehicles were "temporarily taken on balance sheet" in the year to March 2026 ([Autotrader FY26 results](https://plc.autotrader.co.uk/media/usjleen0/full-year-press-release-fy26.pdf)). iBuying, in which the portal buys homes directly from sellers, is the best-known example from real estate; Pattern 3 below covers its failure.
 
 {id: marketplace-taxonomy--the-endpoint-ladder}
 ### The endpoint ladder
@@ -105,7 +105,7 @@ One adjacent business model is not on the ladder but appears in almost every mar
 {id: marketplace-taxonomy--six-axes-one-profile}
 ## Six Axes, One Profile
 
-The endpoint is the most consequential axis, but it is not the only one. Six axes vary independently, and together they form what this book calls a **marketplace profile**: the combination of answers that describes one marketplace in one country and category.
+Six axes vary independently, and together they form what this book calls a **marketplace profile**: the combination of answers that describes one marketplace in one country and category. The endpoint is the most consequential axis, but not the only one.
 
 | Axis | Values | What it decides first |
 | --- | --- | --- |
@@ -118,7 +118,7 @@ The endpoint is the most consequential axis, but it is not the only one. Six axe
 
 **Horizontal** marketplaces cover many unrelated categories in one place: Kleinanzeigen, leboncoin, Marktplaats, OLX. They win on breadth and habit, and their supply is mostly private people. **Vertical** marketplaces specialize in one domain, usually a high-value one with professional supply: property (Rightmove, Idealista, SeLoger), vehicles (mobile.de, Autotrader, AutoScout24), jobs (StepStone, InfoJobs). The economics differ sharply. Rightmove and Autotrader both report operating margins of about 70% on professional subscriptions (sources above), while Adevinta's 2023 report shows the margin of its French business falling two points "mainly reflecting the evolution of the business mix with an increasing share of transaction services and a decreasing share of highly profitable advertising revenues".
 
-Horizontal groups also contain verticals. Andrew Parker's much-cited 2010 post on "the spawn of craigslist" showed how startups carved niches out of Craigslist's categories ([Parker, 2010](http://thegongshow.tumblr.com/post/345941486/the-spawn-of-craigslist-like-most-vcs-that-focus)). The same unbundling happens inside groups: Adevinta reorganized in 2023 around "Re-Commerce, Mobility, and Real Estate & Emerging Verticals", and Prosus now reports OLX by vertical, with motors, real estate and jobs at 71% of OLX revenue in the year to March 2026 ([OLX Group, 2026](https://www.olxgroup.com/?p=5024)). A horizontal brand's car section and a sister vertical brand can end up competing for the same dealers, which is exactly Veldmark's Polish problem.
+Horizontal groups also contain verticals. Andrew Parker's much-cited 2010 post on "the spawn of craigslist" showed how startups carved niches out of Craigslist's categories ([Parker, 2010](http://thegongshow.tumblr.com/post/345941486/the-spawn-of-craigslist-like-most-vcs-that-focus)). The same unbundling happens inside groups: Adevinta reorganized in 2023 around "Re-Commerce, Mobility, and Real Estate & Emerging Verticals", and Prosus now reports OLX by vertical, with motors, real estate and jobs at 71% of OLX revenue in the year to March 2026 ([OLX Group, 2026](https://www.olxgroup.com/?p=5024)). A horizontal brand's car section and a sister vertical brand can end up competing for the same dealers, which is Veldmark's Polish problem.
 
 **Seller type** matters because consumers and professionals respond to different prices and carry different legal status. Consumers buy per item and per event: an insertion fee, a bump, a buyer fee. Professionals buy monthly contracts with quotas and upgrades. Legally, the line between a consumer and a **trader** (a person acting for business purposes) decides which consumer-protection rules apply, what the platform must collect about the seller and what it must disclose to buyers. [Private Sellers, Dealers and Agencies: Modeling Who Lists](#sellers-and-accounts) owns the trader-status model.
 
@@ -126,12 +126,12 @@ Horizontal groups also contain verticals. Andrew Parker's much-cited 2010 post o
 
 **Money flow** and **risk ownership** are separate questions, and the rest of this chapter keeps them separate. A platform can route money through a licensed provider without holding it, hold it through its own licensed entity, or never touch it. Independently, it can carry buyer-protection losses without owning any inventory, or carry inventory risk without processing consumer payments. eBay books losses "resulting from our buyer protection programs, chargebacks" as transaction losses (10-K, above): **buyer protection is a liability to provision, not only a fee to collect**.
 
-The practical rule follows from the axes. **A brand is not a profile.** Tradeyard is one brand with ten profiles across four countries. A platform that encodes the profile as "this is Tradeyard, so it is classifieds" will be wrong for Safe Deal categories in the Netherlands and right for Portugal, and will need code changes every time the business moves a category.
+**A brand is not a profile.** Tradeyard is one brand with ten profiles across four countries. A platform that encodes the profile as "this is Tradeyard, so it is classifieds" will be wrong for Safe Deal categories in the Netherlands and right for Portugal, and will need code changes every time the business moves a category.
 
 {id: marketplace-taxonomy--what-each-model-asks-of-the-architecture}
 ## What Each Model Asks of the Architecture
 
-Moving down the endpoint ladder does not change one system. It changes nearly all of them. The table summarizes the consequences; the sections after it explain the ones that most often surprise architects.
+Moving down the endpoint ladder changes nearly every system, not just one. The table summarizes the consequences; the three sections after it explain those that most often surprise architects.
 
 | Concern | Classifieds | Lead generation | Transactional | Managed |
 | --- | --- | --- | --- | --- |
@@ -143,23 +143,25 @@ Moving down the endpoint ladder does not change one system. It changes nearly al
 | **Data the platform must keep** | Listings, messages, reports | Leads, lead outcomes, call records | Orders, payment and shipping events, financial records under statutory retention | Asset records, cost basis, condition evidence |
 | **Typical regulatory switch** | DSA notice and action, ranking disclosure | Professional seller traceability, lead-data consent | Payment licensing (usually via partner), DAC7 seller reporting, buyer-protection terms | Consumer sale law as seller, financial reporting of inventory |
 
-The diagram below shows the same idea as a pipeline. Every rung adds contexts beneath the previous ones; none replaces them.
+Figure 2 shows the same idea as a pipeline: every rung adds contexts and none replaces the ones before it.
 
-![The endpoint ladder as a pipeline. Each model inherits every context to its left and adds new ones; a marketplace that moves its endpoint for one category must run the additional contexts for that category alone.](listing-systems-architecture/diagrams/aa72e278f35da4d7.png)
+![Diagram: The endpoint ladder as a pipeline](listing-systems-architecture/posts/01-marketplace-taxonomy/assets/images/01-marketplace-taxonomy/fig02-endpoint-ladder-pipeline-each-model-inherits.jpeg)
 
 **Figure 2:** *The endpoint ladder as a pipeline. Each model inherits every context to its left and adds new ones; a marketplace that moves its endpoint for one category must run the additional contexts for that category alone.*
 
 {id: marketplace-taxonomy--what-the-platform-can-observe}
 ### What the platform can observe
 
-The least obvious consequence is **observability of outcomes**. A classifieds platform does not know whether a sale happened. It sees a contact and, if it is lucky, a seller marking the item sold. OLX's 2022 description of its learning-to-rank model is explicit about this: training labels were purchases *or* "messages/calls to sellers", "because transactions aren't always confirmed" ([OLX Tech, 2022](https://tech.olx.com/learning-to-rank-sorting-search-results-b21a8bd48808)). A lead-generation portal sees the lead and, with CRM integration or public records, sometimes the outcome. A transactional marketplace sees the completed order, which is why it can report GMV and a take rate while classifieds report revenue per advertiser instead.
+The least obvious consequence is **observability of outcomes**: a classifieds platform does not know whether a sale happened. It sees a contact and, if it is lucky, a seller marking the item sold. OLX's 2022 description of its learning-to-rank model is explicit about this: training labels were purchases *or* "messages/calls to sellers", "because transactions aren't always confirmed" ([OLX Tech, 2022](https://tech.olx.com/learning-to-rank-sorting-search-results-b21a8bd48808)). A lead-generation portal sees the lead and, with CRM integration or public records, sometimes the outcome. A transactional marketplace sees the completed order.
 
-This is not a reporting detail. It decides **what the ranking optimizes, what the experiments measure and what can be sold**. A portal that cannot observe sales cannot price on sales without building an attribution pipeline first; Zillow's pay-at-close model treats the fee as "variable consideration" and estimates "the conversion rate of a lead to a real estate transaction" (10-K, above). [Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics](#liquidity-and-network-effects) turns this into a metric design.
+Observability decides **what the ranking optimizes, what the experiments measure and what can be sold**. A portal that cannot observe sales cannot price on sales without building an attribution pipeline first; Zillow's pay-at-close model treats the fee as "variable consideration" and estimates "the conversion rate of a lead to a real estate transaction" (10-K, above). [Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics](#liquidity-and-network-effects) turns this into a metric design.
 
 {id: marketplace-taxonomy--identity-and-regulation-deepen-with-the-endpoint}
 ### Identity and regulation deepen with the endpoint
 
-Each rung brings more identity obligations. In the EU, the Digital Services Act (DSA) requires platforms that allow consumers to conclude distance contracts with traders to collect trader information, and to make best efforts to assess whether it is reliable and complete, before those traders can offer products (Article 30 of [Regulation (EU) 2022/2065](https://eur-lex.europa.eu/eli/reg/2022/2065/oj)). The Omnibus Directive defines an "online marketplace" as a service that "allows consumers to conclude distance contracts with other traders or consumers" and makes the main ranking parameters material information ([Directive (EU) 2019/2161, 2019](https://eur-lex.europa.eu/eli/dir/2019/2161/oj)). The EU's DAC7 directive makes platform operators collect and report seller data to tax authorities when they know, or can reasonably know, what sellers were paid ([Belastingdienst, n.d.](https://belastingdienst.nl/wps/wcm/connect/en/business/content/information-for-platform-operators-dac7)). Commentary on DAC7 indicates that platforms engaged solely in listing or advertising fall outside the reporting definition. The consequence, which is a reading of the rules to confirm with counsel rather than settled law for every classifieds case, is that **adding payments switches on seller reporting that a pure classifieds site may not have**. [Rules of the Marketplace: DSA, DAC7 and Vertical Regulation](#marketplace-regulation) owns these obligations; [Who Is on the Other Side? Identity and Verification](#identity-and-verification) owns the identity levels.
+Each rung down switches on more identity and regulatory obligations. In the EU, the Digital Services Act (DSA) requires platforms that allow consumers to conclude distance contracts with traders to collect trader information, and to make best efforts to assess whether it is reliable and complete, before those traders can offer products (Article 30 of [Regulation (EU) 2022/2065](https://eur-lex.europa.eu/eli/reg/2022/2065/oj)). The Omnibus Directive defines an "online marketplace" as a service that "allows consumers to conclude distance contracts with other traders or consumers" and makes the main ranking parameters material information ([Directive (EU) 2019/2161, 2019](https://eur-lex.europa.eu/eli/dir/2019/2161/oj)).
+
+**Adding payments switches on seller reporting that a pure classifieds site may not have.** The EU's DAC7 directive makes platform operators collect and report seller data to tax authorities when they know, or can reasonably know, what sellers were paid ([Belastingdienst, n.d.](https://belastingdienst.nl/wps/wcm/connect/en/business/content/information-for-platform-operators-dac7)). Commentary on DAC7 indicates that platforms engaged solely in listing or advertising fall outside the reporting definition. This is a reading of the rules to confirm with counsel, not settled law for every classifieds case. [Rules of the Marketplace: DSA, DAC7 and Vertical Regulation](#marketplace-regulation) owns these obligations; [Who Is on the Other Side? Identity and Verification](#identity-and-verification) owns the identity levels.
 
 {id: marketplace-taxonomy--money-flows-through-a-licensed-partner-until-it-does-not}
 ### Money flows through a licensed partner, until it does not
@@ -171,7 +173,7 @@ The step beyond that is a licence of one's own. Vinted Pay holds an e-money inst
 {id: marketplace-taxonomy--in-practice-moving-along-the-ladder}
 ## In Practice: Moving Along the Ladder
 
-The documented history of European and American marketplaces shows movement along the ladder in both directions. Three patterns recur.
+The documented history of European and American marketplaces shows movement along the ladder in both directions. Four patterns recur.
 
 {id: marketplace-taxonomy--pattern-1-classifieds-add-a-transactional-layer-category-by-category}
 ### Pattern 1: classifieds add a transactional layer, category by category
@@ -184,7 +186,7 @@ The large European horizontals added payments and shipping for shippable goods w
 
 None of these brands moved cars or homes to on-platform payment. mobile.de, inside the same group, earned essentially no transactional revenue in 2023. **The transactional layer was category-gated**: it applied where items are shippable, prices are moderate and the buyer's main fear is non-delivery.
 
-The economic effect was also documented. Transactional revenue was 5.6% of Adevinta's 2023 revenue, it diluted the French margin, and it came with rising "direct costs from transactional services (such as payment and shipping service provider costs)". It may still be the right strategy, because buyer protection changes trust and frequency, but it is not a free revenue line.
+The transactional layer also cost margin. Transactional revenue was 5.6% of Adevinta's 2023 revenue, it diluted the French margin, and it came with rising "direct costs from transactional services (such as payment and shipping service provider costs)". It may still be the right strategy, because buyer protection changes trust and frequency, but it is not a free revenue line.
 
 {id: marketplace-taxonomy--pattern-2-transactional-pushes-are-scaled-back}
 ### Pattern 2: transactional pushes are scaled back
@@ -203,10 +205,10 @@ The most expensive moves were down to the managed rung.
 - **OLX Autos**, an inventory-holding "buy, recondition, sell" business, reached $1.6 billion of revenue in the year to March 2022, just over half of OLX's classifieds revenue, before losses of $206 million in the following half-year led Prosus to announce its exit in March 2023 ([News24/Fin24, 2023](https://www.news24.com/fin24/companies/prosus-looks-to-ditch-olx-autos-business-as-second-hand-car-market-slows-20230302)). All operations were disposed of, held for sale or closed by March 2025.
 - **CarGurus** decided on 6 August 2025 to wind down CarOffer, its digital wholesale business, which had "proven less effective in today's more volatile and unpredictable pricing environment", and to focus on "technology and analytics that will enable smarter sourcing and pricing decisions rather than facilitating the transactions themselves" ([CarGurus 10-K for 2025, filed 2026](https://www.sec.gov/Archives/edgar/data/1494259/000119312526059435/carg-20251231.htm)).
 
-The common thread is not that transactions are bad. It is that **the managed rung changes what a model error costs**. A valuation that is 7% off is useful information on a listing page; the same error is a balance-sheet loss when the platform buys at the estimate and sellers whose homes are overvalued accept while the rest walk away. Classifieds groups have strong audience economics and weak experience of holding inventory, and the documented retreats show that the systems, the processes and the capital structure were built for the rungs above.
+The common thread is that **the managed rung changes what a model error costs**, not that transactions are bad. A valuation that is 7% off is useful information on a listing page; the same error is a balance-sheet loss when the platform buys at the estimate and sellers whose homes are overvalued accept while the rest walk away. Classifieds groups have strong audience economics and weak experience of holding inventory, and the documented retreats show that the systems, the processes and the capital structure were built for the rungs above.
 
-{id: marketplace-taxonomy--lead-generation-moves-closer-to-the-deal-without-taking-the-money}
-### Lead generation moves closer to the deal without taking the money
+{id: marketplace-taxonomy--pattern-4-lead-generation-moves-closer-to-the-deal}
+### Pattern 4: lead generation moves closer to the deal
 
 Vertical portals have found a middle path: taking part in more of the deal without holding the money or the asset. Autotrader's Deal Builder lets buyers start a deal and reserve a car online; Autotrader reports that such enquiries "convert at double the rate". The same results attribute part of a 1.7% drop in average retailer forecourts in the second half of the year to "concerns with the speed and nature of our Deal Builder product roll-out" (FY26 results, above). mobile.de's 2026 platform update added an AI call assistant and a lead API "so that leads are transferred directly and securely into existing CRM systems" ([mobile.de, 2026](https://newsroom.mobile.de/plattform-update-sommer-2026/)). **The lead-generation endpoint is being extended toward reservations and deal steps**, and the Autotrader case shows that professionals can push back when the platform's new step changes their own workflow.
 
@@ -224,9 +226,9 @@ Ingrid's grid became the **marketplace profile register**, a short, versioned ta
 | **Hearthly** sale, rent, new builds (FR, ES) | 6 | Lead delivered to an agency or developer; tenant application file for rentals | 84% of listings via feeds from about 160 software vendors | Off-platform; settles at the notary or lease signing | None on transactions | Agency subscriptions, new-build campaigns, Valuo data and seller leads, rental services |
 | **Keybridge** (FR, BE, ES) | — | Not a marketplace: SaaS for 9,800 agencies | Professionals only | SaaS billing | Data-custody and neutrality obligations | SaaS subscriptions |
 
-Read across the rows and Noor's proposal changes shape. A shared order and payment platform serves three Tradeyard profiles today and might serve others later, for example Tradeyard Portugal's goods categories, where Safe Deal is not yet live. It does not serve Motorvane, whose dealers want qualified leads in their own systems, or Hearthly, whose transactions settle at a notary. What *every* profile needs is shared beneath the endpoint: identity, listing management, media, search, messaging, trust and safety and a product catalog with entitlements. That is the list the Common Ground program already contained, and the register made the reason explicit.
+Read across the rows and Noor's proposal shrinks: a shared order and payment platform serves three Tradeyard profiles today and might serve others later, for example Tradeyard Portugal's goods categories, where Safe Deal is not yet live. It does not serve Motorvane, whose dealers want qualified leads in their own systems, or Hearthly, whose transactions settle at a notary. What *every* profile needs is shared beneath the endpoint: identity, listing management, media, search, messaging, trust and safety and a product catalog with entitlements. That is the list the Common Ground program already contained, and the register made the reason explicit.
 
-Two of the city-bike and car stories that recur throughout this book sit on different rungs. When Femke sold her **€240** Rotterdam city bike on Monday 8 March 2027, the sale went through Safe Deal "pay at pickup" for **€225**, with a buyer fee of **€11.95** (5% × €225 = €11.25, plus €0.70): a transactional endpoint inside a classifieds brand. When Autohaus Ruhrblick in Essen listed a 2021 Volkswagen Golf for **€21,900** on Motorvane on Wednesday 14 April 2027, the platform's job ended at **23 leads in 10 days** (14 e-mails, 7 calls and 2 test-drive bookings; 19 once repeat contacts from the same buyers are merged); the sale on 29 April happened in the showroom, and Motorvane learned of it only when the dealer's feed removed the car 26 hours later. Both were successes. They were successes of different models, measured by different events, served by different systems above a common listing core.
+The book's two running examples, Femke's city bike and the Essen Golf, sit on different rungs. When Femke sold her **€240** Rotterdam city bike on Monday 8 March 2027, the sale went through Safe Deal "pay at pickup" for **€225**, with a buyer fee of **€11.95** (5% × €225 = €11.25, plus €0.70): a transactional endpoint inside a classifieds brand. When Autohaus Ruhrblick in Essen listed a 2021 Volkswagen Golf for **€21,900** on Motorvane on Wednesday 14 April 2027, the platform's job ended at **23 leads in 10 days** (14 e-mails, 7 calls and 2 test-drive bookings; 19 once repeat contacts from the same buyers are merged); the sale on 29 April happened in the showroom, and Motorvane learned of it only when the dealer's feed removed the car 26 hours later. Both were successes of different models, measured by different events and served by different systems above a common listing core.
 
 ![Two panels on one shared listing core: a city bike handed over after an on-platform payment, and a car dealership receiving 23 leads.](listing-systems-architecture/posts/01-marketplace-taxonomy/assets/images/01-marketplace-taxonomy/two-successes-two-rungs.jpeg)
 
@@ -237,7 +239,7 @@ The Polish overlap was resolved as a commercial decision first and an architectu
 {id: marketplace-taxonomy--trade-offs-where-should-the-marketplace-end}
 ## Trade-offs: Where Should the Marketplace End?
 
-The question every marketplace leadership team returns to is whether to move the endpoint. The options and their costs:
+Every marketplace leadership team keeps returning to one question: should we move the endpoint? The options and their costs:
 
 | Option | What you gain | What you take on | When it is right | When it is wrong |
 | --- | --- | --- | --- | --- |
@@ -251,16 +253,16 @@ Two judgements follow from this table and from the documented cases.
 
 First, **I would treat every move down the ladder as a bet with an exit plan**. The bet is reasonable: buyer protection measurably reduces some fraud, and shipping widens the market beyond the buyer's city. But the decision should define the categories, the metrics that will show whether it works and the conditions under which the business would retreat, and the architecture should make the retreat cheap. OLX's de-prioritization of pay-and-ship is what a cheap retreat looks like from the outside. Adevinta's parallel running of central and local services during its 2025 decentralization, which more than doubled its cloud-provider emissions temporarily according to its 2025 strategic report, is what an expensive reversal looks like.
 
-Second, **the endpoint should be data, not code**. A category gate expressed as configuration ("Safe Deal: enabled for NL goods, BE goods, PL goods; not PT; not vehicles") lets the business move categories without a program. A gate expressed as `if brand == 'tradeyard' and country != 'PT'` in a checkout service, a ranking feature and a notification template turns each commercial decision into a cross-team release. This does not hold in one case: a marketplace that will only ever run one model, such as a pure jobs board, gains little from generalizing the endpoint. Few groups stay that simple for long.
+Second, **the endpoint should be data, not code**. A category gate expressed as configuration ("Safe Deal: enabled for NL goods, BE goods, PL goods; not PT; not vehicles") lets the business move categories without a program. A gate expressed as `if brand == 'tradeyard' and country != 'PT'` in a checkout service, a ranking feature and a notification template turns each commercial decision into a cross-team release. The exception is a marketplace that will only ever run one model, such as a pure jobs board; it gains little from generalizing the endpoint. Few groups stay that simple for long.
 
-![The endpoint as configuration. The profile register decides, per country and category, which contexts a listing flows through after contact and which event counts as success; the listing core and the contact surface stay the same for every profile.](listing-systems-architecture/diagrams/41172b88d75f1a36.png)
+![Diagram: The endpoint as configuration](listing-systems-architecture/posts/01-marketplace-taxonomy/assets/images/01-marketplace-taxonomy/fig04-endpoint-configuration-profile-register-decides-per.jpeg)
 
 **Figure 4:** *The endpoint as configuration. The profile register decides, per country and category, which contexts a listing flows through after contact and which event counts as success; the listing core and the contact surface stay the same for every profile.*
 
 {id: marketplace-taxonomy--vertical-differences}
 ## Vertical Differences
 
-The endpoint and the other axes take typical values in each vertical. [Same Platform, Different Physics: General, Real Estate, Automotive and Jobs](#vertical-requirements) covers the full comparison; this table shows only the taxonomy view.
+The endpoint and the other axes take typical values in each vertical. [Same Platform, Different Physics: How Listing Verticals Differ](#vertical-requirements) covers the full comparison; this table shows only the taxonomy view.
 
 | Vertical | Typical endpoint | Supply | Item identity | Money flow | Monetization unit | Taxonomy trap |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -275,17 +277,17 @@ Indeed's pricing page shows what the jobs endpoint becomes when it is monetized 
 {id: marketplace-taxonomy--failure-modes}
 ## Failure Modes
 
-The taxonomy fails in practice in a small number of recognizable ways.
+The taxonomy fails in practice in seven recognizable ways.
 
 **One model assumed for the whole group.** The most common mistake is the one in Noor's first slide: a shared platform designed for the model of the largest or loudest brand. A listing service with a mandatory order object, a checkout embedded in the contact flow or an identity system that requires payment-grade KYC before posting will fit transactional goods and hurt everyone else. This is how **The Platform Mandate** begins. Brands whose job ends at a lead or a contact find that the platform makes them slower, and they route around it.
 
-**The endpoint hidden in code.** When the model is never written down, it is encoded implicitly in dozens of places: a ranking feature that assumes purchases exist, a notification that promises buyer protection in a category without it, a billing rule that counts contacts as leads. Changing a category's endpoint then requires an archaeology project. The symptom is that nobody can answer "which categories in which countries have protected payment?" without reading code.
+**The endpoint hidden in code.** When the model is never written down, it is encoded implicitly in dozens of places: a ranking feature that assumes purchases exist, a notification that promises buyer protection in a category without it, a billing rule that counts contacts as leads. Changing a category's endpoint then means first finding every place that assumes it. The symptom is that nobody can answer "which categories in which countries have protected payment?" without reading code.
 
 **A transactional pivot launched as a feature.** Payments look like a checkout screen to product teams and like a ledger, a dispute desk, a provisioning policy and a set of tax reports to finance and compliance. A pivot that ships the screen before the rest produces payouts that cannot be reconciled, disputes handled by e-mail and reporting obligations discovered after the first year. [Beyond the Contact: Payments, Shipping and Buyer Protection](#transactions-and-payments) describes the minimum set.
 
-**Contact-stage fraud ignored because "we do not handle money".** A classifieds platform does not handle money, but its messaging is where money is negotiated. Fraud therefore concentrates exactly at the endpoint, including fake payment links that impersonate the platform's own protected-payment brand. Veldmark's first worked example contains one: at 20:11 on Sunday 7 March 2027, a "buyer" sent Femke a fake Safe Deal payment link from a domain registered that day. Designing the endpoint without designing its abuse is **The Scam Inbox**. [From Interest to Contact: Messaging and Lead Management](#messaging-and-leads) and [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention) own the countermeasures.
+**Contact-stage fraud ignored because "we do not handle money".** A classifieds platform does not handle money, but its messaging is where money is negotiated. Fraud therefore concentrates at the endpoint, including fake payment links that impersonate the platform's own protected-payment brand. Veldmark's first worked example contains one: at 20:11 on Sunday 7 March 2027, a "buyer" sent Femke a fake Safe Deal payment link from a domain registered that day. Designing the endpoint without designing its abuse is **The Scam Inbox**. [From Interest to Contact: Messaging and Lead Management](#messaging-and-leads) and [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention) own the countermeasures.
 
-**Revenue from different rungs treated as comparable.** OLX Autos briefly made up just over half of OLX's classifieds revenue while losing money. Transaction GMV, take-rate revenue and principal revenue from selling inventory are not comparable with subscription revenue, and an architecture that reports them in one "revenue" field makes portfolio decisions harder.
+**Revenue from different rungs treated as comparable.** Transaction GMV, take-rate revenue and principal revenue from selling inventory are not comparable with subscription revenue. OLX Autos briefly made up just over half of OLX's classifieds revenue while losing money. An architecture that reports all of them in one "revenue" field makes portfolio decisions harder.
 
 **The success event borrowed from the wrong model.** A lead-generation portal that optimizes for page views, or a transactional marketplace that optimizes for contacts, optimizes the wrong thing. That is **Vanity Liquidity**, and its root cause is often a taxonomy that was never agreed.
 

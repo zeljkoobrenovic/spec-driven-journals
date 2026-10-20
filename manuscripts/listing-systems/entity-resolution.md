@@ -1,7 +1,7 @@
 {id: entity-resolution}
-# 15. One Property, Five Listings: Duplicates and Entity Resolution
+# 15. One Property, Three Listings: Duplicates and Entity Resolution
 
-![One Property, Five Listings: Duplicates and Entity Resolution — logo](listing-systems-architecture/posts/15-entity-resolution/assets/images/15-entity-resolution/logo.jpeg)
+![One Property, Three Listings: Duplicates and Entity Resolution — logo](listing-systems-architecture/posts/15-entity-resolution/assets/images/15-entity-resolution/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Learn the five kinds of duplicate listing, the real-world identities that listings can be resolved to, and the pipeline that turns candidate pairs into stable clusters and canonical entities. You will also see how merge policies decide what buyers, sellers and downstream systems see, using the Lyon apartment that three agencies listed on Hearthly.
 
@@ -21,16 +21,18 @@
 > * **The Unwatched Model** — a pairwise matcher merges and hides listings without labeled evaluation, drift monitoring or an owner who can explain a wrong merge to an agency.
 > * **Ghost Inventory** — a cluster keeps a property "on the market" after its last live listing has gone, because the cluster's state was never tied to the lifecycle of its members.
 
-Every listing marketplace has duplicates. A private seller reposts a bike every two days because new listings rank higher. A dealer's management system and a listing aggregator both send the same car. Three agencies hold mandates on one flat and each publishes it. A fraudster copies a real rental listing, photos and all, and prices it 35% lower. Each of these looks the same in a search result page, because the same thing appears more than once. **They are different problems, and treating them as one is the most common mistake in this area.**
+Part III follows supply from the seller to the result page. [From Raw Supply to Usable Listings: Normalization and Enrichment](#normalization-and-enrichment) left every listing with a canonical address, a decoded VIN where one exists, and image hashes, so listings can now be compared, and the comparison shows that many of them describe the same thing. This chapter's online checks run inside [From Submitted to Searchable: The Publication Pipeline](#publication-pipeline), and search, alerts and valuation read the cluster identifiers it creates.
+
+The duplicates come in several kinds. A private seller reposts a bike every two days because new listings rank higher. A dealer's management system and a listing aggregator both send the same car. Three agencies hold mandates on one flat and each publishes it. A fraudster copies a real rental listing, photos and all, and prices it 35% lower. On a result page each looks the same: one thing appears more than once. **They are different problems, and treating them as one is the most common mistake in this area.**
 
 This chapter covers two capabilities. **Duplicate detection** finds listings that are copies or near-copies of each other. **Entity resolution** (ER), sometimes called record linkage, decides which listings refer to the same real-world thing and gives that thing an identity. A **canonical entity** is the resulting record: one property, one vehicle, sometimes one product, with a stable identifier and attributes reconciled from its listings. In real estate, the canonical entity is the **canonical property**. This chapter owns all three terms.
 
 Neighboring chapters own adjacent parts. [Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion) owns the feeds that bring the copies in. [From Raw Supply to Usable Listings: Normalization and Enrichment](#normalization-and-enrichment) owns the address, VIN and attribute normalization that matching depends on. [Photos Sell: Media Pipelines for Listings](#media-pipeline) owns perceptual hashing as an image capability. [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention) owns what happens once a duplicate turns out to be a scam. This chapter owns the matching, the clusters, the canonical entity and the policies that decide what each side of the market sees.
 
-{id: entity-resolution--setting-the-scene-the-lyon-apartment-three-times}
-## Setting the Scene: The Lyon Apartment, Three Times
+{id: entity-resolution--setting-the-scene-at-veldmark-the-lyon-apartment-three-times}
+## Setting the Scene at Veldmark: The Lyon Apartment, Three Times
 
-In May 2027, Hearthly France receives three listings for a three-room (T3) **68 m²** flat in Lyon's 7th arrondissement, energy class (DPE, the French energy performance diagnostic) **D**. Hearthly is the real-estate portal of Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)). **Agence Rhône Habitat**, a network of **14 branches**, publishes it through Keybridge, the group's agent CRM. Two other agencies hold mandates too, and their transaction software sends the flat through two different real-estate software vendors. Rhône Habitat lists it at **€389,000**. The other agencies list it at €389,000 and €395,000, because French sale prices are usually shown fees included, and the agencies charge different fees.
+In May 2027, Hearthly France receives three listings for a three-room (T3) **68 m²** flat in Lyon's 7th arrondissement, energy class (DPE, the French energy performance diagnostic) **D**. Hearthly is the real-estate portal of Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)). **Agence Rhône Habitat**, a network of **14 branches**, publishes it through Keybridge, the group's agent CRM. Two other agencies hold mandates too, and their transaction software sends the flat through two different real-estate software vendors. Rhône Habitat lists it at **€389,000**. The other agencies list it at €389,000 and €395,000, because French sale prices are usually shown fees included, and the agencies charge different fees.
 
 Before 2027, a buyer searching "T3 Lyon 7e under €400,000" saw three cards with three photo sets, two prices and three agency names. A buyer who saved that search received three alerts. Hearthly's market report counted three listings. The price history behind Valuo, Hearthly's valuation product, showed three properties for one sale. Agencies complained twice: first that "their" flat was shown below a competitor's copy, and then that a competitor's lower-fee copy undercut them on the same page.
 
@@ -53,7 +55,7 @@ The word "duplicate" covers five situations that differ in who creates them, why
 
 Two more cases look like duplicates but are not. **The same entity with a different offer**, such as one flat listed both for sale and for rent, or a car listed again by a new owner two years later, is a new listing on the same entity. Price history and valuation need the link, but search should not hide either listing. **Similar but distinct entities**, such as two identical flats on different floors of a new building or two white 2021 Golfs at one dealer, are the main source of wrong merges.
 
-This gives the chapter's first rule. **Detection can be shared; decisions cannot.** The same blocking and similarity machinery finds a same-seller repost, a multi-agency cluster and a stolen copy. What separates them is the relationship between the sellers and the evidence of intent. The design note in Veldmark's research is blunt: *same seller, same photos* is spam or ranking abuse; *different seller, same photos* is a fraud signal or a legitimate multi-agency listing, and seller, device and organization keys are what tell them apart. The OLX duplicate pipeline described publicly in 2019, discussed below, used exactly those keys to generate candidates.
+The chapter's first rule follows: **detection can be shared; decisions cannot.** The same blocking and similarity machinery finds a same-seller repost, a multi-agency cluster and a stolen copy. What separates them is the relationship between the sellers and the evidence of intent. The design note in Veldmark's research puts it plainly: *same seller, same photos* is spam or ranking abuse; *different seller, same photos* is a fraud signal or a legitimate multi-agency listing, and seller, device and organization keys are what tell them apart. The OLX duplicate pipeline described publicly in 2019, discussed below, used exactly those keys to generate candidates.
 
 ![One shared similarity detector feeds a junction that checks seller keys; abusive duplicates go to enforcement, while legitimate multi-agency listings are clustered into one property card.](listing-systems-architecture/posts/15-entity-resolution/assets/images/15-entity-resolution/shared-detection-separate-decisions.jpeg)
 
@@ -87,12 +89,12 @@ General goods have no entity to resolve to. **Do not invent one.** A marketplace
 
 The reference architecture below is an inference from public algorithms and the few public marketplace designs, not a description of any company's system. Its stages are standard in the record-linkage literature; what is specific to listings is the mix of signals and the speed at which clusters change.
 
-![The matching pipeline. Blocking, scoring and clustering propose links; the entity registry owns the identifiers; a policy engine turns one cluster into different actions for different duplicate kinds; and human decisions feed back into both the registry and the model.](listing-systems-architecture/diagrams/3a80dbbbd8135d79.png)
+![Diagram: The matching pipeline](listing-systems-architecture/posts/15-entity-resolution/assets/images/15-entity-resolution/fig02-matching-pipeline-blocking-scoring-clustering-propose.jpeg)
 
 **Figure 2:** *The matching pipeline. Blocking, scoring and clustering propose links; the entity registry owns the identifiers; a policy engine turns one cluster into different actions for different duplicate kinds; and human decisions feed back into both the registry and the model.*
 
 {id: entity-resolution--blocking-finding-candidates-cheaply}
-### Blocking: Finding Candidates Cheaply
+### Blocking: finding candidates cheaply
 
 Comparing every listing with every other listing is impossible: Hearthly France alone has 1.9 million live listings, which is about 1.8 trillion pairs. **Blocking** generates a small set of candidate pairs using cheap keys with high recall, so that the expensive scoring runs only on plausible pairs. A listing usually gets several blocking keys, and any shared key makes a pair a candidate:
 
@@ -106,7 +108,7 @@ Comparing every listing with every other listing is impossible: Hearthly France 
 Blocking is a recall decision. A pair that shares no key is never compared, so a missing key is a silent miss. The usual failure is a key that seems safe but splits true matches: blocking on exact address misses the agency that writes "rue de Marseille" without a number, and blocking on the H3 cell misses listings near a cell boundary unless neighboring cells are included.
 
 {id: entity-resolution--pairwise-scoring-is-this-pair-the-same-thing}
-### Pairwise Scoring: Is This Pair the Same Thing?
+### Pairwise scoring: is this pair the same thing?
 
 Each candidate pair gets a score from field-level comparisons: text similarity, image distance, geographic distance, surface and room agreement, price gap, same organization, same device, time between postings. Two families of scorer are in common use.
 
@@ -117,32 +119,34 @@ Each candidate pair gets a score from field-level comparisons: text similarity, 
 Scores must be **calibrated** so that thresholds mean something, and the score bands map to actions: above an upper threshold, link automatically; below a lower one, do nothing; between them, send the pair to human review. The gray zone is where the money is spent, so its width is a budget decision.
 
 {id: entity-resolution--clustering-from-pairs-to-groups}
-### Clustering: From Pairs to Groups
+### Clustering: from pairs to groups
 
 Pairs are not clusters. If listing A matches B and B matches C, the obvious step is to put A, B and C together, which is **connected components** clustering. It is simple and it fails in a predictable way: **chaining**. One weak link between two otherwise separate groups merges them, and in dense housing a chain of plausible links can merge a whole building. Safer methods require a cluster to be internally consistent: every member must match most other members (correlation clustering, or a minimum average link score), and a cluster above a size limit is split or sent to review. In real estate, a cluster with more than a handful of members is almost always wrong, because a property rarely has more than four or five agencies at once.
 
 {id: entity-resolution--the-entity-registry-stable-identifiers-and-lineage}
-### The Entity Registry: Stable Identifiers and Lineage
+### The entity registry: stable identifiers and lineage
 
-Clustering produces groups each time it runs. Consumers need **identifiers that stay the same** when the clustering reruns, so that a buyer's saved property, a price-history chart and a valuation series do not jump to a new ID every night. The entity registry owns that stability. It assigns each cluster a durable ID, keeps the ID when membership changes slightly, and records **merge and split events** with lineage when two clusters become one or one becomes two. A merge keeps the older ID and retires the other with a pointer; a split keeps the ID on the larger part. Consumers subscribe to these events like any other domain event (see [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings)).
+The entity registry keeps cluster identifiers stable. Clustering produces new groups each time it runs, but consumers need **identifiers that stay the same** when it reruns, so that a buyer's saved property, a price-history chart and a valuation series do not jump to a new ID every night. The registry assigns each cluster a durable ID, keeps the ID when membership changes slightly, and records **merge and split events** with lineage when two clusters become one or one becomes two. A merge keeps the older ID and retires the other with a pointer; a split keeps the ID on the larger part. Consumers subscribe to these events like any other domain event (see [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings)).
 
 The registry is also where the **canonical entity** lives: the canonical property's address, building, unit features and identifiers, with per-attribute provenance. Survivorship rules decide which value wins when members disagree. Surface might come from the energy diagnostic where present, else the most common value among professional listings; the address comes from the most precise geocode. The listing keeps the seller's own values. **The canonical property does not overwrite the listing**, because the listing is the seller's statement and carries legal weight in some markets. Valuation, price history and analytics read from the canonical record; the listing page shows what the seller published.
 
-![A listing's membership in a cluster has its own lifecycle. Human decisions are durable: a rejected or disputed pair is suppressed so that the next model run cannot re-create it, and unpublished listings detach so the cluster's state follows its live members.](listing-systems-architecture/diagrams/d21567549a326de2.png)
+![Diagram: A listing's membership in a cluster has its own lifecycle](listing-systems-architecture/posts/15-entity-resolution/assets/images/15-entity-resolution/fig03-listing-s-membership-cluster-has-own.jpeg)
 
 **Figure 3:** *A listing's membership in a cluster has its own lifecycle. Human decisions are durable: a rejected or disputed pair is suppressed so that the next model run cannot re-create it, and unpublished listings detach so the cluster's state follows its live members.*
 
-Two details in Figure 3 matter more than they look. First, **a human "not the same" decision must be stored as a constraint**, not just as a label for the next training run, or the nightly job will reunite the pair and the agency that complained will complain again. Second, membership follows the listing lifecycle (see [The Listing Aggregate: Identity, Lifecycle and Invariants](#listing-aggregate)). When the last live listing in a cluster is unpublished, the cluster is no longer "on the market", even though the property entity persists. A cluster that stays active after its members have gone is Ghost Inventory in a new form: an alert subscriber or a market report sees a property for sale that nobody is selling.
+**A human "not the same" decision must be stored as a constraint** (Figure 3), not just as a label for the next training run, or the nightly job will reunite the pair and the agency that complained will complain again.
+
+Membership also follows the listing lifecycle (see [The Listing Aggregate: Identity, Lifecycle and Invariants](#listing-aggregate)). When the last live listing in a cluster is unpublished, the cluster is no longer "on the market", even though the property entity persists. A cluster that stays active after its members have gone is Ghost Inventory in a new form: an alert subscriber or a market report sees a property for sale that nobody is selling.
 
 {id: entity-resolution--online-and-batch}
-### Online and Batch
+### Online and batch
 
 Resolution runs at two speeds. **Online** checks at publication time are cheap and local: exact and perceptual image hashes against recent listings, same-seller text near-duplicates, VIN and partner-reference lookups. They catch reposts and cloned listings before they go live, and they attach new listings to existing clusters when a strong key matches. **Batch** resolution, typically nightly, runs global blocking and clustering across all listings, finds cross-seller and cross-feed clusters, and repairs clusters as listings change. The online path must finish inside the publication budget set in [From Submitted to Searchable: The Publication Pipeline](#publication-pipeline); anything that does not fit runs after publication and adjusts the presentation a few minutes later.
 
 {id: entity-resolution--merge-policies-what-each-audience-sees}
 ## Merge Policies: What Each Audience Sees
 
-Finding a cluster is half the work. The other half is deciding what it changes, audience by audience. This is product policy expressed in architecture, and the most common mistake is to apply one policy, usually "hide the others", everywhere.
+A cluster changes something different for each audience, and choosing what it changes is product policy expressed in architecture. The most common mistake is to apply one policy, usually "hide the others", everywhere.
 
 | Audience or system | Policy options | Recommended default for legitimate clusters |
 | --- | --- | --- |
@@ -156,19 +160,19 @@ Finding a cluster is half the work. The other half is deciding what it changes, 
 | Lead routing | To the card shown | To the agency the buyer chose; never re-route a lead to another agency |
 
 {id: entity-resolution--collapsing-in-search}
-### Collapsing in Search
+### Collapsing in search
 
-The usual implementation stores the cluster ID on each listing's search document and asks the engine to return one document per cluster. Elasticsearch calls this **field collapsing**: the `collapse` parameter keeps only the top-sorted document for each value of a single-valued keyword or numeric field, and optional `inner_hits` return the other members. Its documentation also lists the costs an architect should know before relying on it: the total hit count still counts all matching documents, not the number of groups; aggregations are not collapsed; each `inner_hits` request adds a query per collapsed hit; and collapsing cannot be combined with scroll ([Elastic, n.d.](https://www.elastic.co/docs/reference/elasticsearch/rest-apis/collapse-search-results)). In other words, the result list shows 1,000 properties while the facet counts and the "2,400 results" header still count listings. **Either the counts are computed on a property-level document, or the page shows numbers that disagree with the list.** A common answer is a second, property-level index for counting and map pins, built from the same events; [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture) covers the index design.
+The usual implementation stores the cluster ID on each listing's search document and asks the engine to return one document per cluster. Elasticsearch calls this **field collapsing**: the `collapse` parameter keeps only the top-sorted document for each value of a single-valued keyword or numeric field, and optional `inner_hits` return the other members. Its documentation also lists the costs an architect should know before relying on it: the total hit count still counts all matching documents, not the number of groups; aggregations are not collapsed; each `inner_hits` request adds a query per collapsed hit; and collapsing cannot be combined with scroll ([Elastic, n.d.](https://www.elastic.co/docs/reference/elasticsearch/rest-apis/collapse-search-results)). So the result list shows 1,000 properties while the facet counts and the "2,400 results" header still count listings. **Either the counts are computed on a property-level document, or the page shows numbers that disagree with the list.** A common answer is a second, property-level index for counting and map pins, built from the same events; [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture) covers the index design.
 
 {id: entity-resolution--choosing-the-representative}
-### Choosing the Representative
+### Choosing the representative
 
 When a cluster collapses to one card, one listing's photos, price and agency appear first. This is the most politically sensitive decision in the chapter. The options are the most complete listing, the earliest published, the lowest price, the highest quality score, rotation among agencies, or the listing that pays for visibility. Each one rewards a different behavior. "Lowest price" rewards the agency with the lowest fee. "Earliest" rewards the agency that publishes first. "Quality score" rewards good photos and complete attributes, which is what buyers want. "Paid" silently turns deduplication into an auction.
 
 My rule is that **the representative rule is a published ranking parameter**, decided by product and legal together, and never changed by an engineer tuning a model. If paid placement affects it, the card says so. The EU Platform-to-Business Regulation and the DSA both require the main ranking parameters to be described to business users and consumers ([Rules of the Marketplace: DSA, DAC7 and Vertical Regulation](#marketplace-regulation)). A representative rule is one of them. **Paid-Rank Drift often starts in a cluster rule that nobody thinks of as ranking.**
 
 {id: entity-resolution--a-documented-example-idealista-s-duplicate-control}
-### A Documented Example: Idealista's Duplicate Control
+### A documented example: Idealista's duplicate control
 
 The clearest public product example comes from Idealista, the Spanish, Italian and Portuguese property portal. In April 2021 it launched a duplicate-control tool for home seekers that groups the ads for one property published by several agencies or individuals, *including on other portals*, so that users can compare them in one place. Users see the number of duplicates, price changes, removed ads and new duplicates, and get push notifications when a price changes, an ad is removed or a new duplicate appears. Agents see duplicates only of their own properties, and only once a listing has been published. The tool is updated daily ([Online Marketplaces, 2021-04-11](https://onlinemarketplaces.com/articles/idealista-launches-new-tool-to-help-organize-duplicate-listings)). The report describes the product, not the matching system, and the current state of the tool is not public. Three design choices are worth noting: the cluster is presented as **buyer information** rather than hidden, the **agent view is limited to their own properties**, and the cadence is daily, which suggests batch resolution.
 
@@ -201,16 +205,16 @@ Here is how the Lyon flat moves through the pipeline Hearthly built in 2027. The
 
 **Figure 4:** *Resolved, the Lyon flat is one property card with every agency one click away, one alert per property and one property in Valuo's price history instead of three.*
 
-**The Keybridge constraint.** Veldmark decided in March 2027 that Hearthly may not use Keybridge agency data for ranking or sales targeting (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)). Keybridge holds far more about the Lyon flat than Hearthly does, including the mandate and the seller's identity. Entity resolution at Hearthly may use **only what each listing carries as published to Hearthly**, exactly as it would for a listing from any other software vendor. That rule is enforced in the data path: the matcher reads Hearthly's listing read model, never Keybridge's database, and the access-control review checks it every year. Without it, a better match rate would cost Veldmark the trust of every agency that uses Keybridge to publish to Hearthly's competitors.
+**The Keybridge constraint.** Veldmark decided in March 2027 that Hearthly may not use Keybridge agency data for ranking or sales targeting (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)). Keybridge holds far more about the Lyon flat than Hearthly does, including the mandate and the seller's identity. Entity resolution at Hearthly may use **only what each listing carries as published to Hearthly**, exactly as it would for a listing from any other software vendor. That rule is enforced in the data path: the matcher reads Hearthly's listing read model, never Keybridge's database, and the access-control review checks it every year. Without it, a better match rate would cost Veldmark the trust of every agency that uses Keybridge to publish to Hearthly's competitors.
 
 **What changed.** After the first quarter of the new pipeline, Ingrid's review uses four numbers, all illustrative. Search pages in Lyon show 31% fewer cards for the same queries. Saved-search alerts for Lyon sales fall by 24% with no fall in click-through, which means the removed alerts were noise. Precision measured on 4,000 labeled pairs is 98.6% and recall 91%. Agency disputes run at about 60 a month across France, two thirds of them for flats in the same building that the matcher wrongly merged. Those disputes are the most valuable labels the team has.
 
 {id: entity-resolution--the-same-machinery-pointed-at-abuse}
-### The Same Machinery Pointed at Abuse
+### The same machinery pointed at abuse
 
 The same detectors run on Tradeyard, Veldmark's general classifieds brand, for a different purpose. A same-seller repost of a listing already live in the same category is blocked at publication, with a message that offers a paid bump instead. A delete-and-recreate within days keeps the original creation timestamp, so the new listing gains no freshness advantage (see [The Listing Aggregate: Identity, Lifecycle and Invariants](#listing-aggregate) on why bumps and renewals update a ranking timestamp, never the creation time). This is a monetization and trust decision as much as a technical one: **a marketplace that sells bumps and tolerates free reposts is competing with itself.**
 
-At Hearthly Spain, the same kind of perceptual-hash matching flagged the Barcelona fake-rental ring in July 2027. Twenty-six accounts posted 180 fake rental listings in Eixample using photos stolen from real listings and priced about 35% below market. The match between a new, unrelated account and photos already attached to another agency's live listing, combined with the price anomaly, is the fraud signal. The hash matches fired from the first day, but they went to a different queue from the price flags, and eleven photo-match items were closed as legitimate multi-agency duplicates before an analyst linked the cluster. The policy engine sends such clusters to trust and safety, not to the presentation layer. The case and its cost are in [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention). The architectural point here is that the registry must record **why** listings were linked, because a "duplicate" of the second kind must never be shown to buyers as "also listed by".
+**The registry must record why listings were linked**, because a stolen copy must never be shown to buyers as "also listed by". At Hearthly Spain, the same kind of perceptual-hash matching flagged the Barcelona fake-rental ring in July 2027. Twenty-six accounts posted 180 fake rental listings in Eixample using photos stolen from real listings and priced about 35% below market. The match between a new, unrelated account and photos already attached to another agency's live listing, combined with the price anomaly, is the fraud signal. The hash matches fired from the first day, but they went to a different queue from the price flags, and eleven photo-match items were closed as legitimate multi-agency duplicates before an analyst linked the cluster. The policy engine sends such clusters to trust and safety, not to the presentation layer. The case and its cost are in [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention).
 
 {id: entity-resolution--trade-offs}
 ## Trade-offs
@@ -246,7 +250,9 @@ The trade-off that decides most of the others is **where the cluster ID is store
 | Specific risk | Stock and manufacturer photos flooding the detector | Over-merging units in one building | Missing VINs on private listings | Merging distinct vacancies with the same title |
 | Who disputes | Rarely anyone | Agencies, strongly | Dealers, occasionally | Employers and agencies |
 
-Two rows deserve emphasis. In general classifieds, **legitimate stock photos** are common in some categories, such as new phones or furniture, and a perceptual-hash detector without an allowlist of manufacturer images floods moderators with false matches. In automotive, the VIN makes resolution easy, which tempts teams to skip the gray zone entirely; the cost shows up when a dealer group lists one car at two sites with different prices and the merge picks the wrong one as representative.
+In general classifieds, a perceptual-hash detector without an allowlist of manufacturer images floods moderators with false matches, because **legitimate stock photos** are common in some categories, such as new phones or furniture.
+
+In automotive, the VIN makes resolution easy, which tempts teams to skip the gray zone entirely; the cost shows up when a dealer group lists one car at two sites with different prices and the merge picks the wrong one as representative.
 
 {id: entity-resolution--failure-modes}
 ## Failure Modes
@@ -277,8 +283,8 @@ At group scale, entity resolution raises five decisions.
 
 **5. Watch a small set of numbers.** Listings per entity by market (1.7 at Hearthly France is the baseline); precision and recall on a labeled sample; gray-zone volume and review cost; cluster churn per night; dispute rate and overturn rate by agency; and the share of live listings with a resolved entity. A sudden change in any of them is usually a feed or enrichment change upstream, which is why the dashboard belongs next to the feed-health dashboard of [Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion).
 
-{id: entity-resolution--questions-to-ask-in-a-design-review}
-## Questions to Ask in a Design Review
+{id: entity-resolution--questions-to-ask}
+## Questions to Ask
 
 1. For each duplicate kind we see, what is the action, who owns it, and does the seller get a statement of reasons when the action is a restriction?
 2. What real-world entity are we resolving to in this vertical, and which identifiers do we actually receive, at what fill rate?

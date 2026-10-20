@@ -21,22 +21,22 @@
 > * **The Platform Mandate** — a heat map that scores only duplication pushes differentiating capabilities onto a central platform that does not fit them, and local teams route around it.
 > * **Vanity Liquidity** — capabilities measured by their own activity (listings ingested, searches served) instead of by the value-stream outcomes they serve (contacts, sales) get optimized for the wrong thing.
 
-Most marketplace groups have a systems inventory and an org chart that is less than a year old. Few have a description of **what the marketplace does that would still be true after the next reorganization and the next replatforming**. That description is a capability map. It sounds like enterprise-architecture paperwork, and badly made maps deserve that reputation. A well-made one is the most useful single page a Chief Architect owns, because it is the only artifact on which a GM, a CFO, a platform lead and an acquirer's integration team can point to the same box and mean the same thing.
+[From Newspaper Columns to Portfolios: How the Classifieds Industry Evolved](#industry-evolution) showed how marketplace groups came to run several brands on stacks from different waves. Before such a group can decide what to share, it needs the third piece of business knowledge this part supplies: a description of **what the marketplace does that would still be true after the next reorganization and the next replatforming**. That description is a capability map. Badly made maps deserve their reputation as enterprise-architecture paperwork. A well-made one is the most useful single page a Chief Architect owns, because it is the only artifact on which a GM, a CFO, a platform lead and an acquirer's integration team can point to the same box and mean the same thing.
 
-This chapter builds such a map for listing marketplaces. It starts with four terms that are routinely confused: capability, value stream, product and system. It then builds a three-level capability map with ten top-level areas and cross-maps it to four value streams. Finally it shows how to heat-map the map for **differentiation, maturity and duplication**, and how to read the result without falling into the reflex that every duplicate should be merged. It does not decompose the software. Where the boundaries of models and teams go is the subject of [Bounded Contexts for Marketplaces: Where One Listing Becomes Many Models](#bounded-contexts), which builds directly on this map. It does not repeat the business-model taxonomy either. [Classifieds, Lead Generation and Transactions: A Marketplace Taxonomy](#marketplace-taxonomy) explains why a classifieds site, a lead-generation portal and a transactional marketplace need different capabilities. Here we take that difference as given and map it.
+This chapter defines four terms that are routinely confused (capability, value stream, product and system), builds a three-level map with ten top-level areas, and cross-maps it to four value streams. It then heat-maps the map for **differentiation, maturity and duplication** and reads the result without the reflex that every duplicate should be merged. It takes the business models of [Classifieds, Leads, Transactions and Managed Models: A Marketplace Taxonomy](#marketplace-taxonomy) and the liquidity metrics of [Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics](#liquidity-and-network-effects) as given. It does not decompose the software: [Bounded Contexts for Marketplaces: Where One Listing Becomes Many Models](#bounded-contexts) turns this map into boundaries of models and teams, [Same Platform, Different Physics: How Listing Verticals Differ](#vertical-requirements) tests what genuinely differs between verticals, and [After the Deal: Consolidating Platforms After Acquisitions](#platform-consolidation) applies the map after acquisitions.
 
-The running example is Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)). In March 2027 its new Group Chief Architect uses a capability map to test a €140 million program that the board approved before she arrived.
+The running example is Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)). In March 2027 its new Group Chief Architect uses a capability map to test a €140 million program that the board approved before she arrived.
 
-{id: business-capabilities--setting-the-scene-what-do-we-pay-for-four-times}
-## Setting the Scene: What Do We Pay for Four Times?
+{id: business-capabilities--setting-the-scene-at-veldmark-what-do-we-pay-for-four-times}
+## Setting the Scene at Veldmark: What Do We Pay for Four Times?
 
 It is Tuesday 9 March 2027. Ingrid Halvorsen has been Veldmark's Group Chief Architect for five weeks. The board approved the **Common Ground** program in January: €140 million over 2027–2030 to build shared platform capabilities beneath the group's four brands, retire Tradeyard's PHP monolith Yardstick by the end of 2029, and cut run costs by **€38 million a year** by 2030. The program document lists what to share: a group identity, trust and safety, media, a search platform, messaging, a product catalog and entitlements, an event backbone, a data platform, and a taxonomy and attribute service.
 
-Henrik de Boer, the Group CEO, asks Ingrid the question the private-equity owner asked him: *what exactly do we pay for four times, and which of those things make us money?* The program list does not answer it. The list names platforms to build, not what the business does or how often it does it. Mateus Carvalho, the Group CTO, has a systems inventory of 412 applications across the four brands. It answers a different question. It says that Motorvane runs about 120 Kotlin services and Hearthly runs Go and TypeScript on Google Cloud. It does not say whether "Motorvane dealer packages" and "Hearthly agency subscriptions" are the same capability.
+Henrik de Boer, the Group CEO, asks Ingrid the question the private-equity owner asked him: *what exactly do we pay for four times, and which of those things make us money?* The program list does not answer it: it names platforms to build, not what the business does or how often it does it. Mateus Carvalho, the Group CTO, has a systems inventory of 412 applications across the four brands. It answers a different question: it says that Motorvane runs about 120 Kotlin services and Hearthly runs Go and TypeScript on Google Cloud. It does not say whether "Motorvane dealer packages" and "Hearthly agency subscriptions" are the same capability.
 
 Two days earlier, on Sunday evening, a private seller in Rotterdam listed a city bike for €240 on Tradeyard. Within half an hour the listing had been published (six minutes after submission), matched 312 saved searches, drawn its first contact and attracted a phishing message that pretended to be a Safe Deal payment link. Ingrid uses that listing in her first workshop. She asks the brand CTOs which of their systems the bike passed through, and then which *capabilities* it needed. The first answer differs for every brand. The second, once the group agrees on the words, is nearly identical for all four.
 
-That is the chapter's argument in one example. **Systems differ by brand; capabilities mostly do not.** Comparing brands, finding overlap and deciding what to share all have to happen at the level where the brands are comparable.
+**Systems differ by brand; capabilities mostly do not.** That is the chapter's argument in one example. Comparing brands, finding overlap and deciding what to share all have to happen at the level where the brands are comparable.
 
 ![Four differently shaped system landscapes above one shared row of identical capability tiles that all of them connect to.](listing-systems-architecture/posts/04-business-capabilities/assets/images/04-business-capabilities/systems-differ-capabilities-align.jpeg)
 
@@ -49,7 +49,7 @@ Four terms do most of the work, and confusing them produces most of the bad maps
 
 A **business capability** is what the business does, described independently of how, where and by whom. The Open Group's TOGAF standard defines it, in paraphrase, as a particular ability that a business may possess or exchange to achieve a specific purpose, and devotes a whole series guide to it ([TOGAF Series Guide: Business Capabilities, Version 2](https://publications.opengroup.org/g211), 2022). For a marketplace, *Content moderation*, *Saved searches and alerts* and *Entitlements and quotas* are capabilities. "The Solr cluster", "the Trust team" and "Yardstick's ad-insertion module" are not.
 
-A **value stream** is the end-to-end sequence of stages that delivers an outcome to a customer or stakeholder. The Object Management Group's business-architecture work says that "the Value Stream view defines the end-to-end set of activities that deliver value to external and internal stakeholders" (OMG Business Architecture Working Group, *Business Architecture Overview*, 2012, as quoted in [Wikipedia: Business architecture](https://en.wikipedia.org/wiki/Business_architecture)). In business architecture, value streams are commonly cross-mapped to the capabilities that enable each stage ([Wikipedia: Value stream](https://en.wikipedia.org/wiki/Value_stream)). In a marketplace the obvious value streams are the journeys that create liquidity: a seller lists and sells, a buyer searches and contacts.
+A **value stream** is the end-to-end sequence of stages that delivers an outcome to a customer or stakeholder. The Object Management Group's business-architecture work says that "the Value Stream view defines the end-to-end set of activities that deliver value to external and internal stakeholders" (OMG Business Architecture Working Group, *Business Architecture Overview*, 2012, as quoted in [Wikipedia: Business architecture](https://en.wikipedia.org/wiki/Business_architecture)). In business architecture, value streams are commonly cross-mapped to the capabilities that enable each stage ([Wikipedia: Value stream](https://en.wikipedia.org/wiki/Value_stream)). In a marketplace the main value streams are the journeys that create liquidity: a seller lists and sells, a buyer searches and contacts.
 
 A **product** is a packaged offer that a customer uses or buys: "Tradeyard for iOS", "Motorvane Dealer Hub", the "Top listing" bump. A product composes many capabilities, and a capability serves many products.
 
@@ -69,14 +69,14 @@ Three properties make a capability map useful, and each is easy to break.
 2. **Implementation-free.** No system names, vendor names, team names or channel names in capability labels. "Salesforce CRM" is a system. "Professional account management" is a capability.
 3. **Comparable.** The same capability must mean the same thing in every brand, at least at levels 1 and 2. This is what allows a heat map across brands at all. Vertical vocabulary belongs in the descriptions and in level 3, not in the names of the top two levels.
 
-The distinction matters most for the question Ingrid was asked. A systems inventory counts 412 applications and cannot say how many of them do the same job. A capability map can. In 2014 James Lewis and Martin Fowler made the same move for software: they described microservices as "organized around business capability", in contrast to teams split by technology layer, and they tied the idea to Conway's law ([Lewis and Fowler, "Microservices"](https://martinfowler.com/articles/microservices.html), 2014). Melvin Conway's original observation was that organizations are "constrained to produce designs which are copies of the communication structures of these organizations" ([Conway, "How Do Committees Invent?"](https://www.melconway.com/Home/Committees_Paper.html), *Datamation*, 1968). A capability map is the business-side half of that bargain. It names the units that teams and services should align to before anyone draws a team or a service.
+Only a capability map can answer Ingrid's question. A systems inventory counts 412 applications and cannot say how many of them do the same job. In 2014 James Lewis and Martin Fowler made the same move for software: they described microservices as "organized around business capability", in contrast to teams split by technology layer, and they tied the idea to Conway's law ([Lewis and Fowler, "Microservices"](https://martinfowler.com/articles/microservices.html), 2014). Melvin Conway's original observation was that organizations are "constrained to produce designs which are copies of the communication structures of these organizations" ([Conway, "How Do Committees Invent?"](https://www.melconway.com/Home/Committees_Paper.html), *Datamation*, 1968). A capability map is the business-side half of that bargain: it names the units that teams and services should align to before anyone draws a team or a service.
 
 {id: business-capabilities--a-three-level-capability-map-for-listing-marketplaces}
 ## A Three-Level Capability Map for Listing Marketplaces
 
 The map below has ten level-1 areas. They follow the flow of a listing marketplace: supply comes in, becomes a listing, is discovered, is matched with demand and sometimes transacted, while trust, monetization, professional services, data and a shared platform cut across all of it.
 
-![The ten level-1 capability areas of a listing marketplace. Five follow the liquidity flow from supply to transaction; five cut across it. Dotted edges show where the cross-cutting areas act on the flow; Platform and Data serve every area, and only a few of their edges are drawn.](listing-systems-architecture/diagrams/f120dc04c85ae471.png)
+![Diagram: The ten level-1 capability areas of a listing marketplace](listing-systems-architecture/posts/04-business-capabilities/assets/images/04-business-capabilities/fig02-ten-level-1-capability-areas-listing.jpeg)
 
 **Figure 2:** *The ten level-1 capability areas of a listing marketplace. Five follow the liquidity flow from supply to transaction; five cut across it. Dotted edges show where the cross-cutting areas act on the flow; Platform and Data serve every area, and only a few of their edges are drawn.*
 
@@ -95,15 +95,15 @@ Level 2 breaks each area into capabilities that a business owner would recognize
 | **Data and Insights** | Behavioral tracking and consent; Analytics and governed metrics; Experimentation; Machine learning and price estimation; Data products and licensing | Knowing what happens and deciding with evidence |
 | **Platform** | Identity and access; Notifications; Customer support and back office; Privacy and data-subject rights; Developer platform and runtime | Shared foundations that every customer-facing capability needs |
 
-A few placement choices deserve explanation, because each is a decision someone will challenge.
+Four placement choices will be challenged, so the map records the reason for each.
 
 - **Taxonomy and attributes sit under Listing Management, not Discovery.** Search uses them heavily, but the reason they exist is to define what a listing is. Placing them under Discovery leads to the common mistake of a taxonomy owned by the search team and shaped by facets. [Category Trees That Can Change: Designing Marketplace Taxonomies](#categories-and-taxonomies) and [Attributes Without Chaos: Schemas, Dictionaries and Validation](#attribute-schemas) own the design.
-- **Identity verification sits under Trust and Safety; identity and access sits under Platform.** Logging in is a foundation. Deciding how much to trust a person or a business is a risk decision with policy behind it. The digest's reference models make the same split: authentication as a platform service, verification as a trust capability that authentication escalates to. [Who Is on the Other Side? Identity and Verification](#identity-and-verification) owns the detail.
+- **Identity verification sits under Trust and Safety; identity and access sits under Platform.** Logging in is a foundation. Deciding how much to trust a person or a business is a risk decision with policy behind it. The two reference models described below make the same split: authentication as a platform service, verification as a trust capability that authentication escalates to. [Who Is on the Other Side? Identity and Verification](#identity-and-verification) owns the detail.
 - **Professional Services is a level-1 area of its own.** In verticals the professional seller is the paying customer, and the tooling they use is a product line with its own economics. Folding it into Supply Acquisition hides a revenue line, and folding it into Monetization hides a product. [Serving the Pros: Dealer, Agent and Merchant Tooling](#professional-seller-tooling) covers its architecture.
-- **Transactions is a level-1 area even where it is small.** Most of a classifieds group's value still settles off-platform, but the transactional pivot is a recurring strategic question. Having the area on the map, scored as immature or absent where it is absent, makes the question visible.
+- **Transactions is a level-1 area even where it is small.** Most of a classifieds group's value still settles off-platform, but the transactional pivot is a recurring strategic question. Keeping the area on the map, scored as immature or absent where it is absent, keeps the question visible.
 
 {id: business-capabilities--level-3-where-the-real-decisions-are-made}
-### Level 3: Where the Real Decisions Are Made
+### Level 3: where the real decisions are made
 
 Level 3 is where a capability is split into the parts that behave differently. Veldmark's map has **212** level-3 capabilities. Most are written only for the areas under active decision. Mapping everything to level 3 on day one is wasted effort: the map goes stale before it is used.
 
@@ -121,16 +121,16 @@ The pattern recurs across the map: **the machinery is generic and the content is
 **Figure 3:** *At level 3 a duplicated capability usually splits cleanly: the machinery (search engine, entitlement ledger, moderation pipeline, taxonomy service) is shared, while relevance, packages, policy and category trees stay local.*
 
 {id: business-capabilities--one-skeleton-many-verticals}
-### One Skeleton, Many Verticals
+### One skeleton, many verticals
 
-Does each vertical need its own map? The evidence from reference modeling says no. I maintain two generic reference models built with the Productscape method, one for a horizontal general-listings marketplace and one for a real-estate portal. They describe no real company. They share an identical set of **88 capabilities** in the same five root groups. The real-estate model's "Estimation Funnel" and the general model's "Seller Listing Funnel" occupy the same slot, as do "Property Valuation Tool" and "Pricing Guidance Engine". About two-thirds of the 88 have identical meaning in both. Roughly a dozen keep their responsibility under vertical vocabulary (agency for storefront, agent for seller). Only **nine** are genuinely different capabilities in the same slot: protected payment versus mortgage financing, a listing funnel versus a valuation-led lead funnel, shipping preferences versus rental management, and a few others.
+One map serves every vertical, and reference modeling shows why. I maintain two generic reference models built with the Productscape method, one for a horizontal general-listings marketplace and one for a real-estate portal. They describe no real company. They share an identical set of **88 capabilities** in the same five root groups. The real-estate model's "Estimation Funnel" and the general model's "Seller Listing Funnel" occupy the same slot, as do "Property Valuation Tool" and "Pricing Guidance Engine". About two-thirds of the 88 have identical meaning in both. Roughly a dozen keep their responsibility under vertical vocabulary (agency for storefront, agent for seller). Only **nine** are genuinely different capabilities in the same slot: protected payment versus mortgage financing, a listing funnel versus a valuation-led lead funnel, shipping preferences versus rental management, and a few others.
 
-The lesson generalizes beyond those two models: **a marketplace capability map generalizes across verticals by renaming and re-weighting, not by adding new top-level structure.** That is why Veldmark keeps one group map for four brands. Vertical differences show up in three places: in level-3 capabilities that exist only in one vertical (*Mandate management* for agencies, *Vehicle identification and history* for motors), in the heat-map scores, and in the descriptions. [Same Platform, Different Physics: General, Real Estate, Automotive and Jobs](#vertical-requirements) owns the question of what genuinely differs between verticals.
+The lesson reaches beyond those two models: **a marketplace capability map generalizes across verticals by renaming and re-weighting, not by adding new top-level structure.** That is why Veldmark keeps one group map for four brands. Vertical differences show up in three places: in level-3 capabilities that exist only in one vertical (*Mandate management* for agencies, *Vehicle identification and history* for motors), in the heat-map scores, and in the descriptions. [Same Platform, Different Physics: How Listing Verticals Differ](#vertical-requirements) owns the question of what genuinely differs between verticals.
 
 {id: business-capabilities--value-streams-where-capabilities-meet-outcomes}
 ## Value Streams: Where Capabilities Meet Outcomes
 
-A capability map on its own is a list. It becomes useful when it is cross-mapped to the value streams that produce the outcomes the business measures. For a listing marketplace those outcomes are liquidity: listings that sell, searches that end in contact, leads that become deals ([Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics](#liquidity-and-network-effects) defines the metrics). Four value streams cover most of a group's value.
+A capability map becomes useful only when it is cross-mapped to the value streams that produce the outcomes the business measures. For a listing marketplace those outcomes are liquidity: listings that sell, searches that end in contact, leads that become deals ([Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics](#liquidity-and-network-effects) defines the metrics). Four value streams cover most of a group's value.
 
 | Value stream | Stages | Outcome metric | Main customer |
 | --- | --- | --- | --- |
@@ -139,17 +139,17 @@ A capability map on its own is a list. It becomes useful when it is cross-mapped
 | **Lead-to-deal** | Receive lead → qualify → respond → viewing or test drive → offer → deal → attribution | Lead response time; lead-to-viewing; attributed deals per paying professional | Dealer or agency |
 | **Pro onboarding** | Contract → verify business → set up account and users → connect inventory feed → first listings live → first leads | Days from contract to first live listing; feed success rate; first-90-day retention | Dealer or agency |
 
-Each stage needs capabilities, and the cross-map makes this explicit. Here is list-to-sell for the Rotterdam city bike, with the timings from that Sunday evening.
+The cross-map names the capabilities each stage needs. Figure 4 draws list-to-sell for the Rotterdam city bike, with the timings from that Sunday evening.
 
-![List-to-sell for the €240 Rotterdam city bike, cross-mapped to the level-2 capabilities each stage needs. The six-minute publication delay sits in two capabilities, moderation and indexing. The Ghost Inventory failure at the end, a sold bike featured in the next morning's alert digest, sits in the hand-off between lifecycle and alerts.](listing-systems-architecture/diagrams/c748fed6c1f5606b.png)
+![Diagram: List-to-sell for the €240 Rotterdam city bike, cross-mapped to the level-2 capabilities each stage needs](listing-systems-architecture/posts/04-business-capabilities/assets/images/04-business-capabilities/fig04-list-sell-240-rotterdam-city-bike.jpeg)
 
 **Figure 4:** *List-to-sell for the €240 Rotterdam city bike, cross-mapped to the level-2 capabilities each stage needs. The six-minute publication delay sits in two capabilities, moderation and indexing. The Ghost Inventory failure at the end, a sold bike featured in the next morning's alert digest, sits in the hand-off between lifecycle and alerts.*
 
-The cross-map turns a vague complaint into a located one. The bike's story contains three problems, and each sits in a specific capability.
+The cross-map turns a vague complaint into a located one: each of the bike's three problems sits in a specific capability.
 
 1. **Six minutes from submission to searchable.** The stream-level metric belongs to *Listing lifecycle and publication*, but the delay is produced by *Content moderation* (the review queue) and *Search and filtering* (Solr batch commits). The 90-second target for 2028 is therefore an investment in two capabilities, not in "publishing". [From Submitted to Searchable: The Publication Pipeline](#publication-pipeline) owns the design.
 2. **A phishing message delivered at 20:11.** The domain in the fake Safe Deal link had been registered that day. The gap is in *Fraud and risk scoring* applied to *Contact and messaging*, not in moderation of listings, which had done its job.
-3. **A sold bike in the next morning's alert digest.** The bike was marked sold at 18:10 on Monday and removed from search at 18:11, yet the alert digest still featured it the next morning, because the digest did not consume unpublish events. The stream crosses from *Listing lifecycle and publication* to *Saved searches and alerts* without a contract for unpublish events. That is a capability interface problem, which [Bounded Contexts for Marketplaces: Where One Listing Becomes Many Models](#bounded-contexts) and [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings) take up.
+3. **A sold bike in the next morning's alert digest.** The bike was marked sold at 18:10 on Monday and removed from search at 18:11, yet the next morning's alert digest still featured it. The stream crosses from *Listing lifecycle and publication* to *Saved searches and alerts* without a contract for unpublish events, so the digest never consumed them. That is a capability interface problem, which [Bounded Contexts for Marketplaces: Where One Listing Becomes Many Models](#bounded-contexts) and [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings) take up.
 
 The second use of the cross-map is to find **shared bottlenecks**. When the same capability appears in the bottleneck stage of several value streams, it is a high-leverage investment. At Veldmark, *Fraud and risk scoring* sits in the critical stage of three streams: messaging in list-to-sell and search-to-contact, rental listings in search-to-contact at Hearthly, and business verification in pro onboarding. That is a stronger argument for a shared trust-and-safety platform than "we have four stacks".
 
@@ -168,14 +168,14 @@ Bold cells mark where Veldmark's 2027 evidence placed the binding constraint of 
 Two cautions keep value streams honest.
 
 - **Measure stream outcomes, not capability activity.** "Listings ingested per day" is a capability activity metric. "Share of dealer listings searchable within ten minutes of a feed update" is a stream outcome. A capability team that reports only its own activity will optimize the wrong thing. That is the Vanity Liquidity pattern applied inside the architecture.
-- **Map jobs to streams, then streams to capabilities.** The digest's review of a generated capability model found that customer jobs had been mapped directly to capabilities, skipping the value streams. The result was a model in which every capability appeared to serve every customer. The value stream is the layer that explains *why* a capability matters for an outcome.
+- **Map jobs to streams, then streams to capabilities.** One generated capability model I reviewed had mapped customer jobs directly to capabilities, skipping the value streams. The result was a model in which every capability appeared to serve every customer. The value stream is the layer that explains *why* a capability matters for an outcome.
 
 {id: business-capabilities--heat-mapping-differentiation-maturity-duplication}
 ## Heat-Mapping: Differentiation, Maturity, Duplication
 
-A heat map scores each capability on several dimensions and colors the map, so that patterns become visible on one page. For a multi-brand marketplace group, three dimensions matter, and they must be scored separately.
+A heat map scores each capability on several dimensions and colors the map by the scores, so that patterns show on one page. A multi-brand marketplace group needs three dimensions, scored separately.
 
-**Differentiation** asks how much this capability makes customers choose us over a competitor, in this vertical. It is scored by product and commercial leaders, not by engineers. The DDD Crew's core domain charts make the same separation: business differentiation is "provided by product managers or business stakeholders", while engineers judge model complexity ([DDD Crew, Core Domain Charts](https://github.com/ddd-crew/core-domain-charts), n.d.). A useful prompt is: how hard would it be for a competitor to match us here, and would customers notice if we were merely average?
+**Differentiation** asks how much this capability makes customers choose us over a competitor, in this vertical. It is scored by product and commercial leaders, not by engineers. The DDD Crew's core domain charts make the same separation: business differentiation is "provided by product managers or business stakeholders", while engineers judge model complexity ([DDD Crew, Core Domain Charts](https://github.com/ddd-crew/core-domain-charts), n.d.). Ask: how hard would it be for a competitor to match us here, and would customers notice if we were merely average?
 
 **Maturity** asks how well the capability works today, against what the business needs. It is scored with evidence, on a five-point scale, per implementation.
 
@@ -205,7 +205,7 @@ The last row is the one maps forget. Some duplication is a design decision. Veld
 
 A heat map is only as good as its evidence. Three rules keep it honest.
 
-1. **Score with named evidence and a date.** "Maturity 2: 138,000 listings a week go to human review, and the queue p95 is four minutes" is evidence. "Maturity 2: the team feels it is weak" is not. The digest's review of a generated model found KPI values with no provenance. That is the same failure: numbers that look measured and are not.
+1. **Score with named evidence and a date.** "Maturity 2: 138,000 listings a week go to human review, and the queue p95 is four minutes" is evidence. "Maturity 2: the team feels it is weak" is not. A generated reference model I reviewed showed the same failure: KPI values with no provenance, numbers that look measured and are not.
 2. **Score per implementation, then aggregate.** "Trust and safety: maturity 3" averages a strong Tradeyard NL implementation with an absent Keybridge one and hides both.
 3. **Separate the scorers.** Product leaders score differentiation, engineering leads score maturity, architecture counts duplication. When one group scores everything, the scores converge on that group's interests.
 
@@ -225,18 +225,18 @@ No marketplace group has published its capability map. The public record does sh
 {id: business-capabilities--veldmark-worked-example-five-overlaps-one-commercial-clash-one-deliberate-duplicate}
 ## Veldmark Worked Example: Five Overlaps, One Commercial Clash, One Deliberate Duplicate
 
-Ingrid runs the mapping in three weeks of March 2027. The method is deliberately plain.
+Ingrid runs the mapping in three weeks of March 2027.
 
 1. **Week 1: draft the map.** The group architecture team drafts levels 1 and 2 from the four brands' product documentation and the two reference models, without looking at the systems inventory. Brand CTOs review the draft for one question only: does every capability mean the same thing in your brand? Seven labels change; none of the ten level-1 areas does.
 2. **Week 2: map systems to capabilities.** Each brand maps its applications to level-2 capabilities. Of the 412 applications, 371 map cleanly. The other 41 are either platform plumbing (build tools, monitoring) or Yardstick, which maps to 23 capabilities on its own.
 3. **Week 3: score and read.** Noor Hassan, the Group Chief Product Officer, and the brand product leads score differentiation. Engineering leads score maturity per implementation with dated evidence. Architecture counts duplication. Olivier Petit, VP Monetization, adds revenue attribution for the monetization area.
 
-![The layering Veldmark used: value streams explain why capabilities matter, capabilities are the comparable unit, and systems and teams are mapped to capabilities, never the other way round. Only the capability layer is shared vocabulary across all four brands.](listing-systems-architecture/diagrams/c904ea3d947cc510.png)
+![Diagram: The layering Veldmark used](listing-systems-architecture/posts/04-business-capabilities/assets/images/04-business-capabilities/fig05-layering-veldmark-used-value-streams-explain.jpeg)
 
 **Figure 5:** *The layering Veldmark used: value streams explain why capabilities matter, capabilities are the comparable unit, and systems and teams are mapped to capabilities, never the other way round. Only the capability layer is shared vocabulary across all four brands.*
 
 {id: business-capabilities--the-heat-map}
-### The Heat Map
+### The heat map
 
 The table shows the rows that drove decisions. Maturity is listed per implementation (T = Tradeyard, M = Motorvane, H = Hearthly, K = Keybridge).
 
@@ -255,7 +255,7 @@ The table shows the rows that drove decisions. Maturity is listed per implementa
 | Feed and bulk ingestion; listing distribution | 2 (Hearthly ingestion, Keybridge multi-diffusion) | High | H 3; K 4 | **Deliberate duplicate**: keep separate (neutrality decision, March 2027) |
 
 {id: business-capabilities--reading-the-map}
-### Reading the Map
+### Reading the map
 
 The five overlaps match the "four of everything" problem that the board already knew about: four identity systems, four trust-and-safety stacks, three search engines, four product catalogs, three data warehouses. The map's contribution was not to discover them. It was to change the answer for three of them and to add two findings that no platform program would have produced.
 
@@ -282,7 +282,7 @@ There are four common starting points, and the choice shapes what the map can an
 
 Veldmark combined the first and third: a reference model for the skeleton, value streams to test and weight it, and the systems inventory only as a mapping step.
 
-Granularity is the second trade-off. Level 1 is for boards and investors. Level 2 is for portfolio decisions and heat maps. Level 3 is for platform scoping and bounded contexts. Level 4 usually means process, not capability, and belongs to the teams. A useful stopping rule is to **decompose a capability one level further only when the parts would get different verdicts.** Search splits at level 3 because the engine and the relevance get different verdicts. *Notifications* does not, because all its parts would get the same one.
+Granularity is the second trade-off. Level 1 is for boards and investors. Level 2 is for portfolio decisions and heat maps. Level 3 is for platform scoping and bounded contexts. Level 4 usually means process, not capability, and belongs to the teams. The stopping rule: **decompose a capability one level further only when the parts would get different verdicts.** Search splits at level 3 because the engine and the relevance get different verdicts. *Notifications* does not, because all its parts would get the same one.
 
 {id: business-capabilities--vertical-differences}
 ## Vertical Differences
@@ -310,7 +310,7 @@ At Veldmark this explains two of the heat-map outcomes. Valuo and Motorvane's ma
 
 **Mapping everything to level 4.** A 600-box map takes six months, is out of date on delivery, and nobody reads it. Map level 3 only where a decision is pending.
 
-**Generated or uniform dependencies.** Capability tools make it easy to draw dependencies between capabilities. When every capability depends on three others with boilerplate descriptions, which is what the digest's review found in one generated reference model, the graph hides the real dependencies. Keep only the relationships that shape ownership, data movement, reliability, release sequencing or incident response.
+**Generated or uniform dependencies.** Capability tools make it easy to draw dependencies between capabilities. When every capability depends on three others with boilerplate descriptions, as in one generated reference model I reviewed, the graph hides the real dependencies. Keep only the relationships that shape ownership, data movement, reliability, release sequencing or incident response.
 
 **Synthetic precision.** Maturity scores and KPIs with decimals and no evidence look measured and invite false confidence. Every score needs a source and a date.
 
@@ -343,6 +343,9 @@ What to watch over time: the number of deliberate duplicates (it should be small
 7. Which overlaps are commercial (two brands selling to the same customer) and so need a portfolio decision rather than a platform?
 8. What does each level-2 capability cost to run, and which ones can we attribute revenue to?
 9. When we acquire the next marketplace, how quickly can we map it onto our capabilities?
+
+{id: business-capabilities--from-capabilities-to-contexts}
+## From Capabilities to Contexts
 
 The capability map tells Veldmark *what* the group does and where it does it several times. It does not say where one model of a listing should end and another begin, which team should own which part, or how the parts should talk to each other. That is a decomposition question, and it needs a different tool: domain-driven design's bounded contexts and context maps, applied in [Bounded Contexts for Marketplaces: Where One Listing Becomes Many Models](#bounded-contexts).
 

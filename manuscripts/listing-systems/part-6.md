@@ -23,7 +23,7 @@
 
 Part V made contact between strangers safe enough to happen. Part VI turns to **what the marketplace earns from it**. A classifieds site usually steps aside before the sale, so it charges for access to attention: the right to list, a better position, a package of slots, a lead, an advertisement.
 
-The argument of this part is that **conversion and monetization are one pipeline with a conflict built in**. The marketplace earns its core revenue when buyers find the right listing quickly. Many of its revenue lines, from paid positions to display ads, earn more when buyers see more pages or when paid listings displace relevant ones. These chapters sell attention while measuring, and capping, what each sale costs the match rate.
+The argument of this part is that **conversion and monetization are one pipeline with a conflict built in**. The marketplace earns its core revenue when buyers find the right listing quickly. Many of its revenue lines, from paid positions to display ads, earn more when buyers see more pages or when paid listings displace relevant ones. These chapters design each revenue line to sell attention while measuring, and capping, what it costs the match rate.
 
 ![Pipeline in which attention becomes contacts and then revenue, with paid products feeding in through capped valves and a match-rate gauge below.](listing-systems-architecture/posts/part-6-intro/assets/images/part-6-intro/money-pipeline-with-guardrail.jpeg)
 
@@ -43,12 +43,12 @@ The argument of this part is that **conversion and monetization are one pipeline
 {id: part-6--how-this-part-connects}
 ## How this part connects
 
-[Part V — TRUST: Keeping the Marketplace Safe](#part-5) handed this part three threads. The message safety gate comes from the trust-and-safety platform, in-platform payments bring DAC7 seller reporting into scope, and trader records feed billing. Paid effects flow into the ranking built in [Part IV — DISCOVERY: Matching Intent to Inventory](#part-4), under its relevance floor. [Part VII — PLATFORM: The Distributed System Underneath](#part-7) supplies the plumbing: paid effects and leads travel as events, "contact" becomes a governed metric, and pricing tests get guardrails. For the payments and ledger depth behind Safe Deal, see the sibling book's [Payments for Finance Architects: Eleven Reasons the Numbers Disagree](https://zeljkoobrenovic.github.io/spec-driven-journals/finance-systems-architecture/payments-fundamentals.html).
+[Part V — TRUST: Keeping the Marketplace Safe](#part-5) handed this part three threads: the message safety gate comes from the trust-and-safety platform, in-platform payments bring DAC7 seller reporting into scope, and trader records feed billing. Paid effects flow into the ranking built in [Part IV — DISCOVERY: Matching Intent to Inventory](#part-4), under its relevance floor. [Part VII — PLATFORM: The Distributed System Underneath](#part-7) supplies the plumbing: paid effects and leads travel as events, "contact" becomes a governed metric, and pricing tests get guardrails. For the payments and ledger depth behind Safe Deal, see the sibling book's [Payments for Finance Architects: Eleven Reasons the Numbers Disagree](https://zeljkoobrenovic.github.io/spec-driven-journals/finance-systems-architecture/payments-fundamentals.html).
 
 {id: part-6--the-veldmark-thread}
 ## The Veldmark thread
 
-Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)), earned €1.31 billion in 2026, sold through four separate product catalogs and a group ad unit. Femke's Rotterdam city bike, sold for €225 through Tradeyard Safe Deal, and the Essen Golf's 23 raw leads (19 once repeat contacts are merged) carry the thread. Ingrid Halvorsen's team, with Olivier Petit, decides:
+Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)), earned €1.31 billion in 2026, sold through four separate product catalogs and a group ad unit. Femke's Rotterdam city bike, sold for €225 through Tradeyard Safe Deal, and the Essen Golf's 23 raw leads (19 once repeat contacts are merged) carry the thread. Ingrid Halvorsen's team, with Olivier Petit, decides:
 
 - **one group conversation service** with a message safety gate (May 2027), live for Tradeyard NL and BE in November 2027, and a lead event contract with a stable lead ID in Q1 2028;
 - three **monetization proposals** at the advice forum in May 2027: a Top listing price rise approved, a Motorvane per-lead "lead ledger" counted but not yet billed, and a Hearthly commission pilot for 2028;

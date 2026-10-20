@@ -23,9 +23,9 @@
 
 Most marketplaces build trust and safety (T&S, the policies, systems and people that keep users safe and the inventory honest) in the order problems appear. A keyword filter arrives after the first wave of spam, a review queue after the first press story, a report button after the first regulator letter. Each piece is attached to whatever system was nearest. Ten years later the group has **four moderation stacks that cannot share a signal**, and nobody can answer a simple question: *what did we remove last month, why, and did it actually disappear?*
 
-This chapter treats trust and safety as a **platform capability** with its own architecture. It defines the five functions and the components that implement them. It follows one enforcement decision through every system that has to obey it, and sets out the metrics that show whether the platform works. It also argues for a split: share the machinery across brands, keep the policy local.
+Part IV built search, recommendations and alerts to put a listing in front of buyers within seconds, and each of them must also obey a removal. This chapter, the first of Part V, treats trust and safety as a **platform capability** with its own architecture. It defines the five functions and the components that implement them. It follows one enforcement decision through every system that has to obey it, and sets out the metrics that show whether the platform works. It also argues for a split: share the machinery across brands, keep the policy local.
 
-Fraud is the most expensive harm a classifieds platform faces, and it has its own chapter, [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention), which owns risk scoring, fraud signals and step-up friction. Identity levels and verification belong to [Who Is on the Other Side? Identity and Verification](#identity-and-verification). The legal detail of the Digital Services Act (DSA) and other regulation belongs to [Rules of the Marketplace: DSA, DAC7 and Vertical Regulation](#marketplace-regulation). Here we build the platform those chapters plug into. The running example is Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)).
+Fraud is the most expensive harm a classifieds platform faces, and it has its own chapter, [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention), which owns risk scoring, fraud signals and step-up friction. Identity levels and verification belong to [Who Is on the Other Side? Identity and Verification](#identity-and-verification). The legal detail of the Digital Services Act (DSA) and other regulation belongs to [Rules of the Marketplace: DSA, DAC7 and Vertical Regulation](#marketplace-regulation). Here we build the platform those chapters plug into. The running example is Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)).
 
 {id: trust-and-safety-architecture--setting-the-scene-at-veldmark-four-stacks-and-one-phishing-link}
 ## Setting the Scene at Veldmark: Four Stacks and One Phishing Link
@@ -108,11 +108,9 @@ The [Category Trees That Can Change: Designing Marketplace Taxonomies](#categori
 
 The reference architecture below is assembled from public building blocks: Meta's Sigma rule engine, described in a 2015 engineering post; Stripe Radar's documented rule operations; OLX's published chat moderation; the DSA's notice, statement-of-reasons and appeal requirements; and the practices recommended in a July 2026 expert report commissioned by Ofcom, the UK online-safety regulator. **It is a reference-architecture inference. No classifieds company has published its T&S architecture in this form.**
 
-![The trust and safety platform as components. Detection and human review both feed one decision service, which is the single writer of decision records; enforcement, user notices, appeals, evidence and metrics all derive from those records.](listing-systems-architecture/diagrams/c3fbe0171f32421b.png)
+![Diagram: The trust and safety platform as components](listing-systems-architecture/posts/24-trust-and-safety-architecture/assets/images/24-trust-and-safety-architecture/fig02-trust-safety-platform-components-detection-human.jpeg)
 
 **Figure 2:** *The trust and safety platform as components. Detection and human review both feed one decision service, which is the single writer of decision records; enforcement, user notices, appeals, evidence and metrics all derive from those records.*
-
-The components and their responsibilities:
 
 | Component | Responsibility | Key interface |
 | --- | --- | --- |
@@ -171,7 +169,7 @@ Human review exists for three reasons: to decide the grey zone that automation c
 
 Stripe's documentation for its Radar fraud product gives a rule that transfers directly: **a review queue that almost always ends in the same outcome should become an automated rule** ([Stripe Radar docs, n.d.](https://docs.stripe.com/radar/rules)). The inverse also holds. An automated rule that reviewers would frequently overturn should go back to the queue.
 
-The **random sample** deserves emphasis. The Ofcom-commissioned expert report of July 2026 recommends that larger platforms regularly review randomly sampled ad impressions and the most-viewed ads to estimate the prevalence of violating content ([Integrity Institute for Ofcom, 2026](https://www.ofcom.org.uk/siteassets/resources/documents/research-and-data/online-advertising/fraudulent-advertising-and-account-integrity_expert-insights-on-best-practice.pdf)). For a classifieds platform the equivalent is a stratified sample of live listings and delivered messages per category and country, reviewed blind. It is the only number in trust and safety that does not depend on what the detectors already catch.
+The **random sample** gives the only number in trust and safety that does not depend on what the detectors already catch. The Ofcom-commissioned expert report of July 2026 recommends that larger platforms regularly review randomly sampled ad impressions and the most-viewed ads to estimate the prevalence of violating content ([Integrity Institute for Ofcom, 2026](https://www.ofcom.org.uk/siteassets/resources/documents/research-and-data/online-advertising/fraudulent-advertising-and-account-integrity_expert-insights-on-best-practice.pdf)). For a classifieds platform the equivalent is a stratified sample of live listings and delivered messages per category and country, reviewed blind.
 
 {id: trust-and-safety-architecture--llms-in-the-pipeline}
 ### LLMs in the pipeline
@@ -191,7 +189,7 @@ My rule for placing LLMs in a moderation pipeline has four parts:
 {id: trust-and-safety-architecture--the-enforcement-ladder}
 ### The enforcement ladder
 
-Removal is the action everyone thinks of, but it is rarely the only sensible one. The Ofcom-commissioned experts describe a graduated ladder, from a nudge through posting limits, payment freezes and re-verification to suspension. They note that payment freezes need a higher evidentiary threshold ([Integrity Institute for Ofcom, 2026](https://www.ofcom.org.uk/siteassets/resources/documents/research-and-data/online-advertising/fraudulent-advertising-and-account-integrity_expert-insights-on-best-practice.pdf)). A ladder for a classifieds platform:
+Removal is one rung of a ladder of actions, and often not the right one. The Ofcom-commissioned experts describe a graduated ladder, from a nudge through posting limits, payment freezes and re-verification to suspension. They note that payment freezes need a higher evidentiary threshold ([Integrity Institute for Ofcom, 2026](https://www.ofcom.org.uk/siteassets/resources/documents/research-and-data/online-advertising/fraudulent-advertising-and-account-integrity_expert-insights-on-best-practice.pdf)). A ladder for a classifieds platform:
 
 | Rung | Action | Target | Typical trigger | DSA statement of reasons? |
 | --- | --- | --- | --- | --- |
@@ -204,7 +202,7 @@ Removal is the action everyone thinks of, but it is rarely the only sensible one
 | 7 | Payment freeze | Payouts | Strong fraud evidence on a transaction | Yes (monetary restriction) |
 | 8 | Suspension or termination | Account, and linked accounts | Fraud, repeated violations | Yes |
 
-The fifth column is where many ranking teams are surprised. Article 17 of the DSA covers **demotion** as well as removal, so a ranking system that quietly pushes suspected scam listings down the results is taking a moderation decision that needs a statement of reasons. The DSA Transparency Database schema has a value for exactly this case, `DECISION_VISIBILITY_CONTENT_DEMOTED` ([European Commission, n.d.](https://transparency.dsa.ec.europa.eu/page/api-documentation)). **Ranking teams are in the moderation business** whether they like it or not, and actor-trust down-ranking belongs behind the decision service, not inside a ranking feature. [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking) covers the ranking side of this boundary.
+The fifth column surprises many ranking teams: Article 17 of the DSA covers **demotion** as well as removal, so a ranking system that quietly pushes suspected scam listings down the results is taking a moderation decision that needs a statement of reasons. The DSA Transparency Database schema has a value for exactly this case, `DECISION_VISIBILITY_CONTENT_DEMOTED` ([European Commission, n.d.](https://transparency.dsa.ec.europa.eu/page/api-documentation)). **Ranking teams are in the moderation business**, and actor-trust down-ranking belongs behind the decision service, not inside a ranking feature. [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking) covers the ranking side of this boundary.
 
 {id: trust-and-safety-architecture--one-decision-many-consumers}
 ### One decision, many consumers
@@ -228,7 +226,7 @@ The pattern that works is the one [Every Change Is an Event: Event-Driven Listin
 
 The failure mode is **Ghost Inventory** caused by enforcement. Veldmark's ledger records one benign version. Femke's bike was marked sold at 18:10 on Monday 8 March and removed from search at 18:11, yet the evening alert digest still featured it the next morning. A sold bike in a digest wastes a buyer's time. A *fraudulent* listing in a digest, after the platform has decided to remove it, sends buyers to a scammer under the platform's own brand. Unpublish propagation for sold and expired listings is owned by [From Submitted to Searchable: The Publication Pipeline](#publication-pipeline). Enforcement should ride on the same mechanism, with a higher priority and a stricter time budget.
 
-![Enforcement as an event. One decision fans out to every consumer that holds a copy of the account's listings or conversations, and each consumer acknowledges, so the platform can prove when the suspension actually took effect everywhere.](listing-systems-architecture/diagrams/87370881a51ebc59.png)
+![Diagram: Enforcement as an event](listing-systems-architecture/posts/24-trust-and-safety-architecture/assets/images/24-trust-and-safety-architecture/fig04-enforcement-event-one-decision-fans-out.jpeg)
 
 **Figure 4:** *Enforcement as an event. One decision fans out to every consumer that holds a copy of the account's listings or conversations, and each consumer acknowledges, so the platform can prove when the suspension actually took effect everywhere.*
 
@@ -256,9 +254,9 @@ Article 16 of the DSA requires an easy, electronic notice mechanism and lists wh
 {id: trust-and-safety-architecture--case-management}
 ### Case management
 
-Case management is where most T&S platforms either earn or lose their reviewers' productivity. The features that matter are not exotic: grouping related items into one case (all listings of a ring, all reports about one account), showing the evidence the detectors used, showing the actor's history across brands where the law permits, prefilled reason templates from the policy registry, service-level timers, and a second-review sample for quality control.
+Case management is where most T&S platforms either earn or lose their reviewers' productivity. The features that matter are ordinary: grouping related items into one case (all listings of a ring, all reports about one account), showing the evidence the detectors used, showing the actor's history across brands where the law permits, prefilled reason templates from the policy registry, service-level timers, and a second-review sample for quality control.
 
-![The lifecycle of a case. "Decided" and "Enforced" are separate states because a decision that has not propagated is not yet in effect; an appeal produces a new decision linked to the original, never an edit of it.](listing-systems-architecture/diagrams/1a0d1875ed119e52.png)
+![Diagram: The lifecycle of a case](listing-systems-architecture/posts/24-trust-and-safety-architecture/assets/images/24-trust-and-safety-architecture/fig05-lifecycle-case-decided-enforced-are-separate.jpeg)
 
 **Figure 5:** *The lifecycle of a case. "Decided" and "Enforced" are separate states because a decision that has not propagated is not yet in effect; an appeal produces a new decision linked to the original, never an edit of it.*
 
@@ -276,7 +274,7 @@ Three architectural rules follow:
 {id: trust-and-safety-architecture--statements-of-reasons-as-a-by-product-not-a-project}
 ### Statements of reasons as a by-product, not a project
 
-Every restriction an EU platform imposes on a user's content or account needs a statement of reasons to that user (Art. 17), and every statement must be submitted, without personal data, to the Commission's DSA Transparency Database (Art. 24(5)). The database is large. For the 180 days to 19 October 2026 it held about **4.4 billion** statements from 375 platforms, with **41%** of decisions fully automated ([DSA Transparency Database](https://transparency.dsa.ec.europa.eu/), accessed 19 October 2026).
+Every restriction an EU platform imposes on a user's content or account needs a statement of reasons to that user (Art. 17), and every statement must be submitted, without personal data, to the Commission's DSA Transparency Database (Art. 24(5)). For the 180 days to 19 October 2026 it held about **4.4 billion** statements from 375 platforms, with **41%** of decisions fully automated ([DSA Transparency Database](https://transparency.dsa.ec.europa.eu/), accessed 19 October 2026).
 
 At Tradeyard Netherlands, about 1.9% of new listings were removed for policy or fraud reasons in 2026. With roughly 1.05 million new Dutch listings a week, that is about **20,000 statements of reasons a week from listing removals alone**, before account suspensions and message decisions. Nobody writes those by hand. A platform that has a decision record with policy ID, ground, action, scope, automation flags and source can generate the statement mechanically. A platform without one builds five exporters, as Veldmark had. The [Rules of the Marketplace: DSA, DAC7 and Vertical Regulation](#marketplace-regulation) chapter follows Veldmark's statement-of-reasons pipeline in detail. The point here is that **the decision record is the upstream design**, and the regulatory output is a view of it.
 
@@ -307,7 +305,7 @@ Aisha's first measurement exercise, in April 2027, drew a blind sample of 4,000 
 
 **Figure 6:** *Removal counts suggested 0.2% of Tradeyard NL's live listings violated a policy; a blind random sample of live listings found about 0.6%, mostly in harms the detectors could not see.*
 
-The queue economics that shaped the shared platform's design were simple:
+These weekly queue numbers set the shared platform's design targets:
 
 | Quantity (Tradeyard, weekly) | 2026 baseline | Design target, end of 2028 |
 | --- | --- | --- |
@@ -324,12 +322,12 @@ The design did not aim to remove moderators. It moved about **15 of them from gr
 {id: trust-and-safety-architecture--in-practice-what-is-publicly-documented}
 ## In Practice: What Is Publicly Documented
 
-The honest headline is that **classifieds companies publish very little about their T&S architecture**. What is public is enough to anchor the reference design, but not to describe any company's internals.
+**Classifieds companies publish very little about their T&S architecture**. What is public is enough to anchor the reference design, but not to describe any company's internals.
 
 - **Shared moderation in a portfolio.** Adevinta's 2023 annual report, published in April 2024, says the central technology team's focus had historically been "on consolidating enabling capabilities such as cloud and data, and overarching elements such as chat and moderation" ([Adevinta Annual Report 2023](https://live.euronext.com/sites/default/files/company_press_releases/attachments_oslo/2024/04/26/616971_Adevinta%20AR%202023.pdf)). Moderation was among the first capabilities a multi-country group chose to share. The report does not describe the architecture, and Adevinta's operating model changed after its 2024 take-private.
 - **Shared moderation models.** In a March 2023 engineering post, Adevinta described a "Text in Image" OCR service run by a central team across its marketplaces. It detects insults, hidden messages, phone numbers, e-mail addresses and URLs inside ad images. The post reports volume growing from more than 100 million to 330 million requests a month ([Adevinta Tech Blog, 2023](https://adevinta.com/techblog/text-in-image-2-0-improving-ocr-service-with-paddleocr/)). A shared detector with one API contract and many tenants is exactly the kind of component a group platform should own.
 - **Real-time chat moderation.** OLX's January 2026 post describes real-time moderation of chat messages, a generative-AI image check that blocks suspicious images before delivery, and account bans "as they strike" ([OLX Group, 2026](https://www.olxgroup.com/?p=4590)). It gives no architecture and no human-review detail.
-- **Rules as code, deployed in minutes.** Meta's 2015 post on Sigma describes a rule engine that evaluates policies on every interaction at more than a million requests per second, with policies written in Haskell and hot-swapped into production continuously ([Engineering at Meta, 2015](https://engineering.fb.com/2015/06/26/security/fighting-spam-with-haskell/)). The system is more than ten years old and certainly changed since, but the principle, that **a new rule should reach production in minutes, not with the next monolith deploy**, is exactly what Tradeyard Belgium lacked on 7 March.
+- **Rules as code, deployed in minutes.** Meta's 2015 post on Sigma describes a rule engine that evaluates policies on every interaction at more than a million requests per second, with policies written in Haskell and hot-swapped into production continuously ([Engineering at Meta, 2015](https://engineering.fb.com/2015/06/26/security/fighting-spam-with-haskell/)). The system is more than ten years old and has surely changed since, but the principle, that **a new rule should reach production in minutes, not with the next monolith deploy**, is exactly what Tradeyard Belgium lacked on 7 March.
 - **Rule operations.** Stripe's Radar documentation describes backtesting rules on the past six months of data before activation, a 0% traffic allocation that runs a rule in shadow mode and reports what would have happened, gradual rollout, and an audit trail of who changed each rule ([Stripe Radar docs, n.d.](https://docs.stripe.com/radar/rules)). Payments are not classifieds, but rule lifecycle management transfers unchanged.
 
 > **INFERENCE, NOT DOCUMENTED:** Public job postings for Adevinta-group companies in 2025–2026 mention a global fraud detection and moderation component deployed in several countries. That suggests a shared T&S platform serving multiple country marketplaces, but job postings describe intent, not production design. This book does not treat it as a documented architecture.
@@ -356,7 +354,7 @@ Veldmark's principle for Common Ground is **share platforms, not products**. Tru
 
 The table hides one hard constraint: **sharing signals across brands is a data protection question before it is an engineering one**. Lucía Ortega, Veldmark's Data Protection Officer, approved a shared block list of hashed phone numbers, e-mail addresses, IBANs and device identifiers for accounts terminated for fraud, with a documented fraud-prevention purpose (the GDPR recognizes fraud prevention as a legitimate interest), a two-year retention limit and a data protection impact assessment. She did not approve sharing raw message content or behavioral histories between brands. The architecture enforces that line: the shared store holds hashes and decision references, and per-brand stores hold content.
 
-![The tenancy split adopted for Common Ground. The machinery is shared; policy overlays, vertical detectors and thresholds belong to each brand's tenant. Keybridge, a SaaS tool that does not publish listings to consumers itself, is not a tenant.](listing-systems-architecture/diagrams/273206427d4db84b.png)
+![Diagram: The tenancy split adopted for Common Ground](listing-systems-architecture/posts/24-trust-and-safety-architecture/assets/images/24-trust-and-safety-architecture/fig07-tenancy-split-adopted-common-ground-machinery.jpeg)
 
 **Figure 7:** *The tenancy split adopted for Common Ground. The machinery is shared; policy overlays, vertical detectors and thresholds belong to each brand's tenant. Keybridge, a SaaS tool that does not publish listings to consumers itself, is not a tenant.*
 
@@ -375,7 +373,7 @@ Keybridge's absence is deliberate. It sends agencies' listings to many portals, 
 | **Fully central T&S** (one policy, one team, one queue) | Consistency; scale economies in review | Local law and language suffer; brands lose control of their customer experience | Brands share one product and one market |
 | **Vendor platform** (T&S software and outsourced review) | Speed to start; mature tooling; elastic review capacity | Policy knowledge sits with the vendor; signals and labels may not be portable; data protection reviews per vendor | Early-stage marketplaces, or as the review workforce under a group-owned decision record |
 
-The vendor row deserves a caution rather than a dismissal. Outsourced review capacity is normal in the industry, and Veldmark keeps its two review vendors. What it does not outsource is the **decision record, the policy registry and the labels**. A platform whose labels live in a vendor's system cannot retrain its own models or switch vendors without losing its history.
+A vendor can supply review capacity, but not the records the platform learns from. Outsourced review is normal in the industry, and Veldmark keeps its two review vendors. What it does not outsource is the **decision record, the policy registry and the labels**. A platform whose labels live in a vendor's system cannot retrain its own models or switch vendors without losing its history.
 
 {id: trust-and-safety-architecture--where-to-put-human-judgement}
 ### Where to put human judgement
@@ -387,7 +385,7 @@ The vendor row deserves a caution rather than a dismissal. Outsourced review cap
 | LLMs in the grey zone | Fast policy iteration; better explanations | Cost, latency, adversarial prompts; cannot decide appeals |
 | More sampling | Honest prevalence and recall | Reviewer time spent on mostly clean items |
 
-The tension between moderation and liquidity is real. Every minute a listing waits is a minute it cannot be found, and the [Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics](#liquidity-and-network-effects) chapter shows why the first hours of a listing's life matter most. The answer is not a single mode but **risk tiers with explicit time budgets per tier**, reviewed with the marketplace general managers who carry the liquidity targets.
+Moderation costs liquidity. Every minute a listing waits is a minute it cannot be found, and the [Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics](#liquidity-and-network-effects) chapter shows why the first hours of a listing's life matter most. The answer is not a single mode but **risk tiers with explicit time budgets per tier**, reviewed with the marketplace general managers who carry the liquidity targets.
 
 {id: trust-and-safety-architecture--vertical-differences}
 ## Vertical Differences
@@ -432,7 +430,7 @@ Trust and safety is one of the few capabilities where **sharing pays from the fi
 | Automation thresholds | Policy owner and model owner jointly | Overturn rate and sampled precision per policy |
 | Review vendors and their scope | T&S lead and procurement | Label portability; vendor access to evidence |
 
-Three long-term considerations deserve a place on the architecture roadmap.
+Three long-term trends belong on the architecture roadmap.
 
 - **T&S is a consumer of everything.** It needs listing events, message events, login events, payment events and media events. A group without a reliable event backbone cannot build a shared T&S platform, which is why Veldmark's backbone (July 2027) came before its shared T&S platform (November 2027).
 - **Regulation will keep adding outputs, not inputs.** The DSA, the UK Online Safety Act and successors mostly ask for evidence, notices and reports derived from decisions. A platform built around a clean decision record absorbs new regulation as new views. One built around queues absorbs it as new projects.
@@ -462,7 +460,8 @@ This chapter built the machinery: policies, detection, one decision service, enf
 {id: trust-and-safety-architecture--sources-and-evidence}
 ## Sources and Evidence
 
-**Company engineering and investor sources**
+{id: trust-and-safety-architecture--company-engineering-and-investor-sources}
+### Company engineering and investor sources
 
 - [Adevinta Annual Report 2023](https://live.euronext.com/sites/default/files/company_press_releases/attachments_oslo/2024/04/26/616971_Adevinta%20AR%202023.pdf) — Adevinta, 2024. Chat and moderation among the first capabilities consolidated across marketplaces.
 - [Text in Image 2.0: improving OCR service with PaddleOCR](https://adevinta.com/techblog/text-in-image-2-0-improving-ocr-service-with-paddleocr/) — Adevinta Tech Blog, 2023. A shared OCR moderation service across marketplaces; volumes.
@@ -470,14 +469,16 @@ This chapter built the machinery: policies, detection, one decision service, enf
 - [Fighting spam with Haskell](https://engineering.fb.com/2015/06/26/security/fighting-spam-with-haskell/) — Engineering at Meta, 2015. Sigma rule engine; rules as code deployed continuously.
 - [Fraud prevention rules (Radar)](https://docs.stripe.com/radar/rules) — Stripe, n.d. (current documentation). Backtesting, shadow mode, rollout, rule audit trail, review-queue guidance.
 
-**Standards, regulation and documentation**
+{id: trust-and-safety-architecture--standards-regulation-and-documentation}
+### Standards, regulation and documentation
 
 - [Regulation (EU) 2022/2065 (Digital Services Act)](https://eur-lex.europa.eu/eli/reg/2022/2065/oj) — Official Journal, 2022. Arts. 16, 17, 20, 21, 22 and 24: notice and action, statements of reasons (including demotion), internal complaints, trusted flaggers, transparency; quotations checked against the Official Journal text retrieved through the EU Publications Office.
 - [DSA Transparency Database](https://transparency.dsa.ec.europa.eu/) — European Commission, rolling statistics accessed 19 October 2026. Volume and automation share of statements of reasons.
 - [DSA Transparency Database API documentation](https://transparency.dsa.ec.europa.eu/page/api-documentation) — European Commission, n.d. Decision fields including `DECISION_VISIBILITY_CONTENT_DEMOTED`.
 - [Fraudulent advertising and account integrity: expert insights on best practice](https://www.ofcom.org.uk/siteassets/resources/documents/research-and-data/online-advertising/fraudulent-advertising-and-account-integrity_expert-insights-on-best-practice.pdf) — Integrity Institute for Ofcom, 2026. Enforcement ladder, random sampling for prevalence.
 
-**Research and practitioner sources**
+{id: trust-and-safety-architecture--research-and-practitioner-sources}
+### Research and practitioner sources
 
 - [Scam ads slipping through the net too easily on second-hand marketplaces](https://www.which.co.uk/policy-and-insight/article/scam-ads-slipping-through-the-net-too-easily-on-second-hand-marketplaces-which-warns-aqyF66m1TlU1) — Which?, 2024. Edited scam ads passing review in minutes.
 - [Leboncoin a prétendu à tort qu'il relisait toutes les annonces](https://www.clubic.com/leboncoin/actualite-789848-leboncoin-condamnation.html) — Clubic, 2015. Court finding on misleading pre-moderation claims; hosting status.

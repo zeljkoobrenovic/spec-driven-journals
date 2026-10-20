@@ -21,9 +21,9 @@
 > * **The Attribute Junkyard** — Gives every attribute one definition that forms, feeds, filters and rules compile from.
 > * **Ghost Inventory** — Makes every lifecycle transition an event with a deadline, so no copy outlives the listing.
 
-Part I described the business behind the listings. Part II turns to **the thing being sold**. Most marketplaces modeled the listing once, at launch, and have extended it ever since. Fifteen years later the `ads` table has two hundred columns, category IDs live in the code, and nobody can say which copy of a listing is the true one.
+Part I drew the domain boundaries and decided who owns the listing's truth; Part II designs **the thing being sold** inside them. Most marketplaces modeled the listing once, at launch, and have extended it ever since. Fifteen years later the `ads` table has two hundred columns, category IDs live in the code, and nobody can say which copy of a listing is the true one.
 
-The argument of this part is that a listing is **an offer about a thing, not the thing itself**. The aggregate stays small and strict. Around it sit five subdomains, each with its own owner and rate of change: categories, attributes, media, location and the parties who list. Once each has a contract, ingestion, search, trust and billing read the same meaning instead of guessing it.
+This part argues that a listing is **an offer about a thing, not the thing itself**. The aggregate stays small and strict. Around it sit five subdomains, each with its own owner and rate of change: categories, attributes, media, location and the parties who list. Give each one a contract, and ingestion, search, trust and billing read the same meaning instead of guessing it.
 
 ![A small central listing card linked by dashed ID references to five owned islands: categories, attributes, media, location and accounts.](listing-systems-architecture/posts/part-2-intro/assets/images/part-2-intro/small-aggregate-five-subdomains.jpeg)
 
@@ -49,7 +49,7 @@ The argument of this part is that a listing is **an offer about a thing, not the
 {id: part-2--the-veldmark-thread}
 ## The Veldmark thread
 
-Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)), starts 2027 with four Tradeyard country trees and 3,900 attribute keys, 41% of them used on fewer than 0.1% of listings. Ingrid Halvorsen's team decides:
+Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)), starts 2027 with four Tradeyard country trees and 3,900 attribute keys, 41% of them used on fewer than 0.1% of listings. Ingrid Halvorsen's team decides:
 
 - a **common listing lifecycle** with an enforcement overlay owned by trust and safety, shipped in Listing event contract v1 on 1 July 2027;
 - **Veldmark Place**, a gazetteer and precision-policy service (May 2027), so private sellers' precise points never reach a client;

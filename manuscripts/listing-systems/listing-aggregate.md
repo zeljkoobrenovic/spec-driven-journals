@@ -12,7 +12,7 @@
 > **KEY POINTS:**
 >
 > * **A listing is an offer, not the thing.** It is a seller's time-bounded public statement about an item, a vehicle, a property or a job, at a price and under conditions. Keep the listing separate from the underlying entity, from what the seller has paid for and from the moderation case, and reference them by ID instead of copying them in.
-> * **The lifecycle has three owners, so model three dimensions.** Seller intent (draft, active, paused, sold, withdrawn), platform time (expiry, renewal, archiving) and enforcement (held, blocked, demoted) change for different reasons and have different appeals. One overloaded status field is how listings end up both "sold" and "promoted".
+> * **The lifecycle has three owners, so model two dimensions.** Seller intent (draft, active, paused, sold, withdrawn) and platform time (expiry, renewal, archiving) share a publication state; enforcement (held, blocked, demoted) is a separate overlay, because it changes for different reasons and has its own appeals. One overloaded status field is how listings end up both "sold" and "promoted".
 > * **Every transition is an event with a deadline.** The listing service owns the aggregate and publishes a versioned event for each state change. Each consumer has a contract for how quickly it must react, and removal deadlines matter more than insertion ones. Ghost inventory is what happens when one copy does not listen.
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](#where-listing-systems-go-wrong):**
@@ -23,14 +23,14 @@
 
 Every listing marketplace has a table called something like `ads`, `items` or `listings`, and most have had it since the first release. It starts with a title, a price, a category and a status column. Fifteen years later it has two hundred columns, a status field with twenty values, three flags that mean "promoted" in different ways and a `deleted` column that nobody trusts. **The listing is the oldest and most copied object in the platform, and usually the least designed.**
 
-This chapter treats the listing as what domain-driven design calls an **aggregate**: a cluster of data with one root, one owner and a set of rules that must hold after every change, updated only through that owner. [Bounded Contexts for Marketplaces: Where One Listing Becomes Many Models](#bounded-contexts) explains why the listing means different things in Supply, Search, Trust and Monetization. This chapter designs the Supply-side core that all of them depend on: identity, invariants, lifecycle, versions and the events that leave the aggregate. Categories, attributes, media, location and seller accounts each get their own chapter in Part II; here they appear only as references the aggregate holds.
+This chapter treats the listing as what domain-driven design calls an **aggregate**: a cluster of data with one root, one owner and a set of rules that must hold after every change, updated only through that owner. [Bounded Contexts for Marketplaces: Where One Listing Becomes Many Models](#bounded-contexts) explained why the listing means different things in Supply, Search, Trust and Monetization, and [Same Platform, Different Physics: How Listing Verticals Differ](#vertical-requirements) showed that cars and apartments have identities that outlive any listing. This chapter designs the Supply-side core that all of them depend on: identity, invariants, lifecycle, versions and the events that leave the aggregate. Categories, attributes, media, location and seller accounts each get their own chapter in Part II; here they appear only as references the aggregate holds.
 
-The test of a listing model is simple. **At any moment, can the platform say whether a listing is for sale, who can see it, who can contact it and why?** Most can answer for the owning database and fail for the copies. The architecture in this chapter is built to answer for all of them.
+The test of a listing model is simple. **At any moment, can the platform say whether a listing is for sale, who can see it, who can contact it and why?** Most platforms can answer for the owning database and fail for the copies. The states and events defined here are what later chapters use to answer for every copy: [From Submitted to Searchable: The Publication Pipeline](#publication-pipeline) measures freshness against them, search and [Tell Me When It Appears: Saved Searches and Alerts](#saved-searches-and-alerts) react to them, and [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings) and [System of Record and Read Models: Listing Data Management](#listing-data-management) carry them to every copy.
 
 {id: listing-aggregate--setting-the-scene-at-veldmark-four-answers-to-one-question}
 ## Setting the Scene at Veldmark: Four Answers to One Question
 
-Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)), has a listing that sold twice in its systems. On **Sunday 7 March 2027 at 19:42 CET**, Femke, a private seller in Rotterdam, listed a used city bike on Tradeyard Netherlands for **€240**. It sold on **Monday 8 March** for **€225** through Tradeyard Safe Deal's "pay at pickup". Femke marked it sold at **18:10**; it left search at **18:11**. On Tuesday morning, the morning alert digest, assembled the evening before, still told 214 buyers about it.
+Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)), has a listing whose state its systems could not agree on. On **Sunday 7 March 2027 at 19:42 CET**, Femke, a private seller in Rotterdam, listed a used city bike on Tradeyard Netherlands for **€240**. It sold on **Monday 8 March** for **€225** through Tradeyard Safe Deal's "pay at pickup". Femke marked it sold at **18:10**; it left search at **18:11**. On Tuesday morning, an alert digest assembled the evening before still told 214 buyers about it.
 
 Ingrid Halvorsen, who joined as Group Chief Architect in February 2027, asks a question in her second month that sounds pedantic: *what was the state of Femke's bike at 08:00 on Tuesday?* Daan Visser, Tradeyard's engineering director, pulls the answers from four systems.
 
@@ -53,7 +53,7 @@ Sven Lindqvist, the principal engineer for the event platform, is preparing the 
 {id: listing-aggregate--what-a-listing-is-and-what-it-is-not}
 ## What a Listing Is, and What It Is Not
 
-A **listing** is a seller's public, time-bounded offer about a specific thing: an item to sell, a vehicle, a property to sell or let, a job to fill. It carries the seller's description of the thing, a price or price state, a location, media and contact options, and it has a lifecycle that ends. The productscape model this book draws on (see [Map What the Marketplace Does Before What Runs It](#business-capabilities)) defines it as "a seller-created marketplace offer with lifecycle, visibility, and transaction state". That definition is right, and it hides a distinction that matters more every year.
+A **listing** is a seller's public, time-bounded offer about a specific thing: an item to sell, a vehicle, a property to sell or let, a job to fill. It carries the seller's description of the thing, a price or price state, a location, media and contact options, and it has a lifecycle that ends. The productscape model this book draws on (see [Map What the Marketplace Does Before What Runs It](#business-capabilities)) defines it as "a seller-created marketplace offer with lifecycle, visibility, and transaction state". That definition is right, but it does not separate the listing from its neighbors.
 
 | Concept | What it is | Identity | Lifetime | Example |
 | --- | --- | --- | --- | --- |
@@ -66,7 +66,7 @@ A **listing** is a seller's public, time-bounded offer about a specific thing: a
 
 The distinction between listing and entity is the one that marketplaces discover late. One apartment produces many listings: several agencies at once, then a new listing each time it is sold or let again. One car produces a dealer listing, a private listing three years later and a listing on every competing portal. eBay's attribute model formalizes part of this: each attribute ("aspect") is marked as applying to the **product** or to the **individual item**, so a listing can inherit product facts from a catalog while condition stays on the listing ([eBay Taxonomy API specification](https://developer.ebay.com/develop/api/spec/taxonomy_api.json), n.d.). eBay also shows the limit of pushing the idea too far: its Product-Based Shopping Experience required catalog association for listings from 2018, and eBay's own playbook now states that the mandate for all categories and brands was rolled back ([eBay PBSE playbook](https://developer.ebay.com/api-docs/sell/static/inventory/pbse_playbook_intro.html), n.d., covering 2018–2020).
 
-The rule I use: **the listing references the entity; it never is the entity.** The listing holds an optional `entity_ref` (a canonical property, a vehicle identity, a catalog product) that [One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution) maintains. Prices, descriptions and states belong to the listing. Facts about the thing that outlive any listing, such as a property's surface area from a registry or a vehicle's first registration, belong to the entity, with provenance.
+The rule I use: **the listing references the entity; it never is the entity.** The listing holds an optional `entity_ref` (a canonical property, a vehicle identity, a catalog product) that [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution) maintains. Prices, descriptions and states belong to the listing. Facts about the thing that outlive any listing, such as a property's surface area from a registry or a vehicle's first registration, belong to the entity, with provenance.
 
 ![One apartment as a long-lived entity, with several short-lived listing cards along a timeline all pointing back to it.](listing-systems-architecture/posts/07-listing-aggregate/assets/images/07-listing-aggregate/one-entity-many-listings.jpeg)
 
@@ -75,7 +75,7 @@ The rule I use: **the listing references the entity; it never is the entity.** T
 {id: listing-aggregate--inside-the-aggregate-and-outside-it}
 ### Inside the aggregate, and outside it
 
-An aggregate is defined as much by what it excludes as by what it holds. The test is transactional: a field belongs inside if a change to it must be validated together with the listing's other rules in one write. Otherwise it is a reference.
+The test for what belongs inside is transactional: a field belongs inside if a change to it must be validated together with the listing's other rules in one write. Otherwise it is a reference.
 
 | Inside the listing aggregate | Referenced by ID, owned elsewhere | Owner of the reference |
 | --- | --- | --- |
@@ -90,7 +90,7 @@ An aggregate is defined as much by what it excludes as by what it holds. The tes
 | Ranking timestamp (last renewal) | Paid products, entitlements and placements | [Packages, Bumps and Quotas: Products, Pricing and Entitlements](#products-and-entitlements) |
 | Availability, quantity, unit structure | Orders and payments | [Beyond the Contact: Payments, Shipping and Buyer Protection](#transactions-and-payments) |
 
-Two rows deserve emphasis. **Paid visibility is a reference, not a flag.** A `top_until` column on the listing is a copy of a fact owned by the entitlement service, and copies drift: Femke's bike carried a default `top_until` it never paid for. The listing may cache a projection of active placements for display, but the entitlement service decides what was sold, and ranking reads placements, not listing columns (see [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking)). **Moderation decisions are also references.** The listing knows that it is held or blocked and by which decision; the decision itself, with its evidence, reviewer and policy version, lives in the trust-and-safety case store, because it must survive the listing's deletion.
+Two rows matter most. **Paid visibility is a reference, not a flag.** A `top_until` column on the listing is a copy of a fact owned by the entitlement service, and copies drift: Femke's bike carried a default `top_until` it never paid for. The listing may cache a projection of active placements for display, but the entitlement service decides what was sold, and ranking reads placements, not listing columns (see [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking)). **Moderation decisions are also references.** The listing knows that it is held or blocked and by which decision; the decision itself, with its evidence, reviewer and policy version, lives in the trust-and-safety case store, because it must survive the listing's deletion.
 
 {id: listing-aggregate--identity-one-id-several-keys}
 ## Identity: One ID, Several Keys
@@ -113,7 +113,7 @@ The hard identity question is **relisting**. When a sold or expired listing come
 | --- | --- | --- | --- |
 | Seller renews an expired listing within the renewal window | Keeps URL, history and favorites | Loses them | **Same ID**, new version, state back to active |
 | Seller sold, the sale fell through, item is back | Honest history, "back on the market" signal | Looks fresh | **Same ID**, transition sold → active, recorded |
-| Seller deletes and reposts to look new | Not what the seller asked for | What the seller asked for | **New ID**, but linked by [One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution) to the old one, so ranking and duplicate rules can see the repost |
+| Seller deletes and reposts to look new | Not what the seller asked for | What the seller asked for | **New ID**, but linked by [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution) to the old one, so ranking and duplicate rules can see the repost |
 | A property is put on the market again a year later | Mixes two sale campaigns | Clean campaign metrics | **New ID**, same entity reference |
 | Dealer re-imports the same vehicle after a feed outage | Keeps continuity | Creates duplicates | **Same ID**, matched by external key |
 
@@ -146,8 +146,8 @@ Two design rules follow from the table.
 
 **Enforce on create and on revise.** eBay's aspect metadata warns that a seller "will be blocked from listing or revising an item without" required aspects ([eBay Taxonomy API specification](https://developer.ebay.com/develop/api/spec/taxonomy_api.json), n.d.). That is how a marketplace backfills a newly required attribute over time without a mass migration: each edit must satisfy the current rules. The price is friction for sellers who want to change only the price, so I exempt price-only and pause-only commands from new attribute requirements and apply them on every other edit.
 
-{id: listing-aggregate--the-lifecycle-three-dimensions-not-one-status}
-## The Lifecycle: Three Dimensions, Not One Status
+{id: listing-aggregate--the-lifecycle-two-dimensions-not-one-status}
+## The Lifecycle: Two Dimensions, Not One Status
 
 A **listing lifecycle** is the set of states a listing can be in, the transitions between them, who may trigger each transition, and what each state means for visibility, contact and retention. The usual implementation is a single `status` column. It fails because three different parties change a listing's state for unrelated reasons.
 
@@ -155,13 +155,13 @@ A **listing lifecycle** is the set of states a listing can be in, the transition
 - **The platform clock** expires, renews, archives and purges.
 - **Trust and safety** holds, blocks, restricts and restores, with appeals.
 
-When these share one column, every combination needs its own value ("paused_and_blocked", "expired_under_review"), or one owner overwrites another's state. The classic bug: a seller "resumes" a listing that trust and safety blocked, because the resume command set `status = active`. The fix is structural. I model the lifecycle as **a publication state owned by the listing, plus an enforcement overlay owned by trust and safety**, and derive visibility from both.
+When these share one column, every combination needs its own value ("paused_and_blocked", "expired_under_review"), or one owner overwrites another's state. The classic bug: a seller "resumes" a listing that trust and safety blocked, because the resume command set `status = active`. The fix is structural. I model the lifecycle as **a publication state owned by the listing, plus an enforcement overlay owned by trust and safety**, and derive visibility from both. Seller and clock transitions share the publication state, because both decide whether the offer is open. Enforcement gets its own field, because it changes for other reasons and has its own appeals.
 
 ![Left, three hands fight over one status lever; right, a publication dial and a separate enforcement overlay feed a derived visibility indicator.](listing-systems-architecture/posts/07-listing-aggregate/assets/images/07-listing-aggregate/three-hands-one-status.jpeg)
 
 **Figure 3:** *Seller, platform clock and trust and safety change a listing for unrelated reasons, so the lifecycle is a publication state plus an enforcement overlay, with visibility derived from both.*
 
-![The publication lifecycle owned by the listing service. Seller transitions and clock transitions are distinct; renewal returns the same listing to active; nothing is deleted until retention ends. Enforcement is deliberately absent: it is an overlay, shown in the next table.](listing-systems-architecture/diagrams/90d1d22492f1bdad.png)
+![Diagram: The publication lifecycle owned by the listing service](listing-systems-architecture/posts/07-listing-aggregate/assets/images/07-listing-aggregate/fig04-publication-lifecycle-owned-listing-service-seller.jpeg)
 
 **Figure 4:** *The publication lifecycle owned by the listing service. Seller transitions and clock transitions are distinct; renewal returns the same listing to active; nothing is deleted until retention ends. Enforcement is deliberately absent: it is an overlay, shown in the next table.*
 
@@ -187,7 +187,7 @@ The URL column belongs to [Found by Google: Web, App and SEO Architecture for Li
 {id: listing-aggregate--renewal-bumps-and-the-timestamps-that-make-recency-honest}
 ### Renewal, bumps and the timestamps that make recency honest
 
-Three timestamps carry most of the ranking and analytics weight, and confusing them is expensive.
+Ranking and analytics depend on three timestamps, and confusing them breaks both.
 
 | Timestamp | Meaning | Who moves it |
 | --- | --- | --- |
@@ -207,7 +207,7 @@ Three timestamps carry most of the ranking and analytics weight, and confusing t
 {id: listing-aggregate--versions-change-history-and-price-history}
 ## Versions, Change History and Price History
 
-A **listing version** is an immutable snapshot of the aggregate's seller-visible content after one accepted change, numbered with a monotonically increasing integer per listing. Versions serve four masters.
+A **listing version** is an immutable snapshot of the aggregate's seller-visible content after one accepted change, numbered with a monotonically increasing integer per listing. Versions do four jobs.
 
 1. **Ordering.** Downstream consumers apply changes only if the version is newer than what they hold; the version number becomes the external version for the search index (see [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture)) and the ordering key for events.
 2. **Concurrency.** Commands carry the version they were based on. A dealer feed and the dealer's staff editing the same listing in the pro tool cannot silently overwrite each other; the second writer gets a conflict and re-reads. This is optimistic concurrency, and it is what mobile.de's "no parallel requests on the same ad" rule approximates.
@@ -228,7 +228,7 @@ The outbox pattern writes the event into an outbox table in the same database tr
 {id: listing-aggregate--price-history-is-a-regulated-series}
 ### Price history is a regulated series
 
-Price deserves its own history beyond versions, for three reasons. Buyers react to it: price-drop alerts to watchers are among the most effective notifications a marketplace sends (see [Tell Me When It Appears: Saved Searches and Alerts](#saved-searches-and-alerts)). Models learn from it: asking-price trajectories and the gap to the final price feed valuation and price guidance. And regulation reads it: the EU Price Indication Directive, as amended by the Omnibus Directive and applied from 28 May 2022, requires any announcement of a price reduction by a trader to indicate the prior price ([European Commission, Price Indication Directive](https://commission.europa.eu/law/law-topic/consumer-protection-law/unfair-commercial-practices-and-price-indication/price-indication-directive_en), n.d.). The prior price is defined in Article 6a as the lowest price the trader applied during a period of at least 30 days before the reduction; check the national transposition for the exact rule in each market. A dealer listing that shows "price reduced" must therefore be backed by a price series the platform can query, per listing and per seller, with timestamps.
+Price deserves its own history beyond versions, for three reasons. Buyers react to it: watchers get price-drop alerts (see [Tell Me When It Appears: Saved Searches and Alerts](#saved-searches-and-alerts)). Models learn from it: asking-price trajectories and the gap to the final price feed valuation and price guidance. And regulation reads it: the EU Price Indication Directive, as amended by the Omnibus Directive and applied from 28 May 2022, requires any announcement of a price reduction by a trader to indicate the prior price ([European Commission, Price Indication Directive](https://commission.europa.eu/law/law-topic/consumer-protection-law/unfair-commercial-practices-and-price-indication/price-indication-directive_en), n.d.). The prior price is defined in Article 6a as the lowest price the trader applied during a period of at least 30 days before the reduction; check the national transposition for the exact rule in each market. A dealer listing that shows "price reduced" must therefore be backed by a price series the platform can query, per listing and per seller, with timestamps.
 
 I store a **price event series** per listing: amount, currency, price state, effective time, source (seller, feed, automatic repricing rule) and the version that carried it. "Price reduced" badges, prior-price display and price-drop alerts all read from it. They do not compare two snapshots.
 
@@ -240,7 +240,7 @@ Some attributes change meaning without anyone editing the listing. France's ener
 {id: listing-aggregate--availability-units-and-multi-item-listings}
 ## Availability, Units and Multi-Item Listings
 
-Not every listing describes one thing that sells once. The aggregate must say how many things it offers and when they are available, because search filters, alerts and the sold transition all depend on it.
+Not every listing offers one thing that sells once. The aggregate must say how many things it offers and when they are available, because search filters, alerts and the sold transition all depend on it.
 
 | Shape | Example | Model | Sold transition |
 | --- | --- | --- | --- |
@@ -258,7 +258,7 @@ Two rules keep this manageable. **The parent is a listing only if buyers can con
 
 The listing aggregate is owned by one service per marketplace: the **listing service** (in productscape terms, Classifieds Management). It accepts commands, enforces invariants, writes versions and emits events. Everything else is a reader or a contributor of references.
 
-![One owner, many copies. Every write enters through the listing service, including platform-clock and enforcement transitions; every copy is rebuilt from the event stream. No consumer writes listing state back, and the search index can be rebuilt from the store at any time.](listing-systems-architecture/diagrams/762dd0650c67d3a2.png)
+![Diagram: One owner, many copies](listing-systems-architecture/posts/07-listing-aggregate/assets/images/07-listing-aggregate/fig05-one-owner-many-copies-every-write.jpeg)
 
 **Figure 5:** *One owner, many copies. Every write enters through the listing service, including platform-clock and enforcement transitions; every copy is rebuilt from the event stream. No consumer writes listing state back, and the search index can be rebuilt from the store at any time.*
 
@@ -279,7 +279,7 @@ The command interface is small and explicit. I prefer intent-named commands to a
 | `ApplyEnforcement`, `LiftEnforcement` | Any | `ListingRestricted`, `ListingBlocked`, `ListingRestored` | Search, alerts, messaging: minutes, faster for fraud |
 | `Archive`, `Purge` (clock) | Terminal states | `ListingArchived`, `ListingPurged` | Every copy, including media and analytics, within the erasure deadline |
 
-The table names events by meaning. The published contract carries twelve domain event types: drafts and internal moderation steps stay inside Supply, and related transitions share one type distinguished by a `cause` field (see [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings)). Three properties make this work in practice.
+The table names events by meaning. The published contract carries twelve domain event types: drafts and internal moderation steps stay inside Supply, and related transitions share one type distinguished by a `cause` field (see [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings)). Three properties make the contract work.
 
 **Events carry state, not only notice.** Each event carries the new version, the publication state, the overlay and the changed fields, so a consumer that missed an event can still converge on the latest one. A consumer receiving version 7 when it holds version 5 applies version 7; a consumer receiving version 5 when it holds 7 ignores it.
 
@@ -298,10 +298,10 @@ No classifieds company has published its full listing lifecycle or event model. 
 | RESO Data Dictionary 2.0 (revised 2023) | Eleven standard statuses, including *Active Under Contract*, *Coming Soon* and *Hold* | Vertical lifecycles are richer than goods lifecycles; map them explicitly |
 | Auto Trader plc FY26 results (2026) | Retailer backlash to the Deal Builder reservation rollout in late 2025; Auto Trader paused auto-rollout and introduced "request a reservation" | A platform-controlled state on a dealer's stock changes the dealer's operating model |
 
-The Auto Trader case deserves a moment. In its results for the year to March 2026, Auto Trader describes pausing the automatic rollout of Deal Builder, holding listening sessions and introducing "request a reservation" after retailer pushback ([Auto Trader Group plc, FY26 results](https://plc.autotrader.co.uk/media/usjleen0/full-year-press-release-fy26.pdf), 2026). Trade press reported that the original flow let consumers place a paid reservation and that the revised one leaves the reservation to the retailer's discretion ([Car Dealer Magazine](https://cardealermagazine.co.uk/auto-trader-tweaks-deal-builder-product-making-reservations-optional/320706), 2025). The architectural lesson, which is my interpretation rather than Auto Trader's statement, is that **who may trigger a transition is part of the business model**. In a dealer-supplied vertical, a "reserved" state that the platform sets on the dealer's inventory is a change to the dealer's sales process. Transition permissions belong in the lifecycle specification, per vertical and per seller type, and should be configurable without code.
+The Auto Trader case shows that **who may trigger a transition is part of the business model**; that lesson is my interpretation rather than Auto Trader's statement. In its results for the year to March 2026, Auto Trader describes pausing the automatic rollout of Deal Builder, holding listening sessions and introducing "request a reservation" after retailer pushback ([Auto Trader Group plc, FY26 results](https://plc.autotrader.co.uk/media/usjleen0/full-year-press-release-fy26.pdf), 2026). Trade press reported that the original flow let consumers place a paid reservation and that the revised one leaves the reservation to the retailer's discretion ([Car Dealer Magazine](https://cardealermagazine.co.uk/auto-trader-tweaks-deal-builder-product-making-reservations-optional/320706), 2025). In a dealer-supplied vertical, a "reserved" state that the platform sets on the dealer's inventory is a change to the dealer's sales process. Transition permissions belong in the lifecycle specification, per vertical and per seller type, and should be configurable without code.
 
-{id: listing-aggregate--the-rotterdam-bike-transition-by-transition}
-### The Rotterdam bike, transition by transition
+{id: listing-aggregate--the-rotterdam-city-bike-transition-by-transition}
+### The Rotterdam city bike, transition by transition
 
 Here is Femke's bike under the Common Ground lifecycle that Veldmark adopted in 2027, replayed against the March events. The times and version numbers match the event log in [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings); versions 4 to 7, Femke's Sunday-night edits and a photo reorder, are omitted.
 
@@ -323,7 +323,7 @@ The 07:00 digest on Tuesday is the Ghost Inventory failure in miniature. Under t
 {id: listing-aggregate--trade-offs}
 ## Trade-offs
 
-Beyond the storage choice above, three decisions shape every listing model.
+Beyond the storage choice above, four decisions shape every listing model.
 
 | Decision | Option A | Option B | When A is right | When B is right |
 | --- | --- | --- | --- | --- |
@@ -337,7 +337,7 @@ The retention row has a regulatory floor and ceiling. The Digital Services Act g
 {id: listing-aggregate--vertical-differences}
 ## Vertical Differences
 
-The aggregate's shape is common across verticals; its lifecycle, units and invariants are not. [Same Platform, Different Physics: General, Real Estate, Automotive and Jobs](#vertical-requirements) compares the verticals broadly; this table covers what changes in the listing model.
+The aggregate's shape is common across verticals; its lifecycle, units and invariants are not. [Same Platform, Different Physics: How Listing Verticals Differ](#vertical-requirements) compares the verticals broadly; this table covers what changes in the listing model.
 
 | Dimension | General classifieds | Real estate | Automotive | Jobs | Recommerce (shipped goods) |
 | --- | --- | --- | --- | --- | --- |
@@ -402,6 +402,9 @@ At Veldmark the table translates into configuration, not forks. Tradeyard, Motor
 8. Where is price history stored, and can the platform show a trader's prior price for any reduction it displays?
 9. What is the retention schedule per data class for ended listings, and which event tells every copy to purge?
 10. How are feed-specific states, such as RESO statuses or an agency software's codes, mapped to the platform's lifecycle, and who owns that mapping?
+
+{id: listing-aggregate--from-aggregate-to-category}
+## From Aggregate to Category
 
 The aggregate holds a category ID and a taxonomy version, and treats both as given. They are not. The category decides which attributes are required, which moderation rules apply, what a listing costs and where it appears, and the tree that defines categories has to change while millions of listings sit in it. [Category Trees That Can Change: Designing Marketplace Taxonomies](#categories-and-taxonomies) designs that tree.
 

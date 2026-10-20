@@ -1,7 +1,7 @@
 {id: reliability-and-scale}
-# 40. Sunday Night Peaks: Reliability, Performance and Cost
+# 40. Sunday Evening Peaks: Reliability, Performance and Cost
 
-![Sunday Night Peaks: Reliability, Performance and Cost — logo](listing-systems-architecture/posts/40-reliability-and-scale/assets/images/40-reliability-and-scale/logo.jpeg)
+![Sunday Evening Peaks: Reliability, Performance and Cost — logo](listing-systems-architecture/posts/40-reliability-and-scale/assets/images/40-reliability-and-scale/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Take apart one 48-minute search brown-out and rebuild the reliability architecture it exposed. You will define service level objectives for the journeys that create liquidity, plan capacity for evening and campaign peaks, design degradation modes, decide how far to go with multiple regions, manage bots and scrapers, and measure cost per search and per listing.
 
@@ -21,16 +21,16 @@
 > * **Vanity Liquidity** — uptime percentages per service look healthy while the evening journeys that produce contacts degrade; objectives must be set on the journeys that create matches.
 > * **The Acquisition Archipelago** — four stacks with four search clusters, four observability bills and four on-call rotations pay for peak capacity and reliability engineering four times.
 
-Listing platforms have a traffic shape that most engineers recognize within a week of joining: quiet nights, a lunchtime bump, and a long evening peak when people browse from the sofa. On top of that come the spikes the business creates itself — a television campaign, a push notification to millions of alert subscribers, a bulk feed from a large dealer group — and the traffic nobody invited, from scrapers and bots. **Reliability engineering in a marketplace is mostly the discipline of knowing that shape and designing for it**, rather than reacting to it.
+The earlier chapters of [Part VII — PLATFORM: The Distributed System Underneath](#part-7) built the shared platform beneath Veldmark's brands; this one asks whether that platform holds at the hour when liquidity is made. **Reliability engineering in a marketplace is mostly the discipline of knowing the traffic shape and designing for it**, rather than reacting to it. The shape is familiar: quiet nights, a lunchtime bump and a long evening peak when people browse from the sofa. On top come the spikes the business creates itself — a television campaign, a push notification to millions of alert subscribers, a bulk feed from a large dealer group — and the traffic nobody invited, from scrapers and bots.
 
-The stakes are asymmetric. A minute of failed search at the weekly peak loses more contacts than an hour at night, and contacts are the currency of a listing marketplace (see [Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics](#liquidity-and-network-effects)). Peaks are also when sellers check whether their new listing is visible, when scammers count on moderators being stretched, and when advertising inventory is worth the most. **The peak hour is where reliability, revenue and trust meet.**
+The stakes are asymmetric: a minute of failed search at the weekly peak loses more contacts than an hour at night, and contacts are the currency of a listing marketplace (see [Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics](#liquidity-and-network-effects)). Peaks are also when sellers check whether their new listing is visible, when scammers count on moderators being stretched, and when advertising inventory is worth the most. **The peak hour is where reliability, revenue and trust meet.**
 
-This chapter covers the traffic shape, journey-level objectives, capacity planning, caching, graceful degradation, multiple regions, incident management, bot management and cost. It builds on the platform chapters before it: [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture) owns index design and reindexing mechanics, [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings) owns the event backbone, and [One Platform, Many Marketplaces: Multi-Country and Multi-Brand Architecture](#multi-country-platforms) owns the shared-platform model whose blast radius this chapter has to manage.
+The chapter builds on its neighbors: [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture) owns index design and reindexing mechanics, [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings) the event backbone, and [One Platform, Many Marketplaces: Multi-Country and Multi-Brand Architecture](#multi-country-platforms) the shared-platform model whose blast radius this chapter has to manage. What it adds — journey objectives, a degradation ladder, a regional ambition and unit costs per brand — is what [Part VIII — LEADERSHIP: The Chief Architect's Agenda](#part-8) weighs when it decides which of Veldmark's stacks to consolidate.
 
-{id: reliability-and-scale--setting-the-scene-forty-eight-minutes-on-a-sunday-evening}
-## Setting the Scene: Forty-Eight Minutes on a Sunday Evening
+{id: reliability-and-scale--setting-the-scene-at-veldmark-forty-eight-minutes-on-a-sunday-evening}
+## Setting the Scene at Veldmark: Forty-Eight Minutes on a Sunday Evening
 
-On **Sunday 17 January 2027**, at **20:35 CET**, search on Tradeyard Netherlands slowed down. Tradeyard is the general classifieds brand of Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)). The 99th-percentile latency of search requests rose from about **400 ms** to about **7 seconds** and stayed there for **48 minutes**. About **9%** of search requests failed outright. The apps showed spinners, then error messages; the web showed partial result pages without facets.
+On **Sunday 17 January 2027**, at **20:35 CET**, search on Tradeyard Netherlands slowed down. Tradeyard is the general classifieds brand of Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)). The 99th-percentile latency of search requests rose from about **400 ms** to about **7 seconds** and stayed there for **48 minutes**. About **9%** of search requests failed outright. The apps showed spinners, then error messages; the web showed partial result pages without facets.
 
 The post-incident review, which Ingrid Halvorsen reads in her first week as Group Chief Architect in February 2027, finds no single cause. Three ordinary things happened at once.
 
@@ -40,13 +40,13 @@ The post-incident review, which Ingrid Halvorsen reads in her first week as Grou
 
 Two amplifiers made it worse. The apps retried failed search requests twice with no backoff, turning slow responses into more load. And about a third of the requests reaching the search backend came from automated clients — search engine crawlers, price monitors, scrapers — none of which were throttled when the cluster struggled.
 
-![The brown-out's causal chain. No component failed on its own; a predictable peak met a scheduled batch job, cold caches, unthrottled bots and client retries that fed the overload back into the cluster.](listing-systems-architecture/diagrams/682647623b15d72c.png)
+![Diagram: The brown-out's causal chain](listing-systems-architecture/posts/40-reliability-and-scale/assets/images/40-reliability-and-scale/fig01-brown-out-s-causal-chain-no.jpeg)
 
 **Figure 1:** *The brown-out's causal chain. No component failed on its own; a predictable peak met a scheduled batch job, cold caches, unthrottled bots and client retries that fed the overload back into the cluster.*
 
-The review estimates about **3.4 million** failed search requests in the 48 minutes and about **9,800** fewer first contacts than on a comparable Sunday evening. Its action items are familiar: move the reindex, warm caches, add capacity. Ingrid's question is different. *Why did nothing in the architecture know that Sunday at 20:35 matters more than Tuesday at 04:00, that a campaign was coming, that bots could wait, or that facets were optional?*
+The review estimates about **3.4 million** failed search requests in the 48 minutes and about **9,800** fewer first contacts than on a comparable Sunday evening. Its action items are familiar: move the reindex, warm caches, add capacity. Ingrid asks a different question, which the rest of this chapter answers. *Why did nothing in the architecture know that Sunday at 20:35 matters more than Tuesday at 04:00, that a campaign was coming, that bots could wait, or that facets were optional?*
 
-The rest of this chapter answers that question. The "Sunday-evening peak" is a Veldmark illustration; the documented public example of a marketing-driven peak is Rightmove's, which in 2021 named its busiest minute as "8:48 pm on Wednesday, during the final ad break on prime-time TV" ([Google Cloud press release, 2021](https://www.googlecloudpresscorner.com/2021-12-09-Rightmove-Sets-up-Home-With-Google-Cloud)).
+The "Sunday-evening peak" is a Veldmark illustration; the documented public example of a marketing-driven peak is Rightmove's, which in 2021 named its busiest minute as "8:48 pm on Wednesday, during the final ad break on prime-time TV" ([Google Cloud press release, 2021](https://www.googlecloudpresscorner.com/2021-12-09-Rightmove-Sets-up-Home-With-Google-Cloud)).
 
 {id: reliability-and-scale--the-traffic-shape-of-a-listing-platform}
 ## The Traffic Shape of a Listing Platform
@@ -54,7 +54,7 @@ The rest of this chapter answers that question. The "Sunday-evening peak" is a V
 {id: reliability-and-scale--predictable-sharp-and-partly-self-made}
 ### Predictable, sharp and partly self-made
 
-Four kinds of load shape a listing platform.
+Four kinds of load shape a listing platform, and three of them can be predicted.
 
 | Load | Shape | Predictability | Example |
 | --- | --- | --- | --- |
@@ -63,7 +63,7 @@ Four kinds of load shape a listing platform.
 | **Supply events** | Bursts of writes and index updates | Medium | Bulk dealer feed uploads; price changes across a dealer group; the morning after a holiday |
 | **External shocks** | Sudden shifts from outside | Low | Vinted reported that the October 2021 Facebook outage added about 15% load to its databases ([Vinted Engineering, 2023](https://vinted.engineering/2023/04/27/vinted-vitess-voyage-chapter-3-the-great-migration/)) |
 
-Seasonality can be strong enough to drive architecture. Vinted described its autumn — "the most extreme growth and workload period of the whole year" — as the pressure that pushed it from manually sharded MySQL to Vitess ([Vinted Engineering, 2023](https://vinted.engineering/2023/04/27/vinted-vitess-voyage-chapter-1-autumn-is-coming/)). Real estate has spring and back-to-school rental peaks; automotive has registration-plate and bonus-season effects in some markets. None of this is surprising. What is surprising is how often the architecture treats it as if it were.
+Seasonality can be strong enough to drive architecture. Vinted described its autumn — "the most extreme growth and workload period of the whole year" — as the pressure that pushed it from manually sharded MySQL to Vitess ([Vinted Engineering, 2023](https://vinted.engineering/2023/04/27/vinted-vitess-voyage-chapter-1-autumn-is-coming/)). Real estate has spring and back-to-school rental peaks; automotive has registration-plate and bonus-season effects in some markets. None of this is surprising, yet architectures often treat it as if it were.
 
 {id: reliability-and-scale--the-traffic-nobody-invited}
 ### The traffic nobody invited
@@ -108,23 +108,23 @@ Three design choices in that table matter more than the numbers.
 {id: reliability-and-scale--error-budgets-that-change-behavior}
 ### Error budgets that change behavior
 
-An error budget is useful only if spending it changes decisions. Veldmark's policy, adopted by the architecture advice forum in April 2027, is simple: when a journey has spent more than half of its 28-day budget, changes to the components on that journey's critical path need the journey owner's approval; when the budget is gone, only reliability fixes ship to those components until it recovers. The brown-out alone spent about **30%** of Tradeyard NL's 28-day search budget in 48 minutes, counting failed and slow human requests against about 7 billion search requests in a 28-day period.
+An error budget is useful only if spending it changes decisions. Veldmark's policy, adopted by the architecture advice forum in April 2027: when a journey has spent more than half of its 28-day budget, changes to the components on that journey's critical path need the journey owner's approval; when the budget is gone, only reliability fixes ship to those components until it recovers. The brown-out alone spent about **30%** of Tradeyard NL's 28-day search budget in 48 minutes, counting failed and slow human requests against about 7 billion search requests in a 28-day period.
 
 Peak-hour weighting is the marketplace-specific refinement. A failure at the weekly peak costs more contacts than the same failure at night, so Veldmark reports search reliability both overall and for the peak window, Sunday 18:00–23:00, with the peak window as the one the brand general managers see. The alternative — weighting events by expected contacts — is more precise and harder to explain; I would start with the separate peak window.
 
-{id: reliability-and-scale--architecture-where-reliability-is-built}
-## Architecture: Where Reliability Is Built
+{id: reliability-and-scale--architecture-control-points-in-the-search-path}
+## Architecture: Control Points in the Search Path
 
-![Control points in the search path. The edge classifies and throttles automated traffic and serves cached pages; the gateway admits, sheds and degrades requests; facets and personalization are separate, optional calls; batch reindexing is throttled and kept out of peak windows by the same calendar that drives pre-scaling.](listing-systems-architecture/diagrams/5a52c5e85d5b82b9.png)
+![Diagram: Control points in the search path](listing-systems-architecture/posts/40-reliability-and-scale/assets/images/40-reliability-and-scale/fig03-control-points-search-path-edge-classifies.jpeg)
 
 **Figure 3:** *Control points in the search path. The edge classifies and throttles automated traffic and serves cached pages; the gateway admits, sheds and degrades requests; facets and personalization are separate, optional calls; batch reindexing is throttled and kept out of peak windows by the same calendar that drives pre-scaling.*
 
-The figure shows search, the journey most exposed to peaks, but the same control points apply elsewhere: classify at the edge, admit and degrade at a gateway, separate optional work from essential work, and keep batch work under a calendar.
+The same control points apply to every journey, not only to search, the one most exposed to peaks: classify at the edge, admit and degrade at a gateway, separate optional work from essential work, and keep batch work under a calendar.
 
 {id: reliability-and-scale--isolation-separating-what-can-wait-from-what-cannot}
 ### Isolation: separating what can wait from what cannot
 
-The brown-out happened because interactive queries, reindexing and cache warm-up shared the same nodes at the same time. The architectural remedies are standard and worth stating as rules.
+The brown-out happened because interactive queries, reindexing and cache warm-up shared the same nodes at the same time. Five standard rules keep them apart.
 
 1. **Batch work never shares capacity with peak interactive work by default.** Reindexing, backfills, sitemap rebuilds and model scoring run on separate capacity, or are throttled and scheduled outside peak windows by a calendar the platform enforces. Vinted's indexing team switched its connectors to "idle indexing" after catch-up to reduce cluster pressure ([Vinted Engineering, 2021](https://vinted.engineering/2021/02/08/elasticsearch-index-management/)).
 2. **A reindex is a deployment.** Building a new index beside the old one and switching an alias, as [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture) describes, lets the new index warm before it takes traffic. An in-place full reindex that evicts caches is the Index-as-Database failure in operational form: the index cannot be rebuilt cheaply from upstream data, so it is rebuilt in place.
@@ -137,10 +137,10 @@ The brown-out happened because interactive queries, reindexing and cache warm-up
 
 Google's SRE book gives the rules that would have shortened the brown-out: "always use randomized exponential backoff when scheduling retries", "consider having a server-wide retry budget", and "avoid amplifying retries by issuing retries at multiple levels" ([Ulrich, in *Site Reliability Engineering*, 2016](https://sre.google/sre-book/addressing-cascading-failures/)). The same chapter recommends that overloaded servers shed load and that degraded modes be tested regularly, because rarely used paths break.
 
-For a marketplace the translation is concrete. Apps retry search at most once, with jitter, and only on errors that a retry can fix. The gateway enforces a retry budget across clients. Timeouts shrink as requests move down the stack, so a slow search node fails a request quickly instead of holding it. Admission control at the gateway rejects or degrades requests when concurrency passes a limit, rather than letting queues grow until everything is slow. OLX is reported to have published a two-part post in 2021 on load shedding with NGINX using adaptive concurrency control; it could not be retrieved or verified for this book, so treat it as a pointer, not evidence.
+In a marketplace, apps retry search at most once, with jitter, and only on errors that a retry can fix. The gateway enforces a retry budget across clients. Timeouts shrink as requests move down the stack, so a slow search node fails a request quickly instead of holding it. Admission control at the gateway rejects or degrades requests when concurrency passes a limit, rather than letting queues grow until everything is slow. OLX is reported to have published a two-part post in 2021 on load shedding with NGINX using adaptive concurrency control; it could not be retrieved or verified for this book, so treat it as a pointer, not evidence.
 
-{id: reliability-and-scale--caching}
-### Caching
+{id: reliability-and-scale--caching-in-three-layers}
+### Caching in three layers
 
 Caching in a listing platform has three layers, each with a different staleness tolerance.
 
@@ -155,8 +155,8 @@ Two lessons from the brown-out apply. **Warm before you switch**: any operation 
 {id: reliability-and-scale--capacity-planning-for-known-peaks}
 ## Capacity Planning for Known Peaks
 
-{id: reliability-and-scale--the-calculation}
-### The calculation
+{id: reliability-and-scale--sizing-from-the-weekly-peak}
+### Sizing from the weekly peak
 
 Capacity planning in a marketplace starts from the weekly peak, not the average. Veldmark's group-wide search load averages 9,000 queries per second and peaks at 31,000, a ratio of about 3.4. Tradeyard carries about 70% of that, roughly **21,700** queries per second at the Sunday peak, and Tradeyard NL a little under half of Tradeyard's.
 
@@ -172,15 +172,15 @@ Two levers change the result more than buying nodes. Serving landing-page and br
 
 **Figure 4:** *The cheapest capacity is the request that never reaches the cluster: edge and gateway caches plus bot shedding take about 35% of peak requests off the backend in Veldmark's 2027 plan.*
 
-{id: reliability-and-scale--the-calendar}
-### The calendar
+{id: reliability-and-scale--a-shared-calendar-of-planned-load}
+### A shared calendar of planned load
 
-The campaign factor is only knowable if engineering knows about campaigns. Veldmark's fix is organizational and small: marketing campaigns, scheduled push and e-mail sends, bulk partner imports and large batch jobs go into one **peak and campaign calendar**, owned by platform engineering, that drives pre-scaling and blocks heavy batch work in peak windows. The calendar is also where alert digests are scheduled, so that 38 million daily alert notifications do not all fire into the same evening minute.
+The campaign factor is only knowable if engineering knows about campaigns. Veldmark's fix is organizational: marketing campaigns, scheduled push and e-mail sends, bulk partner imports and large batch jobs go into one **peak and campaign calendar**, owned by platform engineering, that drives pre-scaling and blocks heavy batch work in peak windows. The calendar is also where alert digests are scheduled, so that 38 million daily alert notifications do not all fire into the same evening minute.
 
-{id: reliability-and-scale--load-testing}
-### Load testing
+{id: reliability-and-scale--peak-rehearsals}
+### Peak rehearsals
 
-Load tests should replay production query mixes, including facets and deep pagination, at peak plus campaign factor, against production-like data volumes. Testing with synthetic queries that hit warm caches proves little. The useful test for a listing platform is a **peak rehearsal**: production traffic replayed at 1.3 times the weekly peak, during a quiet window, with a deliberate cache reset and the reindex job running.
+The useful load test for a listing platform is a **peak rehearsal**: production traffic replayed at 1.3 times the weekly peak, during a quiet window, with a deliberate cache reset and the reindex job running. It replays production query mixes, including facets and deep pagination, against production-like data volumes; synthetic queries that hit warm caches prove little.
 
 {id: reliability-and-scale--graceful-degradation-deciding-in-advance-what-to-give-up}
 ## Graceful Degradation: Deciding in Advance What to Give Up
@@ -195,11 +195,11 @@ In this book a **degradation mode** is a predefined, tested reduction of functio
 | **3 Serve from cache** | p99 above 2 s, or error rate above 1% | Frequent queries and landing pages served from cache up to 10 minutes stale; deep pagination capped; sort options limited | Results a few minutes old; fewer options | On-call, with incident commander |
 | **4 Browse only** | Search cluster unavailable | Category and landing pages from edge cache; free-text search box replaced by category browse; insertion accepted and queued | Browse works, search does not, new listings delayed | Incident commander |
 
-![The search degradation ladder. Each step gives up something less essential than the step after it, and recovery steps down only after a sustained period of health, so the system does not oscillate at the peak.](listing-systems-architecture/diagrams/9196591d0a1b66e7.png)
+![Diagram: The search degradation ladder](listing-systems-architecture/posts/40-reliability-and-scale/assets/images/40-reliability-and-scale/fig05-search-degradation-ladder-each-step-gives.jpeg)
 
 **Figure 5:** *The search degradation ladder. Each step gives up something less essential than the step after it, and recovery steps down only after a sustained period of health, so the system does not oscillate at the peak.*
 
-Two pieces of documented practice support this ladder. Vinted's facet work showed that approximate counts are acceptable to users — counts above 500 are shown as "500+" and computed with an early-termination limit — and that capping facet cardinality lowers latency ([Vinted Engineering, 2023](https://vinted.engineering/2023/03/21/faceted-search-using-elasticsearch/)). And the SRE guidance on cascading failures recommends cheaper fallback work under load and regular testing of degraded paths. The marketplace-specific part is the order: **bots first, optional features second, freshness third, search itself last**. Had level 1 and level 2 existed on 17 January 2027, about a third of the backend load and the facet traffic would have gone first, and the 9% failure rate would most likely have been a few minutes of approximate counts.
+The marketplace-specific part of the ladder is its order: **bots first, optional features second, freshness third, search itself last**. Two pieces of documented practice support the steps. Vinted's facet work showed that approximate counts are acceptable to users — counts above 500 are shown as "500+" and computed with an early-termination limit — and that capping facet cardinality lowers latency ([Vinted Engineering, 2023](https://vinted.engineering/2023/03/21/faceted-search-using-elasticsearch/)). And the SRE guidance on cascading failures recommends cheaper fallback work under load and regular testing of degraded paths. Had level 1 and level 2 existed on 17 January 2027, about a third of the backend load and the facet traffic would have gone first, and the 9% failure rate would most likely have been a few minutes of approximate counts.
 
 ![A hot-air balloon carrying search drops sandbags of bots, optional features and freshness in order to stay aloft.](listing-systems-architecture/posts/40-reliability-and-scale/assets/images/40-reliability-and-scale/degradation-balloon-ballast.jpeg)
 
@@ -215,10 +215,10 @@ Each journey has its own ladder. For messaging, degraded mode delays attachments
 
 Classifieds are mostly country-scoped businesses, which shapes the regional question. Vinted, which runs one cross-border catalog, described in 2026 a design in which "all writes happen in the primary site and read-only projections are replicated around the world", and in which a multi-writer design was avoided because its operational cost is hard to justify "without a strong business need" ([Vinted Engineering, 2026](https://vinted.engineering/2026/01/09/building-global-event-driven-platform-part-2/)). Adevinta's shared Kubernetes platform reduced blast radius by running many clusters and shifting traffic between them with weighted DNS records and a controller that watches pod health ([Adevinta Tech Blog, 2023](https://adevinta.com/techblog/achieve-a-smaller-blast-radius-with-highly-available-kubernetes-clusters/)).
 
-Regional failures of a cloud provider do happen, and their shape is instructive. AWS's post-event summary of the 19–20 October 2025 disruption in its N. Virginia (us-east-1) region describes a latent defect in DynamoDB's automated DNS management that left the regional endpoint with an empty DNS record; the effects spread over about 14.5 hours to EC2 instance launches, Network Load Balancer, Lambda, container services, the Security Token Service and console sign-in ([AWS, 2025](https://aws.amazon.com/message/101925/)). Two lessons transfer to any platform. **Regional control planes are shared dependencies**: identity tokens, instance launches and load balancers can fail together. And **autoscaling is not capacity during a regional event**: if new instances cannot launch, only capacity that is already running counts.
+Regional failures of a cloud provider happen, and they take shared dependencies down together. AWS's post-event summary of the 19–20 October 2025 disruption in its N. Virginia (us-east-1) region describes a latent defect in DynamoDB's automated DNS management that left the regional endpoint with an empty DNS record; the effects spread over about 14.5 hours to EC2 instance launches, Network Load Balancer, Lambda, container services, the Security Token Service and console sign-in ([AWS, 2025](https://aws.amazon.com/message/101925/)). Two lessons transfer to any platform. **Regional control planes are shared dependencies**: identity tokens, instance launches and load balancers can fail together. And **autoscaling is not capacity during a regional event**: if new instances cannot launch, only capacity that is already running counts.
 
-{id: reliability-and-scale--options}
-### Options
+{id: reliability-and-scale--five-multi-region-options}
+### Five multi-region options
 
 | Option | What it gives | What it costs | Fits |
 | --- | --- | --- | --- |
@@ -269,8 +269,8 @@ AI crawlers add a commercial question that is not only technical. On 1 July 2025
 {id: reliability-and-scale--cost-making-scale-visible-per-unit-of-work}
 ## Cost: Making Scale Visible per Unit of Work
 
-{id: reliability-and-scale--unit-costs-that-mean-something}
-### Unit costs that mean something
+{id: reliability-and-scale--three-unit-costs}
+### Three unit costs
 
 The FinOps Foundation describes unit economics as bringing together "what an organization spends on technology and the value that technology spending creates" ([FinOps Foundation, n.d.](https://www.finops.org/framework/capabilities/unit-economics/)). For a listing platform, three unit costs are worth computing and publishing.
 
@@ -298,7 +298,7 @@ The best-documented FinOps work in classifieds is Adevinta's, and it points to p
 - **Telemetry as a cost line.** Trimming log fields and moving to a different log shipper cut OpenSearch logging cost by 35% ([Adevinta Tech Blog, 2024](https://adevinta.com/techblog/the-300-bytes-that-saved-millions-optimising-logging-at-scale/)); aggregating metrics cut ingested metrics by more than 33% and the observability bill by more than 20% ([Adevinta Tech Blog, 2024](https://adevinta.com/techblog/how-to-reduce-your-grafana-cloud-costs-with-adaptive-metrics/)).
 - **Platform defaults.** Changing node provisioning made instance-family savings possible (Intel to AMD could save up to €30,000 a month), but a "cheapest first" policy hurt CPU-bound workloads ([Adevinta Tech Blog, 2024](https://adevinta.com/techblog/the-karpenter-effect-redefining-our-kubernetes-operations/)). A webhook that schedules workloads on ARM nodes from image metadata brought ARM to thousands of applications without manifest changes; no savings figure was published ([Adevinta Tech Blog, 2023](https://adevinta.com/techblog/transparently-providing-arm-nodes-to-4000-engineers/)).
 
-The pattern is that **the platform team holds the largest cost levers**, because defaults apply to everyone. AutoScout24 published a 2026 post on a generative-AI "FinOps teammate"; its content is not covered here, but it suggests cost analysis is becoming an engineering-tooling problem as well.
+**The platform team holds the largest cost levers**, because its defaults apply to everyone.
 
 {id: reliability-and-scale--cost-and-the-acquisition-archipelago}
 ### Cost and the Acquisition Archipelago
@@ -373,7 +373,7 @@ Real estate's peculiarity is that the scarcest moments are not always the busies
 
 **Make the peak a platform concept.** The peak and campaign calendar, peak-window change freezes, batch scheduling rules and peak rehearsals are platform capabilities. They cost little and prevent the most common incidents. Marketing joins the calendar; that is a governance decision, not a technical one.
 
-**Fund degradation and read-only modes deliberately.** They are features that are used a few times a year and save the most valuable hours. They will not be built unless they are on someone's roadmap with a date.
+**Fund degradation and read-only modes deliberately.** They are features used a few times a year that save the most valuable hours, and they will not be built unless they are on someone's roadmap with a date.
 
 **Set the regional ambition explicitly.** For a country-scoped group, multi-zone plus a tested read-only standby is usually enough. Active-active should need a business case. Single-site legacy systems, like Yardstick, are the larger regional risk and deserve attention first.
 

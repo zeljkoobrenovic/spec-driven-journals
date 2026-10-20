@@ -25,12 +25,12 @@ Ask a product manager what a category is and you will hear "where the listing go
 
 That double nature is the source of the trouble. Categories look like editorial content, so they are edited like content: renamed in an admin tool, rearranged for a merchandising campaign, created by copying a neighbor. But they behave like schema, so every edit ripples into validation, pricing, search mappings, URLs, saved searches and dashboards. The result, after a decade, is the **Category Straitjacket**: a tree so entangled with code that nobody dares change it, next to an "Other" bucket that keeps growing because the tree no longer fits the supply.
 
-This chapter designs a taxonomy that can change. It defines the concepts precisely, separates the jobs a taxonomy does, shows how to publish it as versioned reference data, and turns category splits and merges into a migration runbook. [The Listing Aggregate: Identity, Lifecycle and Invariants](#listing-aggregate) established that a listing records its category *and the taxonomy version it was classified under*. Here we design the tree and its versions. [Attributes Without Chaos: Schemas, Dictionaries and Validation](#attribute-schemas) then designs the schemas that each category selects.
+Part II keeps the listing small and has it reference governed subdomains by ID. The category is the first of them and the one that selects the contract for the rest. [The Listing Aggregate: Identity, Lifecycle and Invariants](#listing-aggregate) established that a listing records its category *and the taxonomy version it was classified under*, and took both as given. This chapter designs the tree and its versions: what a category controls, how to separate classification from navigation and countries, how to release the tree as versioned reference data, and how to run splits and merges as migrations. [Attributes Without Chaos: Schemas, Dictionaries and Validation](#attribute-schemas) then designs the schemas that each category selects.
 
 {id: categories-and-taxonomies--setting-the-scene-at-veldmark-six-weeks-for-a-new-leaf}
 ## Setting the Scene at Veldmark: Six Weeks for a New Leaf
 
-In September 2027, Noor Hassan, Veldmark's Group Chief Product Officer, wants Tradeyard to split bikes. Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)), sells more used bikes on Tradeyard than almost anything else. E-bikes have become a large share of supply and an even larger share of value, but buyers cannot filter by battery capacity or motor position, and cargo bikes and kids' bikes sit in the same generic leaf as city bikes. Veldmark Ads has an e-bike retail-media campaign it cannot target. The request is four leaves under Bikes: **city bikes, e-bikes, cargo bikes and kids' bikes**.
+In September 2027, Noor Hassan, Veldmark's Group Chief Product Officer, wants Tradeyard to split bikes. Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)), sells more used bikes on Tradeyard than almost anything else. E-bikes have become a large share of supply and an even larger share of value, but buyers cannot filter by battery capacity or motor position, and cargo bikes and kids' bikes sit in the same generic leaf as city bikes. Veldmark Ads has an e-bike retail-media campaign it cannot target. The request is four leaves under Bikes: **city bikes, e-bikes, cargo bikes and kids' bikes**.
 
 Daan Visser, Tradeyard's engineering director, explains why the answer has always been "six weeks". Tradeyard runs four country category trees, built when each country launched: **1,420 leaf categories in the Netherlands, 1,380 in Belgium, 980 in Poland and 760 in Portugal**. A new category means:
 
@@ -48,7 +48,7 @@ Ingrid Halvorsen, the Group Chief Architect, does not want to solve bikes. She w
 {id: categories-and-taxonomies--what-a-category-controls}
 ## What a Category Controls
 
-A **category taxonomy** is a controlled hierarchy of classes into which every listing is placed, together with the rules that hang off each class. A **category node** is one class in it; a **leaf** is a node with no children; a **path** is the chain from the root to a node. The taxonomy is load-bearing because many systems key on it.
+A **category taxonomy** is a controlled hierarchy of classes into which every listing is placed, together with the rules that hang off each class. A **category node** is one class in it; a **leaf** is a node with no children; a **path** is the chain from the root to a node. The taxonomy is load-bearing because every system in the table below keys on it.
 
 | What depends on the category | Example | Owning chapter |
 | --- | --- | --- |
@@ -70,8 +70,8 @@ The public evidence agrees. eBay states that "every eBay listing must be listed 
 
 **Figure 1:** *A category is not a label but the key that selects the form, fees, moderation, filters, ad segments and landing pages a listing gets.*
 
-{id: categories-and-taxonomies--structural-choices}
-## Structural Choices
+{id: categories-and-taxonomies--four-structural-choices}
+## Four Structural Choices
 
 Four structural decisions shape every taxonomy. Each has a default that works for most marketplaces and conditions under which it does not.
 
@@ -91,7 +91,7 @@ My default is a **strict classification tree with leaf-only listing**, plus poly
 {id: categories-and-taxonomies--classification-is-not-navigation}
 ### Classification is not navigation
 
-The most useful structural idea in this chapter comes from Amazon's public documentation. Amazon keeps two structures: **browse nodes**, the customer-facing navigation graph, and **product types**, which define attribute schemas. New items are placed "in the appropriate place(s) within the graph", plural, while the product type decides what must be filled in ([Amazon SP-API, browse nodes and item type keywords](https://developer-docs.amazon/sp-api/docs/get-recommended-browse-nodes-or-item-type-keywords), updated 2026). The lesson, which is my inference from that design, is that **classification for schema selection and classification for browsing are different concerns**. A marketplace that fuses them has to change its schemas every time merchandising wants a new browse path, such as "Back to school" or "Moving house".
+Amazon's public documentation describes two separate structures: **browse nodes**, the customer-facing navigation graph, and **product types**, which define attribute schemas. New items are placed "in the appropriate place(s) within the graph", plural, while the product type decides what must be filled in ([Amazon SP-API, browse nodes and item type keywords](https://developer-docs.amazon/sp-api/docs/get-recommended-browse-nodes-or-item-type-keywords), updated 2026). The lesson, which is my inference from that design, is that **classification for schema selection and classification for browsing are different concerns**. A marketplace that fuses them has to change its schemas every time merchandising wants a new browse path, such as "Back to school" or "Moving house".
 
 I separate three layers:
 
@@ -117,9 +117,9 @@ Multi-country marketplaces choose between country trees, one global tree, or a c
 | **One global tree, translated** | Same nodes everywhere; labels translated | Maximum sharing | Forces local markets into one structure; local categories (a Portuguese tile category, a Polish agricultural one) have no home |
 | **Canonical tree with country views** | One canonical set of nodes with stable IDs; each country enables a subset, with its own labels, slugs and navigation | Shared semantics where they exist, local fit where they do not | Needs governance: who may add a canonical node, and when a country-only node is allowed |
 
-The third model is the one I recommend, and Katarzyna's condition is the reason it works. Each country view decides **which canonical nodes exist** for it, **what they are called** and **how they are browsed**. A node can be country-specific when the distinction exists in only one market, but it is still a canonical node with a canonical ID, so that ML models, ads and analytics can treat it consistently.
+I recommend the canonical tree with country views, because it meets Katarzyna's condition. Each country view decides **which canonical nodes exist** for it, **what they are called** and **how they are browsed**. A node can be country-specific when the distinction exists in only one market, but it is still a canonical node with a canonical ID, so that ML models, ads and analytics can treat it consistently.
 
-![Three layers. The canonical classification tree selects schemas and policies; country views, navigation trees and external mappings are derived from it. Labels, slugs, browse paths and partner codes can change without touching a single listing.](listing-systems-architecture/diagrams/7325c078c44e46d2.png)
+![Diagram: Three layers](listing-systems-architecture/posts/08-categories-and-taxonomies/assets/images/08-categories-and-taxonomies/fig02-three-layers-canonical-classification-tree-selects.jpeg)
 
 **Figure 2:** *Three layers. The canonical classification tree selects schemas and policies; country views, navigation trees and external mappings are derived from it. Labels, slugs, browse paths and partner codes can change without touching a single listing.*
 
@@ -157,7 +157,7 @@ At Veldmark the group taxonomy and attribute service is a small product with fou
 | **Read API and snapshots** | Listing service, search indexer, insertion forms, pro APIs | Full snapshot per release; node lookup by ID and version; mapping lookup; served from cache with long TTLs |
 | **Embedded client** | Services on the hot path | A library that loads the snapshot into memory, so validating a listing never calls the network |
 
-The hot-path rule matters. A listing service that calls the taxonomy service for every insertion has made the taxonomy a runtime dependency of supply. A snapshot cached in memory and refreshed on `TaxonomyReleased` makes it a dependency only of change.
+A listing service that calls the taxonomy service for every insertion has made the taxonomy a runtime dependency of supply. A snapshot cached in memory and refreshed on `TaxonomyReleased` makes it a dependency only of change.
 
 {id: categories-and-taxonomies--mapping-to-external-taxonomies}
 ## Mapping to External Taxonomies
@@ -173,7 +173,9 @@ A marketplace never owns the only taxonomy its data must fit. It must emit categ
 | **Vehicle taxonomies** | Make → model → generation → derivative, licensed from data providers or built by portals | The backbone of automotive classification | Changes monthly as new models appear; license terms may restrict redistribution |
 | **Occupation taxonomies** (ESCO, O\*NET) | Standard occupation and skill classifications | Classifying job listings | Mapping from free-text titles is probabilistic |
 
-Two cases deserve emphasis because they show how external structures move under you. First, Google added vehicle-listing structured-data documentation in October 2023, added phase-out notices in June 2025 and removed the documentation in September 2025 because these types "are no longer shown in Google Search results" ([Google Search Central, vehicle listing structured data changelog](https://developers.google.com/search/docs/appearance/structured-data/vehicle-listing), 2025). A portal that had shaped its vehicle model around Google's schema would have had to reshape it twice in two years. Second, vehicle taxonomies change with the market. Auto Trader UK's developer documentation describes its taxonomy as vehicle types, makes, models, generations and derivatives, and its release notes record model splits that "will impact derivatives" ([Auto Trader developer portal](https://developers.autotrader.co.uk/), n.d.). In automotive, the category tree beneath "Cars" is effectively a licensed or curated taxonomy that the marketplace maps onto, and its changes are migrations like any other.
+External structures change under you, as two cases show. First, Google added vehicle-listing structured-data documentation in October 2023, added phase-out notices in June 2025 and removed the documentation in September 2025 because these types "are no longer shown in Google Search results" ([Google Search Central, vehicle listing structured data changelog](https://developers.google.com/search/docs/appearance/structured-data/vehicle-listing), 2025). A portal that had shaped its vehicle model around Google's schema would have had to reshape it twice in two years.
+
+Second, vehicle taxonomies change with the market. Auto Trader UK's developer documentation describes its taxonomy as vehicle types, makes, models, generations and derivatives, and its release notes record model splits that "will impact derivatives" ([Auto Trader developer portal](https://developers.autotrader.co.uk/), n.d.). In automotive, the category tree beneath "Cars" is effectively a licensed or curated taxonomy that the marketplace maps onto, and its changes are migrations like any other.
 
 For jobs, the European Commission's ESCO classification lists 3,039 occupations and 13,939 skills in 28 languages in version 1.2.1 ([ESCO, "What is ESCO"](https://esco.ec.europa.eu/en/about-esco/what-esco), updated 2025). A jobs marketplace usually keeps a shallow internal category tree for browsing and fees and maps listings to occupation codes as an enrichment, because a job title is not reliably classifiable by the employer.
 
@@ -193,7 +195,7 @@ A **category migration** is any taxonomy change that alters which node an existi
 | **Retire** (no successor) | Listings must move or end | Notify users | 410 or 301 to parent | Remove rules | Freeze history | Reject old code with a clear error |
 | **Add** (new leaf) | Optional reclassification from parent or "Other" | None | New landing pages if demand exists | New rules | New series | New code |
 
-The table makes the key asymmetry visible: **merges are deterministic; splits are lossy.** eBay's expired-category mapping returns one target per retired category and explicitly covers "combined categories and split categories" only; for a split, a single from→to pair can name only a default target ([eBay Taxonomy API specification](https://developer.ebay.com/develop/api/spec/taxonomy_api.json), n.d.). Every listing in a split category must be reclassified, and reclassification at scale is a machine-learning problem.
+**Merges are deterministic; splits are lossy.** eBay's expired-category mapping returns one target per retired category and explicitly covers "combined categories and split categories" only; for a split, a single from→to pair can name only a default target ([eBay Taxonomy API specification](https://developer.ebay.com/develop/api/spec/taxonomy_api.json), n.d.). Every listing in a split category must be reclassified, and reclassification at scale is a machine-learning problem.
 
 ![Left, two boxes of listings flow into one box along single arrows; right, one box of listings reaches a three-way fork where each card needs a decision.](listing-systems-architecture/posts/08-categories-and-taxonomies/assets/images/08-categories-and-taxonomies/merge-deterministic-split-lossy.jpeg)
 
@@ -209,7 +211,7 @@ The pattern generalizes: **a large model as labeler, a cheap model as propagator
 {id: categories-and-taxonomies--the-migration-runbook}
 ### The migration runbook
 
-![A category migration as a release with a dual-version window. Consumers learn both versions before cut-over; listings move by rules first, then by model above a confidence threshold, then by asking sellers; saved searches, URLs, analytics and partner codes each have their own step.](listing-systems-architecture/diagrams/2eb7eceb7bff5ebe.png)
+![Diagram: A category migration as a release with a dual-version window](listing-systems-architecture/posts/08-categories-and-taxonomies/assets/images/08-categories-and-taxonomies/fig04-category-migration-release-dual-version-window.jpeg)
 
 **Figure 4:** *A category migration as a release with a dual-version window. Consumers learn both versions before cut-over; listings move by rules first, then by model above a confidence threshold, then by asking sellers; saved searches, URLs, analytics and partner codes each have their own step.*
 
@@ -245,7 +247,7 @@ The bikes split was decided on **4 October 2027**, released as group taxonomy ve
 {id: categories-and-taxonomies--the-tree-before-and-after}
 ### The tree before and after
 
-![The bikes split. Nineteen country-specific leaves become one canonical Bikes node with seven leaves present in all four country views. Road, mountain and parts leaves map one to one; the generic leaves are divided into city, e-bikes, cargo and kids' bikes.](listing-systems-architecture/diagrams/1a9e3ee5eb8de902.png)
+![Diagram: The bikes split](listing-systems-architecture/posts/08-categories-and-taxonomies/assets/images/08-categories-and-taxonomies/fig05-bikes-split-nineteen-country-specific-leaves.jpeg)
 
 **Figure 5:** *The bikes split. Nineteen country-specific leaves become one canonical Bikes node with seven leaves present in all four country views. Road, mountain and parts leaves map one to one; the generic leaves are divided into city, e-bikes, cargo and kids' bikes.*
 
@@ -290,7 +292,7 @@ The elapsed time from decision to cut-over was four weeks, but the *taxonomy* ch
 {id: categories-and-taxonomies--harmonizing-four-trees}
 ### Harmonizing four trees
 
-The bikes split is one node. The harmonization program applies the same method to the rest of the tree. The canonical tree's first release, 2027.10, contains **1,640** leaf nodes; each country tree became a view over it, with country-only nodes allowed where the distinction is genuinely local. Areas are harmonized in order of value: first where shared ML models, ad segments or Motorvane and Hearthly integration benefit most (vehicles, electronics, bikes, furniture), last where categories are small and local. The rule for a country-only node is simple: it must change a contract (schema, fee, policy or ad segment) that no canonical node provides.
+The harmonization program applies the bikes method to the rest of the tree. The canonical tree's first release, 2027.10, contains **1,640** leaf nodes; each country tree became a view over it, with country-only nodes allowed where the distinction is local. Areas are harmonized in order of value: first where shared ML models, ad segments or Motorvane and Hearthly integration benefit most (vehicles, electronics, bikes, furniture), last where categories are small and local. The rule for a country-only node is simple: it must change a contract (schema, fee, policy or ad segment) that no canonical node provides.
 
 {id: categories-and-taxonomies--trade-offs}
 ## Trade-offs
@@ -380,6 +382,9 @@ At Veldmark, the three verticals share the taxonomy *service* and its release pr
 8. Which ML models use category as a feature or are trained per category, and are they on the release's consumer list?
 9. How do country trees relate to each other, and can a shared model or ad segment address "e-bikes" in every market?
 10. What share of new listings lands in "Other", and who acts when it rises?
+
+{id: categories-and-taxonomies--from-categories-to-attributes}
+## From Categories to Attributes
 
 Categories decide which schema applies; they do not define the schemas. The battery capacity that e-bikes now require, the energy class on every French apartment and the 31 attributes a VIN decode fills for the Essen Golf all need a dictionary, types, units, enumerations and governance of their own. [Attributes Without Chaos: Schemas, Dictionaries and Validation](#attribute-schemas) designs them.
 

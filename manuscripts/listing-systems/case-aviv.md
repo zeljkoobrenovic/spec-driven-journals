@@ -23,9 +23,9 @@
 
 Most marketplace groups in this book's Part IX either built their platforms or bought marketplaces that already shared one. AVIV Group did neither. Axel Springer bought national property portals one at a time (SeLoger in France, Immoweb in Belgium, Immowelt in Germany, Logic-Immo in France again) together with an Israeli horizontal site, Yad2, and a French valuation business, Meilleurs Agents. It then gave them a common name and a common technology leadership, and in 2021 announced the goal of a European real-estate marketplace. **The case is a test of one question: how much of a property portal can be shared across countries?**
 
-The evidence is thin, and the chapter is honest about that. AVIV's GitHub organization has no public repositories, its Medium publication had no posts when the book's research fetched it in October 2026, and no conference talk by AVIV engineers was found. What exists is corporate history, regulatory decisions, trade-press interviews with AVIV executives and a handful of product announcements. **That evidence is enough to show the direction of the strategy and the funnel it served; it is not enough to describe a single system.**
+The evidence is thin. AVIV's GitHub organization has no public repositories, its Medium publication had no posts when the book's research fetched it in October 2026, and no conference talk by AVIV engineers was found. What exists is corporate history, regulatory decisions, trade-press interviews with AVIV executives and a handful of product announcements. **That evidence is enough to show the direction of the strategy and the funnel it served; it is not enough to describe a single system.**
 
-What the record does show is consistent with the argument of [Same Platform, Different Physics: General, Real Estate, Automotive and Jobs](#vertical-requirements) and [One Platform, Many Marketplaces: Multi-Country and Multi-Brand Architecture](#multi-country-platforms): in real estate, ingestion formats, mandatory disclosures, address systems, agent software and monetization norms are national, so a group platform has to stop well short of the product. **AVIV's documented moves (shared valuation science, a bundled professional offer, then local autonomy with group functions) trace that boundary from the outside.**
+The record tests the argument of [Same Platform, Different Physics: How Listing Verticals Differ](#vertical-requirements) and [One Platform, Many Marketplaces: Multi-Country and Multi-Brand Architecture](#multi-country-platforms): in real estate, ingestion formats, mandatory disclosures, address systems, agent software and monetization norms are national, so a group platform has to stop well short of the product. **AVIV's documented moves (shared valuation science, a bundled professional offer, then local autonomy with group functions) trace that boundary from the outside.** The comparison with Veldmark near the end applies the same boundary to Hearthly, Veldmark's property portal in France and Spain.
 
 {id: case-aviv--how-to-read-this-case}
 ## How to Read This Case
@@ -34,14 +34,14 @@ Part IX cases follow stricter rules than the chapters in Parts I–VIII (see [Pa
 
 The limits are tighter than in [Adevinta: From Schibsted's Copy-Paste Model to a Portfolio Platform](#case-adevinta). AVIV has not been listed: before 2025 it was a segment inside Axel Springer, which itself delisted in 2020, and since April 2025 it has been a privately held joint venture. Trade press notes that AVIV "does not publish" a financial breakdown (Online Marketplaces, July 2023). Most of the evidence below comes from one trade publication, Online Marketplaces, and the French real-estate trade site MySweetImmo, both quoting AVIV executives; from Axel Springer, KKR and CPP Investments releases; and from the German and French competition authorities.
 
-**Three kinds of evidence were found and deliberately not used as fact**: job advertisements seen only as search snippets (one mentions a team managing networking for hundreds of AWS accounts), a tech-stack aggregator's profile, and former employees' CVs. They are weak signals about technology choices and say nothing about architecture. The chapter names them so that the reader knows they exist and why they carry no weight here.
+**Three kinds of evidence were found and deliberately not used as fact**: job advertisements seen only as search snippets (one mentions a team managing networking for hundreds of AWS accounts), a tech-stack aggregator's profile, and former employees' CVs. They are weak signals about technology choices and say nothing about architecture.
 
-Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)), appears only in the final comparison. Its real-estate brand, Hearthly, operates in France and Spain, and that overlap with AVIV's French business is a teaching device, not a disguised description of AVIV or SeLoger.
+Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)), appears only in the final comparison. Hearthly's overlap with AVIV's French business is a teaching device, not a disguised description of AVIV or SeLoger.
 
 {id: case-aviv--timeline-aviv-in-dated-events}
 ## Timeline: AVIV in Dated Events
 
-The public chronology follows. Dates are those of the cited releases, decisions and articles; ownership and portfolio facts are as of October 2026 and may change.
+Dates are those of the cited releases, decisions and articles; ownership and portfolio facts are as of October 2026 and may change.
 
 | Date | Event | Source |
 | --- | --- | --- |
@@ -70,7 +70,7 @@ The public chronology follows. Dates are those of the cited releases, decisions 
 
 **A correction worth stating once.** Immowelt and Immonet were combined as companies in **2015**, not in 2023. The 2015 release describes a holding and two sites (Nuremberg and Hamburg) and says nothing about merging the portals' technology. In February 2024 both brands were still operated by AVIV Germany. No public source found for this book documents a platform merger or a shutdown of immonet; readers should check before relying on either brand's current status.
 
-![AVIV's public record moves from separate portals to a shared commercial and data layer, then to a stated group technology goal, and back to local businesses with selected group functions. Only the second step is documented in any product detail.](listing-systems-architecture/diagrams/6a9e9bf602f967ce.png)
+![Diagram: AVIV's public record moves from separate portals to a shared commercial and data layer, then to a stated group technology goal, and back to local businesses with selected group functions](listing-systems-architecture/posts/49-case-aviv/assets/images/49-case-aviv/fig01-aviv-s-public-record-moves-separate.jpeg)
 
 **Figure 1:** *AVIV's public record moves from separate portals to a shared commercial and data layer, then to a stated group technology goal, and back to local businesses with selected group functions. Only the second step is documented in any product detail.*
 
@@ -102,9 +102,9 @@ The **Autorité de la concurrence** (February 2018) cleared Logic-Immo's acquisi
 {id: case-aviv--two-portals-in-one-country}
 ### Two portals in one country
 
-Germany and France each gave AVIV two portals: Immowelt and Immonet, SeLoger and Logic-Immo. The public record shows both pairs kept as separate brands for years. Immonet was still listed in AVIV's brand list in July 2023 and run by AVIV Germany in February 2024; SeLoger and Logic-Immo shared a corporate brand from 2019 and a professional offer from 2022.
+AVIV kept both of its same-country pairs, Immowelt and Immonet in Germany and SeLoger and Logic-Immo in France, as separate brands for years. Immonet was still listed in AVIV's brand list in July 2023 and run by AVIV Germany in February 2024; SeLoger and Logic-Immo shared a corporate brand from 2019 and a professional offer from 2022.
 
-> **INFERENCE, NOT DOCUMENTED:** When two portals in one country keep their brands, the cheapest technical integration is usually below the brand: one ingestion pipeline that accepts each agency's feed once and publishes to both sites, one media store, one agency account and contract system, with two front ends and two search experiences on top. Whether AVIV did this for either pair is not public. The point is that "two brands" says nothing about "two stacks" in either direction, and an architect assessing such a group has to ask.
+> **INFERENCE, NOT DOCUMENTED:** When two portals in one country keep their brands, the cheapest technical integration is usually below the brand: one ingestion pipeline that accepts each agency's feed once and publishes to both sites, one media store, one agency account and contract system, with two front ends and two search experiences on top. Whether AVIV did this for either pair is not public. "Two brands" says nothing about "two stacks" in either direction, so an architect assessing such a group has to ask.
 
 {id: case-aviv--phase-2-moving-up-the-seller-funnel-20192023}
 ## Phase 2: Moving Up the Seller Funnel (2019–2023)
@@ -112,11 +112,13 @@ Germany and France each gave AVIV two portals: Immowelt and Immonet, SeLoger and
 {id: case-aviv--meilleurs-agents-valuation-as-supply-acquisition}
 ### Meilleurs Agents: valuation as supply acquisition
 
-The best-documented AVIV business is the valuation one, and it is documented because it was a product, not a platform.
+Valuation is AVIV's best-documented business, because it was a product, not a platform.
 
-When Meilleurs Agents launched in 2008, FrenchWeb described its method: a historical base of "les informations enregistrées par les notaires depuis 1990" (the information recorded by notaries since 1990), recent sales by partner agencies added in real time, an algorithm that re-indexes past transactions to current market conditions, and a price per square meter that the user then adjusts for condition, exposure, layout and extras (FrenchWeb, 2008). Fourteen years later, Meilleurs Agents' VP Data and Science, Thomas Lefevre, said that "it is not complicated to make an estimation tool. What is complicated, however, is to make a fair estimate", that the data team had grown to 45 people, and that "the median estimate error of our valuations against final transaction value in 2021 was just 6%" (Online Marketplaces, June 2022). The 6% figure is self-reported; no independent audit or methodology note was found.
+When Meilleurs Agents launched in 2008, FrenchWeb described its method: a historical base of "les informations enregistrées par les notaires depuis 1990" (the information recorded by notaries since 1990), recent sales by partner agencies added in real time, an algorithm that re-indexes past transactions to current market conditions, and a price per square meter that the user then adjusts for condition, exposure, layout and extras (FrenchWeb, 2008).
 
-AVIV bought the company in September 2019 for €200 million. FrenchWeb reported that Axel Springer wanted to widen the value chain of its French portals and **share Meilleurs Agents' valuation expertise with its foreign sites** (FrenchWeb, 2019). That is the earliest public statement of something AVIV intended to share across countries, and it is a capability (valuation science), not a system.
+Fourteen years later, Meilleurs Agents' VP Data and Science, Thomas Lefevre, said that "it is not complicated to make an estimation tool. What is complicated, however, is to make a fair estimate", that the data team had grown to 45 people, and that "the median estimate error of our valuations against final transaction value in 2021 was just 6%" (Online Marketplaces, June 2022). The 6% figure is self-reported; no independent audit or methodology note was found.
+
+The 2019 purchase carries the earliest public statement of something AVIV intended to share across countries, and it is a capability (valuation science), not a system. AVIV bought the company in September 2019 for €200 million; FrenchWeb reported that Axel Springer wanted to widen the value chain of its French portals and **share Meilleurs Agents' valuation expertise with its foreign sites** (FrenchWeb, 2019).
 
 ![One recipe book labeled Method travels to three separate kitchens, each using its own basket of local data to produce its own estimate.](listing-systems-architecture/posts/49-case-aviv/assets/images/49-case-aviv/shared-method-local-data.jpeg)
 
@@ -127,7 +129,7 @@ AVIV bought the company in September 2019 for €200 million. FrenchWeb reported
 {id: case-aviv--ultimmo-the-professional-offer-as-the-first-integration}
 ### Ultimmo: the professional offer as the first integration
 
-In November 2022 AVIV launched **Ultimmo**, one offer for agents across SeLoger, Logic-Immo and Meilleurs Agents. The launch material cites "plus d'1 million de visites par jour" (more than one million visits a day) across the three brands' platforms, 630,000 sellers identified each month, and the claim that two sales in three begin on one of the group's platforms. It bundles listing distribution and promotion, logo display on result pages, an estimation tool called Inventory, **detection of seller prospects among buyer contacts**, and an optional prospecting map. AVIV France's managing director, Caroline Evans de Gantès, framed it simply: "Les professionnels ne sont plus seulement en demande de mandats" (professionals no longer just want mandates; they also want visibility with buyers) (MySweetImmo, November 2022).
+In November 2022 AVIV launched **Ultimmo**, one offer for agents across SeLoger, Logic-Immo and Meilleurs Agents. The launch material cites "plus d'1 million de visites par jour" (more than one million visits a day) across the three brands' platforms, 630,000 sellers identified each month, and the claim that two sales in three begin on one of the group's platforms. It bundles listing distribution and promotion, logo display on result pages, an estimation tool called Inventory, **detection of seller prospects among buyer contacts**, and an optional prospecting map. AVIV France's managing director, Caroline Evans de Gantès, framed it: "Les professionnels ne sont plus seulement en demande de mandats" (professionals no longer just want mandates; they also want visibility with buyers) (MySweetImmo, November 2022).
 
 A month earlier, AVIV France's vice-president of client operations, Franck Le Tendre, described the goal of combining SeLoger's relationship with professionals and Meilleurs Agents' work on mandate acquisition, and said Meilleurs Agents' prospecting map had already been rolled out across the group's entities (MySweetImmo, October 2022).
 
@@ -138,9 +140,9 @@ A month earlier, AVIV France's vice-president of client operations, Franck Le Te
 
 In late June 2023 SeLoger, until then an agent-only portal for sales, opened free sale listings to private sellers. Le Tendre explained the reasoning: professionals' share of the market had been flat for 15 to 20 years, about a third of sellers who try to sell alone give up, and "notre objectif est de capter ces indécis et de les diriger vers des professionnels" (our goal is to capture these undecided sellers and direct them to professionals). He said the group had 800 people working on innovation, and that many agents were angry about the move. At the end of September 2023 about 6,000 private sale listings were online, against just under a million professional listings for sale and rent (MySweetImmo, October 2023).
 
-The same year, AVIV France planned 300 Tech, Product and Data hires and said it monetizes seller leads "through a commission-share model" (Online Marketplaces, March 2023).
+The revenue model behind the funnel was stated the same year: AVIV France monetizes seller leads "through a commission-share model" (Online Marketplaces, March 2023).
 
-![The seller funnel that AVIV's documented French moves serve, drawn from the public product descriptions (2019–2023) — not a description of AVIV's systems. Every entry point produces a seller lead; the revenue event, a commission share, happens outside the portal.](listing-systems-architecture/diagrams/8f484f78d8c7cdf4.png)
+![Diagram: The seller funnel that AVIV's documented French moves serve, drawn from the public product descriptions (2019–2023) — not a description of AVIV's systems](listing-systems-architecture/posts/49-case-aviv/assets/images/49-case-aviv/fig04-seller-funnel-that-aviv-s-documented.jpeg)
 
 **Figure 4:** *The seller funnel that AVIV's documented French moves serve, drawn from the public product descriptions (2019–2023) — not a description of AVIV's systems. Every entry point produces a seller lead; the revenue event, a commission share, happens outside the portal.*
 
@@ -149,7 +151,7 @@ The same year, AVIV France planned 300 Tech, Product and Data hires and said it 
 {id: case-aviv--germany-and-belgium}
 ### Germany and Belgium
 
-The German and Belgian records are thinner and point the same way. In December 2025 Theo Mseka said "the subscription model remains the core model in the German market today", that Immowelt offers AI features including "a tool for creating high-quality property descriptions", and that in 2025 Immowelt bought Kaufpreis-Aufteilung.com, nutzungsdauer.com and BauDarlehen24 to build an ecosystem around the property transaction (Online Marketplaces, December 2025). In Belgium, Immoweb bought Realo, a portal that also sells "data as a service" and valuations, in January 2024. **Each market built its own adjacencies around its own transaction**: valuation and commission share in France, tax and financing services in Germany, valuation data in Belgium.
+**Each market built its own adjacencies around its own transaction**: valuation and commission share in France, tax and financing services in Germany, valuation data in Belgium. The German and Belgian records are thinner but point the same way. In December 2025 Theo Mseka said "the subscription model remains the core model in the German market today", that Immowelt offers AI features including "a tool for creating high-quality property descriptions", and that in 2025 Immowelt bought Kaufpreis-Aufteilung.com, nutzungsdauer.com and BauDarlehen24 to build an ecosystem around the property transaction (Online Marketplaces, December 2025). In Belgium, Immoweb bought Realo, a portal that also sells "data as a service" and valuations, in January 2024.
 
 {id: case-aviv--phase-3-the-integration-intent-20212024}
 ## Phase 3: The Integration Intent (2021–2024)
@@ -169,7 +171,7 @@ The integration phase is documented almost entirely by statements of intent.
 
 No public source found for this book describes what the European marketplace or the "fully integrated platform" was meant to contain: a shared listing service, a shared search engine, shared agent tools, shared billing, or only shared infrastructure and data. No source describes a portal moving onto a group platform, a migration milestone or a cost. The phrase "fully integrated platform" itself comes from the interviewer's question in December 2025, not from an AVIV statement.
 
-**My reading** is that the integration intent is documented as a direction of travel, with leadership and hiring behind it, and its scope is unknown. The book therefore treats it as a goal that was set and later changed, and draws lessons only from that sequence and from the structure of the markets, not from any assumed architecture.
+**My reading** is that the integration intent is documented as a direction of travel, with leadership and hiring behind it, and its scope is unknown. The book therefore treats it as a goal set and later changed, and draws lessons only from that sequence and the structure of the markets, not from any assumed architecture.
 
 {id: case-aviv--phase-4-separation-and-local-autonomy-2025}
 ## Phase 4: Separation and Local Autonomy (2025)
@@ -195,7 +197,7 @@ The clearest statement of AVIV's current model comes from the December 2025 inte
 {id: case-aviv--why-real-estate-resists-one-platform}
 ## Why Real Estate Resists One Platform
 
-The structural reasons are documented outside AVIV, and they explain why the record reads as it does. [Same Platform, Different Physics: General, Real Estate, Automotive and Jobs](#vertical-requirements) develops them; the AVIV-relevant points are these.
+National supply software, ingestion standards, disclosures, monetization and property data explain AVIV's record, and they are documented outside AVIV. [Same Platform, Different Physics: How Listing Verticals Differ](#vertical-requirements) develops them; the table keeps the points relevant to AVIV's markets.
 
 | Dimension | France (SeLoger, Logic-Immo, Meilleurs Agents) | Germany (Immowelt, Immonet) | Belgium (Immoweb) | What a group platform must absorb |
 | --- | --- | --- | --- | --- |
@@ -211,12 +213,12 @@ OpenImmo e.V. lists AVIV Group as its member from France (accessed October 2026)
 
 > **INFERENCE, NOT DOCUMENTED:** A plausible reference architecture for a federated multi-country property group — not a description of AVIV's systems — puts cloud landing zones, security, identity tooling, the data platform and machine-learning tooling at group level; offers a shared ingestion engine and a core listing schema (location, price, surface, rooms, media) that each country extends with its own disclosure fields and property-type taxonomy; may share a search engine while keeping ranking policy and paid visibility local; shares valuation *methods* while training on local data; and keeps monetization, billing, agent CRM and professional tools local. In that design the group platform ends at the ingestion adapters on one side and the ranking policy on the other.
 
-![A labeled reference architecture for a multi-country property group, not AVIV's: the shared core is infrastructure, data, identity, engines and methods; the local edge is everything an agent, a regulator or a homeowner sees.](listing-systems-architecture/diagrams/a902a877527806eb.png)
+![Diagram: A labeled reference architecture for a multi-country property group, not AVIV's](listing-systems-architecture/posts/49-case-aviv/assets/images/49-case-aviv/fig05-labeled-reference-architecture-multi-country-property.jpeg)
 
 **Figure 5:** *A labeled reference architecture for a multi-country property group, not AVIV's: the shared core is infrastructure, data, identity, engines and methods; the local edge is everything an agent, a regulator or a homeowner sees.*
 
 {id: case-aviv--trade-offs-the-case-illustrates}
-## Trade-Offs the Case Illustrates
+## Trade-offs the Case Illustrates
 
 | Option | What AVIV's record shows | When it is right | When it fails |
 | --- | --- | --- | --- |
@@ -240,7 +242,7 @@ AVIV was a real-estate group with one horizontal asset, and the two behaved diff
 | **Hybrid brokerage** | Homeday (Germany), Housell (Spain) | In the 2023 brand list; later status not documented | A portal owning brokers competes with its own customers, a trust constraint on data use |
 | **Horizontal classifieds** | Yad2 (Israel) | Real estate 56%, autos 27%, jobs 15% of projected 2025 revenue; sale signed December 2025 | The asset least aligned with a property platform was the first to be separated |
 
-The hybrid-brokerage row deserves a sentence. A portal group that also owns brokerages, or that routes private sellers to agents, holds data its agency customers would not want a competitor to see. That is the same neutrality problem Veldmark faces with Keybridge, discussed below, and it is one reason seller-lead and agent data are usually kept inside the local business.
+A portal group that also owns brokerages, or that routes private sellers to agents, holds data its agency customers would not want a competitor to see. That is the same neutrality problem Veldmark faces with Keybridge, discussed below, and it is one reason seller-lead and agent data are usually kept inside the local business.
 
 {id: case-aviv--failure-modes-the-record-exposes}
 ## Failure Modes the Record Exposes
@@ -291,7 +293,7 @@ The book's patterns, as AVIV's record tests them:
 
 | Book pattern or claim | AVIV's record | Verdict |
 | --- | --- | --- |
-| Real estate is the least portable vertical across countries ([Same Platform, Different Physics: General, Real Estate, Automotive and Jobs](#vertical-requirements)) | National feeds, disclosures and monetization; 2025 shift to local autonomy | Supported, though AVIV never stated its reasons |
+| Real estate is the least portable vertical across countries ([Same Platform, Different Physics: How Listing Verticals Differ](#vertical-requirements)) | National feeds, disclosures and monetization; 2025 shift to local autonomy | Supported, though AVIV never stated its reasons |
 | Share global components beneath local products ([One Platform, Many Marketplaces: Multi-Country and Multi-Brand Architecture](#multi-country-platforms)) | Group functions "where they create clear advantages" (2025) | Consistent with the stated end state; contents not public |
 | Consolidate enabling layers first, core product last ([After the Deal: Consolidating Platforms After Acquisitions](#platform-consolidation)) | A "fully integrated platform" planned and rowed back | Consistent, as a cautionary data point |
 | Valuation is a supply-acquisition engine ([Models in Production: ML Platforms and Use Cases](#ml-platform), [How Listing Marketplaces Make Money](#monetization-models)) | Meilleurs Agents, Ultimmo seller detection, commission-share seller leads | Strongly supported for France |

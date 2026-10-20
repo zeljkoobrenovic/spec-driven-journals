@@ -1,7 +1,7 @@
 {id: vertical-requirements}
-# 6. Same Platform, Different Physics: General, Real Estate, Automotive and Jobs
+# 6. Same Platform, Different Physics: How Listing Verticals Differ
 
-![Same Platform, Different Physics: General, Real Estate, Automotive and Jobs — logo](listing-systems-architecture/posts/06-vertical-requirements/assets/images/06-vertical-requirements/logo.jpeg)
+![Same Platform, Different Physics: How Listing Verticals Differ — logo](listing-systems-architecture/posts/06-vertical-requirements/assets/images/06-vertical-requirements/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Compare general classifieds, real estate, automotive, jobs and recommerce on the dimensions that change architecture, and learn to write a vertical requirement profile for each. You will then use a four-layer share test to decide, capability by capability, what a multi-vertical group should build once and what each vertical must own.
 
@@ -21,14 +21,14 @@
 > * **The Platform Mandate** — a group platform designed around one vertical's physics is imposed on the others, and their teams route around it.
 > * **The Attribute Junkyard** — a shared attribute store without vertical dictionaries accumulates thousands of keys whose meaning differs per vertical, so filters and feeds disagree.
 
-Every listing marketplace looks alike from far away. A seller describes something, a buyer searches, the two make contact, and the marketplace charges someone for the privilege. It is tempting to conclude that one well-designed listing platform can carry a used sofa, a family car, a three-room apartment and a warehouse job, with a different category tree for each. Many groups have tried, and the public record shows how often they had to undo it.
+Part I has so far treated the verticals alike. [Map What the Marketplace Does Before What Runs It](#business-capabilities) shows that a classifieds capability map generalizes across verticals through renaming and re-weighting, not through new top-level structure, and [Bounded Contexts for Marketplaces: Where One Listing Becomes Many Models](#bounded-contexts) draws one context map for all four Veldmark brands. This chapter asks where that sameness stops. The question matters because a group's synergy case assumes one listing platform can carry a used sofa, a family car, a three-room apartment and a warehouse job, with a different category tree for each. Many groups have tried, and the public record shows how often they had to undo it.
 
-The resemblance is real at the level of capabilities. Chapter [Map What the Marketplace Does Before What Runs It](#business-capabilities) shows that a classifieds capability map generalizes across verticals through renaming and re-weighting, not through new top-level structure. **The difference is in the physics**: the forces that act on each capability. A car arrives through a dealer's machine feed with a 17-character identity that decodes into 31 attributes. A sofa arrives through a phone camera with a title and a price. An apartment arrives three times, from three agencies, and must be recognized as one property. A job arrives from an applicant tracking system and expires on a date that a search engine enforces. These forces decide where ingestion load comes from, what the data model must hold, how search ranks, what fraud looks like and how money is made.
+**The difference is in the physics**: the forces that act on each capability. A car arrives through a dealer's machine feed with a 17-character identity that decodes into 31 attributes. A sofa arrives through a phone camera with a title and a price. An apartment arrives three times, from three agencies, and must be recognized as one property. A job arrives from an applicant tracking system and expires on a date that a search engine enforces. These forces decide where ingestion load comes from, what the data model must hold, how search ranks, what fraud looks like and how money is made.
 
-This chapter defines those forces, compares the main verticals on them, and turns the comparison into a decision method. It owns two terms. A **vertical requirement profile** is a one-page description of a vertical's physics, written with numbers, that architecture decisions can be checked against. A **shared-versus-specific decision** is the classification of a capability into one of four layers, from fully shared platform to brand-local product, with stated reasons. The method is applied to Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)), whose three listing brands span four verticals.
+This chapter defines those forces, compares the main verticals on them, and turns the comparison into a decision method. It owns two terms. A **vertical requirement profile** is a one-page description of a vertical's physics, written with numbers, that architecture decisions can be checked against. A **shared-versus-specific decision** is the classification of a capability into one of four layers, from fully shared platform to brand-local product, with stated reasons. The method is applied to Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)), whose three listing brands span four verticals. Part II starts from the result: [The Listing Aggregate: Identity, Lifecycle and Invariants](#listing-aggregate) and the chapters after it design a listing model with room for the item identities, external systems of record and vertical schemas this chapter finds.
 
-{id: vertical-requirements--setting-the-scene-at-veldmark-one-platform-for-four-physics}
-## Setting the Scene at Veldmark: One Platform for Four Physics?
+{id: vertical-requirements--setting-the-scene-at-veldmark-one-platform-for-four-verticals}
+## Setting the Scene at Veldmark: One Platform for Four Verticals?
 
 It is mid-March 2027. The board approved Common Ground in January: **€140 million** over four years to give Veldmark's brands shared platform capabilities under the principle "share platforms, not products". Ingrid Halvorsen, the Group Chief Architect, joined in February. She has called a two-day scoping workshop in Rotterdam because the program's capability list (Veldmark ID, trust and safety, media, search platform, messaging, product catalog and entitlements, event backbone, data platform, taxonomy and attribute service) says nothing about which parts of each capability are shared.
 
@@ -46,7 +46,7 @@ Ingrid does not open with the capability list. She asks each brand to bring one 
 {id: vertical-requirements--horizontal-and-vertical-marketplaces}
 ### Horizontal and vertical marketplaces
 
-A **horizontal marketplace** lists many kinds of goods and services under one brand and one category tree; a **vertical marketplace** specializes in one kind of item, such as property, vehicles or jobs, with data, tools and monetization built for it. [Classifieds, Lead Generation and Transactions: A Marketplace Taxonomy](#marketplace-taxonomy) owns the business definitions. This chapter cares about one consequence: a horizontal marketplace usually contains small vertical *sections* (cars, property, jobs), and those sections inherit the horizontal platform's physics even when their own physics differ. Tradeyard Poland's cars section is a vertical living inside a horizontal stack.
+A **horizontal marketplace** lists many kinds of goods and services under one brand and one category tree; a **vertical marketplace** specializes in one kind of item, such as property, vehicles or jobs, with data, tools and monetization built for it. [Classifieds, Leads, Transactions and Managed Models: A Marketplace Taxonomy](#marketplace-taxonomy) owns the business definitions. This chapter cares about one consequence: a horizontal marketplace usually contains small vertical *sections* (cars, property, jobs), and those sections inherit the horizontal platform's physics even when their own physics differ. Tradeyard Poland's cars section is a vertical living inside a horizontal stack.
 
 {id: vertical-requirements--the-vertical-requirement-profile}
 ### The vertical requirement profile
@@ -72,7 +72,7 @@ A vertical requirement profile describes a vertical by the forces that act on it
 
 **Table 1:** *The fourteen dimensions of a vertical requirement profile, grouped by the part of the architecture they stress.*
 
-The profile is filled in with numbers where numbers exist ("88% of dealer listings via DMS feeds", "1.7 listings per property") and with a short sentence where they do not. Its value is comparative. Two verticals that differ on only two dimensions can share far more than two that differ on ten.
+The profile's value is comparative: two verticals that differ on two dimensions can share far more than two that differ on ten. It is filled in with numbers where numbers exist ("88% of dealer listings via DMS feeds", "1.7 listings per property") and with a short sentence where they do not.
 
 {id: vertical-requirements--the-shared-versus-specific-decision}
 ### The shared-versus-specific decision
@@ -89,7 +89,7 @@ The decision is per capability *part*, not per capability. "Search" is not one d
 {id: vertical-requirements--how-the-verticals-differ}
 ## How the Verticals Differ
 
-The table compares five verticals on the profile dimensions. Each cell names the typical case; real marketplaces vary, and the documented examples follow the table.
+Table 2 compares five verticals on the fourteen dimensions. Each cell names the typical case; real marketplaces vary, and documented examples follow.
 
 | Dimension | General classifieds | Real estate | Automotive | Jobs | Recommerce |
 | --- | --- | --- | --- | --- | --- |
@@ -110,19 +110,19 @@ The table compares five verticals on the profile dimensions. Each cell names the
 
 **Table 2:** *Five verticals on the fourteen profile dimensions. The rows that differ most, item identity, external system of record and transaction locus, are the ones that decide data models and system boundaries.*
 
-Three rows deserve a closer look, because they are where shared platforms most often break.
+Shared platforms most often break on three rows: item identity, external system of record and transaction locus.
 
 {id: vertical-requirements--item-identity-is-the-listing-the-thing-or-an-event-on-the-thing}
 ### Item identity: is the listing the thing, or an event on the thing?
 
-In general classifieds, **the ad is the item**. A used sofa has no identity outside its listing, and when the listing is deleted nothing remains to link to. In automotive and real estate, the item has an identity the listing merely references, and that changes the data model.
+In automotive and real estate, the item has an identity the listing merely references, and that changes the data model. In general classifieds, **the ad is the item**: a used sofa has no identity outside its listing, and when the listing is deleted nothing remains to link to.
 
 - **Vehicles carry machine-readable identity.** The US National Highway Traffic Safety Administration's vPIC service decodes a 17-character VIN into manufacturer data and accepts batches of up to 50 VINs; its databases can be downloaded and run in-house ([NHTSA vPIC](https://vpic.nhtsa.dot.gov/api/), version 4.10, accessed October 2026). In Germany, mobile.de's public Seller API carries the type-approval codes `hsn` and `tsn` and a Schwacke make-and-model code on each ad ([mobile.de Seller API](https://services.mobile.de/manual/seller-api.html), n.d., accessed 2026). Autotrader UK's developer portal publishes a taxonomy of vehicle types, makes, models, generations and derivatives, and keys valuations on a derivative identifier plus first-registration date and mileage ([Autotrader Connect](https://developers.autotrader.co.uk/), n.d., accessed 2026).
 - **Properties outlive their listings.** In Great Britain, a Unique Property Reference Number identifies every addressable location, and Ordnance Survey publishes about 40 million of them as open data ([OS Open UPRN](https://www.ordnancesurvey.co.uk/products/os-open-uprn), n.d.). Zillow's FY2025 annual report describes a "living database" of about 173 million US homes, with user updates to more than 46 million property records ([Zillow Group 10-K](https://www.sec.gov/Archives/edgar/data/1617640/000161764026000015/z-20251231.htm), filed February 2026). A property model of this kind treats listings as events on properties.
 - **Jobs have only probabilistic identity.** A vacancy has no registry. Its identity comes from normalizing a free-text title into an occupation taxonomy such as the EU's ESCO, which in version 1.2.1 has 3,039 occupations and 13,939 skills in 28 languages ([European Commission, ESCO](https://esco.ec.europa.eu/en/about-esco/what-esco), updated December 2025), or the US O*NET-SOC taxonomy of 1,016 occupational titles ([O*NET Resource Center](https://www.onetcenter.org/overview.html), n.d.).
 - **Recommerce sits between.** Some used goods can be matched to a product catalog by barcode or model number; most cannot. eBay's Product-Based Shopping Experience tried to make catalog association mandatory from 2018; eBay's developer documentation now states that the mandate for all categories and brands was rolled back, while product and instance attributes stayed separate ([eBay PBSE playbook](https://developer.ebay.com/api-docs/sell/static/inventory/pbse_playbook_intro.html), n.d., accessed 2026).
 
-The architectural rule follows directly. **Where the item has an identity, model identity, specification and listing as three separate things.** One physical car produces many listings over its life, on many platforms; one apartment is listed for rent, sold and re-listed by different agencies. Price history, duplicate detection, valuations and fraud checks all hang off the identity, not the listing. [The Listing Aggregate: Identity, Lifecycle and Invariants](#listing-aggregate) and [One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution) own the models; this chapter's point is that a horizontal listing service with no place for an external identity cannot serve those verticals well, however good its category tree.
+**Where the item has an identity, model identity, specification and listing as three separate things.** One physical car produces many listings over its life, on many platforms; one apartment is listed for rent, sold and re-listed by different agencies. Price history, duplicate detection, valuations and fraud checks all hang off the identity, not the listing. [The Listing Aggregate: Identity, Lifecycle and Invariants](#listing-aggregate) and [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution) own the models; the point here is that a horizontal listing service with no place for an external identity cannot serve those verticals well, however good its category tree.
 
 ![Three timelines: a sofa that disappears with its single listing, a car and an apartment whose identity tags link many listings over time.](listing-systems-architecture/posts/06-vertical-requirements/assets/images/06-vertical-requirements/listing-as-event-on-the-thing.jpeg)
 
@@ -138,9 +138,9 @@ That reverses several defaults. Deletes arrive late or not at all: Rightmove's R
 {id: vertical-requirements--transaction-locus-where-does-the-money-move}
 ### Transaction locus: where does the money move?
 
-The productscape reference model for real estate records the money of the property sale as "typically settled off-platform at notary or lease signing", with no platform flow at all. Recommerce is the opposite. Vinted describes its marketplace as sitting "in an ecosystem of vertically-integrated shipping and payment infrastructure", with more than 500,000 pick-up and drop-off points in Europe and its own carrier in five countries ([Vinted 2025 results](https://company.vinted.com/newsroom/financial-results-2025), April 2026). Automotive is moving between the two: Autotrader UK reports more than 6,700 retailers on its online reservation product, Deal Builder, and 137,000 full reservations in its year to March 2026 ([Autotrader FY2026 results](https://plc.autotrader.co.uk/media/usjleen0/full-year-press-release-fy26.pdf), May 2026).
+Verticals range from no platform money flow to a full order platform. The productscape reference model for real estate records the money of the property sale as "typically settled off-platform at notary or lease signing", with no platform flow at all. Recommerce is the opposite. Vinted describes its marketplace as sitting "in an ecosystem of vertically-integrated shipping and payment infrastructure", with more than 500,000 pick-up and drop-off points in Europe and its own carrier in five countries ([Vinted 2025 results](https://company.vinted.com/newsroom/financial-results-2025), April 2026). Automotive is moving between the two: Autotrader UK reports more than 6,700 retailers on its online reservation product, Deal Builder, and 137,000 full reservations in its year to March 2026 ([Autotrader FY2026 results](https://plc.autotrader.co.uk/media/usjleen0/full-year-press-release-fy26.pdf), May 2026).
 
-Where money moves, the listing becomes an order: payment intents, shipping labels, tracking events, disputes and a ledger. [Beyond the Contact: Payments, Shipping and Buyer Protection](#transactions-and-payments) owns that pivot. For the profile, the point is that **transaction locus is the dimension most likely to change during a vertical's life**, and with it the whole right-hand half of the architecture.
+Where money moves, the listing becomes an order: payment intents, shipping labels, tracking events, disputes and a ledger. [Beyond the Contact: Payments, Shipping and Buyer Protection](#transactions-and-payments) owns that pivot. **Transaction locus is the profile dimension most likely to change during a vertical's life**, and with it the whole right-hand half of the architecture.
 
 {id: vertical-requirements--in-practice-what-the-public-record-shows}
 ## In Practice: What the Public Record Shows
@@ -169,7 +169,7 @@ The evidence also shows that real estate resists multi-country sharing. AVIV Gro
 {id: vertical-requirements--jobs-normalization-documents-and-an-external-expiry-clock}
 ### Jobs: normalization, documents and an external expiry clock
 
-Jobs marketplaces combine three properties no other vertical has together.
+Jobs marketplaces combine four properties no other vertical has together.
 
 - **Probabilistic normalization on the critical path.** In a January 2024 post, OLX described extracting job roles "buried within the titles and descriptions" with an LLM service subscribed to ad events, then adding them to the search index; about 2,000 new or updated ads a day produced about 4,000 API requests ([OLX tech blog](https://tech.olx.com/extracting-job-roles-in-job-ads-a-journey-with-generative-ai-e8b8cf399659), January 2024).
 - **Documents, not photos.** InfoJobs, then part of Adevinta, uses the group's shared media service, which for InfoJobs "stores, transforms and retrieves mostly documents (résumés, CVs, cover letters)", converting uploads to PDF with LibreOffice ([Adevinta tech blog](https://medium.com/adevinta-tech-blog/engineers-to-the-rescue-when-your-public-employment-service-makes-it-impossible-to-apply-for-jobs-b2ad6f5c29e6), January 2025). A shared media service built for images had to learn document semantics.
@@ -179,7 +179,7 @@ Jobs marketplaces combine three properties no other vertical has together.
 {id: vertical-requirements--recommerce-an-order-platform-with-a-search-engine-attached}
 ### Recommerce: an order platform with a search engine attached
 
-Vinted's engineering record shows what a payment- and shipping-first model does to scale. Its search moved to Vespa between May 2023 and April 2024 and serves about a billion active items, with 4.64 seconds at the 99th percentile for an item update to reach the index ([Vinted Engineering](https://vinted.engineering/2024/09/05/goodbye-elasticsearch-hello-vespa/), September 2024). Its January 2026 post describes moving from synchronous calls to business events with saga-style orchestration across "almost 300" domains ([Vinted Engineering](https://vinted.engineering/2026/01/09/building-global-event-driven-platform-part-1/), January 2026). The hard problems are order, payment and logistics state, and search over an enormous low-structure catalog, not taxonomies or feed contracts.
+In recommerce, the hard problems are order, payment and logistics state, and search over an enormous low-structure catalog, not taxonomies or feed contracts. Vinted's engineering record shows both. Its search moved to Vespa between May 2023 and April 2024 and serves about a billion active items, with 4.64 seconds at the 99th percentile for an item update to reach the index ([Vinted Engineering](https://vinted.engineering/2024/09/05/goodbye-elasticsearch-hello-vespa/), September 2024). Its January 2026 post describes moving from synchronous calls to business events with saga-style orchestration across "almost 300" domains ([Vinted Engineering](https://vinted.engineering/2026/01/09/building-global-event-driven-platform-part-1/), January 2026).
 
 {id: vertical-requirements--groups-organized-by-vertical-and-back-again}
 ### Groups organized by vertical, and back again
@@ -193,12 +193,12 @@ A smaller documented case shows the share test working at feature level. Kleinan
 
 The four layers of the share test become an architecture when each layer has a clear owner and the layers meet at defined extension points. Figure 2 shows the shape I recommend for a multi-vertical group.
 
-![Four layers with different owners. Layer 1 is the same everywhere. Layer 2 runs vertical content on shared engines. Layer 3 holds capabilities that exist because of one vertical's physics but are built once. Layer 4 is how each brand competes. Vertical capabilities plug into shared engines as enrichers and signals, never as forks of the engine.](listing-systems-architecture/diagrams/b4a1bc7f922549db.png)
+![Diagram: Four layers with different owners](listing-systems-architecture/posts/06-vertical-requirements/assets/images/06-vertical-requirements/fig02-four-layers-different-owners-layer-1.jpeg)
 
 **Figure 2:** *Four layers with different owners. Layer 1 is the same everywhere. Layer 2 runs vertical content on shared engines. Layer 3 holds capabilities that exist because of one vertical's physics but are built once. Layer 4 is how each brand competes. Vertical capabilities plug into shared engines as enrichers and signals, never as forks of the engine.*
 
-{id: vertical-requirements--layer-1-what-really-is-the-same}
-### Layer 1: what really is the same
+{id: vertical-requirements--layer-1-what-is-the-same-everywhere}
+### Layer 1: what is the same everywhere
 
 The candidates for a fully shared platform are capabilities whose semantics do not depend on what is listed: authentication and accounts at the identity layer (the brand profile on top is not shared; see [Who Is on the Other Side? Identity and Verification](#identity-and-verification)), the event backbone and its schema registry ([Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings)), media storage, transformation and delivery ([Photos Sell: Media Pipelines for Listings](#media-pipeline)), messaging transport and storage ([From Interest to Contact: Messaging and Lead Management](#messaging-and-leads)), the operation of search clusters ([Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture)), the experimentation platform and the data platform.
 
@@ -219,9 +219,9 @@ Layer 2 is where most of the value of a group platform sits, and where most of t
 
 **Table 3:** *Layer-2 engines: the mechanism is shared, the content is a vertical asset with its own owner and release cycle.*
 
-A documented example of layer-2 thinking is OLX's use of a configuration framework for ranking models that balance the visibility of paid ads across countries and verticals, including Motors and Real Estate ([OLX tech blog](https://tech.olx.com/unlocking-flexibility-in-configuration-the-power-of-hydra-3f9e69263bb4), June 2025): one ranking machinery, configured per vertical. [Attributes Without Chaos: Schemas, Dictionaries and Validation](#attribute-schemas) and [Category Trees That Can Change: Designing Marketplace Taxonomies](#categories-and-taxonomies) show how the taxonomy engine keeps vertical schemas separate without separate services.
-
 The test of a good layer-2 boundary is that **a vertical can change its content without a release of the engine**. If adding a mandatory energy-cost field for French listings needs a code change in the shared attribute service, the content has leaked into the engine, and the Category Straitjacket follows.
+
+OLX documents layer-2 thinking: a configuration framework for ranking models that balance the visibility of paid ads across countries and verticals, including Motors and Real Estate ([OLX tech blog](https://tech.olx.com/unlocking-flexibility-in-configuration-the-power-of-hydra-3f9e69263bb4), June 2025), so one ranking machinery is configured per vertical. [Attributes Without Chaos: Schemas, Dictionaries and Validation](#attribute-schemas) and [Category Trees That Can Change: Designing Marketplace Taxonomies](#categories-and-taxonomies) show how the taxonomy engine keeps vertical schemas separate without separate services.
 
 {id: vertical-requirements--layer-3-vertical-capabilities-with-one-owner}
 ### Layer 3: vertical capabilities with one owner
@@ -242,7 +242,7 @@ Brand experience, packages and prices, sales tooling and the professional front 
 
 Figure 3 shows where the vertical seams sit on the path of one listing. The flow is shared. At each stage, the vertical contributes content or a capability through a declared extension point.
 
-![One listing flow, eight vertical seams. Solid arrows are the shared publication path that \[\[publication-pipeline\]\] owns. Dotted arrows are vertical contributions: rules, enrichers, policies and mappings, each versioned and owned by the vertical. A vertical that needs a new seam asks for one; it does not copy the pipeline.](listing-systems-architecture/diagrams/1281f56c1116cf5f.png)
+![Diagram: One listing flow, eight vertical seams](listing-systems-architecture/posts/06-vertical-requirements/assets/images/06-vertical-requirements/fig03-one-listing-flow-eight-vertical-seams.jpeg)
 
 **Figure 3:** *One listing flow, eight vertical seams. Solid arrows are the shared publication path that [From Submitted to Searchable: The Publication Pipeline](#publication-pipeline) owns. Dotted arrows are vertical contributions: rules, enrichers, policies and mappings, each versioned and owned by the vertical. A vertical that needs a new seam asks for one; it does not copy the pipeline.*
 
@@ -251,7 +251,7 @@ Two design rules keep the seams honest. First, **each extension point has a cont
 {id: vertical-requirements--veldmark-worked-example-three-listings-three-physics}
 ## Veldmark Worked Example: Three Listings, Three Physics
 
-The workshop drafts its profiles from recent listings. Over the spring, Ingrid's team checks them against three listings that this book follows through Parts II and III, and Table 4 puts them side by side.
+The workshop drafts its profiles from recent listings. Over the spring, Ingrid's team checks them against the three listings this book follows through Parts II and III (Table 4).
 
 | Profile dimension | Rotterdam city bike (Tradeyard NL) | Essen Volkswagen Golf (Motorvane DE) | Lyon apartment (Hearthly FR) |
 | --- | --- | --- | --- |
@@ -275,7 +275,7 @@ The table confirms what Felix and Julien argued. The bike's critical numbers are
 
 **Figure 4:** *Three listings, three physics: the bike's critical numbers are minutes, the Golf's are decoded attributes and feed hours, and the Lyon flat's is a ratio of 1.7 listings per property.*
 
-The group's 2026 figures from the ledger turn the comparison into profile numbers that matter for platform design.
+The group's 2026 figures from the ledger add two profile numbers for platform design: implied listing lifetime and revenue per live listing.
 
 | Brand | Live listings | New listings per week | Implied average lifetime | 2026 revenue | Revenue per live listing per year |
 | --- | --- | --- | --- | --- | --- |
@@ -334,7 +334,7 @@ Groups choose among four broad options for supporting several verticals. The sha
 
 **Table 7:** *Four strategies. Most groups end up with B for the platform and D for one or two vertical capabilities; pure A and pure C are each right only under narrow conditions.*
 
-The judgement I would apply is this: **choose option B as the default, use D only for layer-3 capabilities, and keep C available for any business the owners might sell.** Adevinta's 2023–2025 record is the reminder for the last clause. A shared platform that was a synergy in one ownership era became a separation cost in the next. Option B survives that change better than a fully merged product platform, because layer-1 and layer-2 services can be designed to be separable: tenant-scoped data, per-tenant accounts and clean ownership of vertical content.
+My judgement: **choose option B as the default, use D only for layer-3 capabilities, and keep C available for any business the owners might sell.** Adevinta's 2023–2025 record is the reminder for the last clause. A shared platform that was a synergy in one ownership era became a separation cost in the next. Option B survives that change better than a fully merged product platform, because layer-1 and layer-2 services can be designed to be separable: tenant-scoped data, per-tenant accounts and clean ownership of vertical content.
 
 Option B is not free. Without engine teams who treat vertical owners as customers and say no to forks, it decays into A (the engine absorbs vertical content) or into C (each vertical forks the engine).
 
@@ -373,7 +373,7 @@ The automotive row needs one comment. After retailer pushback, Autotrader paused
 {id: vertical-requirements--the-chief-architect-s-view}
 ## The Chief Architect's View
 
-At group scale, the vertical question is not a one-time design decision. It is a standing governance question, and the Chief Architect's job is to make it cheap to ask and hard to dodge.
+At group scale, the vertical question is a standing governance question, not a one-time design decision. The Chief Architect's job is to make it cheap to ask and hard to dodge.
 
 **What to decide.**
 
@@ -391,7 +391,7 @@ At group scale, the vertical question is not a one-time design decision. It is a
 - **Profile drift.** Any change in a vertical's business model, such as a transactional pivot, a move to pay-per-lead or an acquisition, triggers a profile review before the next architecture decision.
 - **Separability.** For every shared capability, whether a brand could be carved out with its data and content in months rather than years. Ownership horizons in this industry are shorter than platform lifetimes.
 
-The long-term consideration is that **vertical boundaries move**. Horizontal marketplaces spin off motors, property and jobs brands; vertical portals add transactions and software; groups organize by vertical and then by country. Layers that match today's organization will be wrong after the next reorganization. Layers that match the physics survive it, because the physics of a car, an apartment and a job change more slowly than org charts.
+In the long term, **vertical boundaries move**. Horizontal marketplaces spin off motors, property and jobs brands; vertical portals add transactions and software; groups organize by vertical and then by country. Layers that match today's organization will be wrong after the next reorganization. Layers that match the physics survive it, because the physics of a car, an apartment and a job change more slowly than org charts.
 
 {id: vertical-requirements--questions-to-ask}
 ## Questions to Ask

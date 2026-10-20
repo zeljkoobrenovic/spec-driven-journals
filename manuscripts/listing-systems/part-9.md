@@ -26,7 +26,7 @@
 {id: part-9--how-to-read-the-cases}
 ## How to read the cases
 
-Part IX follows stricter evidence rules than Parts I–VIII.
+Part IX follows stricter evidence rules than Parts I–VIII: every statement is one of three kinds.
 
 | Kind of statement | How you recognize it |
 | --- | --- |
@@ -74,7 +74,7 @@ Each case links back to the chapters it tests, chiefly [One Platform, Many Marke
 {id: part-9--the-veldmark-thread}
 ## The Veldmark thread
 
-Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)), is tested here, not extended. Ingrid Halvorsen's team holds its 2027 choices against the record:
+Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)), is tested here, not extended. Ingrid Halvorsen's team holds its 2027 choices against the record:
 
 - **"share platforms, not products"** in Common Ground, with every shared capability tenant-separable from its first release;
 - the **shared OpenSearch platform** for Tradeyard and Hearthly, with Motorvane on Elasticsearch until a 2029 review (14 September 2027);

@@ -7,7 +7,7 @@
 
 > **WHY THE BUSINESS CARES:** Buyers judge a marketplace by whether what they see is true: the price, the availability, the seller. Regulators judge it by whether it can prove what it did with personal data. Both depend on knowing where every copy of a listing is and how current it is.
 
-> **WHY ARCHITECTS SHOULD CARE:** An event-driven marketplace makes copies cheap, and cheap copies multiply. Without a register of copies, a staleness budget per read path and an erasure path per store, every new feature adds a place where stale or unlawful data can be served.
+> **WHY ARCHITECTS SHOULD CARE:** An event-driven marketplace makes copies cheap, and cheap copies multiply. Without a registry of copies, a staleness budget per read path and an erasure path per store, every new feature adds a place where stale or unlawful data can be served.
 
 > **KEY POINTS:**
 >
@@ -23,14 +23,14 @@
 
 The previous chapter, [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings), made it easy for any system to keep its own copy of a listing. That was the point: search, alerts, trust and safety, SEO, analytics and partners each need listing data in a different shape, and a published event stream lets them build it without calling the listing service at the Sunday-evening peak. **The price of that independence is copies**, and copies raise three questions that events alone do not answer: which copy is right, how wrong may the others be, and how does a deletion reach all of them?
 
-Listing data management is the discipline that answers those questions. It is unglamorous and it decides a surprising amount: whether buyers see a price that changed ten minutes ago, whether a sold car appears in tomorrow's alert, whether the group can rebuild its search index after a bad mapping change, and whether a private seller's erasure request can be completed, and proven, within the month the law allows.
+Listing data management answers those questions, and the answers decide whether buyers see a price that changed ten minutes ago, whether a sold car appears in tomorrow's alert, whether the group can rebuild its search index after a bad mapping change, and whether a private seller's erasure request can be completed, and proven, within the month the law allows.
 
-This chapter owns the **listing system of record**, **read models** and **erasure propagation**. It assumes the lifecycle from [The Listing Aggregate: Identity, Lifecycle and Invariants](#listing-aggregate) and the event contract from [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings). The search index as a read model is designed in [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture); the analytical copies in [Data Platform for Marketplaces: Events, Lakehouse and Data Products](#data-platform); the legal obligations behind retention in [Rules of the Marketplace: DSA, DAC7 and Vertical Regulation](#marketplace-regulation); regional failover in [Sunday Night Peaks: Reliability, Performance and Cost](#reliability-and-scale).
+This chapter owns the **listing system of record**, **read models** and **erasure propagation**. It assumes the lifecycle from [The Listing Aggregate: Identity, Lifecycle and Invariants](#listing-aggregate) and the event contract from [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings). The search index as a read model is designed in [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture); the analytical copies in [Data Platform for Marketplaces: Events, Lakehouse and Data Products](#data-platform); the legal obligations behind retention in [Rules of the Marketplace: DSA, DAC7 and Vertical Regulation](#marketplace-regulation); regional failover in [Sunday Evening Peaks: Reliability, Performance and Cost](#reliability-and-scale). Later chapters build on its rules: [Found by Google: Web, App and SEO Architecture for Listings](#web-and-seo-architecture) keeps a sold page's URL without the private seller's data, and [Changing the Engine in Flight: Modernizing a Live Marketplace](#modernization-and-migration) carries the copy register and the erasure ledger through Yardstick's retirement.
 
-{id: listing-data-management--setting-the-scene-seven-copies-of-one-bike}
-## Setting the Scene: Seven Copies of One Bike
+{id: listing-data-management--setting-the-scene-at-veldmark-seven-copies-of-one-bike}
+## Setting the Scene at Veldmark: Seven Copies of One Bike
 
-On **Monday 6 September 2027**, Femke, the Rotterdam seller whose €240 city bike sold for €225 in March, closes her Tradeyard account and asks Tradeyard to erase her personal data under Article 17 of the General Data Protection Regulation (GDPR). Lucía Ortega, Veldmark's group data protection officer, forwards the request to Ingrid Halvorsen, Group Chief Architect at Veldmark — the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)). Her note has one line: *"Before we answer her, I need to know every place her bike listing exists."*
+On **Monday 6 September 2027**, Femke, the Rotterdam seller whose €240 city bike sold for €225 in March, closes her Tradeyard account and asks Tradeyard to erase her personal data under Article 17 of the General Data Protection Regulation (GDPR). Lucía Ortega, Veldmark's group data protection officer, forwards the request to Ingrid Halvorsen, Group Chief Architect at Veldmark — the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)). Her note has one line: *"Before we answer her, I need to know every place her bike listing exists."*
 
 Ingrid gives the question to Daan Visser, who owns Yardstick, Tradeyard's PHP monolith, and to Sven Lindqvist from the event platform. Their answer, two days later, lists **seven** places that still hold the listing six months after the sale:
 
@@ -62,7 +62,7 @@ The **listing system of record** (SoR) is the one store in which a change to a l
 - **It is complete for the listing's own data.** Every field a read model shows must originate in the SoR or in another named system of record (seller accounts, entitlements, enrichment outputs with provenance). If a field exists only in a read model, that read model is no longer rebuildable.
 - **It is not necessarily one database.** "One system of record per listing" means one authoritative owner per fact. During a migration, Tradeyard listings live in Yardstick and Motorvane listings in Motorvane's listing service; what must never happen is that one listing is authoritative in two places at once.
 
-A useful distinction for the rest of the chapter: the SoR is authoritative for the **listing**, but a listing references facts with their own systems of record — the seller account ([Private Sellers, Dealers and Agencies: Modeling Who Lists](#sellers-and-accounts)), the paid products ([Packages, Bumps and Quotas: Products, Pricing and Entitlements](#products-and-entitlements)), the canonical property behind a real-estate listing ([One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution)), the moderation decisions ([Trust and Safety as a Platform](#trust-and-safety-architecture)). Listing data management covers the listing's own copies and the references it carries, not those neighbors' data.
+The SoR is authoritative for the **listing**, but a listing references facts with their own systems of record — the seller account ([Private Sellers, Dealers and Agencies: Modeling Who Lists](#sellers-and-accounts)), the paid products ([Packages, Bumps and Quotas: Products, Pricing and Entitlements](#products-and-entitlements)), the canonical property behind a real-estate listing ([One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution)), the moderation decisions ([Trust and Safety as a Platform](#trust-and-safety-architecture)). Listing data management covers the listing's own copies and the references it carries, not those neighbors' data.
 
 {id: listing-data-management--read-models-and-the-kinds-of-copy}
 ### Read models and the kinds of copy
@@ -81,12 +81,12 @@ Not every copy is a read model, and the differences decide how each is governed.
 | **Analytical copy** | History for analysis and model training | Partly: history before the stream is not | Snowflake | Personal-data split, retention, erasure job |
 | **External copy** | Held by a third party | No | E-mail provider logs, partner feeds, search engines' caches | Contract, notification duty, removal requests |
 
-The rule I use is short: **every copy must be either rebuildable or governed.** A rebuildable copy can be dropped and recreated, so its correctness problem reduces to freshness. A copy that cannot be rebuilt — an archive, an evidence store, an external copy — needs its own owner, purpose, retention and deletion path, written down before it exists.
+The rule I use: **every copy must be either rebuildable or governed.** A rebuildable copy can be dropped and recreated, so its correctness problem reduces to freshness. A copy that cannot be rebuilt — an archive, an evidence store, an external copy — needs its own owner, purpose, retention and deletion path, written down before it exists.
 
 {id: listing-data-management--consistency-as-users-experience-it}
 ### Consistency, as users experience it
 
-Database consistency models are precise and mostly invisible to users. What users see is **staleness**: the gap between the SoR's current state and what a screen shows. Four promises cover nearly every listing read path.
+Users do not see database consistency models; they see **staleness**, the gap between the SoR's current state and what a screen shows. Four promises cover nearly every listing read path.
 
 - **Read-your-writes.** A seller who changes the price sees the new price on their own listing page and in "my listings" immediately. Violating it produces support tickets and duplicate edits.
 - **Monotonic reads.** A buyer who has seen the price drop does not see the old price again on the next refresh because a different replica answered. Violating it produces distrust.
@@ -95,8 +95,8 @@ Database consistency models are precise and mostly invisible to users. What user
 
 A **staleness budget** is the written maximum lag for one read path, with the measurement that proves it. It is the requirement that connects the event architecture to the user experience.
 
-{id: listing-data-management--architecture-where-listing-data-lives}
-## Architecture: Where Listing Data Lives
+{id: listing-data-management--architecture-one-system-of-record-registered-read-models}
+## Architecture: One System of Record, Registered Read Models
 
 {id: listing-data-management--polyglot-persistence-for-one-listing}
 ### Polyglot persistence for one listing
@@ -116,12 +116,12 @@ Listing marketplaces are polyglot by necessity. The generic domain model this bo
 | Evidence store | T&S cases, statements of reasons | Evidence | — | Retention schedule; never edited in place |
 | Third-party systems | Partner feeds, e-mail logs, search engines | External | Contractual | Delete instruction, Art. 19 notification, removal request |
 
-![One listing, many copies, each with a promise. Read models are fed from the event stream with a staleness budget; seller tools read from the system of record to guarantee read-your-writes; the copy register gives every store an owner, a rebuild path and a retention rule.](listing-systems-architecture/diagrams/defe390485dad4cb.png)
+![Diagram: One listing, many copies, each with a promise](listing-systems-architecture/posts/34-listing-data-management/assets/images/34-listing-data-management/fig02-one-listing-many-copies-each-promise.jpeg)
 
-**Figure 2:** *One listing, many copies, each with a promise. Read models are fed from the event stream with a staleness budget; seller tools read from the system of record to guarantee read-your-writes; the copy register gives every store an owner, a rebuild path and a retention rule.*
+**Figure 2:** *One listing, many copies, each with a promise. Read models are fed from the event stream with a staleness budget; seller tools read from the system of record to guarantee read-your-writes; the consumer registry gives every store an owner, a rebuild path and a retention rule.*
 
-{id: listing-data-management--serving-the-promises}
-### Serving the promises
+{id: listing-data-management--implementing-the-consistency-guarantees}
+### Implementing the consistency guarantees
 
 Each consistency promise has a standard implementation.
 
@@ -136,7 +136,7 @@ Each consistency promise has a standard implementation.
 {id: listing-data-management--the-index-is-a-read-model}
 ### The index is a read model
 
-The search index deserves a sentence of its own, because it is the copy most likely to become something else. Teams add fields to the index that are computed nowhere else (a quality score, a manual boost, a moderator's correction), run one-off update scripts against it, and eventually discover that they cannot rebuild it without losing those changes. That is **Index-as-Database**. The test is simple: could you delete the index today and rebuild it from the SoR and the event stream, with no loss? If not, find the fields that live only in the index and give each a system of record. Vinted's 2024 migration from Elasticsearch to Vespa illustrates the payoff of the opposite discipline: a "search contract" in a Go gateway let the engine be replaced without changing product applications ([Vinted Engineering](https://vinted.engineering/2024/09/05/goodbye-elasticsearch-hello-vespa/), 2024). [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture) owns the index design; this chapter owns the rule that it is rebuildable.
+The search index is the copy most likely to stop being a read model. Teams add fields to the index that are computed nowhere else (a quality score, a manual boost, a moderator's correction), run one-off update scripts against it, and eventually discover that they cannot rebuild it without losing those changes. That is **Index-as-Database**. The test: could you delete the index today and rebuild it from the SoR and the event stream, with no loss? If not, find the fields that live only in the index and give each a system of record. Vinted's 2024 migration from Elasticsearch to Vespa illustrates the payoff of the opposite discipline: a "search contract" in a Go gateway let the engine be replaced without changing product applications ([Vinted Engineering](https://vinted.engineering/2024/09/05/goodbye-elasticsearch-hello-vespa/), 2024). [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture) owns the index design; this chapter owns the rule that it is rebuildable.
 
 {id: listing-data-management--in-practice-what-marketplaces-have-documented}
 ## In Practice: What Marketplaces Have Documented
@@ -173,7 +173,7 @@ Vinted is a counter-case: a marketplace whose members widely buy across borders,
 {id: listing-data-management--regions-and-residency}
 ### Regions and residency
 
-Veldmark is an EU business with EU users. Each brand has one primary location for its listing SoR — Tradeyard's Yardstick in its co-located Amsterdam data center until the strangler moves it to AWS eu-west-1, Motorvane on AWS eu-central-1, Hearthly on Google Cloud europe-west1 — and keeps its read models close to it. Multi-writer replication across regions is not on the roadmap. Vinted's 2026 account gives the reasoning a classifieds group can borrow: a single write site "avoided the complexity and operational cost of a fully sharded, multi-writer system", complexity the post calls "hard to justify unless the business absolutely demands it". Disaster recovery to a second EU region is a [Sunday Night Peaks: Reliability, Performance and Cost](#reliability-and-scale) decision; the data-management rule is that every replica and backup in that region inherits the same retention and erasure obligations as its source.
+Each Veldmark brand, all of them EU businesses with EU users, writes its listing SoR in one primary location — Tradeyard's Yardstick in its co-located Amsterdam data center until the strangler moves it to AWS eu-west-1, Motorvane on AWS eu-central-1, Hearthly on Google Cloud europe-west1 — and keeps its read models close to it. Multi-writer replication across regions is not on the roadmap. Vinted's 2026 account gives the reasoning a classifieds group can borrow: a single write site "avoided the complexity and operational cost of a fully sharded, multi-writer system", complexity the post calls "hard to justify unless the business absolutely demands it". Disaster recovery to a second EU region is a [Sunday Evening Peaks: Reliability, Performance and Cost](#reliability-and-scale) decision; the data-management rule is that every replica and backup in that region inherits the same retention and erasure obligations as its source.
 
 {id: listing-data-management--retention-archives-and-the-life-of-a-listing-record}
 ## Retention, Archives and the Life of a Listing Record
@@ -195,7 +195,7 @@ Veldmark's group retention schedule, adopted in October 2027 after Femke's reque
 | Transaction records | Safe Deal orders, fees, payouts | 7 years | Deleted |
 | Behavioral data about the listing | Views, contacts, alert deliveries | Per the tracking plan in [Data Platform for Marketplaces: Events, Lakehouse and Data Products](#data-platform) | Aggregated |
 
-Two choices in the table are judgements worth defending. **Anonymized price history survives** because valuation models — Valuo at Hearthly, Motorvane's market-value estimate — depend on it, and history without a seller identity is no longer personal data if the anonymization holds. In real estate the address makes that "if" hard, which the vertical section returns to. **Sold pages expire** after 13 months at most even when they rank, because a public page showing a private seller's name and neighborhood is the most visible copy of all.
+Two rows in the table trade business value against privacy. **Anonymized price history survives** because valuation models — Valuo at Hearthly, Motorvane's market-value estimate — depend on it, and history without a seller identity is no longer personal data if the anonymization holds. In real estate the address makes that "if" hard, which the vertical section returns to. **Sold pages expire** after 13 months at most even when they rank, because a public page showing a private seller's name and neighborhood is the most visible copy of all.
 
 ![A closed listing record splits into four ribbons for photos, listing content, trust evidence and payment records, drawn as timeline bars of increasing length: 90 days, 13 months, 24 months and 7 years.](listing-systems-architecture/posts/34-listing-data-management/assets/images/34-listing-data-management/retention-clocks-by-data-class.jpeg)
 
@@ -204,7 +204,7 @@ Two choices in the table are judgements worth defending. **Anonymized price hist
 {id: listing-data-management--the-listing-record-s-data-lifecycle}
 ### The listing record's data lifecycle
 
-![The record's data lifecycle runs after the business lifecycle ends. Closing a listing starts retention clocks; archiving reduces fields; erasure and anonymization remove identity; a hold pauses the clocks for evidence. Every transition is an event that copy owners act on.](listing-systems-architecture/diagrams/8006f22e1e6d34ff.png)
+![Diagram: The record's data lifecycle runs after the business lifecycle ends](listing-systems-architecture/posts/34-listing-data-management/assets/images/34-listing-data-management/fig04-record-s-data-lifecycle-runs-after.jpeg)
 
 **Figure 4:** *The record's data lifecycle runs after the business lifecycle ends. Closing a listing starts retention clocks; archiving reduces fields; erasure and anonymization remove identity; a hold pauses the clocks for evidence. Every transition is an event that copy owners act on.*
 
@@ -227,7 +227,7 @@ Read as architecture, those articles describe a workflow, not a `DELETE` stateme
 5. **External copies.** Partners and processors receive delete instructions; recipients are notified under Art. 19; public copies indexed by search engines get a removal path (a 404 or 410 page and a removal request where warranted).
 6. **Proof.** The **erasure ledger** records every outcome. The case closes only when every registered copy has answered, and the response to the data subject is generated from the ledger.
 
-![Erasure as a workflow with receipts. The systems of record act first and emit events; every registered copy reports an outcome to the erasure ledger; the case closes only when the ledger is complete.](listing-systems-architecture/diagrams/3c94383cea4e21ba.png)
+![Diagram: Erasure as a workflow with receipts](listing-systems-architecture/posts/34-listing-data-management/assets/images/34-listing-data-management/fig05-erasure-workflow-receipts-systems-record-act.jpeg)
 
 **Figure 5:** *Erasure as a workflow with receipts. The systems of record act first and emit events; every registered copy reports an outcome to the erasure ledger; the case closes only when the ledger is complete.*
 
@@ -246,7 +246,7 @@ Applying the workflow to the seven copies, with the October 2027 schedule:
 | 6 | Safe Deal records | **Retained with legal basis** for 7 years; access restricted to finance and audit | Art. 17(3)(b), legal obligation | Recorded day 1 |
 | 7 | Digest archive and e-mail logs | **Deleted** internally; delete instruction to the e-mail provider, confirmed day 9 | Erasure; processor contract | Day 9 |
 
-Lucía sends Femke the response on **Wednesday 15 September 2027**, nine days after the request, listing what was erased and what is kept, for how long and why. The table also shows the cost of not having the register: the first answer took two days of investigation, and the second time — for the next of the roughly 1,900 erasure requests Tradeyard receives a month — it must take none.
+Lucía sends Femke the response on **Wednesday 15 September 2027**, nine days after the request, listing what was erased and what is kept, for how long and why. The table also shows the cost of not having the registry: the first answer took two days of investigation, and the second time — for the next of the roughly 1,900 erasure requests Tradeyard receives a month — it must take none.
 
 {id: listing-data-management--backups-logs-and-crypto-shredding}
 ### Backups, logs and crypto-shredding
@@ -265,10 +265,10 @@ Three stores resist erasure by design.
 
 Listing data goes wrong in bulk: an enricher version writes a wrong value, a feed mapping misreads a field, a taxonomy migration lands listings in the wrong leaf. The temptation is to patch the read model that shows the error. **The rule is to correct at the system of record and let the correction flow.** In August 2027, a Motorvane VIN-decoder release mapped one engine family's fuel type wrongly on about 41,000 listings. The fix took three steps: correct the enrichment output in the listing service (writing new versions with `cause` = `correction`), publish them through the backfill topic, and let search, the market-value model and the warehouse apply them with the usual version gate. Patching the Elasticsearch index directly would have been faster by a day and would have been undone by the next feed update.
 
-{id: listing-data-management--data-contracts-for-read-models}
-### Data contracts for read models
+{id: listing-data-management--the-consumer-registry-as-a-data-contract}
+### The consumer registry as a data contract
 
-A **copy register** turns the rules in this chapter into something a team can be held to. Every store holding listing data, inside or outside the group, has an entry:
+The **consumer registry** from [From Submitted to Searchable: The Publication Pipeline](#publication-pipeline) turns the rules in this chapter into something a team can be held to. This chapter extends each entry beyond removal: every store holding listing data, inside or outside the group, records its source, staleness budget, rebuild path, retention and erasure handler:
 
 | Field | Example: Tradeyard search index NL |
 | --- | --- |
@@ -281,7 +281,7 @@ A **copy register** turns the rules in this chapter into something a team can be
 | Erasure handler | Delete on `ListingErased`; reconciliation weekly |
 | External recipients | None |
 
-The register is the data-contract idea applied to read models. Adevinta Spain's contracts for analytical ingestion carry a comparable set — schema, landing topic, personal-data fields, owner, service levels, retention — and are immutable and versioned in GitHub ([Adevinta Tech Blog](https://adevinta.com/techblog/creating-source-aligned-data-products-in-adevinta-spain/), 2024). Veldmark extends the idea from the warehouse to every copy, and makes registration a precondition for receiving access to the listing topics, so the register cannot drift from reality: a consumer group without an entry gets no credentials. By December 2027 the register lists **64 copies** of listing data across the group.
+The registry is the data-contract idea applied to read models. Adevinta Spain's contracts for analytical ingestion carry a comparable set — schema, landing topic, personal-data fields, owner, service levels, retention — and are immutable and versioned in GitHub ([Adevinta Tech Blog](https://adevinta.com/techblog/creating-source-aligned-data-products-in-adevinta-spain/), 2024). Veldmark extends the idea from the warehouse to every copy, and makes registration a precondition for receiving access to the listing topics, so the registry cannot drift from reality: a consumer group without an entry gets no credentials. By December 2027 the registry lists **64 copies** of listing data across the group.
 
 {id: listing-data-management--trade-offs}
 ## Trade-offs
@@ -310,7 +310,7 @@ The most contested row in practice is the last. SEO teams can show that sold pag
 | Read model that matters most | Search and alerts | Map tiles and the property cluster view | Search and the market-value model | Search and external job indexes |
 | Archive value | Low | High: market statistics, valuation training | Medium: residual values, price ratings | Low |
 
-The real-estate column hides a hard problem. Hearthly keeps anonymized price history for Valuo's estimates, but a flat's address, surface and price history can identify its owner without a name. For property data, **"anonymized" must be tested against re-identification, not assumed from the removal of names**; aggregation to the building or the street, or retention under a documented legitimate interest with access controls, are the realistic options. [Models in Production: ML Platforms and Use Cases](#ml-platform) owns the model side of that decision.
+In real estate, removing names does not anonymize price history. Hearthly keeps anonymized price history for Valuo's estimates, but a flat's address, surface and price history can identify its owner without a name. For property data, **"anonymized" must be tested against re-identification, not assumed from the removal of names**; aggregation to the building or the street, or retention under a documented legitimate interest with access controls, are the realistic options. [Models in Production: ML Platforms and Use Cases](#ml-platform) owns the model side of that decision.
 
 {id: listing-data-management--failure-modes}
 ## Failure Modes
@@ -329,17 +329,17 @@ The real-estate column hides a hard problem. Hearthly keeps anonymized price his
 {id: listing-data-management--the-chief-architect-s-view}
 ## The Chief Architect's View
 
-Listing data management is where architecture meets liability. The decisions are few, but they are group decisions, because every brand has the same obligations and the same copies.
+The decisions in listing data management are few, but they are group decisions, because every brand has the same obligations and the same copies.
 
-**What to decide centrally.** The rule of one system of record per fact; the copy register and the rule that registration precedes access; the consistency promises per read-path class (seller, buyer, removal); the group retention schedule by data class; the erasure workflow, its event, its handlers and its ledger; and the backup-restore procedure that replays erasures. At Veldmark these are owned jointly: the event platform team runs the register, Lucía Ortega owns the retention schedule and the erasure ledger, and each copy owner owns its handler. The architecture advice forum reviews every new copy type — not every consumer, but every new *kind* of store.
+**What to decide centrally.** The rule of one system of record per fact; the consumer registry and the rule that registration precedes access; the consistency promises per read-path class (seller, buyer, removal); the group retention schedule by data class; the erasure workflow, its event, its handlers and its ledger; and the backup-restore procedure that replays erasures. At Veldmark these are owned jointly: the event platform team runs the register, Lucía Ortega owns the retention schedule and the erasure ledger, and each copy owner owns its handler. The architecture advice forum reviews every new copy type — not every consumer, but every new *kind* of store.
 
 **What to leave local.** Each brand's choice of SoR technology during migration, its read-model designs, and its partitioning scheme within the group's tenancy rule.
 
 **Who decides on conflicts.** When SEO value, model accuracy or fraud prevention argue for keeping data and privacy argues for deletion, the decision belongs to a named owner with the data protection officer's sign-off, recorded as a decision record. The architecture's job is to make each such decision executable per data class, rather than to make it once for a whole database.
 
-**What to watch.** Staleness per read path against budget, especially removals; the count of copies in the register and of consumer groups without an entry (which should be zero); erasure cases closed within deadline and the slowest copy owner; the age of the oldest closed listing in each active store; rebuild times for each read model, tested at least twice a year; and the number of fields that exist only in a read model.
+**What to watch.** Staleness per read path against budget, especially removals; the count of copies in the registry and of consumer groups without an entry (which should be zero); erasure cases closed within deadline and the slowest copy owner; the age of the oldest closed listing in each active store; rebuild times for each read model, tested at least twice a year; and the number of fields that exist only in a read model.
 
-**The long-term consideration.** Copies outlive the systems that created them. Yardstick will be gone by the end of 2029; its listings, their archives, their evidence and their erasure history must not go with it, and they must not be copied into the new platform with their old retention problems intact. A migration plan that does not include the copy register and the erasure ledger is not finished; [Changing the Engine in Flight: Modernizing a Live Marketplace](#modernization-and-migration) takes that up.
+**The long-term consideration.** Copies outlive the systems that created them. Yardstick will be gone by the end of 2029; its listings, their archives, their evidence and their erasure history must not go with it, and they must not be copied into the new platform with their old retention problems intact. A migration plan that does not include the consumer registry and the erasure ledger is not finished; [Changing the Engine in Flight: Modernizing a Live Marketplace](#modernization-and-migration) takes that up.
 
 {id: listing-data-management--questions-to-ask}
 ## Questions to Ask
@@ -349,11 +349,14 @@ Listing data management is where architecture meets liability. The decisions are
 3. What is the staleness budget for each read path — seller pages, search, detail pages, alerts, partner feeds — and how is each measured?
 4. Do sellers always read their own writes? What do they see in the second after an edit?
 5. How do removals reach caches, CDNs and pages, and what is the measured time from "sold" to "gone everywhere"?
-6. Is there a register of every copy of listing data, including exports, test environments and third parties, and does access depend on registration?
+6. Is there a registry of every copy of listing data, including exports, test environments and third parties, and does access depend on registration?
 7. What retention applies to each data class in a closed listing, and which law or purpose justifies each period?
 8. When an erasure request arrives, can we list every copy that holds the subject's data within an hour, and prove each outcome?
 9. Does our backup-restore procedure replay erasures recorded after the backup?
 10. Which "anonymized" datasets could be re-identified by address, VIN or photo?
+
+{id: listing-data-management--from-internal-copies-to-search-engines}
+## From Internal Copies to Search Engines
 
 The copies in this chapter are not only read by Veldmark's own systems. The most valuable read model of all is the one that search engines and AI answer engines build from Tradeyard's 40 million indexed URLs, and its consistency promises are set partly by Google. [Found by Google: Web, App and SEO Architecture for Listings](#web-and-seo-architecture) takes up the customer-facing web and the pages that represent listings to the outside world.
 

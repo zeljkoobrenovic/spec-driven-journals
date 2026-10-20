@@ -17,7 +17,7 @@
 > * **Feed Roulette** — the feed contract turns an import into an agreement on identity, semantics, field ownership, errors and reconciliation, with a mass-change guard that holds a truncated file instead of applying it.
 > * **Entitlement Spaghetti** — the entitlement matrix puts every product's effects, enforcement points, failure behavior and billing basis on one page, so what was sold can be compared with what was delivered.
 
-These are **working templates for a group of listing marketplaces**, taken from the chapters of this book and tested against Veldmark, the fictional marketplace group the book follows. They are not a certification scheme or a vendor method. Each is the smallest form I have found that does its job: it makes a design or decision explicit, assigns an owner, and leaves evidence someone else can check. **Adapt the wording to your marketplaces; keep the fields that carry ownership, removal behavior and dates.** Those are the fields that get dropped first, and the ones whose absence the next incident finds.
+These are **working templates for a group of listing marketplaces**: the records that Parts I to VIII ask a Chief Architect to keep, from the capability map of [Map What the Marketplace Does Before What Runs It](#business-capabilities) to the decision record of [Who Owns What: Organizing Marketplace Engineering](#organizing-marketplace-engineering), each tested against Veldmark, the fictional marketplace group the book follows. They are not a certification scheme or a vendor method. Each is the smallest form I have found that makes a design or decision explicit, assigns an owner, and leaves evidence someone else can check. **Adapt the wording to your marketplaces; keep the fields that carry ownership, removal behavior and dates.** Those are the fields that get dropped first, and the ones whose absence the next incident finds.
 
 Three conventions run through all twelve.
 
@@ -31,7 +31,7 @@ Three conventions run through all twelve.
 | Tool | Use it when | Chapter |
 | --- | --- | --- |
 | [Tool 1](#toolkit--tool-1): Capability map row and heat map | You must show where the group pays several times for the same ability, or who owns a capability | [Map What the Marketplace Does Before What Runs It](#business-capabilities) |
-| [Tool 2](#toolkit--tool-2): Vertical requirement profile and share-layer row | A vertical or brand section is asked to move onto a shared engine, or a new vertical is proposed | [Same Platform, Different Physics: General, Real Estate, Automotive and Jobs](#vertical-requirements) |
+| [Tool 2](#toolkit--tool-2): Vertical requirement profile and share-layer row | A vertical or brand section is asked to move onto a shared engine, or a new vertical is proposed | [Same Platform, Different Physics: How Listing Verticals Differ](#vertical-requirements) |
 | [Tool 3](#toolkit--tool-3): Listing lifecycle state table | You design or change listing states, or two systems disagree about whether a listing is live | [The Listing Aggregate: Identity, Lifecycle and Invariants](#listing-aggregate) |
 | [Tool 4](#toolkit--tool-4): Attribute dictionary entry | A new attribute is proposed, an attribute changes meaning, or facets and feeds disagree | [Attributes Without Chaos: Schemas, Dictionaries and Validation](#attribute-schemas) |
 | [Tool 5](#toolkit--tool-5): Feed contract | A partner, dealer system or agency software vendor will write listings | [Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion) |
@@ -43,14 +43,14 @@ Three conventions run through all twelve.
 | [Tool 11](#toolkit--tool-11): Consolidation decision card | An acquired marketplace, brand or SaaS business must be integrated, or deliberately left alone | [After the Deal: Consolidating Platforms After Acquisitions](#platform-consolidation) |
 | [Tool 12](#toolkit--tool-12): Architecture decision record | A decision crosses a team, brand or tenant, moves money or personal data, or needs an exception | [Who Owns What: Organizing Marketplace Engineering](#organizing-marketplace-engineering) |
 
-The tenant register and configuration hierarchy of [One Platform, Many Marketplaces: Multi-Country and Multi-Brand Architecture](#multi-country-platforms), the qualified-contact definition of [Data Platform for Marketplaces: Events, Lakehouse and Data Products](#data-platform) and the journey SLOs of [Sunday Night Peaks: Reliability, Performance and Cost](#reliability-and-scale) are not repeated here; Tools 6, 7, 11 and 12 link to them where a field depends on them.
+The tenant register and configuration hierarchy of [One Platform, Many Marketplaces: Multi-Country and Multi-Brand Architecture](#multi-country-platforms), the qualified-contact definition of [Data Platform for Marketplaces: Events, Lakehouse and Data Products](#data-platform) and the journey SLOs of [Sunday Evening Peaks: Reliability, Performance and Cost](#reliability-and-scale) are not repeated here; Tools 6, 7, 11 and 12 link to them where a field depends on them.
 
 {id: toolkit--how-the-records-connect}
 ## How the Records Connect
 
-The tools are not twelve separate forms. Most changes in a marketplace group pass through several of them, and each record points to the next.
+Most changes in a marketplace group pass through several of the tools, and each record points to the next.
 
-![How the templates reference each other. Understanding records feed decisions; decisions produce the listing's model and its contracts; and nearly every operational record rests on the event specification and the SLA card, because in a listing marketplace a change is finished only when every copy of the listing reflects it.](listing-systems-architecture/diagrams/965542f9a873dd8f.png)
+![Diagram: How the templates reference each other](listing-systems-architecture/posts/toolkit/assets/images/toolkit/fig01-how-templates-reference-each-other-understanding.jpeg)
 
 **Figure 1:** *How the templates reference each other. Understanding records feed decisions; decisions produce the listing's model and its contracts; and nearly every operational record rests on the event specification and the SLA card, because in a listing marketplace a change is finished only when every copy of the listing reflects it.*
 
@@ -162,7 +162,7 @@ Share-layer row: *vehicle identity, specification and price rating*, **layer 3**
 - Classifying a whole capability into one layer. "Search" is the engine at layer 1, mappings and ranking policies at layer 2, a price-rating signal at layer 3 and the result page at layer 4.
 - Omitting the stage gate. Without it, a vertical moves onto a shared engine when the program plan says so, which is how the Platform Mandate starts.
 
-Learn more: [Same Platform, Different Physics: General, Real Estate, Automotive and Jobs](#vertical-requirements)
+Learn more: [Same Platform, Different Physics: How Listing Verticals Differ](#vertical-requirements)
 
 {id: toolkit--tool-3}
 ## Tool 3: Listing Lifecycle State Table
@@ -522,7 +522,7 @@ Learn more: [Packages, Bumps and Quotas: Products, Pricing and Entitlements](#pr
 {id: toolkit--tool-10}
 ## Tool 10: Listing Event Specification
 
-**Purpose.** A listing event specification states one listing fact in the group's published language, in a shape that search, alerts, trust and safety, monetization, SEO and the data platform can rely on for years. It sits beside the registered schema and says what the event means, when it is emitted, what makes it unique and ordered, what it carries, who consumes it, how fast it must arrive and how it may change. The producer states what happened; each consumer decides what it means for its own copy.
+**Purpose.** A listing event specification defines one event in the listing event contract (see [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings)): it states one listing fact in the group's published language, in a shape that search, alerts, trust and safety, monetization, SEO and the data platform can rely on for years. It sits beside the registered schema and says what the event means, when it is emitted, what makes it unique and ordered, what it carries, who consumes it, how fast it must arrive and how it may change. The producer states what happened; each consumer decides what it means for its own copy.
 
 **Use it when** a new event type is proposed for the listing stream, a field's meaning is in doubt, a consumer registers, or a breaking change is being considered. The default answer to a new type is no: every type is a cost for every consumer.
 
@@ -571,7 +571,7 @@ Learn more: [Every Change Is an Event: Event-Driven Listing Architecture](#event
 {id: toolkit--tool-11}
 ## Tool 11: Consolidation Decision Card
 
-**Purpose.** The consolidation decision card records, for one acquired marketplace, brand or business, its **integration option** (hold separate, federate under group controls, share services beneath, replatform onto a sibling, merge brands, or divest), which capabilities move onto group platforms in which stage of the consolidation sequence and behind which gate, and which are deliberately left alone. It replaces one big yes-or-no on "replatforming" with a staged, gated plan, a synergy ledger whose lines each have an owner, evidence and a dependency, the brand and URL risk, the constraints that bind the deal, and the exit path that keeps the business separable.
+**Purpose.** The consolidation decision card records, for one acquired marketplace, brand or business, its **integration option** (hold separate, federate under group controls, share services beneath, replatform onto a sibling, merge brands, or divest), which capabilities move onto group platforms in which stage of the consolidation sequence and behind which gate, and which are deliberately left alone. It replaces one yes-or-no on "replatforming" with a staged, gated plan. Beside the plan it records a synergy ledger whose lines each have an owner, evidence and a dependency, the brand and URL risk, the constraints that bind the deal, and the exit path that keeps the business separable.
 
 **Use it when** a deal closes or is being priced, a synergy target is announced, a brand or domain migration is proposed, or the next cost program proposes merging something that was kept separate on purpose. Public cases show why the constraints row matters: the UK Competition and Markets Authority accepted undertakings on 2 June 2021 that required Gumtree UK and Shpock to be sold as part of Adevinta's acquisition of eBay Classifieds Group, with transitional services offered by the sellers ([CMA decision, published 2021](https://assets.publishing.service.gov.uk/media/606de28fe90e076f520fecdb/Adevinta-eBay_-_Decision_that_UILs_offer_may_be_acceptable.pdf)). And when eBay Kleinanzeigen became Kleinanzeigen on 16 May 2023, the press release said the previous domain would "remain accessible for several more years" ([Adevinta press release, 2023](https://adevinta.com/press-releases/adevintas-eBay-kleinanzeigen-is-now-kleinanzeigen/)): a brand migration is measured in years of redirects.
 
@@ -686,7 +686,7 @@ Learn more: [Who Owns What: Organizing Marketplace Engineering](#organizing-mark
 {id: toolkit--using-the-toolkit-over-time}
 ## Using the Toolkit Over Time
 
-The templates earn their keep only when they are revisited. Three habits keep them true.
+The templates stay true only when they are revisited, and three habits make that happen.
 
 - **Review them on a calendar, not ad hoc.** The capability map and vertical profiles before annual planning and after every acquisition; decision records on their review dates and triggers; SLA cards and index design cards before the peak and campaign calendar's busiest weeks and after every rebuild drill; feed contracts at each partner's schema retirement notice; the entitlement matrix before every price event; policy cards whenever a transparency report shows a category moving.
 - **Let incidents add fields.** Veldmark's mass-change guard came from 38,400 vanished cars, the send-time re-check from one sold bike in 214 digests, the `PublishRefused` entry from €212,000 of credits and the group-urgent change class from a rule that took three days to cross a border. When a post-incident review finds a gap, the fix usually includes a new field in one of these templates.

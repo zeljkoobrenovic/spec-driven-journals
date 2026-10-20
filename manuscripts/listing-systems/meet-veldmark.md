@@ -1,11 +1,11 @@
 {id: meet-veldmark}
-# Meet Veldmark: Four Marketplaces, One Platform to Build
+# Meet Veldmark: Four Brands, One Platform to Build
 
-![Meet Veldmark: Four Marketplaces, One Platform to Build — logo](listing-systems-architecture/posts/meet-veldmark/assets/images/meet-veldmark/logo.jpeg)
+![Meet Veldmark: Four Brands, One Platform to Build — logo](listing-systems-architecture/posts/meet-veldmark/assets/images/meet-veldmark/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Meet Veldmark Group, the fictional marketplace group this book follows: its four brands and their business models, its volumes, its 2027 systems landscape, the people who run it, the eight problems it starts 2027 with, the Common Ground platform program approved to solve them, and the recurring worked examples whose numbers every chapter shares.
 
-> **WHY THE BUSINESS CARES:** Veldmark earns €1.31 billion a year from four quite different ways of turning listings into money. Its owner wants growth and a lower run cost at the same time, and the group pays for most of its capabilities four times.
+> **WHY THE BUSINESS CARES:** Veldmark earns €1.31 billion a year from four different ways of turning listings into money. Its owner wants growth and a lower run cost at the same time, and the group pays for most of its capabilities four times.
 
 > **WHY ARCHITECTS SHOULD CARE:** Veldmark's difficulty is variety, not scale. Three clouds, three search engines, four identity systems and a PHP monolith from 2006 must serve private sellers, dealers and agencies in eight countries without slowing any marketplace down, and that is the Chief Architect's problem in miniature.
 
@@ -21,7 +21,7 @@
 > * **The Country Fork** — Tradeyard's Belgian and Portuguese sites run on their own copies of Yardstick, and all four countries keep separate category trees and rule sets, so a fraud rule written on a Sunday night reaches Belgium on Wednesday and Poland and Portugal never.
 > * **Ghost Inventory** — the Rotterdam city bike, sold on Monday evening, still appears in 214 alert e-mails on Tuesday morning, and it is the book's spine example for a reason.
 
-Architecture books about marketplaces usually choose one of two kinds of example. Either they use a toy marketplace, one listing table and a search box, which is too simple to show why the hard decisions are hard. Or they describe one real company, whose internals cannot be verified and whose choices do not transfer. This book takes a third route: **one fictional group, detailed enough to be realistic and consistent enough to be followed across fifty chapters.**
+This book tests its argument against **one fictional group, detailed enough to be realistic and consistent enough to be followed across fifty chapters.** The usual alternatives fail in opposite ways: a toy marketplace, one listing table and a search box, is too simple to show why the hard decisions are hard, and a real company's internals cannot be verified and its choices do not transfer. This page is the group's reference. The failure patterns of [Unlisted: Fifteen Ways Listing Systems Go Wrong](#where-listing-systems-go-wrong) appear here as Veldmark's 2027 problems, and every chapter from Part I on opens with a scene whose people, systems and numbers come from this page.
 
 **Veldmark Group is fictional.** It is a composite that borrows *patterns* common in the classifieds industry: a horizontal brand that grew country by country on one codebase, a vertical brand built for professional supply, acquisitions that arrived with their own clouds, a transactional product added on top of a contact marketplace, and a private-equity owner who wants both growth and efficiency. It is **not a portrait of any real company**. Nothing on this page or in any chapter is a claim about how a real group is built; the vendor products it runs are real, but its use of them is invented. The real companies the book discusses, such as Adevinta, OLX, Kleinanzeigen, Rightmove or Auto Trader, appear under their own names, with dated sources, and never as Veldmark.
 
@@ -64,7 +64,7 @@ Each phase left a layer in the systems: four category trees in country copies of
 {id: meet-veldmark--four-brands-four-business-models}
 ## Four Brands, Four Business Models
 
-Veldmark runs four businesses and one shared advertising unit. They differ in who supplies the listings, where the marketplace's job ends and how the money is made, which is exactly the classification [Classifieds, Lead Generation and Transactions: A Marketplace Taxonomy](#marketplace-taxonomy) develops.
+Veldmark runs four businesses and one shared advertising unit. They differ in who supplies the listings, where the marketplace's job ends and how the money is made, the classification [Classifieds, Leads, Transactions and Managed Models: A Marketplace Taxonomy](#marketplace-taxonomy) develops.
 
 | Brand | What it is | Markets | Business model | 2026 revenue |
 | --- | --- | --- | --- | --- |
@@ -89,10 +89,10 @@ Four features of the brand portfolio recur throughout the book.
 
 Veldmark Ads is the exception to "four of everything": one ad stack, on Google Ad Manager with Prebid header bidding, sells inventory on all three marketplaces ([Selling Attention: Display, Native and Retail-Media Advertising](#advertising-platforms)).
 
-{id: meet-veldmark--volumes}
-## Volumes
+{id: meet-veldmark--volumes-every-design-is-sized-against}
+## Volumes Every Design Is Sized Against
 
-2026 figures, rounded; every design in the book is sized against them.
+2026 figures, rounded.
 
 | Metric | Value |
 | --- | --- |
@@ -108,14 +108,14 @@ Veldmark Ads is the exception to "four of everything": one ad stack, on Google A
 | Duplicates | Hearthly France: 1.9M listings describe about **1.12 million** distinct properties, **1.7** listings per property |
 | Taxonomy | Tradeyard: four country trees with 1,420 (NL), 1,380 (BE), 980 (PL) and 760 (PT) leaf categories; **3,900** distinct attribute keys, 41% of them used on fewer than 0.1% of listings |
 
-Two caveats. The **Sunday-evening peak is a Veldmark illustration**, not an industry statistic; the documented public example of a weekly peak, Rightmove's, is in [Sunday Night Peaks: Reliability, Performance and Cost](#reliability-and-scale). And ratios matter more than totals: Tradeyard Netherlands and Portugal have almost the same monthly users per live listing (2.3 and 2.5), yet a new Dutch listing gets its first contact in a median of 2.6 hours and a Portuguese one in 19. [Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics](#liquidity-and-network-effects) explains why, and why every latency target in this book names the liquidity metric it protects.
+Two caveats. The **Sunday-evening peak is a Veldmark illustration**, not an industry statistic; the documented public example of a weekly peak, Rightmove's, is in [Sunday Evening Peaks: Reliability, Performance and Cost](#reliability-and-scale). And ratios matter more than totals: Tradeyard Netherlands and Portugal have almost the same monthly users per live listing (2.3 and 2.5), yet a new Dutch listing gets its first contact in a median of 2.6 hours and a Portuguese one in 19. [Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics](#liquidity-and-network-effects) explains why, and why every latency target in this book names the liquidity metric it protects.
 
 {id: meet-veldmark--the-systems-landscape}
 ## The Systems Landscape
 
-The 2027 baseline estate is the product of that history: one monolith that grew with a brand, one vertical stack built for professionals, acquired stacks on other clouds, and almost nothing between them.
+The 2027 baseline estate is the product of that history, with almost nothing shared between the brands' stacks.
 
-![Veldmark's 2027 baseline: three marketplaces on three stacks and two clouds, an agent CRM on a third cloud, and only advertising and finance shared beneath them.](listing-systems-architecture/diagrams/0b6da2fdac0a6c23.png)
+![Diagram: Veldmark's 2027 baseline](listing-systems-architecture/posts/meet-veldmark/assets/images/meet-veldmark/fig02-veldmark-s-2027-baseline-three-marketplaces.jpeg)
 
 **Figure 2:** *Veldmark's 2027 baseline: three marketplaces on three stacks and two clouds, an agent CRM on a third cloud, and only advertising and finance shared beneath them.*
 
@@ -165,7 +165,7 @@ The recurring customers, private seller **Femke** (she/her) in Rotterdam, dealer
 {id: meet-veldmark--eight-problems-veldmark-starts-2027-with}
 ## Eight Problems Veldmark Starts 2027 With
 
-When Ingrid arrives, the marketplaces work and the group is profitable, but through effort and duplication that grow faster than the business. Eight problems define her starting position; most are instances of patterns from [Unlisted: Fifteen Ways Listing Systems Go Wrong](#where-listing-systems-go-wrong).
+When Ingrid arrives, the marketplaces work and the group is profitable, but its effort and duplication grow faster than the business. Eight problems define her starting position; most are instances of patterns from [Unlisted: Fifteen Ways Listing Systems Go Wrong](#where-listing-systems-go-wrong).
 
 1. **Four of everything.** Four identity systems, four trust-and-safety stacks, three search engines, three clouds, four product catalogs, three data warehouses. *(The Acquisition Archipelago.)*
 2. **Six minutes to searchable.** On Tradeyard, a new listing takes **6 minutes** at the 95th percentile (p95) from submission to searchable, because moderation and indexing work in batches. The target is **90 seconds** p95 by the end of 2028.
@@ -185,15 +185,15 @@ None of these is a technology problem alone. The phishing exists because messagi
 {id: meet-veldmark--the-common-ground-program}
 ## The Common Ground Program
 
-In **January 2027** Veldmark's board approved **Common Ground**: **€140 million** over **2027–2030** to build shared platform capabilities beneath the brands. Its goals are three.
+In **January 2027** Veldmark's board approved **Common Ground**: **€140 million** over **2027–2030** to build shared platform capabilities beneath the brands. It has three goals.
 
 - **Shared platform capabilities**: a group identity (**Veldmark ID**), trust and safety, media, a search platform, messaging, a product catalog and entitlements, an event backbone, a data platform, and a taxonomy and attribute service.
 - **Retire Yardstick by the end of 2029**, through a strangler migration: the insertion flow moves out in the second quarter of 2028, search in the fourth quarter of 2028, and the monolith is decommissioned at the end of 2029.
 - **Cut run costs by €38 million a year by 2030.**
 
-Its governing principle is short: **share platforms, not products.** The marketplaces keep their brands, user experience and go-to-market; the group shares the capabilities beneath them. The hard design work is deciding which *part* of each capability is shared. A shared trust-and-safety pipeline can serve local policies; a shared search engine can serve brand-specific relevance; a shared entitlement ledger can serve brand-owned packages and prices.
+Its governing principle is **share platforms, not products.** The marketplaces keep their brands, user experience and go-to-market; the group shares the capabilities beneath them. The hard design work is deciding which *part* of each capability is shared. A shared trust-and-safety pipeline can serve local policies; a shared search engine can serve brand-specific relevance; a shared entitlement ledger can serve brand-owned packages and prices.
 
-!["Share platforms, not products": the brands keep what buyers and sellers see, Common Ground builds what lies beneath, and Keybridge stays outside by design.](listing-systems-architecture/diagrams/ce8a17542c4d91b0.png)
+![Diagram: "Share platforms, not products"](listing-systems-architecture/posts/meet-veldmark/assets/images/meet-veldmark/fig04-share-platforms-not-products-brands-keep.jpeg)
 
 **Figure 4:** *"Share platforms, not products": the brands keep what buyers and sellers see, Common Ground builds what lies beneath, and Keybridge stays outside by design.*
 
@@ -218,7 +218,7 @@ The decisions the chapters rely on, in order:
 | End 2029 | Yardstick decommissioned | [Changing the Engine in Flight: Modernizing a Live Marketplace](#modernization-and-migration) |
 | 2030 | Run-cost reduction of €38 million a year | [After the Deal: Consolidating Platforms After Acquisitions](#platform-consolidation) |
 
-![Common Ground's four plateaus; each must leave every marketplace working on its own, not only as a step toward the next.](listing-systems-architecture/diagrams/b7d9fce83f783ae8.png)
+![Diagram: Common Ground's four plateaus](listing-systems-architecture/posts/meet-veldmark/assets/images/meet-veldmark/fig05-common-ground-s-four-plateaus-each.jpeg)
 
 **Figure 5:** *Common Ground's four plateaus; each must leave every marketplace working on its own, not only as a step toward the next.*
 
@@ -227,15 +227,15 @@ The decisions the chapters rely on, in order:
 {id: meet-veldmark--the-recurring-worked-examples}
 ## The Recurring Worked Examples
 
-Five stories recur throughout the book. Their facts never change, so a reader can follow one listing across many chapters; each chapter adds detail without contradicting what is here.
+Five stories recur throughout the book. Their facts never change, so a reader can follow one listing across many chapters.
 
 | Example | Canonical facts | Where it does most work |
 | --- | --- | --- |
 | **The Rotterdam city bike** (Tradeyard NL) | Femke lists a used city bike for **€240** on **Sunday 7 March 2027 at 19:42 CET**. Searchable at **19:48**, the six-minute baseline. Matches **312** saved searches; first contact **19:55**; **14** conversations within 24 hours. At **20:11** a "buyer" sends a fake Safe Deal payment link from a domain registered that day; Femke reports it at **20:19**; the account is suspended at **20:26**; a new rule withholds **37** similar messages. On **Monday 8 March** a Safe Deal "pay at pickup" order reserves the bike at **14:02**; it sells for **€225** with a buyer fee of **€11.95** (5% × €225 + €0.70). Marked sold at **18:10**, removed from search at **18:11** — but the alert digest assembled at 17:30 still features it in **214** e-mails at 07:00 on Tuesday. | [The Listing Aggregate: Identity, Lifecycle and Invariants](#listing-aggregate), [From Submitted to Searchable: The Publication Pipeline](#publication-pipeline), [Tell Me When It Appears: Saved Searches and Alerts](#saved-searches-and-alerts), [From Interest to Contact: Messaging and Lead Management](#messaging-and-leads), [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings) |
 | **The Essen Volkswagen Golf** (Motorvane DE) | A 2021 Golf 1.5 TSI, **48,000 km**, **€21,900**, from dealer **Autohaus Ruhrblick** through its DMS feed on **Wednesday 14 April 2027**. VIN decoding fills **31** attributes; the market-value model estimates **€22,800** ("good price"). **23 raw leads in 10 days** (14 e-mails, 7 calls, 2 test-drive bookings), **19** after removing repeat contacts from the same buyers. Price cut to **€21,400** on **Thursday 22 April** triggers price-drop alerts to **1,180** watchers. Sold **Thursday 29 April**; the feed's removal arrives **26 hours** later. | [Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion), [Recommendations for Inventory That Disappears](#recommendations), [Packages, Bumps and Quotas: Products, Pricing and Entitlements](#products-and-entitlements) |
-| **The Lyon apartment** (Hearthly FR) | A three-room (T3) **68 m²** flat in Lyon 7e for sale at **€389,000**, energy class (DPE, the French energy performance diagnostic) **D**. Listed in **May 2027** by **three agencies**, through two real-estate software vendors and Keybridge; one is **Agence Rhône Habitat**, a network of **14 branches**. Entity resolution clusters the three listings into one canonical property. Valuo estimate: **€372,000–€401,000**. | [One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution), [Private Sellers, Dealers and Agencies: Modeling Who Lists](#sellers-and-accounts), [Searching by Place: Map, Polygon and Commute Search](#map-search), [Models in Production: ML Platforms and Use Cases](#ml-platform) |
+| **The Lyon apartment** (Hearthly FR) | A three-room (T3) **68 m²** flat in Lyon 7e for sale at **€389,000**, energy class (DPE, the French energy performance diagnostic) **D**. Listed in **May 2027** by **three agencies**, through two real-estate software vendors and Keybridge; one is **Agence Rhône Habitat**, a network of **14 branches**. Entity resolution clusters the three listings into one canonical property. Valuo estimate: **€372,000–€401,000**. | [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution), [Private Sellers, Dealers and Agencies: Modeling Who Lists](#sellers-and-accounts), [Searching by Place: Map, Polygon and Commute Search](#map-search), [Models in Production: ML Platforms and Use Cases](#ml-platform) |
 | **The Barcelona fake-rental ring** (Hearthly ES) | In **July 2027**, **26** accounts post **180** fake rental listings in Eixample using photos stolen from real listings, priced about **35%** below market, asking for deposits by bank transfer outside the platform. Detected through perceptual-hash matches against existing listings plus price anomalies; **63** people report losses of about **€71,000** before takedown. | [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention), [Photos Sell: Media Pipelines for Listings](#media-pipeline), [Who Is on the Other Side? Identity and Verification](#identity-and-verification), [Tell Me When It Appears: Saved Searches and Alerts](#saved-searches-and-alerts) |
-| **The Sunday-evening brown-out** (Tradeyard NL) | **Sunday 17 January 2027, 20:35 CET**: search p99 latency rises from about **400 ms** to about **7 s** for **48 minutes**, and about **9%** of searches fail. Causes: a TV campaign, a scheduled reindex job and Solr cache eviction at the weekly peak. | [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture), [Sunday Night Peaks: Reliability, Performance and Cost](#reliability-and-scale) |
+| **The Sunday-evening brown-out** (Tradeyard NL) | **Sunday 17 January 2027, 20:35 CET**: search p99 latency rises from about **400 ms** to about **7 s** for **48 minutes**, and about **9%** of searches fail. Causes: a TV campaign, a scheduled reindex job and Solr cache eviction at the weekly peak. | [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture), [Sunday Evening Peaks: Reliability, Performance and Cost](#reliability-and-scale) |
 
 The **Rotterdam bike is the book's spine.** In about 24 hours one €240 listing passes through a dozen systems and exposes a different weakness in almost every one: batch delays behind the six minutes, a messaging check that ran after delivery, a rule that reached Belgium three days late, an analytics extract that recorded the sale as "expired", and a digest that never asked whether the bike was still for sale. Six months later, Femke's erasure request finds **seven** copies of the listing. None of this is exotic; it is what a successful classifieds platform looks like after twenty years of reasonable local decisions.
 
@@ -251,13 +251,13 @@ Each chapter opens with a 2027 scene at Veldmark that poses its question, then a
 | Veldmark problem | Where it is posed | Where it is worked |
 | --- | --- | --- |
 | Four of everything | [Map What the Marketplace Does Before What Runs It](#business-capabilities), [Bounded Contexts for Marketplaces: Where One Listing Becomes Many Models](#bounded-contexts) | [Who Is on the Other Side? Identity and Verification](#identity-and-verification), [Trust and Safety as a Platform](#trust-and-safety-architecture), [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture), [Data Platform for Marketplaces: Events, Lakehouse and Data Products](#data-platform), [One Platform, Many Marketplaces: Multi-Country and Multi-Brand Architecture](#multi-country-platforms), [After the Deal: Consolidating Platforms After Acquisitions](#platform-consolidation) |
-| Six minutes to searchable | [From Submitted to Searchable: The Publication Pipeline](#publication-pipeline) | [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings), [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture), [Tell Me When It Appears: Saved Searches and Alerts](#saved-searches-and-alerts), [Sunday Night Peaks: Reliability, Performance and Cost](#reliability-and-scale) |
+| Six minutes to searchable | [From Submitted to Searchable: The Publication Pipeline](#publication-pipeline) | [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings), [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture), [Tell Me When It Appears: Saved Searches and Alerts](#saved-searches-and-alerts), [Sunday Evening Peaks: Reliability, Performance and Cost](#reliability-and-scale) |
 | Six weeks for a category | [Category Trees That Can Change: Designing Marketplace Taxonomies](#categories-and-taxonomies) | [Attributes Without Chaos: Schemas, Dictionaries and Validation](#attribute-schemas), [From Raw Supply to Usable Listings: Normalization and Enrichment](#normalization-and-enrichment), [What Did They Mean? Query Understanding and Autocomplete](#query-understanding), [Found by Google: Web, App and SEO Architecture for Listings](#web-and-seo-architecture) |
-| Duplicates at Hearthly | [One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution) | [Photos Sell: Media Pipelines for Listings](#media-pipeline), [Searching by Place: Map, Polygon and Commute Search](#map-search), [Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion) |
+| Duplicates at Hearthly | [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution) | [Photos Sell: Media Pipelines for Listings](#media-pipeline), [Searching by Place: Map, Polygon and Commute Search](#map-search), [Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion) |
 | Payment-link phishing | [From Interest to Contact: Messaging and Lead Management](#messaging-and-leads) | [Trust and Safety as a Platform](#trust-and-safety-architecture), [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention), [Who Is on the Other Side? Identity and Verification](#identity-and-verification) |
 | Yardstick | [The Listing Aggregate: Identity, Lifecycle and Invariants](#listing-aggregate), [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings) | [System of Record and Read Models: Listing Data Management](#listing-data-management), [Who Owns What: Organizing Marketplace Engineering](#organizing-marketplace-engineering), [Changing the Engine in Flight: Modernizing a Live Marketplace](#modernization-and-migration) |
-| Keybridge neutrality | [Private Sellers, Dealers and Agencies: Modeling Who Lists](#sellers-and-accounts) | [Serving the Pros: Dealer, Agent and Merchant Tooling](#professional-seller-tooling), [One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution), [Models in Production: ML Platforms and Use Cases](#ml-platform), [Rules of the Marketplace: DSA, DAC7 and Vertical Regulation](#marketplace-regulation) |
-| Overlap in Poland | [Classifieds, Lead Generation and Transactions: A Marketplace Taxonomy](#marketplace-taxonomy) | [Same Platform, Different Physics: General, Real Estate, Automotive and Jobs](#vertical-requirements), [Private Sellers, Dealers and Agencies: Modeling Who Lists](#sellers-and-accounts), [How Listing Marketplaces Make Money](#monetization-models) |
+| Keybridge neutrality | [Private Sellers, Dealers and Agencies: Modeling Who Lists](#sellers-and-accounts) | [Serving the Pros: Dealer, Agent and Merchant Tooling](#professional-seller-tooling), [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution), [Models in Production: ML Platforms and Use Cases](#ml-platform), [Rules of the Marketplace: DSA, DAC7 and Vertical Regulation](#marketplace-regulation) |
+| Overlap in Poland | [Classifieds, Leads, Transactions and Managed Models: A Marketplace Taxonomy](#marketplace-taxonomy) | [Same Platform, Different Physics: How Listing Verticals Differ](#vertical-requirements), [Private Sellers, Dealers and Agencies: Modeling Who Lists](#sellers-and-accounts), [How Listing Marketplaces Make Money](#monetization-models) |
 
 Part VIII follows Common Ground as a program, through to [Built to Be Replaced: Evolving a Marketplace Platform Over a Decade](#long-term-evolution); Part IX leaves Veldmark and tests the book against the public record of real groups, starting with [Adevinta: From Schibsted's Copy-Paste Model to a Portfolio Platform](#case-adevinta).
 
@@ -268,15 +268,18 @@ With the group, its problems and its program introduced, Part I begins where Ing
 {id: meet-veldmark--sources-and-evidence}
 ## Sources and Evidence
 
-**Company engineering and investor sources**
+{id: meet-veldmark--company-engineering-and-investor-sources}
+### Company engineering and investor sources
 
 - None. Veldmark Group, its brands (Tradeyard, Motorvane, Hearthly, Keybridge, Casavista, Veldmark Ads, Valuo, Safe Deal, Tally), its people, customers, figures, systems and events are fictional and invented for teaching; they are not drawn from any single real company.
 
-**Standards, regulation and documentation**
+{id: meet-veldmark--standards-regulation-and-documentation}
+### Standards, regulation and documentation
 
 - [Demandes de valeurs foncières (DVF)](https://www.data.gouv.fr/fr/datasets/demandes-de-valeurs-foncieres/), Direction générale des finances publiques, data.gouv.fr, n.d. (updated twice a year) — the real French open dataset of property transactions on which the fictional Valuo is described as trained.
 
-**Research and practitioner sources**
+{id: meet-veldmark--research-and-practitioner-sources}
+### Research and practitioner sources
 
 - The scenario's shape draws on the generalized marketplace domain models described in this book's provenance note and on the industry history covered, with dated sources, in [From Newspaper Columns to Portfolios: How the Classifieds Industry Evolved](#industry-evolution) and the Part IX case studies.
 

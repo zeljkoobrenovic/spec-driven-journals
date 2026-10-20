@@ -21,11 +21,11 @@
 > * **The Acquisition Archipelago** — four acquired identity systems mean four logins, four ban lists and four answers to "who is this trader", so a fraudster removed from one brand simply registers on the next.
 > * **Moderation as an Afterthought** — verification added after a fraud wave, as a one-off document upload, produces badges that nobody can explain and evidence nobody can find.
 
-Every marketplace eventually asks how much it should know about its users. Most answer it twice, badly. First they ask for almost nothing, because every registration field costs sign-ups. Then, after a fraud wave or a regulator's letter, they ask everyone for an identity document, because the incident made identity feel like the solution. Neither answer holds up. **The right amount of identity depends on what the user is about to do.** Browsing needs none. Publishing a rental in a city full of fake-rental rings needs a great deal.
+Part V treats trust as a shared platform, and [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention) ended on its strongest and most expensive friction: asking users to prove who they are. This chapter decides how much a marketplace should know about its users. Most marketplaces answer that twice, badly. First they ask for almost nothing, because every registration field costs sign-ups. Then, after a fraud wave or a regulator's letter, they ask everyone for an identity document, because the incident made identity feel like the solution. Neither answer holds up. **The right amount of identity depends on what the user is about to do.** Browsing needs none. Publishing a rental in a city full of fake-rental rings needs a great deal.
 
-This chapter treats identity and verification as a platform capability with its own model. It separates *proofing* (establishing who someone is) from *authentication* (establishing that the person logging in is still that someone) and from *business verification* (establishing that an organization exists and is who it says it is). It turns these into identity levels and badges, follows account takeover and recovery, and then takes up the group question: one login for four brands, or four logins forever?
+The chapter separates *proofing* (establishing who someone is) from *authentication* (establishing that the person logging in is still that someone) and from *business verification* (establishing that an organization exists and is who it says it is). It turns these into identity levels and badges, follows account takeover and recovery, and then takes up the group question: one login for four brands, or four logins forever?
 
-Neighboring chapters own adjacent ground. [Private Sellers, Dealers and Agencies: Modeling Who Lists](#sellers-and-accounts) owns the seller account model, organizations, branches and trader status. [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention) owns risk scoring, fraud signals and step-up friction as a fraud control. [Rules of the Marketplace: DSA, DAC7 and Vertical Regulation](#marketplace-regulation) owns the legal detail of the Digital Services Act (DSA) and of seller tax reporting. Here we build the identity service those chapters call. The running example is Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)).
+The result is the identity service that neighboring chapters call. [Private Sellers, Dealers and Agencies: Modeling Who Lists](#sellers-and-accounts) owns the seller account model, organizations, branches and trader status. [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention) owns risk scoring, fraud signals and step-up friction as a fraud control. [Rules of the Marketplace: DSA, DAC7 and Vertical Regulation](#marketplace-regulation) owns the legal detail of the Digital Services Act (DSA) and of seller tax reporting, and builds its trader record on the business registry designed here. [From Interest to Contact: Messaging and Lead Management](#messaging-and-leads) gates contact on the identity levels defined here, and [Beyond the Contact: Payments, Shipping and Buyer Protection](#transactions-and-payments) defers to them for payees. The running example is Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)).
 
 {id: identity-and-verification--setting-the-scene-at-veldmark-one-phone-number-two-brands}
 ## Setting the Scene at Veldmark: One Phone Number, Two Brands
@@ -55,7 +55,7 @@ Approving a login was the easy part. The questions Ingrid brought to the archite
 {id: identity-and-verification--five-words-that-teams-use-interchangeably}
 ### Five words that teams use interchangeably
 
-Identity discussions go wrong when the same word is used for different things. The definitions below are the ones this book uses.
+Identity discussions go wrong when one word stands for several things. This book uses these definitions:
 
 | Term | Meaning | Example at Veldmark |
 | --- | --- | --- |
@@ -67,10 +67,10 @@ Identity discussions go wrong when the same word is used for different things. T
 
 The distinction between account and identity matters most. One person can hold several accounts, and one shared account can be used by several people (a family, a car dealership's front desk). An identity system that assumes one account per person will either block legitimate sharing or fail to see one fraudster with forty accounts.
 
-{id: identity-and-verification--two-axes-not-one-ladder}
-### Two axes, not one ladder
+{id: identity-and-verification--three-axes-not-one-ladder}
+### Three axes, not one ladder
 
-The United States National Institute of Standards and Technology (NIST) gives the clearest vocabulary for this. Its Digital Identity Guidelines, SP 800-63-4, finalized in July 2025, separate **identity assurance** (how confident the service is that a person is who they claim to be) from **authenticator assurance** (how confident it is that the person presenting the credential is the account holder), with a third axis for federated logins ([NIST, 2025](https://csrc.nist.gov/pubs/sp/800/63/4/final)). The guidelines are written for US government systems, and a marketplace has no obligation to follow them. The separation still helps a marketplace.
+The clearest vocabulary for this comes from the United States National Institute of Standards and Technology (NIST). Its Digital Identity Guidelines, SP 800-63-4, finalized in July 2025, separate **identity assurance** (how confident the service is that a person is who they claim to be) from **authenticator assurance** (how confident it is that the person presenting the credential is the account holder), with a third axis for federated logins ([NIST, 2025](https://csrc.nist.gov/pubs/sp/800/63/4/final)). The guidelines are written for US government systems and oblige no marketplace to follow them, but the separation applies to any platform.
 
 A user can be well proven and weakly authenticated: a dealer who passed a full business check five years ago and still logs in with a reused password. A user can also be strongly authenticated and unproven: an anonymous buyer with a passkey. Fraud exploits both gaps, and **a single "verification level" hides which gap is open.**
 
@@ -113,9 +113,9 @@ B1 and B2 map closely to what the DSA requires of online marketplaces before a t
 {id: identity-and-verification--verified-badges}
 ### Verified badges
 
-A **verified badge** is a public statement the marketplace makes to one user about another. That makes it a promise, and a promise has a meaning, a scope and a liability. The rule I use is simple: **a badge must say what was verified, by which method, and nothing more.** "Identity verified with BankID" is a badge. "Verified" is a liability, because a buyer will read it as "safe to pay", and the platform verified nothing of the kind.
+A **verified badge** is a public statement the marketplace makes to one user about another. That makes it a promise, and a promise has a meaning, a scope and a liability. The rule I use: **a badge must say what was verified, by which method, and nothing more.** "Identity verified with BankID" is a badge. "Verified" is a liability, because a buyer will read it as "safe to pay", and the platform verified nothing of the kind.
 
-The Ofcom-commissioned expert report on fraudulent advertising and account integrity makes the point from the attacker's side. Account takeover is attractive because fraudsters "gain check marks, verification" along with the account ([Integrity Institute for Ofcom, 2026](https://www.ofcom.org.uk/siteassets/resources/documents/research-and-data/online-advertising/fraudulent-advertising-and-account-integrity_expert-insights-on-best-practice.pdf)). A badge on a taken-over account is worse than no badge. It amplifies the scam it was meant to prevent.
+Attackers value badges too. The Ofcom-commissioned expert report on fraudulent advertising and account integrity notes that account takeover is attractive because fraudsters "gain check marks, verification" along with the account ([Integrity Institute for Ofcom, 2026](https://www.ofcom.org.uk/siteassets/resources/documents/research-and-data/online-advertising/fraudulent-advertising-and-account-integrity_expert-insights-on-best-practice.pdf)). A badge on a taken-over account is worse than no badge. It amplifies the scam it was meant to prevent.
 
 {id: identity-and-verification--architecture-the-identity-service-and-its-neighbors}
 ## Architecture: The Identity Service and Its Neighbors
@@ -138,14 +138,14 @@ The identity capability splits into components that change at different speeds a
 
 Two boundaries matter most. **Risk scoring lives outside identity.** [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention) reads identity levels as features and asks the identity service for a step-up. It does not write claims. **Documents live outside the claim store.** The claim says "identity document checked with liveness, provider X, case 8f3…, result pass, name match on the payee account". The image of the passport stays with the provider, for the provider's retention period, or in a sealed evidence vault if the law requires the platform to keep a copy.
 
-![Veldmark ID's components. Brands authenticate users through one service but receive brand-specific identifiers; verification providers sit behind adapters that write normalized claims; levels and badges are derived from claims and published as events to the fraud and trust-and-safety platform.](listing-systems-architecture/diagrams/66344cc2e78697d2.png)
+![Diagram: Veldmark ID's components](listing-systems-architecture/posts/26-identity-and-verification/assets/images/26-identity-and-verification/fig02-veldmark-id-s-components-brands-authenticate.jpeg)
 
 **Figure 2:** *Veldmark ID's components. Brands authenticate users through one service but receive brand-specific identifiers; verification providers sit behind adapters that write normalized claims; levels and badges are derived from claims and published as events to the fraud and trust-and-safety platform.*
 
 {id: identity-and-verification--the-claim-as-the-contract}
 ### The claim as the contract
 
-The most important interface in the identity service is not the login API. It is the shape of a claim, because every provider adapter writes one and every consumer reads one. Veldmark's claim record has these fields:
+The most important interface in the identity service is the shape of a claim, not the login API, because every provider adapter writes one and every consumer reads one. Veldmark's claim record has these fields:
 
 | Field | Example | Why it exists |
 | --- | --- | --- |
@@ -158,16 +158,16 @@ The most important interface in the identity service is not the login API. It is
 | `verified_at`, `expires_at` | 2 May 2027; 2 May 2030 | Claims age; phone numbers get recycled; businesses close |
 | `status` | `valid`, `expired`, `revoked`, `disputed` | Badges must follow status |
 
-Two design rules follow. First, **policies reference claim types and assurance, never providers.** "Private-landlord rentals in Spain require `person.identified` at `substantial`" survives a change of document vendor or the arrival of the EU Digital Identity Wallet. "Requires an Onfido check" (or any other named vendor) does not. Second, **claims carry only the attributes a policy needs.** If the only purpose is to show "identity verified", the claim needs the verified name (to match the payee account and the display name policy) and perhaps an adult flag. It does not need the document number, the date of birth or the address. The General Data Protection Regulation (GDPR) requires data to be "limited to what is necessary" and asks for data protection by design ([Regulation (EU) 2016/679, Arts. 5(1)(c) and 25](https://eur-lex.europa.eu/eli/reg/2016/679/oj)). The claim schema is where that principle becomes concrete.
+Two design rules follow. First, **policies reference claim types and assurance, never providers.** "Private-landlord rentals in Spain require `person.identified` at `substantial`" survives a change of document vendor or the arrival of the EU Digital Identity Wallet. "Requires an Onfido check" (or any other named vendor) does not. Second, **claims carry only the attributes a policy needs.** If the only purpose is to show "identity verified", the claim needs the verified name (to match the payee account and the display name policy) and perhaps an adult flag. It does not need the document number, the date of birth or the address. The General Data Protection Regulation (GDPR) requires data to be "limited to what is necessary" and asks for data protection by design ([Regulation (EU) 2016/679, Arts. 5(1)(c) and 25](https://eur-lex.europa.eu/eli/reg/2016/679/oj)). The claim schema is where that principle is enforced.
 
-Seller tax reporting is the exception that proves the rule. Once Safe Deal makes Tradeyard a reporting platform operator under DAC7, it must collect date of birth and tax identification number for reportable sellers. That collection belongs to a separate, purpose-bound tax profile with its own retention, not to the general claim. [Rules of the Marketplace: DSA, DAC7 and Vertical Regulation](#marketplace-regulation) covers the obligation.
+Seller tax reporting needs more attributes, and they stay out of the general claim. Once Safe Deal makes Tradeyard a reporting platform operator under DAC7, it must collect date of birth and tax identification number for reportable sellers. That collection belongs to a separate, purpose-bound tax profile with its own retention. [Rules of the Marketplace: DSA, DAC7 and Vertical Regulation](#marketplace-regulation) covers the obligation.
 
 {id: identity-and-verification--the-claim-lifecycle}
 ### The claim lifecycle
 
-Claims are not permanent. A phone number is reassigned to someone else. A company is dissolved. A passkey is deleted. A payment provider freezes a seller after a fraud report. The claim lifecycle has to model all of it, because a badge that outlives its claim is a false statement.
+Claims expire and get revoked, and the lifecycle has to model every way they end, because a badge that outlives its claim is a false statement. A phone number is reassigned to someone else. A company is dissolved. A passkey is deleted. A payment provider freezes a seller after a fraud report.
 
-![A claim's lifecycle. Every transition recomputes the account's identity level and badges; revocation is a first-class state, not a deletion, so the platform can later explain why a badge disappeared.](listing-systems-architecture/diagrams/758b6ec22a927430.png)
+![Diagram: A claim's lifecycle](listing-systems-architecture/posts/26-identity-and-verification/assets/images/26-identity-and-verification/fig03-claim-s-lifecycle-every-transition-recomputes.jpeg)
 
 **Figure 3:** *A claim's lifecycle. Every transition recomputes the account's identity level and badges; revocation is a first-class state, not a deletion, so the platform can later explain why a badge disappeared.*
 
@@ -177,7 +177,7 @@ Claims are not permanent. A phone number is reassigned to someone else. A compan
 {id: identity-and-verification--authenticators-for-a-consumer-marketplace}
 ### Authenticators for a consumer marketplace
 
-Proofing happens once in a while. Authentication happens every day, for tens of millions of people, and it is where most identity incidents begin. A marketplace needs a small set of authenticators, each with a clear role.
+Most identity incidents begin at authentication, which happens every day for tens of millions of people; proofing happens once in a while. A marketplace needs a small set of authenticators, each with a clear role.
 
 | Authenticator | Role | Strength | Weakness |
 | --- | --- | --- | --- |
@@ -190,14 +190,16 @@ Proofing happens once in a while. Authentication happens every day, for tens of 
 
 A **passkey** is, in the FIDO Alliance's words, "an authentication credential based on FIDO standards" that the user unlocks with a biometric, PIN or pattern on their device. Passkeys can be synced across a user's devices through a cloud service or bound to one device, and FIDO describes them as phishing-resistant either way ([FIDO Alliance, n.d.](https://fidoalliance.org/passkeys/)). NIST's 2025 guidelines accept syncable authenticators at its middle assurance level, subject to protections on the sync service, and exclude them from the highest level because syncing conflicts with its non-exportability requirement ([NIST SP 800-63B-4, Appendix B](https://pages.nist.gov/800-63-4/sp800-63b/syncable)). For a marketplace, synced passkeys are the realistic target: strong enough to stop phishing, recoverable enough for consumers.
 
-The documented marketplace case is Mercari, the Japanese second-hand marketplace. In a July 2026 engineering post, Mercari described about **13 million** users with a registered passkey, and "phishing-resistant accounts" that require a passkey, allow login only with it and permit recovery only through high-assurance identity proofing. Where passkeys are required, Mercari reports that "large-scale phishing financial damages have been effectively zero"; where they are optional, losses dropped as adoption grew. Mercari also names the cost: users who cannot register a passkey leave, and users who lose one are locked out and contact support ([Mercari Engineering, 2026](https://engineering.mercari.com/en/blog/entry/20260730-bridging-the-gap-between-passwords-and-passkeys-with-risk-based-authentication/)).
+Mercari, the Japanese second-hand marketplace, documents that required passkeys stop large-scale phishing, at a cost in lost users and support load. In a July 2026 engineering post, Mercari described about **13 million** users with a registered passkey, and "phishing-resistant accounts" that require a passkey, allow login only with it and permit recovery only through high-assurance identity proofing. Where passkeys are required, Mercari reports that "large-scale phishing financial damages have been effectively zero"; where they are optional, losses dropped as adoption grew. Mercari also names the cost: users who cannot register a passkey leave, and users who lose one are locked out and contact support ([Mercari Engineering, 2026](https://engineering.mercari.com/en/blog/entry/20260730-bridging-the-gap-between-passwords-and-passkeys-with-risk-based-authentication/)).
 
-Mercari's migration model is worth copying because it is gradual. Accounts move along four states: password or e-mail link, e-mail link only (password disabled), passkey or e-mail link, and passkey only. **Disabling the password is the first step, not the last.** The e-mail link acts as a bridge, so a user who never adopts a passkey still stops being phishable by password. FINN, the Norwegian marketplace, shows the same direction from a different starting point: its help center describes logging in to the shared Vend account with a one-time code sent to the user's e-mail address, and separately encourages two-step authentication because, "as on other digital platforms", some FINN users have had their accounts taken over by others ([FINN help center, 2024, updated 2026](https://hjelpesenter.finn.no/hc/no/articles/22642951164434-Beskytt-kontoen-din-med-totrinnsautentisering)).
+Mercari's migration model is worth copying because it is gradual. Accounts move along four states: password or e-mail link, e-mail link only (password disabled), passkey or e-mail link, and passkey only. **Disabling the password is the first step, not the last.** The e-mail link acts as a bridge, so a user who never adopts a passkey still stops being phishable by password.
+
+FINN, the Norwegian marketplace, moves in the same direction from a different starting point: its help center describes logging in to the shared Vend account with a one-time code sent to the user's e-mail address, and separately encourages two-step authentication because, "as on other digital platforms", some FINN users have had their accounts taken over by others ([FINN help center, 2024, updated 2026](https://hjelpesenter.finn.no/hc/no/articles/22642951164434-Beskytt-kontoen-din-med-totrinnsautentisering)).
 
 {id: identity-and-verification--risk-based-authentication}
 ### Risk-based authentication
 
-Strong authenticators protect accounts that use them. Risk-based authentication protects the rest. The idea is to judge each login and each sensitive action by two kinds of evidence, which Mercari calls **session posture** (signals from the device and network of this session: client integrity, network reputation, device and user-agent properties) and **account posture** (what accumulates over the account's life: authentication capabilities, verification history, behavior). Mercari combines them into one weighted verdict, and weights them differently for different decisions ([Mercari Engineering, 2026](https://engineering.mercari.com/en/blog/entry/20260730-bridging-the-gap-between-passwords-and-passkeys-with-risk-based-authentication/)).
+Strong authenticators protect accounts that use them. Risk-based authentication protects the rest. It judges each login and each sensitive action by two kinds of evidence, which Mercari calls **session posture** (signals from the device and network of this session: client integrity, network reputation, device and user-agent properties) and **account posture** (what accumulates over the account's life: authentication capabilities, verification history, behavior). Mercari combines them into one weighted verdict, and weights them differently for different decisions ([Mercari Engineering, 2026](https://engineering.mercari.com/en/blog/entry/20260730-bridging-the-gap-between-passwords-and-passkeys-with-risk-based-authentication/)).
 
 For a listing marketplace, the sensitive actions are predictable, and each deserves its own policy:
 
@@ -213,11 +215,11 @@ For a listing marketplace, the sensitive actions are predictable, and each deser
 {id: identity-and-verification--recovery-is-the-real-login}
 ### Recovery is the real login
 
-Every authentication design has a back door: the flow for people who lost their password, their phone or their passkey. Attackers know that the back door is weaker. If an account can be recovered by answering a support agent's questions or by receiving an SMS code, the passkey protects nothing.
+Every authentication design has a back door: the flow for people who lost their password, their phone or their passkey. Attackers use it because it is weaker. If an account can be recovered by answering a support agent's questions or by receiving an SMS code, the passkey protects nothing.
 
 Mercari's recovery rule is the strictest documented one. Users who cannot be reached by e-mail or phone prove their identity with Japan's My Number Card or with a document and a selfie, and recovery restores a passkey, e-mail address or phone number. "We do not restore passwords," the post says ([Mercari Engineering, 2026](https://engineering.mercari.com/en/blog/entry/20260730-bridging-the-gap-between-passwords-and-passkeys-with-risk-based-authentication/)). The general principle is that **recovery should require at least the assurance the account had**, and that a recovered account should return in a cautious state: badges suspended, payout changes held, until it re-establishes posture.
 
-One more back door deserves a name, because group identity programs open it. Researchers at Microsoft described **pre-hijacking** attacks, in which an attacker creates an account with a victim's e-mail address *before* the victim does, and keeps access after the victim later signs up or links a social login. They found at least 35 of 75 popular services vulnerable to one or more of five variants ([Sudhodanan and Paverd, USENIX Security 2022](https://arxiv.org/abs/2205.10174)). Any program that **merges accounts across brands by matching e-mail addresses** recreates the conditions for this attack. Accounts should be linked only after the user proves control of both, through authentication, not through a string match.
+Group identity programs open a second back door: **pre-hijacking**. Researchers at Microsoft described pre-hijacking attacks, in which an attacker creates an account with a victim's e-mail address *before* the victim does, and keeps access after the victim later signs up or links a social login. They found at least 35 of 75 popular services vulnerable to one or more of five variants ([Sudhodanan and Paverd, USENIX Security 2022](https://arxiv.org/abs/2205.10174)). Any program that **merges accounts across brands by matching e-mail addresses** recreates the conditions for this attack. Accounts should be linked only after the user proves control of both, through authentication, not through a string match.
 
 {id: identity-and-verification--proofing-people-methods-and-their-trade-offs}
 ## Proofing People: Methods and Their Trade-offs
@@ -253,7 +255,9 @@ The architectural conclusion is that **the verification orchestrator must be plu
 {id: identity-and-verification--what-a-shared-identity-looks-like-in-public}
 ### What a shared identity looks like in public
 
-The longest-running public example of a shared marketplace identity is Schibsted's. FINN's help center describes Schibsted account as having been "the shared login solution for all Schibsted services", news media and marketplaces alike. When Schibsted split into two companies, Schibsted Media and Schibsted Marketplaces, the account was separated as well. Users who had used both media services, such as VG and Aftenposten, and marketplace services, such as FINN, ended up with **two accounts**; privacy choices that had applied to all services at once now had to be made per company; and the marketplace account moved to a new web address, so password managers no longer recognized it and some users were asked to set a new password ([FINN help center, "FAQ: Separation of Schibsted Accounts", February 2025, updated 2026](https://hjelpesenter.finn.no/hc/no/articles/24542252272018-FAQ-Separation-of-Schibsted-Accounts)). Schibsted Marketplaces has since been renamed Vend, and FINN describes the Vend account as a shared login and payment solution for Vend services such as FINN.no, Helthjem and Morgenlevering ([FINN help center, 2025, updated 2026](https://hjelpesenter.finn.no/hc/no/articles/26512386856082-FINN-er-en-del-av-Vend-hva-betyr-det-for-deg); [FINN help center, "What is a Vend account?", updated 2026](https://hjelpesenter.finn.no/hc/no/articles/22650483740178-Hva-er-Vend-konto)).
+Schibsted's shared account, the longest-running public example of a marketplace group identity, shows what users feel when the group splits. FINN's help center describes Schibsted account as having been "the shared login solution for all Schibsted services", news media and marketplaces alike. When Schibsted split into two companies, Schibsted Media and Schibsted Marketplaces, the account was separated as well. Users who had used both media services, such as VG and Aftenposten, and marketplace services, such as FINN, ended up with **two accounts**; privacy choices that had applied to all services at once now had to be made per company; and the marketplace account moved to a new web address, so password managers no longer recognized it and some users were asked to set a new password ([FINN help center, "FAQ: Separation of Schibsted Accounts", February 2025, updated 2026](https://hjelpesenter.finn.no/hc/no/articles/24542252272018-FAQ-Separation-of-Schibsted-Accounts)).
+
+Schibsted Marketplaces has since been renamed Vend, and FINN describes the Vend account as a shared login and payment solution for Vend services such as FINN.no, Helthjem and Morgenlevering ([FINN help center, 2025, updated 2026](https://hjelpesenter.finn.no/hc/no/articles/26512386856082-FINN-er-en-del-av-Vend-hva-betyr-det-for-deg); [FINN help center, "What is a Vend account?", updated 2026](https://hjelpesenter.finn.no/hc/no/articles/22650483740178-Hva-er-Vend-konto)).
 
 > **INFERENCE, NOT DOCUMENTED:** The help-center texts describe the user-facing effects, not the internal design. A plausible reading, not a description of Schibsted's or Vend's systems, is that the shared identity carried user data and consents for two businesses in one store, and that separating them required deciding, per user and per data item, which company was the controller.
 
@@ -283,8 +287,8 @@ Veldmark chose the third option, and planned to pass through the fourth for Hear
 
 **Figure 4:** *Veldmark ID shares one account but gives each brand its own profile and its own identifier, so a brand that is sold can be cut out with its users.*
 
-{id: identity-and-verification--the-barcelona-rentals-a-policy-worth-its-cost}
-### The Barcelona rentals: a policy worth its cost
+{id: identity-and-verification--the-barcelona-fake-rental-ring-a-policy-worth-its-cost}
+### The Barcelona fake-rental ring: a policy worth its cost
 
 The first policy built on the level model came from Hearthly Spain. In **July 2027**, **26** accounts posted **180** fake rental listings in Eixample, using photos stolen from real listings and prices about 35% below market, and asked for deposits by bank transfer outside the platform. **63** people reported losses of about **€71,000** before the listings came down. [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention) follows the detection: perceptual-hash matches against existing listings and price anomalies. The identity question was simpler and more uncomfortable. None of the 26 accounts had been asked to prove anything beyond an e-mail address, because Hearthly Spain, like Casavista before it, required nothing more of private landlords.
 
@@ -314,7 +318,7 @@ The fix was to make business claims expire. Veldmark's business registry now re-
 
 Run the March incident again under Veldmark ID's level policy for Tradeyard Netherlands. The scammer's account would still be L2: e-mail confirmed, phone confirmed. Under the new policy, an L2 account younger than 30 days that sends a message containing a link to a domain outside Veldmark's allow list has the message held for a risk check, and the link rendered as text. The domain registered that day fails the check. Femke never sees the link.
 
-Her own account shows the other half. When Femke sold the bike through Safe Deal on 8 March, Adyen had already verified her as a payee, because Adyen must do so before it pays anyone out. In 2027 that fact lived only in Adyen and in a Safe Deal table. Under Veldmark ID it arrives as a `payee.verified` claim with Adyen as its source, and Tradeyard shows buyers the badge "Payouts verified by our payment partner". It does not show "Verified". The difference is the point.
+Femke's own account shows what a badge should say. When Femke sold the bike through Safe Deal on 8 March, Adyen had already verified her as a payee, because Adyen must do so before it pays anyone out. In 2027 that fact lived only in Adyen and in a Safe Deal table. Under Veldmark ID it arrives as a `payee.verified` claim with Adyen as its source, and Tradeyard shows buyers the badge "Payouts verified by our payment partner". It does not show "Verified". The difference is the point.
 
 {id: identity-and-verification--trade-offs}
 ## Trade-offs
@@ -352,7 +356,7 @@ Her own account shows the other half. When Femke sold the bike through Safe Deal
 | Badge buyers understand | "Identity verified", "Payouts verified" | "Registered agency", professional licence where it exists | "Approved dealer", "Seller identity verified" | "Verified employer" |
 | Sensitive data on the other side | Low | **High**: tenant application files with income and identity documents (Hearthly's rental services) | Medium: financing applications | **High**: CVs |
 
-The real-estate row has a twist. On a rental portal, identity risk runs in both directions. A fake landlord defrauds tenants, and a fake "tenant" or a careless agency can harvest tenants' identity documents from application files. Hearthly's tenant application files therefore carry their own access rules: the tenant shares a file with a specific listing, the agency sees it for a limited time, and every view is logged. Identity for the person *receiving* sensitive data matters as much as identity for the person posting a listing.
+On a rental portal, identity risk runs in both directions. A fake landlord defrauds tenants, and a fake "tenant" or a careless agency can harvest tenants' identity documents from application files. Hearthly's tenant application files therefore carry their own access rules: the tenant shares a file with a specific listing, the agency sees it for a limited time, and every view is logged. Identity for the person *receiving* sensitive data matters as much as identity for the person posting a listing.
 
 {id: identity-and-verification--failure-modes}
 ## Failure Modes
@@ -371,7 +375,7 @@ The real-estate row has a twist. On a rental portal, identity risk runs in both 
 
 **Decide the vocabulary centrally, the thresholds locally.** The group should own the claim types, assurance levels, identity levels and badge catalog, the way it owns the listing event contract. Brands and countries decide which actions require which level, within group guardrails, because a bike market in Rotterdam and a rental market in Barcelona carry different risks. Aisha's trust-and-safety team proposes level policies; product owns the friction; Lucía signs off the data each policy collects.
 
-**Treat identity as tier-zero infrastructure.** When Veldmark ID is down, nobody can log in to any brand. It needs the reliability engineering of the search platform, not of an internal tool: multiple availability zones, degraded modes (existing sessions keep working; new logins queue), and a tested regional failover. [Sunday Night Peaks: Reliability, Performance and Cost](#reliability-and-scale) covers the patterns.
+**Treat identity as tier-zero infrastructure.** When Veldmark ID is down, nobody can log in to any brand. It needs the reliability engineering of the search platform, not of an internal tool: multiple availability zones, degraded modes (existing sessions keep working; new logins queue), and a tested regional failover. [Sunday Evening Peaks: Reliability, Performance and Cost](#reliability-and-scale) covers the patterns.
 
 **Make separability a requirement, not a hope.** Pairwise identifiers, controller mapping and brand export are cheap to build at the start and expensive to retrofit. A private-equity owner will eventually ask what it costs to sell one brand. The identity service should have an answer measured in weeks.
 
@@ -403,7 +407,8 @@ Identity answers who is on the other side. Much of what this chapter built, the 
 {id: identity-and-verification--sources-and-evidence}
 ## Sources and Evidence
 
-**Company engineering and investor sources**
+{id: identity-and-verification--company-engineering-and-investor-sources}
+### Company engineering and investor sources
 
 - [Bridging the gap between passwords and passkeys with risk-based authentication](https://engineering.mercari.com/en/blog/entry/20260730-bridging-the-gap-between-passwords-and-passkeys-with-risk-based-authentication/) — Tatsuya Karino, Mercari Engineering, 2026. About 13 million passkey users; phishing-resistant accounts; session and account posture; recovery rules.
 - [Hvorfor verifisere brukeren min? (Why verify my user?)](https://hjelpesenter.finn.no/hc/no/articles/22642799684754-Hvorfor-verifisere-brukeren-min) — FINN help center, 2024 (updated 2026). BankID verification badge, one verified user per BankID, required in some categories, not for business advertisers.
@@ -413,7 +418,8 @@ Identity answers who is on the other side. Much of what this chapter built, the 
 - [FINN er en del av Vend (FINN is part of Vend)](https://hjelpesenter.finn.no/hc/no/articles/26512386856082-FINN-er-en-del-av-Vend-hva-betyr-det-for-deg) and [Hva er Vend-konto? (What is a Vend account?)](https://hjelpesenter.finn.no/hc/no/articles/22650483740178-Hva-er-Vend-konto) — FINN help center, 2025 and 2024 (both updated 2026). Rename to Vend; shared login and payment account; e-mail one-time code login.
 - [Verification overview (Adyen for Platforms)](https://docs.adyen.com/platforms/verification-overview) — Adyen, n.d. (current documentation). KYC of platform users before payouts; re-verification on data change.
 
-**Standards, regulation and documentation**
+{id: identity-and-verification--standards-regulation-and-documentation}
+### Standards, regulation and documentation
 
 - [Regulation (EU) 2022/2065 (Digital Services Act)](https://eur-lex.europa.eu/eli/reg/2022/2065/oj) — Official Journal, 2022. Art. 30 trader traceability, including electronic identification and correction or suspension; text checked against the Official Journal version.
 - [Regulation (EU) 2024/1183 (European Digital Identity Framework)](https://eur-lex.europa.eu/eli/reg/2024/1183/oj) — Official Journal, 2024. Art. 5a wallet provision; Art. 5f acceptance by private relying parties and very large online platforms.
@@ -425,7 +431,8 @@ Identity answers who is on the other side. Much of what this chapter built, the 
 - [NIST SP 800-63B-4, Appendix B: Syncable Authenticators](https://pages.nist.gov/800-63-4/sp800-63b/syncable) — NIST, 2025. Synced passkeys acceptable up to the middle assurance level.
 - [Passkeys](https://fidoalliance.org/passkeys/) — FIDO Alliance, n.d. Definition of passkeys; synced and device-bound variants.
 
-**Research and practitioner sources**
+{id: identity-and-verification--research-and-practitioner-sources}
+### Research and practitioner sources
 
 - [Pre-hijacked accounts: an empirical study of security failures in user account creation on the web](https://arxiv.org/abs/2205.10174) — Avinash Sudhodanan and Andrew Paverd, USENIX Security, 2022. Five pre-hijacking attack types; 35 of 75 services vulnerable.
 - [Fraudulent advertising and account integrity: expert insights on best practice](https://www.ofcom.org.uk/siteassets/resources/documents/research-and-data/online-advertising/fraudulent-advertising-and-account-integrity_expert-insights-on-best-practice.pdf) — Integrity Institute for Ofcom, 2026. Takeover to gain verification marks; friction between account creation and reach.

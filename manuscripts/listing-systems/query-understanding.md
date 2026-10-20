@@ -23,14 +23,14 @@
 
 A listing query is short, often misspelled, written in whatever language and dialect the buyer speaks, and usually **a request for a filter in disguise**. "ebike gazelle" means category e-bikes, brand Gazelle. "golf 8 automatik" means make Volkswagen, model Golf, generation 8, automatic gearbox. "T3 balcon Lyon 7" means three main rooms, a balcony, Lyon's 7th arrondissement. None of these buyers is asking for text relevance. They are asking the marketplace to recognize its own vocabulary in their words.
 
-**Query understanding** is the set of steps that turns the raw query string into a structured query: normalized and analyzed text, a predicted category, extracted attribute values and locations, corrections, expansions and, increasingly, a semantic representation. It sits between the search contract and the engine described in [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture), inside a latency budget of about 25 ms at Veldmark. It hands its output to [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking), which orders what retrieval finds.
+**Query understanding** is the set of steps that turns the raw query string into a structured query: normalized and analyzed text, a predicted category, extracted attribute values and locations, corrections, expansions and, increasingly, a semantic representation. This is where Part IV's claim that structure beats cleverness becomes a design: the categories and attributes that queries compile to come from the taxonomy and attribute service of [Category Trees That Can Change: Designing Marketplace Taxonomies](#categories-and-taxonomies) and [Attributes Without Chaos: Schemas, Dictionaries and Validation](#attribute-schemas). It sits between the search contract and the engine described in [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture), inside a latency budget of about 25 ms at Veldmark. It hands its output to [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking), which orders what retrieval finds.
 
 This chapter owns three terms: **query understanding**, **query categorization** (predicting the category a query is about) and **hybrid retrieval** (combining lexical, structured and embedding-based retrieval in one result set). It treats autocomplete as part of query understanding, because a good suggestion is a query the system already understands.
 
 {id: query-understanding--setting-the-scene-at-veldmark-eleven-ways-to-say-e-bike}
 ## Setting the Scene at Veldmark: Eleven Ways to Say E-Bike
 
-Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)), had a date on its calendar in autumn 2027. On **Monday 1 November 2027**, Tradeyard's bike categories (six country leaves in the Netherlands, most of them generic) would be replaced by canonical leaves for city bikes, e-bikes, cargo bikes, kids' bikes and more, the first change to run through the new group taxonomy and attribute service (see [Category Trees That Can Change: Designing Marketplace Taxonomies](#categories-and-taxonomies)). In early October, Priya Raman, Head of Data & ML, and Tomasz Wiśniewski, head of the group search platform, sat down with a month of Tradeyard Netherlands query logs to answer one question: *when the e-bikes category exists, will the people looking for e-bikes land in it?*
+Veldmark is the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)). On **Monday 1 November 2027**, Tradeyard's bike categories (six country leaves in the Netherlands, most of them generic) would be replaced by canonical leaves for city bikes, e-bikes, cargo bikes, kids' bikes and more, the first change to run through the new group taxonomy and attribute service (see [Category Trees That Can Change: Designing Marketplace Taxonomies](#categories-and-taxonomies)). In early October, Priya Raman, Head of Data & ML, and Tomasz Wiśniewski, head of the group search platform, sat down with a month of Tradeyard Netherlands query logs to answer one question: *when the e-bikes category exists, will the people looking for e-bikes land in it?*
 
 The logs were sobering. Tradeyard NL had about **380,000** live bike listings across all bicycle categories, of which about **214,000** would land in the new city-bike leaf and about **38,000** were e-bikes. About a quarter of the 1.9 million weekly bike searches expressed e-bike intent, in at least eleven forms: "ebike", "e-bike", "e bike", "e-fiets", "efiets", "elektrische fiets", "elektrischefiets", "fiets met trapondersteuning", "elektrische damesfiets", brand-plus-word forms like "gazelle elektrisch", and, a trap, "speed pedelec", which in the Netherlands is legally a moped with its own license plate, not an e-bike.
 
@@ -43,11 +43,11 @@ Belgium added French ("vélo électrique"), Poland "rower elektryczny" and Portu
 
 **Query normalization and analysis.** Unicode normalization, lowercasing, accent folding, tokenization, stemming and decompounding, per language. Analysis must agree between the query side and the index side, or matching fails silently.
 
-**Spelling correction.** Mapping a misspelled token to an intended one, either automatically ("auto-correct") or as a suggestion ("did you mean"). In listings the vocabulary is the marketplace's own: brands, models, place names, category words.
+**Spelling correction.** Mapping a misspelled token to an intended one, either automatically ("auto-correct") or as a suggestion ("did you mean"), against the marketplace's own vocabulary of brands, models, place names and category words.
 
 **Synonyms.** Equivalences ("e-bike = elektrische fiets") and one-way expansions ("gazelle → bike brand"), maintained per language and market.
 
-**Query categorization.** Predicting the category, or a ranked list of categories with probabilities, that a query is about. It is a classification problem whose label set is the category taxonomy, which is why it must be versioned with the taxonomy.
+**Query categorization.** Predicting the category, or a ranked list of categories with probabilities, that a query is about. It is a classification problem whose label set is the category taxonomy.
 
 **Query tagging (attribute extraction).** Recognizing spans of the query that name attribute values ("gazelle" → brand, "28 inch" → wheel size, "T3" → rooms 3) or places ("Lyon 7" → an arrondissement). It is named-entity recognition against the attribute dictionary in [Attributes Without Chaos: Schemas, Dictionaries and Validation](#attribute-schemas) and the location model in [Where Is It? Location, Geocoding and Privacy](#location-and-geo).
 
@@ -59,16 +59,16 @@ Belgium added French ("vélo électrique"), Poland "rower elektryczny" and Portu
 
 **LLM query compiler.** A large language model (LLM) that turns a natural-language request into the marketplace's existing structured query, which the classic engine then executes.
 
-{id: query-understanding--the-architecture-of-a-query-understanding-layer}
-## The Architecture of a Query-Understanding Layer
+{id: query-understanding--architecture-shared-vocabulary-local-policy}
+## Architecture: Shared Vocabulary, Local Policy
 
-Query understanding runs inside the search API, before retrieval, for every request that has text. The diagram shows the reference architecture I recommend. Steps that need models call them through a cache, because the head of the query distribution repeats and the tail is where models earn their keep.
+Query understanding runs inside the search API, before retrieval, for every request that has text. The diagram shows the reference architecture I recommend. Steps that need models call them through a cache: the head of the query distribution repeats, so the models do their real work on the tail.
 
-![Query understanding as a compiler. Each step adds structure with a confidence, the taxonomy and attribute dictionary supply the vocabulary, and the interpretation is shown back to the buyer as chips and corrections so that wrong guesses can be undone.](listing-systems-architecture/diagrams/66ff95d2692a668d.png)
+![Diagram: Query understanding as a compiler](listing-systems-architecture/posts/19-query-understanding/assets/images/19-query-understanding/fig01-query-understanding-compiler-each-step-adds.jpeg)
 
 **Figure 1:** *Query understanding as a compiler. Each step adds structure with a confidence, the taxonomy and attribute dictionary supply the vocabulary, and the interpretation is shown back to the buyer as chips and corrections so that wrong guesses can be undone.*
 
-The ownership split is as important as the steps.
+Each step has its own owner and its own reason to change.
 
 | Component | Owned by | Changes when |
 | --- | --- | --- |
@@ -85,11 +85,11 @@ The table encodes a principle: **the vocabulary is shared, the policy is local**
 {id: query-understanding--language-analysis-per-country}
 ## Language Analysis per Country
 
-Analysis is the least glamorous part of query understanding and the source of most silent failures. Four mechanisms matter for European listing marketplaces.
+Analysis is the source of most silent failures in query understanding. Four mechanisms matter for European listing marketplaces.
 
 **Tokenization and hyphens.** Product and model names are full of hyphens, digits and units: "e-bike", "1.5 TSI", "28-inch", "T3", "iPhone 13". A tokenizer that splits on every hyphen turns "e-bike" into "e" and "bike"; one that never splits leaves "e-bike" unequal to "ebike". The reliable approach is to index and query several forms: the original token, the joined form ("ebike") and the split parts with lower weight. Units and model codes need explicit patterns: a Dutch seller may write "28 inch", "28\"" or "28 duim" for the same wheel size.
 
-**Accent and character folding.** Vinted's 2026 autocomplete indexes both accented and ASCII-folded forms across 24 languages, so that "z" matches "Zara" and "Žalgiris", while "Ž" matches only the accented form ([Vinted Engineering, 2026](https://vinted.engineering/2026/04/22/personalized-search-autocomplete/)). The asymmetry is the point: a buyer who types the accent is telling you something.
+**Accent and character folding.** Vinted's 2026 autocomplete indexes both accented and ASCII-folded forms across 24 languages, so that "z" matches "Zara" and "Žalgiris", while "Ž" matches only the accented form ([Vinted Engineering, 2026](https://vinted.engineering/2026/04/22/personalized-search-autocomplete/)). The asymmetry is deliberate: a buyer who types the accent has asked for the accented form.
 
 **Stemming.** Language stemmers reduce "fietsen" to "fiets" and "appartements" to "appartement". They help recall and occasionally hurt precision, which is why brand and model names should be protected from stemming with a keyword list.
 
@@ -105,16 +105,16 @@ Analysis is the least glamorous part of query understanding and the source of mo
 {id: query-understanding--spelling-correction}
 ### Spelling correction
 
-The simplest correction is fuzzy matching in the engine. Elasticsearch's `AUTO` fuzziness allows no edits for terms of up to two characters, one edit for three to five, and two for longer terms ([Elastic documentation, n.d.](https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html)). It is cheap and useful as a fallback, but it is blind to the marketplace's vocabulary: it will happily match "golf" to "gold".
+The simplest correction is fuzzy matching in the engine. Elasticsearch's `AUTO` fuzziness allows no edits for terms of up to two characters, one edit for three to five, and two for longer terms ([Elastic documentation, n.d.](https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html)). It is cheap and useful as a fallback, but it is blind to the marketplace's vocabulary: it will match "golf" to "gold".
 
-A marketplace speller works better when its vocabulary is the marketplace's own. A typical design, which I recommend, generates a dictionary per market daily from three sources: tokens in live listings weighted by frequency, tokens in successful queries (followed by a click or contact), and the attribute dictionary's values, including brands and models. A correction is applied automatically only when the original returns few results and the corrected form is both close and much more frequent; otherwise it is offered as "did you mean". Brand names and model codes get protection from correction.
+A marketplace speller works better because its vocabulary is the marketplace's own. The design I recommend generates a dictionary per market daily from three sources: tokens in live listings weighted by frequency, tokens in successful queries (followed by a click or contact), and the attribute dictionary's values, including brands and models. A correction is applied automatically only when the original returns few results and the corrected form is both close and much more frequent; otherwise it is offered as "did you mean". Brand names and model codes get protection from correction.
 
-Vinted's autocomplete shows a cheap, layered version of the same idea: a fuzzy cascade from exact prefix to edit distance 1 to edit distance 2, stopping at ten unique suggestions. About 62% of requests resolved at exact prefix ([Vinted Engineering, 2026](https://vinted.engineering/2026/04/22/personalized-search-autocomplete/)). Most of the time, the expensive step is not needed.
+Vinted's autocomplete shows that the expensive step is usually not needed. Its fuzzy cascade runs from exact prefix to edit distance 1 to edit distance 2, stopping at ten unique suggestions, and about 62% of requests resolved at exact prefix ([Vinted Engineering, 2026](https://vinted.engineering/2026/04/22/personalized-search-autocomplete/)).
 
 {id: query-understanding--synonyms}
 ### Synonyms
 
-Synonyms are where hand-maintained search configuration rots. Three rules keep them healthy.
+Synonyms are where hand-maintained search configuration rots. Three rules prevent it.
 
 1. **Apply synonyms at search time, not index time.** Elastic's `synonym_graph` filter is designed for search analyzers, handles multi-word synonyms correctly, and can be made `updateable` so that reloading search analyzers picks up changes ([Elastic documentation, n.d.](https://www.elastic.co/docs/reference/text-analysis/analysis-synonym-graph-tokenfilter)). Changing a synonym should never require a reindex.
 2. **Mine candidates from behavior, approve them by hand.** A useful source is reformulation: buyers who search "x", get little, then search "y" and contact. Candidates go to a reviewer per market, because the cost of a wrong synonym is invisible: "speed pedelec = e-bike" would send moped buyers into bicycles and bicycle buyers past the legal difference.
@@ -137,7 +137,7 @@ Three properties separate a production categorizer from a demo.
 {id: query-understanding--tagging-attributes-and-places}
 ### Tagging attributes and places
 
-Attribute tagging finds spans that name values: brands, models, sizes, rooms, energy classes, fuel types. A dictionary matcher over the attribute dictionary's values and aliases gets surprisingly far, because marketplace vocabularies are bounded; a sequence-labeling model on top handles ambiguity and context. Location tagging is its own problem: "Lyon 7" is an arrondissement, "Den Bosch" is the common name of 's-Hertogenbosch, and "Essen" is a city in Germany and a municipality in Belgium. The location model in [Where Is It? Location, Geocoding and Privacy](#location-and-geo) supplies the gazetteer.
+Attribute tagging finds spans that name values: brands, models, sizes, rooms, energy classes, fuel types. A dictionary matcher over the attribute dictionary's values and aliases gets far, because marketplace vocabularies are bounded; a sequence-labeling model on top handles ambiguity and context. Location tagging is its own problem: "Lyon 7" is an arrondissement, "Den Bosch" is the common name of 's-Hertogenbosch, and "Essen" is a city in Germany and a municipality in Belgium. The location model in [Where Is It? Location, Geocoding and Privacy](#location-and-geo) supplies the gazetteer.
 
 The dictionary is the hard dependency. If the attribute service holds one definition of `bike.wheel_size` with its aliases ("28 inch", "28 duim", "28\""), the tagger can map the query to a filter. If wheel size exists as four free-text keys entered by different country teams, there is nothing to map to: **The Attribute Junkyard** defeats query understanding before any model runs.
 
@@ -146,7 +146,7 @@ Verticals change what a tag means. On Hearthly France, "T3" means three main roo
 {id: query-understanding--from-interpretation-to-query-filter-boost-or-suggest}
 ### From interpretation to query: filter, boost or suggest
 
-An interpretation is only as good as the policy that applies it. The rule I use maps confidence to action, and makes every applied interpretation visible.
+The policy I recommend maps each interpretation's confidence to an action, and shows every applied interpretation to the buyer.
 
 | Confidence | Action | What the buyer sees | Risk if wrong |
 | --- | --- | --- | --- |
@@ -172,7 +172,9 @@ A null-result page is a failed match between demand and supply. Some are genuine
 | 6 | Fill with dense retrieval | Visually or semantically similar listings, labeled "similar" |
 | 7 | Offer a saved search | "Tell me when one appears" (see [Tell Me When It Appears: Saved Searches and Alerts](#saved-searches-and-alerts)) |
 
-The ladder never removes a filter the buyer chose without saying so. Airbnb has published work on augmenting search with recommendations when searches are too narrow ([Airbnb Tech, 2025](https://airbnb.tech/infrastructure/academic-publications-airbnb-tech-2025-year-in-review/)); the general lesson is that a thin result set is an opportunity to show close alternatives, labeled as such. Step 7 matters for liquidity: a buyer who saves a search after a null result is standing demand that alerts can serve when supply appears.
+The ladder never removes a filter the buyer chose without saying so. Airbnb has published work on augmenting search with recommendations when searches are too narrow ([Airbnb Tech, 2025](https://airbnb.tech/infrastructure/academic-publications-airbnb-tech-2025-year-in-review/)); the general lesson is that a thin result set is an opportunity to show close alternatives, labeled as such.
+
+Step 7 matters for liquidity: a buyer who saves a search after a null result is standing demand that alerts can serve when supply appears.
 
 {id: query-understanding--autocomplete-and-query-suggestions}
 ## Autocomplete and Query Suggestions
@@ -185,7 +187,7 @@ Autocomplete is the earliest point at which the marketplace can steer a query to
 - **Serving.** Per-country indices in three European data centers; about 4,700 queries per second at 31 ms p99. Cutting the client debounce from 350 ms to 100 ms increased usage.
 - **Results.** Suggestion use rose from under 8% to over 17% of search sessions; the learning-to-rank change added about 8% suggestion click-through.
 
-![Autocomplete as two pipelines. An offline job builds and scores candidates from logs, vocabulary and live inventory; an online path matches prefixes and re-ranks per user within a few tens of milliseconds. Attaching an interpretation to each suggestion turns a click into a structured query.](listing-systems-architecture/diagrams/f63a3fd3f7510755.png)
+![Diagram: Autocomplete as two pipelines](listing-systems-architecture/posts/19-query-understanding/assets/images/19-query-understanding/fig02-autocomplete-two-pipelines-offline-job-builds.jpeg)
 
 **Figure 2:** *Autocomplete as two pipelines. An offline job builds and scores candidates from logs, vocabulary and live inventory; an online path matches prefixes and re-ranks per user within a few tens of milliseconds. Attaching an interpretation to each suggestion turns a click into a structured query.*
 
@@ -198,7 +200,7 @@ Three design rules follow for listing marketplaces.
 {id: query-understanding--semantic-and-hybrid-retrieval}
 ## Semantic and Hybrid Retrieval
 
-Lexical matching fails on vocabulary mismatch ("aquamarine blouse" against listings that say "blue top") and on categories where the photo says more than the text. Dense retrieval, which embeds queries and listings in one vector space and retrieves by approximate nearest neighbor (ANN), addresses both. The public record from 2023 to 2026 shows how marketplaces actually use it.
+Lexical matching fails on vocabulary mismatch ("aquamarine blouse" against listings that say "blue top") and on categories where the photo says more than the text. Dense retrieval, which embeds queries and listings in one vector space and retrieves by approximate nearest neighbor (ANN), addresses both. The public record from 2023 to 2026 shows how marketplaces use it.
 
 - **Vinted, November 2025.** Dense retrieval in main search uses a two-tower model: a frozen multilingual CLIP (Contrastive Language-Image Pre-training) query tower with a trained projection head, and an item tower that fuses brand and category embeddings with precomputed CLIP image embeddings. Hierarchical navigable small world (HNSW) graph indices in Vespa are split by blocs of connected markets, with fallback from approximate to exact search when the 500 ms budget is at risk. Dense matches are merged with keyword matches and metadata-filter "interpretations" using **reciprocal rank fusion (RRF) in the global ranking phase**, with a per-request cap on dense-only matches. Filling **low-recall sessions** first improved metrics. Full rollout came after about 50 A/B tests. The image embeddings for all primary photos took about a month to compute and need about 1 TB of memory ([Vinted Engineering, 2025](https://vinted.engineering/2025/11/18/dense-retrieval/)).
 - **Airbnb, January 2026.** Embedding-based retrieval chose an inverted-file (IVF) index over HNSW because HNSW memory grew under frequent real-time updates and made combining discriminative filters difficult; IVF cluster IDs act as a normal filter in Apache Lucene, at the cost of lower recall. The listing tower runs as a daily batch, so only the query tower runs online ([Abdool et al., 2026](https://arxiv.org/html/2601.06873v1)).
@@ -221,7 +223,9 @@ Fusion produces candidates; it does not replace ranking. The fused set goes to [
 {id: query-understanding--where-dense-retrieval-belongs-in-a-listing-marketplace}
 ### Where dense retrieval belongs in a listing marketplace
 
-My recommendation follows the evidence: **use dense retrieval to fill recall gaps, not to replace structured retrieval.** Run lexical and structured retrieval first; add dense matches when the session is low-recall, when the query has no strong interpretation, or in image-led categories such as fashion and furniture; cap the share of dense-only results; and make sure dense matches respect every filter the buyer set. The cost model is real: embeddings for every listing, memory for the ANN index, an embedding call per query, and an evaluation burden, because dense results fail in ways lexical results do not. Vinted's tokenizer quirk that flooded a brand-filtered query for "zx750" with about 7,000 extra dense matches is a reminder that the failure modes are new.
+My recommendation follows the evidence: **use dense retrieval to fill recall gaps, not to replace structured retrieval.** Run lexical and structured retrieval first; add dense matches when the session is low-recall, when the query has no strong interpretation, or in image-led categories such as fashion and furniture; cap the share of dense-only results; and make sure dense matches respect every filter the buyer set.
+
+Dense retrieval has real costs: embeddings for every listing, memory for the ANN index, an embedding call per query, and an evaluation burden, because dense results fail in ways lexical results do not. Vinted's tokenizer quirk that flooded a brand-filtered query for "zx750" with about 7,000 extra dense matches is a reminder that the failure modes are new.
 
 ![A structured retrieval core with a capped dense-retrieval ring that fills thin results and an LLM translator that compiles language into validated filters.](listing-systems-architecture/posts/19-query-understanding/assets/images/19-query-understanding/structured-core-with-layers.jpeg)
 
@@ -230,7 +234,7 @@ My recommendation follows the evidence: **use dense retrieval to fill recall gap
 {id: query-understanding--natural-language-and-conversational-search-with-llms}
 ## Natural-Language and Conversational Search with LLMs
 
-Since 2023, several listing marketplaces have published natural-language search features. The striking pattern is that **none of the documented cases replaces retrieval with generation**. They use the LLM to compile language into the existing structured query, or to orchestrate existing search tools.
+Since 2023, several listing marketplaces have published natural-language search features, and **none of the documented cases replaces retrieval with generation**. They use the LLM to compile language into the existing structured query, or to orchestrate existing search tools.
 
 | Marketplace | Feature (date) | What the LLM does | Documented results or limits |
 | --- | --- | --- | --- |
@@ -243,23 +247,23 @@ Since 2023, several listing marketplaces have published natural-language search 
 
 Model names, prices and feature availability in this table change quickly; treat them as dated evidence, not current product facts.
 
-{id: query-understanding--the-llm-as-filter-compiler}
-### The LLM as filter compiler
+{id: query-understanding--the-llm-as-query-compiler}
+### The LLM as query compiler
 
-The pattern these cases share can be stated as an architecture. The LLM receives the query, the market, and a compact description of the filter schema (the category list and the attribute keys and values relevant to the predicted vertical, drawn from the attribute dictionary), and returns a structured query. A validator checks every category and attribute value against the dictionary and drops or repairs what does not exist. The classic engine runs the query. The buyer sees the result with the compiled filters as chips.
+In the pattern these cases share, the LLM receives the query, the market, and a compact description of the filter schema (the category list and the attribute keys and values relevant to the predicted vertical, drawn from the attribute dictionary), and returns a structured query. A validator checks every category and attribute value against the dictionary and drops or repairs what does not exist. The classic engine runs the query. The buyer sees the result with the compiled filters as chips.
 
-![The LLM compiles, the engine retrieves. Validation against the attribute dictionary keeps hallucinated categories and values out of the query, the engine keeps results grounded in live inventory, and the chips make the compiled interpretation visible and editable.](listing-systems-architecture/diagrams/4528484501573040.png)
+![Diagram: The LLM compiles, the engine retrieves](listing-systems-architecture/posts/19-query-understanding/assets/images/19-query-understanding/fig04-llm-compiles-engine-retrieves-validation-against.jpeg)
 
 **Figure 4:** *The LLM compiles, the engine retrieves. Validation against the attribute dictionary keeps hallucinated categories and values out of the query, the engine keeps results grounded in live inventory, and the chips make the compiled interpretation visible and editable.*
 
-The pattern has five properties worth defending in a design review. Results are explainable, because the buyer sees the filters. No listing can be hallucinated, because the engine retrieves. Output can be cached by normalized query. Keyword queries never touch the LLM, which bounds cost and latency. And the same structured query can be saved as an alert, which is exactly what Zillow made possible for natural-language searches.
+The pattern has five properties to defend in a design review. Results are explainable, because the buyer sees the filters. No listing can be hallucinated, because the engine retrieves. Output can be cached by normalized query. Keyword queries never touch the LLM, which bounds cost and latency. And the same structured query can be saved as an alert, which is exactly what Zillow made possible for natural-language searches.
 
-It also has limits. Latency is in hundreds of milliseconds at best, so the compiler should run only for queries that need it, typically long queries or those the classic pipeline cannot interpret with confidence. Query text can be personal data, so prompts and logs fall under the same retention rules as search telemetry, and provider terms decide where text may be processed; leboncoin's rejection of a hosted assistant API over message storage is a documented example of that constraint shaping architecture.
+Its limits are latency and data protection. Latency is in hundreds of milliseconds at best, so the compiler should run only for queries that need it, typically long queries or those the classic pipeline cannot interpret with confidence. Query text can be personal data, so prompts and logs fall under the same retention rules as search telemetry, and provider terms decide where text may be processed; leboncoin's rejection of a hosted assistant API over message storage is a documented example of that constraint shaping architecture.
 
 {id: query-understanding--external-assistants-as-a-new-client}
 ### External assistants as a new client
 
-A newer development changes who sends the query. In two 2026 posts, ImmoScout24 described a Model Context Protocol (MCP) server for its assistant, launched in November 2025, and an app inside ChatGPT over its property data ([Scout24 Engineering, January 2026](https://medium.com/scout24-engineering/shipping-the-first-mcp-in-heyimmo-at-immoscout24-a278214df005); [Scout24 Engineering, March 2026](https://medium.com/scout24-engineering/what-we-learned-from-launching-immoscout24-app-in-chatgpt-efbed0f7375b)); Rightmove's FY2025 results reported an app submitted to the ChatGPT ecosystem ([Rightmove plc, 2026](https://plc.rightmove.co.uk/content/uploads/2026/02/Rightmove-RNS-27.02.26.pdf)). When an external assistant calls marketplace search, the search contract becomes an external product, with a published filter schema, rate limits, attribution for leads and freshness obligations. The query-understanding layer does not disappear; the external model does part of the compiling, and the marketplace's validator becomes the line of defense. [AI Across the Listing Lifecycle](#ai-in-listing-systems) covers how Veldmark opens this channel.
+External AI assistants have started to send queries on the buyer's behalf. In two 2026 posts, ImmoScout24 described a Model Context Protocol (MCP) server for its assistant, launched in November 2025, and an app inside ChatGPT over its property data ([Scout24 Engineering, January 2026](https://medium.com/scout24-engineering/shipping-the-first-mcp-in-heyimmo-at-immoscout24-a278214df005); [Scout24 Engineering, March 2026](https://medium.com/scout24-engineering/what-we-learned-from-launching-immoscout24-app-in-chatgpt-efbed0f7375b)); Rightmove's FY2025 results reported an app submitted to the ChatGPT ecosystem ([Rightmove plc, 2026](https://plc.rightmove.co.uk/content/uploads/2026/02/Rightmove-RNS-27.02.26.pdf)). When an external assistant calls marketplace search, the search contract becomes an external product, with a published filter schema, rate limits, attribution for leads and freshness obligations. The query-understanding layer does not disappear; the external model does part of the compiling, and the marketplace's validator becomes the line of defense. [AI Across the Listing Lifecycle](#ai-in-listing-systems) covers how Veldmark opens this channel.
 
 {id: query-understanding--evaluating-query-understanding}
 ## Evaluating Query Understanding
@@ -276,14 +280,14 @@ Query understanding fails quietly, which makes evaluation the part teams skip. T
 | Dense retrieval | Recall against a reference, on replayed traffic | A/B tests on low-recall sessions |
 | LLM compiler | Structured diff against expected queries | Adoption, reformulation, contact rate |
 
-Two warnings from the public record apply. Airbnb found that offline recall measured on logged data tracked online results poorly, because logs contain only what users were shown; replaying a slice of production traffic to an offline cluster tracked A/B results better ([Abdool et al., 2026](https://arxiv.org/html/2601.06873v1)). And leboncoin's structured-diff evaluation of its JSON compiler, which its authors called deliberately simple, is still better than no evaluation: comparing expected and generated structured queries is cheap and catches regressions in prompts and model versions.
+Two lessons from the public record apply. Airbnb found that offline recall measured on logged data tracked online results poorly, because logs contain only what users were shown; replaying a slice of production traffic to an offline cluster tracked A/B results better ([Abdool et al., 2026](https://arxiv.org/html/2601.06873v1)). And leboncoin's structured-diff evaluation of its JSON compiler, which its authors called deliberately simple, is still better than no evaluation: comparing expected and generated structured queries is cheap and catches regressions in prompts and model versions.
 
 The query sets must be refreshed on a schedule and after every taxonomy release, because the right answer for "e-bike" changes on the day the e-bikes category appears.
 
 {id: query-understanding--in-practice-tradeyard-s-e-bike-queries-through-the-bikes-split}
 ## In Practice: Tradeyard's E-Bike Queries Through the Bikes Split
 
-Priya's and Tomasz's plan for 1 November had four parts, each a direct application of the sections above.
+Priya's and Tomasz's plan for 1 November had four parts, each applying a section above.
 
 **One vocabulary.** The attribute service already held the e-bikes category with its Dutch, French, Polish and Portuguese labels. The team added a query-vocabulary entry: aliases per language ("ebike", "e-bike", "e bike", "e-fiets", "elektrische fiets", "fiets met trapondersteuning", "vélo électrique", "rower elektryczny", "bicicleta elétrica") mapping to the category, and an explicit exclusion for "speed pedelec", which maps to the mopeds category instead. The tagger and the categorizer both read this entry.
 
@@ -324,7 +328,7 @@ Two further projects show where Veldmark is going. Hearthly France is testing an
 | Spelling | Marketplace speller | Large vocabularies; many brands and models | No query logs yet |
 | Retrieval | Lexical plus filters only | Structured verticals; tight budgets | Image-led categories; vocabulary mismatch |
 | Retrieval | Hybrid with dense fill | Low-recall sessions; fashion and furniture | Small teams without evaluation capacity |
-| Natural language | LLM filter compiler for long queries | Rich filter schemas; long-tail phrasing | Short keyword traffic; strict latency budgets |
+| Natural language | LLM query compiler for long queries | Rich filter schemas; long-tail phrasing | Short keyword traffic; strict latency budgets |
 | Natural language | Agentic assistant | Exploratory, advisory journeys | Main search path; cost per query unbounded |
 
 {id: query-understanding--vertical-differences}
@@ -361,9 +365,9 @@ Real estate and automotive have the richest structured vocabularies, which makes
 {id: query-understanding--the-chief-architect-s-view}
 ## The Chief Architect's View
 
-Query understanding is where search meets the group's shared vocabulary, and that is what makes it a group concern. At Veldmark, the decisions I would hold the line on are these.
+Query understanding is a group concern because it is where search meets the group's shared vocabulary. At Veldmark, the decisions I would hold the line on are these.
 
-1. **One vocabulary, many policies.** The taxonomy and attribute service holds what words can mean, in every language, including query aliases and exclusions. Marketplaces own how aggressively they apply interpretations. Neither side may fork the other's responsibility.
+1. **One vocabulary, many policies.** The taxonomy and attribute service holds what words can mean, in every language, including query aliases and exclusions. Marketplaces own how aggressively they apply interpretations. Marketplaces keep no private vocabularies, and the group does not set their thresholds.
 2. **Every model in the query path is an order-tier model.** Categorizers, taggers, spellers, dense retrievers and LLM compilers are registered, owned, evaluated on market-specific query sets and monitored, under the same governance as ranking models (see [Models in Production: ML Platforms and Use Cases](#ml-platform)).
 3. **Taxonomy releases include a query-understanding checklist.** No category split ships without updated query aliases, categorizer labels and evaluation sets. This is where The Category Straitjacket is either broken or rebuilt.
 4. **LLMs compile; engines retrieve.** Any natural-language feature uses the group's AI gateway (see [AI Across the Listing Lifecycle](#ai-in-listing-systems)), validates against the dictionary and executes through the search contract. Providers, models and prompts are configuration, so they can change as prices and terms change; Lucía Ortega's data-protection review covers where query text may be processed and how long prompts are kept.
@@ -385,17 +389,21 @@ What to watch: null-result and low-result rates per market and category, chip-re
 9. If we use an LLM, what validates its output, what does it cost per thousand queries, and where is the query text processed and stored?
 10. Who owns each model in the query path, and when was its evaluation set last refreshed?
 
+{id: query-understanding--from-retrieval-to-order}
+## From Retrieval to Order
+
 Query understanding decides what the engine retrieves; it does not decide the order in which buyers see it. That order is a negotiation between relevance, freshness, seller fairness and paid visibility, and it is the subject of the next chapter, [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking).
 
 {id: query-understanding--sources-and-evidence}
 ## Sources and Evidence
 
-**Company engineering and investor sources**
+{id: query-understanding--company-engineering-and-investor-sources}
+### Company engineering and investor sources
 
 - [How Vinted Serves Personalised Search Autocomplete](https://vinted.engineering/2026/04/22/personalized-search-autocomplete/), Vinted Engineering, 2026 — candidates, ranking, folding, fuzzy cascade, latency and results.
 - [Dense Retrieval](https://vinted.engineering/2025/11/18/dense-retrieval/), Vinted Engineering, 2025 — two-tower model, HNSW, RRF fusion, low-recall fill, filter invariant, costs.
 - [Vinted Search Scaling Chapter 8: Goodbye Elasticsearch, Hello Vespa Search Engine](https://vinted.engineering/2024/09/05/goodbye-elasticsearch-hello-vespa/), Vinted Engineering, 2024 — analyzer parity during engine migration.
-- [From Filters to Phrases: Our AI Revolution in Car Search](https://adevinta.com/techblog/from-filters-to-phrases-our-ai-revolution-in-car-search/), Adevinta Tech Blog (coches.net), 2024 — LLM filter compiler, moderation step, tokens and cost.
+- [From Filters to Phrases: Our AI Revolution in Car Search](https://adevinta.com/techblog/from-filters-to-phrases-our-ai-revolution-in-car-search/), Adevinta Tech Blog (coches.net), 2024 — LLM query compiler, moderation step, tokens and cost.
 - [Building a Smarter Shopping Experience: The Technology Behind Conversational Search](https://adevinta.com/techblog/building-a-smarter-shopping-experience-the-technology-behind-conversational-search-in-e-commerce/), Adevinta Tech Blog (leboncoin), 2024 — JSON compilation, JSON mode, history limits, structured-diff evaluation, provider data constraints.
 - [Why would I need an AI search assistant?](https://adevinta.com/techblog/why-would-i-need-an-ai-search-assistant/), Adevinta Tech Blog (leboncoin), 2024 — user research on assistant adoption.
 - [OLX Magic: transforming e-commerce search experience with AI agents](https://home.mlops.community/public/videos/olx-magic-transforming-e-commerce-search-experience-with-ai-agents-nishi-and-beatriz-2024-11-20), MLOps Community, 2024 — agentic assistant challenges.
@@ -408,7 +416,8 @@ Query understanding decides what the engine retrieves; it does not decide the or
 - [Zillow AI search adds commute time, affordability](https://www.housingwire.com/articles/zillow-artificial-intelligence-search/), HousingWire, 2024 — Zillow natural-language search criteria.
 - [Academic Publications & Airbnb Tech: 2025 Year in Review](https://airbnb.tech/infrastructure/academic-publications-airbnb-tech-2025-year-in-review/), Airbnb Tech, 2025 — augmenting narrow searches with recommendations.
 
-**Standards, regulation and documentation**
+{id: query-understanding--standards-regulation-and-documentation}
+### Standards, regulation and documentation
 
 - [Synonym graph token filter](https://www.elastic.co/docs/reference/text-analysis/analysis-synonym-graph-tokenfilter), Elastic documentation, n.d. — search-time, multi-word and updateable synonyms.
 - [Hyphenation decompounder token filter](https://www.elastic.co/docs/reference/text-analysis/analysis-hyp-decomp-tokenfilter), Elastic documentation, n.d. — decompounding for Germanic languages.
@@ -416,7 +425,8 @@ Query understanding decides what the engine retrieves; it does not decide the or
 - [Reciprocal rank fusion](https://www.elastic.co/docs/reference/elasticsearch/rest-apis/reciprocal-rank-fusion), Elastic documentation, n.d. — RRF retriever and its rank constant.
 - [Score ranker processor](https://docs.opensearch.org/latest/search-plugins/search-pipelines/score-ranker-processor/) and [Normalization processor](https://docs.opensearch.org/latest/search-plugins/search-pipelines/normalization-processor/), OpenSearch documentation, n.d. — hybrid fusion options and versions.
 
-**Research and practitioner sources**
+{id: query-understanding--research-and-practitioner-sources}
+### Research and practitioner sources
 
 - [Applying Embedding-Based Retrieval to Airbnb Search](https://arxiv.org/html/2601.06873v1), Abdool et al. (Airbnb), 2026 — IVF versus HNSW under filters; replay-based evaluation.
 

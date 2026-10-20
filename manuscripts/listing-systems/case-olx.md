@@ -23,7 +23,7 @@
 
 OLX Group has made almost every portfolio move a classifieds group can make. It rolled up local sites across four continents and rebranded many of them to one name. It merged regional businesses into joint ventures in which it kept a minority stake. It built an inventory-owning car business that briefly doubled its revenue, then sold or closed it. It left Russia after the 2022 invasion of Ukraine. And by 2026 it was a **compact European business of seven markets**, reported by its parent Prosus with margins near 50%.
 
-This chapter reads that record as an architect would. It does not profile the company. It asks of each phase: *which markets and businesses did the platform carry, what did the group bet on beyond listings, and what did the engineering teams publish about the stack while the portfolio changed around them?* The answers support three arguments of this book: **liquidity is local and so is the platform's value** ([Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics](#liquidity-and-network-effects)); **adjacent transactional and inventory bets must be designed to be retired** ([Beyond the Contact: Payments, Shipping and Buyer Protection](#transactions-and-payments)); and **a listing stack is improved by evolving search, ranking and configuration in place** ([Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking), [One Platform, Many Marketplaces: Multi-Country and Multi-Brand Architecture](#multi-country-platforms)).
+Part IX tests the book's patterns against real groups, and OLX answers the question [Adevinta: From Schibsted's Copy-Paste Model to a Portfolio Platform](#case-adevinta) leaves open: **what happens to a platform when the portfolio, not the platform strategy, changes?** This chapter asks of each phase: *which markets and businesses did the platform carry, what did the group bet on beyond listings, and what did the engineering teams publish about the stack while the portfolio changed around them?* The answers support three arguments of this book: **liquidity is local and so is the platform's value** ([Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics](#liquidity-and-network-effects)); **adjacent transactional and inventory bets must be designed to be retired** ([Beyond the Contact: Payments, Shipping and Buyer Protection](#transactions-and-payments)); and **a listing stack is improved by evolving search, ranking and configuration in place** ([Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking), [One Platform, Many Marketplaces: Multi-Country and Multi-Brand Architecture](#multi-country-platforms)).
 
 OLX's engineering blog spans 2018 to 2026, but it describes three different organizations: the global OLX of India, Indonesia, Pakistan, South Africa and Latin America; OLX Autos; and today's OLX Europe. **Many posts describe markets OLX no longer owns.** Every "OLX runs X" statement below is true at the date of its source and for the market it names, and no further.
 
@@ -34,7 +34,7 @@ Part IX cases follow stricter rules than the chapters in Parts I–VIII (see [Pa
 
 Three limits shape the case. The financial evidence is unusually good, because Prosus reports OLX separately and, since 2026, by vertical. The engineering evidence is strong on search, ranking, experimentation and trust and safety, and almost silent on platform consolidation. And the history before 2019 rests largely on secondary sources, marked as widely reported.
 
-Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)), appears only in the final comparison. It operates in some of the same countries as OLX, but it is a composite of industry patterns and is not a disguised description of OLX or any other group.
+Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)), appears only in the final comparison. It operates in some of the same countries as OLX, but it is a composite of industry patterns and is not a disguised description of OLX or any other group.
 
 {id: case-olx--timeline-olx-in-dated-events}
 ## Timeline: OLX in Dated Events
@@ -62,16 +62,16 @@ The chronology follows. Dates are those of the cited releases and reports; owner
 | May 2026 | Otodim launched in beta in Ukraine, a real-estate search platform drawing on OLX Ukraine's inventory | OLX Group release, 2026 |
 | Jun 2026 | FY26 results: seven markets (Bulgaria, France, Poland, Portugal, Romania, South Africa, Ukraine), US$992 million revenue | OLX Group and Prosus releases, 2026 |
 
-![Each phase changed what the listing platform had to carry: many markets under one brand, then fewer markets as regions left through mergers, then inventory and payment businesses beside the listings, and finally a small set of markets organized by vertical.](listing-systems-architecture/diagrams/51d6e537f3f6912f.png)
+![Diagram: Each phase changed what the listing platform had to carry](listing-systems-architecture/posts/47-case-olx/assets/images/47-case-olx/fig01-each-phase-changed-what-listing-platform.jpeg)
 
 **Figure 1:** *Each phase changed what the listing platform had to carry: many markets under one brand, then fewer markets as regions left through mergers, then inventory and payment businesses beside the listings, and finally a small set of markets organized by vertical.*
 
 {id: case-olx--phase-1-roll-up-and-rebrand-20062018}
 ## Phase 1: Roll-Up and Rebrand (2006–2018)
 
-The early history rests mainly on secondary sources. They agree on the shape: Naspers bought into OLX in 2010, raised its stake to about 95% in 2014, and in April 2014 rebranded acquired local leaders to OLX in Romania, Bulgaria, Kazakhstan, Belarus, Hungary and Poland, while vertical brands such as Otomoto, Otodom, Storia, Autovit, Standvirtual and Imovirtual kept their names.
+The secondary sources behind the early history agree on its shape: Naspers bought into OLX in 2010, raised its stake to about 95% in 2014, and in April 2014 rebranded acquired local leaders to OLX in Romania, Bulgaria, Kazakhstan, Belarus, Hungary and Poland, while vertical brands such as Otomoto, Otodom, Storia, Autovit, Standvirtual and Imovirtual kept their names.
 
-**My reading** is that the 2014 rebranding was brand consolidation, not platform consolidation. A shared name says nothing about a shared code base, and nothing public describes how many stacks the 45 markets ran. The engineering record of this era, however, shows something specific: **capabilities built once and run across regional markets**, and a habit of fitting new methods into the existing search engine rather than beside it.
+**My reading** is that the 2014 rebranding was brand consolidation, not platform consolidation. A shared name says nothing about a shared code base, and nothing public describes how many stacks the 45 markets ran. The engineering record of this era does show **capabilities built once and run across regional markets**, and a habit of fitting new methods into the existing search engine rather than beside it.
 
 - **Ranking inside the engine (2019).** A May 2019 post on the global-markets search team describes a logistic-regression ranking model whose coefficients were "plugged into the ranking function of the existing search engine", to avoid new serving infrastructure. It reports about 10% improvement on the key search metric, and states that "search generates about 80% of total conversions".
 - **Synonyms from sessions (2018).** For OLX South Africa, a 2018 post describes "query2vec": a skip-gram model over chains of queries in the same session, used to expand searches. Null searches fell by 27%. An early version returned "shoes" for "clothes", which led the team to a stronger evaluation process.
@@ -113,7 +113,7 @@ From 2018 the group began to concentrate. It left Nigeria and Venezuela in 2018,
 
 In 2019 OLX took a controlling stake in Frontier Car Group, investing about US$400 million (TechCrunch, 2021). The business, renamed OLX Autos, bought cars from consumers through an instant offer, reconditioned and resold them. In March 2021 OLX closed its Berlin entity, moved core product development to India and focused OLX Autos on Latin America and Asia (TechCrunch, 2021).
 
-The numbers then went in two directions. According to News24/Fin24's March 2023 report on the Prosus results:
+Revenue then grew while losses widened. According to News24/Fin24's March 2023 report on the Prosus results:
 
 - OLX Autos revenue was about **US$1.6 billion** in the year to March 2022, up 158%, "just over half of the classifieds business's revenue", with about **175,000 cars** transacted (98,000 the year before).
 - In the first half of the following year revenue grew about 60% to about US$1 billion, while **trading losses widened to US$206 million**, which Prosus linked to spending on retail infrastructure.
@@ -121,12 +121,12 @@ The numbers then went in two directions. According to News24/Fin24's March 2023 
 
 In June 2023 OLX cut about 800 roles and stopped buying cars in Argentina, Mexico and Colombia (TechCrunch, 2023); OLX India and the Indonesian business were sold in August 2023. Prosus's FY25 results record that all OLX Autos operations were "disposed of, classified as held for sale or closed by 31 March 2025", with a discontinued-operations loss of US$128 million in that year. South Africa's AutoTrader, a listing business, was never part of OLX Autos.
 
-> **INFERENCE, NOT DOCUMENTED:** A plausible reading of why the bet strained the architecture as well as the balance sheet — not a description of OLX Autos' systems — is that an inventory business needs capabilities a listing platform does not have: inspection and condition records, a pricing authority that commits capital, reconditioning workflow, vehicle logistics and stock accounting, a finance book, and a retail front end that sells owned stock. A classifieds platform influences price and approximates condition; a retailer owns both. The two share a vehicle taxonomy and an audience, and little else. [Classifieds, Lead Generation and Transactions: A Marketplace Taxonomy](#marketplace-taxonomy) places this "managed" model on the ladder and [mobile.de, Auto Trader and AutoScout24: Lessons from Automotive Marketplaces](#case-automotive) compares it with other automotive groups.
+> **INFERENCE, NOT DOCUMENTED:** A plausible reading of why the bet strained the architecture as well as the balance sheet — not a description of OLX Autos' systems — is that an inventory business needs capabilities a listing platform does not have: inspection and condition records, a pricing authority that commits capital, reconditioning workflow, vehicle logistics and stock accounting, a finance book, and a retail front end that sells owned stock. A classifieds platform influences price and approximates condition; a retailer owns both. The two share a vehicle taxonomy and an audience, and little else. [Classifieds, Leads, Transactions and Managed Models: A Marketplace Taxonomy](#marketplace-taxonomy) places this "managed" model on the ladder and [mobile.de, Auto Trader and AutoScout24: Lessons from Automotive Marketplaces](#case-automotive) compares it with other automotive groups.
 
 {id: case-olx--the-other-adjacent-bets}
 ### The other adjacent bets
 
-OLX Autos was the largest bet beyond listings, not the only one. The record shows a pattern of entering adjacent businesses and then leaving most of them.
+Beside OLX Autos, its largest bet beyond listings, OLX entered several smaller adjacent businesses and has left most of them.
 
 | Bet | Entered | What it was | Fate | Source |
 | --- | --- | --- | --- | --- |
@@ -158,7 +158,7 @@ The same period brought the one large acquisition. OLX bought **La Centrale**, a
 {id: case-olx--the-economics-of-focus}
 ### The economics of focus
 
-Prosus's reporting allows the effect of the retreat to be read directly.
+Prosus reports OLX separately, so the retreat shows directly in its margins.
 
 | Period | Revenue | Profit measure | Margin | Source |
 | --- | --- | --- | --- | --- |
@@ -181,17 +181,17 @@ From FY26 Prosus also reports OLX by vertical:
 
 Motors, including La Centrale from November 2025, is the largest and most profitable line, and the three verticals are 71% of revenue although the horizontal OLX sites carry most of the audience. Prosus's FY25 booklet ties the growth to vertical products: in motors, "dealer tools" plus vehicle-history transparency and dealer ratings; in real estate, "the rollout of a unified platform, fully reimagined app and tools optimised for agents".
 
-**My reading** is that the horizontal brand works as a funnel and the verticals monetize it. Otodim, launched in beta in Ukraine in May 2026, shows the move in its plainest form: a dedicated real-estate search platform that "draws on OLX Ukraine's extensive listings inventory", with filters for proximity to shelters and power autonomy, and with independent listing and in-platform messaging still "in development". **A vertical was launched first as a new lens on horizontal inventory**, not as a new supply system. [Same Platform, Different Physics: General, Real Estate, Automotive and Jobs](#vertical-requirements) discusses what a vertical needs beyond such a lens, and [Adevinta: From Schibsted's Copy-Paste Model to a Portfolio Platform](#case-adevinta) shows Adevinta's parallel reorganization by vertical in 2023.
+**My reading** is that the horizontal brand works as a funnel and the verticals monetize it. Otodim, launched in beta in Ukraine in May 2026, shows the move in its plainest form: a dedicated real-estate search platform that "draws on OLX Ukraine's extensive listings inventory", with filters for proximity to shelters and power autonomy, and with independent listing and in-platform messaging still "in development". **A vertical was launched first as a new lens on horizontal inventory**, not as a new supply system. [Same Platform, Different Physics: How Listing Verticals Differ](#vertical-requirements) discusses what a vertical needs beyond such a lens, and [Adevinta: From Schibsted's Copy-Paste Model to a Portfolio Platform](#case-adevinta) shows Adevinta's parallel reorganization by vertical in 2023.
 
 {id: case-olx--the-engineering-record-how-the-listing-stack-evolved}
 ## The Engineering Record: How the Listing Stack Evolved
 
 The posts of 2022–2026 describe OLX Europe, the business that remains. They are concentrated in search, ranking, recommendations, experimentation, trust and safety, and the supply-side use of language models.
 
-{id: case-olx--search-four-stages-on-one-engine}
-### Search: four stages on one engine
+{id: case-olx--search-five-stages-on-one-engine}
+### Search: five stages on one engine
 
-OLX's search evolution is the best-documented in the book's research. It happened on one engine, Apache Solr.
+OLX's search evolved through five stages on one engine, Apache Solr, and is the best-documented search evolution in the book's research.
 
 | Stage | When | What OLX described | Source |
 | --- | --- | --- | --- |
@@ -203,7 +203,7 @@ OLX's search evolution is the best-documented in the book's research. It happene
 
 *Learning to rank (LTR) trains a model to order results from labeled outcomes; NDCG (normalized discounted cumulative gain) is the standard offline ranking metric. Both are defined in [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking).*
 
-Two choices in this table deserve emphasis. **The success label is a contact, not a sale**, because a classifieds platform rarely observes the sale, and the check that unique contacted sellers *rose* guards against a ranker that concentrates demand on a few sellers ([Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics](#liquidity-and-network-effects)). And **paid visibility is an explicit, separate objective** rather than a multiplier hidden in a scoring formula. That is the opposite of Paid-Rank Drift: whoever changes the ranker has to see the paid objective.
+**The success label is a contact, not a sale**, because a classifieds platform rarely observes the sale, and the check that unique contacted sellers *rose* guards against a ranker that concentrates demand on a few sellers ([Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics](#liquidity-and-network-effects)). And **paid visibility is an explicit, separate objective** rather than a multiplier hidden in a scoring formula. That is the opposite of Paid-Rank Drift: whoever changes the ranker has to see the paid objective.
 
 {id: case-olx--hybrid-search-proved-in-the-fallback-then-in-the-main-flow}
 ### Hybrid search: proved in the fallback, then in the main flow
@@ -215,16 +215,16 @@ The September 2025 hybrid-search post is the most instructive single document in
 3. **Bootstrap training data with a deliberately modest ranker.** Because vector results had no interaction history, OLX introduced "a linear re-ranking model to temporarily replace LTR", built on its earlier BM25-weighted function plus recency. Recency was protected because paid listings receive recency resets when sellers buy services.
 4. **Prove value where risk is lowest.** Vector search first ran as a step in the extension chain in a smaller market, where it more than doubled seller-contact events per user. A main-flow test failed to converge because of a web tracking bug; re-runs showed "an approximately 3% increase in the share of users who completed a successful event" on apps and "a ~5% increase" on mobile web, after which OLX decided to "proceed with a full rollout of Hybrid Search on all platforms in this market".
 
-![The hybrid design as OLX described it in 2025: lexical retrieval kept, vectors added as a fixed quota, and one ranker retrained to judge both, with the zero-results fallback as the first place vectors were tested. The diagram shows the documented shape, not internal components.](listing-systems-architecture/diagrams/a4f9192d071cd5f2.png)
+![Diagram: The hybrid design as OLX described it in 2025](listing-systems-architecture/posts/47-case-olx/assets/images/47-case-olx/fig04-hybrid-design-olx-described-it-2025.jpeg)
 
 **Figure 4:** *The hybrid design as OLX described it in 2025: lexical retrieval kept, vectors added as a fixed quota, and one ranker retrained to judge both, with the zero-results fallback as the first place vectors were tested. The diagram shows the documented shape, not internal components.*
 
-A companion post in October 2025 describes choosing the embedding model by memory, latency and language constraints and an offline dataset that weighted favorites and chat replies above clicks; the online test for similar items still lost to the incumbent until location and price were brought back through re-ranking: **similarity is not relevance in local classifieds**. [What Did They Mean? Query Understanding and Autocomplete](#query-understanding) and [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture) develop hybrid retrieval in general.
+**Similarity is not relevance in local classifieds**, as a companion post in October 2025 shows. OLX chose the embedding model by memory, latency and language constraints, with an offline dataset that weighted favorites and chat replies above clicks. The online test for similar items still lost to the incumbent until location and price were brought back through re-ranking. [What Did They Mean? Query Understanding and Autocomplete](#query-understanding) and [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture) develop hybrid retrieval in general.
 
 {id: case-olx--measuring-paid-visibility-honestly}
 ### Measuring paid visibility honestly
 
-The monetization products are packages with a number of "boosts" per 30 days and Value Added Services (VAS), paid exposure sold per listing. In August 2026 OLX described dashboards on which premium motors packages "appeared to perform worse than ads using cheaper packages", because "professional sellers self select into a package". Propensity-score matching, validated against a randomized experiment, estimated uplifts of 17.6% to 97.4% between package levels. An August 2025 post on group sequential testing shows the same rigor in method: with daily peeking, "despite a significance level of 5%, 27.9% of the simulations yielded a significant result". **OLX treats its paid products as claims to be measured**, which [Packages, Bumps and Quotas: Products, Pricing and Entitlements](#products-and-entitlements) and [Testing a Two-Sided Market: Experimentation Platforms](#experimentation) develop.
+**OLX treats its paid products as claims to be measured.** They are packages with a number of "boosts" per 30 days and Value Added Services (VAS), paid exposure sold per listing. In August 2026 OLX described dashboards on which premium motors packages "appeared to perform worse than ads using cheaper packages", because "professional sellers self select into a package". Propensity-score matching, validated against a randomized experiment, estimated uplifts of 17.6% to 97.4% between package levels. An August 2025 post on group sequential testing shows the same rigor in method: with daily peeking, "despite a significance level of 5%, 27.9% of the simulations yielded a significant result". [Packages, Bumps and Quotas: Products, Pricing and Entitlements](#products-and-entitlements) and [Testing a Two-Sided Market: Experimentation Platforms](#experimentation) develop both methods.
 
 {id: case-olx--one-code-base-many-brands}
 ### One code base, many brands
@@ -237,7 +237,7 @@ The record has three explicit statements about multi-brand engineering, all rece
 
 An August 2026 post on coding agents mentions, in passing, a change across "three codebases": two Go services and a PHP service.
 
-![A reference reading of OLX Europe's multi-brand shape, assembled from the documented fragments. Everything in this diagram except the brand names, the ranking repository and the La Centrale acquisition is the author's inference.](listing-systems-architecture/diagrams/ed42e4d77e4a00f2.png)
+![Diagram: A reference reading of OLX Europe's multi-brand shape, assembled from the documented fragments](listing-systems-architecture/posts/47-case-olx/assets/images/47-case-olx/fig05-reference-reading-olx-europe-s-multi.jpeg)
 
 **Figure 5:** *A reference reading of OLX Europe's multi-brand shape, assembled from the documented fragments. Everything in this diagram except the brand names, the ranking repository and the La Centrale acquisition is the author's inference.*
 
@@ -246,12 +246,12 @@ An August 2026 post on coding agents mentions, in passing, a change across "thre
 {id: case-olx--trust-and-safety-media-and-recommendations}
 ### Trust and safety, media and recommendations
 
-The rest of the record is summarized here and treated in depth by the chapters that own each topic.
+The rest of the record belongs to the chapters that own each topic; the table summarizes it and links to them.
 
 | Area | What OLX published | Date and era | Chapter |
 | --- | --- | --- | --- |
 | Moderation | An automatic moderation system of many models that accepts, rejects or escalates listings to a human moderation panel; "more than 40 machine learning services" in production, more than half in trust and safety and in search and recommendations | 2020; global and Europe | [Trust and Safety as a Platform](#trust-and-safety-architecture) |
-| Duplicates and fraud rings | Two-step duplicate detection (cheap candidates, then a pairwise classifier); outlier detection plus graphs of accounts sharing phones, e-mails or message text | 2020 (also PyCon DE 2019) | [One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution), [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention) |
+| Duplicates and fraud rings | Two-step duplicate detection (cheap candidates, then a pairwise classifier); outlier detection plus graphs of accounts sharing phones, e-mails or message text | 2020 (also PyCon DE 2019) | [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution), [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention) |
 | Chat fraud | "Chat Images GenAI" blocks suspicious images and QR codes in chat in real time; fraudulent images "around 30% of all fraud cases" in Poland; QR detection at 80% precision; live in Poland, Portugal, Bulgaria, Romania and other countries | January 2026; Europe | [From Interest to Contact: Messaging and Lead Management](#messaging-and-leads) |
 | Media | CDN serving about 80% of image traffic; an on-demand processor rewritten from thumbor (about 6,000 pods at peak) to Dali, a Rust service on libvips, at about twice the load per instance | 2020; current state not public | [Photos Sell: Media Pipelines for Listings](#media-pipeline) |
 | Recommendations | Item2Vec embeddings with 10–20% uplift in clicks and contacts from recommendation sections (2021); a data-team-owned Python service on ScyllaDB and DynamoDB reaching "a p99 latency under 10ms" after async I/O, batching and garbage-collection tuning (2025) | 2021, 2025; Europe | [Recommendations for Inventory That Disappears](#recommendations) |
@@ -264,7 +264,7 @@ OLX's 2025–2026 releases describe generative AI mostly on the supply side and 
 **My reading** is that the last item is the architecturally significant one. A marketplace that serves its inventory to an assistant it does not control turns structured attributes, availability and API-grade access into the product, and needs the channel controls that [AI Across the Listing Lifecycle](#ai-in-listing-systems) sets out.
 
 {id: case-olx--trade-offs-the-case-illustrates}
-## Trade-Offs the Case Illustrates
+## Trade-offs the Case Illustrates
 
 | Option | What OLX's record shows | When it is right | When it fails |
 | --- | --- | --- | --- |
@@ -343,7 +343,7 @@ The book's patterns, as OLX's record tests them:
 | Measure paid products causally ([Testing a Two-Sided Market: Experimentation Platforms](#experimentation)) | Propensity matching validated by a randomized test | Supported |
 | Hybrid retrieval as an extension of lexical search ([What Did They Mean? Query Understanding and Autocomplete](#query-understanding)) | BM25 kept; vectors as a fixed quota; ranker retrained | Strongly supported |
 | Configuration over code across brands ([One Platform, Many Marketplaces: Multi-Country and Multi-Brand Architecture](#multi-country-platforms)) | One front-end repository for three brands; one LTR repository with brand configs | Supported for the layers documented; the rest is inference |
-| Category-gated, reversible transactional pivot ([Beyond the Contact: Payments, Shipping and Buyer Protection](#transactions-and-payments), [Classifieds, Lead Generation and Transactions: A Marketplace Taxonomy](#marketplace-taxonomy)) | Pay&Ship de-prioritized; OLX Autos exited | Supported, from the retreat side |
+| Category-gated, reversible transactional pivot ([Beyond the Contact: Payments, Shipping and Buyer Protection](#transactions-and-payments), [Classifieds, Leads, Transactions and Managed Models: A Marketplace Taxonomy](#marketplace-taxonomy)) | Pay&Ship de-prioritized; OLX Autos exited | Supported, from the retreat side |
 | Language models first on the supply side ([AI Across the Listing Lifecycle](#ai-in-listing-systems)) | Attribute filling, Auto Description, job-role extraction, dealer copilot | Supported; outcomes company-reported |
 
 Now Veldmark, the fictional group, as of its 2027–2028 decisions in the scenario. Veldmark's Tradeyard is a horizontal brand in the Netherlands, Belgium, Poland and Portugal, with car, property and job sections in Poland and Portugal, beside a separate automotive brand, Motorvane. That structure resembles the horizontal-plus-vertical shape OLX runs in Poland and Portugal; it is a common industry pattern, and the ledger's details are invented. The comparison sharpens five of Veldmark's choices.
@@ -356,7 +356,7 @@ Now Veldmark, the fictional group, as of its 2027–2028 decisions in the scenar
 | Shared OpenSearch platform for Tradeyard and Hearthly by end of 2028, replacing Tradeyard's Solr and Elasticsearch estates | OLX evolved ranking and retrieval on Solr for years | An engine migration is a choice, not a precondition: Veldmark should run its hybrid-retrieval work with OLX's proof sequence whichever engine hosts it |
 | Feb 2028 external assistant channel, Hearthly FR and Motorvane DE first, with quotas, lead attribution and no training on returned listings | CompassGPT and AutoGPT inside ChatGPT | Same direction; Veldmark's contractual and quota controls address the questions OLX's releases leave unanswered |
 
-The Polish overlap deserves one worked question. In the ledger, Tradeyard Poland's car section competed with Motorvane Poland for the same dealers, and Veldmark resolved it in early 2027: private car listings stay on Tradeyard with insertion fees; dealers above a small listing count are offered Motorvane packages, with their stock syndicated to Tradeyard through Motorvane's feed; and the shared listing core records which brand owns the commercial relationship for each listing. OLX runs a horizontal site and a motors vertical in the same country too, but **it has not published how OLX.pl and Otomoto divide dealers, listings or revenue**, so the case cannot validate Veldmark's rule. What the record does support is the direction: OLX's money is in the verticals, and Otodim shows a vertical being built on horizontal inventory. Ingrid Halvorsen, Veldmark's fictional Group Chief Architect, should therefore make sure the "commercial owner per listing" field and Motorvane's syndication feed are first-class parts of the Listing event contract, since they are what would let Tradeyard's cars or homes become a vertical lens later, or be handed to Motorvane entirely.
+The Polish overlap is the Veldmark rule the case can point toward but not validate. In the ledger, Tradeyard Poland's car section competed with Motorvane Poland for the same dealers, and Veldmark resolved it in early 2027: private car listings stay on Tradeyard with insertion fees; dealers above a small listing count are offered Motorvane packages, with their stock syndicated to Tradeyard through Motorvane's feed; and the shared listing core records which brand owns the commercial relationship for each listing. OLX runs a horizontal site and a motors vertical in the same country too, but **it has not published how OLX.pl and Otomoto divide dealers, listings or revenue**, so the case cannot validate Veldmark's rule. What the record does support is the direction: OLX's money is in the verticals, and Otodim shows a vertical being built on horizontal inventory. Ingrid Halvorsen, Veldmark's fictional Group Chief Architect, should therefore make sure the "commercial owner per listing" field and Motorvane's syndication feed are first-class parts of the Listing event contract, since they are what would let Tradeyard's cars or homes become a vertical lens later, or be handed to Motorvane entirely.
 
 {id: case-olx--questions-to-ask}
 ## Questions to Ask

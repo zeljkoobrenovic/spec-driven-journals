@@ -23,9 +23,9 @@
 
 Every listing marketplace above a modest size runs dozens of models, and few of them were planned as a portfolio. A category predictor arrived with a new insertion flow, a fraud model after a bad quarter, a learning-to-rank model when the search team hired its first data scientist, a price estimate because a competitor had one. Each was built on whatever stack its team knew. A few years later the group has more models than anyone can list, **training data that nobody can reproduce**, and a valuation model being pulled into business decisions it was never validated for.
 
-This chapter is about turning that accumulation into a portfolio with a platform under it. It does not re-teach the use cases that other chapters own: [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking) owns learning to rank, [Recommendations for Inventory That Disappears](#recommendations) owns candidate generation, [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention) owns risk scoring, [From Raw Supply to Usable Listings: Normalization and Enrichment](#normalization-and-enrichment) owns attribute extraction, and [Testing a Two-Sided Market: Experimentation Platforms](#experimentation) owns online evaluation. It owns the things they share: the **ML platform**, the **feature store** question, **model governance**, and the use case that raises governance questions most sharply, the **automated valuation model (AVM)**. Generative AI and agents, which reuse much of this platform but raise their own questions, are the subject of [AI Across the Listing Lifecycle](#ai-in-listing-systems).
+This chapter turns that accumulation into a portfolio with a platform under it. It builds on the two chapters before it: [Data Platform for Marketplaces: Events, Lakehouse and Data Products](#data-platform) supplies the events, lakehouse and governed metrics that models train on, and [Testing a Two-Sided Market: Experimentation Platforms](#experimentation) supplies the online tests that judge them. Its decision on which models to share across brands feeds [One Platform, Many Marketplaces: Multi-Country and Multi-Brand Architecture](#multi-country-platforms). It does not re-teach the use cases that other chapters own: [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking) owns learning to rank, [Recommendations for Inventory That Disappears](#recommendations) owns candidate generation, [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention) owns risk scoring, [From Raw Supply to Usable Listings: Normalization and Enrichment](#normalization-and-enrichment) owns attribute extraction, and [Testing a Two-Sided Market: Experimentation Platforms](#experimentation) owns online evaluation. It owns the things they share: the **ML platform**, the **feature store** question, **model governance**, and the use case that raises governance questions most sharply, the **automated valuation model (AVM)**. Generative AI and agents, which reuse much of this platform but raise their own questions, are the subject of [AI Across the Listing Lifecycle](#ai-in-listing-systems).
 
-The argument runs through one model. Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)), owns Valuo, Hearthly's AVM in France. In 2027, Valuo is asked to do three things: put a price-position badge on every listing, power a guaranteed-offer product, and feed a bank's mortgage decisions. The model is the same in all three. The decisions are not.
+The argument runs through one model. Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)), owns Valuo, Hearthly's AVM in France. In 2027, Valuo is asked to do three things: put a price-position badge on every listing, power a guaranteed-offer product, and feed a bank's mortgage decisions. The model is the same in all three. The decisions are not.
 
 {id: ml-platform--setting-the-scene-at-veldmark-146-models-and-one-price-badge}
 ## Setting the Scene at Veldmark: 146 Models and One Price Badge
@@ -38,7 +38,7 @@ Three requests arrive the same month, and all three involve Valuo.
 2. **The guaranteed offer.** A Hearthly product manager proposes "Hearthly Direct": homeowners who request a Valuo estimate would receive a guaranteed purchase offer at 94% of the estimate, funded by a property-investment partner, with Hearthly taking a share of the resale margin.
 3. **The lender license.** A French bank asks to license Valuo estimates as an input to mortgage pre-approval.
 
-Ingrid Halvorsen, the Group Chief Architect, asks the forum one question about each request before anyone discusses technology: **if the estimate is 8% wrong, who loses money, and how much?** For the badge, a buyer may contact a listing that is less of a bargain than it looked. For the guaranteed offer, Veldmark's partner buys a home for more than it can sell it for, and the loss comes back through the contract. For the lender, a household may borrow against a value that is not there. The model is identical. The consequence of its error is not, and that consequence, not the algorithm, is what the rest of this chapter organizes around.
+Ingrid Halvorsen, the Group Chief Architect, asks the forum one question about each request before anyone discusses technology: **if the estimate is 8% wrong, who loses money, and how much?** For the badge, a buyer may contact a listing that is less of a bargain than it looked. For the guaranteed offer, Veldmark's partner buys a home for more than it can sell it for, and the loss comes back through the contract. For the lender, a household may borrow against a value that is not there. The model is identical; the consequence of its error is not, and the rest of this chapter is organized around that consequence, not the algorithm.
 
 ![One valuation model feeding a listing badge, a guaranteed offer and a mortgage input, with the weight of an error growing from a feather to a heavy weight.](listing-systems-architecture/posts/38-ml-platform/assets/images/38-ml-platform/one-estimate-three-stakes.jpeg)
 
@@ -47,8 +47,8 @@ Ingrid Halvorsen, the Group Chief Architect, asks the forum one question about e
 {id: ml-platform--concepts-use-cases-decision-tiers-and-the-platform}
 ## Concepts: Use Cases, Decision Tiers and the Platform
 
-{id: ml-platform--the-terms}
-### The terms
+{id: ml-platform--terms-from-ml-capability-to-model-governance}
+### Terms: from ML capability to model governance
 
 - **ML capability** — a business capability whose output comes from a learned model: category prediction, price estimation, fraud scoring. The capability is owned by a product team; the model is one implementation of it, and it can be replaced by rules or a vendor.
 - **Model** — a trained artifact plus its feature definitions, training data snapshot, evaluation results and serving configuration. A model without its data lineage cannot be audited or reproduced, so the lineage is part of the model.
@@ -62,7 +62,7 @@ Ingrid Halvorsen, the Group Chief Architect, asks the forum one question about e
 {id: ml-platform--four-decision-tiers}
 ### Four decision tiers
 
-The organizing idea of this chapter is that **a model's governance follows the decision it makes**. I use four tiers.
+**A model's governance follows the decision it makes**, and this chapter sorts those decisions into four tiers.
 
 | Tier | What the model does | Marketplace examples | Who bears the error | Governance it needs |
 | --- | --- | --- | --- | --- |
@@ -80,14 +80,14 @@ Three properties of the tiers matter.
 {id: ml-platform--the-use-case-portfolio}
 ### The use-case portfolio
 
-The table maps the common ML use cases in listing marketplaces to the tier, the serving mode and the label source. Labels are listed because they are where marketplace ML differs most from e-commerce: a classifieds marketplace often never sees the sale.
+The table maps the common ML use cases in listing marketplaces to tier, serving mode and label source. Labels are listed because marketplace ML differs most from e-commerce there: a classifieds marketplace often never sees the sale.
 
 | Use case | Lifecycle stage | Tier | Typical serving mode | Label source | Owning chapter |
 | --- | --- | --- | --- | --- | --- |
 | Category prediction | Insertion | Inform | Synchronous, in the insertion flow | Seller's final category; moderator corrections | [Category Trees That Can Change: Designing Marketplace Taxonomies](#categories-and-taxonomies) |
 | Attribute extraction (text, image) | Enrichment | Inform | Asynchronous, event-triggered | Seller confirmations; audit samples | [From Raw Supply to Usable Listings: Normalization and Enrichment](#normalization-and-enrichment) |
 | Image classification and quality | Media ingestion | Inform or gate | Asynchronous batch on upload | Moderator decisions; human labeling | [Photos Sell: Media Pipelines for Listings](#media-pipeline) |
-| Duplicate detection | Publication | Order or gate | Asynchronous pairwise scoring | Confirmed merges; seller disputes | [One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution) |
+| Duplicate detection | Publication | Order or gate | Asynchronous pairwise scoring | Confirmed merges; seller disputes | [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution) |
 | Moderation and fraud scoring | Insertion, messaging | Gate | Synchronous fast path plus asynchronous enrichment | Moderator decisions, user reports, chargebacks | [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention) |
 | Ranking (learning to rank) | Search | Order | Synchronous, in the search engine or a re-ranker | Contacts, favorites, clicks with position correction | [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking) |
 | Recommendations | Discovery | Order | Batch candidates plus online re-ranking | Views, contacts | [Recommendations for Inventory That Disappears](#recommendations) |
@@ -115,7 +115,7 @@ The platform has seven parts. The first four are mostly generic; the last three 
 6. **Labels**: pipelines that turn operational outcomes into training labels, with their delay, noise and ownership recorded.
 7. **Prediction log and monitoring**: every consequential prediction logged with its model version and features, joined later to outcomes; drift, performance by segment and cost dashboards.
 
-![The listing-specific parts of an ML platform are the label pipelines, the feature definitions shared between training and serving, and the prediction log that joins every consequential score to its outcome.](listing-systems-architecture/diagrams/c6b6d7020c2ba6ad.png)
+![Diagram: The listing-specific parts of an ML platform are the label pipelines, the feature definitions shared between training and serving, and the prediction log that joins every consequential score to its outcome](listing-systems-architecture/posts/38-ml-platform/assets/images/38-ml-platform/fig02-listing-specific-parts-ml-platform-are.jpeg)
 
 **Figure 2:** *The listing-specific parts of an ML platform are the label pipelines, the feature definitions shared between training and serving, and the prediction log that joins every consequential score to its outcome.*
 
@@ -131,7 +131,7 @@ A listing changes rarely compared with how often it is viewed. A Tradeyard listi
 | Synchronous endpoint | The input exists only at request time | Category prediction while typing; fraud fast path at submit; query understanding | Latency budget; capacity at peak |
 | In-engine scoring | The model ranks documents already in the index | Learning to rank in Solr, OpenSearch or Vespa | Feature availability in the index; engine upgrades |
 
-Zillow's 2020 account of floor-plan detection is a clean example of the second mode: when a 3D tour finishes, its panoramas land in object storage, a workflow launches batch-transform jobs that run window and door detection, and the results are stored as JSON. The team chose batch jobs because a live endpoint took about ten minutes to create while a batch job had a fixed startup cost of one to two minutes ([Zillow Tech Hub, 2020](https://medium.com/zillow-tech-hub); the post describes 2020 systems and the current state is not public). **Inference attached to the media and listing lifecycle, not online serving, is the pattern to copy.**
+Zillow's 2020 account of floor-plan detection shows the second mode: when a 3D tour finishes, its panoramas land in object storage, a workflow launches batch-transform jobs that run window and door detection, and the results are stored as JSON. The team chose batch jobs because a live endpoint took about ten minutes to create while a batch job had a fixed startup cost of one to two minutes ([Zillow Tech Hub, 2020](https://medium.com/zillow-tech-hub); the post describes 2020 systems and the current state is not public). **Inference attached to the media and listing lifecycle, not online serving, is the pattern to copy.**
 
 In-engine scoring is the documented pattern for ranking. In 2022, OLX described a LambdaMART model trained with XGBoost and converted to run inside Solr's learning-to-rank plugin, with some features computed at query time and others "refreshed periodically (e.g. CTR)" ([OLX Tech, 2022](https://tech.olx.com/learning-to-rank-sorting-search-results-b21a8bd48808); the current setup may differ). The model lives in the engine; the platform's job is to keep its features fresh in the index and its version in the registry.
 
@@ -140,7 +140,7 @@ In-engine scoring is the documented pattern for ranking. In 2022, OLX described 
 
 Feature stores are the most oversold part of ML platforms in this industry. In the public record I could find, **no classifieds company has documented a feature store**. Adevinta's 2024 description of its ML Golden Path, built with Adevinta Spain, leboncoin, Marktplaats and Subito, uses Kubeflow Pipelines for workflows and MLflow as model registry, and does not mention one ([Adevinta Tech Blog, 2024](https://adevinta.com/techblog/adevintas-machine-learning-golden-path/)). OLX's 2025 recommendations service reads precomputed data from ScyllaDB and DynamoDB, which play the role of an online store without the name ([OLX Tech, 2025](https://tech.olx.com/scaling-recommendations-service-at-olx-db4548813e3a)).
 
-The reason is that many listing models consume **listing-intrinsic features**: category, attributes, price, location, image count. These already live on the listing record and in the search document. A feature store adds little for them. It earns its cost for two other kinds of feature:
+Many listing models do not need one, because they consume **listing-intrinsic features**: category, attributes, price, location, image count. These already live on the listing record and in the search document. A feature store earns its cost for two other kinds of feature:
 
 | Feature kind | Examples | Where it lives without a feature store | When a feature store pays |
 | --- | --- | --- | --- |
@@ -165,15 +165,15 @@ The label pipeline is therefore a product in its own right, with an owner, a def
 {id: ml-platform--monitoring-and-the-drifts-specific-to-listings}
 ### Monitoring and the drifts specific to listings
 
-Generic drift monitoring compares input distributions over time. Listing marketplaces have four drift sources that deserve explicit monitors.
+Beyond generic drift monitoring, which compares input distributions over time, listing marketplaces have four drift sources that deserve explicit monitors.
 
 1. **Taxonomy and schema changes.** When Tradeyard's "Bikes" category splits into city, e-bikes, cargo and kids bikes on **Monday 1 November 2027**, every model with category as a feature sees a new value and loses an old one. The category predictor, the price-hint model and the fraud model all need a migration plan, which is why the taxonomy service publishes category changes as versioned events with mappings (see [Category Trees That Can Change: Designing Marketplace Taxonomies](#categories-and-taxonomies)).
 2. **Seasonality and market shifts.** Property prices, rental demand and used-car values move with interest rates and seasons. A valuation model must be monitored against fresh transactions, not against last year's error.
 3. **Adversarial drift.** Fraudsters adapt to gate models within days. Gate-tier models need monitors on the share of passed listings later reported, not only on input distributions.
 4. **Feedback loops.** A price hint changes the prices sellers ask, and the model then trains on prices it influenced. Ranking changes which listings get contacts, and the next ranking model trains on those contacts. D. Sculley and colleagues named this "hidden feedback loops" in their 2015 paper on technical debt in ML systems, alongside "undeclared consumers" ([Sculley et al., NeurIPS 2015](https://papers.nips.cc/paper_files/paper/2015/hash/86df7dcfd896fcaf2674f757a2463eba-Abstract.html)). Both are marketplace defaults, not edge cases.
 
-{id: ml-platform--in-practice-what-marketplaces-have-documented}
-## In Practice: What Marketplaces Have Documented
+{id: ml-platform--what-marketplaces-have-documented}
+## What Marketplaces Have Documented
 
 The public record on marketplace ML platforms is thin and uneven. Adevinta and OLX publish the most; Zillow, Rightmove and the motor portals publish outcomes but little about how. The evidence below is dated because platform posts age quickly.
 
@@ -183,7 +183,7 @@ The public record on marketplace ML platforms is thin and uneven. Adevinta and O
 
 **OLX's model-selection discipline (2025).** When choosing an embedding model, OLX filtered public leaderboards by memory, latency and language constraints, built an offline evaluation set from consecutive user interactions in its own markets, fine-tuned the winner, and still lost the first A/B test because the model ignored location and price. It added a re-ranking layer and learned that "similarity is not relevance" ([OLX Tech, 2025](https://tech.olx.com/importance-of-offline-evaluation-to-guide-model-choice-1c2be1c4599a)). **Offline evaluation is necessary and never sufficient** for order-tier models.
 
-**Valuation as a product.** Zillow's FY2025 annual report calls the Zestimate "our patented proprietary automated valuation model" and gives a 2025 median error of 1.8% for homes listed for sale and 7.2% for off-market homes ([Zillow Group 10-K, filed February 2026](https://www.sec.gov/Archives/edgar/data/1617640/000161764026000015/z-20251231.htm)). The gap between the two numbers is instructive: a model that sees the asking price, which is the agent's own valuation, is graded on an easier test. In France, Meilleurs Agents (part of AVIV Group) reported a median estimate error of 6% against final transaction values for 2021; the figure is self-reported ([Online Marketplaces, 2022](https://www.onlinemarketplaces.com/articles/meilleurs-agents-launches-new-campaign-fake-websites-included)). Zillow's 10-K also warns that changes in laws, contracts or data-provider practices could limit uses of licensed data "such as model training". **Listing licenses now govern training, not only display.**
+**Valuation as a product.** Zillow's FY2025 annual report calls the Zestimate "our patented proprietary automated valuation model" and gives a 2025 median error of 1.8% for homes listed for sale and 7.2% for off-market homes ([Zillow Group 10-K, filed February 2026](https://www.sec.gov/Archives/edgar/data/1617640/000161764026000015/z-20251231.htm)). The gap has a simple cause: a model that sees the asking price, which is the agent's own valuation, is graded on an easier test. In France, Meilleurs Agents (part of AVIV Group) reported a median estimate error of 6% against final transaction values for 2021; the figure is self-reported ([Online Marketplaces, 2022](https://www.onlinemarketplaces.com/articles/meilleurs-agents-launches-new-campaign-fake-websites-included)). Zillow's 10-K also warns that changes in laws, contracts or data-provider practices could limit uses of licensed data "such as model training". **Listing licenses now govern training, not only display.**
 
 **Pricing guidance outside property.** In 2020, OLX described an ML model that suggests an optimal price range to Otomoto sellers (the current product may differ) ([OLX Tech, 2020](https://tech.olx.com/data-science-at-olx-7c7406d1713f)). Airbnb's KDD 2018 paper described a three-stage pricing system (a booking-probability model, a regression to a suggested price with a custom loss, and personalization) behind Price Tips and Smart Pricing ([KDD 2018](https://www.kdd.org/kdd2018/accepted-papers/view/customized-regression-model-for-airbnb-dynamic-pricing)). The methodology behind the price ratings of mobile.de, AutoScout24 and Auto Trader UK is not public in a form I could verify; a plausible reference architecture, not a description of any of them, is a gradient-boosted or hedonic model per market over make, model, trim, year, mileage, region and options, served as a score stored on the listing and refreshed by listing events.
 
@@ -203,14 +203,14 @@ Four architectural lessons follow. They are my interpretation of the documented 
 
 **Figure 3:** *Selection makes error one-sided: owners accept the offers the model overvalued and decline the rest, so an error that averages out across all homes becomes a systematic loss on the homes actually bought.*
 
-{id: ml-platform--veldmark-worked-example-valuo-and-the-pricing-hint}
-### Veldmark worked example: Valuo and the pricing hint
+{id: ml-platform--in-practice-valuo-and-the-pricing-hint}
+## In Practice: Valuo and the Pricing Hint
 
 Valuo estimates the value of French residential properties from DVF transactions and Hearthly listing data. It runs on Hearthly's Google Cloud stack, scores the property base weekly, and rescores a property when a listing event changes its inputs. In the October 2027 back-test, Valuo's **median absolute error is 7.4% for off-market properties** against subsequent DVF sales and **2.3% for listed properties**, for the same reason Zillow's on-market error is lower: the model sees the asking price. Each estimate comes with an **80% prediction interval**.
 
-Take the canonical Lyon apartment: a three-room, 68 m² flat in Lyon 7e, energy class D, listed in May 2027 at **€389,000** by three agencies, which entity resolution clusters into one canonical property (see [One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution)). Valuo's interval is **€372,000–€401,000**, a width of €29,000, or 7.5% of its midpoint of €386,500. The asking price sits inside the interval, so the badge reads *in line with the estimate*.
+Take the canonical Lyon apartment: a three-room, 68 m² flat in Lyon 7e, energy class D, listed in May 2027 at **€389,000** by three agencies, which entity resolution clusters into one canonical property (see [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution)). Valuo's interval is **€372,000–€401,000**, a width of €29,000, or 7.5% of its midpoint of €386,500. The asking price sits inside the interval, so the badge reads *in line with the estimate*.
 
-The forum turns the badge into rules before anyone builds it. These are the decisions recorded on **Monday 4 October 2027**:
+Before anyone builds the badge, the forum turns it into rules, recorded on **Monday 4 October 2027**:
 
 | Rule | Decision | Reason |
 | --- | --- | --- |
@@ -223,13 +223,13 @@ The forum turns the badge into rules before anyone builds it. These are the deci
 | Monitoring | Weekly error against new DVF sales by arrondissement and price band; monthly report of asking-price convergence toward estimates | Detects drift and the feedback loop |
 | Owner | Hearthly's valuation product manager owns the badge; Priya's team owns the platform; Julien Marchand signs off model versions | Every consumer and version has a name |
 
-Two rules show where the architecture does the governance. The **Keybridge exclusion** is implemented as a lineage tag checked by the training pipeline, so a data scientist cannot violate the neutrality commitment by joining the wrong table. The **label rule** cuts the feedback loop at its source: badges will move asking prices, but Valuo learns only from what buyers paid.
+Two of these rules are enforced by the architecture, not by policy. The **Keybridge exclusion** is implemented as a lineage tag checked by the training pipeline, so a data scientist cannot violate the neutrality commitment by joining the wrong table. The **label rule** cuts the feedback loop at its source: badges will move asking prices, but Valuo learns only from what buyers paid.
 
 ![A loop from model to badge to asking prices, with the path back from asking prices into training cut by scissors, while registered sale records feed the model.](listing-systems-architecture/posts/38-ml-platform/assets/images/38-ml-platform/label-rule-cuts-feedback-loop.jpeg)
 
 **Figure 4:** *The label rule cuts the feedback loop at its source: badges will move asking prices, but Valuo trains only on the prices buyers actually paid in the DVF records.*
 
-![The pricing hint is event-triggered inference stored on the listing read model; every score is logged with its model version so that later DVF sales can grade it.](listing-systems-architecture/diagrams/8e06111e18b4dd2c.png)
+![Diagram: The pricing hint is event-triggered inference stored on the listing read model](listing-systems-architecture/posts/38-ml-platform/assets/images/38-ml-platform/fig05-pricing-hint-event-triggered-inference-stored.jpeg)
 
 **Figure 5:** *The pricing hint is event-triggered inference stored on the listing read model; every score is logged with its model version so that later DVF sales can grade it.*
 
@@ -284,8 +284,8 @@ Veldmark chooses the hybrid. The decision of **Tuesday 9 November 2027** makes o
 | Fraud scoring | Depends on your abuse patterns and labels | Vendor device and network signals | Build the model; buy signals |
 | Text extraction and classification | Increasingly done with large language models | Model APIs | See [AI Across the Listing Lifecycle](#ai-in-listing-systems) |
 
-{id: ml-platform--cost}
-### Cost
+{id: ml-platform--what-ml-costs-gpus-rescoring-and-unused-models}
+### What ML costs: GPUs, rescoring and unused models
 
 ML cost in marketplaces is dominated by three items: GPU training and serving for image and language models, scoring the whole inventory repeatedly, and the people who maintain models nobody uses. At Veldmark, Priya's inventory estimates **€11.2 million a year** in compute, licenses and tooling across the four stacks in 2027, of which about €3.1 million is image inference. The most effective cost controls are architectural: score on events instead of on schedules, store scores on listings instead of recomputing per view, retire models with no consumers, and make the registry show cost per model next to its owner. A model whose cost nobody sees will never be retired.
 
@@ -327,7 +327,7 @@ The jobs row matters for Veldmark because Tradeyard runs small jobs sections in 
 
 The registry enforces the same lifecycle for every model, with the tier deciding how heavy each gate is.
 
-![Every model passes the same states; what changes with the tier is the evidence each transition requires, and a drift alert sends a production model back to shadow rather than leaving it to decide unwatched.](listing-systems-architecture/diagrams/7ec9a7599f8bc8a1.png)
+![Diagram: Every model passes the same states](listing-systems-architecture/posts/38-ml-platform/assets/images/38-ml-platform/fig06-every-model-passes-same-states-what.jpeg)
 
 **Figure 6:** *Every model passes the same states; what changes with the tier is the evidence each transition requires, and a drift alert sends a production model back to shadow rather than leaving it to decide unwatched.*
 

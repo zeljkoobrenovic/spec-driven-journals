@@ -23,14 +23,14 @@
 
 Marketplace groups are usually assembled, not designed. A founding marketplace grows its own engineering organization; acquisitions bring theirs; a group function appears to run finance, security and perhaps an advertising stack. Each organization works. Together they produce the familiar picture of four identity systems and four trust-and-safety stacks, because **each capability exists as many times as there are teams that believe they own it.**
 
-The technical chapters of this book argue for shared platforms beneath local products: one event backbone, one search platform, one trust-and-safety pipeline, one entitlement ledger, configured per brand and country. None of that survives contact with an organization that has no team to own it. This chapter is about the other half of the architecture: **who owns which journey, which capability and which decision**, how those teams interact, how they are paid for, and how a group makes architectural decisions that bind several brands without a central committee that slows all of them.
+The technical chapters of this book argue for shared platforms beneath local products: one event backbone, one search platform, one trust-and-safety pipeline, one entitlement ledger, configured per brand and country. None of that survives contact with an organization that has no team to own it. [After the Deal: Consolidating Platforms After Acquisitions](#platform-consolidation) set the order in which the shared capabilities move after acquisitions; this chapter covers the other half of the architecture: **who owns which journey, which capability and which decision**, how those teams interact, how they are paid for, and how a group makes architectural decisions that bind several brands without a central committee that slows all of them. [Changing the Engine in Flight: Modernizing a Live Marketplace](#modernization-and-migration) then moves the code to the owners named here.
 
-This chapter owns two terms. A **marketplace team topology** is the assignment of team types to a marketplace group's journeys, bounded contexts and shared capabilities, together with the interaction mode between each pair of teams. **Architecture governance** is the set of decision rights, forums, records, principles and standards through which architectural decisions are made, communicated and revisited. Where boundaries come from is the subject of [Bounded Contexts for Marketplaces: Where One Listing Becomes Many Models](#bounded-contexts); what to share across countries and brands is [One Platform, Many Marketplaces: Multi-Country and Multi-Brand Architecture](#multi-country-platforms); the order of consolidation after acquisitions is [After the Deal: Consolidating Platforms After Acquisitions](#platform-consolidation).
+This chapter owns two terms. A **marketplace team topology** is the assignment of team types to a marketplace group's journeys, bounded contexts and shared capabilities, together with the interaction mode between each pair of teams. **Architecture governance** is the set of decision rights, forums, records, principles and standards through which architectural decisions are made, communicated and revisited. Where boundaries come from is the subject of [Bounded Contexts for Marketplaces: Where One Listing Becomes Many Models](#bounded-contexts); what to share across countries and brands is [One Platform, Many Marketplaces: Multi-Country and Multi-Brand Architecture](#multi-country-platforms).
 
-{id: organizing-marketplace-engineering--setting-the-scene-the-rule-that-reached-belgium-three-days-late}
-## Setting the Scene: The Rule That Reached Belgium Three Days Late
+{id: organizing-marketplace-engineering--setting-the-scene-at-veldmark-the-rule-that-reached-belgium-three-days-late}
+## Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late
 
-On Sunday 7 March 2027, Femke, a private seller in Rotterdam, listed a city bike on Tradeyard Netherlands. At 20:11 a "buyer" sent her a fake Safe Deal payment link. She reported it at 20:19, the account was suspended at 20:26, and Tradeyard NL's trust-and-safety team wrote a new rule that withheld 37 similar messages to other sellers that evening. Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)), handled the incident well in the Netherlands.
+On Sunday 7 March 2027, Femke, a private seller in Rotterdam, listed a city bike on Tradeyard Netherlands. At 20:11 a "buyer" sent her a fake Safe Deal payment link. She reported it at 20:19, the account was suspended at 20:26, and Tradeyard NL's trust-and-safety team wrote a new rule that withheld 37 similar messages to other sellers that evening. Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)), handled the incident well in the Netherlands.
 
 The rule reached Tradeyard Belgium on **Wednesday 10 March**, because Belgian rules shipped with Yardstick, Tradeyard's PHP monolith, which deploys twice a week. It never reached Tradeyard Poland or Portugal, where moderation was run by two outsourced vendors with their own rule sets. And the phone number behind the suspended account had also registered a private-seller account on Motorvane, Veldmark's automotive marketplace, which nobody at Motorvane learned about.
 
@@ -61,12 +61,12 @@ Mateus Carvalho, the Group CTO, asks Ingrid the question this chapter answers: *
 
 Melvin Conway observed in 1968 that organizations which design systems produce designs that copy their own communication structures ([Conway, 1968](https://www.melconway.com/Home/Committees_Paper.html)). In a marketplace group the observation is easy to verify: four brands with four engineering organizations have four identity systems. The useful reading is the reverse one, sometimes called the *inverse Conway maneuver*: **if you want a shared search platform, create a team whose job is the search platform**, and give the brands' discovery teams a reason to depend on it.
 
-Two limits keep the maneuver honest. First, changing teams does not change code; the old structure persists in the systems until someone migrates them, which is why [Changing the Engine in Flight: Modernizing a Live Marketplace](#modernization-and-migration) follows this chapter. Second, teams have a limited capacity for complexity. The Team Topologies authors, Matthew Skelton and Manuel Pais, put it as a principle: "Teams can only handle so much complexity before breaking down" ([Team Topologies, key concepts](https://teamtopologies.com/key-concepts), n.d.). A team asked to own Tradeyard's insertion flow in four countries, the pro-seller API and the image pipeline will own all three badly.
+The maneuver has two limits. First, changing teams does not change code; the old structure persists in the systems until someone migrates them, which is why [Changing the Engine in Flight: Modernizing a Live Marketplace](#modernization-and-migration) follows this chapter. Second, teams have a limited capacity for complexity. The Team Topologies authors, Matthew Skelton and Manuel Pais, put it as a principle: "Teams can only handle so much complexity before breaking down" ([Team Topologies, key concepts](https://teamtopologies.com/key-concepts), n.d.). A team asked to own Tradeyard's insertion flow in four countries, the pro-seller API and the image pipeline will own all three badly.
 
 {id: organizing-marketplace-engineering--four-team-types-and-three-interaction-modes}
 ### Four team types and three interaction modes
 
-Team Topologies names four fundamental team types and three ways teams interact ([Team Topologies, key concepts](https://teamtopologies.com/key-concepts), n.d.). The vocabulary is widely used; what matters here is how each type maps onto a listing marketplace.
+Team Topologies names four fundamental team types and three ways teams interact ([Team Topologies, key concepts](https://teamtopologies.com/key-concepts), n.d.). The tables below map each onto a listing marketplace.
 
 | Team type | Definition (Team Topologies) | In a marketplace group | Example at Veldmark (2027 design) |
 | --- | --- | --- | --- |
@@ -86,7 +86,7 @@ The mode is a property of a pair of teams at a point in time. **Collaboration th
 {id: organizing-marketplace-engineering--the-marketplace-team-topology}
 ### The marketplace team topology
 
-A marketplace adds three axes to the generic picture, and every organization design has to choose which axis cuts the stream-aligned teams:
+Every marketplace organization design must choose the axis that cuts its stream-aligned teams: country, journey or capability layer.
 
 | Axis | Teams look like | Strength | Weakness |
 | --- | --- | --- | --- |
@@ -94,7 +94,7 @@ A marketplace adds three axes to the generic picture, and every organization des
 | **Journey** | "Tradeyard Discovery" serving all four countries | One implementation per journey; local needs carried by market product leads and configuration | Needs strong configuration and localization; local managers feel distant |
 | **Capability layer** | "Tradeyard Search Backend", "Tradeyard Android" | Deep technical skill | Every product change needs several teams; nobody owns an outcome |
 
-For marketplaces with one product in several countries, I would cut stream-aligned teams **by journey within a brand**, and carry the country through product roles and configuration rather than through separate teams. The exception is a country whose product genuinely differs, such as Tradeyard Poland's vehicles and property sections with insertion fees, which may justify a market team for those sections. The rule I use: **a country team is justified by a different product, not by a different language.**
+For marketplaces with one product in several countries, I would cut stream-aligned teams **by journey within a brand**, and carry the country through product roles and configuration rather than through separate teams. The exception is a country whose product differs, such as Tradeyard Poland's vehicles and property sections with insertion fees, which may justify a market team for those sections. The rule I use: **a country team is justified by a different product, not by a different language.**
 
 Across brands, the same journey stays separate. Motorvane's dealer supply and Hearthly's agency supply are different products with different customers, feeds and contracts, and the shared part — the supply contract, the validator library, the taxonomy — is a platform, not a shared team (see [Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion)).
 
@@ -122,17 +122,19 @@ Governance is often treated as a synonym for review. In a marketplace group it h
 | **Forum** | A regular, open place where proposed decisions get advice in public | Advice is private, inconsistent and slow |
 | **Standards and golden paths** | The few things every team must do the same way, ideally made easy by a platform | Either everything is a standard or nothing is |
 
-Michael Nygard's 2011 proposal for architecture decision records (ADRs) is still the common shape: a title, the context ("the forces at play"), the decision in active voice, a status (proposed, accepted, deprecated, superseded) and the consequences, positive and negative ([Nygard, 2011](https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions)). Andrew Harmel-Law's **advice process**, described in 2021, replaces approval with one rule: "anyone can make an architectural decision", provided they first seek advice from everyone meaningfully affected and from people with relevant expertise, and record the advice they received; they need not follow it. It is supported by decision records, a weekly open architecture advisory forum, team-sourced principles and a local technology radar ([Harmel-Law, martinfowler.com, 2021](https://martinfowler.com/articles/scaling-architecture-conversationally.html)).
+Michael Nygard's 2011 proposal for architecture decision records (ADRs) is still the common shape: a title, the context ("the forces at play"), the decision in active voice, a status (proposed, accepted, deprecated, superseded) and the consequences, positive and negative ([Nygard, 2011](https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions)).
+
+Andrew Harmel-Law's **advice process**, described in 2021, replaces approval with one rule: "anyone can make an architectural decision", provided they first seek advice from everyone meaningfully affected and from people with relevant expertise, and record the advice they received; they need not follow it. It is supported by decision records, a weekly open architecture advisory forum, team-sourced principles and a local technology radar ([Harmel-Law, martinfowler.com, 2021](https://martinfowler.com/articles/scaling-architecture-conversationally.html)).
 
 {id: organizing-marketplace-engineering--architecture-a-topology-for-a-group-of-marketplaces}
 ## Architecture: A Topology for a Group of Marketplaces
 
-{id: organizing-marketplace-engineering--the-shape}
-### The shape
+{id: organizing-marketplace-engineering--stream-aligned-teams-on-top-of-platform-teams}
+### Stream-aligned teams on top of platform teams
 
-Figure 2 shows the target topology Veldmark adopted for Common Ground. The pattern generalizes: stream-aligned teams per brand and journey on top, platform teams per shared capability underneath, a small number of complicated-subsystem teams beside them, and enabling teams that move between them.
+A group of marketplaces needs stream-aligned teams per brand and journey on top, platform teams per shared capability underneath, a few complicated-subsystem teams beside them, and enabling teams that move between them. Figure 2 shows the version Veldmark adopted for Common Ground.
 
-![Veldmark's Common Ground team topology (target 2028). Brands keep their journeys and their products; the group owns the capabilities beneath them; specialists and enablers sit beside both. Keybridge stays outside the platform organization because its neutrality commitment requires it.](listing-systems-architecture/diagrams/3688b4b52d40b81f.png)
+![Diagram: Veldmark's Common Ground team topology (target 2028)](listing-systems-architecture/posts/42-organizing-marketplace-engineering/assets/images/42-organizing-marketplace-engineering/fig02-veldmark-s-common-ground-team-topology.jpeg)
 
 **Figure 2:** *Veldmark's Common Ground team topology (target 2028). Brands keep their journeys and their products; the group owns the capabilities beneath them; specialists and enablers sit beside both. Keybridge stays outside the platform organization because its neutrality commitment requires it.*
 
@@ -145,7 +147,7 @@ Three properties of the figure matter more than its boxes:
 {id: organizing-marketplace-engineering--platform-teams-as-internal-products}
 ### Platform teams as internal products
 
-A platform team is not a shared-services department. The difference is visible in five things it must have:
+A platform team differs from a shared-services department in five things it must have:
 
 | A platform team has | Why it matters in a marketplace group | Evidence it is missing |
 | --- | --- | --- |
@@ -182,9 +184,9 @@ The matrix has two deliberate features. Brands decide exceptions themselves, pro
 {id: organizing-marketplace-engineering--the-advice-process-in-a-marketplace-group}
 ### The advice process in a marketplace group
 
-Figure 4 shows how a cross-brand decision travels under the advice process as Veldmark runs it.
+Under the advice process, most cross-brand decisions stay with the team that proposes them. Figure 4 shows the path as Veldmark runs it.
 
-![The advice process applied to cross-brand decisions. Most decisions stay with the team that proposes them; the forum makes advice public and consistent; only decisions that move funding, people or personal data across brands go to an accountable executive.](listing-systems-architecture/diagrams/5ec8ecdd78f58ea8.png)
+![Diagram: The advice process applied to cross-brand decisions](listing-systems-architecture/posts/42-organizing-marketplace-engineering/assets/images/42-organizing-marketplace-engineering/fig04-advice-process-applied-cross-brand-decisions.jpeg)
 
 **Figure 4:** *The advice process applied to cross-brand decisions. Most decisions stay with the team that proposes them; the forum makes advice public and consistent; only decisions that move funding, people or personal data across brands go to an accountable executive.*
 
@@ -207,7 +209,9 @@ How platform work is paid for shapes behavior more than any principle. Five mode
 | **Chargeback by usage** | Tenants pay per unit (per thousand searches, per million events, per stored image) | Efficient use; risk that tenants avoid a platform to save budget, or build shadow copies | Mature platforms with stable unit costs |
 | **Internal market** | Tenants may buy outside if the platform is not competitive | Strong pressure on the platform | Rarely right for capabilities that must be shared for policy reasons, such as trust and safety or identity |
 
-The trap is to pick one model for all platforms. Trust and safety and identity are shared because the group needs one answer for fraud and for login; charging per decision would tempt a brand to skip checks. Search and media are shared for cost; usage pricing makes their cost visible and fair. Adevinta's cloud governance team stated the principle for accounts and infrastructure in a December 2024 post as "You build it, you run it (and you pay for it)", backed by an ownership catalog mapping more than a thousand cloud accounts and projects to teams and cost centers ([Adevinta Tech Blog, 2024](https://adevinta.com/techblog/multi-cloud-governance-at-scale/)). **Cost attribution needs an ownership catalog before it needs a pricing model.**
+The trap is to pick one model for all platforms. Trust and safety and identity are shared because the group needs one answer for fraud and for login; charging per decision would tempt a brand to skip checks. Search and media are shared for cost; usage pricing makes their cost visible and fair.
+
+**Cost attribution needs an ownership catalog before it needs a pricing model.** Adevinta's cloud governance team stated the principle for accounts and infrastructure in a December 2024 post as "You build it, you run it (and you pay for it)", backed by an ownership catalog mapping more than a thousand cloud accounts and projects to teams and cost centers ([Adevinta Tech Blog, 2024](https://adevinta.com/techblog/multi-cloud-governance-at-scale/)).
 
 {id: organizing-marketplace-engineering--the-roles-of-architects}
 ### The roles of architects
@@ -226,7 +230,7 @@ A 2018 post on the Berlin Tech Blog, shared by the eBay Kleinanzeigen and mobile
 {id: organizing-marketplace-engineering--in-practice-what-the-public-record-shows}
 ## In Practice: What the Public Record Shows
 
-Few marketplace groups publish their organization designs. The following are the documented fragments, with their dates; each is evidence about one organization at one time.
+Few marketplace groups publish their organization designs; each dated fragment below is evidence about one organization at one time.
 
 **Marktplaats: from business-unit teams to Journey Teams (2017).** In a November 2017 post, Marktplaats described replacing product teams aligned to business units, each product owner with a "huge backlog", by cross-functional **Journey Teams** organized around the customer journey, which included product, technology, marketing, customer relations, product analytics and data science. The company moved to objectives and key results, with at most three company objectives and four key results each, refreshed quarterly. The head of technology wrote that in this way of working "the platform has been changed from a set of monolithic services to microservices, allowing teams to deliver 10x faster each year" — a self-reported claim ([Marktplaats Technology, 2017](https://medium.com/marktplaats-technology/the-marktplaats-journey-becoming-the-best-version-of-ourselves-5ece9829f13f)). The post is nine years old, and the current organization is not public. It is still the clearest classifieds account of cutting teams by journey rather than by business unit, and of the architecture following the teams.
 
@@ -234,7 +238,9 @@ Few marketplace groups publish their organization designs. The following are the
 
 **AutoScout24: growing the new organization one team at a time.** A 2016 conference report described AutoScout24's move from a .NET monolith to microservices on AWS, "Project Tatsu", which began in November 2014 with one team and grew to eight, adding teams every two to three months, with no big upfront plan ([InfoQ, 2016](https://www.infoq.com/news/2016/02/autoscout-microservices/)). The evidence is ten years old; it shows a migration staffed by growing the new organization rather than reassigning the old one in one move.
 
-**OLX: squads and chapters, then a framework for cross-functional work.** A 2021 post from OLX Autos, a business OLX has since closed, described squads owning end-to-end journeys and chapters (Android, backend, quality) led by chapter leads who also line-managed ([OLX Tech, 2021](https://tech.olx.com/scaling-agile-olx-2b2dd7b9def4)). In March 2026, OLX Motors described its "Work Organization Framework", introduced because "by 2024, at OLX Motors, we had a classic case of 'too much of everything, not enough of anything'": a governance model with champions, drivers and outcome tracking that completed 29 initiatives, including standardized user identification across 71 services and one deployment-notification center across more than 60 services ([OLX Tech, 2026](https://tech.olx.com/empowering-innovation-through-structure-93c15614f6d3)). Two lessons: journey squads alone do not deliver cross-cutting hygiene; and a lightweight, outcome-tracked structure for cross-team initiatives is a governance tool in its own right. A third OLX fragment concerns ownership: a July 2025 post explains that recommendations serving moved out of "a shared backend service" to the data team "to gain greater autonomy and flexibility" ([OLX Tech, 2025](https://tech.olx.com/scaling-recommendations-service-at-olx-db4548813e3a)) — a complicated subsystem taking ownership of its own runtime, with the efficiency trade-offs the post describes.
+**OLX: squads and chapters, then a framework for cross-functional work.** A 2021 post from OLX Autos, a business OLX has since closed, described squads owning end-to-end journeys and chapters (Android, backend, quality) led by chapter leads who also line-managed ([OLX Tech, 2021](https://tech.olx.com/scaling-agile-olx-2b2dd7b9def4)). In March 2026, OLX Motors described its "Work Organization Framework", introduced because "by 2024, at OLX Motors, we had a classic case of 'too much of everything, not enough of anything'": a governance model with champions, drivers and outcome tracking that completed 29 initiatives, including standardized user identification across 71 services and one deployment-notification center across more than 60 services ([OLX Tech, 2026](https://tech.olx.com/empowering-innovation-through-structure-93c15614f6d3)). Two lessons: journey squads alone do not deliver cross-cutting hygiene; and a lightweight, outcome-tracked structure for cross-team initiatives is a governance tool in its own right.
+
+A third OLX fragment concerns ownership: a July 2025 post explains that recommendations serving moved out of "a shared backend service" to the data team "to gain greater autonomy and flexibility" ([OLX Tech, 2025](https://tech.olx.com/scaling-recommendations-service-at-olx-db4548813e3a)) — a complicated subsystem taking ownership of its own runtime, with the efficiency trade-offs the post describes.
 
 **Adevinta: voluntary platforms, harvested inventions, and a swing back.** Adevinta's record covers the full pendulum and is told in [Adevinta: From Schibsted's Copy-Paste Model to a Portfolio Platform](#case-adevinta). For organization design, three fragments matter. The deployment abstraction that ran across its marketplaces, FIAAS, came from FINN.no, and its experimentation analysis package, Fisher, came from Marktplaats; both were local inventions promoted to group level (2017–2023 sources). In 2023 the group "redesigned the operating model and created a robust structure organised by verticals", and in 2025 it "evolved from a centralised structure to a decentralised, standalone operating model", with "the ramp-down of central functions, the transfer of key capabilities, the localisation of intellectual property" (Adevinta Annual Report 2023; Strategic Report 2025). In a September 2026 post about an infrastructure self-service bot, leboncoin's engineering blog described about ten infrastructure engineers supporting about 70 feature teams ([leboncoin tech blog, 2026](https://medium.com/feed/leboncoin-tech-blog); figures from the blog's feed summary, the full post not retrieved).
 
@@ -258,7 +264,7 @@ In May 2027 Ingrid and Yara Mendes, the Head of Platform Engineering, bring thre
 | **B. Central platform organization, product-run** | Group platform teams under the Head of Platform Engineering, each with a product owner and tenant-facing contract; brands keep journeys | One owner per shared capability; fleet-level economics | Brands lose engineers and some control; risk of the Platform Mandate if platforms are slow |
 | **C. Central product and technology** | One group organization owning all products and platforms, with brand "market teams" for local needs | Maximum reuse | Breaks "share platforms, not products"; the 2023-style convergence bet; expensive to reverse if a brand is sold |
 
-The forum's advice is option B, with conditions. Mateus Carvalho decides it on **Tuesday 22 June 2027**, effective **1 September 2027**, in the decision record "Common Ground organization v1". Its essential parts:
+The forum's advice is option B, with conditions. Mateus Carvalho decides it on **Tuesday 22 June 2027**, effective **1 September 2027**, in the decision record "Common Ground organization v1". It has five parts:
 
 1. **One owning team per shared capability.** The group platform organization, under Yara Mendes, owns the Common Ground platforms: event backbone, search platform, identity (Veldmark ID), trust-and-safety pipeline engineering, media, messaging, catalog and entitlements, taxonomy and attributes, the listing platform (publication pipeline and consumer registry) and the developer platform. Data and ML platforms stay in Priya Raman's Data & ML organization, which follows the same platform rules.
 2. **Brands keep their journeys, products and teams.** Stream-aligned teams stay in Tradeyard, Motorvane and Hearthly, cut by journey. Tradeyard's Polish and Portuguese country teams become journey teams serving all four Tradeyard countries, with market product leads per country; Tradeyard Poland keeps one market team for its vehicles and property sections.
@@ -395,6 +401,9 @@ Two consequences for organization design. In real estate and automotive, the **s
 8. How many cross-brand decisions were made last quarter, how long did they take, and how many escalated?
 9. Which decisions are past their review date or trigger?
 10. If a brand were sold in 18 months, which teams and platforms would have to split, and is that written down?
+
+{id: organizing-marketplace-engineering--from-organization-to-migration}
+## From Organization to Migration
 
 The organization assigns owners; it does not move code. Tradeyard's teams still deploy through Yardstick, and the new platform teams own capabilities that the monolith still implements. [Changing the Engine in Flight: Modernizing a Live Marketplace](#modernization-and-migration) takes up the work of moving a live marketplace from the old system to the new one without losing traffic, sellers or revenue.
 

@@ -21,14 +21,14 @@
 > * **Moderation as an Afterthought** — An alert system that fans out every new listing within minutes also delivers fake listings to the most motivated buyers, unless the risk gate sits in front of it.
 > * **Vanity Liquidity** — Counting alerts sent rather than contacts made rewards noisy alerts, and users answer noise by unsubscribing.
 
-A search is a question asked once. A **saved search** is the same question asked continuously: "tell me when a city bike under €300 appears within 10 km of Rotterdam", "a T3 in this polygon in Lyon under €400,000", "a Golf from 2019 or later with less than 60,000 km". A buyer who saves a search turns a moment of intent into **standing demand**, and the marketplace takes on an obligation: to notify them when supply appears, quickly enough that the notification is worth something.
+The earlier chapters of Part IV help a buyer find what is listed at the moment they search. A **saved search** covers what is listed afterwards: it is the same question asked continuously, "tell me when a city bike under €300 appears within 10 km of Rotterdam", "a T3 in this polygon in Lyon under €400,000", "a Golf from 2019 or later with less than 60,000 km". A buyer who saves a search turns a moment of intent into **standing demand**, and the marketplace takes on an obligation: to notify them when supply appears, quickly enough that the notification is worth something.
 
-The obligation is larger than it looks. At Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)), there are **46 million** active saved searches, and its brands send about **38 million** alert notifications a day by push and e-mail. Every new listing, every price cut and every reactivation is a candidate for matching against all of them. **Alerts are where the listing event stream, the taxonomy, the search platform, the trust gate and the notification channels all meet**, and the alert system is only as correct as the weakest of them.
+At Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)), the obligation covers **46 million** active saved searches, and the group's brands send about **38 million** alert notifications a day by push and e-mail. Every new listing, every price cut and every reactivation is a candidate for matching against all of them. **Alerts are where the listing event stream, the taxonomy, the search platform, the trust gate and the notification channels all meet**, and the alert system is only as correct as the weakest of them.
 
-This chapter owns three terms. A **saved search** is a persisted, normalized search query with an owner, a notification policy and a lifecycle. **Percolation** (also called reverse search or prospective search) is matching a document against stored queries rather than a query against stored documents. **Alert fan-out** is the process of turning matches into notifications across channels, with deduplication, throttling and delivery. It builds on [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture) for the engine, on [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings) for the event stream, on [From Submitted to Searchable: The Publication Pipeline](#publication-pipeline) for what "searchable" means and when, and on [Searching by Place: Map, Polygon and Commute Search](#map-search) for drawn and commute areas. Ranking signals from alerts are used by [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking) and [Recommendations for Inventory That Disappears](#recommendations).
+This chapter owns three terms. A **saved search** is a persisted, normalized search query with an owner, a notification policy and a lifecycle. **Percolation** (also called reverse search or prospective search) is matching a document against stored queries rather than a query against stored documents. **Alert fan-out** is the process of turning matches into notifications across channels, with deduplication, throttling and delivery. It builds on [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture) for the engine, on [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings) for the event stream, on [From Submitted to Searchable: The Publication Pipeline](#publication-pipeline) for what "searchable" means and when, and on [Searching by Place: Map, Polygon and Commute Search](#map-search) for drawn and commute areas. [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking) and [Recommendations for Inventory That Disappears](#recommendations) use its engagement signals, and its risk gate is where the trust and safety work of [Part V — TRUST: Keeping the Marketplace Safe](#part-5) begins.
 
-{id: saved-searches-and-alerts--setting-the-scene-312-saved-searches-and-a-ten-minute-cron}
-## Setting the Scene: 312 Saved Searches and a Ten-Minute Cron
+{id: saved-searches-and-alerts--setting-the-scene-at-veldmark-312-saved-searches-and-a-ten-minute-cron}
+## Setting the Scene at Veldmark: 312 Saved Searches and a Ten-Minute Cron
 
 On **Sunday 7 March 2027 at 19:42 CET**, Femke, a private seller in Rotterdam, lists a used city bike for **€240** on Tradeyard Netherlands. It becomes searchable at **19:48**, six minutes later, the Tradeyard baseline. It matches **312** saved searches. The first contact arrives at **19:55**, from a buyer who received an alert. Femke has **14** conversations within 24 hours, and on Monday 8 March she sells the bike for **€225** through Safe Deal. Tradeyard marks it sold at **18:10** and search removes it at **18:11**.
 
@@ -72,14 +72,14 @@ The **query part must be stored in normalized, versioned form**, not as a URL or
 
 Figure 1 shows the lifecycle a saved search moves through.
 
-![A saved search is long-lived user data with its own lifecycle. Dormancy and migration are states, not cleanup scripts, so that each one has an owner, a user notice and a measurable backlog.](listing-systems-architecture/diagrams/795232c1e229e02c.png)
+![Diagram: A saved search is long-lived user data with its own lifecycle](listing-systems-architecture/posts/23-saved-searches-and-alerts/assets/images/23-saved-searches-and-alerts/fig01-saved-search-long-lived-user-data.jpeg)
 
 **Figure 1:** *A saved search is long-lived user data with its own lifecycle. Dormancy and migration are states, not cleanup scripts, so that each one has an owner, a user notice and a measurable backlog.*
 
-The productscape model behind this book names the capability *Saved Search / Alerts* ("persist search intent and alert on new matches by email/push") and records the saved search as personal data, kept "until user deletion or inactivity threshold". That is the right default: a saved search says where someone wants to live, what car they can afford, or what they want to buy, and it is governed by the General Data Protection Regulation (GDPR) like any other personal data.
+A saved search is personal data. The productscape model behind this book names the capability *Saved Search / Alerts* ("persist search intent and alert on new matches by email/push") and records the saved search as personal data, kept "until user deletion or inactivity threshold". That is the right default: a saved search says where someone wants to live, what car they can afford, or what they want to buy, and it is governed by the General Data Protection Regulation (GDPR) like any other personal data.
 
-{id: saved-searches-and-alerts--the-match-set-and-the-transitions-that-matter}
-### The match set and the transitions that matter
+{id: saved-searches-and-alerts--the-match-set-notify-on-entry-retract-on-exit}
+### The match set: notify on entry, retract on exit
 
 For a saved search *S*, its **match set** is the set of live, alertable listings that satisfy *S*'s query right now. Alerts are about changes to the match set, not about listing events as such. A listing event can:
 
@@ -87,7 +87,7 @@ For a saved search *S*, its **match set** is the set of live, alertable listings
 - **Stay** in it: a matching listing gets new photos or a better description. Usually not alert-worthy, with one exception, the price drop for listings the user watches.
 - **Leave** it: sold, removed, expired, reserved, repriced above the limit. Never alert-worthy as a match, but always important as a **retraction**: pending notifications and digest entries for that listing must be cancelled.
 
-The rule that follows is the most useful single rule in alert design: **notify on entry, retract on exit, ignore the rest**. Implementing it requires knowing whether the listing matched *before* the event, which means the matcher needs either the previous state of the listing (event-carried state with the changed fields and their previous values, as the listing event contract of [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings) provides) or a **match ledger** that records which (saved search, listing) pairs have already been notified. In practice both are needed: the previous state for the matching logic, and the ledger for deduplication across channels and over time.
+The design rule follows: **notify on entry, retract on exit, ignore the rest**. Implementing it requires knowing whether the listing matched *before* the event, which means the matcher needs either the previous state of the listing (event-carried state with the changed fields and their previous values, as the listing event contract of [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings) provides) or a **match ledger** that records which (saved search, listing) pairs have already been notified. In practice both are needed: the previous state for the matching logic, and the ledger for deduplication across channels and over time.
 
 ![A match set drawn as an enclosure: entering listings ring a bell, changes inside are ignored, and leaving listings pull back pending notifications.](listing-systems-architecture/posts/23-saved-searches-and-alerts/assets/images/23-saved-searches-and-alerts/match-set-entry-exit.jpeg)
 
@@ -106,7 +106,7 @@ Price-drop alerts invite gaming. A dealer who cuts the price by €10 every thre
 {id: saved-searches-and-alerts--two-ways-to-match-percolate-or-re-query}
 ## Two Ways to Match: Percolate or Re-query
 
-There are two families of matching, and a third that combines them.
+At Veldmark's scale, instant alerts need percolation; batch re-query is fast enough only for digests.
 
 **Batch re-query** runs each saved search periodically as an ordinary search against the main index, filtered to listings published or changed since its last run. It reuses the search engine and its analyzers exactly, so a saved search returns what the same search would return on the site. Its cost scales with the number of saved searches, not with the number of listings, and its latency is the batch interval. For Tradeyard's 31 million saved searches, re-running each one every five minutes would mean about 100,000 queries per second, more than three times Veldmark's whole-group search peak of **31,000 queries per second**. Batch re-query is therefore a digest strategy, not an instant-alert strategy, at this scale.
 
@@ -135,7 +135,7 @@ Other engines offer the same capability under other names. Lucene's **monitor** 
 {id: saved-searches-and-alerts--candidate-selection-is-where-percolation-wins-or-loses}
 ### Candidate selection is where percolation wins or loses
 
-A naive percolator tests every listing against every stored query. At Veldmark's scale the design must instead select a small candidate set for each listing, and the selection key is mostly **category and place**, because almost every saved search in a listing marketplace has both. A plausible decomposition for Tradeyard:
+At Veldmark's scale, percolation must select a small candidate set of stored queries for each listing rather than test every listing against every stored query, and the selection key is mostly **category and place**, because almost every saved search in a listing marketplace has both. A plausible decomposition for Tradeyard:
 
 - **Partition** the percolator indices by brand, country and top-level category tree, so a city bike never meets a property search.
 - **Index pre-filter keys** with each stored query: the leaf and ancestor category IDs it accepts, the place IDs or coarse geo cells (for example H3 resolution 5 or 6, see [Where Is It? Location, Geocoding and Privacy](#location-and-geo)) that cover its area, and a price band. A listing then carries its own keys, and the percolate request filters candidates by those keys before testing the full queries.
@@ -148,12 +148,12 @@ For Femke's bike, the NL city-bikes partition held about **1.9 million** saved s
 
 Some marketplaces skip the engine altogether and build a **structured matcher**: saved searches are decomposed into their structured constraints and stored in an in-memory or key-value index keyed by (category, place cell); each listing looks up the keys it produces and evaluates the remaining numeric and attribute constraints in code. Tradeyard's Yardstick cron job is a primitive version of this in MySQL and PHP. The approach is fast and cheap for browse-shaped saved searches and has no coupling to the search engine's mapping. Its weakness is fidelity: it reimplements the search semantics, and every difference (how "10 km" is measured, how keywords are tokenized, how a missing attribute is treated) becomes an alert that does not match what the user sees on the site, or a listing the site shows that no alert announced.
 
-{id: saved-searches-and-alerts--the-architecture-of-alerts}
-## The Architecture of Alerts
+{id: saved-searches-and-alerts--architecture-a-saved-search-store-with-rebuildable-percolators}
+## Architecture: A Saved-Search Store with Rebuildable Percolators
 
 Figure 4 shows the target architecture Ingrid's team proposes for Common Ground.
 
-![The saved-search store is the system of record and the percolator indices are rebuildable projections. Listing events enter through a risk gate; matches flow to an orchestrator that owns deduplication, policy and a send-time availability check; channel workers send; engagement flows back to saved-search hygiene and to ranking.](listing-systems-architecture/diagrams/ae3d0d6659d5c23e.png)
+![Diagram: The saved-search store is the system of record and the percolator indices are rebuildable projections](listing-systems-architecture/posts/23-saved-searches-and-alerts/assets/images/23-saved-searches-and-alerts/fig04-saved-search-store-system-record-percolator.jpeg)
 
 **Figure 4:** *The saved-search store is the system of record and the percolator indices are rebuildable projections. Listing events enter through a risk gate; matches flow to an orchestrator that owns deduplication, policy and a send-time availability check; channel workers send; engagement flows back to saved-search hygiene and to ranking.*
 
@@ -171,20 +171,20 @@ The responsibilities:
 The matching approach is a **hybrid**: percolation per event for instant alerts, and for digests a choice between collecting the day's percolation matches (cheap, already computed) and batch re-querying (exact, reuses the main index). Ingrid's recommendation is to build digests from the percolation matches recorded in the match ledger and re-check them at send time, because that keeps one matching semantics for both channels. Batch re-query remains as a reconciliation job that samples saved searches and compares its results with the ledger, to catch matcher bugs.
 
 {id: saved-searches-and-alerts--the-bike-replayed-on-the-target-design}
-### The Bike, Replayed on the Target Design
+### The bike, replayed on the target design
 
 Figure 5 replays Femke's listing on the Common Ground design.
 
-![On the target design the bike's 312 matches become 289 instant pushes within seconds, 14 matches are deferred to digests by frequency caps, and 9 are suppressed as duplicates. The sale on Monday retracts the bike from pending digests, and the send-time check would catch it even if the retraction were missed.](listing-systems-architecture/diagrams/97adf2155e9cdc2a.png)
+![Diagram: On the target design the bike's 312 matches become 289 instant pushes within seconds, 14 matches are deferred to digests by frequency caps, and 9 are suppressed as duplicates](listing-systems-architecture/posts/23-saved-searches-and-alerts/assets/images/23-saved-searches-and-alerts/fig05-target-design-bike-s-312-matches.jpeg)
 
 **Figure 5:** *On the target design the bike's 312 matches become 289 instant pushes within seconds, 14 matches are deferred to digests by frequency caps, and 9 are suppressed as duplicates. The sale on Monday retracts the bike from pending digests, and the send-time check would catch it even if the retraction were missed.*
 
-The numbers in the figure are illustrative. Nine of the 312 matches belong to users with two overlapping saved searches (city bikes near Rotterdam, and all bikes under €300 in South Holland), and the ledger sends one notification per user per listing. Fourteen users had already received their cap of instant alerts for the evening and get the bike in the next digest. The remaining 289 pushes leave within seconds.
+The match ledger and the caps decide what each of the 312 matches becomes. Nine belong to users with two overlapping saved searches (city bikes near Rotterdam, and all bikes under €300 in South Holland), and the ledger sends one notification per user per listing. Fourteen users had already received their cap of instant alerts for the evening and get the bike in the next digest. The remaining 289 pushes leave within seconds. The numbers in the figure are illustrative.
 
 {id: saved-searches-and-alerts--fan-out-hot-listings-quotas-and-bursts}
 ## Fan-out: Hot Listings, Quotas and Bursts
 
-Most listings match a few dozen saved searches. Some match tens of thousands: a cheap two-room flat in a capital city, an underpriced popular car, a new iPhone at half price. The fan-out burst from such a listing must be absorbed by queues, not by synchronous calls, and the system must be sized for the distribution's tail, not its mean.
+Fan-out must be sized for the tail of the match distribution, not its mean. Most listings match a few dozen saved searches. Some match tens of thousands: a cheap two-room flat in a capital city, an underpriced popular car, a new iPhone at half price. Queues, not synchronous calls, must absorb the burst from such a listing.
 
 Three layers of limits shape the design.
 
@@ -192,9 +192,9 @@ Three layers of limits shape the design.
 2. **User attention.** The real limit is the user. A buyer with six saved searches in dense categories can match fifty listings on a Sunday evening. Frequency caps (for example, at most five instant alerts per user per hour, the rest batched), quiet hours in the user's time zone and collapsing of several matches into one notification ("4 new city bikes near Rotterdam") are product rules enforced in the orchestrator.
 3. **Mail reputation.** E-mail providers judge the sender, not the message. Since 1 February 2024, Gmail requires senders of more than 5,000 messages a day to its users to authenticate with SPF (Sender Policy Framework), DKIM (DomainKeys Identified Mail) and DMARC (Domain-based Message Authentication, Reporting and Conformance), to keep spam rates reported in its Postmaster Tools below 0.30%, and to support one-click unsubscribe for marketing and subscribed messages ([Google Workspace Admin Help, n.d.](https://support.google.com/a/answer/81126)). One-click unsubscribe is specified in RFC 8058 (2017) as a `List-Unsubscribe-Post: List-Unsubscribe=One-Click` header, with both unsubscribe headers covered by a valid DKIM signature ([IETF RFC 8058, 2017](https://datatracker.ietf.org/doc/html/rfc8058)). An alert e-mail that users mark as spam damages the deliverability of every e-mail the brand sends, including password resets and Safe Deal receipts. Separate sending domains or subdomains for alerts and transactional mail limit that blast radius.
 
-For scale comparison, leboncoin's engineering blog described in June 2026 moving about **12 million** transactional e-mails a day from 20 Postfix servers to PowerMTA on AWS ([leboncoin tech blog, 2026-06-03](https://medium.com/leboncoin-tech-blog/how-we-migrated-12-million-transactional-emails-per-day-from-postfix-to-powermta-104f227eb1fc)). Veldmark's 14 million alert e-mails a day are in the same range; at that volume, mail infrastructure is a system with its own engineering, whether it is bought or run.
+At Veldmark's 14 million alert e-mails a day, mail infrastructure is a system with its own engineering, whether it is bought or run. For comparison, leboncoin's engineering blog described in June 2026 moving about **12 million** transactional e-mails a day, the same range, from 20 Postfix servers to PowerMTA on AWS ([leboncoin tech blog, 2026-06-03](https://medium.com/leboncoin-tech-blog/how-we-migrated-12-million-transactional-emails-per-day-from-postfix-to-powermta-104f227eb1fc)).
 
-The ordering of a large fan-out deserves a decision too. When 40,000 people are alerted to the same flat, the order in which they are notified decides who gets the viewing. Sending in saved-search creation order privileges old accounts; sending in database order is arbitrary. My recommendation is a randomized order within each fan-out, completed within the latency target, and a policy decision, written down, on whether any paid product may change it. A paid "early alert" product is technically trivial and commercially tempting; it is also a ranking decision in disguise, with the same transparency questions [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking) raises for paid placement.
+The order of a large fan-out is a fairness decision. When 40,000 people are alerted to the same flat, the order in which they are notified decides who gets the viewing. Sending in saved-search creation order privileges old accounts; sending in database order is arbitrary. My recommendation is a randomized order within each fan-out, completed within the latency target, and a policy decision, written down, on whether any paid product may change it. A paid "early alert" product is technically trivial and commercially tempting; it is also a ranking decision in disguise, with the same transparency questions [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking) raises for paid placement.
 
 {id: saved-searches-and-alerts--channels-digests-and-relevance}
 ## Channels, Digests and Relevance
@@ -208,14 +208,14 @@ The ordering of a large fan-out deserves a decision too. When 40,000 people are 
 
 A **digest** is a scheduled message that collects matches since the last digest. Digests trade speed for attention: they suit users who want to browse matches once a day, and they absorb the overflow of frequency caps. Their two requirements follow from the bike: **retraction** of items that left the match set, and the **send-time availability check**, which re-reads each item's state from the listing read model when the digest is rendered for sending. The second is the safety net for the first; together they bring the 4% stale-item rate to near zero.
 
-**Alert relevance** is not binary. A listing that matches the filters of a saved search can still be a poor alert: an overpriced item, a listing from a seller with a poor response rate, a near-duplicate of something already sent. Ordering the items within a digest by match quality, and suppressing instant alerts for clear duplicates (the same item reposted, or the same property from a second agency, see [One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution)), are where alerts meet [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking). The simplest useful rule: within a digest, use the same ranking as the site, minus paid boosts, plus a penalty for items the user has already seen.
+**Alert relevance** is not binary. A listing that matches the filters of a saved search can still be a poor alert: an overpriced item, a listing from a seller with a poor response rate, a near-duplicate of something already sent. Ordering the items within a digest by match quality, and suppressing instant alerts for clear duplicates (the same item reposted, or the same property from a second agency, see [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution)), are where alerts meet [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking). The simplest useful rule: within a digest, use the same ranking as the site, minus paid boosts, plus a penalty for items the user has already seen.
 
 {id: saved-searches-and-alerts--alerts-as-a-liquidity-lever}
 ## Alerts as a Liquidity Lever
 
-The productscape model behind this book records the buyer's view plainly: "Alert speed is the differentiator: for in-demand local goods the first buyer to message usually wins, so minutes matter", and lists among the pains "alerts after the item is sold" and "batching or delayed indexing means the alert arrives hours late". Saving a search "converts a fleeting query into a standing demand signal".
+Alerts are a lever on liquidity in the sense of [Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics](#liquidity-and-network-effects): they shorten the time from supply appearing to demand responding. The productscape model behind this book records the buyer's view plainly: "Alert speed is the differentiator: for in-demand local goods the first buyer to message usually wins, so minutes matter", and lists among the pains "alerts after the item is sold" and "batching or delayed indexing means the alert arrives hours late". Saving a search "converts a fleeting query into a standing demand signal".
 
-That makes alerts a lever on liquidity in the sense of [Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics](#liquidity-and-network-effects): they shorten the time from supply appearing to demand responding. In Femke's case, the first contact arrived seven minutes after the listing was searchable, from an alert. On the seller side, fast first contacts are what make private sellers list again.
+The lever works on both sides of the market. In Femke's case, the first contact arrived seven minutes after the listing was searchable, from an alert. On the seller side, fast first contacts are what make private sellers list again.
 
 The metrics that measure the lever, in the order I would put them on the search platform's dashboard:
 
@@ -248,12 +248,12 @@ The design consequence is a **risk gate in front of the matcher**, owned by trus
 - A takedown event retracts the listing from pending notifications and digests like a sale, and the orchestrator can send a **follow-up safety notice** to users who were alerted to a listing later removed for fraud. That is a policy decision with legal review, not a default.
 - A short **alert hold** for new accounts' first listings (minutes, not hours) gives the automated checks of [Scams, Fakes and Account Takeovers: Fraud Prevention for Listings](#fraud-prevention) time to run before the fan-out.
 
-The trade-off is real: every minute of hold costs honest sellers the speed advantage this chapter is about. The hold should be targeted by risk and category, measured, and reviewed with the brands. A general delay would undo the latency target.
+Every minute of hold costs honest sellers the speed advantage this chapter is about. The hold should be targeted by risk and category, measured, and reviewed with the brands. A general delay would undo the latency target.
 
 {id: saved-searches-and-alerts--saved-searches-outlive-the-taxonomy}
 ## Saved Searches Outlive the Taxonomy
 
-Saved searches are long-lived user data. They are written against a category tree, an attribute dictionary, a gazetteer and sometimes drawn shapes and commute parameters, and all of those change. The listing-data brief puts the rule simply: saved searches are user data; migrate them, don't drop them.
+Saved searches outlive the reference data they are written against: a category tree, an attribute dictionary, a gazetteer and sometimes drawn shapes and commute parameters, all of which change. The listing-data brief puts the rule simply: saved searches are user data; migrate them, don't drop them.
 
 Veldmark's test is the **bikes split** that goes live on **Monday 1 November 2027**, when Tradeyard's bike listings move from 19 country leaves into the canonical bike leaves of the new group taxonomy (city, e-bikes, cargo, kids' and others; see [Category Trees That Can Change: Designing Marketplace Taxonomies](#categories-and-taxonomies)). About **1.3 million** saved searches across Tradeyard's four countries reference the old leaves and must be rewritten. The migration plan:
 
@@ -279,9 +279,7 @@ Alerts sit on a legal boundary that differs by country, so this section states p
 {id: saved-searches-and-alerts--worked-example-sizing-the-matcher-for-veldmark}
 ## Worked Example: Sizing the Matcher for Veldmark
 
-The sizing exercise, done with the volumes in the ledger, shows where the cost of alerts sits.
-
-**Event rate.** Veldmark's brands produce about 2.75 million new listings a week (Tradeyard 2.3 million, Motorvane 210,000, Hearthly 240,000), an average of about 4.5 per second. With price changes, resumptions and matched-attribute edits, the alert-relevant event rate is, say, three times that, about 14 per second on average. Sunday evenings and dealer feed runs push peaks to perhaps 60–80 events per second. These are modest rates. **Matching is not expensive because of events; it is expensive because of candidates per event.**
+**Event rate.** With the volumes in the scenario ledger, Veldmark's brands produce about 2.75 million new listings a week (Tradeyard 2.3 million, Motorvane 210,000, Hearthly 240,000), an average of about 4.5 per second. With price changes, resumptions and matched-attribute edits, the alert-relevant event rate is, say, three times that, about 14 per second on average. Sunday evenings and dealer feed runs push peaks to perhaps 60–80 events per second. These are modest rates. **Matching is not expensive because of events; it is expensive because of candidates per event.**
 
 **Candidates.** With brand-country-category partitions and place pre-filters, a typical Tradeyard listing meets tens of thousands of candidate saved searches, as the bike did (58,000). At 80 events per second and 50,000 candidates each, the percolator evaluates up to 4 million stored queries per second at peak, which is a cluster to size and test, not a footnote. Reducing candidates is the cheapest lever: dormancy pausing removes about a third; finer place pre-filters remove more.
 
@@ -365,6 +363,9 @@ What to watch over the longer term: **natural-language saved searches**. A 2023 
 8. How are users ordered within a large fan-out, and may any paid product change that order?
 9. How many saved searches are dormant, what is the retention rule, and does deletion reach the store, the ledger and the percolator?
 10. Which metric does the alerts team optimize: sends, opens or contacts?
+
+{id: saved-searches-and-alerts--from-discovery-to-trust}
+## From Discovery to Trust
 
 Alerts bring buyers back to listings that are fresh and real. Whether those listings *are* real is the work of the next part of the book, [Part V — TRUST: Keeping the Marketplace Safe](#part-5), which begins with how a marketplace organizes trust and safety as a system rather than a queue ([Trust and Safety as a Platform](#trust-and-safety-architecture)).
 

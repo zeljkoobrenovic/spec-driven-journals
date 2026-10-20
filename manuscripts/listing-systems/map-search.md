@@ -21,18 +21,18 @@
 > * **Ghost Inventory** — Cached map tiles and cluster counts keep showing sold and withdrawn listings long after search has removed them.
 > * **The Platform Mandate** — A shared search platform tuned for list-shaped horizontal classifieds, imposed on a map-first property portal, pushes the portal's teams to build a shadow geo stack.
 
-Most search chapters treat location as one filter among many: a radius around a postcode, applied before price and category. For a large share of listing marketplaces that is backwards. A family looking for a flat starts with *where*: near a school, within half an hour of work, on this side of the river. A car buyer starts with *how far I am willing to drive to see it*. A buyer of a used sofa starts with *how far I can carry it*. **Place is often the first filter and the main one**, and in real estate it is also the main way people browse.
+Part IV argues that most discovery queries are filters in disguise, and that the platform should compile a buyer's words, places and saved searches into its own structure. This chapter does that for place. Search usually treats location as one filter among many, a radius around a postcode applied before price and category; for many listing marketplaces that is backwards. A family looking for a flat starts with *where*: near a school, within half an hour of work, on this side of the river. A car buyer starts with *how far I am willing to drive to see it*. A buyer of a used sofa starts with *how far I can carry it*. **Place is often the first filter and the main one**, and in real estate it is also the main way people browse.
 
-This chapter owns **map search** (discovery where the result set is displayed on, and scoped by, a map), **isochrone search** (filtering by travel time rather than distance) and **geo clustering** (grouping many results into fewer map markers). It builds on [Where Is It? Location, Geocoding and Privacy](#location-and-geo), which owns geocoding, location precision and the geo index; that chapter decides *what point a listing has*, and this one decides *how buyers search over those points*. It sits on the engine and index design of [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture) and uses the ranking concepts of [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking). Saved map searches and their alerts are the subject of the next chapter, [Tell Me When It Appears: Saved Searches and Alerts](#saved-searches-and-alerts).
+This chapter owns **map search** (discovery where the result set is displayed on, and scoped by, a map), **isochrone search** (filtering by travel time rather than distance) and **geo clustering** (grouping many results into fewer map markers). It builds on [Where Is It? Location, Geocoding and Privacy](#location-and-geo), which owns geocoding, location precision and the geo index; that chapter decides *what point a listing has*, and this one decides *how buyers search over those points*. It sits on the engine and index design of [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture), uses the ranking concepts of [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking), and turns the canonical properties of [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution) into map pins. The next chapter, [Tell Me When It Appears: Saved Searches and Alerts](#saved-searches-and-alerts), turns saved map searches into alerts.
 
-Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)), offers the case. Its property portal Hearthly launched a draw-your-area search in France, and by 2027 it has become both the feature agencies praise and the workload the search team fears.
+Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)), offers the case. Its property portal Hearthly launched a draw-your-area search in France, and by 2027 it has become both the feature agencies praise and the workload the search team fears.
 
-{id: map-search--setting-the-scene-the-polygon-problem-at-hearthly}
-## Setting the Scene: The Polygon Problem at Hearthly
+{id: map-search--setting-the-scene-at-veldmark-the-polygon-problem-at-hearthly}
+## Setting the Scene at Veldmark: The Polygon Problem at Hearthly
 
 It is late September 2027, two weeks after Veldmark decided on **14 September** to move Tradeyard and Hearthly onto a shared search platform on Amazon OpenSearch Service by the end of 2028 (see [Search Architecture for Listings: Indices, Freshness and Scale](#search-architecture)). Julien Marchand, Hearthly's CTO, asks Ingrid Halvorsen, Veldmark's Group Chief Architect, and Tomasz Wiśniewski, who heads the group search platform, for a session about one feature before the migration is planned.
 
-Hearthly's search runs on self-managed OpenSearch on Google Kubernetes Engine. In France it serves **1.9 million** live listings, which entity resolution groups into about **1.12 million** distinct properties ([One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution)), and **0.7 million** in Spain. Julien's numbers for September 2027, local to this chapter and illustrative, are these:
+Hearthly's search runs on self-managed OpenSearch on Google Kubernetes Engine. In France it serves **1.9 million** live listings, which entity resolution groups into about **1.12 million** distinct properties ([One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution)), and **0.7 million** in Spain. Julien's numbers for September 2027, local to this chapter and illustrative, are these:
 
 - **61%** of Hearthly France search sessions open the map view at least once; on mobile, 54%.
 - **17%** of sessions use *Dessinez votre zone* ("draw your area"), the draw-your-area search launched in France in 2024.
@@ -43,7 +43,7 @@ Hearthly's search runs on self-managed OpenSearch on Google Kubernetes Engine. I
 
 Two complaints arrive with the numbers. Agencies in Lyon, among them **Agence Rhône Habitat** (fictional, 14 branches), complain that the map shows their listing as one of three stacked pins for the same flat. And product wants commute search, *"30 minutes by public transport to my office"*, for the spring 2028 season, with a routing provider's quote that prices each isochrone request.
 
-Tomasz's worry is the platform. The shared OpenSearch platform was sized and tuned for Tradeyard, which produces about 70% of group queries and is list-shaped: category, keyword, radius and price, with a ranked page of results. Hearthly is map-shaped. And Hearthly stays on Google Cloud through 2028 while the shared platform runs on AWS, so every pan and zoom could cross clouds.
+Tomasz's worry is that Hearthly's traffic does not fit the shared platform. The shared OpenSearch platform was sized and tuned for Tradeyard, which produces about 70% of group queries and is list-shaped: category, keyword, radius and price, with a ranked page of results. Hearthly is map-shaped. And Hearthly stays on Google Cloud through 2028 while the shared platform runs on AWS, so every pan and zoom could cross clouds.
 
 Ingrid frames three questions for the session. **What query shapes does the map need, and who translates the user's gesture into them? How should results be grouped, cached and ranked on a map? And what does commute search cost, in latency, money and license terms?** The rest of this chapter answers them.
 
@@ -60,9 +60,9 @@ Buyers express place in five ways. Each has a different meaning, a different ind
 | **Named area** | "Lyon 7e", "Eixample", "postcode 3011" | Term filter on a denormalized array of ancestor place IDs | Cheapest and most cacheable; boundaries are reference data |
 | **Travel time** (isochrone) | "30 minutes by tram from my office at 08:30" | A `geo_shape` filter on an isochrone polygon, or travel times computed per listing after retrieval | One routing call per search or many per page; the provider's pricing dominates |
 
-A few definitions anchor the rest of the chapter. A **bounding box** is the rectangle defined by the map's south-west and north-east corners at the current zoom. An **isochrone** is a polygon enclosing every point reachable from an origin within a time budget, for a given mode of transport and departure time. A **place ID** is a stable identifier for an administrative or named area (country, region, city, district, neighborhood). [Where Is It? Location, Geocoding and Privacy](#location-and-geo) recommends storing on each listing the ancestor place IDs, so that "all listings in Lyon 7e" is a term filter, not a polygon query. A **public point** is the coordinate a listing may expose to clients, which for private sellers is deliberately coarser than the true location (also from [Where Is It? Location, Geocoding and Privacy](#location-and-geo)).
+A **bounding box** is the rectangle defined by the map's south-west and north-east corners at the current zoom. An **isochrone** is a polygon enclosing every point reachable from an origin within a time budget, for a given mode of transport and departure time. A **place ID** is a stable identifier for an administrative or named area (country, region, city, district, neighborhood). [Where Is It? Location, Geocoding and Privacy](#location-and-geo) recommends storing on each listing the ancestor place IDs, so that "all listings in Lyon 7e" is a term filter, not a polygon query. A **public point** is the coordinate a listing may expose to clients, which for private sellers is deliberately coarser than the true location (also from [Where Is It? Location, Geocoding and Privacy](#location-and-geo)).
 
-The engine primitives are documented. In Elasticsearch, and with the same names in OpenSearch, `geo_point` stores points and `geo_shape` stores polygons, lines and rectangles. Shapes are tessellated into triangles indexed in a BKD tree, at a precision of about 1e-7 degrees, and **tessellation cost scales with the number of vertices** ([Elastic, geo-shape field type, n.d.](https://www.elastic.co/docs/reference/elasticsearch/mapping-reference/geo-shape)). The `geo_shape` query can run against `geo_point` fields with the spatial relations `intersects`, `within`, `disjoint` and `contains`. It can also reference a shape already indexed in another index by its ID, which is how a platform can store named areas or saved polygons once and refer to them by name ([Elastic, geo-shape query, n.d.](https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-geo-shape-query)).
+Elasticsearch documents these primitives, and OpenSearch uses the same names: `geo_point` stores points and `geo_shape` stores polygons, lines and rectangles. Shapes are tessellated into triangles indexed in a BKD tree, at a precision of about 1e-7 degrees, and **tessellation cost scales with the number of vertices** ([Elastic, geo-shape field type, n.d.](https://www.elastic.co/docs/reference/elasticsearch/mapping-reference/geo-shape)). The `geo_shape` query can run against `geo_point` fields with the spatial relations `intersects`, `within`, `disjoint` and `contains`. It can also reference a shape already indexed in another index by its ID, which is how a platform can store named areas or saved polygons once and refer to them by name ([Elastic, geo-shape query, n.d.](https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-geo-shape-query)).
 
 Three semantic traps sit inside the table.
 
@@ -75,7 +75,7 @@ Three semantic traps sit inside the table.
 
 The strongest public evidence on map search comes from Airbnb, which is not a classifieds site but shares the property: place-first discovery of unique inventory. In a 2024 paper, Airbnb's search team reported that its two result interfaces, a ranked list and price pins on a map, had used the same booking-probability ranking, and that list assumptions did not hold on the map. The team rebuilt the model of user attention for maps ([Haldar et al., *Learning to Rank for Maps at Airbnb*, arXiv, 2024](https://arxiv.org/abs/2407.00091v1)). Airbnb's 2025 review of its research says maps account for "roughly 80% of search interactions" and describes a map-specific NDCG (normalized discounted cumulative gain, the standard list-ranking metric), because list NDCG "fails to model user attention on maps" ([Airbnb Tech, 2025 year in review](https://airbnb.tech/infrastructure/academic-publications-airbnb-tech-2025-year-in-review/)). Airbnb's January 2026 paper on embedding-based retrieval adds that nearly all its searches carry filters, "especially map-based geographic filters", and that it uses S2 cells as a location feature ([arXiv 2601.06873, 2026](https://arxiv.org/html/2601.06873v1)).
 
-Property portals have long treated the map as central; Rightmove, for example, named "rich, map-centric results" among the three priorities of its 2014 move to Elasticsearch, in a case study Elastic published in 2025 ([Elastic, 2025](https://www.elastic.co/pdf/elastic-rightmove-partnership-success-story.pdf)); that describes a 2014 decision, and the case study does not detail Rightmove's current map stack. Applying Airbnb's ranking findings to property portals is my inference, not something the portals have published, but the mechanics carry over, and they change the architecture in five ways.
+Property portals have long treated the map as central. Rightmove named "rich, map-centric results" among the three priorities of its 2014 move to Elasticsearch, according to a case study Elastic published in 2025 ([Elastic, 2025](https://www.elastic.co/pdf/elastic-rightmove-partnership-success-story.pdf)); the case study does not detail Rightmove's current map stack. Applying Airbnb's ranking findings to property portals is my inference, not something the portals have published. The mechanics carry over, though, and the table shows how they change the architecture.
 
 | Property | List view | Map view |
 | --- | --- | --- |
@@ -86,18 +86,16 @@ Property portals have long treated the map as central; Rightmove, for example, n
 | **Attention model** | Top positions get most attention, decaying down the page | Attention follows geography and the user's area of interest, not a position |
 | **Evaluation** | NDCG, click-through by position | Map-specific metrics; contacts per map session; time to shortlist |
 
-Two consequences follow. First, **the map is a search client in its own right**, with its own latency budget and query mix. Capacity planning that counts "searches" as list queries will underestimate the map by a large factor. Second, **ranking does not disappear on the map; it moves**. When a viewport over central Lyon holds 2,400 matching flats, the system must decide which 300 to show as individual pins and which to fold into clusters, which pins carry a price label, and what the side list shows. Paid placements raise the same questions on the map that [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking) discusses for lists: a "featured" pin that is larger or always shown is a paid boost, and ranking transparency obligations apply to it.
+Two consequences follow. First, **the map is a search client in its own right**, with its own latency budget and query mix. Capacity planning that counts "searches" as list queries will underestimate the map's load. Second, **ranking does not disappear on the map; it moves**. When a viewport over central Lyon holds 2,400 matching flats, the system must decide which 300 to show as individual pins and which to fold into clusters, which pins carry a price label, and what the side list shows. Paid placements raise the same questions on the map that [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking) discusses for lists: a "featured" pin that is larger or always shown is a paid boost, and ranking transparency obligations apply to it.
 
-{id: map-search--the-architecture-of-map-search}
-## The Architecture of Map Search
+{id: map-search--architecture-a-geo-query-compiler-in-front-of-the-engine}
+## Architecture: A Geo Query Compiler in Front of the Engine
 
-The design I recommend separates the map's concerns into components with narrow interfaces. Figure 1 shows them for Hearthly's target state on the shared search platform.
+The design I recommend puts a geo query compiler between the map clients and the engine, and gives each other map concern its own component with a narrow interface. Figure 1 shows them for Hearthly's target state on the shared search platform.
 
-![The geo query compiler turns every place expression into a normalized query before any cache or engine sees it. Commute requests go through an isochrone service with its own cache, and listing events invalidate cached tiles so the map does not show ghost inventory.](listing-systems-architecture/diagrams/edd9f189831c2ca9.png)
+![Diagram: The geo query compiler turns every place expression into a normalized query before any cache or engine sees it](listing-systems-architecture/posts/22-map-search/assets/images/22-map-search/fig01-geo-query-compiler-turns-every-place.jpeg)
 
 **Figure 1:** *The geo query compiler turns every place expression into a normalized query before any cache or engine sees it. Commute requests go through an isochrone service with its own cache, and listing events invalidate cached tiles so the map does not show ghost inventory.*
-
-The responsibilities are as follows.
 
 - **Map search API** (a backend-for-frontend, see [Found by Google: Web, App and SEO Architecture for Listings](#web-and-seo-architecture)). Receives the gesture (viewport, zoom, drawn shape, chosen areas, commute parameters) and the ordinary filters. Returns pins, clusters, counts and the side list in one response shaped for the map client. It owns debouncing rules and response budgets per zoom level.
 - **Geo query compiler.** The center of the design. It normalizes every place expression into one of the engine primitives: it resolves names to place IDs, simplifies and validates polygons, snaps viewports to tiles, asks the isochrone service for commute polygons, and enforces the precision rule (match and display fields, see below). Because every query passes through it, it is also where cost limits, vertex caps and cache keys are defined.
@@ -110,11 +108,11 @@ The responsibilities are as follows.
 The rule that holds the design together: **clients send intent, not engine queries**. A mobile client that sends a raw 2,000-vertex finger trace straight to the engine, or that constructs its own bounding boxes at arbitrary precision, puts the cost and correctness of the map in the hands of every app release. Mobile releases are slow to reach all users (see [Found by Google: Web, App and SEO Architecture for Listings](#web-and-seo-architecture)), so a client-side mistake can live for a year. The compiler makes the server the owner.
 
 {id: map-search--a-pan-a-zoom-a-count}
-### A Pan, a Zoom, a Count
+### A pan, a zoom, a count
 
 Figure 2 shows the sequence for a single pan on the map, the most frequent interaction.
 
-![Snapping the viewport to tiles turns an uncacheable bounding box into a set of reusable cache entries. A pan typically reuses most of the previous tiles, so the engine sees only the edge of the movement.](listing-systems-architecture/diagrams/125c9978af1efeb8.png)
+![Diagram: Snapping the viewport to tiles turns an uncacheable bounding box into a set of reusable cache entries](listing-systems-architecture/posts/22-map-search/assets/images/22-map-search/fig02-snapping-viewport-tiles-turns-uncacheable-bounding.jpeg)
 
 **Figure 2:** *Snapping the viewport to tiles turns an uncacheable bounding box into a set of reusable cache entries. A pan typically reuses most of the previous tiles, so the engine sees only the edge of the movement.*
 
@@ -137,12 +135,12 @@ At city zoom levels a map cannot show every match as a pin. **Geo clustering** g
 
 The sources for the table are documentation, all undated: OpenSearch's `geohex_grid` aggregation groups points into H3 cells identified by their H3 index, at precision 0 to 15 ([OpenSearch, geohex grid, n.d.](https://docs.opensearch.org/latest/aggregations/bucket/geohex-grid/)). Supercluster describes itself as "a very fast geospatial point clustering library for browsers and Node", built to power clustering in Mapbox GL JS ([Mapbox, Supercluster, n.d.](https://github.com/mapbox/supercluster)). Elasticsearch's `_mvt` endpoint returns the tile layers listed above, with `grid_agg` set to `geotile` or `geohex` and up to 10,000 hits per tile ([Elastic, vector tile search API, n.d.](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-search-mvt)). A team on OpenSearch that wants vector tiles should check the current OpenSearch documentation before assuming the same endpoint exists; the aggregations underneath are available in both engines.
 
-The approaches combine. A common and sensible split is server-side aggregation at city and region zoom, client-side clustering of capped point sets at street zoom, and individual pins when the viewport holds fewer than a few hundred matches. H3 hexagons, introduced by Uber in 2018 ([Uber Engineering, 2018](https://www.uber.com/blog/h3/)), make clusters that look less like a chessboard than square tiles do, because every hexagon has six equidistant neighbors; [Where Is It? Location, Geocoding and Privacy](#location-and-geo) gives the resolution table.
+The approaches combine. A common split is server-side aggregation at city and region zoom, client-side clustering of capped point sets at street zoom, and individual pins when the viewport holds fewer than a few hundred matches. H3 hexagons, introduced by Uber in 2018 ([Uber Engineering, 2018](https://www.uber.com/blog/h3/)), make clusters that look less like a chessboard than square tiles do, because every hexagon has six equidistant neighbors; [Where Is It? Location, Geocoding and Privacy](#location-and-geo) gives the resolution table.
 
 {id: map-search--the-privacy-trap-in-aggregation}
-### The Privacy Trap in Aggregation
+### The privacy trap in aggregation
 
-There is a trap here that is easy to miss: **aggregations can leak what pins hide**. If a private seller's exact point is stored next to the public point, and the cluster centroid or the cell is computed from the exact point, a cluster of one at high zoom places a marker at the seller's front door. The same holds for heatmaps, "price per square meter" grids computed at fine resolution, and the `hits` layer of a vector tile.
+**Aggregations can leak what pins hide.** If a private seller's exact point is stored next to the public point, and the cluster centroid or the cell is computed from the exact point, a cluster of one at high zoom places a marker at the seller's front door. The same holds for heatmaps, "price per square meter" grids computed at fine resolution, and the `hits` layer of a vector tile.
 
 The rule is absolute: **every geometry returned to a client is computed from the public point field**, and the exact point field is not readable by the map search API at all. [Where Is It? Location, Geocoding and Privacy](#location-and-geo) recommends a deterministic public point per listing, either a snapped cell center or a seeded random offset. Determinism matters again here: if the offset changed with each query, averaging cluster positions over many requests would reveal the true point. For Tradeyard's private sellers the public point is the center of an H3 resolution-7 cell. For Hearthly's agency listings it follows the precision each agency chooses (P3 district, P4 street or P5 exact address), and a property listed by several agencies shows the coarsest of their choices.
 
@@ -153,7 +151,7 @@ The rule is absolute: **every geometry returned to a client is computed from the
 {id: map-search--drawn-polygons-normalize-before-you-query}
 ## Drawn Polygons: Normalize Before You Query
 
-A drawn polygon is the most expressive place query and the most dangerous one. Its cost depends on vertex count, its validity depends on the user's finger, and its meaning depends on rules the user never sees. Whether property portals implement draw search as a `geo_shape` query with the user's polygon against listing points is, for the large portals that offer draw search (Rightmove, Idealista and Zillow among them), not publicly documented; it is the natural implementation in Elasticsearch-style engines, and Hearthly uses it.
+A drawn polygon is the most expressive place query and the most dangerous one. Its cost depends on vertex count, its validity depends on the user's finger, and its meaning depends on rules the user never sees. Large portals offer draw search (Rightmove, Idealista and Zillow among them), but how they implement it is not publicly documented. The natural implementation in Elasticsearch-style engines is a `geo_shape` query with the user's polygon against listing points, and Hearthly uses it.
 
 The geo query compiler should apply six steps to every drawn shape before it reaches the engine.
 
@@ -175,7 +173,7 @@ The remaining semantic choice is **`within` versus `intersects` for points**. Fo
 {id: map-search--commute-search-isochrones-and-travel-times}
 ## Commute Search: Isochrones and Travel Times
 
-Commute search lets buyers filter or sort by travel time to a place that matters to them. For property it is one of the most requested features, because the cost of a home is partly the cost of getting to work from it. There are two documented forms in the property sector.
+Commute search lets buyers filter or sort by travel time to a place that matters to them. For property it matters because the cost of a home is partly the cost of getting to work from it. There are two documented forms in the property sector.
 
 - **Per-listing travel times to the user's places.** Rightmove's *My Places* feature calculates travel times from each property to points of interest the user saves (work, school, family), for walking, cycling, driving and public transport, using the third-party TravelTime API. The places persist in the user's session, so travel times appear on every property they view. According to TravelTime's case study (undated; the page carries a 2026 footer and is vendor marketing), Rightmove chose it partly for a **fixed annual license with unlimited requests**, because computing travel times to every place, for every mode, across millions of daily searches "would simply not be possible in a transactional model" ([TravelTime, Rightmove case study, n.d.](https://traveltime.com/case-study/rightmove-property-poi-search-traveltime)). The case study describes per-listing travel times, not isochrone filtering.
 - **Commute as a search criterion.** Zillow added commute time, affordability and nearby points of interest as natural-language search criteria in September 2024, with the example "homes within 30 minutes of downtown Dallas" ([HousingWire, 2024-09-04](https://www.housingwire.com/articles/zillow-artificial-intelligence-search/)). The article gives no technical detail, so how Zillow computes it is not public.
@@ -190,7 +188,7 @@ Behind both forms sit two patterns, which a platform will usually need together.
 The isochrone filter is what makes "show me only homes within 30 minutes" possible over the whole inventory; per-listing travel time is what makes each result card honest. A design that uses only the first shows "28 minutes" on a home that the router would say is 33 minutes away; a design that uses only the second cannot filter, only annotate a page.
 
 {id: map-search--routing-providers-are-an-architectural-constraint}
-### Routing Providers Are an Architectural Constraint
+### Routing providers are an architectural constraint
 
 **The commercial model of the routing provider is an architectural input**, as the Rightmove case shows. Three kinds of terms matter.
 
@@ -201,9 +199,9 @@ The isochrone filter is what makes "show me only homes within 30 minutes" possib
 The alternative is a self-hosted routing engine. Valhalla, an open-source engine, offers an isochrone service that "computes areas that are reachable within specified time intervals from a location", with costing models for car, bicycle, pedestrian and multimodal travel, up to four contours by default, and polygon output ([Valhalla documentation, n.d.](https://valhalla.github.io/valhalla/api/isochrone/)). Self-hosting moves the cost from license fees to engineering: road and transit data, which for public transport means importing operators' timetables (commonly published in the General Transit Feed Specification, GTFS) and keeping them current, plus capacity for the peaks. For public transport in particular, the departure time changes the answer, so the cache key must include a time bucket and the product must state the assumption ("weekdays, leaving at 08:30").
 
 {id: map-search--caching-isochrones}
-### Caching Isochrones
+### Caching isochrones
 
-Commute requests repeat more than one might think, because people commute to the same few places. The isochrone cache key I recommend is:
+Commute requests repeat often, because people commute to the same few places. The isochrone cache key I recommend is:
 
 - the origin snapped to an H3 resolution-9 cell (about 0.1 km², average edge about 200 m; [Where Is It? Location, Geocoding and Privacy](#location-and-geo)), so that two users working in the same building share an entry;
 - the mode;
@@ -215,7 +213,7 @@ Snapping the origin by up to about 200 meters changes the isochrone by a small m
 {id: map-search--neighborhood-data-and-points-of-interest}
 ## Neighborhood Data and Points of Interest
 
-A map invites context: schools, transit stops, shops, parks, noise, flood risk, and local price statistics. This context is valuable and it is the part of map search most often under-designed, because it looks like content rather than data.
+Neighborhood context (schools, transit stops, shops, parks, noise, flood risk and local price statistics) is the part of map search most often under-designed, because it looks like content rather than data.
 
 Four rules apply.
 
@@ -227,7 +225,7 @@ Four rules apply.
 {id: map-search--performance-and-caching-at-the-peak}
 ## Performance and Caching at the Peak
 
-Map traffic peaks with all search traffic. At Veldmark the group peak is about **31,000 queries per second** on Sunday evenings, 20:00–22:00 CET; that peak is Veldmark's illustration, while the documented public example of a sharp, marketing-driven peak is Rightmove's busiest minute, "8:48 pm on Wednesday, during the final ad break on prime-time TV" ([Google Cloud press release, 2021](https://www.googlecloudpresscorner.com/2021-12-09-Rightmove-Sets-up-Home-With-Google-Cloud); see [Sunday Night Peaks: Reliability, Performance and Cost](#reliability-and-scale)). Map requests are a large share of Hearthly's peak because each session sends many of them.
+Map traffic peaks with all search traffic. At Veldmark the group peak is about **31,000 queries per second** on Sunday evenings, 20:00–22:00 CET; that peak is Veldmark's illustration, while the documented public example of a sharp, marketing-driven peak is Rightmove's busiest minute, "8:48 pm on Wednesday, during the final ad break on prime-time TV" ([Google Cloud press release, 2021](https://www.googlecloudpresscorner.com/2021-12-09-Rightmove-Sets-up-Home-With-Google-Cloud); see [Sunday Evening Peaks: Reliability, Performance and Cost](#reliability-and-scale)). Map requests are about 2,700 of Hearthly's 4,200 peak requests per second, because each session sends many of them.
 
 The levers, in the order I would pull them:
 
@@ -235,7 +233,7 @@ The levers, in the order I would pull them:
 2. **Cheaper shapes**: named areas where the user's intent allows, and normalized polygons everywhere else.
 3. **Approximate counts** and separate request paths for counts, clusters and the side list.
 4. **Zoom-dependent result limits.** At region zoom, clusters only; at street zoom, a capped set of pins. Never return 10,000 points to a phone.
-5. **Degradation modes.** Under overload, serve cached clusters even if slightly stale, disable live counts, and fall back from per-listing travel times to isochrone-only. [Sunday Night Peaks: Reliability, Performance and Cost](#reliability-and-scale) owns the general model; the map needs its own entries in it.
+5. **Degradation modes.** Under overload, serve cached clusters even if slightly stale, disable live counts, and fall back from per-listing travel times to isochrone-only. [Sunday Evening Peaks: Reliability, Performance and Cost](#reliability-and-scale) owns the general model; the map needs its own entries in it.
 
 Cache invalidation is where map caching meets **Ghost Inventory**. A cluster tile cached for ten minutes shows a sold flat for ten minutes, and a pin that opens a "listing no longer available" page is the most visible kind of staleness. The listing event stream should invalidate tiles: an unpublish or price-change event identifies the tiles containing the listing's public point at each cached zoom level, and those entries are dropped. With tile keys derived from the public point, this is a direct calculation, not a search. A short time-to-live (one to two minutes) as a backstop limits the damage if an event is missed. [From Submitted to Searchable: The Publication Pipeline](#publication-pipeline) owns the unpublish propagation SLA; the tile cache is one more consumer that must meet it.
 
@@ -244,12 +242,12 @@ Hearthly's cross-cloud constraint adds one more lever. With the shared search pl
 {id: map-search--worked-example-the-lyon-apartment-on-the-map}
 ## Worked Example: The Lyon Apartment on the Map
 
-In May 2027, a three-room (T3) **68 m²** flat in Lyon 7e is listed for sale at **€389,000**, energy class (DPE, *diagnostic de performance énergétique*) **D**, by **three agencies**: one listing arrives through each of two real-estate software vendors and one through Keybridge, Veldmark's agency software. One of the agencies is Agence Rhône Habitat. Entity resolution clusters the three listings into one canonical property, and Valuo estimates it at **€372,000–€401,000** (the canonical facts are in [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)).
+In May 2027, a three-room (T3) **68 m²** flat in Lyon 7e is listed for sale at **€389,000**, energy class (DPE, *diagnostic de performance énergétique*) **D**, by **three agencies**: one listing arrives through each of two real-estate software vendors and one through Keybridge, Veldmark's agency software. One of the agencies is Agence Rhône Habitat. Entity resolution clusters the three listings into one canonical property, and Valuo estimates it at **€372,000–€401,000** (the canonical facts are in [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)).
 
 Ingrid's team uses the flat as its design walk-through: it replays a buyer's May 2027 evening session as it would run in the target design of Figure 1, with commute search included. Sophie (fictional, she/her) works near Lyon Part-Dieu station and wants a T3 under €400,000 within 30 minutes of the office by public transport.
 
 1. **Commute filter.** Sophie enters her office address and "30 minutes, public transport, weekdays at 08:30". The compiler snaps the origin to its H3 resolution-9 cell and asks the isochrone service. The key is already cached; colleagues of hers asked the same question this week. The isochrone, simplified to 58 vertices, covers most of Lyon 3e, 7e and 8e and parts of Villeurbanne.
-2. **Map view.** At city zoom the compiler intersects the isochrone with the viewport, snaps to 9 tiles, and asks for H3 grid aggregations with the filters (sale, T3, up to €400,000). Seven tiles are cache hits. The map shows 14 clusters with 412 matching properties. The count is per **canonical property**, not per listing: the engine collapses listings of the same property (the canonical property ID is in the listing document, see [One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution)), so the three agency listings of the 7e flat count once.
+2. **Map view.** At city zoom the compiler intersects the isochrone with the viewport, snaps to 9 tiles, and asks for H3 grid aggregations with the filters (sale, T3, up to €400,000). Seven tiles are cache hits. The map shows 14 clusters with 412 matching properties. The count is per **canonical property**, not per listing: the engine collapses listings of the same property (the canonical property ID is in the listing document, see [One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution)), so the three agency listings of the 7e flat count once.
 3. **Draw.** Sophie draws around the streets near the Jean-Macé metro stop. Her trace has 181 vertices; the compiler repairs a self-intersection, simplifies it to 27 vertices and intersects it with the isochrone. 63 properties remain.
 4. **Pins.** At street zoom the map shows 63 pins. The 7e flat is **one pin**, at the exact address because all three agencies chose to publish it (a clustered property shows the coarsest precision any of its agencies chose). Tapping it shows the three agency offers on one property card, with the price, the DPE class, the Valuo range and a per-listing travel time of **24 minutes**, computed by a matrix call for the pins on screen.
 5. **Save.** Sophie saves the search. The saved search stores the normalized polygon by reference, the isochrone parameters (not the polygon, which may change when timetables change) and the filters. From this point, [Tell Me When It Appears: Saved Searches and Alerts](#saved-searches-and-alerts) takes over.
@@ -260,7 +258,7 @@ The example shows the value of the compiler as one owner: the canonical-property
 
 **Figure 5:** *Entity resolution on the map: the Lyon 7e flat listed by three agencies is one pin and one property card with three offers, instead of the three stacked pins that Agence Rhône Habitat complained about.*
 
-The commute arithmetic is worth doing before the product decision. If 10% of Hearthly's 2,700 peak map requests per second come from commute sessions, and each needs a new isochrone per parameter change plus a travel-time matrix per page of pins, then even with a 70% isochrone cache hit rate the peak load is in the low hundreds of isochrones and tens of thousands of matrix elements per second. On a per-request price list, that cost rises with every marketing campaign; with a fixed license or a self-hosted engine, it is capacity planning. That arithmetic, more than any feature comparison, leads Hearthly to choose, for the spring 2028 commute launch, a fixed-license provider for travel-time matrices and a self-hosted engine for cached isochrones (an illustrative Veldmark decision).
+The commute arithmetic, not a feature comparison, decides the routing choice. If 10% of Hearthly's 2,700 peak map requests per second come from commute sessions, and each needs a new isochrone per parameter change plus a travel-time matrix per page of pins, then even with a 70% isochrone cache hit rate the peak load is in the low hundreds of isochrones and tens of thousands of matrix elements per second. On a per-request price list, that cost rises with every marketing campaign; with a fixed license or a self-hosted engine, it is capacity planning. So for the spring 2028 commute launch Hearthly chooses a fixed-license provider for travel-time matrices and a self-hosted engine for cached isochrones (an illustrative Veldmark decision).
 
 {id: map-search--trade-offs}
 ## Trade-offs
@@ -292,7 +290,7 @@ The table hides one cross-cutting cost: **every geo feature that becomes a saved
 | Commute search | Rarely useful | High value | Low; distance to dealer suffices | High value |
 | Neighborhood data | Little | Schools, transit, noise, flood, prices; legally sensitive in some markets | Dealer reviews and opening hours | Transit; employer location |
 
-Two notes on the table. For automotive, the place that matters is the seller's, not the car's, so Motorvane's map is effectively a dealer map, and its main geo query is a radius around the buyer's postcode in German (*Umkreissuche*). Motorvane stays on Elasticsearch until a 2029 review, which is fine: the geo primitives in this chapter exist in both engines. For general classifieds, the strongest geo lever is not the map but **local liquidity**: ranking by distance and recency together, and expanding the radius when local results are thin, so a buyer in a small town does not see an empty page. [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking) owns the scoring; the compiler owns the radius expansion policy.
+For automotive, the place that matters is the seller's, not the car's, so Motorvane's map is effectively a dealer map, and its main geo query is a radius around the buyer's postcode in German (*Umkreissuche*). Motorvane stays on Elasticsearch until a 2029 review, which is fine: the geo primitives in this chapter exist in both engines. For general classifieds, the strongest geo lever is not the map but **local liquidity**: ranking by distance and recency together, and expanding the radius when local results are thin, so a buyer in a small town does not see an empty page. [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking) owns the scoring; the compiler owns the radius expansion policy.
 
 {id: map-search--failure-modes}
 ## Failure Modes
@@ -318,7 +316,7 @@ The decisions I would put in front of the architecture advice forum:
 
 1. **Own the geo query compiler as part of the search platform.** Tomasz's team owns it; brands configure it (vertex caps, snapping tolerances, precision rules per category). This is the seam that keeps the shared platform from becoming **The Platform Mandate**: Hearthly gets the map-specific behavior it needs as configuration of a shared component, not as a fork.
 2. **Write the precision rule as a platform invariant.** Which field may be matched, which may be returned, per brand and seller type, enforced in the compiler and the index mapping. Lucía Ortega, the group's Data Protection Officer, signs it off; changes go through a decision record.
-3. **Treat the canonical property as the map unit for real estate.** This makes entity resolution ([One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution)) a dependency of map search. Its accuracy becomes visible to every user, so its quality metrics belong on the search platform's dashboard, not only the data team's.
+3. **Treat the canonical property as the map unit for real estate.** This makes entity resolution ([One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution)) a dependency of map search. Its accuracy becomes visible to every user, so its quality metrics belong on the search platform's dashboard, not only the data team's.
 4. **Buy or build routing on a volume forecast, not a feature list.** The commercial model, limits and display terms are decided by Ingrid with Mateus Carvalho (CTO) and finance, with a forecast of peak isochrone and matrix volumes. Re-forecast whenever a brand plans a commute-led campaign.
 5. **Budget the map separately in capacity planning.** Count map requests, not searches, and size the tile cache and engine for the Sunday-evening peak of map traffic in the map-heavy brands.
 6. **Measure the map as a product.** Contacts and saves per map session, time to shortlist, and the share of sessions that end on the map. Owned by the brands' product teams, reviewed with search.
@@ -338,6 +336,9 @@ What to watch over the long term: **conversational and natural-language search w
 8. Do commute results state mode and departure time, and do saved searches store the parameters rather than the polygon?
 9. How are map ranking and pin selection evaluated, and are list metrics being used where they do not apply?
 10. Which neighborhood layers carry legal or reputational risk in each market, and who approved them?
+
+{id: map-search--from-maps-to-standing-promises}
+## From Maps to Standing Promises
 
 The map turns place into a query. The next step is to turn a query into a standing promise: when a buyer saves the polygon around Jean-Macé, Hearthly commits to telling her within minutes when a matching flat appears. That promise, and the reverse search and fan-out machinery behind it, is the subject of [Tell Me When It Appears: Saved Searches and Alerts](#saved-searches-and-alerts).
 

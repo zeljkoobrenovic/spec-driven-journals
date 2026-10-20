@@ -5,7 +5,7 @@
 
 > **IN THIS CHAPTER, YOU WILL:** Map the recommendation surfaces of a listing marketplace, compare content-based, collaborative, session-based and embedding methods under fast inventory churn, and design a pipeline that keeps sold listings out and new ones in: candidate generation, filtering, re-ranking and policy. You will also see how to evaluate recommendations and where consent and regulation constrain them.
 
-> **WHY THE BUSINESS CARES:** Recommendations catch the buyer who did not find what they wanted, or did not know what to search for, and send them to another listing instead of another site. On detail pages and home feeds they are a significant share of contacts. When they recommend a car that was sold yesterday, they waste the buyer's time and annoy the dealer who has to answer.
+> **WHY THE BUSINESS CARES:** Recommendations catch the buyer who did not find what they wanted, or did not know what to search for, and send them to another listing instead of another site. At Motorvane, the similar-vehicles carousel starts 7% of leads in Germany. When they recommend a car that was sold yesterday, they waste the buyer's time and annoy the dealer who has to answer.
 
 > **WHY ARCHITECTS SHOULD CARE:** Most recommender designs assume a stable catalog that a nightly batch job can process. A listing marketplace replaces a large part of its catalog every week. The architecture must support real-time inserts and deletes, filtered retrieval and content-based cold start. It needs the same event feed and the same availability rules as search, or it will rebuild Ghost Inventory in a new place.
 
@@ -23,14 +23,14 @@
 
 In retail, a recommender learns that people who bought a kettle also bought a toaster, and the lesson stays useful for years because the same kettle is sold every day. In a listing marketplace there is no "same kettle". The Essen Volkswagen Golf with 48,000 kilometers exists once, for fifteen days, and then it is gone. **Every listing is a cold-start problem, and every recommendation is a bet on an item that may disappear before the buyer clicks.**
 
-That changes the architecture more than the algorithms. The published marketplace systems that work have kept their models fairly simple. What they changed is the plumbing: indices that accept inserts and deletes in real time, retrieval that filters while it searches, content and image features that let a listing take part before anyone has viewed it, and serving-time checks that keep sold items out. The failures usually come from the opposite choice, a recommender built as a nightly batch job on top of a catalog that changes by the hour.
+Churn changes a recommender's architecture more than its algorithms. The published marketplace systems that work have kept their models fairly simple. What they changed is the plumbing: indices that accept inserts and deletes in real time, retrieval that filters while it searches, content and image features that let a listing take part before anyone has viewed it, and serving-time checks that keep sold items out. The failures usually come from the opposite choice, a recommender built as a nightly batch job on top of a catalog that changes by the hour.
 
-This chapter owns **candidate generation**, **similar listings** and **cold start**. It builds on the ranking machinery of [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking), since a recommendation module is a ranked list without a query. It leaves the ML platform underneath, feature stores and model governance, to [Models in Production: ML Platforms and Use Cases](#ml-platform), and the event stream that keeps everything fresh to [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings).
+This chapter owns **candidate generation**, **similar listings** and **cold start**. Like the rest of [Part IV — DISCOVERY: Matching Intent to Inventory](#part-4), it treats discovery as a read model over the listing stream, judged on contacts. A recommendation module is a ranked list without a query, so it reuses the machinery of [Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking). Its rule that every surface reads the same availability status as search returns in [Searching by Place: Map, Polygon and Commute Search](#map-search) and [Tell Me When It Appears: Saved Searches and Alerts](#saved-searches-and-alerts). It leaves the ML platform underneath, feature stores and model governance, to [Models in Production: ML Platforms and Use Cases](#ml-platform), and the event stream that keeps everything fresh to [Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings).
 
-{id: recommendations--setting-the-scene-the-golf-that-kept-being-recommended}
-## Setting the Scene: The Golf That Kept Being Recommended
+{id: recommendations--setting-the-scene-at-veldmark-the-golf-that-kept-being-recommended}
+## Setting the Scene at Veldmark: The Golf That Kept Being Recommended
 
-Motorvane is the automotive brand of Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)). Every vehicle detail page in Germany carries a carousel of ten "similar vehicles". It was built in 2020 as a nightly Spark job. The job computes item-to-item co-views (pairs of listings viewed in the same session), keeps the top ten neighbors for each listing and writes them to a key-value store that the detail page reads. It was cheap, it raised click-through when it launched, and nobody has looked at it closely since.
+Motorvane is the automotive brand of Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)). Every vehicle detail page in Germany carries a carousel of ten "similar vehicles". It was built in 2020 as a nightly Spark job. The job computes item-to-item co-views (pairs of listings viewed in the same session), keeps the top ten neighbors for each listing and writes them to a key-value store that the detail page reads. It was cheap, it raised click-through when it launched, and nobody has looked at it closely since.
 
 In May 2027, Felix Brandt, Motorvane's CTO, asked for a review after a complaint from Autohaus Ruhrblick in Essen. The dealer's **2021 Volkswagen Golf 1.5 TSI**, 48,000 km, arrived through its dealer management system (DMS) feed on Wednesday **14 April 2027** at **€21,900**. It had a good run: **23 leads in 10 days** (raw leads; 19 after deduplicating repeat contacts from the same buyers), a price cut to **€21,400** on 22 April that triggered price-drop alerts to 1,180 watchers, and a sale at 15:10 on Thursday **29 April**. The feed's removal arrived **26 hours** after the sale, at 17:10 on Friday 30 April. Three e-mail enquiries reached the dealer in between, two of them from buyers who had arrived through the carousel. Search dropped the listing within minutes of the removal. The carousel did not: it read lists written by the nightly job, so the sold Golf stayed in other cars' carousels until the job ran again in the early hours of Saturday 1 May.
 
@@ -49,7 +49,7 @@ Priya Raman's team found that the Golf was not an exception. Their review of the
 | Recommendations from the same dealer group as the anchor car | 31% |
 | Share of live inventory that appeared in any carousel in a week | 46% |
 
-The second row explains why the carousel matters, and the third explains what is wrong with it. A co-view recommender can only recommend listings that someone has already viewed together with something else. A car that arrived this morning has no co-views, so it appears in no carousel and gets none of the 12% of traffic the carousel distributes. Dealers pay for packages with listing slots ([How Listing Marketplaces Make Money](#monetization-models)). They notice when a new car gets less attention than an old one, and they do not care that the cause is an algorithm's data requirements.
+The carousel starts 7% of leads, yet 41% of new listings get no impressions from it in their first 72 hours. A co-view recommender can only recommend listings that someone has already viewed together with something else. A car that arrived this morning has no co-views, so it appears in no carousel and gets none of the 12% of traffic the carousel distributes. Dealers pay for packages with listing slots ([How Listing Marketplaces Make Money](#monetization-models)). They notice when a new car gets less attention than an old one, and they do not care that the cause is an algorithm's data requirements.
 
 The question Felix put to Ingrid Halvorsen and Priya was practical: **how should Motorvane recommend cars that may be sold tomorrow and were not there yesterday?**
 
@@ -68,7 +68,9 @@ A **recommendation** is a list of listings, searches or sellers that the user di
 | **"Buyers also contacted"** after a contact | The contacted listing | Asynchronous | Hours | Additional contacts for the same buyer |
 | **Recommendation e-mails and push** | The user's history | Batch | Must be checked again at send time | Opens that lead to contacts |
 
-Two surfaces deserve more attention than they usually get. **Low-result fallback** is where recommendations protect liquidity most directly. A buyer searching for a cargo bike within five kilometers of a small town may get three results. Similar listings slightly farther away, or in a neighboring category, turn a dead end into a contact. Airbnb describes "augmenting search with recommendations" when searches are too narrow ([Airbnb Tech, 2025](https://airbnb.tech/infrastructure/academic-publications-airbnb-tech-2025-year-in-review/)). **Recommendation e-mails** are where Ghost Inventory is most visible: a list computed at 02:00 and opened at 09:00 can be seven hours stale. The Rotterdam city bike that Femke sold on 8 March 2027 still appeared in Tradeyard's alert digest the next morning, and the same failure is waiting in every batch-built recommendation e-mail.
+**Low-result fallback** is where recommendations protect liquidity most directly, and it gets less attention than it deserves. A buyer searching for a cargo bike within five kilometers of a small town may get three results. Similar listings slightly farther away, or in a neighboring category, turn a dead end into a contact. Airbnb describes "augmenting search with recommendations" when searches are too narrow ([Airbnb Tech, 2025](https://airbnb.tech/infrastructure/academic-publications-airbnb-tech-2025-year-in-review/)).
+
+**Recommendation e-mails** are where Ghost Inventory is most visible: a list computed at 02:00 and opened at 09:00 can be seven hours stale. The Rotterdam city bike that Femke sold on 8 March 2027 still appeared in Tradeyard's alert digest the next morning, and the same failure is waiting in every batch-built recommendation e-mail.
 
 {id: recommendations--why-listings-break-the-usual-recommender}
 ## Why Listings Break the Usual Recommender
@@ -90,10 +92,10 @@ The consequence is a design principle: **the recommender must be able to describ
 
 **Figure 2:** *A co-view recommender can only recommend listings someone has already viewed alongside another, so a new car starts invisible; describing a listing by what it is places it among similar cars from minute one.*
 
-{id: recommendations--methods-and-their-fit}
-## Methods and Their Fit
+{id: recommendations--methods-under-churn}
+## Methods Under Churn
 
-The main families of methods are well known. What matters here is how each one behaves under churn.
+For listings, what matters about each method family is how it treats a new listing and a sold one.
 
 | Method | How it works | New listing | Sold listing | Cost | Marketplace evidence |
 | --- | --- | --- | --- | --- | --- |
@@ -104,7 +106,7 @@ The main families of methods are well known. What matters here is how each one b
 | **Learned item embeddings** (item2vec-style, two-tower) | Embeddings from sessions, optionally with content towers | Works if a content tower exists | Disappears if the index is live | Medium; approximate-nearest-neighbor (ANN) serving | Airbnb listing embeddings ([Grbovic and Cheng, 2018](https://www.kdd.org/kdd2018/accepted-papers/view/real-time-personalization-using-embeddings-for-search-ranking-at-airbnb)); Vinted two-tower retrieval ([Vinted, 2023](https://vinted.engineering/2023/10/09/adopting-vespa-for-recommendation-retrieval/)) |
 | **Bandits and ensembles** | Choose among several sub-models online | Inherits | Inherits | Medium | FINN.no re-ranking proposals from several sub-models with bandits ([Eide and Zhou, 2018](https://arxiv.org/abs/1809.02130)) |
 
-The documented cases show a consistent direction.
+The documented cases, in date order:
 
 - **Airbnb, 2018.** Grbovic and Cheng's KDD paper introduced listing and user embeddings for real-time personalization in search ranking and in similar-listing recommendations. They reported that these two channels drive 99% of Airbnb's conversions ([KDD 2018](https://www.kdd.org/kdd2018/accepted-papers/view/real-time-personalization-using-embeddings-for-search-ranking-at-airbnb)). The paper, eight years old now, made "embeddings learned from sessions" the standard pattern for marketplace similarity.
 - **Zillow, 2021.** A Zillow engineering post described Word2Vec embeddings of listing descriptions for similar-home recommendations. The team chose Word2Vec after comparing GloVe, BERT and Doc2Vec, trained it on about 10 million descriptions and generated more than 2 million embeddings per model in under ten minutes in a daily Airflow job. Offline gains were largest for vacant land, where structured data is thin ([Zillow Tech Hub, 2021](https://medium.com/zillow-tech-hub/improving-recommendation-quality-by-tapping-into-listing-text-8407959b1711)). The current state of that system is not public. The lesson still holds: **text carries the listings that attributes describe poorly.**
@@ -112,14 +114,14 @@ The documented cases show a consistent direction.
 - **Vinted, 2023.** Vinted's homepage recommendations had used a read-only Faiss index that "had to be periodically rebuilt" to add new listings and drop sold ones. It also could not pre-filter, so users with restrictive filters could get no recommendations at all. Moving retrieval to Vespa, with real-time updates and pre-filtering, fixed both. In Vinted's 2023 test, exact nearest-neighbor search raised p99 latency by about 40%, from about 50 ms to about 70 ms, without enough benefit, so Vinted kept approximate search with measured recall of about 60–70% ([Vinted, 2023](https://vinted.engineering/2023/10/09/adopting-vespa-for-recommendation-retrieval/)).
 - **Airbnb, 2026.** In its embedding-based retrieval for search, Airbnb computes the listing tower as a **daily offline batch** and only the query tower online. Serving cost then no longer grows with the number of eligible listings, but listing features can be up to a day old at retrieval time ([Abdool et al., 2026](https://arxiv.org/html/2601.06873v1)). For Airbnb, whose listings persist, that is a sensible trade. For a classifieds site, whose listings are often days old, a day of staleness is a large share of a listing's life.
 
-The Vinted and Airbnb choices are not contradictory. They are the same trade-off evaluated for different inventory lifetimes, and that is the most useful way to read any published recommender design.
+Vinted and Airbnb made the same trade-off and settled it differently, because their inventory lives for different lengths of time. That is the most useful way to read any published recommender design.
 
-{id: recommendations--the-architecture-generate-filter-re-rank-apply-policy}
-## The Architecture: Generate, Filter, Re-rank, Apply Policy
+{id: recommendations--architecture-generate-filter-re-rank-apply-policy}
+## Architecture: Generate, Filter, Re-rank, Apply Policy
 
 Recommendation systems at scale share the multi-stage shape of search ranking. The difference is that there is no query to anchor relevance, so the candidate generation stage carries more of the load. For listings I use four stages with strict responsibilities.
 
-![Recommendations as four stages. Several cheap candidate sources, one of them purely content-based, feed one filter that enforces availability and eligibility at serving time. A re-ranker optimizes for contacts, and a policy caps concentration and reserves room for new listings. The listing event stream keeps both the candidate indices and the filter current.](listing-systems-architecture/diagrams/bdbd97a2513c6645.png)
+![Diagram: Recommendations as four stages](listing-systems-architecture/posts/21-recommendations/assets/images/21-recommendations/fig03-recommendations-four-stages-several-cheap-candidate.jpeg)
 
 **Figure 3:** *Recommendations as four stages. Several cheap candidate sources, one of them purely content-based, feed one filter that enforces availability and eligibility at serving time. A re-ranker optimizes for contacts, and a policy caps concentration and reserves room for new listings. The listing event stream keeps both the candidate indices and the filter current.*
 
@@ -138,14 +140,14 @@ A rule I insist on: **candidate sources return listing identifiers and scores, n
 {id: recommendations--filtering}
 ### Filtering
 
-The filter is the stage that keeps the system honest. It is deliberately boring and deliberately central: one component, applied to every candidate from every source, at serving time.
+The filter keeps sold, ineligible and untrusted listings off every surface. It is one deliberately simple component, applied to every candidate from every source at serving time.
 
 | Filter | Rule | Source of truth |
 | --- | --- | --- |
 | **Availability** | Only active, published listings; not sold, reserved, expired, paused or removed | Listing status read model fed by unpublish events ([From Submitted to Searchable: The Publication Pipeline](#publication-pipeline)) |
 | **Eligibility** | Same country and brand rules; category exclusions (no adult or regulated categories on the home feed) | Policy configuration |
 | **Trust** | No listings under fraud review or from suspended accounts | Trust platform decisions ([Trust and Safety as a Platform](#trust-and-safety-architecture)) |
-| **Duplicates** | At most one listing per canonical entity | Entity resolution clusters ([One Property, Five Listings: Duplicates and Entity Resolution](#entity-resolution)) |
+| **Duplicates** | At most one listing per canonical entity | Entity resolution clusters ([One Property, Three Listings: Duplicates and Entity Resolution](#entity-resolution)) |
 | **Already seen or contacted** | Drop listings the user has contacted; demote ones already viewed | User interaction history |
 | **Consent** | Personalized candidates only where the user has consented | Consent state on the request |
 
@@ -166,9 +168,9 @@ The **policy** then applies rules that a model should not learn:
 {id: recommendations--keeping-recommendations-alive-events-and-serving-time-checks}
 ## Keeping Recommendations Alive: Events and Serving-Time Checks
 
-Freshness has two directions, and the second matters more. A new listing should become eligible within minutes, and a sold listing should become ineligible within minutes. Both come from the listing event stream that already feeds search ([Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings)). The sequence below replays the Golf's sale in Motorvane's target design.
+Freshness runs in two directions, and removal matters more than insertion: a sold listing should become ineligible within minutes, as a new listing should become eligible. Both come from the listing event stream that already feeds search ([Every Change Is an Event: Event-Driven Listing Architecture](#event-driven-listings)). The sequence below replays the Golf's sale in Motorvane's target design.
 
-![Two defenses against Ghost Inventory. The unpublish event deletes the listing from the candidate indices, and the serving-time status check catches anything the indices still hold, such as precomputed co-view lists. Neither defense can fix a feed that reports the sale 26 hours late; that is an ingestion problem, owned by the feed contract.](listing-systems-architecture/diagrams/747db541e16c6f1c.png)
+![Diagram: Two defenses against Ghost Inventory](listing-systems-architecture/posts/21-recommendations/assets/images/21-recommendations/fig04-two-defenses-against-ghost-inventory-unpublish.jpeg)
 
 **Figure 4:** *Two defenses against Ghost Inventory. The unpublish event deletes the listing from the candidate indices, and the serving-time status check catches anything the indices still hold, such as precomputed co-view lists. Neither defense can fix a feed that reports the sale 26 hours late; that is an ingestion problem, owned by the feed contract.*
 
@@ -290,7 +292,9 @@ If the Golf were listed under the new design, it would appear in other cars' car
 | Distinctive risk | Scam listings with attractive prices recommended widely | Dealer concentration; recommending cars from competing dealers on a dealer's own page | Recommending the same property through several agencies; fair-housing exposure | Discrimination in who sees which jobs |
 | Supply-side sensitivity | Private sellers' first contacts | Dealers measure carousel leads and compare packages | Agencies watch exposure across portals | Employers pay per application in some models |
 
-The automotive cell "recommending competing dealers on a dealer's own page" is a product decision with commercial weight. Some automotive marketplaces sell "own stock only" recommendations on dealer listings as a package feature. If that is sold, it is a paid effect and belongs in the policy layer with a label, not inside the model. At Hearthly, the duplicate filter has a fairness side. When the Lyon apartment's three agency listings are clustered into one canonical property, the recommender must choose one listing to show. The rule should match the one ranking uses for the cluster ([Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking)), or agencies will see inconsistent treatment across surfaces.
+The automotive cell "recommending competing dealers on a dealer's own page" is a product decision with commercial weight. Some automotive marketplaces sell "own stock only" recommendations on dealer listings as a package feature. If that is sold, it is a paid effect and belongs in the policy layer with a label, not inside the model.
+
+At Hearthly, the duplicate filter has a fairness side. When the Lyon apartment's three agency listings are clustered into one canonical property, the recommender must choose one listing to show. The rule should match the one ranking uses for the cluster ([Ranking for Two Sides: Relevance, Freshness and Paid Visibility](#ranking)), or agencies will see inconsistent treatment across surfaces.
 
 {id: recommendations--failure-modes}
 ## Failure Modes

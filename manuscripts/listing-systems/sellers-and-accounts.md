@@ -21,11 +21,11 @@
 > * **The Acquisition Archipelago** — each acquired brand brings its own seller accounts, and the group cannot even count how many businesses it serves.
 > * **Feed Roulette** — integrations authenticated with shared passwords and no scoped grants cannot be told apart, throttled or revoked one dealer at a time.
 
-Every listing has a seller, but "seller" is a surprisingly slippery word. On a general classifieds site it usually means a person with a phone number. On a real-estate portal it means an agency branch, staffed by agents, owned by a company that may be one franchisee in a national network, publishing through a software vendor's feed. On an automotive marketplace it means a dealer group with several sites, a DMS (dealer management system) vendor that uploads the stock, a head office that negotiates the package, and salespeople who answer the leads.
+Part II has modeled the listing as an aggregate with its category, attributes, media and location; the last governed subdomain it references is the seller account, and "seller" means something different in every vertical. On a general classifieds site it usually means a person with a phone number. On a real-estate portal it means an agency branch, staffed by agents, owned by a company that may be one franchisee in a national network, publishing through a software vendor's feed. On an automotive marketplace it means a dealer group with several sites, a DMS (dealer management system) vendor that uploads the stock, a head office that negotiates the package, and salespeople who answer the leads.
 
-Most marketplaces start with the first meaning and extend it one exception at a time, until the "user" table has a company name column, a parent-user ID for branches, a "pro" flag, a VAT number field and a shared login for the DMS vendor. **The account model is the place where marketplaces most often confuse identity with commerce.** The aim of this chapter is a model that keeps those separate from the start and that still collapses gracefully to "one person selling one bike".
+Most marketplaces start with the first meaning and extend it one exception at a time, until the "user" table has a company name column, a parent-user ID for branches, a "pro" flag, a VAT number field and a shared login for the DMS vendor. **The account model is the place where marketplaces most often confuse identity with commerce.** This chapter builds a model that keeps them separate from the start and still collapses to "one person selling one bike". Later chapters build on it: entitlements attach to its accounts and branches ([Packages, Bumps and Quotas: Products, Pricing and Entitlements](#products-and-entitlements)), leads route through its branches ([From Interest to Contact: Messaging and Lead Management](#messaging-and-leads)), and partner feeds authenticate as its integration principals ([Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion)).
 
-The chapter works through the model with Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Marketplaces, One Platform to Build](#meet-veldmark)): Femke, a private seller on Tradeyard; Autohaus Ruhrblick, a dealer on Motorvane; and Agence Rhône Habitat, an agency network that lists on Hearthly and runs its business on Keybridge.
+The chapter works through the model with Veldmark, the fictional marketplace group this book follows (see [Meet Veldmark: Four Brands, One Platform to Build](#meet-veldmark)): Femke, a private seller on Tradeyard; Autohaus Ruhrblick, a dealer on Motorvane; and Agence Rhône Habitat, an agency network that lists on Hearthly and runs its business on Keybridge.
 
 {id: sellers-and-accounts--setting-the-scene-at-veldmark-fourteen-branches-three-wrong-answers}
 ## Setting the Scene at Veldmark: Fourteen Branches, Three Wrong Answers
@@ -68,7 +68,7 @@ Whether a classifieds site that only connects buyers and sellers lets consumers 
 | EU DAC7 tax reporting | Once the platform knows the consideration paid to sellers, it reports sellers above the threshold to tax authorities. Goods sellers with fewer than 30 sales and €2,000 or less in the period are excluded ([Belastingdienst](https://belastingdienst.nl/wps/wcm/connect/en/business/content/information-for-platform-operators-dac7), n.d.) | Name, address, date of birth or registration, tax identifiers, financial account, quarterly consideration and fees, per seller and Member State |
 | US INFORM Consumers Act (for comparison) | High-volume third-party sellers on marketplaces that process their payments must be verified, and larger ones disclosed ([FTC, 2023](https://www.ftc.gov/business-guidance/resources/informing-businesses-about-inform-consumers-act)) | Verified identity, bank account, tax ID, annual re-certification |
 
-Two things stand out. First, **one verified record serves many laws**, each with its own view of it. Second, the obligations grow with the business model: a pure lead-generation classifieds site sits mostly outside DAC7 and INFORM, but **launching in-platform payments brings seller reporting with it**, because the platform then knows what each seller was paid. Tradeyard Safe Deal is exactly that change ([Beyond the Contact: Payments, Shipping and Buyer Protection](#transactions-and-payments)).
+**One verified record serves many laws**, each with its own view of it. The obligations also grow with the business model: a pure lead-generation classifieds site sits mostly outside DAC7 and INFORM, but **launching in-platform payments brings seller reporting with it**, because the platform then knows what each seller was paid. Tradeyard Safe Deal is that change ([Beyond the Contact: Payments, Shipping and Buyer Protection](#transactions-and-payments)).
 
 {id: sellers-and-accounts--trader-status-as-a-governed-attribute}
 ### Trader status as a governed attribute
@@ -85,13 +85,15 @@ The fourth part is where marketplaces most often have nothing. A private seller 
 {id: sellers-and-accounts--organizations-branches-and-networks}
 ### Organizations, branches and networks
 
-An **organization** is a legal entity that sells: a company, a sole trader's business, a public body. It is the trader, signs contracts and is the subject of business verification ([Who Is on the Other Side? Identity and Verification](#identity-and-verification) covers KYB, know-your-business checks). Industry practice and the published reference models converge on a few more levels:
+An **organization** is a legal entity that sells: a company, a sole trader's business, a public body. It is the trader, signs contracts and is the subject of business verification ([Who Is on the Other Side? Identity and Verification](#identity-and-verification) covers KYB, know-your-business checks). Industry practice and published reference models add three more levels:
 
 - **Branch** (also site, location, rooftop, office): a physical place of business with its own address, opening hours, staff, inventory and lead routing. Branches usually belong to one organization.
-- **Network** (franchise, brand group, dealer group): an umbrella across *several* organizations that share a brand. A franchise network is not a legal parent of its franchisees, which is exactly why a model that makes branches children of one legal entity fails.
+- **Network** (franchise, brand group, dealer group): an umbrella across *several* organizations that share a brand. A franchise network is not a legal parent of its franchisees, which is why a model that makes branches children of one legal entity fails.
 - **Storefront** or **profile**: the public identity shown to buyers (name, logo, description, ratings). It may correspond to a branch, an organization or a network brand.
 
-Public portal interfaces show how real these levels are. Rightmove's Real Time Datafeed specification gives each software provider a **Network ID** and each agent office a **Branch ID** with sales and lettings channels; a call "will be rejected if sending a channel to which the branch does not have access", and the feed provider must be authorized for each branch ([Rightmove RTDF specification v1.4.1, 2023](https://media.rightmove.co.uk/ps/pdf/guides/adf/Rightmove_Real_Time_Datafeed_Specification.pdf)). Rightmove's commercial unit is the same branch: its average revenue per advertiser (ARPA) is defined as revenue from agency and new-homes advertisers divided by the number of advertisers, and it reported 16,385 agency branches at the end of 2025 ([Rightmove results announcement, 2026](https://plc.rightmove.co.uk/content/uploads/2026/02/Rightmove-RNS-27.02.26.pdf)). Autotrader UK reports its unit as retailer forecourts (13,942 on average in FY26) with an average revenue per retailer of £2,995 a month ([Autotrader FY26 results, 2026](https://plc.autotrader.co.uk/media/usjleen0/full-year-press-release-fy26.pdf)). The choice of commercial unit (branch, forecourt, dealer, organization) is a modeling decision that shows up in investor reporting.
+Public portal interfaces use the same levels. Rightmove's Real Time Datafeed specification gives each software provider a **Network ID** and each agent office a **Branch ID** with sales and lettings channels; a call "will be rejected if sending a channel to which the branch does not have access", and the feed provider must be authorized for each branch ([Rightmove RTDF specification v1.4.1, 2023](https://media.rightmove.co.uk/ps/pdf/guides/adf/Rightmove_Real_Time_Datafeed_Specification.pdf)).
+
+The choice of commercial unit (branch, forecourt, dealer, organization) is a modeling decision that shows up in investor reporting. Rightmove's commercial unit is the branch: its average revenue per advertiser (ARPA) is defined as revenue from agency and new-homes advertisers divided by the number of advertisers, and it reported 16,385 agency branches at the end of 2025 ([Rightmove results announcement, 2026](https://plc.rightmove.co.uk/content/uploads/2026/02/Rightmove-RNS-27.02.26.pdf)). Autotrader UK reports its unit as retailer forecourts (13,942 on average in FY26) with an average revenue per retailer of £2,995 a month ([Autotrader FY26 results, 2026](https://plc.autotrader.co.uk/media/usjleen0/full-year-press-release-fy26.pdf)).
 
 {id: sellers-and-accounts--users-roles-and-memberships}
 ### Users, roles and memberships
@@ -108,25 +110,25 @@ Two rules follow from separating users from organizations:
 
 An **integration principal** is a software client that acts on behalf of sellers: a real-estate CRM, a DMS vendor, a feed aggregator, a listing tool. It is not a user and not a seller.
 
-mobile.de's public Seller API shows the pattern clearly. Integration is through **Transfer Service Providers** (the DMS and inventory-tool vendors that upload for dealers) or through self-uploading dealers. Providers serving more than ten customers must supply contractual and technical contacts, their software, a VAT ID and customer numbers before access is granted, and every ad must name the dealer's customer number. API credentials are independent of sellers, and an API user sees only the sellers linked to it ([mobile.de Seller API](https://services.mobile.de/manual/seller-api.html), n.d.).
+mobile.de's public Seller API keeps integration principals separate from sellers. Integration is through **Transfer Service Providers** (the DMS and inventory-tool vendors that upload for dealers) or through self-uploading dealers. Providers serving more than ten customers must supply contractual and technical contacts, their software, a VAT ID and customer numbers before access is granted, and every ad must name the dealer's customer number. API credentials are independent of sellers, and an API user sees only the sellers linked to it ([mobile.de Seller API](https://services.mobile.de/manual/seller-api.html), n.d.).
 
-Modern authorization practice makes the same separation with OAuth. The OAuth 2.0 Security Best Current Practice (RFC 9700, January 2025) requires exact-match redirect URIs, recommends PKCE for all clients, forbids the implicit grant, says the resource-owner password grant "MUST NOT be used", and recommends sender-constrained, audience-restricted tokens ([IETF RFC 9700, 2025](https://www.rfc-editor.org/rfc/rfc9700.html)). In listing terms: a third-party tool acting for one agency uses the authorization-code flow, with the agency's administrator consenting to scopes; a contracted feed vendor uses client credentials with grants bound to specific organizations and branches. **A vendor serving 500 dealers is one client with 500 grants, not 500 shared passwords.**
+OAuth makes the same separation. The OAuth 2.0 Security Best Current Practice (RFC 9700, January 2025) requires exact-match redirect URIs, recommends PKCE for all clients, forbids the implicit grant, says the resource-owner password grant "MUST NOT be used", and recommends sender-constrained, audience-restricted tokens ([IETF RFC 9700, 2025](https://www.rfc-editor.org/rfc/rfc9700.html)). In listing terms: a third-party tool acting for one agency uses the authorization-code flow, with the agency's administrator consenting to scopes; a contracted feed vendor uses client credentials with grants bound to specific organizations and branches. **A vendor serving 500 dealers is one client with 500 grants, not 500 shared passwords.**
 
 ![Left, a vendor carries a tangled ring of dealers' keys; right, the vendor holds one client badge with scoped permission tickets to each dealer.](listing-systems-architecture/posts/12-sellers-and-accounts/assets/images/12-sellers-and-accounts/one-client-many-grants.jpeg)
 
 **Figure 2:** *An integration vendor serving many dealers should be one client with a scoped grant per dealer, never a collection of shared seller passwords.*
 
-{id: sellers-and-accounts--architecture-a-party-model-for-supply}
-## Architecture: A Party Model for Supply
+{id: sellers-and-accounts--architecture-the-seller-account-model}
+## Architecture: The Seller Account Model
 
-{id: sellers-and-accounts--the-model}
-### The model
+{id: sellers-and-accounts--one-entity-per-question}
+### One entity per question
 
-![Six entities answer four questions. Users act, legal entities are responsible, contracts pay, and storefronts are shown; seller accounts tie them to one brand, branches tie them to a place, and integrations get scoped grants instead of logins.](listing-systems-architecture/diagrams/d5af9c63eb79af7a.png)
+![Diagram: Eight entities, each answering one question](listing-systems-architecture/posts/12-sellers-and-accounts/assets/images/12-sellers-and-accounts/fig03-eight-entities-each-answering-one-question.jpeg)
 
-**Figure 3:** *Six entities answer four questions. Users act, legal entities are responsible, contracts pay, and storefronts are shown; seller accounts tie them to one brand, branches tie them to a place, and integrations get scoped grants instead of logins.*
+**Figure 3:** *Eight entities, each answering one question. Users act, legal entities are responsible, contracts pay, and storefronts are shown; seller accounts tie them to one brand, branches tie them to a place, networks group traders under one umbrella, and integrations get scoped grants instead of logins.*
 
-The entities and what each one owns:
+Each entity answers one question and lives in one place:
 
 | Entity | Answers | Key attributes | Lives in |
 | --- | --- | --- | --- |
@@ -139,7 +141,7 @@ The entities and what each one owns:
 | **Network** | Which brand umbrella? | Network name, member legal entities, shared display assets | Brand account service |
 | **Integration principal** | Which software acts? | Client ID, vendor legal entity, grants per seller account, branch and scope, quotas | Group integration platform ([Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion)) |
 
-For the simple cases, most of this collapses. Femke is a user with one private seller account; there is no legal entity, branch, contract or storefront beyond her public profile. A single-office agency is one legal entity, one seller account, one branch, one contract and one storefront. The model costs nothing in the simple case and is essential in the complex one.
+In the simple cases, most of this collapses. Femke is a user with one private seller account; there is no legal entity, branch, contract or storefront beyond her public profile. A single-office agency is one legal entity, one seller account, one branch, one contract and one storefront. The model costs nothing in the simple case and is essential in the complex one.
 
 {id: sellers-and-accounts--agence-rhone-habitat-modeled-correctly}
 ### Agence Rhône Habitat, modeled correctly
@@ -156,7 +158,7 @@ For the simple cases, most of this collapses. Femke is a user with one private s
 | Users | 61 e-mail logins, 7 of them former staff | Users with memberships scoped to branches; leavers' memberships ended by the agency's administrators |
 | Integration | Keybridge authenticated as the parent advertiser | Keybridge is an integration principal with grants for the 14 branches, scoped to listings and leads |
 
-The before-and-after table is Veldmark's illustration, but the forces behind it are general. A franchise network is a display and commercial concept, not a legal hierarchy, and the legal hierarchy is what the trader rules follow.
+A franchise network is a display and commercial concept, not a legal hierarchy, and the trader rules follow the legal hierarchy. The table is Veldmark's illustration, but any franchise network has the same shape.
 
 ![One brand umbrella over six separate legal entities: a parent building with nine branches and five franchisee buildings with one branch each.](listing-systems-architecture/posts/12-sellers-and-accounts/assets/images/12-sellers-and-accounts/franchise-network-not-hierarchy.jpeg)
 
@@ -167,11 +169,11 @@ The before-and-after table is Veldmark's illustration, but the forces behind it 
 
 A **seller account lifecycle** is the set of states an account passes through, from registration to erasure. It differs for private and professional accounts mainly in the onboarding gate.
 
-![A seller account's lifecycle. Professional accounts pass a verification gate before their listings go live, private accounts can be reclassified into it, and closing an account starts retention clocks rather than deleting data at once.](listing-systems-architecture/diagrams/40936d53d0401477.png)
+![Diagram: A seller account's lifecycle](listing-systems-architecture/posts/12-sellers-and-accounts/assets/images/12-sellers-and-accounts/fig05-seller-account-s-lifecycle-professional-accounts.jpeg)
 
 **Figure 5:** *A seller account's lifecycle. Professional accounts pass a verification gate before their listings go live, private accounts can be reclassified into it, and closing an account starts retention clocks rather than deleting data at once.*
 
-Three transitions deserve attention:
+Three transitions need explicit design:
 
 - **Reclassification** (Active to UnderReview to Onboarding) is how a private account becomes a trader. Its listings may stay visible during the case, but new listings beyond a volume limit wait until verification completes.
 - **Suspension** must propagate. A suspended account's listings leave search, its integration grants stop working, its scheduled bumps stop and its pending leads are handled. [From Submitted to Searchable: The Publication Pipeline](#publication-pipeline) owns unpublish propagation; the account service owns the event that triggers it. Every restriction is also a moderation decision that needs a statement of reasons under the DSA ([Trust and Safety as a Platform](#trust-and-safety-architecture)).
@@ -187,7 +189,7 @@ For private sellers, contact preferences are also safety controls. A new private
 {id: sellers-and-accounts--reputation-and-ratings}
 ### Reputation and ratings
 
-Ratings attach to something, and the choice is a modeling decision with legal weight:
+Where ratings attach is a modeling decision with legal weight:
 
 | Attach ratings to | Works for | Breaks when |
 | --- | --- | --- |
@@ -198,8 +200,8 @@ Ratings attach to something, and the choice is a modeling decision with legal we
 
 EU consumer law, as amended by the 2019 Modernisation Directive, requires a business that gives access to consumer reviews to say whether and how it checks that they come from people who actually used or bought the product (Article 7(6) of the Unfair Commercial Practices Directive, inserted by [Directive (EU) 2019/2161](https://eur-lex.europa.eu/eli/dir/2019/2161/oj)). A marketplace that shows ratings of sellers should therefore record, with each rating, what made the reviewer eligible: a completed Safe Deal transaction, a lead followed by a confirmed viewing, or nothing at all.
 
-{id: sellers-and-accounts--in-practice}
-## In Practice
+{id: sellers-and-accounts--in-practice-documented-patterns-and-three-veldmark-accounts}
+## In Practice: Documented Patterns and Three Veldmark Accounts
 
 {id: sellers-and-accounts--documented-patterns-at-real-marketplaces}
 ### Documented patterns at real marketplaces
@@ -211,7 +213,7 @@ The public record on seller models is thin; most of it is in partner API documen
 - **CarGurus** defines a paying dealer as "a dealer account with an active, paid subscription at the end of a defined period" and reported 34,409 paying dealers at the end of 2025 ([CarGurus Form 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1494259/000119312526059435/carg-20251231.htm)). The definition is a reminder that the commercial unit is an account with a contract, not a legal entity.
 - **The Bundeskartellamt's clearance on 8 October 2026** of mobile.de's acquisition of Carwow's German business noted that dealers and consumers often use several platforms in parallel and that many platforms let dealers export their data to other platforms; its main stated reasons for clearance were Carwow's new-car focus and competition from AutoScout24 ([Bundeskartellamt, 2026](https://www.bundeskartellamt.de/SharedDocs/Meldung/DE/Pressemitteilungen/2026/10_08_2026_mobile_carwow.html)). Dealers keep their data portable across marketplaces, and the integration-principal model is how a marketplace accepts that.
 
-> **INFERENCE, NOT DOCUMENTED:** None of these sources describes the internal account schema of the companies concerned. The party model in this chapter is a reference architecture derived from their public interfaces and from regulatory requirements, not a description of any company's systems.
+> **INFERENCE, NOT DOCUMENTED:** None of these sources describes the internal account schema of the companies concerned. The seller account model in this chapter is a reference architecture derived from their public interfaces and from regulatory requirements, not a description of any company's systems.
 
 {id: sellers-and-accounts--femke-a-private-seller}
 ### Femke, a private seller
@@ -223,7 +225,7 @@ Femke's Tradeyard account in March 2027 is a user record with an e-mail address,
 - Her sale of the city bike for €225 through Safe Deal "pay at pickup" counts towards DAC7. She makes four Safe Deal sales in 2027 for €610 in total, well under both thresholds, so Tradeyard collects nothing beyond what Safe Deal itself needs.
 - Her public profile shows her first name, her district (not her postcode; see [Where Is It? Location, Geocoding and Privacy](#location-and-geo)), her member-since date and ratings from completed Safe Deal transactions, each marked as verified by a transaction.
 
-Contrast her with the accounts Tradeyard's reclassification job flags. In 2026, about **18,000** Tradeyard Netherlands accounts declared as private each published more than 100 listings; a sample review by Aisha Rahman's trust team found that most were resellers (an illustrative Veldmark figure). Each of them is a trader the platform has not verified and whose buyers have been told, wrongly, that consumer rights do not apply. The reclassification process is the fix, and it is also a revenue opportunity: reclassified traders are the obvious prospects for Tradeyard's professional subscriptions.
+The accounts Tradeyard's reclassification job flags only look like Femke's. In 2026, about **18,000** Tradeyard Netherlands accounts declared as private each published more than 100 listings; a sample review by Aisha Rahman's trust team found that most were resellers (an illustrative Veldmark figure). Each of them is a trader the platform has not verified and whose buyers have been told, wrongly, that consumer rights do not apply. The reclassification process is the fix, and it is also a revenue opportunity: reclassified traders are the obvious prospects for Tradeyard's professional subscriptions.
 
 {id: sellers-and-accounts--autohaus-ruhrblick-a-dealer}
 ### Autohaus Ruhrblick, a dealer
@@ -236,7 +238,7 @@ Autohaus Ruhrblick (fictional) is one legal entity with two sites, Essen and Boc
 - **Contract:** one dealer package (Motorvane's Pro 150: 150 listing slots for €1,450 a month) covering both branches, with the slots shared between them ([Packages, Bumps and Quotas: Products, Pricing and Entitlements](#products-and-entitlements)).
 - **Integration principal:** the DMS vendor's client, with a grant for both branches, scoped to listings write and statistics read. The vendor cannot read leads, because Autohaus Ruhrblick has not consented to that scope.
 
-When the dealer lists the 2021 Volkswagen Golf on Wednesday 14 April 2027, the listing is owned by the seller account, assigned to the Essen branch, and its provenance records the DMS vendor's client as the writer. The 23 raw leads in ten days (19 after deduplicating repeat contacts from the same buyers) go to the Essen queues. The trader-information panel on the listing shows the GmbH's name, address, register number and self-certification, which is exactly what DSA Art. 30(7) asks for. When the feed's removal arrives 26 hours after the sale on 29 April, the delay is a problem for [Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion), not for the account model, but the account model is what lets Motorvane measure feed latency per integration principal and per dealer and raise it with the right vendor.
+When the dealer lists the 2021 Volkswagen Golf on Wednesday 14 April 2027, the listing is owned by the seller account, assigned to the Essen branch, and its provenance records the DMS vendor's client as the writer. The 23 raw leads in ten days (19 after deduplicating repeat contacts from the same buyers) go to the Essen queues. The trader-information panel on the listing shows the GmbH's name, address, register number and self-certification, which is what DSA Art. 30(7) asks for. When the feed's removal arrives 26 hours after the sale on 29 April, the delay is a problem for [Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion), not for the account model, but the account model is what lets Motorvane measure feed latency per integration principal and per dealer and raise it with the right vendor.
 
 {id: sellers-and-accounts--overlap-across-brands-poland}
 ### Overlap across brands: Poland
@@ -258,7 +260,7 @@ A multi-brand group has three realistic options for who-lists data:
 
 Veldmark chooses the middle option, and the Keybridge case shows why the purpose limits matter. In March 2027, Veldmark committed that **no Keybridge agency data is used by Hearthly for ranking or sales targeting**, with access controls and an annual independent review. Agence Rhône Habitat is both a Keybridge customer and a Hearthly advertiser. A shared registry of legal entities will link the two accounts, because the same company is the trader in both. The question is what that link may be used for.
 
-![Share identity and verified legal facts, not commercial data. The registry gives every brand the same verified trader record; Keybridge reaches Hearthly only as an integration principal with scoped grants, and its CRM data never crosses the dashed line.](listing-systems-architecture/diagrams/1d4adc86ec0603d1.png)
+![Diagram: Share identity and verified legal facts, not commercial data](listing-systems-architecture/posts/12-sellers-and-accounts/assets/images/12-sellers-and-accounts/fig06-share-identity-verified-legal-facts-not.jpeg)
 
 **Figure 6:** *Share identity and verified legal facts, not commercial data. The registry gives every brand the same verified trader record; Keybridge reaches Hearthly only as an integration principal with scoped grants, and its CRM data never crosses the dashed line.*
 
@@ -335,7 +337,7 @@ Real estate is the vertical where the hierarchy is deepest and the individual ag
 {id: sellers-and-accounts--the-chief-architect-s-view}
 ## The Chief Architect's View
 
-The seller account is a supporting domain in the language of [Bounded Contexts for Marketplaces: Where One Listing Becomes Many Models](#bounded-contexts): no buyer chooses a marketplace for its account model. But almost every core domain depends on it, which makes it a place where a group should standardize early, before the product catalog, entitlements and messaging copy their own versions.
+The seller account is a supporting domain in the language of [Bounded Contexts for Marketplaces: Where One Listing Becomes Many Models](#bounded-contexts): no buyer chooses a marketplace for its account model. But almost every core domain depends on it, so a group should standardize it early, before the product catalog, entitlements and messaging copy their own versions.
 
 **Decision 1: one supply-side model for all brands.** Users, legal entities, seller accounts, branches, networks, contracts, storefronts and integration principals, with the meanings in this chapter. Each brand implements it in its own account service on its own timeline, but the identifiers and events (SellerAccountCreated, TraderStatusChanged, BranchAdded, MembershipEnded, AccountSuspended) follow one group contract. The product catalog and entitlement service due in Q2 2028 attaches entitlements to seller accounts and branches as defined here; without that, [Packages, Bumps and Quotas: Products, Pricing and Entitlements](#products-and-entitlements) would be building on four different meanings of "customer".
 
@@ -362,6 +364,9 @@ The condition under which this is too much: a single-brand, C2C-only marketplace
 8. Across our brands, can we count how many businesses we serve, and who is allowed to ask that question?
 9. If we launched in-platform payments in a new country tomorrow, could we produce the seller data that tax reporting would require?
 10. Which other services hold their own copy of the account hierarchy, and which of them would disagree with the account service today?
+
+{id: sellers-and-accounts--from-the-listing-to-its-supply}
+## From the Listing to Its Supply
 
 With the listing, its taxonomy, attributes, media, location and seller modeled, Part II's account of the thing being sold is complete. [Part III — SUPPLY: Getting Inventory In](#part-3) turns to how that supply actually arrives, through forms, APIs and bulk feeds from thousands of partners, starting with [Many Doors In: Forms, APIs and Bulk Feeds](#listing-ingestion).
 
