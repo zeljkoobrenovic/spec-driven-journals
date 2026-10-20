@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: AI Across the Listing Lifecycle
@@ -71,3 +71,4 @@ Group and brand Chief Architects, CPOs and CTOs, heads of data and ML, search an
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: restored [[long-term-evolution]] link (consistency item 10); Sources reformatted to house style; PL/PT rollout tied to evaluation sets (taxonomy service already live there); gray zone spelling; Digital Omnibus dates and OLX Auto Description figures re-verified. *(AI-mediated session)*
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Cross-chapter consistency sweep: six vague headings renamed (Concepts, Components, The design, One listing, Cost, Evaluation); the EU AI Act section moved before Trade-offs to restore the shared closing order; no body text changed. *(AI-mediated session)*

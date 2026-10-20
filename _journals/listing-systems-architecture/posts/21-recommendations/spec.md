@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Recommendations for Inventory That Disappears
@@ -70,3 +70,4 @@ Chief architects, recommendation and ML leads, discovery product owners and data
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: Golf leads labeled raw (23) vs deduplicated (19), sale time added, DSA Arts. 27/38 checked against the Official Journal (Art. 27 small-enterprise exemption noted), Zillow source linked to the 2021 post, old evidence flagged, acronyms expanded. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Cross-chapter consistency sweep: 1 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*

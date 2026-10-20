@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: From Interest to Contact: Messaging and Lead Management
@@ -76,3 +76,4 @@ Article only for now.
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: Golf lead replay aligned with the editor's 23 raw / 19 merged leads (four repeat contacts), OLX chat-image claim matched to the 2026 source, EECC citation verified against the Official Journal and relinked to EUR-Lex. *(AI-mediated session)*
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Cross-chapter consistency sweep: 3 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*

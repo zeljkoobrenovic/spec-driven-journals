@@ -1,15 +1,17 @@
 ---
 name: sharpen-post
-description: Make one post less vague and easier to follow. Works iteratively on a whole index.md (or modality file): first the section-heading outline, then the paragraph order within each section, then the first sentence of every paragraph, then the sentences themselves. Writes in a plain, simple style, cuts needless words, and prefers deleting vague or confusing content to adding new content. May also tighten the post's spec.md when it is vague or out of step with the sharpened post. Use when asked to sharpen, tighten, de-vague, simplify, clarify or cut down a post in _journals/*/posts/*/.
+description: Make one post less vague and easier to follow. Works iteratively on a whole index.md (or modality file): first the opening, so it says why the post belongs in its book or journal, then the section-heading outline, then the paragraph order within each section, then the first sentence of every paragraph, then the sentences themselves. Writes in a plain, simple style, cuts needless words, and prefers deleting vague or confusing content to adding new content. May also tighten the post's spec.md when it is vague or out of step with the sharpened post. Use when asked to sharpen, tighten, de-vague, simplify, clarify or cut down a post in _journals/*/posts/*/.
 ---
 
 # Sharpen Post
 
 ## Goal
 
-Make one post **sharp**: a reader who reads only the section headings knows
-what the post covers and in what order. A reader who reads only the first
-sentence of each paragraph gets a faithful summary. Every remaining sentence
+Make one post **sharp**. A reader who reads only the opening knows why the
+post belongs in its book or journal, not just what it covers. A reader who
+reads only the section headings knows what the post covers and in what order.
+A reader who reads only the first sentence of each paragraph gets a faithful
+summary. Every remaining sentence
 says something specific in plain words.
 
 This is a **cutting pass**. Prefer removing to adding. When a passage is vague
@@ -128,8 +130,57 @@ are counted as part of this pass.
 3. In one sentence, write down what the post argues. If you cannot, find that
    sentence first: the spec's Intent or the post's KEY POINTS usually hold it.
    Every later cut is judged against it.
+4. If the post belongs to a book-shaped journal, write down in one sentence
+   why the book needs this chapter. A book-shaped journal has parts, part
+   intros, or an introduction that states an argument. Use these sources:
+   - the journal's `config.yaml` description;
+   - the introduction or opening guide;
+   - this part's intro;
+   - the book's PLAN or README, if one exists;
+   - the hand-offs in the previous and next posts.
 
-### 1. Section flow (headings only)
+### 1. Place in the book (the opening)
+
+A reader who reads only the opening elements should see why this chapter is
+in the book, not just what it is about. The opening elements are the excerpt,
+any fixed callouts or KEY POINTS, and the lead paragraphs before the first
+section. A post that could sit unchanged in any blog has lost its place in
+the book.
+
+Check that the opening answers three questions, in plain words:
+
+1. **Which question of the book does this chapter answer?** Tie it to the
+   book's argument, or to the problem its part addresses. A sentence such as
+   "Search is important for marketplaces" is not enough. A sentence such as
+   "A marketplace's liquidity is wasted if buyers cannot find the supply Part
+   III brought in; this chapter is where finding begins" is.
+2. **What does it build on?** Name the earlier chapter, concept or running
+   example the reader already has. Use a `[[link]]` where it helps.
+3. **What depends on it?** Name what later chapters, decisions or the running
+   example will use from this one.
+
+How to make the opening answer them:
+
+- **Strengthen what is there.** Make the lead paragraphs or the "why it
+  matters" callout carry the answers. Usually one or two sentences are
+  enough. Do not add a new section or a new callout type.
+- **Prefer replacing a generic opener to adding text.** Many leads start with
+  a sentence true of any system ("Search is at the heart of every
+  marketplace"). Replace it with the book-specific reason.
+- **Use the book's own vocabulary.** Use the terms of its argument, its named
+  failure patterns and its running example. Do not invent a new framing.
+- **Keep it short.** The opening states the chapter's place in the book; it
+  does not retell the previous chapter.
+- **Standalone journals need less.** For a journal of standalone records (ADRs,
+  principles, essays), the opening should still say why the record matters to
+  that journal's purpose and name its closest related records. It does not
+  need a part-level framing.
+
+Do not move the chapter's place in the book. If the post's role and its
+neighbors' hand-offs disagree, align the opening with the plan and report the
+mismatch.
+
+### 2. Section flow (headings only)
 
 Run `--headings` and read the outline as if it were the whole post.
 
@@ -150,7 +201,7 @@ Run `--headings` and read the outline as if it were the whole post.
 Re-run `--headings`. Repeat until the outline alone gives the reader the
 post's shape.
 
-### 2. Paragraph order (per section)
+### 3. Paragraph order (per section)
 
 For each section, read its paragraphs in order.
 
@@ -165,7 +216,7 @@ For each section, read its paragraphs in order.
   will…", "As discussed above…" or "In summary…". Fixed preface or hand-off
   elements required by the house shape are the exception.
 
-### 3. First sentences (the skim path)
+### 4. First sentences (the skim path)
 
 Run the full skeleton and read the `P1, P2, …` lines alone, top to bottom.
 
@@ -176,13 +227,13 @@ Run the full skeleton and read the `P1, P2, …` lines alone, top to bottom.
   sentence, restructure the paragraph so that point comes first, then the
   support.
 - **The P-lines together summarize the post.** Where one does not follow from
-  the one before it, the problem is the paragraph order (step 2), not the
+  the one before it, the problem is the paragraph order (step 3), not the
   wording.
 - **Keep narrative paragraphs as they are.** Scenes, case narratives and quoted
   dialogue may open with action, but the paragraph that interprets a scene
   states its point first.
 
-### 4. Sentences (vagueness and needless words)
+### 5. Sentences (vagueness and needless words)
 
 Go through each paragraph. Work on a block with `**bold**` lead-in phrases as
 you would on a paragraph.
@@ -235,9 +286,9 @@ Common vague patterns:
 - Use the same term for the same thing throughout. Do not switch between
   synonyms for variety.
 
-### 5. Iterate, then verify
+### 6. Iterate, then verify
 
-1. Re-run steps 1–3 on the edited post. Edits often expose a new ordering or
+1. Re-run steps 1–4 on the edited post. Edits often expose a new ordering or
    topic-sentence problem. Repeat until a full round produces no structural
    change. Stop after **three rounds**.
 2. Run `--stats` and compare it with the baseline. Use the word count as a
@@ -281,6 +332,8 @@ Keep the report short:
   `factcheck.py` reported, with a one-line reason, so the author can restore
   it;
 - plain-text references in other pages to a heading you renamed;
+- how the opening now states the chapter's place in the book, or why it
+  already did;
 - anything left vague because fixing it needs facts the post does not have.
   These are questions for the author.
 
@@ -298,6 +351,9 @@ Keep the report short:
   their rhythm.
 - Leaving heading-anchor links, `[[…]]` links or figure numbering broken.
 - Cutting facts to hit a word-count target.
+- An opening that explains the topic but never says why this book needs the
+  chapter, or a generic first sentence that would fit any blog post on the
+  subject.
 - Editing a quotation, or wording that mirrors another page's title, excerpt or
   glossary entry.
 - Finishing without running `factcheck.py`, or with `LOST` lines left

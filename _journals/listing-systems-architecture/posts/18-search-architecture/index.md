@@ -35,7 +35,7 @@ This chapter is about the **structure** of that layer: what goes into the search
 
 The argument rests on one principle from [[listing-data-management]]: **the search index is a read model**. Everything else in this chapter, from document versioning to reindexing to capacity planning, follows from treating it as a projection that can be thrown away and rebuilt, and from refusing to let it become the only place where something is true.
 
-## Setting the Scene at Veldmark: Three Engines and a Sunday Night
+## Setting the Scene at Veldmark: Three Engines and a Sunday Evening
 
 Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]), entered 2027 with three search engines. Tradeyard, the general-classifieds brand, ran **Solr 8**, self-hosted next to its PHP monolith Yardstick, for the Netherlands, Belgium and Portugal, and **Elasticsearch 7** for Poland, a leftover from a 2016 rebuild of the Polish site. Motorvane, the automotive brand, ran **Elasticsearch 8** on Elastic Cloud. Hearthly, the real-estate portal, ran **OpenSearch** that it managed itself on Google Kubernetes Engine. Between them they served 17.25 million live listings, an average of about **9,000 queries per second** and a peak of about **31,000** on Sunday evenings, with Tradeyard carrying about 70% of the load.
 
@@ -428,11 +428,13 @@ What to watch over time: freshness percentiles per market and operation, the sha
 9. How are new attribute keys promoted to typed index fields, and who approves it?
 10. What would we need to see to reopen the engine decision, and how would we test a candidate without changing product code?
 
+## From Engine to Intent
+
 A search layer that is fast, fresh and rebuildable still has to understand what people type into it. A buyer in Utrecht who types "ebike" and one who types "elektrische fiets" mean the same thing, and neither has told the engine which category, which attributes or which language they mean. That translation from words to structured queries is the subject of the next chapter, [[query-understanding]].
 
 ## Sources and Evidence
 
-**Company engineering and investor sources**
+### Company engineering and investor sources
 
 - [Vinted Search Scaling Chapter 8: Goodbye Elasticsearch, Hello Vespa Search Engine](https://vinted.engineering/2024/09/05/goodbye-elasticsearch-hello-vespa/), Vinted Engineering, 2024 — engine history, topology, freshness, update rates, analyzer migration and the search contract.
 - [Vinted Search Scaling Chapter 9: Billion-Scale Search](https://vinted.engineering/2025/01/10/1-billion-items-in-search/), Vinted Engineering, 2025 — growth to one billion searchable items.
@@ -450,7 +452,7 @@ A search layer that is fast, fresh and rebuildable still has to understand what 
 - [Elastic is the key to helping Rightmove customers find and buy their dream home](https://www.elastic.co/pdf/elastic-rightmove-partnership-success-story.pdf), Elastic (vendor case study), 2025 — Rightmove's engine and alerts.
 - [Homegate's fast and modern search experience](https://www.elastic.co/blog/homegate-search-experience), Elastic blog, 2024 — Homegate's engine and alerts.
 
-**Standards, regulation and documentation**
+### Standards, regulation and documentation
 
 - [Aliases](https://www.elastic.co/docs/manage-data/data-store/aliases), Elastic documentation, n.d. — atomic alias swaps.
 - [Index modules](https://www.elastic.co/docs/reference/elasticsearch/index-settings/index-modules), Elastic documentation, n.d. — shard count fixed at creation; refresh settings.
@@ -464,7 +466,7 @@ A search layer that is fast, fresh and rebuildable still has to understand what 
 - [Elasticsearch is Open Source. Again!](https://www.elastic.co/blog/elasticsearch-is-open-source-again), Elastic (S. Banon), 2024 — license history and the AGPL option.
 - [Linux Foundation Announces OpenSearch Software Foundation](https://linuxfoundation.org/press/linux-foundation-announces-opensearch-software-foundation-to-foster-open-collaboration-in-search-and-analytics), Linux Foundation, 2024 — OpenSearch governance.
 
-**Research and practitioner sources**
+### Research and practitioner sources
 
 - [Applying Embedding-Based Retrieval to Airbnb Search](https://arxiv.org/html/2601.06873v1), Abdool et al. (Airbnb), 2026 — Lucene-based retrieval with an IVF filter.
 

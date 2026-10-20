@@ -454,7 +454,7 @@ Fraud prevention keeps coming back to one question: who is on the other side? A 
 
 ## Sources and Evidence
 
-**Company engineering and investor sources**
+### Company engineering and investor sources
 
 - [We fight online fraud with the power of AI](https://www.olxgroup.com/?p=4590) — OLX Group, 2026. Chat image fraud about 30% of Polish fraud cases; QR-code phishing detection with 80% precision; blocking before delivery.
 - [OLX blocks scammers using advanced algorithms](https://www.itweb.co.za/article/olx-blocks-scammers-using-advanced-algorithms/nWJadvb8APOMbjO1) — ITWeb, 2018. Warn-in-context on payment keywords and off-platform moves (OLX South Africa).
@@ -466,13 +466,13 @@ Fraud prevention keeps coming back to one question: who is on the other side? A 
 - [Cracking down on organized crime behind scam centers](https://about.fb.com/news/2024/11/cracking-down-organized-crime-scam-centers/) — Meta, 2024. Scale of organized scam operations.
 - [Fraud prevention rules (Radar)](https://docs.stripe.com/radar/rules) — Stripe, n.d. (current documentation). Backtesting, shadow mode, rollout, audit trail, rule metrics.
 
-**Standards, regulation and documentation**
+### Standards, regulation and documentation
 
 - [PDQ perceptual hash](https://github.com/facebook/ThreatExchange/tree/main/pdq) — Meta ThreatExchange, n.d. Match thresholds, quality score, invariance limits.
 - [Are you VoP to go? Prepare for Verification of Payee by October 2025](https://www.mccannfitzgerald.com/knowledge/financial-services-regulation/are-you-vop-to-go-prepare-for-verification-of-payee-by-october-2025) — McCann FitzGerald, 2025. Verification of Payee obligation for euro-area payment service providers from 9 October 2025.
 - [Fraudulent advertising and account integrity: expert insights on best practice](https://www.ofcom.org.uk/siteassets/resources/documents/research-and-data/online-advertising/fraudulent-advertising-and-account-integrity_expert-insights-on-best-practice.pdf) — Integrity Institute for Ofcom, 2026. Signals, friction between account creation and reach, enforcement ladder.
 
-**Research and practitioner sources**
+### Research and practitioner sources
 
 - [Annual Fraud Report 2026](https://www.ukfinance.org.uk/system/files/2026-06/UK%20Finance%20Fraud%20Report%202026.pdf) — UK Finance, 2026. Purchase-scam cases, losses, share of APP fraud, reimbursement, policy asks.
 - [Scam ads slipping through the net too easily on second-hand marketplaces](https://www.which.co.uk/policy-and-insight/article/scam-ads-slipping-through-the-net-too-easily-on-second-hand-marketplaces-which-warns-aqyF66m1TlU1) — Which?, 2024. Undercover test: edited scam ads passing review; evasion by changing devices and identities.

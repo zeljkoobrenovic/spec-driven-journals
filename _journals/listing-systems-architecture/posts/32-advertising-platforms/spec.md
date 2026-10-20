@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Selling Attention: Display, Native and Retail-Media Advertising
@@ -69,3 +69,4 @@ Article only for now.
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: Hand-off restored to [[part-7]], VLOP statement sourced to the Commission's list (updated 15 Oct 2026), Omnibus and P2B citations verified and relinked to EUR-Lex. *(AI-mediated session)*
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Cross-chapter consistency sweep: 4 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*

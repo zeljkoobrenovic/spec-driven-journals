@@ -416,6 +416,8 @@ At Veldmark, the three verticals share the taxonomy *service* and its release pr
 9. How do country trees relate to each other, and can a shared model or ad segment address "e-bikes" in every market?
 10. What share of new listings lands in "Other", and who acts when it rises?
 
+## From Categories to Attributes
+
 Categories decide which schema applies; they do not define the schemas. The battery capacity that e-bikes now require, the energy class on every French apartment and the 31 attributes a VIN decode fills for the Essen Golf all need a dictionary, types, units, enumerations and governance of their own. [[attribute-schemas]] designs them.
 
 ## Sources and Evidence

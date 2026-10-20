@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Tell Me When It Appears: Saved Searches and Alerts
@@ -69,3 +69,4 @@ Article only for now.
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: hand-off to [[part-5]], Tradeyard transition aligned with the Yardstick exit plan, baseline labels fixed, leboncoin source linked to the post, acronyms expanded, ePrivacy Art. 13 verified. *(AI-mediated session)*
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Cross-chapter consistency sweep: 3 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*

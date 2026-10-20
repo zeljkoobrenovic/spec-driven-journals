@@ -328,7 +328,7 @@ No classifieds company has published its full listing lifecycle or event model. 
 
 The Auto Trader case deserves a moment. In its results for the year to March 2026, Auto Trader describes pausing the automatic rollout of Deal Builder, holding listening sessions and introducing "request a reservation" after retailer pushback ([Auto Trader Group plc, FY26 results](https://plc.autotrader.co.uk/media/usjleen0/full-year-press-release-fy26.pdf), 2026). Trade press reported that the original flow let consumers place a paid reservation and that the revised one leaves the reservation to the retailer's discretion ([Car Dealer Magazine](https://cardealermagazine.co.uk/auto-trader-tweaks-deal-builder-product-making-reservations-optional/320706), 2025). The architectural lesson, which is my interpretation rather than Auto Trader's statement, is that **who may trigger a transition is part of the business model**. In a dealer-supplied vertical, a "reserved" state that the platform sets on the dealer's inventory is a change to the dealer's sales process. Transition permissions belong in the lifecycle specification, per vertical and per seller type, and should be configurable without code.
 
-### The Rotterdam bike, transition by transition
+### The Rotterdam city bike, transition by transition
 
 Here is Femke's bike under the Common Ground lifecycle that Veldmark adopted in 2027, replayed against the March events. The times and version numbers match the event log in [[event-driven-listings]]; versions 4 to 7, Femke's Sunday-night edits and a photo reorder, are omitted.
 
@@ -424,6 +424,8 @@ At Veldmark the table translates into configuration, not forks. Tradeyard, Motor
 8. Where is price history stored, and can the platform show a trader's prior price for any reduction it displays?
 9. What is the retention schedule per data class for ended listings, and which event tells every copy to purge?
 10. How are feed-specific states, such as RESO statuses or an agency software's codes, mapped to the platform's lifecycle, and who owns that mapping?
+
+## From Aggregate to Category
 
 The aggregate holds a category ID and a taxonomy version, and treats both as given. They are not. The category decides which attributes are required, which moderation rules apply, what a listing costs and where it appears, and the tree that defines categories has to change while millions of listings sit in it. [[categories-and-taxonomies]] designs that tree.
 

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: What Did They Mean? Query Understanding and Autocomplete
@@ -70,3 +70,4 @@ Search and ML leads, principal engineers and chief architects of classifieds, re
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: NL bike figures aligned with the editor line (380k bikes, 214k city bikes), pre-split leaves corrected, Rightmove and Vinted claims tightened to source wording, Scout24 sources made specific, old evidence flagged, HNSW/CLIP expanded, AI-gateway links added. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Cross-chapter consistency sweep: 4 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*

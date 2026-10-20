@@ -378,6 +378,8 @@ What to watch: coverage of filterable attributes per category and country; the s
 9. What did the last backfill cost in compute and reviewer time, and how many are planned this quarter?
 10. Which enrichers are shared across brands, which are local, and is that line drawn by domain meaning or by history?
 
+## From Clean Records to Duplicates
+
 A normalized, enriched listing can now be compared with other listings, which is what makes the next problem visible: several of them describe the same flat or the same car. [[entity-resolution]] takes the canonical addresses, decoded VINs and image hashes produced here and asks when several listings are one thing, and what each side of the market should see when they are.
 
 ## Sources and Evidence

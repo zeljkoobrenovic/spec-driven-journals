@@ -51,7 +51,7 @@ By **November 2027**, Noor Hassan, Veldmark's Group Chief Product Officer, has s
 
 Aisha Rahman, Group Head of Trust & Safety, asks what happens when fraudsters use the listing assistant. Lucía Ortega, the Group Data Protection Officer and regulatory lead, asks which of the six fall under the EU AI Act. Tomasz Wiśniewski, head of the group search platform, asks who pays for an external assistant's queries at the Sunday-evening peak of 31,000 queries per second. Ingrid Halvorsen, the Group Chief Architect, asks a fourth question of each proposal: **what structured thing does the model produce, and what checks it?** The answer to that question decides the architecture, and it turns out to be the same for all six.
 
-## Concepts
+## Concepts: Generative AI, Agents and Autonomy
 
 - **Generative AI** — models that produce text, images, structured output or actions from prompts, typically large language models (LLMs) and vision-language models. Predictive models that score or classify are covered in [[ml-platform]]; generative models reuse that platform for registration, logging and monitoring.
 - **AI listing assistant** — a feature in the insertion flow that proposes listing content (category, attributes, title, description, price) from photos, voice or short text, for the seller to accept, edit or reject.
@@ -95,7 +95,7 @@ Three patterns run through the table. **Every implementation keeps the structure
 
 ## Architecture: The Control Layer Between Models and Listings
 
-### Components
+### Four components the ML platform lacks
 
 An AI feature in a listing system has four parts that the predictive-ML platform does not already provide, plus the guardrails that sit around them.
 
@@ -150,7 +150,7 @@ The documented trajectory matches the table: leboncoin moved guardrails from pro
 
 ## Veldmark Worked Example: The Photo-to-Listing Assistant
 
-### The design
+### Five steps before the seller confirms
 
 Tradeyard's assistant was approved for a pilot on **Monday 15 November 2027**: Tradeyard Netherlands, iOS first, goods categories only, excluding vehicles, property, jobs and services, for 5% of private sellers. The exclusions follow the documented sequence at eBay and Kleinanzeigen and Tradeyard's own constraint: vehicles need decoded vehicle data, not photos, and property needs addresses and mandatory disclosures.
 
@@ -194,7 +194,7 @@ sequenceDiagram
 
 **Figure 3:** *The language model ranks categories from an allowed list, fills a schema it is given, and writes prose last; the price comes from a registered predictive model and the photos are screened before any generation starts.*
 
-### One listing
+### One listing: a Utrecht cargo bike
 
 On **Monday 6 December 2027 at 19:05 CET**, a private seller in Utrecht photographs his electric cargo bike four times. The trust check finds no hash matches. The assistant proposes **Bikes › Cargo**, one of the canonical leaves of the bikes split released on 1 November 2027, with a confidence of 0.94. For the schema it fills seven of nine attributes: brand (read from the frame decal), electric assist (yes), box position (front), number of wheels (two), color, frame size and condition (good). It returns `unknown` for battery capacity and model year, which the photos do not show; the seller adds the year. The price-hint model proposes **€1,450–€1,700** for the attributes and Utrecht; the seller sets **€1,600**. He publishes at 19:07, **2 minutes 10 seconds** after the first photo, and the listing enters the standard moderation pipeline like any other.
 
@@ -291,7 +291,7 @@ OLX's chat-image model (2026) shows a well-scoped gate-tier use: one fraud vecto
 
 ## Cost and Evaluation
 
-### Cost
+### Cost per outcome
 
 Generative AI cost is per call, which makes it visible in a way predictive ML rarely is. The public numbers are few and old by model-pricing standards.
 
@@ -303,7 +303,7 @@ Generative AI cost is per call, which makes it visible in a way predictive ML ra
 
 The lesson is not the figures, which fall as model prices fall, but the unit: **cost per outcome**, such as cost per published listing, per successful search or per qualified lead. The AI gateway should report it per feature and per brand, with a budget and an alert, so that a prompt change that triples tokens is noticed the same day.
 
-### Evaluation
+### Evaluation before and after launch
 
 | Stage | What it checks | Listing example |
 | --- | --- | --- |
@@ -314,6 +314,24 @@ The lesson is not the figures, which fall as model prices fall, but the unit: **
 | Sampled production audit | Drift in real traffic | Weekly human review of assisted listings and conversational queries |
 
 Faithfulness, whether the output is supported by the input, deserves its own metric, separate from fluency; OLX's reporting of 98% for style and 89% for faithfulness shows why. **Fluent and wrong is the characteristic failure of generative models**, and it is invisible to usage metrics.
+
+## Regulation: The EU AI Act for Marketplaces
+
+The EU Artificial Intelligence Act (Regulation (EU) 2024/1689) applies in phases, and the Digital Omnibus on AI, published as Regulation (EU) 2026/1744 on 24 July 2026, moved some of them ([European Parliament Legislative Train, updated September 2026](https://www.europarl.europa.eu/legislative-train/theme-a-europe-fit-for-the-digital-age/file-digital-omnibus-on-ai); [implementation timeline, updated August 2026](https://artificialintelligenceact.eu/implementation-timeline/)). As verified in October 2026:
+
+| Obligation | Applies from | Marketplace relevance |
+| --- | --- | --- |
+| Prohibited practices and AI literacy | 2 February 2025 | Manipulative or exploitative designs in assistants; staff training |
+| General-purpose AI model obligations, including the copyright policy | 2 August 2025 | Applies to model providers; relevant to crawler and licensing policy |
+| Article 50 transparency: people must be informed they are interacting with an AI system unless it is obvious; generated content must be marked in a machine-readable way | 2 August 2026; marking for generative systems placed on the market before that date by 2 December 2026 | Conversational search, chat assistants, generated descriptions and images |
+| High-risk obligations for stand-alone Annex III systems | 2 December 2027 | Candidate selection and job-ad targeting; creditworthiness of natural persons |
+| High-risk systems embedded in regulated products | 2 August 2028 | Rarely relevant to listings |
+
+Annex III point 4(a) lists AI systems "intended to be used for the recruitment or selection of natural persons", in particular "to place targeted job advertisements, to analyse and filter job applications, and to evaluate candidates" ([AI Act, Annex III](https://artificialintelligenceact.eu/annex/3/)). Any jobs marketplace that ranks candidates or targets job ads with AI is in scope, and so is Tradeyard's small jobs section in Poland and Portugal if it builds such features. Point 5(b) covers creditworthiness evaluation of natural persons, which matters if a valuation or affordability model feeds a lender's decision (see [[ml-platform]]).
+
+Article 50's marking duty applies to providers of systems that generate synthetic text, images, audio or video, with an exception for systems that only assist standard editing or do not substantially alter the input ([AI Act, Article 50](https://artificialintelligenceact.eu/article/50/)). Whether a marketplace that builds a listing assistant on a third-party model is a provider of that system, and whether a seller-confirmed description falls under the exception, are questions for counsel. Veldmark's architectural answer is not to depend on the answer: assisted descriptions and AI-edited images carry machine-readable provenance metadata and a visible label from launch, and every conversational surface says it is an AI assistant.
+
+The AI Act sits alongside the rules this book covers elsewhere: the DSA's limits on automated complaint handling and its statements of reasons, the P2B Regulation's ranking transparency, consumer law on misleading claims, and the GDPR for prompts and conversations that contain personal data (see [[marketplace-regulation]]).
 
 ## Trade-offs
 
@@ -337,24 +355,6 @@ Faithfulness, whether the output is supported by the input, deserves its own met
 | External agent channel | Weak fit | Strong fit (documented: ImmoScout24, OLX CompassGPT) | Strong fit (documented: OLX AutoGPT) | Emerging |
 | Copilots | Pro sellers in some categories | Agency CRM, listing descriptions | Dealer lead replies and pricing | Recruiter tools |
 | AI Act exposure | Article 50 transparency | Article 50; credit-adjacent valuation uses to review | Article 50; finance referrals to review | **High-risk** for candidate selection and job-ad targeting (Annex III point 4) |
-
-## Regulation: The EU AI Act for Marketplaces
-
-The EU Artificial Intelligence Act (Regulation (EU) 2024/1689) applies in phases, and the Digital Omnibus on AI, published as Regulation (EU) 2026/1744 on 24 July 2026, moved some of them ([European Parliament Legislative Train, updated September 2026](https://www.europarl.europa.eu/legislative-train/theme-a-europe-fit-for-the-digital-age/file-digital-omnibus-on-ai); [implementation timeline, updated August 2026](https://artificialintelligenceact.eu/implementation-timeline/)). As verified in October 2026:
-
-| Obligation | Applies from | Marketplace relevance |
-| --- | --- | --- |
-| Prohibited practices and AI literacy | 2 February 2025 | Manipulative or exploitative designs in assistants; staff training |
-| General-purpose AI model obligations, including the copyright policy | 2 August 2025 | Applies to model providers; relevant to crawler and licensing policy |
-| Article 50 transparency: people must be informed they are interacting with an AI system unless it is obvious; generated content must be marked in a machine-readable way | 2 August 2026; marking for generative systems placed on the market before that date by 2 December 2026 | Conversational search, chat assistants, generated descriptions and images |
-| High-risk obligations for stand-alone Annex III systems | 2 December 2027 | Candidate selection and job-ad targeting; creditworthiness of natural persons |
-| High-risk systems embedded in regulated products | 2 August 2028 | Rarely relevant to listings |
-
-Annex III point 4(a) lists AI systems "intended to be used for the recruitment or selection of natural persons", in particular "to place targeted job advertisements, to analyse and filter job applications, and to evaluate candidates" ([AI Act, Annex III](https://artificialintelligenceact.eu/annex/3/)). Any jobs marketplace that ranks candidates or targets job ads with AI is in scope, and so is Tradeyard's small jobs section in Poland and Portugal if it builds such features. Point 5(b) covers creditworthiness evaluation of natural persons, which matters if a valuation or affordability model feeds a lender's decision (see [[ml-platform]]).
-
-Article 50's marking duty applies to providers of systems that generate synthetic text, images, audio or video, with an exception for systems that only assist standard editing or do not substantially alter the input ([AI Act, Article 50](https://artificialintelligenceact.eu/article/50/)). Whether a marketplace that builds a listing assistant on a third-party model is a provider of that system, and whether a seller-confirmed description falls under the exception, are questions for counsel. Veldmark's architectural answer is not to depend on the answer: assisted descriptions and AI-edited images carry machine-readable provenance metadata and a visible label from launch, and every conversational surface says it is an AI assistant.
-
-The AI Act sits alongside the rules this book covers elsewhere: the DSA's limits on automated complaint handling and its statements of reasons, the P2B Regulation's ranking transparency, consumer law on misleading claims, and the GDPR for prompts and conversations that contain personal data (see [[marketplace-regulation]]).
 
 ## Failure Modes
 

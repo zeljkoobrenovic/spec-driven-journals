@@ -35,7 +35,7 @@ The chapter owns four terms. A **product catalog** is the versioned definition o
 
 No marketplace whose sources this book uses has published its catalog, pricing or entitlement architecture in detail. The design here is therefore a **reference-architecture inference**, anchored to published product behavior: Rightmove's commitments plus extras, Autotrader's annual price event and stock lever, OLX's boosts per package, CarGurus' capped free tier, Vinted's fee on every card. It also draws on public documentation from billing vendors. It is not a description of any company's systems.
 
-## Setting the Scene: Thirteen Cars and €117
+## Setting the Scene at Veldmark: Thirteen Cars and €117
 
 It is late September 2027 at Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]). Autohaus Ruhrblick, the Essen dealer whose Volkswagen Golf sold in April, disputes its August invoice from Motorvane. The dealer is on Motorvane's "Pro 150" package: **150 listing slots for €1,450 a month**, with any car above 150 billed at **€9 per car per month** as overage. In August, the dealer management system (DMS) feed delivered **163** cars. The invoice charged overage for 13 cars, **€117**. The dealer's sales manager checked Motorvane's own site. Only 150 Ruhrblick cars were live. The 13 extra cars had never been published.
 
@@ -305,7 +305,7 @@ That gap shapes the build-or-buy decision. I would buy invoicing, tax, dunning a
 
 ## Veldmark Worked Example: One Catalog for Four Brands
 
-### The forum's design
+### The architecture advice forum's design
 
 After the Ruhrblick audit, the architecture advice forum agrees a design in October 2027. Yara Mendes, Head of Platform Engineering, owns the platform team that builds it. Its core is the group entitlement service, nicknamed **Tally**. The decisions:
 

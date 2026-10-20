@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Models in Production: ML Platforms and Use Cases
@@ -72,3 +72,4 @@ Chief and enterprise architects of marketplace groups, heads of data and ML, ML 
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: hedged pre-2023 OLX and Airbnb evidence as possibly superseded, standardized Sources headings; verified Zillow 10-K, Digital Omnibus on AI and Annex III quotes. *(AI-mediated session)*
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Cross-chapter consistency sweep: 2 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*

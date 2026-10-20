@@ -357,7 +357,7 @@ Four chains appear most often.
 
 Two patterns sit at the roots of most chains. **Vanity Liquidity** is a measurement failure: without a governed definition of a match, every team optimizes something easier. **Feed Roulette** and **The Category Straitjacket** are contract failures: without a governed contract for what enters the platform and how it is classified, every downstream system compensates on its own. That is why this book defines liquidity metrics in Part I and contracts in Parts II and III before it discusses search, ranking or AI.
 
-### A diagnostic table
+### First indicators for each pattern
 
 | Pattern | First indicator to ask for | Typical owner of the number |
 | --- | --- | --- |

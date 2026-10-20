@@ -1,13 +1,13 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Private Sellers, Dealers and Agencies: Modeling Who Lists
 
 ## Intent
 
-Give architects a supply-side party model that works from a private seller with one bike to an agency network with franchisees, and show why it must separate four questions that account models usually conflate: who acts (user), who is responsible (legal entity, the trader), who pays (contract and billing account) and who is shown (storefront, branch). Make trader status a governed attribute with evidence and a reclassification process, show integrations as principals with scoped grants, and settle how a multi-brand group shares identity and verified legal facts without merging brand accounts.
+Give architects a supply-side seller account model that works from a private seller with one bike to an agency network with franchisees, and show why it must separate four questions that account models usually conflate: who acts (user), who is responsible (legal entity, the trader), who pays (contract and billing account) and who is shown (storefront, branch). Make trader status a governed attribute with evidence and a reclassification process, show integrations as principals with scoped grants, and settle how a multi-brand group shares identity and verified legal facts without merging brand accounts.
 
 ## Audience
 
@@ -15,7 +15,7 @@ Chief and principal architects, identity and account-platform leads, and product
 
 ## Success criteria
 
-- [ ] Reader can name the entities of the party model (user, legal entity, seller account, branch, network, contract, storefront, integration principal) and what each answers.
+- [ ] Reader can name the entities of the seller account model (user, legal entity, seller account, branch, network, contract, storefront, integration principal) and what each answers.
 - [ ] Reader can explain why franchise networks break a model where branches are children of one legal entity.
 - [ ] Reader can list the four parts of a trader status record and describe a reclassification process.
 - [ ] Reader can map DSA Art. 30, the consumer-law trader declaration, P2B, DAC7 and INFORM to account data, with dated sources.
@@ -72,3 +72,5 @@ Article only for now.
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: DSA Art. 30, CRD Art. 6a and UCPD Art. 7(6) checked against the Official Journal and cited to EUR-Lex; Bundeskartellamt finding restated as reported (8 Oct 2026); Ruhrblick KYB aligned with identity-and-verification, package named (Pro 150), Golf leads labeled raw vs deduplicated; hand-off to [[part-3]]. *(AI-mediated session)*
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Cross-chapter consistency sweep: 4 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
+- **2026-10-20** — Renamed "party model" to the glossary's "seller account model" in Intent, success criteria and the chapter's INFERENCE callout, to match the renamed Architecture heading. *(AI-mediated session)*

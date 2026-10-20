@@ -321,7 +321,7 @@ Veldmark chose the third option, and planned to pass through the fourth for Hear
 ![One shared account hub with three brand profile cards attached along dashed cut lines, one of them detached cleanly with its users.](assets/images/26-identity-and-verification/identity-designed-to-be-cut.jpeg)
 **Figure 4:** *Veldmark ID shares one account but gives each brand its own profile and its own identifier, so a brand that is sold can be cut out with its users.*
 
-### The Barcelona rentals: a policy worth its cost
+### The Barcelona fake-rental ring: a policy worth its cost
 
 The first policy built on the level model came from Hearthly Spain. In **July 2027**, **26** accounts posted **180** fake rental listings in Eixample, using photos stolen from real listings and prices about 35% below market, and asked for deposits by bank transfer outside the platform. **63** people reported losses of about **€71,000** before the listings came down. [[fraud-prevention]] follows the detection: perceptual-hash matches against existing listings and price anomalies. The identity question was simpler and more uncomfortable. None of the 26 accounts had been asked to prove anything beyond an e-mail address, because Hearthly Spain, like Casavista before it, required nothing more of private landlords.
 
@@ -429,7 +429,7 @@ Identity answers who is on the other side. Much of what this chapter built, the 
 
 ## Sources and Evidence
 
-**Company engineering and investor sources**
+### Company engineering and investor sources
 
 - [Bridging the gap between passwords and passkeys with risk-based authentication](https://engineering.mercari.com/en/blog/entry/20260730-bridging-the-gap-between-passwords-and-passkeys-with-risk-based-authentication/) — Tatsuya Karino, Mercari Engineering, 2026. About 13 million passkey users; phishing-resistant accounts; session and account posture; recovery rules.
 - [Hvorfor verifisere brukeren min? (Why verify my user?)](https://hjelpesenter.finn.no/hc/no/articles/22642799684754-Hvorfor-verifisere-brukeren-min) — FINN help center, 2024 (updated 2026). BankID verification badge, one verified user per BankID, required in some categories, not for business advertisers.
@@ -439,7 +439,7 @@ Identity answers who is on the other side. Much of what this chapter built, the 
 - [FINN er en del av Vend (FINN is part of Vend)](https://hjelpesenter.finn.no/hc/no/articles/26512386856082-FINN-er-en-del-av-Vend-hva-betyr-det-for-deg) and [Hva er Vend-konto? (What is a Vend account?)](https://hjelpesenter.finn.no/hc/no/articles/22650483740178-Hva-er-Vend-konto) — FINN help center, 2025 and 2024 (both updated 2026). Rename to Vend; shared login and payment account; e-mail one-time code login.
 - [Verification overview (Adyen for Platforms)](https://docs.adyen.com/platforms/verification-overview) — Adyen, n.d. (current documentation). KYC of platform users before payouts; re-verification on data change.
 
-**Standards, regulation and documentation**
+### Standards, regulation and documentation
 
 - [Regulation (EU) 2022/2065 (Digital Services Act)](https://eur-lex.europa.eu/eli/reg/2022/2065/oj) — Official Journal, 2022. Art. 30 trader traceability, including electronic identification and correction or suspension; text checked against the Official Journal version.
 - [Regulation (EU) 2024/1183 (European Digital Identity Framework)](https://eur-lex.europa.eu/eli/reg/2024/1183/oj) — Official Journal, 2024. Art. 5a wallet provision; Art. 5f acceptance by private relying parties and very large online platforms.
@@ -451,7 +451,7 @@ Identity answers who is on the other side. Much of what this chapter built, the 
 - [NIST SP 800-63B-4, Appendix B: Syncable Authenticators](https://pages.nist.gov/800-63-4/sp800-63b/syncable) — NIST, 2025. Synced passkeys acceptable up to the middle assurance level.
 - [Passkeys](https://fidoalliance.org/passkeys/) — FIDO Alliance, n.d. Definition of passkeys; synced and device-bound variants.
 
-**Research and practitioner sources**
+### Research and practitioner sources
 
 - [Pre-hijacked accounts: an empirical study of security failures in user account creation on the web](https://arxiv.org/abs/2205.10174) — Avinash Sudhodanan and Andrew Paverd, USENIX Security, 2022. Five pre-hijacking attack types; 35 of 75 services vulnerable.
 - [Fraudulent advertising and account integrity: expert insights on best practice](https://www.ofcom.org.uk/siteassets/resources/documents/research-and-data/online-advertising/fraudulent-advertising-and-account-integrity_expert-insights-on-best-practice.pdf) — Integrity Institute for Ofcom, 2026. Takeover to gain verification marks; friction between account creation and reach.

@@ -35,7 +35,7 @@ This chapter builds such a map for listing marketplaces. It starts with four ter
 
 The running example is Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]). In March 2027 its new Group Chief Architect uses a capability map to test a €140 million program that the board approved before she arrived.
 
-## Setting the Scene: What Do We Pay for Four Times?
+## Setting the Scene at Veldmark: What Do We Pay for Four Times?
 
 It is Tuesday 9 March 2027. Ingrid Halvorsen has been Veldmark's Group Chief Architect for five weeks. The board approved the **Common Ground** program in January: €140 million over 2027–2030 to build shared platform capabilities beneath the group's four brands, retire Tradeyard's PHP monolith Yardstick by the end of 2029, and cut run costs by **€38 million a year** by 2030. The program document lists what to share: a group identity, trust and safety, media, a search platform, messaging, a product catalog and entitlements, an event backbone, a data platform, and a taxonomy and attribute service.
 
@@ -120,7 +120,7 @@ A few placement choices deserve explanation, because each is a decision someone 
 - **Professional Services is a level-1 area of its own.** In verticals the professional seller is the paying customer, and the tooling they use is a product line with its own economics. Folding it into Supply Acquisition hides a revenue line, and folding it into Monetization hides a product. [[professional-seller-tooling]] covers its architecture.
 - **Transactions is a level-1 area even where it is small.** Most of a classifieds group's value still settles off-platform, but the transactional pivot is a recurring strategic question. Having the area on the map, scored as immature or absent where it is absent, makes the question visible.
 
-### Level 3: Where the Real Decisions Are Made
+### Level 3: where the real decisions are made
 
 Level 3 is where a capability is split into the parts that behave differently. Veldmark's map has **212** level-3 capabilities. Most are written only for the areas under active decision. Mapping everything to level 3 on day one is wasted effort: the map goes stale before it is used.
 
@@ -136,7 +136,7 @@ The pattern recurs across the map: **the machinery is generic and the content is
 ![One shared machine with four slots, each receiving a differently colored brand cartridge for relevance, packages, policy and category trees.](assets/images/04-business-capabilities/machinery-and-content-split.jpeg)
 **Figure 3:** *At level 3 a duplicated capability usually splits cleanly: the machinery (search engine, entitlement ledger, moderation pipeline, taxonomy service) is shared, while relevance, packages, policy and category trees stay local.*
 
-### One Skeleton, Many Verticals
+### One skeleton, many verticals
 
 Does each vertical need its own map? The evidence from reference modeling says no. I maintain two generic reference models built with the Productscape method, one for a horizontal general-listings marketplace and one for a real-estate portal. They describe no real company. They share an identical set of **88 capabilities** in the same five root groups. The real-estate model's "Estimation Funnel" and the general model's "Seller Listing Funnel" occupy the same slot, as do "Property Valuation Tool" and "Pricing Guidance Engine". About two-thirds of the 88 have identical meaning in both. Roughly a dozen keep their responsibility under vertical vocabulary (agency for storefront, agent for seller). Only **nine** are genuinely different capabilities in the same slot: protected payment versus mortgage financing, a listing funnel versus a valuation-led lead funnel, shipping preferences versus rental management, and a few others.
 
@@ -269,7 +269,7 @@ flowchart TB
 ---end mermaid---
 **Figure 5:** *The layering Veldmark used: value streams explain why capabilities matter, capabilities are the comparable unit, and systems and teams are mapped to capabilities, never the other way round. Only the capability layer is shared vocabulary across all four brands.*
 
-### The Heat Map
+### The heat map
 
 The table shows the rows that drove decisions. Maturity is listed per implementation (T = Tradeyard, M = Motorvane, H = Hearthly, K = Keybridge).
 
@@ -287,7 +287,7 @@ The table shows the rows that drove decisions. Maturity is listed per implementa
 | Professional sales and account acquisition, Poland | 2 (Tradeyard PL cars, Motorvane PL) | High | T PL 2; M PL 3 | **Commercial overlap**: a portfolio decision, not a platform one |
 | Feed and bulk ingestion; listing distribution | 2 (Hearthly ingestion, Keybridge multi-diffusion) | High | H 3; K 4 | **Deliberate duplicate**: keep separate (neutrality decision, March 2027) |
 
-### Reading the Map
+### Reading the map
 
 The five overlaps match the "four of everything" problem that the board already knew about: four identity systems, four trust-and-safety stacks, three search engines, four product catalogs, three data warehouses. The map's contribution was not to discover them. It was to change the answer for three of them and to add two findings that no platform program would have produced.
 
@@ -370,6 +370,8 @@ What to watch over time: the number of deliberate duplicates (it should be small
 7. Which overlaps are commercial (two brands selling to the same customer) and so need a portfolio decision rather than a platform?
 8. What does each level-2 capability cost to run, and which ones can we attribute revenue to?
 9. When we acquire the next marketplace, how quickly can we map it onto our capabilities?
+
+## From Capabilities to Contexts
 
 The capability map tells Veldmark *what* the group does and where it does it several times. It does not say where one model of a listing should end and another begin, which team should own which part, or how the parts should talk to each other. That is a decomposition question, and it needs a different tool: domain-driven design's bounded contexts and context maps, applied in [[bounded-contexts]].
 

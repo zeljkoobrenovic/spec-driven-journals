@@ -35,7 +35,7 @@ This chapter owns three terms. The **publication pipeline** is the sequence of s
 
 Neighboring chapters own the parts. [[listing-aggregate]] owns the lifecycle states and the events each transition emits. [[trust-and-safety-architecture]] owns the moderation gate inside this pipeline and the enforcement decisions that trigger takedowns. [[event-driven-listings]] owns the event contract, the outbox and the per-event-family objectives. [[search-architecture]] owns indexing and its share of the budget. [[saved-searches-and-alerts]] owns matching and fan-out. This chapter owns the whole path, the budget that ties the stages together and the measurement that proves it works.
 
-## Setting the Scene: Where Did Six Minutes Go?
+## Setting the Scene at Veldmark: Where Did Six Minutes Go?
 
 On Sunday **7 March 2027** at **19:42 CET**, Femke, a private seller in Rotterdam, publishes a used city bike for **€240** on Tradeyard Netherlands. Tradeyard is the general classifieds brand of Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]). Automated moderation clears the listing at **19:44**. It becomes searchable at **19:48**. It matches **312** saved searches, the first buyer writes at **19:55**, and fourteen conversations follow within 24 hours. The bike sells on Monday for **€225** through Tradeyard Safe Deal. Tradeyard marks it sold at **18:10** and removes it from search at **18:11**. On Tuesday at 07:00, it appears in **214** alert digests, which were assembled at 17:30 on Monday from a database replica snapshot and never re-checked.
 
@@ -47,7 +47,7 @@ This chapter is the design that came out of those two questions.
 
 ## Concepts: Stages, Paths and Clocks
 
-### The stages
+### Eight stages from submission to full visibility
 
 A listing typically passes through eight stages between submission and full visibility. The order below is logical; the architecture section decides which run in sequence and which in parallel.
 
@@ -341,7 +341,7 @@ The trade-off that decides the others is **where "published" is defined**. If it
 
 **What to watch.** Insertion latency per brand, channel and moderation path; the share of listings held; review-path latency; removal latency per consumer and the worst consumer; the overdue-transition backlog; copy-reconciliation mismatches per day; and synthetic-canary results at the Sunday-evening peak. A number that improves while the held share rises is not an improvement.
 
-## Questions to Ask in a Design Review
+## Questions to Ask
 
 1. Which stages are on the synchronous path, and could any of them move out without changing the publication decision?
 2. Which listings does our freshness SLA cover, which clock does it measure, and what is the objective for listings held for review?

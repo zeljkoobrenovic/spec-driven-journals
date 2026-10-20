@@ -93,7 +93,7 @@ Four features of the brand portfolio recur throughout the book.
 
 Veldmark Ads is the exception to "four of everything": one ad stack, on Google Ad Manager with Prebid header bidding, sells inventory on all three marketplaces ([[advertising-platforms]]).
 
-## Volumes
+## Volumes Every Design Is Sized Against
 
 2026 figures, rounded; every design in the book is sized against them.
 
@@ -316,15 +316,15 @@ With the group, its problems and its program introduced, Part I begins where Ing
 
 ## Sources and Evidence
 
-**Company engineering and investor sources**
+### Company engineering and investor sources
 
 - None. Veldmark Group, its brands (Tradeyard, Motorvane, Hearthly, Keybridge, Casavista, Veldmark Ads, Valuo, Safe Deal, Tally), its people, customers, figures, systems and events are fictional and invented for teaching; they are not drawn from any single real company.
 
-**Standards, regulation and documentation**
+### Standards, regulation and documentation
 
 - [Demandes de valeurs foncières (DVF)](https://www.data.gouv.fr/fr/datasets/demandes-de-valeurs-foncieres/), Direction générale des finances publiques, data.gouv.fr, n.d. (updated twice a year) — the real French open dataset of property transactions on which the fictional Valuo is described as trained.
 
-**Research and practitioner sources**
+### Research and practitioner sources
 
 - The scenario's shape draws on the generalized marketplace domain models described in this book's provenance note and on the industry history covered, with dated sources, in [[industry-evolution]] and the Part IX case studies.
 

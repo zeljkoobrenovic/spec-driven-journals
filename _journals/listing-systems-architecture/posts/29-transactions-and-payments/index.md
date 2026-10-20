@@ -277,7 +277,7 @@ Every step produced an event, and every amount has a ledger line: €70.65 captu
 
 The numbers make two points. Safe Deal is a good business: €75 million of revenue on €1.02 billion of GMV is a 7.4% take rate, and losses are an order of magnitude below revenue. And it was **run as a feature on top of Yardstick's world view** until 2027: its dispute desk worked from e-mail templates, partial refunds were manual and the finance view was reconstructed at month-end.
 
-## The Forum's Decisions
+## The Architecture Advice Forum's Decisions
 
 On 22 September 2027 the forum applied the four conditions and the architecture above to each proposal.
 

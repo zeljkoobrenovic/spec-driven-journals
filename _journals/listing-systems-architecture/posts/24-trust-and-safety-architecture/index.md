@@ -549,7 +549,7 @@ This chapter built the machinery: policies, detection, one decision service, enf
 
 ## Sources and Evidence
 
-**Company engineering and investor sources**
+### Company engineering and investor sources
 
 - [Adevinta Annual Report 2023](https://live.euronext.com/sites/default/files/company_press_releases/attachments_oslo/2024/04/26/616971_Adevinta%20AR%202023.pdf) — Adevinta, 2024. Chat and moderation among the first capabilities consolidated across marketplaces.
 - [Text in Image 2.0: improving OCR service with PaddleOCR](https://adevinta.com/techblog/text-in-image-2-0-improving-ocr-service-with-paddleocr/) — Adevinta Tech Blog, 2023. A shared OCR moderation service across marketplaces; volumes.
@@ -557,14 +557,14 @@ This chapter built the machinery: policies, detection, one decision service, enf
 - [Fighting spam with Haskell](https://engineering.fb.com/2015/06/26/security/fighting-spam-with-haskell/) — Engineering at Meta, 2015. Sigma rule engine; rules as code deployed continuously.
 - [Fraud prevention rules (Radar)](https://docs.stripe.com/radar/rules) — Stripe, n.d. (current documentation). Backtesting, shadow mode, rollout, rule audit trail, review-queue guidance.
 
-**Standards, regulation and documentation**
+### Standards, regulation and documentation
 
 - [Regulation (EU) 2022/2065 (Digital Services Act)](https://eur-lex.europa.eu/eli/reg/2022/2065/oj) — Official Journal, 2022. Arts. 16, 17, 20, 21, 22 and 24: notice and action, statements of reasons (including demotion), internal complaints, trusted flaggers, transparency; quotations checked against the Official Journal text retrieved through the EU Publications Office.
 - [DSA Transparency Database](https://transparency.dsa.ec.europa.eu/) — European Commission, rolling statistics accessed 19 October 2026. Volume and automation share of statements of reasons.
 - [DSA Transparency Database API documentation](https://transparency.dsa.ec.europa.eu/page/api-documentation) — European Commission, n.d. Decision fields including `DECISION_VISIBILITY_CONTENT_DEMOTED`.
 - [Fraudulent advertising and account integrity: expert insights on best practice](https://www.ofcom.org.uk/siteassets/resources/documents/research-and-data/online-advertising/fraudulent-advertising-and-account-integrity_expert-insights-on-best-practice.pdf) — Integrity Institute for Ofcom, 2026. Enforcement ladder, random sampling for prevalence.
 
-**Research and practitioner sources**
+### Research and practitioner sources
 
 - [Scam ads slipping through the net too easily on second-hand marketplaces](https://www.which.co.uk/policy-and-insight/article/scam-ads-slipping-through-the-net-too-easily-on-second-hand-marketplaces-which-warns-aqyF66m1TlU1) — Which?, 2024. Edited scam ads passing review in minutes.
 - [Leboncoin a prétendu à tort qu'il relisait toutes les annonces](https://www.clubic.com/leboncoin/actualite-789848-leboncoin-condamnation.html) — Clubic, 2015. Court finding on misleading pre-moderation claims; hosting status.

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Unlisted: Fifteen Ways Listing Systems Go Wrong
@@ -70,3 +70,4 @@ Article only for now. One illustration per pattern, as in the RECONCILED opening
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: pattern-to-chapter matrix regenerated from every chapter's FAILURE PATTERNS callout (14 rows changed; ● now means named in the callout only), "Where this book helps" lines extended for Ghost Inventory, the portfolio patterns, Vanity Liquidity and The Unwatched Model; timetoread corrected. *(AI-mediated session)*
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Cross-chapter consistency sweep: 1 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*

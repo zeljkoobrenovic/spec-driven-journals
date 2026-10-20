@@ -35,7 +35,7 @@ The technical chapters of this book argue for shared platforms beneath local pro
 
 This chapter owns two terms. A **marketplace team topology** is the assignment of team types to a marketplace group's journeys, bounded contexts and shared capabilities, together with the interaction mode between each pair of teams. **Architecture governance** is the set of decision rights, forums, records, principles and standards through which architectural decisions are made, communicated and revisited. Where boundaries come from is the subject of [[bounded-contexts]]; what to share across countries and brands is [[multi-country-platforms]]; the order of consolidation after acquisitions is [[platform-consolidation]].
 
-## Setting the Scene: The Rule That Reached Belgium Three Days Late
+## Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late
 
 On Sunday 7 March 2027, Femke, a private seller in Rotterdam, listed a city bike on Tradeyard Netherlands. At 20:11 a "buyer" sent her a fake Safe Deal payment link. She reported it at 20:19, the account was suspended at 20:26, and Tradeyard NL's trust-and-safety team wrote a new rule that withheld 37 similar messages to other sellers that evening. Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]), handled the incident well in the Netherlands.
 
@@ -126,7 +126,7 @@ Michael Nygard's 2011 proposal for architecture decision records (ADRs) is still
 
 ## Architecture: A Topology for a Group of Marketplaces
 
-### The shape
+### Stream-aligned teams on top of platform teams
 
 Figure 2 shows the target topology Veldmark adopted for Common Ground. The pattern generalizes: stream-aligned teams per brand and journey on top, platform teams per shared capability underneath, a small number of complicated-subsystem teams beside them, and enabling teams that move between them.
 
@@ -415,6 +415,8 @@ Two consequences for organization design. In real estate and automotive, the **s
 8. How many cross-brand decisions were made last quarter, how long did they take, and how many escalated?
 9. Which decisions are past their review date or trigger?
 10. If a brand were sold in 18 months, which teams and platforms would have to split, and is that written down?
+
+## From Organization to Migration
 
 The organization assigns owners; it does not move code. Tradeyard's teams still deploy through Yardstick, and the new platform teams own capabilities that the monolith still implements. [[modernization-and-migration]] takes up the work of moving a live marketplace from the old system to the new one without losing traffic, sellers or revenue.
 

@@ -35,7 +35,7 @@ The neglect has a pattern. Attributes start as a few columns; a second vertical 
 
 This chapter is about the design that prevents it. It sits between [[categories-and-taxonomies]], which owns the category tree and its versioning, and [[normalization-and-enrichment]], which owns the pipeline that cleans and derives values and records their provenance. Here the subject is the **contract**: the attribute dictionary, the category schema, the storage model, the validation and the governance that keep one definition true across every system that reads it. Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]), provides the worked example.
 
-## Setting the Scene: Eleven Ways to Say "Frame Size"
+## Setting the Scene at Veldmark: Eleven Ways to Say "Frame Size"
 
 It is late August 2027. Veldmark's group taxonomy and attribute service is due to go live for Tradeyard in October, and the bikes split (city bikes, e-bikes, cargo bikes and kids' bikes as separate leaf categories) is planned for **Monday 1 November 2027**. Ingrid Halvorsen, the Group Chief Architect, has asked Daan Visser, who owns Tradeyard's Yardstick monolith, and Tomasz Wiśniewski, who runs the group search platform, a simple question: what will the new "frame size" facet on the city-bikes page show?
 
@@ -417,6 +417,8 @@ At group scale, attributes are a governance problem with an architecture attache
 8. What share of attribute keys is used on fewer than 0.1% of listings, and is that share rising or falling?
 9. Is the source of each value (seller, feed, registry decode, model) recorded, and which source wins in a conflict?
 10. Which attributes are sensitive, and what prevents them from becoming targeting keys or ranking features?
+
+## From Attributes to Pictures
 
 The attribute dictionary describes what a listing says in words and numbers. Buyers, however, decide in pictures first, and media is a second, much larger body of listing data with its own pipeline, storage economics, privacy risks and fraud signals. [[media-pipeline]] takes it up.
 

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: One Platform, Many Marketplaces: Multi-Country and Multi-Brand Architecture
@@ -62,3 +62,4 @@ External: Adevinta Annual Report 2019; Navarro 2020; Adevinta dispute back offic
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: seven → eight countries, AVIV 2021 quote aligned with case-aviv (no "unified"; "fully integrated" attributed to the interviewer), Vinted quote corrected, [[long-term-evolution]] link restored. *(AI-mediated session)*
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Cross-chapter consistency sweep: 4 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*

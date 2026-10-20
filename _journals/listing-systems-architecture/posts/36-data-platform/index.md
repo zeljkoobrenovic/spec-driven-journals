@@ -34,7 +34,7 @@ This chapter takes the opposite route. It starts from what a listing marketplace
 
 Two neighbors own adjacent ground. [[event-driven-listings]] owns the listing event stream and its schema evolution; this chapter consumes that stream. [[listing-data-management]] owns the system of record, read models and erasure propagation; this chapter applies erasure to analytical copies. The next chapter, [[experimentation]], builds on the exposure and metric layers designed here, and [[ml-platform]] builds on its training data.
 
-## Setting the Scene: Three Warehouses, Three Contacts
+## Setting the Scene at Veldmark: Three Warehouses, Three Contacts
 
 On Monday 15 March 2027, Henrik de Boer, Veldmark's Group CEO, sends a short e-mail to his leadership team. Veldmark is the fictional marketplace group this book follows (see [[meet-veldmark]]). The board pack for the first quarter will, for the first time, show "contacts per live listing" for every brand, because the investor's operating partners want one liquidity number that can be compared across Tradeyard, Motorvane and Hearthly. He asks for last week's figures by Wednesday.
 
@@ -247,7 +247,7 @@ The decision record Veldmark's architecture advice forum approved in May 2027 re
 
 Each row closes an argument the brands had been having implicitly. Counting **once per buyer and listing** removes the difference between a chatty marketplace and a terse one; Tradeyard's buyers write several messages per conversation, Hearthly's send one form. Counting **at delivery** puts the fact on the server. The **72-hour fraud restatement** is the most consequential choice: it means Femke's phishing "buyer", suspended at 20:26 on Sunday, never reaches the final figure for that day, which closes on Wednesday, and it ties the liquidity metric to the trust-and-safety data product, so a marketplace cannot improve its contact rate by tolerating scammers. That is **Vanity Liquidity** prevented by definition rather than by exhortation. Billing may apply a stricter rule than steering, as Motorvane's proposed billable lead does with its 14-day window ([[monetization-models]]), but **both must be derived from the same contacts data product**, or the dealer's invoice and the board pack will disagree about the same car.
 
-### The worked example: replaying one week
+### Replaying one week under the new definition
 
 Priya's team replayed the week of 8–14 March 2027 under the new definition for all three listing brands. Keybridge, which has no buyers, was out of scope.
 
@@ -418,6 +418,8 @@ Who decides: the Group Chief Architect owns the platform's shape and the contrac
 8. Do our dealer and agent reports use the same definitions as our board pack?
 9. What does our data estate cost per thousand live listings, and which team owns each of the ten largest cost items?
 10. When a liquidity metric drops, how quickly can we tell whether the market or the instrumentation changed?
+
+## From Measurement to Causation
 
 With one definition of a contact, exposure logged with its ranking context, and data products that every team reads in the same way, Veldmark can start asking the question that every product team asks next: did our change cause that? In a two-sided market, where buyers and sellers affect each other, the answer is harder to get than an A/B testing tool suggests, and [[experimentation]] takes it up.
 

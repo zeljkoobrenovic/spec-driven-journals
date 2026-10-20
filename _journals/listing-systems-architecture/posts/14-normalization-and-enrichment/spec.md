@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: From Raw Supply to Usable Listings: Normalization and Enrichment
@@ -71,3 +71,4 @@ Chief architects, principal engineers, data and ML leads and listing-data owners
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: expanded DMS, VIN and OCR on first use, clarified the 31-attribute count, American spelling. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Cross-chapter consistency sweep: 1 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*

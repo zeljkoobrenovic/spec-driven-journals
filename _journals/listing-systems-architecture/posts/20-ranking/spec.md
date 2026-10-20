@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Ranking for Two Sides: Relevance, Freshness and Paid Visibility
@@ -71,3 +71,4 @@ Chief architects, search and ranking leads, data science leads and monetization 
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: verified P2B, Omnibus and DSA quotes against Official Journal texts and repointed sources; completed the Omnibus ranking definition; expanded VAS, LTR, P2B and UCPD on first use; timetoread 36 min. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Cross-chapter consistency sweep: 1 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*

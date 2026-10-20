@@ -349,6 +349,8 @@ Who decides: the Head of Data & ML owns the engine, the methods and the cluster 
 9. Which experiments overlap on the same mechanism today, and how are they isolated?
 10. What share of our traffic sits in a long-term holdout, and what has it told us?
 
+## From Experiments to Models
+
 The experiment platform and the data platform give Veldmark trustworthy measurements; most of the changes it measures are now made by models, from ranking and recommendations to valuation and fraud scoring. How those models are trained, served, monitored and governed is the subject of [[ml-platform]].
 
 ## Sources and Evidence

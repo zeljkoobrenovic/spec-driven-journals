@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Many Doors In: Forms, APIs and Bulk Feeds
@@ -72,3 +72,4 @@ Chief and enterprise architects, principal engineers and engineering leads respo
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: labeled the Golf's 23 leads as raw (19 deduplicated), expanded PKCE and DVLA, American spelling, timetoread corrected. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Cross-chapter consistency sweep: 1 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*

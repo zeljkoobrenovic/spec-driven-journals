@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Sunday Night Peaks: Reliability, Performance and Cost
@@ -66,3 +66,4 @@ Chief architects, platform and SRE leads, search platform leads and engineering 
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: hand-off now goes to [[part-8]] (plus [[platform-consolidation]]), [[part-7]] linked, Cloudflare AI-crawler claim and unretrieved OLX post hedged, American spelling. *(AI-mediated session)*
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Cross-chapter consistency sweep: 5 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*

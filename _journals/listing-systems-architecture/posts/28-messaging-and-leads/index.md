@@ -413,7 +413,7 @@ A contact that turns into an agreement leaves the marketplace with a choice: ste
 
 ## Sources and Evidence
 
-**Company engineering and investor sources**
+### Company engineering and investor sources
 
 - [Cassandra Compaction Trade-Offs](https://tech.olx.com/cassandra-compaction-trade-offs-848ba51c64c0), OLX Tech Blog (Satish Chandra), 2021 — chat storage on Cassandra, partitioning by user, chats and threads tables, mutable message metadata.
 - [How Discord Stores Trillions of Messages](https://discord.com/blog/how-discord-stores-trillions-of-messages), Discord (Bo Ingram), 2023 — message partitioning, hot partitions, request coalescing, migration results.
@@ -431,13 +431,13 @@ A contact that turns into an agreement leaves the marketplace with a choice: ste
 - [Plattform-Update Sommer 2026](https://newsroom.mobile.de/plattform-update-sommer-2026/), mobile.de newsroom, 2026 — Lead API into dealers' CRM systems.
 - [Dit is de vervanger voor de Gelijk Oversteken-functie van Marktplaats](https://radar.avrotros.nl/artikel/dit-is-de-vervanger-voor-de-gelijk-oversteken-functie-van-marktplaats-52677), AVROTROS Radar, 2022 — buyer protection tied to in-platform messaging.
 
-**Standards, regulation and documentation**
+### Standards, regulation and documentation
 
 - [Directive (EU) 2018/1972, European Electronic Communications Code](https://eur-lex.europa.eu/eli/dir/2018/1972/oj), *Official Journal*, 2018 (Article 2(5) checked against the Publications Office text, October 2026) — definition of interpersonal communications service and the ancillary-feature exclusion.
 - [Regulation (EU) 2016/679, General Data Protection Regulation](https://eur-lex.europa.eu/eli/reg/2016/679/oj), 2016 — purpose limitation, minimization, legitimate interest.
 - [Regulation (EU) 2022/2065, Digital Services Act](https://eur-lex.europa.eu/eli/reg/2022/2065/oj), 2022 — statements of reasons for restrictions, including of messages.
 
-**Research and practitioner sources**
+### Research and practitioner sources
 
 - [Fraudulent advertising and account integrity: expert insights on best practice](https://www.ofcom.org.uk/siteassets/resources/documents/research-and-data/online-advertising/fraudulent-advertising-and-account-integrity_expert-insights-on-best-practice.pdf), Integrity Institute for Ofcom, 2026 — friction for new accounts and account-integrity signals relevant to contact policy.
 

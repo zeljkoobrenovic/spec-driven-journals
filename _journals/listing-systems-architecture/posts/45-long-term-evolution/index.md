@@ -51,7 +51,7 @@ She does three things in the four weeks before the board meeting:
 
 The answer to the investor's question is in the stressor table later in this chapter. The answer to Henrik's is the scorecard. Both rest on the argument.
 
-## The Argument of This Book: A Liquidity Machine
+## The Argument: A Liquidity Machine
 
 A listing marketplace sells one thing: **matches**. A seller wants a buyer, a dealer wants leads, an agency wants mandates, a buyer wants the right item, car or home before somebody else gets it. Listings, search, trust and monetization are not separate products; they are **stages of one pipeline whose throughput is liquidity**. [[liquidity-and-network-effects]] defines liquidity precisely: the probability that a listing finds a buyer, or a search finds a listing worth contacting, within the time window that matters in its category. It is local, measured per cell (region × category), and it is the only thing that compounds into network effects.
 

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: How Listing Marketplaces Make Money
@@ -70,3 +70,4 @@ Chief architects, principal engineers and engineering directors at marketplace g
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: Safe Deal take rate (about 7.4% on €1.02B GMV) added and the superseded 4.1M/€310M caveat removed from the spec, Golf duplicate breakdown aligned with messaging-and-leads, [[toolkit]] link restored, Vinted fee naming hedged, EU texts relinked to EUR-Lex. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Cross-chapter consistency sweep: 1 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*

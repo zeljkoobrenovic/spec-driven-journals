@@ -112,7 +112,7 @@ The appeal is obvious: the software sits where listings originate, and switching
 
 ## Architecture: A Workspace Over Systems of Record
 
-### The shape
+### Three properties of the pro workspace
 
 Figure 2 shows the reference architecture I recommend. It has three properties: the pro workspace owns no business records, every capability is available through the same API the partners use, and statistics are computed from the same event stream as billing.
 

@@ -52,7 +52,7 @@ Ingrid Halvorsen, the Group Chief Architect, asks the forum one question about e
 
 ## Concepts: Use Cases, Decision Tiers and the Platform
 
-### The terms
+### Terms: from ML capability to model governance
 
 - **ML capability** — a business capability whose output comes from a learned model: category prediction, price estimation, fraud scoring. The capability is owned by a product team; the model is one implementation of it, and it can be replaced by rules or a vendor.
 - **Model** — a trained artifact plus its feature definitions, training data snapshot, evaluation results and serving configuration. A model without its data lineage cannot be audited or reproduced, so the lineage is part of the model.
@@ -308,7 +308,7 @@ Veldmark chooses the hybrid. The decision of **Tuesday 9 November 2027** makes o
 | Fraud scoring | Depends on your abuse patterns and labels | Vendor device and network signals | Build the model; buy signals |
 | Text extraction and classification | Increasingly done with large language models | Model APIs | See [[ai-in-listing-systems]] |
 
-### Cost
+### What ML costs: GPUs, rescoring and unused models
 
 ML cost in marketplaces is dominated by three items: GPU training and serving for image and language models, scoring the whole inventory repeatedly, and the people who maintain models nobody uses. At Veldmark, Priya's inventory estimates **€11.2 million a year** in compute, licenses and tooling across the four stacks in 2027, of which about €3.1 million is image inference. The most effective cost controls are architectural: score on events instead of on schedules, store scores on listings instead of recomputing per view, retire models with no consumers, and make the registry show cost per model next to its owner. A model whose cost nobody sees will never be retired.
 

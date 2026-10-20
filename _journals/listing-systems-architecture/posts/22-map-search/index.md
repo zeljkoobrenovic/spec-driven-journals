@@ -35,7 +35,7 @@ This chapter owns **map search** (discovery where the result set is displayed on
 
 Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]), offers the case. Its property portal Hearthly launched a draw-your-area search in France, and by 2027 it has become both the feature agencies praise and the workload the search team fears.
 
-## Setting the Scene: The Polygon Problem at Hearthly
+## Setting the Scene at Veldmark: The Polygon Problem at Hearthly
 
 It is late September 2027, two weeks after Veldmark decided on **14 September** to move Tradeyard and Hearthly onto a shared search platform on Amazon OpenSearch Service by the end of 2028 (see [[search-architecture]]). Julien Marchand, Hearthly's CTO, asks Ingrid Halvorsen, Veldmark's Group Chief Architect, and Tomasz Wiśniewski, who heads the group search platform, for a session about one feature before the migration is planned.
 
@@ -93,7 +93,7 @@ Property portals have long treated the map as central; Rightmove, for example, n
 
 Two consequences follow. First, **the map is a search client in its own right**, with its own latency budget and query mix. Capacity planning that counts "searches" as list queries will underestimate the map by a large factor. Second, **ranking does not disappear on the map; it moves**. When a viewport over central Lyon holds 2,400 matching flats, the system must decide which 300 to show as individual pins and which to fold into clusters, which pins carry a price label, and what the side list shows. Paid placements raise the same questions on the map that [[ranking]] discusses for lists: a "featured" pin that is larger or always shown is a paid boost, and ranking transparency obligations apply to it.
 
-## The Architecture of Map Search
+## Architecture: Map Search
 
 The design I recommend separates the map's concerns into components with narrow interfaces. Figure 1 shows them for Hearthly's target state on the shared search platform.
 
@@ -126,7 +126,7 @@ The responsibilities are as follows.
 
 The rule that holds the design together: **clients send intent, not engine queries**. A mobile client that sends a raw 2,000-vertex finger trace straight to the engine, or that constructs its own bounding boxes at arbitrary precision, puts the cost and correctness of the map in the hands of every app release. Mobile releases are slow to reach all users (see [[web-and-seo-architecture]]), so a client-side mistake can live for a year. The compiler makes the server the owner.
 
-### A Pan, a Zoom, a Count
+### A pan, a zoom, a count
 
 Figure 2 shows the sequence for a single pan on the map, the most frequent interaction.
 
@@ -173,7 +173,7 @@ The sources for the table are documentation, all undated: OpenSearch's `geohex_g
 
 The approaches combine. A common and sensible split is server-side aggregation at city and region zoom, client-side clustering of capped point sets at street zoom, and individual pins when the viewport holds fewer than a few hundred matches. H3 hexagons, introduced by Uber in 2018 ([Uber Engineering, 2018](https://www.uber.com/blog/h3/)), make clusters that look less like a chessboard than square tiles do, because every hexagon has six equidistant neighbors; [[location-and-geo]] gives the resolution table.
 
-### The Privacy Trap in Aggregation
+### The privacy trap in aggregation
 
 There is a trap here that is easy to miss: **aggregations can leak what pins hide**. If a private seller's exact point is stored next to the public point, and the cluster centroid or the cell is computed from the exact point, a cluster of one at high zoom places a marker at the seller's front door. The same holds for heatmaps, "price per square meter" grids computed at fine resolution, and the `hits` layer of a vector tile.
 
@@ -218,7 +218,7 @@ Behind both forms sit two patterns, which a platform will usually need together.
 
 The isochrone filter is what makes "show me only homes within 30 minutes" possible over the whole inventory; per-listing travel time is what makes each result card honest. A design that uses only the first shows "28 minutes" on a home that the router would say is 33 minutes away; a design that uses only the second cannot filter, only annotate a page.
 
-### Routing Providers Are an Architectural Constraint
+### Routing providers are an architectural constraint
 
 **The commercial model of the routing provider is an architectural input**, as the Rightmove case shows. Three kinds of terms matter.
 
@@ -228,7 +228,7 @@ The isochrone filter is what makes "show me only homes within 30 minutes" possib
 
 The alternative is a self-hosted routing engine. Valhalla, an open-source engine, offers an isochrone service that "computes areas that are reachable within specified time intervals from a location", with costing models for car, bicycle, pedestrian and multimodal travel, up to four contours by default, and polygon output ([Valhalla documentation, n.d.](https://valhalla.github.io/valhalla/api/isochrone/)). Self-hosting moves the cost from license fees to engineering: road and transit data, which for public transport means importing operators' timetables (commonly published in the General Transit Feed Specification, GTFS) and keeping them current, plus capacity for the peaks. For public transport in particular, the departure time changes the answer, so the cache key must include a time bucket and the product must state the assumption ("weekdays, leaving at 08:30").
 
-### Caching Isochrones
+### Caching isochrones
 
 Commute requests repeat more than one might think, because people commute to the same few places. The isochrone cache key I recommend is:
 
@@ -356,6 +356,8 @@ What to watch over the long term: **conversational and natural-language search w
 8. Do commute results state mode and departure time, and do saved searches store the parameters rather than the polygon?
 9. How are map ranking and pin selection evaluated, and are list metrics being used where they do not apply?
 10. Which neighborhood layers carry legal or reputational risk in each market, and who approved them?
+
+## From Maps to Standing Promises
 
 The map turns place into a query. The next step is to turn a query into a standing promise: when a buyer saves the polygon around Jean-Macé, Hearthly commits to telling her within minutes when a matching flat appears. That promise, and the reverse search and fan-out machinery behind it, is the subject of [[saved-searches-and-alerts]].
 

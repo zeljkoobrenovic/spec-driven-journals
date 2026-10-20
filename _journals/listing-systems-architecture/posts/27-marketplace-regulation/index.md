@@ -358,7 +358,7 @@ The DSA is a regulation and applies directly, but enforcement, penalties and man
 
 Veldmark expresses country differences as data. The policy registry holds legal grounds per country; the attribute schema holds mandatory regulated fields per country and category; the disclosure templates hold language and placement per country; the reporting views hold format and authority per country. Engineers change components. Lucía's team, with counsel, changes configuration, through reviewed pull requests against the registry, and the obligation register records which configuration implements which obligation. [[multi-country-platforms]] covers the tenancy model this relies on.
 
-### Trade-offs
+## Trade-offs
 
 | Approach | Strengths | Weaknesses | When it is right |
 | --- | --- | --- | --- |
@@ -416,11 +416,11 @@ Part V has built the trust machinery of a listing marketplace: the shared trust-
 
 ## Sources and Evidence
 
-**Company engineering and investor sources**
+### Company engineering and investor sources
 
 - [Vurderinger mellom Kjøper og Selger på FINN.no (Ratings between buyer and seller)](https://hjelpesenter.finn.no/hc/no/articles/22650860254994-Vurderinger-mellom-Kj%C3%B8per-og-Selger-p%C3%A5-FINN-no) — FINN help center, 2024 (updated 2026). Ratings published simultaneously after a deal.
 
-**Standards, regulation and documentation**
+### Standards, regulation and documentation
 
 - [Regulation (EU) 2022/2065 (Digital Services Act)](https://eur-lex.europa.eu/eli/reg/2022/2065/oj) — Official Journal, 2022. Arts. 3, 14–33, 52 and 93; text checked against the Official Journal version retrieved through the EU Publications Office.
 - [Commission Implementing Regulation (EU) 2024/2835](https://eur-lex.europa.eu/eli/reg_impl/2024/2835/oj) — Official Journal, 2024. Transparency-report templates, calendar-year periods, two-month publication, five-year availability.
@@ -441,7 +441,7 @@ Part V has built the trust machinery of a listing marketplace: the shared trust-
 - [24 CFR § 100.75, discriminatory advertisements](https://www.law.cornell.edu/cfr/text/24/100.75) — Cornell Legal Information Institute, n.d. US fair-housing advertising rule.
 - [Review of EU consumer law](https://commission.europa.eu/law/law-topic/consumer-protection-law/review-eu-consumer-law_en) — European Commission, n.d. Fitness check and the planned Digital Fairness Act.
 
-**Research and practitioner sources**
+### Research and practitioner sources
 
 - [Fake reviews and sneaky fees banned under new law](https://www.which.co.uk/news/article/fake-reviews-and-sneaky-fees-banned-under-new-law-campaigned-for-by-which-aLzVp4g0S76D) — Which?, 2025. DMCC Act review rules from 6 April 2025; fines up to 10% of global turnover.
 

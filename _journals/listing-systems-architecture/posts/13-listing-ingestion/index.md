@@ -366,6 +366,8 @@ What to watch: the share of live listings past their channel's freshness SLA; he
 9. Which legally required disclosures are blocking in the feed contract, per country and category, and who updates them when the law changes?
 10. Does any integration, including one owned by our own group, have access or terms that other partners do not?
 
+## From Accepted to Usable
+
 The records that pass this boundary are accepted, but they are not yet usable: prices with thousands separators in the wrong locale, makes spelled five ways, addresses without coordinates and vehicles described only by a VIN. The next chapter, [[normalization-and-enrichment]], follows the same Golf from accepted record to consistent, enriched listing, and asks how the platform records which of its values the dealer said and which the platform derived.
 
 ## Sources and Evidence

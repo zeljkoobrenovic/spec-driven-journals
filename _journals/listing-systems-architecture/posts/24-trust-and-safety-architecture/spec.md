@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Trust and Safety as a Platform
@@ -75,3 +75,4 @@ Article only for now.
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: Ingrid joined five weeks (not three) before 7 March; DSA Arts. 16, 17, 20 and 24(5) verified against the Official Journal and unofficial-mirror links replaced; Transparency Database demotion value corrected to DECISION_VISIBILITY_CONTENT_DEMOTED. *(AI-mediated session)*
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Cross-chapter consistency sweep: 3 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*

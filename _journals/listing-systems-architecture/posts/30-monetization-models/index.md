@@ -35,7 +35,7 @@ Every one of these is a **monetization model**. In this book, a monetization mod
 
 This chapter catalogs the models with public evidence and the KPIs portals publish. It then shows the systems each model requires and the liquidity each one spends. [[products-and-entitlements]], the next chapter, designs the catalog, pricing and entitlement systems that implement them. [[advertising-platforms]] owns display and retail-media advertising, and [[transactions-and-payments]] owns the transactional pivot. Both appear here only as models.
 
-## Setting the Scene: Where Does the Next Euro Come From?
+## Setting the Scene at Veldmark: Where Does the Next Euro Come From?
 
 It is mid-May 2027 at Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]). Veldmark's private-equity owner has asked the group to show how revenue grows from **€1.31 billion** in 2026 without cutting into the Common Ground budget. Olivier Petit, VP Monetization, brings three proposals to the architecture advice forum, the weekly open review that Ingrid Halvorsen, the Group Chief Architect, set up in April.
 

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Packages, Bumps and Quotas: Products, Pricing and Entitlements
@@ -65,3 +65,4 @@ Principal engineers and architects who own monetization, search or billing integ
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: [[toolkit]] link restored for the entitlement matrix, Omnibus and P2B citations verified against the Official Journal and relinked to EUR-Lex. *(AI-mediated session)*
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Cross-chapter consistency sweep: 2 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*

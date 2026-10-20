@@ -115,9 +115,9 @@ Modern authorization practice makes the same separation with OAuth. The OAuth 2.
 ![Left, a vendor carries a tangled ring of dealers' keys; right, the vendor holds one client badge with scoped permission tickets to each dealer.](assets/images/12-sellers-and-accounts/one-client-many-grants.jpeg)
 **Figure 2:** *An integration vendor serving many dealers should be one client with a scoped grant per dealer, never a collection of shared seller passwords.*
 
-## Architecture: A Party Model for Supply
+## Architecture: The Seller Account Model
 
-### The model
+### Who acts, who pays, who is shown
 
 ---begin mermaid---
 flowchart TB
@@ -221,7 +221,7 @@ Ratings attach to something, and the choice is a modeling decision with legal we
 
 EU consumer law, as amended by the 2019 Modernisation Directive, requires a business that gives access to consumer reviews to say whether and how it checks that they come from people who actually used or bought the product (Article 7(6) of the Unfair Commercial Practices Directive, inserted by [Directive (EU) 2019/2161](https://eur-lex.europa.eu/eli/dir/2019/2161/oj)). A marketplace that shows ratings of sellers should therefore record, with each rating, what made the reviewer eligible: a completed Safe Deal transaction, a lead followed by a confirmed viewing, or nothing at all.
 
-## In Practice
+## In Practice: Documented Patterns and Three Veldmark Accounts
 
 ### Documented patterns at real marketplaces
 
@@ -232,7 +232,7 @@ The public record on seller models is thin; most of it is in partner API documen
 - **CarGurus** defines a paying dealer as "a dealer account with an active, paid subscription at the end of a defined period" and reported 34,409 paying dealers at the end of 2025 ([CarGurus Form 10-K, 2026](https://www.sec.gov/Archives/edgar/data/1494259/000119312526059435/carg-20251231.htm)). The definition is a reminder that the commercial unit is an account with a contract, not a legal entity.
 - **The Bundeskartellamt's clearance on 8 October 2026** of mobile.de's acquisition of Carwow's German business noted that dealers and consumers often use several platforms in parallel and that many platforms let dealers export their data to other platforms; its main stated reasons for clearance were Carwow's new-car focus and competition from AutoScout24 ([Bundeskartellamt, 2026](https://www.bundeskartellamt.de/SharedDocs/Meldung/DE/Pressemitteilungen/2026/10_08_2026_mobile_carwow.html)). Dealers keep their data portable across marketplaces, and the integration-principal model is how a marketplace accepts that.
 
-> **INFERENCE, NOT DOCUMENTED:** None of these sources describes the internal account schema of the companies concerned. The party model in this chapter is a reference architecture derived from their public interfaces and from regulatory requirements, not a description of any company's systems.
+> **INFERENCE, NOT DOCUMENTED:** None of these sources describes the internal account schema of the companies concerned. The seller account model in this chapter is a reference architecture derived from their public interfaces and from regulatory requirements, not a description of any company's systems.
 
 ### Femke, a private seller
 
@@ -393,6 +393,8 @@ The condition under which this is too much: a single-brand, C2C-only marketplace
 8. Across our brands, can we count how many businesses we serve, and who is allowed to ask that question?
 9. If we launched in-platform payments in a new country tomorrow, could we produce the seller data that tax reporting would require?
 10. Which other services hold their own copy of the account hierarchy, and which of them would disagree with the account service today?
+
+## From the Listing to Its Supply
 
 With the listing, its taxonomy, attributes, media, location and seller modeled, Part II's account of the thing being sold is complete. [[part-3]] turns to how that supply actually arrives, through forms, APIs and bulk feeds from thousands of partners, starting with [[listing-ingestion]].
 

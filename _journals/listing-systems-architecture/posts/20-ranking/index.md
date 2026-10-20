@@ -35,7 +35,7 @@ Ranking in a listing marketplace is harder than in retail search for three reaso
 
 This chapter is about the function that turns the candidates retrieved by [[search-architecture]] and interpreted by [[query-understanding]] into an ordered page. It owns **learning to rank** (LTR), **paid-organic blending** and **ranking transparency**. It does not re-teach the product catalog and entitlements behind paid products ([[products-and-entitlements]]), the experimentation methods for two-sided markets ([[experimentation]]) or the full regulatory map ([[marketplace-regulation]]). It shows where each one enters the ranking function.
 
-## Setting the Scene: The "Top Listing" Boost That Ate Relevance
+## Setting the Scene at Veldmark: The "Top Listing" Boost That Ate Relevance
 
 Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]), earns **€150 million** a year from Tradeyard's paid visibility products, its value-added services (VAS): bumps, top listings and highlights. In April 2027, two months after she joined as Group Chief Architect, Ingrid Halvorsen asked Priya Raman's data team a narrow question: what does a buyer in Tradeyard Netherlands actually see on the first page?
 
@@ -96,7 +96,7 @@ Signals fall into families with different owners, update rates and risks. The ta
 
 Two rules of thumb come from this table. First, **signals that change often should not live in the inverted index**. In segment-based engines such as Elasticsearch, OpenSearch and Solr, a partial update re-indexes the whole document, so engagement counters and bump timestamps cause update storms; [[search-architecture]] covers the mitigation. Second, **every signal in the "paid" and "trust" rows carries a legal duty**, which is a reason to apply them in a layer that can be logged and explained, not inside a score.
 
-## The Architecture of a Ranking Function
+## Architecture: The Ranking Function
 
 The pattern that the documented large marketplaces converge on is a **multi-stage pipeline**. Each stage scores fewer candidates with a more expensive method. Airbnb's 2026 description of its search stack is typical: retrieval of tens of thousands of homes, a first-stage neural ranker, then a set-wise re-ranker, with each stage scoring about an order of magnitude fewer listings than the last ([Abdool et al., 2026](https://arxiv.org/html/2601.06873v1)). Vespa's documentation names the same phases, first, second and global ([Vespa](https://docs.vespa.ai/en/phased-ranking.html), n.d.). In a 2024 engineering post, Vinted reported that after moving to Vespa it could rank 200,000 candidates per query ([Vinted, 2024](https://vinted.engineering/2024/09/05/goodbye-elasticsearch-hello-vespa/)).
 
@@ -400,7 +400,7 @@ Ranking is one of the few components that every part of the business believes it
 9. What share of first-page positions do new listings receive, and is it rising or falling with each model retraining?
 10. If we change search engines next year, which parts of our ranking live in the engine and would have to be rebuilt?
 
-## From Ordered Results to Suggestions Nobody Asked For
+## From Ranking to Recommendations
 
 Ranking orders what a buyer asked for. The next chapter, [[recommendations]], deals with what the buyer did not ask for: similar listings, home feeds and "you may also like" modules that must find relevant items in inventory that may be gone tomorrow. The same machinery reappears there, candidate generation, re-ranking, exposure and logging, but without a query to anchor relevance, which makes cold start, availability and feedback loops even harder.
 

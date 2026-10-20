@@ -35,7 +35,7 @@ The media pipeline is the set of systems that accepts photos, videos, floor plan
 
 This chapter designs the pipeline as one system with one contract. It builds on the attribute contract in [[attribute-schemas]], hands moderation policy to [[trust-and-safety-architecture]] and duplicate clustering to [[entity-resolution]], and follows Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]), through Hearthly's media bill and the fake-rental ring that its image checks caught too late.
 
-## Setting the Scene: 1.8 Billion Images and a Fake-Rental Ring
+## Setting the Scene at Veldmark: 1.8 Billion Images and a Fake-Rental Ring
 
 It is September 2027. Julien Marchand, Hearthly's CTO, brings two documents to Ingrid Halvorsen, the Group Chief Architect.
 
@@ -349,6 +349,8 @@ Media is one of the easiest capabilities to share in a marketplace group and one
 8. When a listing is removed, how long do its images remain reachable on the CDN?
 9. Which models depend on images, and are they recomputed when media arrives or changes?
 10. How does the platform record and display whether an image is a photograph, an edited photograph or generated?
+
+## From Pictures to Place
 
 Photos show what an item is; the listing also has to say where it is. Location drives search, maps, trust signals and privacy risks of its own, and photos are only one way to leak it. [[location-and-geo]] takes up geocoding, precision and the privacy of a seller's address.
 

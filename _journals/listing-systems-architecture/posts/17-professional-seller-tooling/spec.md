@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Serving the Pros: Dealer, Agent and Merchant Tooling
@@ -69,3 +69,4 @@ Architects and engineering leads who own dealer portals, agency workspaces, part
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: Ruhrblick moved to the canonical Pro 150 package (€1,450, 150 slots), sale-record date aligned with ingestion, Rhône Habitat branch wording, OLX causal claim corrected to the source, P2B verified against the Official Journal, hand-off to [[part-4]]. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Cross-chapter consistency sweep: 1 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*

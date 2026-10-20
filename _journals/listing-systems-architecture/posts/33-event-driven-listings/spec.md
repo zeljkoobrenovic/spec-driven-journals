@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Every Change Is an Event: Event-Driven Listing Architecture
@@ -70,3 +70,4 @@ Chief and principal architects, event-platform and search leads in multi-brand m
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: corrected the Kleinanzeigen Debezium quote, fixed a table-row reference, flagged 2022 Adevinta evidence as older, expanded SLO, American spelling. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Cross-chapter consistency sweep: 2 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*

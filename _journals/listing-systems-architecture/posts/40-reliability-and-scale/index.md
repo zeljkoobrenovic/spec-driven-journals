@@ -35,7 +35,7 @@ The stakes are asymmetric. A minute of failed search at the weekly peak loses mo
 
 This chapter covers the traffic shape, journey-level objectives, capacity planning, caching, graceful degradation, multiple regions, incident management, bot management and cost. It builds on the platform chapters before it: [[search-architecture]] owns index design and reindexing mechanics, [[event-driven-listings]] owns the event backbone, and [[multi-country-platforms]] owns the shared-platform model whose blast radius this chapter has to manage.
 
-## Setting the Scene: Forty-Eight Minutes on a Sunday Evening
+## Setting the Scene at Veldmark: Forty-Eight Minutes on a Sunday Evening
 
 On **Sunday 17 January 2027**, at **20:35 CET**, search on Tradeyard Netherlands slowed down. Tradeyard is the general classifieds brand of Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]). The 99th-percentile latency of search requests rose from about **400 ms** to about **7 seconds** and stayed there for **48 minutes**. About **9%** of search requests failed outright. The apps showed spinners, then error messages; the web showed partial result pages without facets.
 
@@ -161,7 +161,7 @@ Google's SRE book gives the rules that would have shortened the brown-out: "alwa
 
 For a marketplace the translation is concrete. Apps retry search at most once, with jitter, and only on errors that a retry can fix. The gateway enforces a retry budget across clients. Timeouts shrink as requests move down the stack, so a slow search node fails a request quickly instead of holding it. Admission control at the gateway rejects or degrades requests when concurrency passes a limit, rather than letting queues grow until everything is slow. OLX is reported to have published a two-part post in 2021 on load shedding with NGINX using adaptive concurrency control; it could not be retrieved or verified for this book, so treat it as a pointer, not evidence.
 
-### Caching
+### Caching in three layers
 
 Caching in a listing platform has three layers, each with a different staleness tolerance.
 
@@ -175,7 +175,7 @@ Two lessons from the brown-out apply. **Warm before you switch**: any operation 
 
 ## Capacity Planning for Known Peaks
 
-### The calculation
+### Sizing from the weekly peak
 
 Capacity planning in a marketplace starts from the weekly peak, not the average. Veldmark's group-wide search load averages 9,000 queries per second and peaks at 31,000, a ratio of about 3.4. Tradeyard carries about 70% of that, roughly **21,700** queries per second at the Sunday peak, and Tradeyard NL a little under half of Tradeyard's.
 
@@ -190,7 +190,7 @@ Two levers change the result more than buying nodes. Serving landing-page and br
 ![A wide stream of human and bot requests narrowed at the edge by a cache and a bot gate before a smaller stream reaches the search cluster.](assets/images/40-reliability-and-scale/requests-that-never-reach-the-cluster.jpeg)
 **Figure 4:** *The cheapest capacity is the request that never reaches the cluster: edge and gateway caches plus bot shedding take about 35% of peak requests off the backend in Veldmark's 2027 plan.*
 
-### The calendar
+### A shared calendar of planned load
 
 The campaign factor is only knowable if engineering knows about campaigns. Veldmark's fix is organizational and small: marketing campaigns, scheduled push and e-mail sends, bulk partner imports and large batch jobs go into one **peak and campaign calendar**, owned by platform engineering, that drives pre-scaling and blocks heavy batch work in peak windows. The calendar is also where alert digests are scheduled, so that 38 million daily alert notifications do not all fire into the same evening minute.
 
@@ -239,7 +239,7 @@ Classifieds are mostly country-scoped businesses, which shapes the regional ques
 
 Regional failures of a cloud provider do happen, and their shape is instructive. AWS's post-event summary of the 19–20 October 2025 disruption in its N. Virginia (us-east-1) region describes a latent defect in DynamoDB's automated DNS management that left the regional endpoint with an empty DNS record; the effects spread over about 14.5 hours to EC2 instance launches, Network Load Balancer, Lambda, container services, the Security Token Service and console sign-in ([AWS, 2025](https://aws.amazon.com/message/101925/)). Two lessons transfer to any platform. **Regional control planes are shared dependencies**: identity tokens, instance launches and load balancers can fail together. And **autoscaling is not capacity during a regional event**: if new instances cannot launch, only capacity that is already running counts.
 
-### Options
+### Five multi-region options
 
 | Option | What it gives | What it costs | Fits |
 | --- | --- | --- | --- |

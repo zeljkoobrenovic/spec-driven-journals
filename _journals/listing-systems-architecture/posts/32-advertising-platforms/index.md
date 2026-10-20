@@ -239,7 +239,7 @@ Adevinta's numbers show both the size and the fragility of the business: Europea
 
 The architecture advice forum took three decisions in July 2027, each with a decision record.
 
-### Decision 1: The auction timeout is a contact-guarded parameter
+### Decision 1: the auction timeout is set with contacts as a guardrail
 
 Priya Raman's team ran a four-week experiment on Tradeyard Netherlands listing and search pages, randomized by user, with three arms: the 1,500 ms timeout, 900 ms, and 900 ms with four of the nine bidders moved to Prebid Server and below-the-fold slots lazy-loaded.
 
@@ -255,7 +255,7 @@ The third arm lost 1.9% of programmatic revenue per page view and gained about 1
 ![Balance scale on which a faster page with more contacts outweighs a slightly larger ad revenue from a slower auction, with a contacts gate for ad changes.](assets/images/32-advertising-platforms/timeout-on-a-contact-scale.jpeg)
 **Figure 5:** *The shorter auction cost 1.9% of programmatic revenue per page view and gained about 1% in contacts, which is worth more to the marketplace; ad timeouts, slot counts and ad load now ship behind an experiment with contacts per session as the guardrail.*
 
-### Decision 2: Audiences are built from approved building blocks
+### Decision 2: audiences are built from approved building blocks
 
 The car maker's "electric SUV" audience was rebuilt under the audience-service rules. Its sources were limited to Motorvane search and saved-search events for electric SUVs in the previous 30 days, from signed-in or consented users with the relevant TCF purposes; no dealer-side data, no Keybridge or Valuo data, no listing-contact content. Minimum segment size per activation was set at 1,000 users. Activation was allowed on Motorvane pages and through private deals; off-site activation only through a clean room with aggregate reporting. The segment contained about 310,000 users in Germany when first built, and fell to about 240,000 after the consent check removed users whose purposes did not cover it, a 23% difference that the original segment had silently ignored.
 
@@ -264,7 +264,7 @@ The car maker's "electric SUV" audience was rebuilt under the audience-service r
 
 The forum also accepted Felix Brandt's condition for Motorvane: **retail-media placements for car makers do not appear on dealer listing detail pages**, only on search, editorial and model pages, and dealers can see which placements ran next to their stock. Motorvane dealers pay **€238 million** a year in subscriptions; a €14 million retail-media line is not worth their trust.
 
-### Decision 3: One family of paid positions
+### Decision 3: one family of paid positions
 
 From the first quarter of 2028, sponsored listings and top listings on Tradeyard Poland become one product family in the group product catalog ([[products-and-entitlements]]): fixed-price "Top listing" and auctioned "Sponsored" are two pricing modes for the same slot type. Ranking reads both from one read model; both are subject to the relevance floor; the result page carries at most three paid positions in the first ten rows, whichever mode bought them. Veldmark Ads keeps the auction, budgets and self-serve tool; the brand keeps the product description and the slot rules; one invoice line per seller per period shows both. Sponsored-listing revenue on Tradeyard Poland fell about 6% in the first months after the floor, while contacts per paid position rose; the same pattern [[ranking]] reports for top listings.
 
@@ -339,7 +339,7 @@ Advertising closes Part VI: the marketplace now has contacts, transactions, prod
 
 ## Sources and Evidence
 
-**Company engineering and investor sources**
+### Company engineering and investor sources
 
 - [Adevinta Annual Report 2023](https://www.sec.gov/Archives/edgar/data/1065088/000106508824000094/ex9901adevinta2023annualre.htm), Adevinta ASA (exhibit to eBay filing), 2024 — advertising revenue by segment, French advertising decline, SSPs as critical suppliers, revenue recognition, first-party advertising in the convergence plan.
 - [eBay Inc. Form 10-K for fiscal 2025](https://www.sec.gov/Archives/edgar/data/1065088/000106508826000027/ebay-20251231.htm), eBay Inc., 2026 — advertising revenue, Promoted Listings as first-party advertising.
@@ -348,7 +348,7 @@ Advertising closes Part VI: the marketplace now has contacts, transactions, prod
 - [Rightmove plc results for the year ended 31 December 2025](https://plc.rightmove.co.uk/content/uploads/2026/02/Rightmove-RNS-27.02.26.pdf), Rightmove, 2026 — marketing CRM audience.
 - [Hybrid Search: Where Keywords Meet Vectors](https://tech.olx.com/hybrid-search-where-keywords-meet-vectors-enabling-classifieds-discovery-b7c383fe4fc4), OLX Tech Blog, 2025 — VAS LTR balancing relevance and paid visibility.
 
-**Standards, regulation and documentation**
+### Standards, regulation and documentation
 
 - [Regulation (EU) 2022/2065, Digital Services Act](https://eur-lex.europa.eu/eli/reg/2022/2065/oj), 2022 — Art. 26 advertising transparency and special-category profiling ban; Art. 28 minors.
 - [Directive (EU) 2019/2161](https://eur-lex.europa.eu/eli/dir/2019/2161/oj), *Official Journal*, 2019 (Annex point 11a checked against the Publications Office text, October 2026) — blacklisted undisclosed paid ranking.
@@ -362,7 +362,7 @@ Advertising closes Part VI: the marketplace now has contacts, transactions, prod
 - [List of designated very large online platforms and search engines](https://digital-strategy.ec.europa.eu/en/policies/list-designated-vlops-and-vloses), European Commission, updated 15 October 2026 — no classifieds marketplace among the designated platforms.
 - [Update on plans for Privacy Sandbox technologies](https://privacysandbox.google.com/blog/update-on-plans-for-privacy-sandbox-technologies), Google, 2025 — third-party cookie choice retained; Privacy Sandbox technologies retired.
 
-**Research and practitioner sources**
+### Research and practitioner sources
 
 - [Department of Justice prevails in landmark antitrust case against Google](https://www.justice.gov/opa/pr/department-justice-prevails-landmark-antitrust-case-against-google), US Department of Justice, 2025 — court finding on open-web advertising markets.
 

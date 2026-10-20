@@ -35,7 +35,7 @@ The opposite mistake is just as common. A group sees the duplication, builds one
 
 This chapter is about the architecture between those two failures. It owns three terms: the **tenancy model** (what a tenant is and how every shared capability scopes, isolates and separates by it), the **global component** (a capability run once for the group beneath local products) and **configuration over code** (expressing market differences as governed data instead of code branches). It draws on the public record of Adevinta, eBay Classifieds Group, OLX, AVIV and Vinted. Group-level sequencing after an acquisition belongs to [[platform-consolidation]]; the organization that runs a shared platform belongs to [[organizing-marketplace-engineering]].
 
-## Setting the Scene: One Rule, Four Countries, Three Days
+## Setting the Scene at Veldmark: One Rule, Four Countries, Three Days
 
 On **Sunday 7 March 2027** at 20:11 CET, a fake "buyer" sent Femke, a private seller on Tradeyard Netherlands, a phishing link disguised as a Tradeyard Safe Deal payment page. She reported it at 20:19, the account was suspended at 20:26, and a new rule written that evening withheld **37** similar messages to other sellers. Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]), had stopped the attack in one market in under an hour.
 
@@ -122,7 +122,7 @@ Three observations from the table shape the rest of the chapter.
 
 ## Architecture: A Tenancy Model for a Marketplace Group
 
-### The layers
+### Shared and local, layer by layer
 
 The reference architecture below is the author's model, not a description of any company's systems. It separates what is shared from what is local by layer, and puts the tenancy services, which every layer depends on, in the middle.
 
@@ -316,7 +316,7 @@ The Polish vehicles section shows how the layers combine. Tradeyard Poland's veh
 
 The rings were used for the first time for the group taxonomy and attribute service, which went live in October 2027 with Tradeyard first. Ring 1 (`ty:pt`) received the new category resolution on Monday 4 October 2027, ring 2 a week later and ring 3 (`ty:nl`) on Monday 25 October, one week before the bikes split went live on **Monday 1 November 2027** ([[categories-and-taxonomies]]). The ring-1 week found two defects that would have mattered at scale: a Portuguese label falling back to Dutch where a translation was missing, and a cache key that omitted the tenant code. **The second defect is the classic multi-tenant bug**, and it is the reason decision 2 makes the tenant code mandatory in every cache key, not only in data.
 
-## Trade-Offs
+## Trade-offs
 
 ### Choosing a platform model per capability
 
@@ -400,6 +400,8 @@ Real estate deserves special care. National professional-software ecosystems, ma
 8. For each shared capability, what is the exit path for one tenant: export, handover, transitional run, switch-off?
 9. Which shared components grew by adoption and which by mandate, and what would happen if the mandate were withdrawn?
 10. Is any current initiative converging whole product platforms rather than sharing capabilities beneath them? If so, where is its separate investment case?
+
+## From Sharing to Staying Up
 
 A tenancy model decides how the platform is shared; it does not decide whether the shared platform stays up when everyone uses it at once. The next chapter, [[reliability-and-scale]], takes the shared platform to its Sunday-evening peak and asks how to keep it fast, available and affordable.
 

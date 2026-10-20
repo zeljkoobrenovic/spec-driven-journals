@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Bounded Contexts for Marketplaces: Where One Listing Becomes Many Models
@@ -68,3 +68,4 @@ Chief and principal architects and engineering leaders who must draw or review a
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: Kleinanzeigen Debezium quote corrected to the source wording; Vinted domain claims spot-checked; IDs and Lyon prices checked against ch. 15 and ch. 33. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Cross-chapter consistency sweep: 4 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*

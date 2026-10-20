@@ -35,7 +35,7 @@ The public record of classifieds groups is unusually rich on this topic, because
 
 This chapter owns three terms: the **consolidation sequence** (the order and gates in which an acquired marketplace's capabilities move onto group platforms), the **synergy case** (the quantified hypothesis of savings and growth that justifies the integration, with its costs) and the **brand migration** (moving users, sellers, partners and search engines from one consumer brand to another). The tenancy model that a consolidation needs is in [[multi-country-platforms]]; the migration techniques for moving a live system are in [[modernization-and-migration]]; Adevinta's full record is in [[case-adevinta]].
 
-## Setting the Scene: Where Are the Casavista Synergies?
+## Setting the Scene at Veldmark: Where Are the Casavista Synergies?
 
 On **Thursday 14 October 2027**, Henrik de Boer, Veldmark's Group CEO, forwarded Ingrid Halvorsen a question from the private-equity owner's operating partner ahead of the 2028 budget. Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]), had bought two businesses into its real-estate portfolio in two years. **The question was blunt: where were the synergies that had been paid for?**
 
@@ -120,7 +120,7 @@ flowchart TB
 
 The questions are ordered by how absolute they are. A merger-control remedy or a commitment to customers, such as Keybridge's neutrality, rules out integration whatever its savings. A likely sale within a few years rules out deep sharing, because every shared layer becomes separation work. Only then does the question of fit arise.
 
-### The stages
+### Stages and gates after an acquisition
 
 Figure 4 shows the sequence the chapter recommends for a marketplace acquired into a group that already has shared platforms. It is a reference model; the gates matter more than the exact stage boundaries.
 
@@ -249,7 +249,7 @@ The review classified Keybridge's integration option as **federate under group c
 
 The review also covered the one commercial overlap between Veldmark's own brands. Tradeyard Poland's cars section competed with Motorvane Poland for the same dealers: about **2,900** Polish dealers had accounts on both, and about **40%** paid both. This was a portfolio decision, not a platform one, and it had already been made in the marketplace profile register: Tradeyard Poland's vehicles section stays a classifieds section with insertion fees for private sellers, while dealers above a small listing count are offered Motorvane packages and their stock is syndicated to Tradeyard through Motorvane's feed ([[marketplace-taxonomy]]). The architectural consequence for consolidation is small but important: the shared listing core records which brand owns the commercial relationship for each listing, so the overlap can be managed without merging the brands.
 
-## Trade-Offs
+## Trade-offs
 
 ### Integration options compared
 
@@ -331,6 +331,8 @@ Real estate and automotive carry an extra risk: supply arrives through professio
 8. For a brand migration: how long will the old domain answer, how are accounts carried over, which partner endpoints change, and when are business users notified?
 9. Are we migrating any capability onto a sibling system that is itself scheduled to be replaced?
 10. If this business were sold in three years, what would we hand over, switch off and run twice, and what would it cost?
+
+## From Sequence to Organization
 
 A consolidation sequence describes what moves and when; it does not say who owns each capability once it has moved, or how the acquired engineers become part of the group. The next chapter, [[organizing-marketplace-engineering]], takes up the organization that makes a consolidated platform work.
 

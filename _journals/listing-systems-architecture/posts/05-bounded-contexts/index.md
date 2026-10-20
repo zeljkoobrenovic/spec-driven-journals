@@ -35,7 +35,7 @@ Listing marketplaces are an unusually clear case for that tool, because their ce
 
 This chapter applies the method: subdomains first, then contexts and the meanings they own, then the context map and its relationships, then aggregates, then the listing event as the shared language. It defines the terms and draws the boundaries. It does not design the listing aggregate itself, which [[listing-aggregate]] owns, or the event contract's envelope and evolution, which [[event-driven-listings]] owns. The running example is Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]).
 
-## Setting the Scene: Six Answers to "What Is a Listing?"
+## Setting the Scene at Veldmark: Six Answers to "What Is a Listing?"
 
 It is April 2027. Veldmark has just adopted its architecture principles and set up a weekly, open architecture advice forum. Sven Lindqvist, principal engineer for the event platform, has three months to ship **Listing event contract v1**, which goes live on 1 July 2027. Before he can define an event, he needs an answer to a question that sounds trivial. Ingrid Halvorsen, the Group Chief Architect, puts it on the forum's agenda: *what is a listing, and who decides?*
 
@@ -191,7 +191,7 @@ Each relationship on the map is a decision. The important ones, with the reasoni
 
 **Yardstick is a big ball of mud, contained.** Tradeyard's monolith still holds the `ads` table and its 214 columns until the insertion flow moves out in Q2 2028. It is not decomposed in place. **Yardstick Relay**, a translator service, reads Yardstick's tables through change data capture (CDC) and emits contract events, so consumers see the same language from Tradeyard as from Motorvane. The rule Veldmark adopted is that CDC is a source, never a contract: only the translator reads Yardstick's tables. When the new insertion service ships, it publishes the same contract through its own outbox, and consumers do not notice. [[modernization-and-migration]] owns the strangler plan.
 
-### Aggregates and Transactional Boundaries
+### Aggregates and transactional boundaries
 
 Bounded contexts set the boundaries of models. Aggregates set the boundaries of transactions inside them. Most damage in listing systems comes from transactions that try to span what should be two aggregates, often in two contexts.
 
@@ -231,7 +231,7 @@ sequenceDiagram
 
 Each step is consistent within one aggregate. Between them, the system is eventually consistent, and the boundaries say who repairs what. This is the trade an architect makes on purpose: **atomic consistency within an aggregate, explicit eventual consistency between aggregates, and idempotency everywhere.**
 
-### The Listing Event as Published Language
+### The listing event as published language
 
 If the context map has one artifact that matters more than all the others, it is the listing event contract. It is the language through which the catalog tells every other context what happened to a listing. Its design rules follow from the context map.
 
@@ -385,6 +385,8 @@ At group scale, the context map is the architecture's constitution. These are th
 8. Does any context have two owning teams, or any responsibility, such as removal propagation, have none?
 9. Which relationships on the map carry a commercial or legal promise, and are they enforced by access control?
 10. If a brand had to be carved out next year, which shared contexts would it have to leave, and how much of its data would they hold?
+
+## From One Map to Four Verticals
 
 The context map says where the models are and how they talk. It deliberately treats the four brands alike, because most of the map is shared. The next chapter, [[vertical-requirements]], asks the opposite question: what genuinely differs between general classifieds, real estate, automotive and jobs, and therefore which contexts must never be forced into one shape.
 

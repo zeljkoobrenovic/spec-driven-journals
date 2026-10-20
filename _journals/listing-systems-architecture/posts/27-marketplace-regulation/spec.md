@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Rules of the Marketplace: DSA, DAC7 and Vertical Regulation
@@ -68,3 +68,4 @@ Chief and enterprise architects, trust-and-safety, data and payments leads, and 
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: Safe Deal 2026 volume updated to 11.6M transactions / ~€1.02B GMV; Country Fork cost aligned to eight countries; closing hand-off now links [[part-6]]; Transparency Database and P2B-repeal claims spot-checked. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Cross-chapter consistency sweep: 4 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*

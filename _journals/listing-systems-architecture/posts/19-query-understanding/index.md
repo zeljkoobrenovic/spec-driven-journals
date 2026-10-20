@@ -65,7 +65,7 @@ Belgium added French ("vélo électrique"), Poland "rower elektryczny" and Portu
 
 **LLM query compiler.** A large language model (LLM) that turns a natural-language request into the marketplace's existing structured query, which the classic engine then executes.
 
-## The Architecture of a Query-Understanding Layer
+## Architecture: The Query-Understanding Layer
 
 Query understanding runs inside the search API, before retrieval, for every request that has text. The diagram shows the reference architecture I recommend. Steps that need models call them through a cache, because the head of the query distribution repeats and the tail is where models earn their keep.
 
@@ -407,11 +407,13 @@ What to watch: null-result and low-result rates per market and category, chip-re
 9. If we use an LLM, what validates its output, what does it cost per thousand queries, and where is the query text processed and stored?
 10. Who owns each model in the query path, and when was its evaluation set last refreshed?
 
+## From Retrieval to Order
+
 Query understanding decides what the engine retrieves; it does not decide the order in which buyers see it. That order is a negotiation between relevance, freshness, seller fairness and paid visibility, and it is the subject of the next chapter, [[ranking]].
 
 ## Sources and Evidence
 
-**Company engineering and investor sources**
+### Company engineering and investor sources
 
 - [How Vinted Serves Personalised Search Autocomplete](https://vinted.engineering/2026/04/22/personalized-search-autocomplete/), Vinted Engineering, 2026 — candidates, ranking, folding, fuzzy cascade, latency and results.
 - [Dense Retrieval](https://vinted.engineering/2025/11/18/dense-retrieval/), Vinted Engineering, 2025 — two-tower model, HNSW, RRF fusion, low-recall fill, filter invariant, costs.
@@ -429,7 +431,7 @@ Query understanding decides what the engine retrieves; it does not decide the or
 - [Zillow AI search adds commute time, affordability](https://www.housingwire.com/articles/zillow-artificial-intelligence-search/), HousingWire, 2024 — Zillow natural-language search criteria.
 - [Academic Publications & Airbnb Tech: 2025 Year in Review](https://airbnb.tech/infrastructure/academic-publications-airbnb-tech-2025-year-in-review/), Airbnb Tech, 2025 — augmenting narrow searches with recommendations.
 
-**Standards, regulation and documentation**
+### Standards, regulation and documentation
 
 - [Synonym graph token filter](https://www.elastic.co/docs/reference/text-analysis/analysis-synonym-graph-tokenfilter), Elastic documentation, n.d. — search-time, multi-word and updateable synonyms.
 - [Hyphenation decompounder token filter](https://www.elastic.co/docs/reference/text-analysis/analysis-hyp-decomp-tokenfilter), Elastic documentation, n.d. — decompounding for Germanic languages.
@@ -437,7 +439,7 @@ Query understanding decides what the engine retrieves; it does not decide the or
 - [Reciprocal rank fusion](https://www.elastic.co/docs/reference/elasticsearch/rest-apis/reciprocal-rank-fusion), Elastic documentation, n.d. — RRF retriever and its rank constant.
 - [Score ranker processor](https://docs.opensearch.org/latest/search-plugins/search-pipelines/score-ranker-processor/) and [Normalization processor](https://docs.opensearch.org/latest/search-plugins/search-pipelines/normalization-processor/), OpenSearch documentation, n.d. — hybrid fusion options and versions.
 
-**Research and practitioner sources**
+### Research and practitioner sources
 
 - [Applying Embedding-Based Retrieval to Airbnb Search](https://arxiv.org/html/2601.06873v1), Abdool et al. (Airbnb), 2026 — IVF versus HNSW under filters; replay-based evaluation.
 

@@ -35,7 +35,7 @@ Most marketplaces discover this late. The web front end is built for users, SEO 
 
 The chapter covers the web layer (rendering, composition, caching, performance), the SEO layer (landing-page generation, listing-page lifecycle, sitemaps, structured data, localization), the app layer (backends-for-frontends, server-driven UI, deep links) and the newest channel, AI search and answer engines. It does not re-teach search indexing, which [[search-architecture]] owns, or the event stream, which [[event-driven-listings]] owns. It uses both.
 
-## Setting the Scene: Forty Million URLs and a Sold Bike
+## Setting the Scene at Veldmark: Forty Million URLs and a Sold Bike
 
 It is late March 2027 at Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]). Ingrid Halvorsen, the Group Chief Architect, is reviewing Tradeyard's web estate with Daan Visser, Tradeyard's engineering director, and the brand's SEO lead. Tradeyard has about **40 million** URLs in Google's index across its four country domains, and **46%** of its web sessions start from organic search. Those two numbers appear in every board pack as evidence of strength. Ingrid wants to know what is behind them.
 

@@ -35,7 +35,7 @@ Most marketplaces start with the cheapest answers: downstream systems poll the l
 
 This chapter owns the **listing event**, the **transactional outbox** and **schema evolution** for listing events. It builds on the lifecycle and invariants in [[listing-aggregate]] and the stages in [[publication-pipeline]]. Where the copies live, how consistent they must be, and how erasure reaches them belong to [[listing-data-management]]. How behavioral tracking events reach the data platform belongs to [[data-platform]].
 
-## Setting the Scene: The Digest That Did Not Know the Bike Was Sold
+## Setting the Scene at Veldmark: The Digest That Did Not Know the Bike Was Sold
 
 On Tuesday 9 March 2027, Ingrid Halvorsen, Veldmark's Group Chief Architect (Veldmark is the fictional marketplace group this book follows; see [[meet-veldmark]]), reads an incident note from Tradeyard Netherlands. Femke's €240 Rotterdam city bike, listed on Sunday evening, sold on Monday for €225 through Safe Deal. Tradeyard marked it sold at **18:10** and Solr removed it from search at **18:11**. Yet the next morning's alert digest e-mail still featured the bike to people with matching saved searches. Three of them messaged Femke to ask whether it was still available.
 
@@ -396,6 +396,8 @@ At group scale the listing event contract is one of a handful of artifacts that 
 8. What is the end-to-end latency from "seller marks sold" to "listing gone from search, alerts and partner feeds", and is it measured continuously?
 9. Which personal data fields are on the stream, and how would an erasure reach every retained copy of them?
 10. Which artifacts are computed from listing data and delivered hours later, and do they re-check availability at delivery?
+
+## From Events to Copies
 
 The event stream moves changes; it does not decide where the resulting copies live, how stale each may be, or how a seller's erasure request reaches all seven of them. [[listing-data-management]] takes up those questions with the same bike, now held in seven places at once.
 

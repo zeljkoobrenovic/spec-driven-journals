@@ -35,7 +35,7 @@ The obligation is larger than it looks. At Veldmark, the fictional marketplace g
 
 This chapter owns three terms. A **saved search** is a persisted, normalized search query with an owner, a notification policy and a lifecycle. **Percolation** (also called reverse search or prospective search) is matching a document against stored queries rather than a query against stored documents. **Alert fan-out** is the process of turning matches into notifications across channels, with deduplication, throttling and delivery. It builds on [[search-architecture]] for the engine, on [[event-driven-listings]] for the event stream, on [[publication-pipeline]] for what "searchable" means and when, and on [[map-search]] for drawn and commute areas. Ranking signals from alerts are used by [[ranking]] and [[recommendations]].
 
-## Setting the Scene: 312 Saved Searches and a Ten-Minute Cron
+## Setting the Scene at Veldmark: 312 Saved Searches and a Ten-Minute Cron
 
 On **Sunday 7 March 2027 at 19:42 CET**, Femke, a private seller in Rotterdam, lists a used city bike for **€240** on Tradeyard Netherlands. It becomes searchable at **19:48**, six minutes later, the Tradeyard baseline. It matches **312** saved searches. The first contact arrives at **19:55**, from a buyer who received an alert. Femke has **14** conversations within 24 hours, and on Monday 8 March she sells the bike for **€225** through Safe Deal. Tradeyard marks it sold at **18:10** and search removes it at **18:11**.
 
@@ -159,7 +159,7 @@ For Femke's bike, the NL city-bikes partition held about **1.9 million** saved s
 
 Some marketplaces skip the engine altogether and build a **structured matcher**: saved searches are decomposed into their structured constraints and stored in an in-memory or key-value index keyed by (category, place cell); each listing looks up the keys it produces and evaluates the remaining numeric and attribute constraints in code. Tradeyard's Yardstick cron job is a primitive version of this in MySQL and PHP. The approach is fast and cheap for browse-shaped saved searches and has no coupling to the search engine's mapping. Its weakness is fidelity: it reimplements the search semantics, and every difference (how "10 km" is measured, how keywords are tokenized, how a missing attribute is treated) becomes an alert that does not match what the user sees on the site, or a listing the site shows that no alert announced.
 
-## The Architecture of Alerts
+## Architecture: Alerts
 
 Figure 4 shows the target architecture Ingrid's team proposes for Common Ground.
 
@@ -198,7 +198,7 @@ The responsibilities:
 
 The matching approach is a **hybrid**: percolation per event for instant alerts, and for digests a choice between collecting the day's percolation matches (cheap, already computed) and batch re-querying (exact, reuses the main index). Ingrid's recommendation is to build digests from the percolation matches recorded in the match ledger and re-check them at send time, because that keeps one matching semantics for both channels. Batch re-query remains as a reconciliation job that samples saved searches and compares its results with the ledger, to catch matcher bugs.
 
-### The Bike, Replayed on the Target Design
+### The bike, replayed on the target design
 
 Figure 5 replays Femke's listing on the Common Ground design.
 
@@ -399,6 +399,8 @@ What to watch over the longer term: **natural-language saved searches**. A 2023 
 8. How are users ordered within a large fan-out, and may any paid product change that order?
 9. How many saved searches are dormant, what is the retention rule, and does deletion reach the store, the ledger and the percolator?
 10. Which metric does the alerts team optimize: sends, opens or contacts?
+
+## From Discovery to Trust
 
 Alerts bring buyers back to listings that are fresh and real. Whether those listings *are* real is the work of the next part of the book, [[part-5]], which begins with how a marketplace organizes trust and safety as a system rather than a queue ([[trust-and-safety-architecture]]).
 

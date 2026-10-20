@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: After the Deal: Consolidating Platforms After Acquisitions
@@ -62,3 +62,4 @@ External: eBay 8-K 2004; eBay Vivanuncios 2015; Immowelt 2015; Adevinta 2021, 20
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: AVIV "fully integrated platform" attributed to the interviewer (consistency item 18); American spelling; timetoread corrected to 27 min; Bundeskartellamt 8 Oct 2026 and Adevinta synergy figures re-verified. *(AI-mediated session)*
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Cross-chapter consistency sweep: 4 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*

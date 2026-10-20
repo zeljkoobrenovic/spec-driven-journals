@@ -408,6 +408,8 @@ The condition under which this design is too much: a single-country marketplace 
 9. Could a buyer search across our country sites near a border today, and if not, is that a product decision or an accident of the data model?
 10. What is our weekly figure for coordinate defects, and who looks at it?
 
+## From Place to Seller
+
 Location tells the marketplace where a listing is; it does not say who is selling it. That question — private sellers, dealers, agencies with fourteen branches, and the accounts, roles and integrations behind them — is the subject of [[sellers-and-accounts]].
 
 ## Sources and Evidence

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Meet Veldmark: Four Marketplaces, One Platform to Build
@@ -68,3 +68,4 @@ Article only for now.
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: Tradeyard country history aligned with industry-evolution (BE and PT on their own copies of Yardstick; PL by acquisition); Ruhrblick's Pro 150 package named; all figures checked against the ledger and editor lines; American spelling (program). *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Cross-chapter consistency sweep: 4 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*

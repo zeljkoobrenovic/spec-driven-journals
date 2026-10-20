@@ -37,7 +37,7 @@ The industry has a settled answer to the first-order question. Martin Fowler's *
 
 This chapter owns three terms. A **migration stage gate** is a decision point in moving one slice of a system, with measured exit criteria and a defined rollback, that must be passed before more traffic or responsibility moves. **Relevance parity** is the condition that a new search path produces outcomes for buyers and sellers that are not worse than the old path's, within agreed tolerances, measured on real queries; it is not identical results. **URL migration** is the controlled change of public URLs, or the deliberate decision not to change them, with mappings, redirects, sitemaps and monitoring that preserve search-engine signals. The event mechanisms this chapter uses belong to [[event-driven-listings]], the search platform to [[search-architecture]], and the URL and redirect services to [[web-and-seo-architecture]].
 
-## Setting the Scene: Yardstick in 2027
+## Setting the Scene at Veldmark: Yardstick in 2027
 
 Yardstick is the core of Tradeyard, the horizontal classifieds brand of Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]). It is a PHP monolith written from 2006 onwards, running on MySQL in a co-located data center in Amsterdam. Since 2019 about 40 microservices have grown around it on AWS, but Yardstick still owns the listing table, insertion, most page rendering, alerts, the pro-seller tools, the admin back office and the integration with Tradeyard Safe Deal. It serves Tradeyard's 13.2 million live listings in four countries, about 2.3 million new listings a week and 31 million monthly users.
 
@@ -390,6 +390,8 @@ The professional verticals have one advantage: cohorts are natural. Moving a sof
 8. Which URLs, status codes or rendering modes change, and where are the redirects and the monitoring?
 9. When was rollback last rehearsed with real data, and what is the point of no return?
 10. Which consumers still read the legacy database, and which transitional components have no end date?
+
+## From Migration to AI
 
 Yardstick's retirement is a 2029 event; the platform that replaces it will itself be replaced, in parts, during the next decade. Before that question, the next chapter, [[ai-in-listing-systems]], looks at the technology shift most likely to reshape listing creation, search and moderation on the new platform, and at the architecture that keeps it under control.
 

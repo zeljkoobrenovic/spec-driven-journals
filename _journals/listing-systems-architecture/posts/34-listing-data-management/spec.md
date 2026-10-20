@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: System of Record and Read Models: Listing Data Management
@@ -68,3 +68,4 @@ Chief and principal architects, data and platform leads, and privacy engineers i
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: aligned Femke's media copy with the media-pipeline ledger (six photos, GPS in originals), corrected the Vinted multi-writer quote and Vitess shard wording, hedged the Vinted cross-border claim, verified DSA Arts. 20(1) and 30(5) against the Official Journal text. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Cross-chapter consistency sweep: 2 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*

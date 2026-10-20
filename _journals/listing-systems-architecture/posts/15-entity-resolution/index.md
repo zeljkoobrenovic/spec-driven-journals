@@ -35,7 +35,7 @@ This chapter covers two capabilities. **Duplicate detection** finds listings tha
 
 Neighboring chapters own adjacent parts. [[listing-ingestion]] owns the feeds that bring the copies in. [[normalization-and-enrichment]] owns the address, VIN and attribute normalization that matching depends on. [[media-pipeline]] owns perceptual hashing as an image capability. [[fraud-prevention]] owns what happens once a duplicate turns out to be a scam. This chapter owns the matching, the clusters, the canonical entity and the policies that decide what each side of the market sees.
 
-## Setting the Scene: The Lyon Apartment, Three Times
+## Setting the Scene at Veldmark: The Lyon Apartment, Three Times
 
 In May 2027, Hearthly France receives three listings for a three-room (T3) **68 m²** flat in Lyon's 7th arrondissement, energy class (DPE, the French energy performance diagnostic) **D**. Hearthly is the real-estate portal of Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]). **Agence Rhône Habitat**, a network of **14 branches**, publishes it through Keybridge, the group's agent CRM. Two other agencies hold mandates too, and their transaction software sends the flat through two different real-estate software vendors. Rhône Habitat lists it at **€389,000**. The other agencies list it at €389,000 and €395,000, because French sale prices are usually shown fees included, and the agencies charge different fees.
 
@@ -107,7 +107,7 @@ flowchart LR
 ---end mermaid---
 **Figure 2:** *The matching pipeline. Blocking, scoring and clustering propose links; the entity registry owns the identifiers; a policy engine turns one cluster into different actions for different duplicate kinds; and human decisions feed back into both the registry and the model.*
 
-### Blocking: Finding Candidates Cheaply
+### Blocking: finding candidates cheaply
 
 Comparing every listing with every other listing is impossible: Hearthly France alone has 1.9 million live listings, which is about 1.8 trillion pairs. **Blocking** generates a small set of candidate pairs using cheap keys with high recall, so that the expensive scoring runs only on plausible pairs. A listing usually gets several blocking keys, and any shared key makes a pair a candidate:
 
@@ -120,7 +120,7 @@ Comparing every listing with every other listing is impossible: Hearthly France 
 
 Blocking is a recall decision. A pair that shares no key is never compared, so a missing key is a silent miss. The usual failure is a key that seems safe but splits true matches: blocking on exact address misses the agency that writes "rue de Marseille" without a number, and blocking on the H3 cell misses listings near a cell boundary unless neighboring cells are included.
 
-### Pairwise Scoring: Is This Pair the Same Thing?
+### Pairwise scoring: is this pair the same thing?
 
 Each candidate pair gets a score from field-level comparisons: text similarity, image distance, geographic distance, surface and room agreement, price gap, same organization, same device, time between postings. Two families of scorer are in common use.
 
@@ -130,11 +130,11 @@ Each candidate pair gets a score from field-level comparisons: text similarity, 
 
 Scores must be **calibrated** so that thresholds mean something, and the score bands map to actions: above an upper threshold, link automatically; below a lower one, do nothing; between them, send the pair to human review. The gray zone is where the money is spent, so its width is a budget decision.
 
-### Clustering: From Pairs to Groups
+### Clustering: from pairs to groups
 
 Pairs are not clusters. If listing A matches B and B matches C, the obvious step is to put A, B and C together, which is **connected components** clustering. It is simple and it fails in a predictable way: **chaining**. One weak link between two otherwise separate groups merges them, and in dense housing a chain of plausible links can merge a whole building. Safer methods require a cluster to be internally consistent: every member must match most other members (correlation clustering, or a minimum average link score), and a cluster above a size limit is split or sent to review. In real estate, a cluster with more than a handful of members is almost always wrong, because a property rarely has more than four or five agencies at once.
 
-### The Entity Registry: Stable Identifiers and Lineage
+### The entity registry: stable identifiers and lineage
 
 Clustering produces groups each time it runs. Consumers need **identifiers that stay the same** when the clustering reruns, so that a buyer's saved property, a price-history chart and a valuation series do not jump to a new ID every night. The entity registry owns that stability. It assigns each cluster a durable ID, keeps the ID when membership changes slightly, and records **merge and split events** with lineage when two clusters become one or one becomes two. A merge keeps the older ID and retires the other with a pointer; a split keeps the ID on the larger part. Consumers subscribe to these events like any other domain event (see [[event-driven-listings]]).
 
@@ -158,7 +158,7 @@ stateDiagram-v2
 
 Two details in Figure 3 matter more than they look. First, **a human "not the same" decision must be stored as a constraint**, not just as a label for the next training run, or the nightly job will reunite the pair and the agency that complained will complain again. Second, membership follows the listing lifecycle (see [[listing-aggregate]]). When the last live listing in a cluster is unpublished, the cluster is no longer "on the market", even though the property entity persists. A cluster that stays active after its members have gone is Ghost Inventory in a new form: an alert subscriber or a market report sees a property for sale that nobody is selling.
 
-### Online and Batch
+### Online and batch
 
 Resolution runs at two speeds. **Online** checks at publication time are cheap and local: exact and perceptual image hashes against recent listings, same-seller text near-duplicates, VIN and partner-reference lookups. They catch reposts and cloned listings before they go live, and they attach new listings to existing clusters when a strong key matches. **Batch** resolution, typically nightly, runs global blocking and clustering across all listings, finds cross-seller and cross-feed clusters, and repairs clusters as listings change. The online path must finish inside the publication budget set in [[publication-pipeline]]; anything that does not fit runs after publication and adjusts the presentation a few minutes later.
 
@@ -177,17 +177,17 @@ Finding a cluster is half the work. The other half is deciding what it changes, 
 | Inventory and market metrics | Count listings; count properties | Report both; use properties for "supply" and listings for "advertising volume" |
 | Lead routing | To the card shown | To the agency the buyer chose; never re-route a lead to another agency |
 
-### Collapsing in Search
+### Collapsing in search
 
 The usual implementation stores the cluster ID on each listing's search document and asks the engine to return one document per cluster. Elasticsearch calls this **field collapsing**: the `collapse` parameter keeps only the top-sorted document for each value of a single-valued keyword or numeric field, and optional `inner_hits` return the other members. Its documentation also lists the costs an architect should know before relying on it: the total hit count still counts all matching documents, not the number of groups; aggregations are not collapsed; each `inner_hits` request adds a query per collapsed hit; and collapsing cannot be combined with scroll ([Elastic, n.d.](https://www.elastic.co/docs/reference/elasticsearch/rest-apis/collapse-search-results)). In other words, the result list shows 1,000 properties while the facet counts and the "2,400 results" header still count listings. **Either the counts are computed on a property-level document, or the page shows numbers that disagree with the list.** A common answer is a second, property-level index for counting and map pins, built from the same events; [[search-architecture]] covers the index design.
 
-### Choosing the Representative
+### Choosing the representative
 
 When a cluster collapses to one card, one listing's photos, price and agency appear first. This is the most politically sensitive decision in the chapter. The options are the most complete listing, the earliest published, the lowest price, the highest quality score, rotation among agencies, or the listing that pays for visibility. Each one rewards a different behavior. "Lowest price" rewards the agency with the lowest fee. "Earliest" rewards the agency that publishes first. "Quality score" rewards good photos and complete attributes, which is what buyers want. "Paid" silently turns deduplication into an auction.
 
 My rule is that **the representative rule is a published ranking parameter**, decided by product and legal together, and never changed by an engineer tuning a model. If paid placement affects it, the card says so. The EU Platform-to-Business Regulation and the DSA both require the main ranking parameters to be described to business users and consumers ([[marketplace-regulation]]). A representative rule is one of them. **Paid-Rank Drift often starts in a cluster rule that nobody thinks of as ranking.**
 
-### A Documented Example: Idealista's Duplicate Control
+### A documented example: Idealista's duplicate control
 
 The clearest public product example comes from Idealista, the Spanish, Italian and Portuguese property portal. In April 2021 it launched a duplicate-control tool for home seekers that groups the ads for one property published by several agencies or individuals, *including on other portals*, so that users can compare them in one place. Users see the number of duplicates, price changes, removed ads and new duplicates, and get push notifications when a price changes, an ad is removed or a new duplicate appears. Agents see duplicates only of their own properties, and only once a listing has been published. The tool is updated daily ([Online Marketplaces, 2021-04-11](https://onlinemarketplaces.com/articles/idealista-launches-new-tool-to-help-organize-duplicate-listings)). The report describes the product, not the matching system, and the current state of the tool is not public. Three design choices are worth noting: the cluster is presented as **buyer information** rather than hidden, the **agent view is limited to their own properties**, and the cadence is daily, which suggests batch resolution.
 
@@ -222,7 +222,7 @@ Here is how the Lyon flat moves through the pipeline Hearthly built in 2027. The
 
 **What changed.** After the first quarter of the new pipeline, Ingrid's review uses four numbers, all illustrative. Search pages in Lyon show 31% fewer cards for the same queries. Saved-search alerts for Lyon sales fall by 24% with no fall in click-through, which means the removed alerts were noise. Precision measured on 4,000 labeled pairs is 98.6% and recall 91%. Agency disputes run at about 60 a month across France, two thirds of them for flats in the same building that the matcher wrongly merged. Those disputes are the most valuable labels the team has.
 
-### The Same Machinery Pointed at Abuse
+### The same machinery pointed at abuse
 
 The same detectors run on Tradeyard, Veldmark's general classifieds brand, for a different purpose. A same-seller repost of a listing already live in the same category is blocked at publication, with a message that offers a paid bump instead. A delete-and-recreate within days keeps the original creation timestamp, so the new listing gains no freshness advantage (see [[listing-aggregate]] on why bumps and renewals update a ranking timestamp, never the creation time). This is a monetization and trust decision as much as a technical one: **a marketplace that sells bumps and tolerates free reposts is competing with itself.**
 
@@ -289,7 +289,7 @@ At group scale, entity resolution raises five decisions.
 
 **5. Watch a small set of numbers.** Listings per entity by market (1.7 at Hearthly France is the baseline); precision and recall on a labeled sample; gray-zone volume and review cost; cluster churn per night; dispute rate and overturn rate by agency; and the share of live listings with a resolved entity. A sudden change in any of them is usually a feed or enrichment change upstream, which is why the dashboard belongs next to the feed-health dashboard of [[listing-ingestion]].
 
-## Questions to Ask in a Design Review
+## Questions to Ask
 
 1. For each duplicate kind we see, what is the action, who owns it, and does the seller get a statement of reasons when the action is a restriction?
 2. What real-world entity are we resolving to in this vertical, and which identifiers do we actually receive, at what fill rate?

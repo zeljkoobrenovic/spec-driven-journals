@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: The Listing Aggregate: Identity, Lifecycle and Invariants
@@ -67,3 +67,4 @@ Chief and principal architects, staff engineers and engineering leaders who own 
 - **2026-10-19** — Editorial review pass: reservation time aligned to the canonical 14:02, photo count to six (media-pipeline), search removal target to the publication-pipeline SLA card (10 s p95), erasure date clarified, reading time corrected. *(AI-mediated session)*
 - **2026-10-19** — Editor: bike version numbers aligned with event-driven-listings (reserved v8, sold v9). *(AI-mediated session)*
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Cross-chapter consistency sweep: 1 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*

@@ -35,7 +35,7 @@ Listing data management is the discipline that answers those questions. It is un
 
 This chapter owns the **listing system of record**, **read models** and **erasure propagation**. It assumes the lifecycle from [[listing-aggregate]] and the event contract from [[event-driven-listings]]. The search index as a read model is designed in [[search-architecture]]; the analytical copies in [[data-platform]]; the legal obligations behind retention in [[marketplace-regulation]]; regional failover in [[reliability-and-scale]].
 
-## Setting the Scene: Seven Copies of One Bike
+## Setting the Scene at Veldmark: Seven Copies of One Bike
 
 On **Monday 6 September 2027**, Femke, the Rotterdam seller whose €240 city bike sold for €225 in March, closes her Tradeyard account and asks Tradeyard to erase her personal data under Article 17 of the General Data Protection Regulation (GDPR). Lucía Ortega, Veldmark's group data protection officer, forwards the request to Ingrid Halvorsen, Group Chief Architect at Veldmark — the fictional marketplace group this book follows (see [[meet-veldmark]]). Her note has one line: *"Before we answer her, I need to know every place her bike listing exists."*
 
@@ -373,6 +373,8 @@ Listing data management is where architecture meets liability. The decisions are
 8. When an erasure request arrives, can we list every copy that holds the subject's data within an hour, and prove each outcome?
 9. Does our backup-restore procedure replay erasures recorded after the backup?
 10. Which "anonymized" datasets could be re-identified by address, VIN or photo?
+
+## From Internal Copies to Search Engines
 
 The copies in this chapter are not only read by Veldmark's own systems. The most valuable read model of all is the one that search engines and AI answer engines build from Tradeyard's 40 million indexed URLs, and its consistency promises are set partly by Google. [[web-and-seo-architecture]] takes up the customer-facing web and the pages that represent listings to the outside world.
 

@@ -35,7 +35,7 @@ That changes the architecture more than the algorithms. The published marketplac
 
 This chapter owns **candidate generation**, **similar listings** and **cold start**. It builds on the ranking machinery of [[ranking]], since a recommendation module is a ranked list without a query. It leaves the ML platform underneath, feature stores and model governance, to [[ml-platform]], and the event stream that keeps everything fresh to [[event-driven-listings]].
 
-## Setting the Scene: The Golf That Kept Being Recommended
+## Setting the Scene at Veldmark: The Golf That Kept Being Recommended
 
 Motorvane is the automotive brand of Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]). Every vehicle detail page in Germany carries a carousel of ten "similar vehicles". It was built in 2020 as a nightly Spark job. The job computes item-to-item co-views (pairs of listings viewed in the same session), keeps the top ten neighbors for each listing and writes them to a key-value store that the detail page reads. It was cheap, it raised click-through when it launched, and nobody has looked at it closely since.
 
@@ -116,7 +116,7 @@ The documented cases show a consistent direction.
 
 The Vinted and Airbnb choices are not contradictory. They are the same trade-off evaluated for different inventory lifetimes, and that is the most useful way to read any published recommender design.
 
-## The Architecture: Generate, Filter, Re-rank, Apply Policy
+## Architecture: Generate, Filter, Re-rank, Apply Policy
 
 Recommendation systems at scale share the multi-stage shape of search ranking. The difference is that there is no query to anchor relevance, so the candidate generation stage carries more of the load. For listings I use four stages with strict responsibilities.
 
