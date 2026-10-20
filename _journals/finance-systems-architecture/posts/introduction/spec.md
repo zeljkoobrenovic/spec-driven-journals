@@ -7,7 +7,7 @@ revised: 2026-10-18
 
 ## Intent
 
-Open **RECONCILED: Enterprise Architecture for Financial Systems** by telling the reader what the book is for, whom it serves, why it is called RECONCILED and how to find the chapter that answers the decision already on their desk. Frame the book's problem with a scene a Chief Architect recognizes (the CFO's "why nine days?" question, which turns out to be an architecture question), set up the five reconciliations that [[long-term-evolution]] pays off without repeating that synthesis, and explain how to read the evidence: documented fact, industry practice, the author's recommendation and the fictional Northmere.
+Open **RECONCILED: Architecting Finance Systems** by telling the reader what the book is for, whom it serves, why it is called RECONCILED and how to find the chapter that answers the decision already on their desk. Frame the book's problem with a scene a Chief Architect recognizes (the CFO's "why nine days?" question, which turns out to be an architecture question), set up the five reconciliations that [[long-term-evolution]] pays off without repeating that synthesis, and explain how to read the evidence: documented fact, industry practice, the author's recommendation and the fictional Northmere.
 
 ## Audience
 
@@ -70,3 +70,4 @@ Article only for now.
 - **2026-10-19** — Reading-order table and Figure 3 updated for the renamed parts (INTEGRATION, LEADERSHIP, PRACTICE). *(AI-mediated session)*
 - **2026-10-19** — Title renamed to "Introduction: Architecture Where Every Number Must Reconcile" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the mermaid diagram with a generated illustration (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Book title renamed from "RECONCILED: Enterprise Architecture for Financial Systems" to "RECONCILED: Architecting Finance Systems" at the author's request. *(AI-mediated session)*

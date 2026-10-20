@@ -1,6 +1,6 @@
 # Illustrator Brief — RECONCILED inline figures
 
-You are adding inline article figures to pages of **RECONCILED: Enterprise Architecture for Financial Systems** (ROOT = `/Users/zeljkoobrenovic/PycharmProjects/spec-driven-journals/_journals/finance-systems-architecture/`). The user explicitly asked to **illustrate the articles and generate the images** (`GEMINI_API_KEY` is set in the environment — never print it).
+You are adding inline article figures to pages of **RECONCILED: Architecting Finance Systems** (ROOT = `/Users/zeljkoobrenovic/PycharmProjects/spec-driven-journals/_journals/finance-systems-architecture/`). The user explicitly asked to **illustrate the articles and generate the images** (`GEMINI_API_KEY` is set in the environment — never print it).
 
 ## Read first
 

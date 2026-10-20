@@ -1,6 +1,6 @@
 # Research Brief: Technology Spend as Financial Data — FinOps Meets the Ledger
 
-**For:** *RECONCILED: Enterprise Architecture for Financial Systems*, the chapter "FinOps Meets the Ledger: Technology Spend as Financial Data"
+**For:** *RECONCILED: Architecting Finance Systems*, the chapter "FinOps Meets the Ledger: Technology Spend as Financial Data"
 **Prepared:** 2026-10-18
 **Status:** Verified research brief. Chapter writers should cite the primary sources listed at the end, not this brief.
 

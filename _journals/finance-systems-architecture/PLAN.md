@@ -1,6 +1,6 @@
 # RECONCILED — Book Plan and Chapter Contracts
 
-**RECONCILED: Enterprise Architecture for Financial Systems**
+**RECONCILED: Architecting Finance Systems**
 
 *How a Chief Architect designs, integrates, governs and evolves the finance technology of a multinational enterprise — ERP, payments, close, consolidation and the custom platforms between them — as one coherent system.*
 

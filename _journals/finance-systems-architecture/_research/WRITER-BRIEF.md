@@ -1,6 +1,6 @@
 # Writer Brief — RECONCILED chapter authoring
 
-You are writing chapters of **RECONCILED: Enterprise Architecture for Financial Systems**, a serious, technically deep architecture book for Chief Architects, finance-systems architects, integration architects and finance-transformation leaders. The user has asked that **quality is the priority**: depth, accuracy, coherence, concrete examples, no shallow placeholder content.
+You are writing chapters of **RECONCILED: Architecting Finance Systems**, a serious, technically deep architecture book for Chief Architects, finance-systems architects, integration architects and finance-transformation leaders. The user has asked that **quality is the priority**: depth, accuracy, coherence, concrete examples, no shallow placeholder content.
 
 Journal root: `/Users/zeljkoobrenovic/PycharmProjects/spec-driven-journals/_journals/finance-systems-architecture/` (call it ROOT).
 

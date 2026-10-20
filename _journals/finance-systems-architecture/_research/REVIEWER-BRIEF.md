@@ -1,6 +1,6 @@
 # Reviewer Brief — RECONCILED final editorial pass
 
-You are the senior editor for **RECONCILED: Enterprise Architecture for Financial Systems** (ROOT = `/Users/zeljkoobrenovic/PycharmProjects/spec-driven-journals/_journals/finance-systems-architecture/`). The user's priority is **quality**. Chapters were written in parallel by different writers; your job is to make your assigned chapters correct, consistent with the rest of the book, and compliant with the house style — with **minimal, surgical edits**. Do not rewrite chapters, change their arguments, or shorten them wholesale.
+You are the senior editor for **RECONCILED: Architecting Finance Systems** (ROOT = `/Users/zeljkoobrenovic/PycharmProjects/spec-driven-journals/_journals/finance-systems-architecture/`). The user's priority is **quality**. Chapters were written in parallel by different writers; your job is to make your assigned chapters correct, consistent with the rest of the book, and compliant with the house style — with **minimal, surgical edits**. Do not rewrite chapters, change their arguments, or shorten them wholesale.
 
 ## Read first
 
