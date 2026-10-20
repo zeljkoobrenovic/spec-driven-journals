@@ -75,6 +75,11 @@ deletes wastes the effort.
 
   If you delete a figure, renumber the remaining figures and every "Figure N"
   reference in the text.
+- **Settled heading decisions win.** If the journal has
+  `_research/heading-decisions.md`, read it before renaming any heading. It
+  lists the fixed headings, and the variations the author has decided to
+  keep. Do not rename a heading against it. If you think a decision is wrong,
+  report that instead.
 - **Parallel pages share headings.** Books often give pages of the same kind
   the same section names: case studies, part intros, the "Setting the Scene"
   or worked-example sections of chapters. Before renaming a heading, compare
@@ -105,9 +110,15 @@ diagrams and tables. For a paragraph that opens with a bold run-in label
 (`**Data.**`), it shows the label plus the sentence after it.
 
 `scripts/factcheck.py` compares the post with its last committed version (or
-`--base REF`). It reports every number, date, `[[link]]`, URL, evidence label,
-callout label and quotation whose count fell, and checks that figure captions
-run 1, 2, 3 in order. It exits with status 1 when anything was lost.
+`--base REF`). It reports what was lost or changed:
+- every number, date, `[[link]]`, URL, evidence label, callout label and
+  quotation whose count fell;
+- every number word in prose ("three", "dozen") whose count fell;
+- any number word that changed in a heading, such as "four stages" becoming
+  "five stages";
+- figure captions that no longer run 1, 2, 3 in order.
+
+It exits with status 1 when anything is flagged.
 
 ```bash
 S=.claude/skills/sharpen-post/scripts
@@ -142,9 +153,9 @@ are counted as part of this pass.
 ### 1. Place in the book (the opening)
 
 A reader who reads only the opening elements should see why this chapter is
-in the book, not just what it is about. The opening elements are the excerpt,
-any fixed callouts or KEY POINTS, and the lead paragraphs before the first
-section. A post that could sit unchanged in any blog has lost its place in
+in the book, not just what it is about. The opening elements are the title,
+the excerpt, any fixed callouts or KEY POINTS, and the lead paragraphs before
+the first section. A post that could sit unchanged in any blog has lost its place in
 the book.
 
 Check that the opening answers three questions, in plain words:
@@ -175,6 +186,19 @@ How to make the opening answer them:
   principles, essays), the opening should still say why the record matters to
   that journal's purpose and name its closest related records. It does not
   need a part-level framing.
+
+**Check the title and excerpt against the book's terms.** They appear on the
+index page, in every cross-link and in search results, so a stale term there
+is the most visible one in the post. Compare them with:
+- the glossary;
+- the scenario ledger or another canonical facts file;
+- the post's own headings and body.
+
+You may edit the excerpt, under the same rules as the lead. **Do not change
+the title.** It is the author's, and changing it renames every cross-link to
+the post. Instead, report the mismatch and suggest a wording, for example:
+"title says Sunday Night; the ledger and the post say Sunday evening". Never
+touch `permalink:`.
 
 Do not move the chapter's place in the book. If the post's role and its
 neighbors' hand-offs disagree, align the opening with the plan and report the
@@ -303,10 +327,13 @@ Common vague patterns:
 
    If the count rose by more than about 2%, review every addition and keep
    only what the flow needs.
-3. Run `factcheck.py` and resolve every `LOST` line in one of two ways:
+3. Run `factcheck.py` and resolve every `LOST` or `CHANGED` line in one of
+   three ways:
    - restore the item, if the cut was accidental, or a number was dropped
      while rewording a sentence;
-   - list it in the report as a deliberate cut, with the reason.
+   - list it in the report as a deliberate cut, with the reason;
+   - for a changed heading number, confirm the section's content and list it
+     as a checked correction (for example "the table lists five stages").
 
    Then read the `git diff` once for what the script cannot see: names, claims
    and house-shape elements.
@@ -334,6 +361,8 @@ Keep the report short:
 - plain-text references in other pages to a heading you renamed;
 - how the opening now states the chapter's place in the book, or why it
   already did;
+- any mismatch between the title and the book's terms, with a suggested title
+  (the title itself is left unchanged);
 - anything left vague because fixing it needs facts the post does not have.
   These are questions for the author.
 

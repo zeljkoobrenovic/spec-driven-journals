@@ -5,9 +5,11 @@ Usage:
     python3 factcheck.py <file.md>              # compare with HEAD
     python3 factcheck.py <file.md> --base REF   # compare with another revision
 
-Counts, in the old and new text: numbers and dates, [[cross-links]], URLs,
-inference labels, quoted passages, callout labels and figure captions. Prints
-every item whose count fell, and checks that figure captions still run 1, 2, 3...
+Counts, in the old and new text: numbers and dates, number words ("three",
+"dozen"), [[cross-links]], URLs, inference labels, quoted passages, callout
+labels and figure captions. Prints every item whose count fell, flags any
+number word that changed in a heading ("four stages" -> "five stages"), and
+checks that figure captions still run 1, 2, 3...
 Exit status 1 when something was lost, so a removal is never silent: either
 restore it or name it in the report as a deliberate cut.
 """
@@ -27,6 +29,14 @@ CHECKS = {
     "quoted passage": re.compile(r"\"([^\"\n]*)\"|“([^”\n]*)”"),
 }
 FIGURE = re.compile(r"^\*\*Figure (\d+):?\*\*", re.M)
+NUMBER_WORDS = ("one two three four five six seven eight nine ten eleven twelve thirteen fourteen "
+                "fifteen sixteen seventeen eighteen nineteen twenty thirty forty fifty sixty seventy "
+                "eighty ninety hundred thousand million billion dozen half single double triple twice "
+                "first second third fourth fifth sixth seventh eighth ninth tenth").split()
+NUMBER_WORD = re.compile(r"\b(" + "|".join(NUMBER_WORDS) + r")\b", re.I)
+# Too common in prose to count there; still compared inside headings.
+PROSE_SKIP = {"one", "half", "single", "double", "first", "second"}
+HEADING = re.compile(r"^#{1,6} .*$", re.M)
 
 
 def strip_front_matter(text):
@@ -70,6 +80,26 @@ def main():
                 lost += 1
                 print(f"LOST {kind}: {token!r} ({n} -> {after[token]})")
 
+    # Number words in prose: a fall in count is reported like a lost number.
+    def prose_words(text):
+        body = HEADING.sub("", text)
+        return Counter(w.lower() for w in NUMBER_WORD.findall(body) if w.lower() not in PROSE_SKIP)
+    before, after = prose_words(old), prose_words(new)
+    for word, n in sorted(before.items()):
+        if after[word] < n:
+            lost += 1
+            print(f"LOST number word: {word!r} ({n} -> {after[word]})")
+
+    # Number words in headings: any change is flagged, because a heading that
+    # says "four" where the section lists five is a factual claim.
+    def heading_words(text):
+        return Counter(w.lower() for h in HEADING.findall(text) for w in NUMBER_WORD.findall(h))
+    hb, ha = heading_words(old), heading_words(new)
+    for word in sorted(set(hb) | set(ha)):
+        if hb[word] != ha[word]:
+            lost += 1
+            print(f"CHANGED heading number word: {word!r} ({hb[word]} -> {ha[word]}); confirm the section still says so")
+
     figures = [int(n) for n in FIGURE.findall(new)]
     if figures != list(range(1, len(figures) + 1)):
         lost += 1
@@ -79,7 +109,7 @@ def main():
         print(f"NOTE figures {old_figures} -> {len(figures)}; check every 'Figure N' reference")
 
     if lost:
-        print(f"{lost} item(s) lost compared with {base}: restore each, or name it in the report as a deliberate cut.")
+        print(f"{lost} item(s) lost or changed compared with {base}: restore each, or name it in the report as a deliberate cut or a checked correction.")
         sys.exit(1)
     print(f"OK: no numbers, dates, links, URLs, labels, quotes or figures lost compared with {base}.")
 
