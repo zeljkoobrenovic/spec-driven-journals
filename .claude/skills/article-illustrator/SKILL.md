@@ -155,6 +155,37 @@ Useful options: `--only <id-or-filename>` (one image), `--post <slug-or-permalin
 (continue numbering), `--limit N`. The generator does not run the site build —
 run `python3 _wiring/build.py` yourself after.
 
+## Replacing mermaid diagrams with illustrations
+
+When asked to turn a post's existing mermaid diagrams into illustrations, use
+`scripts/mermaid_to_illustrations.py`. It keeps figure numbers and captions, so
+prose references stay valid.
+
+1. Build the site, then screenshot the rendered diagrams as layout references.
+   The image model redraws from these. Prompts from text alone get the
+   structure wrong: duplicated boxes, invented panels, misrouted arrows.
+   `python3.11 scripts/snapshot_mermaid.py <journal> <refs-dir> [post-folder ...]`
+2. Stage the placeholders:
+   `python3 scripts/mermaid_to_illustrations.py stage <index.md> ... --refs <refs-dir> --archive _journals/<j>/_research/mermaid-figures.json`
+   - Each mermaid block gets a placeholder in front of it, and the block itself
+     stays, so the page renders as before.
+   - The prompt asks the model to restyle the reference image. It adds a
+     checklist parsed from the source: every box once, every arrow with its
+     direction, only the source's panels.
+   - The aspect ratio follows the reference image, and images are 2K.
+   - The archive keeps every mermaid source, so a figure can be regenerated
+     later.
+3. Generate without `--replace`.
+4. Inspect every image against its reference and checklist, comparing
+   structure, not looks. Even with a reference, expect about one error per
+   complex diagram: an extra or misrouted arrow, a missing label. Retry with a
+   `Corrections: …` sentence appended to the prompt, at most 3 times. Report
+   any image still wrong.
+5. Swap the placeholder and its mermaid block for the image. The existing
+   `**Figure N:**` caption stays:
+   `python3 scripts/mermaid_to_illustrations.py finalize <index.md> ...`
+   A placeholder whose image is missing keeps its mermaid block.
+
 ## Anti-patterns
 
 - Generating images without explicit user request — staging placeholders is the

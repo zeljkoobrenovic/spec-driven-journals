@@ -80,22 +80,7 @@ Only a capability map can answer Ingrid's question. A systems inventory counts 4
 
 The map below has ten level-1 areas. They follow the flow of a listing marketplace: supply comes in, becomes a listing, is discovered, is matched with demand and sometimes transacted, while trust, monetization, professional services, data and a shared platform cut across all of it.
 
----begin mermaid---
-flowchart LR
-    SA["Supply Acquisition"] --> LM["Listing Management"]
-    LM --> DI["Discovery"]
-    DI --> MC["Matching and Contact"]
-    MC --> TR["Transactions"]
-    TS["Trust and Safety"] -.->|"screens"| LM
-    TS -.->|"screens"| MC
-    TS -.->|"screens"| TR
-    MO["Monetization"] -.->|"paid visibility"| DI
-    MO -.->|"listing fees and packages"| LM
-    PS["Professional Services"] -.->|"pro tooling"| SA
-    PS -.->|"lead workspace"| MC
-    DA["Data and Insights"] -.->|"metrics and models"| DI
-    PL["Platform"] -.->|"identity, notifications, support"| MC
----end mermaid---
+![Diagram: The ten level-1 capability areas of a listing marketplace](assets/images/04-business-capabilities/fig02-ten-level-1-capability-areas-listing.jpeg)
 **Figure 2:** *The ten level-1 capability areas of a listing marketplace. Five follow the liquidity flow from supply to transaction; five cut across it. Dotted edges show where the cross-cutting areas act on the flow; Platform and Data serve every area, and only a few of their edges are drawn.*
 
 Level 2 breaks each area into capabilities that a business owner would recognize and that can be compared across brands. Veldmark's group map has **54** level-2 capabilities.
@@ -155,20 +140,7 @@ A capability map becomes useful only when it is cross-mapped to the value stream
 
 The cross-map names the capabilities each stage needs. Figure 4 draws list-to-sell for the Rotterdam city bike, with the timings from that Sunday evening.
 
----begin mermaid---
-flowchart LR
-    S1["Start and describe, 19:42"] --> S2["Publish, searchable 19:48"]
-    S2 --> S3["Matched and alerted, 312 saved searches"]
-    S3 --> S4["First contact, 19:55"]
-    S4 --> S5["Agree and pay, Monday"]
-    S5 --> S6["Mark sold, 18:10 Monday"]
-    C1["Listing creation, Taxonomy, Media, Price estimation"] -.-> S1
-    C2["Content moderation, Lifecycle and publication, Search indexing"] -.-> S2
-    C3["Saved searches and alerts, Notifications"] -.-> S3
-    C4["Contact and messaging, Fraud and risk scoring"] -.-> S4
-    C5["Checkout and protected payment, Payouts"] -.-> S5
-    C6["Lifecycle and publication, Saved searches and alerts"] -.-> S6
----end mermaid---
+![Diagram: List-to-sell for the €240 Rotterdam city bike, cross-mapped to the level-2 capabilities each stage needs](assets/images/04-business-capabilities/fig04-list-sell-240-rotterdam-city-bike.jpeg)
 **Figure 4:** *List-to-sell for the €240 Rotterdam city bike, cross-mapped to the level-2 capabilities each stage needs. The six-minute publication delay sits in two capabilities, moderation and indexing. The Ghost Inventory failure at the end, a sold bike featured in the next morning's alert digest, sits in the hand-off between lifecycle and alerts.*
 
 The cross-map turns a vague complaint into a located one: each of the bike's three problems sits in a specific capability.
@@ -254,19 +226,7 @@ Ingrid runs the mapping in three weeks of March 2027.
 2. **Week 2: map systems to capabilities.** Each brand maps its applications to level-2 capabilities. Of the 412 applications, 371 map cleanly. The other 41 are either platform plumbing (build tools, monitoring) or Yardstick, which maps to 23 capabilities on its own.
 3. **Week 3: score and read.** Noor Hassan, the Group Chief Product Officer, and the brand product leads score differentiation. Engineering leads score maturity per implementation with dated evidence. Architecture counts duplication. Olivier Petit, VP Monetization, adds revenue attribution for the monetization area.
 
----begin mermaid---
-flowchart TB
-    VS["Value streams: list-to-sell, search-to-contact, lead-to-deal, pro onboarding"] --> CAP["54 level-2 capabilities"]
-    CAP --> TY["Tradeyard systems, incl. Yardstick"]
-    CAP --> MV["Motorvane systems"]
-    CAP --> HE["Hearthly systems"]
-    CAP --> KB["Keybridge systems"]
-    CAP --> GS["Group shared: ads stack, SAP finance"]
-    TY --> T1["Teams in Rotterdam, Lisbon, Warsaw"]
-    MV --> T2["Teams in Düsseldorf"]
-    HE --> T3["Teams in Lyon"]
-    KB --> T4["Keybridge teams"]
----end mermaid---
+![Diagram: The layering Veldmark used](assets/images/04-business-capabilities/fig05-layering-veldmark-used-value-streams-explain.jpeg)
 **Figure 5:** *The layering Veldmark used: value streams explain why capabilities matter, capabilities are the comparable unit, and systems and teams are mapped to capabilities, never the other way round. Only the capability layer is shared vocabulary across all four brands.*
 
 ### The heat map

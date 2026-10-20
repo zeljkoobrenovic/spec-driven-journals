@@ -56,26 +56,7 @@ The tenant register and configuration hierarchy of [[multi-country-platforms]], 
 
 Most changes in a marketplace group pass through several of the tools, and each record points to the next.
 
----begin mermaid---
-flowchart LR
-    CAP["Tool 1 Capability row"] --> VRP["Tool 2 Vertical profile"]
-    CAP --> CON["Tool 11 Consolidation card"]
-    VRP --> ADR["Tool 12 Decision record"]
-    CON --> ADR
-    ADR --> LIF["Tool 3 Lifecycle table"]
-    ADR --> ATT["Tool 4 Dictionary entry"]
-    LIF --> EVT["Tool 10 Event specification"]
-    ATT --> FEED["Tool 5 Feed contract"]
-    ATT --> IDX["Tool 7 Index design card"]
-    FEED --> SLA["Tool 6 SLA card"]
-    EVT --> SLA
-    EVT --> IDX
-    EVT --> TS["Tool 8 Enforcement card"]
-    EVT --> ENT["Tool 9 Entitlement matrix"]
-    TS --> SLA
-    ENT --> IDX
----end mermaid---
-
+![Diagram: How the templates reference each other](assets/images/toolkit/fig01-how-templates-reference-each-other-understanding.jpeg)
 **Figure 1:** *How the templates reference each other. Understanding records feed decisions; decisions produce the listing's model and its contracts; and nearly every operational record rests on the event specification and the SLA card, because in a listing marketplace a change is finished only when every copy of the listing reflects it.*
 
 ## <a id="tool-1"></a>Tool 1: Capability Map Row and Heat Map

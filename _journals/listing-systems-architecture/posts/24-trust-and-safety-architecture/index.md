@@ -111,47 +111,7 @@ The [[categories-and-taxonomies]] chapter treats category trees as versioned ref
 
 The reference architecture below is assembled from public building blocks: Meta's Sigma rule engine, described in a 2015 engineering post; Stripe Radar's documented rule operations; OLX's published chat moderation; the DSA's notice, statement-of-reasons and appeal requirements; and the practices recommended in a July 2026 expert report commissioned by Ofcom, the UK online-safety regulator. **It is a reference-architecture inference. No classifieds company has published its T&S architecture in this form.**
 
----begin mermaid---
-flowchart LR
-    subgraph IN["Intake"]
-        EV["Listing, message, account and payment events"]
-        RP["User reports and notices"]
-        TF["Trusted flaggers and authorities"]
-        EXT["Bank and partner fraud reports"]
-    end
-    subgraph DET["Detection"]
-        GATE["Synchronous gate"]
-        ASYNC["Asynchronous detectors"]
-        SAMP["Random sampling"]
-    end
-    POL["Policy registry"]
-    DEC["Decision service"]
-    CASE["Case management and review"]
-    ENF["Enforcement events"]
-    CONS["Search, alerts, messaging, SEO, ads, payments"]
-    SOR["Statements of reasons and notices"]
-    APP["Appeals"]
-    EVD["Evidence and audit store"]
-    MET["Metrics and transparency reports"]
-    EV --> GATE
-    EV --> ASYNC
-    RP --> CASE
-    TF --> CASE
-    EXT --> CASE
-    GATE -->|"scores and rule hits"| DEC
-    ASYNC -->|"scores and rule hits"| DEC
-    SAMP -->|"sampled items"| CASE
-    POL -.->|"policy versions"| GATE
-    POL -.->|"policy versions"| DEC
-    CASE -->|"human decisions"| DEC
-    DEC -->|"decision record"| ENF
-    ENF --> CONS
-    DEC --> SOR
-    SOR --> APP
-    APP -->|"uphold or reverse"| DEC
-    DEC --> EVD
-    EVD --> MET
----end mermaid---
+![Diagram: The trust and safety platform as components](assets/images/24-trust-and-safety-architecture/fig02-trust-safety-platform-components-detection-human.jpeg)
 **Figure 2:** *The trust and safety platform as components. Detection and human review both feed one decision service, which is the single writer of decision records; enforcement, user notices, appeals, evidence and metrics all derive from those records.*
 
 | Component | Responsibility | Key interface |
@@ -260,31 +220,7 @@ The pattern that works is the one [[event-driven-listings]] sets out for listing
 
 The failure mode is **Ghost Inventory** caused by enforcement. Veldmark's ledger records one benign version. Femke's bike was marked sold at 18:10 on Monday 8 March and removed from search at 18:11, yet the evening alert digest still featured it the next morning. A sold bike in a digest wastes a buyer's time. A *fraudulent* listing in a digest, after the platform has decided to remove it, sends buyers to a scammer under the platform's own brand. Unpublish propagation for sold and expired listings is owned by [[publication-pipeline]]. Enforcement should ride on the same mechanism, with a higher priority and a stricter time budget.
 
----begin mermaid---
-sequenceDiagram
-    participant R as Reporter
-    participant C as CaseManagement
-    participant D as DecisionService
-    participant B as EventBackbone
-    participant S as Search
-    participant M as Messaging
-    participant A as Alerts
-    participant P as Payments
-    participant N as NoticeService
-    R->>C: report payment-link message, 20:19
-    C->>D: priority-lane case with rule hits
-    D->>D: decide suspend account, policy POL-FRAUD-PAYLINK v2
-    D->>B: EnforcementApplied, 20:26
-    B->>S: hide all listings of the account
-    B->>M: withhold pending messages, warn 9 counterparties
-    B->>A: drop queued alerts that reference the account
-    B->>P: hold open Safe Deal payouts
-    B->>N: statement of reasons to the account holder
-    S-->>D: acknowledged
-    M-->>D: acknowledged
-    A-->>D: acknowledged
-    P-->>D: acknowledged
----end mermaid---
+![Diagram: Enforcement as an event](assets/images/24-trust-and-safety-architecture/fig04-enforcement-event-one-decision-fans-out.jpeg)
 **Figure 4:** *Enforcement as an event. One decision fans out to every consumer that holds a copy of the account's listings or conversations, and each consumer acknowledges, so the platform can prove when the suspension actually took effect everywhere.*
 
 The "warn 9 counterparties" step in Figure 4 is the target design, not what happened in March 2027. On that Sunday the suspension in Yardstick blocked the account from sending new messages, but the other sellers it had already contacted received no warning. Two of them found out the next day, from Femke's warning in a neighborhood chat group.
@@ -310,24 +246,7 @@ Article 16 of the DSA requires an easy, electronic notice mechanism and lists wh
 
 Case management is where most T&S platforms either earn or lose their reviewers' productivity. The features that matter are ordinary: grouping related items into one case (all listings of a ring, all reports about one account), showing the evidence the detectors used, showing the actor's history across brands where the law permits, prefilled reason templates from the policy registry, service-level timers, and a second-review sample for quality control.
 
----begin mermaid---
-stateDiagram-v2
-    [*] --> Received: notice, detection or sample
-    Received --> Triaged: grouped and prioritized
-    Triaged --> InReview: assigned to a qualified reviewer
-    Triaged --> AutoDecided: rule or model above threshold
-    InReview --> Decided: action chosen from the ladder
-    AutoDecided --> Decided: decision record written
-    Decided --> Enforced: all consumers acknowledged
-    Enforced --> Appealed: user complaint within the window
-    Appealed --> Upheld: qualified human confirms
-    Appealed --> Reversed: qualified human reverses
-    Reversed --> Restored: EnforcementLifted acknowledged
-    Upheld --> Closed
-    Restored --> Closed
-    Enforced --> Closed: complaint window passes
-    Closed --> [*]
----end mermaid---
+![Diagram: The lifecycle of a case](assets/images/24-trust-and-safety-architecture/fig05-lifecycle-case-decided-enforced-are-separate.jpeg)
 **Figure 5:** *The lifecycle of a case. "Decided" and "Enforced" are separate states because a decision that has not propagated is not yet in effect; an appeal produces a new decision linked to the original, never an edit of it.*
 
 ### Appeals and redress
@@ -417,41 +336,7 @@ Veldmark's principle for Common Ground is **share platforms, not products**. Tru
 
 The table hides one hard constraint: **sharing signals across brands is a data protection question before it is an engineering one**. Lucía Ortega, Veldmark's Data Protection Officer, approved a shared block list of hashed phone numbers, e-mail addresses, IBANs and device identifiers for accounts terminated for fraud, with a documented fraud-prevention purpose (the GDPR recognizes fraud prevention as a legitimate interest), a two-year retention limit and a data protection impact assessment. She did not approve sharing raw message content or behavioral histories between brands. The architecture enforces that line: the shared store holds hashes and decision references, and per-brand stores hold content.
 
----begin mermaid---
-flowchart TB
-    subgraph SHARED["Group trust and safety platform"]
-        REG["Policy registry with overlays"]
-        RULES["Rules runtime and rule lifecycle"]
-        DS["Decision service"]
-        CM["Case management"]
-        EVS["Evidence store, partitioned"]
-        SR["Statement-of-reasons service"]
-        BL["Shared hashed block lists"]
-    end
-    subgraph TY["Tradeyard tenant"]
-        TYP["Policy overlays NL, BE, PL, PT"]
-        TYD["Payment-link and counterfeit detectors"]
-    end
-    subgraph MV["Motorvane tenant"]
-        MVP["Policy overlays DE, NL, PL, AT"]
-        MVD["VIN reuse and deposit-scam detectors"]
-    end
-    subgraph HL["Hearthly tenant"]
-        HLP["Policy overlays FR, ES"]
-        HLD["Fake-rental and housing-language detectors"]
-    end
-    TYP --> REG
-    MVP --> REG
-    HLP --> REG
-    TYD -->|"scores"| DS
-    MVD -->|"scores"| DS
-    HLD -->|"scores"| DS
-    RULES --> DS
-    BL --> RULES
-    DS --> CM
-    DS --> EVS
-    DS --> SR
----end mermaid---
+![Diagram: The tenancy split adopted for Common Ground](assets/images/24-trust-and-safety-architecture/fig07-tenancy-split-adopted-common-ground-machinery.jpeg)
 **Figure 7:** *The tenancy split adopted for Common Ground. The machinery is shared; policy overlays, vertical detectors and thresholds belong to each brand's tenant. Keybridge, a SaaS tool that does not publish listings to consumers itself, is not a tenant.*
 
 Keybridge's absence is deliberate. It sends agencies' listings to many portals, including Hearthly's competitors, and Veldmark committed in March 2027 not to use Keybridge agency data for Hearthly's advantage. A moderation decision on a Keybridge-originated listing at Hearthly is Hearthly's decision about Hearthly's copy. It is not shared back into Keybridge, and Keybridge does not consume the block lists. The [[platform-consolidation]] chapter discusses why neutral SaaS businesses inside a marketplace group need explicit data boundaries.

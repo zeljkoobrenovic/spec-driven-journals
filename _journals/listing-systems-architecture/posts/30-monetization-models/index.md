@@ -98,22 +98,7 @@ Listing marketplaces use ten recurring revenue models. Most groups run several a
 | 9 | Financing and insurance referrals | Partners (lenders, insurers, brokers) | Referral, application or funded contract | Rightmove Mortgages £6.8m (2025); CarGurus financing-partner revenue (FY2025) |
 | 10 | Consumer subscriptions | Buyers or renters | Consumer × month | ImmoScout24 Plus, 506,937 average customers (FY2025) |
 
----begin mermaid---
-flowchart LR
-    S["Seller decides to list"] --> L["Listing published"]
-    L --> V["Listing seen in search"]
-    V --> C["Buyer contacts seller"]
-    C --> Q["Qualified lead"]
-    Q --> T["Payment and delivery"]
-    T --> D["Deal closed"]
-    M1["Insertion fee"] -.-> L
-    M2["VAS and depth tiers"] -.-> V
-    M3["Pro subscription and slots"] -.-> L
-    M4["Pay per lead or share of voice"] -.-> Q
-    M5["Take rate and buyer fee"] -.-> T
-    M6["Pay at close"] -.-> D
-    M7["Advertising"] -.-> V
----end mermaid---
+![Diagram: Each model charges at a different point in the funnel](assets/images/30-monetization-models/fig01-each-model-charges-different-point-funnel.jpeg)
 **Figure 1:** *Each model charges at a different point in the funnel. The further down the funnel the charge sits, the more of the funnel the marketplace must observe, so the more systems it must build: lead attribution after contact, a payments ledger after the lead, outcome matching after the payment.*
 
 ### 1. Insertion fees: charging for the right to list
@@ -221,35 +206,7 @@ The ten models draw on one shared set of monetization capabilities, each model o
 
 *● central to the model; ○ needed in some variants. Author's synthesis from the published product mechanics above; no company has published its monetization architecture in detail.*
 
----begin mermaid---
-flowchart TB
-    subgraph Commercial["Commercial core, shared across models"]
-        CAT["Product catalog"]
-        PR["Pricing engine"]
-        ENT["Entitlement and quota service"]
-        BIL["Billing and invoicing"]
-    end
-    subgraph Delivery["Where value is delivered"]
-        INS["Insertion flow and feeds"]
-        RANK["Search ranking and rendering"]
-        LEAD["Lead routing and attribution"]
-        PAY["Checkout, payments ledger, payouts"]
-        ADS["Ad server and consent"]
-    end
-    CAT --> PR
-    PR --> ENT
-    ENT -->|"may I publish"| INS
-    ENT -->|"boost weight and paid label"| RANK
-    ENT -->|"lead allowance and caps"| LEAD
-    INS -->|"listings published"| MET["Delivery metering"]
-    RANK -->|"impressions and positions"| MET
-    LEAD -->|"billable leads"| MET
-    PAY -->|"fees and payouts"| FIN["Finance ledger"]
-    ADS -->|"delivered impressions"| MET
-    MET --> BIL
-    BIL --> FIN
-    MET --> ROI["ROI reporting to professionals"]
----end mermaid---
+![Diagram: A reference monetization architecture](assets/images/30-monetization-models/fig02-reference-monetization-architecture-catalog-pricing-entitlement.jpeg)
 **Figure 2:** *A reference monetization architecture. The catalog, pricing, entitlement and billing core is shared across models. Each model adds or emphasizes one delivery system. The delivery systems emit metering events, so that what was billed can be reconciled with what was delivered. This is the author's reference inference, not a description of any company.*
 
 Three boundaries in Figure 2 matter more than the boxes.
@@ -300,17 +257,7 @@ Every model spends the same reserve, organic liquidity, so every model needs a g
 
 *Author's recommendations; metric definitions belong in the governed metrics layer described in [[data-platform]].*
 
----begin mermaid---
-flowchart LR
-    LIQ["Organic liquidity: fresh supply, relevant results, real contacts"] -->|"creates"| VAL["Value per paid product"]
-    VAL -->|"lets the portal charge"| REV["Monetization revenue"]
-    REV -->|"funds"| INV["Investment in supply, search, trust"]
-    INV -->|"raises"| LIQ
-    REV -.->|"too many paid positions"| REL["Lower relevance"]
-    REV -.->|"fees on marginal supply"| DEP["Thinner supply"]
-    REL -.->|"erodes"| LIQ
-    DEP -.->|"erodes"| LIQ
----end mermaid---
+![Diagram: The monetization–liquidity loop](assets/images/30-monetization-models/fig04-monetization-liquidity-loop-revenue-funds-investment.jpeg)
 **Figure 4:** *The monetization–liquidity loop. Revenue funds the investment that raises liquidity, and liquidity sets what paid products are worth. Overcharging the same reserve, through too many paid positions or fees on marginal supply, erodes it from the other side.*
 
 ## Veldmark Worked Example: Revenue Mix and Three Proposals

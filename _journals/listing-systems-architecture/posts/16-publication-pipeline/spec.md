@@ -72,3 +72,4 @@ Article only for now.
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 3 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 5,573 → 5,551 prose words; lead now places the chapter as the last link of Part III's supply chain (Part I sets its targets, Part IV reads its output); 3 headings renamed (Concepts: Stages, Clocks and Moderation Modes; Re-check at send time; Shape first, engine second); leboncoin and Which? lessons split into point-first paragraphs; announce and teaser sentences cut. *(AI-mediated session)*
+- **2026-10-20** — Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`). *(AI-mediated session)*

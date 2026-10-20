@@ -124,35 +124,7 @@ Consent makes client-side liquidity counts biased. If 30% of web sessions declin
 
 The reference architecture below has five layers and one rule: every arrow into the platform passes through a contract. It describes no company's actual systems.
 
----begin mermaid---
-flowchart LR
-    subgraph Sources
-        DE["Domain events via outbox"]
-        CDC["CDC from legacy databases"]
-        CL["Web and app tracking SDK"]
-        SV["Server-side tracking"]
-        EXT["Partner and vendor data"]
-    end
-    DE --> GATE["Contract gate and quarantine"]
-    CDC --> GATE
-    CL --> COL["Event collector"] --> GATE
-    SV --> GATE
-    EXT --> GATE
-    GATE --> RAW["Source-aligned data products"]
-    GATE --> PII["Personal data store"]
-    RAW --> DOM["Domain entities: listing, seller, buyer, contact"]
-    PII -.->|"joined only under policy"| DOM
-    DOM --> MET["Governed metrics layer"]
-    DOM --> CONS["Consumer-aligned data products"]
-    MET --> BI["Dashboards and board pack"]
-    MET --> EXP["Experimentation analysis"]
-    CONS --> ML["ML training and features"]
-    CONS --> PRO["Pro insights and ROI API"]
-    CONS --> REG["Regulatory reporting"]
-    POL["Catalog, lineage and access policy"] -.-> RAW
-    POL -.-> DOM
-    POL -.-> CONS
----end mermaid---
+![Diagram: A reference data platform for a listing marketplace](assets/images/36-data-platform/fig02-reference-data-platform-listing-marketplace-every.jpeg)
 **Figure 2:** *A reference data platform for a listing marketplace. Every source passes a contract gate; personal data is stored apart and joined only under policy; governed metrics are computed once and consumed by dashboards, experiments and pro reporting alike.*
 
 | Layer | Responsibility | Owner | Interface |
@@ -196,24 +168,7 @@ Marketplaces map onto this naturally, because their bounded contexts already exi
 
 My reading of this record is that **ownership federates but the substrate and the rules do not**. Every documented case keeps one platform, one catalog and one set of governance mechanisms, and distributes the ownership of datasets to domains. None of them describes a mesh in which each domain chooses its own storage, formats and access model. That distinction matters for a group like Veldmark, where "data mesh" can easily become a polite name for keeping three warehouses.
 
----begin mermaid---
-flowchart TB
-    subgraph Product["Data product: qualified contacts, owned by Messaging and Leads"]
-        IN["Inputs: contact_delivered events, lead records, fraud actions"]
-        TR["Transformation code in the domain repository"]
-        OUT["Outputs: contact fact table, daily aggregates by tenant and category"]
-        CT["Contract: schema version, semantics, PII fields, retention"]
-        SLO["Service levels: complete by 06:00 CET, restatement within 72 hours"]
-        AC["Access policy: purposes allowed, tenants visible"]
-    end
-    IN --> TR --> OUT
-    CT -.-> OUT
-    SLO -.-> OUT
-    AC -.-> OUT
-    OUT --> M1["Metric: qualified contacts per live listing"]
-    OUT --> M2["Pro report: leads per listing for dealers"]
-    OUT --> M3["Experiment outcome metric"]
----end mermaid---
+![Diagram: Anatomy of a data product](assets/images/36-data-platform/fig03-anatomy-data-product-domain-that-owns.jpeg)
 **Figure 3:** *Anatomy of a data product. The domain that owns contacts publishes them once, with a contract, service levels and access policy; the board metric, the dealer report and the experiment outcome all read the same table.*
 
 ### Who owns which data product
@@ -270,23 +225,7 @@ The headline was not that Tradeyard's number fell by 63%; nobody had believed it
 ![Three marketplace brands measuring the same bike listing with a rubber tape, an uneven ruler and a measuring cup, reading 52, beside the same brands sharing one certified ruler that reads 13.](assets/images/36-data-platform/one-ruler-for-contacts.jpeg)
 **Figure 4:** *One governed definition replaces each brand's own ruler: counted once per buyer and listing, with the phishing account excluded, Femke's bike drops from 52 messages to 13 qualified contacts, and the brands can finally be compared.*
 
----begin mermaid---
-sequenceDiagram
-    participant B as Buyer app
-    participant M as Messaging service
-    participant K as Event backbone
-    participant P as Contacts data product
-    participant T as Trust and safety
-    participant X as Metrics layer
-    B->>M: send first message on listing
-    M->>K: ContactDelivered with buyer, listing, channel
-    B->>K: contact_initiated tracking event, consent state
-    K->>P: both events, joined on contact attempt
-    P->>X: provisional qualified contact, day D
-    T->>K: AccountActioned for fraud, within 72 hours
-    K->>P: restate contacts from actioned account
-    P->>X: final qualified contacts for day D at D plus 3
----end mermaid---
+![Diagram: How a qualified contact is computed](assets/images/36-data-platform/fig05-how-qualified-contact-computed-server-side.jpeg)
 **Figure 5:** *How a qualified contact is computed. The server-side delivery event is the fact; the client event adds context; a fraud action within 72 hours restates the day before it becomes final.*
 
 ### Which liquidity metrics to govern

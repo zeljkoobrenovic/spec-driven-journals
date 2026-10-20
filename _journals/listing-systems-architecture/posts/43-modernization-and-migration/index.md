@@ -103,23 +103,7 @@ Shadow traffic has a well-known weakness in listings: the data changes underneat
 
 A slice moves through five gates. The names are Veldmark's; the shape is general.
 
----begin mermaid---
-stateDiagram-v2
-    state "G0 Contract" as G0
-    state "G1 Shadow" as G1
-    state "G2 Canary" as G2
-    state "G3 Ramp" as G3
-    state "G4 Retire" as G4
-    [*] --> G0
-    G0 --> G1: contract published, consumers known
-    G1 --> G2: unexplained differences below threshold
-    G2 --> G3: outcome metrics non-inferior, rollback rehearsed
-    G3 --> G4: point of no return decided at forum
-    G2 --> G1: rollback
-    G3 --> G2: rollback
-    G4 --> [*]
----end mermaid---
-
+![Diagram: The five stage gates for one migration slice](assets/images/43-modernization-and-migration/fig02-five-stage-gates-one-migration-slice.jpeg)
 **Figure 2:** *The five stage gates for one migration slice. Rollback is a normal transition until G3; the move to G4 is the recorded decision that the old path will no longer be kept current.*
 
 | Gate | Exit criteria (examples) | Rollback |
@@ -138,24 +122,7 @@ Two rules make the gates useful. **Exit criteria are numbers agreed before the g
 
 Figure 3 shows the transitional architecture for Tradeyard in mid-2028, after the insertion flow has moved and before search has. It generalizes to any listing monolith.
 
----begin mermaid---
-flowchart LR
-    U["Buyers, sellers, crawlers"] --> CDN["CloudFront route rules"]
-    APP["Mobile apps"] --> BFF["Mobile and web BFFs"]
-    CDN -->|"moved page types"| PAGES["Server-rendered page apps"]
-    CDN -->|"remaining page types"| YS["Yardstick PHP monolith"]
-    PAGES --> BFF
-    BFF -->|"insertion by seller cohort"| LS["New listing service"]
-    BFF -->|"not yet moved"| YS
-    LS -->|"outbox"| EV["Listing event contract v1"]
-    YS -->|"CDC"| RELAY["Yardstick Relay"]
-    RELAY --> EV
-    EV --> MIMIC["Legacy Mimic writer"]
-    MIMIC -->|"keeps ads table current"| YDB["Yardstick MySQL"]
-    YS --- YDB
-    EV --> SEARCH["Search, alerts, trust, SEO, data"]
----end mermaid---
-
+![Diagram: Tradeyard's transitional architecture in mid-2028](assets/images/43-modernization-and-migration/fig03-tradeyard-s-transitional-architecture-mid-2028.jpeg)
 **Figure 3:** *Tradeyard's transitional architecture in mid-2028. Three seams — edge routes, BFF routing and the event stream — decide which system serves what. The new listing service is the system of record for listings it created; the Legacy Mimic writer keeps Yardstick's table current so that modules still in the monolith keep working and rollback stays possible.*
 
 Four principles follow from it.

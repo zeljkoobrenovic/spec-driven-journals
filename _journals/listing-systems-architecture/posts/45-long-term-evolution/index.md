@@ -57,24 +57,7 @@ A listing marketplace sells one thing: **matches**. A seller wants a buyer, a de
 
 Read that way, every part of this book describes one stage of the machine, the guarantee that stage must give, and the way it fails.
 
----begin mermaid---
-flowchart LR
-    S["Supply: forms, APIs, feeds"] --> L["Listing: aggregate, taxonomy, attributes, media, place"]
-    L --> P["Publication: decide, then propagate"]
-    P --> D["Discovery: search, ranking, alerts, recommendations"]
-    D --> T["Trust: gate, identity, fraud, regulation"]
-    T --> C["Contact and transaction: messaging, leads, payments"]
-    C --> M["Money: packages, entitlements, ads"]
-    M -->|"paid effects, bounded by policy"| D
-    C -->|"outcomes and labels"| D
-    C -->|"outcomes and labels"| T
-    E["Platform: events, system of record, data, experiments, ML, reliability"] -.-> P
-    E -.-> D
-    E -.-> T
-    E -.-> M
-    G["Leadership: consolidation, organization, modernization, AI, evolution"] -.-> E
----end mermaid---
-
+![Diagram: The liquidity machine](assets/images/45-long-term-evolution/fig01-liquidity-machine-supply-becomes-listings-listings.jpeg)
 **Figure 1:** *The liquidity machine. Supply becomes listings, listings are published and found, trust decides which contacts are safe, contacts become matches and money. Outcomes flow back into ranking and trust; paid effects flow back into discovery under policy. The platform carries every stage; leadership decides how the platform evolves.*
 
 The table states the argument part by part: each stage protects a liquidity metric and has a named way to fail.
@@ -143,31 +126,7 @@ The chapter's title states its stance: **systems are built to be replaced; contr
 
 The first output of Ingrid's paper is a sorting of the 2027 decisions by how long they are meant to last. It is the most useful single page for the next Chief Architect, because it says which decisions are load-bearing and which are bets that should be revisited on schedule.
 
----begin mermaid---
-flowchart TB
-    subgraph Decades["Built to last: decades"]
-        A1["Listing, account and party identifiers"]
-        A2["Listing event contract and compatibility rules"]
-        A3["Taxonomy IDs, attribute dictionary, place IDs"]
-        A4["Governed metric definitions"]
-        A5["Decision records and evidence formats"]
-    end
-    subgraph Years["Built to change: years"]
-        B1["Search engine and index schema"]
-        B2["Event broker and data warehouse engine"]
-        B3["Cloud provider and runtime"]
-        B4["Entitlement and identity implementations"]
-    end
-    subgraph Months["Built to churn: weeks to months"]
-        C1["Ranking policies, prices, packages"]
-        C2["Models, prompts and LLM providers"]
-        C3["Trust policies and thresholds"]
-        C4["Category tree releases"]
-    end
-    Decades --> Years
-    Years --> Months
----end mermaid---
-
+![Diagram: Three rates of change](assets/images/45-long-term-evolution/fig03-three-rates-change-top-layer-what.jpeg)
 **Figure 3:** *Three rates of change. The top layer is what other systems, partners and regulators depend on; it changes only by versioned contract. The middle layer is replaceable behind those contracts. The bottom layer is content that brands change as data, through review rather than release.*
 
 | Layer | Veldmark 2027 decisions | Expected life | How it changes | Owner |
@@ -188,19 +147,7 @@ A useful test for any new proposal at the forum: *which layer does this belong i
 
 The workshop's value comes from the breadth of the stressors and the honesty of the "what breaks" column, not from its loop, which is simple.
 
----begin mermaid---
-flowchart LR
-    A["Naive architecture: the 2027 Common Ground design"] --> B["List stressors across seven families"]
-    B --> C["For each stressor: attractor and business reaction"]
-    C --> D["What breaks in the current design"]
-    D --> E["Residue: the structure that would survive"]
-    E --> F["Integrated, already survived, or open"]
-    F --> G["Count residues per component"]
-    G --> H["Combine stressors and re-test"]
-    H -->|"new residue found"| E
-    G --> I["Investment and fitness functions"]
----end mermaid---
-
+![Diagram: Stressor analysis as Veldmark runs it](assets/images/45-long-term-evolution/fig04-stressor-analysis-veldmark-runs-it-combined.jpeg)
 **Figure 4:** *Stressor analysis as Veldmark runs it. Combined stressors are the check: if the platform survives them by composing residues it already has, the decomposition holds; if not, the loop adds a residue.*
 
 The stressors are deliberately drawn from seven families, because architects left alone list mostly technical risks:
@@ -374,18 +321,7 @@ Five design choices in the scorecard are the parts other groups tend to get wron
 
 **The scorecard is in the architecture repository, versioned.** Definitions change through decision records, and the governed metrics catalog of [[data-platform]] computes F5, F6 and the contact counts, so the scorecard and the business dashboards use the same numbers.
 
----begin mermaid---
-flowchart LR
-    A["Scorecard: 12 fitness functions"] --> B["Quarterly architecture review"]
-    B -->|"function below target"| C["Debt register item with liquidity estimate"]
-    B -->|"stressor landscape changed"| D["Stressor analysis update"]
-    C --> E["Investment decision at the forum"]
-    D --> E
-    E --> F["Decision record and change"]
-    F --> G["Production, drills and tabletops"]
-    G -->|"measured"| A
----end mermaid---
-
+![Diagram: The steering loop](assets/images/45-long-term-evolution/fig07-steering-loop-fitness-functions-feed-quarterly.jpeg)
 **Figure 7:** *The steering loop. Fitness functions feed the quarterly review; failures become debt items with a liquidity estimate; changes in the outside world update the stressor analysis; both compete for investment through decision records. The loop, not a target diagram, is the long-term plan.*
 
 ## The Architecture Function's Own Evolution

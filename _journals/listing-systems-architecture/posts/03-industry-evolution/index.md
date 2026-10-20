@@ -70,16 +70,7 @@ Two questions followed. Mateus Carvalho, the Group CTO, asked which of these lay
 
 The chapter divides the history into five waves. The boundaries are approximate and overlap, because different groups reached each wave at different times.
 
----begin mermaid---
-flowchart LR
-    W0["Wave 0: Print columns, to about 1995"] -->|"listings go online, free"| W1["Wave 1: Online pioneers, 1995 to 2005"]
-    W1 -->|"land-grab per country"| W2["Wave 2: Portfolio building, 2005 to 2016"]
-    W2 -->|"integrate what was bought"| W3["Wave 3: Consolidation, 2016 to 2023"]
-    W3 -->|"capital gets expensive"| W4["Wave 4: Take-privates and break-ups, 2023 to 2026"]
-    W1 -.->|"verticals split off"| V["Vertical portals: property, motors, jobs"]
-    V -.->|"acquired into portfolios"| W2
-    W3 -.->|"transactional pivot for goods"| T["Payments, shipping, buyer protection"]
----end mermaid---
+![Diagram: Five waves of classifieds strategy](assets/images/03-industry-evolution/fig02-five-waves-classifieds-strategy-vertical-portals.jpeg)
 **Figure 2:** *Five waves of classifieds strategy. Vertical portals grew alongside the horizontals and were absorbed into portfolios; the transactional pivot runs through the consolidation wave. Each arrow is a strategic change that left the previous wave's systems in place.*
 
 ## The Timeline in Dated Events
@@ -235,28 +226,7 @@ The outcome of mobile.de's sale process is not public as of October 2026. The Fi
 
 > **INFERENCE, NOT DOCUMENTED:** For owners pursuing break-up value, a shared product platform is a liability at exit: it creates transitional services, intellectual-property questions and double running costs. The same shared platform that a synergy case valued in 2021 became a separation cost in 2025. The documented pattern does not say centralization was wrong; it says **platform topology has to match the capital strategy**, and that the capital strategy can change within two or three years.
 
----begin mermaid---
-flowchart TB
-    subgraph S1["Federation era"]
-        A1["Local product and tech per marketplace"]
-    end
-    subgraph S2["Selective centralization, 2019 to 2020"]
-        A2["Central data and scalable components; voluntary internal platform"]
-    end
-    subgraph S3["Integration, 2021 to 2023"]
-        A3["Shared cloud, data, chat, moderation, experimentation"]
-    end
-    subgraph S4["Convergence bet, 2023 to mid 2024"]
-        A4["Two generalist product platforms to become one"]
-    end
-    subgraph S5["Decentralization, 2024 to 2026"]
-        A5["Central functions ramped down; capabilities and IP localized; brands sold"]
-    end
-    A1 -->|"listing and scale"| A2
-    A2 -->|"acquisition of eBay Classifieds"| A3
-    A3 -->|"overlap in customer needs"| A4
-    A4 -->|"take-private and break-up value"| A5
----end mermaid---
+![Diagram: The centralize–decentralize swing in Adevinta's own words, 2019–2026](assets/images/03-industry-evolution/fig03-centralize-decentralize-swing-adevinta-s-own.jpeg)
 **Figure 3:** *The centralize–decentralize swing in Adevinta's own words, 2019–2026. Each step was justified by the ownership and strategy of its moment; the systems built in one step became the inheritance, or the separation cost, of the next.*
 
 ## Reading a Group's Architecture as Sediment
@@ -273,16 +243,7 @@ The waves give an architect a practical tool: for each major system, ask **which
 | Converged product platforms (Wave 3) | Markets' needs overlap enough to share product | Local workarounds; feature requests queuing at the center | Re-examine per capability; keep local edges local |
 | Carve-out residue (Wave 4) | A separation will happen once, quickly | Transitional services that last years; parallel running costs | Design separability in advance, not at signing |
 
----begin mermaid---
-flowchart TB
-    OWN["Ownership and capital strategy"] -->|"sets"| TOP["Platform topology: federate, share, converge, separate"]
-    TOP -->|"funds and staffs"| PLAT["Shared platforms"]
-    TOP -->|"tolerates"| LOC["Local stacks"]
-    PLAT -->|"outlive the strategy"| SED["Sediment inherited by the next owner"]
-    LOC -->|"outlive the strategy"| SED
-    SED -->|"constrains the cost of"| NEXT["Next deal: merger, sale, carve-out"]
-    NEXT -->|"changes"| OWN
----end mermaid---
+![Diagram: The loop behind the timeline](assets/images/03-industry-evolution/fig04-loop-behind-timeline-ownership-sets-platform.jpeg)
 **Figure 4:** *The loop behind the timeline. Ownership sets platform topology; platforms and local stacks outlive the strategy that created them; that sediment then sets the cost of the next deal, which changes the ownership again. The architect's leverage is in making the sediment cheap to separate.*
 
 ## In Practice: Veldmark's History, Read as Sediment

@@ -68,17 +68,7 @@ The chronology follows. Dates are those of the cited releases and reports; owner
 | May 2026 | Otodim launched in beta in Ukraine, a real-estate search platform drawing on OLX Ukraine's inventory | OLX Group release, 2026 |
 | Jun 2026 | FY26 results: seven markets (Bulgaria, France, Poland, Portugal, Romania, South Africa, Ukraine), US$992 million revenue | OLX Group and Prosus releases, 2026 |
 
----begin mermaid---
-flowchart LR
-    P1["Roll-up and rebrand, 2006 to 2018"] --> P2["Regional reshaping, 2018 to 2021"]
-    P2 --> P3["Vertical integration bet, 2019 to 2025"]
-    P3 --> P4["Retreat to a European core, 2022 to 2026"]
-    P1 -.->|"one brand, many local stacks"| L1["Up to 45 markets"]
-    P2 -.->|"markets leave with their platforms"| L2["Minority stakes and joint ventures"]
-    P3 -.->|"owning cars, credit, delivery"| L3["Adjacent businesses"]
-    P4 -.->|"motors, real estate, jobs"| L4["Seven markets, verticals"]
----end mermaid---
-
+![Diagram: Each phase changed what the listing platform had to carry](assets/images/47-case-olx/fig01-each-phase-changed-what-listing-platform.jpeg)
 **Figure 1:** *Each phase changed what the listing platform had to carry: many markets under one brand, then fewer markets as regions left through mergers, then inventory and payment businesses beside the listings, and finally a small set of markets organized by vertical.*
 
 ## Phase 1: Roll-Up and Rebrand (2006–2018)
@@ -217,18 +207,7 @@ The September 2025 hybrid-search post is the most instructive single document in
 3. **Bootstrap training data with a deliberately modest ranker.** Because vector results had no interaction history, OLX introduced "a linear re-ranking model to temporarily replace LTR", built on its earlier BM25-weighted function plus recency. Recency was protected because paid listings receive recency resets when sellers buy services.
 4. **Prove value where risk is lowest.** Vector search first ran as a step in the extension chain in a smaller market, where it more than doubled seller-contact events per user. A main-flow test failed to converge because of a web tracking bug; re-runs showed "an approximately 3% increase in the share of users who completed a successful event" on apps and "a ~5% increase" on mobile web, after which OLX decided to "proceed with a full rollout of Hybrid Search on all platforms in this market".
 
----begin mermaid---
-flowchart LR
-    Q["Buyer query"] --> BM["Solr BM25 retrieval"]
-    Q --> VEC["Vector retrieval, fixed quota"]
-    BM -->|"keyword candidates"| MRG["Merged candidate set"]
-    VEC -->|"35, then 70 candidates"| MRG
-    MRG --> LTR["LTR re-rank, retrained with similarity feature"]
-    LTR -->|"Vanilla or VAS objective"| PAGE["Result page"]
-    BM -.->|"low or zero results"| EXT["Extension chain fallbacks"]
-    EXT -.->|"first test of vectors"| VEC
----end mermaid---
-
+![Diagram: The hybrid design as OLX described it in 2025](assets/images/47-case-olx/fig04-hybrid-design-olx-described-it-2025.jpeg)
 **Figure 4:** *The hybrid design as OLX described it in 2025: lexical retrieval kept, vectors added as a fixed quota, and one ranker retrained to judge both, with the zero-results fallback as the first place vectors were tested. The diagram shows the documented shape, not internal components.*
 
 **Similarity is not relevance in local classifieds**, as a companion post in October 2025 shows. OLX chose the embedding model by memory, latency and language constraints, with an offline dataset that weighted favorites and chat replies above clicks. The online test for similar items still lost to the incumbent until location and price were brought back through re-ranking. [[query-understanding]] and [[search-architecture]] develop hybrid retrieval in general.
@@ -247,25 +226,7 @@ The record has three explicit statements about multi-brand engineering, all rece
 
 An August 2026 post on coding agents mentions, in passing, a change across "three codebases": two Go services and a PHP service.
 
----begin mermaid---
-flowchart TB
-    subgraph MOT["Motors platform, one code base"]
-        M1["Otomoto, Poland"]
-        M2["Autovit, Romania"]
-        M3["Standvirtual, Portugal"]
-    end
-    subgraph RE["Real-estate platform, one code base"]
-        R1["Otodom, Poland"]
-        R2["Storia, Romania"]
-        R3["Imovirtual, Portugal"]
-    end
-    CFG["Per-brand configuration: locale, taxonomy, packages, ranking settings"] --> MOT
-    CFG --> RE
-    MOT --> SH["Shared capabilities: search ranking repository, ML, chat safety, identity"]
-    RE --> SH
-    LC["La Centrale, France, acquired 2025"] -.->|"integration path not public"| MOT
----end mermaid---
-
+![Diagram: A reference reading of OLX Europe's multi-brand shape, assembled from the documented fragments](assets/images/47-case-olx/fig05-reference-reading-olx-europe-s-multi.jpeg)
 **Figure 5:** *A reference reading of OLX Europe's multi-brand shape, assembled from the documented fragments. Everything in this diagram except the brand names, the ranking repository and the La Centrale acquisition is the author's inference.*
 
 > **INFERENCE, NOT DOCUMENTED:** The fragments — one front-end repository for three brands, one ranking repository with brand configuration, a "unified platform" credited for real-estate growth, user identifiers standardized across 71 services — are consistent with a common classifieds pattern: one code base per vertical, serving several country brands, with locale, taxonomy and commercial packages held as configuration, and a legacy PHP core being replaced by Go services. That is a plausible reference architecture, not a description of OLX's systems. OLX has not published which brands share which code base, when the real-estate platform was unified, or whether La Centrale will move onto the motors platform. [[multi-country-platforms]] treats this tenancy model in general.

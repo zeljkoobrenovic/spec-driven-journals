@@ -83,26 +83,7 @@ The pipeline's actual mode must match what the marketplace tells users. In Decem
 
 The reference architecture below is Veldmark's target design and an inference from public building blocks; no classifieds operator has published its complete publication pipeline.
 
----begin mermaid---
-flowchart LR
-    S["Seller app or feed"] --> V["Validation against category schema"]
-    V --> G["Risk gate: allow, hold, reject"]
-    G --> EN["Entitlement and fee check"]
-    EN --> W["Listing write plus outbox"]
-    W -->|"ListingSubmitted"| Q["Async risk checks and enrichment"]
-    Q -->|"cleared for publication"| P["Listing context publishes"]
-    G -->|"hold"| HR["Human review queue"]
-    HR -->|"approve"| P
-    P -->|"ListingPublished"| T["Listing event topic"]
-    T --> IX["Search indexer"]
-    T --> AL["Alert matcher"]
-    T --> SEO["Sitemaps and page cache"]
-    T --> REC["Recommendation candidates"]
-    T --> PF["Partner and ad feeds"]
-    IX --> MON["Freshness monitor"]
-    AL --> MON
-    SEO --> MON
----end mermaid---
+![Diagram: The decision path (left) ends when the listing context records the decision and publishes one event](assets/images/16-publication-pipeline/fig01-decision-path-left-ends-when-listing.jpeg)
 **Figure 1:** *The decision path (left) ends when the listing context records the decision and publishes one event; the propagation path (right) fans that event out to every consumer, each of which reports to a freshness monitor. The human-review path rejoins at the same publication step, so a held listing propagates exactly like an automatically cleared one.*
 
 ### The synchronous path: decide, and stop
@@ -138,19 +119,7 @@ Fan-out is only safe if every consumer applies events correctly when they arrive
 
 These rules prevent the **zombie listing**, as many teams call it. A reindex job or a replayed backlog writes a listing's old "active" state after its "sold" state has been applied, and the sold listing comes back to life in search. It is the most common way that a backfill creates Ghost Inventory, and it is invisible unless something compares every copy with the system of record.
 
----begin mermaid---
-sequenceDiagram
-    participant LC as ListingContext
-    participant TOP as EventTopic
-    participant IX as SearchIndexer
-    participant BF as BackfillJob
-    LC->>TOP: ListingPublished version 3
-    TOP->>IX: apply version 3, document created
-    LC->>TOP: ListingSold version 5
-    TOP->>IX: apply version 5, tombstone kept
-    BF->>IX: replay snapshot with version 3 active
-    IX->>IX: version 3 is lower than 5, ignored
----end mermaid---
+![Diagram: Why consumers keep tombstones and gate on versions](assets/images/16-publication-pipeline/fig02-why-consumers-keep-tombstones-gate-versions.jpeg)
 **Figure 2:** *Why consumers keep tombstones and gate on versions. Without the tombstone, the backfill's version 3 would find no document and recreate the sold listing; with it, the stale write is ignored.*
 
 ### Expiry and renewal
@@ -196,25 +165,7 @@ The objectives in the table are the targets Veldmark set in 2027; the search and
 
 A takedown for fraud or policy violation is an enforcement decision owned by trust and safety, but its propagation should not be a separate mechanism. The decision service emits its decision, the listing context applies it and emits the resulting listing event, and every registered consumer removes the listing exactly as it would for a sale, on a **priority lane** with a tighter objective (see [[trust-and-safety-architecture]]). Two separate removal mechanisms, one for sales and one for takedowns, guarantee that one of them falls behind the consumer registry. The only differences for takedowns are priority, the 410 page rather than a "sold" page, the removal of pending messages, and the statement of reasons the Digital Services Act requires for the restriction ([[marketplace-regulation]]).
 
----begin mermaid---
-flowchart TB
-    SOLD["Seller marks sold"] --> LC["Listing context"]
-    EXP["Lifecycle scheduler: expiry"] --> LC
-    TD["Decision service: takedown"] --> LC
-    FEED["Feed reconciler: missing from snapshot"] --> LC
-    LC -->|"ListingSold, ListingExpired, ListingRemoved"| TOP["Listing event topic, priority lane"]
-    TOP --> C1["Search index"]
-    TOP --> C2["Alerts and digests"]
-    TOP --> C3["Recommendations"]
-    TOP --> C4["Pages, sitemaps, caches"]
-    TOP --> C5["Ads and partner feeds"]
-    C1 -->|"ack with version"| PM["Propagation monitor"]
-    C2 -->|"ack with version"| PM
-    C3 -->|"ack with version"| PM
-    C4 -->|"ack with version"| PM
-    C5 -->|"ack with version"| PM
-    PM -->|"overdue consumer"| ON["On-call alert"]
----end mermaid---
+![Diagram: Four causes, one removal path](assets/images/16-publication-pipeline/fig04-four-causes-one-removal-path-sales.jpeg)
 **Figure 4:** *Four causes, one removal path. Sales, expiry, takedowns and feed reconciliation all end in the listing context, which emits one removal event; each registered consumer acknowledges with the version it applied, and the propagation monitor alerts on any consumer that misses its objective.*
 
 ## Observability: Proving the Pipeline Works

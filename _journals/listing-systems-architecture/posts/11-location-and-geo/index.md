@@ -148,22 +148,7 @@ A private seller's precise listing location is personal data; the gazetteer is n
 
 ### Components
 
----begin mermaid---
-flowchart LR
-    IN["Insertion form, app, feed"] -->|"raw address or postcode"| PA["Address parser per country"]
-    PA -->|"components"| GW["Geocoding gateway"]
-    GW -->|"country routing"| P1["National register geocoder"]
-    GW -->|"fallback"| P2["Commercial geocoder"]
-    GW -->|"point, match level, licence"| PR["Place resolver"]
-    GZ["Gazetteer, versioned"] --> PR
-    PR -->|"place IDs and ancestors"| PP["Precision policy engine"]
-    POL["Policy rules per brand, category, seller type"] --> PP
-    PP -->|"precise part"| RS["Restricted location store"]
-    PP -->|"public part"| LA["Listing aggregate"]
-    LA -->|"ListingPublished"| SE["Search documents"]
-    LA -->|"ListingPublished"| WEB["Pages, structured data, feeds"]
-    RS -->|"restricted reads"| ER["Duplicate detection and fraud"]
----end mermaid---
+![Diagram: Location enters as text and leaves as two different products](assets/images/11-location-and-geo/fig02-location-enters-text-leaves-two-different.jpeg)
 **Figure 2:** *Location enters as text and leaves as two different products. Everything to the right of the precision policy engine sees only what the policy allows, while duplicate detection and fraud models read the restricted store through an audited path.*
 
 The components and their responsibilities:
@@ -195,19 +180,7 @@ Distances leak locations, as the Rotterdam case showed. A distance from a search
 
 Internal consumers are different. Duplicate detection for real estate needs the precise point, since two listings of the same flat should agree within meters ([[entity-resolution]] uses H3 resolution 9 cells as a blocking key). Fraud models need it to compare a listing's location with the account's history. These reads go to the restricted store and are logged.
 
----begin mermaid---
-flowchart TB
-    PREC["Precise point, P5, restricted"] --> POLICY["Precision policy, versioned rules"]
-    SELLER["Seller choice: exact, street or district"] --> POLICY
-    CAT["Brand, category and seller type"] --> POLICY
-    POLICY -->|"deterministic snap or seeded offset"| PUB["Public point and display level"]
-    POLICY -->|"place IDs to allowed level"| PLC["Place references"]
-    PUB --> D1["Distance shown, rounded"]
-    PUB --> D2["Map pin or circle"]
-    PUB --> D3["Structured data and sitemaps"]
-    PLC --> D4["Filters, landing pages, alerts"]
-    PREC -.->|"audited internal reads only"| D5["Dedup, fraud, valuation"]
----end mermaid---
+![Diagram: One precise point, many audiences](assets/images/11-location-and-geo/fig04-one-precise-point-many-audiences-public.jpeg)
 **Figure 4:** *One precise point, many audiences. Public consumers see a derived point and place references; only internal models with a documented purpose read the precise point, and every distance a buyer sees comes from the public side.*
 
 ### Location in the listing event and the search document

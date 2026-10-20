@@ -75,3 +75,4 @@ Article only for now.
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 1 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 5,585 → 5,578 prose words; no headings renamed or sections moved; lead now ties the chapter to the data platform and to the ranking, pricing and paid-product decisions it settles; teaser and filler openers replaced with topic sentences. *(AI-mediated session)*
+- **2026-10-20** — Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`). *(AI-mediated session)*

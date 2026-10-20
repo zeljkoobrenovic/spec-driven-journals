@@ -76,3 +76,4 @@ Article only for now.
 - **2026-10-20** — Cross-chapter consistency sweep: 1 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 6,540 → 6,550 prose words; lead now ties the chapter to Part II's aggregate-and-subdomains model and names what it builds on; eight topic sentences brought forward or made concrete; no headings renamed, no sections moved; spec unchanged. *(AI-mediated session)*
 - **2026-10-20** — Consistency fix: scene heading now "Five Answers" to match the five-row table; lead no longer says "four different ideas". *(AI-mediated session)*
+- **2026-10-20** — Replaced 2 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`). *(AI-mediated session)*

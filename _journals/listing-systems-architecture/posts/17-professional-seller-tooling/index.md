@@ -81,25 +81,7 @@ The architecture therefore needs a **performance funnel per listing, branch and 
 
 [[messaging-and-leads]] defines a **lead** as a buyer contact with commercial intent attached to a listing and a seller. From the professional's side, a lead has a lifecycle the marketplace often cannot see: it is assigned to a salesperson, answered, qualified, turned into an appointment and won or lost, usually in the professional's CRM. Figure 1 shows that lifecycle as the pro workspace should model it.
 
----begin mermaid---
-stateDiagram-v2
-    [*] --> Received
-    Received --> Merged: same buyer and listing within window
-    Received --> Assigned: routed to branch or salesperson
-    Assigned --> Responded: first reply or call back
-    Assigned --> Unanswered: response window passed
-    Unanswered --> Responded: late reply
-    Responded --> Qualified: real buyer, real intent
-    Responded --> Disqualified: spam, wrong number, no intent
-    Qualified --> Appointment: viewing or test drive booked
-    Appointment --> Won: sale, instruction or let
-    Appointment --> Lost: no deal
-    Qualified --> Lost: no deal
-    Merged --> [*]
-    Won --> [*]
-    Lost --> [*]
-    Disqualified --> [*]
----end mermaid---
+![Diagram: The professional's lead lifecycle](assets/images/17-professional-seller-tooling/fig01-professional-s-lead-lifecycle-marketplace-records.jpeg)
 **Figure 1:** *The professional's lead lifecycle. The marketplace records Received, Merged, Assigned and Responded itself; the later states usually happen in the professional's CRM and come back only through an integration. ROI reporting is only as good as that return path.*
 
 **Response time** and **outcome** are the two measurements in the figure that matter most. Response time is the one the marketplace can see and the professional can improve; mobile.de's 2026 lead-performance report tracks exactly response time, response rate and processing status. Outcome is the one the professional sees and the marketplace needs; without it, ROI is an estimate.
@@ -116,24 +98,7 @@ Owning that software brings an advantage and a conflict. The advantage: the soft
 
 The reference architecture I recommend (Figure 2) has three properties: the pro workspace owns no business records, every capability is available through the same API the partners use, and statistics are computed from the same event stream as billing.
 
----begin mermaid---
-flowchart LR
-    WEB["Pro web workspace"] --> GW["Pro API gateway"]
-    APP["Pro mobile app"] --> GW
-    PART["Partner software: DMS, CRM"] --> GW
-    GW -->|"org-scoped token"| BFF["Pro workspace backend"]
-    BFF --> INV["Listing service"]
-    BFF --> LEAD["Lead ledger"]
-    BFF --> ENT["Entitlements"]
-    BFF --> ACC["Accounts and organizations"]
-    BFF --> INS["Insights and valuation"]
-    BFF --> STAT["Performance read model"]
-    EV["Listing, exposure and lead events"] --> STAT
-    EV --> LEAD
-    EV --> BILL["Billing and delivery records"]
-    LEAD -->|"webhooks and Lead API"| PART
-    GW -.->|"sandbox and certification"| DEV["Developer portal"]
----end mermaid---
+![Diagram: The pro workspace composes domain services for one organization](assets/images/17-professional-seller-tooling/fig02-pro-workspace-composes-domain-services-one.jpeg)
 **Figure 2:** *The pro workspace composes domain services for one organization. The portal UI, the app and partner software reach the same capabilities through one gateway with organization-scoped tokens. Statistics, the lead ledger and billing all consume one event stream, so their numbers can be reconciled.*
 
 The pieces, and why each sits where it does:
@@ -245,30 +210,7 @@ The renewal conversation changes with the numbers. Over the same quarter, Autoha
 
 Emma's report is useful to agencies and legitimate for Keybridge. The question is what data it uses and who sees the result. Figure 5 shows the boundary Ingrid's team designs.
 
----begin mermaid---
-flowchart LR
-    subgraph KB["Keybridge tenant on Azure"]
-        CRM["Agency CRM records"]
-        REP["Portal performance report per agency"]
-    end
-    subgraph PORTALS["Portals"]
-        HE["Hearthly public feed and lead APIs"]
-        CA["Competing portal A APIs"]
-        CB["Competing portal B APIs"]
-    end
-    subgraph HG["Hearthly on Google Cloud"]
-        RANK["Ranking and sales systems"]
-    end
-    CRM -->|"listings the agency chose to publish"| HE
-    CRM -->|"same listings"| CA
-    CRM -->|"same listings"| CB
-    HE -->|"leads and stats via public API"| REP
-    CA -->|"leads and stats"| REP
-    CB -->|"leads and stats"| REP
-    REP -->|"shown to that agency only"| CRM
-    HE --> RANK
-    RANK -.-x|"no access"| CRM
----end mermaid---
+![Diagram: Keybridge's neutrality boundary](assets/images/17-professional-seller-tooling/fig05-keybridge-s-neutrality-boundary-keybridge-publishes.jpeg)
 **Figure 5:** *Keybridge's neutrality boundary. Keybridge publishes to Hearthly through the same public API as any other vendor and receives Hearthly's leads and statistics through the same public APIs as everyone else. The portal performance report is computed inside Keybridge, per agency, and shown only to that agency. No Hearthly system can read Keybridge's data.*
 
 The design answers Claire's question: **no**. Hearthly cannot see the cross-portal comparison, aggregated or not, because it is computed from data agencies entrusted to Keybridge, including data from Hearthly's competitors. Hearthly can learn where it underperforms the way any portal can: from its own data, from agency feedback and from public market research. The decision record notes the alternative Claire raised, an "anonymized benchmark" sold to Hearthly, and rejects it. Even anonymized, it would be Keybridge agency data used for Hearthly's sales targeting, which the March decision forbids, and it would undermine Keybridge's position with every agency that multi-lists.

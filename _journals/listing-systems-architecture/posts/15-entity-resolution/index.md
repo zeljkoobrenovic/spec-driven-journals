@@ -92,21 +92,7 @@ General goods have no entity to resolve to. **Do not invent one.** A marketplace
 
 The reference architecture below is an inference from public algorithms and the few public marketplace designs, not a description of any company's system. Its stages are standard in the record-linkage literature; what is specific to listings is the mix of signals and the speed at which clusters change.
 
----begin mermaid---
-flowchart LR
-    E["Listing events"] --> N["Normalized listing view"]
-    N --> B["Blocking: candidate keys"]
-    B --> P["Pairwise scoring"]
-    P --> C["Clustering"]
-    C --> R["Entity registry: stable cluster IDs"]
-    R --> X["Policy engine by duplicate kind"]
-    X -->|"abusive"| TS["Trust and safety cases"]
-    X -->|"legitimate"| S["Search and alerts read models"]
-    X -->|"legitimate"| V["Valuation and analytics"]
-    H["Human review and seller disputes"] --> R
-    P -.->|"gray-zone pairs"| H
-    R -.->|"labels"| P
----end mermaid---
+![Diagram: The matching pipeline](assets/images/15-entity-resolution/fig02-matching-pipeline-blocking-scoring-clustering-propose.jpeg)
 **Figure 2:** *The matching pipeline. Blocking, scoring and clustering propose links; the entity registry owns the identifiers; a policy engine turns one cluster into different actions for different duplicate kinds; and human decisions feed back into both the registry and the model.*
 
 ### Blocking: finding candidates cheaply
@@ -142,20 +128,7 @@ The entity registry keeps cluster identifiers stable. Clustering produces new gr
 
 The registry is also where the **canonical entity** lives: the canonical property's address, building, unit features and identifiers, with per-attribute provenance. Survivorship rules decide which value wins when members disagree. Surface might come from the energy diagnostic where present, else the most common value among professional listings; the address comes from the most precise geocode. The listing keeps the seller's own values. **The canonical property does not overwrite the listing**, because the listing is the seller's statement and carries legal weight in some markets. Valuation, price history and analytics read from the canonical record; the listing page shows what the seller published.
 
----begin mermaid---
-stateDiagram-v2
-    [*] --> Unmatched: listing published
-    Unmatched --> Proposed: candidate link scored in gray zone
-    Unmatched --> Linked: score above auto threshold
-    Proposed --> Linked: reviewer confirms
-    Proposed --> Unmatched: reviewer rejects, pair suppressed
-    Linked --> Disputed: seller or agency disputes link
-    Disputed --> Linked: dispute rejected
-    Disputed --> Unmatched: dispute upheld, pair suppressed
-    Linked --> Detached: listing unpublished
-    Detached --> Linked: listing reactivated
-    Detached --> [*]
----end mermaid---
+![Diagram: A listing's membership in a cluster has its own lifecycle](assets/images/15-entity-resolution/fig03-listing-s-membership-cluster-has-own.jpeg)
 **Figure 3:** *A listing's membership in a cluster has its own lifecycle. Human decisions are durable: a rejected or disputed pair is suppressed so that the next model run cannot re-create it, and unpublished listings detach so the cluster's state follows its live members.*
 
 **A human "not the same" decision must be stored as a constraint** (Figure 3), not just as a label for the next training run, or the nightly job will reunite the pair and the agency that complained will complain again.

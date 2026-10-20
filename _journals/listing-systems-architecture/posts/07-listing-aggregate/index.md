@@ -160,30 +160,7 @@ When these share one column, every combination needs its own value ("paused_and_
 ![Left, three hands fight over one status lever; right, a publication dial and a separate enforcement overlay feed a derived visibility indicator.](assets/images/07-listing-aggregate/three-hands-one-status.jpeg)
 **Figure 3:** *Seller, platform clock and trust and safety change a listing for unrelated reasons, so the lifecycle is a publication state plus an enforcement overlay, with visibility derived from both.*
 
----begin mermaid---
-stateDiagram-v2
-    [*] --> Draft: seller starts
-    Draft --> PendingReview: seller submits
-    PendingReview --> Active: gate passed
-    PendingReview --> Rejected: gate failed
-    Rejected --> Draft: seller edits
-    Active --> Paused: seller pauses
-    Paused --> Active: seller resumes
-    Active --> Reserved: seller or order reserves
-    Reserved --> Active: reservation lapses
-    Reserved --> Sold: sale confirmed
-    Active --> Sold: seller marks sold
-    Active --> Expired: lifetime elapsed
-    Expired --> Active: seller renews
-    Sold --> Active: sale fell through
-    Active --> Withdrawn: seller withdraws
-    Paused --> Withdrawn: seller withdraws
-    Expired --> Archived: renewal window closed
-    Sold --> Archived: display window closed
-    Withdrawn --> Archived: appeal window closed
-    Archived --> Purged: retention elapsed
-    Purged --> [*]
----end mermaid---
+![Diagram: The publication lifecycle owned by the listing service](assets/images/07-listing-aggregate/fig04-publication-lifecycle-owned-listing-service-seller.jpeg)
 **Figure 4:** *The publication lifecycle owned by the listing service. Seller transitions and clock transitions are distinct; renewal returns the same listing to active; nothing is deleted until retention ends. Enforcement is deliberately absent: it is an overlay, shown in the next table.*
 
 The enforcement overlay has its own small state set: **none**, **held** (awaiting review, not visible), **restricted** (visible but demoted, or hidden in some countries), **blocked** (not visible, seller cannot restore) and **restored** (after appeal). It is orthogonal to publication. A listing can be active and blocked, which means invisible; it can be sold and blocked, which matters for buyer-protection claims. The overlay matters legally: under the Digital Services Act a decision to remove, disable or *demote* content requires a statement of reasons to the affected user ([Regulation (EU) 2022/2065, Art. 17](https://eur-lex.europa.eu/eli/reg/2022/2065/oj), 2022), so a "restricted" state that ranking applies silently is still an enforcement action with a record. [[trust-and-safety-architecture]] owns the decisions; the listing holds the overlay state and the decision ID.
@@ -271,24 +248,7 @@ Two rules keep this manageable. **The parent is a listing only if buyers can con
 
 The listing aggregate is owned by one service per marketplace: the **listing service** (in productscape terms, Classifieds Management). It accepts commands, enforces invariants, writes versions and emits events. Everything else is a reader or a contributor of references.
 
----begin mermaid---
-flowchart LR
-    S["Seller apps and pro tools"] -->|"commands with version"| LS["Listing service"]
-    F["Feed ingestion"] -->|"commands keyed by external key"| LS
-    TS["Trust and safety decisions"] -->|"hold, block, restore"| LS
-    ENT["Entitlement service"] -->|"placement references"| LS
-    CLK["Lifecycle scheduler"] -->|"expire, archive, purge"| LS
-    TAX["Taxonomy and schema service"] -.->|"cached rules"| LS
-    LS --> DB["Listing store with versions and outbox"]
-    DB -->|"outbox relay"| EV["Listing event stream"]
-    EV --> SR["Search index"]
-    EV --> AL["Alerts and digests"]
-    EV --> RC["Recommendations"]
-    EV --> SEO["Sitemaps and listing pages"]
-    EV --> AN["Analytics"]
-    EV --> PF["Partner and syndication feeds"]
-    EV --> TSR["Trust scoring"]
----end mermaid---
+![Diagram: One owner, many copies](assets/images/07-listing-aggregate/fig05-one-owner-many-copies-every-write.jpeg)
 **Figure 5:** *One owner, many copies. Every write enters through the listing service, including platform-clock and enforcement transitions; every copy is rebuilt from the event stream. No consumer writes listing state back, and the search index can be rebuilt from the store at any time.*
 
 The command interface is small and explicit. I prefer intent-named commands to a generic `PATCH`, because intent is what the events must carry.

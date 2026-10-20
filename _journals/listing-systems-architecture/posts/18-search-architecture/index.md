@@ -72,23 +72,7 @@ When Ingrid Halvorsen joined as Group Chief Architect in February 2027, the sear
 
 A listing search layer has two paths that meet at the engine: a write path that turns listing changes into documents, and a read path that turns requests into engine queries and responses. The diagram shows the reference architecture I recommend; it is a design, not a description of any named company's system.
 
----begin mermaid---
-flowchart LR
-    SOR["Listing system of record"] -->|"outbox events"| ES["Listing event stream"]
-    REF["Taxonomy, attribute and seller services"] -->|"reference events"| ES
-    ES --> IDX["Indexer: stream processor"]
-    RM["Denormalization read models"] <-->|"lookups"| IDX
-    FEAT["Ranking features store"] -.->|"periodic or in-place updates"| ENG
-    IDX -->|"versioned upserts and deletes"| ENG["Search engine cluster"]
-    APP["Web, apps, SEO renderer, alerts"] --> API["Search API: the contract"]
-    API --> QU["Query understanding"]
-    API -->|"items request"| ENG
-    API -->|"facets request"| FC["Facet cache"]
-    FC -->|"miss"| ENG
-    API --> HYD["Result hydration and policy"]
-    HYD -->|"status recheck"| SOR
-    ENG -->|"query and indexing telemetry"| OBS["Observability and freshness monitors"]
----end mermaid---
+![Diagram: The search layer as a read model](assets/images/18-search-architecture/fig02-search-layer-read-model-documents-are.jpeg)
 **Figure 2:** *The search layer as a read model. Documents are built only from the event stream and reference data, the search contract hides the engine from product applications, and facets travel a separate path from results so their cost does not block the result list.*
 
 The table sets what each component owns and what it must not own.
@@ -243,22 +227,7 @@ The budget also settles arguments: when a team proposes a step that costs 80 ms,
 
 Mappings change with the taxonomy, analyzers with query-understanding work, shard counts with growth, and engines get upgraded; each needs a reindex. The baseline procedure is the alias swap; the diagram shows it with a live update stream, which is where the correctness risk lives.
 
----begin mermaid---
-sequenceDiagram
-    participant OP as Reindex controller
-    participant IX as Indexer
-    participant OLD as Index v7
-    participant NEW as Index v8
-    participant AL as Read alias
-    OP->>NEW: create with new mapping and shard plan
-    OP->>IX: start backfill into v8 from snapshot at sequence S
-    IX->>NEW: bulk writes with external versions
-    IX->>OLD: live updates continue
-    IX->>NEW: live updates from S onward, same versions
-    OP->>NEW: verify counts, sample documents, shadow queries
-    OP->>AL: atomic swap from v7 to v8
-    OP->>OLD: keep for rollback, then delete
----end mermaid---
+![Diagram: A reindex with a live stream](assets/images/18-search-architecture/fig05-reindex-live-stream-backfill-live-updates.jpeg)
 **Figure 5:** *A reindex with a live stream. Backfill and live updates both write into the new index with the listing's sequence as the version, so the order in which they arrive does not matter. The swap happens only after counts, samples and shadow queries agree.*
 
 Five practices separate a boring reindex from an incident.
@@ -341,20 +310,7 @@ By summer 2027, Tomasz Wiśniewski led the new group search platform team in War
 
 The decision on **14 September 2027** was option C, with three conditions that matter more than the engine. First, every product application moves to the **group search contract**, Listing Search API v1, before its engine changes; Motorvane adopts the contract on Elasticsearch, so a 2029 engine review becomes an adapter change rather than a rewrite. Second, documents are built only from the Common Ground listing event contract v1 on Confluent Cloud, live since 1 July 2027, plus the taxonomy and attribute services; no index field without a source. Third, Vespa was evaluated and deferred, with an explicit trigger for reopening it: if Tradeyard's update storms or ranking depth cannot meet their budgets on OpenSearch, the 2029 review revisits it.
 
----begin mermaid---
-flowchart TB
-    TY["Tradeyard web and apps"] --> API["Listing Search API v1"]
-    HE["Hearthly web and apps on Google Cloud"] -->|"cross-cloud until Hearthly moves"| API
-    MO["Motorvane web and apps"] --> API
-    API --> AOS["OpenSearch adapter"]
-    API --> AES["Elasticsearch adapter"]
-    AOS --> OS["Amazon OpenSearch Service: Tradeyard NL, BE, PL, PT and Hearthly FR, ES"]
-    AES --> EC["Elastic Cloud: Motorvane DE, NL, PL, AT"]
-    KAF["Listing event contract v1 on Confluent Cloud"] --> IXF["Shared indexer framework"]
-    TAX["Taxonomy and attribute service"] --> IXF
-    IXF --> OS
-    IXF --> EC
----end mermaid---
+![Diagram: Veldmark's target search platform after the September 2027 decision](assets/images/18-search-architecture/fig06-veldmark-s-target-search-platform-after.jpeg)
 **Figure 6:** *Veldmark's target search platform after the September 2027 decision. Two engines remain, but every product application calls one contract and every index is fed by one indexer framework from one event contract, so the 2029 engine review becomes an adapter decision.*
 
 The Rotterdam bike shows what the new write path is meant to buy. Femke's listing passed automated moderation at 19:44 in March 2027 and sat in Yardstick's batch indexer until the next commit cycle; it was searchable at 19:48. On the target platform, the `ListingPublished` event reaches the indexer in about 2 seconds, the document builder reads seller, category and media data from read models in about 3 seconds, and the OpenSearch refresh interval is 5 seconds. The index's share of the 90-second publication budget becomes **15 seconds p95**, and the rest belongs to validation and moderation.

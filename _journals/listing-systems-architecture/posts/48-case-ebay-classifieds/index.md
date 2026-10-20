@@ -71,19 +71,7 @@ Dates are those of the cited releases, filings and archived group web pages. Bra
 | 16 May 2023 | eBay Kleinanzeigen becomes **Kleinanzeigen** | Adevinta release, 2023 |
 | Jun 2025 | Kleinanzeigen describes migrating "the whole platform to a new system", user by user | Berlin Tech Blog, 2025 |
 
----begin mermaid---
-flowchart LR
-    A["Buy national leaders, 2004 to 2013"] --> C["Federation with group functions, 2009 to 2020"]
-    B["Launch group brands, 2005 to 2009"] --> C
-    C --> D["Sale to Adevinta, 2020 to 2021"]
-    D --> E["Regulatory and strategic divestments, 2021 to 2022"]
-    D --> F["Kept brands separate from eBay, 2022 to 2025"]
-    C -.->|"shared: search choice, PaaS, motors platform, payments partner"| L1["Thin shared layer"]
-    C -.->|"local: brand, product, core platform"| L2["National platforms"]
-    E -.->|"transitional services"| L1
-    F -.->|"rebrand and replatform"| L2
----end mermaid---
-
+![Diagram: eCG grew in two ways](assets/images/48-case-ebay-classifieds/fig01-ecg-grew-two-ways-it-bought.jpeg)
 **Figure 1:** *eCG grew in two ways: it bought national leaders and it launched group brands. Both ended up as a federation with a thin shared layer. The sale split the brands into those that were sold, which needed transitional services from the shared layer, and those Adevinta kept, which then had to remove the eBay name from their own platforms.*
 
 ## Phase 1: Building a Portfolio Two Ways (2004–2015)
@@ -144,17 +132,7 @@ Replaying recorded queries against frozen copies made every difference explainab
 
 **3. A motors-vertical platform with published contracts.** Two repositories created in September 2020 document **MoVe**, the "eCG Motors Vertical" platform, from the outside. The reference client targets a **Listing API** whose specification was published at `api.ecgmove.com` (the host no longer resolves). Integrators needed sandbox credentials and an assigned `partnerId`, and could call the public APIs only from "well-known, whitelisted IPs". The reference webhook receiver describes the outbound side. MoVe "is able to hand over a number of different events around the main business entities: listings, dealers and promotions", plus "enriched listings" (a listing with its promotions and dealer document, resent whenever any part changes) and "listing-url" events. For every listing event, MoVe expects a synchronous reply with the recipient's own listing ID and "one consumer facing VIP URL per supported language" (a VIP is a listing's detail page). And: "MoVe Listings are dispatched to a variety of different receivers. In the Canadian tenant, this can include Kijiji.ca, kijijiautos.ca and others."
 
----begin mermaid---
-flowchart LR
-    DMS["Dealer and integrator systems"] -->|"Listing API, partnerId, IP allow-list"| MOVE["MoVe motors platform"]
-    MOVE -->|"listing, dealer, promotion events"| R1["Receiver: Kijiji.ca"]
-    MOVE -->|"listing, dealer, promotion events"| R2["Receiver: kijijiautos.ca"]
-    MOVE -->|"enriched listing events"| R3["Other receivers"]
-    R1 -->|"local listing ID and detail-page URLs"| MOVE
-    R2 -->|"local listing ID and detail-page URLs"| MOVE
-    MOVE -->|"listing-url events"| SUB["Subscribers needing dispatch status"]
----end mermaid---
-
+![Diagram: The documented shape of MoVe, from its 2020 reference repositories](assets/images/48-case-ebay-classifieds/fig03-documented-shape-move-2020-reference-repositories.jpeg)
 **Figure 3:** *The documented shape of MoVe, from its 2020 reference repositories: dealers send stock to one platform, which pushes typed events to several marketplaces in a tenant and records each marketplace's own listing ID and URL. The repositories name only the Canadian tenant's receivers.*
 
 > **INFERENCE, NOT DOCUMENTED:** MoVe reads as a shared supply hub for the automotive vertical. It holds the canonical dealer listing, accepts stock once, and syndicates it to several consumer-facing marketplaces per "tenant", which is probably a country. The word "tenant" and the multi-receiver dispatch suggest it was built to serve more than Canada; the Australian car sites bought in 2020 are plausible candidates. The repositories do not name any tenant other than Canada, and nothing public says whether mobile.de used MoVe. This is the author's reading of two README files, not a description of how the platform was deployed.
@@ -207,17 +185,7 @@ The post documents six design choices.
 - **Back-sync for rollback.** Updates by users already on the new system flowed back to the legacy system, so most users still saw their ads and anyone could be switched back.
 - **A state machine per user**, and loops broken by version, not time. Each user moved through IDENTIFIED, ELIGIBLE, MIGRATION_REQUESTED, MIGRATED and TRANSITIONED. Update cycles between the two systems were detected with the JPA `@Version` field as a logical clock. The coordination logic lived in one service built as a modular monolith, so it could use MySQL transactions.
 
----begin mermaid---
-stateDiagram-v2
-    [*] --> IDENTIFIED
-    IDENTIFIED --> ELIGIBLE: "data transformed or user selected"
-    ELIGIBLE --> MIGRATION_REQUESTED: "migration request issued"
-    MIGRATION_REQUESTED --> MIGRATED: "core data written to new system"
-    MIGRATION_REQUESTED --> ELIGIBLE: "retry after failure"
-    MIGRATED --> TRANSITIONED: "proxy routes user to new system"
-    TRANSITIONED --> [*]
----end mermaid---
-
+![Diagram: The per-user migration states Kleinanzeigen published in 2025](assets/images/48-case-ebay-classifieds/fig04-per-user-migration-states-kleinanzeigen-published.jpeg)
 **Figure 4:** *The per-user migration states Kleinanzeigen published in 2025. The retry edge reflects the post's description of resetting a user to ELIGIBLE. Replatforming became a sequence of small, reversible per-user moves instead of a cut-over date.*
 
 **My reading** is that the migration's ownership matters as much as its algorithm. The new system "was being developed by a whole separate team", so the transformation logic could not simply live inside it. A migration between two systems owned by different teams needs its own owner and its own anti-corruption layer, and Kleinanzeigen gave it one. [[modernization-and-migration]] develops the per-user strangler pattern, and [[bounded-contexts]] the translation layer.
@@ -246,22 +214,7 @@ The offer to provide transitional services for Gumtree UK came from eBay, the se
 
 Shpock went to Russmedia Equity Partners on the day the undertakings were accepted. Gumtree UK and Motors.co.uk, about 7% of eCG's 2020 revenue, were sold to O3 Industries and Novum Capital on 1 December 2021. Adevinta then sold the Australian businesses to The Market Herald for US$60 million in August 2022, saying it "will continue to support the Australian business and its employees during the transition". The Mexican business went to Navent in September 2022, and Gumtree South Africa to Impresa Capital in July 2022. [[case-adevinta]] covers the strategic review behind these sales, which focused the group on five core European markets.
 
----begin mermaid---
-flowchart TB
-    subgraph SELLER["Seller side after signing"]
-        S1["Shared group services"]
-        S2["Parent marketplace programs"]
-    end
-    subgraph SOLD["Divested brand"]
-        B1["Own platform and data"]
-        B2["Dependencies outside the package"]
-    end
-    B2 -->|"transitional services agreement"| S1
-    B2 -->|"partnering in key areas"| S2
-    B1 -->|"replatform or rebuild"| N["Buyer's target state"]
-    B2 -->|"replace before TSA expiry"| N
----end mermaid---
-
+![Diagram: A plausible reference view of a carve-out, consistent with the CMA decision and Adevinta's 2022 release but not a description of any specific separation](assets/images/48-case-ebay-classifieds/fig05-plausible-reference-view-carve-out-consistent.jpeg)
 **Figure 5:** *A plausible reference view of a carve-out, consistent with the CMA decision and Adevinta's 2022 release but not a description of any specific separation. Everything a divested brand uses but does not own becomes a TSA line with an expiry date.*
 
 ### Which brands needed help

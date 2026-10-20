@@ -115,28 +115,7 @@ The platform has seven parts. The first four are mostly generic; the last three 
 6. **Labels**: pipelines that turn operational outcomes into training labels, with their delay, noise and ownership recorded.
 7. **Prediction log and monitoring**: every consequential prediction logged with its model version and features, joined later to outcomes; drift, performance by segment and cost dashboards.
 
----begin mermaid---
-flowchart LR
-    EV["Event backbone: listing, tracking, moderation, contact events"] --> LH["Lakehouse"]
-    EV --> SF["Streaming feature jobs"]
-    LH --> BF["Batch feature pipelines"]
-    BF --> OFF["Offline feature history"]
-    SF --> ON["Online feature store"]
-    BF --> ON
-    LAB["Label pipelines"] --> TR["Training pipelines"]
-    OFF --> TR
-    TR --> REG["Model registry with cards and consumers"]
-    REG --> BS["Batch scoring into listing read models"]
-    REG --> AS["Event-triggered async inference"]
-    REG --> RT["Synchronous endpoints"]
-    ON --> RT
-    BS --> PL["Prediction log"]
-    AS --> PL
-    RT --> PL
-    PL --> MON["Monitoring: drift, segments, cost"]
-    LH --> LAB
-    PL --> LAB
----end mermaid---
+![Diagram: The listing-specific parts of an ML platform are the label pipelines, the feature definitions shared between training and serving, and the prediction log that joins every consequential score to its outcome](assets/images/38-ml-platform/fig02-listing-specific-parts-ml-platform-are.jpeg)
 **Figure 2:** *The listing-specific parts of an ML platform are the label pipelines, the feature definitions shared between training and serving, and the prediction log that joins every consequential score to its outcome.*
 
 ### Serving modes: most listing models do not need real-time inference
@@ -240,26 +219,7 @@ Two of these rules are enforced by the architecture, not by policy. The **Keybri
 ![A loop from model to badge to asking prices, with the path back from asking prices into training cut by scissors, while registered sale records feed the model.](assets/images/38-ml-platform/label-rule-cuts-feedback-loop.jpeg)
 **Figure 4:** *The label rule cuts the feedback loop at its source: badges will move asking prices, but Valuo trains only on the prices buyers actually paid in the DVF records.*
 
----begin mermaid---
-sequenceDiagram
-    participant LS as Listing service
-    participant BB as Event backbone
-    participant ER as Entity resolution
-    participant VA as Valuo scorer
-    participant RM as Listing read model
-    participant PG as Listing page
-    participant LOG as Prediction log
-    LS->>BB: ListingPublished, price 389000
-    BB->>ER: resolve to canonical property
-    ER->>BB: PropertyResolved
-    BB->>VA: score property and listing
-    VA->>VA: interval 372000 to 401000, width 7.5 percent
-    VA->>RM: badge in line, model version, comparables
-    VA->>LOG: features, interval, version
-    PG->>RM: read listing with badge
-    LS->>BB: ListingUpdated, price cut
-    BB->>VA: rescore and update badge
----end mermaid---
+![Diagram: The pricing hint is event-triggered inference stored on the listing read model](assets/images/38-ml-platform/fig05-pricing-hint-event-triggered-inference-stored.jpeg)
 **Figure 5:** *The pricing hint is event-triggered inference stored on the listing read model; every score is logged with its model version so that later DVF sales can grade it.*
 
 The badge goes live in Lyon and Bordeaux on **Monday 22 November 2027** as an experiment randomized by city district rather than by user, because a badge on one listing changes how buyers judge its neighbors (see [[experimentation]]).
@@ -347,19 +307,7 @@ The jobs row matters for Veldmark because Tradeyard runs small jobs sections in 
 
 The registry enforces the same lifecycle for every model, with the tier deciding how heavy each gate is.
 
----begin mermaid---
-stateDiagram-v2
-    [*] --> Proposed
-    Proposed --> Experimental: owner, tier and label named
-    Experimental --> Shadow: offline evaluation by segment passed
-    Shadow --> Canary: shadow scores match logged outcomes
-    Canary --> Production: online experiment and tier sign-off
-    Production --> Production: retrained version approved
-    Production --> Deprecated: replaced or no consumers
-    Production --> Shadow: drift alert or incident
-    Deprecated --> Retired: consumers migrated
-    Retired --> [*]
----end mermaid---
+![Diagram: Every model passes the same states](assets/images/38-ml-platform/fig06-every-model-passes-same-states-what.jpeg)
 **Figure 6:** *Every model passes the same states; what changes with the tier is the evidence each transition requires, and a drift alert sends a production model back to shadow rather than leaving it to decide unwatched.*
 
 **Decide who owns labels.** Labels come from moderation, messaging, transactions and feeds, which are all owned by other teams. Make label events part of those teams' published contracts, so that a change in how moderators record decisions is reviewed as a change to every model that learns from them.

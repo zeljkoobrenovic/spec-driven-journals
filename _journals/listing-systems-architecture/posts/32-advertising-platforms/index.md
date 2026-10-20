@@ -82,30 +82,7 @@ Two distinctions shape everything after this section. **Display and native ads a
 
 Veldmark's reference architecture keeps three decision paths apart and puts one policy service over all of them (Figure 1). It is a reference design, not a description of any real company's systems.
 
----begin mermaid---
-flowchart TB
-    subgraph PAGE["Marketplace page or app screen"]
-        CMP["Consent management platform"]
-        SLOTS["Ad slots and native positions"]
-        RES["Search results"]
-    end
-    POL["Ad policy service"] -->|"ad load, exclusions, labels"| SLOTS
-    POL -->|"floors, caps, labels"| SP
-    CMP -->|"TC string"| HB["Header bidding: Prebid client and server"]
-    CMP -->|"consent state"| AUD["First-party audience service"]
-    HB -->|"bid requests"| SSP["Supply-side platforms"]
-    SSP -->|"bids"| HB
-    HB -->|"winning bids as key-values"| AS["Ad server"]
-    AUD -->|"segment keys"| AS
-    AS -->|"creative"| SLOTS
-    RES --> SP["Sponsored listing auction inside ranking"]
-    CAMP["Campaign and budget service"] --> SP
-    AUD -->|"audience deals"| RM["Retail media campaigns"]
-    RM --> AS
-    SLOTS -->|"impressions, viewability"| MEAS["Measurement and billing"]
-    SP -->|"impressions, clicks"| MEAS
-    MEAS -->|"contacts as guardrail"| DP["Data platform"]
----end mermaid---
+![Diagram: Veldmark's ad stack](assets/images/32-advertising-platforms/fig01-veldmark-s-ad-stack-display-native.jpeg)
 **Figure 1:** *Veldmark's ad stack. Display and native ads are decided by the ad server after header bidding; sponsored listings are decided inside the search stack; retail media uses both, plus the audience service. One policy service sets ad load, labels, exclusions and floors for every path, and measurement reports contacts next to revenue.*
 
 | Component | Responsibility | Owner at Veldmark |
@@ -125,22 +102,7 @@ A display impression on a listing page is a short distributed transaction with a
 
 The timeout trades bids against speed, and Prebid's documentation says so plainly. "Any demand partner who hasn't responded with a bid within the time allotted will not be included in the auction"; fewer bidders speed up processing but reduce the chance of the best bid, and finding the balance "might require some time and experimentation". Server-side header bidding through Prebid Server is "required in environments that don't have HTML header sections in which to put JavaScript", which is the case for mobile apps and AMP, and Prebid Mobile works "in conjunction with Prebid Server" ([Prebid, n.d.](https://docs.prebid.org/overview/intro.html)). For a listing marketplace, where a large share of traffic is in apps, the server-side path is not optional.
 
----begin mermaid---
-sequenceDiagram
-    participant U as Browser
-    participant C as CMP
-    participant P as PrebidClient
-    participant S as SSPs
-    participant A as AdServer
-    U->>C: page load, read stored consent
-    C-->>U: TC string for this user
-    U->>P: request bids for visible slots
-    P->>S: bid requests with TC string
-    S-->>P: bids that arrive within the timeout
-    P->>A: slot request with bids as key-values
-    A-->>U: winning creative or house ad
-    U->>A: impression and viewability events
----end mermaid---
+![Diagram: One display impression](assets/images/32-advertising-platforms/fig02-one-display-impression-timeout-bounds-bid.jpeg)
 **Figure 2:** *One display impression. The timeout bounds the bid step; bids that arrive late are dropped; the ad server decides between programmatic bids and direct campaigns. Every request downstream of the CMP carries the consent string, and slots below the fold are requested only when they approach the viewport.*
 
 Five rules keep the auction off the page's critical path; [[web-and-seo-architecture]] owns Core Web Vitals themselves.
@@ -163,19 +125,7 @@ Native ads, such as a bank's mortgage card between the fifth and sixth listing o
 
 Sponsored listings are the advertising product closest to the core marketplace. eBay's FY2025 10-K says it generates "a meaningful amount of our revenue from our Promoted Listings (a first-party advertising offering) and, to a lesser extent, third-party advertising"; eBay's advertising revenue was **US$1,993 million** in 2025, against US$79.6 billion of GMV ([eBay, 2026](https://www.sec.gov/Archives/edgar/data/1065088/000106508826000027/ebay-20251231.htm)). For classifieds, OLX has described its learning-to-rank stack running a "VAS LTR" model that balances "maximizing relevance for users and ensuring visibility for Value Added Services (VAS), ads that have paid for additional exposure", and the retraining needed when vector retrieval changed which paid listings were retrieved ([OLX, 2025](https://tech.olx.com/hybrid-search-where-keywords-meet-vectors-enabling-classifieds-discovery-b7c383fe4fc4)). Paid visibility lives inside ranking, whatever team sells it.
 
----begin mermaid---
-flowchart LR
-    SEL["Seller self-serve or sales tool"] -->|"campaign, bid, budget"| CB["Campaign and budget service"]
-    CB -->|"eligible listings, bids, pacing"| RM["Ranking read model"]
-    Q["Buyer query"] --> RET["Retrieval"]
-    RET --> RK["Ranking with relevance floor"]
-    RM --> RK
-    RK -->|"organic plus paid within slot cap"| PRES["Result page with Sponsored label"]
-    PRES -->|"impressions and clicks"| EV["Ad events"]
-    EV -->|"invalid traffic filter"| BILL["Billing per click"]
-    EV --> ATT["Attribution to contacts"]
-    BILL --> CB
----end mermaid---
+![Diagram: Sponsored listings at Veldmark](assets/images/32-advertising-platforms/fig03-sponsored-listings-veldmark-campaigns-budgets-live.jpeg)
 **Figure 3:** *Sponsored listings at Veldmark. Campaigns and budgets live in the ad unit's service; the decision about which paid listings appear, where, and only above a relevance floor, is made inside ranking from a read model; billing and attribution consume the impression and click events.*
 
 Five design choices keep paid positions inside the marketplace's rules:

@@ -116,25 +116,7 @@ Four lessons recur across them.
 
 **The channel determines the transport and the rhythm, never the meaning.** Every channel ends in the same small set of commands on the listing service, validated by the same compiled schema, and every channel reports outcomes through the same error catalog.
 
----begin mermaid---
-flowchart LR
-    IF["Insertion flow, web and app"] --> CMD["Listing command gateway"]
-    API["Partner API"] --> ADP["Channel adapters"]
-    FILE["Bulk feeds, push or pull"] --> ADP
-    REP["Replicators for external systems of record"] --> ADP
-    ADP -->|"ingestion records"| LOG["Ingestion record log"]
-    LOG --> HASH["Change detection by content hash"]
-    HASH --> VAL["Validation with compiled schemas"]
-    VAL --> REC["Reconciler and snapshot diff"]
-    REC --> GUARD["Mass-change guard"]
-    GUARD --> CMD
-    CMD -->|"commands keyed by external key"| LS["Listing service"]
-    LS -->|"listing events"| NORM["Normalization and enrichment"]
-    NORM --> PUB["Publication pipeline"]
-    VAL -->|"errors and warnings"| RPT["Run reports and partner feedback"]
-    GUARD -->|"held runs"| OPS["Feed operations console"]
-    RPT --> PRT["Partners and sellers"]
----end mermaid---
+![Diagram: Many doors, one write path](assets/images/13-listing-ingestion/fig02-many-doors-one-write-path-adapters.jpeg)
 **Figure 2:** *Many doors, one write path. Adapters turn each transport into the same ingestion record; change detection, validation, reconciliation and a mass-change guard sit between the partner and the listing service; errors flow back to partners through one report format. The insertion flow writes through the same command gateway and validator.*
 
 ### Components and responsibilities
@@ -193,21 +175,7 @@ Feed-driven listings have three writers: the partner's feed, the seller using th
 
 The reconciler turns a run into changes, and the guard sits where a snapshot run becomes removals. For a delta run the reconciler applies operations. For a snapshot run it computes, per seller, the set difference between the snapshot and the seller's live feed-owned listings.
 
----begin mermaid---
-stateDiagram-v2
-    [*] --> Received
-    Received --> Parsed: adapter accepts transport
-    Received --> Rejected: authentication or format failure
-    Parsed --> Diffed: per-seller set difference computed
-    Diffed --> Applied: changes within thresholds
-    Diffed --> Held: removals or price changes exceed thresholds
-    Held --> Applied: partner or operator confirms
-    Held --> Discarded: partner resends a complete run
-    Applied --> Reported: run report delivered
-    Rejected --> Reported
-    Discarded --> Reported
-    Reported --> [*]
----end mermaid---
+![Diagram: The life of a snapshot run](assets/images/13-listing-ingestion/fig04-life-snapshot-run-run-that-would.jpeg)
 **Figure 4:** *The life of a snapshot run. A run that would remove or reprice more of a seller's stock than its thresholds allow is held, not applied; the partner learns about it through the same report as any other outcome.*
 
 A **mass-change guard** holds a snapshot run for a seller when its effect exceeds a threshold, for example removal of more than a set share of that seller's live stock, or more than a set count, or a change to a large share of prices. The thresholds are per seller size, because a small dealer selling three of its eight cars on a Saturday is normal and an agency losing 60% of its stock overnight is not. Held runs are confirmed by the partner through an API call or by an operator, or superseded by a complete resend. The guard is cheap, and it is the single control that would have turned Motorvane's 38,400 removals into 286 held runs and one phone call to the vendor.

@@ -82,18 +82,7 @@ The chronology below draws on the cited releases, filings and reports. Ownership
 
 The four marketplaces and the contrast case sit at different points on a single line: how far the marketplace reaches into the transaction.
 
----begin mermaid---
-flowchart LR
-    S1["Listing and contact"] --> S2["Qualified lead"]
-    S2 --> S3["Reservation and deal steps"]
-    S3 --> S4["Owning the car"]
-    M["mobile.de"] -.->|"leads, finance and leasing referrals"| S2
-    A["Autotrader UK"] -.->|"Deal Builder reservations"| S3
-    G["CarGurus"] -.->|"Digital Deal; CarOffer wound down 2025"| S3
-    AS["AutoScout24"] -.->|"leads and leasing"| S2
-    O["OLX Autos"] -.->|"buy, recondition, sell; exited 2023 to 2025"| S4
----end mermaid---
-
+![Diagram: Where each case sits on the transaction ladder, as of 2026](assets/images/51-case-automotive/fig01-where-each-case-sits-transaction-ladder.jpeg)
 **Figure 1:** *Where each case sits on the transaction ladder, as of 2026. The documented retreats are all from the last step, where the marketplace takes price risk on the car itself.*
 
 ## Why Automotive Behaves Differently
@@ -151,25 +140,7 @@ The 24-hour replay window is a public benchmark: it tells consumers how long the
 
 > **INFERENCE, NOT DOCUMENTED:** The external contracts imply an internal design: a log of listing state changes that feeds Ad Stream (and plausibly search indexing), a price-rating service invoked synchronously for previews and asynchronously when images or market data change, and per-ad serialization of writes. A plausible reference flow — not a description of mobile.de's systems — is shown in Figure 3. mobile.de has not published how these components are built.
 
----begin mermaid---
-sequenceDiagram
-    participant D as Dealer DMS
-    participant T as TSP
-    participant API as Seller API
-    participant PR as Price rating
-    participant LOG as Change log
-    participant AS as Ad Stream consumer
-    D->>T: Stock change
-    T->>API: POST ad with insertion request ID
-    API->>PR: Rate vehicle
-    PR-->>API: Band or no rating with reason
-    API-->>T: 201 Created or 303 See Other
-    API->>LOG: Ad created or updated
-    T->>API: Upload images
-    API->>PR: Recalculate with images
-    LOG-->>AS: AD_CREATE_OR_UPDATE after contract delay
----end mermaid---
-
+![Diagram: A plausible reference flow consistent with mobile.de's public API documentation — not a description of its internal systems](assets/images/51-case-automotive/fig03-plausible-reference-flow-consistent-mobile-de.jpeg)
 **Figure 3:** *A plausible reference flow consistent with mobile.de's public API documentation — not a description of its internal systems. Retries are safe, the rating is recomputed when photos arrive, and downstream consumers read a delayed change feed with a 24-hour replay window.*
 
 ### Ranking and the 2026 product layer
@@ -228,19 +199,7 @@ The same results describe what the rollout cost. Retailer numbers "softened", re
 
 **My reading** is that Deal Builder put a platform-controlled state, "reserved", on inventory the dealer owns and manages in its own systems, which changes who decides that a car is off the market and which lead gets it. The documented response amounts to making the state opt-in and dealer-controlled. [[listing-aggregate]] states the general rule: **who may trigger a transition is part of the business model.**
 
----begin mermaid---
-stateDiagram-v2
-    [*] --> Active
-    Active --> ReservationRequested: buyer requests
-    ReservationRequested --> Reserved: dealer accepts
-    ReservationRequested --> Active: dealer declines or timeout
-    Active --> Reserved: buyer pays fee where dealer opted in
-    Reserved --> Active: reservation lapses or cancelled
-    Reserved --> Sold: sale confirmed
-    Active --> Sold: sold off platform
-    Sold --> [*]
----end mermaid---
-
+![Diagram: A reference state model for reservations on dealer stock — not Autotrader's design](assets/images/51-case-automotive/fig05-reference-state-model-reservations-dealer-stock.jpeg)
 **Figure 5:** *A reference state model for reservations on dealer stock — not Autotrader's design. The paid, platform-set path exists only where the dealer opted in; otherwise a reservation is a request the dealer accepts, and every reserved state can lapse back to active.*
 
 ## AutoScout24: The Platform Story
@@ -282,17 +241,7 @@ Three of the four companies publish enough to compare their price products direc
 | Link to ordering | Search position responds to price (2026 release) | Deals sorted by the algorithm, "not how much a dealer pays" | Not documented |
 | Source and date | Seller API manual, n.d.; newsroom, 2026 | 10-K, 2026; help center, 2026 | FY26 results, 2026; developer portal, n.d. |
 
----begin mermaid---
-flowchart LR
-    MKT["Market of asking prices and sales"] -->|"training data"| MODEL["Market-value model"]
-    MODEL -->|"band per listing"| BAND["Price rating"]
-    BAND -->|"label and sort feature"| SRCH["Search results"]
-    BAND -->|"next band boundary"| TOOL["Dealer pricing tool"]
-    SRCH -->|"leads"| DEALER["Dealer"]
-    TOOL -->|"price change"| DEALER
-    DEALER -->|"reprices to band edge"| MKT
----end mermaid---
-
+![Diagram: The loop the public record implies](assets/images/51-case-automotive/fig06-loop-public-record-implies-once-rating.jpeg)
 **Figure 6:** *The loop the public record implies. Once a rating feeds ordering and dealer tools, dealers price toward band boundaries, and the distribution of prices the model learns from shifts. The model is measuring a market it is helping to set.*
 
 > **INFERENCE, NOT DOCUMENTED:** None of the companies publishes its valuation methodology in a form verified for this book. A plausible reference architecture — not a description of any of them — is a gradient-boosted or hedonic model per market over make, model, derivative, year, mileage, options, condition signals and region; served as a band stored on the listing and refreshed by listing events and periodic market recomputation; with the band boundaries derived from a prediction interval rather than a fixed percentage. This matches the statement in [[normalization-and-enrichment]] and the governance in [[ml-platform]].

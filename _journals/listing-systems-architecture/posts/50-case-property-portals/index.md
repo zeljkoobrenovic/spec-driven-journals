@@ -66,17 +66,7 @@ Dates are those of the cited filings, releases and reports. Ownership and litiga
 | 31 Jul 2026 | Rightmove: "100% of applications are in the cloud", more than 5 PB on a unified data platform, 99.99% uptime | Rightmove H1 2026 results |
 | 6 Aug 2026 | REA FY26: Buy yield +13% on flat listings; 66% operating EBITDA margin | REA ASX announcement, 2026 |
 
----begin mermaid---
-flowchart LR
-    A["2006-2018 Estimates inform consumers"] --> B["2018-2021 Zillow commits capital on its estimates"]
-    B --> C["Nov 2021 Zillow Offers wound down"]
-    C --> D["2021-2026 Portals rebuild around leads, agent tools and data"]
-    D --> E["2024-2026 Licensing, settlement and listing-access disputes"]
-    D --> F["2025-2026 AI assistants and conversational search"]
-    E --> G["Supply terms become architecture"]
-    F --> G
----end mermaid---
-
+![Diagram: The arc of the public record](assets/images/50-case-property-portals/fig01-arc-public-record-valuation-moved-informing.jpeg)
 **Figure 1:** *The arc of the public record. Valuation moved from informing consumers to committing capital and back. The current phase sits under two pressures: who controls supply, and how AI assistants reach listings.*
 
 ## Four Portals, Four Economic Engines
@@ -93,20 +83,7 @@ The four leading portals in this case report different unit KPIs, and **the choi
 
 **Rightmove's is a subscription with a commitment plus overage**: in 2025 "more than 50% of independent agents purchased incremental product above their package commitment", and 62% of agency ARPA growth came from product rather than price ([Rightmove FY2025 results, 2026](https://plc.rightmove.co.uk/content/uploads/2026/02/Rightmove-RNS-27.02.26.pdf)). **REA's is per-listing depth**: its fiscal 2026 Buy yield rose on "a 7% average Premiere+ price rise, growth in add-on products, higher subscription revenues and increased depth penetration", and a subsidiary, Campaign Agent, provides "vendor paid advertising finance solutions" ([REA FY26 results, 2026](https://announcements.asx.com.au/asxpdf/20260806/pdf/072glql0b10gc1.pdf)). **Zillow's is lead generation**: connections are distributed "in proportion to their share of voice", and in Zillow Preferred, its invite-only pay-when-you-close program, agents pay "when a real estate transaction is closed with one of the leads, generally within two years", which Zillow accounts for as variable consideration ([Zillow 10-K for 2025, 2026](https://www.sec.gov/Archives/edgar/data/1617640/000161764026000015/z-20251231.htm)).
 
----begin mermaid---
-flowchart TB
-    U["Unit of charge"] --> S["Per advertiser, Rightmove"]
-    U --> L["Per listing, REA"]
-    U --> D["Per lead or closing, Zillow"]
-    S --> S1["Contracts, packages, quotas, overage"]
-    S --> S2["Branch performance and lead reports"]
-    L --> L1["Per-listing orders and tier upgrades"]
-    L --> L2["Vendor campaign finance and invoicing"]
-    D --> D1["Lead allocation by share of voice per zip"]
-    D --> D2["Lead-to-close attribution over two years"]
-    D2 --> D3["Revenue estimate and true-up"]
----end mermaid---
-
+![Diagram: The unit a portal charges for determines the core of its monetization architecture](assets/images/50-case-property-portals/fig02-unit-portal-charges-determines-core-monetization.jpeg)
 **Figure 2:** *The unit a portal charges for determines the core of its monetization architecture. A subscription portal centers on contracts and quotas, a depth portal on per-listing orders, and a lead portal on allocation and attribution.*
 
 My reading is that these engines also explain each portal's appetite for valuation. Rightmove and REA both sell **seller leads**, homeowners identified before they choose an agent, and both report growth in them: Rightmove's AI-enabled Online Agent Valuation supported "c.50% total increase in unique valuation leads to estate agents" in the first half of 2026, and REA reported a 22% increase in seller leads for fiscal 2026. Valuation in property is a supply-acquisition product: it reaches the homeowner at the moment a listing is born. Zillow took the same insight one step further and bought the house.
@@ -155,20 +132,7 @@ The following lessons are my interpretation of those statements, not Zillow's ow
 4. **Accuracy was reported on the wrong population.** "Typically less than 1%" was measured on declined offers. The decision-relevant metric was the error on purchased homes at resale, net of holding and repair costs.
 5. **Exposure grew faster than evidence.** By the end of the quarter, almost 18,000 homes were in inventory or under contract. The public record shows no capital limit tied to validated performance. That does not prove none existed. It shows that nothing in the published reasoning stopped exposure from outrunning the evidence.
 
----begin mermaid---
-flowchart LR
-    M["Valuation model, present value"] --> I["Inform: estimate shown to owner"]
-    M --> O["Commit: cash offer"]
-    O --> A{"Seller accepts?"}
-    A -->|"Model overvalued, accepts more often"| B["Home bought"]
-    A -->|"Model undervalued, walks away"| W["No purchase"]
-    B --> R["Repair and hold for months"]
-    R --> X["Resale at future price"]
-    X --> G["Gain or loss on inventory"]
-    R --> C["Capacity and demand planning"]
-    G -->|"Forecast miss"| P["Write-down"]
----end mermaid---
-
+![Diagram: Why a commit-tier use needs its own validation](assets/images/50-case-property-portals/fig04-why-commit-tier-use-needs-own.jpeg)
 **Figure 4:** *Why a commit-tier use needs its own validation. The same model feeds an information product and a purchase. In the purchase path, selection biases the accepted homes, and the outcome depends on a future price after months of holding.*
 
 > **INFERENCE, NOT DOCUMENTED:** A validation regime fit for a commit-tier valuation use — a reference design, not a description of anything Zillow ran — would have five parts. (1) Back-tests on **resale price over the holding period**, not on present value. (2) Error measured on the **accepted population**, with a correction for selection. (3) **Capital limits** per market that grow only as realized margins confirm the back-tests. (4) **Operational capacity** (repair crews, days to resale) modeled as an input to pricing, not only as a cost. (5) An **owner outside the model team** with authority to pause buying when realized error leaves an agreed band. Each part is standard practice in credit risk, which is a closer analogy for iBuying than consumer valuation.
@@ -273,24 +237,7 @@ None of the companies above has published a whole-system view, so the synthesis 
 
 > **INFERENCE, NOT DOCUMENTED:** A plausible reference architecture for a national property portal — a composite derived from the public record, not a description of Zillow, Rightmove, REA, Idealista or CoStar — has five load-bearing parts. (1) A **licensed-supply ingestion tier**: adapters per source (MLS replication, agent-software feeds), each record carrying license, embargo and attribution metadata, with snapshot reconciliation. (2) A **property registry**: a durable property entity resolved from address and parcel identifiers, with listings, sales, rentals and valuations as events on it. (3) **Valuation and market models** whose outputs are registered by decision tier, so that the same AVM can feed an estimate page, a seller-lead product or a lender only through separately validated versions. (4) A **monetization core** shaped by the unit of charge: contracts and quotas, per-listing orders, or lead allocation with attribution. (5) **Agent workflow surfaces** (CRM, tour scheduling, valuation tools) that both serve the supply side and feed outcome data back.
 
----begin mermaid---
-flowchart LR
-    MLS["MLS replication and agent-software feeds"] --> ING["Ingestion with license and embargo flags"]
-    ING --> PR["Property registry, durable entity"]
-    PR --> LS["Listing read model and search"]
-    PR --> AVM["Valuation models by decision tier"]
-    AVM --> EST["Inform: estimates and price badges"]
-    AVM --> SL["Inform: seller-lead products"]
-    AVM -.->|"separate validation"| LND["Commit: lending or buying"]
-    LS --> LEAD["Lead routing and allocation"]
-    SL --> LEAD
-    LEAD --> MON["Monetization core: contracts, orders or attribution"]
-    LEAD --> AGT["Agent CRM and tour tools"]
-    AGT -->|"outcomes"| MON
-    ING -->|"license terms"| ML["Training data eligibility"]
-    ML --> AVM
----end mermaid---
-
+![Diagram: A reference architecture inferred from the public record](assets/images/50-case-property-portals/fig07-reference-architecture-inferred-public-record-property.jpeg)
 **Figure 7:** *A reference architecture inferred from the public record. The property registry, not the listing, is the durable entity. License terms flow from ingestion to training, and any commit-tier use of valuation sits behind a separate validation path.*
 
 ## Trade-offs the Cases Illustrate

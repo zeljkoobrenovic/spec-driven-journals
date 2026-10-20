@@ -72,3 +72,4 @@ Chief and enterprise architects of marketplace groups, search and ranking leads,
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 6,091 → 6,103 prose words; opening now ties the case to Part IX and the Adevinta case; search heading corrected to "five stages" to match its table; 10 paragraph openings rewritten to state their point; no sections moved. *(AI-mediated session)*
 - **2026-10-20** — Trade-offs heading capitalized as in the 45 chapters. *(AI-mediated session)*
+- **2026-10-20** — Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`). *(AI-mediated session)*

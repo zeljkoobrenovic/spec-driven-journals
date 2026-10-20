@@ -65,18 +65,7 @@ Dates are those of the cited releases and reports. Ownership and portfolio facts
 | 27 Feb 2026 | Spain sale completes, with a gain of about €1.1 billion | Strategic Report 2025 (published 2026) |
 | 3 Mar 2026 | A Spanish branch is set up to provide software development "for the account of Kleinanzeigen.de GmbH" | Strategic Report 2025 |
 
----begin mermaid---
-flowchart LR
-    P1["Federation of local sites, before 2019"] --> P2["Selective centralization, 2019 to 2020"]
-    P2 --> P3["Integrating eBay Classifieds, 2021 to 2023"]
-    P3 --> P4["Verticals and product convergence, 2023 to mid 2024"]
-    P4 --> P5["Decentralization and break-up, mid 2024 to 2026"]
-    P2 -.->|"shared: infrastructure, data"| L1["Enabling layers"]
-    P3 -.->|"shared: chat, moderation, ML, experimentation"| L2["Overarching components"]
-    P4 -.->|"planned: one generalist platform"| L3["Product platform"]
-    P5 -.->|"localized: capabilities and IP"| L4["Standalone marketplaces"]
----end mermaid---
-
+![Diagram: Each phase moved the line between shared and local to a different layer](assets/images/46-case-adevinta/fig01-each-phase-moved-line-between-shared.jpeg)
 **Figure 1:** *Each phase moved the line between shared and local to a different layer: infrastructure and data first, overarching components next, the product platform itself in 2023, and then back to standalone marketplaces.*
 
 ## Phase 1: The Schibsted Federation (Before 2019)
@@ -144,18 +133,7 @@ The engineering blog (about 90 posts, August 2022 to March 2026) documents conso
 
 The dispute back office is the only cross-marketplace *product* component with a published architecture. Each marketplace's transaction events (via Kafka, SQS or REST) were normalized into a common model behind a Kotlin API, with a micro-frontend user interface that marketplaces could extend. The stated constraint was "We couldn't hardcode anything… or make any assumptions."
 
----begin mermaid---
-flowchart LR
-    M1["Marketplace A transaction events"] -->|"Kafka"| ACL["Per-tenant ingestion adapters"]
-    M2["Marketplace B transaction events"] -->|"SQS"| ACL
-    M3["Marketplace C transaction events"] -->|"REST"| ACL
-    ACL -->|"normalized dispute model"| CORE["Shared dispute service"]
-    CORE --> API["Shared API"]
-    API --> UI["Shared back-office shell"]
-    UI --> F1["Marketplace A extension"]
-    UI --> F2["Marketplace B extension"]
----end mermaid---
-
+![Diagram: The documented shape of Adevinta's 2023 dispute back office](assets/images/46-case-adevinta/fig03-documented-shape-adevinta-s-2023-dispute.jpeg)
 **Figure 3:** *The documented shape of Adevinta's 2023 dispute back office: per-tenant ingestion into a canonical model, a shared core, and a front end that each marketplace can extend. The shared component inherits the quality of every marketplace's events.*
 
 > **INFERENCE, NOT DOCUMENTED:** The dispute tool is the canonical shape for any cross-marketplace product capability: an anti-corruption layer per tenant, a canonical event model, and an extension surface in the user interface. Its weakness is that the global component can only be as good as the worst tenant's event stream, so the real integration work moves into each marketplace's event contracts. This is the author's reading of the published design, not a description of how the service was operated.
@@ -202,25 +180,7 @@ The capability named first in the convergence rationale, "the full transactional
 
 Transactions grew revenue and costs together. The 2023 report notes rising "direct costs from transactional services (such as payment and shipping service provider costs)", and a two-point fall in France's EBITDA margin "mainly reflecting the evolution of the business mix with an increasing share of transaction services". Transactional revenue rose 31% year on year in the first quarter of 2024.
 
----begin mermaid---
-sequenceDiagram
-    participant B as Buyer
-    participant MP as Marketplace
-    participant PSP as Licensed PSP
-    participant C as Carrier
-    participant S as Seller
-    B->>MP: Accept offer in chat
-    MP->>PSP: Create payment with buyer fee
-    PSP-->>MP: Funds held
-    MP->>C: Create shipping label
-    MP->>S: Notify to ship
-    S->>C: Hand over parcel
-    C-->>MP: Delivered event
-    B->>MP: Confirm receipt or open dispute
-    MP->>PSP: Release funds to seller
-    PSP-->>S: Payout
----end mermaid---
-
+![Diagram: A plausible reference flow for C2C buyer protection consistent with the public descriptions of Kleinanzeigen and Marktplaats — not a description of either system](assets/images/46-case-adevinta/fig04-plausible-reference-flow-c2c-buyer-protection.jpeg)
 **Figure 4:** *A plausible reference flow for C2C buyer protection consistent with the public descriptions of Kleinanzeigen and Marktplaats — not a description of either system. The provider holds the money; the marketplace owns the offer state, logistics, release timer and disputes.*
 
 > **INFERENCE, NOT DOCUMENTED:** In this pattern the marketplace never holds funds; a licensed payment service provider (PSP) does, under its marketplace product. What the marketplace owns is the state machine around the money: offer and acceptance, fee pricing, label creation and tracking, the release timer and dispute handling. That split explains both halves of the Adevinta story. It looked centralizable in 2023, because the state machine is similar everywhere. It argued for local ownership again in 2025, because the PSP contracts, carriers and consumer-law obligations underneath it are national. [[transactions-and-payments]] develops the design, and the sibling book's [[adyen]] chapter covers the provider side.

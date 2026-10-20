@@ -116,22 +116,7 @@ Listing marketplaces are polyglot by necessity. The generic domain model this bo
 | Evidence store | T&S cases, statements of reasons | Evidence | — | Retention schedule; never edited in place |
 | Third-party systems | Partner feeds, e-mail logs, search engines | External | Contractual | Delete instruction, Art. 19 notification, removal request |
 
----begin mermaid---
-flowchart LR
-    SOR["Listing system of record"] -->|"listing events"| BUS["Event backbone"]
-    BUS -->|"90 s add, 30 s remove"| IDX["Search index"]
-    BUS -->|"5 s"| KV["Detail-page cache"]
-    BUS -->|"purge by listing ID"| CDN["CDN and page cache"]
-    BUS -->|"re-check at send"| ALR["Alert store"]
-    BUS -->|"hourly"| DW["Warehouse"]
-    BUS -->|"on enforcement"| EVD["Evidence store"]
-    BUS -->|"contract"| EXT["Partner and provider copies"]
-    SELLER["Seller tools"] -->|"read your writes"| SOR
-    REG["Consumer registry"] -.->|"owner, budget, rebuild, retention"| IDX
-    REG -.-> DW
-    REG -.-> EVD
-    REG -.-> EXT
----end mermaid---
+![Diagram: One listing, many copies, each with a promise](assets/images/34-listing-data-management/fig02-one-listing-many-copies-each-promise.jpeg)
 **Figure 2:** *One listing, many copies, each with a promise. Read models are fed from the event stream with a staleness budget; seller tools read from the system of record to guarantee read-your-writes; the consumer registry gives every store an owner, a rebuild path and a retention rule.*
 
 ### Implementing the consistency guarantees
@@ -208,20 +193,7 @@ Two rows in the table trade business value against privacy. **Anonymized price h
 
 ### The listing record's data lifecycle
 
----begin mermaid---
-stateDiagram-v2
-    [*] --> Active: published
-    Active --> Closed: sold, expired or removed
-    Closed --> Active: relisted within retention
-    Closed --> Archived: active set purged, archive keeps reduced fields
-    Archived --> Anonymized: retention ends, seller identity removed
-    Closed --> Erased: erasure request
-    Archived --> Erased: erasure request
-    Erased --> Anonymized: non-personal history kept
-    Anonymized --> [*]
-    Closed --> Held: legal or T&S hold
-    Held --> Archived: hold released
----end mermaid---
+![Diagram: The record's data lifecycle runs after the business lifecycle ends](assets/images/34-listing-data-management/fig04-record-s-data-lifecycle-runs-after.jpeg)
 **Figure 4:** *The record's data lifecycle runs after the business lifecycle ends. Closing a listing starts retention clocks; archiving reduces fields; erasure and anonymization remove identity; a hold pauses the clocks for evidence. Every transition is an event that copy owners act on.*
 
 The lifecycle is distinct from the business lifecycle in [[listing-aggregate]]. A listing is *sold* once; its record then passes through several data states over months. Each transition is emitted as an event — `ListingErased` is part of the v1 contract — so that copies follow the record without a separate integration.
@@ -241,23 +213,7 @@ Read as architecture, those articles describe a workflow, not a `DELETE` stateme
 5. **External copies.** Partners and processors receive delete instructions; recipients are notified under Art. 19; public copies indexed by search engines get a removal path (a 404 or 410 page and a removal request where warranted).
 6. **Proof.** The **erasure ledger** records every outcome. The case closes only when every registered copy has answered, and the response to the data subject is generated from the ledger.
 
----begin mermaid---
-sequenceDiagram
-    participant DPO as Privacy request service
-    participant Acc as Account context
-    participant LC as Listing context
-    participant Bus as Event backbone
-    participant Copy as Copy owners
-    participant Led as Erasure ledger
-    DPO->>Acc: open erasure case, deadline one month
-    Acc->>LC: listings owned by the subject
-    LC->>LC: purge personal fields, version 10
-    LC->>Bus: ListingErased per listing
-    Acc->>Bus: SubjectErased for account data
-    Bus->>Copy: search, cache, CDN, media, warehouse, alerts
-    Copy->>Led: outcome per copy
-    Led->>DPO: all copies answered, response drafted
----end mermaid---
+![Diagram: Erasure as a workflow with receipts](assets/images/34-listing-data-management/fig05-erasure-workflow-receipts-systems-record-act.jpeg)
 **Figure 5:** *Erasure as a workflow with receipts. The systems of record act first and emit events; every registered copy reports an outcome to the erasure ledger; the case closes only when the ledger is complete.*
 
 ### Femke's request, copy by copy

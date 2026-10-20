@@ -119,27 +119,7 @@ Multi-country marketplaces choose between country trees, one global tree, or a c
 
 I recommend the canonical tree with country views, because it meets Katarzyna's condition. Each country view decides **which canonical nodes exist** for it, **what they are called** and **how they are browsed**. A node can be country-specific when the distinction exists in only one market, but it is still a canonical node with a canonical ID, so that ML models, ads and analytics can treat it consistently.
 
----begin mermaid---
-flowchart TB
-    subgraph CORE["Canonical classification"]
-        CT["Classification tree with stable IDs"]
-        SC["Category schemas and policies"]
-    end
-    CT --> SC
-    CT --> NL["NL view: Dutch labels and slugs"]
-    CT --> BE["BE view: Dutch and French labels"]
-    CT --> PL["PL view: Polish labels, local nodes"]
-    CT --> PT["PT view: Portuguese labels"]
-    NL --> NAV["Navigation trees and landing pages"]
-    BE --> NAV
-    PL --> NAV
-    PT --> NAV
-    CT --> MAP["Mappings to external taxonomies"]
-    MAP --> G["Google product taxonomy"]
-    MAP --> SO["schema.org types"]
-    MAP --> PF["Partner feed codes"]
-    SC --> CONS["Listing service, search, fees, moderation, ads, analytics"]
----end mermaid---
+![Diagram: Three layers](assets/images/08-categories-and-taxonomies/fig02-three-layers-canonical-classification-tree-selects.jpeg)
 **Figure 2:** *Three layers. The canonical classification tree selects schemas and policies; country views, navigation trees and external mappings are derived from it. Labels, slugs, browse paths and partner codes can change without touching a single listing.*
 
 ## The Taxonomy as Versioned Reference Data
@@ -223,22 +203,7 @@ The pattern generalizes: **a large model as labeler, a cheap model as propagator
 
 ### The migration runbook
 
----begin mermaid---
-flowchart LR
-    A["Change request with impact analysis"] --> B["Release drafted: tree, mapping, attribute diff, dates"]
-    B --> C["Review by taxonomy owner and affected teams"]
-    C --> D["Dual-version window opens"]
-    D --> E["Consumers deploy support for both versions"]
-    D --> F["Reclassify listings: rules, then model, then seller"]
-    F --> G["Audit sample gates the run"]
-    E --> H["Cut-over: new version becomes default"]
-    G --> H
-    H --> I["Rewrite saved searches and alerts"]
-    H --> J["Redirects and landing pages"]
-    H --> K["Analytics mapping view"]
-    H --> L["Partner code deprecation window"]
-    L --> M["Old version retired"]
----end mermaid---
+![Diagram: A category migration as a release with a dual-version window](assets/images/08-categories-and-taxonomies/fig04-category-migration-release-dual-version-window.jpeg)
 **Figure 4:** *A category migration as a release with a dual-version window. Consumers learn both versions before cut-over; listings move by rules first, then by model above a confidence threshold, then by asking sellers; saved searches, URLs, analytics and partner codes each have their own step.*
 
 Seven steps, each with a concern that teams commonly forget.
@@ -270,29 +235,7 @@ The bikes split was decided on **4 October 2027**, released as group taxonomy ve
 
 ### The tree before and after
 
----begin mermaid---
-flowchart LR
-    subgraph BEFORE["Before: 19 country leaves"]
-        NLB["NL: 6 bike leaves"]
-        BEB["BE: 6 bike leaves"]
-        PLB["PL: 4 bike leaves"]
-        PTB["PT: 3 bike leaves"]
-    end
-    subgraph AFTER["After: canonical Bikes node, release 2027.11"]
-        BK["Bikes"]
-        BK --> CB["City bikes"]
-        BK --> EB["E-bikes"]
-        BK --> KB["Cargo bikes"]
-        BK --> KD["Kids' bikes"]
-        BK --> RB["Road bikes"]
-        BK --> MB["Mountain bikes"]
-        BK --> BP["Bike parts and accessories"]
-    end
-    NLB -->|"mapping and reclassification"| BK
-    BEB -->|"mapping and reclassification"| BK
-    PLB -->|"mapping and reclassification"| BK
-    PTB -->|"mapping and reclassification"| BK
----end mermaid---
+![Diagram: The bikes split](assets/images/08-categories-and-taxonomies/fig05-bikes-split-nineteen-country-specific-leaves.jpeg)
 **Figure 5:** *The bikes split. Nineteen country-specific leaves become one canonical Bikes node with seven leaves present in all four country views. Road, mountain and parts leaves map one to one; the generic leaves are divided into city, e-bikes, cargo and kids' bikes.*
 
 Every country view enables all seven leaves, with local labels: *Stadsfietsen* and *E-bikes* in the Netherlands, *Vélos de ville* alongside the Dutch labels in Belgium, *Rowery miejskie* in Poland, *Bicicletas de cidade* in Portugal. Polish navigation keeps bikes under its existing "Sport i hobby" browse node, so Poland's buyers see their familiar structure while the classification underneath is shared.

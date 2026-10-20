@@ -132,37 +132,7 @@ Andrew Harmel-Law's **advice process**, described in 2021, replaces approval wit
 
 A group of marketplaces needs stream-aligned teams per brand and journey on top, platform teams per shared capability underneath, a few complicated-subsystem teams beside them, and enabling teams that move between them. Figure 2 shows the version Veldmark adopted for Common Ground.
 
----begin mermaid---
-flowchart TB
-    subgraph BRANDS["Stream-aligned teams per brand and journey"]
-        TY["Tradeyard: supply, discovery, conversation and Safe Deal, pro sellers, monetization"]
-        MV["Motorvane: dealer supply, discovery, leads and financing, private sellers"]
-        HE["Hearthly: agency supply, discovery, valuation products, rentals"]
-    end
-    subgraph SPEC["Complicated-subsystem teams"]
-        RK["Ranking and relevance models"]
-        AV["Valuo AVM"]
-        FR["Fraud modeling"]
-    end
-    subgraph PLAT["Group platform teams"]
-        EV["Event platform"]
-        SP["Search platform"]
-        ID["Veldmark ID"]
-        TS["Trust and safety pipeline"]
-        EN["Catalog and entitlements"]
-        TX["Taxonomy and attributes"]
-        DP["Developer platform"]
-        DA["Data and ML platforms"]
-    end
-    EN2["Enabling teams: Yardstick exit, search migration, reliability"]
-    BRANDS -->|"X-as-a-Service"| PLAT
-    BRANDS -->|"X-as-a-Service"| SPEC
-    SPEC -->|"X-as-a-Service"| PLAT
-    EN2 -->|"facilitation"| BRANDS
-    EN2 -->|"collaboration, time-boxed"| PLAT
-    KB["Keybridge engineering, separate by design"] -.->|"group security standards only"| DP
----end mermaid---
-
+![Diagram: Veldmark's Common Ground team topology (target 2028)](assets/images/42-organizing-marketplace-engineering/fig02-veldmark-s-common-ground-team-topology.jpeg)
 **Figure 2:** *Veldmark's Common Ground team topology (target 2028). Brands keep their journeys and their products; the group owns the capabilities beneath them; specialists and enablers sit beside both. Keybridge stays outside the platform organization because its neutrality commitment requires it.*
 
 Three properties of the figure matter more than its boxes:
@@ -209,20 +179,7 @@ The matrix has two deliberate features. Brands decide exceptions themselves, pro
 
 Under the advice process, most cross-brand decisions stay with the team that proposes them. Figure 4 shows the path as Veldmark runs it.
 
----begin mermaid---
-flowchart LR
-    A["Team drafts decision record"] --> B{"Affects another team or brand?"}
-    B -->|"no"| L["Decide and record locally"]
-    B -->|"yes"| C["Seek advice from affected teams and experts"]
-    C --> D["Present at weekly advice forum"]
-    D --> E{"Moves money, people or personal data?"}
-    E -->|"no"| F["Team decides and records advice received"]
-    E -->|"yes"| G["CTO or DPO decides, with the record"]
-    F --> H["Decision log and principle check"]
-    G --> H
-    H --> I["Review date or trigger recorded"]
----end mermaid---
-
+![Diagram: The advice process applied to cross-brand decisions](assets/images/42-organizing-marketplace-engineering/fig04-advice-process-applied-cross-brand-decisions.jpeg)
 **Figure 4:** *The advice process applied to cross-brand decisions. Most decisions stay with the team that proposes them; the forum makes advice public and consistent; only decisions that move funding, people or personal data across brands go to an accountable executive.*
 
 The process gives up approval and keeps three things that matter: **advice is public**, so the Motorvane team hears what the search platform told Hearthly; **decisions are recorded**, so the reasons survive the people; and **every record carries a review date or trigger**, so decisions are revisited when the facts change rather than when someone new arrives.

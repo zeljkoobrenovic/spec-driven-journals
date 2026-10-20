@@ -71,3 +71,4 @@ Chief and enterprise architects of marketplace groups, technology leaders integr
 - **2026-10-19** — Editor: reconciled with multi-country-platforms (copies folded back into one codebase 2016–2018, origin of the country branches). *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 7,848 → 7,837 words; excerpt and first KEY POINT now name the chapter's own five waves (no separate "land-grab" wave); lead names what the chapter builds on and which chapters use it; "What Wave 1 left in the systems" made a subheading like Waves 2 and 3; teaser first sentences replaced with each paragraph's point. Spec unchanged. *(AI-mediated session)*
+- **2026-10-20** — Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`). *(AI-mediated session)*

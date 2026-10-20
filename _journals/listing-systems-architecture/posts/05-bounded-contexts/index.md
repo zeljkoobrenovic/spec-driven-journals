@@ -145,30 +145,7 @@ The generic domain models this book draws on reach the same structure by a diffe
 
 The context map below is Veldmark's **Common Ground context map**, as approved by the architecture advice forum in May 2027. It shows the target for 2028, with Yardstick still in place behind a translator.
 
----begin mermaid---
-flowchart LR
-    SV["Software vendors and DMS feeds"] -->|"vendor formats"| ING["Feed ingestion, ACL"]
-    KB["Keybridge, separate SaaS"] -->|"public feed contract only"| ING
-    SELL["Seller insertion"] -->|"commands"| CAT["Listing catalog"]
-    ING -->|"commands"| CAT
-    YS["Yardstick, legacy"] -->|"CDC"| YR["Yardstick Relay, ACL"]
-    YR -->|"listing events v1"| BUS["Listing event contract v1"]
-    CAT -->|"outbox"| BUS
-    TAX["Taxonomy and attributes, open host"] -->|"schemas"| CAT
-    TS["Trust and safety"] -->|"decisions"| CAT
-    BUS --> TS
-    BUS --> SR["Search, conformist"]
-    BUS --> AL["Saved searches and alerts"]
-    BUS --> ER["Entity resolution"]
-    BUS --> AN["Analytics and data platform"]
-    MON["Products and entitlements"] -->|"placement references"| CAT
-    MON -->|"visibility effects"| SR
-    BUS --> MSG["Messaging and leads"]
-    ID["Veldmark ID, open host"] -.->|"identity"| SELL
-    ID -.->|"identity"| MSG
-    PAY["Safe Deal transactions"] -->|"reserve and sold"| CAT
-    ADY["Adyen for Platforms"] -->|"provider model"| PAY
----end mermaid---
+![Diagram: The Common Ground context map (target 2028)](assets/images/05-bounded-contexts/fig02-common-ground-context-map-target-2028.jpeg)
 **Figure 2:** *The Common Ground context map (target 2028). The listing catalog owns listing truth and publishes it as Listing event contract v1. Partner feeds and the Yardstick monolith reach the contract through anti-corruption layers. Search conforms to the contract. Trust and safety, monetization and transactions change listings only through commands to the catalog. Keybridge sends listings in through the same public feed contract as any vendor and consumes nothing.*
 
 Each relationship on the map is a decision, and each has a reason.
@@ -211,22 +188,7 @@ Consider a bump. A seller buys a "Top listing" for seven days. A naive implement
 3. The catalog records the placement reference on the listing and emits a new version.
 4. If step 2 or 3 fails, monetization retries with the same key. If the listing has been removed in the meantime, the catalog rejects the command and monetization refunds or re-credits the entitlement.
 
----begin mermaid---
-sequenceDiagram
-    participant S as Seller
-    participant MON as Monetization
-    participant CAT as ListingCatalog
-    participant BUS as ListingEvents
-    participant SR as Search
-    S->>MON: Buy Top listing for 7 days
-    MON->>MON: Record order and grant entitlement, keyed by order ID
-    MON->>CAT: ApplyPlacement with entitlement reference
-    CAT->>CAT: Check listing is active, add placement reference, new version
-    CAT->>BUS: VisibilityChanged with listing version
-    BUS->>SR: Apply boost if version is newer
-    CAT-->>MON: Rejected if listing was removed meanwhile
-    MON->>MON: Re-credit entitlement on rejection
----end mermaid---
+![Diagram: A bump crosses two aggregates in two contexts without a shared transaction](assets/images/05-bounded-contexts/fig03-bump-crosses-two-aggregates-two-contexts.jpeg)
 **Figure 3:** *A bump crosses two aggregates in two contexts without a shared transaction. Each step is atomic inside its own aggregate, the order ID makes retries safe, and a rejection from the catalog is repaired by monetization, which owns the entitlement.*
 
 Each step is consistent within one aggregate. Between them, the system is eventually consistent, and the boundaries say who repairs what. This is the trade an architect makes on purpose: **atomic consistency within an aggregate, explicit eventual consistency between aggregates, and idempotency everywhere.**

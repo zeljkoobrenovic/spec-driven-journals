@@ -349,6 +349,16 @@ def extract_image_bytes(payload: dict) -> tuple[bytes, str]:
     raise RuntimeError(f"Gemini response did not contain image data: {json.dumps(payload)[:1000]}")
 
 
+def reference_parts(target: IllustrationTarget) -> list[dict]:
+    """An optional layout reference image (placeholder field reference_image) sent before the prompt."""
+    ref = target.item.get("reference_image")
+    if not ref:
+        return []
+    data = Path(ref).read_bytes()
+    mime = "image/png" if data.startswith(PNG_SIGNATURE) else "image/jpeg"
+    return [{"inlineData": {"mimeType": mime, "data": base64.b64encode(data).decode("ascii")}}]
+
+
 def call_gemini(api_key: str, model: str, target: IllustrationTarget, args: argparse.Namespace) -> tuple[bytes, str]:
     request_url = API_URL_TEMPLATE.format(
         model=urllib.parse.quote(model, safe=""),
@@ -356,10 +366,11 @@ def call_gemini(api_key: str, model: str, target: IllustrationTarget, args: argp
     )
     body = json.dumps(
         {
-            "contents": [{"role": "user", "parts": [{"text": target.prompt}]}],
+            "contents": [{"role": "user", "parts": reference_parts(target) + [{"text": target.prompt}]}],
             "generationConfig": {
                 "responseModalities": ["IMAGE"],
-                "imageConfig": {"aspectRatio": target.aspect_ratio},
+                "imageConfig": {"aspectRatio": target.aspect_ratio,
+                                **({"imageSize": target.item["image_size"]} if target.item.get("image_size") else {})},
             },
         }
     ).encode("utf-8")

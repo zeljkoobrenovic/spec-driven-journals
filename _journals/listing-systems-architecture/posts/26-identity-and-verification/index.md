@@ -137,43 +137,7 @@ The identity capability splits into components that change at different speeds a
 
 Two boundaries matter most. **Risk scoring lives outside identity.** [[fraud-prevention]] reads identity levels as features and asks the identity service for a step-up. It does not write claims. **Documents live outside the claim store.** The claim says "identity document checked with liveness, provider X, case 8f3…, result pass, name match on the payee account". The image of the passport stays with the provider, for the provider's retention period, or in a sealed evidence vault if the law requires the platform to keep a copy.
 
----begin mermaid---
-flowchart LR
-    subgraph BRANDS["Brand applications"]
-        TY["Tradeyard"]
-        MV["Motorvane"]
-        HL["Hearthly"]
-    end
-    subgraph VID["Veldmark ID"]
-        AUTH["Authentication service"]
-        REC["Account recovery"]
-        PROF["Profile service"]
-        ORCH["Verification orchestrator"]
-        CLAIM["Claim store"]
-        LVL["Level and badge engine"]
-        BIZ["Business registry"]
-    end
-    subgraph PROV["External providers"]
-        EID["Bank eID and EUDI wallet adapters"]
-        DOC["Document and liveness vendor"]
-        REGS["Trade registers and VAT checks"]
-        PSP["Adyen KYC status"]
-    end
-    TY -->|"OIDC login, pairwise subject"| AUTH
-    MV -->|"OIDC login, pairwise subject"| AUTH
-    HL -->|"OIDC login, pairwise subject"| AUTH
-    AUTH --> PROF
-    REC --> AUTH
-    ORCH --> EID
-    ORCH --> DOC
-    BIZ --> REGS
-    PSP -->|"status webhook"| CLAIM
-    ORCH -->|"normalized result"| CLAIM
-    BIZ -->|"business claims"| CLAIM
-    CLAIM --> LVL
-    LVL -->|"level and badges"| BRANDS
-    LVL -->|"IdentityLevelChanged"| FR["Fraud and T&S platform"]
----end mermaid---
+![Diagram: Veldmark ID's components](assets/images/26-identity-and-verification/fig02-veldmark-id-s-components-brands-authenticate.jpeg)
 **Figure 2:** *Veldmark ID's components. Brands authenticate users through one service but receive brand-specific identifiers; verification providers sit behind adapters that write normalized claims; levels and badges are derived from claims and published as events to the fraud and trust-and-safety platform.*
 
 ### The claim as the contract
@@ -199,23 +163,7 @@ Seller tax reporting needs more attributes, and they stay out of the general cla
 
 Claims expire and get revoked, and the lifecycle has to model every way they end, because a badge that outlives its claim is a false statement. A phone number is reassigned to someone else. A company is dissolved. A passkey is deleted. A payment provider freezes a seller after a fraud report.
 
----begin mermaid---
-stateDiagram-v2
-    [*] --> Requested: policy asks for a claim
-    Requested --> Pending: user starts a verification journey
-    Pending --> Valid: provider result passes
-    Pending --> Failed: provider result fails or times out
-    Failed --> Pending: retry within limits
-    Valid --> Expiring: expiry date approaches
-    Expiring --> Valid: re-verified
-    Expiring --> Expired: not re-verified in time
-    Valid --> Revoked: posture change, takeover or fraud decision
-    Valid --> Disputed: user or third party contests it
-    Disputed --> Valid: dispute rejected
-    Disputed --> Revoked: dispute upheld
-    Revoked --> [*]
-    Expired --> [*]
----end mermaid---
+![Diagram: A claim's lifecycle](assets/images/26-identity-and-verification/fig03-claim-s-lifecycle-every-transition-recomputes.jpeg)
 **Figure 3:** *A claim's lifecycle. Every transition recomputes the account's identity level and badges; revocation is a first-class state, not a deletion, so the platform can later explain why a badge disappeared.*
 
 ## Authentication and Account Takeover

@@ -154,25 +154,7 @@ Marketplaces have published more about model-based enrichment since 2023 than ab
 
 ## Architecture: A Replayable Pipeline That Writes Back
 
----begin mermaid---
-flowchart LR
-    LS["Listing service"] -->|"ListingSubmitted, ListingRevised"| ORC["Enrichment orchestrator"]
-    ORC --> N["Normalizers"]
-    N --> R["Registry decoders"]
-    R --> M["Model enrichers"]
-    M --> P["Platform computations and quality score"]
-    REF["Reference data with versions"] -.-> N
-    REF -.-> R
-    REG["Model registry"] -.-> M
-    SCH["Compiled category schemas"] -.-> ORC
-    P -->|"ApplyEnrichment with provenance"| LS
-    M -->|"suggestions"| SUG["Suggestion store"]
-    SUG --> UI["Insertion flow and pro tools"]
-    UI -->|"accept, edit, reject"| LS
-    LS -->|"listing events"| IDX["Search index and other read models"]
-    LS -->|"corrections and decisions"| LAB["Label store"]
-    LAB -.->|"training and evaluation data"| REG
----end mermaid---
+![Diagram: The enrichment pipeline as a loop around the listing service](assets/images/14-normalization-and-enrichment/fig02-enrichment-pipeline-loop-around-listing-service.jpeg)
 **Figure 2:** *The enrichment pipeline as a loop around the listing service. Enrichers read listing events and versioned reference data, and write results back as commands with provenance; read models such as the search index are rebuilt from the listing, never written directly. Suggestions go to sellers, and their decisions become labels.*
 
 ### The rules that make it replayable
@@ -203,17 +185,7 @@ The blocking set must fit inside the publication budget owned by [[publication-p
 
 An enricher changes for three reasons: its code or model changes, its reference data changes (a decoder release, a new alias table, a boundary reform), or the schema it fills changes (a new attribute, a category split). Each change raises a question that most pipelines answer by accident: **which existing listings should be re-processed, in what order, and with what protection?**
 
----begin mermaid---
-flowchart TB
-    V["New enricher or reference-data version"] --> SH["Shadow run on a labeled sample"]
-    SH --> CMP["Compare with ground truth and the previous version"]
-    CMP -->|"precision below gate"| STOP["Stop and fix"]
-    CMP -->|"passes gate"| PLAN["Backfill plan: active listings first, then paused, then archive"]
-    PLAN --> RUN["Rate-limited backfill writing via ApplyEnrichment"]
-    RUN --> MON["Monitor value churn, disputes and downstream metrics"]
-    MON -->|"anomaly"| HALT["Halt and roll back to previous version's values"]
-    MON -->|"stable"| DONE["Mark version current"]
----end mermaid---
+![Diagram: Releasing an enricher like a schema migration](assets/images/14-normalization-and-enrichment/fig03-releasing-enricher-like-schema-migration-new.jpeg)
 **Figure 3:** *Releasing an enricher like a schema migration. A new version is shadow-tested against labels, backfilled by priority through the same write path, and monitored for unexpected churn; because every value records the version that produced it, a bad release can be rolled back value by value.*
 
 Etsy's reported practice of halting production runs when precision or recall drifts from a baseline is the public precedent for the gate. Two details make it work in practice. **Value churn is a metric**: if a new version changes 4% of values where the evaluation predicted 1%, something is different between the sample and production. And **rollback is a data operation**: because provenance records the enricher version per value, the pipeline can restore the previous version's values for every listing it touched, without touching values that sellers or moderators set in between.

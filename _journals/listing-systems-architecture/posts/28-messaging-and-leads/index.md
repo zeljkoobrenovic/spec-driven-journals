@@ -106,27 +106,7 @@ Third, **channels evolve away from what the platform cannot attribute.** Rightmo
 
 The contact path has eight components of its own, listed in the table below. Figure 2 shows the reference architecture Veldmark adopted; it is not a description of any real company's systems.
 
----begin mermaid---
-flowchart LR
-    UI["Listing page and apps"] -->|"contact intent"| CP["Contact policy service"]
-    CP -->|"allowed channel"| CS["Conversation service"]
-    CP -->|"allowed channel"| TEL["Call tracking and masked numbers"]
-    CP -->|"allowed channel"| BK["Booking service"]
-    CS -->|"message to check"| GATE["Message safety gate"]
-    GATE -->|"verdict"| CS
-    CS -->|"deliver"| RT["Real-time gateway and push"]
-    CS -->|"MessageSubmitted events"| BUS["Event backbone"]
-    BUS --> TS["T and S asynchronous detectors"]
-    TS -->|"withdraw or warn"| CS
-    BUS --> LS["Lead service"]
-    TEL -->|"CallCompleted"| LS
-    BK -->|"BookingConfirmed"| LS
-    LS -->|"LeadCreated"| LR["Lead routing and delivery"]
-    LR -->|"webhook, API, e-mail, file"| CRM["Dealer and agency CRMs"]
-    CRM -->|"status and outcome"| LR
-    LR -->|"LeadDelivered, LeadOutcomeReported"| BUS
-    BUS --> DP["Data platform and ROI reporting"]
----end mermaid---
+![Diagram: The contact path at Veldmark](assets/images/28-messaging-and-leads/fig02-contact-path-veldmark-contact-policy-decides.jpeg)
 **Figure 2:** *The contact path at Veldmark. Contact policy decides who may reach whom and how; the conversation service owns messages and calls the safety gate before delivery; the lead service derives leads from conversations, calls and bookings; routing delivers leads to professionals' systems and brings their outcomes back. Only the conversation service stores message content.*
 
 What each component owns, and what it must not own:
@@ -172,26 +152,7 @@ Delivery has three tiers: an open connection to a client that is online (typical
 
 Delivery speed earns money. A buyer who gets an answer in minutes is far more likely to stay than one who gets it the next day; a seller's response time is one of the most useful quality signals a marketplace has, and several portals expose it as a badge or ranking input (see [[ranking]]). But **speed and safety pull against each other on exactly one step: the moment between "stored" and "shown"**. Figure 3 shows how Veldmark resolved it.
 
----begin mermaid---
-sequenceDiagram
-    participant B as BuyerApp
-    participant C as Conversations
-    participant G as SafetyGate
-    participant S as SellerDevice
-    participant T as TSDetectors
-    B->>C: send message with idempotency key
-    C->>C: store as pending
-    C->>G: check message, budget 150 ms
-    G-->>C: verdict deliver, warn, withhold or block
-    alt deliver or warn
-        C->>S: push message, with warning banner if warn
-    else withhold
-        C->>B: shown as sent, held for review
-    end
-    C-)T: MessageSubmitted event
-    T-)C: later verdict, withdraw and warn recipient
-    C->>S: replace message with safety notice
----end mermaid---
+![Diagram: A message's life with the safety gate on the delivery path](assets/images/28-messaging-and-leads/fig03-message-s-life-safety-gate-delivery.jpeg)
 **Figure 3:** *A message's life with the safety gate on the delivery path. The synchronous check decides before the recipient sees anything; asynchronous detectors can still withdraw a delivered message and warn the recipient. The sender of a withheld message is not told it was withheld, so the check does not become a free testing tool for fraudsters.*
 
 ## Safety on the Delivery Path
@@ -250,26 +211,7 @@ The pattern is consistent: **a signed-in buyer, a structured enquiry and a model
 
 **The lead lifecycle.** A lead needs states that both sides recognize, because each state is a potential dispute.
 
----begin mermaid---
-stateDiagram-v2
-    [*] --> Created: contact matches a lead rule
-    Created --> Merged: duplicate of an open lead
-    Created --> Delivered: recipient system accepted it
-    Created --> Undeliverable: no valid route or channel failing
-    Undeliverable --> Delivered: retried or rerouted
-    Delivered --> Acknowledged: CRM confirms receipt
-    Acknowledged --> Responded: professional replied or called back
-    Responded --> Qualified: professional marks it genuine
-    Responded --> Disqualified: spam, duplicate or out of area
-    Qualified --> Won: sale, mandate or lease reported
-    Qualified --> Lost: buyer bought elsewhere or stopped
-    Disqualified --> Disputed: professional asks for a credit
-    Disputed --> Credited: dispute accepted
-    Disputed --> Upheld: dispute rejected
-    Merged --> [*]
-    Won --> [*]
-    Lost --> [*]
----end mermaid---
+![Diagram: The lead lifecycle Veldmark adopted](assets/images/28-messaging-and-leads/fig04-lead-lifecycle-veldmark-adopted-portal-controls.jpeg)
 **Figure 4:** *The lead lifecycle Veldmark adopted. The portal controls the states up to Delivered; everything after Acknowledged depends on data from the professional's systems. Billing rules and ROI reports must say which state they count.*
 
 Two things in Figure 4 are easy to miss. First, **"delivered" means the recipient's system accepted it, not that Veldmark sent an e-mail.** Second, the states after Acknowledged are reported by the professional, so they are only as good as the integration. A portal that cannot receive outcomes cannot measure lead value except through surveys and renewals.

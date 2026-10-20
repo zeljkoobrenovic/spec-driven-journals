@@ -97,21 +97,7 @@ Two consequences follow. First, **the map is a search client in its own right**,
 
 The design I recommend puts a geo query compiler between the map clients and the engine, and gives each other map concern its own component with a narrow interface. Figure 1 shows them for Hearthly's target state on the shared search platform.
 
----begin mermaid---
-flowchart LR
-    C["Map client web and app"] -->|"gesture, filters"| B["Map search API BFF"]
-    B --> Q["Geo query compiler"]
-    Q -->|"place names to IDs"| P["Place and boundary service"]
-    Q -->|"commute request"| I["Isochrone service"]
-    I -->|"cache miss"| R["Routing provider or engine"]
-    I --> IC["Isochrone cache"]
-    Q -->|"normalized geo query"| T["Tile and cluster cache"]
-    T -->|"cache miss"| S["Search engine OpenSearch"]
-    S -->|"hits and grid aggregations"| T
-    B -->|"pins, clusters, counts"| C
-    B -->|"POI and neighborhood layers"| N["Neighborhood data service"]
-    E["Listing events"] -->|"unpublish, price change"| T
----end mermaid---
+![Diagram: The geo query compiler turns every place expression into a normalized query before any cache or engine sees it](assets/images/22-map-search/fig01-geo-query-compiler-turns-every-place.jpeg)
 **Figure 1:** *The geo query compiler turns every place expression into a normalized query before any cache or engine sees it. Commute requests go through an isochrone service with its own cache, and listing events invalidate cached tiles so the map does not show ghost inventory.*
 
 - **Map search API** (a backend-for-frontend, see [[web-and-seo-architecture]]). Receives the gesture (viewport, zoom, drawn shape, chosen areas, commute parameters) and the ordinary filters. Returns pins, clusters, counts and the side list in one response shaped for the map client. It owns debouncing rules and response budgets per zoom level.
@@ -128,27 +114,7 @@ The rule that holds the design together: **clients send intent, not engine queri
 
 Figure 2 shows the sequence for a single pan on the map, the most frequent interaction.
 
----begin mermaid---
-sequenceDiagram
-    participant U as Buyer
-    participant C as MapClient
-    participant B as MapAPI
-    participant Q as Compiler
-    participant T as TileCache
-    participant S as Engine
-    U->>C: pans the map
-    C->>C: waits 250 ms for the gesture to settle
-    C->>B: viewport, zoom 14, filters
-    B->>Q: compile
-    Q->>Q: snap viewport to 6 tiles at zoom 14
-    Q->>T: get tiles with filter hash
-    T-->>Q: 4 hits, 2 misses
-    Q->>S: grid aggregation for 2 missing tiles
-    S-->>Q: cell counts and centroids
-    Q->>T: store 2 tiles
-    Q-->>B: clusters for 6 tiles
-    B-->>C: clusters, total count, side list page 1
----end mermaid---
+![Diagram: Snapping the viewport to tiles turns an uncacheable bounding box into a set of reusable cache entries](assets/images/22-map-search/fig02-snapping-viewport-tiles-turns-uncacheable-bounding.jpeg)
 **Figure 2:** *Snapping the viewport to tiles turns an uncacheable bounding box into a set of reusable cache entries. A pan typically reuses most of the previous tiles, so the engine sees only the edge of the movement.*
 
 Three choices in the figure matter.

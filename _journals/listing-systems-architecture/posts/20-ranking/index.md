@@ -102,21 +102,7 @@ Large marketplaces that publish their designs converge on a **multi-stage pipeli
 
 For a listing marketplace I add one stage that the published papers rarely draw separately, because it is where the business rules live: the **ranking policy layer**.
 
----begin mermaid---
-flowchart LR
-    Q["Parsed query and filters"] --> R["Retrieval: lexical, filters, optional vectors"]
-    R -->|"thousands of candidates"| F1["First phase: cheap score"]
-    F1 -->|"top hundreds"| M["Relevance model: learning to rank"]
-    FS["Feature sources: listing, seller, engagement"] --> M
-    M -->|"scored list"| P["Ranking policy layer"]
-    E["Entitlement effects: bumps, top listing, tier"] --> P
-    T["Trust signals: risk, duplicates, demotions"] --> P
-    PC["Policy config: versioned, reviewed"] --> P
-    P -->|"ordered page with reasons"| B["Results page, map, carousel"]
-    P -.->|"served features, positions, policy version"| L["Ranking log"]
-    B -.->|"impressions, clicks, contacts"| L
-    L -.->|"training data and audits"| M
----end mermaid---
+![Diagram: A ranking function as four stages](assets/images/20-ranking/fig02-ranking-function-four-stages-relevance-model.jpeg)
 **Figure 2:** *A ranking function as four stages. The relevance model estimates what the buyer will act on; the policy layer applies freshness, paid placement, diversity and trust rules from versioned configuration; the log records what was served and why, which is what training, evaluation, billing and regulators all need.*
 
 Each component needs a written contract, because Tradeyard's failure was missing boundaries, not bad engineering.
@@ -135,26 +121,7 @@ Each component needs a written contract, because Tradeyard's failure was missing
 
 Every ranked page produces data that four other teams depend on. The sequence below shows one text query in the target architecture.
 
----begin mermaid---
-sequenceDiagram
-    participant U as Buyer app
-    participant S as Search API
-    participant E as Search engine
-    participant RK as Ranking service
-    participant EN as Entitlement read model
-    participant LG as Ranking log
-    U->>S: query stadsfiets, Rotterdam, 10 km
-    S->>E: retrieve with filters, top 500
-    E-->>S: candidates with match features
-    S->>RK: candidates, query context, user context
-    RK->>EN: entitlement effects for candidates
-    EN-->>RK: bump times, top listing, tier
-    RK->>RK: model scores, then policy version 7
-    RK-->>S: ordered page, labels, reasons
-    RK--)LG: features as served, positions, policy version
-    S-->>U: results page with paid labels
-    U--)LG: impressions, clicks, contacts
----end mermaid---
+![Diagram: One ranked query](assets/images/20-ranking/fig03-one-ranked-query-entitlement-effects-are.jpeg)
 **Figure 3:** *One ranked query. Entitlement effects are read at ranking time from a fast read model, and the ranking service logs features as served, positions and the policy version. Training, delivery reporting to paying sellers, experiment analysis and regulatory explanations all come from that log.*
 
 Three interface decisions make this work.

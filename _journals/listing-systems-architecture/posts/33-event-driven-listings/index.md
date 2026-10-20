@@ -94,24 +94,7 @@ The architecture has five parts, and each has one owner.
 4. **The schema registry** stores every version of the event schema and rejects incompatible changes at publish time.
 5. **Consumers** — search indexer, alert matcher, trust-and-safety scoring, sitemap generator, warehouse loader, partner syndication, pro-seller statistics — each own their read model and their consumer offsets.
 
----begin mermaid---
-flowchart LR
-    subgraph Producer["Listing context, the system of record"]
-        W["Write path: insertion, edit, feed upsert, enforcement"] --> DB["Listing database"]
-        W --> OB["Outbox table, same transaction"]
-    end
-    OB -->|"CDC relay reads the outbox"| EV["listing.events.v1, keyed by listing ID"]
-    EV -->|"compaction job keeps latest"| ST["listing.state.v1, compacted"]
-    SR["Schema registry"] -.->|"compatibility check"| EV
-    EV --> S["Search indexer"]
-    EV --> A["Alert matcher"]
-    EV --> T["Trust and safety scoring"]
-    EV --> M["Sitemap and SEO pages"]
-    EV --> P["Partner syndication"]
-    EV --> DW["Warehouse loader"]
-    ST -->|"bootstrap and rebuild"| S
-    ST -->|"bootstrap"| N["New consumer"]
----end mermaid---
+![Diagram: One producer, one contract, many consumers](assets/images/33-event-driven-listings/fig02-one-producer-one-contract-many-consumers.jpeg)
 **Figure 2:** *One producer, one contract, many consumers. The outbox makes publication part of the write; the domain-event topic carries changes; the compacted state topic lets any consumer, including one built next year, start from the current state without asking the producer for a dump.*
 
 ### The transactional outbox
@@ -236,24 +219,7 @@ At go-live on **1 July 2027**, the contract has 23 registered consumer groups. B
 
 The Rotterdam bike is a March 2027 story, before the contract existed. Sven's team uses it as the acceptance test for v1: replay Femke's listing through the new design and check that every consumer would have behaved correctly.
 
----begin mermaid---
-sequenceDiagram
-    participant Seller as Femke
-    participant LC as Tradeyard listing context
-    participant Relay as Yardstick Relay
-    participant Topic as listing.events.v1
-    participant Search as Search indexer
-    participant Alerts as Alert matcher and digest
-    participant Seo as SEO page service
-    Seller->>LC: marks bike sold, Monday 18:10
-    LC->>LC: commit status sold, version 9
-    LC-->>Relay: binlog row change
-    Relay->>Topic: ListingSold, version 9
-    Topic->>Search: delete from index
-    Topic->>Alerts: drop from pending digests
-    Topic->>Seo: page shows sold, related bikes
-    Alerts->>Alerts: Tuesday 07:00 re-check state before send
----end mermaid---
+![Diagram: The bike's sale as a single event with three consumers](assets/images/33-event-driven-listings/fig03-bike-s-sale-single-event-three.jpeg)
 **Figure 3:** *The bike's sale as a single event with three consumers. The digest is fixed twice over: it removes the bike when `ListingSold` arrives, and it re-checks listing state at send time, because a derived artifact that lives for thirteen hours must not trust a snapshot.*
 
 | Time (CET) | Event | Version | What consumers do |

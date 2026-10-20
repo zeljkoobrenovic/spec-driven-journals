@@ -92,28 +92,7 @@ A **backend-for-frontend (BFF)** is a server-side component owned by the team th
 
 The customer-facing stack has five layers: the edge, the page applications, the backends-for-frontends, the SEO services and the domain APIs beneath them.
 
----begin mermaid---
-flowchart LR
-    U["Browsers and apps"] --> E["Edge and CDN: routing, caching, bot rules"]
-    C["Search engine crawlers"] --> E
-    E --> P1["Landing and search pages"]
-    E --> P2["Listing detail pages"]
-    E --> P3["Insertion and account pages"]
-    U -->|"app API calls"| MB["Mobile BFF"]
-    P1 --> WB["Web BFF"]
-    P2 --> WB
-    P3 --> WB
-    WB --> D["Domain APIs: search, listing, seller, media, ads, entitlements"]
-    MB --> D
-    P1 --> S1["URL and canonical service"]
-    P2 --> S1
-    S1 --> S2["Landing page registry"]
-    S1 --> S3["Redirect registry"]
-    EV["Listing event stream"] --> S4["Sitemap and notification service"]
-    EV --> S5["Edge purge on change"]
-    S5 --> E
-    S4 -->|"sitemaps and change pings"| C
----end mermaid---
+![Diagram: The customer-facing stack](assets/images/35-web-and-seo-architecture/fig02-customer-facing-stack-pages-apps-reach.jpeg)
 **Figure 2:** *The customer-facing stack. Pages and apps reach domain data through their own backends-for-frontends; the SEO services decide which URLs exist and what they return, and the listing event stream keeps sitemaps and edge caches in step with the inventory.*
 
 ### The edge
@@ -182,20 +161,7 @@ Google's spam policies define the inner boundary. **Scaled content abuse** is wh
 
 ### The lifecycle of a landing page
 
----begin mermaid---
-stateDiagram-v2
-    [*] --> Candidate: demand signal detected
-    Candidate --> Indexable: demand, supply and distinctness rules pass
-    Candidate --> Rejected: fails a rule
-    Indexable --> Thin: supply below threshold for N days
-    Thin --> Indexable: supply recovers
-    Thin --> Gone: empty for a sustained period
-    Indexable --> Redirected: taxonomy or location change
-    Thin --> Redirected: taxonomy or location change
-    Redirected --> [*]
-    Gone --> [*]
-    Rejected --> [*]
----end mermaid---
+![Diagram: A landing page is a managed object with states](assets/images/35-web-and-seo-architecture/fig03-landing-page-managed-object-states-indexable.jpeg)
 **Figure 3:** *A landing page is a managed object with states. Indexable pages are in sitemaps and linked; thin pages answer with noindex and stay linked for users; gone pages answer 404 or 410; redirected pages answer 301 to their successor, recorded in the redirect registry.*
 
 Each state maps to a response: **Indexable** pages return `200`, appear in sitemaps and receive internal links; **Thin** pages return `200` with `noindex, follow`, so users can still use them and crawlers still follow their links to listings; **Gone** pages return `404` or `410`; **Redirected** pages return `301` to the successor. Hysteresis — a page must stay thin for some days before it changes state, and recover for some days before it returns — prevents seasonal or weekend swings from flipping pages in and out of the index.
@@ -230,24 +196,7 @@ Two details matter in practice. **The grace period is for people, not crawlers.*
 
 Sitemaps should be built from the listing event stream, not regenerated nightly from a database scan. Google's limits shape the design: a sitemap holds at most 50,000 URLs or 50 MB uncompressed, a sitemap index holds up to 50,000 sitemaps, `priority` and `changefreq` are ignored, and `lastmod` is used only if it is "consistently and verifiably" accurate ([Google Search Central, updated 2026](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap); [sitemap index files, updated 2025](https://developers.google.com/search/docs/crawling-indexing/sitemaps/large-sitemaps)).
 
----begin mermaid---
-sequenceDiagram
-    participant L as Listing service
-    participant K as Listing event stream
-    participant S as Sitemap service
-    participant R as Redirect registry
-    participant E as Edge cache
-    participant G as Search engines
-    L->>K: ListingPublished
-    K->>S: add URL to current shard with lastmod
-    S->>G: sitemap index updated, change ping where supported
-    L->>K: ListingSold
-    K->>E: purge listing page by listing ID
-    K->>S: remove URL from shard
-    K->>R: record grace period then gone status
-    G->>E: recrawl listing URL
-    E-->>G: noindex during grace, then 410
----end mermaid---
+![Diagram: Sitemaps and removal signals driven by listing events](assets/images/35-web-and-seo-architecture/fig04-sitemaps-removal-signals-driven-listing-events.jpeg)
 **Figure 4:** *Sitemaps and removal signals driven by listing events. The same ListingSold event that removes the listing from search purges the edge cache, drops the URL from its sitemap shard and schedules the gone status, so the search engine learns about the sale through every channel at once.*
 
 A practical shard layout for a large site is by page type, country and creation date: new listings append to the current day's shard, so recently changed shards are small and their `lastmod` is meaningful. Landing pages live in their own shards, updated when the registry changes state. Search Console's per-sitemap reporting then shows indexing coverage by page type, which is the diagnostic the SEO team needs.

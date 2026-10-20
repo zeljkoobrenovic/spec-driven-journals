@@ -143,21 +143,7 @@ Moving down the endpoint ladder changes nearly every system, not just one. The t
 
 Figure 2 shows the same idea as a pipeline: every rung adds contexts and none replaces the ones before it.
 
----begin mermaid---
-flowchart LR
-    L["Listing published"] --> S["Search and discovery"]
-    S --> C["Contact or conversation"]
-    C -->|"classifieds ends here"| X1["Off-platform deal"]
-    C --> Q["Lead qualification and routing"]
-    Q -->|"lead generation ends here"| X2["Professional closes off-platform"]
-    Q --> O["Order and checkout"]
-    O --> P["Payment via licensed provider"]
-    P --> D["Shipping or pickup confirmation"]
-    D --> R["Release, payout and dispute window"]
-    R -->|"transactional ends here"| X3["Completed sale"]
-    R --> I["Inventory, valuation and resale"]
-    I -->|"managed ends here"| X4["Guaranteed outcome"]
----end mermaid---
+![Diagram: The endpoint ladder as a pipeline](assets/images/01-marketplace-taxonomy/fig02-endpoint-ladder-pipeline-each-model-inherits.jpeg)
 **Figure 2:** *The endpoint ladder as a pipeline. Each model inherits every context to its left and adds new ones; a marketplace that moves its endpoint for one category must run the additional contexts for that category alone.*
 
 ### What the platform can observe
@@ -255,21 +241,7 @@ First, **I would treat every move down the ladder as a bet with an exit plan**. 
 
 Second, **the endpoint should be data, not code**. A category gate expressed as configuration ("Safe Deal: enabled for NL goods, BE goods, PL goods; not PT; not vehicles") lets the business move categories without a program. A gate expressed as `if brand == 'tradeyard' and country != 'PT'` in a checkout service, a ranking feature and a notification template turns each commercial decision into a cross-team release. The exception is a marketplace that will only ever run one model, such as a pure jobs board; it gains little from generalizing the endpoint. Few groups stay that simple for long.
 
----begin mermaid---
-flowchart TB
-    PR["Marketplace profile register"] -->|"endpoint per country and category"| CFG["Configuration service"]
-    CFG --> LC["Listing core"]
-    CFG --> CH["Contact options"]
-    CFG --> OR["Order and payment contexts"]
-    CFG --> LR["Lead routing and attribution"]
-    CFG --> RK["Ranking success label"]
-    CFG --> MON["Product catalog and entitlements"]
-    LC -->|"listing events"| CH
-    CH -->|"conversation started"| LR
-    CH -->|"offer accepted"| OR
-    OR -->|"order completed"| RK
-    LR -->|"lead delivered"| RK
----end mermaid---
+![Diagram: The endpoint as configuration](assets/images/01-marketplace-taxonomy/fig04-endpoint-configuration-profile-register-decides-per.jpeg)
 **Figure 4:** *The endpoint as configuration. The profile register decides, per country and category, which contexts a listing flows through after contact and which event counts as success; the listing core and the contact surface stay the same for every profile.*
 
 ## Vertical Differences

@@ -149,17 +149,7 @@ The last two rows are where most damage happens. A team that changes `mileage` f
 
 Enforcing new requirements on *create and revise* rather than on all stored listings is what makes backfill gradual. eBay's warning that sellers are blocked "from listing or revising" without required aspects is the public precedent. Listings that predate the requirement stay published, keep their old schema version, and are brought up to date the next time their seller or feed touches them, or by an enrichment run that fills the value with model provenance.
 
----begin mermaid---
-stateDiagram-v2
-    [*] --> Proposed: steward drafts entry
-    Proposed --> Active: review approves, mappings complete
-    Proposed --> Rejected: duplicates an existing attribute
-    Active --> Deprecated: successor defined or no longer needed
-    Deprecated --> Retired: no producer writes it and no reader depends on it
-    Deprecated --> Active: deprecation withdrawn
-    Retired --> [*]
-    Rejected --> [*]
----end mermaid---
+![Diagram: The lifecycle of an attribute definition](assets/images/09-attribute-schemas/fig03-lifecycle-attribute-definition-active-attribute-never.jpeg)
 **Figure 3:** *The lifecycle of an attribute definition. An active attribute never changes its meaning; deprecation stops new writes while readers continue, and retirement waits until the dependency list in the entry's purposes is empty. A retired key is never reused.*
 
 ## Storage Models: Wide Tables, EAV, Documents and Typed Schemas
@@ -199,24 +189,7 @@ The components:
 5. **Release events.** A `SchemaReleased` event on the event backbone tells consumers that new compiled artifacts exist. Consumers pull them and apply them on their own schedule within an agreed window.
 6. **Quality metrics.** Coverage, validity and long-tail ratios per attribute and category, computed from listing events, feeding the stewards' dashboards.
 
----begin mermaid---
-flowchart LR
-    ST["Attribute stewards"] -->|"propose and review"| DS["Dictionary store"]
-    RD["Reference data suppliers"] -->|"makes, models, brands"| RDS["Reference data service"]
-    RDS --> DS
-    DS -->|"release"| SC["Schema compiler"]
-    SC -->|"JSON Schema per category version"| VL["Validator library"]
-    SC -->|"form definitions"| IF["Insertion flow"]
-    SC -->|"inbound mappings"| FI["Feed and API ingestion"]
-    SC -->|"mapping and facet config"| SI["Search indexer"]
-    SC -->|"outbound mappings"| FO["Outbound feeds and SEO markup"]
-    SC -->|"rule inputs"| TS["Trust rules"]
-    SC -->|"targeting keys"| AD["Ads targeting"]
-    VL --- IF
-    VL --- FI
-    SC -->|"SchemaReleased event"| EB["Event backbone"]
-    EB --> AN["Analytics and quality metrics"]
----end mermaid---
+![Diagram: One definition, many compiled artifacts](assets/images/09-attribute-schemas/fig04-one-definition-many-compiled-artifacts-stewards.jpeg)
 **Figure 4:** *One definition, many compiled artifacts. Stewards change the dictionary; the compiler turns each release into the validator, forms, mappings and configurations that other systems load locally. No system on the listing write path calls the schema service at request time.*
 
 Three properties of this design matter more than its components.
@@ -326,23 +299,7 @@ Frame size's eleven keys became `bike.frame_size_cm` and `bike.frame_size_class`
 
 **Step 4: the bikes split.** The four new leaves inherit eight attributes from "Bikes" and add their own. E-bikes add `bike.motor_position` (front hub, rear hub, mid-drive), `bike.battery_capacity_wh` and `bike.assist_speed_kmh`. Battery capacity was published as **recommended** with an expected-required date of **1 March 2028**, four months after the split, because Tradeyard's professional bike dealers send feeds that needed time to add it. The rollout followed the compatibility rules in two releases.
 
----begin mermaid---
-sequenceDiagram
-    participant St as Goods steward
-    participant Dict as Dictionary and compiler
-    participant Feeds as Dealer feeds
-    participant Form as Insertion flow
-    participant Idx as Search indexer
-    St->>Dict: add battery capacity as recommended, required from 1 Mar 2028
-    Dict->>Idx: release 2027.11 with new field and facet buckets
-    Dict->>Form: form shows the field, nudges sellers
-    Dict->>Feeds: published mapping and readiness report
-    Feeds->>Dict: test submissions validate, warnings only
-    Note over Dict,Feeds: runway of four months, readiness tracked per dealer feed
-    St->>Dict: switch to required for create and revise
-    Dict->>Form: missing value now blocks publication
-    Dict->>Feeds: missing value now returns a stable error code
----end mermaid---
+![Diagram: Making an attribute required is a producer-breaking change, so it ships in two releases](assets/images/09-attribute-schemas/fig05-making-attribute-required-producer-breaking-change.jpeg)
 **Figure 5:** *Making an attribute required is a producer-breaking change, so it ships in two releases: first recommended with a published effective date, then enforced on create and revise once the readiness report shows the feeds are ready. Existing listings are not invalidated.*
 
 Listings that existed before 1 November were re-classified by a model, with low-confidence cases left in a transitional category until their sellers confirmed at the next edit; [[categories-and-taxonomies]] tells that part.

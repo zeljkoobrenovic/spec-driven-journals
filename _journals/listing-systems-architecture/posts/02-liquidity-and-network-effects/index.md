@@ -68,17 +68,7 @@ A **network effect** exists when a participant's value from the platform depends
 
 Network effects in marketplaces are **asymptotic**: the benefit of adding participants flattens once a market is deep enough. NFX's widely read essay on network effects defines them as "network effects with diminishing returns" and observes that "in nearly every marketplace, one side, or one type of node, is harder to acquire than the other" ([NFX, The Network Effects Bible, 2019, updated 2024](https://www.nfx.com/post/network-effects-bible)). Both hold in listing marketplaces. A buyer looking for a used city bike in Rotterdam gains a lot when the supply grows from five listings to fifty, and little more when it grows from five hundred to five thousand. The constraint is almost always supply in the long tail of cells, not in the dense centre.
 
----begin mermaid---
-flowchart LR
-    S["Fresh, relevant local supply"] -->|"more to find"| D["Buyer visits and searches"]
-    D -->|"contacts and leads"| V["Seller success"]
-    V -->|"sellers return and list more"| S
-    D -->|"saved searches and alerts"| A["Standing demand"]
-    A -->|"faster first contact"| V
-    S -->|"same-side competition"| C["Exposure per listing"]
-    C -->|"too thin and sellers leave"| S
-    P["Paid visibility and pro packages"] -->|"funded by seller success"| V
----end mermaid---
+![Diagram: The liquidity loop](assets/images/02-liquidity-and-network-effects/fig01-liquidity-loop-cross-side-effects-supply.jpeg)
 **Figure 1:** *The liquidity loop. Cross-side effects (supply attracts demand, demand produces seller success, success brings supply back) are the engine; same-side competition among sellers limits each listing's exposure, and paid visibility is only worth buying while the loop is turning.*
 
 ### Liquidity, defined
@@ -177,18 +167,7 @@ Three design rules make the tree usable.
 
 **Give every metric a counter-metric.** Each metric in the tree can be improved dishonestly. Contact rate rises if scam messages count. Fresh supply rises if expired listings are kept live. Exposure rises if duplicates multiply. The counter-metrics at the bottom of the table exist to make those improvements visible.
 
----begin mermaid---
-flowchart TB
-    L["Liquidity per cell"] --> SU["Supply: fresh, available, deduplicated"]
-    L --> EX["Exposure: early impressions, zero results"]
-    L --> MA["Match: contact rate, time to first contact"]
-    L --> OU["Outcome: sell-through, lead conversion"]
-    L --> RE["Retention: sellers return, standing demand"]
-    SU -.->|"inflated by"| G["Ghost share"]
-    SU -.->|"inflated by"| DU["Duplicate ratio"]
-    MA -.->|"inflated by"| UN["Unsafe contact rate"]
-    EX -.->|"distorted by"| PB["Paid exposure concentration"]
----end mermaid---
+![Diagram: The liquidity metric tree with its counter-metrics](assets/images/02-liquidity-and-network-effects/fig02-liquidity-metric-tree-counter-metrics-solid.jpeg)
 **Figure 2:** *The liquidity metric tree with its counter-metrics. The solid branches measure whether matches happen; the dotted branches detect the ways each branch can be inflated without any real improvement.*
 
 ### Contacts, leads and outcomes by model
@@ -254,17 +233,7 @@ The peak-hour row deserves a worked example, because it is where liquidity and r
 
 Priya's team later estimated the liquidity cost. Tradeyard NL carries about 45% of Tradeyard's search traffic, or roughly 9,000 queries per second at the peak. The incident review put the damage at about **3.4 million** failed search requests in the 48 minutes (the campaign added about 30% to the traffic, and apps retried failed requests), many more slow ones, and about **9,800 fewer first contacts** than on a comparable Sunday evening, concentrated in the densest cells where speed matters most. The estimate is rough, but it turned the incident from "search was slow" into "sellers in our best cells lost a Sunday evening's contacts", which is what persuaded the brand to fund the capacity work described in [[reliability-and-scale]].
 
----begin mermaid---
-flowchart LR
-    M1["Time to first contact"] --> R1["Publication p95 90 seconds"]
-    M1 --> R2["Alerts within 5 minutes"]
-    M2["Ghost share"] --> R3["Unpublish in under a minute"]
-    M2 --> R4["Availability check at send time"]
-    M3["Fresh available supply"] --> R5["Feed snapshot reconciliation"]
-    M4["Duplicate ratio"] --> R6["Canonical entities in search"]
-    M5["Search-to-contact at peak"] --> R7["Peak-hour latency objectives"]
-    M6["Unsafe contact rate"] --> R8["Message screening before delivery"]
----end mermaid---
+![Diagram: Liquidity metrics on the left, the requirements they generate on the right](assets/images/02-liquidity-and-network-effects/fig05-liquidity-metrics-left-requirements-they-generate.jpeg)
 **Figure 5:** *Liquidity metrics on the left, the requirements they generate on the right. Every target in the second column should be traceable to the metric in the first; a requirement that cannot be traced is either missing its business reason or not worth its cost.*
 
 ## Trade-offs in Measuring and Managing Liquidity

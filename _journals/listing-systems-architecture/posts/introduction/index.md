@@ -59,21 +59,7 @@ That probability is **liquidity**: the likelihood that a listing finds a buyer, 
 
 The book's central claim follows: **a listing marketplace is a liquidity machine, and its architecture should be judged by how reliably it turns fresh, trustworthy supply into matches with demand**, in every country, category and vertical, while letting each marketplace evolve at its own pace. Listings, search, trust and monetization are not separate products; they are stages of one pipeline whose throughput is liquidity.
 
----begin mermaid---
-flowchart LR
-    S["Supply: forms, APIs, feeds"] --> L["Listing: a well-formed offer"]
-    L --> P["Publication: decide, then propagate"]
-    P --> D["Discovery: search, ranking, alerts"]
-    D --> T["Trust: is this contact safe"]
-    T --> C["Contact and transaction"]
-    C --> M["Money: packages, leads, ads"]
-    M -->|"paid effects, bounded by policy"| D
-    C -->|"outcomes"| D
-    C -->|"outcomes"| T
-    E["Platform underneath: events, data, ML, reliability"] -.-> P
-    E -.-> D
-    E -.-> M
----end mermaid---
+![Diagram: The liquidity machine](assets/images/introduction/fig02-liquidity-machine-supply-becomes-listings-that.jpeg)
 **Figure 2:** *The liquidity machine. Supply becomes listings that are published, found, trusted, contacted and paid for; outcomes flow back into discovery and trust, and paid effects flow back into discovery under policy. Each part of the book designs one stage, and the platform carries them all.*
 
 Read that way, every architectural choice is judged by the liquidity it protects or spends. A freshness objective is no longer an engineering preference; it is justified by the liquidity metric it protects, such as time to first contact. A removal that reaches search but not the alert digest is not a minor bug; it spends buyers' trust on an item that no longer exists. A paid placement is not only a product line; it is a sale of liquidity that must earn more than it costs the match rate. And a shared platform in a group is not good because it is shared; it is good if every brand's machine runs faster on it than without it.
@@ -139,21 +125,7 @@ The book opens with three preface pages, continues with eight parts that form a 
 | **[[part-9]]** PRACTICE | What do publicly documented groups teach, and where does the evidence stop? | 46–51: Adevinta, OLX, eBay Classifieds, AVIV, property portals, automotive |
 | **Reference** | Where are the templates, definitions and sources? | [[toolkit]], [[glossary]], [[bibliography]] |
 
----begin mermaid---
-flowchart LR
-    PR["Preface: argument, failure patterns, Veldmark"] --> P1["I Marketplace"]
-    P1 --> P2["II Listing"]
-    P2 --> P3["III Supply"]
-    P3 --> P4["IV Discovery"]
-    P4 --> P5["V Trust"]
-    P5 --> P6["VI Money"]
-    P6 --> P7["VII Platform"]
-    P7 --> P8["VIII Leadership"]
-    P8 --> P9["IX Practice"]
-    P2 -.->|"templates"| R["Toolkit, glossary, bibliography"]
-    P7 -.->|"templates"| R
-    P8 -.->|"templates"| R
----end mermaid---
+![Diagram: Parts II to VI follow a listing through the machine, Part I sets the business terms they rely on, Part VII builds the platform beneath them and Part VIII keeps it coherent over time](assets/images/introduction/fig04-parts-ii-vi-follow-listing-through.jpeg)
 **Figure 4:** *Parts II to VI follow a listing through the machine, Part I sets the business terms they rely on, Part VII builds the platform beneath them and Part VIII keeps it coherent over time; Part IX tests the patterns against public evidence.*
 
 **Part I, MARKETPLACE,** starts with the business, because in a listing marketplace the business model decides the architecture: a site whose job ends at the contact, a portal that sells leads and a marketplace that holds buyers' money need different identity, trust, payment and data systems. The part defines liquidity and the marketplace models, tells the industry's history from the public record, and describes the marketplace in capabilities and bounded contexts that outlive reorganizations. Do not skip it; later chapters justify their targets by pointing back to it.

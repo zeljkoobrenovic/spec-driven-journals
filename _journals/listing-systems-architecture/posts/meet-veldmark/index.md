@@ -117,32 +117,7 @@ Two caveats. The **Sunday-evening peak is a Veldmark illustration**, not an indu
 
 The 2027 baseline estate is the product of that history, with almost nothing shared between the brands' stacks.
 
----begin mermaid---
-flowchart LR
-    PS["Private sellers and buyers"] -->|"web and apps"| TY["Tradeyard - Yardstick PHP monolith on MySQL plus about 40 services on AWS"]
-    PS --> MV["Motorvane - about 120 Kotlin services on AWS"]
-    PS --> HL["Hearthly - Go and TypeScript services on Google Cloud"]
-    DMS["DMS vendors and transfer providers"] -->|"dealer stock feeds"| MV
-    AG["36,500 agencies"] --> RSV["About 160 real-estate software vendors"]
-    AG --> KB["Keybridge - .NET agent CRM on Azure"]
-    RSV -->|"agency feeds"| HL
-    KB -->|"multi-diffusion"| HL
-    KB -->|"multi-diffusion"| CP["Competing portals"]
-    TY --> TYS["Solr 8 for NL BE PT, Elasticsearch 7 for PL"]
-    MV --> MVS["Elasticsearch 8 on Elastic Cloud"]
-    HL --> HLS["Self-managed OpenSearch on GKE"]
-    TY -->|"Safe Deal payments"| ADY["Adyen for Platforms"]
-    ADS["Veldmark Ads - Google Ad Manager with Prebid"] -.->|"ad slots"| TY
-    ADS -.->|"ad slots"| MV
-    ADS -.->|"ad slots"| HL
-    TY --> SF["Snowflake - Tradeyard and Motorvane accounts"]
-    MV --> SF
-    HL --> BQ["BigQuery"]
-    KB --> SYN["Azure Synapse"]
-    SF -->|"revenue and invoices"| SAP["Group finance on SAP S/4HANA"]
-    BQ --> SAP
-    SYN --> SAP
----end mermaid---
+![Diagram: Veldmark's 2027 baseline](assets/images/meet-veldmark/fig02-veldmark-s-2027-baseline-three-marketplaces.jpeg)
 **Figure 2:** *Veldmark's 2027 baseline: three marketplaces on three stacks and two clouds, an agent CRM on a third cloud, and only advertising and finance shared beneath them.*
 
 | Area | Tradeyard | Motorvane | Hearthly | Keybridge |
@@ -215,32 +190,7 @@ In **January 2027** Veldmark's board approved **Common Ground**: **€140 millio
 
 Its governing principle is **share platforms, not products.** The marketplaces keep their brands, user experience and go-to-market; the group shares the capabilities beneath them. The hard design work is deciding which *part* of each capability is shared. A shared trust-and-safety pipeline can serve local policies; a shared search engine can serve brand-specific relevance; a shared entitlement ledger can serve brand-owned packages and prices.
 
----begin mermaid---
-flowchart TB
-    subgraph BR["Owned by each brand: products, UX, relevance, policy, prices"]
-        TYP["Tradeyard"]
-        MVP["Motorvane"]
-        HLP["Hearthly"]
-    end
-    subgraph CG["Common Ground: shared platform capabilities"]
-        ID["Veldmark ID and business party registry"]
-        TS["Trust and safety platform"]
-        SR["Search platform - OpenSearch, Motorvane on Elasticsearch to 2029"]
-        TX["Taxonomy, attribute and place services"]
-        EN["Product catalog and entitlements - Tally"]
-        NT["Messaging and notifications"]
-        MD["Media"]
-    end
-    subgraph FD["Foundations"]
-        EV["Event backbone - Kafka on Confluent Cloud"]
-        DP["Data and ML platform"]
-    end
-    TYP --> CG
-    MVP --> CG
-    HLP --> CG
-    CG --> FD
-    KBX["Keybridge - stays separate and neutral"] -.->|"public supply contract only"| HLP
----end mermaid---
+![Diagram: "Share platforms, not products"](assets/images/meet-veldmark/fig04-share-platforms-not-products-brands-keep.jpeg)
 **Figure 4:** *"Share platforms, not products": the brands keep what buyers and sellers see, Common Ground builds what lies beneath, and Keybridge stays outside by design.*
 
 Common Ground is also a governance change. In **April 2027** the group adopted architecture principles and set up the **architecture advice forum**, a weekly, open meeting that gives advice rather than approvals, and made **decision records mandatory for cross-brand decisions**. Much of the book's Veldmark story happens in that forum.
@@ -264,13 +214,7 @@ The decisions the chapters rely on, in order:
 | End 2029 | Yardstick decommissioned | [[modernization-and-migration]] |
 | 2030 | Run-cost reduction of €38 million a year | [[platform-consolidation]] |
 
----begin mermaid---
-flowchart LR
-    B["2027 baseline - four of everything, six-minute publication"] --> Y1["2027 - govern and decide: forum, maps, event backbone, taxonomy service, shared T and S for NL and BE"]
-    Y1 --> Y2["2028 - move: Veldmark ID, Tally, insertion and search out of Yardstick, OpenSearch for Tradeyard and Hearthly"]
-    Y2 --> Y3["2029 - retire: Yardstick decommissioned, Motorvane search review"]
-    Y3 --> Y4["2030 - harvest: 38 million euros a year lower run cost"]
----end mermaid---
+![Diagram: Common Ground's four plateaus](assets/images/meet-veldmark/fig05-common-ground-s-four-plateaus-each.jpeg)
 **Figure 5:** *Common Ground's four plateaus; each must leave every marketplace working on its own, not only as a step toward the next.*
 
 **AWS is the group's primary cloud** from 2027. **Hearthly stays on Google Cloud through 2028** and **Keybridge stays on Azure**; the book treats a multi-cloud group as normal, not as a failure.

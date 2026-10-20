@@ -71,3 +71,4 @@ Chief and enterprise architects, principal engineers and engineering leaders of 
 - **2026-10-20** — Sharpening pass: 5,757 → 5,793 prose words; opening now places the case as the last of Part IX and names what it tests; one subheading renamed ("The platform, dated" → "The platform from 2019 to 2026"); buried points moved to paragraph openings; spec otherwise unchanged. *(AI-mediated session)*
 - **2026-10-20** — Trade-offs heading capitalized as in the 45 chapters. *(AI-mediated session)*
 - **2026-10-20** — Consistency fix: "Vertical Differences: How the Lessons Transfer" renamed to the fixed case heading "Vertical Differences in the Record"; the table under it is unchanged. *(AI-mediated session)*
+- **2026-10-20** — Replaced 4 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`). *(AI-mediated session)*

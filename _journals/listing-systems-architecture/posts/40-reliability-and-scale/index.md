@@ -47,18 +47,7 @@ The post-incident review, which Ingrid Halvorsen reads in her first week as Grou
 
 Two amplifiers made it worse. The apps retried failed search requests twice with no backoff, turning slow responses into more load. And about a third of the requests reaching the search backend came from automated clients — search engine crawlers, price monitors, scrapers — none of which were throttled when the cluster struggled.
 
----begin mermaid---
-flowchart LR
-    TV["TV campaign at 20:30"] -->|"traffic plus 30 percent"| L["Peak load on NL search"]
-    RX["Weekly full reindex since 20:00"] -->|"CPU and disk contention"| SC["Solr query nodes"]
-    RX -->|"new segments committed"| CE["Caches evicted"]
-    CE -->|"cold facet and browse queries"| SC
-    L --> SC
-    BOT["Unthrottled automated clients"] --> SC
-    SC -->|"p99 rises to 7 s"| AP["Apps time out"]
-    AP -->|"two retries, no backoff"| SC
-    SC -->|"9 percent of searches fail"| OUT["Fewer contacts at the weekly peak"]
----end mermaid---
+![Diagram: The brown-out's causal chain](assets/images/40-reliability-and-scale/fig01-brown-out-s-causal-chain-no.jpeg)
 **Figure 1:** *The brown-out's causal chain. No component failed on its own; a predictable peak met a scheduled batch job, cold caches, unthrottled bots and client retries that fed the overload back into the cluster.*
 
 The review estimates about **3.4 million** failed search requests in the 48 minutes and about **9,800** fewer first contacts than on a comparable Sunday evening. Its action items are familiar: move the reindex, warm caches, add capacity. Ingrid asks a different question, which the rest of this chapter answers. *Why did nothing in the architecture know that Sunday at 20:35 matters more than Tuesday at 04:00, that a campaign was coming, that bots could wait, or that facets were optional?*
@@ -123,24 +112,7 @@ Peak-hour weighting is the marketplace-specific refinement. A failure at the wee
 
 ## Architecture: Control Points in the Search Path
 
----begin mermaid---
-flowchart LR
-    U["Apps and browsers"] --> E["Edge: CDN, bot classification, rate limits"]
-    B["Crawlers, scrapers, partners"] --> E
-    E -->|"cache hit"| CR["Cached pages and results"]
-    E -->|"cache miss"| G["Search gateway: admission control, degradation switch"]
-    G --> Q["Query service: results"]
-    G --> F["Facet service: counts"]
-    G --> P["Personalization and reranking"]
-    Q --> SC["Search cluster: query nodes"]
-    F --> SC
-    IX["Indexing pipeline"] --> SC
-    RB["Reindex and backfill jobs"] -->|"throttled, outside peak windows"| IX
-    CAL["Peak and campaign calendar"] --> RB
-    CAL --> CAP["Capacity plan and pre-scaling"]
-    CAP --> SC
-    OBS["Journey SLIs and error budgets"] --> G
----end mermaid---
+![Diagram: Control points in the search path](assets/images/40-reliability-and-scale/fig03-control-points-search-path-edge-classifies.jpeg)
 **Figure 3:** *Control points in the search path. The edge classifies and throttles automated traffic and serves cached pages; the gateway admits, sheds and degrades requests; facets and personalization are separate, optional calls; batch reindexing is throttled and kept out of peak windows by the same calendar that drives pre-scaling.*
 
 The same control points apply to every journey, not only to search, the one most exposed to peaks: classify at the edge, admit and degrade at a gateway, separate optional work from essential work, and keep batch work under a calendar.
@@ -210,18 +182,7 @@ In this book a **degradation mode** is a predefined, tested reduction of functio
 | **3 Serve from cache** | p99 above 2 s, or error rate above 1% | Frequent queries and landing pages served from cache up to 10 minutes stale; deep pagination capped; sort options limited | Results a few minutes old; fewer options | On-call, with incident commander |
 | **4 Browse only** | Search cluster unavailable | Category and landing pages from edge cache; free-text search box replaced by category browse; insertion accepted and queued | Browse works, search does not, new listings delayed | Incident commander |
 
----begin mermaid---
-stateDiagram-v2
-    [*] --> Normal
-    Normal --> ShedBots: concurrency above threshold
-    ShedBots --> TrimOptional: p99 above 1 s for 3 minutes
-    TrimOptional --> FromCache: p99 above 2 s or errors above 1 percent
-    FromCache --> BrowseOnly: search cluster unavailable
-    BrowseOnly --> FromCache: cluster healthy
-    FromCache --> TrimOptional: p99 below 1 s for 10 minutes
-    TrimOptional --> ShedBots: p99 normal for 10 minutes
-    ShedBots --> Normal: concurrency normal
----end mermaid---
+![Diagram: The search degradation ladder](assets/images/40-reliability-and-scale/fig05-search-degradation-ladder-each-step-gives.jpeg)
 **Figure 5:** *The search degradation ladder. Each step gives up something less essential than the step after it, and recovery steps down only after a sustained period of health, so the system does not oscillate at the peak.*
 
 The marketplace-specific part of the ladder is its order: **bots first, optional features second, freshness third, search itself last**. Two pieces of documented practice support the steps. Vinted's facet work showed that approximate counts are acceptable to users — counts above 500 are shown as "500+" and computed with an early-termination limit — and that capping facet cardinality lowers latency ([Vinted Engineering, 2023](https://vinted.engineering/2023/03/21/faceted-search-using-elasticsearch/)). And the SRE guidance on cascading failures recommends cheaper fallback work under load and regular testing of degraded paths. Had level 1 and level 2 existed on 17 January 2027, about a third of the backend load and the facet traffic would have gone first, and the 9% failure rate would most likely have been a few minutes of approximate counts.

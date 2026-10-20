@@ -135,27 +135,7 @@ A transactional pivot adds six bounded contexts beside the listing core. None of
 | **Buyer protection and disputes** | Coverage rules, dispute cases, evidence, decisions, refunds funded by the platform, loss provision | `DisputeOpened`, `DisputeDecided`, `ProtectionPaid` | Account sanctions ([[trust-and-safety-architecture]]) |
 | **Transaction ledger and reporting** | The double-entry record of every amount owed and moved; reconciliation with provider reports; per-seller aggregates for tax | `JournalPosted`, `ReconciliationBreak`, `SellerPeriodAggregated` | Payment execution |
 
----begin mermaid---
-flowchart LR
-    CHAT["Conversation: offer accepted"] -->|"create order"| ORD["Order context"]
-    LST["Listing context"] -->|"availability check"| ORD
-    ORD -->|"reserve and sold"| LST
-    ORD -->|"quote fees"| FEE["Fees and pricing"]
-    ORD -->|"payment session"| PAY["Payment edge"]
-    PAY -->|"sessions, refunds, payouts"| PSP["Licensed PSP marketplace product"]
-    PSP -->|"webhooks and settlement reports"| PAY
-    ORD -->|"buy label"| SHP["Shipping"]
-    SHP -->|"labels and tracking"| CAR["Carriers and PUDO networks"]
-    CAR -->|"tracking events"| SHP
-    SHP -->|"delivered or returned"| ORD
-    ORD -->|"dispute window"| BP["Buyer protection and disputes"]
-    BP -->|"refund decision"| PAY
-    RISK["Risk scoring"] -->|"hold or release"| ORD
-    ORD -->|"order events"| LED["Transaction ledger"]
-    PAY -->|"money events"| LED
-    LED -->|"journals"| FIN["Group finance"]
-    LED -->|"per-seller aggregates"| TAX["DAC7 reporting"]
----end mermaid---
+![Diagram: The transaction platform beside the listing core](assets/images/29-transactions-and-payments/fig02-transaction-platform-beside-listing-core-order.jpeg)
 **Figure 2:** *The transaction platform beside the listing core. The order context owns the sale and its timers; the payment edge translates to the licensed provider; shipping and disputes feed the order's release decision; the ledger receives both order and money events, so finance and tax reporting are built from the same record.*
 
 ### The order owns availability
@@ -166,29 +146,7 @@ When the order completes, the listing becomes sold through the same stream, and 
 
 ### The order state machine
 
----begin mermaid---
-stateDiagram-v2
-    [*] --> Placed: buyer commits to offer
-    Placed --> Paid: payment captured, listing reserved
-    Placed --> Cancelled: payment fails or times out
-    Paid --> AwaitingHandIn: shipping chosen, label issued
-    Paid --> AwaitingPickup: pay at pickup chosen
-    AwaitingHandIn --> InTransit: carrier scan
-    AwaitingHandIn --> Cancelled: not handed in before deadline, refund
-    InTransit --> Delivered: delivery or PUDO scan
-    InTransit --> Returned: parcel returned to seller, refund
-    AwaitingPickup --> Completed: handover code entered
-    AwaitingPickup --> Cancelled: no handover before expiry, refund
-    Delivered --> Completed: buyer confirms or window passes
-    Delivered --> Disputed: buyer opens dispute in window
-    Disputed --> Completed: resolved for seller
-    Disputed --> Refunded: resolved for buyer
-    Completed --> Chargeback: card issuer dispute
-    Refunded --> [*]
-    Cancelled --> [*]
-    Returned --> [*]
-    Completed --> [*]
----end mermaid---
+![Diagram: A protected-payment order for goods](assets/images/29-transactions-and-payments/fig03-protected-payment-order-goods-every-waiting.jpeg)
 **Figure 3:** *A protected-payment order for goods. Every waiting state has a deadline, every exit to cancellation or refund returns money and releases the listing, and a completed order can still be reopened by a card chargeback weeks later, which is why the ledger must handle states after payout.*
 
 Four design rules follow from the diagram.

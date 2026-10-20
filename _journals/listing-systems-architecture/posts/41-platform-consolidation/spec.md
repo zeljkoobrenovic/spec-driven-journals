@@ -64,3 +64,4 @@ External: eBay 8-K 2004; eBay Vivanuncios 2015; Immowelt 2015; Adevinta 2021, 20
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 4 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 4,969 → 4,982 prose words; no headings renamed; lead now places the chapter as the opener of Part VIII and names what later chapters take from it; decoupling rule moved to the top of the brand-migration section; four paragraphs restructured to lead with their point; one announcing sentence cut. Spec unchanged. *(AI-mediated session)*
+- **2026-10-20** — Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`). *(AI-mediated session)*

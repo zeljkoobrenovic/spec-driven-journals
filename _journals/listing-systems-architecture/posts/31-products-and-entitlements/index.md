@@ -104,48 +104,7 @@ Separating entitlement from effect keeps the hot paths fast. Ranking does not ne
 
 ## Architecture: The Commercial Core
 
----begin mermaid---
-flowchart LR
-    subgraph Define["Define"]
-        CAT["Product catalog: products, packages, effects, versions"]
-        PRL["Price lists and contracts"]
-    end
-    subgraph Sell["Sell"]
-        PE["Pricing engine"]
-        CO["Consumer checkout, prepaid"]
-        CT["Contracts and subscriptions, postpaid"]
-    end
-    subgraph Hold["Hold"]
-        EL["Entitlement ledger"]
-        EP["Effect projector"]
-    end
-    subgraph Deliver["Deliver"]
-        INS["Insertion and feed import"]
-        RANK["Ranking and rendering"]
-        LEAD["Lead routing"]
-    end
-    subgraph Settle["Settle"]
-        MET["Metering and delivery evidence"]
-        BIL["Billing and invoicing"]
-        FIN["Finance ledger"]
-    end
-    CAT --> PE
-    PRL --> PE
-    PE -->|"quote with versions"| CO
-    PE -->|"quote with versions"| CT
-    CO -->|"OrderPaid"| EL
-    CT -->|"ContractActivated or Changed"| EL
-    EL -->|"EntitlementGranted, Consumed, Expired"| EP
-    EP -->|"effects on listing read model and search index"| RANK
-    EP -->|"slot and quota effects"| INS
-    EP -->|"lead allowance effects"| LEAD
-    INS -->|"SlotConsumed, PublishRefused"| MET
-    RANK -->|"PaidImpression"| MET
-    LEAD -->|"LeadDelivered"| MET
-    MET --> EL
-    MET --> BIL
-    BIL --> FIN
----end mermaid---
+![Diagram: The commercial core as five stages](assets/images/31-products-and-entitlements/fig02-commercial-core-five-stages-catalog-price.jpeg)
 **Figure 2:** *The commercial core as five stages. Catalog and price lists define, the pricing engine and the two selling paths sell, the entitlement ledger holds, the delivery systems deliver, and metering and billing settle. Delivery evidence flows back into the ledger and billing so that the invoice is computed from what happened, not from what was ordered. Reference architecture, not a description of any company.*
 
 ### Two selling paths, one ledger
@@ -180,21 +139,7 @@ The current balance of any entitlement is the sum of its entries. Snapshots and 
 2. **Explainability.** "Why can't I publish my 151st car?" has an answer: the grants, consumptions and releases for that account, each traceable to a business event.
 3. **Reconciliation.** Billing and the ledger can be compared entry by entry. The Ruhrblick invoice would have been computed from `Consume` and `PublishRefused` entries, not from a count of a feed file.
 
----begin mermaid---
-stateDiagram-v2
-    [*] --> Granted: order paid or contract period starts
-    Granted --> Active: validity window opens
-    Active --> Suspended: moderation hold or unpaid invoice
-    Suspended --> Active: hold cleared or invoice paid
-    Active --> Exhausted: quota fully consumed
-    Exhausted --> Active: release or top-up grant
-    Active --> Expired: window ends
-    Exhausted --> Expired: window ends
-    Active --> Revoked: listing removed, cancellation or refund
-    Suspended --> Revoked: removal confirmed
-    Expired --> [*]
-    Revoked --> [*]
----end mermaid---
+![Diagram: The lifecycle of an entitlement](assets/images/31-products-and-entitlements/fig04-lifecycle-entitlement-every-transition-ledger-entry.jpeg)
 **Figure 4:** *The lifecycle of an entitlement. Every transition is a ledger entry caused by a business event. Suspended and Revoked are the transitions most often forgotten, and they are where moderation, payments and monetization must agree.*
 
 ### Effects: projecting entitlements onto the hot paths
@@ -261,26 +206,7 @@ RECONCILED's [[designing-financial-ledgers]] covers the accounting design. The a
 
 A daily **delivery reconciliation** closes the loop. It compares three numbers for each paid product and holder: what was **granted** (ledger), what was **delivered** (delivery evidence: slots used, paid impressions, boosts executed, leads routed), and what was **billed** (invoice lines).
 
----begin mermaid---
-sequenceDiagram
-    participant S as Seller
-    participant PE as Pricing engine
-    participant CO as Checkout
-    participant EL as Entitlement ledger
-    participant EP as Effect projector
-    participant RK as Ranking
-    participant RC as Delivery reconciliation
-    S->>PE: quote Top listing 7 days for listing 5531
-    PE-->>S: price with catalog, price-list and promotion versions
-    S->>CO: pay
-    CO->>EL: OrderPaid with idempotency key
-    EL->>EP: EntitlementGranted
-    EP->>RK: paid fields on the listing document
-    RK->>RC: PaidImpression events with positions and queries
-    RC->>EL: delivery shortfall found
-    EL->>EP: Adjust entry adds two days
-    EP->>RK: extended top window
----end mermaid---
+![Diagram: A top listing from quote to make-good](assets/images/31-products-and-entitlements/fig05-top-listing-quote-make-good-quote.jpeg)
 **Figure 5:** *A top listing from quote to make-good. The quote records the versions that produced the price, the grant is idempotent, effects reach ranking by event, and delivery evidence comes back from ranking. When reconciliation finds a shortfall, the remedy is a ledger entry, not a manual credit.*
 
 Only this loop can keep the promise of Tradeyard's top listing. The ranking decision of June 2027 that [[ranking]] describes repositioned Tradeyard's top listing as **seven days of guaranteed prominence in relevant searches, with an automatic extension when delivery falls short**. Reconciliation also produces two other outputs:

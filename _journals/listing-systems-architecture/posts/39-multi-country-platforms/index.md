@@ -126,43 +126,7 @@ Marketplace groups use six platform models, and they are not a maturity ladder: 
 
 The reference architecture below is the author's model, not a description of any company's systems. It separates what is shared from what is local by layer, and puts the tenancy services, which every layer depends on, in the middle.
 
----begin mermaid---
-flowchart TB
-    subgraph LOCAL["Local per brand and market"]
-        UX["Web, apps and brand design"]
-        GTM["Packages, prices and sales"]
-        POL["Market policies and legal texts"]
-        EXT["Tenant extensions such as VIN decoding or DPE checks"]
-    end
-    subgraph TEN["Tenancy services"]
-        REG["Tenant register"]
-        CFG["Configuration service"]
-        REL["Release rings and flags"]
-    end
-    subgraph GLOBAL["Global components"]
-        ID["Identity"]
-        TS["Trust and safety pipeline"]
-        SRCH["Search engine platform"]
-        MED["Media pipeline"]
-        TAX["Taxonomy and attribute service"]
-        CAT["Product catalog and entitlements"]
-        EVT["Event backbone"]
-        DATA["Data platform"]
-    end
-    subgraph INFRA["Shared infrastructure"]
-        RUN["Compute, cloud accounts and observability"]
-    end
-    UX --> CFG
-    GTM --> CAT
-    POL --> TS
-    EXT -->|"extension contracts"| SRCH
-    EXT -->|"extension contracts"| TAX
-    REG --> CFG
-    CFG --> GLOBAL
-    REL --> GLOBAL
-    GLOBAL --> RUN
----end mermaid---
-
+![Diagram: Shared and local by layer](assets/images/39-multi-country-platforms/fig03-shared-local-layer-brands-own-product.jpeg)
 **Figure 3:** *Shared and local by layer. Brands own the product surfaces, commercial terms and market policies; the group owns global components and infrastructure; the tenancy services in the middle carry every market difference down into the shared layers as configuration, extensions and release scope.*
 
 **Local does not mean "outside the platform".** A Polish fee table, a Belgian bilingual form or a French energy-label rule is local content, but it is applied by shared components through configuration and extension contracts. The brand owns the content; the platform owns the mechanism.
@@ -186,16 +150,7 @@ The last attribute is the one most groups omit. A tenant that is *leaving* (sold
 
 Configuration is resolved along a hierarchy, from the most general scope to the most specific. A value set at a higher level is inherited unless a lower level overrides it, and the configuration schema says at which levels each key may be set.
 
----begin mermaid---
-flowchart LR
-    G["Group default"] --> B["Brand"]
-    B --> T["Tenant: brand and country"]
-    T --> P["Marketplace profile"]
-    P --> S["Seller segment"]
-    S --> X["Experiment arm"]
-    X --> R["Resolved value at request time"]
----end mermaid---
-
+![Diagram: The configuration hierarchy](assets/images/39-multi-country-platforms/fig04-configuration-hierarchy-most-keys-are-set.jpeg)
 **Figure 4:** *The configuration hierarchy. Most keys are set at one or two levels; the schema forbids the rest. Experiment arms sit last so that an experiment can override any value for its population without forking it.*
 
 OLX published a small, concrete version of this idea in 2025. Its learning-to-rank projects had spread across teams and repositories and caused "duplicated efforts", so it centralized them in one repository and used the Hydra library for hierarchical configuration, with brand-level configs such as `brand: olx` and `brand: real_estate` ([OLX Tech, 2025](https://tech.olx.com/unlocking-flexibility-in-configuration-the-power-of-hydra-3f9e69263bb4)). The scope there is one capability, but the shape generalizes: one code path, configuration composed by scope.
@@ -277,24 +232,7 @@ Two choices drew argument. Felix Brandt, Motorvane's chief technology officer, o
 
 Before the shared trust-and-safety platform went live for Tradeyard Netherlands and Belgium in **November 2027** ([[trust-and-safety-architecture]]), Ingrid's team replayed the March incident against it as a design test of the tenancy model.
 
----begin mermaid---
-sequenceDiagram
-    participant AN as Analyst in Lisbon
-    participant TS as T and S policy service
-    participant CFG as Configuration service
-    participant NL as Tenant ty nl
-    participant BE as Tenant ty be
-    participant PL as Tenant ty pl
-    AN->>TS: New rule for fake payment links
-    TS->>CFG: Rule class fraud, scope all Tradeyard tenants
-    CFG-->>TS: Group-urgent class, no ring wait
-    TS->>NL: Enforce now
-    TS->>BE: Enforce now
-    TS->>PL: Shadow mode for 48 hours
-    PL-->>TS: Matches per locale for review
-    TS->>PL: Enforce after Polish term list approved
----end mermaid---
-
+![Diagram: The 7 March rule replayed on the shared platform](assets/images/39-multi-country-platforms/fig05-7-march-rule-replayed-shared-platform.jpeg)
 **Figure 5:** *The 7 March rule replayed on the shared platform. The rule is policy content with a tenant scope, not a deployment. Tenants whose language the rule was written for enforce at once; tenants in other languages run it in shadow mode until a locale-specific term list is reviewed.*
 
 The replay produced three findings that went back into the tenancy model.

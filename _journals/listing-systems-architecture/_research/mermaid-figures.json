@@ -1,0 +1,1052 @@
+[
+ {
+  "post": "01-marketplace-taxonomy",
+  "figure": 2,
+  "id": "fig02-endpoint-ladder-pipeline-each-model-inherits",
+  "asset": "assets/images/01-marketplace-taxonomy/fig02-endpoint-ladder-pipeline-each-model-inherits.jpeg",
+  "mermaid": "flowchart LR\n    L[\"Listing published\"] --> S[\"Search and discovery\"]\n    S --> C[\"Contact or conversation\"]\n    C -->|\"classifieds ends here\"| X1[\"Off-platform deal\"]\n    C --> Q[\"Lead qualification and routing\"]\n    Q -->|\"lead generation ends here\"| X2[\"Professional closes off-platform\"]\n    Q --> O[\"Order and checkout\"]\n    O --> P[\"Payment via licensed provider\"]\n    P --> D[\"Shipping or pickup confirmation\"]\n    D --> R[\"Release, payout and dispute window\"]\n    R -->|\"transactional ends here\"| X3[\"Completed sale\"]\n    R --> I[\"Inventory, valuation and resale\"]\n    I -->|\"managed ends here\"| X4[\"Guaranteed outcome\"]"
+ },
+ {
+  "post": "01-marketplace-taxonomy",
+  "figure": 4,
+  "id": "fig04-endpoint-configuration-profile-register-decides-per",
+  "asset": "assets/images/01-marketplace-taxonomy/fig04-endpoint-configuration-profile-register-decides-per.jpeg",
+  "mermaid": "flowchart TB\n    PR[\"Marketplace profile register\"] -->|\"endpoint per country and category\"| CFG[\"Configuration service\"]\n    CFG --> LC[\"Listing core\"]\n    CFG --> CH[\"Contact options\"]\n    CFG --> OR[\"Order and payment contexts\"]\n    CFG --> LR[\"Lead routing and attribution\"]\n    CFG --> RK[\"Ranking success label\"]\n    CFG --> MON[\"Product catalog and entitlements\"]\n    LC -->|\"listing events\"| CH\n    CH -->|\"conversation started\"| LR\n    CH -->|\"offer accepted\"| OR\n    OR -->|\"order completed\"| RK\n    LR -->|\"lead delivered\"| RK"
+ },
+ {
+  "post": "02-liquidity-and-network-effects",
+  "figure": 1,
+  "id": "fig01-liquidity-loop-cross-side-effects-supply",
+  "asset": "assets/images/02-liquidity-and-network-effects/fig01-liquidity-loop-cross-side-effects-supply.jpeg",
+  "mermaid": "flowchart LR\n    S[\"Fresh, relevant local supply\"] -->|\"more to find\"| D[\"Buyer visits and searches\"]\n    D -->|\"contacts and leads\"| V[\"Seller success\"]\n    V -->|\"sellers return and list more\"| S\n    D -->|\"saved searches and alerts\"| A[\"Standing demand\"]\n    A -->|\"faster first contact\"| V\n    S -->|\"same-side competition\"| C[\"Exposure per listing\"]\n    C -->|\"too thin and sellers leave\"| S\n    P[\"Paid visibility and pro packages\"] -->|\"funded by seller success\"| V"
+ },
+ {
+  "post": "02-liquidity-and-network-effects",
+  "figure": 2,
+  "id": "fig02-liquidity-metric-tree-counter-metrics-solid",
+  "asset": "assets/images/02-liquidity-and-network-effects/fig02-liquidity-metric-tree-counter-metrics-solid.jpeg",
+  "mermaid": "flowchart TB\n    L[\"Liquidity per cell\"] --> SU[\"Supply: fresh, available, deduplicated\"]\n    L --> EX[\"Exposure: early impressions, zero results\"]\n    L --> MA[\"Match: contact rate, time to first contact\"]\n    L --> OU[\"Outcome: sell-through, lead conversion\"]\n    L --> RE[\"Retention: sellers return, standing demand\"]\n    SU -.->|\"inflated by\"| G[\"Ghost share\"]\n    SU -.->|\"inflated by\"| DU[\"Duplicate ratio\"]\n    MA -.->|\"inflated by\"| UN[\"Unsafe contact rate\"]\n    EX -.->|\"distorted by\"| PB[\"Paid exposure concentration\"]"
+ },
+ {
+  "post": "02-liquidity-and-network-effects",
+  "figure": 5,
+  "id": "fig05-liquidity-metrics-left-requirements-they-generate",
+  "asset": "assets/images/02-liquidity-and-network-effects/fig05-liquidity-metrics-left-requirements-they-generate.jpeg",
+  "mermaid": "flowchart LR\n    M1[\"Time to first contact\"] --> R1[\"Publication p95 90 seconds\"]\n    M1 --> R2[\"Alerts within 5 minutes\"]\n    M2[\"Ghost share\"] --> R3[\"Unpublish in under a minute\"]\n    M2 --> R4[\"Availability check at send time\"]\n    M3[\"Fresh available supply\"] --> R5[\"Feed snapshot reconciliation\"]\n    M4[\"Duplicate ratio\"] --> R6[\"Canonical entities in search\"]\n    M5[\"Search-to-contact at peak\"] --> R7[\"Peak-hour latency objectives\"]\n    M6[\"Unsafe contact rate\"] --> R8[\"Message screening before delivery\"]"
+ },
+ {
+  "post": "03-industry-evolution",
+  "figure": 2,
+  "id": "fig02-five-waves-classifieds-strategy-vertical-portals",
+  "asset": "assets/images/03-industry-evolution/fig02-five-waves-classifieds-strategy-vertical-portals.jpeg",
+  "mermaid": "flowchart LR\n    W0[\"Wave 0: Print columns, to about 1995\"] -->|\"listings go online, free\"| W1[\"Wave 1: Online pioneers, 1995 to 2005\"]\n    W1 -->|\"land-grab per country\"| W2[\"Wave 2: Portfolio building, 2005 to 2016\"]\n    W2 -->|\"integrate what was bought\"| W3[\"Wave 3: Consolidation, 2016 to 2023\"]\n    W3 -->|\"capital gets expensive\"| W4[\"Wave 4: Take-privates and break-ups, 2023 to 2026\"]\n    W1 -.->|\"verticals split off\"| V[\"Vertical portals: property, motors, jobs\"]\n    V -.->|\"acquired into portfolios\"| W2\n    W3 -.->|\"transactional pivot for goods\"| T[\"Payments, shipping, buyer protection\"]"
+ },
+ {
+  "post": "03-industry-evolution",
+  "figure": 3,
+  "id": "fig03-centralize-decentralize-swing-adevinta-s-own",
+  "asset": "assets/images/03-industry-evolution/fig03-centralize-decentralize-swing-adevinta-s-own.jpeg",
+  "mermaid": "flowchart TB\n    subgraph S1[\"Federation era\"]\n        A1[\"Local product and tech per marketplace\"]\n    end\n    subgraph S2[\"Selective centralization, 2019 to 2020\"]\n        A2[\"Central data and scalable components; voluntary internal platform\"]\n    end\n    subgraph S3[\"Integration, 2021 to 2023\"]\n        A3[\"Shared cloud, data, chat, moderation, experimentation\"]\n    end\n    subgraph S4[\"Convergence bet, 2023 to mid 2024\"]\n        A4[\"Two generalist product platforms to become one\"]\n    end\n    subgraph S5[\"Decentralization, 2024 to 2026\"]\n        A5[\"Central functions ramped down; capabilities and IP localized; brands sold\"]\n    end\n    A1 -->|\"listing and scale\"| A2\n    A2 -->|\"acquisition of eBay Classifieds\"| A3\n    A3 -->|\"overlap in customer needs\"| A4\n    A4 -->|\"take-private and break-up value\"| A5"
+ },
+ {
+  "post": "03-industry-evolution",
+  "figure": 4,
+  "id": "fig04-loop-behind-timeline-ownership-sets-platform",
+  "asset": "assets/images/03-industry-evolution/fig04-loop-behind-timeline-ownership-sets-platform.jpeg",
+  "mermaid": "flowchart TB\n    OWN[\"Ownership and capital strategy\"] -->|\"sets\"| TOP[\"Platform topology: federate, share, converge, separate\"]\n    TOP -->|\"funds and staffs\"| PLAT[\"Shared platforms\"]\n    TOP -->|\"tolerates\"| LOC[\"Local stacks\"]\n    PLAT -->|\"outlive the strategy\"| SED[\"Sediment inherited by the next owner\"]\n    LOC -->|\"outlive the strategy\"| SED\n    SED -->|\"constrains the cost of\"| NEXT[\"Next deal: merger, sale, carve-out\"]\n    NEXT -->|\"changes\"| OWN"
+ },
+ {
+  "post": "04-business-capabilities",
+  "figure": 2,
+  "id": "fig02-ten-level-1-capability-areas-listing",
+  "asset": "assets/images/04-business-capabilities/fig02-ten-level-1-capability-areas-listing.jpeg",
+  "mermaid": "flowchart LR\n    SA[\"Supply Acquisition\"] --> LM[\"Listing Management\"]\n    LM --> DI[\"Discovery\"]\n    DI --> MC[\"Matching and Contact\"]\n    MC --> TR[\"Transactions\"]\n    TS[\"Trust and Safety\"] -.->|\"screens\"| LM\n    TS -.->|\"screens\"| MC\n    TS -.->|\"screens\"| TR\n    MO[\"Monetization\"] -.->|\"paid visibility\"| DI\n    MO -.->|\"listing fees and packages\"| LM\n    PS[\"Professional Services\"] -.->|\"pro tooling\"| SA\n    PS -.->|\"lead workspace\"| MC\n    DA[\"Data and Insights\"] -.->|\"metrics and models\"| DI\n    PL[\"Platform\"] -.->|\"identity, notifications, support\"| MC"
+ },
+ {
+  "post": "04-business-capabilities",
+  "figure": 4,
+  "id": "fig04-list-sell-240-rotterdam-city-bike",
+  "asset": "assets/images/04-business-capabilities/fig04-list-sell-240-rotterdam-city-bike.jpeg",
+  "mermaid": "flowchart LR\n    S1[\"Start and describe, 19:42\"] --> S2[\"Publish, searchable 19:48\"]\n    S2 --> S3[\"Matched and alerted, 312 saved searches\"]\n    S3 --> S4[\"First contact, 19:55\"]\n    S4 --> S5[\"Agree and pay, Monday\"]\n    S5 --> S6[\"Mark sold, 18:10 Monday\"]\n    C1[\"Listing creation, Taxonomy, Media, Price estimation\"] -.-> S1\n    C2[\"Content moderation, Lifecycle and publication, Search indexing\"] -.-> S2\n    C3[\"Saved searches and alerts, Notifications\"] -.-> S3\n    C4[\"Contact and messaging, Fraud and risk scoring\"] -.-> S4\n    C5[\"Checkout and protected payment, Payouts\"] -.-> S5\n    C6[\"Lifecycle and publication, Saved searches and alerts\"] -.-> S6"
+ },
+ {
+  "post": "04-business-capabilities",
+  "figure": 5,
+  "id": "fig05-layering-veldmark-used-value-streams-explain",
+  "asset": "assets/images/04-business-capabilities/fig05-layering-veldmark-used-value-streams-explain.jpeg",
+  "mermaid": "flowchart TB\n    VS[\"Value streams: list-to-sell, search-to-contact, lead-to-deal, pro onboarding\"] --> CAP[\"54 level-2 capabilities\"]\n    CAP --> TY[\"Tradeyard systems, incl. Yardstick\"]\n    CAP --> MV[\"Motorvane systems\"]\n    CAP --> HE[\"Hearthly systems\"]\n    CAP --> KB[\"Keybridge systems\"]\n    CAP --> GS[\"Group shared: ads stack, SAP finance\"]\n    TY --> T1[\"Teams in Rotterdam, Lisbon, Warsaw\"]\n    MV --> T2[\"Teams in Düsseldorf\"]\n    HE --> T3[\"Teams in Lyon\"]\n    KB --> T4[\"Keybridge teams\"]"
+ },
+ {
+  "post": "05-bounded-contexts",
+  "figure": 2,
+  "id": "fig02-common-ground-context-map-target-2028",
+  "asset": "assets/images/05-bounded-contexts/fig02-common-ground-context-map-target-2028.jpeg",
+  "mermaid": "flowchart LR\n    SV[\"Software vendors and DMS feeds\"] -->|\"vendor formats\"| ING[\"Feed ingestion, ACL\"]\n    KB[\"Keybridge, separate SaaS\"] -->|\"public feed contract only\"| ING\n    SELL[\"Seller insertion\"] -->|\"commands\"| CAT[\"Listing catalog\"]\n    ING -->|\"commands\"| CAT\n    YS[\"Yardstick, legacy\"] -->|\"CDC\"| YR[\"Yardstick Relay, ACL\"]\n    YR -->|\"listing events v1\"| BUS[\"Listing event contract v1\"]\n    CAT -->|\"outbox\"| BUS\n    TAX[\"Taxonomy and attributes, open host\"] -->|\"schemas\"| CAT\n    TS[\"Trust and safety\"] -->|\"decisions\"| CAT\n    BUS --> TS\n    BUS --> SR[\"Search, conformist\"]\n    BUS --> AL[\"Saved searches and alerts\"]\n    BUS --> ER[\"Entity resolution\"]\n    BUS --> AN[\"Analytics and data platform\"]\n    MON[\"Products and entitlements\"] -->|\"placement references\"| CAT\n    MON -->|\"visibility effects\"| SR\n    BUS --> MSG[\"Messaging and leads\"]\n    ID[\"Veldmark ID, open host\"] -.->|\"identity\"| SELL\n    ID -.->|\"identity\"| MSG\n    PAY[\"Safe Deal transactions\"] -->|\"reserve and sold\"| CAT\n    ADY[\"Adyen for Platforms\"] -->|\"provider model\"| PAY"
+ },
+ {
+  "post": "05-bounded-contexts",
+  "figure": 3,
+  "id": "fig03-bump-crosses-two-aggregates-two-contexts",
+  "asset": "assets/images/05-bounded-contexts/fig03-bump-crosses-two-aggregates-two-contexts.jpeg",
+  "mermaid": "sequenceDiagram\n    participant S as Seller\n    participant MON as Monetization\n    participant CAT as ListingCatalog\n    participant BUS as ListingEvents\n    participant SR as Search\n    S->>MON: Buy Top listing for 7 days\n    MON->>MON: Record order and grant entitlement, keyed by order ID\n    MON->>CAT: ApplyPlacement with entitlement reference\n    CAT->>CAT: Check listing is active, add placement reference, new version\n    CAT->>BUS: VisibilityChanged with listing version\n    BUS->>SR: Apply boost if version is newer\n    CAT-->>MON: Rejected if listing was removed meanwhile\n    MON->>MON: Re-credit entitlement on rejection"
+ },
+ {
+  "post": "06-vertical-requirements",
+  "figure": 2,
+  "id": "fig02-four-layers-different-owners-layer-1",
+  "asset": "assets/images/06-vertical-requirements/fig02-four-layers-different-owners-layer-1.jpeg",
+  "mermaid": "flowchart TB\n    subgraph L4[\"Layer 4: brand-local product\"]\n        UX[\"Brand UX, packages, sales motion\"]\n        PRO[\"Pro tool front ends\"]\n    end\n    subgraph L3[\"Layer 3: vertical capabilities, group-owned\"]\n        VEH[\"Vehicle identity, spec and price rating\"]\n        PROP[\"Property entity and valuation\"]\n        JOB[\"Job normalization\"]\n    end\n    subgraph L2[\"Layer 2: shared engines, vertical content\"]\n        TAX[\"Taxonomy and attribute service\"]\n        ING[\"Ingestion engine and adapters\"]\n        RANK[\"Ranking framework and policies\"]\n        ENT[\"Catalog and entitlement engine\"]\n        TS[\"Trust rules and models\"]\n    end\n    subgraph L1[\"Layer 1: shared platform\"]\n        ID[\"Identity\"]\n        EV[\"Event backbone\"]\n        MED[\"Media processing\"]\n        MSG[\"Messaging transport\"]\n        SRCH[\"Search infrastructure\"]\n        DATA[\"Data platform\"]\n    end\n    UX --> TAX\n    PRO --> ING\n    VEH -->|\"enricher\"| ING\n    PROP -->|\"enricher\"| ING\n    JOB -->|\"enricher\"| ING\n    VEH -->|\"signal\"| RANK\n    TAX --> SRCH\n    ING --> EV\n    RANK --> SRCH\n    ENT --> RANK\n    TS --> EV"
+ },
+ {
+  "post": "06-vertical-requirements",
+  "figure": 3,
+  "id": "fig03-one-listing-flow-eight-vertical-seams",
+  "asset": "assets/images/06-vertical-requirements/fig03-one-listing-flow-eight-vertical-seams.jpeg",
+  "mermaid": "flowchart LR\n    IN[\"Form, API or feed\"] --> VAL[\"Validate\"]\n    VAL --> ENR[\"Enrich\"]\n    ENR --> RISK[\"Risk and moderation\"]\n    RISK --> PUB[\"Publish\"]\n    PUB --> IDX[\"Index\"]\n    IDX --> RK[\"Rank and render\"]\n    SCH[\"Vertical schema\"] -.->|\"rules\"| VAL\n    VE[\"Vehicle decode\"] -.->|\"enricher\"| ENR\n    PE[\"Property match\"] -.->|\"enricher\"| ENR\n    JE[\"Job title normalizer\"] -.->|\"enricher\"| ENR\n    VR[\"Vertical fraud rules\"] -.->|\"policy\"| RISK\n    EXP[\"Vertical expiry policy\"] -.->|\"lifetime\"| PUB\n    MAP[\"Vertical index mapping\"] -.->|\"document shape\"| IDX\n    POL[\"Vertical ranking policy\"] -.->|\"policy\"| RK"
+ },
+ {
+  "post": "07-listing-aggregate",
+  "figure": 4,
+  "id": "fig04-publication-lifecycle-owned-listing-service-seller",
+  "asset": "assets/images/07-listing-aggregate/fig04-publication-lifecycle-owned-listing-service-seller.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Draft: seller starts\n    Draft --> PendingReview: seller submits\n    PendingReview --> Active: gate passed\n    PendingReview --> Rejected: gate failed\n    Rejected --> Draft: seller edits\n    Active --> Paused: seller pauses\n    Paused --> Active: seller resumes\n    Active --> Reserved: seller or order reserves\n    Reserved --> Active: reservation lapses\n    Reserved --> Sold: sale confirmed\n    Active --> Sold: seller marks sold\n    Active --> Expired: lifetime elapsed\n    Expired --> Active: seller renews\n    Sold --> Active: sale fell through\n    Active --> Withdrawn: seller withdraws\n    Paused --> Withdrawn: seller withdraws\n    Expired --> Archived: renewal window closed\n    Sold --> Archived: display window closed\n    Withdrawn --> Archived: appeal window closed\n    Archived --> Purged: retention elapsed\n    Purged --> [*]"
+ },
+ {
+  "post": "07-listing-aggregate",
+  "figure": 5,
+  "id": "fig05-one-owner-many-copies-every-write",
+  "asset": "assets/images/07-listing-aggregate/fig05-one-owner-many-copies-every-write.jpeg",
+  "mermaid": "flowchart LR\n    S[\"Seller apps and pro tools\"] -->|\"commands with version\"| LS[\"Listing service\"]\n    F[\"Feed ingestion\"] -->|\"commands keyed by external key\"| LS\n    TS[\"Trust and safety decisions\"] -->|\"hold, block, restore\"| LS\n    ENT[\"Entitlement service\"] -->|\"placement references\"| LS\n    CLK[\"Lifecycle scheduler\"] -->|\"expire, archive, purge\"| LS\n    TAX[\"Taxonomy and schema service\"] -.->|\"cached rules\"| LS\n    LS --> DB[\"Listing store with versions and outbox\"]\n    DB -->|\"outbox relay\"| EV[\"Listing event stream\"]\n    EV --> SR[\"Search index\"]\n    EV --> AL[\"Alerts and digests\"]\n    EV --> RC[\"Recommendations\"]\n    EV --> SEO[\"Sitemaps and listing pages\"]\n    EV --> AN[\"Analytics\"]\n    EV --> PF[\"Partner and syndication feeds\"]\n    EV --> TSR[\"Trust scoring\"]"
+ },
+ {
+  "post": "08-categories-and-taxonomies",
+  "figure": 2,
+  "id": "fig02-three-layers-canonical-classification-tree-selects",
+  "asset": "assets/images/08-categories-and-taxonomies/fig02-three-layers-canonical-classification-tree-selects.jpeg",
+  "mermaid": "flowchart TB\n    subgraph CORE[\"Canonical classification\"]\n        CT[\"Classification tree with stable IDs\"]\n        SC[\"Category schemas and policies\"]\n    end\n    CT --> SC\n    CT --> NL[\"NL view: Dutch labels and slugs\"]\n    CT --> BE[\"BE view: Dutch and French labels\"]\n    CT --> PL[\"PL view: Polish labels, local nodes\"]\n    CT --> PT[\"PT view: Portuguese labels\"]\n    NL --> NAV[\"Navigation trees and landing pages\"]\n    BE --> NAV\n    PL --> NAV\n    PT --> NAV\n    CT --> MAP[\"Mappings to external taxonomies\"]\n    MAP --> G[\"Google product taxonomy\"]\n    MAP --> SO[\"schema.org types\"]\n    MAP --> PF[\"Partner feed codes\"]\n    SC --> CONS[\"Listing service, search, fees, moderation, ads, analytics\"]"
+ },
+ {
+  "post": "08-categories-and-taxonomies",
+  "figure": 4,
+  "id": "fig04-category-migration-release-dual-version-window",
+  "asset": "assets/images/08-categories-and-taxonomies/fig04-category-migration-release-dual-version-window.jpeg",
+  "mermaid": "flowchart LR\n    A[\"Change request with impact analysis\"] --> B[\"Release drafted: tree, mapping, attribute diff, dates\"]\n    B --> C[\"Review by taxonomy owner and affected teams\"]\n    C --> D[\"Dual-version window opens\"]\n    D --> E[\"Consumers deploy support for both versions\"]\n    D --> F[\"Reclassify listings: rules, then model, then seller\"]\n    F --> G[\"Audit sample gates the run\"]\n    E --> H[\"Cut-over: new version becomes default\"]\n    G --> H\n    H --> I[\"Rewrite saved searches and alerts\"]\n    H --> J[\"Redirects and landing pages\"]\n    H --> K[\"Analytics mapping view\"]\n    H --> L[\"Partner code deprecation window\"]\n    L --> M[\"Old version retired\"]"
+ },
+ {
+  "post": "08-categories-and-taxonomies",
+  "figure": 5,
+  "id": "fig05-bikes-split-nineteen-country-specific-leaves",
+  "asset": "assets/images/08-categories-and-taxonomies/fig05-bikes-split-nineteen-country-specific-leaves.jpeg",
+  "mermaid": "flowchart LR\n    subgraph BEFORE[\"Before: 19 country leaves\"]\n        NLB[\"NL: 6 bike leaves\"]\n        BEB[\"BE: 6 bike leaves\"]\n        PLB[\"PL: 4 bike leaves\"]\n        PTB[\"PT: 3 bike leaves\"]\n    end\n    subgraph AFTER[\"After: canonical Bikes node, release 2027.11\"]\n        BK[\"Bikes\"]\n        BK --> CB[\"City bikes\"]\n        BK --> EB[\"E-bikes\"]\n        BK --> KB[\"Cargo bikes\"]\n        BK --> KD[\"Kids' bikes\"]\n        BK --> RB[\"Road bikes\"]\n        BK --> MB[\"Mountain bikes\"]\n        BK --> BP[\"Bike parts and accessories\"]\n    end\n    NLB -->|\"mapping and reclassification\"| BK\n    BEB -->|\"mapping and reclassification\"| BK\n    PLB -->|\"mapping and reclassification\"| BK\n    PTB -->|\"mapping and reclassification\"| BK"
+ },
+ {
+  "post": "09-attribute-schemas",
+  "figure": 3,
+  "id": "fig03-lifecycle-attribute-definition-active-attribute-never",
+  "asset": "assets/images/09-attribute-schemas/fig03-lifecycle-attribute-definition-active-attribute-never.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Proposed: steward drafts entry\n    Proposed --> Active: review approves, mappings complete\n    Proposed --> Rejected: duplicates an existing attribute\n    Active --> Deprecated: successor defined or no longer needed\n    Deprecated --> Retired: no producer writes it and no reader depends on it\n    Deprecated --> Active: deprecation withdrawn\n    Retired --> [*]\n    Rejected --> [*]"
+ },
+ {
+  "post": "09-attribute-schemas",
+  "figure": 4,
+  "id": "fig04-one-definition-many-compiled-artifacts-stewards",
+  "asset": "assets/images/09-attribute-schemas/fig04-one-definition-many-compiled-artifacts-stewards.jpeg",
+  "mermaid": "flowchart LR\n    ST[\"Attribute stewards\"] -->|\"propose and review\"| DS[\"Dictionary store\"]\n    RD[\"Reference data suppliers\"] -->|\"makes, models, brands\"| RDS[\"Reference data service\"]\n    RDS --> DS\n    DS -->|\"release\"| SC[\"Schema compiler\"]\n    SC -->|\"JSON Schema per category version\"| VL[\"Validator library\"]\n    SC -->|\"form definitions\"| IF[\"Insertion flow\"]\n    SC -->|\"inbound mappings\"| FI[\"Feed and API ingestion\"]\n    SC -->|\"mapping and facet config\"| SI[\"Search indexer\"]\n    SC -->|\"outbound mappings\"| FO[\"Outbound feeds and SEO markup\"]\n    SC -->|\"rule inputs\"| TS[\"Trust rules\"]\n    SC -->|\"targeting keys\"| AD[\"Ads targeting\"]\n    VL --- IF\n    VL --- FI\n    SC -->|\"SchemaReleased event\"| EB[\"Event backbone\"]\n    EB --> AN[\"Analytics and quality metrics\"]"
+ },
+ {
+  "post": "09-attribute-schemas",
+  "figure": 5,
+  "id": "fig05-making-attribute-required-producer-breaking-change",
+  "asset": "assets/images/09-attribute-schemas/fig05-making-attribute-required-producer-breaking-change.jpeg",
+  "mermaid": "sequenceDiagram\n    participant St as Goods steward\n    participant Dict as Dictionary and compiler\n    participant Feeds as Dealer feeds\n    participant Form as Insertion flow\n    participant Idx as Search indexer\n    St->>Dict: add battery capacity as recommended, required from 1 Mar 2028\n    Dict->>Idx: release 2027.11 with new field and facet buckets\n    Dict->>Form: form shows the field, nudges sellers\n    Dict->>Feeds: published mapping and readiness report\n    Feeds->>Dict: test submissions validate, warnings only\n    Note over Dict,Feeds: runway of four months, readiness tracked per dealer feed\n    St->>Dict: switch to required for create and revise\n    Dict->>Form: missing value now blocks publication\n    Dict->>Feeds: missing value now returns a stable error code"
+ },
+ {
+  "post": "10-media-pipeline",
+  "figure": 2,
+  "id": "fig02-one-pipeline-behind-three-doors-files",
+  "asset": "assets/images/10-media-pipeline/fig02-one-pipeline-behind-three-doors-files.jpeg",
+  "mermaid": "flowchart LR\n    MU[\"Mobile and web upload\"] -->|\"pre-signed URL\"| RAW[\"Quarantine bucket\"]\n    FD[\"Partner feeds\"] -->|\"fetch changed URLs only\"| RAW\n    BO[\"Back office and generated media\"] --> RAW\n    RAW --> GT[\"Gate: type, size, dimensions\"]\n    GT --> SN[\"Sanitize: decode, re-encode, strip metadata\"]\n    SN --> HS[\"Hash: SHA-256 and PDQ\"]\n    HS -->|\"exact duplicate\"| DD[\"Link to existing master\"]\n    HS --> MS[\"Master store\"]\n    HS --> HI[\"Group hash index\"]\n    MS --> CL[\"Classify: quality, OCR, content, room or angle\"]\n    HI -->|\"match to another seller\"| TS[\"Trust and safety decision\"]\n    CL --> TS\n    TS -->|\"approved\"| EV[\"MediaReady event\"]\n    EV --> PP[\"Publication pipeline\"]\n    MS --> IS[\"Image service\"]\n    IS --> CDN[\"CDN edge\"]\n    CDN --> BU[\"Buyers\"]"
+ },
+ {
+  "post": "10-media-pipeline",
+  "figure": 5,
+  "id": "fig05-media-asset-s-lifecycle-follows-listing",
+  "asset": "assets/images/10-media-pipeline/fig05-media-asset-s-lifecycle-follows-listing.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Quarantined: uploaded or fetched\n    Quarantined --> Rejected: fails gate or scan\n    Quarantined --> Processing: passes gate\n    Processing --> Pending: master stored, awaiting decision\n    Pending --> Live: approved and attached to a live listing\n    Pending --> Blocked: trust decision blocks it\n    Live --> Dormant: listing sold, expired or removed\n    Dormant --> Live: listing relisted\n    Dormant --> Archived: retention window passes\n    Archived --> Deleted: retention class ends\n    Blocked --> Deleted: evidence retention ends\n    Rejected --> [*]\n    Deleted --> [*]"
+ },
+ {
+  "post": "10-media-pipeline",
+  "figure": 6,
+  "id": "fig06-layered-duplicate-detection-cheap-checks-run",
+  "asset": "assets/images/10-media-pipeline/fig06-layered-duplicate-detection-cheap-checks-run.jpeg",
+  "mermaid": "flowchart TB\n    IMG[\"New master image\"] --> EX{\"Exact SHA-256 match?\"}\n    EX -->|\"yes\"| SAME[\"Link to existing master\"]\n    EX -->|\"no\"| PQ{\"PDQ match within threshold?\"}\n    PQ -->|\"no\"| EMB{\"Embedding neighbor above similarity?\"}\n    PQ -->|\"yes\"| WHO{\"Same seller or allowlisted source?\"}\n    EMB -->|\"no\"| NEW[\"New unique image\"]\n    EMB -->|\"yes\"| WHO\n    WHO -->|\"same seller\"| REP[\"Repost signal for ranking and dedup\"]\n    WHO -->|\"stock or manufacturer image\"| OK[\"Allowlisted, no action\"]\n    WHO -->|\"different seller\"| CTX{\"High-risk segment?\"}\n    CTX -->|\"rental or new account\"| HOLD[\"Hold for trust decision\"]\n    CTX -->|\"sale with known agencies\"| ER[\"Feature for entity resolution\"]"
+ },
+ {
+  "post": "11-location-and-geo",
+  "figure": 2,
+  "id": "fig02-location-enters-text-leaves-two-different",
+  "asset": "assets/images/11-location-and-geo/fig02-location-enters-text-leaves-two-different.jpeg",
+  "mermaid": "flowchart LR\n    IN[\"Insertion form, app, feed\"] -->|\"raw address or postcode\"| PA[\"Address parser per country\"]\n    PA -->|\"components\"| GW[\"Geocoding gateway\"]\n    GW -->|\"country routing\"| P1[\"National register geocoder\"]\n    GW -->|\"fallback\"| P2[\"Commercial geocoder\"]\n    GW -->|\"point, match level, licence\"| PR[\"Place resolver\"]\n    GZ[\"Gazetteer, versioned\"] --> PR\n    PR -->|\"place IDs and ancestors\"| PP[\"Precision policy engine\"]\n    POL[\"Policy rules per brand, category, seller type\"] --> PP\n    PP -->|\"precise part\"| RS[\"Restricted location store\"]\n    PP -->|\"public part\"| LA[\"Listing aggregate\"]\n    LA -->|\"ListingPublished\"| SE[\"Search documents\"]\n    LA -->|\"ListingPublished\"| WEB[\"Pages, structured data, feeds\"]\n    RS -->|\"restricted reads\"| ER[\"Duplicate detection and fraud\"]"
+ },
+ {
+  "post": "11-location-and-geo",
+  "figure": 4,
+  "id": "fig04-one-precise-point-many-audiences-public",
+  "asset": "assets/images/11-location-and-geo/fig04-one-precise-point-many-audiences-public.jpeg",
+  "mermaid": "flowchart TB\n    PREC[\"Precise point, P5, restricted\"] --> POLICY[\"Precision policy, versioned rules\"]\n    SELLER[\"Seller choice: exact, street or district\"] --> POLICY\n    CAT[\"Brand, category and seller type\"] --> POLICY\n    POLICY -->|\"deterministic snap or seeded offset\"| PUB[\"Public point and display level\"]\n    POLICY -->|\"place IDs to allowed level\"| PLC[\"Place references\"]\n    PUB --> D1[\"Distance shown, rounded\"]\n    PUB --> D2[\"Map pin or circle\"]\n    PUB --> D3[\"Structured data and sitemaps\"]\n    PLC --> D4[\"Filters, landing pages, alerts\"]\n    PREC -.->|\"audited internal reads only\"| D5[\"Dedup, fraud, valuation\"]"
+ },
+ {
+  "post": "12-sellers-and-accounts",
+  "figure": 3,
+  "id": "fig03-eight-entities-each-answering-one-question",
+  "asset": "assets/images/12-sellers-and-accounts/fig03-eight-entities-each-answering-one-question.jpeg",
+  "mermaid": "flowchart TB\n    U[\"User, a Veldmark ID identity\"] -->|\"membership with roles\"| SA[\"Seller account, per brand\"]\n    LE[\"Legal entity, the trader\"] -->|\"acts as\"| SA\n    SA -->|\"has\"| BR[\"Branches\"]\n    NW[\"Network or franchise brand\"] -.->|\"groups several\"| LE\n    SA -->|\"party to\"| CT[\"Commercial contract and billing account\"]\n    CT -->|\"covers\"| BR\n    BR -->|\"shown as\"| SF[\"Storefront profile\"]\n    IP[\"Integration principal\"] -->|\"grant scoped to branch and capability\"| BR\n    BR -->|\"assigned\"| L[\"Listings\"]\n    SA -->|\"owns\"| L\n    TS[\"Trader status record\"] --> SA"
+ },
+ {
+  "post": "12-sellers-and-accounts",
+  "figure": 5,
+  "id": "fig05-seller-account-s-lifecycle-professional-accounts",
+  "asset": "assets/images/12-sellers-and-accounts/fig05-seller-account-s-lifecycle-professional-accounts.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Registered: sign-up or contract\n    Registered --> Active: private seller with verified contact\n    Registered --> Onboarding: professional or declared trader\n    Onboarding --> PendingVerification: trader data submitted\n    PendingVerification --> Active: verification passed\n    PendingVerification --> Onboarding: data incomplete or unreliable\n    Active --> UnderReview: reclassification or risk case\n    UnderReview --> Active: case closed\n    UnderReview --> Onboarding: reclassified as trader\n    Active --> Restricted: limits on listing or contact\n    Restricted --> Active: limits lifted\n    Active --> Suspended: enforcement or unpaid contract\n    Restricted --> Suspended: enforcement\n    Suspended --> Active: appeal upheld or debt settled\n    Active --> Closed: seller or contract ends\n    Suspended --> Closed: termination\n    Closed --> Erased: retention period expired\n    Erased --> [*]"
+ },
+ {
+  "post": "12-sellers-and-accounts",
+  "figure": 6,
+  "id": "fig06-share-identity-verified-legal-facts-not",
+  "asset": "assets/images/12-sellers-and-accounts/fig06-share-identity-verified-legal-facts-not.jpeg",
+  "mermaid": "flowchart TB\n    subgraph GROUP[\"Group layer\"]\n        VID[\"Veldmark ID: users and logins\"]\n        BPR[\"Business party registry: legal entities and verification\"]\n    end\n    subgraph BRANDS[\"Brand layer\"]\n        TY[\"Tradeyard seller accounts\"]\n        MV[\"Motorvane seller accounts\"]\n        HE[\"Hearthly seller accounts\"]\n    end\n    subgraph SAAS[\"Neutral SaaS\"]\n        KB[\"Keybridge tenants and CRM data\"]\n    end\n    VID --> TY\n    VID --> MV\n    VID --> HE\n    BPR -->|\"verified trader facts\"| TY\n    BPR -->|\"verified trader facts\"| MV\n    BPR -->|\"verified trader facts\"| HE\n    BPR -->|\"verified trader facts\"| KB\n    KB -->|\"listings via integration grant only\"| HE\n    KB -.->|\"no CRM, lead or competitor data\"| HE"
+ },
+ {
+  "post": "13-listing-ingestion",
+  "figure": 2,
+  "id": "fig02-many-doors-one-write-path-adapters",
+  "asset": "assets/images/13-listing-ingestion/fig02-many-doors-one-write-path-adapters.jpeg",
+  "mermaid": "flowchart LR\n    IF[\"Insertion flow, web and app\"] --> CMD[\"Listing command gateway\"]\n    API[\"Partner API\"] --> ADP[\"Channel adapters\"]\n    FILE[\"Bulk feeds, push or pull\"] --> ADP\n    REP[\"Replicators for external systems of record\"] --> ADP\n    ADP -->|\"ingestion records\"| LOG[\"Ingestion record log\"]\n    LOG --> HASH[\"Change detection by content hash\"]\n    HASH --> VAL[\"Validation with compiled schemas\"]\n    VAL --> REC[\"Reconciler and snapshot diff\"]\n    REC --> GUARD[\"Mass-change guard\"]\n    GUARD --> CMD\n    CMD -->|\"commands keyed by external key\"| LS[\"Listing service\"]\n    LS -->|\"listing events\"| NORM[\"Normalization and enrichment\"]\n    NORM --> PUB[\"Publication pipeline\"]\n    VAL -->|\"errors and warnings\"| RPT[\"Run reports and partner feedback\"]\n    GUARD -->|\"held runs\"| OPS[\"Feed operations console\"]\n    RPT --> PRT[\"Partners and sellers\"]"
+ },
+ {
+  "post": "13-listing-ingestion",
+  "figure": 4,
+  "id": "fig04-life-snapshot-run-run-that-would",
+  "asset": "assets/images/13-listing-ingestion/fig04-life-snapshot-run-run-that-would.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Received\n    Received --> Parsed: adapter accepts transport\n    Received --> Rejected: authentication or format failure\n    Parsed --> Diffed: per-seller set difference computed\n    Diffed --> Applied: changes within thresholds\n    Diffed --> Held: removals or price changes exceed thresholds\n    Held --> Applied: partner or operator confirms\n    Held --> Discarded: partner resends a complete run\n    Applied --> Reported: run report delivered\n    Rejected --> Reported\n    Discarded --> Reported\n    Reported --> [*]"
+ },
+ {
+  "post": "14-normalization-and-enrichment",
+  "figure": 2,
+  "id": "fig02-enrichment-pipeline-loop-around-listing-service",
+  "asset": "assets/images/14-normalization-and-enrichment/fig02-enrichment-pipeline-loop-around-listing-service.jpeg",
+  "mermaid": "flowchart LR\n    LS[\"Listing service\"] -->|\"ListingSubmitted, ListingRevised\"| ORC[\"Enrichment orchestrator\"]\n    ORC --> N[\"Normalizers\"]\n    N --> R[\"Registry decoders\"]\n    R --> M[\"Model enrichers\"]\n    M --> P[\"Platform computations and quality score\"]\n    REF[\"Reference data with versions\"] -.-> N\n    REF -.-> R\n    REG[\"Model registry\"] -.-> M\n    SCH[\"Compiled category schemas\"] -.-> ORC\n    P -->|\"ApplyEnrichment with provenance\"| LS\n    M -->|\"suggestions\"| SUG[\"Suggestion store\"]\n    SUG --> UI[\"Insertion flow and pro tools\"]\n    UI -->|\"accept, edit, reject\"| LS\n    LS -->|\"listing events\"| IDX[\"Search index and other read models\"]\n    LS -->|\"corrections and decisions\"| LAB[\"Label store\"]\n    LAB -.->|\"training and evaluation data\"| REG"
+ },
+ {
+  "post": "14-normalization-and-enrichment",
+  "figure": 3,
+  "id": "fig03-releasing-enricher-like-schema-migration-new",
+  "asset": "assets/images/14-normalization-and-enrichment/fig03-releasing-enricher-like-schema-migration-new.jpeg",
+  "mermaid": "flowchart TB\n    V[\"New enricher or reference-data version\"] --> SH[\"Shadow run on a labeled sample\"]\n    SH --> CMP[\"Compare with ground truth and the previous version\"]\n    CMP -->|\"precision below gate\"| STOP[\"Stop and fix\"]\n    CMP -->|\"passes gate\"| PLAN[\"Backfill plan: active listings first, then paused, then archive\"]\n    PLAN --> RUN[\"Rate-limited backfill writing via ApplyEnrichment\"]\n    RUN --> MON[\"Monitor value churn, disputes and downstream metrics\"]\n    MON -->|\"anomaly\"| HALT[\"Halt and roll back to previous version's values\"]\n    MON -->|\"stable\"| DONE[\"Mark version current\"]"
+ },
+ {
+  "post": "15-entity-resolution",
+  "figure": 2,
+  "id": "fig02-matching-pipeline-blocking-scoring-clustering-propose",
+  "asset": "assets/images/15-entity-resolution/fig02-matching-pipeline-blocking-scoring-clustering-propose.jpeg",
+  "mermaid": "flowchart LR\n    E[\"Listing events\"] --> N[\"Normalized listing view\"]\n    N --> B[\"Blocking: candidate keys\"]\n    B --> P[\"Pairwise scoring\"]\n    P --> C[\"Clustering\"]\n    C --> R[\"Entity registry: stable cluster IDs\"]\n    R --> X[\"Policy engine by duplicate kind\"]\n    X -->|\"abusive\"| TS[\"Trust and safety cases\"]\n    X -->|\"legitimate\"| S[\"Search and alerts read models\"]\n    X -->|\"legitimate\"| V[\"Valuation and analytics\"]\n    H[\"Human review and seller disputes\"] --> R\n    P -.->|\"gray-zone pairs\"| H\n    R -.->|\"labels\"| P"
+ },
+ {
+  "post": "15-entity-resolution",
+  "figure": 3,
+  "id": "fig03-listing-s-membership-cluster-has-own",
+  "asset": "assets/images/15-entity-resolution/fig03-listing-s-membership-cluster-has-own.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Unmatched: listing published\n    Unmatched --> Proposed: candidate link scored in gray zone\n    Unmatched --> Linked: score above auto threshold\n    Proposed --> Linked: reviewer confirms\n    Proposed --> Unmatched: reviewer rejects, pair suppressed\n    Linked --> Disputed: seller or agency disputes link\n    Disputed --> Linked: dispute rejected\n    Disputed --> Unmatched: dispute upheld, pair suppressed\n    Linked --> Detached: listing unpublished\n    Detached --> Linked: listing reactivated\n    Detached --> [*]"
+ },
+ {
+  "post": "16-publication-pipeline",
+  "figure": 1,
+  "id": "fig01-decision-path-left-ends-when-listing",
+  "asset": "assets/images/16-publication-pipeline/fig01-decision-path-left-ends-when-listing.jpeg",
+  "mermaid": "flowchart LR\n    S[\"Seller app or feed\"] --> V[\"Validation against category schema\"]\n    V --> G[\"Risk gate: allow, hold, reject\"]\n    G --> EN[\"Entitlement and fee check\"]\n    EN --> W[\"Listing write plus outbox\"]\n    W -->|\"ListingSubmitted\"| Q[\"Async risk checks and enrichment\"]\n    Q -->|\"cleared for publication\"| P[\"Listing context publishes\"]\n    G -->|\"hold\"| HR[\"Human review queue\"]\n    HR -->|\"approve\"| P\n    P -->|\"ListingPublished\"| T[\"Listing event topic\"]\n    T --> IX[\"Search indexer\"]\n    T --> AL[\"Alert matcher\"]\n    T --> SEO[\"Sitemaps and page cache\"]\n    T --> REC[\"Recommendation candidates\"]\n    T --> PF[\"Partner and ad feeds\"]\n    IX --> MON[\"Freshness monitor\"]\n    AL --> MON\n    SEO --> MON"
+ },
+ {
+  "post": "16-publication-pipeline",
+  "figure": 2,
+  "id": "fig02-why-consumers-keep-tombstones-gate-versions",
+  "asset": "assets/images/16-publication-pipeline/fig02-why-consumers-keep-tombstones-gate-versions.jpeg",
+  "mermaid": "sequenceDiagram\n    participant LC as ListingContext\n    participant TOP as EventTopic\n    participant IX as SearchIndexer\n    participant BF as BackfillJob\n    LC->>TOP: ListingPublished version 3\n    TOP->>IX: apply version 3, document created\n    LC->>TOP: ListingSold version 5\n    TOP->>IX: apply version 5, tombstone kept\n    BF->>IX: replay snapshot with version 3 active\n    IX->>IX: version 3 is lower than 5, ignored"
+ },
+ {
+  "post": "16-publication-pipeline",
+  "figure": 4,
+  "id": "fig04-four-causes-one-removal-path-sales",
+  "asset": "assets/images/16-publication-pipeline/fig04-four-causes-one-removal-path-sales.jpeg",
+  "mermaid": "flowchart TB\n    SOLD[\"Seller marks sold\"] --> LC[\"Listing context\"]\n    EXP[\"Lifecycle scheduler: expiry\"] --> LC\n    TD[\"Decision service: takedown\"] --> LC\n    FEED[\"Feed reconciler: missing from snapshot\"] --> LC\n    LC -->|\"ListingSold, ListingExpired, ListingRemoved\"| TOP[\"Listing event topic, priority lane\"]\n    TOP --> C1[\"Search index\"]\n    TOP --> C2[\"Alerts and digests\"]\n    TOP --> C3[\"Recommendations\"]\n    TOP --> C4[\"Pages, sitemaps, caches\"]\n    TOP --> C5[\"Ads and partner feeds\"]\n    C1 -->|\"ack with version\"| PM[\"Propagation monitor\"]\n    C2 -->|\"ack with version\"| PM\n    C3 -->|\"ack with version\"| PM\n    C4 -->|\"ack with version\"| PM\n    C5 -->|\"ack with version\"| PM\n    PM -->|\"overdue consumer\"| ON[\"On-call alert\"]"
+ },
+ {
+  "post": "17-professional-seller-tooling",
+  "figure": 1,
+  "id": "fig01-professional-s-lead-lifecycle-marketplace-records",
+  "asset": "assets/images/17-professional-seller-tooling/fig01-professional-s-lead-lifecycle-marketplace-records.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Received\n    Received --> Merged: same buyer and listing within window\n    Received --> Assigned: routed to branch or salesperson\n    Assigned --> Responded: first reply or call back\n    Assigned --> Unanswered: response window passed\n    Unanswered --> Responded: late reply\n    Responded --> Qualified: real buyer, real intent\n    Responded --> Disqualified: spam, wrong number, no intent\n    Qualified --> Appointment: viewing or test drive booked\n    Appointment --> Won: sale, instruction or let\n    Appointment --> Lost: no deal\n    Qualified --> Lost: no deal\n    Merged --> [*]\n    Won --> [*]\n    Lost --> [*]\n    Disqualified --> [*]"
+ },
+ {
+  "post": "17-professional-seller-tooling",
+  "figure": 2,
+  "id": "fig02-pro-workspace-composes-domain-services-one",
+  "asset": "assets/images/17-professional-seller-tooling/fig02-pro-workspace-composes-domain-services-one.jpeg",
+  "mermaid": "flowchart LR\n    WEB[\"Pro web workspace\"] --> GW[\"Pro API gateway\"]\n    APP[\"Pro mobile app\"] --> GW\n    PART[\"Partner software: DMS, CRM\"] --> GW\n    GW -->|\"org-scoped token\"| BFF[\"Pro workspace backend\"]\n    BFF --> INV[\"Listing service\"]\n    BFF --> LEAD[\"Lead ledger\"]\n    BFF --> ENT[\"Entitlements\"]\n    BFF --> ACC[\"Accounts and organizations\"]\n    BFF --> INS[\"Insights and valuation\"]\n    BFF --> STAT[\"Performance read model\"]\n    EV[\"Listing, exposure and lead events\"] --> STAT\n    EV --> LEAD\n    EV --> BILL[\"Billing and delivery records\"]\n    LEAD -->|\"webhooks and Lead API\"| PART\n    GW -.->|\"sandbox and certification\"| DEV[\"Developer portal\"]"
+ },
+ {
+  "post": "17-professional-seller-tooling",
+  "figure": 5,
+  "id": "fig05-keybridge-s-neutrality-boundary-keybridge-publishes",
+  "asset": "assets/images/17-professional-seller-tooling/fig05-keybridge-s-neutrality-boundary-keybridge-publishes.jpeg",
+  "mermaid": "flowchart LR\n    subgraph KB[\"Keybridge tenant on Azure\"]\n        CRM[\"Agency CRM records\"]\n        REP[\"Portal performance report per agency\"]\n    end\n    subgraph PORTALS[\"Portals\"]\n        HE[\"Hearthly public feed and lead APIs\"]\n        CA[\"Competing portal A APIs\"]\n        CB[\"Competing portal B APIs\"]\n    end\n    subgraph HG[\"Hearthly on Google Cloud\"]\n        RANK[\"Ranking and sales systems\"]\n    end\n    CRM -->|\"listings the agency chose to publish\"| HE\n    CRM -->|\"same listings\"| CA\n    CRM -->|\"same listings\"| CB\n    HE -->|\"leads and stats via public API\"| REP\n    CA -->|\"leads and stats\"| REP\n    CB -->|\"leads and stats\"| REP\n    REP -->|\"shown to that agency only\"| CRM\n    HE --> RANK\n    RANK -.-x|\"no access\"| CRM"
+ },
+ {
+  "post": "18-search-architecture",
+  "figure": 2,
+  "id": "fig02-search-layer-read-model-documents-are",
+  "asset": "assets/images/18-search-architecture/fig02-search-layer-read-model-documents-are.jpeg",
+  "mermaid": "flowchart LR\n    SOR[\"Listing system of record\"] -->|\"outbox events\"| ES[\"Listing event stream\"]\n    REF[\"Taxonomy, attribute and seller services\"] -->|\"reference events\"| ES\n    ES --> IDX[\"Indexer: stream processor\"]\n    RM[\"Denormalization read models\"] <-->|\"lookups\"| IDX\n    FEAT[\"Ranking features store\"] -.->|\"periodic or in-place updates\"| ENG\n    IDX -->|\"versioned upserts and deletes\"| ENG[\"Search engine cluster\"]\n    APP[\"Web, apps, SEO renderer, alerts\"] --> API[\"Search API: the contract\"]\n    API --> QU[\"Query understanding\"]\n    API -->|\"items request\"| ENG\n    API -->|\"facets request\"| FC[\"Facet cache\"]\n    FC -->|\"miss\"| ENG\n    API --> HYD[\"Result hydration and policy\"]\n    HYD -->|\"status recheck\"| SOR\n    ENG -->|\"query and indexing telemetry\"| OBS[\"Observability and freshness monitors\"]"
+ },
+ {
+  "post": "18-search-architecture",
+  "figure": 5,
+  "id": "fig05-reindex-live-stream-backfill-live-updates",
+  "asset": "assets/images/18-search-architecture/fig05-reindex-live-stream-backfill-live-updates.jpeg",
+  "mermaid": "sequenceDiagram\n    participant OP as Reindex controller\n    participant IX as Indexer\n    participant OLD as Index v7\n    participant NEW as Index v8\n    participant AL as Read alias\n    OP->>NEW: create with new mapping and shard plan\n    OP->>IX: start backfill into v8 from snapshot at sequence S\n    IX->>NEW: bulk writes with external versions\n    IX->>OLD: live updates continue\n    IX->>NEW: live updates from S onward, same versions\n    OP->>NEW: verify counts, sample documents, shadow queries\n    OP->>AL: atomic swap from v7 to v8\n    OP->>OLD: keep for rollback, then delete"
+ },
+ {
+  "post": "18-search-architecture",
+  "figure": 6,
+  "id": "fig06-veldmark-s-target-search-platform-after",
+  "asset": "assets/images/18-search-architecture/fig06-veldmark-s-target-search-platform-after.jpeg",
+  "mermaid": "flowchart TB\n    TY[\"Tradeyard web and apps\"] --> API[\"Listing Search API v1\"]\n    HE[\"Hearthly web and apps on Google Cloud\"] -->|\"cross-cloud until Hearthly moves\"| API\n    MO[\"Motorvane web and apps\"] --> API\n    API --> AOS[\"OpenSearch adapter\"]\n    API --> AES[\"Elasticsearch adapter\"]\n    AOS --> OS[\"Amazon OpenSearch Service: Tradeyard NL, BE, PL, PT and Hearthly FR, ES\"]\n    AES --> EC[\"Elastic Cloud: Motorvane DE, NL, PL, AT\"]\n    KAF[\"Listing event contract v1 on Confluent Cloud\"] --> IXF[\"Shared indexer framework\"]\n    TAX[\"Taxonomy and attribute service\"] --> IXF\n    IXF --> OS\n    IXF --> EC"
+ },
+ {
+  "post": "19-query-understanding",
+  "figure": 1,
+  "id": "fig01-query-understanding-compiler-each-step-adds",
+  "asset": "assets/images/19-query-understanding/fig01-query-understanding-compiler-each-step-adds.jpeg",
+  "mermaid": "flowchart LR\n    Q[\"Raw query, market, language, context\"] --> N[\"Normalize and analyze per language\"]\n    N --> SP[\"Spelling correction\"]\n    SP --> SY[\"Synonyms and expansions\"]\n    SY --> CAT[\"Query categorization\"]\n    SY --> TAG[\"Attribute and location tagging\"]\n    CAT --> INT[\"Interpretation builder with confidences\"]\n    TAG --> INT\n    DICT[\"Taxonomy and attribute dictionary, versioned\"] --> CAT\n    DICT --> TAG\n    INT --> CACHE[\"Interpretation cache\"]\n    INT --> RET[\"Retrieval strategies: lexical, filters, dense\"]\n    RET --> FUSE[\"Fusion and recovery\"]\n    FUSE -->|\"candidates\"| RANK[\"Ranking\"]\n    INT -->|\"chips and corrections\"| UI[\"Results page\"]"
+ },
+ {
+  "post": "19-query-understanding",
+  "figure": 2,
+  "id": "fig02-autocomplete-two-pipelines-offline-job-builds",
+  "asset": "assets/images/19-query-understanding/fig02-autocomplete-two-pipelines-offline-job-builds.jpeg",
+  "mermaid": "flowchart TB\n    LOGS[\"Query logs with outcomes\"] --> GEN[\"Candidate generation per market and language\"]\n    META[\"Category, brand and attribute vocabulary\"] --> GEN\n    INV[\"Live inventory counts\"] --> GEN\n    GEN -->|\"filter unsafe, empty and rare\"| SCORE[\"Offline scoring and normalization\"]\n    SCORE -->|\"twice weekly or daily\"| IDX[\"Suggestion index with edge n-grams\"]\n    KEY[\"Keystrokes after debounce\"] --> MATCH[\"Prefix match then fuzzy cascade\"]\n    IDX --> MATCH\n    MATCH --> LTR[\"Online re-ranking with user features\"]\n    LTR --> SUG[\"Suggestions with interpretations attached\"]"
+ },
+ {
+  "post": "19-query-understanding",
+  "figure": 4,
+  "id": "fig04-llm-compiles-engine-retrieves-validation-against",
+  "asset": "assets/images/19-query-understanding/fig04-llm-compiles-engine-retrieves-validation-against.jpeg",
+  "mermaid": "sequenceDiagram\n    participant B as Buyer\n    participant API as Search API\n    participant MOD as Moderation classifier\n    participant LLM as LLM compiler\n    participant VAL as Schema validator\n    participant ENG as Search engine\n    B->>API: long natural-language query\n    API->>MOD: classify query\n    MOD-->>API: valid\n    API->>LLM: query plus market filter schema\n    LLM-->>API: structured query as JSON\n    API->>VAL: check categories and values against dictionary\n    VAL-->>API: validated query, unknown values dropped\n    API->>ENG: execute structured query\n    ENG-->>API: results\n    API-->>B: results with compiled filters as chips"
+ },
+ {
+  "post": "20-ranking",
+  "figure": 2,
+  "id": "fig02-ranking-function-four-stages-relevance-model",
+  "asset": "assets/images/20-ranking/fig02-ranking-function-four-stages-relevance-model.jpeg",
+  "mermaid": "flowchart LR\n    Q[\"Parsed query and filters\"] --> R[\"Retrieval: lexical, filters, optional vectors\"]\n    R -->|\"thousands of candidates\"| F1[\"First phase: cheap score\"]\n    F1 -->|\"top hundreds\"| M[\"Relevance model: learning to rank\"]\n    FS[\"Feature sources: listing, seller, engagement\"] --> M\n    M -->|\"scored list\"| P[\"Ranking policy layer\"]\n    E[\"Entitlement effects: bumps, top listing, tier\"] --> P\n    T[\"Trust signals: risk, duplicates, demotions\"] --> P\n    PC[\"Policy config: versioned, reviewed\"] --> P\n    P -->|\"ordered page with reasons\"| B[\"Results page, map, carousel\"]\n    P -.->|\"served features, positions, policy version\"| L[\"Ranking log\"]\n    B -.->|\"impressions, clicks, contacts\"| L\n    L -.->|\"training data and audits\"| M"
+ },
+ {
+  "post": "20-ranking",
+  "figure": 3,
+  "id": "fig03-one-ranked-query-entitlement-effects-are",
+  "asset": "assets/images/20-ranking/fig03-one-ranked-query-entitlement-effects-are.jpeg",
+  "mermaid": "sequenceDiagram\n    participant U as Buyer app\n    participant S as Search API\n    participant E as Search engine\n    participant RK as Ranking service\n    participant EN as Entitlement read model\n    participant LG as Ranking log\n    U->>S: query stadsfiets, Rotterdam, 10 km\n    S->>E: retrieve with filters, top 500\n    E-->>S: candidates with match features\n    S->>RK: candidates, query context, user context\n    RK->>EN: entitlement effects for candidates\n    EN-->>RK: bump times, top listing, tier\n    RK->>RK: model scores, then policy version 7\n    RK-->>S: ordered page, labels, reasons\n    RK--)LG: features as served, positions, policy version\n    S-->>U: results page with paid labels\n    U--)LG: impressions, clicks, contacts"
+ },
+ {
+  "post": "21-recommendations",
+  "figure": 3,
+  "id": "fig03-recommendations-four-stages-several-cheap-candidate",
+  "asset": "assets/images/21-recommendations/fig03-recommendations-four-stages-several-cheap-candidate.jpeg",
+  "mermaid": "flowchart LR\n    A[\"Anchor: listing, user or failed query\"] --> CG[\"Candidate generation\"]\n    subgraph SRC[\"Candidate sources\"]\n        C1[\"Attribute and geo similarity\"]\n        C2[\"Embedding nearest neighbors\"]\n        C3[\"Co-view and co-contact\"]\n        C4[\"Fresh local listings\"]\n    end\n    CG --> C1\n    CG --> C2\n    CG --> C3\n    CG --> C4\n    C1 --> MF[\"Filter: availability, eligibility, consent, trust\"]\n    C2 --> MF\n    C3 --> MF\n    C4 --> MF\n    MF -->|\"hundreds of eligible candidates\"| RR[\"Re-ranker: contact probability\"]\n    RR --> PL[\"Policy: dealer caps, diversity, exploration\"]\n    PL -->|\"ten listings with reason codes\"| SV[\"Carousel, feed, e-mail\"]\n    LE[\"Listing event stream\"] -.->|\"inserts, updates, removals\"| C1\n    LE -.-> C2\n    LE -.-> MF\n    SV -.->|\"impressions, clicks, contacts\"| LOG[\"Recommendation log\"]"
+ },
+ {
+  "post": "21-recommendations",
+  "figure": 4,
+  "id": "fig04-two-defenses-against-ghost-inventory-unpublish",
+  "asset": "assets/images/21-recommendations/fig04-two-defenses-against-ghost-inventory-unpublish.jpeg",
+  "mermaid": "sequenceDiagram\n    participant DMS as Dealer DMS feed\n    participant ING as Motorvane ingestion\n    participant EV as Listing event stream\n    participant ST as Status read model\n    participant ANN as Candidate indices\n    participant REC as Recommendation service\n    participant VDP as Detail page\n    DMS->>ING: full feed without the Golf, 26 hours after sale\n    ING->>EV: ListingSold, reason removed by feed\n    EV->>ST: status inactive\n    EV->>ANN: delete from attribute and vector indices\n    VDP->>REC: similar vehicles for a Golf anchor\n    REC->>ANN: candidates\n    ANN-->>REC: candidates without the sold Golf\n    REC->>ST: check status of every candidate\n    ST-->>REC: all active\n    REC-->>VDP: ten available cars with reason codes"
+ },
+ {
+  "post": "22-map-search",
+  "figure": 1,
+  "id": "fig01-geo-query-compiler-turns-every-place",
+  "asset": "assets/images/22-map-search/fig01-geo-query-compiler-turns-every-place.jpeg",
+  "mermaid": "flowchart LR\n    C[\"Map client web and app\"] -->|\"gesture, filters\"| B[\"Map search API BFF\"]\n    B --> Q[\"Geo query compiler\"]\n    Q -->|\"place names to IDs\"| P[\"Place and boundary service\"]\n    Q -->|\"commute request\"| I[\"Isochrone service\"]\n    I -->|\"cache miss\"| R[\"Routing provider or engine\"]\n    I --> IC[\"Isochrone cache\"]\n    Q -->|\"normalized geo query\"| T[\"Tile and cluster cache\"]\n    T -->|\"cache miss\"| S[\"Search engine OpenSearch\"]\n    S -->|\"hits and grid aggregations\"| T\n    B -->|\"pins, clusters, counts\"| C\n    B -->|\"POI and neighborhood layers\"| N[\"Neighborhood data service\"]\n    E[\"Listing events\"] -->|\"unpublish, price change\"| T"
+ },
+ {
+  "post": "22-map-search",
+  "figure": 2,
+  "id": "fig02-snapping-viewport-tiles-turns-uncacheable-bounding",
+  "asset": "assets/images/22-map-search/fig02-snapping-viewport-tiles-turns-uncacheable-bounding.jpeg",
+  "mermaid": "sequenceDiagram\n    participant U as Buyer\n    participant C as MapClient\n    participant B as MapAPI\n    participant Q as Compiler\n    participant T as TileCache\n    participant S as Engine\n    U->>C: pans the map\n    C->>C: waits 250 ms for the gesture to settle\n    C->>B: viewport, zoom 14, filters\n    B->>Q: compile\n    Q->>Q: snap viewport to 6 tiles at zoom 14\n    Q->>T: get tiles with filter hash\n    T-->>Q: 4 hits, 2 misses\n    Q->>S: grid aggregation for 2 missing tiles\n    S-->>Q: cell counts and centroids\n    Q->>T: store 2 tiles\n    Q-->>B: clusters for 6 tiles\n    B-->>C: clusters, total count, side list page 1"
+ },
+ {
+  "post": "23-saved-searches-and-alerts",
+  "figure": 1,
+  "id": "fig01-saved-search-long-lived-user-data",
+  "asset": "assets/images/23-saved-searches-and-alerts/fig01-saved-search-long-lived-user-data.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Active: user saves a search\n    Active --> Paused: user pauses or unsubscribes from all channels\n    Paused --> Active: user resumes\n    Active --> Dormant: no opened alert in 12 months\n    Dormant --> Active: user reopens or confirms\n    Dormant --> Deleted: six months without reactivation\n    Active --> Migrating: taxonomy or gazetteer version changes\n    Migrating --> Active: rewritten and compared\n    Migrating --> NeedsReview: no safe automatic mapping\n    NeedsReview --> Active: user confirms new criteria\n    Active --> Deleted: user deletes or erasure request\n    Deleted --> [*]"
+ },
+ {
+  "post": "23-saved-searches-and-alerts",
+  "figure": 4,
+  "id": "fig04-saved-search-store-system-record-percolator",
+  "asset": "assets/images/23-saved-searches-and-alerts/fig04-saved-search-store-system-record-percolator.jpeg",
+  "mermaid": "flowchart LR\n    U[\"Buyer apps and web\"] -->|\"save, edit, pause\"| SS[\"Saved-search service, system of record\"]\n    SS -->|\"SavedSearchChanged\"| PI[\"Percolator indices by brand, country, category\"]\n    L[\"Listing event stream\"] -->|\"published, price changed, resumed\"| M[\"Alert matcher\"]\n    L -->|\"sold, removed, reserved, expired\"| R[\"Retraction handler\"]\n    G[\"Risk gate from trust and safety\"] -->|\"cleared for alerting\"| M\n    M -->|\"percolate with pre-filter keys\"| PI\n    M -->|\"match events keyed by user\"| O[\"Notification orchestrator\"]\n    R -->|\"cancel pending items\"| O\n    O -->|\"dedup, caps, quiet hours, consent\"| LG[\"Match ledger\"]\n    O -->|\"send-time availability check\"| LS[\"Listing read model\"]\n    O --> P[\"Push worker, APNs and FCM\"]\n    O --> E[\"E-mail and digest worker\"]\n    O --> IA[\"In-app inbox\"]\n    P -->|\"delivered, opened\"| F[\"Engagement events\"]\n    E -->|\"delivered, bounced, complained, unsubscribed\"| F\n    F --> SS\n    F --> D[\"Data platform, ranking and recommendations\"]"
+ },
+ {
+  "post": "23-saved-searches-and-alerts",
+  "figure": 5,
+  "id": "fig05-target-design-bike-s-312-matches",
+  "asset": "assets/images/23-saved-searches-and-alerts/fig05-target-design-bike-s-312-matches.jpeg",
+  "mermaid": "sequenceDiagram\n    participant L as ListingStream\n    participant G as RiskGate\n    participant M as Matcher\n    participant P as Percolator\n    participant O as Orchestrator\n    participant W as PushWorker\n    participant B as Buyer\n    L->>G: ListingPublished, city bike, 3014 Rotterdam, 240 euros\n    G->>M: risk low, alertable\n    M->>P: percolate with keys city bikes, cells, price band\n    P-->>M: 312 saved searches\n    M->>O: 312 match events keyed by user\n    O->>O: dedup 9, quiet hours 0, caps 14 to digest\n    O->>W: 289 instant pushes\n    W->>B: push within 40 seconds of searchable\n    Note over O: Monday evening the bike sells\n    L->>O: ListingSold\n    O->>O: cancel digest items for the bike\n    O->>O: 07:00 send-time check drops any remaining item"
+ },
+ {
+  "post": "24-trust-and-safety-architecture",
+  "figure": 2,
+  "id": "fig02-trust-safety-platform-components-detection-human",
+  "asset": "assets/images/24-trust-and-safety-architecture/fig02-trust-safety-platform-components-detection-human.jpeg",
+  "mermaid": "flowchart LR\n    subgraph IN[\"Intake\"]\n        EV[\"Listing, message, account and payment events\"]\n        RP[\"User reports and notices\"]\n        TF[\"Trusted flaggers and authorities\"]\n        EXT[\"Bank and partner fraud reports\"]\n    end\n    subgraph DET[\"Detection\"]\n        GATE[\"Synchronous gate\"]\n        ASYNC[\"Asynchronous detectors\"]\n        SAMP[\"Random sampling\"]\n    end\n    POL[\"Policy registry\"]\n    DEC[\"Decision service\"]\n    CASE[\"Case management and review\"]\n    ENF[\"Enforcement events\"]\n    CONS[\"Search, alerts, messaging, SEO, ads, payments\"]\n    SOR[\"Statements of reasons and notices\"]\n    APP[\"Appeals\"]\n    EVD[\"Evidence and audit store\"]\n    MET[\"Metrics and transparency reports\"]\n    EV --> GATE\n    EV --> ASYNC\n    RP --> CASE\n    TF --> CASE\n    EXT --> CASE\n    GATE -->|\"scores and rule hits\"| DEC\n    ASYNC -->|\"scores and rule hits\"| DEC\n    SAMP -->|\"sampled items\"| CASE\n    POL -.->|\"policy versions\"| GATE\n    POL -.->|\"policy versions\"| DEC\n    CASE -->|\"human decisions\"| DEC\n    DEC -->|\"decision record\"| ENF\n    ENF --> CONS\n    DEC --> SOR\n    SOR --> APP\n    APP -->|\"uphold or reverse\"| DEC\n    DEC --> EVD\n    EVD --> MET"
+ },
+ {
+  "post": "24-trust-and-safety-architecture",
+  "figure": 4,
+  "id": "fig04-enforcement-event-one-decision-fans-out",
+  "asset": "assets/images/24-trust-and-safety-architecture/fig04-enforcement-event-one-decision-fans-out.jpeg",
+  "mermaid": "sequenceDiagram\n    participant R as Reporter\n    participant C as CaseManagement\n    participant D as DecisionService\n    participant B as EventBackbone\n    participant S as Search\n    participant M as Messaging\n    participant A as Alerts\n    participant P as Payments\n    participant N as NoticeService\n    R->>C: report payment-link message, 20:19\n    C->>D: priority-lane case with rule hits\n    D->>D: decide suspend account, policy POL-FRAUD-PAYLINK v2\n    D->>B: EnforcementApplied, 20:26\n    B->>S: hide all listings of the account\n    B->>M: withhold pending messages, warn 9 counterparties\n    B->>A: drop queued alerts that reference the account\n    B->>P: hold open Safe Deal payouts\n    B->>N: statement of reasons to the account holder\n    S-->>D: acknowledged\n    M-->>D: acknowledged\n    A-->>D: acknowledged\n    P-->>D: acknowledged"
+ },
+ {
+  "post": "24-trust-and-safety-architecture",
+  "figure": 5,
+  "id": "fig05-lifecycle-case-decided-enforced-are-separate",
+  "asset": "assets/images/24-trust-and-safety-architecture/fig05-lifecycle-case-decided-enforced-are-separate.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Received: notice, detection or sample\n    Received --> Triaged: grouped and prioritized\n    Triaged --> InReview: assigned to a qualified reviewer\n    Triaged --> AutoDecided: rule or model above threshold\n    InReview --> Decided: action chosen from the ladder\n    AutoDecided --> Decided: decision record written\n    Decided --> Enforced: all consumers acknowledged\n    Enforced --> Appealed: user complaint within the window\n    Appealed --> Upheld: qualified human confirms\n    Appealed --> Reversed: qualified human reverses\n    Reversed --> Restored: EnforcementLifted acknowledged\n    Upheld --> Closed\n    Restored --> Closed\n    Enforced --> Closed: complaint window passes\n    Closed --> [*]"
+ },
+ {
+  "post": "24-trust-and-safety-architecture",
+  "figure": 7,
+  "id": "fig07-tenancy-split-adopted-common-ground-machinery",
+  "asset": "assets/images/24-trust-and-safety-architecture/fig07-tenancy-split-adopted-common-ground-machinery.jpeg",
+  "mermaid": "flowchart TB\n    subgraph SHARED[\"Group trust and safety platform\"]\n        REG[\"Policy registry with overlays\"]\n        RULES[\"Rules runtime and rule lifecycle\"]\n        DS[\"Decision service\"]\n        CM[\"Case management\"]\n        EVS[\"Evidence store, partitioned\"]\n        SR[\"Statement-of-reasons service\"]\n        BL[\"Shared hashed block lists\"]\n    end\n    subgraph TY[\"Tradeyard tenant\"]\n        TYP[\"Policy overlays NL, BE, PL, PT\"]\n        TYD[\"Payment-link and counterfeit detectors\"]\n    end\n    subgraph MV[\"Motorvane tenant\"]\n        MVP[\"Policy overlays DE, NL, PL, AT\"]\n        MVD[\"VIN reuse and deposit-scam detectors\"]\n    end\n    subgraph HL[\"Hearthly tenant\"]\n        HLP[\"Policy overlays FR, ES\"]\n        HLD[\"Fake-rental and housing-language detectors\"]\n    end\n    TYP --> REG\n    MVP --> REG\n    HLP --> REG\n    TYD -->|\"scores\"| DS\n    MVD -->|\"scores\"| DS\n    HLD -->|\"scores\"| DS\n    RULES --> DS\n    BL --> RULES\n    DS --> CM\n    DS --> EVS\n    DS --> SR"
+ },
+ {
+  "post": "25-fraud-prevention",
+  "figure": 2,
+  "id": "fig02-risk-scoring-service-real-time-path",
+  "asset": "assets/images/25-fraud-prevention/fig02-risk-scoring-service-real-time-path.jpeg",
+  "mermaid": "flowchart LR\n    subgraph CALL[\"Callers\"]\n        INS[\"Insertion and edit\"]\n        MSG[\"Message send\"]\n        LOG[\"Login and recovery\"]\n        PAY[\"Payout release\"]\n    end\n    subgraph RT[\"Real-time path\"]\n        API[\"Risk API\"]\n        FS[\"Online feature store\"]\n        RL[\"Rules\"]\n        ML[\"Models\"]\n        CMB[\"Score combiner and reasons\"]\n    end\n    subgraph NRT[\"Streaming and batch\"]\n        STR[\"Stream processors: velocity and counters\"]\n        GR[\"Identity graph\"]\n        IMG[\"Image hash and embedding index\"]\n        PRC[\"Price models\"]\n        BAT[\"Batch features and training\"]\n    end\n    EVT[\"Event backbone\"]\n    DEC[\"Decision service\"]\n    LBL[\"Label store\"]\n    INS --> API\n    MSG --> API\n    LOG --> API\n    PAY --> API\n    API --> FS\n    API --> RL\n    API --> ML\n    RL --> CMB\n    ML --> CMB\n    CMB -->|\"scores, reasons, friction\"| DEC\n    EVT --> STR\n    EVT --> GR\n    EVT --> IMG\n    STR --> FS\n    GR --> FS\n    IMG --> FS\n    PRC --> FS\n    BAT --> FS\n    DEC -->|\"outcomes\"| LBL\n    LBL --> BAT"
+ },
+ {
+  "post": "25-fraud-prevention",
+  "figure": 4,
+  "id": "fig04-7-march-2027-phishing-message-it",
+  "asset": "assets/images/25-fraud-prevention/fig04-7-march-2027-phishing-message-it.jpeg",
+  "mermaid": "sequenceDiagram\n    participant F as FakeBuyer\n    participant M as MessageService\n    participant R as RiskAPI\n    participant L as LinkIntel\n    participant D as DecisionService\n    participant S as Seller\n    F->>M: message with payment link\n    M->>R: score message, sender and link\n    R->>L: domain age and brand check\n    L-->>R: registered today, contains Safe Deal brand\n    R-->>M: risk 0.97, reason phishing link\n    M->>D: hold message, propose account restriction\n    D-->>M: withhold message, restrict sender\n    M-->>S: message withheld, safety notice shown\n    D->>D: case opened for linked accounts"
+ },
+ {
+  "post": "25-fraud-prevention",
+  "figure": 5,
+  "id": "fig05-fraud-feedback-loop-labels-arrive-several",
+  "asset": "assets/images/25-fraud-prevention/fig05-fraud-feedback-loop-labels-arrive-several.jpeg",
+  "mermaid": "flowchart LR\n    SC[\"Risk scores\"] --> DS[\"Decisions and friction\"]\n    DS --> OUT[\"Outcomes\"]\n    OUT --> RV[\"Reviewer labels\"]\n    OUT --> UR[\"User and victim reports\"]\n    OUT --> BK[\"Bank and police reports\"]\n    OUT --> AP[\"Appeal reversals\"]\n    SMP[\"Random sample\"] --> RV\n    RV --> LS[\"Label store with point-in-time features\"]\n    UR --> LS\n    BK --> LS\n    AP --> LS\n    LS --> TR[\"Training and backtests\"]\n    TR --> SH[\"Shadow mode\"]\n    SH -->|\"promote\"| SC\n    LS --> RM[\"Rule metrics\"]\n    RM -->|\"retire or tune\"| SC"
+ },
+ {
+  "post": "26-identity-and-verification",
+  "figure": 2,
+  "id": "fig02-veldmark-id-s-components-brands-authenticate",
+  "asset": "assets/images/26-identity-and-verification/fig02-veldmark-id-s-components-brands-authenticate.jpeg",
+  "mermaid": "flowchart LR\n    subgraph BRANDS[\"Brand applications\"]\n        TY[\"Tradeyard\"]\n        MV[\"Motorvane\"]\n        HL[\"Hearthly\"]\n    end\n    subgraph VID[\"Veldmark ID\"]\n        AUTH[\"Authentication service\"]\n        REC[\"Account recovery\"]\n        PROF[\"Profile service\"]\n        ORCH[\"Verification orchestrator\"]\n        CLAIM[\"Claim store\"]\n        LVL[\"Level and badge engine\"]\n        BIZ[\"Business registry\"]\n    end\n    subgraph PROV[\"External providers\"]\n        EID[\"Bank eID and EUDI wallet adapters\"]\n        DOC[\"Document and liveness vendor\"]\n        REGS[\"Trade registers and VAT checks\"]\n        PSP[\"Adyen KYC status\"]\n    end\n    TY -->|\"OIDC login, pairwise subject\"| AUTH\n    MV -->|\"OIDC login, pairwise subject\"| AUTH\n    HL -->|\"OIDC login, pairwise subject\"| AUTH\n    AUTH --> PROF\n    REC --> AUTH\n    ORCH --> EID\n    ORCH --> DOC\n    BIZ --> REGS\n    PSP -->|\"status webhook\"| CLAIM\n    ORCH -->|\"normalized result\"| CLAIM\n    BIZ -->|\"business claims\"| CLAIM\n    CLAIM --> LVL\n    LVL -->|\"level and badges\"| BRANDS\n    LVL -->|\"IdentityLevelChanged\"| FR[\"Fraud and T&S platform\"]"
+ },
+ {
+  "post": "26-identity-and-verification",
+  "figure": 3,
+  "id": "fig03-claim-s-lifecycle-every-transition-recomputes",
+  "asset": "assets/images/26-identity-and-verification/fig03-claim-s-lifecycle-every-transition-recomputes.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Requested: policy asks for a claim\n    Requested --> Pending: user starts a verification journey\n    Pending --> Valid: provider result passes\n    Pending --> Failed: provider result fails or times out\n    Failed --> Pending: retry within limits\n    Valid --> Expiring: expiry date approaches\n    Expiring --> Valid: re-verified\n    Expiring --> Expired: not re-verified in time\n    Valid --> Revoked: posture change, takeover or fraud decision\n    Valid --> Disputed: user or third party contests it\n    Disputed --> Valid: dispute rejected\n    Disputed --> Revoked: dispute upheld\n    Revoked --> [*]\n    Expired --> [*]"
+ },
+ {
+  "post": "27-marketplace-regulation",
+  "figure": 2,
+  "id": "fig02-one-decision-two-statements-user-receives",
+  "asset": "assets/images/27-marketplace-regulation/fig02-one-decision-two-statements-user-receives.jpeg",
+  "mermaid": "sequenceDiagram\n    participant DS as DecisionService\n    participant SR as SoRService\n    participant PR as PolicyRegistry\n    participant NS as NoticeService\n    participant PS as PIIStripper\n    participant BQ as BatchQueue\n    participant TDB as TransparencyDatabase\n    participant ES as EvidenceStore\n    DS->>SR: DecisionRecorded with decision_id and action\n    SR->>PR: ground text for policy and version in user language\n    PR-->>SR: ground and redress text\n    SR->>NS: statement to the account holder by e-mail and in-app\n    SR->>ES: store full statement with personal data\n    SR->>PS: statement for the database\n    PS-->>SR: personal data removed, check passed\n    SR->>BQ: enqueue keyed by decision_id\n    BQ->>TDB: batch of up to 100 statements\n    TDB-->>BQ: accepted or rejected batch\n    BQ->>TDB: on retry check existing puid first\n    BQ->>ES: record submission id and time"
+ },
+ {
+  "post": "27-marketplace-regulation",
+  "figure": 4,
+  "id": "fig04-veldmark-s-dac7-pipeline-payment-ledger",
+  "asset": "assets/images/27-marketplace-regulation/fig04-veldmark-s-dac7-pipeline-payment-ledger.jpeg",
+  "mermaid": "flowchart LR\n    LED[\"Safe Deal ledger\"] -->|\"payouts per seller\"| AGG[\"Quarterly aggregation per seller and country\"]\n    AGG --> THR[\"Excluded-seller test, 30 sales and 2,000 euro\"]\n    THR -->|\"reportable or approaching\"| DD[\"Due diligence requests\"]\n    DD --> TP[\"Seller tax profile\"]\n    VID[\"Veldmark ID claims\"] -->|\"verified name and address\"| TP\n    PSP[\"Adyen KYC and payout account\"] -->|\"financial account identifier\"| TP\n    TP --> VAL[\"TIN format and VAT validation\"]\n    VAL --> REP[\"Annual report in the standard format\"]\n    REP -->|\"by 31 January\"| TAX[\"Dutch tax administration\"]\n    REP --> SELL[\"Copy of reported data to each seller\"]\n    TP --> EVD[\"Evidence and retention per national rules\"]"
+ },
+ {
+  "post": "27-marketplace-regulation",
+  "figure": 5,
+  "id": "fig05-compliance-design-each-obligation-register-points",
+  "asset": "assets/images/27-marketplace-regulation/fig05-compliance-design-each-obligation-register-points.jpeg",
+  "mermaid": "flowchart TB\n    LAW[\"Legal sources and guidance\"] --> OR[\"Obligation register\"]\n    OR -->|\"requirement\"| CTRL[\"Controls in shared components\"]\n    subgraph COMP[\"Compliance-by-design components\"]\n        DR[\"Decision record and evidence store\"]\n        TR[\"Trader and business registry\"]\n        DSUR[\"Disclosure surfaces\"]\n        RV[\"Regulatory reporting views\"]\n    end\n    CTRL --> DR\n    CTRL --> TR\n    CTRL --> DSUR\n    CFG[\"Country and brand configuration\"] --> COMP\n    DR --> RV\n    TR --> RV\n    LEDGER[\"Payment ledger\"] --> RV\n    RV -->|\"reports and submissions\"| AUTH[\"Regulators and tax authorities\"]\n    OR -->|\"evidence query\"| RV\n    RV -->|\"control test results\"| OR"
+ },
+ {
+  "post": "28-messaging-and-leads",
+  "figure": 2,
+  "id": "fig02-contact-path-veldmark-contact-policy-decides",
+  "asset": "assets/images/28-messaging-and-leads/fig02-contact-path-veldmark-contact-policy-decides.jpeg",
+  "mermaid": "flowchart LR\n    UI[\"Listing page and apps\"] -->|\"contact intent\"| CP[\"Contact policy service\"]\n    CP -->|\"allowed channel\"| CS[\"Conversation service\"]\n    CP -->|\"allowed channel\"| TEL[\"Call tracking and masked numbers\"]\n    CP -->|\"allowed channel\"| BK[\"Booking service\"]\n    CS -->|\"message to check\"| GATE[\"Message safety gate\"]\n    GATE -->|\"verdict\"| CS\n    CS -->|\"deliver\"| RT[\"Real-time gateway and push\"]\n    CS -->|\"MessageSubmitted events\"| BUS[\"Event backbone\"]\n    BUS --> TS[\"T and S asynchronous detectors\"]\n    TS -->|\"withdraw or warn\"| CS\n    BUS --> LS[\"Lead service\"]\n    TEL -->|\"CallCompleted\"| LS\n    BK -->|\"BookingConfirmed\"| LS\n    LS -->|\"LeadCreated\"| LR[\"Lead routing and delivery\"]\n    LR -->|\"webhook, API, e-mail, file\"| CRM[\"Dealer and agency CRMs\"]\n    CRM -->|\"status and outcome\"| LR\n    LR -->|\"LeadDelivered, LeadOutcomeReported\"| BUS\n    BUS --> DP[\"Data platform and ROI reporting\"]"
+ },
+ {
+  "post": "28-messaging-and-leads",
+  "figure": 3,
+  "id": "fig03-message-s-life-safety-gate-delivery",
+  "asset": "assets/images/28-messaging-and-leads/fig03-message-s-life-safety-gate-delivery.jpeg",
+  "mermaid": "sequenceDiagram\n    participant B as BuyerApp\n    participant C as Conversations\n    participant G as SafetyGate\n    participant S as SellerDevice\n    participant T as TSDetectors\n    B->>C: send message with idempotency key\n    C->>C: store as pending\n    C->>G: check message, budget 150 ms\n    G-->>C: verdict deliver, warn, withhold or block\n    alt deliver or warn\n        C->>S: push message, with warning banner if warn\n    else withhold\n        C->>B: shown as sent, held for review\n    end\n    C-)T: MessageSubmitted event\n    T-)C: later verdict, withdraw and warn recipient\n    C->>S: replace message with safety notice"
+ },
+ {
+  "post": "28-messaging-and-leads",
+  "figure": 4,
+  "id": "fig04-lead-lifecycle-veldmark-adopted-portal-controls",
+  "asset": "assets/images/28-messaging-and-leads/fig04-lead-lifecycle-veldmark-adopted-portal-controls.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Created: contact matches a lead rule\n    Created --> Merged: duplicate of an open lead\n    Created --> Delivered: recipient system accepted it\n    Created --> Undeliverable: no valid route or channel failing\n    Undeliverable --> Delivered: retried or rerouted\n    Delivered --> Acknowledged: CRM confirms receipt\n    Acknowledged --> Responded: professional replied or called back\n    Responded --> Qualified: professional marks it genuine\n    Responded --> Disqualified: spam, duplicate or out of area\n    Qualified --> Won: sale, mandate or lease reported\n    Qualified --> Lost: buyer bought elsewhere or stopped\n    Disqualified --> Disputed: professional asks for a credit\n    Disputed --> Credited: dispute accepted\n    Disputed --> Upheld: dispute rejected\n    Merged --> [*]\n    Won --> [*]\n    Lost --> [*]"
+ },
+ {
+  "post": "29-transactions-and-payments",
+  "figure": 2,
+  "id": "fig02-transaction-platform-beside-listing-core-order",
+  "asset": "assets/images/29-transactions-and-payments/fig02-transaction-platform-beside-listing-core-order.jpeg",
+  "mermaid": "flowchart LR\n    CHAT[\"Conversation: offer accepted\"] -->|\"create order\"| ORD[\"Order context\"]\n    LST[\"Listing context\"] -->|\"availability check\"| ORD\n    ORD -->|\"reserve and sold\"| LST\n    ORD -->|\"quote fees\"| FEE[\"Fees and pricing\"]\n    ORD -->|\"payment session\"| PAY[\"Payment edge\"]\n    PAY -->|\"sessions, refunds, payouts\"| PSP[\"Licensed PSP marketplace product\"]\n    PSP -->|\"webhooks and settlement reports\"| PAY\n    ORD -->|\"buy label\"| SHP[\"Shipping\"]\n    SHP -->|\"labels and tracking\"| CAR[\"Carriers and PUDO networks\"]\n    CAR -->|\"tracking events\"| SHP\n    SHP -->|\"delivered or returned\"| ORD\n    ORD -->|\"dispute window\"| BP[\"Buyer protection and disputes\"]\n    BP -->|\"refund decision\"| PAY\n    RISK[\"Risk scoring\"] -->|\"hold or release\"| ORD\n    ORD -->|\"order events\"| LED[\"Transaction ledger\"]\n    PAY -->|\"money events\"| LED\n    LED -->|\"journals\"| FIN[\"Group finance\"]\n    LED -->|\"per-seller aggregates\"| TAX[\"DAC7 reporting\"]"
+ },
+ {
+  "post": "29-transactions-and-payments",
+  "figure": 3,
+  "id": "fig03-protected-payment-order-goods-every-waiting",
+  "asset": "assets/images/29-transactions-and-payments/fig03-protected-payment-order-goods-every-waiting.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Placed: buyer commits to offer\n    Placed --> Paid: payment captured, listing reserved\n    Placed --> Cancelled: payment fails or times out\n    Paid --> AwaitingHandIn: shipping chosen, label issued\n    Paid --> AwaitingPickup: pay at pickup chosen\n    AwaitingHandIn --> InTransit: carrier scan\n    AwaitingHandIn --> Cancelled: not handed in before deadline, refund\n    InTransit --> Delivered: delivery or PUDO scan\n    InTransit --> Returned: parcel returned to seller, refund\n    AwaitingPickup --> Completed: handover code entered\n    AwaitingPickup --> Cancelled: no handover before expiry, refund\n    Delivered --> Completed: buyer confirms or window passes\n    Delivered --> Disputed: buyer opens dispute in window\n    Disputed --> Completed: resolved for seller\n    Disputed --> Refunded: resolved for buyer\n    Completed --> Chargeback: card issuer dispute\n    Refunded --> [*]\n    Cancelled --> [*]\n    Returned --> [*]\n    Completed --> [*]"
+ },
+ {
+  "post": "30-monetization-models",
+  "figure": 1,
+  "id": "fig01-each-model-charges-different-point-funnel",
+  "asset": "assets/images/30-monetization-models/fig01-each-model-charges-different-point-funnel.jpeg",
+  "mermaid": "flowchart LR\n    S[\"Seller decides to list\"] --> L[\"Listing published\"]\n    L --> V[\"Listing seen in search\"]\n    V --> C[\"Buyer contacts seller\"]\n    C --> Q[\"Qualified lead\"]\n    Q --> T[\"Payment and delivery\"]\n    T --> D[\"Deal closed\"]\n    M1[\"Insertion fee\"] -.-> L\n    M2[\"VAS and depth tiers\"] -.-> V\n    M3[\"Pro subscription and slots\"] -.-> L\n    M4[\"Pay per lead or share of voice\"] -.-> Q\n    M5[\"Take rate and buyer fee\"] -.-> T\n    M6[\"Pay at close\"] -.-> D\n    M7[\"Advertising\"] -.-> V"
+ },
+ {
+  "post": "30-monetization-models",
+  "figure": 2,
+  "id": "fig02-reference-monetization-architecture-catalog-pricing-entitlement",
+  "asset": "assets/images/30-monetization-models/fig02-reference-monetization-architecture-catalog-pricing-entitlement.jpeg",
+  "mermaid": "flowchart TB\n    subgraph Commercial[\"Commercial core, shared across models\"]\n        CAT[\"Product catalog\"]\n        PR[\"Pricing engine\"]\n        ENT[\"Entitlement and quota service\"]\n        BIL[\"Billing and invoicing\"]\n    end\n    subgraph Delivery[\"Where value is delivered\"]\n        INS[\"Insertion flow and feeds\"]\n        RANK[\"Search ranking and rendering\"]\n        LEAD[\"Lead routing and attribution\"]\n        PAY[\"Checkout, payments ledger, payouts\"]\n        ADS[\"Ad server and consent\"]\n    end\n    CAT --> PR\n    PR --> ENT\n    ENT -->|\"may I publish\"| INS\n    ENT -->|\"boost weight and paid label\"| RANK\n    ENT -->|\"lead allowance and caps\"| LEAD\n    INS -->|\"listings published\"| MET[\"Delivery metering\"]\n    RANK -->|\"impressions and positions\"| MET\n    LEAD -->|\"billable leads\"| MET\n    PAY -->|\"fees and payouts\"| FIN[\"Finance ledger\"]\n    ADS -->|\"delivered impressions\"| MET\n    MET --> BIL\n    BIL --> FIN\n    MET --> ROI[\"ROI reporting to professionals\"]"
+ },
+ {
+  "post": "30-monetization-models",
+  "figure": 4,
+  "id": "fig04-monetization-liquidity-loop-revenue-funds-investment",
+  "asset": "assets/images/30-monetization-models/fig04-monetization-liquidity-loop-revenue-funds-investment.jpeg",
+  "mermaid": "flowchart LR\n    LIQ[\"Organic liquidity: fresh supply, relevant results, real contacts\"] -->|\"creates\"| VAL[\"Value per paid product\"]\n    VAL -->|\"lets the portal charge\"| REV[\"Monetization revenue\"]\n    REV -->|\"funds\"| INV[\"Investment in supply, search, trust\"]\n    INV -->|\"raises\"| LIQ\n    REV -.->|\"too many paid positions\"| REL[\"Lower relevance\"]\n    REV -.->|\"fees on marginal supply\"| DEP[\"Thinner supply\"]\n    REL -.->|\"erodes\"| LIQ\n    DEP -.->|\"erodes\"| LIQ"
+ },
+ {
+  "post": "31-products-and-entitlements",
+  "figure": 2,
+  "id": "fig02-commercial-core-five-stages-catalog-price",
+  "asset": "assets/images/31-products-and-entitlements/fig02-commercial-core-five-stages-catalog-price.jpeg",
+  "mermaid": "flowchart LR\n    subgraph Define[\"Define\"]\n        CAT[\"Product catalog: products, packages, effects, versions\"]\n        PRL[\"Price lists and contracts\"]\n    end\n    subgraph Sell[\"Sell\"]\n        PE[\"Pricing engine\"]\n        CO[\"Consumer checkout, prepaid\"]\n        CT[\"Contracts and subscriptions, postpaid\"]\n    end\n    subgraph Hold[\"Hold\"]\n        EL[\"Entitlement ledger\"]\n        EP[\"Effect projector\"]\n    end\n    subgraph Deliver[\"Deliver\"]\n        INS[\"Insertion and feed import\"]\n        RANK[\"Ranking and rendering\"]\n        LEAD[\"Lead routing\"]\n    end\n    subgraph Settle[\"Settle\"]\n        MET[\"Metering and delivery evidence\"]\n        BIL[\"Billing and invoicing\"]\n        FIN[\"Finance ledger\"]\n    end\n    CAT --> PE\n    PRL --> PE\n    PE -->|\"quote with versions\"| CO\n    PE -->|\"quote with versions\"| CT\n    CO -->|\"OrderPaid\"| EL\n    CT -->|\"ContractActivated or Changed\"| EL\n    EL -->|\"EntitlementGranted, Consumed, Expired\"| EP\n    EP -->|\"effects on listing read model and search index\"| RANK\n    EP -->|\"slot and quota effects\"| INS\n    EP -->|\"lead allowance effects\"| LEAD\n    INS -->|\"SlotConsumed, PublishRefused\"| MET\n    RANK -->|\"PaidImpression\"| MET\n    LEAD -->|\"LeadDelivered\"| MET\n    MET --> EL\n    MET --> BIL\n    BIL --> FIN"
+ },
+ {
+  "post": "31-products-and-entitlements",
+  "figure": 4,
+  "id": "fig04-lifecycle-entitlement-every-transition-ledger-entry",
+  "asset": "assets/images/31-products-and-entitlements/fig04-lifecycle-entitlement-every-transition-ledger-entry.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Granted: order paid or contract period starts\n    Granted --> Active: validity window opens\n    Active --> Suspended: moderation hold or unpaid invoice\n    Suspended --> Active: hold cleared or invoice paid\n    Active --> Exhausted: quota fully consumed\n    Exhausted --> Active: release or top-up grant\n    Active --> Expired: window ends\n    Exhausted --> Expired: window ends\n    Active --> Revoked: listing removed, cancellation or refund\n    Suspended --> Revoked: removal confirmed\n    Expired --> [*]\n    Revoked --> [*]"
+ },
+ {
+  "post": "31-products-and-entitlements",
+  "figure": 5,
+  "id": "fig05-top-listing-quote-make-good-quote",
+  "asset": "assets/images/31-products-and-entitlements/fig05-top-listing-quote-make-good-quote.jpeg",
+  "mermaid": "sequenceDiagram\n    participant S as Seller\n    participant PE as Pricing engine\n    participant CO as Checkout\n    participant EL as Entitlement ledger\n    participant EP as Effect projector\n    participant RK as Ranking\n    participant RC as Delivery reconciliation\n    S->>PE: quote Top listing 7 days for listing 5531\n    PE-->>S: price with catalog, price-list and promotion versions\n    S->>CO: pay\n    CO->>EL: OrderPaid with idempotency key\n    EL->>EP: EntitlementGranted\n    EP->>RK: paid fields on the listing document\n    RK->>RC: PaidImpression events with positions and queries\n    RC->>EL: delivery shortfall found\n    EL->>EP: Adjust entry adds two days\n    EP->>RK: extended top window"
+ },
+ {
+  "post": "32-advertising-platforms",
+  "figure": 1,
+  "id": "fig01-veldmark-s-ad-stack-display-native",
+  "asset": "assets/images/32-advertising-platforms/fig01-veldmark-s-ad-stack-display-native.jpeg",
+  "mermaid": "flowchart TB\n    subgraph PAGE[\"Marketplace page or app screen\"]\n        CMP[\"Consent management platform\"]\n        SLOTS[\"Ad slots and native positions\"]\n        RES[\"Search results\"]\n    end\n    POL[\"Ad policy service\"] -->|\"ad load, exclusions, labels\"| SLOTS\n    POL -->|\"floors, caps, labels\"| SP\n    CMP -->|\"TC string\"| HB[\"Header bidding: Prebid client and server\"]\n    CMP -->|\"consent state\"| AUD[\"First-party audience service\"]\n    HB -->|\"bid requests\"| SSP[\"Supply-side platforms\"]\n    SSP -->|\"bids\"| HB\n    HB -->|\"winning bids as key-values\"| AS[\"Ad server\"]\n    AUD -->|\"segment keys\"| AS\n    AS -->|\"creative\"| SLOTS\n    RES --> SP[\"Sponsored listing auction inside ranking\"]\n    CAMP[\"Campaign and budget service\"] --> SP\n    AUD -->|\"audience deals\"| RM[\"Retail media campaigns\"]\n    RM --> AS\n    SLOTS -->|\"impressions, viewability\"| MEAS[\"Measurement and billing\"]\n    SP -->|\"impressions, clicks\"| MEAS\n    MEAS -->|\"contacts as guardrail\"| DP[\"Data platform\"]"
+ },
+ {
+  "post": "32-advertising-platforms",
+  "figure": 2,
+  "id": "fig02-one-display-impression-timeout-bounds-bid",
+  "asset": "assets/images/32-advertising-platforms/fig02-one-display-impression-timeout-bounds-bid.jpeg",
+  "mermaid": "sequenceDiagram\n    participant U as Browser\n    participant C as CMP\n    participant P as PrebidClient\n    participant S as SSPs\n    participant A as AdServer\n    U->>C: page load, read stored consent\n    C-->>U: TC string for this user\n    U->>P: request bids for visible slots\n    P->>S: bid requests with TC string\n    S-->>P: bids that arrive within the timeout\n    P->>A: slot request with bids as key-values\n    A-->>U: winning creative or house ad\n    U->>A: impression and viewability events"
+ },
+ {
+  "post": "32-advertising-platforms",
+  "figure": 3,
+  "id": "fig03-sponsored-listings-veldmark-campaigns-budgets-live",
+  "asset": "assets/images/32-advertising-platforms/fig03-sponsored-listings-veldmark-campaigns-budgets-live.jpeg",
+  "mermaid": "flowchart LR\n    SEL[\"Seller self-serve or sales tool\"] -->|\"campaign, bid, budget\"| CB[\"Campaign and budget service\"]\n    CB -->|\"eligible listings, bids, pacing\"| RM[\"Ranking read model\"]\n    Q[\"Buyer query\"] --> RET[\"Retrieval\"]\n    RET --> RK[\"Ranking with relevance floor\"]\n    RM --> RK\n    RK -->|\"organic plus paid within slot cap\"| PRES[\"Result page with Sponsored label\"]\n    PRES -->|\"impressions and clicks\"| EV[\"Ad events\"]\n    EV -->|\"invalid traffic filter\"| BILL[\"Billing per click\"]\n    EV --> ATT[\"Attribution to contacts\"]\n    BILL --> CB"
+ },
+ {
+  "post": "33-event-driven-listings",
+  "figure": 2,
+  "id": "fig02-one-producer-one-contract-many-consumers",
+  "asset": "assets/images/33-event-driven-listings/fig02-one-producer-one-contract-many-consumers.jpeg",
+  "mermaid": "flowchart LR\n    subgraph Producer[\"Listing context, the system of record\"]\n        W[\"Write path: insertion, edit, feed upsert, enforcement\"] --> DB[\"Listing database\"]\n        W --> OB[\"Outbox table, same transaction\"]\n    end\n    OB -->|\"CDC relay reads the outbox\"| EV[\"listing.events.v1, keyed by listing ID\"]\n    EV -->|\"compaction job keeps latest\"| ST[\"listing.state.v1, compacted\"]\n    SR[\"Schema registry\"] -.->|\"compatibility check\"| EV\n    EV --> S[\"Search indexer\"]\n    EV --> A[\"Alert matcher\"]\n    EV --> T[\"Trust and safety scoring\"]\n    EV --> M[\"Sitemap and SEO pages\"]\n    EV --> P[\"Partner syndication\"]\n    EV --> DW[\"Warehouse loader\"]\n    ST -->|\"bootstrap and rebuild\"| S\n    ST -->|\"bootstrap\"| N[\"New consumer\"]"
+ },
+ {
+  "post": "33-event-driven-listings",
+  "figure": 3,
+  "id": "fig03-bike-s-sale-single-event-three",
+  "asset": "assets/images/33-event-driven-listings/fig03-bike-s-sale-single-event-three.jpeg",
+  "mermaid": "sequenceDiagram\n    participant Seller as Femke\n    participant LC as Tradeyard listing context\n    participant Relay as Yardstick Relay\n    participant Topic as listing.events.v1\n    participant Search as Search indexer\n    participant Alerts as Alert matcher and digest\n    participant Seo as SEO page service\n    Seller->>LC: marks bike sold, Monday 18:10\n    LC->>LC: commit status sold, version 9\n    LC-->>Relay: binlog row change\n    Relay->>Topic: ListingSold, version 9\n    Topic->>Search: delete from index\n    Topic->>Alerts: drop from pending digests\n    Topic->>Seo: page shows sold, related bikes\n    Alerts->>Alerts: Tuesday 07:00 re-check state before send"
+ },
+ {
+  "post": "34-listing-data-management",
+  "figure": 2,
+  "id": "fig02-one-listing-many-copies-each-promise",
+  "asset": "assets/images/34-listing-data-management/fig02-one-listing-many-copies-each-promise.jpeg",
+  "mermaid": "flowchart LR\n    SOR[\"Listing system of record\"] -->|\"listing events\"| BUS[\"Event backbone\"]\n    BUS -->|\"90 s add, 30 s remove\"| IDX[\"Search index\"]\n    BUS -->|\"5 s\"| KV[\"Detail-page cache\"]\n    BUS -->|\"purge by listing ID\"| CDN[\"CDN and page cache\"]\n    BUS -->|\"re-check at send\"| ALR[\"Alert store\"]\n    BUS -->|\"hourly\"| DW[\"Warehouse\"]\n    BUS -->|\"on enforcement\"| EVD[\"Evidence store\"]\n    BUS -->|\"contract\"| EXT[\"Partner and provider copies\"]\n    SELLER[\"Seller tools\"] -->|\"read your writes\"| SOR\n    REG[\"Consumer registry\"] -.->|\"owner, budget, rebuild, retention\"| IDX\n    REG -.-> DW\n    REG -.-> EVD\n    REG -.-> EXT"
+ },
+ {
+  "post": "34-listing-data-management",
+  "figure": 4,
+  "id": "fig04-record-s-data-lifecycle-runs-after",
+  "asset": "assets/images/34-listing-data-management/fig04-record-s-data-lifecycle-runs-after.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Active: published\n    Active --> Closed: sold, expired or removed\n    Closed --> Active: relisted within retention\n    Closed --> Archived: active set purged, archive keeps reduced fields\n    Archived --> Anonymized: retention ends, seller identity removed\n    Closed --> Erased: erasure request\n    Archived --> Erased: erasure request\n    Erased --> Anonymized: non-personal history kept\n    Anonymized --> [*]\n    Closed --> Held: legal or T&S hold\n    Held --> Archived: hold released"
+ },
+ {
+  "post": "34-listing-data-management",
+  "figure": 5,
+  "id": "fig05-erasure-workflow-receipts-systems-record-act",
+  "asset": "assets/images/34-listing-data-management/fig05-erasure-workflow-receipts-systems-record-act.jpeg",
+  "mermaid": "sequenceDiagram\n    participant DPO as Privacy request service\n    participant Acc as Account context\n    participant LC as Listing context\n    participant Bus as Event backbone\n    participant Copy as Copy owners\n    participant Led as Erasure ledger\n    DPO->>Acc: open erasure case, deadline one month\n    Acc->>LC: listings owned by the subject\n    LC->>LC: purge personal fields, version 10\n    LC->>Bus: ListingErased per listing\n    Acc->>Bus: SubjectErased for account data\n    Bus->>Copy: search, cache, CDN, media, warehouse, alerts\n    Copy->>Led: outcome per copy\n    Led->>DPO: all copies answered, response drafted"
+ },
+ {
+  "post": "35-web-and-seo-architecture",
+  "figure": 2,
+  "id": "fig02-customer-facing-stack-pages-apps-reach",
+  "asset": "assets/images/35-web-and-seo-architecture/fig02-customer-facing-stack-pages-apps-reach.jpeg",
+  "mermaid": "flowchart LR\n    U[\"Browsers and apps\"] --> E[\"Edge and CDN: routing, caching, bot rules\"]\n    C[\"Search engine crawlers\"] --> E\n    E --> P1[\"Landing and search pages\"]\n    E --> P2[\"Listing detail pages\"]\n    E --> P3[\"Insertion and account pages\"]\n    U -->|\"app API calls\"| MB[\"Mobile BFF\"]\n    P1 --> WB[\"Web BFF\"]\n    P2 --> WB\n    P3 --> WB\n    WB --> D[\"Domain APIs: search, listing, seller, media, ads, entitlements\"]\n    MB --> D\n    P1 --> S1[\"URL and canonical service\"]\n    P2 --> S1\n    S1 --> S2[\"Landing page registry\"]\n    S1 --> S3[\"Redirect registry\"]\n    EV[\"Listing event stream\"] --> S4[\"Sitemap and notification service\"]\n    EV --> S5[\"Edge purge on change\"]\n    S5 --> E\n    S4 -->|\"sitemaps and change pings\"| C"
+ },
+ {
+  "post": "35-web-and-seo-architecture",
+  "figure": 3,
+  "id": "fig03-landing-page-managed-object-states-indexable",
+  "asset": "assets/images/35-web-and-seo-architecture/fig03-landing-page-managed-object-states-indexable.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Candidate: demand signal detected\n    Candidate --> Indexable: demand, supply and distinctness rules pass\n    Candidate --> Rejected: fails a rule\n    Indexable --> Thin: supply below threshold for N days\n    Thin --> Indexable: supply recovers\n    Thin --> Gone: empty for a sustained period\n    Indexable --> Redirected: taxonomy or location change\n    Thin --> Redirected: taxonomy or location change\n    Redirected --> [*]\n    Gone --> [*]\n    Rejected --> [*]"
+ },
+ {
+  "post": "35-web-and-seo-architecture",
+  "figure": 4,
+  "id": "fig04-sitemaps-removal-signals-driven-listing-events",
+  "asset": "assets/images/35-web-and-seo-architecture/fig04-sitemaps-removal-signals-driven-listing-events.jpeg",
+  "mermaid": "sequenceDiagram\n    participant L as Listing service\n    participant K as Listing event stream\n    participant S as Sitemap service\n    participant R as Redirect registry\n    participant E as Edge cache\n    participant G as Search engines\n    L->>K: ListingPublished\n    K->>S: add URL to current shard with lastmod\n    S->>G: sitemap index updated, change ping where supported\n    L->>K: ListingSold\n    K->>E: purge listing page by listing ID\n    K->>S: remove URL from shard\n    K->>R: record grace period then gone status\n    G->>E: recrawl listing URL\n    E-->>G: noindex during grace, then 410"
+ },
+ {
+  "post": "36-data-platform",
+  "figure": 2,
+  "id": "fig02-reference-data-platform-listing-marketplace-every",
+  "asset": "assets/images/36-data-platform/fig02-reference-data-platform-listing-marketplace-every.jpeg",
+  "mermaid": "flowchart LR\n    subgraph Sources\n        DE[\"Domain events via outbox\"]\n        CDC[\"CDC from legacy databases\"]\n        CL[\"Web and app tracking SDK\"]\n        SV[\"Server-side tracking\"]\n        EXT[\"Partner and vendor data\"]\n    end\n    DE --> GATE[\"Contract gate and quarantine\"]\n    CDC --> GATE\n    CL --> COL[\"Event collector\"] --> GATE\n    SV --> GATE\n    EXT --> GATE\n    GATE --> RAW[\"Source-aligned data products\"]\n    GATE --> PII[\"Personal data store\"]\n    RAW --> DOM[\"Domain entities: listing, seller, buyer, contact\"]\n    PII -.->|\"joined only under policy\"| DOM\n    DOM --> MET[\"Governed metrics layer\"]\n    DOM --> CONS[\"Consumer-aligned data products\"]\n    MET --> BI[\"Dashboards and board pack\"]\n    MET --> EXP[\"Experimentation analysis\"]\n    CONS --> ML[\"ML training and features\"]\n    CONS --> PRO[\"Pro insights and ROI API\"]\n    CONS --> REG[\"Regulatory reporting\"]\n    POL[\"Catalog, lineage and access policy\"] -.-> RAW\n    POL -.-> DOM\n    POL -.-> CONS"
+ },
+ {
+  "post": "36-data-platform",
+  "figure": 3,
+  "id": "fig03-anatomy-data-product-domain-that-owns",
+  "asset": "assets/images/36-data-platform/fig03-anatomy-data-product-domain-that-owns.jpeg",
+  "mermaid": "flowchart TB\n    subgraph Product[\"Data product: qualified contacts, owned by Messaging and Leads\"]\n        IN[\"Inputs: contact_delivered events, lead records, fraud actions\"]\n        TR[\"Transformation code in the domain repository\"]\n        OUT[\"Outputs: contact fact table, daily aggregates by tenant and category\"]\n        CT[\"Contract: schema version, semantics, PII fields, retention\"]\n        SLO[\"Service levels: complete by 06:00 CET, restatement within 72 hours\"]\n        AC[\"Access policy: purposes allowed, tenants visible\"]\n    end\n    IN --> TR --> OUT\n    CT -.-> OUT\n    SLO -.-> OUT\n    AC -.-> OUT\n    OUT --> M1[\"Metric: qualified contacts per live listing\"]\n    OUT --> M2[\"Pro report: leads per listing for dealers\"]\n    OUT --> M3[\"Experiment outcome metric\"]"
+ },
+ {
+  "post": "36-data-platform",
+  "figure": 5,
+  "id": "fig05-how-qualified-contact-computed-server-side",
+  "asset": "assets/images/36-data-platform/fig05-how-qualified-contact-computed-server-side.jpeg",
+  "mermaid": "sequenceDiagram\n    participant B as Buyer app\n    participant M as Messaging service\n    participant K as Event backbone\n    participant P as Contacts data product\n    participant T as Trust and safety\n    participant X as Metrics layer\n    B->>M: send first message on listing\n    M->>K: ContactDelivered with buyer, listing, channel\n    B->>K: contact_initiated tracking event, consent state\n    K->>P: both events, joined on contact attempt\n    P->>X: provisional qualified contact, day D\n    T->>K: AccountActioned for fraud, within 72 hours\n    K->>P: restate contacts from actioned account\n    P->>X: final qualified contacts for day D at D plus 3"
+ },
+ {
+  "post": "37-experimentation",
+  "figure": 2,
+  "id": "fig02-four-contracts-experimentation-platform-registry-fixes",
+  "asset": "assets/images/37-experimentation/fig02-four-contracts-experimentation-platform-registry-fixes.jpeg",
+  "mermaid": "flowchart LR\n    REG[\"Experiment registry: hypothesis, unit, metrics, owner\"] --> ASG[\"Assignment service\"]\n    ASG -->|\"variant per unit\"| FLAG[\"Feature flags and config in services\"]\n    FLAG --> SURF[\"Product surfaces: search, insertion, checkout, pricing\"]\n    SURF -->|\"experiment_exposure event\"| EXP[\"Exposure log\"]\n    SURF -->|\"tracking and domain events\"| DP[\"Data platform\"]\n    DP --> MET[\"Governed metrics layer\"]\n    EXP --> ENG[\"Analysis engine\"]\n    MET --> ENG\n    ENG -->|\"SRM check, variance reduction, sequential tests\"| RES[\"Results and guardrails\"]\n    RES --> DEC[\"Decision record in registry\"]\n    RES -->|\"near real time guardrail alerts\"| ASG"
+ },
+ {
+  "post": "37-experimentation",
+  "figure": 3,
+  "id": "fig03-how-bump-test-misled-under-seller",
+  "asset": "assets/images/37-experimentation/fig03-how-bump-test-misled-under-seller.jpeg",
+  "mermaid": "flowchart TB\n    subgraph Test[\"During a seller-randomized bump test\"]\n        T1[\"Treatment sellers bump more\"] -->|\"take first-page time\"| C1[\"Control sellers' bumps slide down faster\"]\n        C1 --> D1[\"Measured gap: treatment looks much better\"]\n    end\n    subgraph Rollout[\"After rollout to all sellers\"]\n        A1[\"Everyone bumps more\"] --> A2[\"Each bump holds the top for less time\"]\n        A2 --> A3[\"Contacts per bump fall for everyone\"]\n        A3 --> D2[\"Real effect: smaller or negative\"]\n    end\n    D1 -.->|\"transfer mistaken for effect\"| D2"
+ },
+ {
+  "post": "37-experimentation",
+  "figure": 5,
+  "id": "fig05-choosing-randomization-unit-first-question-whether",
+  "asset": "assets/images/37-experimentation/fig05-choosing-randomization-unit-first-question-whether.jpeg",
+  "mermaid": "flowchart TB\n    Q1{\"Does the change move visibility, prices or the comparison set?\"}\n    Q1 -->|\"no\"| Q2{\"Which side does it act on?\"}\n    Q2 -->|\"buyers\"| B[\"Buyer-side randomization\"]\n    Q2 -->|\"sellers\"| S[\"Seller-side randomization\"]\n    Q1 -->|\"yes\"| Q3{\"Can it be applied per buyer-listing pair?\"}\n    Q3 -->|\"yes, ranking model change\"| TS[\"Two-sided randomization or interleaving\"]\n    Q3 -->|\"no, price or policy\"| Q4{\"Is carryover short, hours not days?\"}\n    Q4 -->|\"yes\"| SW[\"Switchback by region and time slot\"]\n    Q4 -->|\"no\"| CL[\"Cluster randomization by region and category\"]\n    CL --> Q5{\"Fewer than about 30 usable clusters?\"}\n    Q5 -->|\"yes\"| GEO[\"Geographic test with matched markets\"]"
+ },
+ {
+  "post": "38-ml-platform",
+  "figure": 2,
+  "id": "fig02-listing-specific-parts-ml-platform-are",
+  "asset": "assets/images/38-ml-platform/fig02-listing-specific-parts-ml-platform-are.jpeg",
+  "mermaid": "flowchart LR\n    EV[\"Event backbone: listing, tracking, moderation, contact events\"] --> LH[\"Lakehouse\"]\n    EV --> SF[\"Streaming feature jobs\"]\n    LH --> BF[\"Batch feature pipelines\"]\n    BF --> OFF[\"Offline feature history\"]\n    SF --> ON[\"Online feature store\"]\n    BF --> ON\n    LAB[\"Label pipelines\"] --> TR[\"Training pipelines\"]\n    OFF --> TR\n    TR --> REG[\"Model registry with cards and consumers\"]\n    REG --> BS[\"Batch scoring into listing read models\"]\n    REG --> AS[\"Event-triggered async inference\"]\n    REG --> RT[\"Synchronous endpoints\"]\n    ON --> RT\n    BS --> PL[\"Prediction log\"]\n    AS --> PL\n    RT --> PL\n    PL --> MON[\"Monitoring: drift, segments, cost\"]\n    LH --> LAB\n    PL --> LAB"
+ },
+ {
+  "post": "38-ml-platform",
+  "figure": 5,
+  "id": "fig05-pricing-hint-event-triggered-inference-stored",
+  "asset": "assets/images/38-ml-platform/fig05-pricing-hint-event-triggered-inference-stored.jpeg",
+  "mermaid": "sequenceDiagram\n    participant LS as Listing service\n    participant BB as Event backbone\n    participant ER as Entity resolution\n    participant VA as Valuo scorer\n    participant RM as Listing read model\n    participant PG as Listing page\n    participant LOG as Prediction log\n    LS->>BB: ListingPublished, price 389000\n    BB->>ER: resolve to canonical property\n    ER->>BB: PropertyResolved\n    BB->>VA: score property and listing\n    VA->>VA: interval 372000 to 401000, width 7.5 percent\n    VA->>RM: badge in line, model version, comparables\n    VA->>LOG: features, interval, version\n    PG->>RM: read listing with badge\n    LS->>BB: ListingUpdated, price cut\n    BB->>VA: rescore and update badge"
+ },
+ {
+  "post": "38-ml-platform",
+  "figure": 6,
+  "id": "fig06-every-model-passes-same-states-what",
+  "asset": "assets/images/38-ml-platform/fig06-every-model-passes-same-states-what.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Proposed\n    Proposed --> Experimental: owner, tier and label named\n    Experimental --> Shadow: offline evaluation by segment passed\n    Shadow --> Canary: shadow scores match logged outcomes\n    Canary --> Production: online experiment and tier sign-off\n    Production --> Production: retrained version approved\n    Production --> Deprecated: replaced or no consumers\n    Production --> Shadow: drift alert or incident\n    Deprecated --> Retired: consumers migrated\n    Retired --> [*]"
+ },
+ {
+  "post": "39-multi-country-platforms",
+  "figure": 3,
+  "id": "fig03-shared-local-layer-brands-own-product",
+  "asset": "assets/images/39-multi-country-platforms/fig03-shared-local-layer-brands-own-product.jpeg",
+  "mermaid": "flowchart TB\n    subgraph LOCAL[\"Local per brand and market\"]\n        UX[\"Web, apps and brand design\"]\n        GTM[\"Packages, prices and sales\"]\n        POL[\"Market policies and legal texts\"]\n        EXT[\"Tenant extensions such as VIN decoding or DPE checks\"]\n    end\n    subgraph TEN[\"Tenancy services\"]\n        REG[\"Tenant register\"]\n        CFG[\"Configuration service\"]\n        REL[\"Release rings and flags\"]\n    end\n    subgraph GLOBAL[\"Global components\"]\n        ID[\"Identity\"]\n        TS[\"Trust and safety pipeline\"]\n        SRCH[\"Search engine platform\"]\n        MED[\"Media pipeline\"]\n        TAX[\"Taxonomy and attribute service\"]\n        CAT[\"Product catalog and entitlements\"]\n        EVT[\"Event backbone\"]\n        DATA[\"Data platform\"]\n    end\n    subgraph INFRA[\"Shared infrastructure\"]\n        RUN[\"Compute, cloud accounts and observability\"]\n    end\n    UX --> CFG\n    GTM --> CAT\n    POL --> TS\n    EXT -->|\"extension contracts\"| SRCH\n    EXT -->|\"extension contracts\"| TAX\n    REG --> CFG\n    CFG --> GLOBAL\n    REL --> GLOBAL\n    GLOBAL --> RUN"
+ },
+ {
+  "post": "39-multi-country-platforms",
+  "figure": 4,
+  "id": "fig04-configuration-hierarchy-most-keys-are-set",
+  "asset": "assets/images/39-multi-country-platforms/fig04-configuration-hierarchy-most-keys-are-set.jpeg",
+  "mermaid": "flowchart LR\n    G[\"Group default\"] --> B[\"Brand\"]\n    B --> T[\"Tenant: brand and country\"]\n    T --> P[\"Marketplace profile\"]\n    P --> S[\"Seller segment\"]\n    S --> X[\"Experiment arm\"]\n    X --> R[\"Resolved value at request time\"]"
+ },
+ {
+  "post": "39-multi-country-platforms",
+  "figure": 5,
+  "id": "fig05-7-march-rule-replayed-shared-platform",
+  "asset": "assets/images/39-multi-country-platforms/fig05-7-march-rule-replayed-shared-platform.jpeg",
+  "mermaid": "sequenceDiagram\n    participant AN as Analyst in Lisbon\n    participant TS as T and S policy service\n    participant CFG as Configuration service\n    participant NL as Tenant ty nl\n    participant BE as Tenant ty be\n    participant PL as Tenant ty pl\n    AN->>TS: New rule for fake payment links\n    TS->>CFG: Rule class fraud, scope all Tradeyard tenants\n    CFG-->>TS: Group-urgent class, no ring wait\n    TS->>NL: Enforce now\n    TS->>BE: Enforce now\n    TS->>PL: Shadow mode for 48 hours\n    PL-->>TS: Matches per locale for review\n    TS->>PL: Enforce after Polish term list approved"
+ },
+ {
+  "post": "40-reliability-and-scale",
+  "figure": 1,
+  "id": "fig01-brown-out-s-causal-chain-no",
+  "asset": "assets/images/40-reliability-and-scale/fig01-brown-out-s-causal-chain-no.jpeg",
+  "mermaid": "flowchart LR\n    TV[\"TV campaign at 20:30\"] -->|\"traffic plus 30 percent\"| L[\"Peak load on NL search\"]\n    RX[\"Weekly full reindex since 20:00\"] -->|\"CPU and disk contention\"| SC[\"Solr query nodes\"]\n    RX -->|\"new segments committed\"| CE[\"Caches evicted\"]\n    CE -->|\"cold facet and browse queries\"| SC\n    L --> SC\n    BOT[\"Unthrottled automated clients\"] --> SC\n    SC -->|\"p99 rises to 7 s\"| AP[\"Apps time out\"]\n    AP -->|\"two retries, no backoff\"| SC\n    SC -->|\"9 percent of searches fail\"| OUT[\"Fewer contacts at the weekly peak\"]"
+ },
+ {
+  "post": "40-reliability-and-scale",
+  "figure": 3,
+  "id": "fig03-control-points-search-path-edge-classifies",
+  "asset": "assets/images/40-reliability-and-scale/fig03-control-points-search-path-edge-classifies.jpeg",
+  "mermaid": "flowchart LR\n    U[\"Apps and browsers\"] --> E[\"Edge: CDN, bot classification, rate limits\"]\n    B[\"Crawlers, scrapers, partners\"] --> E\n    E -->|\"cache hit\"| CR[\"Cached pages and results\"]\n    E -->|\"cache miss\"| G[\"Search gateway: admission control, degradation switch\"]\n    G --> Q[\"Query service: results\"]\n    G --> F[\"Facet service: counts\"]\n    G --> P[\"Personalization and reranking\"]\n    Q --> SC[\"Search cluster: query nodes\"]\n    F --> SC\n    IX[\"Indexing pipeline\"] --> SC\n    RB[\"Reindex and backfill jobs\"] -->|\"throttled, outside peak windows\"| IX\n    CAL[\"Peak and campaign calendar\"] --> RB\n    CAL --> CAP[\"Capacity plan and pre-scaling\"]\n    CAP --> SC\n    OBS[\"Journey SLIs and error budgets\"] --> G"
+ },
+ {
+  "post": "40-reliability-and-scale",
+  "figure": 5,
+  "id": "fig05-search-degradation-ladder-each-step-gives",
+  "asset": "assets/images/40-reliability-and-scale/fig05-search-degradation-ladder-each-step-gives.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Normal\n    Normal --> ShedBots: concurrency above threshold\n    ShedBots --> TrimOptional: p99 above 1 s for 3 minutes\n    TrimOptional --> FromCache: p99 above 2 s or errors above 1 percent\n    FromCache --> BrowseOnly: search cluster unavailable\n    BrowseOnly --> FromCache: cluster healthy\n    FromCache --> TrimOptional: p99 below 1 s for 10 minutes\n    TrimOptional --> ShedBots: p99 normal for 10 minutes\n    ShedBots --> Normal: concurrency normal"
+ },
+ {
+  "post": "41-platform-consolidation",
+  "figure": 3,
+  "id": "fig03-choosing-integration-option-regulation-commitments-expected",
+  "asset": "assets/images/41-platform-consolidation/fig03-choosing-integration-option-regulation-commitments-expected.jpeg",
+  "mermaid": "flowchart TB\n    Q1{\"Regulatory remedy or commitment that requires separation?\"}\n    Q1 -->|\"yes\"| SEP[\"Hold separate or divest, with transitional services\"]\n    Q1 -->|\"no\"| Q2{\"Likely to be sold within three years?\"}\n    Q2 -->|\"yes\"| FED[\"Federate under group controls; share only separable services\"]\n    Q2 -->|\"no\"| Q3{\"Same vertical and market as a group brand?\"}\n    Q3 -->|\"no\"| SHR[\"Share services beneath; keep product and brand\"]\n    Q3 -->|\"yes\"| Q4{\"Separate investment case for product convergence?\"}\n    Q4 -->|\"no\"| SHR\n    Q4 -->|\"yes\"| REP[\"Replatform onto sibling; brand migration as a separate decision\"]"
+ },
+ {
+  "post": "41-platform-consolidation",
+  "figure": 4,
+  "id": "fig04-consolidation-sequence-each-stage-moves-capabilities",
+  "asset": "assets/images/41-platform-consolidation/fig04-consolidation-sequence-each-stage-moves-capabilities.jpeg",
+  "mermaid": "flowchart LR\n    S0[\"Stage 0: Day-one controls\"] -->|\"gate: risk baseline\"| S1[\"Stage 1: Invisible and contractual\"]\n    S1 -->|\"gate: data and cost visible\"| S2[\"Stage 2: Trust and identity\"]\n    S2 -->|\"gate: fraud and login parity\"| S3[\"Stage 3: Shared engines\"]\n    S3 -->|\"gate: relevance and freshness parity\"| S4[\"Stage 4: Product platform, optional\"]\n    S4 -.->|\"separate decision\"| BM[\"Brand migration\"]"
+ },
+ {
+  "post": "41-platform-consolidation",
+  "figure": 5,
+  "id": "fig05-workstreams-brand-migration-most-are-invisible",
+  "asset": "assets/images/41-platform-consolidation/fig05-workstreams-brand-migration-most-are-invisible.jpeg",
+  "mermaid": "flowchart TB\n    DEC[\"Brand decision and date\"] --> LEG[\"Legal entities, terms and notices to business users\"]\n    DEC --> DOM[\"Domains, URL map and redirect registry\"]\n    DEC --> ACC[\"Account continuity, no re-registration\"]\n    DEC --> APP[\"Apps: same identifiers, new name and theme\"]\n    DEC --> MSG[\"E-mail and push: sender domains and links in alerts\"]\n    DEC --> PART[\"Partner feeds, APIs and credentials\"]\n    DOM --> SEO[\"Search engine move and traffic baseline\"]\n    MSG --> SEO\n    LEG --> GO[\"Switch day\"]\n    ACC --> GO\n    APP --> GO\n    PART --> GO\n    SEO --> GO\n    GO --> AFT[\"Old domain kept with redirects for years\"]"
+ },
+ {
+  "post": "42-organizing-marketplace-engineering",
+  "figure": 2,
+  "id": "fig02-veldmark-s-common-ground-team-topology",
+  "asset": "assets/images/42-organizing-marketplace-engineering/fig02-veldmark-s-common-ground-team-topology.jpeg",
+  "mermaid": "flowchart TB\n    subgraph BRANDS[\"Stream-aligned teams per brand and journey\"]\n        TY[\"Tradeyard: supply, discovery, conversation and Safe Deal, pro sellers, monetization\"]\n        MV[\"Motorvane: dealer supply, discovery, leads and financing, private sellers\"]\n        HE[\"Hearthly: agency supply, discovery, valuation products, rentals\"]\n    end\n    subgraph SPEC[\"Complicated-subsystem teams\"]\n        RK[\"Ranking and relevance models\"]\n        AV[\"Valuo AVM\"]\n        FR[\"Fraud modeling\"]\n    end\n    subgraph PLAT[\"Group platform teams\"]\n        EV[\"Event platform\"]\n        SP[\"Search platform\"]\n        ID[\"Veldmark ID\"]\n        TS[\"Trust and safety pipeline\"]\n        EN[\"Catalog and entitlements\"]\n        TX[\"Taxonomy and attributes\"]\n        DP[\"Developer platform\"]\n        DA[\"Data and ML platforms\"]\n    end\n    EN2[\"Enabling teams: Yardstick exit, search migration, reliability\"]\n    BRANDS -->|\"X-as-a-Service\"| PLAT\n    BRANDS -->|\"X-as-a-Service\"| SPEC\n    SPEC -->|\"X-as-a-Service\"| PLAT\n    EN2 -->|\"facilitation\"| BRANDS\n    EN2 -->|\"collaboration, time-boxed\"| PLAT\n    KB[\"Keybridge engineering, separate by design\"] -.->|\"group security standards only\"| DP"
+ },
+ {
+  "post": "42-organizing-marketplace-engineering",
+  "figure": 4,
+  "id": "fig04-advice-process-applied-cross-brand-decisions",
+  "asset": "assets/images/42-organizing-marketplace-engineering/fig04-advice-process-applied-cross-brand-decisions.jpeg",
+  "mermaid": "flowchart LR\n    A[\"Team drafts decision record\"] --> B{\"Affects another team or brand?\"}\n    B -->|\"no\"| L[\"Decide and record locally\"]\n    B -->|\"yes\"| C[\"Seek advice from affected teams and experts\"]\n    C --> D[\"Present at weekly advice forum\"]\n    D --> E{\"Moves money, people or personal data?\"}\n    E -->|\"no\"| F[\"Team decides and records advice received\"]\n    E -->|\"yes\"| G[\"CTO or DPO decides, with the record\"]\n    F --> H[\"Decision log and principle check\"]\n    G --> H\n    H --> I[\"Review date or trigger recorded\"]"
+ },
+ {
+  "post": "43-modernization-and-migration",
+  "figure": 2,
+  "id": "fig02-five-stage-gates-one-migration-slice",
+  "asset": "assets/images/43-modernization-and-migration/fig02-five-stage-gates-one-migration-slice.jpeg",
+  "mermaid": "stateDiagram-v2\n    state \"G0 Contract\" as G0\n    state \"G1 Shadow\" as G1\n    state \"G2 Canary\" as G2\n    state \"G3 Ramp\" as G3\n    state \"G4 Retire\" as G4\n    [*] --> G0\n    G0 --> G1: contract published, consumers known\n    G1 --> G2: unexplained differences below threshold\n    G2 --> G3: outcome metrics non-inferior, rollback rehearsed\n    G3 --> G4: point of no return decided at forum\n    G2 --> G1: rollback\n    G3 --> G2: rollback\n    G4 --> [*]"
+ },
+ {
+  "post": "43-modernization-and-migration",
+  "figure": 3,
+  "id": "fig03-tradeyard-s-transitional-architecture-mid-2028",
+  "asset": "assets/images/43-modernization-and-migration/fig03-tradeyard-s-transitional-architecture-mid-2028.jpeg",
+  "mermaid": "flowchart LR\n    U[\"Buyers, sellers, crawlers\"] --> CDN[\"CloudFront route rules\"]\n    APP[\"Mobile apps\"] --> BFF[\"Mobile and web BFFs\"]\n    CDN -->|\"moved page types\"| PAGES[\"Server-rendered page apps\"]\n    CDN -->|\"remaining page types\"| YS[\"Yardstick PHP monolith\"]\n    PAGES --> BFF\n    BFF -->|\"insertion by seller cohort\"| LS[\"New listing service\"]\n    BFF -->|\"not yet moved\"| YS\n    LS -->|\"outbox\"| EV[\"Listing event contract v1\"]\n    YS -->|\"CDC\"| RELAY[\"Yardstick Relay\"]\n    RELAY --> EV\n    EV --> MIMIC[\"Legacy Mimic writer\"]\n    MIMIC -->|\"keeps ads table current\"| YDB[\"Yardstick MySQL\"]\n    YS --- YDB\n    EV --> SEARCH[\"Search, alerts, trust, SEO, data\"]"
+ },
+ {
+  "post": "44-ai-in-listing-systems",
+  "figure": 2,
+  "id": "fig02-models-never-write-systems-record-directly",
+  "asset": "assets/images/44-ai-in-listing-systems/fig02-models-never-write-systems-record-directly.jpeg",
+  "mermaid": "flowchart TB\n    subgraph Surfaces[\"Product surfaces\"]\n        INS[\"Insertion flow\"]\n        SRCH[\"Search and chat\"]\n        PRO[\"Pro copilots\"]\n        EXT[\"External agents via MCP\"]\n    end\n    INS --> GW[\"AI gateway: routing, quotas, cost, logs, kill switch\"]\n    SRCH --> GW\n    PRO --> GW\n    EXT --> AGW[\"Agent API gateway: auth, quotas, attribution\"]\n    AGW --> TOOLS\n    GW --> MOD[\"Models: provider APIs and self-hosted\"]\n    GW --> REG[\"Prompt and configuration registry\"]\n    MOD --> VAL[\"Validators: schema, taxonomy, policy\"]\n    VAL --> GR[\"Guardrails: contacts, payments, claims\"]\n    GR --> TOOLS[\"Marketplace tools: taxonomy, search, price, trust\"]\n    TOOLS --> SOR[\"Systems of record: listing, index, catalog\"]\n    GW --> EVAL[\"Evaluation harness and sampled audits\"]"
+ },
+ {
+  "post": "44-ai-in-listing-systems",
+  "figure": 3,
+  "id": "fig03-language-model-ranks-categories-allowed-list",
+  "asset": "assets/images/44-ai-in-listing-systems/fig03-language-model-ranks-categories-allowed-list.jpeg",
+  "mermaid": "sequenceDiagram\n    participant S as Seller app\n    participant AS as Listing assistant\n    participant TS as Trust and safety\n    participant TX as Taxonomy service\n    participant VLM as Vision language model\n    participant PH as Price hint model\n    participant LS as Listing service\n    S->>AS: four photos\n    AS->>TS: perceptual hash and prohibited item check\n    TS-->>AS: clear\n    AS->>TX: current leaf categories\n    AS->>VLM: rank categories from allowed list\n    VLM-->>AS: Bikes Cargo, confidence 0.94\n    AS->>TX: attribute schema for Cargo\n    AS->>VLM: fill schema, unknown allowed\n    VLM-->>AS: attributes with confidences\n    AS->>PH: price range for attributes and location\n    PH-->>AS: 1450 to 1700 euros\n    AS->>VLM: draft title and description from confirmed fields\n    AS-->>S: editable proposal with provenance\n    S->>LS: confirm and publish at 1600 euros\n    LS->>TS: standard moderation pipeline"
+ },
+ {
+  "post": "44-ai-in-listing-systems",
+  "figure": 6,
+  "id": "fig06-external-assistant-gets-tools-not-pages",
+  "asset": "assets/images/44-ai-in-listing-systems/fig06-external-assistant-gets-tools-not-pages.jpeg",
+  "mermaid": "flowchart LR\n    A[\"External assistant\"] -->|\"tool call with filters\"| G[\"Agent API gateway\"]\n    G -->|\"authenticate partner, quota per partner\"| Q[\"Query compiler and validator\"]\n    Q --> S[\"Search API on the shared index\"]\n    S --> F[\"Result filter: public fields only, no contact data\"]\n    F --> L[\"Listing summaries with tracked links\"]\n    L --> A\n    A -->|\"user follows link\"| W[\"Listing page on Hearthly\"]\n    W -->|\"contact attributed to channel\"| LD[\"Lead and analytics\"]"
+ },
+ {
+  "post": "45-long-term-evolution",
+  "figure": 1,
+  "id": "fig01-liquidity-machine-supply-becomes-listings-listings",
+  "asset": "assets/images/45-long-term-evolution/fig01-liquidity-machine-supply-becomes-listings-listings.jpeg",
+  "mermaid": "flowchart LR\n    S[\"Supply: forms, APIs, feeds\"] --> L[\"Listing: aggregate, taxonomy, attributes, media, place\"]\n    L --> P[\"Publication: decide, then propagate\"]\n    P --> D[\"Discovery: search, ranking, alerts, recommendations\"]\n    D --> T[\"Trust: gate, identity, fraud, regulation\"]\n    T --> C[\"Contact and transaction: messaging, leads, payments\"]\n    C --> M[\"Money: packages, entitlements, ads\"]\n    M -->|\"paid effects, bounded by policy\"| D\n    C -->|\"outcomes and labels\"| D\n    C -->|\"outcomes and labels\"| T\n    E[\"Platform: events, system of record, data, experiments, ML, reliability\"] -.-> P\n    E -.-> D\n    E -.-> T\n    E -.-> M\n    G[\"Leadership: consolidation, organization, modernization, AI, evolution\"] -.-> E"
+ },
+ {
+  "post": "45-long-term-evolution",
+  "figure": 3,
+  "id": "fig03-three-rates-change-top-layer-what",
+  "asset": "assets/images/45-long-term-evolution/fig03-three-rates-change-top-layer-what.jpeg",
+  "mermaid": "flowchart TB\n    subgraph Decades[\"Built to last: decades\"]\n        A1[\"Listing, account and party identifiers\"]\n        A2[\"Listing event contract and compatibility rules\"]\n        A3[\"Taxonomy IDs, attribute dictionary, place IDs\"]\n        A4[\"Governed metric definitions\"]\n        A5[\"Decision records and evidence formats\"]\n    end\n    subgraph Years[\"Built to change: years\"]\n        B1[\"Search engine and index schema\"]\n        B2[\"Event broker and data warehouse engine\"]\n        B3[\"Cloud provider and runtime\"]\n        B4[\"Entitlement and identity implementations\"]\n    end\n    subgraph Months[\"Built to churn: weeks to months\"]\n        C1[\"Ranking policies, prices, packages\"]\n        C2[\"Models, prompts and LLM providers\"]\n        C3[\"Trust policies and thresholds\"]\n        C4[\"Category tree releases\"]\n    end\n    Decades --> Years\n    Years --> Months"
+ },
+ {
+  "post": "45-long-term-evolution",
+  "figure": 4,
+  "id": "fig04-stressor-analysis-veldmark-runs-it-combined",
+  "asset": "assets/images/45-long-term-evolution/fig04-stressor-analysis-veldmark-runs-it-combined.jpeg",
+  "mermaid": "flowchart LR\n    A[\"Naive architecture: the 2027 Common Ground design\"] --> B[\"List stressors across seven families\"]\n    B --> C[\"For each stressor: attractor and business reaction\"]\n    C --> D[\"What breaks in the current design\"]\n    D --> E[\"Residue: the structure that would survive\"]\n    E --> F[\"Integrated, already survived, or open\"]\n    F --> G[\"Count residues per component\"]\n    G --> H[\"Combine stressors and re-test\"]\n    H -->|\"new residue found\"| E\n    G --> I[\"Investment and fitness functions\"]"
+ },
+ {
+  "post": "45-long-term-evolution",
+  "figure": 7,
+  "id": "fig07-steering-loop-fitness-functions-feed-quarterly",
+  "asset": "assets/images/45-long-term-evolution/fig07-steering-loop-fitness-functions-feed-quarterly.jpeg",
+  "mermaid": "flowchart LR\n    A[\"Scorecard: 12 fitness functions\"] --> B[\"Quarterly architecture review\"]\n    B -->|\"function below target\"| C[\"Debt register item with liquidity estimate\"]\n    B -->|\"stressor landscape changed\"| D[\"Stressor analysis update\"]\n    C --> E[\"Investment decision at the forum\"]\n    D --> E\n    E --> F[\"Decision record and change\"]\n    F --> G[\"Production, drills and tabletops\"]\n    G -->|\"measured\"| A"
+ },
+ {
+  "post": "46-case-adevinta",
+  "figure": 1,
+  "id": "fig01-each-phase-moved-line-between-shared",
+  "asset": "assets/images/46-case-adevinta/fig01-each-phase-moved-line-between-shared.jpeg",
+  "mermaid": "flowchart LR\n    P1[\"Federation of local sites, before 2019\"] --> P2[\"Selective centralization, 2019 to 2020\"]\n    P2 --> P3[\"Integrating eBay Classifieds, 2021 to 2023\"]\n    P3 --> P4[\"Verticals and product convergence, 2023 to mid 2024\"]\n    P4 --> P5[\"Decentralization and break-up, mid 2024 to 2026\"]\n    P2 -.->|\"shared: infrastructure, data\"| L1[\"Enabling layers\"]\n    P3 -.->|\"shared: chat, moderation, ML, experimentation\"| L2[\"Overarching components\"]\n    P4 -.->|\"planned: one generalist platform\"| L3[\"Product platform\"]\n    P5 -.->|\"localized: capabilities and IP\"| L4[\"Standalone marketplaces\"]"
+ },
+ {
+  "post": "46-case-adevinta",
+  "figure": 3,
+  "id": "fig03-documented-shape-adevinta-s-2023-dispute",
+  "asset": "assets/images/46-case-adevinta/fig03-documented-shape-adevinta-s-2023-dispute.jpeg",
+  "mermaid": "flowchart LR\n    M1[\"Marketplace A transaction events\"] -->|\"Kafka\"| ACL[\"Per-tenant ingestion adapters\"]\n    M2[\"Marketplace B transaction events\"] -->|\"SQS\"| ACL\n    M3[\"Marketplace C transaction events\"] -->|\"REST\"| ACL\n    ACL -->|\"normalized dispute model\"| CORE[\"Shared dispute service\"]\n    CORE --> API[\"Shared API\"]\n    API --> UI[\"Shared back-office shell\"]\n    UI --> F1[\"Marketplace A extension\"]\n    UI --> F2[\"Marketplace B extension\"]"
+ },
+ {
+  "post": "46-case-adevinta",
+  "figure": 4,
+  "id": "fig04-plausible-reference-flow-c2c-buyer-protection",
+  "asset": "assets/images/46-case-adevinta/fig04-plausible-reference-flow-c2c-buyer-protection.jpeg",
+  "mermaid": "sequenceDiagram\n    participant B as Buyer\n    participant MP as Marketplace\n    participant PSP as Licensed PSP\n    participant C as Carrier\n    participant S as Seller\n    B->>MP: Accept offer in chat\n    MP->>PSP: Create payment with buyer fee\n    PSP-->>MP: Funds held\n    MP->>C: Create shipping label\n    MP->>S: Notify to ship\n    S->>C: Hand over parcel\n    C-->>MP: Delivered event\n    B->>MP: Confirm receipt or open dispute\n    MP->>PSP: Release funds to seller\n    PSP-->>S: Payout"
+ },
+ {
+  "post": "47-case-olx",
+  "figure": 1,
+  "id": "fig01-each-phase-changed-what-listing-platform",
+  "asset": "assets/images/47-case-olx/fig01-each-phase-changed-what-listing-platform.jpeg",
+  "mermaid": "flowchart LR\n    P1[\"Roll-up and rebrand, 2006 to 2018\"] --> P2[\"Regional reshaping, 2018 to 2021\"]\n    P2 --> P3[\"Vertical integration bet, 2019 to 2025\"]\n    P3 --> P4[\"Retreat to a European core, 2022 to 2026\"]\n    P1 -.->|\"one brand, many local stacks\"| L1[\"Up to 45 markets\"]\n    P2 -.->|\"markets leave with their platforms\"| L2[\"Minority stakes and joint ventures\"]\n    P3 -.->|\"owning cars, credit, delivery\"| L3[\"Adjacent businesses\"]\n    P4 -.->|\"motors, real estate, jobs\"| L4[\"Seven markets, verticals\"]"
+ },
+ {
+  "post": "47-case-olx",
+  "figure": 4,
+  "id": "fig04-hybrid-design-olx-described-it-2025",
+  "asset": "assets/images/47-case-olx/fig04-hybrid-design-olx-described-it-2025.jpeg",
+  "mermaid": "flowchart LR\n    Q[\"Buyer query\"] --> BM[\"Solr BM25 retrieval\"]\n    Q --> VEC[\"Vector retrieval, fixed quota\"]\n    BM -->|\"keyword candidates\"| MRG[\"Merged candidate set\"]\n    VEC -->|\"35, then 70 candidates\"| MRG\n    MRG --> LTR[\"LTR re-rank, retrained with similarity feature\"]\n    LTR -->|\"Vanilla or VAS objective\"| PAGE[\"Result page\"]\n    BM -.->|\"low or zero results\"| EXT[\"Extension chain fallbacks\"]\n    EXT -.->|\"first test of vectors\"| VEC"
+ },
+ {
+  "post": "47-case-olx",
+  "figure": 5,
+  "id": "fig05-reference-reading-olx-europe-s-multi",
+  "asset": "assets/images/47-case-olx/fig05-reference-reading-olx-europe-s-multi.jpeg",
+  "mermaid": "flowchart TB\n    subgraph MOT[\"Motors platform, one code base\"]\n        M1[\"Otomoto, Poland\"]\n        M2[\"Autovit, Romania\"]\n        M3[\"Standvirtual, Portugal\"]\n    end\n    subgraph RE[\"Real-estate platform, one code base\"]\n        R1[\"Otodom, Poland\"]\n        R2[\"Storia, Romania\"]\n        R3[\"Imovirtual, Portugal\"]\n    end\n    CFG[\"Per-brand configuration: locale, taxonomy, packages, ranking settings\"] --> MOT\n    CFG --> RE\n    MOT --> SH[\"Shared capabilities: search ranking repository, ML, chat safety, identity\"]\n    RE --> SH\n    LC[\"La Centrale, France, acquired 2025\"] -.->|\"integration path not public\"| MOT"
+ },
+ {
+  "post": "48-case-ebay-classifieds",
+  "figure": 1,
+  "id": "fig01-ecg-grew-two-ways-it-bought",
+  "asset": "assets/images/48-case-ebay-classifieds/fig01-ecg-grew-two-ways-it-bought.jpeg",
+  "mermaid": "flowchart LR\n    A[\"Buy national leaders, 2004 to 2013\"] --> C[\"Federation with group functions, 2009 to 2020\"]\n    B[\"Launch group brands, 2005 to 2009\"] --> C\n    C --> D[\"Sale to Adevinta, 2020 to 2021\"]\n    D --> E[\"Regulatory and strategic divestments, 2021 to 2022\"]\n    D --> F[\"Kept brands separate from eBay, 2022 to 2025\"]\n    C -.->|\"shared: search choice, PaaS, motors platform, payments partner\"| L1[\"Thin shared layer\"]\n    C -.->|\"local: brand, product, core platform\"| L2[\"National platforms\"]\n    E -.->|\"transitional services\"| L1\n    F -.->|\"rebrand and replatform\"| L2"
+ },
+ {
+  "post": "48-case-ebay-classifieds",
+  "figure": 3,
+  "id": "fig03-documented-shape-move-2020-reference-repositories",
+  "asset": "assets/images/48-case-ebay-classifieds/fig03-documented-shape-move-2020-reference-repositories.jpeg",
+  "mermaid": "flowchart LR\n    DMS[\"Dealer and integrator systems\"] -->|\"Listing API, partnerId, IP allow-list\"| MOVE[\"MoVe motors platform\"]\n    MOVE -->|\"listing, dealer, promotion events\"| R1[\"Receiver: Kijiji.ca\"]\n    MOVE -->|\"listing, dealer, promotion events\"| R2[\"Receiver: kijijiautos.ca\"]\n    MOVE -->|\"enriched listing events\"| R3[\"Other receivers\"]\n    R1 -->|\"local listing ID and detail-page URLs\"| MOVE\n    R2 -->|\"local listing ID and detail-page URLs\"| MOVE\n    MOVE -->|\"listing-url events\"| SUB[\"Subscribers needing dispatch status\"]"
+ },
+ {
+  "post": "48-case-ebay-classifieds",
+  "figure": 4,
+  "id": "fig04-per-user-migration-states-kleinanzeigen-published",
+  "asset": "assets/images/48-case-ebay-classifieds/fig04-per-user-migration-states-kleinanzeigen-published.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> IDENTIFIED\n    IDENTIFIED --> ELIGIBLE: \"data transformed or user selected\"\n    ELIGIBLE --> MIGRATION_REQUESTED: \"migration request issued\"\n    MIGRATION_REQUESTED --> MIGRATED: \"core data written to new system\"\n    MIGRATION_REQUESTED --> ELIGIBLE: \"retry after failure\"\n    MIGRATED --> TRANSITIONED: \"proxy routes user to new system\"\n    TRANSITIONED --> [*]"
+ },
+ {
+  "post": "48-case-ebay-classifieds",
+  "figure": 5,
+  "id": "fig05-plausible-reference-view-carve-out-consistent",
+  "asset": "assets/images/48-case-ebay-classifieds/fig05-plausible-reference-view-carve-out-consistent.jpeg",
+  "mermaid": "flowchart TB\n    subgraph SELLER[\"Seller side after signing\"]\n        S1[\"Shared group services\"]\n        S2[\"Parent marketplace programs\"]\n    end\n    subgraph SOLD[\"Divested brand\"]\n        B1[\"Own platform and data\"]\n        B2[\"Dependencies outside the package\"]\n    end\n    B2 -->|\"transitional services agreement\"| S1\n    B2 -->|\"partnering in key areas\"| S2\n    B1 -->|\"replatform or rebuild\"| N[\"Buyer's target state\"]\n    B2 -->|\"replace before TSA expiry\"| N"
+ },
+ {
+  "post": "49-case-aviv",
+  "figure": 1,
+  "id": "fig01-aviv-s-public-record-moves-separate",
+  "asset": "assets/images/49-case-aviv/fig01-aviv-s-public-record-moves-separate.jpeg",
+  "mermaid": "flowchart LR\n    P1[\"Assembling national portals, 2010 to 2019\"] --> P2[\"Moving up the seller funnel, 2019 to 2023\"]\n    P2 --> P3[\"Integration intent, 2021 to 2024\"]\n    P3 --> P4[\"Separation and local autonomy, 2025\"]\n    P1 -.->|\"bought: complete businesses and stacks\"| L1[\"Separate portals per country\"]\n    P2 -.->|\"shared: valuation science, professional offer\"| L2[\"Commercial and data layer\"]\n    P3 -.->|\"stated goal: one European marketplace\"| L3[\"Group technology roadmap\"]\n    P4 -.->|\"kept: group functions where they pay\"| L4[\"Local businesses with shared functions\"]"
+ },
+ {
+  "post": "49-case-aviv",
+  "figure": 4,
+  "id": "fig04-seller-funnel-that-aviv-s-documented",
+  "asset": "assets/images/49-case-aviv/fig04-seller-funnel-that-aviv-s-documented.jpeg",
+  "mermaid": "flowchart LR\n    O[\"Homeowner\"] -->|\"asks for an estimate\"| V[\"Valuation product\"]\n    O -->|\"lists privately\"| FS[\"Private sale listing\"]\n    B[\"Buyer contacts on portals\"] -->|\"classified as likely sellers\"| SD[\"Seller detection\"]\n    V --> SL[\"Seller lead\"]\n    FS --> SL\n    SD --> SL\n    SL -->|\"routed to a subscribing agent\"| AG[\"Agency\"]\n    AG -->|\"wins the mandate\"| M[\"Mandate in agency software\"]\n    M -->|\"feed to several portals\"| L[\"Professional listing\"]\n    L --> B\n    M -.->|\"sale closes off the portal\"| CS[\"Commission share to the portal\"]"
+ },
+ {
+  "post": "49-case-aviv",
+  "figure": 5,
+  "id": "fig05-labeled-reference-architecture-multi-country-property",
+  "asset": "assets/images/49-case-aviv/fig05-labeled-reference-architecture-multi-country-property.jpeg",
+  "mermaid": "flowchart TB\n    subgraph LOCAL[\"Local edge per country\"]\n        AD[\"Feed adapters per software ecosystem\"]\n        DS[\"Disclosure fields and validation\"]\n        RK[\"Ranking policy and paid visibility\"]\n        PR[\"Products, pricing and billing\"]\n        CRM[\"Agent tools and seller-lead routing\"]\n        BR[\"Brand, UX and go-to-market\"]\n    end\n    subgraph SHARED[\"Plausibly shared group core\"]\n        CL[\"Cloud, security and FinOps\"]\n        DP[\"Data platform and ML tooling\"]\n        ID[\"Identity and consent tooling\"]\n        IE[\"Ingestion engine and core listing schema\"]\n        SE[\"Search engine\"]\n        VM[\"Valuation methods\"]\n    end\n    AD --> IE\n    DS --> IE\n    IE --> SE\n    RK --> SE\n    DP --> VM\n    VM -->|\"models trained on local data\"| CRM\n    PR --> CRM"
+ },
+ {
+  "post": "50-case-property-portals",
+  "figure": 1,
+  "id": "fig01-arc-public-record-valuation-moved-informing",
+  "asset": "assets/images/50-case-property-portals/fig01-arc-public-record-valuation-moved-informing.jpeg",
+  "mermaid": "flowchart LR\n    A[\"2006-2018 Estimates inform consumers\"] --> B[\"2018-2021 Zillow commits capital on its estimates\"]\n    B --> C[\"Nov 2021 Zillow Offers wound down\"]\n    C --> D[\"2021-2026 Portals rebuild around leads, agent tools and data\"]\n    D --> E[\"2024-2026 Licensing, settlement and listing-access disputes\"]\n    D --> F[\"2025-2026 AI assistants and conversational search\"]\n    E --> G[\"Supply terms become architecture\"]\n    F --> G"
+ },
+ {
+  "post": "50-case-property-portals",
+  "figure": 2,
+  "id": "fig02-unit-portal-charges-determines-core-monetization",
+  "asset": "assets/images/50-case-property-portals/fig02-unit-portal-charges-determines-core-monetization.jpeg",
+  "mermaid": "flowchart TB\n    U[\"Unit of charge\"] --> S[\"Per advertiser, Rightmove\"]\n    U --> L[\"Per listing, REA\"]\n    U --> D[\"Per lead or closing, Zillow\"]\n    S --> S1[\"Contracts, packages, quotas, overage\"]\n    S --> S2[\"Branch performance and lead reports\"]\n    L --> L1[\"Per-listing orders and tier upgrades\"]\n    L --> L2[\"Vendor campaign finance and invoicing\"]\n    D --> D1[\"Lead allocation by share of voice per zip\"]\n    D --> D2[\"Lead-to-close attribution over two years\"]\n    D2 --> D3[\"Revenue estimate and true-up\"]"
+ },
+ {
+  "post": "50-case-property-portals",
+  "figure": 4,
+  "id": "fig04-why-commit-tier-use-needs-own",
+  "asset": "assets/images/50-case-property-portals/fig04-why-commit-tier-use-needs-own.jpeg",
+  "mermaid": "flowchart LR\n    M[\"Valuation model, present value\"] --> I[\"Inform: estimate shown to owner\"]\n    M --> O[\"Commit: cash offer\"]\n    O --> A{\"Seller accepts?\"}\n    A -->|\"Model overvalued, accepts more often\"| B[\"Home bought\"]\n    A -->|\"Model undervalued, walks away\"| W[\"No purchase\"]\n    B --> R[\"Repair and hold for months\"]\n    R --> X[\"Resale at future price\"]\n    X --> G[\"Gain or loss on inventory\"]\n    R --> C[\"Capacity and demand planning\"]\n    G -->|\"Forecast miss\"| P[\"Write-down\"]"
+ },
+ {
+  "post": "50-case-property-portals",
+  "figure": 7,
+  "id": "fig07-reference-architecture-inferred-public-record-property",
+  "asset": "assets/images/50-case-property-portals/fig07-reference-architecture-inferred-public-record-property.jpeg",
+  "mermaid": "flowchart LR\n    MLS[\"MLS replication and agent-software feeds\"] --> ING[\"Ingestion with license and embargo flags\"]\n    ING --> PR[\"Property registry, durable entity\"]\n    PR --> LS[\"Listing read model and search\"]\n    PR --> AVM[\"Valuation models by decision tier\"]\n    AVM --> EST[\"Inform: estimates and price badges\"]\n    AVM --> SL[\"Inform: seller-lead products\"]\n    AVM -.->|\"separate validation\"| LND[\"Commit: lending or buying\"]\n    LS --> LEAD[\"Lead routing and allocation\"]\n    SL --> LEAD\n    LEAD --> MON[\"Monetization core: contracts, orders or attribution\"]\n    LEAD --> AGT[\"Agent CRM and tour tools\"]\n    AGT -->|\"outcomes\"| MON\n    ING -->|\"license terms\"| ML[\"Training data eligibility\"]\n    ML --> AVM"
+ },
+ {
+  "post": "51-case-automotive",
+  "figure": 1,
+  "id": "fig01-where-each-case-sits-transaction-ladder",
+  "asset": "assets/images/51-case-automotive/fig01-where-each-case-sits-transaction-ladder.jpeg",
+  "mermaid": "flowchart LR\n    S1[\"Listing and contact\"] --> S2[\"Qualified lead\"]\n    S2 --> S3[\"Reservation and deal steps\"]\n    S3 --> S4[\"Owning the car\"]\n    M[\"mobile.de\"] -.->|\"leads, finance and leasing referrals\"| S2\n    A[\"Autotrader UK\"] -.->|\"Deal Builder reservations\"| S3\n    G[\"CarGurus\"] -.->|\"Digital Deal; CarOffer wound down 2025\"| S3\n    AS[\"AutoScout24\"] -.->|\"leads and leasing\"| S2\n    O[\"OLX Autos\"] -.->|\"buy, recondition, sell; exited 2023 to 2025\"| S4"
+ },
+ {
+  "post": "51-case-automotive",
+  "figure": 3,
+  "id": "fig03-plausible-reference-flow-consistent-mobile-de",
+  "asset": "assets/images/51-case-automotive/fig03-plausible-reference-flow-consistent-mobile-de.jpeg",
+  "mermaid": "sequenceDiagram\n    participant D as Dealer DMS\n    participant T as TSP\n    participant API as Seller API\n    participant PR as Price rating\n    participant LOG as Change log\n    participant AS as Ad Stream consumer\n    D->>T: Stock change\n    T->>API: POST ad with insertion request ID\n    API->>PR: Rate vehicle\n    PR-->>API: Band or no rating with reason\n    API-->>T: 201 Created or 303 See Other\n    API->>LOG: Ad created or updated\n    T->>API: Upload images\n    API->>PR: Recalculate with images\n    LOG-->>AS: AD_CREATE_OR_UPDATE after contract delay"
+ },
+ {
+  "post": "51-case-automotive",
+  "figure": 5,
+  "id": "fig05-reference-state-model-reservations-dealer-stock",
+  "asset": "assets/images/51-case-automotive/fig05-reference-state-model-reservations-dealer-stock.jpeg",
+  "mermaid": "stateDiagram-v2\n    [*] --> Active\n    Active --> ReservationRequested: buyer requests\n    ReservationRequested --> Reserved: dealer accepts\n    ReservationRequested --> Active: dealer declines or timeout\n    Active --> Reserved: buyer pays fee where dealer opted in\n    Reserved --> Active: reservation lapses or cancelled\n    Reserved --> Sold: sale confirmed\n    Active --> Sold: sold off platform\n    Sold --> [*]"
+ },
+ {
+  "post": "51-case-automotive",
+  "figure": 6,
+  "id": "fig06-loop-public-record-implies-once-rating",
+  "asset": "assets/images/51-case-automotive/fig06-loop-public-record-implies-once-rating.jpeg",
+  "mermaid": "flowchart LR\n    MKT[\"Market of asking prices and sales\"] -->|\"training data\"| MODEL[\"Market-value model\"]\n    MODEL -->|\"band per listing\"| BAND[\"Price rating\"]\n    BAND -->|\"label and sort feature\"| SRCH[\"Search results\"]\n    BAND -->|\"next band boundary\"| TOOL[\"Dealer pricing tool\"]\n    SRCH -->|\"leads\"| DEALER[\"Dealer\"]\n    TOOL -->|\"price change\"| DEALER\n    DEALER -->|\"reprices to band edge\"| MKT"
+ },
+ {
+  "post": "introduction",
+  "figure": 2,
+  "id": "fig02-liquidity-machine-supply-becomes-listings-that",
+  "asset": "assets/images/introduction/fig02-liquidity-machine-supply-becomes-listings-that.jpeg",
+  "mermaid": "flowchart LR\n    S[\"Supply: forms, APIs, feeds\"] --> L[\"Listing: a well-formed offer\"]\n    L --> P[\"Publication: decide, then propagate\"]\n    P --> D[\"Discovery: search, ranking, alerts\"]\n    D --> T[\"Trust: is this contact safe\"]\n    T --> C[\"Contact and transaction\"]\n    C --> M[\"Money: packages, leads, ads\"]\n    M -->|\"paid effects, bounded by policy\"| D\n    C -->|\"outcomes\"| D\n    C -->|\"outcomes\"| T\n    E[\"Platform underneath: events, data, ML, reliability\"] -.-> P\n    E -.-> D\n    E -.-> M"
+ },
+ {
+  "post": "introduction",
+  "figure": 4,
+  "id": "fig04-parts-ii-vi-follow-listing-through",
+  "asset": "assets/images/introduction/fig04-parts-ii-vi-follow-listing-through.jpeg",
+  "mermaid": "flowchart LR\n    PR[\"Preface: argument, failure patterns, Veldmark\"] --> P1[\"I Marketplace\"]\n    P1 --> P2[\"II Listing\"]\n    P2 --> P3[\"III Supply\"]\n    P3 --> P4[\"IV Discovery\"]\n    P4 --> P5[\"V Trust\"]\n    P5 --> P6[\"VI Money\"]\n    P6 --> P7[\"VII Platform\"]\n    P7 --> P8[\"VIII Leadership\"]\n    P8 --> P9[\"IX Practice\"]\n    P2 -.->|\"templates\"| R[\"Toolkit, glossary, bibliography\"]\n    P7 -.->|\"templates\"| R\n    P8 -.->|\"templates\"| R"
+ },
+ {
+  "post": "meet-veldmark",
+  "figure": 2,
+  "id": "fig02-veldmark-s-2027-baseline-three-marketplaces",
+  "asset": "assets/images/meet-veldmark/fig02-veldmark-s-2027-baseline-three-marketplaces.jpeg",
+  "mermaid": "flowchart LR\n    PS[\"Private sellers and buyers\"] -->|\"web and apps\"| TY[\"Tradeyard - Yardstick PHP monolith on MySQL plus about 40 services on AWS\"]\n    PS --> MV[\"Motorvane - about 120 Kotlin services on AWS\"]\n    PS --> HL[\"Hearthly - Go and TypeScript services on Google Cloud\"]\n    DMS[\"DMS vendors and transfer providers\"] -->|\"dealer stock feeds\"| MV\n    AG[\"36,500 agencies\"] --> RSV[\"About 160 real-estate software vendors\"]\n    AG --> KB[\"Keybridge - .NET agent CRM on Azure\"]\n    RSV -->|\"agency feeds\"| HL\n    KB -->|\"multi-diffusion\"| HL\n    KB -->|\"multi-diffusion\"| CP[\"Competing portals\"]\n    TY --> TYS[\"Solr 8 for NL BE PT, Elasticsearch 7 for PL\"]\n    MV --> MVS[\"Elasticsearch 8 on Elastic Cloud\"]\n    HL --> HLS[\"Self-managed OpenSearch on GKE\"]\n    TY -->|\"Safe Deal payments\"| ADY[\"Adyen for Platforms\"]\n    ADS[\"Veldmark Ads - Google Ad Manager with Prebid\"] -.->|\"ad slots\"| TY\n    ADS -.->|\"ad slots\"| MV\n    ADS -.->|\"ad slots\"| HL\n    TY --> SF[\"Snowflake - Tradeyard and Motorvane accounts\"]\n    MV --> SF\n    HL --> BQ[\"BigQuery\"]\n    KB --> SYN[\"Azure Synapse\"]\n    SF -->|\"revenue and invoices\"| SAP[\"Group finance on SAP S/4HANA\"]\n    BQ --> SAP\n    SYN --> SAP"
+ },
+ {
+  "post": "meet-veldmark",
+  "figure": 4,
+  "id": "fig04-share-platforms-not-products-brands-keep",
+  "asset": "assets/images/meet-veldmark/fig04-share-platforms-not-products-brands-keep.jpeg",
+  "mermaid": "flowchart TB\n    subgraph BR[\"Owned by each brand: products, UX, relevance, policy, prices\"]\n        TYP[\"Tradeyard\"]\n        MVP[\"Motorvane\"]\n        HLP[\"Hearthly\"]\n    end\n    subgraph CG[\"Common Ground: shared platform capabilities\"]\n        ID[\"Veldmark ID and business party registry\"]\n        TS[\"Trust and safety platform\"]\n        SR[\"Search platform - OpenSearch, Motorvane on Elasticsearch to 2029\"]\n        TX[\"Taxonomy, attribute and place services\"]\n        EN[\"Product catalog and entitlements - Tally\"]\n        NT[\"Messaging and notifications\"]\n        MD[\"Media\"]\n    end\n    subgraph FD[\"Foundations\"]\n        EV[\"Event backbone - Kafka on Confluent Cloud\"]\n        DP[\"Data and ML platform\"]\n    end\n    TYP --> CG\n    MVP --> CG\n    HLP --> CG\n    CG --> FD\n    KBX[\"Keybridge - stays separate and neutral\"] -.->|\"public supply contract only\"| HLP"
+ },
+ {
+  "post": "meet-veldmark",
+  "figure": 5,
+  "id": "fig05-common-ground-s-four-plateaus-each",
+  "asset": "assets/images/meet-veldmark/fig05-common-ground-s-four-plateaus-each.jpeg",
+  "mermaid": "flowchart LR\n    B[\"2027 baseline - four of everything, six-minute publication\"] --> Y1[\"2027 - govern and decide: forum, maps, event backbone, taxonomy service, shared T and S for NL and BE\"]\n    Y1 --> Y2[\"2028 - move: Veldmark ID, Tally, insertion and search out of Yardstick, OpenSearch for Tradeyard and Hearthly\"]\n    Y2 --> Y3[\"2029 - retire: Yardstick decommissioned, Motorvane search review\"]\n    Y3 --> Y4[\"2030 - harvest: 38 million euros a year lower run cost\"]"
+ },
+ {
+  "post": "toolkit",
+  "figure": 1,
+  "id": "fig01-how-templates-reference-each-other-understanding",
+  "asset": "assets/images/toolkit/fig01-how-templates-reference-each-other-understanding.jpeg",
+  "mermaid": "flowchart LR\n    CAP[\"Tool 1 Capability row\"] --> VRP[\"Tool 2 Vertical profile\"]\n    CAP --> CON[\"Tool 11 Consolidation card\"]\n    VRP --> ADR[\"Tool 12 Decision record\"]\n    CON --> ADR\n    ADR --> LIF[\"Tool 3 Lifecycle table\"]\n    ADR --> ATT[\"Tool 4 Dictionary entry\"]\n    LIF --> EVT[\"Tool 10 Event specification\"]\n    ATT --> FEED[\"Tool 5 Feed contract\"]\n    ATT --> IDX[\"Tool 7 Index design card\"]\n    FEED --> SLA[\"Tool 6 SLA card\"]\n    EVT --> SLA\n    EVT --> IDX\n    EVT --> TS[\"Tool 8 Enforcement card\"]\n    EVT --> ENT[\"Tool 9 Entitlement matrix\"]\n    TS --> SLA\n    ENT --> IDX"
+ },
+ {
+  "post": "where-listing-systems-go-wrong",
+  "figure": 2,
+  "id": "fig02-where-each-pattern-strikes-along-liquidity",
+  "asset": "assets/images/where-listing-systems-go-wrong/fig02-where-each-pattern-strikes-along-liquidity.jpeg",
+  "mermaid": "flowchart LR\n    S[\"Supply in: forms, APIs, feeds\"] --> L[\"Listing model: category, attributes, location\"]\n    L --> P[\"Publication and copies: index, alerts, caches, SEO\"]\n    P --> D[\"Discovery: search, ranking, recommendations\"]\n    D --> C[\"Contact and transaction: messages, leads, payments\"]\n    FR[\"Feed Roulette\"] -.-> S\n    CS[\"The Category Straitjacket\"] -.-> L\n    AJ[\"The Attribute Junkyard\"] -.-> L\n    DE[\"The Duplicate Echo\"] -.-> P\n    GI[\"Ghost Inventory\"] -.-> P\n    ID[\"Index-as-Database\"] -.-> P\n    MA[\"Moderation as an Afterthought\"] -.-> P\n    PR[\"Paid-Rank Drift\"] -.-> D\n    SI[\"The Scam Inbox\"] -.-> C\n    UND[\"Portfolio: Country Fork, Acquisition Archipelago, Platform Mandate\"] -.-> L\n    MEAS[\"Measurement and control: Vanity Liquidity, Entitlement Spaghetti, Unwatched Model\"] -.-> D"
+ },
+ {
+  "post": "where-listing-systems-go-wrong",
+  "figure": 4,
+  "id": "fig04-patterns-form-chains-most-downstream-symptoms",
+  "asset": "assets/images/where-listing-systems-go-wrong/fig04-patterns-form-chains-most-downstream-symptoms.jpeg",
+  "mermaid": "flowchart LR\n    FR[\"Feed Roulette\"] -->|\"unvalidated values\"| AJ[\"The Attribute Junkyard\"]\n    FR -->|\"late or missing deletes\"| GI[\"Ghost Inventory\"]\n    FR -->|\"new IDs on re-import\"| DE[\"The Duplicate Echo\"]\n    CS[\"The Category Straitjacket\"] -->|\"new facts go into free keys\"| AJ\n    CS -->|\"trees change separately\"| CF[\"The Country Fork\"]\n    ID[\"Index-as-Database\"] -->|\"removal built for one copy\"| GI\n    DE -->|\"stolen photos pass as duplicates\"| SI[\"The Scam Inbox\"]\n    MA[\"Moderation as an Afterthought\"] -->|\"no gate before contact\"| SI\n    VL[\"Vanity Liquidity\"] -->|\"revenue counted, organic cost not\"| PR[\"Paid-Rank Drift\"]\n    ES[\"Entitlement Spaghetti\"] -->|\"unbounded paid multipliers\"| PR\n    VL -->|\"models trained on clicks\"| UM[\"The Unwatched Model\"]\n    CF -->|\"each market acquires its own tools\"| AA[\"The Acquisition Archipelago\"]\n    AA -->|\"consolidation by decree\"| PM[\"The Platform Mandate\"]\n    PM -->|\"shadow stacks\"| AA"
+ }
+]

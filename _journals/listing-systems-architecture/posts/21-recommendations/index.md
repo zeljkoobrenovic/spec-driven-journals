@@ -122,31 +122,7 @@ Vinted and Airbnb made the same trade-off and settled it differently, because th
 
 Recommendation systems at scale share the multi-stage shape of search ranking. The difference is that there is no query to anchor relevance, so the candidate generation stage carries more of the load. For listings I use four stages with strict responsibilities.
 
----begin mermaid---
-flowchart LR
-    A["Anchor: listing, user or failed query"] --> CG["Candidate generation"]
-    subgraph SRC["Candidate sources"]
-        C1["Attribute and geo similarity"]
-        C2["Embedding nearest neighbors"]
-        C3["Co-view and co-contact"]
-        C4["Fresh local listings"]
-    end
-    CG --> C1
-    CG --> C2
-    CG --> C3
-    CG --> C4
-    C1 --> MF["Filter: availability, eligibility, consent, trust"]
-    C2 --> MF
-    C3 --> MF
-    C4 --> MF
-    MF -->|"hundreds of eligible candidates"| RR["Re-ranker: contact probability"]
-    RR --> PL["Policy: dealer caps, diversity, exploration"]
-    PL -->|"ten listings with reason codes"| SV["Carousel, feed, e-mail"]
-    LE["Listing event stream"] -.->|"inserts, updates, removals"| C1
-    LE -.-> C2
-    LE -.-> MF
-    SV -.->|"impressions, clicks, contacts"| LOG["Recommendation log"]
----end mermaid---
+![Diagram: Recommendations as four stages](assets/images/21-recommendations/fig03-recommendations-four-stages-several-cheap-candidate.jpeg)
 **Figure 3:** *Recommendations as four stages. Several cheap candidate sources, one of them purely content-based, feed one filter that enforces availability and eligibility at serving time. A re-ranker optimizes for contacts, and a policy caps concentration and reserves room for new listings. The listing event stream keeps both the candidate indices and the filter current.*
 
 ### Candidate generation
@@ -190,26 +166,7 @@ The **policy** then applies rules that a model should not learn:
 
 Freshness runs in two directions, and removal matters more than insertion: a sold listing should become ineligible within minutes, as a new listing should become eligible. Both come from the listing event stream that already feeds search ([[event-driven-listings]]). The sequence below replays the Golf's sale in Motorvane's target design.
 
----begin mermaid---
-sequenceDiagram
-    participant DMS as Dealer DMS feed
-    participant ING as Motorvane ingestion
-    participant EV as Listing event stream
-    participant ST as Status read model
-    participant ANN as Candidate indices
-    participant REC as Recommendation service
-    participant VDP as Detail page
-    DMS->>ING: full feed without the Golf, 26 hours after sale
-    ING->>EV: ListingSold, reason removed by feed
-    EV->>ST: status inactive
-    EV->>ANN: delete from attribute and vector indices
-    VDP->>REC: similar vehicles for a Golf anchor
-    REC->>ANN: candidates
-    ANN-->>REC: candidates without the sold Golf
-    REC->>ST: check status of every candidate
-    ST-->>REC: all active
-    REC-->>VDP: ten available cars with reason codes
----end mermaid---
+![Diagram: Two defenses against Ghost Inventory](assets/images/21-recommendations/fig04-two-defenses-against-ghost-inventory-unpublish.jpeg)
 **Figure 4:** *Two defenses against Ghost Inventory. The unpublish event deletes the listing from the candidate indices, and the serving-time status check catches anything the indices still hold, such as precomputed co-view lists. Neither defense can fix a feed that reports the sale 26 hours late; that is an ingestion problem, owned by the feed contract.*
 
 Three design points follow from the diagram.

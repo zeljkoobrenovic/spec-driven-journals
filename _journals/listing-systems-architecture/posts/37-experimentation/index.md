@@ -76,20 +76,7 @@ The **primary metric** (or overall evaluation criterion) is the one metric a tes
 
 An experimentation platform has four components. Each is simple; the hard part is making them agree on units, timestamps and definitions.
 
----begin mermaid---
-flowchart LR
-    REG["Experiment registry: hypothesis, unit, metrics, owner"] --> ASG["Assignment service"]
-    ASG -->|"variant per unit"| FLAG["Feature flags and config in services"]
-    FLAG --> SURF["Product surfaces: search, insertion, checkout, pricing"]
-    SURF -->|"experiment_exposure event"| EXP["Exposure log"]
-    SURF -->|"tracking and domain events"| DP["Data platform"]
-    DP --> MET["Governed metrics layer"]
-    EXP --> ENG["Analysis engine"]
-    MET --> ENG
-    ENG -->|"SRM check, variance reduction, sequential tests"| RES["Results and guardrails"]
-    RES --> DEC["Decision record in registry"]
-    RES -->|"near real time guardrail alerts"| ASG
----end mermaid---
+![Diagram: The four contracts of an experimentation platform](assets/images/37-experimentation/fig02-four-contracts-experimentation-platform-registry-fixes.jpeg)
 **Figure 2:** *The four contracts of an experimentation platform. The registry fixes unit and metrics before launch; assignment and exposure share a unit identifier; metrics come from the governed layer; the analysis engine checks the experiment's health before it reports an effect.*
 
 ### 1. Assignment
@@ -143,19 +130,7 @@ Johari, Li, Liskovich and Weintraub analyzed the first two mechanisms formally. 
 
 The bias can be large. In a 2020 meta-experiment on Airbnb's pricing tools, Holtz, Lobel, Liskovich and Aral ran the same treatment under listing-level randomization and under cluster randomization of listings, and estimated that "32.60% of the Bernoulli-randomized treatment effect estimate is due to interference bias", which they describe as a lower bound ([Holtz et al., 2020](https://arxiv.org/abs/2004.12489)). Airbnb is a booking marketplace, not a classifieds site, but the mechanism, listings competing for the same guests, is the same one that undid Veldmark's bump test.
 
----begin mermaid---
-flowchart TB
-    subgraph Test["During a seller-randomized bump test"]
-        T1["Treatment sellers bump more"] -->|"take first-page time"| C1["Control sellers' bumps slide down faster"]
-        C1 --> D1["Measured gap: treatment looks much better"]
-    end
-    subgraph Rollout["After rollout to all sellers"]
-        A1["Everyone bumps more"] --> A2["Each bump holds the top for less time"]
-        A2 --> A3["Contacts per bump fall for everyone"]
-        A3 --> D2["Real effect: smaller or negative"]
-    end
-    D1 -.->|"transfer mistaken for effect"| D2
----end mermaid---
+![Diagram: How the bump test misled](assets/images/37-experimentation/fig03-how-bump-test-misled-under-seller.jpeg)
 **Figure 3:** *How the bump test misled. Under seller randomization, treatment sellers gained partly at control sellers' expense; at full rollout there was no one left to take from, and the transfer turned into congestion.*
 
 ## Designs for Two-Sided Markets
@@ -200,20 +175,7 @@ Assign whole cities or countries, a coarse form of clustering. It suits market-l
 | Switchback | Low if carryover is short | Medium | Medium | Short-lived mechanisms |
 | Geographic | Low | Very low | Low to medium | Fees, policies, campaigns |
 
----begin mermaid---
-flowchart TB
-    Q1{"Does the change move visibility, prices or the comparison set?"}
-    Q1 -->|"no"| Q2{"Which side does it act on?"}
-    Q2 -->|"buyers"| B["Buyer-side randomization"]
-    Q2 -->|"sellers"| S["Seller-side randomization"]
-    Q1 -->|"yes"| Q3{"Can it be applied per buyer-listing pair?"}
-    Q3 -->|"yes, ranking model change"| TS["Two-sided randomization or interleaving"]
-    Q3 -->|"no, price or policy"| Q4{"Is carryover short, hours not days?"}
-    Q4 -->|"yes"| SW["Switchback by region and time slot"]
-    Q4 -->|"no"| CL["Cluster randomization by region and category"]
-    CL --> Q5{"Fewer than about 30 usable clusters?"}
-    Q5 -->|"yes"| GEO["Geographic test with matched markets"]
----end mermaid---
+![Diagram: Choosing a randomization unit](assets/images/37-experimentation/fig05-choosing-randomization-unit-first-question-whether.jpeg)
 **Figure 5:** *Choosing a randomization unit. The first question is whether the change works by reallocating something units compete for; if it does, user-level randomization is the wrong default.*
 
 ### Interleaving: power for ranking models

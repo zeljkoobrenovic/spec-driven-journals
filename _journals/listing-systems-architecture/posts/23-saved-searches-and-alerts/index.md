@@ -77,21 +77,7 @@ The **query part must be stored in normalized, versioned form**, not as a URL or
 
 Figure 1 shows the lifecycle a saved search moves through.
 
----begin mermaid---
-stateDiagram-v2
-    [*] --> Active: user saves a search
-    Active --> Paused: user pauses or unsubscribes from all channels
-    Paused --> Active: user resumes
-    Active --> Dormant: no opened alert in 12 months
-    Dormant --> Active: user reopens or confirms
-    Dormant --> Deleted: six months without reactivation
-    Active --> Migrating: taxonomy or gazetteer version changes
-    Migrating --> Active: rewritten and compared
-    Migrating --> NeedsReview: no safe automatic mapping
-    NeedsReview --> Active: user confirms new criteria
-    Active --> Deleted: user deletes or erasure request
-    Deleted --> [*]
----end mermaid---
+![Diagram: A saved search is long-lived user data with its own lifecycle](assets/images/23-saved-searches-and-alerts/fig01-saved-search-long-lived-user-data.jpeg)
 **Figure 1:** *A saved search is long-lived user data with its own lifecycle. Dormancy and migration are states, not cleanup scripts, so that each one has an owner, a user notice and a measurable backlog.*
 
 A saved search is personal data. The productscape model behind this book names the capability *Saved Search / Alerts* ("persist search intent and alert on new matches by email/push") and records the saved search as personal data, kept "until user deletion or inactivity threshold". That is the right default: a saved search says where someone wants to live, what car they can afford, or what they want to buy, and it is governed by the General Data Protection Regulation (GDPR) like any other personal data.
@@ -163,26 +149,7 @@ Some marketplaces skip the engine altogether and build a **structured matcher**:
 
 Figure 4 shows the target architecture Ingrid's team proposes for Common Ground.
 
----begin mermaid---
-flowchart LR
-    U["Buyer apps and web"] -->|"save, edit, pause"| SS["Saved-search service, system of record"]
-    SS -->|"SavedSearchChanged"| PI["Percolator indices by brand, country, category"]
-    L["Listing event stream"] -->|"published, price changed, resumed"| M["Alert matcher"]
-    L -->|"sold, removed, reserved, expired"| R["Retraction handler"]
-    G["Risk gate from trust and safety"] -->|"cleared for alerting"| M
-    M -->|"percolate with pre-filter keys"| PI
-    M -->|"match events keyed by user"| O["Notification orchestrator"]
-    R -->|"cancel pending items"| O
-    O -->|"dedup, caps, quiet hours, consent"| LG["Match ledger"]
-    O -->|"send-time availability check"| LS["Listing read model"]
-    O --> P["Push worker, APNs and FCM"]
-    O --> E["E-mail and digest worker"]
-    O --> IA["In-app inbox"]
-    P -->|"delivered, opened"| F["Engagement events"]
-    E -->|"delivered, bounced, complained, unsubscribed"| F
-    F --> SS
-    F --> D["Data platform, ranking and recommendations"]
----end mermaid---
+![Diagram: The saved-search store is the system of record and the percolator indices are rebuildable projections](assets/images/23-saved-searches-and-alerts/fig04-saved-search-store-system-record-percolator.jpeg)
 **Figure 4:** *The saved-search store is the system of record and the percolator indices are rebuildable projections. Listing events enter through a risk gate; matches flow to an orchestrator that owns deduplication, policy and a send-time availability check; channel workers send; engagement flows back to saved-search hygiene and to ranking.*
 
 The responsibilities:
@@ -202,28 +169,7 @@ The matching approach is a **hybrid**: percolation per event for instant alerts,
 
 Figure 5 replays Femke's listing on the Common Ground design.
 
----begin mermaid---
-sequenceDiagram
-    participant L as ListingStream
-    participant G as RiskGate
-    participant M as Matcher
-    participant P as Percolator
-    participant O as Orchestrator
-    participant W as PushWorker
-    participant B as Buyer
-    L->>G: ListingPublished, city bike, 3014 Rotterdam, 240 euros
-    G->>M: risk low, alertable
-    M->>P: percolate with keys city bikes, cells, price band
-    P-->>M: 312 saved searches
-    M->>O: 312 match events keyed by user
-    O->>O: dedup 9, quiet hours 0, caps 14 to digest
-    O->>W: 289 instant pushes
-    W->>B: push within 40 seconds of searchable
-    Note over O: Monday evening the bike sells
-    L->>O: ListingSold
-    O->>O: cancel digest items for the bike
-    O->>O: 07:00 send-time check drops any remaining item
----end mermaid---
+![Diagram: On the target design the bike's 312 matches become 289 instant pushes within seconds, 14 matches are deferred to digests by frequency caps, and 9 are suppressed as duplicates](assets/images/23-saved-searches-and-alerts/fig05-target-design-bike-s-312-matches.jpeg)
 **Figure 5:** *On the target design the bike's 312 matches become 289 instant pushes within seconds, 14 matches are deferred to digests by frequency caps, and 9 are suppressed as duplicates. The sale on Monday retracts the bike from pending digests, and the send-time check would catch it even if the retraction were missed.*
 
 The match ledger and the caps decide what each of the 312 matches becomes. Nine belong to users with two overlapping saved searches (city bikes near Rotterdam, and all bikes under €300 in South Holland), and the ledger sends one notification per user per listing. Fourteen users had already received their cap of instant alerts for the evening and get the bike in the next digest. The remaining 289 pushes leave within seconds. The numbers in the figure are illustrative.

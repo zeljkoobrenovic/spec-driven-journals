@@ -76,17 +76,7 @@ Dates are those of the cited releases, decisions and articles; ownership and por
 
 **A correction worth stating once.** Immowelt and Immonet were combined as companies in **2015**, not in 2023. The 2015 release describes a holding and two sites (Nuremberg and Hamburg) and says nothing about merging the portals' technology. In February 2024 both brands were still operated by AVIV Germany. No public source found for this book documents a platform merger or a shutdown of immonet; readers should check before relying on either brand's current status.
 
----begin mermaid---
-flowchart LR
-    P1["Assembling national portals, 2010 to 2019"] --> P2["Moving up the seller funnel, 2019 to 2023"]
-    P2 --> P3["Integration intent, 2021 to 2024"]
-    P3 --> P4["Separation and local autonomy, 2025"]
-    P1 -.->|"bought: complete businesses and stacks"| L1["Separate portals per country"]
-    P2 -.->|"shared: valuation science, professional offer"| L2["Commercial and data layer"]
-    P3 -.->|"stated goal: one European marketplace"| L3["Group technology roadmap"]
-    P4 -.->|"kept: group functions where they pay"| L4["Local businesses with shared functions"]
----end mermaid---
-
+![Diagram: AVIV's public record moves from separate portals to a shared commercial and data layer, then to a stated group technology goal, and back to local businesses with selected group functions](assets/images/49-case-aviv/fig01-aviv-s-public-record-moves-separate.jpeg)
 **Figure 1:** *AVIV's public record moves from separate portals to a shared commercial and data layer, then to a stated group technology goal, and back to local businesses with selected group functions. Only the second step is documented in any product detail.*
 
 ## Phase 1: Assembling National Portals (2010–2019)
@@ -147,21 +137,7 @@ In late June 2023 SeLoger, until then an agent-only portal for sales, opened fre
 
 The revenue model behind the funnel was stated the same year: AVIV France monetizes seller leads "through a commission-share model" (Online Marketplaces, March 2023).
 
----begin mermaid---
-flowchart LR
-    O["Homeowner"] -->|"asks for an estimate"| V["Valuation product"]
-    O -->|"lists privately"| FS["Private sale listing"]
-    B["Buyer contacts on portals"] -->|"classified as likely sellers"| SD["Seller detection"]
-    V --> SL["Seller lead"]
-    FS --> SL
-    SD --> SL
-    SL -->|"routed to a subscribing agent"| AG["Agency"]
-    AG -->|"wins the mandate"| M["Mandate in agency software"]
-    M -->|"feed to several portals"| L["Professional listing"]
-    L --> B
-    M -.->|"sale closes off the portal"| CS["Commission share to the portal"]
----end mermaid---
-
+![Diagram: The seller funnel that AVIV's documented French moves serve, drawn from the public product descriptions (2019–2023) — not a description of AVIV's systems](assets/images/49-case-aviv/fig04-seller-funnel-that-aviv-s-documented.jpeg)
 **Figure 4:** *The seller funnel that AVIV's documented French moves serve, drawn from the public product descriptions (2019–2023) — not a description of AVIV's systems. Every entry point produces a seller lead; the revenue event, a commission share, happens outside the portal.*
 
 > **INFERENCE, NOT DOCUMENTED:** A commission-share model makes the portal's revenue depend on a sale recorded by an agency and a notary, weeks or months after the lead. A plausible reference architecture — not a description of AVIV's systems — needs a lead ledger with stable identifiers for the homeowner, the property and the agency, homeowner consent to routing and outcome tracking, and a reconciliation process against agent-reported or contractually reported closings. That is closer to the attribution systems of [[monetization-models]] and [[products-and-entitlements]] than to a classifieds listing service, and it is local by nature: French mandates, fees and notarial practice do not exist in the same form in Germany or Belgium.
@@ -223,33 +199,7 @@ OpenImmo e.V. lists AVIV Group as its member from France (accessed October 2026)
 
 > **INFERENCE, NOT DOCUMENTED:** A plausible reference architecture for a federated multi-country property group — not a description of AVIV's systems — puts cloud landing zones, security, identity tooling, the data platform and machine-learning tooling at group level; offers a shared ingestion engine and a core listing schema (location, price, surface, rooms, media) that each country extends with its own disclosure fields and property-type taxonomy; may share a search engine while keeping ranking policy and paid visibility local; shares valuation *methods* while training on local data; and keeps monetization, billing, agent CRM and professional tools local. In that design the group platform ends at the ingestion adapters on one side and the ranking policy on the other.
 
----begin mermaid---
-flowchart TB
-    subgraph LOCAL["Local edge per country"]
-        AD["Feed adapters per software ecosystem"]
-        DS["Disclosure fields and validation"]
-        RK["Ranking policy and paid visibility"]
-        PR["Products, pricing and billing"]
-        CRM["Agent tools and seller-lead routing"]
-        BR["Brand, UX and go-to-market"]
-    end
-    subgraph SHARED["Plausibly shared group core"]
-        CL["Cloud, security and FinOps"]
-        DP["Data platform and ML tooling"]
-        ID["Identity and consent tooling"]
-        IE["Ingestion engine and core listing schema"]
-        SE["Search engine"]
-        VM["Valuation methods"]
-    end
-    AD --> IE
-    DS --> IE
-    IE --> SE
-    RK --> SE
-    DP --> VM
-    VM -->|"models trained on local data"| CRM
-    PR --> CRM
----end mermaid---
-
+![Diagram: A labeled reference architecture for a multi-country property group, not AVIV's](assets/images/49-case-aviv/fig05-labeled-reference-architecture-multi-country-property.jpeg)
 **Figure 5:** *A labeled reference architecture for a multi-country property group, not AVIV's: the shared core is infrastructure, data, identity, engines and methods; the local edge is everything an agent, a regulator or a homeowner sees.*
 
 ## Trade-offs the Case Illustrates

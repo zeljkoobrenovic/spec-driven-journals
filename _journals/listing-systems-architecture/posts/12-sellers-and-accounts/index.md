@@ -121,20 +121,7 @@ OAuth makes the same separation. The OAuth 2.0 Security Best Current Practice (R
 
 ### One entity per question
 
----begin mermaid---
-flowchart TB
-    U["User, a Veldmark ID identity"] -->|"membership with roles"| SA["Seller account, per brand"]
-    LE["Legal entity, the trader"] -->|"acts as"| SA
-    SA -->|"has"| BR["Branches"]
-    NW["Network or franchise brand"] -.->|"groups several"| LE
-    SA -->|"party to"| CT["Commercial contract and billing account"]
-    CT -->|"covers"| BR
-    BR -->|"shown as"| SF["Storefront profile"]
-    IP["Integration principal"] -->|"grant scoped to branch and capability"| BR
-    BR -->|"assigned"| L["Listings"]
-    SA -->|"owns"| L
-    TS["Trader status record"] --> SA
----end mermaid---
+![Diagram: Eight entities, each answering one question](assets/images/12-sellers-and-accounts/fig03-eight-entities-each-answering-one-question.jpeg)
 **Figure 3:** *Eight entities, each answering one question. Users act, legal entities are responsible, contracts pay, and storefronts are shown; seller accounts tie them to one brand, branches tie them to a place, networks group traders under one umbrella, and integrations get scoped grants instead of logins.*
 
 Each entity answers one question and lives in one place:
@@ -175,27 +162,7 @@ A franchise network is a display and commercial concept, not a legal hierarchy, 
 
 A **seller account lifecycle** is the set of states an account passes through, from registration to erasure. It differs for private and professional accounts mainly in the onboarding gate.
 
----begin mermaid---
-stateDiagram-v2
-    [*] --> Registered: sign-up or contract
-    Registered --> Active: private seller with verified contact
-    Registered --> Onboarding: professional or declared trader
-    Onboarding --> PendingVerification: trader data submitted
-    PendingVerification --> Active: verification passed
-    PendingVerification --> Onboarding: data incomplete or unreliable
-    Active --> UnderReview: reclassification or risk case
-    UnderReview --> Active: case closed
-    UnderReview --> Onboarding: reclassified as trader
-    Active --> Restricted: limits on listing or contact
-    Restricted --> Active: limits lifted
-    Active --> Suspended: enforcement or unpaid contract
-    Restricted --> Suspended: enforcement
-    Suspended --> Active: appeal upheld or debt settled
-    Active --> Closed: seller or contract ends
-    Suspended --> Closed: termination
-    Closed --> Erased: retention period expired
-    Erased --> [*]
----end mermaid---
+![Diagram: A seller account's lifecycle](assets/images/12-sellers-and-accounts/fig05-seller-account-s-lifecycle-professional-accounts.jpeg)
 **Figure 5:** *A seller account's lifecycle. Professional accounts pass a verification gate before their listings go live, private accounts can be reclassified into it, and closing an account starts retention clocks rather than deleting data at once.*
 
 Three transitions need explicit design:
@@ -277,30 +244,7 @@ A multi-brand group has three realistic options for who-lists data:
 
 Veldmark chooses the middle option, and the Keybridge case shows why the purpose limits matter. In March 2027, Veldmark committed that **no Keybridge agency data is used by Hearthly for ranking or sales targeting**, with access controls and an annual independent review. Agence Rhône Habitat is both a Keybridge customer and a Hearthly advertiser. A shared registry of legal entities will link the two accounts, because the same company is the trader in both. The question is what that link may be used for.
 
----begin mermaid---
-flowchart TB
-    subgraph GROUP["Group layer"]
-        VID["Veldmark ID: users and logins"]
-        BPR["Business party registry: legal entities and verification"]
-    end
-    subgraph BRANDS["Brand layer"]
-        TY["Tradeyard seller accounts"]
-        MV["Motorvane seller accounts"]
-        HE["Hearthly seller accounts"]
-    end
-    subgraph SAAS["Neutral SaaS"]
-        KB["Keybridge tenants and CRM data"]
-    end
-    VID --> TY
-    VID --> MV
-    VID --> HE
-    BPR -->|"verified trader facts"| TY
-    BPR -->|"verified trader facts"| MV
-    BPR -->|"verified trader facts"| HE
-    BPR -->|"verified trader facts"| KB
-    KB -->|"listings via integration grant only"| HE
-    KB -.->|"no CRM, lead or competitor data"| HE
----end mermaid---
+![Diagram: Share identity and verified legal facts, not commercial data](assets/images/12-sellers-and-accounts/fig06-share-identity-verified-legal-facts-not.jpeg)
 **Figure 6:** *Share identity and verified legal facts, not commercial data. The registry gives every brand the same verified trader record; Keybridge reaches Hearthly only as an integration principal with scoped grants, and its CRM data never crosses the dashed line.*
 
 The rules Veldmark writes into the decision record:

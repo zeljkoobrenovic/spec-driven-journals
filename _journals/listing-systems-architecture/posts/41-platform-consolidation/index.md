@@ -103,19 +103,7 @@ The best-documented case in the industry is a forced one. Under the acquisition 
 
 The integration option is the first architectural decision after signing, and Figure 3 makes it with four questions.
 
----begin mermaid---
-flowchart TB
-    Q1{"Regulatory remedy or commitment that requires separation?"}
-    Q1 -->|"yes"| SEP["Hold separate or divest, with transitional services"]
-    Q1 -->|"no"| Q2{"Likely to be sold within three years?"}
-    Q2 -->|"yes"| FED["Federate under group controls; share only separable services"]
-    Q2 -->|"no"| Q3{"Same vertical and market as a group brand?"}
-    Q3 -->|"no"| SHR["Share services beneath; keep product and brand"]
-    Q3 -->|"yes"| Q4{"Separate investment case for product convergence?"}
-    Q4 -->|"no"| SHR
-    Q4 -->|"yes"| REP["Replatform onto sibling; brand migration as a separate decision"]
----end mermaid---
-
+![Diagram: Choosing an integration option](assets/images/41-platform-consolidation/fig03-choosing-integration-option-regulation-commitments-expected.jpeg)
 **Figure 3:** *Choosing an integration option. Regulation, commitments and the expected holding period remove options before technology is considered; replatforming onto a sibling needs its own investment case, and a brand merger is a separate decision even then.*
 
 The questions are ordered by how absolute they are. A merger-control remedy or a commitment to customers, such as Keybridge's neutrality, rules out integration whatever its savings. A likely sale within a few years rules out deep sharing, because every shared layer becomes separation work. Only then does the question of fit arise.
@@ -124,15 +112,7 @@ The questions are ordered by how absolute they are. A merger-control remedy or a
 
 Figure 4 is the reference sequence for a marketplace acquired into a group that already has shared platforms; its gates matter more than its exact stage boundaries.
 
----begin mermaid---
-flowchart LR
-    S0["Stage 0: Day-one controls"] -->|"gate: risk baseline"| S1["Stage 1: Invisible and contractual"]
-    S1 -->|"gate: data and cost visible"| S2["Stage 2: Trust and identity"]
-    S2 -->|"gate: fraud and login parity"| S3["Stage 3: Shared engines"]
-    S3 -->|"gate: relevance and freshness parity"| S4["Stage 4: Product platform, optional"]
-    S4 -.->|"separate decision"| BM["Brand migration"]
----end mermaid---
-
+![Diagram: The consolidation sequence](assets/images/41-platform-consolidation/fig04-consolidation-sequence-each-stage-moves-capabilities.jpeg)
 **Figure 4:** *The consolidation sequence. Each stage moves capabilities that are more visible to users than the last; each gate is a measured condition, not a date. Product convergence and brand migration are optional and decided separately.*
 
 | Stage | Capabilities | Why at this point | Gate to the next stage |
@@ -159,24 +139,7 @@ The governing rule is to **decouple the brand migration from the platform migrat
 
 A brand migration touches more systems than its sponsors expect. Figure 5 lists the workstreams and their dependencies.
 
----begin mermaid---
-flowchart TB
-    DEC["Brand decision and date"] --> LEG["Legal entities, terms and notices to business users"]
-    DEC --> DOM["Domains, URL map and redirect registry"]
-    DEC --> ACC["Account continuity, no re-registration"]
-    DEC --> APP["Apps: same identifiers, new name and theme"]
-    DEC --> MSG["E-mail and push: sender domains and links in alerts"]
-    DEC --> PART["Partner feeds, APIs and credentials"]
-    DOM --> SEO["Search engine move and traffic baseline"]
-    MSG --> SEO
-    LEG --> GO["Switch day"]
-    ACC --> GO
-    APP --> GO
-    PART --> GO
-    SEO --> GO
-    GO --> AFT["Old domain kept with redirects for years"]
----end mermaid---
-
+![Diagram: The workstreams of a brand migration](assets/images/41-platform-consolidation/fig05-workstreams-brand-migration-most-are-invisible.jpeg)
 **Figure 5:** *The workstreams of a brand migration. Most are invisible in the brand plan and visible on switch day: a broken redirect, a forced re-registration, an alert e-mail linking to a retired domain or a partner feed sent to an endpoint that no longer answers.*
 
 Each workstream has its own rules:

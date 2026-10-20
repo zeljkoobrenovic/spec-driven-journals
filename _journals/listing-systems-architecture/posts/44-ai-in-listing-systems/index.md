@@ -106,28 +106,7 @@ An AI feature in a listing system has four parts that the predictive-ML platform
 
 Around them sit **validators**: deterministic checks that an output conforms to the attribute dictionary, the filter schema or the policy taxonomy, and **guardrails** that block outputs containing contact details, payment instructions, prohibited items or unsupported claims.
 
----begin mermaid---
-flowchart TB
-    subgraph Surfaces["Product surfaces"]
-        INS["Insertion flow"]
-        SRCH["Search and chat"]
-        PRO["Pro copilots"]
-        EXT["External agents via MCP"]
-    end
-    INS --> GW["AI gateway: routing, quotas, cost, logs, kill switch"]
-    SRCH --> GW
-    PRO --> GW
-    EXT --> AGW["Agent API gateway: auth, quotas, attribution"]
-    AGW --> TOOLS
-    GW --> MOD["Models: provider APIs and self-hosted"]
-    GW --> REG["Prompt and configuration registry"]
-    MOD --> VAL["Validators: schema, taxonomy, policy"]
-    VAL --> GR["Guardrails: contacts, payments, claims"]
-    GR --> TOOLS["Marketplace tools: taxonomy, search, price, trust"]
-    TOOLS --> SOR["Systems of record: listing, index, catalog"]
-    GW --> EVAL["Evaluation harness and sampled audits"]
----end mermaid---
-
+![Diagram: Models never write to systems of record directly](assets/images/44-ai-in-listing-systems/fig02-models-never-write-systems-record-directly.jpeg)
 **Figure 2:** *Models never write to systems of record directly: every output passes a deterministic validator and a guardrail, and reaches listings, search or catalog only through the same tools and contracts that the rest of the platform uses.*
 
 ### Boundaries that matter
@@ -164,32 +143,7 @@ It depends on two Common Ground capabilities that went live just before it: the 
 
 The seller sees all five as an editable form and must confirm before publishing. The published listing carries a small label, "Description drafted with AI and checked by the seller", and per-field provenance.
 
----begin mermaid---
-sequenceDiagram
-    participant S as Seller app
-    participant AS as Listing assistant
-    participant TS as Trust and safety
-    participant TX as Taxonomy service
-    participant VLM as Vision language model
-    participant PH as Price hint model
-    participant LS as Listing service
-    S->>AS: four photos
-    AS->>TS: perceptual hash and prohibited item check
-    TS-->>AS: clear
-    AS->>TX: current leaf categories
-    AS->>VLM: rank categories from allowed list
-    VLM-->>AS: Bikes Cargo, confidence 0.94
-    AS->>TX: attribute schema for Cargo
-    AS->>VLM: fill schema, unknown allowed
-    VLM-->>AS: attributes with confidences
-    AS->>PH: price range for attributes and location
-    PH-->>AS: 1450 to 1700 euros
-    AS->>VLM: draft title and description from confirmed fields
-    AS-->>S: editable proposal with provenance
-    S->>LS: confirm and publish at 1600 euros
-    LS->>TS: standard moderation pipeline
----end mermaid---
-
+![Diagram: The language model ranks categories from an allowed list, fills a schema it is given, and writes prose last](assets/images/44-ai-in-listing-systems/fig03-language-model-ranks-categories-allowed-list.jpeg)
 **Figure 3:** *The language model ranks categories from an allowed list, fills a schema it is given, and writes prose last; the price comes from a registered predictive model and the photos are screened before any generation starts.*
 
 ### One listing: a Utrecht cargo bike
@@ -239,18 +193,7 @@ Agentic search, in which the model plans several steps and calls tools, costs an
 
 When an external assistant calls the marketplace, search becomes an API product with its own contract. ImmoScout24's account of its ChatGPT app shows that the mechanics differ from web releases: the assistant platform caches tool descriptors, so a deploy can break references that the platform still holds. Rightmove's FY2025 results, published in February 2026, described conversational search going live and an app submitted to the ChatGPT ecosystem ([Rightmove plc, 2026](https://plc.rightmove.co.uk/content/uploads/2026/02/Rightmove-RNS-27.02.26.pdf)). In both cases the assistant does not get the website; it gets **tools**: search with a structured filter schema, listing summaries, and links back.
 
----begin mermaid---
-flowchart LR
-    A["External assistant"] -->|"tool call with filters"| G["Agent API gateway"]
-    G -->|"authenticate partner, quota per partner"| Q["Query compiler and validator"]
-    Q --> S["Search API on the shared index"]
-    S --> F["Result filter: public fields only, no contact data"]
-    F --> L["Listing summaries with tracked links"]
-    L --> A
-    A -->|"user follows link"| W["Listing page on Hearthly"]
-    W -->|"contact attributed to channel"| LD["Lead and analytics"]
----end mermaid---
-
+![Diagram: An external assistant gets tools, not pages](assets/images/44-ai-in-listing-systems/fig06-external-assistant-gets-tools-not-pages.jpeg)
 **Figure 6:** *An external assistant gets tools, not pages: authenticated, rate-limited search over the same index, public fields only, and tracked links that bring contacts back to the marketplace and attribute them to the channel.*
 
 The decisions Veldmark records for the channel in its **February 2028** decision record are the ones every group will face:

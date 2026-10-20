@@ -139,29 +139,7 @@ Veldmark's decision record, owned by the shared trust-and-safety platform, maps 
 
 The pipeline that replaced the five exporters has four stages (look up the ground text, send the user's statement and store it as evidence, strip personal data, submit in batches keyed by decision ID), and one rule: **the user's statement and the database submission are two views of one decision, generated from the same record.**
 
----begin mermaid---
-sequenceDiagram
-    participant DS as DecisionService
-    participant SR as SoRService
-    participant PR as PolicyRegistry
-    participant NS as NoticeService
-    participant PS as PIIStripper
-    participant BQ as BatchQueue
-    participant TDB as TransparencyDatabase
-    participant ES as EvidenceStore
-    DS->>SR: DecisionRecorded with decision_id and action
-    SR->>PR: ground text for policy and version in user language
-    PR-->>SR: ground and redress text
-    SR->>NS: statement to the account holder by e-mail and in-app
-    SR->>ES: store full statement with personal data
-    SR->>PS: statement for the database
-    PS-->>SR: personal data removed, check passed
-    SR->>BQ: enqueue keyed by decision_id
-    BQ->>TDB: batch of up to 100 statements
-    TDB-->>BQ: accepted or rejected batch
-    BQ->>TDB: on retry check existing puid first
-    BQ->>ES: record submission id and time
----end mermaid---
+![Diagram: One decision, two statements](assets/images/27-marketplace-regulation/fig02-one-decision-two-statements-user-receives.jpeg)
 **Figure 2:** *One decision, two statements. The user receives the full statement with redress options; the Commission's database receives a version stripped of personal data, batched and keyed by the decision ID, so retries never create duplicates and every submission can be traced back to its decision.*
 
 Throughput is not the hard part. In 2027 Veldmark's three consumer platforms generated about **61,000** restricting decisions a week: listing removals and demotions, message withholdings, payout holds and account suspensions, with Tradeyard Netherlands' roughly 20,000 weekly listing removals the largest single source. At 100 statements per batch that is only about 610 API calls a week. Three other things are hard:
@@ -256,20 +234,7 @@ The 2026 figures show why DAC7 is mostly a filtering problem. Safe Deal processe
 
 The buyer protection fee is charged to the buyer, not withheld from the seller, so it does not reduce consideration. Femke's city bike is a useful edge case. She sold it for **€225** on Monday 8 March 2027, and the buyer paid the **€11.95** fee on top. Her consideration is €225, and with one sale in the year she is an excluded seller. If she sold 30 items through Safe Deal in 2027, even small ones, she would become reportable, and Tradeyard would need her tax identification number before 31 December.
 
----begin mermaid---
-flowchart LR
-    LED["Safe Deal ledger"] -->|"payouts per seller"| AGG["Quarterly aggregation per seller and country"]
-    AGG --> THR["Excluded-seller test, 30 sales and 2,000 euro"]
-    THR -->|"reportable or approaching"| DD["Due diligence requests"]
-    DD --> TP["Seller tax profile"]
-    VID["Veldmark ID claims"] -->|"verified name and address"| TP
-    PSP["Adyen KYC and payout account"] -->|"financial account identifier"| TP
-    TP --> VAL["TIN format and VAT validation"]
-    VAL --> REP["Annual report in the standard format"]
-    REP -->|"by 31 January"| TAX["Dutch tax administration"]
-    REP --> SELL["Copy of reported data to each seller"]
-    TP --> EVD["Evidence and retention per national rules"]
----end mermaid---
+![Diagram: Veldmark's DAC7 pipeline](assets/images/27-marketplace-regulation/fig04-veldmark-s-dac7-pipeline-payment-ledger.jpeg)
 **Figure 4:** *Veldmark's DAC7 pipeline. The payment ledger provides the quarterly consideration; identity claims and the payment provider supply verified identity and account data; a separate tax profile collects what only tax law needs; the report goes to the tax authority and the same data goes to each seller.*
 
 Three architectural lessons came out of building it. **Aggregate from the ledger, not from orders**, because consideration is what was paid or credited, net of fees, in the quarter it was paid. **Ask early**: the pipeline flags sellers approaching the threshold (20 sales or €1,500) so due diligence starts before the deadline rather than in December. **Keep the tax profile separate**: tax identification numbers and dates of birth are collected for one purpose, under tax law, and must not leak into the general identity claims or the analytics warehouse. [[transactions-and-payments]] covers the ledger, and RECONCILED's [[payments-to-ledger]] covers the accounting integration.
@@ -329,27 +294,7 @@ The obligations in this chapter form a long list, but they ask for only five sys
 | **Disclosure surfaces** | DSA Arts. 26–27 and 30(7); P2B Art. 5; UCPD Art. 7(4a) and Annex I 11a; CRD Art. 6a; energy and vehicle labeling | Generated from documented parameters and structured fields, never hand-written per page |
 | **Regulatory reporting views** | DSA transparency reports and active-recipient counts; DAC7 reports | Saved, versioned queries over the event log and ledger; reproducible |
 
----begin mermaid---
-flowchart TB
-    LAW["Legal sources and guidance"] --> OR["Obligation register"]
-    OR -->|"requirement"| CTRL["Controls in shared components"]
-    subgraph COMP["Compliance-by-design components"]
-        DR["Decision record and evidence store"]
-        TR["Trader and business registry"]
-        DSUR["Disclosure surfaces"]
-        RV["Regulatory reporting views"]
-    end
-    CTRL --> DR
-    CTRL --> TR
-    CTRL --> DSUR
-    CFG["Country and brand configuration"] --> COMP
-    DR --> RV
-    TR --> RV
-    LEDGER["Payment ledger"] --> RV
-    RV -->|"reports and submissions"| AUTH["Regulators and tax authorities"]
-    OR -->|"evidence query"| RV
-    RV -->|"control test results"| OR
----end mermaid---
+![Diagram: Compliance by design](assets/images/27-marketplace-regulation/fig05-compliance-design-each-obligation-register-points.jpeg)
 **Figure 5:** *Compliance by design. Each obligation in the register points to a control in a shared component and to an evidence query; country differences enter as configuration; reports and control tests are computed from the same data, so the register always knows which obligations are demonstrably met.*
 
 ### Country differences as configuration

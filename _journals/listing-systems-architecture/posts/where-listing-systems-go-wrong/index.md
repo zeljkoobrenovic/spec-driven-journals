@@ -56,24 +56,7 @@ The patterns fall into four loose families. The **data** family (the first six) 
 
 The patterns are not spread evenly along the pipeline. Most of the data family strikes on the way in and in the copies that publication creates; the marketplace family strikes where buyers meet listings; the portfolio and measurement families sit underneath every stage.
 
----begin mermaid---
-flowchart LR
-    S["Supply in: forms, APIs, feeds"] --> L["Listing model: category, attributes, location"]
-    L --> P["Publication and copies: index, alerts, caches, SEO"]
-    P --> D["Discovery: search, ranking, recommendations"]
-    D --> C["Contact and transaction: messages, leads, payments"]
-    FR["Feed Roulette"] -.-> S
-    CS["The Category Straitjacket"] -.-> L
-    AJ["The Attribute Junkyard"] -.-> L
-    DE["The Duplicate Echo"] -.-> P
-    GI["Ghost Inventory"] -.-> P
-    ID["Index-as-Database"] -.-> P
-    MA["Moderation as an Afterthought"] -.-> P
-    PR["Paid-Rank Drift"] -.-> D
-    SI["The Scam Inbox"] -.-> C
-    UND["Portfolio: Country Fork, Acquisition Archipelago, Platform Mandate"] -.-> L
-    MEAS["Measurement and control: Vanity Liquidity, Entitlement Spaghetti, Unwatched Model"] -.-> D
----end mermaid---
+![Diagram: Where each pattern strikes along the liquidity pipeline](assets/images/where-listing-systems-go-wrong/fig02-where-each-pattern-strikes-along-liquidity.jpeg)
 **Figure 2:** *Where each pattern strikes along the liquidity pipeline; the portfolio and measurement families are not stages but conditions that make every stage worse.*
 
 Costs below are described along up to four dimensions: **liquidity** (matches lost or delayed), **trust** (of buyers, sellers and regulators), **speed** (how fast the marketplace can change) and **cost** (money spent or refunded).
@@ -325,23 +308,7 @@ Costs below are described along up to four dimensions: **liquidity** (matches lo
 
 The patterns rarely appear alone. Most marketplaces show several, and they feed each other in recognizable chains. The chain matters because **fixing a downstream symptom while the upstream pattern continues produces the same symptom again**, usually within a year.
 
----begin mermaid---
-flowchart LR
-    FR["Feed Roulette"] -->|"unvalidated values"| AJ["The Attribute Junkyard"]
-    FR -->|"late or missing deletes"| GI["Ghost Inventory"]
-    FR -->|"new IDs on re-import"| DE["The Duplicate Echo"]
-    CS["The Category Straitjacket"] -->|"new facts go into free keys"| AJ
-    CS -->|"trees change separately"| CF["The Country Fork"]
-    ID["Index-as-Database"] -->|"removal built for one copy"| GI
-    DE -->|"stolen photos pass as duplicates"| SI["The Scam Inbox"]
-    MA["Moderation as an Afterthought"] -->|"no gate before contact"| SI
-    VL["Vanity Liquidity"] -->|"revenue counted, organic cost not"| PR["Paid-Rank Drift"]
-    ES["Entitlement Spaghetti"] -->|"unbounded paid multipliers"| PR
-    VL -->|"models trained on clicks"| UM["The Unwatched Model"]
-    CF -->|"each market acquires its own tools"| AA["The Acquisition Archipelago"]
-    AA -->|"consolidation by decree"| PM["The Platform Mandate"]
-    PM -->|"shadow stacks"| AA
----end mermaid---
+![Diagram: The patterns form chains](assets/images/where-listing-systems-go-wrong/fig04-patterns-form-chains-most-downstream-symptoms.jpeg)
 **Figure 4:** *The patterns form chains; most downstream symptoms, such as ghost listings or paid results crowding the first page, trace back to a missing contract, a missing owner or the wrong metric.*
 
 Four chains appear most often.

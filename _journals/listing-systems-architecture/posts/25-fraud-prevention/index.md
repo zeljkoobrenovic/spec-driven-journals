@@ -119,52 +119,7 @@ A **risk scoring service** answers one question for many callers: *how risky is 
 
 The design below is a **reference-architecture inference**, built from public adjacent systems (Meta's Sigma rule engine, Stripe Radar's documented rule operations, Uber's 2017 description of a shared feature store, Mercari's 2026 risk-based authentication) and from the evidence above. No classifieds company has published a fraud-scoring architecture in this form.
 
----begin mermaid---
-flowchart LR
-    subgraph CALL["Callers"]
-        INS["Insertion and edit"]
-        MSG["Message send"]
-        LOG["Login and recovery"]
-        PAY["Payout release"]
-    end
-    subgraph RT["Real-time path"]
-        API["Risk API"]
-        FS["Online feature store"]
-        RL["Rules"]
-        ML["Models"]
-        CMB["Score combiner and reasons"]
-    end
-    subgraph NRT["Streaming and batch"]
-        STR["Stream processors: velocity and counters"]
-        GR["Identity graph"]
-        IMG["Image hash and embedding index"]
-        PRC["Price models"]
-        BAT["Batch features and training"]
-    end
-    EVT["Event backbone"]
-    DEC["Decision service"]
-    LBL["Label store"]
-    INS --> API
-    MSG --> API
-    LOG --> API
-    PAY --> API
-    API --> FS
-    API --> RL
-    API --> ML
-    RL --> CMB
-    ML --> CMB
-    CMB -->|"scores, reasons, friction"| DEC
-    EVT --> STR
-    EVT --> GR
-    EVT --> IMG
-    STR --> FS
-    GR --> FS
-    IMG --> FS
-    PRC --> FS
-    BAT --> FS
-    DEC -->|"outcomes"| LBL
-    LBL --> BAT
----end mermaid---
+![Diagram: The risk scoring service](assets/images/25-fraud-prevention/fig02-risk-scoring-service-real-time-path.jpeg)
 **Figure 2:** *The risk scoring service. The real-time path reads precomputed features and evaluates rules and models within the caller's latency budget; streaming and batch jobs keep the features, the identity graph and the image index current; decisions and their outcomes return as labels.*
 
 ### Real-time and batch: what runs where
@@ -266,24 +221,7 @@ A reference design for message-level fraud controls:
 5. **Score the conversation, not only the message.** A sequence of "courier", "safe payment", "deposit" and a link is a pattern no single message shows.
 6. **Mask or delay off-platform contact details** for new and unverified accounts, so the scam cannot leave the platform before the platform has had a chance to see it.
 
----begin mermaid---
-sequenceDiagram
-    participant F as FakeBuyer
-    participant M as MessageService
-    participant R as RiskAPI
-    participant L as LinkIntel
-    participant D as DecisionService
-    participant S as Seller
-    F->>M: message with payment link
-    M->>R: score message, sender and link
-    R->>L: domain age and brand check
-    L-->>R: registered today, contains Safe Deal brand
-    R-->>M: risk 0.97, reason phishing link
-    M->>D: hold message, propose account restriction
-    D-->>M: withhold message, restrict sender
-    M-->>S: message withheld, safety notice shown
-    D->>D: case opened for linked accounts
----end mermaid---
+![Diagram: The 7 March 2027 phishing message as it would be handled by the target design](assets/images/25-fraud-prevention/fig04-7-march-2027-phishing-message-it.jpeg)
 **Figure 4:** *The 7 March 2027 phishing message as it would be handled by the target design. The message is scored before delivery; the domain-age and brand check is decisive; the decision service withholds the message, restricts the sender and opens a case for linked accounts.*
 
 Scanning private messages for fraud has a legal side. In the EU it engages the GDPR's purpose-limitation and minimization principles and the ePrivacy framework. The DSA also requires platforms to disclose their use of automated means in moderation. Veldmark documents fraud prevention as the purpose, runs a data protection impact assessment, says in its terms that automated tools scan messages for scams, and keeps scanned content only as long as the case needs it. [[marketplace-regulation]] covers the legal analysis.
@@ -302,25 +240,7 @@ A fraud model is only as current as its labels, and fraud labels are **late, bia
 | Appeal reversals | Confirmed false positives | Days to weeks | Undercounts: most wrongly blocked users do not appeal |
 | Random-sample review | Unbiased prevalence and recall | Days | Small samples for rare fraud types |
 
----begin mermaid---
-flowchart LR
-    SC["Risk scores"] --> DS["Decisions and friction"]
-    DS --> OUT["Outcomes"]
-    OUT --> RV["Reviewer labels"]
-    OUT --> UR["User and victim reports"]
-    OUT --> BK["Bank and police reports"]
-    OUT --> AP["Appeal reversals"]
-    SMP["Random sample"] --> RV
-    RV --> LS["Label store with point-in-time features"]
-    UR --> LS
-    BK --> LS
-    AP --> LS
-    LS --> TR["Training and backtests"]
-    TR --> SH["Shadow mode"]
-    SH -->|"promote"| SC
-    LS --> RM["Rule metrics"]
-    RM -->|"retire or tune"| SC
----end mermaid---
+![Diagram: The fraud feedback loop](assets/images/25-fraud-prevention/fig05-fraud-feedback-loop-labels-arrive-several.jpeg)
 **Figure 5:** *The fraud feedback loop. Labels arrive from several sources with different delays and biases; the random sample corrects selection bias; new models and rules run in shadow mode before they score live traffic, and rule metrics retire rules that have rotted.*
 
 Four practices keep the loop honest.

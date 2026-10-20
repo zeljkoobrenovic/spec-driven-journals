@@ -184,44 +184,7 @@ A smaller documented case shows the share test working at feature level. Kleinan
 
 The four layers of the share test become an architecture when each layer has a clear owner and the layers meet at defined extension points. Figure 2 shows the shape I recommend for a multi-vertical group.
 
----begin mermaid---
-flowchart TB
-    subgraph L4["Layer 4: brand-local product"]
-        UX["Brand UX, packages, sales motion"]
-        PRO["Pro tool front ends"]
-    end
-    subgraph L3["Layer 3: vertical capabilities, group-owned"]
-        VEH["Vehicle identity, spec and price rating"]
-        PROP["Property entity and valuation"]
-        JOB["Job normalization"]
-    end
-    subgraph L2["Layer 2: shared engines, vertical content"]
-        TAX["Taxonomy and attribute service"]
-        ING["Ingestion engine and adapters"]
-        RANK["Ranking framework and policies"]
-        ENT["Catalog and entitlement engine"]
-        TS["Trust rules and models"]
-    end
-    subgraph L1["Layer 1: shared platform"]
-        ID["Identity"]
-        EV["Event backbone"]
-        MED["Media processing"]
-        MSG["Messaging transport"]
-        SRCH["Search infrastructure"]
-        DATA["Data platform"]
-    end
-    UX --> TAX
-    PRO --> ING
-    VEH -->|"enricher"| ING
-    PROP -->|"enricher"| ING
-    JOB -->|"enricher"| ING
-    VEH -->|"signal"| RANK
-    TAX --> SRCH
-    ING --> EV
-    RANK --> SRCH
-    ENT --> RANK
-    TS --> EV
----end mermaid---
+![Diagram: Four layers with different owners](assets/images/06-vertical-requirements/fig02-four-layers-different-owners-layer-1.jpeg)
 **Figure 2:** *Four layers with different owners. Layer 1 is the same everywhere. Layer 2 runs vertical content on shared engines. Layer 3 holds capabilities that exist because of one vertical's physics but are built once. Layer 4 is how each brand competes. Vertical capabilities plug into shared engines as enrichers and signals, never as forks of the engine.*
 
 ### Layer 1: what is the same everywhere
@@ -264,23 +227,7 @@ Brand experience, packages and prices, sales tooling and the professional front 
 
 Figure 3 shows where the vertical seams sit on the path of one listing. The flow is shared. At each stage, the vertical contributes content or a capability through a declared extension point.
 
----begin mermaid---
-flowchart LR
-    IN["Form, API or feed"] --> VAL["Validate"]
-    VAL --> ENR["Enrich"]
-    ENR --> RISK["Risk and moderation"]
-    RISK --> PUB["Publish"]
-    PUB --> IDX["Index"]
-    IDX --> RK["Rank and render"]
-    SCH["Vertical schema"] -.->|"rules"| VAL
-    VE["Vehicle decode"] -.->|"enricher"| ENR
-    PE["Property match"] -.->|"enricher"| ENR
-    JE["Job title normalizer"] -.->|"enricher"| ENR
-    VR["Vertical fraud rules"] -.->|"policy"| RISK
-    EXP["Vertical expiry policy"] -.->|"lifetime"| PUB
-    MAP["Vertical index mapping"] -.->|"document shape"| IDX
-    POL["Vertical ranking policy"] -.->|"policy"| RK
----end mermaid---
+![Diagram: One listing flow, eight vertical seams](assets/images/06-vertical-requirements/fig03-one-listing-flow-eight-vertical-seams.jpeg)
 **Figure 3:** *One listing flow, eight vertical seams. Solid arrows are the shared publication path that [[publication-pipeline]] owns. Dotted arrows are vertical contributions: rules, enrichers, policies and mappings, each versioned and owned by the vertical. A vertical that needs a new seam asks for one; it does not copy the pipeline.*
 
 Two design rules keep the seams honest. First, **each extension point has a contract and a failure mode**. A vehicle decoder that times out must leave the listing publishable with a "decode pending" state, because a dealer feed of 200 cars cannot wait for one provider. Second, **the number of seams is governed**. Every new extension point is a permanent cost to the engine team, so new seams go through the same review as new shared capabilities.

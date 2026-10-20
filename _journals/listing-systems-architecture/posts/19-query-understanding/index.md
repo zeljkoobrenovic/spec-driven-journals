@@ -69,23 +69,7 @@ Belgium added French ("vélo électrique"), Poland "rower elektryczny" and Portu
 
 Query understanding runs inside the search API, before retrieval, for every request that has text. The diagram shows the reference architecture I recommend. Steps that need models call them through a cache: the head of the query distribution repeats, so the models do their real work on the tail.
 
----begin mermaid---
-flowchart LR
-    Q["Raw query, market, language, context"] --> N["Normalize and analyze per language"]
-    N --> SP["Spelling correction"]
-    SP --> SY["Synonyms and expansions"]
-    SY --> CAT["Query categorization"]
-    SY --> TAG["Attribute and location tagging"]
-    CAT --> INT["Interpretation builder with confidences"]
-    TAG --> INT
-    DICT["Taxonomy and attribute dictionary, versioned"] --> CAT
-    DICT --> TAG
-    INT --> CACHE["Interpretation cache"]
-    INT --> RET["Retrieval strategies: lexical, filters, dense"]
-    RET --> FUSE["Fusion and recovery"]
-    FUSE -->|"candidates"| RANK["Ranking"]
-    INT -->|"chips and corrections"| UI["Results page"]
----end mermaid---
+![Diagram: Query understanding as a compiler](assets/images/19-query-understanding/fig01-query-understanding-compiler-each-step-adds.jpeg)
 **Figure 1:** *Query understanding as a compiler. Each step adds structure with a confidence, the taxonomy and attribute dictionary supply the vocabulary, and the interpretation is shown back to the buyer as chips and corrections so that wrong guesses can be undone.*
 
 Each step has its own owner and its own reason to change.
@@ -197,18 +181,7 @@ Autocomplete is the earliest point at which the marketplace can steer a query to
 - **Serving.** Per-country indices in three European data centers; about 4,700 queries per second at 31 ms p99. Cutting the client debounce from 350 ms to 100 ms increased usage.
 - **Results.** Suggestion use rose from under 8% to over 17% of search sessions; the learning-to-rank change added about 8% suggestion click-through.
 
----begin mermaid---
-flowchart TB
-    LOGS["Query logs with outcomes"] --> GEN["Candidate generation per market and language"]
-    META["Category, brand and attribute vocabulary"] --> GEN
-    INV["Live inventory counts"] --> GEN
-    GEN -->|"filter unsafe, empty and rare"| SCORE["Offline scoring and normalization"]
-    SCORE -->|"twice weekly or daily"| IDX["Suggestion index with edge n-grams"]
-    KEY["Keystrokes after debounce"] --> MATCH["Prefix match then fuzzy cascade"]
-    IDX --> MATCH
-    MATCH --> LTR["Online re-ranking with user features"]
-    LTR --> SUG["Suggestions with interpretations attached"]
----end mermaid---
+![Diagram: Autocomplete as two pipelines](assets/images/19-query-understanding/fig02-autocomplete-two-pipelines-offline-job-builds.jpeg)
 **Figure 2:** *Autocomplete as two pipelines. An offline job builds and scores candidates from logs, vocabulary and live inventory; an online path matches prefixes and re-ranks per user within a few tens of milliseconds. Attaching an interpretation to each suggestion turns a click into a structured query.*
 
 Three design rules follow for listing marketplaces.
@@ -266,25 +239,7 @@ Model names, prices and feature availability in this table change quickly; treat
 
 In the pattern these cases share, the LLM receives the query, the market, and a compact description of the filter schema (the category list and the attribute keys and values relevant to the predicted vertical, drawn from the attribute dictionary), and returns a structured query. A validator checks every category and attribute value against the dictionary and drops or repairs what does not exist. The classic engine runs the query. The buyer sees the result with the compiled filters as chips.
 
----begin mermaid---
-sequenceDiagram
-    participant B as Buyer
-    participant API as Search API
-    participant MOD as Moderation classifier
-    participant LLM as LLM compiler
-    participant VAL as Schema validator
-    participant ENG as Search engine
-    B->>API: long natural-language query
-    API->>MOD: classify query
-    MOD-->>API: valid
-    API->>LLM: query plus market filter schema
-    LLM-->>API: structured query as JSON
-    API->>VAL: check categories and values against dictionary
-    VAL-->>API: validated query, unknown values dropped
-    API->>ENG: execute structured query
-    ENG-->>API: results
-    API-->>B: results with compiled filters as chips
----end mermaid---
+![Diagram: The LLM compiles, the engine retrieves](assets/images/19-query-understanding/fig04-llm-compiles-engine-retrieves-validation-against.jpeg)
 **Figure 4:** *The LLM compiles, the engine retrieves. Validation against the attribute dictionary keeps hallucinated categories and values out of the query, the engine keeps results grounded in live inventory, and the chips make the compiled interpretation visible and editable.*
 
 The pattern has five properties to defend in a design review. Results are explainable, because the buyer sees the filters. No listing can be hallucinated, because the engine retrieves. Output can be cached by normalized query. Keyword queries never touch the LLM, which bounds cost and latency. And the same structured query can be saved as an alert, which is exactly what Zillow made possible for natural-language searches.
