@@ -1,5 +1,5 @@
 ---
-title: "Sunday Night Peaks: Reliability, Performance and Cost"
+title: "Sunday Evening Peaks: Reliability, Performance and Cost"
 date: 2026-10-19
 author: Željko Obrenović
 excerpt: "How do you keep a listing platform fast, available and affordable at scale? Define reliability per user journey rather than per service, plan for peaks you can predict and degrade the optional parts before the essential ones, and treat cost per search and per listing as architecture metrics with owners."

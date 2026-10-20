@@ -536,7 +536,7 @@ Learn more: [[products-and-entitlements]]
 
 ## <a id="tool-10"></a>Tool 10: Listing Event Specification
 
-**Purpose.** A listing event specification states one listing fact in the group's published language, in a shape that search, alerts, trust and safety, monetization, SEO and the data platform can rely on for years. It sits beside the registered schema and says what the event means, when it is emitted, what makes it unique and ordered, what it carries, who consumes it, how fast it must arrive and how it may change. The producer states what happened; each consumer decides what it means for its own copy.
+**Purpose.** A listing event specification defines one event in the listing event contract (see [[event-driven-listings]]): it states one listing fact in the group's published language, in a shape that search, alerts, trust and safety, monetization, SEO and the data platform can rely on for years. It sits beside the registered schema and says what the event means, when it is emitted, what makes it unique and ordered, what it carries, who consumes it, how fast it must arrive and how it may change. The producer states what happened; each consumer decides what it means for its own copy.
 
 **Use it when** a new event type is proposed for the listing stream, a field's meaning is in doubt, a consumer registers, or a breaking change is being considered. The default answer to a new type is no: every type is a cost for every consumer.
 

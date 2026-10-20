@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: AVIV Group: Building a European Real-Estate Platform from Acquisitions
@@ -71,3 +71,5 @@ Chief and enterprise architects of marketplace groups with property portals in s
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: re-verified 12 load-bearing claims; corrected the Bundeskartellamt quote and the 2023 "write the future" quote, added the KKR-control caveat on the Yad2 sale, expanded DPE/DVF, timetoread updated. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 5,480 → 5,434 prose words; outline unchanged (house case-study shape); opening now names the Hearthly comparison it feeds; point-first openers in the Meilleurs Agents, two-portals, Germany/Belgium and vertical-table paragraphs; duplicate 300-hire mention and meta sentences cut. *(AI-mediated session)*
+- **2026-10-20** — Trade-offs heading capitalized as in the 45 chapters. *(AI-mediated session)*

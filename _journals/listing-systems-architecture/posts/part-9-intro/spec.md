@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Part IX — PRACTICE: How Others Built It
@@ -50,3 +50,4 @@ None.
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: AVIV reading softened per consistency-issues item 25 (2021 goal of "a European real estate marketplace" with unpublished scope; "fully integrated platform" is the interviewer's phrase) in key points, failure patterns and the comparison table. *(AI-mediated session)*
 - **2026-10-19** — Added 1 inline illustration (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 593 → 600 prose words; no headings renamed or sections moved (outline matches the sibling part intros); first sentence of "How to read the cases" now states the three kinds of statement. *(AI-mediated session)*

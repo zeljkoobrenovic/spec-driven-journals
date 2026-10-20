@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Field Kit: Templates for the Marketplace Architect
@@ -67,3 +67,4 @@ Chief and enterprise architects of marketplace groups, principal engineers, sear
 
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: Tool 11 rebuilt against the written platform-consolidation chapter (six integration options, staged and gated sequence, synergy ledger with dated evidence, 3% traffic rule, Keybridge federated under group controls); bike version 9 and 14:02 reservation confirmed. *(AI-mediated session)*
+- **2026-10-20** — Tool 10 purpose now says a listing event specification defines one event in the listing event contract, linking event-driven-listings. *(AI-mediated session)*

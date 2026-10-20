@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: OLX Group: Regional Platforms, Verticalization and Retreat
@@ -70,3 +70,5 @@ Chief and enterprise architects of marketplace groups, search and ranking leads,
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: re-verified 9 load-bearing claims (FY26, Avito, OLX Autos, hybrid search, Otodim, OfferUp); noted the implied FY25 aEBITDA margin, the Schibsted-to-Adevinta JV stake and the unnamed Pay&Ship provider. *(AI-mediated session)*
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,091 → 6,103 prose words; opening now ties the case to Part IX and the Adevinta case; search heading corrected to "five stages" to match its table; 10 paragraph openings rewritten to state their point; no sections moved. *(AI-mediated session)*
+- **2026-10-20** — Trade-offs heading capitalized as in the 45 chapters. *(AI-mediated session)*

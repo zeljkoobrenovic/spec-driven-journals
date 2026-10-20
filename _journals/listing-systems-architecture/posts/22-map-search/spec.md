@@ -72,3 +72,4 @@ Article only for now.
 - **2026-10-19** — Editorial review pass: American spelling (license), Zillow 2024 claim corrected (no schools), Hearthly agency precision and Valuo training aligned with the ledger, H3 res-7 size fixed, writer-brief wording removed, acronyms expanded, timetoread 36 min. *(AI-mediated session)*
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 6 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
+- **2026-10-20** — Architecture heading now names the design (a geo query compiler in front of the engine). *(AI-mediated session)*

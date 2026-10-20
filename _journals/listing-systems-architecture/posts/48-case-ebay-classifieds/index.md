@@ -33,7 +33,7 @@ eBay entered classifieds in 2004 by buying national leaders, and over sixteen ye
 
 The case is the mirror image of [[case-adevinta]]. Adevinta published a great deal about its central platforms. eCG published almost nothing as a group, and **that silence is itself evidence about how it was organized**. What does exist, scattered across brand blogs in Amsterdam and Berlin, a GitHub organization, conference talks, archived job postings and a regulator's decision, shows a **federation of strong national businesses with a thin, selective shared layer**. The sale then showed which dependencies on that shared layer had to be written into contracts.
 
-This chapter asks the questions [[multi-country-platforms]] and [[platform-consolidation]] raise. *What did the group share, at which layer, and through what kind of interface? What stayed local? And what did the sale reveal about the coupling?* It covers eCG's own history and the separation from eBay. For Adevinta's strategy after 2021 — integration, convergence and decentralization — it links to [[case-adevinta]] and does not repeat it.
+Among Part IX's cases, eCG tests how thin a shared layer can be and what a sale exposes, the stressor [[multi-country-platforms]] and [[platform-consolidation]] leave open. *What did the group share, at which layer, and through what kind of interface? What stayed local? And what did the sale reveal about the coupling?* The answers feed the closing test of Veldmark's Common Ground program. The chapter covers eCG's own history and the separation from eBay. For Adevinta's strategy after 2021 — integration, convergence and decentralization — it links to [[case-adevinta]] and does not repeat it.
 
 ## How to Read This Case
 
@@ -88,8 +88,6 @@ flowchart LR
 
 ## Phase 1: Building a Portfolio Two Ways (2004–2015)
 
-### Bought leaders and greenfield brands
-
 eBay assembled the portfolio by two routes, and the outcomes differ sharply.
 
 The first route was **buying the national leader and keeping its brand**. eBay's November 2004 filing on Marktplaats is explicit: the company would be run "as a separate business". mobile.de, Gumtree, dba.dk with Bilbasen, 2dehands/2ememain and Vivanuncios followed the same pattern. Each kept its name, its local management and, as far as the record shows, its own platform.
@@ -108,15 +106,13 @@ The second route was **launching new sites under a group brand** in markets with
 ![Left: a mature tree with its root ball lowered into a new plot, buyers and sellers already in its branches. Right: a row of seedlings, most wilting, two growing strong.](assets/images/48-case-ebay-classifieds/transplant-or-seed.jpeg)
 **Figure 2:** *A bought leader arrives with local supply and demand already in balance; a greenfield brand has to grow that balance from bare soil, and most of the group's launches did not.*
 
-### One platform's growth
-
-Self-reported scale figures on the group's archived pages use different definitions (visits, unique visitors, users) and should not be compared across brands. One brand's own account is more useful. eBay Kleinanzeigen was built in 2009 "to process 10K new ads per day" and launched with about 700,000 live ads; by 2019 it held more than 34 million live ads and took up to a million new ads a day (Berlin Tech Blog, 2019). **A hundredfold growth in daily inserts was absorbed on the brand's own engineering path, not through a group platform.**
+**A brand absorbed a hundredfold growth in daily inserts on its own engineering path, not through a group platform.** eBay Kleinanzeigen was built in 2009 "to process 10K new ads per day" and launched with about 700,000 live ads; by 2019 it held more than 34 million live ads and took up to a million new ads a day (Berlin Tech Blog, 2019). The group's archived pages give self-reported scale figures too, but they use different definitions (visits, unique visitors, users) and should not be compared across brands.
 
 ## Phase 2: A Federation with Group Functions (2009–2020)
 
 ### What the organization looked like from outside
 
-eCG never described its operating model in public, so the evidence is indirect. Four kinds of source point the same way.
+Four kinds of indirect source show group functions beside brand-run platforms; eCG never described its operating model in public.
 
 - **Job postings, 2009–2011** (archived from the group's careers pages). A 2010 post sought a "Senior Developer – Kijiji Platform" in Italy (PHP and Java). A 2011 post for Kijiji US asked engineers to "collaborate with development teams of sister Classifieds platform" and build solutions "that can be reused by other Classifieds platforms". A 2011 Gumtree post for a technology director described "a variety of eCommerce platforms that form the portfolio of the group". The careers site listed "eBay Classifieds Global" as a hiring entity beside the brands.
 - **A Berlin hub shared by two brands.** Kleinanzeigen and mobile.de publish one engineering blog, "written by developers, engineers, testers and many more from Kleinanzeigen and mobile.de in Berlin". Its predecessor domain was `ebaytech.berlin`.
@@ -127,7 +123,7 @@ eCG never described its operating model in public, so the evidence is indirect. 
 
 ### What was shared, layer by layer
 
-Five shared layers are documented. Each worked through a different kind of interface, and that difference is the most useful thing the case teaches.
+Five shared layers are documented, each behind a different kind of interface, and the interface type is the most useful thing the case teaches.
 
 **1. Search: a coordinated choice, migrated brand by brand.** In a December 2015 post (republished on Medium in 2017), Frank Laan of Marktplaats described replacing **Voyager**, a search engine "developed internally by eBay in the USA" and introduced at Marktplaats around 2008–2009. By 2015, "Ebay itself has moved on from Voyager several years ago". Development had stopped, few people still knew the system, and it had "almost become a black box for us". Marktplaats and "other eBay Classifieds Group (eCG) companies facing similar problems" evaluated replacements together and chose Elasticsearch, a choice the group's data-and-architecture director also presented at Elastic{ON} in Amsterdam in 2015. **The choice was shared. The migration was not.** Marktplaats migrated itself:
 
@@ -140,7 +136,7 @@ Five shared layers are documented. Each worked through a different kind of inter
 | Rollout | Feature switch: 1% on a Friday, 50% by the end of the next week, then 100% with the old platform kept running |
 | Result | Two or three developers, about three months, zero downtime; "At no point did we consider going back" |
 
-The comparison step is worth stopping on. The team did not shadow live traffic against a live index, because the index changes under it every second and differences cannot be reproduced. Recorded queries against frozen copies make every difference explainable. [[search-architecture]] treats this as the default way to compare engines during a migration.
+Replaying recorded queries against frozen copies made every difference explainable. Shadowing live traffic against a live index would not, because the index changes every second and differences cannot be reproduced. [[search-architecture]] treats this as the default way to compare engines during a migration.
 
 **2. Infrastructure: a group-built platform-as-a-service.** The `eBayClassifiedsGroup` GitHub organization holds the group's open-source infrastructure work. **PanteraS** (created November 2014, "Platform as a Service in a box") combined Mesos and Marathon for scheduling, Consul for service discovery and Fabio for load balancing; around it sit deployment, release-recording, Cassandra and NetScaler tooling. Rackow's 2018 talk described the Global Motors stack on top: Terraform on an **OpenStack private cloud**, a small production-like tenant for every developer, stateless applications on PanteraS, and databases and Kafka on Nomad "after having poor results with stateful applications on PanteraS".
 
@@ -163,7 +159,7 @@ flowchart LR
 
 > **INFERENCE, NOT DOCUMENTED:** MoVe reads as a shared supply hub for the automotive vertical. It holds the canonical dealer listing, accepts stock once, and syndicates it to several consumer-facing marketplaces per "tenant", which is probably a country. The word "tenant" and the multi-receiver dispatch suggest it was built to serve more than Canada; the Australian car sites bought in 2020 are plausible candidates. The repositories do not name any tenant other than Canada, and nothing public says whether mobile.de used MoVe. This is the author's reading of two README files, not a description of how the platform was deployed.
 
-The documented part is enough to make the architectural point. **MoVe is the one shared product platform in the eCG record, and it sits in the vertical where sharing pays most clearly.** Dealer stock is structured, arrives through integrators, and benefits from being entered once and shown in several places. The interface was a contract with versioned payloads, a sandbox and partner identity, not a shared database. This is the pattern [[listing-ingestion]] and [[professional-seller-tooling]] recommend for professional supply.
+**MoVe is the one shared product platform in the eCG record, and it sits in the vertical where sharing pays most clearly.** Dealer stock is structured, arrives through integrators, and benefits from being entered once and shown in several places. The interface was a contract with versioned payloads, a sandbox and partner identity, not a shared database. This is the pattern [[listing-ingestion]] and [[professional-seller-tooling]] recommend for professional supply.
 
 **4. The parent's marketplace as a supply source.** In December 2016, eCG's general manager Alessandro Coppo announced that eBay marketplace inventory, tested on Gumtree Australia that year, would appear on Gumtree UK and eBay Kleinanzeigen, and that motors seller tools from eBay's Cargigi acquisition were "being used by Kijiji in Canada and Gumtree in South Africa". He spoke of "integrating and cooperating at our technology infrastructure level", without architecture. **My reading** is that this was the most parent-dependent layer in the record, and the first to be exposed by a sale.
 
@@ -188,11 +184,11 @@ A sixth layer is regional rather than group-wide. A recent Adevinta job posting 
 
 ## Inside One National Platform: Kleinanzeigen, 2009–2025
 
-The best-documented eCG platform belongs to a brand, not to the group. It also shows what a national platform does on its own engineering path, before and after the parent leaves. [[case-adevinta]] covers the group strategy around it after 2021; this section covers only what Kleinanzeigen's engineers published.
+The best-documented eCG platform belongs to a brand, not to the group, and shows what a national platform does on its own engineering path before and after the parent leaves. [[case-adevinta]] covers the group strategy around it after 2021; this section covers only what Kleinanzeigen's engineers published.
 
 ### An event backbone that started with alerts
 
-Andre Charton, Kleinanzeigen's head of search, summarized ten years of the platform in an October 2019 post. The 2009 system was "a plain old database backend", "a search backend based on Apache Solr (with a Master/Slave setup)" and web servers. The core system, "the monolith", was Java. In 2015 the team "introduced Kafka to break out from the monolith". The first use case was saved searches with push notifications, which they could not run "in real time with MySQL" at scale. Every important event, command or entity update became a message, and a separate saved-search backend consumed them. By 2019 the platform held 45 million saved searches and processed up to a million new ads a day. "By introducing Kafka with a truly scalable use case, we won big trust."
+Kleinanzeigen's event backbone began with one job the database could not do: saved-search alerts. Andre Charton, Kleinanzeigen's head of search, summarized ten years of the platform in an October 2019 post. The 2009 system was "a plain old database backend", "a search backend based on Apache Solr (with a Master/Slave setup)" and web servers. The core system, "the monolith", was Java. In 2015 the team "introduced Kafka to break out from the monolith". The first use case was saved searches with push notifications, which they could not run "in real time with MySQL" at scale. Every important event, command or entity update became a message, and a separate saved-search backend consumed them. By 2019 the platform held 45 million saved searches and processed up to a million new ads a day. "By introducing Kafka with a truly scalable use case, we won big trust."
 
 Two later uses followed from that trust. **Kafka became storage.** The search cluster, by then Elasticsearch with more than 34 million live ads, could be rebuilt from a compacted topic that keeps the latest full entity per key: "We are able to fully index 34 million documents in our search cluster in less than 30 minutes." **Kafka became a stream**, feeding a personalized home feed "consumed like a stream".
 
@@ -202,7 +198,7 @@ Two later uses followed from that trust. **Kafka became storage.** The search cl
 
 In June 2025, MD Sayem Ahmed of Kleinanzeigen's "Team Red" wrote that "KA recently migrated the whole platform to a new system". The team built the new system, "ran it parallel to our legacy system, migrated all users' data to the new system, and then incrementally switched users to the new one", with the option to "revert the users to the old system". The post does not name either platform. It does not say whether the new system is an Adevinta group platform, and this chapter does not connect it to the 2023 convergence plan described in [[case-adevinta]]. The post gives no basis for doing so.
 
-The documented design choices are these.
+The post documents six design choices.
 
 - **Order by data dependency.** Core user data (identifiers, authentication, profile) moved first, and dependent migrations (ads, transactions, messages) started only when told a user had moved.
 - **Route by user.** A reverse proxy "with just enough business logic" forwarded each user's traffic to the legacy or the new system according to that user's migration state.
@@ -224,7 +220,7 @@ stateDiagram-v2
 
 **Figure 4:** *The per-user migration states Kleinanzeigen published in 2025. The retry edge reflects the post's description of resetting a user to ELIGIBLE. Replatforming became a sequence of small, reversible per-user moves instead of a cut-over date.*
 
-The post also notes that the new system "was being developed by a whole separate team", which is why the transformation logic could not simply live inside it. **My reading** is that this sentence matters as much as the algorithm. A migration between two systems owned by different teams needs its own owner and its own anti-corruption layer. Kleinanzeigen gave it one. [[modernization-and-migration]] develops the per-user strangler pattern, and [[bounded-contexts]] the translation layer.
+**My reading** is that the migration's ownership matters as much as its algorithm. The new system "was being developed by a whole separate team", so the transformation logic could not simply live inside it. A migration between two systems owned by different teams needs its own owner and its own anti-corruption layer, and Kleinanzeigen gave it one. [[modernization-and-migration]] develops the per-user strangler pattern, and [[bounded-contexts]] the translation layer.
 
 ### mobile.de: commercial commitments inside ranking
 
@@ -282,9 +278,9 @@ The brands Adevinta kept had to stop being eBay. Three pieces of evidence show w
 
 Away from the core, Adevinta recorded a €147 million impairment on Kijiji Canada in its 2023 results, citing competition and a new mobile app rolled out in 2023 (OnlineMarketplaces, 2024). Kijiji is still listed among Adevinta's brands as of October 2026.
 
-**My reading** is that separating from a parent takes work at three layers, and the cheapest of them is the one most often budgeted. Domains need redirects that last years, for search engines and for bookmarks (see [[web-and-seo-architecture]]). Identity must carry over without forcing users to register again. Design systems need themes driven by tokens before a rebrand can be fast. The visible logo change is the last two weeks of a much longer job.
+**My reading** is that separating from a parent takes work at three layers below the logo, and the logo change, the cheapest part, is the one most often budgeted. Domains need redirects that last years, for search engines and for bookmarks (see [[web-and-seo-architecture]]). Identity must carry over without forcing users to register again. Design systems need themes driven by tokens before a rebrand can be fast. The visible logo change is the last two weeks of a much longer job.
 
-## Trade-Offs the Case Illustrates
+## Trade-offs the Case Illustrates
 
 | Option | What eCG's record shows | When it is right | When it fails |
 | --- | --- | --- | --- |
@@ -322,7 +318,7 @@ eCG's portfolio was mostly generalist and automotive, with little real estate an
 
 ## Where the Public Evidence Stops
 
-The following questions matter to an architect and are not answered by any public source found for this book. The chapter does not fill them with inference beyond the two labeled callouts above.
+No public source found for this book answers the following questions. The chapter does not fill them with inference beyond the two labeled callouts above.
 
 | Question | What is public | What is not |
 | --- | --- | --- |
@@ -380,7 +376,9 @@ Now Veldmark, the fictional group, as of its 2027 decisions in the scenario. Its
 | Tradeyard Safe Deal runs on Adyen for Platforms; Veldmark holds no payment license | Two eCG brands used one licensed payment institution | Consistent; keep the provider edge behind an anti-corruption layer so a provider switch is a migration, not a rewrite |
 | Majority-owned by a private-equity investor since 2025 | eCG's parent sold it; buyers then sold several brands within 18 months | Keep a dependency register per brand from the first Common Ground release |
 
-The last row deserves one worked question. Suppose Veldmark's owner decided in 2029 to sell **Tradeyard Portugal**, the group's least liquid Tradeyard country, with 1.1 million live listings, about 210,000 new listings a week and no Safe Deal. Under the ledger's timeline, Tradeyard Portugal would by then use the group taxonomy and attribute service (Tradeyard first, from October 2027), the Confluent event backbone and Listing event contract v1 (from July 2027), Veldmark ID (rolled out in 2028), the shared OpenSearch platform (all Tradeyard countries by end of 2028) and the group entitlement service Tally (Tradeyard from the second quarter of 2028). It would still depend on Yardstick until its decommissioning at the end of 2029. Each of these would become a line in a transitional services agreement, the same kind of line the CMA recorded for Gumtree UK. **The architectural answer is not to share less but to make each shared capability hand-over-able**: country-scoped taxonomy releases that can be exported, listing topics and schemas filtered by the brand and country in the group listing ID, identity with per-brand profiles and an export path, per-country indices with portable definitions, and an entitlement ledger whose Portuguese accounts can be extracted. Veldmark's tenancy model (June 2027) already asks every shared capability to document a tenant exit path ([[multi-country-platforms]]); a per-brand dependency register is the list that makes those exit paths checkable. Ingrid Halvorsen, Veldmark's fictional Group Chief Architect, can make it a standing item at the architecture advice forum in 2027, at little cost, and test it in the separability tabletops that [[long-term-evolution]] describes.
+The last row deserves one worked question. Suppose Veldmark's owner decided in 2029 to sell **Tradeyard Portugal**, the group's least liquid Tradeyard country, with 1.1 million live listings, about 210,000 new listings a week and no Safe Deal. Under the ledger's timeline, Tradeyard Portugal would by then use the group taxonomy and attribute service (Tradeyard first, from October 2027), the Confluent event backbone and Listing event contract v1 (from July 2027), Veldmark ID (rolled out in 2028), the shared OpenSearch platform (all Tradeyard countries by end of 2028) and the group entitlement service Tally (Tradeyard from the second quarter of 2028). It would still depend on Yardstick until its decommissioning at the end of 2029. Each of these would become a line in a transitional services agreement, the same kind of line the CMA recorded for Gumtree UK.
+
+**The architectural answer is not to share less but to make each shared capability hand-over-able**: country-scoped taxonomy releases that can be exported, listing topics and schemas filtered by the brand and country in the group listing ID, identity with per-brand profiles and an export path, per-country indices with portable definitions, and an entitlement ledger whose Portuguese accounts can be extracted. Veldmark's tenancy model (June 2027) already asks every shared capability to document a tenant exit path ([[multi-country-platforms]]); a per-brand dependency register is the list that makes those exit paths checkable. Ingrid Halvorsen, Veldmark's fictional Group Chief Architect, can make it a standing item at the architecture advice forum in 2027, at little cost, and test it in the separability tabletops that [[long-term-evolution]] describes.
 
 ## Questions to Ask
 

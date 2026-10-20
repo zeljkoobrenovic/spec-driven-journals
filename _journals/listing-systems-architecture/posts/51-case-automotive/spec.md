@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: mobile.de, Auto Trader and AutoScout24: Lessons from Automotive Marketplaces
@@ -68,3 +68,5 @@ Chief and enterprise architects, principal engineers and engineering leaders of 
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: re-verified 11 load-bearing claims (Autotrader FY26, mobile.de manuals, Bundeskartellamt, CarGurus 10-K, Fin24, AutoScout24, Berlin Buzzwords); tightened the Prosus exit wording, expanded WLTP, American spelling, timetoread updated. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 5,757 → 5,793 prose words; opening now places the case as the last of Part IX and names what it tests; one subheading renamed ("The platform, dated" → "The platform from 2019 to 2026"); buried points moved to paragraph openings; spec otherwise unchanged. *(AI-mediated session)*
+- **2026-10-20** — Trade-offs heading capitalized as in the 45 chapters. *(AI-mediated session)*

@@ -159,7 +159,7 @@ For Femke's bike, the NL city-bikes partition held about **1.9 million** saved s
 
 Some marketplaces skip the engine altogether and build a **structured matcher**: saved searches are decomposed into their structured constraints and stored in an in-memory or key-value index keyed by (category, place cell); each listing looks up the keys it produces and evaluates the remaining numeric and attribute constraints in code. Tradeyard's Yardstick cron job is a primitive version of this in MySQL and PHP. The approach is fast and cheap for browse-shaped saved searches and has no coupling to the search engine's mapping. Its weakness is fidelity: it reimplements the search semantics, and every difference (how "10 km" is measured, how keywords are tokenized, how a missing attribute is treated) becomes an alert that does not match what the user sees on the site, or a listing the site shows that no alert announced.
 
-## Architecture: Alerts
+## Architecture: A Saved-Search Store with Rebuildable Percolators
 
 Figure 4 shows the target architecture Ingrid's team proposes for Common Ground.
 

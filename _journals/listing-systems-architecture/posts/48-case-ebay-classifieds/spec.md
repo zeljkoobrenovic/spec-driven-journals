@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: eBay Classifieds Group: Shared Platforms, Local Brands and a Sale
@@ -70,3 +70,5 @@ Chief and enterprise architects of marketplace groups, platform and search leads
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: re-verified 10 load-bearing claims (SEC 2004/2020, CMA decision, Worldline, MoVe, Australia sale, rebrand); dated OPP at Kleinanzeigen to July 2023 (t3n) and the Adyen switch as after that; added Shpock buyer and acceptance date; tied the worked question to the tenancy model exit paths; American spelling. *(AI-mediated session)*
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,695 → 6,702 words (fact-dense case, structure only); opening now states the chapter's Part IX question (how thin a shared layer can be, what a sale exposes) and its feed into the Veldmark comparison; Phase 1's two subsection headings removed; six paragraphs re-led with their point; worked question split in two. Spec unchanged. *(AI-mediated session)*
+- **2026-10-20** — Trade-offs heading capitalized as in the 45 chapters. *(AI-mediated session)*

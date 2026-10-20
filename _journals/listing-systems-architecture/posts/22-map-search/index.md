@@ -93,7 +93,7 @@ Property portals have long treated the map as central; Rightmove, for example, n
 
 Two consequences follow. First, **the map is a search client in its own right**, with its own latency budget and query mix. Capacity planning that counts "searches" as list queries will underestimate the map by a large factor. Second, **ranking does not disappear on the map; it moves**. When a viewport over central Lyon holds 2,400 matching flats, the system must decide which 300 to show as individual pins and which to fold into clusters, which pins carry a price label, and what the side list shows. Paid placements raise the same questions on the map that [[ranking]] discusses for lists: a "featured" pin that is larger or always shown is a paid boost, and ranking transparency obligations apply to it.
 
-## Architecture: Map Search
+## Architecture: A Geo Query Compiler in Front of the Engine
 
 The design I recommend separates the map's concerns into components with narrow interfaces. Figure 1 shows them for Hearthly's target state on the shared search platform.
 

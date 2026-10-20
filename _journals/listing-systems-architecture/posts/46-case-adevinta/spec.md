@@ -71,3 +71,4 @@ Chief and enterprise architects of marketplace groups, platform-engineering lead
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 6,355 → 6,240 prose words; 6 headings renamed to state their content; evidence limits moved from the intro into How to Read This Case; buried points moved to paragraph openings; vague "contested layers" row rewritten from the 2024 risk register. No facts, sources or links removed; spec unchanged. *(AI-mediated session)*
 - **2026-10-20** — Restored three headings shared by every Part IX case (Trade-Offs the Case Illustrates; Vertical Differences in the Record; A Reference Architecture for the Shared Platform), flagged by the cross-chapter consistency check. *(AI-mediated session)*
+- **2026-10-20** — Trade-offs heading capitalized as in the 45 chapters. *(AI-mediated session)*

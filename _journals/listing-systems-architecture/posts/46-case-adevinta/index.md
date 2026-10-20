@@ -278,7 +278,7 @@ The engineering posts confirm the fleet-level coupling. A September 2023 post on
 
 **My reading** is that most of the separability the 2025 transition needed was already present, built for other reasons. Per-tenant cloud accounts mapped to cost centers existed for FinOps; data products with contracts existed in Spain for data quality; FIAAS deployment files were portable by design. A platform built for chargeback and tenant isolation is a platform from which a tenant can be carved. What the public record does not show is how long the carve-outs took or what they cost beyond the "temporary spike" in cloud emissions.
 
-## Trade-Offs the Case Illustrates
+## Trade-offs the Case Illustrates
 
 | Option | What Adevinta's record shows | When it is right | When it fails |
 | --- | --- | --- | --- |

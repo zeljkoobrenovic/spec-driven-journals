@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Zillow, Rightmove, Idealista and REA: What Property Portals Teach
@@ -71,3 +71,5 @@ Chief and enterprise architects, ML and data leads, and engineering directors of
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: re-verified 12 load-bearing claims against filings and results; hedged the Idealista deal valuation, corrected Rightmove retention to "above 90%", expanded MLS/IDX, American spelling, timetoread updated. *(AI-mediated session)*
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,800 → 6,867 prose words; opening now ties the case to [[case-aviv]], the Part IX question and the chapters it tests; 3 headings renamed (one aligned with sibling cases); Zestimate-error paragraph split; teaser first sentences replaced. *(AI-mediated session)*
+- **2026-10-20** — Trade-offs heading capitalized as in the 45 chapters. *(AI-mediated session)*
