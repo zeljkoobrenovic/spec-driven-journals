@@ -14,7 +14,12 @@ marker so the reader can see them, but they are not treated as prose paragraphs.
 import re
 import sys
 
-SENTENCE_END = re.compile(r"(?<=[.!?])[\"')\]*_]*\s+(?=[A-Z\[*\"'(`0-9])")
+SENTENCE_END = re.compile(r"(?<=[.!?])[\"')\]*_”’]*\s+(?=[A-Za-z\[*\"'(`0-9“‘])")
+# Words ending in "." that do not end a sentence.
+ABBREVIATIONS = {"e.g.", "i.e.", "etc.", "vs.", "cf.", "approx.", "n.d.", "no.", "p.", "pp.",
+                 "fig.", "st.", "mr.", "ms.", "dr.", "ca.", "inc.", "ltd.", "co.", "u.s.", "u.k."}
+# A bold run-in label such as **Data.** or **Creates must be safe to retry.**
+RUN_IN = re.compile(r"^\*\*([^*]{1,80}?[.:!?])\*\*\s+(.+)$")
 
 
 def body_lines(text):
@@ -64,9 +69,26 @@ def blocks(lines):
 
 
 def first_sentence(text):
+    """The first sentence, skipping abbreviations; a sentence may start in lowercase (mobile.de)."""
     text = re.sub(r"\s+", " ", text).strip()
-    parts = SENTENCE_END.split(text, maxsplit=1)
-    return parts[0]
+    for m in SENTENCE_END.finditer(text):
+        head = text[:m.start()]
+        last_word = head.rsplit(" ", 1)[-1].lstrip("(*\"'“").lower()
+        if last_word in ABBREVIATIONS or re.fullmatch(r"[a-z]\.", last_word):
+            continue
+        return head
+    return text
+
+
+def lead(text):
+    """First sentence; for a short bold run-in label, the label plus the sentence after it."""
+    text = re.sub(r"\s+", " ", text).strip()
+    m = RUN_IN.match(text)
+    if m:
+        if len(m.group(1).split()) <= 6:
+            return f"**{m.group(1)}** {first_sentence(m.group(2))}"
+        return f"**{m.group(1)}**"  # the label is itself the topic sentence
+    return first_sentence(text)
 
 
 def classify(block):
@@ -116,7 +138,7 @@ def main():
             continue
         elif kind == "para":
             n += 1
-            print(f"    P{n}: {first_sentence(' '.join(b))}")
+            print(f"    P{n}: {lead(' '.join(b))}")
         elif kind in ("list", "quote"):
             print(f"    [{kind}] {first_sentence(re.sub(r'^[>*+-]+|^\d+[.)]', '', b[0].strip()).strip())[:120]}")
         elif kind == "caption":

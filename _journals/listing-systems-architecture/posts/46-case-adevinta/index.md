@@ -268,7 +268,7 @@ The table pulls the five phases into one view, at the layers Figure 1 introduced
 | Chat and moderation | — | Consolidated, per AR 2023 | Consolidated | Trust and fraud named as decentralization risk |
 | Generalist product platform | Local | Local | **Convergence of leboncoin and Kleinanzeigen announced** | Not documented; marketplaces "standalone" |
 
-## The Shared Platform: Coupled but Separable
+## A Reference Architecture for the Shared Platform
 
 The public posts describe parts of the platform in detail but never the whole. The inference below fills that gap only to reason about coupling and separability.
 
@@ -278,7 +278,7 @@ The engineering posts confirm the fleet-level coupling. A September 2023 post on
 
 **My reading** is that most of the separability the 2025 transition needed was already present, built for other reasons. Per-tenant cloud accounts mapped to cost centers existed for FinOps; data products with contracts existed in Spain for data quality; FIAAS deployment files were portable by design. A platform built for chargeback and tenant isolation is a platform from which a tenant can be carved. What the public record does not show is how long the carve-outs took or what they cost beyond the "temporary spike" in cloud emissions.
 
-## Trade-Offs: Five Places to Draw the Shared Line
+## Trade-Offs the Case Illustrates
 
 | Option | What Adevinta's record shows | When it is right | When it fails |
 | --- | --- | --- | --- |
@@ -290,7 +290,7 @@ The engineering posts confirm the fleet-level coupling. A September 2023 post on
 
 **The right line between shared and local depends on the layer, on how uniform the technology is, and on how long the group expects to own each tenant.** The rows are not a maturity ladder. The third condition is the one Adevinta's record adds to the usual platform discussion.
 
-## How the Verticals Differed
+## Vertical Differences in the Record
 
 Adevinta's generalist, automotive and real-estate marketplaces behaved differently under the same group strategy.
 

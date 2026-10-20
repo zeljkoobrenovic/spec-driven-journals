@@ -42,6 +42,16 @@ deletes wastes the effort.
   names, citations, quoted text, or the labels that mark evidence (for example
   `INFERENCE, NOT DOCUMENTED`). If a fact sits in a vague paragraph you delete,
   move it into a paragraph you keep, or confirm the post states it elsewhere.
+  You may delete a whole quotation when it adds nothing, but never edit words
+  inside one, and report every quotation you delete.
+- **Text that mirrors another page counts as quoted text.** This includes:
+  - another page's title, excerpt or key point repeated in this post (common in
+    part intros, hand-offs, toolkits and tables of chapters);
+  - a term defined in the glossary;
+  - a heading name that another page cites.
+
+  Leave its wording alone even when it is vague. If it should change, change it
+  at its source, and report that instead of editing it here.
 - **Keep the house shape.** Fixed elements stay in place with their exact
   labels:
   - front matter;
@@ -63,24 +73,51 @@ deletes wastes the effort.
 
   If you delete a figure, renumber the remaining figures and every "Figure N"
   reference in the text.
-- **Heading anchors may be linked from elsewhere.** Before renaming a heading,
-  run `grep -rn "<permalink>.html#" _journals/` to check for links into this
-  page. If a link points at that heading, keep the anchor working: keep an
-  explicit id, or update the link.
+- **Parallel pages share headings.** Books often give pages of the same kind
+  the same section names: case studies, part intros, the "Setting the Scene"
+  or worked-example sections of chapters. Before renaming a heading, compare
+  it with two or three sibling pages:
+
+  ```bash
+  python3 .claude/skills/sharpen-post/scripts/skeleton.py <sibling>/index.md --headings
+  ```
+
+  If the siblings use the same heading, it is part of the house shape. Keep it,
+  and sharpen the paragraphs under it instead.
+- **Headings may be referenced from elsewhere, by link or by name.** Before
+  renaming a heading, make two checks:
+  - links: run `grep -rn "<permalink>.html#" _journals/`. If a link points at
+    the heading, keep the anchor working with an explicit id, or update the
+    link;
+  - plain-text mentions: run `grep -rnF "<old heading text>" _journals/<journal>/`
+    to find prose such as "see the Layer Map" or captions that name the section.
+    Inside this post, update the mention. In another page, keep the old heading,
+    or report the mention so the author can update it.
 - Edit only the requested file and its `spec.md`. Report problems in other
   pages instead of fixing them.
 
 ## Tool
 
 `scripts/skeleton.py` prints a post's skeleton. It skips front matter, code,
-diagrams and tables.
+diagrams and tables. For a paragraph that opens with a bold run-in label
+(`**Data.**`), it shows the label plus the sentence after it.
+
+`scripts/factcheck.py` compares the post with its last committed version (or
+`--base REF`). It reports every number, date, `[[link]]`, URL, evidence label,
+callout label and quotation whose count fell, and checks that figure captions
+run 1, 2, 3 in order. It exits with status 1 when anything was lost.
 
 ```bash
-S=.claude/skills/sharpen-post/scripts/skeleton.py
-python3 $S <file.md> --headings   # the outline only
-python3 $S <file.md>              # headings + first sentence of every paragraph (P1, P2, …)
-python3 $S <file.md> --stats      # headings, paragraphs, prose words
+S=.claude/skills/sharpen-post/scripts
+python3 $S/skeleton.py <file.md> --headings   # the outline only
+python3 $S/skeleton.py <file.md>              # headings + first sentence of every paragraph (P1, P2, …)
+python3 $S/skeleton.py <file.md> --stats      # headings, paragraphs, prose words
+python3 $S/factcheck.py <file.md>             # what was lost compared with HEAD
 ```
+
+If the post has uncommitted changes from before this pass, note the commit or
+copy you started from and pass it as `--base`. Otherwise those earlier changes
+are counted as part of this pass.
 
 ## Workflow
 
@@ -203,15 +240,25 @@ Common vague patterns:
 1. Re-run steps 1–3 on the edited post. Edits often expose a new ordering or
    topic-sentence problem. Repeat until a full round produces no structural
    change. Stop after **three rounds**.
-2. Run `--stats` and compare it with the baseline. Prose words should fall,
-   usually by 10–30%. If they rose, you added rather than cut; review the
-   additions.
-3. Check the `git diff`:
-   - no number, date, name, citation, link or evidence label was lost or
-     altered by accident;
-   - every `[[…]]` link is intact;
-   - figure numbers run consecutively;
-   - the house-shape elements are still present.
+2. Run `--stats` and compare it with the baseline. Use the word count as a
+   check against padding, not as a target. Never cut a fact to reach a number.
+   Expected change by kind of post:
+
+   | Kind of post | Expected change in prose words |
+   | --- | --- |
+   | Essays, concept chapters, explanations | Usually fall 10–30% |
+   | Fact-dense case studies, evidence-heavy chapters | Often fall less than 5%; the gain is in structure and openings |
+   | Part intros, hand-offs, toolkits, references | About flat; often only a few sentences change |
+
+   If the count rose by more than about 2%, review every addition and keep
+   only what the flow needs.
+3. Run `factcheck.py` and resolve every `LOST` line in one of two ways:
+   - restore the item, if the cut was accidental, or a number was dropped
+     while rewording a sentence;
+   - list it in the report as a deliberate cut, with the reason.
+
+   Then read the `git diff` once for what the script cannot see: names, claims
+   and house-shape elements.
 4. Run `python3 _wiring/build.py 2>&1 | grep -iE "<journal>|error|Traceback"`
    and confirm `[built] <journal>`. If the journal has a render check, run it
    on the page.
@@ -230,8 +277,10 @@ Keep the report short:
 - the new heading outline, if it changed;
 - sections merged, moved or deleted;
 - spec changes, if any, with the reason for each;
-- each **deleted passage that carried a claim**, with a one-line reason, so the
-  author can restore it;
+- each **deleted passage that carried a claim**, and every deliberate cut that
+  `factcheck.py` reported, with a one-line reason, so the author can restore
+  it;
+- plain-text references in other pages to a heading you renamed;
 - anything left vague because fixing it needs facts the post does not have.
   These are questions for the author.
 
@@ -248,4 +297,9 @@ Keep the report short:
 - Making every paragraph identical in shape. Narrative and case sections keep
   their rhythm.
 - Leaving heading-anchor links, `[[…]]` links or figure numbering broken.
+- Cutting facts to hit a word-count target.
+- Editing a quotation, or wording that mirrors another page's title, excerpt or
+  glossary entry.
+- Finishing without running `factcheck.py`, or with `LOST` lines left
+  unexplained.
 - Editing several posts in one pass. This skill works on one post at a time.
