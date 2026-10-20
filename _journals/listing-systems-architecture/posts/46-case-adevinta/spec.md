@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-20
 ---
 
 # Spec: Adevinta: From Schibsted's Copy-Paste Model to a Portfolio Platform
@@ -69,3 +69,4 @@ Chief and enterprise architects of marketplace groups, platform-engineering lead
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: re-verified 10 load-bearing claims; dated the Kleinanzeigen provider history (OPP 2020–2023, Adyen per 2026 help page) and Marktplaats OPP (2022); aligned the Hearthly-sale worked question with the long-term-evolution stressor and tenancy model; expanded OCR/EU5; American spelling. *(AI-mediated session)*
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,355 → 6,240 prose words; 9 headings renamed to state their content; evidence limits moved from the intro into How to Read This Case; buried points moved to paragraph openings; vague "contested layers" row rewritten from the 2024 risk register. No facts, sources or links removed; spec unchanged. *(AI-mediated session)*
