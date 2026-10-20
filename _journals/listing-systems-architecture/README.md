@@ -1,6 +1,6 @@
-# Architecting Listing Systems — Manuscript Workspace
+# LISTED — Manuscript Workspace
 
-**Architecting Listing Systems: Engineering Large-Scale Classifieds and Marketplace Platforms**
+**LISTED: Architecting Large-Scale Classifieds and Marketplace Platforms**
 
 How architects and engineering leaders design, scale, govern and evolve the systems behind classifieds and listing marketplaces — listings, ingestion, search, trust, monetization and the multi-country platforms beneath them.
 

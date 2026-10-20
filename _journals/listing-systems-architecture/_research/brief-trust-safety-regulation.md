@@ -1,6 +1,6 @@
 # Research brief: Marketplace trust, safety, fraud prevention, moderation, identity and regulation
 
-Prepared 19 October 2026 for chapter writers of *Architecting Listing Systems: Engineering Large-Scale Classifieds and Marketplace Platforms*. The brief covers two things. The first is the fraud and abuse that classifieds platforms face, and the engineering used against it. The second is the regulation that now shapes moderation, trader identity and evidence-keeping in the EU, the UK and the US. Named companies appear because they published something. That is not an endorsement.
+Prepared 19 October 2026 for chapter writers of *LISTED: Architecting Large-Scale Classifieds and Marketplace Platforms*. The brief covers two things. The first is the fraud and abuse that classifieds platforms face, and the engineering used against it. The second is the regulation that now shapes moderation, trader identity and evidence-keeping in the EU, the UK and the US. Named companies appear because they published something. That is not an endorsement.
 
 ## How to read this brief
 

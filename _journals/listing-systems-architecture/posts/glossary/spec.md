@@ -7,7 +7,7 @@ revised: 2026-10-19
 
 ## Intent
 
-Give *Architecting Listing Systems* one shared vocabulary. A reader who meets a term in any chapter (a marketplace model, a listing-model concept, a feed or search term, a trust or regulatory obligation, a monetization or platform device) can find a plain-language definition in one place, see it beside the terms it is most often confused with, and follow a link to the chapter that owns it. The page also serves the writers and AI tools that work on the book: the chapters follow these definitions, so a disagreement between a chapter and this page is a defect to fix in one of them.
+Give *LISTED* one shared vocabulary. A reader who meets a term in any chapter (a marketplace model, a listing-model concept, a feed or search term, a trust or regulatory obligation, a monetization or platform device) can find a plain-language definition in one place, see it beside the terms it is most often confused with, and follow a link to the chapter that owns it. The page also serves the writers and AI tools that work on the book: the chapters follow these definitions, so a disagreement between a chapter and this page is a defect to fix in one of them.
 
 ## Audience
 

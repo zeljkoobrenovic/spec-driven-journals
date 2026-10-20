@@ -1,6 +1,6 @@
 # Research brief: Marketplace economics, business models and monetization systems
 
-Prepared 19 October 2026 for chapter writers of *Architecting Listing Systems: Engineering Large-Scale Classifieds and Marketplace Platforms*. Main consumers: Part VI (MONEY): chapters 30 `monetization-models`, 31 `products-and-entitlements` and 32 `advertising-platforms`. Also chapters 01 `marketplace-taxonomy`, 04 `business-capabilities`, 28 `messaging-and-leads` and 29 `transactions-and-payments`. The brief is vendor-neutral. Companies appear because they publish unusually precise KPI definitions in their filings, not because the book endorses them.
+Prepared 19 October 2026 for chapter writers of *LISTED: Architecting Large-Scale Classifieds and Marketplace Platforms*. Main consumers: Part VI (MONEY): chapters 30 `monetization-models`, 31 `products-and-entitlements` and 32 `advertising-platforms`. Also chapters 01 `marketplace-taxonomy`, 04 `business-capabilities`, 28 `messaging-and-leads` and 29 `transactions-and-payments`. The brief is vendor-neutral. Companies appear because they publish unusually precise KPI definitions in their filings, not because the book endorses them.
 
 ## How to read this brief
 

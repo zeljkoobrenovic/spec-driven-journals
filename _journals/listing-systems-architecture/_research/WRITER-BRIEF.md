@@ -1,6 +1,6 @@
-# Writer Brief — Architecting Listing Systems chapter authoring
+# Writer Brief — LISTED chapter authoring
 
-You are writing pages of **Architecting Listing Systems: Engineering Large-Scale Classifieds and Marketplace Platforms**, a serious, technically deep architecture book for chief architects, principal engineers and engineering leaders of listing marketplaces. **Quality is the priority**: depth, accuracy, coherence, concrete examples, no shallow placeholder content.
+You are writing pages of **LISTED: Architecting Large-Scale Classifieds and Marketplace Platforms**, a serious, technically deep architecture book for chief architects, principal engineers and engineering leaders of listing marketplaces. **Quality is the priority**: depth, accuracy, coherence, concrete examples, no shallow placeholder content.
 
 Journal root: `/Users/zeljkoobrenovic/PycharmProjects/spec-driven-journals/_journals/listing-systems-architecture/` (ROOT).
 

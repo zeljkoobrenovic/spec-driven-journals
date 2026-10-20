@@ -1,6 +1,6 @@
 # Research brief: AVIV Group and real-estate marketplace architecture
 
-Prepared 19 October 2026 for chapter writers of *Architecting Listing Systems: Engineering Large-Scale Classifieds and Marketplace Platforms*. The brief covers three things: AVIV Group, the portfolio of real-estate classifieds Axel Springer used to own; the other property portals that publish usable evidence about their engineering or operations; and the data standards and regulation that make real-estate listing systems architecturally different from general classifieds. It does not endorse any company. Portals are included because there is public evidence about them, and the depth of each section follows the depth of that evidence.
+Prepared 19 October 2026 for chapter writers of *LISTED: Architecting Large-Scale Classifieds and Marketplace Platforms*. The brief covers three things: AVIV Group, the portfolio of real-estate classifieds Axel Springer used to own; the other property portals that publish usable evidence about their engineering or operations; and the data standards and regulation that make real-estate listing systems architecturally different from general classifieds. It does not endorse any company. Portals are included because there is public evidence about them, and the depth of each section follows the depth of that evidence.
 
 ## How to read this brief
 

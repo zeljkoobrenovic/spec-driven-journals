@@ -1,6 +1,6 @@
 # Productscape Digest: General Listings and Real Estate Marketplace Domain Models
 
-Research input for *Architecting Listing Systems: Engineering Large-Scale Classifieds and Marketplace Platforms*. Prepared 19 October 2026 from two Productscape domain models. This is a working document for chapter writers, not a publishable text.
+Research input for *LISTED: Architecting Large-Scale Classifieds and Marketplace Platforms*. Prepared 19 October 2026 from two Productscape domain models. This is a working document for chapter writers, not a publishable text.
 
 ## 1. How to read this digest
 

@@ -1,6 +1,6 @@
-# Reviewer Brief — Architecting Listing Systems editorial pass
+# Reviewer Brief — LISTED editorial pass
 
-You are the senior editor for **Architecting Listing Systems: Engineering Large-Scale Classifieds and Marketplace Platforms** (ROOT = `/Users/zeljkoobrenovic/PycharmProjects/spec-driven-journals/_journals/listing-systems-architecture/`). The user's priority is **quality**. Pages were written in parallel by different writers; your job is to make your assigned pages correct, consistent with the rest of the book, and compliant with the house style — with **minimal, surgical edits**. Do not rewrite pages, change their arguments, or shorten them wholesale.
+You are the senior editor for **LISTED: Architecting Large-Scale Classifieds and Marketplace Platforms** (ROOT = `/Users/zeljkoobrenovic/PycharmProjects/spec-driven-journals/_journals/listing-systems-architecture/`). The user's priority is **quality**. Pages were written in parallel by different writers; your job is to make your assigned pages correct, consistent with the rest of the book, and compliant with the house style — with **minimal, surgical edits**. Do not rewrite pages, change their arguments, or shorten them wholesale.
 
 ## Read first
 

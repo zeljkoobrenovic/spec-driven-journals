@@ -1,6 +1,6 @@
 # Illustrator Brief — RECONCILED inline figures
 
-You are adding inline article figures to pages of **Architecting Listing Systems** (ROOT = `/Users/zeljkoobrenovic/PycharmProjects/spec-driven-journals/_journals/listing-systems-architecture/`). The user explicitly asked to **illustrate the articles and generate the images** (`GEMINI_API_KEY` is set in the environment — never print it).
+You are adding inline article figures to pages of **LISTED** (ROOT = `/Users/zeljkoobrenovic/PycharmProjects/spec-driven-journals/_journals/listing-systems-architecture/`). The user explicitly asked to **illustrate the articles and generate the images** (`GEMINI_API_KEY` is set in the environment — never print it).
 
 ## Read first
 

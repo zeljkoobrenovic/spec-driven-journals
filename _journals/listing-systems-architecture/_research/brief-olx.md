@@ -1,6 +1,6 @@
 # Research brief: OLX Group (Prosus): history, footprint, economics and engineering
 
-Prepared 19 October 2026 for chapter writers of *Architecting Listing Systems: Engineering Large-Scale Classifieds and Marketplace Platforms*. OLX is documented here as a case study. It is unusually useful for the book for three reasons:
+Prepared 19 October 2026 for chapter writers of *LISTED: Architecting Large-Scale Classifieds and Marketplace Platforms*. OLX is documented here as a case study. It is unusually useful for the book for three reasons:
 
 1. It is one of the few classifieds groups that has gone through **every major portfolio move**: global roll-up, regional mergers, a failed vertical-integration bet (OLX Autos), forced exit (Russia), carve-outs into joint ventures (US, MENA/South Asia, Brazil) and a final retreat to a compact European core.
 2. Its parent, Prosus, **reports OLX's revenue and profit separately**, so the economics of a focused classifieds business can be read from primary filings.

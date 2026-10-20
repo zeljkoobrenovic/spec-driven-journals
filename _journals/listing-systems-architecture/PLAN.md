@@ -1,6 +1,6 @@
-# Architecting Listing Systems — Book Plan and Chapter Contracts
+# LISTED — Book Plan and Chapter Contracts
 
-**Architecting Listing Systems: Engineering Large-Scale Classifieds and Marketplace Platforms**
+**LISTED: Architecting Large-Scale Classifieds and Marketplace Platforms**
 
 *How architects and engineering leaders design, scale, govern and evolve the systems behind classifieds and listing marketplaces — from the listing aggregate and the ingestion pipeline to search, trust, monetization and the multi-country platforms that hold a portfolio of marketplaces together.*
 

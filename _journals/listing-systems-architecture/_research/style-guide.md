@@ -1,4 +1,4 @@
-# Architecting Listing Systems — Style Guide for Chapter Writers
+# LISTED — Style Guide for Chapter Writers
 
 Read this, `../PLAN.md` (your chapter contract), `scenario-ledger.md` (the shared fictional facts) and the research briefs named in your contract **before writing**. The reference books for voice, density and structure are RECONCILED (`_journals/finance-systems-architecture/`; read `posts/20-payments-fundamentals/index.md` as the model chapter) and OWNED (`_journals/private-techuity/`, `posts/27-manage-technical-debt/index.md`). Keep their discipline: concrete, defined, evidenced, example-driven.
 

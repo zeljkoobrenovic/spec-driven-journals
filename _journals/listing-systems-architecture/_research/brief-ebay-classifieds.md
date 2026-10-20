@@ -1,6 +1,6 @@
 # Research brief: eBay Classifieds Group and its brands (history, shared platforms, sale, aftermath)
 
-Prepared 19 October 2026 for chapter writers of *Architecting Listing Systems: Engineering Large-Scale Classifieds and Marketplace Platforms*. This brief covers how eBay assembled a global classifieds portfolio (2004–2020), what is publicly known about how those sites were engineered and how much technology they shared, how the portfolio was sold to Adevinta (2020–2021), and what happened to each brand afterwards. It ends with lessons on multi-country shared platforms versus strong local brands.
+Prepared 19 October 2026 for chapter writers of *LISTED: Architecting Large-Scale Classifieds and Marketplace Platforms*. This brief covers how eBay assembled a global classifieds portfolio (2004–2020), what is publicly known about how those sites were engineered and how much technology they shared, how the portfolio was sold to Adevinta (2020–2021), and what happened to each brand afterwards. It ends with lessons on multi-country shared platforms versus strong local brands.
 
 ## How to read this brief
 

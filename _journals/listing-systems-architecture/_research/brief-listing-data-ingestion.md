@@ -1,6 +1,6 @@
 # Research brief: Listing domain data, taxonomies, media, geo and ingestion pipelines
 
-Prepared 19 October 2026 for chapter writers of *Architecting Listing Systems: Engineering Large-Scale Classifieds and Marketplace Platforms*. This brief covers the **listing as data**: how it is classified, typed, enriched, ingested, illustrated, de-duplicated, measured and owned. Two neighboring briefs go deeper on vertical standards. For RESO, OpenImmo, MLS feeds and real-estate cross-portal duplicates, see **brief-real-estate-portals**. For VIN decoding, make/model reference data and dealer management system (DMS) feeds, see **brief-automotive**. This brief touches those topics only where they illustrate a general pattern.
+Prepared 19 October 2026 for chapter writers of *LISTED: Architecting Large-Scale Classifieds and Marketplace Platforms*. This brief covers the **listing as data**: how it is classified, typed, enriched, ingested, illustrated, de-duplicated, measured and owned. Two neighboring briefs go deeper on vertical standards. For RESO, OpenImmo, MLS feeds and real-estate cross-portal duplicates, see **brief-real-estate-portals**. For VIN decoding, make/model reference data and dealer management system (DMS) feeds, see **brief-automotive**. This brief touches those topics only where they illustrate a general pattern.
 
 ## How to read this brief
 

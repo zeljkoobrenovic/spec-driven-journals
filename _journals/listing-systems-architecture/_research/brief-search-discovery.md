@@ -1,6 +1,6 @@
 # Research brief: Search, discovery, ranking and recommendations in listing marketplaces
 
-Prepared 19 October 2026 for chapter writers of *Architecting Listing Systems: Engineering Large-Scale Classifieds and Marketplace Platforms*. The brief is vendor-neutral. Vinted, Airbnb and leboncoin get the most space because they have published unusually detailed, dated engineering material, not because the book endorses their choices.
+Prepared 19 October 2026 for chapter writers of *LISTED: Architecting Large-Scale Classifieds and Marketplace Platforms*. The brief is vendor-neutral. Vinted, Airbnb and leboncoin get the most space because they have published unusually detailed, dated engineering material, not because the book endorses their choices.
 
 ## How to read this brief
 

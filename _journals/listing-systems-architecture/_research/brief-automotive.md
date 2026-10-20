@@ -1,6 +1,6 @@
 # Research brief: Automotive marketplaces and other verticals (jobs, recommerce)
 
-Prepared 19 October 2026 for chapter writers of *Architecting Listing Systems: Engineering Large-Scale Classifieds and Marketplace Platforms*. Scope: Part A covers automotive marketplaces and the architecture specific to vehicles. Part B covers jobs marketplaces and horizontal recommerce. Part C compares the four architectural archetypes (general classifieds, automotive, jobs, recommerce). The brief is vendor-neutral. Companies appear because they publish unusually useful primary material (annual reports, 10-K filings, API documentation, engineering blogs), not because the book endorses them.
+Prepared 19 October 2026 for chapter writers of *LISTED: Architecting Large-Scale Classifieds and Marketplace Platforms*. Scope: Part A covers automotive marketplaces and the architecture specific to vehicles. Part B covers jobs marketplaces and horizontal recommerce. Part C compares the four architectural archetypes (general classifieds, automotive, jobs, recommerce). The brief is vendor-neutral. Companies appear because they publish unusually useful primary material (annual reports, 10-K filings, API documentation, engineering blogs), not because the book endorses them.
 
 ## How to read this brief
 

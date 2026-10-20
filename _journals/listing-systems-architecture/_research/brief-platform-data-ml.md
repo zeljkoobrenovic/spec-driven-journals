@@ -1,6 +1,6 @@
 # Research brief: Distributed systems, platform engineering, data, experimentation and ML in listing marketplaces
 
-Prepared 19 October 2026 for chapter writers of *Architecting Listing Systems: Engineering Large-Scale Classifieds and Marketplace Platforms*. Scope: how classifieds and listing marketplaces have documented their runtime platforms, event and data architectures, web delivery for SEO-heavy sites, experimentation, ML, and GenAI adoption. Classifieds evidence comes first (Adevinta and its brands, Vinted, the Scout24 portals, Auto Trader UK, Rightmove, OLX, eBay). General marketplace references (Airbnb, Zalando, Uber, DoorDash) appear only where they teach a pattern that classifieds documentation does not.
+Prepared 19 October 2026 for chapter writers of *LISTED: Architecting Large-Scale Classifieds and Marketplace Platforms*. Scope: how classifieds and listing marketplaces have documented their runtime platforms, event and data architectures, web delivery for SEO-heavy sites, experimentation, ML, and GenAI adoption. Classifieds evidence comes first (Adevinta and its brands, Vinted, the Scout24 portals, Auto Trader UK, Rightmove, OLX, eBay). General marketplace references (Airbnb, Zalando, Uber, DoorDash) appear only where they teach a pattern that classifieds documentation does not.
 
 ## How to read this brief
 

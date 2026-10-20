@@ -7,7 +7,7 @@ revised: 2026-10-19
 
 ## Intent
 
-Open **Architecting Listing Systems** by telling the reader what the book is for, whom it serves, what it argues and how to find the chapter that answers the decision already on their desk. Frame the problem with a scene a Chief Architect recognizes (a general manager asks why a smaller competitor turns its listings into more contacts, and every team's own report is green), show that it is an architecture question, and state the book's central argument, a listing marketplace is a liquidity machine, in the same words [[long-term-evolution]] uses, without repeating that chapter's part-by-part synthesis. Explain the five kinds of statement and why company-specific claims carry publication dates.
+Open **LISTED** by telling the reader what the book is for, whom it serves, what it argues and how to find the chapter that answers the decision already on their desk. Frame the problem with a scene a Chief Architect recognizes (a general manager asks why a smaller competitor turns its listings into more contacts, and every team's own report is green), show that it is an architecture question, and state the book's central argument, a listing marketplace is a liquidity machine, in the same words [[long-term-evolution]] uses, without repeating that chapter's part-by-part synthesis. Explain the five kinds of statement and why company-specific claims carry publication dates.
 
 ## Audience
 
@@ -67,3 +67,4 @@ Article only for now.
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: Part VIII paragraph aligned with the written part intro (one owning team per capability; problems of change, not design); argument checked against long-term-evolution; American spelling. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
+- **2026-10-20** — Book retitled to *LISTED: Architecting Large-Scale Classifieds and Marketplace Platforms*; permalinks unchanged. *(AI-mediated session)*
