@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Stripe: Every Movement Is a Balance Transaction
@@ -71,3 +71,4 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Stripe: Programmable Payments, Billing and Connected Accounts" to "Stripe: Every Movement Is a Balance Transaction" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 4 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 7,973 → 7,986 prose words; lead now places the chapter in Part II and names what it builds on and what [[payments-to-ledger]] takes from it; 1 subheading renamed ("The account model has moved on" → "Accounts v2 replaces Standard, Express and Custom"); Metronome and idempotency recommendations split into their own paragraphs; first sentences made to state their points; spec unchanged. *(AI-mediated session)*

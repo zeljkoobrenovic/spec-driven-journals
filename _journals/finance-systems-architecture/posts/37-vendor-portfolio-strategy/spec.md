@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Own Your Roadmap: Vendor Strategy Without Lock-In Panic
@@ -70,3 +70,4 @@ Chief and enterprise architects, finance-systems leaders, payments-platform lead
 - **2026-10-18** — Added a cross-reference to [[finops]] for cloud commitments, minimum spend and marketplace purchases as vendor dependencies. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Vendor Strategy and Avoiding Excessive Dependency" to "Own Your Roadmap: Vendor Strategy Without Lock-In Panic" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,910 → 6,859 prose words; lead now ties the chapter to the target state's named products and hands forward to [[finance-transformation]]; recap of the chapter's contents removed from the lead; exit maturity stages named in the text; four teaser openers made into claims; no headings changed. *(AI-mediated session)*

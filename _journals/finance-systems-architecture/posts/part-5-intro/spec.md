@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: PART V — PRACTICE: How Others Built It
@@ -17,7 +17,7 @@ Chief Architects, finance-systems and integration architects, and finance-transf
 
 - [ ] Opens with the IN THIS PART and FAILURE PATTERNS callouts; patterns use exact names, are linked to [[where-finance-architecture-goes-wrong]] and are ordered by strength of connection to chapter 44: The Shadow Ledger, The Permanent Exception, Point-to-Point Spaghetti.
 - [ ] Explains why real cases after a fictional one: evidence versus illustration, and what a public engineering blog can and cannot prove (survivorship, selective disclosure, dates).
-- [ ] States the documented / interpretation / not public discipline, with a small mermaid evidence-boundary diagram and caption.
+- [ ] States the documented / interpretation / not public discipline, with one evidence-boundary figure and caption.
 - [ ] One paragraph on [[case-uber-payments]] drawn from its KEY POINTS.
 - [ ] Presents the part as a growing collection without promising specific companies.
 - [ ] Explains how to use the cases with the earlier chapters and the [[toolkit]]; closes by pointing to [[case-uber-payments]].
@@ -50,3 +50,4 @@ The journal's `config.yaml`, `PLAN.md` (Part V contract), the style guide and ch
 - 2026-10-18: Initial spec and article, AI-mediated session.
 - **2026-10-19** — Part title renamed to "PRACTICE: How Others Built It" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the mermaid diagram with a generated illustration (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 702 → 696 words; no headings changed; one confusing pointer ("third column") fixed; spec criterion updated from a mermaid diagram to the evidence-boundary figure that replaced it. *(AI-mediated session)*

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Technical Debt on the Balance Sheet
@@ -18,11 +18,12 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - [x] Reader can name seven finance-specific debt types (ERP custom code, unsupported versions and vendor deadlines, EUCs in the close, integration, data, control, knowledge) and link each to a failure pattern.
 - [x] Reader can define a fitness function in five parts (metric, measurement, threshold, owner, automation) and distinguish it from portfolio fitness scores.
 - [x] A fitness-function catalog table covers reconciliation completeness, auto-match rate, suspense aging, tie-out breaks, close duration by phase, interface error rate and replay count, idempotency conformance, clean-core score, upgrade lead time, mapping-rule coverage, EUCs in key controls, key-control automation, ledger-to-warehouse tie-out, partner master quality and decision lead time.
-- [x] The chapter shows how fitness functions are automated (transport and deployment pipelines, BlackLine data, delivery ledgers, a dbt-tested FinDB mart) and reviewed (quarterly architecture fitness review), with a diagram.
+- [x] The chapter shows how fitness functions are automated (transport and deployment pipelines, BlackLine data, delivery ledgers, a dbt-tested FinDB mart) and reviewed (quarterly architecture fitness review), with a figure of the feeds and the review.
 - [x] Northmere's register has eight items in three columns, with cash and capacity separated at the $165k planning rate, figures consistent with the ledger and with [[sap-s4hana]], [[application-portfolio]], [[integration-architecture]] and [[blackline]].
+- [x] The opening ties the chapter to [[finance-transformation]] (what the program leaves behind must keep being measured) and names what later uses it ([[finops]], the debt register in [[toolkit]]).
 - [x] The OWNED sequencing rule is adapted (finance's five kinds of date; close critical path and key controls as tie-break) and applied to the register.
 - [x] Tranche funding uses gates written as fitness-function readings; the CFO presentation answers Tomás's two questions in his units.
-- [x] Failure modes include debt as a backlog count, fitness theater and metrics without owners; three mermaid diagrams; trade-off table; Chief Architect's view; questions; sources.
+- [x] Failure modes include debt as a backlog count, fitness theater and metrics without owners; figures for the carrying cost, the measurement feeds, the sequencing rule and a register item's life; trade-off table; Chief Architect's view; questions; sources.
 
 ## Non-goals
 
@@ -41,7 +42,7 @@ Chief and enterprise architects, finance-systems and integration architects, and
 
 ## Open questions
 
-- Should the fitness catalog appear in the toolkit as a template alongside the debt register?
+- Tool 12 in [[toolkit]] carries one fitness-function card. Should the whole catalog appear there too?
 - The interface error-rate baseline is "being measured"; a later chapter may want a number.
 
 ## Decision log
@@ -75,3 +76,4 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - **2026-10-18** — Closing hand-off now points to the new chapter [[finops]] (read after this one), then [[resilience-and-security]]. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Technical Debt, Architectural Fitness and Modernization Priorities" to "Technical Debt on the Balance Sheet" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 5,324 → 5,362 prose words; opening now ties the chapter to [[finance-transformation]] and names [[toolkit]] and [[finops]] as users; 2 subheadings renamed (Five parts of a finance fitness function; Five kinds of external date); topic sentences brought forward in 5 paragraphs; spec criteria updated for figures (mermaid replaced), an opening criterion added, and the toolkit open question narrowed to the catalog. *(AI-mediated session)*

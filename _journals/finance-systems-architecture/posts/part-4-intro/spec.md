@@ -1,13 +1,13 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: PART IV — LEADERSHIP: The Chief Architect's Agenda
 
 ## Intent
 
-Orient the reader to Part IV: how a Chief Architect leads a multi-year finance transformation whose biggest choices are still open when it is funded. Show which strategic disciplines the ten chapters cover (governance, principles and standards, target and transition states, vendor strategy, transformation, technical debt, resilience and security, organization, AI, the long view), define design authority and transition state, and frame the part through Keystone's December 2026 approval at Northmere.
+Orient the reader to Part IV: how a Chief Architect leads a multi-year finance transformation whose biggest choices are still open when it is funded. Show which strategic disciplines the eleven chapters cover (governance, principles and standards, target and transition states, vendor strategy, transformation, technical debt, technology spend, resilience and security, organization, AI, the long view), define design authority and transition state, and frame the part through Keystone's December 2026 approval at Northmere.
 
 ## Audience
 
@@ -17,8 +17,8 @@ Chief Architects, enterprise and finance-systems architects, and finance-transfo
 
 - [ ] Opens with the IN THIS PART and FAILURE PATTERNS callouts, using exact pattern names (The Borrowed Roadmap, Big-Bang Bravado, Nobody's Bot, Audit Archaeology) linked to [[where-finance-architecture-goes-wrong]].
 - [ ] One-paragraph Northmere opening (labeled fictional) whose facts match the scenario ledger: Keystone approved December 2026, about $310 million over five years, $95 million run-rate savings by 2030, one finance core by 2029, three-day close by 2031, Dana co-chairing the design authority with Leila, final rights on mandatory standards without line authority over brand engineering.
-- [ ] Defines design authority and transition state in plain language.
-- [ ] A mermaid learning-path diagram groups chapters 34–43 into four stages (decide well; plan the journey; keep the estate healthy; organize and look ahead), with a figure caption.
+- [ ] Defines design authority and transition state in plain language, and says the part's leadership is mostly protecting them from schedule pressure.
+- [ ] A learning-path figure groups the eleven chapters into four stages (decide well; plan the journey; keep the estate healthy; organize and look ahead), with a figure caption.
 - [ ] Lists every chapter in config order as `[[permalink]]` with one line drawn from that chapter's KEY POINTS (from PLAN.md where the chapter is not yet written).
 - [ ] Closes with what the reader can do by the end and links to [[architecture-governance]] and [[toolkit]].
 - [ ] 600–850 words.
@@ -52,3 +52,4 @@ The journal's `config.yaml`, `PLAN.md`, `_research/scenario-ledger.md` and the K
 - **2026-10-18** — Added [[finops]] (new chapter read after technical-debt-and-fitness) to the learning path, the stage 3 diagram node and the closing paragraph; "ten" chapters became "eleven". *(AI-mediated session)*
 - **2026-10-19** — Part title renamed to "LEADERSHIP: The Chief Architect's Agenda" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the mermaid diagram with a generated illustration (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 839 → 825 words; opening and terms paragraphs lead with their point; no headings changed. Spec: Intent and learning-path criterion now say eleven chapters (FinOps added) and a figure rather than a mermaid diagram; terms criterion names the protection point. *(AI-mediated session)*

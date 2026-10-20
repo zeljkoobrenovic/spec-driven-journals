@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Around the Core: Where Specialist Platforms Earn Their Place
@@ -20,7 +20,7 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - [ ] Reader can distinguish post-audit, Peppol four-corner, clearance and decentralized CTC models and explain why the invoice moves into the order-to-cash critical path.
 - [ ] Reader can sketch a payment factory with pain.001 / pain.002 / camt.053 flows and the controls on the ERP-to-bank path, without the "MT940 is dead" error.
 - [ ] Reader can assign data ownership for supplier, bank account and tax master data.
-- [ ] Article has ≥3 mermaid diagrams (tax call sequence, payment factory, clearance flow), an ERP-native vs specialist table, a Northmere worked example (one €90 commission, two VAT answers), a Chief Architect's view with Northmere decisions, Questions to ask, and Sources.
+- [ ] Article has ≥3 diagrams (tax call sequence, payment factory, clearance flow), an ERP-native vs specialist table, a Northmere worked example (one €90 commission, two VAT answers), a Chief Architect's view with Northmere decisions, Questions to ask, and Sources.
 - [ ] All vendor facts trace to the satellites-ai or accounting briefs or to pages fetched in session; ownership changes and renames are stated correctly.
 
 ## Non-goals
@@ -72,3 +72,4 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Around the Core: Tax, Treasury, Procurement and Reporting Platforms" to "Around the Core: Where Specialist Platforms Earn Their Place" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 4 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 7,352 → 7,368 prose words; outline unchanged; lead now places the chapter as Part II's close, linking [[capability-mapping]] and [[part-3]]; generic and announcing sentences tightened or cut; long sentences split. Spec: diagram criterion no longer says "mermaid", since the diagrams are now generated illustrations. *(AI-mediated session)*

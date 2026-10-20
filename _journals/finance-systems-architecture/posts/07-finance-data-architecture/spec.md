@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Finance Data Architecture: Who Owns the Truth
@@ -73,3 +73,4 @@ Chief and enterprise architects, finance-systems and data architects, and financ
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Finance Data Architecture: Master Data, Systems of Record and Governance" to "Finance Data Architecture: Who Owns the Truth" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 4 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,410 → 6,391 prose words; lead now ties the chapter to [[finance-processes]] and the chapters that use its designs; 1 heading renamed ("The Architecture of Financial Master Data" → "Few Authoring Points, Many Subscribers"); topic sentences and long sentences tightened; spec unchanged. *(AI-mediated session)*

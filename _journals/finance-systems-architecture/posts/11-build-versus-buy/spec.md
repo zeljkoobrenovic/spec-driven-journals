@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Build, Buy or Compose: Choosing What to Own
@@ -22,7 +22,7 @@ Chief and enterprise architects, finance-systems leads, procurement and finance-
 - [ ] Reader can state the EU Data Act switching terms (Art. 25, 26, 29, 31) and DORA's third-party and exit provisions (Art. 28(3), 28(4), 28(8), 30(3)(f)) and when they apply at Northmere (Northmere Payments B.V.).
 - [ ] Reader can spot three weighted-scoring pitfalls in a worked score sheet (knock-out hidden by compensation, a tie that flips under a five-point weight shift, weights set after demos).
 - [ ] Reader can apply the post-acquisition rules (wrap within twelve months; converge, keep as a tier, or keep wrapped).
-- [ ] Article has three mermaid diagrams, trade-off tables, Chief Architect's view, Questions to ask and Sources and Evidence.
+- [ ] Article has five figures (generated illustrations, no mermaid), trade-off tables, Chief Architect's view, Questions to ask and Sources and Evidence.
 
 ## Non-goals
 
@@ -69,3 +69,4 @@ Chief and enterprise architects, finance-systems leads, procurement and finance-
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Build, Buy or Compose: Vendor Selection and Portfolio Rationalization" to "Build, Buy or Compose: Choosing What to Own" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,920 → 6,941 prose words (opening now ties the chapter to Part I's earlier sourcing questions and names the Part II chapters that apply it); "Applying the Tests to Tablekin" moved before the cost section, its closing paragraph moved to the end of the cost conclusions; 1 heading renamed ("A Selection Process That Finds the Truth" → "A Selection Process With Seven Gates"); 3 long paragraphs split. Spec: the diagram criterion now says five generated figures instead of three mermaid diagrams, matching the 20 October conversion. *(AI-mediated session)*

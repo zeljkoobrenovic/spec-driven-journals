@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: The Chief Architect's Job: Making Many Systems Tell One Story
@@ -68,3 +68,4 @@ Chief and enterprise architects, finance-systems leads and transformation leader
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "The Chief Architect's Job: Coherence Across a Finance Estate" to "The Chief Architect's Job: Making Many Systems Tell One Story" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 5,294 → 5,267 prose words; no headings renamed or sections moved; lead now states the chapter's place in Part I (builds on [[meet-northmere]], hands to [[capability-mapping]]); opening sentences of eleven paragraphs made point-first; one recap sentence cut. Spec unchanged. *(AI-mediated session)*

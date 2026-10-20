@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Never Update, Only Append: Designing Custom Ledgers
@@ -75,3 +75,4 @@ Chief Architects, solution and finance-systems architects, and engineering leads
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Designing Custom Ledgers and Financial Event Processing" to "Never Update, Only Append: Designing Custom Ledgers" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 8,437 → 8,457 prose words (fact-dense chapter; gain is in openings); lead now names what the chapter builds on ([[custom-finance-platforms]]) and what depends on it ([[sap-s4hana]], the Keystone replacement); about 15 paragraph openings restated as claims, the architecture boundaries split into two paragraphs, the yen example moved to the rounding paragraph; no headings renamed; spec unchanged. *(AI-mediated session)*

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: PART I — FOUNDATIONS: How Money Moves Through an Enterprise
@@ -18,7 +18,7 @@ Chief Architects, finance-systems, integration and enterprise architects, and fi
 - [ ] Opens with the IN THIS PART and FAILURE PATTERNS callouts, using exact pattern names linked to [[where-finance-architecture-goes-wrong]].
 - [ ] One-paragraph Northmere opening (labeled fictional) that poses the part's question with figures that match the scenario ledger.
 - [ ] Defines finance estate, business capability, subledger and general ledger in one clause each.
-- [ ] A mermaid learning-path diagram groups chapters 01–12 into four stages, with a figure caption.
+- [ ] A generated learning-path illustration groups chapters 01–12 into four stages, with a figure caption.
 - [ ] Lists every chapter in config order as `[[permalink]]` with one line drawn from that chapter's KEY POINTS.
 - [ ] Closes with what the reader can do by the end, what the part does not give them, and links to [[chief-architect-role]] and [[part-2]].
 - [ ] 500–850 words.
@@ -51,3 +51,4 @@ The journal's `config.yaml`, `PLAN.md`, `_research/scenario-ledger.md` and the K
 - **2026-10-18** — Editorial review pass: aligned the CFO-question framing with ch. 1 (three questions). *(AI-mediated session)*
 - **2026-10-19** — Part title renamed to "FOUNDATIONS: How Money Moves Through an Enterprise" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the mermaid diagram with a generated illustration (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 732 → 729 prose words; stage paragraph now names the four stages; hand-off no longer says "the next part" twice; spec criterion updated from a mermaid diagram to the generated illustration the post now uses. *(AI-mediated session)*

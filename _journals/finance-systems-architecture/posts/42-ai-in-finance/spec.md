@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Automate the Work, Not the Accountability
@@ -73,3 +73,4 @@ Chief and enterprise architects, finance-systems and integration architects, con
 - **2026-10-18** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "AI, Automation and Agentic Finance Operations" to "Automate the Work, Not the Accountability" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 2 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 7,230 → 7,292 words; lead now places the chapter in the book (Part III residue, [[organizing-for-architecture]] before, STD-FIN-06, toolkit card and [[long-term-evolution]] after); trade-offs count corrected to four; four paragraphs split or restructured to lead with their point; headings unchanged. *(AI-mediated session)*

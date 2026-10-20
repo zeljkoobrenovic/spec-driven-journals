@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Introduction: Architecture Where Every Number Must Reconcile
@@ -43,7 +43,6 @@ Article only for now.
 
 ## Open questions
 
-- When the Part V introduction (`part-5`) is written, link it from the structure table and add further case studies to the Part V row.
 - Should the introduction carry a full contents list, as OWNED's does, or is the site index enough?
 
 ## Decision log
@@ -71,3 +70,4 @@ Article only for now.
 - **2026-10-19** — Title renamed to "Introduction: Architecture Where Every Number Must Reconcile" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the mermaid diagram with a generated illustration (article-illustrator), captions unchanged. *(AI-mediated session)*
 - **2026-10-20** — Book title renamed from "RECONCILED: Enterprise Architecture for Financial Systems" to "RECONCILED: Architecting Finance Systems" at the author's request. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 3,157 → 3,140 words; no headings renamed; three paragraph openings made to state their point (Why This Book Exists ×2, the evidence-label paragraph). Spec: removed the answered Open question on `part-5` (the structure table now links it). *(AI-mediated session)*

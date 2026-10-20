@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: SAP S/4HANA: One Journal, Clean Core
@@ -22,7 +22,7 @@ Chief and enterprise architects, finance-systems and SAP solution architects, in
 - [ ] Presents Central Finance mechanics, uses and limits, and both 2027 Q4 options at SAP level with a diagram and a table, leaving the decision open and general coexistence to [[multiple-erps]].
 - [ ] Covers clean-core models and levels A–D as documented by SAP, and Northmere's remediation plan with a quarterly fitness function.
 - [ ] States maintenance dates with sources and "as of October 2026"; separates generally available AI from announcements.
-- [ ] Three mermaid diagrams; Questions to ask; Sources and Evidence grouped; Northmere numbers agree with the scenario ledger.
+- [ ] At least three diagram illustrations; Questions to ask; Sources and Evidence grouped; Northmere numbers agree with the scenario ledger.
 
 ## Non-goals
 
@@ -71,3 +71,4 @@ Chief and enterprise architects, finance-systems and SAP solution architects, in
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "SAP S/4HANA: The Enterprise Finance Core" to "SAP S/4HANA: One Journal, Clean Core" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 7,705 → 7,757 prose words (+0.7%, from a new lead paragraph placing the chapter in Part II after [[custom-finance-platforms]] and [[designing-financial-ledgers]]); excerpt tightened (FI-CA no longer listed as "outside the core"); merchant-subledger history moved after the FI-CA rule; Group Reporting and the market-dimension paragraph lead with their point; two announcer sentences cut; headings unchanged; spec success criterion "three mermaid diagrams" corrected to "at least three diagram illustrations" (the post has five figures, no mermaid). *(AI-mediated session)*

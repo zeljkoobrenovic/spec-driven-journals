@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Workday: The Org Chart Behind the Ledger
@@ -73,3 +73,4 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Workday: Financials, People and the Organizational Backbone" to "Workday: The Org Chart Behind the Ledger" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 7,948 → 7,908 words; lead now places the chapter after [[sap-s4hana]] and ties it to the convergence decision in [[multiple-erps]]; Stripe-flow paragraphs split and the proof-of-concept condition moved next to its tests; announcing sentences trimmed; no headings renamed; spec unchanged. *(AI-mediated session)*

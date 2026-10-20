@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: When the ERP Isn't Enough: Custom Finance Platforms
@@ -72,3 +72,4 @@ Chief and enterprise architects, finance-systems architects and engineering dire
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Why Enterprises Build Their Own Finance Platforms" to "When the ERP Isn't Enough: Custom Finance Platforms" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,276 → 6,332 prose words (opening now states the chapter's place in Part II); "The True Cost of Owning" moved up to follow the four burdens; one heading renamed ("Why Custom Finance Platforms Are Hard to Modernize"); control-total hop count corrected to match the four-row table; no spec content changes. *(AI-mediated session)*

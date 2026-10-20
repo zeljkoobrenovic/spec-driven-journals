@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: The Technology Is the Easy Part: Leading a Finance Transformation
@@ -68,3 +68,4 @@ Chief and enterprise architects, finance-systems architects, program directors a
 - **2026-10-18** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Leading an ERP Modernization and Finance Transformation" to "The Technology Is the Easy Part: Leading a Finance Transformation" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,963 → 6,973 prose words; lead now places the chapter in Part IV (builds on target-and-transition-states and vendor-portfolio-strategy, hands its estate to technical-debt-and-fitness); two announcement sentences cut; ten paragraph openers turned into claims; headings unchanged; spec unchanged. *(AI-mediated session)*

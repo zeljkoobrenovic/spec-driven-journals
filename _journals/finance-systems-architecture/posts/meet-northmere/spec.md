@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Meet Northmere: Five Brands, One Set of Books
@@ -67,3 +67,4 @@ Article only for now.
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed to "Meet Northmere: Five Brands, One Set of Books" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 2 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 2,418 → 2,448 words; new lead paragraph states the page's place in the preface (sets the numbers every chapter uses, links the failure patterns, points to the problem-to-chapter map); Keystone timeline anchors split into a dated list; a few sentences tightened; headings unchanged. *(AI-mediated session)*

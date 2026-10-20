@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Recover Before the Close: Resilience and Security for Finance
@@ -74,3 +74,4 @@ Chief Architects, finance-systems and payments architects, SRE and platform lead
 - **2026-10-18** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Resilience, Observability, Security and Recovery for Finance Systems" to "Recover Before the Close: Resilience and Security for Finance" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 7,011 → 7,025 prose words; lead now ties the chapter to [[finops]] and names the chapters that depend on it; "Security Architecture for Finance, Concisely" renamed "Finance-Specific Security Beyond the Baseline"; five paragraphs re-led with their point; announcers cut. Spec unchanged. *(AI-mediated session)*

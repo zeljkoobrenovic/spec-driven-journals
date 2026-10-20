@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Unreconciled: Fourteen Ways Finance Architecture Goes Wrong
@@ -20,7 +20,8 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - [ ] A summary table of all fourteen patterns and their warning signs precedes the pattern sections.
 - [ ] Each pattern has an italic quote, what it looks like, why it happens, what it costs (control, cost, speed, audit risk), a Northmere vignette labeled fictional, a one- or two-sentence remedy direction, and "Where this book helps:" with 2–4 valid cross-links.
 - [ ] Northmere figures match the scenario ledger (€14m suspense, 1.9%, €2.1m >90 days, 1,100 interfaces, ~240 flat files, ~70 EUCs, 2,300 custom objects, seven-month upgrades, 71 entities, 38,000 GL lines from 3 million subledger lines, the FY2026 significant deficiency).
-- [ ] A closing section shows the reinforcing chains with a mermaid diagram (Doppelgänger Record → Spreadsheet Glue → The Suspense Swamp among them) and a diagnostic table of first indicators per pattern.
+- [ ] The lead ties the page to the introduction's argument (an estate must be architected so it can always be reconciled; failures sit at the boundaries) and names what depends on it: the chapter callouts and [[meet-northmere]]'s starting problems.
+- [ ] After the patterns, one section shows the reinforcing chains in a figure (Doppelgänger Record → Spreadsheet Glue → The Suspense Swamp among them), and a separate section gives a diagnostic table of first indicators per pattern.
 - [ ] Any regulatory definition is sourced (PCAOB AS 2201 for deficiency severity).
 - [ ] Roughly 5,000–6,500 words of prose.
 
@@ -80,3 +81,5 @@ Article only for now. Pattern illustrations (one per pattern, as in OWNED) are a
 - **2026-10-19** — Title renamed to "Unreconciled: Fourteen Ways Finance Architecture Goes Wrong" at the author's request. *(AI-mediated session)*
 - **2026-10-19** — Added one inline illustration per failure pattern (14, article-illustrator); the Suspense Swamp sediment figure was replaced by a swamp image to match the renamed pattern; figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Replaced the mermaid diagram with a generated illustration (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,329 → 6,413 prose words; new lead paragraph ties the page to the introduction's argument and names what depends on it; diagnostic table promoted to its own section, "First Indicators to Ask For"; pattern statements moved ahead of term definitions in four "What it looks like" paragraphs; spec criteria updated for the lead and for the chains figure (no longer a mermaid diagram). *(AI-mediated session)*
+- **2026-10-20** — Header image regenerated with the fourteen current pattern names and their four families. *(AI-mediated session)*

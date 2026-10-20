@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Anatomy of a Finance Estate: Layers, Planes and Boundaries
@@ -69,3 +69,4 @@ Chief and enterprise architects, finance-systems and integration architects who 
 - **2026-10-18** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Anatomy of a Financial Systems Landscape" to "Anatomy of a Finance Estate: Layers, Planes and Boundaries" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,490 → 6,514 prose words; lead now names what the chapter builds on ([[capability-mapping]], [[application-portfolio]]); "What a Reference Model Is, and What It Is Not" renamed "A Reference Model and Four Tests for a Layer"; announcing sentences tightened; layer 1, 5 and 6 openers turned into claims. No spec change needed. *(AI-mediated session)*

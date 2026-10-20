@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Working Papers: Templates for the Finance Architect
@@ -70,3 +70,4 @@ Chief and enterprise architects, finance-systems, integration and data architect
 - **2026-10-18** — Consistency pass: SFP subledger cut-over date set to 1 November 2027; calendar rule wording clarified where relevant. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Toolkit: Templates for the Finance Architect" to "Working Papers: Templates for the Finance Architect" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the mermaid diagram with a generated illustration (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 5,343 → 5,362 prose words; lead now states the page's place in the book (the records the chapters teach; the set [[long-term-evolution]] lists and the blank forms three chapters point to); "Using the Toolkit Over Time" renamed "Keeping the Records Current"; removed a false pointer claiming Tools 1 and 4 link to the principles and overlap chapters. Spec unchanged. *(AI-mediated session)*

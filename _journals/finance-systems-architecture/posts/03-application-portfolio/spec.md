@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Manage the Application Portfolio as an Investment
@@ -73,3 +73,4 @@ Chief and enterprise architects, finance-systems leaders and finance-transformat
 - **2026-10-18** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-18** — Added a cross-reference to [[finops]] for hosting cost per application from tagged, ledger-tied cloud billing data. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 7,214 → 7,169 prose words; outline unchanged; lead now states the chapter's place (builds on the capability-to-application trace, defines TIME, pace layers and TCO for the book, feeds target state, overlap register and vendor strategy); six announcing first sentences rewritten as claims; contract-date cautions split into two paragraphs. *(AI-mediated session)*

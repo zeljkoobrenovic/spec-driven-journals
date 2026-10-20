@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: One Number, Many Views: Finance Data from Operations to Analytics
@@ -72,3 +72,4 @@ Chief and enterprise architects, data and finance-systems architects, heads of f
 - **2026-10-18** — Added a cross-reference to [[finops]] (cloud billing data product and unit cost as a governed metric). *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Finance Data Across the Estate: From Operations to Analytics" to "One Number, Many Views: Finance Data from Operations to Analytics" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 4 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,952 → 6,908 prose words; opening now places the chapter in Part III (builds on [[transaction-to-report]] and [[payments-to-ledger]], used by [[systems-of-record]], [[traceability-and-reconciliation]] and [[ai-in-finance]]); "Design" subsection renamed "How the tie-out works"; teaser and recap first sentences replaced with claims; no spec criteria changed. *(AI-mediated session)*

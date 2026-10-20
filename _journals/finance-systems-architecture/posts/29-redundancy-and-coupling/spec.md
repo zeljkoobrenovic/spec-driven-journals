@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Duplicates and Dependencies: The Hidden Costs of a Grown Estate
@@ -21,7 +21,7 @@ Chief and enterprise architects, integration architects and finance-systems lead
 - [ ] Reader can classify a dependency by the six coupling types, with a finance example and remedy for each, and explain why semantic coupling is the most expensive.
 - [ ] Reader can state the seven design rules and how each is enforced, and compute three coupling measures (change coupling, fan-in/out, incident propagation) from existing data.
 - [ ] Reader can follow the payout-engine collapse: options, the execution split by funding entity, gated stages, risks and controls, economics.
-- [ ] Article has four mermaid diagrams (register lifecycle, overlap map, coupling heat, collapse sequence), trade-off tables, governance hooks, Chief Architect's view, Questions to ask, Sources and Evidence; hands off to [[loosely-coupled-domains]].
+- [ ] Article has six figures (register row lifecycle, overlap map, semantic coupling, coupling heat, collapse sequence, redundancy–coupling trade-off), trade-off tables, governance hooks, Chief Architect's view, Questions to ask, Sources and Evidence; hands off to [[loosely-coupled-domains]].
 
 ## Non-goals
 
@@ -71,3 +71,4 @@ Chief and enterprise architects, integration architects and finance-systems lead
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Preventing Redundant Capabilities and Unnecessary Coupling" to "Duplicates and Dependencies: The Hidden Costs of a Grown Estate" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 4 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,003 → 6,025 words; opening now places the chapter in Part III (after [[multiple-erps]], before [[loosely-coupled-domains]]); 3 headings renamed (Twelve fields per row, Where Northmere's coupling runs hot, Seven Design Rules); first sentences tightened; spec success criterion updated from "four mermaid diagrams" to the six figures the article now carries. *(AI-mediated session)*

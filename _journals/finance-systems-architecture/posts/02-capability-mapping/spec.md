@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Map What Finance Does Before What Runs It
@@ -73,3 +73,4 @@ Chief and enterprise architects, finance-systems architects and finance-transfor
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Map Capabilities Before Systems" to "Map What Finance Does Before What Runs It" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 5,854 → 5,789 prose words; lead now ties the chapter to [[chief-architect-role]] and the chapters that consume the map; "The map" renamed "Ten groups, 45 capabilities"; two announce-only lines cut; several first sentences now state their point. *(AI-mediated session)*

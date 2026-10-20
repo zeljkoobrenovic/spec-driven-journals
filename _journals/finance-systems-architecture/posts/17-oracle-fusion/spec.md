@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Oracle Fusion: An Accounting Hub for High-Volume Events
@@ -45,7 +45,7 @@ Chief Architects, finance-systems and integration architects, and finance-transf
 - Re-verify the Data Extraction (26A) tool's official name and object coverage against current Oracle release notes; public sources are mostly A-Team and community posts as of October 2026.
 - Re-check the AI agent line-up and packaging before any revision; the article cites the October 2025 announcement only.
 - Confirm whether a journal-level secondary ledger in the group chart is practical at Wayfare's volume before presenting it as more than a possibility.
-- The 2027 Q4 Keystone decision outcome should be reflected here once [[multiple-erps]] and later Part IV chapters settle it.
+- ~~The 2027 Q4 Keystone decision outcome should be reflected here once [[multiple-erps]] and later Part IV chapters settle it.~~ Answered: the Chief Architect's View notes the 8 December 2027 decision (Wayfare converges onto S/4HANA; Oracle Accounting Hub not adopted).
 
 ## Decision log
 
@@ -67,3 +67,4 @@ Chief Architects, finance-systems and integration architects, and finance-transf
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Oracle Fusion Cloud ERP: Ledgers, Accounting Hub and Coexistence" to "Oracle Fusion: An Accounting Hub for High-Volume Events" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 7,472 → 7,497 prose words; lead rewritten to place the chapter in the Keystone Q4 decision (third ledger after [[sap-s4hana]] and [[workday]], Accounting Hub as the vendor form of the [[designing-financial-ledgers]] pattern); topic sentences sharpened; no headings changed; Open question on the Q4 outcome marked answered. *(AI-mediated session)*

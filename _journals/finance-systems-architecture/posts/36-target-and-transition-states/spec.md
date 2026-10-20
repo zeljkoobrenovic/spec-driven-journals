@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: The Middle Matters: Transition States and the Roadmap
@@ -75,3 +75,4 @@ Chief and enterprise architects, finance-systems leaders and finance-transformat
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Target State, Transition States and the Roadmap" to "The Middle Matters: Transition States and the Roadmap" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 4 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 5,360 → 5,462 prose words; lead now places the chapter in Part IV (after governance and principles, before vendor strategy, transformation and debt) and names its inputs (portfolio waves, convergence decision); five paragraph openers made into claims; no headings, sections or facts changed. *(AI-mediated session)*

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Adyen: One Platform from Checkout to Settlement
@@ -71,3 +71,4 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Adyen: Single-Platform Acquiring and Platform Payments" to "Adyen: One Platform from Checkout to Settlement" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 7,768 → 7,826 prose words (opening now ties the chapter to Part II, [[stripe]] and [[payments-to-ledger]]); 4 headings renamed; chargeback stages split into their own paragraph; buried topic sentences moved first; no facts cut. *(AI-mediated session)*

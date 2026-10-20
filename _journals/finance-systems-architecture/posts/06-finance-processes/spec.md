@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Order to Cash, Procure to Pay, Record to Report
@@ -78,3 +78,4 @@ Article only for now.
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "The End-to-End Finance Processes" to "Order to Cash, Procure to Pay, Record to Report" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 5,823 → 5,870 prose words; lead now states the argument first and the chapter's place in the book (Part I's nine-day-close question, builds on accounting-for-architects, feeds finance-data-architecture and transaction-to-report); 2 headings renamed ("Naming conventions" → "The processes and their owners", "Anatomy of a hand-off" → "The five properties of a hand-off"); 3 two-point paragraphs split; ownership recommendation moved first. Spec unchanged. *(AI-mediated session)*

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Controls by Design, Not by Audit Season
@@ -71,3 +71,4 @@ Chief and enterprise architects, finance-systems and platform engineering leader
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Controls, Auditability and Security by Design" to "Controls by Design, Not by Audit Season" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 4 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,886 → 6,934 prose words; lead now states the chapter's place in Part I (builds on [[part-1]] and [[finance-data-architecture]], feeds the ledger, platform and AI chapters); 1 subheading renamed; SEC semiannual note moved to the 302 bullet; first sentences brought forward. *(AI-mediated session)*

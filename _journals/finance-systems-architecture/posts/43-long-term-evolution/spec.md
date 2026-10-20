@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Built to Be Replaced: Evolving the Finance Estate Over a Decade
@@ -70,3 +70,4 @@ Chief and enterprise architects, finance-transformation leaders and CFO-level sp
 - **2026-10-18** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Evolving the Finance Estate Over a Decade" to "Built to Be Replaced: Evolving the Finance Estate Over a Decade" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,035 → 6,034 words (flat; fact-dense closing chapter); outline unchanged; lead now names the introduction's five reconciliations and the toolkit; four paragraphs reordered or split so their point comes first. Spec unchanged. *(AI-mediated session)*

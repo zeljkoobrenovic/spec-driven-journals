@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: BlackLine: Matching, Certifying and Closing
@@ -22,7 +22,8 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - [x] Reader sees Northmere's 9 → 5 day plan attributing days to BlackLine-only, shared, and upstream-only measures (1 / 2 / 1).
 - [x] Alternatives table uses only verified facts (BlackLine 10-K, Oracle Account Reconciliation docs, OneStream Solution Exchange, Trintech and FloQast about pages, SAP AFC).
 - [x] Corporate status and AI availability are dated "as of October 2026"; BlackLine "popularized", not coined, continuous accounting.
-- [x] Four mermaid diagrams, trade-off tables, Chief Architect's view, questions to ask, Sources and Evidence.
+- [x] The opening says where the chapter sits in Part II (after the ledgers, before [[onestream]]) and which Part III chapters build on it.
+- [x] Five figures (generated illustrations), trade-off tables, Chief Architect's view, questions to ask, Sources and Evidence.
 
 ## Non-goals
 
@@ -73,3 +74,4 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - **2026-10-18** — Added 1 inline illustration (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "BlackLine: Close Automation, Reconciliation and Continuous Accounting" to "BlackLine: Matching, Certifying and Closing" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 4 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 7,144 → 7,187 prose words; opening now places the chapter after the ledger chapters and before [[onestream]], and names [[payments-to-ledger]] and [[traceability-and-reconciliation]] as the Part III chapters that build on it; announcer sentences cut; buried points moved first (reconciliation integrations, risk rating, Task Management visibility, intercompany origination, control totals, SaaS archive, trade-off rules); cautions and lessons turned into lists. Spec: stale "four mermaid diagrams" criterion replaced by five figures, and a criterion added for the opening. No headings renamed. *(AI-mediated session)*

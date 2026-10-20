@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Uber's Payments Platform: A Ledger at the Center of Money Movement
@@ -65,3 +65,4 @@ Chief Architects, payments and finance-systems architects, and engineering leade
 - **2026-10-18** — Initial spec and article. Status `accepted`. *(Željko Obrenović, AI-mediated session)*
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 5 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,131 → 6,130 words; Engineering Practice section moved before What Changed Since 2019 so the 2018–2019 picture precedes the update; lead names the patterns tested and the toolkit hand-off; first sentences of eight paragraphs made to state their point; excerpt split into two sentences. *(AI-mediated session)*

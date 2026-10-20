@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Files, Events and APIs: How Finance Systems Talk
@@ -73,3 +73,4 @@ Chief, enterprise and integration architects, and finance-systems and platform e
 - **2026-10-18** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Integration Architecture for Finance" to "Files, Events and APIs: How Finance Systems Talk" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 4 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,999 → 7,005 prose words; opening now ties the chapter to [[controls-and-auditability]]; teaser first sentences replaced with claims; long platform-options sentence split; CDC point given its own paragraph; no headings renamed and no sections moved; spec otherwise unchanged. *(AI-mediated session)*

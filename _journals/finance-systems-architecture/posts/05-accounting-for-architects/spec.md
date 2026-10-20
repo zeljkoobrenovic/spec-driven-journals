@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Accounting for Architects: Ledgers, Journals and Revenue
@@ -77,3 +77,4 @@ Article only for now.
 - **2026-10-18** — Editorial review pass: Lisbon bank-credit entries moved to 16 Mar (batch 1047 booked 14 Mar); €420 outcome tied to the canonical lost chargeback; Wayfare rail stated as merchant of record but agent; event count corrected; American spelling. *(AI-mediated session)*
 - **2026-10-18** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 7,887 → 7,756 prose words; lead now names what the chapter builds on ([[finance-landscape]]'s subledger layer); 1 subheading renamed ("Why the architect needs this" → "What the conclusion decides in the data"); buried points moved to first sentences (trial balance, safeguarding, chargeback correction period); announcer sentences cut. Spec unchanged apart from this line. *(AI-mediated session)*

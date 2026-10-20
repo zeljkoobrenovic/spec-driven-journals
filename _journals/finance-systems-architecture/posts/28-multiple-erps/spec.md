@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Converge or Coexist: Living with More Than One ERP
@@ -71,3 +71,4 @@ Chief and enterprise architects, finance-systems architects and finance-transfor
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Multiple ERPs, One Finance Core: Coexistence and Convergence" to "Converge or Coexist: Living with More Than One ERP" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 4 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 5,693 → 5,727 prose words; opening now ties the chapter to Part III's question and names what it builds on ([[systems-of-record]]) and what carries it out ([[incremental-modernization]]); "Operating Multiple ERPs Well" renamed "Enforcing the Five 'Ones'"; first sentences tightened in six paragraphs. Spec unchanged. *(AI-mediated session)*

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: OneStream: Consolidating Actuals, Planning the Future
@@ -72,3 +72,4 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "OneStream: Consolidation, Planning and Performance Management" to "OneStream: Consolidating Actuals, Planning the Future" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 4 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 8,459 → 8,517 prose words; added a lead paragraph placing the chapter in Part II (after BlackLine, before ERP convergence); sharpened six paragraph openings and split the excerpt; no headings renamed, no sections moved; spec unchanged. *(AI-mediated session)*

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: FinOps Meets the Ledger: Technology Spend as Financial Data
@@ -75,3 +75,4 @@ Chief and enterprise architects, finance-systems and data architects, FinOps pra
 - **2026-10-18** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Technology Spend as Financial Data: FinOps Meets the Ledger" to "FinOps Meets the Ledger: Technology Spend as Financial Data" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 7,263 → 7,285 prose words; outline unchanged; lead now ties the chapter to [[technical-debt-and-fitness]] and names what it builds on and feeds; four first sentences brought forward (prepaid treatment, capitalization, summarized journals, account hierarchy); announce and filler sentences cut. *(AI-mediated session)*

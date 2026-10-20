@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Systems of Record: Ending the Doppelgänger Record
@@ -68,3 +68,4 @@ Chief and enterprise architects, finance-systems, data and integration architect
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Systems of Record and Authoritative Data Boundaries" to "Systems of Record: Ending the Doppelgänger Record" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 5,658 → 5,707 prose words; lead now places the chapter in Part III (builds on [[transaction-to-report]] and [[finance-data-flows]], feeds [[multiple-erps]], [[incremental-modernization]], [[traceability-and-reconciliation]]); 3 headings renamed ("Concepts:" prefix dropped, "Enforcing Authority in Three Layers", "Integration With" to match siblings); matrix-building steps turned into a numbered list; topic sentences brought forward. Spec unchanged otherwise. *(AI-mediated session)*

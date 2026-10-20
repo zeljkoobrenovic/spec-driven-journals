@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: The Life of a Booking: From €600 Payment to $97.38 of Revenue
@@ -70,3 +70,4 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "From Customer Transaction to Financial Statement" to "The Life of a Booking: From €600 Payment to $97.38 of Revenue" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 7,798 → 7,776 words; "The Chain at Northmere: Architecture" renamed "Architecture: Two Paths, Three Collapses, Two Entities"; lead now says the chapter opens Part III and hands to [[payments-to-ledger]]; excerpt says eleven systems, matching the body; teaser first sentences replaced. *(AI-mediated session)*

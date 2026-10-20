@@ -33,7 +33,7 @@ A finance estate is the set of systems, data flows, controls and people that tur
 
 **Enterprise architecture** is the discipline that treats that sum as a system. This book takes the view of a **Chief Architect** responsible for enterprise architecture, enterprise applications and financial systems. That person cannot run every platform and does not own most of the engineers. They are nevertheless accountable for whether the estate holds together: whether two systems that describe the same money agree, whether a new brand can be onboarded without a new ledger, whether the next vendor renewal is a choice or a hostage negotiation.
 
-This chapter sets out the job: what architecture is for in a finance estate, why finance makes it different, how the function is organized, where its decision rights stop, and how to tell whether it is any good. The rest of the book reuses its vocabulary.
+This chapter sets out the job: what architecture is for in a finance estate, why finance makes it different, how the function is organized, where its decision rights stop, and how to tell whether it is any good. It opens Part I because every later chapter assumes the decision rights, standards and vocabulary set out here, applied to the Northmere estate introduced in [[meet-northmere]]. The next chapter, [[capability-mapping]], builds the map those rights need first.
 
 ## Setting the Scene: Dana's First Month at Northmere
 
@@ -84,11 +84,11 @@ Five traits of the finance domain change how familiar architecture techniques ar
 | **Period-end rhythm** | Load, risk and organizational attention spike at month, quarter and year end | Change freezes, peak-capacity engineering and cut-overs aligned to period boundaries. A design that works on day 15 can fail on working day 2 | [[finance-processes]], [[resilience-and-security]] |
 | **Money in flight** | At any moment, funds are between customer, payment service provider, bank, safeguarding account and partner, and some of them belong to someone else | The estate must show where every euro is and whose it is. For a licensed e-money institution, safeguarding reconciliation is a daily regulatory obligation | [[payments-to-ledger]], [[payments-fundamentals]] |
 
-These traits give finance architecture a different temperament from product architecture. The cost of a wrong decision often arrives months later, at an audit, a filing or a close, and lands on people who were not in the room. That delay is why decision quality and a written rationale matter more here than in most domains, and why finance teams can seem conservative to engineers: usually they are pricing a risk the engineers have not yet seen.
+In finance, the cost of a wrong decision often arrives months later, at an audit, a filing or a close, and lands on people who were not in the room. That delay is why decision quality and a written rationale matter more here than in most domains, and why finance teams can seem conservative to engineers: usually they are pricing a risk the engineers have not yet seen.
 
 ## Architecture as a Function and a Service
 
-Many enterprise architecture teams are judged by what they publish: a framework, a metamodel, current-state diagrams, a principles poster. They are easy to fund in year one and easy to cut in year three, because nothing changes when the documents improve. The alternative is to run architecture as a **function that delivers services**. The function has customers (finance leadership, brand engineering, the transformation program, internal controls), a small catalog of things it does for them, and service levels it can be held to.
+An enterprise architecture team judged by what it publishes (a framework, a metamodel, current-state diagrams, a principles poster) is easy to fund in year one and easy to cut in year three, because nothing changes when the documents improve. The alternative is to run architecture as a **function that delivers services**. The function has customers (finance leadership, brand engineering, the transformation program, internal controls), a small catalog of things it does for them, and service levels it can be held to.
 
 Dana's catalog, as she drafted it in her second month, had six services.
 
@@ -106,7 +106,7 @@ The service framing has two consequences that are easy to state and hard to keep
 
 ### Artifacts that earn their keep, and shelfware
 
-Architecture produces artifacts, and some of them are indispensable. The test I apply is whether **someone outside the architecture team would notice within a quarter if the artifact stopped being maintained**. If nobody would notice, the artifact is shelfware: kept for its own sake, read by its authors.
+The test I apply to an artifact is whether **someone outside the architecture team would notice within a quarter if the artifact stopped being maintained**. If nobody would notice, the artifact is shelfware: kept for its own sake, read by its authors.
 
 | Artifact | Earns its keep when | Becomes shelfware when | Northmere, December 2026 |
 | --- | --- | --- | --- |
@@ -119,7 +119,7 @@ Architecture produces artifacts, and some of them are indispensable. The test I 
 
 The pattern: **an artifact earns its keep when a decision depends on it**. Dana's rule was that no artifact is created unless a decision, a control or a program gate needs it, and whoever owns that dependency maintains it.
 
-One caution about the repository itself. Northmere's portfolio lives in SAP LeanIX, which SAP [acquired in November 2023](https://news.sap.com/2023/11/sap-completes-acquisition-of-leanix/). That says nothing against the product. It does mean that the enterprise's fact base about its SAP estate sits in a tool owned by the ERP vendor whose estate is being rationalized. Dana's response was not to replace it. She made sure the data could be exported on a schedule into the finance data platform, so the facts did not depend on the tool. This is a small, cheap instance of resisting **The Borrowed Roadmap**.
+The repository itself carries a dependency on a vendor. Northmere's portfolio lives in SAP LeanIX, which SAP [acquired in November 2023](https://news.sap.com/2023/11/sap-completes-acquisition-of-leanix/). That says nothing against the product, but it means that the enterprise's fact base about its SAP estate sits in a tool owned by the ERP vendor whose estate is being rationalized. Dana's response was not to replace it. She made sure the data could be exported on a schedule into the finance data platform, so the facts did not depend on the tool. This is a small, cheap instance of resisting **The Borrowed Roadmap**.
 
 ## Operating Models: Centralized, Federated and Advisory
 
@@ -142,14 +142,14 @@ An **operating model** for architecture answers three questions: where the archi
 
 For a group like Northmere I recommend **federated, with a thin mandatory core and an advisory periphery**. The mandatory core is a short list of standards that protect the whole: how money events are published, how subledgers reconcile to the ledger, how the ERP is extended, how access is separated. Within that core, the Chief Architect decides. Outside it, teams decide using an advice process, and the architecture function competes for influence on the quality of its advice.
 
-There is one finance-specific caveat, and I would not soften it. **The advice process does not remove documented change approval for systems in ICFR scope.** A brand team may decide its own design through advice. A change to a system that feeds the financial statements still needs authorization and evidence that satisfies the auditor, and that is what Northmere's SFP finding was about. The credible model runs advice for design and keeps a thin, explicit control gate for in-scope changes, owned jointly with internal controls. Where this recommendation does not hold: during the remediation of a significant deficiency, I would run the affected platform under a temporarily centralized model, with every change reviewed, and say in writing when that will end.
+**The advice process does not remove documented change approval for systems in ICFR scope.** This is the finance-specific caveat, and I would not soften it. A brand team may decide its own design through advice. A change to a system that feeds the financial statements still needs authorization and evidence that satisfies the auditor, and that is what Northmere's SFP finding was about. The credible model runs advice for design and keeps a thin, explicit control gate for in-scope changes, owned jointly with internal controls. Where this recommendation does not hold: during the remediation of a significant deficiency, I would run the affected platform under a temporarily centralized model, with every change reviewed, and say in writing when that will end.
 
 ![A small solid core of mandatory standards surrounded by a wide advisory ring where teams decide, with an orange control gate on the edge through which in-scope changes pass.](assets/images/01-chief-architect-role/thin-core-advisory-periphery.jpeg)
 **Figure 2:** *Federated with a thin mandatory core: the Chief Architect decides a short list of standards, teams decide the rest through advice, and every change to an in-scope system still passes the control gate.*
 
 ## Decision Rights: Mandatory Standards and Advice
 
-**Decision rights** state who may take which decision, who must be consulted before it is taken, who can block a specific aspect of it, and who is only informed. An architecture function without them has two possible fates. It can approve everything to stay popular, or it can claim everything and become the queue. Both are common.
+**Decision rights** state who may take which decision, who must be consulted before it is taken, who can block a specific aspect of it, and who is only informed. Without them, an architecture function either approves everything to stay popular or claims everything and becomes the queue. Both are common.
 
 Dana's mandate gave her one decision right outright: final decisions on mandatory enterprise-application standards. Her first deliverable was to make that right precise. She defined what counts as a mandatory standard and wrote down whose rights border hers. The table below is the version she agreed with her peers in November 2026. It uses D for decides, R for recommends, C for consulted (must be heard before the decision), S for sign-off on one specific aspect, and I for informed.
 
@@ -178,13 +178,13 @@ Decisions are also routed by **materiality**, so that most never reach a forum.
 ![A decision enters at the top and routes into four lanes — team, advisory forum, architecture review, design authority — with most traffic on the team lane; all lanes converge on an ICFR-scope check that leads either to a control gate with evidence or straight on.](assets/images/01-chief-architect-role/decision-routing-by-materiality.jpeg)
 **Figure 3:** *Decisions route by materiality, and most never reach a forum. Every path converges on the same control gate for systems in ICFR scope: advice can replace approval for design, never for change evidence.*
 
-The mechanics behind this diagram are owned by [[architecture-governance]]: what a decision record contains, how the review board and the advice forum differ, how waivers are tracked, and how conformance is checked. This chapter's point is narrower. **Decision rights come first, and forums second.** A review board set up before the rights are agreed becomes a debating society, or a court with no jurisdiction.
+**Decision rights come first, and forums second.** A review board set up before the rights are agreed becomes a debating society, or a court with no jurisdiction. The mechanics behind this diagram are owned by [[architecture-governance]]: what a decision record contains, how the review board and the advice forum differ, how waivers are tracked, and how conformance is checked.
 
 ## The Matrix with Brand Finance Engineering
 
 The hardest part of the Chief Architect's job at a group like Northmere is not technical. Dana is accountable for the coherence of an estate whose largest custom component, SFP, is run by about 60 engineers who report to Jonas Berg and, through him, to Stayloft. Wayfare's Oracle Fusion and payout engine belong to Hana Kowalski. Tablekin's Workday Financials and Stripe integration belong to Arjun Rao. This is a **matrix**: brand engineering reports to the brands, and takes standards and architectural direction from Dana.
 
-A matrix works when each side gets something it cannot get alone. Brand finance teams commonly want stable contracts, fast decisions and not rebuilding ledger, tax or reconciliation logic; they fear a central mandate that freezes their roadmap. Architecture needs them to adopt standards, retire duplicates and surface problems early. Dana made her side of the bargain explicit.
+A matrix works when each side gets something it cannot get alone. Brand finance teams commonly want stable contracts, fast decisions and no need to rebuild ledger, tax or reconciliation logic; they fear a central mandate that freezes their roadmap. Architecture needs them to adopt standards, retire duplicates and surface problems early. Dana made her side of the bargain explicit.
 
 | What Dana asks of the brands | What Dana owes the brands in return |
 | --- | --- |
@@ -196,7 +196,7 @@ A matrix works when each side gets something it cannot get alone. Brand finance 
 
 Two things make the matrix fail. The first is **the Chief Architect without a budget**: standards that each brand must fund from its own roadmap will lose to the brand's roadmap every time. Keystone solved part of this for Dana by funding the adapter kit and the first migrations centrally. The second is **the Chief Architect as messenger**, whose authority depends on escalating to the CFO. Each escalation spends trust; Dana's rule was at most one a quarter.
 
-Team design across this matrix, including stream-aligned brand teams, platform teams for the ledger and integration, and enabling architecture, is owned by [[organizing-for-architecture]]. Here the point is that the matrix is a contract, and contracts need consideration on both sides.
+Team design across this matrix, including stream-aligned brand teams, platform teams for the ledger and integration, and enabling architecture, is owned by [[organizing-for-architecture]].
 
 ## Riding the Architect Elevator
 
@@ -218,7 +218,7 @@ Dana did not start with the systems. She asked Leila to let her sit in on the Se
 | 6–7 | Brand trial balances loaded into OneStream; chart-of-accounts mapping; consolidation and eliminations | Three charts of accounts; mappings maintained in spreadsheets; mapping errors found during load are fixed and reloaded |
 | 8–9 | Review, top-side adjustments, sign-offs | Adjustments driven by the residual differences of days 3–7 |
 
-The walk changed the conversation. Nine days was not one problem. It was three, each with a different owner and a different cure. **Days 3 to 5 were a traceability problem**: SFP summarized before posting and kept no key from summary to settlement line, so every break had to be investigated by reconstructing the detail. This is **Lost in Aggregation**, and [[traceability-and-reconciliation]] treats its cure. **Days 6 to 7 were a coherence problem**: three ledgers and spreadsheet mappings, which is **Spreadsheet Glue** on top of an unmade decision about ledger convergence. **Days 8 to 9 were mostly consequences** of the first two, and would shrink as they did.
+The walk showed that nine days was not one problem but three, each with a different owner and a different cure. **Days 3 to 5 were a traceability problem**: SFP summarized before posting and kept no key from summary to settlement line, so every break had to be investigated by reconstructing the detail. This is **Lost in Aggregation**, and [[traceability-and-reconciliation]] treats its cure. **Days 6 to 7 were a coherence problem**: three ledgers and spreadsheet mappings, which is **Spreadsheet Glue** on top of an unmade decision about ledger convergence. **Days 8 to 9 were mostly consequences** of the first two, and would shrink as they did.
 
 ![A nine-day calendar strip where days 3 to 5 are a traceability problem, days 6 to 7 a coherence problem, and days 8 to 9 the consequences of both.](assets/images/01-chief-architect-role/nine-days-three-problems.jpeg)
 **Figure 5:** *The close walk split nine days into three problems with different owners: days 3 to 5 lost to traceability, days 6 to 7 to coherence across three ledgers, and days 8 to 9 to the consequences of both.*
@@ -235,11 +235,11 @@ Dana answered Tomás in writing in mid-November 2026. Each answer was one page, 
 | **Why do we have three ledgers?** | Because two acquisitions each brought a working ledger and integrating them at consolidation was the cheapest way to report on day one. That was reasonable in 2023 and 2024. Nobody then decided whether it was the end state, so it became one by default | A recorded decision in Q4 2027 on convergence: SAP Central Finance versus an accounting-hub pattern, with options, costs and control impact; until then, no new ledger anywhere in the group | The decision record itself, dated, with the options and the reasons |
 | **What will Keystone actually change?** | In 2027, governance and evidence rather than new platforms: one decision record and review forum, five mandatory standards, payments-to-ledger completeness, a published target state, a portfolio cost baseline, and remediation of the SFP finding. Larger changes follow in later years, and each is tied to a transition state that switches something off | Keystone's year-one scope and the design authority's charter | A quarterly Keystone report on decisions taken and their lead time, systems retired, suspense balances and close days, each against a target |
 
-The second answer is the one I would point any new Chief Architect to. **"Three ledgers" was not a mistake. It was a decision deferred until deferral became the decision.** Integrating acquisitions at consolidation level is a common and defensible pattern. It goes wrong when nobody records it as a transition state with a review date. The Chief Architect's contribution is to put a date on the decision, not to decide on day 40 something that needs a year of evidence. Northmere's ledger convergence decision is examined throughout Part III, in [[multiple-erps]] and [[systems-of-record]].
+**"Three ledgers" was not a mistake. It was a decision deferred until deferral became the decision.** Of the three answers, this is the one I would point any new Chief Architect to. Integrating acquisitions at consolidation level is a common and defensible pattern. It goes wrong when nobody records it as a transition state with a review date. The Chief Architect's contribution is to put a date on the decision, not to decide on day 40 something that needs a year of evidence. Northmere's ledger convergence decision is examined throughout Part III, in [[multiple-erps]] and [[systems-of-record]].
 
 ## Measuring the Architecture Function
 
-A service should be measured as one. The most visible outputs (documents, reviews, diagrams) are the least meaningful, and the meaningful outcomes, such as a shorter close or fewer duplicate systems, have several causes. A credible scorecard mixes measures the function controls with outcomes it contributes to, and says which is which.
+The most visible outputs (documents, reviews, diagrams) are the least meaningful, and the meaningful outcomes, such as a shorter close or fewer duplicate systems, have several causes. A credible scorecard mixes measures the function controls with outcomes it contributes to, and says which is which.
 
 | Measure | Definition | Northmere baseline, Q4 2026 | 2027 target | How it gets gamed | Counterweight |
 | --- | --- | --- | --- | --- | --- |
@@ -260,7 +260,7 @@ Coherence is the job, so the role touches every chapter. Four dependencies matte
 
 ## Failure Modes
 
-Architecture functions fail in recognizable ways. Most of these are failures of decision rights or of the service model, not of technical judgment.
+Most architecture functions fail on decision rights or the service model, not on technical judgment.
 
 - **The ivory tower.** The function produces a target state and a principles set that brand teams never read, because none of it arrived with a reference implementation or a funded migration. Symptom: the same integration built three times while the target state says it should exist once.
 - **Architecture police.** Every change needs a review, reviews take weeks, and teams learn to describe changes so they fall below the threshold. Symptom: nobody measures decision lead time, and teams talk about "getting through architecture".

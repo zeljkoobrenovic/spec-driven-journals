@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Global by Design: Entities, Currencies, Jurisdictions and Brands
@@ -72,3 +72,4 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - **2026-10-18** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Many Entities, Currencies, Jurisdictions and Brands" to "Global by Design: Entities, Currencies, Jurisdictions and Brands" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 4 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,777 → 6,812 prose words (fact-dense chapter; gain is in structure and openings); lead now opens from [[integration-architecture]]'s pipes and names what Part II, [[brands-entities-markets]] and [[build-versus-buy]] take from this chapter; matching/netting and rate-ownership/rate-sources paragraphs split; topic sentences sharpened; no headings renamed, nothing deleted. *(AI-mediated session)*

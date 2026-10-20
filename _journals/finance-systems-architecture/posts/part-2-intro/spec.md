@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: PART II — PLATFORMS: What Each Is For, and What It Costs to Depend On
@@ -18,7 +18,7 @@ Chief Architects, finance-systems and integration architects, and finance-transf
 - [ ] Opens with the IN THIS PART and FAILURE PATTERNS callouts, using exact pattern names linked to [[where-finance-architecture-goes-wrong]].
 - [ ] One-paragraph Northmere opening (labeled fictional) whose facts match the scenario ledger (three ledgers, SFP's 38,000 daily lines, Central Finance versus accounting hub decided in 2027 Q4).
 - [ ] States that chapters cite vendor documentation, do not rank vendors and label judgments as the author's.
-- [ ] A mermaid learning-path diagram groups chapters 13–23 into four stages following the finance landscape, with a figure caption.
+- [ ] A learning-path figure (generated illustration) groups chapters 13–23 into four stages following the finance landscape, with a figure caption.
 - [ ] Lists every chapter in config order as `[[permalink]]` with one line drawn from that chapter's KEY POINTS.
 - [ ] Closes with what the reader can do by the end and links to [[custom-finance-platforms]] and [[part-3]].
 - [ ] 500–850 words.
@@ -51,3 +51,4 @@ The journal's `config.yaml`, `PLAN.md`, `_research/scenario-ledger.md` and the K
 - **2026-10-18** — Editorial review pass: no changes needed (format, links and hand-off checked). *(AI-mediated session)*
 - **2026-10-19** — Part title renamed to "PLATFORMS: What Each Is For, and What It Costs to Depend On" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the mermaid diagram with a generated illustration (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 707 → 710 prose words; no structural change; two sentences tightened; learning-path success criterion updated from mermaid to the generated illustration that replaced it. *(AI-mediated session)*

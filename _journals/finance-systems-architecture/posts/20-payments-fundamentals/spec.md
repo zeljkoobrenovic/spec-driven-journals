@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Payments for Finance Architects: Eleven Reasons the Numbers Disagree
@@ -76,3 +76,4 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Payments for Finance Architects: The Lifecycle of Money Movement" to "Payments for Finance Architects: Eleven Reasons the Numbers Disagree" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 5 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 7,474 → 7,466 prose words; Tokens section moved next to Multiple Providers and Orchestration; lead now places the chapter in Part II and names the Part III hand-off; first sentences of the FX, PSD3/PSR, PCI DSS, instant-payments and eleven-reasons paragraphs now state their point; spec unchanged. *(AI-mediated session)*

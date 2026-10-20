@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: The Next Brand Should Be Boring: Onboarding as Configuration
@@ -74,4 +74,5 @@ Chief and enterprise architects, finance-systems architects and finance-transfor
 - **2026-10-18** — Editorial review pass: closing hand-off corrected to the accounting-hub migration (SFP to group engine posting into S/4HANA) and given a heading; American spelling. *(AI-mediated session)*
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Onboarding Brands, Entities and Markets as Configuration" to "The Next Brand Should Be Boring: Onboarding as Configuration" at the author's request. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,363 → 6,319 prose words; outline unchanged; lead now places the chapter in Part III (builds on [[traceability-and-reconciliation]], hands to [[incremental-modernization]]); three announce-only sentences cut; several paragraph openings now state their point. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Modernizing Without Stopping the Close
@@ -69,3 +69,4 @@ Chief and enterprise architects, finance-systems architects, program leads, cont
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Modernizing Without Stopping the Close: An Incremental Migration" to "Modernizing Without Stopping the Close" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 4 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,718 → 6,769 prose words (fact-dense chapter; gain is in structure); lead now ties the chapter to Part III's question and names what depends on it (the group gate standard, Part IV governance); 2 headings renamed ("The Target and the Transitional Architecture" → "Shadow and Transitional Architecture", "What we learned after stage 1" → "What Went Wrong in Stage 1"); Stage 0 paragraph split; point-first openings for the setback, scope and advantage paragraphs. No spec content changes. *(AI-mediated session)*

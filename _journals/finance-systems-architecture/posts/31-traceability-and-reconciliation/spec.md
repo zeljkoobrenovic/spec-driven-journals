@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Reconciled by Design: Traceability and Audit Across Boundaries
@@ -71,3 +71,4 @@ Chief and enterprise architects, integration and finance-systems architects, and
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Designing for Traceability, Reconciliation and Audit Across Boundaries" to "Reconciled by Design: Traceability and Audit Across Boundaries" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 4,765 → 4,798 prose words; lead now ties the chapter to Part III's boundary argument, what it builds on ([[loosely-coupled-domains]]) and what reuses the catalog; 2 subheadings renamed; 3 topic sentences moved forward; 1 paragraph split. *(AI-mediated session)*

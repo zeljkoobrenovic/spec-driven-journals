@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Changing the Engine in Flight: Modernization Patterns for Finance
@@ -75,3 +75,4 @@ Chief and enterprise architects, finance-systems architects and transformation l
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Modernization Patterns for Legacy Finance Systems" to "Changing the Engine in Flight: Modernization Patterns for Finance" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,430 → 6,471 prose words; lead now ties the chapter to [[build-versus-buy]] and names what builds on it ([[multiple-erps]], [[incremental-modernization]]); buried points moved to first sentences (deadline-driven conversion, hub cost); rollback split from the cut-over slots paragraph; no headings renamed. *(AI-mediated session)*

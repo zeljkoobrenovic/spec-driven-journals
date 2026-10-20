@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Who Owns What: Organizing Architecture Across Finance and Technology
@@ -74,3 +74,4 @@ Chief and enterprise architects, CTOs and brand engineering leaders, finance-sys
 - **2026-10-18** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Organizing Architecture Ownership Across Finance, Engineering, Security and Data" to "Who Owns What: Organizing Architecture Across Finance and Technology" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 5,629 → 5,622 words; lead now ties the chapter to Keystone's target state, the Chief Architect's matrix and [[ai-in-finance]]; 1 subheading renamed ("The e-wallet under the new topology"); buried topic sentences brought forward in the Conway lessons, ownership roles and matrix sections. *(AI-mediated session)*

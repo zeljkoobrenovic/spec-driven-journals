@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Architecture Governance That Speeds Decisions
@@ -72,3 +72,4 @@ Chief and enterprise architects, finance-systems leads and internal-controls lea
 - **2026-10-18** — Consistency pass: aligned Lisbon batch credit wording / Stripe Tax waiver renewal with neighboring chapters. *(AI-mediated session)*
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 3 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 5,768 → 5,780 prose words; lead now ties the chapter to Part III's decisions and names the Part IV chapters that use its register; rollout paragraph moved under the catalog heading; teaser and back-reference openers replaced with their claims; headings unchanged; spec unchanged. *(AI-mediated session)*

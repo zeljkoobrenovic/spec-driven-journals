@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Payments-to-Ledger: Draining the Suspense Swamp
@@ -73,3 +73,4 @@ Chief and enterprise architects, finance-systems and integration architects, and
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Payments-to-Ledger: Connecting Providers, Brand Platforms and the ERP" to "Payments-to-Ledger: Draining the Suspense Swamp" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 4 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 6,327 → 6,342 words; lead now names [[transaction-to-report]]'s hand-off and what builds on this chapter; 1 subheading renamed (Components and flow → Components and responsibilities); 10 paragraphs reordered or stripped of teaser openers so the point comes first; one restating sentence cut. *(AI-mediated session)*

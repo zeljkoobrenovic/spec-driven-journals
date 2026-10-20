@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-18
+revised: 2026-10-20
 ---
 
 # Spec: Canonical Events: A Common Language for Money
@@ -69,3 +69,4 @@ Chief, enterprise and integration architects, finance-systems architects and pla
 - **2026-10-18** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-19** — Title renamed from "Canonical Events and Adapters for Loosely Coupled Financial Domains" to "Canonical Events: A Common Language for Money" at the author's request. *(AI-mediated session)*
 - **2026-10-20** — Replaced the 2 mermaid diagrams with generated illustrations (article-illustrator), captions unchanged. *(AI-mediated session)*
+- **2026-10-20** — Sharpening pass: 7,053 → 7,059 prose words; outline unchanged; lead now links [[redundancy-and-coupling]] and [[traceability-and-reconciliation]] to place the chapter in Part III; about fifteen sentences tightened. *(AI-mediated session)*
