@@ -16,7 +16,7 @@ In her first weeks at Northmere, the fictional group this book follows, Dana Whi
 
 This part provides that view. It describes no product; it sets out the concepts every later chapter relies on, so that a discussion about SAP, Workday, BlackLine or Adyen starts from shared definitions rather than vendor vocabulary.
 
-Three terms carry most of the weight. A **finance estate** is the set of systems, data, integrations and controls through which an enterprise records what it owns, owes, earns and spends, and proves it. A **business capability** is something finance must be able to do, named independently of the system, team or process that does it today. A **subledger** is a detailed record of one area of activity (bookings, payouts, partner balances) whose summarized total must equal a control account in the **general ledger**, the official book of account. Much of this book is about keeping those totals provably equal as volume, brands and platforms multiply.
+Four terms carry most of the weight. A **finance estate** is the set of systems, data, integrations and controls through which an enterprise records what it owns, owes, earns and spends, and proves it. A **business capability** is something finance must be able to do, named independently of the system, team or process that does it today. A **subledger** is a detailed record of one area of activity (bookings, payouts, partner balances) whose summarized total must equal a control account in the **general ledger**, the official book of account. Much of this book is about keeping those totals provably equal as volume, brands and platforms multiply.
 
 The twelve chapters run in four stages: the architecture practice, the finance domain, the disciplines that cut across every platform, and how systems are sourced and changed. Experienced finance-systems architects can skim the domain stage; experienced enterprise architects should not skip it, because it is where most architecture mistakes in finance begin.
 
@@ -37,7 +37,7 @@ The twelve chapters run in four stages: the architecture practice, the finance d
 
 - [Anatomy of a Finance Estate: Layers, Planes and Boundaries](#finance-landscape) — the layers of a finance estate, the volume gradient between them and the failures that occur at layer boundaries.
 - [Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects) — double entry, revenue recognition and principal versus agent, worked through the €600 Lisbon booking.
-- [Order to Cash, Procure to Pay, Record to Report](#finance-processes) — the end-to-end processes as chains of hand-offs, including the marketplace variants of Order-to-Cash.
+- [Order-to-Cash, Procure-to-Pay, Record-to-Report](#finance-processes) — the end-to-end processes as chains of hand-offs, including the marketplace variants of Order-to-Cash.
 
 **Cross-cutting disciplines.**
 

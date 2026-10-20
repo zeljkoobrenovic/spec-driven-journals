@@ -27,8 +27,8 @@ Most engineering organizations learn this the expensive way. A platform is built
 
 The payout engine whose change control drew an audit finding is one of the reasons [FOUNDATIONS: How Money Moves Through an Enterprise](#part-1) gives for Northmere's nine-day close, and [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture) has already shown one control producing its own evidence: the governed mapping change. This chapter turns that into a discipline for every finance platform. It defines the control vocabulary precisely, because auditors and engineers use the same words differently, and works through one remediation: Northmere's **significant deficiency** on the Stayloft payout engine. The argument: **the cheapest control evidence is a by-product of normal operation**, and that happens only when the control is part of the design. The custom ledger in [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers), the SOC 1 reading in each platform chapter and the agent controls in [Automate the Work, Not the Accountability](#ai-in-finance) build on it.
 
-{id: controls-and-auditability--setting-the-scene-a-significant-deficiency-on-the-payout-engine}
-## Setting the Scene: A Significant Deficiency on the Payout Engine
+{id: controls-and-auditability--setting-the-scene-at-northmere-a-significant-deficiency-on-the-payout-engine}
+## Setting the Scene at Northmere: A Significant Deficiency on the Payout Engine
 
 Northmere, the fictional group this book follows, is listed in New York and files with the Securities and Exchange Commission (SEC). It therefore falls under the Sarbanes-Oxley Act: management must report each year on the effectiveness of its internal control over financial reporting, and, as a large accelerated filer, its external auditor must attest to that report.
 

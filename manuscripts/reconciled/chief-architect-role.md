@@ -27,8 +27,8 @@ A finance estate is the set of systems, data flows, controls and people that tur
 
 This chapter sets out the job: what architecture is for in a finance estate, why finance makes it different, how the function is organized, where its decision rights stop, and how to tell whether it is any good. It opens Part I because every later chapter assumes the decision rights, standards and vocabulary set out here, applied to the Northmere estate introduced in [Meet Northmere: Five Brands, One Set of Books](#meet-northmere). The next chapter, [Map What Finance Does Before What Runs It](#capability-mapping), builds the map those rights need first.
 
-{id: chief-architect-role--setting-the-scene-dana-s-first-month-at-northmere}
-## Setting the Scene: Dana's First Month at Northmere
+{id: chief-architect-role--setting-the-scene-at-northmere-dana-s-first-month-at-northmere}
+## Setting the Scene at Northmere: Dana's First Month at Northmere
 
 Northmere, the fictional multi-brand digital commerce group this book follows, is introduced in full in [Meet Northmere: Five Brands, One Set of Books](#meet-northmere). In 2026 it reported about $8.2 billion of revenue on about $64 billion of gross transaction value. It has 71 legal entities in 38 countries and a New York listing that puts its financial reporting under the Sarbanes-Oxley Act. **Dana Whitlock** joined from a payments company in September 2026 as Chief Architect, Enterprise Applications and Financial Systems. She reports to Ravi Menon, the Group CTO, with a dotted line to Tomás Ferreira, the Group CFO, and leads about 30 architects. Her mandate letter gives her **final decision rights on mandatory enterprise-application standards**. The roughly 60 engineers who run the Stayloft Finance Platform, and the finance-systems teams at Wayfare and Tablekin, do not report to her.
 
@@ -76,7 +76,7 @@ Five traits of the finance domain change how familiar architecture techniques ar
 | **Correctness is binary at the boundary** | A balance is right or it is wrong. "Eventually consistent" is acceptable inside a pipeline, never in the posted ledger at period end | Delivery guarantees are designed as at-least-once delivery plus idempotent effects plus reconciliation, never as a property bought from middleware | [Files, Events and APIs: How Finance Systems Talk](#integration-architecture), [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers) |
 | **Auditability** | Every reported number must trace to the transactions behind it, and every change to a system that produces it must be authorized and evidenced | Audit trails, segregation of duties and change approval are design inputs, not retrofits. The auditor is a stakeholder in design reviews of in-scope systems | [Controls by Design, Not by Audit Season](#controls-and-auditability), [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation) |
 | **Regulatory deadlines** | Filing dates, e-invoicing mandates and tax reporting go-lives are external and fixed | The roadmap has immovable dates that technology did not choose, and architecture must leave room for them | [Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale), [The Middle Matters: Transition States and the Roadmap](#target-and-transition-states) |
-| **Period-end rhythm** | Load, risk and organizational attention spike at month, quarter and year end | Change freezes, peak-capacity engineering and cut-overs aligned to period boundaries. A design that works on day 15 can fail on working day 2 | [Order to Cash, Procure to Pay, Record to Report](#finance-processes), [Recover Before the Close: Resilience and Security for Finance](#resilience-and-security) |
+| **Period-end rhythm** | Load, risk and organizational attention spike at month, quarter and year end | Change freezes, peak-capacity engineering and cut-overs aligned to period boundaries. A design that works on day 15 can fail on working day 2 | [Order-to-Cash, Procure-to-Pay, Record-to-Report](#finance-processes), [Recover Before the Close: Resilience and Security for Finance](#resilience-and-security) |
 | **Money in flight** | At any moment, funds are between customer, payment service provider, bank, safeguarding account and partner, and some of them belong to someone else | The estate must show where every euro is and whose it is. For a licensed e-money institution, safeguarding reconciliation is a daily regulatory obligation | [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger), [Payments for Finance Architects: Eleven Reasons the Numbers Disagree](#payments-fundamentals) |
 
 In finance, the cost of a wrong decision often arrives months later, at an audit, a filing or a close, and lands on people who were not in the room. That delay is why decision quality and a written rationale matter more here than in most domains, and why finance teams can seem conservative to engineers: usually they are pricing a risk the engineers have not yet seen.
@@ -232,8 +232,8 @@ The walk showed that nine days was not one problem but three, each with a differ
 
 Dana did not answer "nine days" with "we need a new ERP", the answer vendors and integrators are commercially inclined to give. Nor did she claim architecture alone would fix the close: the calendar is Leila's, and some of the time is policy and people. Her answer was a contribution, in days, with its assumptions shown.
 
-{id: chief-architect-role--dana-s-answers-to-the-three-questions}
-## Dana's Answers to the Three Questions
+{id: chief-architect-role--dana-s-answers-to-tomas-s-three-questions}
+## Dana's Answers to Tomás's Three Questions
 
 Dana answered Tomás in writing in mid-November 2026. Each answer was one page, and the three summarized to a table that went into the Keystone board pack.
 

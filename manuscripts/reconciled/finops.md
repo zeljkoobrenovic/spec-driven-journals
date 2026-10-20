@@ -334,7 +334,7 @@ The FinOps Foundation draws the line clearly: "The primary difference between sh
 **I would run all three, for different purposes.** Showback, at contracted or on-demand prices, lets engineers see the effect of their choices. Many companies show usage at a reference price and keep commitment savings central, and that is a legitimate showback policy. Chargeback and recharge carry actual amortized cost, because the ledger must. The two views stay reconcilable through an explicit "rate difference" line, so nobody has to ask which number is real. Where I disagree with common practice is the order. Groups often start with showback and add intercompany recharge years later. In a multi-entity group, **the intercompany recharge is not a maturity stage; it is a statutory requirement from the first month the payer and the consumer differ.** Build it first and correctly, even if allocation precision comes later.
 
 {id: finops--integration-with-the-rest-of-the-estate}
-## Integration With the Rest of the Estate
+## Integration with the Rest of the Estate
 
 - **Portfolio** ([Manage the Application Portfolio as an Investment](#application-portfolio)): the hosting component of each application's TCO is now measured from FOCUS data by `nm-app-id`, and retirement savings are counted when that data shows zero.
 - **Master data** ([Finance Data Architecture: Who Owns the Truth](#finance-data-architecture)): the sub-account register and tag values are governed attributes validated against the legal entity register and the cost-center master. The rules map to the group chart of accounts.
@@ -384,8 +384,8 @@ The FinOps Foundation draws the line clearly: "The primary difference between sh
 9. What is our technology cost per unit of business volume, does its numerator tie to the closed ledger, and who owns its definition?
 10. Which savings in our business cases were counted before the billing data showed the cost had gone?
 
-{id: finops--handing-off}
-## Handing Off
+{id: finops--from-spend-to-resilience}
+## From Spend to Resilience
 
 Measuring and allocating technology spend makes the estate's economics visible. It says nothing about whether the estate survives a bad day. The same platforms that produce the billing data also run the ledgers, payment flows and close calendars that must keep working when a region fails, a settlement file is duplicated or a privileged account misbehaves. [Recover Before the Close: Resilience and Security for Finance](#resilience-and-security) takes up those questions: criticality tiers that follow money and the close calendar, recovery objectives for ledgers, business observability of money in flight, and incident response when the error is in the books.
 

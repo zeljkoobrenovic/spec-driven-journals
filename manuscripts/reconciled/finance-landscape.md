@@ -50,7 +50,7 @@ Four artifacts are often confused, though each answers a different question.
 | Artifact | Question it answers | Unit | Owner in this book |
 | --- | --- | --- | --- |
 | **Capability map** | What must finance be able to do? | Business capability, independent of systems | [Map What Finance Does Before What Runs It](#capability-mapping) |
-| **Process model** | In what order does work happen, and who hands off to whom? | Process step and hand-off | [Order to Cash, Procure to Pay, Record to Report](#finance-processes) |
+| **Process model** | In what order does work happen, and who hands off to whom? | Process step and hand-off | [Order-to-Cash, Procure-to-Pay, Record-to-Report](#finance-processes) |
 | **Reference model** | What classes of system does a finance estate need, and how do they relate? | Layer or plane | This chapter |
 | **Application landscape** | Which systems does this enterprise actually run? | Application and interface | [Manage the Application Portfolio as an Investment](#application-portfolio) |
 
@@ -299,7 +299,7 @@ Three findings changed how Northmere talked about its estate.
 
 The layered model is one cut of the estate; other cuts answer other questions better.
 
-- **Process-centric** views ([Order to Cash, Procure to Pay, Record to Report](#finance-processes)) show hand-offs and control points, but processes cross layers: order-to-cash at Northmere touches layers 1, 2, 3, 4 and 7, and a process view alone does not show that three processes share one subledger, or that two have each built their own.
+- **Process-centric** views ([Order-to-Cash, Procure-to-Pay, Record-to-Report](#finance-processes)) show hand-offs and control points, but processes cross layers: order-to-cash at Northmere touches layers 1, 2, 3, 4 and 7, and a process view alone does not show that three processes share one subledger, or that two have each built their own.
 - **Vendor-suite-centric** views follow the dominant ERP's modules and erase what the vendor does not sell: payouts, customer funds and safeguarding become "interfaces". As a skeleton, that is a mild form of **The Borrowed Roadmap**.
 - **Capability-centric** and **domain-centric** views ([Map What Finance Does Before What Runs It](#capability-mapping)) are stable across reorganizations and right for investment, team boundaries and contracts, but they draw capabilities and contexts as peers and hide the physics: at Northmere, Subledger Accounting carries about eighty times the line volume of General Ledger Management and must summarize into it.
 - **Postmodern or composable ERP**, Gartner's prediction from 2013 or 2014 (sources disagree) that the monolithic ERP would break into loosely coupled applications ([TechTarget summary](https://techtarget.com/searcherp/podcast/Evolution-of-postmodern-ERP-to-composable-ERP-explained)), is a sourcing philosophy, not a decomposition. In my judgment it needs a layered model more than a suite does, because **every seam between composed components is a reconciliation point**; without a model of which piece masters what, a composable estate becomes **Point-to-Point Spaghetti** with better marketing ([Build, Buy or Compose: Choosing What to Own](#build-versus-buy)).
@@ -328,7 +328,7 @@ The layers are **logical responsibilities, not physical tiers**. Misreading this
 The model describes a multi-entity commercial group. In banks and insurers, core banking and policy administration are subledgers of extraordinary depth; the model still applies, but layer 2 becomes most of the estate.
 
 {id: finance-landscape--integration-with-the-rest-of-the-estate}
-## Integration With the Rest of the Estate
+## Integration with the Rest of the Estate
 
 [Systems of Record: Ending the Doppelgänger Record](#systems-of-record) decides authority per data object, which often moves between layers: the booking in layer 1, the receivable in layer 2, the balance in layer 3. [Files, Events and APIs: How Finance Systems Talk](#integration-architecture) designs the integration plane; [Controls by Design, Not by Audit Season](#controls-and-auditability) and [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation) design the control plane and the reconciliation at each boundary. [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers) goes deep into layer 2, Part II places each vendor on the model, and [The Life of a Booking: From €600 Payment to $97.38 of Revenue](#transaction-to-report) follows one booking through every layer from event to filing.
 

@@ -178,8 +178,8 @@ Semantic coupling is the type I watch hardest in finance, because it produces no
 
 Semantic coupling is what happens when a term crosses a context boundary without translation. In domain-driven design, a **bounded context** is the boundary within which a model and its language are consistent ([DDD Reference](https://www.domainlanguage.com/ddd/reference/)); [Map What Finance Does Before What Runs It](#capability-mapping) drew Northmere's. "Account" means a customer account in Sales, a bank account in Treasury and a GL account in Accounting. "Revenue" means gross bookings to a commercial team, cash collected to a payments team and recognized revenue to the controller. "Supplier" means an indirect-spend vendor in Coupa and a ground-transport partner in Wayfare's payout engine, which is why the two have different bank-detail authorities. The remedy has two parts: **one owned definition per financial term that crosses a boundary**, published with the interface in the **published language** of the canonical events; and **explicit translation at the boundary**, so that a context that uses the term differently converts it rather than reusing the name. The governed metrics in [One Number, Many Views: Finance Data from Operations to Analytics](#finance-data-flows) apply the same rule to reporting.
 
-{id: redundancy-and-coupling--release-and-vendor-coupling-someone-else-s-calendar}
-### Release and vendor coupling: someone else's calendar
+{id: redundancy-and-coupling--release-and-contractual-coupling-someone-else-s-calendar}
+### Release and contractual coupling: someone else's calendar
 
 Release coupling is mostly imported. Software-as-a-service (SaaS) vendors set their own cadence: Oracle ships quarterly Fusion updates that customers cannot skip ([Oracle Fusion: An Accounting Hub for High-Volume Events](#oracle-fusion)); Workday delivers two feature releases a year plus weekly updates ([Workday: The Org Chart Behind the Ledger](#workday)); Stripe ships monthly non-breaking API versions and twice-yearly major versions with breaking changes ([Stripe API versioning](https://docs.stripe.com/api/versioning)). An interface written directly against a vendor's payload inherits that cadence. The remedy is an **anticorruption layer** (ACL), a translation component that converts a vendor's model into the enterprise's published language, so that a vendor change is absorbed in one place and tested once.
 
@@ -339,7 +339,7 @@ A register maintained by architects alone decays within a year; it stays honest 
 The design authority reviews transitional rows monthly and accepted rows annually, and Dana reports one number to the steering committee each quarter: **duplications without a decision.** It should be zero, and when an acquisition closes it will briefly not be.
 
 {id: redundancy-and-coupling--integration-with-the-rest-of-the-estate}
-## Integration With the Rest of the Estate
+## Integration with the Rest of the Estate
 
 The register sits between the capability map that feeds it ([Map What Finance Does Before What Runs It](#capability-mapping)) and the portfolio waves that execute its retirements ([Manage the Application Portfolio as an Investment](#application-portfolio)). Rule 1 assumes the authority matrix in [Systems of Record: Ending the Doppelgänger Record](#systems-of-record); brand-ledger duplication, the largest redundancy in the estate, belongs to [Converge or Coexist: Living with More Than One ERP](#multiple-erps). Rules 2 and 5 are designed in [Canonical Events: A Common Language for Money](#loosely-coupled-domains), the control totals that make decoupled flows provable are in [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation), and exit plans for vendor coupling belong to [Own Your Roadmap: Vendor Strategy Without Lock-In Panic](#vendor-portfolio-strategy).
 

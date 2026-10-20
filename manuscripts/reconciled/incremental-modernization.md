@@ -211,7 +211,7 @@ The same pattern ran for expected PSP receivables and traveler-side open items i
 **People and hypercare.** Hypercare ran with two stand-ups a day, a single incident queue for finance, payments and engineering, and a named decision-maker on duty: the Head of Partner Settlement for payouts and Leila's deputy for accounting. Under the exit criteria in [The Technology Is the Easy Part: Leading a Finance Transformation](#finance-transformation), hypercare could not end before the June quarter-end close and four weeks without priority-1 or priority-2 incidents.
 
 {id: incremental-modernization--what-went-wrong-in-stage-1}
-### What Went Wrong in Stage 1
+### What went wrong in stage 1
 
 Stage 1 did not go cleanly, and that is why it came first.
 
@@ -223,7 +223,7 @@ The design absorbed it in two moves: a dated bridge, then a permanent booking or
 
 **A foreign-exchange rounding policy difference.** SFP and the engine rounded currency conversions differently, and the shadow had misclassified the difference. In the INTL cohort, many partners are paid in a currency other than the one the traveler paid in. SFP converted each booking's payable to the payout currency and rounded per booking. The generalized engine, built to the group convention, converted the partner's summed payables per payout and rounded once, using the treasury-sourced rate ID from the group rate service ([Global by Design: Entities, Currencies, Jurisdictions and Brands](#global-scale)). The difference was at most a cent per booking, but it did not reverse: about $11,600 net and $27,900 absolute in May (illustrative). In the shadow it had been classified as **timing**, because day-level comparisons with slightly different rate snapshots made it look as if it reversed. It was **policy**, the same lesson as the 2025 FI-CA rounding difference in [Changing the Engine in Flight: Modernization Patterns for Finance](#modernization-patterns), in a new form. Leila ruled for per-booking conversion at the rate ID recorded at stay completion, because the partner statement shows per-booking amounts. The rule change went live in mid-June. The variance-classification procedure gained a test: **a variance is timing only if a later cycle actually reverses it.**
 
-**A missed partner payout reference.** The first engine-based payout run for Stayloft UK Ltd on 1 May built the remittance reference from the engine's posting reference instead of the payout ID. Every payout amount was right and on time. But about 2,600 UK partners received remittance advice they could not match to their bookings, and BlackLine's matching of payout bank debits against payouts in transit failed for that run: £5.9 million unmatched on 2 May (illustrative). Matching was restored manually the same day, and the reference was fixed for the 3 May run. The cause was a test suite that compared amounts and counts but not references. The hand-off contract between payout service and Northmere Pay ([Order to Cash, Procure to Pay, Record to Report](#finance-processes)) already named the payout ID as the identifier. **Nobody had turned that clause into a test.**
+**A missed partner payout reference.** The first engine-based payout run for Stayloft UK Ltd on 1 May built the remittance reference from the engine's posting reference instead of the payout ID. Every payout amount was right and on time. But about 2,600 UK partners received remittance advice they could not match to their bookings, and BlackLine's matching of payout bank debits against payouts in transit failed for that run: £5.9 million unmatched on 2 May (illustrative). Matching was restored manually the same day, and the reference was fixed for the 3 May run. The cause was a test suite that compared amounts and counts but not references. The hand-off contract between payout service and Northmere Pay ([Order-to-Cash, Procure-to-Pay, Record-to-Report](#finance-processes)) already named the payout ID as the identifier. **Nobody had turned that clause into a test.**
 
 The results went into the stage 2 gate. G1 for the EEA cohort gained three criteria:
 
@@ -233,7 +233,7 @@ The results went into the stage 2 gate. G1 for the EEA cohort gained three crite
 
 The reverse shadow for UK and INTL ran through the July close instead of stopping after June, because June was not clean. Quarantine was cleared, but the bridge waiver was still open at quarter-end. G2 passed on 13 August, working day 9 of the July close, and the reverse shadow for those entities was switched off on 20 August 2029.
 
-**Measured outcome, stage 1** (illustrative): opening load 2.63 million bookings in 3 hours 10 minutes, reconciled at 05:20, migration clearing zero in all nineteen pairs; engine-to-GL tie-out certified at working day 1 in every close from May; unexplained absolute three-way variance $212,000 at May month-end, $41,000 at June, $9,400 at July; on-time partner payouts 99.2% in May and 99.4% in June, against a 98.6% baseline and a 99.5% target ([Order to Cash, Procure to Pay, Record to Report](#finance-processes)); about 2,900 additional partner support tickets in May, back to baseline by mid-June.
+**Measured outcome, stage 1** (illustrative): opening load 2.63 million bookings in 3 hours 10 minutes, reconciled at 05:20, migration clearing zero in all nineteen pairs; engine-to-GL tie-out certified at working day 1 in every close from May; unexplained absolute three-way variance $212,000 at May month-end, $41,000 at June, $9,400 at July; on-time partner payouts 99.2% in May and 99.4% in June, against a 98.6% baseline and a 99.5% target ([Order-to-Cash, Procure-to-Pay, Record-to-Report](#finance-processes)); about 2,900 additional partner support tickets in May, back to baseline by mid-June.
 
 {id: incremental-modernization--stage-2-1-november-2029-the-eea-cohort}
 ## Stage 2 (1 November 2029): The EEA Cohort
@@ -305,7 +305,7 @@ Two details in the runbook came from stage 1. The delta load exists because Octo
 **Measured outcome of the whole migration** (illustrative, first half of 2030 against 2027): the SFP-to-S/4HANA summarization interface and its custom posting path retired; partner payables and expected PSP receivables drill back from S/4HANA to the booking through one engine for every Stayloft and Wayfare entity; Stayloft finance operations for the subledger reduced from about 25 FTE to about 14 in Dublin; 11 SFP key controls retired and 6 replaced by the engine's group controls; about $2.2 million a year of infrastructure and controls cost removed from SFP; and the Stayloft engineers who built the engine now run it as a group service.
 
 {id: incremental-modernization--trade-offs-how-else-the-subledger-could-have-moved}
-## Trade-Offs: How Else the Subledger Could Have Moved
+## Trade-offs: How Else the Subledger Could Have Moved
 
 | Approach | How it works | Strength | Weakness | Right when |
 | --- | --- | --- | --- | --- |
@@ -316,7 +316,7 @@ Two details in the runbook came from stage 1. The delta load exists because Octo
 Northmere's approach cost the most in transitional architecture, and it is the only one where **every intermediate state could be closed, audited and, until a stated point, reversed.**
 
 {id: incremental-modernization--integration-with-the-rest-of-the-estate}
-## Integration With the Rest of the Estate
+## Integration with the Rest of the Estate
 
 The migration changed little outside the subledger, by design. **Producers did not change**, because the canonical event contract in [Canonical Events: A Common Language for Money](#loosely-coupled-domains) was the seam. **Payments-to-ledger did not change**: only the system holding the expected receivables moved, as [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger) intended. **OneStream did not change**, because trial balances still came from S/4HANA under CoA v2 ([OneStream: Consolidating Actuals, Planning the Future](#onestream)). **BlackLine** carried the temporary reconciliations as catalog entries with expiry dates, removed when their cohorts exited ([BlackLine: Matching, Certifying and Closing](#blackline)). The **partner hub** became the only path into FI-CA in 2029 ([Finance Data Architecture: Who Owns the Truth](#finance-data-architecture)), so no cohort carried the duplicate partner records of the 2025 load.
 
@@ -362,8 +362,8 @@ Dana did not run this migration; the Keystone program did ([The Technology Is th
 9. Does hypercare end after the first quarter-end close on the new book?
 10. When will the old components be deleted, who has retrieved an item from the archive without them, and what was the result?
 
-{id: incremental-modernization--closing}
-## Closing
+{id: incremental-modernization--from-integration-to-leadership}
+## From Integration to Leadership
 
 This chapter closes Part III. The estate has been treated as one system: events, payments, data, authority, coupling, traceability, onboarding, and now the movement of a book of record from one part of that system to another without a bad close. Every chapter in this part relied on decisions someone had to take, record and enforce: slicing, tolerances, standards, waivers with expiry dates, and the right to say no to a plan date. Part IV ([LEADERSHIP: The Chief Architect's Agenda](#part-4)) turns to that leadership work, starting with how a Chief Architect governs a federated finance estate so that decisions like these are fast, recorded and respected, in [Architecture Governance That Speeds Decisions](#architecture-governance).
 

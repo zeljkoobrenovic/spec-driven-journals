@@ -29,8 +29,8 @@ Both the platform's value and its limits are predictable. It is an excellent **s
 
 A note on corporate status, because it changes quickly: **as of October 2026**, BlackLine, Inc. was listed on Nasdaq (ticker BL). It had been the subject of acquisition interest, including a 2025 offer from SAP that was reported and that BlackLine rejected. In March 2026 its board confirmed a Strategic Committee empowered to evaluate strategic transactions. Check the current position before you rely on it in a vendor strategy.
 
-{id: blackline--setting-the-scene-at-northmere-working-day-three}
-## Setting the Scene at Northmere: Working Day Three
+{id: blackline--setting-the-scene-at-northmere-working-day-3}
+## Setting the Scene at Northmere: Working Day 3
 
 Northmere, the fictional multi-brand digital commerce group this book follows, closes its books in **9 working days**. Leila Haddad, the Chief Accounting Officer and Group Controller, has committed to Tomás Ferreira, the Group CFO, that the close will take **5 days by the end of 2028** and 3 by 2030, as part of Program Keystone.
 
@@ -45,7 +45,7 @@ Dana Whitlock, the Chief Architect, joins Leila's WD3 stand-up. The finance oper
 {id: blackline--what-close-automation-is-for}
 ## What Close Automation Is For
 
-The **financial close** is the routine of making a period's books complete, accurate and locked. It covers subledger cut-off, accruals, revaluation, reconciliations, intercompany agreement, review, period lock and then consolidation. [Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects) covers the accounting and [Order to Cash, Procure to Pay, Record to Report](#finance-processes) places the close inside Record-to-Report. A close-automation platform supports five jobs within it:
+The **financial close** is the routine of making a period's books complete, accurate and locked. It covers subledger cut-off, accruals, revaluation, reconciliations, intercompany agreement, review, period lock and then consolidation. [Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects) covers the accounting and [Order-to-Cash, Procure-to-Pay, Record-to-Report](#finance-processes) places the close inside Record-to-Report. A close-automation platform supports five jobs within it:
 
 | Job | What the platform does | What it does not do |
 | --- | --- | --- |
@@ -133,7 +133,7 @@ Three boundaries in Figure 2 carry most of the architecture:
 
 - **Inbound copies are not authority.** If a balance in BlackLine disagrees with S/4HANA, S/4HANA is right and the feed is broken. Every feed needs a control total that proves the copy is complete.
 - **Write-back is narrow.** Only approved manual journals flow back to a ledger. Matching results do not post directly; the next sections explain why.
-- **Consolidation gets status, not data.** OneStream's workflow consumes an "entity certified" signal before it accepts that entity's trial balance. Duplicating reconciliation data into the consolidation system creates a second reconciliation system of record. This is the "status, not data" pattern that [OneStream: Consolidating Actuals, Planning the Future](#onestream) develops from the consolidation side.
+- **Consolidation gets status, not data.** OneStream's workflow consumes an "entity certified" signal before it lets that entity be locked. Duplicating reconciliation data into the consolidation system creates a second reconciliation system of record. This is the "status, not data" pattern that [OneStream: Consolidating Actuals, Planning the Future](#onestream) develops from the consolidation side.
 
 {id: blackline--transaction-matching-rule-design-for-high-volume}
 ## Transaction Matching: Rule Design for High Volume
@@ -193,7 +193,7 @@ I recommend that **these postings come from the subledger or payments platform, 
 {id: blackline--why-1-9-stays-unmatched}
 ### Why 1.9% Stays Unmatched
 
-When Dana's team analyzed the roughly 40,000 unmatched APM lines in the April close, they fell into four groups:
+When Dana's team analyzed the roughly 40,000 APM lines unmatched at WD3 of the March close, they fell into four groups:
 
 | Cause | Share of unmatched lines | Can a better rule fix it? | Real fix |
 | --- | --- | --- | --- |
@@ -357,7 +357,7 @@ Three controls questions apply to any AI preparer, from any vendor:
 Northmere's 2027 stance, agreed between Mei and Dana: pilot Verity Prepare on 300 medium-tier accounts, keep a human reviewer on every one, and measure review rejection rates for two quarters before expanding. High-tier accounts stay human-prepared until the evidence supports a change. That is the opposite of **Nobody's Bot**. [Automate the Work, Not the Accountability](#ai-in-finance) develops the general model.
 
 {id: blackline--trade-offs-alternatives-and-overlaps}
-## Trade-Offs: Alternatives and Overlaps
+## Trade-offs: Alternatives and Overlaps
 
 The market splits into ERP-native capabilities, EPM suites with reconciliation modules, and specialist close platforms. The table below uses only facts verified from vendor documentation or filings; the "when it fits" column is my judgment.
 
@@ -402,7 +402,7 @@ Three lessons apply beyond Northmere:
 The plan also says what *not* to do. The second Transaction Matching environment proposed at the WD3 stand-up would have matched nothing the first could not. Dana's decision record declined it and funded the provider-reference work instead.
 
 {id: blackline--integration-with-the-rest-of-the-estate}
-## Integration With the Rest of the Estate
+## Integration with the Rest of the Estate
 
 The ledgers ([SAP S/4HANA: One Journal, Clean Core](#sap-s4hana), [Oracle Fusion: An Accounting Hub for High-Volume Events](#oracle-fusion), [Workday: The Org Chart Behind the Ledger](#workday)) supply balances and receive approved journals, and their period locks stay authoritative. The payment providers ([Adyen: One Platform from Checkout to Settlement](#adyen), [Stripe: Every Movement Is a Balance Transaction](#stripe)) supply settlement data through Northmere Pay's normalization layer, under the clearing design owned by [Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger). OneStream consumes certification status, not reconciliation data. The reconciliation catalog, which lists every boundary that must be proven complete and the tool that proves it, belongs to [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation): BlackLine proves most of those boundaries, but it is not the catalog.
 

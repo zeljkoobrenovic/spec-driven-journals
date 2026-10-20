@@ -311,7 +311,7 @@ These criteria are written by Northmere and attached to the integrator's milesto
 
 The effort benefit in the register is realized only when work stops being done, and work stops only when Finance's roles, procedures and controls change with the system.
 
-The operating-model changes that commonly accompany a finance transformation are concrete: **end-to-end process owners** accountable across systems and entities (Northmere named its owners in 2027, see [Order to Cash, Procure to Pay, Record to Report](#finance-processes)); **roles** that move accountants from preparing reconciliations to reviewing exceptions; **shared service centers**, which work only if the template is actually global; **automated controls** replacing manual ones, which changes what the auditor tests; and **external parties** who see new invoices, statements and payment timings. At Northmere, 850,000 Stayloft partners will receive FI-CA-produced statements in 2028.
+The operating-model changes that commonly accompany a finance transformation are concrete: **end-to-end process owners** accountable across systems and entities (Northmere named its owners in 2027, see [Order-to-Cash, Procure-to-Pay, Record-to-Report](#finance-processes)); **roles** that move accountants from preparing reconciliations to reviewing exceptions; **shared service centers**, which work only if the template is actually global; **automated controls** replacing manual ones, which changes what the auditor tests; and **external parties** who see new invoices, statements and payment timings. At Northmere, 850,000 Stayloft partners will receive FI-CA-produced statements in 2028.
 
 Two practices help the architecture directly. **Finance super-users in the design**, named controllers and accountants who sit in fit-to-standard workshops and own the template's content for their area, turn "IT's new system" into Finance's design. And **a change impact log per release**, listing which roles, procedures, controls and external documents change, makes it visible when a technical decision has an organizational cost. When the design authority considers a variation, the change impact is one of the inputs.
 
@@ -351,8 +351,8 @@ Across these cases, **programs fail on governance, data, testing, controls and g
 
 Inside programs, the failure modes are quieter: **the template erodes one reasonable exception at a time**, **the integrator becomes the architect by default** because the enterprise's architects are too few to attend the design workshops, **benefits are re-baselined silently** so the program meets a target that has moved, and **decommissioning is dropped** when the budget tightens, so old and new both run and the retired-systems benefit never arrives.
 
-{id: finance-transformation--northmere-in-practice-keystone-s-first-year}
-## Northmere in Practice: Keystone's First Year
+{id: finance-transformation--in-practice-keystone-s-first-year}
+## In Practice: Keystone's First Year
 
 {id: finance-transformation--the-decisions-of-2027}
 ### The decisions of 2027

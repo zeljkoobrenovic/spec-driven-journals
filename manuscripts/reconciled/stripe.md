@@ -362,7 +362,7 @@ Three design choices make this auditable:
 The same design, with different accounts, covers the other two Stripe shapes. For the **€84.00 Wayfare rail ticket**, Wayfare's own Stripe account produces a `charge` balance transaction in euros. Wayfare's posting service books gross to Stripe clearing – EUR in Oracle Fusion. Wayfare is merchant of record, but Northmere's policy treats it as agent for rail, so it recognizes only its €6.72 margin as revenue at ticket issue and owes the rail operator the €77.28 fare in the monthly supplier settlement ([Oracle Fusion: An Accounting Hub for High-Volume Events](#oracle-fusion)). That is a different revenue model, but the same reconciliation unit. For **Stayloft bookings routed to Stripe**, Northmere Pay normalizes the balance transactions into the canonical `PaymentSettled` and `PSPFeeCharged` events alongside Adyen's journal lines. SFP consumes the canonical events and does not see either provider's shape.
 
 {id: stripe--trade-offs-how-deep-to-go-into-stripe}
-## Trade-Offs: How Deep to Go into Stripe
+## Trade-offs: How Deep to Go into Stripe
 
 The boundary in Table 2 is one of four realistic depths of Stripe adoption for a brand like Tablekin.
 

@@ -176,7 +176,7 @@ Contracts are where dependency becomes enforceable. The levers below are the one
 {id: vendor-portfolio-strategy--abstraction-at-the-right-seams}
 ## Abstraction at the Right Seams
 
-An **anti-corruption layer** is a boundary component that translates a vendor's model into the enterprise's own, so that the rest of the estate depends on the enterprise's concepts rather than the vendor's ([Canonical Events: A Common Language for Money](#loosely-coupled-domains) owns the pattern; [Evans, DDD Reference](https://www.domainlanguage.com/ddd/reference/)). Abstraction reduces dependency at a seam. It also costs engineering, hides vendor features and adds a component that can fail. The question is where it pays.
+An **anticorruption layer** is a boundary component that translates a vendor's model into the enterprise's own, so that the rest of the estate depends on the enterprise's concepts rather than the vendor's ([Canonical Events: A Common Language for Money](#loosely-coupled-domains) owns the pattern; [Evans, DDD Reference](https://www.domainlanguage.com/ddd/reference/)). Abstraction reduces dependency at a seam. It also costs engineering, hides vendor features and adds a component that can fail. The question is where it pays.
 
 An abstraction pays when it passes three tests: (1) **a change of vendor at that seam is plausible within the planning horizon** because of concentration, price, ownership or regulation; (2) **several consumers would otherwise depend on the vendor's format**, so the abstraction removes many dependencies at once; and (3) **the enterprise's concept at the seam is stable and well understood**, so the abstraction does not have to chase the vendor's features. If all three hold, build it. If none hold, it is waste.
 
@@ -184,7 +184,7 @@ An abstraction pays when it passes three tests: (1) **a change of vendor at that
 
 **Figure 5:** *Where Northmere abstracts. Seams with plausible vendor change and many consumers (payments, tax, e-invoicing, events) get an enterprise-owned boundary; the general ledger is used directly, and bank connectivity relies on a standard format rather than a custom layer.*
 
-Where Northmere puts anti-corruption layers:
+Where Northmere puts anticorruption layers:
 
 - **Payment adapters at Northmere Pay's edge.** All three tests hold. Concentration on Adyen is high, two other provider families already exist, and every downstream consumer (SFP, BlackLine, FinDB, S/4HANA) would otherwise parse provider formats. (SFP is the Stayloft Finance Platform, Stayloft's custom merchant subledger and payout system.) Nothing outside Northmere Pay knows which provider processed a payment unless it asks ([Adyen: One Platform from Checkout to Settlement](#adyen), [Stripe: Every Movement Is a Balance Transaction](#stripe)).
 - **Canonical financial events.** The Keystone v1 event model (`PaymentSettled`, `PSPFeeCharged`, `CommissionInvoiced` and the rest) is the enterprise's language for money movement. It is what lets a ledger, a PSP or a brand platform change without rewriting its consumers ([Canonical Events: A Common Language for Money](#loosely-coupled-domains)).
@@ -395,6 +395,6 @@ Vendor strategy keeps the estate's options open. It does not by itself move the 
 - [SAP makes bid worth billions for BlackLine](https://www.techzine.eu/news/applications/135798/sap-makes-bid-worth-billions-for-blackline/) — Techzine, 2025; reported rejected SAP offer.
 - [SAP simplifies the naming of its cloud ERP offering](https://www.timetoact-group.com/content-share/wca/blog/sap-simplifies-the-naming-of-its-cloud-erp-offering-144257) — TIMETOACT GROUP, 2025; 2025 rename of SAP cloud ERP editions.
 - [Site Reliability Engineering, ch. 3 "Embracing Risk"](https://sre.google/sre-book/embracing-risk/) — Beyer et al., Google/O'Reilly, 2016; the error budget concept the dependency budget borrows from.
-- [DDD Reference](https://www.domainlanguage.com/ddd/reference/) — Eric Evans, 2015; the anti-corruption layer pattern.
+- [DDD Reference](https://www.domainlanguage.com/ddd/reference/) — Eric Evans, 2015; the anticorruption layer pattern.
 
 Northmere Group is fictional; all its figures, contracts and decisions are illustrative. Architectural recommendations are the author's judgment.

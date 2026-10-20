@@ -393,11 +393,11 @@ Every satellite family has an ERP-native alternative. The comparison below is th
 Two cautions apply across the table. First, "included in the subscription" is not the same as free: the integration, the controls, the reconciliation and the second set of rules still have to be owned. Second, a specialist chosen for one ERP becomes a standard only if the other ERPs are attached to it; otherwise it is another overlap.
 
 {id: satellite-platforms--integration-with-the-rest-of-the-estate}
-## Integration With the Rest of the Estate
+## Integration with the Rest of the Estate
 
 At Northmere the satellites are attached through SAP Integration Suite, MuleSoft and direct connectors, so a tax engine upgrade needs regression tests in several places. The principles of [Files, Events and APIs: How Finance Systems Talk](#integration-architecture) apply with three satellite-specific additions:
 
-- **An internal facade per shared satellite.** The tax service adapter and the e-invoicing gateway are Northmere-owned facades. Callers depend on Northmere's contract, not the vendor's API, so a vendor change is contained. This is the anti-corruption layer from [Canonical Events: A Common Language for Money](#loosely-coupled-domains), applied to vendors.
+- **An internal facade per shared satellite.** The tax service adapter and the e-invoicing gateway are Northmere-owned facades. Callers depend on Northmere's contract, not the vendor's API, so a vendor change is contained. This is the anticorruption layer from [Canonical Events: A Common Language for Money](#loosely-coupled-domains), applied to vendors.
 - **Master data is published, not copied.** Legal entities, counterparties, bank accounts and product tax codes are published from their systems of record to the satellites that need them. [Systems of Record: Ending the Doppelgänger Record](#systems-of-record) owns the matrix; the satellite charter names which objects each satellite consumes and which it owns.
 - **Every satellite has a reconciliation in the catalog.** Tax engine to GL tax accounts; bank statements to GL bank accounts; Coupa approved invoices to S/4HANA AP postings; Concur reports to employee payables; Workiva figures to OneStream; FinDB metrics to the ledger. If a satellite has no reconciliation, nobody knows when it disagrees with the ledger.
 

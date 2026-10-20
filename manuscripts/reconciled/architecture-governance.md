@@ -27,8 +27,8 @@ In a finance estate, governance carries a burden that product architecture does 
 
 [The Chief Architect's Job: Making Many Systems Tell One Story](#chief-architect-role) set out Northmere's decision rights: five proposed mandatory standards owned by the Chief Architect (a sixth, for AI agents, followed in Q3 2027), advice everywhere else, expiring waivers, and a control gate that advice never replaces for systems in internal control over financial reporting (ICFR) scope. Part III then relied on decisions someone had to take, record and enforce: slicing plans, tolerances, standards and waivers with expiry dates. This chapter opens Part IV by building the machinery that turns those rights into decisions. The rest of Part IV runs through it: [Principles That Decide Things](#principles-standards-reference) writes the standards it enforces, and the chapters on transition states, vendors, transformation and technical debt record their decisions in its register.
 
-{id: architecture-governance--setting-the-scene-the-first-queue}
-## Setting the Scene: The First Queue
+{id: architecture-governance--setting-the-scene-at-northmere-the-first-queue}
+## Setting the Scene at Northmere: The First Queue
 
 Northmere, the fictional multi-brand digital commerce group this book follows, opened its architecture decision register on **11 January 2027** and held the first session of its Architecture Review Board three days later. Dana Whitlock, the Chief Architect, had set two targets on her scorecard: a median of **10 working days** for standard decisions and **25** for design-authority decisions, against a reconstructed baseline of 41.
 
@@ -178,8 +178,8 @@ Three things are worth copying. **The options include the cheap answers**, so th
 
 The record also missed its target. It was first raised on 13 January and decided on 10 February: 20 working days, twice the T2 target, mostly spent waiting for the control impact assessment. Dana reported it that way rather than starting the clock at formal intake, and changed the process: Internal Controls now joins triage for any trigger-5 decision, so the assessment starts on day one.
 
-{id: architecture-governance--review-board-and-advice-forum}
-## Review Board and Advice Forum
+{id: architecture-governance--review-board-and-architecture-advisory-forum}
+## Review Board and Architecture Advisory Forum
 
 Two forum designs dominate architecture governance, and they are often presented as rivals.
 
@@ -344,8 +344,8 @@ The numbers are small: with 71 decisions a year a median moves with a handful of
 
 The measure I watch most closely is the **path mix**. When the board's share rises, either triage has become defensive or the standards too broad.
 
-{id: architecture-governance--governance-anti-patterns}
-## Governance Anti-Patterns
+{id: architecture-governance--failure-modes}
+## Failure Modes
 
 Governance systems fail in ways distinct from the function failures in [The Chief Architect's Job: Making Many Systems Tell One Story](#chief-architect-role), and each has a measurable symptom.
 

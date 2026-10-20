@@ -25,8 +25,8 @@
 
 This chapter covers that representation: the **legal entity model** and how SAP S/4HANA, Oracle Fusion Cloud ERP and Workday encode it; **intercompany** trade, transfer pricing and netting; the **multi-currency model**; **multi-GAAP** and statutory reporting; local requirements such as SAF-T, e-invoicing and fiscal numbering; indirect tax at platform scale; the data Pillar Two demands; and the constraints of a licensed payments entity. The argument throughout: **treat each of these as a governed dimension or a designed flow**, not as a property each system configures for itself. The platform chapters of Part II, the market-launch kit in [The Next Brand Should Be Boring: Onboarding as Configuration](#brands-entities-markets) and the sourcing decisions in [Build, Buy or Compose: Choosing What to Own](#build-versus-buy) all assume the entity register, rate service and intercompany design set out here.
 
-{id: global-scale--setting-the-scene-seventy-one-entities-and-three-requests}
-## Setting the Scene: Seventy-One Entities and Three Requests
+{id: global-scale--setting-the-scene-at-northmere-seventy-one-entities-and-three-requests}
+## Setting the Scene at Northmere: Seventy-One Entities and Three Requests
 
 Northmere, the fictional group this book follows, is a New York–listed digital commerce group headquartered in Amsterdam. It reports in US dollars under US GAAP, trades through **71 legal entities in 38 countries**, takes customer payments in **46 currencies**, settles with partners in **31 currencies**, and files local GAAP or IFRS statutory accounts for each entity. [Meet Northmere: Five Brands, One Set of Books](#meet-northmere) introduces its brands and its licensed e-money institution, **Northmere Payments B.V.**
 
@@ -320,8 +320,8 @@ Every input depends on something argued earlier: the entity register for keys an
 
 The modeling rule: **regulatory status is an entity attribute, and every flow touching a licensed entity carries it.** Netting exclusions, reconciliation scope and resilience scope derive from the register, so a third licensed entity, which Brazil may require, extends them by configuration.
 
-{id: global-scale--opening-brazil-a-preview-of-the-launch-checklist}
-## Opening Brazil: A Preview of the Launch Checklist
+{id: global-scale--opening-brazil-a-preview-of-the-market-launch-kit}
+## Opening Brazil: A Preview of the Market Launch Kit
 
 The 2028 Brazil launch tests everything above. Treated as "configure Stayloft for Brazil", it produces exactly the forks this chapter warns against. Treated as a change to the entity, currency, tax and regulatory model, it becomes a checklist that [The Next Brand Should Be Boring: Onboarding as Configuration](#brands-entities-markets) turns into a reusable market-launch kit:
 
@@ -338,8 +338,8 @@ The 2028 Brazil launch tests everything above. Treated as "configure Stayloft fo
 
 None of this is a Brazil-specific build. Each item is a register entry, a code-list value or a shared-service rule. **If launching a market requires code changes in a brand platform, the dimensions were not separated well enough.**
 
-{id: global-scale--trade-offs}
-## Trade-Offs
+{id: global-scale--trade-offs-intercompany-origination-and-settlement}
+## Trade-offs: Intercompany Origination and Settlement
 
 Entity granularity in the ledger was settled above: share a ledger where currency, calendar and chart are shared, and never let a brand ledger stand in for entity books. Rate sourcing has only one answer that scales, the treasury-sourced, versioned group rate service. The open trade-off is where intercompany originates and settles.
 
@@ -353,7 +353,7 @@ Entity granularity in the ledger was settled above: share a ledger where currenc
 For Northmere I would combine a continuously fed intercompany originator and matcher with Kyriba netting, keeping consolidation matching as the final check. Whether the originator is BlackLine, SAP's own capability or a small service is a portfolio decision for [Build, Buy or Compose: Choosing What to Own](#build-versus-buy).
 
 {id: global-scale--integration-with-the-rest-of-the-estate}
-## Integration With the Rest of the Estate
+## Integration with the Rest of the Estate
 
 These models belong to no single platform, so they need explicit owners. The entity register, rate service and tax master data are master-data domains under [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture), with authority recorded in [Systems of Record: Ending the Doppelgänger Record](#systems-of-record); the event envelope that carries the five dimensions belongs to [Canonical Events: A Common Language for Money](#loosely-coupled-domains); translation and elimination run in [OneStream: Consolidating Actuals, Planning the Future](#onestream), intercompany and FX account reconciliation in [BlackLine: Matching, Certifying and Closing](#blackline), tax, e-invoicing and netting in [Around the Core: Where Specialist Platforms Earn Their Place](#satellite-platforms); and intercompany, rate and safeguarding reconciliations join the catalog in [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation), to the evidence standards of [Controls by Design, Not by Audit Season](#controls-and-auditability).
 

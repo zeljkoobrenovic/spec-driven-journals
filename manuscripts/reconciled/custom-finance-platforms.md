@@ -31,8 +31,8 @@ These platforms grow. A commission engine acquires an invoicing module because t
 
 Part II asks every platform what it masters, what it only receives, how its numbers are proven against the ledger and what it would cost to leave. It starts with the platforms an enterprise builds itself, because their boundary is the one most often never drawn. This chapter makes the decision nobody made: which finance capabilities to build, **where the boundary with the ERP must sit**, what owning really costs, and an **explicit retirement test** for deciding what to keep, converge or switch off. It applies the per-capability method of [Build, Buy or Compose: Choosing What to Own](#build-versus-buy) and the per-component dispositions of [Changing the Engine in Flight: Modernization Patterns for Finance](#modernization-patterns) to Northmere's Stayloft Finance Platform, and its boundary rules and control totals are the ones [SAP S/4HANA: One Journal, Clean Core](#sap-s4hana), [The Life of a Booking: From €600 Payment to $97.38 of Revenue](#transaction-to-report) and [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation) rely on. The internals of a custom ledger (posting rules, invariants, idempotency, bi-temporality) belong to the next chapter, [Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers): this chapter decides what such a ledger should own; that one explains how to build it.
 
-{id: custom-finance-platforms--setting-the-scene-the-sfp-question-at-northmere}
-## Setting the Scene: The SFP Question at Northmere
+{id: custom-finance-platforms--setting-the-scene-at-northmere-the-sfp-question-at-northmere}
+## Setting the Scene at Northmere: The SFP Question at Northmere
 
 Northmere, the fictional group this book follows (see [Meet Northmere: Five Brands, One Set of Books](#meet-northmere)), is a multi-brand digital commerce group with about $8.2 billion of revenue in 2026. Its largest brand, Stayloft, is an accommodation marketplace that runs two business models side by side. Under the **agency model**, the property collects the traveler's payment and Stayloft invoices the property a monthly commission. Under the **merchant model**, Stayloft collects the payment, holds it until after the stay, and pays the property net of commission. The merchant share of Stayloft's gross transaction value rose from 51% in 2023 to 64% in 2026, and with it the amount of money, liability and reconciliation that runs through Stayloft's finance systems.
 
@@ -106,10 +106,10 @@ The case against building is not that engineers cannot write finance software. I
 | Licensed-entity needs | Regulatory reporting and daily reconciliation obligations | The licensed entity owns the requirement; the platform owns the evidence |
 | Cost at scale | Hidden people and control costs | A full cost of owning, refreshed every year |
 
-{id: custom-finance-platforms--the-true-cost-of-owning}
-## The True Cost of Owning
+{id: custom-finance-platforms--the-total-cost-of-ownership}
+## The Total Cost of Ownership
 
-The four burdens add costs that business cases for custom finance platforms leave out. Those cases count engineers and cloud spend; at Northmere the rest comes to almost half the total. In March 2027 Dana's team estimated SFP's annual cost of owning (illustrative, rounded):
+The four burdens add costs that business cases for custom finance platforms leave out. Those cases count engineers and cloud spend; at Northmere the rest comes to nearly a third of the total. In March 2027 Dana's team estimated SFP's annual cost of owning (illustrative, rounded):
 
 | Cost line | What it covers | Estimate per year |
 | --- | --- | --- |
@@ -289,7 +289,7 @@ The table also answers the original question in Tomás's terms. Of SFP's nine co
 **Figure 5:** *SFP is nine components, not one, and they get nine answers: three stay custom, four converge onto group platforms and two are retired, because the retirement test is asked per component rather than per platform.*
 
 {id: custom-finance-platforms--trade-offs-where-the-merchant-subledger-could-live}
-## Trade-Offs: Where the Merchant Subledger Could Live
+## Trade-offs: Where the Merchant Subledger Could Live
 
 The most consequential verdict in the table is the merchant subledger's, and it is not settled until the Q4 2027 decision on how brand ledgers converge. The options are compared below; the platform chapters explain each vendor product in depth ([SAP S/4HANA: One Journal, Clean Core](#sap-s4hana), [Oracle Fusion: An Accounting Hub for High-Volume Events](#oracle-fusion), [Workday: The Org Chart Behind the Ledger](#workday)).
 
@@ -306,7 +306,7 @@ My recommendation to Northmere is the FI-CA option, conditional on the volume pr
 *A note from later in the story: this May 2027 recommendation did not survive. On 8 December 2027 the Keystone design authority chose the accounting-hub pattern for brand-ledger convergence, with a group accounting engine generalized from SFP's redesigned subledger engine posting into S/4HANA; FI-CA keeps merchant invoicing but not the merchant subledger. The record above is left as it was argued at the time; [Converge or Coexist: Living with More Than One ERP](#multiple-erps) tells the decision and [Modernizing Without Stopping the Close](#incremental-modernization) the migration that followed.*
 
 {id: custom-finance-platforms--integration-with-the-rest-of-the-estate}
-## Integration With the Rest of the Estate
+## Integration with the Rest of the Estate
 
 A custom finance platform touches nearly every other part of the estate, and each contact has an owner elsewhere in this book:
 

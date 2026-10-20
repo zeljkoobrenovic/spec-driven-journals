@@ -399,8 +399,8 @@ Dana's reading of the evidence, presented to the design authority in June 2027, 
 9. Which Oracle capabilities (EPM, ARCS, tax engine, translation, analytics, AI agents) duplicate a group platform, and who has decided each one?
 10. What can an Oracle AI agent post, approve or change in our tenant today, and where is the evidence?
 
-{id: oracle-fusion--hand-off}
-## Hand-Off
+{id: oracle-fusion--from-ledgers-to-reconciliation}
+## From Ledgers to Reconciliation
 
 Fusion's design shows that a good accounting engine can preserve detail while summarizing for the ledger, but the reconciliation work that proves balances right still has to happen somewhere. The next chapter, [BlackLine: Matching, Certifying and Closing](#blackline), turns to the platform Northmere uses for that work: account reconciliation, transaction matching at PSP-settlement volume and the idea of continuous accounting.
 

@@ -27,8 +27,8 @@ Software engineering already names these steps (strangler fig, legacy displaceme
 
 The chapter owns the pattern catalog, the parallel run and the cut-over, and later chapters build on them. [Converge or Coexist: Living with More Than One ERP](#multiple-erps) makes the hub decision this chapter leaves open, [Modernizing Without Stopping the Close](#incremental-modernization) works through the full migration of Stayloft's merchant subledger, and [The Technology Is the Easy Part: Leading a Finance Transformation](#finance-transformation) covers the program leadership of an ERP transformation.
 
-{id: modernization-patterns--setting-the-scene-three-modernization-files-at-northmere}
-## Setting the Scene: Three Modernization Files at Northmere
+{id: modernization-patterns--setting-the-scene-at-northmere-three-modernization-files-at-northmere}
+## Setting the Scene at Northmere: Three Modernization Files at Northmere
 
 Northmere, the fictional multi-brand digital commerce group this book follows ([Meet Northmere: Five Brands, One Set of Books](#meet-northmere)), reaches October 2027 with three modernization files before the design authority that Dana Whitlock, the Chief Architect, chairs with Leila Haddad, the Chief Accounting Officer.
 
@@ -266,7 +266,7 @@ A modernization is finished when the old system is gone, its controls are closed
 
 **Form.** Rehosting EBS read-only in the cloud would keep its licenses, patching and access controls for a system nobody transacts in; a third-party archive product would add a vendor. The design authority chose to **extract to open formats in Northmere's archive store**: tabular data with documented schemas, invoice images as PDFs, and a reconciliation pack. A database backup does not qualify, because it can only be read by restoring EBS. The reconciliation pack is the core of the design: for every entity and period the archived trial balance equals the last EBS trial balance, record counts and amount totals agree per table, and a documented drill path runs from journal to subledger entry to document.
 
-**Access.** A search interface over the archive, read-only, with roles for Wayfare finance, group tax, internal audit and legal. Every access is logged. The external auditor gets a documented retrieval procedure with a target of five working days. Personal data the law does not require, such as contact notes and customer marketing fields, is excluded from the extract, as the GDPR section above requires.
+**Access.** A search interface over the archive, read-only, with roles for Wayfare finance, group tax, internal audit and legal. Every access is logged. The external auditor gets a documented retrieval procedure with a target of five working days. Personal data the law does not require, such as contact notes and customer marketing fields, is excluded from the extract, as the personal-data rule above requires.
 
 {id: modernization-patterns--the-sequence}
 ### The sequence
@@ -298,7 +298,7 @@ The table maps each situation, not each technology, to the chapter's disposition
 | Read-only legacy system | Retire with archive | Dual access; retrieval drills; disposal schedule | Keeping the system alive as its own archive |
 
 {id: modernization-patterns--integration-with-the-rest-of-the-estate}
-## Integration With the Rest of the Estate
+## Integration with the Rest of the Estate
 
 Modernization patterns depend on the integration architecture in two ways. **Interception requires a seam**, and in finance the best seam is the canonical financial event (`BookingConfirmed`, `StayCompleted`, `CommissionInvoiced` and the rest), because it lets old and new consume the same input. That is why Keystone's canonical events ([Canonical Events: A Common Language for Money](#loosely-coupled-domains)) come before its migrations in the roadmap. **Reconciliation requires matching keys**, and those keys have to be designed into the transitional architecture, as [Reconciled by Design: Traceability and Audit Across Boundaries](#traceability-and-reconciliation) explains.
 
@@ -342,8 +342,8 @@ What to watch over the long term: the hub mapping becoming the new Spreadsheet G
 9. What is the last point at which rollback is still possible?
 10. What personal data are we migrating or archiving that the law does not require us to keep?
 
-{id: modernization-patterns--closing}
-## Closing
+{id: modernization-patterns--from-foundations-to-platforms}
+## From Foundations to Platforms
 
 This chapter completes Part I: the foundations now run from capabilities and portfolio through accounting, data, controls, integration and sourcing to changing a live finance estate without breaking its books. Part II ([PLATFORMS: What Each Is For, and What It Costs to Depend On](#part-2)) turns to the platforms themselves, starting where many modernization decisions start: the custom platforms enterprises build around their ERPs, in [When the ERP Isn't Enough: Custom Finance Platforms](#custom-finance-platforms).
 

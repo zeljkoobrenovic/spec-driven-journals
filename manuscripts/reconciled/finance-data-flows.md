@@ -335,8 +335,8 @@ AI agents raise the stakes, because an agent asked "what was Stayloft's revenue 
 - **Every answer carries the metric ID, version and status.** "Group net revenue, Q1 2027, $1,986 million, CLOSED, net_revenue v3" is an answer; a bare number is not.
 - **Agents inherit the tie-out status.** Northmere's variance-commentary pilot in late 2027 cited the ledger for financial figures and FinDB only for operational drivers, because FinDB was not yet tied out when the pilot was designed ([Automate the Work, Not the Accountability](#ai-in-finance)). Once certification exists, the agent can read certified datasets and must decline uncertified ones for financial questions.
 
-{id: finance-data-flows--trade-offs}
-## Trade-offs
+{id: finance-data-flows--trade-offs-three-decisions-for-a-finance-data-platform}
+## Trade-offs: Three Decisions for a Finance Data Platform
 
 Three decisions shape a finance data platform. None has a universally right answer.
 
@@ -352,7 +352,7 @@ Three decisions shape a finance data platform. None has a universally right answ
 The trade-off I would argue hardest about is ownership. A pure data-mesh reading gives each domain its own revenue data product, and the result is a revenue number per domain. **Federate production, centralize agreement**: domains own the data they produce, and one team is accountable for the products that must agree with the books.
 
 {id: finance-data-flows--integration-with-the-rest-of-the-estate}
-## Integration With the Rest of the Estate
+## Integration with the Rest of the Estate
 
 - **Subledgers and ledgers** ([Never Update, Only Append: Designing Custom Ledgers](#designing-financial-ledgers)) provide detail with drill-back keys and balances for tie-out; the subledger's own daily tie-out to the GL is upstream of FinDB's derivation tie-out.
 - **Payments** ([Payments-to-Ledger: Draining the Suspense Swamp](#payments-to-ledger)): BlackLine's matching and FinDB's analytics read the same canonical money movements.

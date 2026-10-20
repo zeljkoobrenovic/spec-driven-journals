@@ -354,8 +354,8 @@ Northmere made the control card a mandatory standard, STD-FIN-06, in Q3 2027: no
 
 The card does three jobs: it is the design checklist, so nothing is discovered late; the audit walkthrough document, so Mei's team does not reconstruct it afterwards; and the inventory entry — commentary on COSO's guidance stresses inventories of AI use, including **shadow AI** built outside governance, and the card gives an inventory content rather than names.
 
-{id: ai-in-finance--trade-offs}
-## Trade-offs
+{id: ai-in-finance--trade-offs-four-recurring-agent-design-choices}
+## Trade-offs: Four Recurring Agent Design Choices
 
 Four choices recur in every agent design decision, and none has a universal answer.
 
@@ -403,8 +403,8 @@ What to watch over the next three years: vendor SOC 1 scopes extending to AI fea
 9. Which root causes has this agent surfaced, and which have been fixed upstream?
 10. Does the vendor's SOC 1 cover the AI features we rely on, and what complementary user-entity controls does that leave with us?
 
-{id: ai-in-finance--closing-agents-as-one-more-stressor}
-## Closing: Agents as One More Stressor
+{id: ai-in-finance--from-agents-to-the-long-view}
+## From Agents to the Long View
 
 The three Northmere pilots did not deliver an autonomous finance function, and were not meant to. They delivered something more durable: a pattern — tools, proposals, approval, evidence — and a control card that let Mei's team walk the external auditor through every agent run in the FY2027 audit without a new finding on how the agents were changed or accessed. The Year 5 aspiration of AI-assisted reconciliation with auditable evidence now has an architecture that can grow into it, one rung and one use case at a time.
 

@@ -27,8 +27,8 @@ The answer is not a technology. It is a small set of disciplines accountants hav
 
 The worked example is Northmere's 2027 redesign of the merchant-model subledger inside the Stayloft Finance Platform. Its summaries feed the S/4HANA core that [SAP S/4HANA: One Journal, Clean Core](#sap-s4hana) covers next, and its engine is built to be replaced when Keystone moves the subledger into that core. The chapter goes deeper technically than most; the code is language-neutral, because the design choices are the point.
 
-{id: designing-financial-ledgers--setting-the-scene-rebuilding-the-sfp-merchant-subledger}
-## Setting the Scene: Rebuilding the SFP Merchant Subledger
+{id: designing-financial-ledgers--setting-the-scene-at-northmere-rebuilding-the-sfp-merchant-subledger}
+## Setting the Scene at Northmere: Rebuilding the SFP Merchant Subledger
 
 In April 2027 Jonas Berg, who runs Stayloft Finance Engineering, brings a proposal to the Keystone design authority chaired by Dana Whitlock, the Chief Architect, and Leila Haddad, the Chief Accounting Officer. The **Stayloft Finance Platform (SFP)** holds Stayloft's merchant-model subledger: for every booking where Stayloft collects the traveler's money, SFP tracks the funds held, the commission earned and the amount owed to the property. It writes about **3 million subledger lines a day** and posts about **38,000 summarized general-ledger (GL) lines a day** into SAP S/4HANA, the group's finance core.
 
@@ -491,8 +491,8 @@ Infrastructure metrics say the engine is up; they do not say the money is accoun
 
 These are the same quantities Stripe uses to judge its Ledger: **clearing** (did the fund flow complete), **timeliness** (did data arrive on time) and **completeness** (do we have all of it) ([Stripe, 2024](https://stripe.dev/blog/ledger-stripe-system-for-tracking-and-validating-money-movement)). Expressed in euros, they are the numbers a controller understands without translation.
 
-{id: designing-financial-ledgers--in-practice-northmere-s-redesign}
-## In Practice: Northmere's Redesign
+{id: designing-financial-ledgers--in-practice-northmere-s-merchant-subledger-redesign}
+## In Practice: Northmere's Merchant Subledger Redesign
 
 The design authority approves Jonas's proposal in May 2027 with the following decisions, recorded as a Keystone architecture decision record.
 

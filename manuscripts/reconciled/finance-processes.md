@@ -1,7 +1,7 @@
 {id: finance-processes}
-# 9. Order to Cash, Procure to Pay, Record to Report
+# 9. Order-to-Cash, Procure-to-Pay, Record-to-Report
 
-![Order to Cash, Procure to Pay, Record to Report — logo](finance-systems-architecture/posts/06-finance-processes/assets/images/06-finance-processes/logo.jpeg)
+![Order-to-Cash, Procure-to-Pay, Record-to-Report — logo](finance-systems-architecture/posts/06-finance-processes/assets/images/06-finance-processes/logo.jpeg)
 
 > **IN THIS CHAPTER, YOU WILL:** Walk through the end-to-end finance processes an enterprise estate serves (Record-to-Report, Procure-to-Pay, Order-to-Cash and its marketplace variants, partner payouts, treasury, tax, Plan-to-Perform, Acquire-to-Retire and the finance side of Hire-to-Retire) and learn to read each one as a chain of hand-offs, with the controls, failure points and metrics that belong to each hand-off.
 
@@ -27,8 +27,8 @@ Finance teams describe their work in processes: **Record-to-Report** (R2R), **Pr
 
 Two documents run through the chapter: a supplier invoice that enters through Coupa and leaves through a bank, and the Lisbon booking, a €600 merchant-model stay that touches seven processes before it becomes €90 of revenue. Following both is the fastest way I know to find where an estate's design is weak.
 
-{id: finance-processes--setting-the-scene-two-documents-dana-asked-to-follow}
-## Setting the Scene: Two Documents Dana Asked to Follow
+{id: finance-processes--setting-the-scene-at-northmere-two-documents-dana-asked-to-follow}
+## Setting the Scene at Northmere: Two Documents Dana Asked to Follow
 
 Northmere, the fictional multi-brand digital commerce group this book follows, closes its books in nine working days in early 2027; Program Keystone, its finance transformation, targets five by the end of 2028. In February 2027 Dana Whitlock, the Chief Architect for Enterprise Applications and Financial Systems, asked Leila Haddad, the Chief Accounting Officer: "Where do the nine days go?" Leila answered with a close calendar. Dana asked instead for two documents to be followed from origin to the consolidated statements, with every change of system, owner and identifier recorded on one sheet.
 
@@ -401,7 +401,7 @@ The rule I use: **put judgment in the system that owns the domain, put translati
 On ownership, I recommend process-aligned ownership paired with capability-aligned ownership: **the process owner signs the hand-off contract; the capability owner implements it.** System-aligned ownership gives clear technical accountability but orphans the hand-offs. Process-aligned ownership gives one owner for end-to-end metrics and exceptions, but it needs authority over brand teams. Capability-aligned ownership prevents duplicates, but nobody owns the outcome. Where a process owner cannot be given authority over brand engineering, the hand-off contract should at least be an architecture standard the review board enforces.
 
 {id: finance-processes--integration-with-the-rest-of-the-estate}
-## Integration With the Rest of the Estate
+## Integration with the Rest of the Estate
 
 This chapter owns the process view; other chapters own the layers it crosses. [Anatomy of a Finance Estate: Layers, Planes and Boundaries](#finance-landscape) places each system of the matrix in the reference model. [Accounting for Architects: Ledgers, Journals and Revenue](#accounting-for-architects) owns the journal entries behind each step. [Finance Data Architecture: Who Owns the Truth](#finance-data-architecture) owns the master data every hand-off depends on. [Controls by Design, Not by Audit Season](#controls-and-auditability) turns the key controls here into a control framework. [Files, Events and APIs: How Finance Systems Talk](#integration-architecture) supplies the idempotency and control-total mechanics, [Canonical Events: A Common Language for Money](#loosely-coupled-domains) the canonical events the Lisbon trace used, and [Systems of Record: Ending the Doppelgänger Record](#systems-of-record) formalizes how authority over an item moves from booking platform to subledger to GL.
 

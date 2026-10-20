@@ -187,7 +187,7 @@ When the equation does not close, money is missing or duplicated. When "in fligh
 {id: resilience-and-security--the-money-in-flight-dashboard}
 ### The money-in-flight dashboard
 
-The dashboard Leila's and Ingrid's teams share has one row per flow and four numbers per row: value in flight, age of the oldest item, completeness gap, and clearing balance against expectation. The flows are the ones that cross ownership boundaries: PSP capture to settlement, settlement to bank, subledger to general ledger, payout instruction to bank confirmation, safeguarding requirement to safeguarded balance, brand ledgers to OneStream. Each has an owner from the end-to-end process owner list in [Order to Cash, Procure to Pay, Record to Report](#finance-processes).
+The dashboard Leila's and Ingrid's teams share has one row per flow and four numbers per row: value in flight, age of the oldest item, completeness gap, and clearing balance against expectation. The flows are the ones that cross ownership boundaries: PSP capture to settlement, settlement to bank, subledger to general ledger, payout instruction to bank confirmation, safeguarding requirement to safeguarded balance, brand ledgers to OneStream. Each has an owner from the end-to-end process owner list in [Order-to-Cash, Procure-to-Pay, Record-to-Report](#finance-processes).
 
 {id: resilience-and-security--service-level-objectives-on-financial-flows}
 ### Service level objectives on financial flows
