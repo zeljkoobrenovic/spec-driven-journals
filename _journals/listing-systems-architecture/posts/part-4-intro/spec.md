@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Part IV — DISCOVERY: Matching Intent to Inventory
@@ -38,7 +38,7 @@ None.
 ## Decision log
 
 - 2026-10-19: Modeled on RECONCILED's part introductions with this book's callout set and a chapter table.
-- 2026-10-19: Failure patterns: Index-as-Database, Paid-Rank Drift and Ghost Inventory, the three that recur across most of the part's chapters.
+- 2026-10-19: Failure patterns: Search as System of Record, Multiplier Creep and Ghost Inventory, the three that recur across most of the part's chapters.
 - 2026-10-19: The Airbnb map-traffic figure from [[map-search]] is left to that chapter to avoid an external claim here.
 
 ## Sources
@@ -52,3 +52,4 @@ None.
 - **2026-10-19** — Added 1 inline illustration (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 641 → 642 words; headings unchanged (shared with sibling part intros); "sets requirements forward" replaced, since Part VII supplies discovery rather than depending on it; "the same questions" made "three questions". *(AI-mediated session)*
 - **2026-10-20** — Term alignment with the glossary: "projection" → "read model", "copy register" → "consumer registry", "filter compiler" → "query compiler", where they occur on this page. *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

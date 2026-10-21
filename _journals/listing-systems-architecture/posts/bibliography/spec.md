@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Bibliography
@@ -15,7 +15,7 @@ Chief Architects, marketplace platform and search architects, and engineering le
 
 ## Success criteria
 
-- [ ] Front matter, then IN THIS SECTION, YOU WILL; KEY POINTS with exactly three bullets; one failure pattern (The Platform Mandate); `<br>`; an intro covering the October 2026 research, secondary summaries and 2026 naming.
+- [ ] Front matter, then IN THIS SECTION, YOU WILL; KEY POINTS with exactly three bullets; one failure pattern (The Forced Fit); `<br>`; an intro covering the October 2026 research, secondary summaries and 2026 naming.
 - [ ] Every entry was harvested from a `## Sources and Evidence` section of a page in `config.yaml`; nothing is added that no page cites; URLs are copied exactly; pointer lines and the internal research briefs are not entries.
 - [ ] Entries are deduplicated by normalized URL and carry identifiers R1, R2, … in topic order; new sources append from the next free R-number and are never renumbered (the registry is `_research/bib-tools/ids.json`).
 - [ ] Each entry has identifier, title, publisher, the chapter's publication year (or "n.d."), one clause on what it supports, an evidence type and a Cited in line of `[[permalink]]` links.
@@ -48,10 +48,11 @@ Article only. A reference page is not adapted into other modalities.
 
 ## Sources
 
-- Every page's `## Sources and Evidence` section; [[where-listing-systems-go-wrong]] for The Platform Mandate.
+- Every page's `## Sources and Evidence` section; [[where-listing-systems-go-wrong]] for The Forced Fit.
 - The RECONCILED bibliography and its tools in `_journals/finance-systems-architecture/_research/bib-tools/`.
 
 ## Changelog
 
 - **2026-10-19** — Initial bibliography harvested from every page's Sources and Evidence section. *(AI-mediated session)*
 - **2026-10-20** — Term alignment with the glossary: "projection" → "read model", "copy register" → "consumer registry", "filter compiler" → "query compiler", where they occur on this page. *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

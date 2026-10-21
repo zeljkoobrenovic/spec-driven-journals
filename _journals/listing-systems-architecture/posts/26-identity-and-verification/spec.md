@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Who Is on the Other Side? Identity and Verification
@@ -72,3 +72,4 @@ Chief and enterprise architects of marketplace groups, identity and security lea
 - **2026-10-20** — Sharpening pass: 6,361 → 6,394 prose words; outline unchanged; opening now ties the chapter to Part V and fraud-prevention's hand-off and names the chapters that build on it; 14 paragraph openings rewritten to state their point; two long paragraphs (Mercari/FINN, Schibsted/Vend) split; no facts or quotations removed. *(AI-mediated session)*
 - **2026-10-20** — Consistency fix: excerpt now describes separate claims on three axes combined into levels, matching the body and Figure 1, instead of "a ladder of separate claims"; H3 "Two axes, not one ladder" renamed "Three axes, not one ladder", the section's own conclusion. *(AI-mediated session)*
 - **2026-10-20** — Replaced 2 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`); known differences from the source: Figure 2: kept attempt 1: 'Fraud and T&S platform' drawn inside the 'Veldmark ID' panel; 'Hearthly' → 'Authentication service' (OIDC login) arrow missing; invented arrow 'Profile service' → 'Hearthly'; 'Account recovery' → 'Authentication service' and 'Authentication service' → 'Profile service' drawn without arrowheads; Figure 3: kept attempt 1 (structure correct): invented title/caption sentence printed at top; words START and END printed beside the dots. *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

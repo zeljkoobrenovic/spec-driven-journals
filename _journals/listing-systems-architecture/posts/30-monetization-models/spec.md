@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: How Listing Marketplaces Make Money
@@ -73,3 +73,4 @@ Chief architects, principal engineers and engineering directors at marketplace g
 - **2026-10-20** — Cross-chapter consistency sweep: 1 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 8,117 → 8,149 prose words; opening now places the chapter in Part VI after messaging-and-leads and transactions-and-payments; 12 teaser or buried first sentences rewritten to state their point; "Two KPI definitions" corrected to three; no headings renamed or sections moved; spec unchanged. *(AI-mediated session)*
 - **2026-10-20** — Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`); known differences from the source: Figure 2: kept attempt 4: 'Billing and invoicing' drawn twice (in core panel and beside Delivery metering, joined by a line); arrow goes 'Billing and invoicing' → 'ROI reporting to professionals' instead of → 'Finance ledger'. *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

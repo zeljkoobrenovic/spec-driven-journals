@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: The Listing Aggregate: Identity, Lifecycle and Invariants
@@ -71,3 +71,4 @@ Chief and principal architects, staff engineers and engineering leaders who own 
 - **2026-10-20** — Sharpening pass: 5,786 → 5,836 words; outline unchanged; lead now names what the chapter builds on and which chapters use its states and events; Auto Trader paragraph leads with its lesson; trade-offs count corrected to four; publication-state/overlay split explained in one sentence; no spec criteria changed. *(AI-mediated session)*
 - **2026-10-20** — Consistency fix: heading, third key point and excerpt now say two lifecycle dimensions (publication state plus enforcement overlay, three owners), matching the body, Figure 3 and the glossary; unsourced "among the most effective notifications" claim about price-drop alerts reduced to the plain fact. *(AI-mediated session)*
 - **2026-10-20** — Replaced 2 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`); known differences from the source: Figure 4: kept attempt 1: prints 'START' and 'END' beside the dots; 'seller resumes' arrow points from Paused to Rejected instead of Active. *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

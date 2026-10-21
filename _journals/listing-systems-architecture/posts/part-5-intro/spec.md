@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Part V — TRUST: Keeping the Marketplace Safe
@@ -39,7 +39,7 @@ None.
 ## Decision log
 
 - 2026-10-19: Modeled on RECONCILED's part introductions with this book's callout set and a chapter table.
-- 2026-10-19: Failure patterns: Moderation as an Afterthought, The Scam Inbox, The Acquisition Archipelago.
+- 2026-10-19: Failure patterns: Moderation as an Afterthought, Fast Mail for Fraudsters, Deal-Shaped Architecture.
 - 2026-10-19: Safe Deal and DAC7 numbers deliberately left out of the part intro; [[marketplace-regulation]] owns them (its superseded 4.1M / €310M figures were corrected in the editorial review).
 
 ## Sources
@@ -52,3 +52,4 @@ None.
 - **2026-10-19** — Editorial review pass: format, ledger facts and links checked; no article changes needed (Safe Deal figures in marketplace-regulation are now corrected to 11.6M / ~€1.02B). *(AI-mediated session)*
 - **2026-10-19** — Added 1 inline illustration (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 666 → 666 words; headings unchanged (house shape); two sentences reworded (the argument sentence and the Veldmark thread's incident link); spec unchanged. *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

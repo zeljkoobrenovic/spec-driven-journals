@@ -108,18 +108,18 @@ Use these exact names:
 | **The Category Straitjacket** | Adding, splitting or renaming a category needs a code release, a data migration and a cross-team meeting. |
 | **The Attribute Junkyard** | Attributes are free-form strings with no dictionary, so filters, facets and feeds disagree about what a listing is. |
 | **Ghost Inventory** | Sold, expired or removed listings stay searchable, alertable and contactable long after they are gone. |
-| **The Duplicate Echo** | The same item or property appears many times, from reposts, multiple feeds or multiple agencies, and crowds out everything else. |
+| **Seeing Double** | The same item or property appears many times, from reposts, multiple feeds or multiple agencies, and crowds out everything else. |
 | **Feed Roulette** | Partner and professional feeds are ingested without contracts, validation or feedback, so every import is a surprise. |
-| **Index-as-Database** | The search index has quietly become the system of record, and nobody can rebuild it from anything else. |
-| **Paid-Rank Drift** | Paid boosts and promotions accumulate in the ranking until relevance degrades and buyers stop trusting the order. |
+| **Search as System of Record** | The search index has quietly become the system of record, and nobody can rebuild it from anything else. |
+| **Multiplier Creep** | Paid boosts and promotions accumulate in the ranking until relevance degrades and buyers stop trusting the order. |
 | **Moderation as an Afterthought** | Trust and safety is bolted on after launch, as a queue that grows faster than the team that empties it. |
-| **The Scam Inbox** | Messaging and contact features ship without safety signals and become the main channel for fraud. |
-| **The Country Fork** | Each market runs its own copy of the codebase, and every improvement has to be built several times. |
-| **The Acquisition Archipelago** | Acquired marketplaces keep their entire stacks indefinitely, and the group pays for every capability several times. |
-| **The Platform Mandate** | A central platform is imposed on markets that it does not fit, and local teams route around it. |
+| **Fast Mail for Fraudsters** | Messaging and contact features ship without safety signals and become the main channel for fraud. |
+| **The Copy-Paste Country** | Each market runs its own copy of the codebase, and every improvement has to be built several times. |
+| **Deal-Shaped Architecture** | Acquired marketplaces keep their entire stacks indefinitely, and the group pays for every capability several times. |
+| **The Forced Fit** | A central platform is imposed on markets that it does not fit, and local teams route around it. |
 | **Vanity Liquidity** | The marketplace measures listings and visits instead of matches, contacts and sales, and optimizes the wrong thing. |
-| **Entitlement Spaghetti** | What a seller has paid for is checked ad hoc in many services, so nobody can say what was sold versus delivered. |
-| **The Unwatched Model** | A ranking, pricing, valuation or fraud model makes consequential decisions without evaluation, monitoring or an owner. |
+| **Billing by Guesswork** | What a seller has paid for is checked ad hoc in many services, so nobody can say what was sold versus delivered. |
+| **Set-and-Forget AI** | A ranking, pricing, valuation or fraud model makes consequential decisions without evaluation, monitoring or an owner. |
 
 ## Veldmark usage
 

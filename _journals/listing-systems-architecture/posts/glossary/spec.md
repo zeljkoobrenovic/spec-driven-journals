@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-19
+revised: 2026-10-21
 ---
 
 # Spec: Glossary
@@ -62,3 +62,4 @@ External: none directly. Definitions follow the regulation, standard and company
 
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
 - **2026-10-19** — Editorial review pass: rows written from contracts rechecked against industry-evolution, transactions-and-payments, platform-consolidation, modernization-and-migration and long-term-evolution (14 rows corrected, carve-out/TSA and dispute/chargeback rows added, index updated); eight countries; timetoread corrected. *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

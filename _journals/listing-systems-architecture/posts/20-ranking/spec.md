@@ -1,13 +1,13 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Ranking for Two Sides: Relevance, Freshness and Paid Visibility
 
 ## Intent
 
-Show architects that the order of a results page is a system with separable parts, not a sort setting. A relevance model estimates buyer action. A separately owned, versioned ranking policy applies freshness, paid placement, diversity, exploration and trust rules. A ranking log records what was served and why. The chapter owns learning to rank, paid-organic blending and ranking transparency. It argues that Paid-Rank Drift comes from rules hidden as engine boost multipliers that are each tested alone. The remedy is layering, a relevance floor with a cap on paid positions, delivery accounting, two-sided labels and guardrails, and transparency generated from configuration. After reading it, a Chief Architect should know what to standardize across brands (the machinery) and what to leave local (the models and the policy values).
+Show architects that the order of a results page is a system with separable parts, not a sort setting. A relevance model estimates buyer action. A separately owned, versioned ranking policy applies freshness, paid placement, diversity, exploration and trust rules. A ranking log records what was served and why. The chapter owns learning to rank, paid-organic blending and ranking transparency. It argues that Multiplier Creep comes from rules hidden as engine boost multipliers that are each tested alone. The remedy is layering, a relevance floor with a cap on paid positions, delivery accounting, two-sided labels and guardrails, and transparency generated from configuration. After reading it, a Chief Architect should know what to standardize across brands (the machinery) and what to leave local (the models and the policy values).
 
 ## Audience
 
@@ -49,7 +49,7 @@ Chief architects, search and ranking leads, data science leads and monetization 
 
 ## Decision log
 
-- **2026-10-19** — Built the chapter around the separation of the relevance model from the ranking policy, rather than around algorithms. The Paid-Rank Drift failure is organizational and architectural, and an algorithm survey would not show it.
+- **2026-10-19** — Built the chapter around the separation of the relevance model from the ranking policy, rather than around algorithms. The Multiplier Creep failure is organizational and architectural, and an algorithm survey would not show it.
 - **2026-10-19** — Told the Veldmark case as "boost archaeology", a dated table of five accreted rules, so that the mechanism of drift is concrete. Reused the Rotterdam city bike (position 14; first contact came from saved searches) without changing any ledger fact.
 - **2026-10-19** — Recommended GBDT LambdaMART-style ranking as the default and neural re-rankers conditionally, grounded in mobile.de (2024) and the Airbnb lineage. A neural-first recommendation was rejected.
 - **2026-10-19** — Made the experiment cluster-randomized (category × region) and reported a revenue cost (−2.5% VAS revenue per search) alongside the gains, to keep the trade-off honest.
@@ -74,3 +74,4 @@ Chief architects, search and ranking leads, data science leads and monetization 
 - **2026-10-20** — Cross-chapter consistency sweep: 1 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 6,911 → 6,954 prose words; lead now states the chapter's place in Part IV and what depends on it; 2 headings renamed ("What Ranking Is: Prominence, Not a Sort", "Architecture: Model, Policy Layer and Ranking Log"); exposure paragraph split; first sentences sharpened; spec success criterion repointed from Figure 1 to Figure 2 (the pipeline figure became Figure 2 when illustrations were added). *(AI-mediated session)*
 - **2026-10-20** — Replaced 2 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`). *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

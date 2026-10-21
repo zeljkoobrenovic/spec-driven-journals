@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Part VII — PLATFORM: The Distributed System Underneath
@@ -15,7 +15,7 @@ Chief architects, platform-engineering, data and ML leads, and principal enginee
 
 ## Success criteria
 
-- [ ] Opens with IN THIS PART, WHY THE BUSINESS CARES, WHY ARCHITECTS SHOULD CARE, KEY POINTS (exactly three bullets) and a FAILURE PATTERNS callout using exact names (Index-as-Database, The Country Fork, The Unwatched Model) linked to [[where-listing-systems-go-wrong]].
+- [ ] Opens with IN THIS PART, WHY THE BUSINESS CARES, WHY ARCHITECTS SHOULD CARE, KEY POINTS (exactly three bullets) and a FAILURE PATTERNS callout using exact names (Search as System of Record, The Copy-Paste Country, Set-and-Forget AI) linked to [[where-listing-systems-go-wrong]].
 - [ ] States the part's argument: a shared platform earns trust through contracts, not mandates.
 - [ ] A "Chapters in this part" table lists all eight chapters in config order with the question each answers and when to read it, drawn from each chapter's KEY POINTS and lead.
 - [ ] Connects back to [[part-6]], [[part-2]], [[part-4]] and [[part-5]], and forward to [[part-8]].
@@ -51,3 +51,4 @@ Article only for now.
 - **2026-10-19** — Added 1 inline illustration (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 685 → 691 words; headings unchanged (house shape of part intros); "How this part connects" now opens with its point. *(AI-mediated session)*
 - **2026-10-20** — Term alignment with the glossary: "projection" → "read model", "copy register" → "consumer registry", "filter compiler" → "query compiler", where they occur on this page. *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Trust and Safety as a Platform
@@ -78,3 +78,4 @@ Article only for now.
 - **2026-10-20** — Cross-chapter consistency sweep: 3 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 6,077 → 6,077 prose words (lead now ties the chapter to Part IV's surfaces and opens Part V; teaser first sentences and filler phrases cut); outline unchanged; no spec criteria changed. *(AI-mediated session)*
 - **2026-10-20** — Replaced 4 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`); known differences from the source: Figure 2: kept attempt 1: 'Case management and review' drawn inside the 'Detection' panel (should be outside both panels); Figure 7: kept attempt 2: Tradeyard 'Policy overlays NL, BE, PL, PT' arrow ends at the panel edge instead of 'Policy registry with overlays'; 'Policy overlays FR, ES' arrow ends at 'Decision service' instead of the registry; 'Payment-link and counterfeit detectors' scores arrow ends at 'Policy registry with overlays' instead of 'Decision service'. *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

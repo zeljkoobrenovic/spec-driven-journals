@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: AI Across the Listing Lifecycle
@@ -75,3 +75,4 @@ Group and brand Chief Architects, CPOs and CTOs, heads of data and ML, search an
 - **2026-10-20** — Sharpening pass: 5,923 → 5,955 prose words; opening now names the Part II taxonomy and attribute schemas it builds on and the hand-off to [[long-term-evolution]]; vague first sentences rewritten (lifecycle evidence, rollout cost, fraud signal, crawler trade-off, cost per outcome); conversational-search paragraph split; no headings changed; spec unchanged otherwise. *(AI-mediated session)*
 - **2026-10-20** — Consistency fix: "Conversational search as a filter compiler" → "…as a query compiler", and the trade-off table row, matching the glossary's "LLM query compiler". *(AI-mediated session)*
 - **2026-10-20** — Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`). *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

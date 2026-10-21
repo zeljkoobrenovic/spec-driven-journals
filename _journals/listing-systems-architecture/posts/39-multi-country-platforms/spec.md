@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: One Platform, Many Marketplaces: Multi-Country and Multi-Brand Architecture
@@ -66,3 +66,4 @@ External: Adevinta Annual Report 2019; Navarro 2020; Adevinta dispute back offic
 - **2026-10-20** — Sharpening pass: 6,193 → 6,214 prose words (opening now ties the chapter to Part VII's contracts-not-mandates argument and names what it builds on and feeds); no headings renamed; one announce-only sentence cut; first sentences sharpened in Concepts, Platform Models, Architecture and In Practice; spec unchanged. *(AI-mediated session)*
 - **2026-10-20** — Consistency fix: Pointer to [[long-term-evolution]] now uses that chapter's term, cost to reverse, instead of optionality. *(AI-mediated session)*
 - **2026-10-20** — Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`); known differences from the source: Figure 3: kept attempt 2: extra dashed arrow 'Packages, prices and sales' → 'Release rings and flags'; missing 'Packages, prices and sales' → 'Product catalog and entitlements'; 'Market policies and legal texts' arrow ends on the Global components frame, not on 'Trust and safety pipeline'. *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

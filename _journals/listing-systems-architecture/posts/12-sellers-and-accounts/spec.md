@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Private Sellers, Dealers and Agencies: Modeling Who Lists
@@ -78,3 +78,4 @@ Article only for now.
 - **2026-10-20** — Consistency fix: Figure 3 caption now counts the eight entities the diagram and table show. *(AI-mediated session)*
 - **2026-10-20** — Renamed the subheading "Four questions and the entities that answer them" (from the sharpening pass) to "One entity per question": the table has eight entities and eight questions. *(AI-mediated session)*
 - **2026-10-20** — Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`); known differences from the source: Figure 5: kept attempt 3: state names joined as 'UnderReview' and 'PendingVerification'; 'enforcement or unpaid contract' (Active to Suspended) branches off the 'limits lifted' line, so it reads as if it starts at Restricted. *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

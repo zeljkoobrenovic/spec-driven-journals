@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Classifieds, Leads, Transactions and Managed Models: A Marketplace Taxonomy
@@ -55,7 +55,7 @@ Chief and enterprise architects of marketplace groups, principal engineers and p
 
 - **Internal**
   - [[meet-veldmark]] — the fictional group and its four brands.
-  - [[where-listing-systems-go-wrong]] — The Platform Mandate, The Scam Inbox, Vanity Liquidity.
+  - [[where-listing-systems-go-wrong]] — The Forced Fit, Fast Mail for Fraudsters, Vanity Liquidity.
   - Research briefs: monetization-economics, adevinta, olx, automotive, real-estate-portals, trust-safety-regulation; productscape digest.
 - **External**
   - Adevinta annual reports 2019 and 2023, strategic report 2025 — revenue types, transactional history, convergence and decentralization.
@@ -73,3 +73,4 @@ Chief and enterprise architects of marketplace groups, principal engineers and p
 - **2026-10-20** — Sharpening pass: 7,118 → 7,092 prose words; lead now states the chapter's place in Part I and the later chapters that use the marketplace profile; excerpt names all four rungs; Deal Builder/mobile.de subsection renamed "Pattern 4" to match the patterns list; DAC7 point split into its own paragraph; topic sentences tightened; no spec criteria changed. *(AI-mediated session)*
 - **2026-10-20** — Retitled to name all four models the chapter covers, including managed marketplaces; permalink unchanged. *(AI-mediated session)*
 - **2026-10-20** — Replaced 2 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`). *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

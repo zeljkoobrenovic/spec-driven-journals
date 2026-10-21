@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Rules of the Marketplace: DSA, DAC7 and Vertical Regulation
@@ -66,9 +66,10 @@ Chief and enterprise architects, trust-and-safety, data and payments leads, and 
 ## Changelog
 
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
-- **2026-10-19** — Editorial review pass: Safe Deal 2026 volume updated to 11.6M transactions / ~€1.02B GMV; Country Fork cost aligned to eight countries; closing hand-off now links [[part-6]]; Transparency Database and P2B-repeal claims spot-checked. *(AI-mediated session)*
+- **2026-10-19** — Editorial review pass: Safe Deal 2026 volume updated to 11.6M transactions / ~€1.02B GMV; Copy-Paste Country cost aligned to eight countries; closing hand-off now links [[part-6]]; Transparency Database and P2B-repeal claims spot-checked. *(AI-mediated session)*
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 4 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 6,993 → 7,029 prose words; opening now ties the chapter to Part V and to Part VI; twelve paragraph openings rewritten to state their point; no headings or facts changed; spec unchanged. *(AI-mediated session)*
 - **2026-10-20** — Consistency fix: the three surprising table entries now name ranking, payments and seller-data teams (not messaging); the statement-of-reasons pipeline's four stages are named, as Figure 2's eight participants did not show them. *(AI-mediated session)*
 - **2026-10-20** — Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`). *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

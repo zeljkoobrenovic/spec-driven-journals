@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Models in Production: ML Platforms and Use Cases
@@ -21,7 +21,7 @@ Chief and enterprise architects of marketplace groups, heads of data and ML, ML 
 - [ ] Reader can name the label proxies of classifieds ML and their biases, and the four listing-specific drift sources.
 - [ ] Reader can state the Zillow Offers facts from the SEC filings with dates and the four architectural lessons, labeled as interpretation.
 - [ ] Reader can follow Valuo from estimate to pricing hint with the Lyon apartment's ledger numbers, the display rules, the Keybridge data exclusion and the label rule, and see why the guaranteed offer and lender license took different paths.
-- [ ] Reader can weigh platform strategies (trade-off table) and understand the registration-first hybrid as the antidote to The Platform Mandate.
+- [ ] Reader can weigh platform strategies (trade-off table) and understand the registration-first hybrid as the antidote to The Forced Fit.
 - [ ] Reader knows the AI Act's verified high-risk dates after the 2026 Digital Omnibus and why jobs and credit-adjacent uses matter.
 
 ## Non-goals
@@ -75,3 +75,4 @@ Chief and enterprise architects of marketplace groups, heads of data and ML, ML 
 - **2026-10-20** — Cross-chapter consistency sweep: 2 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 6,393 → 6,414 prose words; Valuo worked example lifted to its own H2 ("In Practice: Valuo and the Pricing Hint"), separating it from the public-evidence section ("What Marketplaces Have Documented"); opening now names what the chapter builds on ([[data-platform]], [[experimentation]]) and feeds ([[multi-country-platforms]]); six topic sentences tightened. Spec unchanged. *(AI-mediated session)*
 - **2026-10-20** — Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`); known differences from the source: Figure 2: kept attempt 2: no arrow 'Offline feature history' to 'Training pipelines'; extra arrow 'Batch feature pipelines' to 'Training pipelines'; feedback arrow into 'Label pipelines' starts at 'Monitoring' instead of 'Prediction log'. *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Built to Be Replaced: Evolving a Marketplace Platform Over a Decade
@@ -76,3 +76,4 @@ Group Chief Architects, CTOs and CPOs of multi-country, multi-vertical marketpla
 - **2026-10-20** — Sharpening pass: 7,081 → 7,046 prose words; outline unchanged; opening now names the Part IX dependency; "insertion freshness" aligned with F1's name "publication freshness"; two paragraphs split, several teaser sentences cut. *(AI-mediated session)*
 - **2026-10-20** — Consistency fix: Scorecard intro no longer promises a cadence column the table does not have. *(AI-mediated session)*
 - **2026-10-20** — Replaced 4 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`); known differences from the source: Figure 1: missing arrow 'Contact and transaction' -> 'Trust' labeled 'outcomes and labels' (kept original image; retries were worse). *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

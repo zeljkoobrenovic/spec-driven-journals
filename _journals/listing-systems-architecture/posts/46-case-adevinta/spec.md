@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Adevinta: From Schibsted's Copy-Paste Model to a Portfolio Platform
@@ -73,3 +73,4 @@ Chief and enterprise architects of marketplace groups, platform-engineering lead
 - **2026-10-20** — Restored three renamed headings, flagged by the cross-chapter consistency check: Trade-Offs the Case Illustrates and Vertical Differences in the Record, which every Part IX case shares, and A Reference Architecture for the Shared Platform, which matches 50-case-property-portals. (Corrected on 2026-10-20: an earlier wording said all three were shared by every case.) *(AI-mediated session)*
 - **2026-10-20** — Trade-offs heading capitalized as in the 45 chapters. *(AI-mediated session)*
 - **2026-10-20** — Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`); known differences from the source: Figure 3: Kafka brand logo with extra 'kafka' wordmark beside the 'Kafka' label (kept attempt 2). *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

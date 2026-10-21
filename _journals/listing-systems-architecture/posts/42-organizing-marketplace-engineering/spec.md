@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Who Owns What: Organizing Marketplace Engineering
@@ -71,3 +71,4 @@ Chief and enterprise architects, CTOs, heads of platform engineering and enginee
 - **2026-10-20** — Cross-chapter consistency sweep: 3 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 5,646 → 5,642 words; lead now names [[platform-consolidation]] as the chapter it builds on and [[modernization-and-migration]] as the one that uses it; six first sentences now state their point; three overloaded paragraphs split; no headings renamed; spec unchanged. *(AI-mediated session)*
 - **2026-10-20** — Replaced 2 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`); known differences from the source: Figure 2: kept attempt 2: dashed 'group security standards only' arrow ends on 'Trust and safety pipeline' instead of 'Developer platform'. *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

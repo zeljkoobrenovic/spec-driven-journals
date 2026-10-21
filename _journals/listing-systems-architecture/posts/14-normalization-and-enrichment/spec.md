@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: From Raw Supply to Usable Listings: Normalization and Enrichment
@@ -74,3 +74,4 @@ Chief architects, principal engineers, data and ML leads and listing-data owners
 - **2026-10-20** — Cross-chapter consistency sweep: 1 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 5,458 → 5,477 prose words; 1 heading renamed; opening ties the chapter to Part III's supply chain; model-evidence pattern moved ahead of its examples; spec's figure references corrected to Figures 2 and 3 after the illustrator renumbering. *(AI-mediated session)*
 - **2026-10-20** — Replaced 2 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`); known differences from the source: Figure 2: kept attempt 1: the 'ApplyEnrichment with provenance' line into 'Listing service' has no arrowhead (direction not shown). *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

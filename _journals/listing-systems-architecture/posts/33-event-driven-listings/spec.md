@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Every Change Is an Event: Event-Driven Listing Architecture
@@ -74,3 +74,4 @@ Chief and principal architects, event-platform and search leads in multi-brand m
 - **2026-10-20** — Sharpening pass: 6,291 → 6,324 prose words; lead now places the chapter as Part VII's first contract; 1 heading renamed ("In Practice: Public Evidence and Contract v1"); 7 paragraph openings brought to their point; 2 paragraphs split; spec unchanged. *(AI-mediated session)*
 - **2026-10-20** — Consistency fix: Event catalog count corrected to thirteen types (pause and resume share a table row). *(AI-mediated session)*
 - **2026-10-20** — Replaced 2 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`). *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

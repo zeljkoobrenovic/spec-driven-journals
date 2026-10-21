@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: From Submitted to Searchable: The Publication Pipeline
@@ -73,3 +73,4 @@ Article only for now.
 - **2026-10-20** — Cross-chapter consistency sweep: 3 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 5,573 → 5,551 prose words; lead now places the chapter as the last link of Part III's supply chain (Part I sets its targets, Part IV reads its output); 3 headings renamed (Concepts: Stages, Clocks and Moderation Modes; Re-check at send time; Shape first, engine second); leboncoin and Which? lessons split into point-first paragraphs; announce and teaser sentences cut. *(AI-mediated session)*
 - **2026-10-20** — Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`). *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

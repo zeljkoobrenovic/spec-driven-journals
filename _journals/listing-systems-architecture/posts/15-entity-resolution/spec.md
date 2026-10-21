@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: One Property, Three Listings: Duplicates and Entity Resolution
@@ -75,3 +75,4 @@ Article only for now.
 - **2026-10-20** — Retitled "Three Listings" to match the Lyon apartment example in the ledger, the scene heading and the body; permalink unchanged. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 5,883 → 5,915 words; new lead paragraph places the chapter in Part III (builds on normalization and enrichment, feeds publication, search, alerts and valuation); five paragraph openers rewritten to state their point; two paragraphs split; no headings changed. *(AI-mediated session)*
 - **2026-10-20** — Replaced 2 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`); known differences from the source: Figure 3: kept attempt 4: prints the words 'START' and 'END' beside the start and end dots; structure otherwise correct. *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

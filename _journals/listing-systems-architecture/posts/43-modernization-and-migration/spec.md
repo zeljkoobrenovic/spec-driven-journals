@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Changing the Engine in Flight: Modernizing a Live Marketplace
@@ -72,3 +72,4 @@ Chief and principal architects, engineering directors and platform leads who own
 - **2026-10-20** — Consistency fix: Excerpt lists all five stage gates, starting with contract, to match the body and glossary. *(AI-mediated session)*
 - **2026-10-20** — Term alignment with the glossary: "projection" → "read model", "copy register" → "consumer registry", "filter compiler" → "query compiler", where they occur on this page. *(AI-mediated session)*
 - **2026-10-20** — Replaced 2 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`); known differences from the source: Figure 2: kept attempt 1: prints the words 'START' and 'END' beside the start and end dots (otherwise correct); Figure 3: kept attempt 4: 'CDC' arrow dashed instead of solid; 'Yardstick PHP monolith'–'Yardstick MySQL' line has an arrowhead; MySQL box icon is a dolphin resembling the MySQL logo. *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

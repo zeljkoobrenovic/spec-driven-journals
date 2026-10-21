@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Tell Me When It Appears: Saved Searches and Alerts
@@ -73,3 +73,4 @@ Article only for now.
 - **2026-10-20** — Architecture heading now names the design (a saved-search store with rebuildable percolators). *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 7,317 → 7,335 prose words; opening now places the chapter after Part IV's find-what-exists chapters and points to [[part-5]]; 1 heading renamed (match set: notify on entry, retract on exit); 9 paragraph openings now state their point; no sections moved. *(AI-mediated session)*
 - **2026-10-20** — Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`); known differences from the source: Figure 4: kept attempt 3: 'sold, removed, reserved, expired' drawn from 'Alert matcher' instead of 'Listing event stream' to 'Retraction handler'; invented arrow 'In-app inbox' to 'Engagement events'. *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

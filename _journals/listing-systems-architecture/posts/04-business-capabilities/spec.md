@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Map What the Marketplace Does Before What Runs It
@@ -73,3 +73,4 @@ Chief and enterprise architects of marketplace groups, platform and product lead
 - **2026-10-20** — Cross-chapter consistency sweep: 6 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 5,921 → 5,853 prose words; lead rewritten to place the chapter in Part I (builds on industry-evolution, taxonomy and liquidity; feeds bounded-contexts, vertical-requirements, platform-consolidation); internal "digest" references replaced with first-person reference-model wording; question and teaser first sentences turned into claims; no headings renamed, no spec criteria changed. *(AI-mediated session)*
 - **2026-10-20** — Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`). *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: eBay Classifieds Group: Shared Platforms, Local Brands and a Sale
@@ -73,3 +73,4 @@ Chief and enterprise architects of marketplace groups, platform and search leads
 - **2026-10-20** — Sharpening pass: 6,695 → 6,702 words (fact-dense case, structure only); opening now states the chapter's Part IX question (how thin a shared layer can be, what a sale exposes) and its feed into the Veldmark comparison; Phase 1's two subsection headings removed; six paragraphs re-led with their point; worked question split in two. Spec unchanged. *(AI-mediated session)*
 - **2026-10-20** — Trade-offs heading capitalized as in the 45 chapters. *(AI-mediated session)*
 - **2026-10-20** — Replaced 4 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`). *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Sunday Evening Peaks: Reliability, Performance and Cost
@@ -70,3 +70,4 @@ Chief architects, platform and SRE leads, search platform leads and engineering 
 - **2026-10-20** — Retitled "Sunday Evening Peaks" to match the ledger's Sunday-evening peak; permalink unchanged. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 6,238 → 6,211 words; lead now places the chapter in Part VII and names what Part VIII uses from it; 3 headings renamed (Architecture, Peak rehearsals, Three unit costs); degradation-order point moved first; unverified AutoScout24 FinOps aside cut; spec unchanged. *(AI-mediated session)*
 - **2026-10-20** — Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`). *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

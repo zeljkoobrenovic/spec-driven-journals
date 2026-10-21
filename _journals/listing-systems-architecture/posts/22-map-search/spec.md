@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Searching by Place: Map, Polygon and Commute Search
@@ -52,7 +52,7 @@ Article only for now.
 
 - **2026-10-19** — Centered the chapter on a server-side geo query compiler as the single owner of place semantics, rather than organizing it by query type, because the cost, privacy and caching rules all hang on that seam.
 - **2026-10-19** — Used Airbnb's map-ranking papers as the main public evidence, labeled the transfer to property portals as inference, because no portal has published comparable map evaluation work.
-- **2026-10-19** — Made the canonical property the map unit in the Lyon example to tie the Duplicate Echo to a visible map symptom; entity resolution itself stays in its own chapter.
+- **2026-10-19** — Made the canonical property the map unit in the Lyon example to tie Seeing Double to a visible map symptom; entity resolution itself stays in its own chapter.
 - **2026-10-19** — Treated the routing provider's commercial model as an architectural constraint (Rightmove/TravelTime, Mapbox limits) instead of a procurement footnote.
 
 ## Sources
@@ -76,3 +76,4 @@ Article only for now.
 - **2026-10-20** — Sharpening pass: 7,522 → 7,516 words; lead now ties the chapter to Part IV's "compile places into structure" argument and to entity resolution; "five ways" corrected to the table's six rows; topic sentences sharpened; outline unchanged; spec unchanged. *(AI-mediated session)*
 - **2026-10-20** — Consistency fix: unsourced "one of the most requested features" claim for commute search removed. *(AI-mediated session)*
 - **2026-10-20** — Replaced 2 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`). *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

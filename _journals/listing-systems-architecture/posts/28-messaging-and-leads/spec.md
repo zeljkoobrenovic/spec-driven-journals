@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: From Interest to Contact: Messaging and Lead Management
@@ -79,3 +79,4 @@ Article only for now.
 - **2026-10-20** — Cross-chapter consistency sweep: 3 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 8,034 → 8,032 prose words (fact-dense chapter; gains in structure); lead now states why the chapter opens Part VI and what depends on it; 1 heading renamed ("The Contact Channels" → "Contact Channels: What the Platform Sees"); three long paragraphs split; point-first openings in pull delivery, lead monitoring and vertical routing; announcement sentences cut. Spec unchanged. *(AI-mediated session)*
 - **2026-10-20** — Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`); known differences from the source: Figure 2: kept attempt 2: extra arrow 'Message safety gate' → 'Lead service' carrying the 'BookingConfirmed' label (the 'Booking service' → 'Lead service' arrow is unlabeled); two parallel lines from 'Call tracking and masked numbers' to 'Lead service'; Figure 4: kept attempt 2: 'Merged' points to 'Acknowledged' instead of the end dot (Merged → END missing). *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

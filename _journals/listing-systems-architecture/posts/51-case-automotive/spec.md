@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: mobile.de, Auto Trader and AutoScout24: Lessons from Automotive Marketplaces
@@ -49,7 +49,7 @@ Chief and enterprise architects, principal engineers and engineering leaders of 
 ## Decision log
 
 - **2026-10-19** — Organized by company, then a cross-case section, because each company's public evidence is of a different kind (API contracts, investor levers, platform posts, a 10-K); a phase structure like the Adevinta case did not fit.
-- **2026-10-19** — Made the price rating the case's central technical thread, since it is the one product all four document and the one where the book's Unwatched Model pattern is visible in public (mobile.de's Preis-Planer linking price to search position).
+- **2026-10-19** — Made the price rating the case's central technical thread, since it is the one product all four document and the one where the book's Set-and-Forget AI pattern is visible in public (mobile.de's Preis-Planer linking price to search position).
 - **2026-10-19** — Framed Deal Builder and the CarOffer and OLX Autos retreats as one "transaction ladder" (Figure 1) rather than as separate anecdotes; labeled the reading as the author's.
 - **2026-10-19** — Avoided Autohaus Ruhrblick's package price in the Veldmark comparison, because chapter 17 and the ledger give different package details; used only the Pro 150 overbilling facts recorded in the ledger. No new canonical facts added.
 
@@ -72,3 +72,4 @@ Chief and enterprise architects, principal engineers and engineering leaders of 
 - **2026-10-20** — Trade-offs heading capitalized as in the 45 chapters. *(AI-mediated session)*
 - **2026-10-20** — Consistency fix: "Vertical Differences: How the Lessons Transfer" renamed to the fixed case heading "Vertical Differences in the Record"; the table under it is unchanged. *(AI-mediated session)*
 - **2026-10-20** — Replaced 4 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`). *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

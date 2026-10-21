@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Introduction: Architecture for Liquidity
@@ -70,3 +70,4 @@ Article only for now.
 - **2026-10-20** — Book retitled to *LISTED: Architecting Large-Scale Classifieds and Marketplace Platforms*; permalinks unchanged. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 3,873 → 3,852 words; outline unchanged; six paragraph openers rewritten to state their point (central claim, liquidity lens, gap, statement kinds, routing warning); spec unchanged. *(AI-mediated session)*
 - **2026-10-20** — Replaced 2 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`); known differences from the source: Figure 2: kept attempt 4: Discovery box truncated to 'Discovery...' (missing 'search, ranking, alerts'). *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

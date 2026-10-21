@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Selling Attention: Display, Native and Retail-Media Advertising
@@ -72,3 +72,4 @@ Article only for now.
 - **2026-10-20** — Cross-chapter consistency sweep: 4 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 5,566 → 5,615 prose words; lead now places the chapter as Part VI's last revenue line and names what Part VII reuses; the two vocabulary distinctions moved ahead of the terms table; five first sentences rewritten to state their point; no headings renamed, no sections moved. *(AI-mediated session)*
 - **2026-10-20** — Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`); known differences from the source: Figure 1: kept attempt 3: extra arrow 'Ad policy service' to 'Consent management platform' carrying 'ad load, exclusions, labels' (the arrow to 'Ad slots' has no label); 'floors, caps, labels' printed twice; arrows both ways between 'Search results' and 'Sponsored listing auction'; extra arrow 'Campaign and budget service' to 'Ad server'; 'impressions, viewability' arrow from 'Ad slots' merged with the 'creative' line. *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

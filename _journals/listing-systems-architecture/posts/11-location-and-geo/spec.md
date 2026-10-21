@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Where Is It? Location, Geocoding and Privacy
@@ -77,3 +77,4 @@ Article only for now.
 - **2026-10-20** — Sharpening pass: 6,540 → 6,550 prose words; lead now ties the chapter to Part II's aggregate-and-subdomains model and names what it builds on; eight topic sentences brought forward or made concrete; no headings renamed, no sections moved; spec unchanged. *(AI-mediated session)*
 - **2026-10-20** — Consistency fix: scene heading now "Five Answers" to match the five-row table; lead no longer says "four different ideas". *(AI-mediated session)*
 - **2026-10-20** — Replaced 2 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`). *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

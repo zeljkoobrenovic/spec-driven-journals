@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Bounded Contexts for Marketplaces: Where One Listing Becomes Many Models
@@ -72,3 +72,4 @@ Chief and principal architects and engineering leaders who must draw or review a
 - **2026-10-20** — Sharpening pass: 6,354 → 6,314 prose words; Concepts heading renamed to "Subdomains, Contexts and Context Maps"; lead now names the chapters that build on these boundaries; topic sentences brought forward in One Listing, Many Models; one sentence on goods and product safety cut as a repeat of Vertical Differences; no spec criteria changed. *(AI-mediated session)*
 - **2026-10-20** — Consistency fix: "twelve event types" → "thirteen" to match the event catalog in [[event-driven-listings]] (pause and resume are separate types). *(AI-mediated session)*
 - **2026-10-20** — Replaced 2 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`); known differences from the source: Figure 2: kept attempt 4: 'decisions' edge runs from Listing catalog toward Trust and safety with no clear arrowhead at Listing catalog (should be Trust and safety → Listing catalog). *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

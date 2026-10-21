@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: What Did They Mean? Query Understanding and Autocomplete
@@ -74,3 +74,4 @@ Search and ML leads, principal engineers and chief architects of classifieds, re
 - **2026-10-20** — Sharpening pass: 5,980 → 5,969 words; headings unchanged; lead now ties the chapter to Part IV's "structure beats cleverness" argument and the taxonomy and attribute service; announcing and teaser first sentences replaced with claims; two paragraphs split. *(AI-mediated session)*
 - **2026-10-20** — Consistency fix: "filter compiler" → the glossary's "query compiler" ("The LLM as query compiler", trade-off table, source note); "Architecture: The Query-Understanding Layer" → "Architecture: Shared Vocabulary, Local Policy", the principle the section states. *(AI-mediated session)*
 - **2026-10-20** — Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`); known differences from the source: Figure 1: kept attempt 3: extra arrow from 'Taxonomy and attribute dictionary, versioned' to 'Synonyms and expansions'. *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

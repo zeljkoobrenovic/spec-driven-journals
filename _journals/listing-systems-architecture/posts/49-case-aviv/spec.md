@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: AVIV Group: Building a European Real-Estate Platform from Acquisitions
@@ -75,3 +75,4 @@ Chief and enterprise architects of marketplace groups with property portals in s
 - **2026-10-20** — Trade-offs heading capitalized as in the 45 chapters. *(AI-mediated session)*
 - **2026-10-20** — "The final section" now points to the Veldmark comparison near the end, since two sections follow it. *(AI-mediated session)*
 - **2026-10-20** — Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`); known differences from the source: Figure 4: invented title 'Seller funnel in AVIV's French moves (2019–2023)'; missing label 'classified as likely sellers' on 'Buyer contacts on portals' -> 'Seller detection' (kept original image). *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

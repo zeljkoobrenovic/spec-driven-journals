@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Search Architecture for Listings: Indices, Freshness and Scale
@@ -15,7 +15,7 @@ Chief and principal architects, search platform leads and engineering directors 
 
 ## Success criteria
 
-- [ ] Reader can explain why the index must be rebuildable from the event stream and system of record, and how a quarterly rebuild drill detects Index-as-Database.
+- [ ] Reader can explain why the index must be rebuildable from the event stream and system of record, and how a quarterly rebuild drill detects Search as System of Record.
 - [ ] Reader can design a listing search document, including the promotion rule for typed versus flattened attributes and the mapping-limit reason for it.
 - [ ] Reader can choose an index topology using the three questions (cross-boundary queries, analyzers, load skew).
 - [ ] Reader can name the update-storm mitigations and explain external versioning with a listing-owned sequence, including Vinted's partition-count lesson.
@@ -73,3 +73,4 @@ Chief and principal architects, search platform leads and engineering directors 
 - **2026-10-20** — Sharpening pass: 6,943 → 6,905 prose words; lead rewritten to place the chapter as the start of Part IV's discovery read models; "Architecture: Components and Boundaries" renamed "Architecture: The Index as a Projection"; "Choosing an Engine" moved after capacity planning, so engine choice follows the structure it depends on; topic sentences tightened. Spec unchanged apart from this line. *(AI-mediated session)*
 - **2026-10-20** — Consistency fix: "projection" → "read model" in the excerpt, KEY POINTS, lead, Architecture heading ("Architecture: The Index as a Rebuildable Read Model") and Figure 2 caption, matching the glossary, [[listing-data-management]] and the Part IV intro; spec Intent updated to match. *(AI-mediated session)*
 - **2026-10-20** — Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`); known differences from the source: Figure 6: kept attempt 1: line from 'Shared indexer framework' to 'Amazon OpenSearch Service' merges with the 'Elasticsearch adapter' line at a junction, so it can read as 'Elasticsearch adapter' also pointing to Amazon OpenSearch. *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

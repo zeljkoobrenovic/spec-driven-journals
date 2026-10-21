@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Field Kit: Templates for the Marketplace Architect
@@ -70,3 +70,4 @@ Chief and enterprise architects of marketplace groups, principal engineers, sear
 - **2026-10-20** — Tool 10 purpose now says a listing event specification defines one event in the listing event contract, linking event-driven-listings. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 4,852 → 4,864 words; lead now names the toolkit as the records Parts I–VIII ask for, linking the first and last owning chapters; teaser opener cut from How the Records Connect; Tool 11 purpose sentence split; no headings changed. *(AI-mediated session)*
 - **2026-10-20** — Replaced 1 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`). *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

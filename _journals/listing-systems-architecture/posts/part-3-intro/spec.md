@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Part III — SUPPLY: Getting Inventory In
@@ -38,7 +38,7 @@ None.
 ## Decision log
 
 - 2026-10-19: Structure follows the sibling [[part-2]] intro for consistency; no diagram, to stay within 800 words.
-- 2026-10-19: Failure patterns chosen: Feed Roulette, The Duplicate Echo, Ghost Inventory, each the lead pattern of at least one chapter in the part.
+- 2026-10-19: Failure patterns chosen: Feed Roulette, Seeing Double, Ghost Inventory, each the lead pattern of at least one chapter in the part.
 
 ## Sources
 
@@ -50,3 +50,4 @@ Internal: [[listing-ingestion]], [[normalization-and-enrichment]], [[entity-reso
 - **2026-10-19** — Editorial review pass: restored [[part-1]] and [[part-5]] links in the connections section. *(AI-mediated session)*
 - **2026-10-19** — Added 1 inline illustration (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 657 → 657 words; headings unchanged (match sibling part intros); long connections sentence split; [[meet-veldmark]] link added to the Veldmark thread to match sibling intros. *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Part VIII — LEADERSHIP: The Chief Architect's Agenda
@@ -38,7 +38,7 @@ None.
 ## Decision log
 
 - 2026-10-19: Modeled on [[part-2]] and [[part-7]]; same callout set and chapter table.
-- 2026-10-19: Failure patterns limited to three (Acquisition Archipelago, Platform Mandate, Unwatched Model); Country Fork and Vanity Liquidity are left to the chapters.
+- 2026-10-19: Failure patterns limited to three (Deal-Shaped Architecture, Forced Fit, Set-and-Forget AI); Copy-Paste Country and Vanity Liquidity are left to the chapters.
 - 2026-10-19: The Veldmark thread lists decisions only; supporting numbers stay in the chapters.
 
 ## Sources
@@ -51,3 +51,4 @@ None.
 - **2026-10-19** — Editorial review pass: American spelling (program); Veldmark thread no longer says Ingrid's team takes decisions owned by the CTO, board and forum. *(AI-mediated session)*
 - **2026-10-19** — Added 1 inline illustration (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 793 → 799 words; headings unchanged (house shape for part intros); lead and "How this part connects" opening sentences made concrete. *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

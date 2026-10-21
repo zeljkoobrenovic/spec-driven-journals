@@ -1,13 +1,13 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Packages, Bumps and Quotas: Products, Pricing and Entitlements
 
 ## Intent
 
-Design the commercial core behind a listing marketplace's paid products: product catalog, pricing engine, consumer checkout and professional contracts, entitlement and quota ledger, effect projection onto hot paths, enforcement points, metering, billing and the sold-versus-delivered reconciliation. After reading, the reader should be able to replace scattered package checks (Entitlement Spaghetti) with four separated concerns joined by events. They should see that an entitlement is an append-only ledger whose effects are projected onto the listing read model. They should also be able to show that every invoice line can be traced to delivery evidence.
+Design the commercial core behind a listing marketplace's paid products: product catalog, pricing engine, consumer checkout and professional contracts, entitlement and quota ledger, effect projection onto hot paths, enforcement points, metering, billing and the sold-versus-delivered reconciliation. After reading, the reader should be able to replace scattered package checks (Billing by Guesswork) with four separated concerns joined by events. They should see that an entitlement is an append-only ledger whose effects are projected onto the listing read model. They should also be able to show that every invoice line can be traced to delivery evidence.
 
 ## Audience
 
@@ -69,3 +69,4 @@ Principal engineers and architects who own monetization, search or billing integ
 - **2026-10-20** — Sharpening pass: 5,231 → 5,243 prose words; outline unchanged; lead now states the chapter's place in Part VI and names [[ranking]] and [[advertising-platforms]] as consumers of its effects; buried points moved to first sentences (effect projection, reconciliation, Ruhrblick replay, real-estate hierarchy); one paragraph split; Figure 3 moved above the property list; spec unchanged. *(AI-mediated session)*
 - **2026-10-20** — Consistency fix: Concepts section now says its subsections cover three of the four concerns and points to the billing interface under Architecture. *(AI-mediated session)*
 - **2026-10-20** — Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`); known differences from the source: Figure 2: kept attempt 2: invented title 'Reference Architecture: Commercial Core Flow'; invented label 'delivery evidence flows back into the ledger'; that arrow points 'Entitlement ledger' → 'Metering and delivery evidence' instead of the reverse; Figure 4: kept attempt 1 (structure correct): words START and END printed beside the dots. *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

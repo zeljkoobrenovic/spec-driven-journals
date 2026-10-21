@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Part VI — MONEY: Conversion and Monetization
@@ -15,7 +15,7 @@ Chief architects, monetization and commercial-platform leads, product and engine
 
 ## Success criteria
 
-- [ ] Opens with IN THIS PART, WHY THE BUSINESS CARES, WHY ARCHITECTS SHOULD CARE, KEY POINTS (exactly three bullets) and a FAILURE PATTERNS callout using exact names (The Scam Inbox, Paid-Rank Drift, Entitlement Spaghetti) linked to [[where-listing-systems-go-wrong]].
+- [ ] Opens with IN THIS PART, WHY THE BUSINESS CARES, WHY ARCHITECTS SHOULD CARE, KEY POINTS (exactly three bullets) and a FAILURE PATTERNS callout using exact names (Fast Mail for Fraudsters, Multiplier Creep, Billing by Guesswork) linked to [[where-listing-systems-go-wrong]].
 - [ ] States the part's argument: marketplaces sell access to attention, and every revenue line must measure and cap what it costs the match rate.
 - [ ] A "Chapters in this part" table lists all five chapters in config order with the question each answers and when to read it.
 - [ ] Connects back to [[part-5]] and [[part-4]], forward to [[part-7]], and points to RECONCILED's [[payments-fundamentals]] for payments depth.
@@ -51,3 +51,4 @@ Article only for now.
 - **2026-10-19** — Editorial review pass: chapter 29 row rewritten from the written chapter, Safe Deal transaction-platform decision added to the Veldmark thread, Golf leads labeled raw versus merged. *(AI-mediated session)*
 - **2026-10-19** — Added 1 inline illustration (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 742 → 746 prose words; two sentences tightened (the part argument now says what the chapters design; the Part V threads read as one list); no heading, section or fact changes. *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

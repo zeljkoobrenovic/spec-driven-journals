@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Part IX — PRACTICE: How Others Built It
@@ -38,7 +38,7 @@ None.
 ## Decision log
 
 - 2026-10-19: Modeled on the Part II intro, with two additions the other part intros do not need: an evidence-reading table and a cross-case comparison table. Body runs near the 800-word ceiling as a result.
-- 2026-10-19: Failure patterns limited to The Acquisition Archipelago, The Platform Mandate and The Unwatched Model, the three that recur most across the six cases.
+- 2026-10-19: Failure patterns limited to Deal-Shaped Architecture, The Forced Fit and Set-and-Forget AI, the three that recur most across the six cases.
 - 2026-10-19: No Sources section; every company fact in the intro is taken from a case page's KEY POINTS or lead, where it is sourced and dated.
 
 ## Sources
@@ -51,3 +51,4 @@ None.
 - **2026-10-19** — Editorial review pass: AVIV reading softened per consistency-issues item 25 (2021 goal of "a European real estate marketplace" with unpublished scope; "fully integrated platform" is the interviewer's phrase) in key points, failure patterns and the comparison table. *(AI-mediated session)*
 - **2026-10-19** — Added 1 inline illustration (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 593 → 600 prose words; no headings renamed or sections moved (outline matches the sibling part intros); first sentence of "How to read the cases" now states the three kinds of statement. *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

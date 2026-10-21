@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: OLX Group: Regional Platforms, Verticalization and Retreat
@@ -73,3 +73,4 @@ Chief and enterprise architects of marketplace groups, search and ranking leads,
 - **2026-10-20** — Sharpening pass: 6,091 → 6,103 prose words; opening now ties the case to Part IX and the Adevinta case; search heading corrected to "five stages" to match its table; 10 paragraph openings rewritten to state their point; no sections moved. *(AI-mediated session)*
 - **2026-10-20** — Trade-offs heading capitalized as in the 45 chapters. *(AI-mediated session)*
 - **2026-10-20** — Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`). *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

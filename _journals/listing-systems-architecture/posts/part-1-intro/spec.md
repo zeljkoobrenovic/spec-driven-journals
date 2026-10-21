@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Part I — MARKETPLACE: The Business Behind the Listings
@@ -38,7 +38,7 @@ Article only.
 ## Decision log
 
 - 2026-10-19: Structure follows the sibling [[part-2]] intro (callouts, chapter table, connections, Veldmark thread) for consistency across part intros; no learning-path diagram, to stay within 800 words.
-- 2026-10-19: Failure patterns chosen: Vanity Liquidity, The Platform Mandate, The Acquisition Archipelago, the three most often named by the part's chapters.
+- 2026-10-19: Failure patterns chosen: Vanity Liquidity, The Forced Fit, Deal-Shaped Architecture, the three most often named by the part's chapters.
 
 ## Sources
 
@@ -51,3 +51,4 @@ Internal: [[marketplace-taxonomy]], [[liquidity-and-network-effects]], [[industr
 - **2026-10-19** — Added 1 inline illustration (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 678 → 680 prose words (already within budget; light pass); headings unchanged (fixed part-intro shape); lead's three steps made explicit; "How this part connects" now opens with its point (the vocabulary); one Veldmark bullet reworded. *(AI-mediated session)*
 - **2026-10-20** — Second sharpening pass: 680 → 689 prose words; headings unchanged; the lead's second paragraph now opens with a claim ("Sharing decisions need three pieces of business knowledge") instead of "The part argues in three steps". *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

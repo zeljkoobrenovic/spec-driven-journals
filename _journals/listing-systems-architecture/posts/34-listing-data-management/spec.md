@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: System of Record and Read Models: Listing Data Management
@@ -73,3 +73,4 @@ Chief and principal architects, data and platform leads, and privacy engineers i
 - **2026-10-20** — Consistency fix: "copy register" → the **consumer registry** of [[publication-pipeline]], which this chapter extends with source, staleness budget, rebuild path, retention and erasure handler (heading "The consumer registry as a data contract", Figure 2, body); "Serving the promises" → "Implementing the consistency guarantees"; "Architecture: Where Listing Data Lives" → "Architecture: One System of Record, Registered Read Models". *(AI-mediated session)*
 - **2026-10-20** — Term alignment with the glossary: "projection" → "read model", "copy register" → "consumer registry", "filter compiler" → "query compiler", where they occur on this page. *(AI-mediated session)*
 - **2026-10-20** — Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`). *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

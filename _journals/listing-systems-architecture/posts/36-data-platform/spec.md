@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Data Platform for Marketplaces: Events, Lakehouse and Data Products
@@ -49,7 +49,7 @@ Article only for now.
 ## Decision log
 
 - **2026-10-19** — Built the chapter around one board question ("how many contacts last week?") rather than a technology survey, because the governed contact metric is where the platform's value and politics are both visible.
-- **2026-10-19** — Recommended open table formats plus a warehouse as main compute, rejecting "one warehouse" (blocks acquisitions on other clouds) and "warehouse per brand" (the Acquisition Archipelago), citing Adevinta's 2025 decentralization as the portability argument.
+- **2026-10-19** — Recommended open table formats plus a warehouse as main compute, rejecting "one warehouse" (blocks acquisitions on other clouds) and "warehouse per brand" (Deal-Shaped Architecture), citing Adevinta's 2025 decentralization as the portability argument.
 - **2026-10-19** — Made "server-side for facts, client-side for context" a core rule, because consent and client loss bias client-side counts differently by country.
 - **2026-10-19** — Treated Keybridge neutrality as the canonical cross-brand sharing case, expressed as access policy with external audit.
 
@@ -77,3 +77,4 @@ Article only for now.
 - **2026-10-20** — Sharpening pass: 6,908 → 6,938 prose words (opening now ties the chapter to Part VII's contract argument and to Part VI's contact counts); 1 heading renamed ("Data Products and the Data Mesh" → "Data Products: Federate Ownership, Not Substrate"); buried points moved to first sentences in 9 paragraphs; 3 long paragraphs split; no spec change. *(AI-mediated session)*
 - **2026-10-20** — Consistency fix: Ingrid's line says three contact definitions, matching the scene table; the replay table and intro now say the Essen Golf row (April) was added after the March week. *(AI-mediated session)*
 - **2026-10-20** — Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`). *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*

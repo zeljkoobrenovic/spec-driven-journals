@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Unlisted: Fifteen Ways Listing Systems Go Wrong
@@ -19,7 +19,7 @@ Chief and enterprise architects of marketplace groups, principal engineers, sear
 - [ ] Opens with IN THIS SECTION and exactly three KEY POINTS; no failure-pattern callout.
 - [ ] A summary table of all fifteen patterns and their warning signs precedes the pattern sections.
 - [ ] Each pattern has a fictional quote attributed to a role, what it looks like (warning signs), why it happens, what it costs, a Veldmark illustration labeled fictional, a short remedy direction, and "Where this book helps:" with valid cross-links that match the chapters' own FAILURE PATTERNS callouts.
-- [ ] Public examples are dated and sourced (Zillow Offers 2021 for The Unwatched Model; leboncoin 2015 and Which? 2024 for Moderation as an Afterthought; UK Finance 2026 for The Scam Inbox; Adevinta 2019–2025 for the portfolio patterns; Mercari 2024, eBay, OLX, Kleinanzeigen and others); where no public failure is documented, the page says so.
+- [ ] Public examples are dated and sourced (Zillow Offers 2021 for Set-and-Forget AI; leboncoin 2015 and Which? 2024 for Moderation as an Afterthought; UK Finance 2026 for Fast Mail for Fraudsters; Adevinta 2019–2025 for the portfolio patterns; Mercari 2024, eBay, OLX, Kleinanzeigen and others); where no public failure is documented, the page says so.
 - [ ] Veldmark figures match the scenario ledger (bike timeline and digest, 41,000 downstream ghosts a week, 1.7 listings per property, 8 March 2027 truncated feeds, 17 January 2027 brown-out, boost archaeology, 146-model inventory, €212,000 overbilling, qualified-contact replay).
 - [ ] Two mermaid diagrams (patterns along the pipeline; reinforcing chains), a diagnostic table of first indicators, and a closing pattern-to-chapter matrix covering all 51 chapters.
 - [ ] Hands off to [[meet-veldmark]].
@@ -43,7 +43,7 @@ Article only for now. One illustration per pattern, as in the RECONCILED opening
 
 - The article runs to about 9,600 words of prose because each of the fifteen patterns carries a public example; a later edit could move some public examples to the linked chapters if length becomes a problem.
 - The matrix marks unwritten chapters (industry-evolution, transactions-and-payments, multi-country-platforms, Part VIII and the Part IX cases other than Adevinta) from the plan; revise it when their callouts exist.
-- The Platform Mandate illustration presents the shared search platform's geo query compiler as the alternative to a list-only API; it is a framing of the map-search chapter's decision, not a new ledger fact.
+- The Forced Fit illustration presents the shared search platform's geo query compiler as the alternative to a list-only API; it is a framing of the map-search chapter's decision, not a new ledger fact.
 
 ## Decision log
 
@@ -68,8 +68,11 @@ Article only for now. One illustration per pattern, as in the RECONCILED opening
 ## Changelog
 
 - **2026-10-19** — Initial spec and article. *(AI-mediated session)*
-- **2026-10-19** — Editorial review pass: pattern-to-chapter matrix regenerated from every chapter's FAILURE PATTERNS callout (14 rows changed; ● now means named in the callout only), "Where this book helps" lines extended for Ghost Inventory, the portfolio patterns, Vanity Liquidity and The Unwatched Model; timetoread corrected. *(AI-mediated session)*
+- **2026-10-19** — Editorial review pass: pattern-to-chapter matrix regenerated from every chapter's FAILURE PATTERNS callout (14 rows changed; ● now means named in the callout only), "Where this book helps" lines extended for Ghost Inventory, the portfolio patterns, Vanity Liquidity and Set-and-Forget AI; timetoread corrected. *(AI-mediated session)*
 - **2026-10-19** — Added 3 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Cross-chapter consistency sweep: 1 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 10,466 → 10,499 prose words; opening now ties the page to the introduction's liquidity argument and states that every chapter's callout points back here; "First indicators for each pattern" promoted to its own H2 section; three small cuts. *(AI-mediated session)*
-- **2026-10-20** — Replaced 2 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`); known differences from the source: Figure 2: kept attempt 1: Portfolio arrow runs behind 'The Duplicate Echo' and Moderation arrow runs behind 'Measurement and control' and 'Paid-Rank Drift', so both read as wrong links; Figure 4: kept attempt 4: label 'new facts go into free keys' missing on Category Straitjacket to Attribute Junkyard arrow; Index-as-Database to Ghost Inventory line runs through The Category Straitjacket box. *(AI-mediated session)*
+- **2026-10-20** — Replaced 2 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`); known differences from the source: Figure 2: kept attempt 1: Portfolio arrow runs behind 'Seeing Double' and Moderation arrow runs behind 'Measurement and control' and 'Multiplier Creep', so both read as wrong links; Figure 4: kept attempt 4: label 'new facts go into free keys' missing on Category Straitjacket to Attribute Junkyard arrow; Search as System of Record to Ghost Inventory line runs through The Category Straitjacket box. *(AI-mediated session)*
+- **2026-10-21** — Renamed nine of the fifteen patterns (author's choice): The Duplicate Echo → Seeing Double, Index-as-Database → Search as System of Record, Paid-Rank Drift → Multiplier Creep, The Scam Inbox → Fast Mail for Fraudsters, The Country Fork → The Copy-Paste Country, The Acquisition Archipelago → Deal-Shaped Architecture, The Platform Mandate → The Forced Fit, Entitlement Spaghetti → Billing by Guesswork, The Unwatched Model → Set-and-Forget AI; matrix codes and Figures 2 and 4 relabelled; the new names applied across the book. *(AI-mediated session)*
+- **2026-10-21** — Added 14 inline illustrations, one per pattern that lacked one (Ghost Inventory already had one), each after the pattern's "An illustration." paragraph; figures renumbered 1–19. *(AI-mediated session)*
+- **2026-10-21** — Moved each pattern figure to just after the section's opening quote, before "What it looks like" (author's request); numbering unchanged. *(AI-mediated session)*

@@ -1,6 +1,6 @@
 ---
 status: accepted
-revised: 2026-10-20
+revised: 2026-10-21
 ---
 
 # Spec: Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics
@@ -47,7 +47,7 @@ Chief architects, data and ML leads, product directors and engineering directors
 ## Decision log
 
 - **2026-10-19** — Defined liquidity as a per-cell probability within a time window, rather than as a ratio of buyers to listings, so the Tradeyard PT example could show the national ratio misleading.
-- **2026-10-19** — Organized metrics as a tree with explicit counter-metrics, to tie the chapter to the Ghost Inventory and Duplicate Echo failure patterns.
+- **2026-10-19** — Organized metrics as a tree with explicit counter-metrics, to tie the chapter to the Ghost Inventory and Seeing Double failure patterns.
 - **2026-10-19** — Made "metrics become requirements" a full section with an owner-chapter column, so later chapters can cite their targets back to a liquidity mechanism.
 - **2026-10-19** — Estimated the brown-out's liquidity cost (2.3M failed searches, about 40,000 contacts) as a labeled Veldmark estimate rather than adding it to the canonical incident facts.
 
@@ -70,3 +70,4 @@ Chief architects, data and ML leads, product directors and engineering directors
 - **2026-10-19** — Added 2 inline illustrations (article-illustrator); figures renumbered. *(AI-mediated session)*
 - **2026-10-20** — Sharpening pass: 6,142 → 6,138 words; 1 heading renamed ("Getting Started and Staying Ahead" → "Competing for Liquidity"); winner-take-most paragraphs reordered (mechanism before limits); opening names where the requirements are traced; bike paragraph leads with the six-minute split. Spec unchanged. *(AI-mediated session)*
 - **2026-10-20** — Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in `_research/mermaid-figures.json`). *(AI-mediated session)*
+- **2026-10-21** — Renamed failure patterns to match [[where-listing-systems-go-wrong]]: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. *(AI-mediated session)*
