@@ -19,6 +19,7 @@ template framework.
 | Placeholder | Value |
 | --- | --- |
 | `__TITLE__` | Journal title from `config.yaml`. |
+| `__META_TAGS__` | Description and Open Graph tags for link previews: title, excerpt or description, absolute page URL and hero image, built from the journal's `site_url:` (default: `SITE_URL` in `build.py`). |
 | `__DESCRIPTION__` | Journal description from `config.yaml`. |
 | `__JOURNAL__` | Journal directory name. |
 | `__LOGO_HTML__` | Optional rendered hero image and credit. |
@@ -29,6 +30,7 @@ template framework.
 | Placeholder | Value |
 | --- | --- |
 | `__TITLE__` | Post title or spec title. |
+| `__META_TAGS__` | Description and Open Graph tags for link previews: title, excerpt or description, absolute page URL and hero image, built from the journal's `site_url:` (default: `SITE_URL` in `build.py`). |
 | `__SECTION_HTML__` | Section label or spec status header. |
 | `__BYLINE__` | Author, date, and reading-time string. |
 | `__LOGO_HTML__` | Optional post hero image and credit. |

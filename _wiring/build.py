@@ -26,6 +26,9 @@ JOURNALS_DIR = ROOT / "_journals"
 TEMPLATES_DIR = ROOT / "_templates"
 DOCS_DIR = ROOT / "docs"
 INCLUDES_DIR = DOCS_DIR / "_includes"
+# Public root of docs/, for the absolute URLs that link previews (Open Graph) need.
+# A journal served elsewhere overrides it with `site_url:` in its config.yaml.
+SITE_URL = "https://zeljkoobrenovic.github.io/spec-driven-journals"
 
 
 # --- tiny YAML subset parser ----------------------------------------------
@@ -484,6 +487,11 @@ def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str, crosslink_in
     logo = config.get("logo") or ""
     logo_credit = config.get("logo_credit") or ""
     sections = config.get("sections") or []
+    base_url = (config.get("site_url") or f"{SITE_URL}/{journal_dir.name}").rstrip("/")
+
+    def meta_tags(page_title, page_desc, page, image):
+        return _meta_tags(page_title, page_desc, f"{base_url}/{page}",
+                          f"{base_url}/{image}" if image else "", title)
 
     out_dir = DOCS_DIR / journal_dir.name
     if out_dir.exists():
@@ -586,6 +594,9 @@ def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str, crosslink_in
                 spec_html = (
                     post_tpl
                     .replace("__TITLE__", _html_escape(spec_title))
+                    .replace("__META_TAGS__", meta_tags(
+                        spec_title, meta.get("excerpt", ""), f"{slug}.spec.html",
+                        meta.get("logo") or logo))
                     .replace("__SECTION_HTML__", _spec_header_html(spec_status, spec_revised))
                     .replace("__BYLINE__", "")
                     .replace("__LOGO_HTML__", "")
@@ -599,6 +610,9 @@ def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str, crosslink_in
             html = (
                 post_tpl
                 .replace("__TITLE__", _html_escape(meta.get("title", slug)))
+                .replace("__META_TAGS__", meta_tags(
+                    meta.get("title", slug), meta.get("excerpt", ""), f"{slug}.html",
+                    meta.get("logo") or logo))
                 .replace("__SECTION_HTML__", section_html)
                 .replace("__BYLINE__", _html_escape(_byline(meta)))
                 .replace("__LOGO_HTML__", post_logo_html)
@@ -637,6 +651,7 @@ def build_journal(journal_dir: Path, index_tpl: str, post_tpl: str, crosslink_in
     index_html = (
         index_tpl
         .replace("__TITLE__", _html_escape(title))
+        .replace("__META_TAGS__", meta_tags(title, description, "", logo))
         .replace("__DESCRIPTION__", _description_html(description))
         .replace("__JOURNAL__", _html_escape(journal_dir.name))
         .replace("__LOGO_HTML__", logo_html)
@@ -734,6 +749,25 @@ def _logo_html(logo: str, credit: str) -> str:
     if credit:
         out += f'\n        <p class="logo-credit">{_html_escape(credit)}</p>'
     return out
+
+
+def _meta_tags(title: str, description: str, url: str, image: str, site_name: str) -> str:
+    """Description and Open Graph tags, so shared links get a preview card."""
+    # Previews show plain text: drop markdown links, emphasis and [[crosslinks]].
+    desc = _MD_LINK.sub(r"\1", description or "")
+    desc = re.sub(r"\[\[([^\]]+)\]\]", r"\1", desc).replace("**", "").replace("*", "").strip()
+    tags = [
+        ("name", "description", desc),
+        ("property", "og:type", "website"),
+        ("property", "og:site_name", site_name),
+        ("property", "og:title", title),
+        ("property", "og:description", desc),
+        ("property", "og:url", url),
+        ("property", "og:image", image),
+        ("name", "twitter:card", "summary_large_image" if image else "summary"),
+    ]
+    return "\n    ".join(f'<meta {attr}="{key}" content="{_html_escape(value)}">'
+                         for attr, key, value in tags if value)
 
 
 def _byline(meta: dict) -> str:
